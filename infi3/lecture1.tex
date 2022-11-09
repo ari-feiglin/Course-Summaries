@@ -1,0 +1,177 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\@blist[#1]{%
+    \bgroup\bgroup\par\vskip-\medskipamount%
+    \gdef\item{%
+        \par\egroup\bgroup\medskip\setbox0=\hbox{#1\quad}%
+        \advance\leftskip by \wd0\leavevmode\kern-\wd0\box0%
+    }%
+}
+\def\blist{\@ifnextchar[ \@blist {\@blist[$\bullet$]}}
+\def\elist{\par\egroup\egroup\medskip}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\pdf@drawing@macro{check}{0 1 0 RG 1.2 w 1 j 1 J 0 5 m 3 0 l 8 10 l S}{9.2pt}{12pt}{1pt}{1pt}
+\pdf@drawing@macro{ecks}{1 0 0 RG 0 0 m 1 j 1 J 10 10 l 0 10 m 10 0 l S}{11.2pt}{12pt}{1pt}{1pt}
+
+\begin{document}
+
+\c@section=1
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infintesimal Calculus 3}
+
+    \medskip
+    \textit{Lecture 1, Sunday October 23, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+Just like how the focus of Calculus 1 and 2 were of single value functions:
+\[ f\colon X\subseteq\bR\longvarrightarrow\bR \]
+The focus of this course will be on functions:
+\[ f\colon X\subseteq\bR\longvarrightarrow\bR^m \]
+
+\subsection{A Soft Review of Linear Algebra}
+
+\begin{defn*}
+
+    We will recall that a \ppemph{normed vector space} $V$ is a vector space equipped with a norm function:
+        \[ \norm\cdot\colon W\longvarrightarrow\bR \]
+    Which satisfies the following axioms:
+    \blist
+        \item Positivity: $\norm v\geq0$ for every $v\in V$.
+        \item Homogeneity: $\norm{\alpha v}=\abs\alpha\cdot\norm v$ for every $\alpha\in\bR$ and $v\in V$.
+        \item The Triangle Inequality: $\norm{v+u}\leq\norm{v}+\norm{u}$ for every $v,u\in V$.
+    \elist
+
+\end{defn*}
+
+Notice that by the triangle inequality:
+\[ \norm{v-u}+\norm u\geq\norm v \quad \norm{v-u}+\norm v\geq\norm u \]
+So we have that
+\[ \norm{v-u} \geq \abs{\norm v - \norm u} \]
+
+\begin{exam}
+
+    Some examples of norms over $\bR^n$ are:
+        \blist
+            \item $\norm x_\infty=\max{\abs{x_1},\dots,\abs{x_n}}$
+            \item $\norm x_p=\displaystyle\parens{\sum_{k=1}^n \abs{x_k}^p}^{\frac1p}$ for $1\leq p<\infty$.
+        \elist
+        These are actually special cases of the more general $\ell^p$ norm, which itself can be seen as a special case of the $L^p(\bR)$ norm.
+
+\end{exam}
+
+\begin{exam}
+
+    The set:
+        \[ C\parens{[a,b]}\coloneqq\set{f\colon[a,b]\longvarrightarrow\bR}[f\text{ is continuous}] \]
+    is also a vector space, and we can norm it by the $\norm\cdot_{\rm max}$ norm:
+        \[ \norm{f}_{\rm max}\coloneqq\max_{x\in[a,b]} f(x) \]
+    We can also define the $\norm\cdot_p$ norm:
+        \[ \norm f_p\coloneqq\parens{\int_a^b \abs{f(x)}^p\,dx}^{\frac1p} \]
+    This too is a specific case of the $L^p[a,b]$ norm.
+
+\end{exam}
+
+Note that $C[a,b]$ is infinite-dimensional.
+We can show this by showing that the set $\set{x^n}_{n\in\bN}\subseteq C[a,b]$ is linearly independent.
+Suppose then that there is a finite sum of $x^n$s which equals $0$:
+\[ \sum_{k=1}^n a_k x^{k_n} = 0 \]
+Notice that the sum above is a polynomial, we will let it equal $p(x)$, so $p\equiv 0$.
+But we know that a polynomial is identically $0$ if and only if its coefficients are all $0$, meaning that $a_k=0$.
+So $\set{x^n}_{n\in\bN}$ is indeed linearly independent, so $C[a,b]$ is infinite dimensional.
+
+\begin{defn*}
+
+    Again recall that given a vector space $V$, an \ppemph{inner product} on $V$ is a function:
+        \[ \iprod{\cdot,\cdot}\colon V\times V\longvarrightarrow\bR \]
+    Such that:
+    \blist
+        \item $\iprod{v,v}\geq0$ and is $0$ if and only if $v=0$.
+        \item $\iprod{\alpha v,u}=\alpha\iprod{v,u}$
+        \item $\iprod{v,u}=\overline{\iprod{u,v}}$.
+              Since we are working over $\bR$ we can simplify this to $\iprod{v,u}=\iprod{u,v}$.
+    \elist
+    If $V$ has an inner product, it is called an \ppemph{inner product space}.
+
+\end{defn*}
+
+An inner product also generates a norm, we can define:
+\[ \norm{v} = \sqrt{\iprod{v,v}} \]
+
+\begin{exam}
+
+    Over $C[a,b]$ we can define:
+        \[ \iprod{f,g} = \int_a^b f(x)\cdot g(x)\,dx \]
+    This inner product actually generates the $\norm\cdot_2$ norm.
+
+\end{exam}
+
+\begin{exam}
+
+    The $\ell^p$ space is the space of all infinite sequences $\set{a_n}_{n=1}^\infty$ such that:
+        \[ \sum_{n=1}^\infty \abs{a_n}^p < \infty \]
+    And we define the $\ell^p$ norm, also denoted $\norm\cdot_p$ to be the $p$th root of this.
+
+    Over $\ell^2$ we can define an inner product:
+        \[ \iprod{\set{a_n}_{n=1}^\infty, \set{b_n}_{n=1}^\infty} = \sum_{n=1}^\infty a_n\cdot b_n \]
+    It can be seen that this is well-defined and it is trivial to see that this generates the $\ell^2$ norm.
+\end{exam}
+
+\begin{defn*}
+
+    Given a normed vector space $V$, we can define the \ppemph{distance} metric to be:
+        \[ d(v,u) = \norm{v-u} \]
+
+\end{defn*}
+
+\begin{defn*}
+
+    A set $M$ equipped with a function:
+        \[ d(\cdot, \cdot)\colon M\times M\longvarrightarrow\bR_{\geq0} \]
+    Which satisfies the following:
+    \blist
+        \item Positivity: $d(v,u)\geq0$ and is $0$ if and only if $v=u$.
+        \item Symmetry: $d(v,u)=d(u,v)$.
+        \item The Triangle Inequality: $d(v,u)\leq d(v,w)+d(w,u)$.
+    \elist
+
+\end{defn*}
+
+Notice then that a normed vector space is a metric space since:
+\[ d(v,w) + d(w,u) = \norm{v-w} + \norm{w-u} \geq \norm{v-u} = d(v,u) \]
+And the other two requirements are simple to prove.
+
+\def\bS{\mathbb{S}}
+
+\begin{exam}
+    Not every metric space is a vector space.
+    We can define the $\bS^n$ space as:
+        \[ \bS^n\coloneqq\set{v\in\bR^{n+1}}[\norm v = 1] \subset \bR^{n+1} \]
+    We can define a metric on $\bS^n$ to be the length of the smallest arc between two points.
+    This is obviously not a vector space, but it \emph{is} a metric space.
+\end{exam}
+
+\end{document}
+
