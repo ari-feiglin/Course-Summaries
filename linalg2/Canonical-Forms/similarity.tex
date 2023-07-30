@@ -1,0 +1,113 @@
+\begin{defn*}
+
+    Two matrices $M_1,M_2\in M_n(\bF)$ are \ppemph{similar} if they are representations of the same linear operator.
+    In other words, $M_1$ and $M_2$ are similar if there exists some linear operator $T$, and bases $B$ and $C$ such that
+    \[ M_1 = [T]_B \text{ and } M_2 = [T]_C \]
+    Similarity is denoted by $M_1\sim M_2$.
+
+\end{defn*}
+
+Similarity is an equivalence relation, as it is obviously reflexive and symmetric.
+But it is not immediate that it is transitive, as if $M_1\sim M_2$ and $M_2\sim M_3$, then all we know is that there are linear operators $T$ and $S$, and bases $B$, $C$, $D$, and $E$ such that
+\[ M_1 = [T]_B,\quad M_2 = [T]_C,\quad M_2=[S]_D,\quad M_3=[S]_E \]
+(By our definition, $T$ and $S$ need not even be linear operators over the same vector space, but since all the vector spaces have the same dimension, they are all isomorphic.)
+We will prove transitivity another way, by finding an equivalent condition for similarity.
+
+\begin{lemm*}
+
+    If $A\in M_n(\bF)$ is invertible and $B$ is a basis of some $n$-dimensional vector space $V$, then there exists some bases $C$ and $D$ such that $A=[I]^C_B$ and $A=[I]^B_D$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Suppose $B=(v_1,\dots,v_n)$, then let us denote $C=(u_1,\dots,u_n)$.
+    We must have that $[u_i]_B=C_i(A)$, and since $[\cdot]_B$ is an isomorphism, there exists such a $u_i$ (defined by $(v_1,\dots,v_n)\cdot C_i(A)$).
+    And since the $A$ is invertible, $\set{C_1(A),\dots,C_n(A)}$ are linearly independent and so the $u_i$ are also linearly independent, and therefore form a basis (since they define a linearly independent
+    set whose size is the dimension of $V$).
+
+    Now, we know that this must also be true for $A^{-1}$ and so there exists a basis $D$ such that $A^{-1}=[I]^D_B$ and so $A=[I]^B_D$ as required.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}
+
+    $M_1$ and $M_2$ are similar if and only if there exists an invertible matrix $P$ such that $M_1=P^{-1}M_2P$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Suppose $M_1$ and $M_2$ are similar, and so there exists a linear operator $T$ and bases $B$ and $C$ such that $M_1=[T]_B$ and $M_2=[T]_C$.
+    But then
+    \[ M_1 = [I]^C_B\cdot[T]_C\cdot[I]^B_C \]
+    so if we defined $P=[I]^B_C$, then $P$ is invertible and $P^{-1}=[I]^C_B$ so
+    \[ M_1 = P^{-1}M_2P \]
+    as required.
+
+    And if $M_1=P^{-1}M_2P$, then since $M_2$ represents a linear operator, suppose $M_2=[T]^B_B$.
+    Then by the previous lemma, we know that there exists some basis $C$ such that $P=[I]^C_B$, and so
+    \[ M_1 = [I]^B_C\cdot[T]^B_B\cdot[I]^C_B = [T]^C_C \]
+    and therefore $M_1$ and $M_2$ both represent the same linear operator, and are therefore similar.
+    \qed
+
+\end{proof}
+
+Thus similarity is transitive, since if $M_1\sim M_2$ and $M_2\sim M_3$ then there exist invertible matrices $P$ and $Q$ such that
+\[ M_1 = P^{-1}M_2P,\quad M_2 = Q^{-1}M_3Q \implies M_1 = P^{-1}Q^{-1}M_3QP = (QP)^{-1}M_3(QP) \]
+so $M_1\sim M_3$ as required.
+So similarity is indeed an equivalence relation.
+
+\begin{prop*}
+
+    Similar matrices have the same characteristic polynomial.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $A\sim B$, then $A=P^{-1}BP$ for some invertible matrix $P$.
+    Then
+    \[ p_A(x) = \detof{xI-A} = \detof{xI-P^{-1}BP} = \detof{P^{-1}(xI-B)P} = \detof P\cdot\detof{xI-B}\cdot\detof{P^{-1}} \]
+    And since $\detof P\cdot\detof{P^{-1}}=1$, this is equal to
+    \[ = \detof{xI-B} = p_B(x) \qed \]
+
+\end{proof}
+
+This should make sense, as two similar matrices should have the same eigenvalues as they represent the same linear transformation, which form the roots of their characteristic polynomials.
+And indeed two similar matrices have the same eigenvalues, as their characteristic polynomials are equivalent.
+
+\begin{prop*}
+
+    Two similar matrices have the same determinants and traces.
+
+\end{prop*}
+
+\begin{proof}
+
+    We can show this two ways.
+    Firstly, we showed that the traces and determinant are some of the coefficients of the characteristic polynomial of a matrix.
+    And since two similar matrices have the same characteristic polynomial, their determinants and traces are the same.
+
+    We can also prove this more directly.
+    Suppose $A$ and $B$ are similar, then $A=P^{-1}BP$ and so
+    \[ \detof A = \detof{P^{-1}BP} = \detof{P^{-1}}\detof B\detof P = \detof B \]
+    And recall that $\traceof{AB}=\traceof{BA}$ and so
+    \[ \traceof A = \traceof{P^{-1}BP} = \traceof{P^{-1}(BP)} = \traceof{BPP^{-1}} = \traceof B \]
+    as required.
+    \qed
+
+\end{proof}
+
+Now, since similar matrices have the same characteristic polynomial, determinant, and trace, we can define the characteristic polynomial of a linear operator.
+
+\begin{defn*}
+
+    If $T$ is a linear operator, then we define the \ppemph{characteristic polynomial} of $T$ to be the characteristic polynomial of any of its matrix representations.
+    And we similarly define its \ppemph{determinant} and \ppemph{trace} to be the determinant and trace of any of its matrix representations, respectively.
+
+\end{defn*}
+
+Since by definition all of $T$'s matrix representations are similar, they all have the same characteristic polynomial, determinant, and trace and so this definition is well-defined.
+

@@ -1,0 +1,300 @@
+\begin{defn*}
+
+    A \ppemph{permutation} of $n$ elements is a bijection $\sigma\colon\set{1,\dots,n}\longto\set{1,\dots,n}$.
+    $S_n$ is defined to be the set of all permutations of $n$ elements.
+
+\end{defn*}
+
+Recall that there are $n!$ bijections between two sets of cardinality $n$, thus $\abs{S_n}=n!$.
+
+One common way of writing permutations is in table form, for example
+\[ \begin{pmatrix} 1 & 2 & 3 & 4 & 5 \\ 4 & 3 & 1 & 5 & 2 \end{pmatrix} \]
+corresponds to a permutation
+\[ \begin{tikzcd}[column sep=small]
+    1 & 2 & 3 & 4 & 5 \\ 4 & 3 & 1 & 5 & 2
+    \arrow[maps to, from=1-1, to=2-1]
+    \arrow[maps to, from=1-2, to=2-2]
+    \arrow[maps to, from=1-3, to=2-3]
+    \arrow[maps to, from=1-4, to=2-4]
+    \arrow[maps to, from=1-5, to=2-5]
+\end{tikzcd} \]
+
+Now, let us chase elements, starting from $1$.
+$1$ is mapped to $4$ which is mapped to $5$ which is mapped to $2$ which is mapped $3$ which is mapped to $1$.
+This creates a cycle:
+
+\begin{defn*}
+
+    A \ppemph{cycle} is a permutation $\sigma$ such that there exist $n_1,\dots,n_k$ where $\sigma(n_i)=n_{i+1}$ for $i<k$ and $\sigma(n_k)=n_1$.
+    And for every number $m$ which is not equal to some $n_k$, $\sigma(m)=m$.
+    Cycles are denoted
+    \[ \sigma = \pmat{n_1 & n_2 & \dots & n_k} \]
+
+    A cycle whose length is $2$ is called a \ppemph{transposition}.
+
+\end{defn*}
+
+Thus our $\sigma$ can be written as the cycle
+\[ \sigma = \pmat{1 & 4 & 5 & 2 & 3} \]
+
+Notice that if $\sigma=\pmat{n_1&\dots&n_k}$ is a cycle, then so is $\sigma^{-1}$:
+\[ \sigma^{-1} = \pmat{n_k&n_{k-1}&\dots&n_1} \]
+This is since $\sigma^{-1}(n_i)=n_{i-1}$ for $i>1$ and $\sigma^{-1}(n_1)=n_k$.
+
+\begin{note}
+
+    Given two permutations $\sigma$ and $\tau$, we will denote the composition by the product $\sigma\tau$, neglecting the composition operator $\circ$.
+
+\end{note}
+
+\begin{defn*}
+
+    The \ppemph{support} of a permutation $\sigma$ is the set of all non-invariant numbers, ie.
+    \[ \supportof\sigma = \set{k}[\sigma(k)\neq k] \]
+    So for example, for cycles
+    \[ \supportof{\pmat{n_1 & n_2 & \dots & n_k}} = \set{n_1,\,\dots,\,n_k} \]
+    Two permutations are called \ppemph{disjoint} if their supports are.
+
+\end{defn*}
+
+Note that a permutation $\sigma\in S_n$ can be thought of as a permutation of the elements in its support.
+In other words, there is a natural equivalence between $\sigma$ and a permutation in $S_{\abs{\supportof\sigma}}$.
+
+\begin{prop*}
+
+    If $\sigma$ is a permutation then $\supportof\sigma=\supportof{\sigma^{-1}}$.
+
+\end{prop*}
+
+\begin{proof}
+
+    If $k\in\supportof\sigma$ then $\sigma(k)\neq k$, which means $\sigma^{-1}(\sigma(k))\neq\sigma^{-1}(k)$, and so $\sigma^{-1}(k)\neq k$.
+    Therefore $k\in\supportof{\sigma^{-1}}$, and so $\supportof\sigma\subseteq\supportof{\sigma^{-1}}$.
+    By symmetry, we have that $\supportof\sigma\supseteq\supportof{\sigma^{-1}}$, and therefore $\supportof\sigma=\supportof{\sigma^{-1}}$ as required.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    If $\sigma$ and $\tau$ are two disjoint permutations, then $\sigma\tau=\tau\sigma$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $\sigma$ and $\tau$ are disjoint, then let $k$ be some number.
+    It is either in the support of $\sigma$ or in the support of $\tau$, or in neither support.
+    If it is in neither support then $\sigma(k)=\tau(k)=k$, and so
+    \[ \sigma\tau(k) = \tau\sigma(k) = k \]
+    Otherwise, suppose without loss of generality that $k\in\supportof\sigma$.
+    Then $\sigma(k)\neq k$ so $\sigma(\sigma(k))\neq\sigma(k)$ since $\sigma$ is injective, and therefore $\sigma(k)\in\supportof\sigma$.
+    Since $\sigma$ and $\tau$ are disjoint, this means $\sigma(k)\notin\supportof\tau$ and so $\tau(\sigma(k))=\sigma(k)$.
+    So
+    \[ \tau\sigma(k) = \tau(\sigma(k)) = \sigma(k) \]
+    and on the other hand, since $k\notin\supportof\tau$,
+    \[ \sigma\tau(k) = \sigma(k) \]
+    so $\tau\sigma(k)=\sigma\tau(k)$.
+
+    Since this is true for every $k$, we have that $\sigma\tau=\tau\sigma$, as required.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    If $\sigma$ and $\tau$ are permutations then $\supportof{\sigma\tau}\subseteq\supportof\sigma\cup\supportof\tau$.
+    If $\sigma$ and $\tau$ are disjoint, this is an equality.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $i\in\supportof{\sigma\tau}$, and suppose that $i\notin\supportof\sigma\cup\supportof\tau$.
+    Thus $i\notin\supportof\sigma$ and $i\notin\supportof\tau$ so $\sigma(i)=\tau(i)=i$, so $\sigma\tau(i)=i$ which is a contradiction.
+
+    If $\sigma$ and $\tau$ are disjoint then if $i\in\supportof\sigma\cup\supportof\tau$, then suppose $i\in\supportof\sigma$.
+    Then $i\notin\supportof\tau$, so $\sigma\tau(i)=\sigma(i)\neq i$, so $i\in\supportof{\sigma\tau}$ as required.
+    \qed
+
+\end{proof}
+
+Let us look at another permutation
+\[ \sigma=\begin{pmatrix} 1 & 2 & 3 & 4 & 5 \\ 4 & 1 & 5 & 2 & 3 \end{pmatrix} \]
+Doing some chasing gives us
+\[ 1\varmapsto4\varmapsto2\varmapsto1 \]
+which is a cycle, but does not fully cover all of $\sigma$'s support, as we are missing $3$ and $5$.
+Chasing these numbers gives the cycle
+\[ 3\varmapsto5\varmapsto3 \]
+Therefore
+\[ \sigma=\pmat{1&4&2}\pmat{3&5} \]
+As you can see, we can write $\sigma$ as the product of two disjoint cycles.
+This turns out to be true in general.
+
+\begin{thrm*}
+
+    Every permutation $\sigma\in S_n$ can be factorized as the product of disjoint cycles in $S_n$, and this factorization is unique (up to order).
+
+\end{thrm*}
+
+\begin{proof}
+
+    Firstly, let us show that the product of disjoint cycles is unique.
+    Suppose $\sigma_1,\dots,\sigma_k$ are all disjoint and $\tau_1,\dots,\tau_\ell$ are also all disjoint such that
+    \[ \sigma_1\cdots\sigma_k = \tau_1\cdots\tau_\ell \]
+
+    Suppose $\sigma_1=\pmat{n_1&\dots&n_t}$, then $n_1$ must be in the support of some $\tau_i$, so without loss of generality suppose $n_1\in\supportof{\tau_1}$ (no generality is lost because the product
+    of disjoint permutations is commutative).
+    Then $n_2=\sigma_1(n_1)=\tau_1(n_1)$, and so $n_2\in\supportof{\tau_1^{-1}}=\supportof\tau$, meaning $n_3=\sigma_1(n_2)=\tau_1(n_2)$ as well, and so on.
+    Therefore
+    \[ n_{i+1} = \sigma_1(n_i) = \tau_1(n_i) \]
+    And $\tau_1(n_t)=\sigma_1(n_t)=n_1$, therefore $\tau_1=\pmat{n_1&\dots&n_t}=\sigma_1$.
+    Thus we have that
+    \[ \sigma_1\cdots\sigma_k=\sigma_1\cdot\tau_2\cdots\tau_\ell \]
+    therefore
+    \[ \sigma_2\cdots\sigma_k = \tau_2\cdots\tau_\ell \]
+    We can continue inductively, and showing that $\sigma_2=\tau_2$ and so on.
+    Thus the factorization of a permutation by disjoint cycles is unique, if it exists.
+
+    Now we will show that such a factorization exists.
+    Suppose $\sigma$ is a permutation, then if $\supportof\sigma=\varnothing$, $\sigma=\id$ and we have finished (since $\id$ is equal to the empty product of cycles).
+    Otherwise, let $i\in\supportof\sigma$, then there exists some $n>0$ such that $\sigma^n(i)=i$.
+    This is because otherwise the map $n\varmapsto\sigma^n(i)$ would be injective: if $\sigma^n(i)=\sigma^m(i)$ for $n>m$ then $\sigma^{n-m}(i)=i$ in contradiction, so the map is injective.
+    But this is an injection from $\bN$ to $\set{1,\dots,n}$ which is a contradiction.
+
+    So let $k$ be the minimum positive value such that $\sigma^k(i)=i$, since $i\in\supportof\sigma$, $i>1$.
+    Now, let
+    \[ \tau = \pmat{i&\sigma(i)&\dots&\sigma^{k-1}(i)} \]
+    then $\tau$ is a cycle.
+    Notice that for $j<k$, $\tau^{-1}\sigma(\sigma^j(i))=\sigma^j(i)$, and so $\sigma^j(i)\notin\supportof{\tau^{-1}\sigma}$.
+    Since
+    \[ \supportof{\tau^{-1}\sigma}\subseteq\supportof\tau\cup\supportof\sigma=\supportof\sigma \]
+    So we have that
+    \[ \supportof{\tau^{-1}\sigma}\subseteq\supportof\sigma\setminus\set{i,\sigma(i),\dots,\sigma^{k-1}(i)} \]
+    So $\tau^{-1}\sigma$ and $\tau$ are disjoint.
+
+    So let us induct over $n$ (in $S_n$).
+    For $n=1$, $\sigma=\id$ which is trivial.
+    Otherwise, we showed that there exists a cycle $\tau$ such that $\tau^{-1}\sigma$ has a strictly smaller support than $\sigma$.
+    Thus $\tau^{-1}\sigma$ is essentially a permutation in $S_k$ for $k<n$, and by our inductive hypothesis, we have that
+    \[ \tau^{-1}\sigma = \sigma_1\cdots\sigma_k \]
+    where $\sigma_i$ are all disjoint cycles.
+    Now since $\tau^{-1}\sigma$ and $\tau$ are disjoint, we must have that $\sigma_i$ and $\tau$ are disjoint, and so
+    \[ \sigma = \tau\sigma_1\cdots\sigma_k \]
+    and this is a product of disjoint cycles.
+    \qed
+
+\end{proof}
+
+This is a very important theorem, as it greatly reduces the amount of work we need to do in order to work with permutations.
+
+\begin{defn*}
+
+    If $\sigma$ is a permutation, an \ppemph{inversion} is a pair of indexes $(i,j)$ such that $i<j$ but $\sigma(i)>\sigma(j)$ (ie. an inversion is when $\sigma$ flips the order of two numbers).
+    Let $N(\sigma)$ equal the number of inversions of $\sigma$,
+    \[ N(\sigma) = \abs{\set{(i,j)}[i<j,\,\sigma(i)>\sigma(j)]} \]
+    Let the \ppemph{sign} of the permutation be
+    \[ \signof\sigma = (-1)^{N(\sigma)} \]
+
+    If $\signof\sigma=1$, then $\sigma$ is caled \ppemph{even} (since the number of inversions is even).
+    And if $\signof\sigma=-1$, then $\sigma$ is called \ppemph{odd}.
+
+\end{defn*}
+
+So for example, given an transposition $\sigma=\pmat{i&j}$, then we can suppose $i<j$ (since $\pmat{i&j}=\pmat{j&i}$), and so $N(\sigma)=1$ since $i$ is mapped to $j$ and $j$ is mapped to $i$, so
+$i<j$ but $\sigma(i)>\sigma(j)$.
+
+\begin{prop*}
+
+    If $\sigma$ and $\tau$ are two permutations (not necessarily disjoint) then $\signof{\sigma\tau}=\signof\sigma\cdot\signof\tau$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $i<j$, then suppose $\set{i,j}$ is an inversion of $\sigma\tau$.
+    If $\set{i,j}$ is an inversion of $\tau$ then $\set{\tau(i),\tau(j)}$ cannot be an inversion of $\sigma$.
+    And otherwise if $\set{i,j}$ is not an inversion of $\tau$ then $\set{\tau(i),\tau(j)}$ must be an inversion of $\sigma$.
+    So we have that $\set{i,j}$ is an inversion of $\sigma\tau$ if and only if
+    \blist
+        \item $\set{i,j}$ is an inversion of $\tau$ and $\set{\tau(i),\tau(j)}$ is not an inversion of $\sigma$, or
+        \item $\set{i,j}$ is not an inversion of $\tau$ and $\set{\tau(i),\tau(j)}$ is an inversion of $\sigma$.
+    \elist
+
+    Let $N$ be the number of inversions $\set{i,j}$ of $\tau$ such that $\set{\tau(i),\tau(j)}$ is also an inversion of $\sigma$.
+    We claim that
+    \[ N(\sigma\tau) = N(\sigma) + N(\tau) - 2N \]
+    This is because $N(\sigma)$ is equal to the number of pairs $\set{i,j}$ where
+    \blist
+        \item $\set{i,j}$ is not an inversion of $\tau$ and $\set{\tau(i),\tau(j)}$ is an inversion of $\sigma$, or
+        \item $\set{i,j}$ is an inversion of $\tau$ and $\set{\tau(i),\tau(j)}$ is an inversion of $\sigma$.
+    \elist
+    And similarly $N(\tau)$ is equal to the number of pairs $\set{i,j}$ where
+    \blist
+        \item $\set{i,j}$ is an inversion of $\tau$ and $\set{\tau(i),\tau(j)}$ is not an inversion of $\sigma$, or
+        \item $\set{i,j}$ is an inversion of $\tau$ and $\set{\tau(i),\tau(j)}$ is an inversion of $\sigma$.
+    \elist
+
+    Thus when adding $N(\sigma)+N(\tau)$ we double count the number of pairs where $\set{i,j}$ is an inversion of $\tau$ and $\set{\tau(i),\tau(j)}$ is an inversion of $\sigma$, of which there are $N$.
+    The rest of the cases are counted by $N(\sigma\tau)$, so
+    \[ N(\sigma) + N(\tau) = N(\sigma\tau) + 2N \]
+    Thus
+    \[ \signof{\sigma\tau} = (-1)^{N(\sigma\tau)} = (-1)^{N(\sigma)+N(\tau)-2N} = (-1)^{N(\sigma)}(-1)^{N(\tau)} = \signof\sigma\cdot\signof\tau \]
+    as required.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    If $\sigma$ is a cycle of length $k$, then
+    \[ \signof\sigma = (-1)^{k-1} \]
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $\sigma=\pmat{n_1&\dots&n_k}$, then let
+    \[ \tau = \pmat{n_1&n_2}\cdot\pmat{n_2&n_3}\cdots\pmat{n_{k-1}&n_k} \]
+    Notice that for $i<k$, $n_i$ is transposed with $n_{i+1}$ and then $n_{i+1}$ is not transposed again (since the only other transpositions with $n_{i+1}$ is to the right of $\pmat{n_i&n_{i+1}}$).
+    So $\tau(n_i)=n_{i+1}$.
+    And for $i=k$, then $n_k$ is transposed with $n_{k-1}$ which is transposed with $n_{k-2}$ and so on until $n_1$, so $\tau(n_k)=n_1$.
+    Thus $\tau=\sigma$.
+
+    Since $\sign$ is multiplicative, we have that
+    \[ \signof\sigma = \prod_{i=1}^{k-1}\signof{\pmat{n_i&n_{i+1}}} = (-1)^{k-1} \]
+    because the sign of a transposition is $-1$.
+    \qed
+
+\end{proof}
+
+This provides a much easier method of computing the sign of a permutation.
+First, decompose it into cycles, then find the sign of each of the cycles (which is simple, by the above proposition), and multiply them together.
+For example, let us take a look at
+\[ \sigma = \pmat{1&2&3&4&5&6&7&8&9&10\\6&5&9&10&1&2&3&5&7&4} \]
+Chasing numbers we get
+\[ 1\mapsto6\mapsto2\mapsto5\mapsto1,\quad 3\mapsto9\mapsto7\mapsto3,\quad 4\mapsto10\mapsto4 \]
+And thus we get that
+\[ \sigma=\pmat{1&6&2&5}\pmat{3&9&7}\pmat{4&10} \]
+and so
+\[ \signof\sigma=(-1)^3(-1)^2(-1)^1=1 \]
+In other words, $\sigma$ is even.
+
+\begin{prop*}
+
+    For $n>1$, there are as many even permutations as there are odd permutations in $S_n$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Since $n>1$, we have the transposition $\pmat{1&2}$ in $S_n$.
+    If $\sigma$ is even, then $\sigma\cdot\pmat{1&2}$ is odd (since $\signof{\sigma\cdot\pmat{1&2}}=\signof\sigma\cdot\signof{\pmat{1&2}}=-1$).
+    And if $\sigma$ is odd, then $\sigma\cdot\pmat{1&2}$ is even.
+    And so the map $\sigma\varmapsto\sigma\cdot\pmat{1&2}$ maps even permutations to odd permutations, and odd permutations to even permutations.
+    Since the map is injective, this means that there must be at least as many even permutations as odd permutatations, and vice versa, so there is the same amount.
+    \qed
+
+\end{proof}
+
+

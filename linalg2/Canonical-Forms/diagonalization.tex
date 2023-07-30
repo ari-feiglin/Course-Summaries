@@ -1,0 +1,204 @@
+So now that we have a notion of similarity, we have tools to ask an important question.
+When can a linear operator be represented as a diagonal matrix?
+This question is important because diagonal matrices are very easy to discuss, because they are one of the most basic types of matrices.
+So if we can find a diagonal representation of a linear operator, we can deal with it much easier.
+
+\begin{defn*}
+
+    A linear operator is \ppemph{diagonalizable} if one of its representations is a diagonal matrix.
+    And a matrix is \ppemph{diagonalizable} if it represents a diagonalizable linear operator.
+
+\end{defn*}
+
+Thus a matrix is diagonalizable if and only if it is similar to a diagonal matrix.
+And a linear operator is diagonalizable if and only if its representations are diagonalizable.
+
+\begin{lemm*}
+
+    A diagonal matrix's eigenvalues are its values on the diagonal, and $e_i$ are all eigenvectors.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Suppose $A=\diagof{\alpha_1,\dots,\alpha_n}$ then $xI-A=\diagof{x-\alpha_1,\dots,x-\alpha_n}$ and therefore
+    \[ p_A(x) = \detof{xI-A} = (x-\alpha_1)\cdots(x-\alpha_n) \]
+    And so the eigenvalues of $A$, which are the roots of $p_A$, are $\alpha_1,\dots,\alpha_n$ as required.
+    And since $Ae_i=\alpha_i e_i$, $e_i$ are eigenvectors.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}
+
+    A linear operator $T$ over $V$ is diagonalizable if and only if there exists a basis of $V$ consisting only of eigenvectors of $T$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    If $T$ is a diagonalizable linear operator, then there exists a basis $B$ of $V$ such that $A=[T]_B$ is a diagonal matrix.
+    Then $e_i$ are all eigenvectors of $A$, and since there exist vectors $u_i$ such that $[u_i]_B=e_i$,
+    \[ [Tu_i]_B = [T]_B[u_i]_B = Ae_i = \lambda e_i = [\lambda u_i]_B \implies Tu_i=\lambda u_i \]
+    So $u_i$ are eigenvectors of $T$, and $\set{u_1,\dots,u_n}$ is a basis for $V$ as required.
+
+    And if there exists a basis $B=\set{v_1,\dots,v_n}$ of eigenvectors, then $Tv_i=\lambda_iv_i$ and so if we let $A=[T]_B$, then
+    \[ Ae_i = [T]_B[v_i]_B = [Tv_i]_B = \lambda_i[v_i]_B = \lambda_ie_i \]
+    So $A$ is a diagonal matrix, and therefore $T$ is diagonalizable.
+    \qed
+
+\end{proof}
+
+This theorem works for matrices as well.
+Since $A$ is diagonalizable if and only if it is the representation of a diagonalizable linear operator $T$, which is if and only if there exists a basis of eigenvectors of $T$.
+And since there exists a one-to-one correspondence between eigenvectors of $T$ and $A$ (as shown in the proofs above), this is if and only if there exists a basis of eigenvectors of $A$.
+
+\begin{prop*}
+
+    Recall that the sum of eigenspaces is direct.
+    A linear operator $T$ (and by extension a matrix) is diagonalizable if and only if
+    \[ \bigoplus_{\lambda\in\specof T}V_\lambda = V \]
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $\specof T=\set{\lambda_1,\dots,\lambda_t}$.
+    If $T$ is diagonalizable, then there exists a basis of eigenvectors $B$.
+    Now, we can partition $B$ into $B=B_1\dcup\cdots\dcup B_t$ where $B_t$ is a basis for $V_{\lambda_i}$.
+    But $B$ is also a basis for $\bigoplus_\lambda V_\lambda$, and so $\bigoplus_\lambda V_\lambda=V$.
+
+    Now, if $\bigoplus_\lambda V_\lambda=V$, then let $B_i$ be a basis for $V_{\lambda_i}$, then $B=B_1\dcup\cdots\dcup B_t$ is a basis for $\bigoplus_\lambda V_\lambda=V$.
+    So there exists a basis for $V$ which consists of eigenvectors of $T$, and therefore $T$ is diagonalizable.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    A linear operator $T$ (and by extension a matrix) is diagonalizable if and only if
+    \[ \sum_{\lambda\in\specof T}\dim V_\lambda = \dim V \]
+
+\end{prop*}
+
+\begin{proof}
+
+    We know that
+    \[ \dimof{\bigoplus_{\lambda\in\specof T}V_\lambda} = \sum_{\lambda\in\specof T}\dim V_\lambda \]
+    And so $\sum_\lambda\dim V_\lambda=\dim V$ if and only if $\bigoplus_\lambda V_\lambda=V$, which is if and only if $T$ is diagonalizable.
+    \qed
+
+\end{proof}
+
+This theorem gives us a good method of diagonalizing a matrix.
+Suppose $A$ is matrix, we can find its eigenvectors by computing its characteristic polynomial, finding its roots, and then for each root (eigenvalue) $\lambda$, finding $V_\lambda=N(\lambda I-A)$.
+So we can then form a basis for $V_\lambda$, and taking the union of these bases to be $B$, we know $A$ is diagonalizable if and only if $\abs B=\dim V$ (by the previous proposition).
+So if $\abs B=\dim V$, suppose $B=(v_1,\dots,v_n)$ let
+\[ P = \pmat{\vert & & \vert \\ v_1 & \cdots & v_n \\ \vert & & \vert} \]
+Then
+\[ C_i(AP) = AC_i(P) = Av_i = \lambda_i v_i \]
+And
+\[ P^{-1}\lambda_iv_i = \lambda_iP^{-1}C_i(P) = \lambda_iC_i(P^{-1}P) = \lambda_ie_i \]
+And therefore
+\[ C_i(P^{-1}AP) = \lambda_ie_i \implies P^{-1}AP = \diagof{\lambda_1,\dots,\lambda_n} \]
+Obviously $\diagof{\lambda_1,\dots,\lambda_n}$ would be the diagonal matrix similar to $A$, since a diagonal matrix's characteristic polynomial is given by the product $x-\lambda$ where $\lambda$ are the
+values on its diagonal.
+This also shows us the \emph{diagonalizer} $P$ for $A$ is the matrix of eigenvectors of $A$.
+
+\begin{defn*}
+
+    Let $T$ be a linear operator, and $\lambda$ an eigenvalue.
+    Then $\lambda$'s \ppemph{algebraic multiplicity} is its order in the characteristic polynomial $p_T(x)$, or
+    \[ \mu_T(\lambda) = \maxof{k}[(x-\lambda)^k\divides p_T(x)] \]
+    And $\lambda$'s \ppemph{geometric multiplicity} is the dimension of the eigenspace $\gamma_T(\lambda)=V_\lambda$.
+
+    If the linear operator $T$ is understood, then the algebraic and geometric multiplicities may be denoted $\mu_\lambda$ and $\gamma_\lambda$ respectively.
+
+\end{defn*}
+
+Note that we can write $p_T(x)$ as
+\[ p_T(x) = q(x)\cdot\prod_{\lambda\in\specof T}(x-\lambda)^{\mu_T(\lambda)} \]
+where $q(x)$ is an irreducible polynomial.
+So if $p_T(x)$ is fully factorizable, then
+\[ p_T(x) = \prod_{\lambda\in\specof T}(x-\lambda)^{\mu_T(\lambda)} \]
+(Since in this case $q(x)$ must be a constant, and since $p_T(x)$ is monic, it must be equal to $1$.)
+So if $\dim V=n$, then $\degof{p_T(x)}=n$ and on the other hand
+\[ n = \degof{\prod_{\lambda\in\specof T}(x-\lambda)^{\mu_T(\lambda)}} = \sum_{\lambda\in\specof T}\mu_T(\lambda) \]
+So the sum of the algebraic multiplicities is $n$.
+
+Now if we denote
+\[ p_T(x) = x^n + c_{n-1}x^{n-1} + \cdots + c_0 \]
+Notice that
+\[ c_0 = \prod_{\lambda\in\specof T}(-\lambda)^{\mu_T(\lambda)} = (-1)^n\prod_{\lambda\in\specof T}\lambda^{\mu_T(\lambda)} \]
+And since we know that $c_0=(-1)^n\detof T$, this means that
+\[ \prod_{\lambda\in\specof T}\lambda^{\mu_T(\lambda)} = \detof T \]
+So the product of the eigenvalues of a linear operator (taking into account their multiplicities) is equal to the determinant of the linear operator.
+
+And also notice
+\[ c_{n-1} = -\sum_{\lambda\in\specof T}\lambda\mu_T(\lambda) \]
+And since $c_{n-1}=\traceof T$, we have that
+\[ \traceof T = \sum_{\lambda\in\specof T}\lambda\mu_T(\lambda) \]
+so $\traceof T$ is equal to the sum of the eigenvalues of $T$ (taking into account their multiplicities).
+Let us summarize this in the following proposition:
+
+\begin{thrm*}
+
+    If $\lambda$ is an eigenvalue of a matrix $A$ then its geometric multiplicity is less than its algebraic multiplicity,
+    \[ 1\leq\gamma_\lambda\leq\mu_\lambda\leq n \]
+
+\end{thrm*}
+
+\begin{proof}
+
+    Since $\gamma_\lambda=\dim V_\lambda$, and $V_\lambda$ is non-zero (since $\lambda$ is an eigenvalue), $\gamma_\lambda\geq1$.
+    And $\mu_\lambda\leq n$ since the degree of the characteristic polynomial is $n$, and $(x-\lambda)^{\mu_\lambda}$ divides $p_T(x)$.
+
+    All that remains to be shown is that $\gamma_\lambda\leq\mu_\lambda$.
+    Suppose $\gamma_\lambda=k$, then let $(v_1,\dots,v_k)$ be a basis for $V_\lambda$, which we can expand to a basis of $V$: $(v_1,\dots,v_k,\hat v_{k+1},\dots,\hat v_n)$.
+    Now, let us define
+    \[ P = \pmat{\vert & & \vert & \vert & & \vert \\ v_1 & \cdots & v_k & \hat v_{k+1} & \cdots & \hat v_n \\ \vert & & \vert & \vert & & \vert} \]
+    Then
+    \[ AP = \pmat{\vert & & \vert & \vert & & \vert \\ \lambda v_1 & \cdots & \lambda v_k & A\hat v_{k+1} & \cdots & A\hat v_n \\ \vert & & \vert & \vert & & \vert} \]
+    Now, $P^{-1}v_i=P^{-1}C_i(P)=e_i$, and so
+    \[ P^{-1}AP = \pmat{\vert & & \vert & \vert & & \vert \\ \lambda e_1 & \cdots & \lambda e_k & P^{-1}A\hat v_{k+1} & \cdots & \hat P^{-1}A\hat v_n \\ \vert & & \vert & \vert & & \vert} =
+    \parens{\!\!\!\begin{array}{c|c} \lambda I_k & * \\\hline 0 & * \end{array}\!\!\!} \]
+    Let $M=P^{-1}AP$, then $A\sim M$ and so $p_A(x)=p_M(x)$.
+    And the characteristic polynomial of $M$ is
+    \[ p_M(x) = \detof{xI-M} = \det\parens{\!\!\!\begin{array}{c|c} (x-\lambda) I_k & * \\\hline 0 & * \end{array}\!\!\!} = \detof{(x-\lambda)I_k}\cdot\detof{*} = (x-\lambda)^kq(x) \]
+    Which means that $(x-\lambda)^k\divides p_A(x)$, and so $k=\gamma_\lambda\leq\mu_\lambda$.
+    Keep in mind that this inequality may be strict, as we do not know if $\lambda$ is a root of $q(x)$ or not.
+    \qed
+
+\end{proof}
+
+This theorem is true for linear operators as well, as we can look at a matrix representation of the linear operator, which shares the same eigenvalues and their multiplicities.
+
+\begin{thrm*}
+
+    A linear operator $T$ is diagonalizable if and only if for every eigenvalue of $T$, its algebraic multiplicity is equal to its geometric multiplicity, and $p_T(x)$ can be fully factorized.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Suppose $T$ is diagonalizable, then
+    \[ \sum_{\lambda\in\specof T}\dim V_\lambda = \sum_{\lambda\in\specof T}\gamma_\lambda = \dim V \]
+    We also know that
+    \[ \sum_{\lambda\in\specof T}\mu_\lambda \leq \degof{p_T(x)} = \dim V \]
+    Since $\mu_\lambda$ is the degree of $(x-\lambda)$ in the characteristic polynomial.
+    Thus
+    \[ \sum_{\lambda\in\specof T}\mu_\lambda \leq \sum_{\lambda\in\specof T}\gamma_\lambda \]
+    And since $\gamma_\lambda\leq\mu_\lambda$, and the multiplicities are positive, we must have that $\mu_\lambda=\gamma_\lambda$ for each eigenvalue $\lambda$ (as otherwise the sum of algebraic
+    multiplicities would be strictly larger than the sum of geometric multiplicities, contrading the inequality above).
+    This also means that $p_T(x)$ is fully factorizable since the sum of $\mu_\lambda$ is equal to the degree of $p_T(x)$ (alternatively this is because $T$ is diagonalizable so one of its representations
+    is a diagonal matrix, and the characteristic polynomial of a diagonal matrix is fully factorizable).
+
+    Now suppose that $p_T(x)$ is fully factorizable, then
+    \[ \sum_{\lambda\in\specof T}\mu_\lambda = \degof{p_T(x)} = \dim V \]
+    And since $\mu_\lambda=\gamma_\lambda$, we have that
+    \[ \dim V = \sum_{\lambda\in\specof T}\gamma_\lambda = \sum_{\lambda\in\specof T}\dim V_\lambda \]
+    and so $T$ is diagonalizable.
+    \qed
+
+\end{proof}
+

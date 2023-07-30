@@ -1,0 +1,64 @@
+As discussed in the previous section, a linear operator is diagonalizable if and only if its algebraic and geometric multiplicities are all equal \emph{and its characteristic polynomial is fully
+factorizable}.
+But what if we just know that its characteristic polynomial is fully factorizable?
+It turns out that that this is equivalent to the linear operator being \emph{triangularizable}:
+
+\begin{defn*}
+
+    A linear operator is \ppemph{triangularizable} if one of its matrix representations is an upper right triangle matrix.
+    And a matrix is \ppemph{triangularizable} if it is similar to an upper right triangle matrix.
+
+\end{defn*}
+
+\begin{thrm*}
+
+    A linear operator $T$ is triangularizable if and only if its characteristic polynomial is fully factorizable.
+
+\end{thrm*}
+
+\begin{proof}
+
+    If $T$ is triangularizable, then there exists a basis $B$ such that $[T]_B$ is an upper right triangle matrix,
+    \[ [T]_B = \pmat{\lambda_1 & * & * \\ & \ddots & * \\ & & \lambda_n} \]
+    And so
+    \[ p_T(x) = \detof{xI-[T]_B} = \det\pmat{x-\lambda_1 & * & * \\ & \ddots & * \\ & & x-\lambda_n} = (x-\lambda_1)\cdots(x-\lambda_n) \]
+    which is fully factored.
+
+    We will prove the converse via induction on $n=\dim V$.
+    For $n=1$, this is trivial as $T$ just scales vectors, so $[T]_B=(\lambda)$, which is already an upper right triangle matrix.
+    For the inductive step, suppose this is true for linear operators over vector spaces of dimension $n$, we will prove it is true for linear operators over vector spaces of dimension $n+1$.
+
+    Since $p_T(x)$ is fully factorizable, and of degree $n+1>1$, it has a root $\lambda_1$, and so $T$ has an eigenvalue $\lambda_1$ with an eigenvector $v_1$.
+    Let us extend this to a basis $B=(v_1,\hat v_2,\dots,\hat v_{n+1})$ and so
+    \[ [T]_B = \pmat{\lambda_1 & \hort*\hort \\ \begin{matrix} \vert \\ 0 \\ \vert \end{matrix} & A} \]
+    Now,
+    \[ p_T(x) = (x-\lambda_1)p_A(x) \]
+    and since $p_T(x)$ is fully factorizable, so is $p_A(x)$ and since $A\in M_n(\bF)$, by our inductive hypothesis $A$ is triangularizable.
+    Thus $A$ is similar to an upper right triangle matrix, suppose $P^{-1}AP$ is an upper right triangle matrix.
+    Now if we define
+    \[ Q = \pmat{1 & \hort\:0\:\hort \\ \begin{matrix} \vert \\ 0 \\ \vert \end{matrix} & P} \implies Q^{-1} = \pmat{1 & \hort\:0\:\hort \\ \begin{matrix} \vert\\0\\\vert \end{matrix} & P^{-1}} \]
+    And so
+    \[ Q^{-1}[T]_BQ = \pmat{1 & \hort\:0\:\hort \\ \begin{matrix} \vert \\ 0 \\ \vert \end{matrix} & P}\pmat{\lambda_1 & \hort * \hort \\ \begin{matrix} \vert \\ 0 \\ \vert \end{matrix} & A}
+    \pmat{1 & \hort\:0\:\hort \\ \begin{matrix} \vert\\0\\\vert \end{matrix} & P^{-1}} = \pmat{\lambda_1 & \hort * \hort \\ \begin{matrix} \vert \\ 0 \\ \vert \end{matrix} & P^{-1}AP} \]
+    Since $P^{-1}AP$ is an upper right triangle matrix, so is $Q^{-1}[T]_BQ$, and thus one of $T$'s representations is an upper right triangle matrix, as required.
+    \qed
+
+\end{proof}
+
+Notice that this gives us an algorithm for triangularizing a matrix whose characteristic polynomial is fully factorizable:
+first we find an eigenvector $v_1$, and then we extend this to a basis $B=(v_1,\hat v_2,\dots,\hat v_n)$, and define
+\[ M = \pmat{\vert & \vert & & \vert \\ v_1 & \hat v_2 & \cdots & \hat v_n \\ \vert & \vert & & \vert} \]
+Then
+\[ M^{-1}AM = \pmat{\lambda_1 & \hort * \hort \\ \begin{matrix} \vert \\ 0 \\ \vert \end{matrix} & A_1} \]
+And then you recursively triangularize $A_1$, and get a matrix $P$ such that $P^{-1}A_1P$ is an upper right triangle matrix.
+And then defining $Q=(1)\oplus P$ (this is notation for creating a new matrix whose upper left corner is $1$ and then the bottom right block is the matrix $P$), and as shown in the proof above, $Q$
+triangularizes $M^{-1}AM$, and so $MQ$ triangularizes $A$.
+
+\begin{coro*}
+
+    Every linear operator over $\bC$ has an upper right triangle matrix representation.
+
+\end{coro*}
+
+This is because every polynomial over $\bC$ fully factorizes, and so the characteristic polynomial of the linear operator fully factorizes and therefore the linear operator is triangularizable.
+

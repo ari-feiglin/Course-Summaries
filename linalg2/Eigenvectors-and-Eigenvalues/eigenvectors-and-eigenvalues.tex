@@ -1,0 +1,287 @@
+\c@subsection=1
+
+In the previous section we discussed one geometric property of matrices, in this section we will discuss another.
+Suppose we have a matrix $A\in M_n(\bF)$, we know it acts on vectors in $\bF^n$ by mapping them to other vectors in $\bF^n$, but generally it can be hard to understand what these images are.
+What we'd like to do is focus on a type of vector whose image is easier to understand.
+In your first linear algebra course you discussed one such type, the vectors which compose the \emph{null space} of the matrix $A$ (recall that the null space of $A$ is given by the set of all vectors $v$
+where $Av=0$).
+
+In this course we will investigate another type of vector, the \emph{eigenvector} of a matrix.
+While null space vectors are mapped to $0$, eigenvectors can be thought of as vectors which are essentially invariant under $A$, and it turns out that a lot of information about $A$ can be gleaned by
+studying these eigenvectors.
+
+\begin{defn*}
+
+    If $A\in M_n(\bF)$ is a matrix, an \ppemph{eigenvector} of $A$ is a non-zero vector $v\in\bF^n$ such that there exists a scalar $\lambda\in\bF$ where
+    \[ Av = \lambda v \]
+    $\lambda$ is called an \ppemph{eigenvalue} of $A$.
+
+    Similarly, if $T\colon V\longto V$ is a linear transformation (a linear transformation from one vector space to itself is also called a linear \emph{operator}), an \ppemph{eigenvector} of $T$ is a
+    non-zero vector $v\in V$ such that there exists a scalar $\lambda\in\bF$, called the \ppemph{eigenvalue}, where
+    \[ Tv = \lambda v \]
+
+    If $\lambda$ is an eigenvalue of a linear operator (or matrix) $T$ over $V$, then its \ppemph{eigenspace} is
+    \[ V_\lambda = \set{v\in V}[Tv = \lambda v] \]
+    This is the set of all eigenvectors of $T$ whose eigenvalue is $\lambda$, and the zero vector.
+    And the \ppemph{spectrum} of $T$, denoted $\specof T$, is the set of all eigenvalues of $T$.
+
+\end{defn*}
+
+\begin{prop*}
+
+    Eigenspaces of linear operators over $V$ are subspaces of $V$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $V_\lambda$ is an eigenspace of the linear operator $T$.
+    Then obviously $0\in V_\lambda$ since $T0=0=\lambda\cdot0$.
+    And if $v,u\in V_\lambda$ and $\alpha\in T$ then
+    \[ T(v+\alpha u)=Tv+\alpha Tu=\lambda v + \alpha\lambda u = \lambda(v+\alpha u) \]
+    and so $v+\alpha u\in V_\lambda$ as required.
+    \qed
+
+\end{proof}
+
+Alternatively, this proposition is a direct result of realizing
+\[ V_\lambda = \kerof{\lambda I - T} \]
+which is of course a subspace of $V$.
+
+\begin{prop*}
+
+    If $A\in M_n(\bF)$, then $\lambda$ is an eigenvalue of $A$ if and only if $\detof{\lambda I-A}=0$.
+
+\end{prop*}
+
+\begin{proof}
+
+    $\lambda$ is an eigenvalue of $A$ if and only if there exists a non-zero vector $v$ such that $Av=\lambda v$, which is equivalent to $(\lambda I-A)v=0$.
+    Thus $\lambda$ is an eigenvalue of $A$ if and only if $\lambda I-A$ has a non-trivial null space, which is equivalent to $\lambda I-A$ being singular, which is equivalent to its determinant being zero.
+
+\end{proof}
+
+So the eigenvalues of $A$ are the roots of the map $x\mapsto\detof{xI-A}$.
+Now, let us look at the expression $\detof{xI-A}$, suppose $A=(a_{ij})$, then
+\[ \detof{xI-A} = \det\pmat{x-a_{11} & -a_{12} & \cdots & -a_{1n} \\ -a_{21} & x-a_{22} & \cdots & -a_{2n} \\ \vdots & \vdots & \ddots & \vdots \\ -a_{n1} & -a_{n2} & \cdots & x-a_{nn}} \]
+Now, let $\sigma\in S_n$, then since for every $i$, $[xI-A]_{i\sigma(i)}$ is a polynomial (either a constant or of the form $x-\alpha$), $\prod_{i=1}^n [xI-A]_{i\sigma(i)}$ is also a polynomial.
+So the determinant $\detof{xI-A}$ is a polynomial.
+
+\begin{defn*}
+
+    If $A\in M_n(\bF)$, then its \ppemph{characteristic polynomial} is the polynomial defined by
+    \[ p_A(x) = \detof{xI-A} \]
+
+\end{defn*}
+
+So the eigenvalues of $A$ are precisely the roots of the polynomial $p_A$.
+This tells us something quite interesting: over fields which are not algebraically closed (where not all polynomials have roots), there exist matrices without eigenvalues.
+
+\begin{prop*}
+
+    The polynomial $p(x)=x^n+c_{n-1}x^{n-1}+\cdots+c_0$ is the characteristic polynomial of the matrix
+    \[ C_p = \pmat{0 & 0 & \cdots & 0 & -c_0 \\ 1 & 0 & \cdots & 0 & -c_1 \\ 0 & 1 & \cdots & 0 & -c_2 \\ \vdots & \vdots & \ddots & \vdots & \vdots \\ 0 & 0 & \cdots & 1 & -c_{n-1}} \]
+    $C_p$ is called the \ppemph{companion matrix} of $p$.
+
+\end{prop*}
+
+\begin{proof}
+
+    The characteristic polynomial of $C_p$, which we will denote by $f$, is
+    \[ f(x) = \det\pmat{
+        x  &    &   & & c_0 \\
+        -1 & x  &   & & c_1 \\
+           & -1 & x & & c_2 \\
+           &    & \ddots & \ddots & \vdots \\
+           &    &   & -1 & x+c_{n-1}} \]
+    Now, using \ppref{laplaceFormula}, this is equal to
+    \[ f(x) = x\cdot\det\pmat{x & & & c_1 \\ -1 & x & & c_2 \\ & \ddots & \ddots & \vdots \\ & & -1 & x+c_{n-1}} +
+        (-1)^{1+n}c_0\cdot\pmat{-1 & x \\ & -1 & \ddots \\ & & \ddots & x \\ & & & -1} \]
+    The first determinant is the characteristic polynomial of $C_q$ for $q=x^{n-1}+c_{n-1}x^{n-1}+\cdots+c_1$, and so inductively this is just equal to $q$.
+    And the second determinant is the determinant of an upper right triangle matrix, which is then just equal to $(-1)^{n-1}$, and so this is equal to
+    \[ = x(x^{n-1}+c_{n-1}x^{n-2}+\cdots+c_1) + (-1)^{n+1}(-1)^{n-1}c_0 = x^n+c_{n-1}x^{n-1} + \cdots + c_1x + c_0 = p(x) \]
+    as required.
+    \qed
+
+\end{proof}
+
+What this tells us is that for any monic polynomial (polynomial whose leading coefficient is one), there exists a matrix whose characteristic polynomial is that same polynomial.
+So if we have a monic polynomial which has no roots, then its companion matrix will have no eigenvalues.
+For example, in $\bR$ the polynomial $x^2+1$ has no roots, and so its companion matrix
+\[ C = \pmat{0 & -1 \\ 1 & 0} \]
+has no eigenvalues.
+
+\begin{defn*}
+
+    If $A\in M_n(\bF)$ and $J\subseteq\set{1,\dots,n}$ then we define $A_J\in M_k(\bF)$ where $k=\abs J$ to be the matrix formed by taking the rows and columns in $A$ whose indexes are in $J$.
+    (In other words, remove all rows and columns of $A$ whose indexes aren't in $J$.)
+
+\end{defn*}
+
+\newfunc{fp}{{\rm fp}}({})
+\begin{lemm*}
+
+    For $\sigma\in S_n$ let $\fpof\sigma$ be the set of all fixed points of $\sigma$, $\set{i}[\sigma(i)=i]$ then
+    \[ \detof{A_J} = \sum_{\substack{\sigma\in S_n\\J^c\subseteq\fpof\sigma}}\signof\sigma\cdot\prod_{i\in J}a_{i\sigma(i)} \]
+
+\end{lemm*}
+
+\begin{proof}
+
+    Suppose $\abs J=k$, then for each $1\leq i\leq k$, let $m_i$ be the index of the row in $A$ which is equal to the $i$th row in $A_J$.
+    So for example if $J=\set{1,3}$ then $m_1=1$, and $m_2=3$ (so another way of thinking of this is that $m_i$ is the $i$th smallest element in $J$).
+    This means that $i\mapsto m_i$ is a bijection between $\set{1,\dots,k}$ and $J$, and $[A_J]_{ij}=a_{m_im_j}$.
+    And so
+    \[ \detof{A_J} = \sum_{\sigma\in S_k}\signof\sigma\cdot\prod_{i=1}^k[A_J]_{i\sigma(i)} = \sum_{\sigma\in S_k}\signof\sigma\cdot\prod_{i=1}^ka_{m_im_{\sigma(i)}} \]
+    For every $\sigma\in S_k$ let us define $\hat\sigma\in S_n$ by first setting $\hat\sigma(i)=i$ for $i\in J^c$ and otherwise since every element in $J$ is of the form $m_i$ and so set
+    $\hat\sigma(m_i)=m_{\sigma(i)}$.
+    This is a permutation because it is injective (since elements in $J^c$ are mapped to themselves and elements of $J$ are mapped to other elements of $J$, and $\sigma$ is injective in $J^c$ and $J$).
+
+    Now notice that the map $\sigma\mapsto\hat\sigma$ is a bijection between $S_k$ and $\set{\hat\sigma\in S_n}[J^c\subseteq\fpof{\hat\sigma}]$.
+    This is not too hard to show.
+
+    Now since $\hat\sigma\bigl|_{J^c}=\id$, the sign of $\hat\sigma$ is equal to the sign of $\hat\sigma\bigl|_J$ (since its cycle decomposition is formed of cycles of elements in $J$).
+    Now, for $m_i,m_j\in J$, $(m_i,m_j)$ is an inversion if and only if $m_i<m_j$ and $m_{\sigma(i)}>m_{\sigma(j)}$, and since $m_i$ is increasing, this is if and only if $i<j$ and $\sigma(i)>\sigma(j)$.
+    So $\sigma$ and $\hat\sigma\bigl|_J$ have the same number of inversions, and so $\signof\sigma=\signof{\hat\sigma}$.
+    Therefore
+    \[ \detof{A_J} = \sum_{J^c\subseteq\fpof{\hat\sigma}}\signof\sigma\cdot\prod_{i=1}^k a_{m_im_{\sigma(i)}} \]
+    And since $m_{\sigma(i)}=\hat\sigma(m_i)$, this is equal to
+    \[ = \sum_{J^c\subseteq\fpof{\hat\sigma}}\signof{\hat\sigma}\cdot\prod_{i=1}^k a_{m_i\hat\sigma(m_i)} = \sum_{J^c\subseteq\fpof{\hat\sigma}}\signof{\hat\sigma}\cdot\prod_{i\in J}a_{i\hat\sigma(i)} \]
+    where the final equality is since $m_i$ is a bijection between $\set{1,\dots,k}$ and $J$.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    The characteristic polynomial of a matrix $A\in M_n(\bF)$ is of the form
+    \[ p_A(x) = x^n + c_{n-1}x^{n-1} + \cdots + c_0 \]
+    where $c_k=(-1)^{n-k}\sum_{\abs J=n-k}\detof{A_J}$, and in particular $c_0=(-1)^n\detof A$ and $c_{n-1}=-\traceof A$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Notice that
+    \[ p_A(x) = \det\pmat{\begin{matrix}x-a_{11} & -a_{12} & \cdots & -a_{1n}\end{matrix} \\[10pt] \scalebox{1.5}{$*$}\\[10pt]} =
+    \det\pmat{\begin{matrix}x & 0 & \cdots & 0\end{matrix}\\[10pt] \scalebox{1.5}{$*$}\\[10pt]} +
+    \det\pmat{\begin{matrix}-a_{11} & -a_{12} & \cdots & -a_{1n}\end{matrix} \\[10pt] \scalebox{1.5}{$*$}\\[10pt]} \]
+    And if we define for $J\subseteq\set{1,\dots,n}$, the matrix $B_J$ by
+    \[ R_i(B_J) = \begin{cases} -R_i(A) & i\in J \\ x\cdot e_i & i\notin J \end{cases} \]
+    Then it can be shown (by continuing the process above) that
+    \[ p_A(x) = \sum_{J\subseteq\set{1,\dots,n}}\detof{B_J} \]
+
+    Let us focus on a single $B_J$.
+    Let $\sigma\in S_n$, if there exists an $i\notin J$ such that $\sigma(i)\neq i$ then $[B_J]_{i\sigma(i)}=[x\cdot e_i]_{\sigma(i)}=0$.
+    This means that unless $J^c\subseteq\fpof\sigma$, $\sigma$ will not contribute anything to the determinant of $B_J$.
+    And so
+    \[ \detof{B_J} = \sum_{\substack{\sigma\in S_n\\J^c\subseteq\fpof\sigma}}\signof\sigma\cdot\prod_{i=1}^n[B_J]_{i\sigma(i)} \]
+    Now, for $i\notin J$, $\sigma(i)=i$ and so $[B_J]_{i\sigma(i)}=x$, and for $i\in J$, $[B_J]_{i\sigma(i)}=-a_{i\sigma(i)}$ and so the determinant is equal to
+    \[ = \sum_{J^c\subseteq\fpof\sigma}\signof\sigma\cdot x^{\abs{J^c}}\cdot\prod_{i\in J}(-a_{i\sigma(i)}) =
+    x^{\abs{J^c}}\cdot(-1)^{\abs J}\sum_{J^c\subseteq\fpof\sigma}\signof\sigma\cdot\prod_{i\in J}a_{i\sigma(i)} \]
+    And by the previous lemma, this is equal to
+    \[ = x^{\abs{J^c}}\cdot(-1)^{\abs J}\cdot\detof{A_J} \]
+
+    Therefore the coefficient of $x^k$ in $p_A(x)$ is the sum over all $J\subseteq\set{1,\dots,n}$ such that $\abs{J^c}=k$, of $(-1)^{\abs{J^c}}\cdot\detof{A_J}=(-1)^{n-k}\detof{A_J}$, and so
+    \[ c_k = (-1)^{n-k}\sum_{\abs J=n-k}\detof{A_J} \]
+    as required.
+    And for $k=n$, the only $B_J$ which supplies $x^n$ is when $J^c=\set{1,\dots,n}$ and in this case $B_J=xI$ and so $\detof{B_J}=x^n$.
+    So $c_n$ is indeed one.
+
+    For $k=0$, this becomes
+    \[ c_0 = (-1)^n\sum_{\abs J=n}\detof{A_J} \]
+    And since $\abs J=n$, this means $J=\set{1,\dots,n}$ and so $A_J=A$ and therefore
+    \[ c_0 = (-1)^n\detof A \]
+    And for $k=n-1$ this is
+    \[ c_{n-1} = -\sum_{\abs J=1}\detof{A_J} \]
+    If $\abs J=1$ then $J$ is a singleton, suppose $J=\set j$.
+    Then $A_J=(a_{jj})$ and so $\detof{A_J}=a_{jj}$, and therefore
+    \[ c_{n-1} = -\sum_{j=1}^n a_{jj} = -\traceof A \]
+    as required.
+    \qed
+
+\end{proof}
+
+\begin{note}
+
+    The main use of the proposition above is its results:
+    \benum
+        \item $p_A$ is a monic polynomial,
+        \item $c_0=(-1)^n\detof A$, and
+        \item $c_{n-1}=-\traceof A$.
+    \eenum
+    The proposition generalizes this, but we can prove these three facts directly with more ease.
+
+    Firstly, the coefficient of $x^n$ must be obtained only by the permutation $\sigma=\id$ (since it is the only permutation which goes over the diagonal $n$ times), and this contributes
+    \[ \prod_{i=1}^n (x-a_{ii}) \]
+    to the characteristic polynomial.
+    Since this is the product of monic polynomials, it is also a monic polynomial, and so it contributes $x^n$ to the polynomial.
+    Therefore the characteristic polynomial is monic.
+
+    In general, the free coefficient of a polynomial is equal to the value of the polynomial when evaluated at $0$, and so
+    \[ c_0 = p_A(0) = \detof{0\cdot I-A} = \detof{-A} = (-1)^n\detof A \]
+    And finally, the coefficient of $x^{n-1}$ is obtained only by permutations such that $\sigma(i)=i$ at least $n-1$ times.
+    But since $\sigma$ is bijective, if it occurs $n-1$ times, for the final number there is only one choice for $\sigma(i)$, which is $i$.
+    And so $\sigma=\id$, so only $\id$ contributes to the coefficient of $x^{n-1}$, and it is contributed in
+    \[ \prod_{i=1}^n (x-a_{ii}) \]
+    The coefficient of $x^{n-1}$ in this polynomial is equal to $-a_{nn}-a_{n-1,n-1}-\cdots-a_{11}$ since $x$ must be multiplied with itself $n-1$ times and then with a number $-a_{ii}$ to give $x^{n-1}$.
+    And this is just equal to $-\traceof A$.
+
+\end{note}
+
+These properties actually tell us something pretty interesting about the eigenvalues of a matrix, which we will investigate later.
+
+\begin{prop*}
+
+    Eigenvectors with different eigenvalues are linearly independent.
+    Meaning if $v_1,\dots,v_n$ are all eigenvectors of $T$ with respective \emph{distinct} eigenvalues $\lambda_1,\dots,\lambda_n$ then $\set{v_1,\dots,v_n}$ is linearly independent.
+
+\end{prop*}
+
+\begin{proof}
+
+    We will prove this by induction on $n$.
+    If $n=1$ this is trivial (since $v_1\neq0$ as $0$ is not an eigenvector).
+    For the inductive step, suppose
+    \[ \alpha_1v_1 + \cdots + \alpha_nv_n = 0 \]
+    Now if we compose each side with $T$ we get
+    \[ \alpha_1\lambda_1v_1 + \cdots + \alpha_n\lambda_nv_n = 0 \]
+    Since all the eigenvalues are distinct, there is some $\lambda_i\neq0$.
+    Without loss of generality, this is $\lambda_n$.
+    So let us multiply the original equation by $\lambda_n$ and we get the system
+    \begin{align*}
+        \alpha_1\lambda_nv_1 + \cdots + \alpha_n\lambda_nv_n &= 0 \\
+        \alpha_1\lambda_1v_1 + \cdots + \alpha_n\lambda_nv_n &= 0
+    \end{align*}
+
+    Subtracting the second equation from the first gives
+    \[ \alpha_1(\lambda_n-\lambda_1)v_1 + \cdots + \alpha_{n-1}(\lambda_n-\lambda_{n-1})v_{n-1} = 0 \]
+    By our inductive hypothesis, $\set{v_1,\dots,v_{n-1}}$ is linearly independent and so $\alpha_i(\lambda_n-\lambda_i)=0$ for each $i$.
+    Since $\lambda_i\neq\lambda_n$ for $i<n$, we have that $\alpha_i=0$ for $i<n$.
+    And so $\alpha_nv_n=0$ and sicne $v_n\neq0$, we have $\alpha_n=0$.
+
+    So for every $i$, $\alpha_i=0$, meaning $\set{v_1,\dots,v_n}$ is linearly independent as required.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    If $T$ is a linear operator and $V_{\lambda_1},\dots,V_{\lambda_n}$ are eigenspaces of $T$, then their sum is a direct sum.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $B_i$ be a basis for $V_{\lambda_i}$, then let $B=B_1\dcup\cdots\dcup B_n$.
+    $B$ spans $V_{\lambda_1}+\cdots+V_{\lambda_n}$ (since the union of spanning sets spans their sum), so all that remains is to show $B$ is linearly independent.
+    Now, suppose there exists a zeroing linear combination
+    \[ \sum_{i=1}^n\sum_{j=1}^{n_i}\alpha_{ij}v_{ij} = 0 \]
+    But since $\sum_j\alpha_{ij}v_{ij}\in V_{\lambda_i}$, and eigenvectors in different eigenspaces are linearly independent, this means that for every $i$,
+    \[ \sum_j\alpha_{ij}v_{ij} = 0 \]
+    And since $v_{ij}\in B_i$, which is linearly independent, $\alpha_{ij}=0$ for every $i,j$.
+    So $B$ is indeed linearly independent.
+    \qed
+
+\end{proof}
+
