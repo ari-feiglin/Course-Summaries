@@ -1,0 +1,121 @@
+\begin{defn*}
+
+    A \ppemph{curve} is a continuous function
+    \[ \gamma\colon[a,b]\longto\bR^n \]
+    A curve is \ppemph{smooth} if it is differentiable, and it is \ppemph{regular} if its derivative is never zero.
+    If $\gamma'(t)=0$ then $t$ is called a \ppemph{singularity} of $\gamma$.
+
+\end{defn*}
+
+\begin{defn*}
+
+    Suppose $\alpha\colon[a,b]\longto\bR^n$ is a curve, and $\phi\colon[c,d]\longto[a,b]$ is differentiable and $\phi'>0$, then we define $\beta\colon[c,d]\longto\bR^n$ by $\beta=\alpha\circ\phi$.
+    This is called a \ppemph{reparametrization} of $\alpha$.
+
+\end{defn*}
+
+\begin{prop*}
+
+    ``$x$ is a reparametrization of $y$'' is an equivalence relation.
+
+\end{prop*}
+
+\begin{proof}
+
+    Obviously this is reflexive (take $\phi$ to be the identity function).
+    And it is transitive since if $\beta=\alpha\circ\phi$ and $\gamma=\beta\circ\psi$ then $\gamma=\alpha\circ(\phi\circ\psi)$ (the derivative of the composition is still positive).
+    restrict the definition, this still works).
+    Now suppose $\beta=\alpha\circ\phi$, then since $\phi'>0$, we know that $\phi$ is strictly increasing (and therefore injective).
+    And so we can also assume that $\phi$ is surjective, since $\phi([a,b])=[\phi(a),\phi(b)]$.
+    So $\phi$ is bijective and so $\alpha=\beta\circ\phi^{-1}$, and $(\phi^{-1})'>0$ (since it is equal to the inverse of $\phi'$ of some point).
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    Let $\alpha\colon[0,T]\to\bR^n$ be a curve, let
+    \[ s_\alpha(t) = \int_0^t\norm{\alpha'(f)} = \int_a^T\parens{\sum_{k=1}^n\alpha_k'(f)^2}^{1/2} \]
+    $s_\alpha(t)$ is the \ppemph{arclength} of $\alpha$.
+
+    $\alpha'$ is the componentwise derivative of $\alpha$, which is equal to the Jacobian of $\alpha$.
+    We can continue with higher order componentwise derivatives.
+
+\end{defn*}
+
+The intuition behind the definition of $s(t)$ is that by the definition of integrals (using Riemman sums), we can partition $[0,T]$ into $t_0=0<t_1<\cdots<t_n=t$, and
+\[ \alpha'(f) \approx \frac{\alpha(t_{i+1})-\alpha(t_i)}{\Delta_i} \implies \norm{\alpha'(f)}\cdot\Delta_i \approx \norm{\alpha(t_{i+1})-\alpha(t_i)} \]
+
+\newpage
+And $\norm{\alpha(t_{i+1})-\alpha(t_i)}$ approximates the length of $\alpha$ between $t_i$ and $t_{i+1}$.
+And as we make the partition finer and finer, these approximations get more and more accurate.
+
+\begin{prop*}
+
+    Arclength is invariant under reparameterization.
+    Meaning if $\alpha\colon[a,b]\longto\bR^n$ and $\beta=\alpha\circ\phi$ then
+    \[ \int_a^b\norm{\alpha'(t)} = \int_c^d\norm{\beta'(t)} \]
+
+\end{prop*}
+
+\begin{proof}
+
+    Notice that
+    \[ \beta'(t) = \phi'(t)\cdot\alpha'\bigl(\phi(t)\bigr) \]
+    Since $\phi'(t)>0$ we have that
+    \[ \int_c^d\norm{\beta'(t)} = \int_c^d\norm{\alpha'(\phi(t))}\cdot\phi'(t)\,dt \]
+    Let $u=\phi(t)$ then $\phi'(t)\,dt=du$ and since $\phi(c)=a$ and $\phi(d)=b$, so
+    \[ = \int_a^b\norm{\alpha'(u)}\,du \]
+    as required.
+    \qed
+
+\end{proof}
+
+What we have shown is that $s_{\alpha\circ\phi}(t)=s_\alpha(\phi(t))$, ie
+\[ s_{\alpha\circ\phi} = s_\alpha\circ\phi \]
+
+Notice that $s_\alpha'(t)=\norm{\alpha'(t)}$.
+If $\alpha$ is regular then $\alpha'(t)\neq0$ and so $s_\alpha'>0$ so $s_\alpha$ is smooth and strictly increasing, meaning $s_\alpha$ is invertible.
+
+\begin{defn*}
+
+    If $\alpha$ is a smooth regular curve, then let us define the curve $\beta$ by
+    \[ \beta(u) = \alpha\circ s_\alpha^{-1}(u) = \alpha(t) \]
+    $\beta$ is called the \ppemph{natural parameterization} of $\alpha$.
+
+\end{defn*}
+
+Another way of thinking of the natural parameterization is realizing that $\beta(u)$ is equal to the value of $\alpha$ after traversing $u$ units on the arc defined by $\alpha$.
+
+Notice that if $\beta$ is a reparameterization of $\alpha$, then they both have the same natural parameterizations, since if $\beta=\alpha\circ\phi$ then
+\[ \beta\circ s_\beta^{-1} = \beta\circ s_{\alpha\circ\phi}^{-1} = \beta\circ(s_\alpha\circ\phi)^{-1} = \alpha\circ\phi\circ\phi^{-1}\circ s_\alpha^{-1} = \alpha\circ s_\alpha^{-1} \]
+In other words:
+
+\begin{prop*}
+
+    The natural parameterization of a regular smooth curve is unique, up to reparameterization.
+    Meaning if $\alpha$ and $\beta$ are reparameterizations of one another, then they have the same natural parameterization.
+
+\end{prop*}
+
+Notice that $\alpha$ is a natural parameterization if and only if $s_\alpha=\mathrm{id}$.
+If $\alpha$ is a natural parameterization, then $\alpha=\alpha\circ s_\alpha^{-1}$, and so $s_\alpha=\mathrm{id}$.
+And if $s_\alpha=\mathrm{id}$, then $\alpha\circ s_\alpha^{-1}=\alpha$.
+
+\begin{prop*}
+
+    If $\alpha$ is a curve, it is a natural parameterization if and only if $\norm{\alpha'}=1$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Since
+    \[ s_\alpha(t) = \int_0^t \norm{\alpha'(u)} \]
+    so $s_\alpha'=\norm{\alpha'}$, so if $s_\alpha=\mathrm{id}$ then $s_\alpha'=\norm{\alpha'}=1$.
+    And if $\norm{\alpha'}=1$ then $s_\alpha'=1$ so $s_\alpha(t)=t+c$ and since $s_\alpha(0)=0$, $c=0$ as required.
+    \qed
+
+\end{proof}
+
+

@@ -1,0 +1,202 @@
+Let $\alpha$ be the natural parameterization of some curve.
+In two dimensions, recall that we define $N_\alpha$ by rotating $T_\alpha=\alpha'$ ninety degrees.
+But rotation by ninety degrees has less meaning in three dimensions, as there are an infinite number of planes on which we can rotate ninety degrees.
+But recall by \ppref[proposition]{constVecField} that if $\norm{T_\alpha}$ is constant, then $T'_\alpha$ is orthogonal to $T_\alpha$.
+Thus we can define $N_\alpha$ to be the unit vector in the direction of $T'_\alpha$, ie $N_\alpha=\frac{T_\alpha'}{\norm{T_\alpha'}}$.
+And recall that we defined curvature as the scalar function $\kappa_\alpha$ such that
+\[ T'_\alpha = \kappa_\alpha N_\alpha \]
+in three dimensions this becomes
+\[ T'_\alpha = \kappa_\alpha\frac{T_\alpha'}{\norm{T_\alpha'}} \implies \kappa_\alpha = \norm{T'_\alpha} \]
+So in three dimensions, curvature is always positive, while in two dimensions it may be signed.
+
+But $\set{T_\alpha,N_\alpha}$ is not yet an orthonormal basis, we require one more vector.
+We can obtain it by simply defining
+\[ B_\alpha = T_\alpha\times N_\alpha \]
+this is orthogonal to $T_\alpha$ and $N_\alpha$ and since $\norm{T_\alpha}=\norm{N_\alpha}=1$, $\norm{B_\alpha}=1$.
+So $\set{T_\alpha,N_\alpha,B_\alpha}$ is an orthonormal basis.
+
+Let us summarize the definitions:
+
+\begin{defn*}
+
+    Let $\alpha$ be a natural parameterization, then we define
+    \benum
+        \item $T_\alpha(s)$ as $\alpha'(s)$.
+        \item $N_\alpha(s)=\frac{T'_\alpha(s)}{\norm{T'_\alpha(s)}}$.
+        \item $B_\alpha(s)=T_\alpha(s)\times N_\alpha(s)$.
+    \eenum
+
+    And the \ppemph{curvature} of $\alpha$ is defined to be $\kappa_\alpha(s)=\norm{T'_\alpha(s)}$.
+    Or alternatively
+    \[ \kappa_\alpha(s) = \iprod{T'_\alpha(s), N_\alpha(s)} \]
+
+\end{defn*}
+
+Now, since $\norm{B}=1$, $B'$ is orthogonal to $B$ and so
+\[ B' = \iprod{B',T}T + \iprod{B',N}N + \iprod{B',B}B = \iprod{B',T}T + \iprod{B',N}N \]
+And since we know that $\iprod{B,T}=\iprod{B,N}=0$, we get that by differentiating
+\[ \iprod{B',T} = -\iprod{B,T'},\qquad \iprod{B',N} = -\iprod{B,N'} \]
+And since
+\[ \iprod{B,T'} = \iprod{B,\kappa N} = 0 \]
+and so $\iprod{B',T}=0$.
+Therefore
+\[ B' = \iprod{B',N}N \]
+
+\begin{defn*}
+
+    Let $\alpha$ be the natural parameterization of a curve, we define the \ppemph{torsion} of $\alpha$ to be
+    \[ \tau_\alpha(s) = -\iprod{B'_\alpha(s),N_\alpha(s)} = \iprod{B_\alpha(s),N'_\alpha(s)} \]
+
+\end{defn*}
+
+Now, we know that since $T$'s norm is constant, $T'\perp T$ and so
+\[ N' = \iprod{N',T}T + \iprod{N',N}N + \iprod{N',B}B = \iprod{N',T}T + \iprod{N',B}B = -\iprod{N,T'}T - \iprod{N,B'}B = -\kappa T + \tau B \]
+Thus we have the system of ODEs:
+\begin{align*}
+    T'_\alpha(s) &= \kappa_\alpha(s)N_\alpha(s)\\
+    N'_\alpha(s) &= -\kappa(s)T_\alpha(s) + \tau(s)B_\alpha(s) \\
+    B'_\alpha(s) &= -\tau_\alpha(s)N_\alpha(s)
+\end{align*}
+Or using matrices,
+\[ \pmat{T'\\N'\\B'} = \pmat{0 & \kappa & 0 \\ -\kappa & 0 & \tau \\ 0 & -\tau & 0}\pmat{T\\N\\B} \]
+Thus if we are given $\kappa_\alpha(s)$ and $\tau_\alpha(s)$, and $T_\alpha(0)$, $N_\alpha(0)$, and $B_\alpha(0)$ then we can solve the ODE for $T_\alpha$ and integrate to get $\alpha$.
+In fact, we need only two out of $T_\alpha(0)$, $N_\alpha(0)$, and $B_\alpha(0)$, since that will determine the third.
+This proves the fundamental theorem of curves for three dimensions,
+
+\begin{thrm*}[ftoc3d,The\ Fundamental\ Theorem\ of\ Curves]
+
+    Every natural parameterization is determined uniquely by its curvature, torsion, and initial conditions for $T$, $N$, and $B$.
+
+\end{thrm*}
+
+\begin{exam*}
+
+    Suppose we have a natural parameterization
+    \[ \gamma(s) = \pmat{\gamma_1(s) \\ \gamma_2(s) \\ 0} \]
+    which is a two dimensional curve embedded onto the $[xy]$ plane in $\bR^3$.
+    Then
+    \[ T(s) = \pmat{\gamma'_1(s) \\ \gamma'_2(s) \\ 0},\qquad T'(s) = \pmat{\gamma''_1(s) \\ \gamma''_2(s) \\ 0} \]
+    If $T'(s)=0$ then $\kappa(s)=\norm{T'(s)}=0$ and so $N(s)$ is undefined, and therefore so is $B(s)$ and $\tau(s)$.
+    Otherwise since $T'$ is on the $[xy]$ plane, so is $N$.
+    Thus since $B=T\times N$, $B=(0,0,\pm1)$.
+    Using the right-hand rule, we can see that $B$'s sign is $+1$ when the curve is turning left, and $-1$ when turning right, and so $B$'s sign encodes the sign of the curvature of the curve when viewed
+    as a planar curve.
+
+    And since for any neighborhood in which $B$ is defined, $B$ is constant, and so $B'=0$ and thus $\tau(s)=0$ when defined.
+
+\end{exam*}
+
+\begin{lemm*}
+
+    Suppose $f_{ij}$ are all differential at $x_0$ then let us define
+    \[ D = \det\pmat{f_{11} & \cdots & f_{1n} \\ \vdots & \ddots & \vdots \\ f_{n1} & \cdots & f_{nn}} \]
+    then
+    \[ D'(x_0) = \sum_{i=1}^n \det\pmat{f_{11} & \cdots & f_{1n} \\ \vdots & \ddots & \vdots \\ f'_{i1} & \cdots & f'_{in} \\ \vdots & \ddots & \vdots \\ f_{n1} & \cdots & f_{nn}} \]
+
+\end{lemm*}
+
+\begin{proof}
+
+    By definition
+    \[ D = \sum_{\sigma\in S_n}\signof\sigma\cdot\prod_{i=1}^n f_{i\sigma(i)} \]
+    and thus
+    \[ D' = \sum_{\sigma\in S_n}\signof\sigma\cdot\parens{\prod_{i=1}^n f_{i\sigma(i)}}' = \sum_{\sigma\in S_n}\signof\sigma\cdot\sum_{i=1}^n f'_{i\sigma(i)}\cdot\prod_{i\neq j=1}^n f_{j\sigma(j)} 
+    = \sum_{i=1}^n\sum_{\sigma\in S_n} f'_{i\sigma(i)}\cdot\prod_{i\neq j=1}^n f_{j\sigma(j)} \]
+    Each component in this sum is the determinant of $D$ if instead we swapped the $i$th row with $f'_{i1},\dots,f'_{in}$, thus we get the equality required by the lemma.
+
+\end{proof}
+
+This means that by using the determinant formula for cross products, we have that
+\[ (f_1\times f_2)' = f'_1\times f_2 + f_1\times f'_2 \]
+
+\begin{prop*}
+
+    Curvature and torsion are invariant under isometries.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $\phi$ is an isometry, then it is of the form $v\mapsto Av+c$ for some orthogonal matrix $A$ and vector $c$.
+    Then if $\alpha$ is a natural parameterization, so is $\phi\circ\alpha$ and
+    \[ (\phi\circ\alpha(t))' = J_\phi(\alpha(t))\cdot\alpha'(t) = A\alpha'(t) \]
+    And thus $T_{\phi\circ\alpha}=AT_\alpha$ and so
+    \[ \kappa_{\phi\circ\alpha} = \norm{T'_{\phi\circ\alpha}} = \norm{AT'_\alpha} = \norm{T'_\alpha} = \kappa_\alpha \]
+    so curvature is indeed invariant.
+
+    And
+    \[ B_{\phi\circ\alpha} = T_{\phi\circ\alpha}\times N_{\phi\circ\alpha} = \frac1{\norm{T'_{\phi\circ\alpha}}}\cdot (AT_\alpha)\times(AT'_\alpha) = \frac1{\kappa_\alpha}(AT_\alpha)\times(AT'_\alpha) \]
+    And so
+    \[ B'_{\phi\circ\alpha} = \frac1\kappa\parens{AT'_\alpha\times AT'_\alpha + AT_\alpha\times AT''_\alpha} = \frac1\kappa(AT_\alpha\times AT''_\alpha) \]
+    And since $N_{\phi\circ\alpha}=\frac{T'_{\phi\circ\alpha}}{\kappa}=\frac{AT'_\alpha}\kappa$,
+    \[ \tau_{\phi\circ\alpha} = \frac1{\kappa^2}\iprod{AT_\alpha\times AT''_\alpha, AT'_\alpha} = \frac1{\kappa^2}\iprod{T_\alpha\times T''_\alpha,T'_\alpha} = \tau_\alpha \qed \]
+
+\end{proof}
+
+\begin{prop*}
+
+    Let $\gamma$ be a regular smooth curve such that $\kappa\neq0$ in the entire domain.
+    Then the image of $\gamma$ is contained within a plane if and only if $\tau=0$ everywhere.
+
+\end{prop*}
+
+\begin{proof}
+
+    If $\gamma$ is contained within a plane, we can compose it with an isometry to move the plane to $[xy]$.
+    Then we showed in the above example that the torsion of the transformed curve is zero.
+    And since torsion is preserved under isometries, $\gamma$'s torsion is zero.
+
+    Now, if $\tau=0$ then $B'=0$ so $B=w$ is constant.
+    Since $T$ is orthogonal to $B$, $\iprod{T,w}=0$ and so
+    \[ (\iprod{\gamma,w}') = \iprod{\gamma',w} + \iprod{\gamma,0} = \iprod{T,w} = 0 \]
+    and thus $\iprod{\gamma,w}=c$ is constant.
+    Thus $\gamma$ is contained within the plane $\set{x}[\iprod{x,w}=c]$.
+    \qed
+
+\end{proof}
+
+In two dimensions, the osculating circle is the circle centered at
+\[ c(s_0) = \alpha(s_0) + \frac1{\kappa(s_0)}N(s_0) \]
+whose radius is $\frac1{\kappa(s_0)}$.
+Using the same derivation for the two dimensional case, we get the same result in three dimensions.
+
+The plane spanned by $T(s_0)$ and $N(s_0)$ which contains $\alpha(s_0)$ is the \emph{tangent plane} to the curve at $s_0$.
+
+How do we compute $\kappa$ and $\tau$ for arbitrary regular curves?
+Let $\beta$ be an arbitrary regular curve and $\gamma$ its natural parameterization:
+\[ \gamma = \beta\circ s^{-1} \implies \beta = \gamma\circ s \]
+then
+\begin{align*}
+    \beta'(t) &= s'(t)\gamma'(s(t)),\\
+    \beta''(t) &= s''(t)\gamma'(s(t)) + s'(t)^2\gamma''(s(t)),\\
+    \beta'''(t) &=s'''(t)\gamma'(s(t))+s''(t)s'(t)\gamma''(s(t))+2s'(t)s''(t)\gamma''(s(t))+s'(t)^3\gamma'''(t)
+\end{align*}
+
+Now, $\gamma'=T$ and $\gamma''=T'=\kappa N$ and
+\[ \gamma'''=\kappa'N+\kappa N'=\kappa'N+\kappa\parens{-\kappa T+\tau B} = \kappa'N - \kappa^2T + \kappa\tau B \]
+
+And so
+\[ \beta'\times\beta'' = (s'T)\times(s''T+(s')^2\kappa N) = (s')^3\kappa B \]
+Thus
+\[ \norm{\beta'\times\beta''} = \norm{\beta'}^3\kappa \implies \kappa = \frac{\norm{\beta'\times\beta''}}{\norm{\beta'}^3} \]
+And
+\[ \iprod{\beta''',B} = \iprod{(s')^3\gamma''',B} = (s')^3\kappa\tau \]
+Now, $s'=\norm{\beta'}$, and so
+\[ (s')^3\kappa= \norm{\beta'}^3\frac{\norm{\beta'\times\beta''}}{\norm{\beta'}^3}= \norm{\beta'\times\beta''} \]
+And since
+\[ \beta'\times\beta'' = (s')^3\kappa B = \norm{\beta'\times\beta''}B \]
+And so
+\[ \tau = \frac{\iprod{\beta''',B}}{\norm{\beta'\times\beta''}} = \frac{\iprod{\beta''',\beta'\times\beta''}}{\norm{\beta'\times\beta''}^2} \]
+And since
+\[ \iprod{\beta''',\beta'\times\beta''} = \iprod{\beta'\times\beta'',\beta'''} = \detof{\beta',\beta'',\beta'''} \]
+we get
+\[ \tau = \frac{\detof{\beta',\beta'',\beta'''}}{\norm{\beta'\times\beta''}^2} \]
+Let us summarize this in the following proposition:
+
+\begin{prop*}
+
+    If $\beta$ is an arbitrary regular smooth curve in $\bR^3$, then its curvature and torsion are given by
+    \[ \kappa_\beta(s) = \frac{\norm{\beta'(s)\times\beta''(s)}}{\norm{\beta'(s)}^3},\qquad \tau_\beta(s) = \frac{\det\bigl(\beta'(s),\beta''(s),\beta'''(s)\bigr)}{\norm{\beta'(s)\times\beta''(s)}^2} \]
+
+\end{prop*}
+

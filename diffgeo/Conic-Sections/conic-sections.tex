@@ -1,0 +1,115 @@
+How do we define what a circle is?
+Historically, there are two approaches: Descartes defined it as the set of all points $(x,y)$ which satisfy the equation
+\[ (x-a)^2 + (y-b)^2 = R^2 \]
+for some values $a$ and $b$ and $R>0$.
+Euclid defined it as the set of all points whose distance from a specific point is some positive constant $R$.
+
+We know that these two definitions are equivalent (given the standard norm/metric in $\bR^2$), but Descartes's definition was introduced two thousand years after Euclid's.
+The idea of translating a visual or intuitive definition to an analytic one, as Descartes did, will be a motif of this course.
+
+Now, recall the definition of an ellipse.
+Given two points, called the \emph{foci} of the ellipse, $F_1$ and $F_2$ and a constant $d$, the ellipse defined is the set of all points $A$ such that
+\[ \abs{F_1A} + \abs{F_2A} = d \]
+We also must have that $\abs{F_1F_2}<d$ as otherwise this just defines some line segment of $F_1F_2$.
+This is the Euclidean definition of an ellipse.
+Descartes's definition of an ellipse is the set of all points which satisfy
+\[ \frac{x^2}{a^2} + \frac{y^2}{b^2} = 1 \]
+
+We must show that the cartesian definition satisfies the euclidean definition (and vice versa).
+Let us suppose that $a^2>b^2$ (if we have an equality then this defines a circle), then we define $c=\sqrt{a^2-b^2}$, and $F_1=(-c,0)$ and $F_2=(c,0)$.
+Then define $d=2a$.
+Now we must show that given $A=(x,y)$, $\abs{F_1A}+\abs{F_2A}=d$ if and only if $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$.
+Now,
+\[ \abs{F_1A} + \abs{F_2A} = \sqrt{(x+c)^2 + y^2},\qquad \abs{F_2A} = \sqrt{(x-c)^2 + y^2} \]
+And so we must show that
+\[ \sqrt{(x+c)^2 + y^2} + \sqrt{(x-c)^2 + y^2} = 2a \iff \frac{x^2}{a^2} + \frac{y^2}{b^2} = 1 \]
+Fortunately, we are not doing boring high school algebra, so we'll just assume that this is true.
+Thus the cartesian definition implies the eucliean definition.
+
+Now suppose we have $F_1$, $F_2$, and $d$.
+Then we redefine the axes such that the $x$ axis is parallel to $F_1F_2$ and the $y$ axis is equidistant from $F_1$ and $F_2$.
+Define $a=\frac d2$, and $c=\abs{F_10}$ (ie. half the distance between $F_1$ and $F_2$), and since $c=\sqrt{a^2-b^2}$, this defines $b$.
+Now all that remains is to show that the points which satisfy $\frac{x^2}{a^2}+\frac{y^2}{b^2}=1$ are precisely the points which satisfy the euclidean definition of the ellipse defined by $F_1$, $F_2$, and
+$d$.
+Again, we won't be doing this.
+
+Now, what about equations of the form
+\[ \frac{x^2}{a^2} - \frac{y^2}{b^2} = 1\,? \]
+In the language of Euclid, this is defined by
+\[ \bigl\lvert\abs{F_1A} - \abs{F_2A}\bigr\rvert = d \]
+These are called hyperbolas.
+
+And now for parabolas, Euclid defined them as the set of all points which satisfy
+\[ \abs{A\ell} = \abs{AF} \]
+where $\ell$ is a line (called the directrix), and $F$ is the focal point.
+$\abs{A\ell}$ is defined as the metric between a point and a set is usually defined, by taking the infimum of all the distances between points on $\ell$ and $A$.
+This corresponds to the length of the line segment perpendicular to $\ell$ which intersects with $A$.
+
+In cartesian terms, what we can do is define the $x$ axis to be parallel to $\ell$ and halfway between it and $F$, and the $y$ axis to pass through $F$.
+Let $F=(0,f)$ and $\ell\colon y=-f$.
+Then if $A=(x,y)$,
+\[ \abs{AF} = \sqrt{x^2+(y-f)^2},\qquad \abs{A\ell} = \abs{y+f} \]
+So
+\[ \abs{AF} = \abs{A\ell} \iff x^2+(y-f)^2 = (y+f)^2 \iff x^2 = 4fy \iff y = \frac1{4f}x^2 \]
+
+Notice that all of these shapes are equivalent to the set of solutions of an equation of the form $Q(x,y)=0$ where
+\[ Q(x,y) = ax^2 + by^2 + cxy + dx + ey + f \]
+and two other forms of solutions are lines, or two lines (of the form $y=\pm\alpha x$).
+
+\begin{prop*}
+
+    The set of solutions to $Q(x,y)=0$ is either a line, two lines, an ellipse, a hyperbola, or a parabola.
+
+\end{prop*}
+
+\begin{proof}
+
+    Notice that $Q(x,y)=0$ if and only if
+    \[ \pmat{x&y}\pmat{a&\frac c2\\\frac c2&b}\pmat{x\\y} + \pmat{d&e}\pmat{x\\y}+f = 0 \]
+    Let $A$ be the diagonal matrix in the equation above.
+    Now recall that if a matrix is symmetric, it can be orthogonally diagonalized.
+    Suppose that $P$ is the orthogonal matrix which diagonalizes $A$, so
+    \[ P^TAP = \pmat{\lambda_1\\&\lambda_2} \]
+    Now suppose
+    \[ P^T\pmat{x\\y} = \pmat{t\\s} \iff \pmat{x\\y} = P\pmat{t\\s} \]
+    Meaning that
+    \[ \pmat{x&y} = \pmat{x\\y}^T = \pmat{t&s}P^T \]
+
+    Thus $Q(x,y)=0$ if and only if
+    \[ \pmat{t&s}P^TAP\pmat{t\\s} + \pmat{d&e}P\pmat{t\\s} + f = \pmat{t&s}\pmat{\lambda_1\\&\lambda_2}\pmat{t\\s} + \pmat{d&e}P\pmat{t\\s}+f = 0 \]
+    if we denote $\pmat{d&e}P=\pmat{d'&e'}$ we get that this is if and only if
+    \[ \lambda_1t^2+\lambda_2s^2 + d't + e's + f = 0 \]
+    Now utilizing this new equation, we will split into cases.
+
+    \benum
+        \item If $\lambda_1,\lambda_2\neq0$, then we can complete the square, the equation is equivalent to
+        \[ \lambda_1\parens{t+\frac{d'}{2\lambda_1}}^2 + \lambda_2\parens{s+\frac{e'}{2\lambda_2}}^2 + f-\frac{{d'}^2}{4\lambda_1}-\frac{{e'}^2}{4\lambda_2} = 0 \]
+        This is equivalent to an equation of the form
+        \[ \lambda_1u^2 + \lambda_2v^2 + f' = 0 \]
+        If $f'=0$ then this is $\lambda_1u^2=-\lambda_2v^2$, which defines two lines (with respect to $u$ and $v$).
+        Otherwise this defines an ellipse.
+
+        Note that these define shapes with respect to $u$ and $v$, but since $t$ and $s$ are simply some (orthogonal) linear transformation of $x$ and $y$, and $u$ and $v$ are shifts of $t$ and $s$,
+        the shape defined in $x$ and $y$ is some orthogonal linear transformation of this ellipse and a shift, which still defines two lines or an ellipse.
+        This will be true of the other cases as well.
+
+        \item If $\lambda_2=0$ and $\lambda_1\neq0$ then we get
+        \[ \lambda_1t^2 + d't + e's + f = 0 \]
+        which defines a parabola (complete the square).
+        Similar for if $\lambda_1=0$ and $\lambda_2\neq0$.
+
+        \item If $\lambda_1=\lambda_2=0$ then we get
+        \[ d't + e's + f = 0 \]
+        which defines a line.
+        \qed
+    \eenum
+
+\end{proof}
+
+\begin{coro*}
+
+    The only bound set of the form $A=\set{(x,y)}[Q(x,y)=0]$ is an ellipse.
+
+\end{coro*}
+
+

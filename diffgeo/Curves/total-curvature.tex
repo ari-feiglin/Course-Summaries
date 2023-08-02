@@ -1,0 +1,155 @@
+Let $\gamma\colon[0,L]\longto\bR^2$ be a natural parameterization, then $T=\gamma'$ and $\kappa(s)=\iprod{T',N}$.
+Suppose $T(0)$ has an angle of $\theta_0$ then let us define
+\[ \theta(s) = \int_0^s \kappa(p)\,dp + \theta_0 \]
+And we define the curve
+\[ \beta(s) = \gamma(0) + \pmat{\int_0^s\cos(\theta(s))\,dp\\\int_0^s\sin(\theta(s))\,dp} \]
+Now, notice that
+\[ \beta'(s) = \pmat{\cos(\theta(s))\\\sin(\theta(s))} \]
+And since $\norm{\beta'}=1$, $\beta$ is a natural parameterization.
+And further
+\[ \beta''(s) = \theta'(s)\cdot\pmat{-\sin(\theta(s))\\\cos(\theta(s))} = \theta'(s)\cdot R_{\frac\pi2}\beta'(s) \]
+Which means that
+\[ \kappa_\beta(s) = \iprod{\beta''(s), N_\beta(s)} = \iprod{\theta'(s)\cdot R_{\frac\pi2}\beta'(s), R_{\frac\pi2}\beta'(s)} = \theta'(s)\iprod{\beta'(s),\beta'(s)}=\theta'(s)=\kappa(s) \]
+(The third equality is since $R_{\frac\pi2}$ is orthogonal.)
+So the curvature of $\beta$ is equal to that of $\gamma$.
+
+Now,
+\[ T_\beta(0) = \beta'(0) = \pmat{\cos(\theta(0))\\\sin(\theta(0))} = \pmat{\cos(\theta_0)\\\sin(\theta_0)} = T(0) \]
+And $\beta(0)=\gamma(0)$.
+
+So by the \ppref{ftoc}, since $\kappa_\beta=\kappa_\gamma$, $\beta(0)=\gamma(0)$, and $T_\beta(0)=T_\gamma(0)$, we have that $\beta=\gamma$.
+This means that
+\[ T_\gamma(s) = T_\beta(s) = \beta'(s) = \pmat{\cos(\theta(s))\\\sin(\theta(s))} \]
+So $\theta$ is the angle function of $\gamma$ (ie. it gives the angle of $\gamma$).
+So we have proven the following proposition:
+
+\begin{prop*}
+
+    If $\gamma\colon[0,L]\longto\bR^2$ is a regular smooth curve, then its angle is given by
+    \[ \theta_\gamma(s) = \int_0^s \kappa_\gamma(p)\,dp + \theta_0 \]
+    where $\theta_0$ is the angle of $T_\gamma(0)$.
+
+\end{prop*}
+
+\begin{defn*}
+
+    If $\gamma\colon[0,L]\longto\bR^2$ is a natural parameterization, then we define
+    \[ K_\gamma = \int_0^L \kappa_\gamma(s)\,ds \]
+    to be the \ppemph{total curvature} of $\gamma$.
+
+\end{defn*}
+
+So by the above definitions,
+\[ K_\gamma = \theta_\gamma(L) - \theta_\gamma(0) \]
+So $K_\gamma$ can also be thought of the total difference in the angle of $\gamma$.
+
+\begin{exam*}
+
+    If $\gamma$ is a circle, then intuitively $K_\gamma=2\pi$ since the total difference in the angle of the curve is $2\pi$.
+    And since the natural parameterization is given by a curve from $[0,2\pi R]$ whose curvature is $\frac1R$ and thus
+    \[ K_\gamma = \int_0^{2\pi R}\frac1R = 2\pi \]
+    as expected.
+
+\end{exam*}
+
+\begin{defn*}
+
+    A smooth curve $\gamma\colon[a,b]\longto\bR^n$ is \ppemph{$n$-closed} if $\gamma^{(k)}(a)=\gamma^{(k)}(b)$ for every $0\leq k\leq n$.
+    If $\gamma$ is $n$-closed for every $n$, then $\gamma$ is called \ppemph{closed}.
+
+\end{defn*}
+
+\begin{prop*}
+
+    If $\gamma$ is a $1$-closed regular smooth curve then $K_\gamma=2\pi n$ for some $n\in\bZ$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Since $\gamma$ is $1$-closed, $\gamma'(0)=\gamma'(L)$.
+    But recall that
+    \[ \gamma'(s) = \pmat{\cos(\theta(s))\\\sin(\theta(s))} \]
+    So we have that
+    \[ \pmat{\cos(\theta(0))\\\sin(\theta(0))} = \pmat{\cos(\theta(L))\\\sin(\theta(L))} \]
+    Which is if and only if $\theta(L)=\theta(0)+2\pi n$ for some $n\in\bZ$, and so $K_\gamma=2\pi n$ as required.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    If $\gamma$ is a $1$-closed regular smooth curve, then $\frac1{2\pi}K_\gamma$ is called $\gamma$'s \ppemph{winding number} (about $0$).
+
+\end{defn*}
+
+\begin{thrm*}[hopfTheorem,Hopf's\ Theorem]
+
+    If $\gamma\colon[0,L]\longto\bR^2$ is a closed natural parameterization, then $\gamma$ is injective (other than at the points $0$ and $L$).
+
+\end{thrm*}
+
+We will not be proving this theorem.
+
+This means that if $\gamma$ is closed, then $K_\gamma=\pm2\pi$.
+This is because the winding number is $\pm1$, as otherwise $\gamma$ would have to intersect with itself.
+The sign of $K_\gamma$ correlates with its orientation.
+We will prove this formally:
+
+\begin{prop*}
+
+    If $\gamma$ is a closed curve then $K_\gamma=\pm2\pi$.
+
+\end{prop*}
+
+\begin{proof}
+
+    We assume that $\gamma\colon[0,T]\to\bR^2$ is the natural parameterization of the curve.
+    Suppose $\gamma(0)=0$, and $T(0)=\pmat{1\\0}$, and $0\leq\gamma_1(s)$ for every $s\neq0,T$ (we can get to this via an isometry).
+    Let $B=\set{(x,y)}[0\leq x\leq y\leq T]$ and we define a function $g\colon B\longto S^1$ ($S^1$ is the unit circle) by
+    \[ g(s,t) = \begin{cases} \frac{\gamma(t)-\gamma(s)}{\norm{\gamma(t)-\gamma(s)}} & s\neq t\text{ and } s\neq0,t\neq T \\ \gamma'(s) & s=t \\ -\gamma'(0) & s=0\text{ and }t=T \end{cases} \]
+    $g$ is therefore continuous.
+
+    Let us define $\alpha_0(t)$ (from $[0,T]\to B$) to be the line which connects $(0,0)$ to $(T,T)$, ie. $\alpha_0(t)=t(1,1)$.
+    And let us define $\alpha_1(t)$ to be the concatenation of the line from $(0,0)$ to $(0,T)$ with the line from $(0,T)$ to $(T,T)$.
+    $\alpha_0$ and $\alpha_1$ are both contained within $B$.
+    And for $0\leq\lambda\leq1$, let us define $\alpha_\lambda=(1-\lambda)\alpha_0+\lambda\alpha_1$.
+
+    Since $g\circ\alpha_\lambda(t)$ is a unit vector (since $g(t)$ always is), there exists a function $\theta_\lambda$ such that
+    \[ g\circ\alpha_\lambda = \pmat{\cos(\theta_\lambda(t)) \\ \sin(\theta_\lambda(t))} \]
+    Since $g$ and $\alpha_\lambda$ are continuous (though $\alpha_\lambda$ is not differentiable for $\lambda>0$ as $\alpha_1$ is not), so is $\theta_\lambda$.
+    Let us define
+    \[ D(\lambda) = \theta_\lambda(T) - \theta_\lambda(0) \]
+    Since $g\circ\alpha_\lambda(T)=\gamma'(T)$ which is equal to $\gamma'(0)=g\circ\alpha_\lambda(0)$ since $\gamma$ is closed, we have that
+    \[ \pmat{\cos\theta_\lambda(T) \\ \sin\theta_\lambda(T)} = \pmat{\cos\theta_\lambda(0) \\ \sin\theta_\lambda(0)} \]
+    and therefore $D(\lambda)=\theta_\lambda(T)-\theta_\lambda(0)$ is a multiple of $2\pi$.
+
+    Now, notice that $g\circ\alpha_0(t)=g(t,t)=\gamma'(t)$ and so $\theta_0$ is the angle of $\gamma$, so
+    \[ D(0) = \theta_0(T) - \theta_0(0) = K_\gamma \]
+
+    Notice that $g\circ\alpha_1(0)=g(0,0)=\gamma'(0)=(1,0)$ and $g\circ\alpha_1(T/2)=g\circ(0,T)=-\gamma'(0)=(-1,0)$, $g\circ\alpha_1$ rotated $\pi$ radians on its path from $(0,0)$ to $(0,T)$.
+    And similarly $g\circ\alpha_1(T)=g(T,T)=\gamma'(T)=\gamma'(0)=(1,0)$.
+    And so $g\circ\alpha_1$ rotated another $\pi$ radians on its path from $(0,T)$ to $(T,T)$.
+    Thus all in all $D(1)=2\pi$ (or $-2\pi$ if we were to change our orientation).
+
+    We will now prove that $D$ is continuous.
+    And since $D$ is always a multiple of $2\pi$ this would mean that it is constant, and so $K_\gamma=\pm2\pi$.
+
+    Suppose that $\lambda$ is a point of discontinuity for $D$, then for $h$ small enough $D(\lambda)\neq D(\lambda+h)$ and so let $\delta=\theta_\lambda-\theta_{\lambda+h}$.
+    Then
+    \[ \abs{\delta(T)-\delta(0)} = \abs{\theta_\lambda(T)-\theta_{\lambda+h}(T)-\theta_\lambda(0)+\theta_{\lambda+h}(0)} = \abs{D(\lambda+h)-D(\lambda)} \]
+    and since $D$ is always a multiple of $2\pi$ and $D(\lambda+h)\neq D(\lambda)$, this means that
+    \[ \abs{\delta(T)-\delta(0)} \geq 2\pi \]
+    Since $\delta$ is continuous, and the difference between the endpoints $\delta(0)$ and $\delta(T)$ is greater than $2\pi$, there must exists some $0\leq t_0\leq T$ and $n$ natural such that
+    $\delta(t_0)=\pm\pi(2n+1)$ (ie. there must be a point where $\delta$ is an odd multiple of $\pi$).
+    And so $\theta_\lambda(t_0)-\theta_{\lambda+h}(t_0)=\pm\pi(2n+1)$ and therefore
+    \[ g\circ\alpha_\lambda(t_0) = \pmat{\cos\theta_\lambda(t_0) \\ \sin\theta_\lambda(t_0)} = \pmat{\cosof{\theta_{\lambda+h}(t_0)\pm\pi(2n+1)}\\\sinof{\theta_{\lambda+h}(t_0)\pm\pi(2n+1)}} = 
+    -\pmat{\cos\theta_{\lambda+h}(t_0)\\\sin\theta_{\lambda+h}(t_0)} = -g\circ\alpha_{\lambda+h}(t_0) \]
+    But we can make $h$ small enough so that $\alpha_\lambda$ and $\alpha_{\lambda+h}$ are arbitrarily close, and since $g$ is continuous $g\circ\alpha_\lambda(t_0)$ and $g\circ\alpha_{\lambda+h}(t_0)$ must
+    be arbitrarily close.
+    But they are on opposite ends of the unit circle, in contradiction.
+    \qed
+
+\end{proof}
+
+

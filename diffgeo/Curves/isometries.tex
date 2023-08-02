@@ -1,0 +1,137 @@
+Recall the following definition
+
+\begin{defn*}
+
+    If $(M,\rho)$ and $(X,\sigma)$ are two metric spaces, a function
+    \[ f\colon M\longto X \]
+    is an \ppemph{isometry} if $\rho(x,y)=\sigma(f(x),f(y))$ for every $x,y\in M$.
+    $M$ and $X$ are called \ppemph{isometric}.
+
+\end{defn*}
+
+It is obvious that isometries are injective (if $f(x)=f(y)$ then $\rho(x,y)=0$ so $x=y$).
+
+If $X$ is a normed vector space, and $A$ is an orthogonal transformation then recall $\norm{Ax}=\norm x$, so
+\[ \norm{Ax-Ay}=\norm{A(x-y)} = \norm{x-y} \]
+so $A$ is an isometry.
+
+\begin{defn*}
+
+    If $X$ is a normed vector space, and $a$ is a unit vector then define
+    \[ S_a(x) = x - 2\iprod{x,a}\cdot a \]
+    This is the reflection about $\set a^\bot$.
+
+\end{defn*}
+
+Recall that $x-\iprod{x,a}a\in\set a^\bot$, since
+\[ \iprod{x-\iprod{x,a}a,a} = \iprod{x,a} - \iprod{\iprod{x,a}a,a} = \iprod{x,a} - \iprod{x,a}\iprod{a,a} = \iprod{x,a} - \iprod{x,a} = 0 \]
+
+Now notice that
+\blist
+    \item If $x\in a^\bot$ then $S_a(x)=x$.
+    \item $S_a(a)=-a$.
+    \item $S_a^2(x)=S_a(x-2\iprod{x,a}a)=x-2\iprod{x,a}a-2\iprod{x-2\iprod{x,a}a,a}=x-2\iprod{x,a}a+2\iprod{x,a}=x$.
+    So $S_a^2(x)=x$.
+    \item $S_a(x+y)=S_a(x)+S_a(y)$ and $S_a(\lambda x)=\lambda S_a(x)$, so $S_a$ is a linear transformation.
+\elist
+
+Also notice that $\iprod{x,a}a=a\iprod{x,a}=aa^Tx$, thus
+\[ S_a(x) = (I-2aa^T)x \]
+this is another proof that $S_a$ is a linear transformation, as $S_a(x)=Ax$ where $A=I-2aa^T$.
+Now notice that $A^T=A$, we have that $A$ is orthogonal, so $S_a$ is an isometry.
+
+\begin{prop*}
+
+    If $f\colon\bR^n\longto\bR^n$ is an isometry which preserves the origin, ie. $f(0)=0$, then $f$ is an orthogonal linear transformation.
+
+\end{prop*}
+
+\begin{proof}
+
+    Notice that $f$ preserves norms, since $\norm x=\norm{x-0}=\norm{f(x)-f(0)}=\norm{f(x)}$.
+    And so $f$ preserves the inner product since
+    \[ \norm{x-y}^2 = \iprod{x-y,x-y} = \norm x^2-2\iprod{x,y}+\norm y^2 \]
+    And thus
+    \[ 2\iprod{x,y} = \norm x^2-\norm{x-y}^2+\norm y^2 \]
+    So
+    \[ 2\iprod{x,y} = \norm{f(x)}^2-\norm{f(x)-f(y)}^2+\norm{f(y)}^2 \]
+    But the equality is true for any $x,y$ and so
+    \[ 2\iprod{f(x),f(y)} = \norm{f(x)}^2-\norm{f(x)-f(y)}^2+\norm{f(y)}^2 \]
+    Thus $\iprod{x,y}=\iprod{f(x),f(y)}$ as required.
+
+    Let us define
+    \[ A = \pmat{\vert & & \vert \\ f(e_1) & \cdots & f(e_n) \\ \vert & & \vert} \]
+    Now recall that
+    \[ \iprod{e_i,e_j} = \delta_{ij} = \begin{cases} 1 & i=j \\ 0 & i\neq j \end{cases} \]
+    And so $\iprod{f(e_i),f(e_j)}=\delta_{ij}$.
+    Thus the rows of $A$ form an orthogonal basis, meaning $A$ is an orthogonal matrix.
+
+    Now let us define
+    \[ g(x) = A^{-1}f(x) \]
+    and we will prove that $g(x)=x$, which means that $f(x)=Ax$.
+    Notice that
+    \[ g(e_i) = A^{-1}f(e_i) = A^{-1}C_i(A) = C_i(A^{-1}A) = e_i \]
+    Now, if $g$ were a linear transformation, we could finish here.
+    Since $g(0)=0$, $g$ is an isometry (as the composition of isometries) which preserves the origin, so it preserves inner products.
+
+    Now let $x\in\bR^n$ have coefficients $x_i$, meaning $\iprod{x,e_i}=x_i$, now let $g(x)=y$ with coefficients $y_i$.
+    So
+    \[ x_i = \iprod{x,e_i} = \iprod{g(x),g(e_i)} = \iprod{y,e_i} = y_i \]
+    Thus $x=y$, so $g(x)=x$ and thus $f(x)=Ax$, so $f$ is indeed an orthogonal transformation.
+    \qed
+
+\end{proof}
+
+Thus if $f$ is an isometry, let $g(x)=f(x)-f(0)$, then $g$ is also an isometry which preserves the origin and so $g(x)=Ax$ where $A$ is orthogonal.
+And so $f(x)=Ax+f(0)$.
+
+\begin{thrm*}[cartanDieudonne,Cartan-Dieudonne\ Theorem]
+
+    If $f\colon\bR^n\longto\bR^n$ is an isometry, then
+    \[ f = T\circ S_1\circ\cdots S_m \]
+    where $T$ is a shift, and $S_i$ are reflections, and $m\leq n$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    We will prove this by induction on $n$.
+    For $n=1$, then we know that $f(x)=Ax+c$ where $A$ is orthogonal, and in $\bR$ that means that $A=\pm1$.
+    So $f(x)=\pm x+c$.
+    The $+c$ is a shift, and $-x$ is a reflection about $1$.
+
+    Now, for the inductive step let $g(x)=f(x)-f(0)$ so $g(x)=Ax$ where $A$ is orthogonal.
+    If $A=\mathrm{id}$, then $f(x)=x+c$ which is just a shift, and we have finished.
+    Otherwise there exists an $a\in\bR^n$ such that $g(a)\neq a$.
+    Now, we want a $b\in\lspan{a,g(a)}$ such that $\norm b=1$ and $S_b(a)=g(a)$.
+    Let
+    \[ d = \frac a{\norm a}+\frac{g(a)}{\norm{g(a)}} \]
+    And let $b$ be the unit normal to $d$ in $\lspan{a,g(a)}$.
+    Then $S_b(a)$ is the reflection of $a$ about $d$, which gives $g(a)$.
+
+    Now let
+    \[ h = S_b\circ g \]
+    then $h$ is the composition of two orthogonal transformations, and is therefore also an orthogonal transformation.
+    Let $\hat a=\frac a{\norm a}$, and let us extend this to an orthogonal basis
+    \[ B = \set{\hat a,b_2,\cdots,b_n} \]
+    And since $h$ is orthogonal, $h(B)$ is also an orthogonal basis.
+    And $h(a)=S_b(g(a))=S_b(S_b(a))=a$, and so $h(\hat a)=\hat a$.
+    Thus
+    \[ h(\set{b_2,\dots,b_n})\perp\hat a \]
+    And so $h(\set{b_2,\dots,b_n})$ is an orthogonal basis of $V=\hat a^\perp$, which has a dimension of $n-1$.
+    And so $h\bigl\vert_V\colon V\to V$ is an orthogonal transformation, since $\set{b_2,\dots,b_n}$ is an orthogonal basis of $V$, and so is its image.
+    So by our inductive assumption,
+    \[ h\bigl\vert_V = S_2\circ\cdots\circ S_m \]
+    where $S_i$ are reflections with respect to $u^\perp\subseteq V$, and $m\leq n$.
+
+    Let $\ell=\lspan{\hat a}$, and $h\bigl\vert_\ell=\mathrm{id}$, and since $h$ is linear
+    \[ h = S_2\circ\cdots\circ S_m \]
+    where $S_i$ is a reflection with respect to $u^\perp\subseteq\bR^n$.
+    And since $h=S_b\circ g$, and $f=T\circ g$, where $T$ is a shift (adding $f(0)$), we have
+    \[ T = T\circ S_b\circ S_2\circ\cdots\circ S_m \]
+    where $m\leq n$ as required.
+    \qed
+
+\end{proof}
+
+
