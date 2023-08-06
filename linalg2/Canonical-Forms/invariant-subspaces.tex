@@ -1,0 +1,426 @@
+\begin{defn*}
+
+    If $T\colon V\longto V$ is a linear operator, then a subspace $U\leq V$ is \ppemph{invariant} under $T$ if $T(U)\leq U$.
+    ($U$ is also called an \ppemph{invariant subspace}.)
+
+\end{defn*}
+
+If $U$ is an invariant subspace of $V$, then we can define the restricted linear operator $T_U\colon U\longto U$ by $T_U(u)=T(u)$.
+
+\begin{exam*}
+
+    If $\lambda$ is an eigenvalue of $T$, then $V_\lambda$ is invariant under $T$.
+    This is because if $v\in V_\lambda$ then $Tv=\lambda v\in V_\lambda$.
+
+\end{exam*}
+
+\begin{prop*}[invariantSpan]
+
+    Suppose $S$ is a subset of $V$, and for every $v\in S$, $Tv\in\lspanof S$.
+    Then $\lspanof S$ is an invariant subspace of $V$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $v\in\lspanof S$, so there exist $v_1,\dots,v_n\in S$ and $\alpha_1,\dots,\alpha_n\in\bF$ such that $v=\alpha_1v_1+\cdots+\alpha_nv_n$.
+    And so $Tv=\alpha_1Tv_1+\cdots+\alpha_nTv_n$.
+    And since $\alpha_iTv_i\in\lspanof S$, $Tv\in\lspanof S$ as required.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    If $V_1,\dots,V_n$ are disjoint invariant subspaces under $T$, then
+    \[ \imageof T = \bigoplus_{i=1}^n \imageof{T_i},\qquad \kerof T = \bigoplus_{i=1}^n \kerof{T_i} \]
+    where $T_i=T_{V_i}$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Since $V_i$ are all disjoint, and $\imageof{T_i}$ and $\kerof{T_i}$ are subspaces of $V_i$, they too are all disjoint.
+    Now, suppose $v\in\kerof T$ then $v=v_1+\cdots+v_n$ where $v_i\in V_i$ then $Tv_1+\cdots+Tv_n=0$.
+    But $Tv_i\in V_i$ and since their sum is direct, every vector has an \emph{unique} representation as the sum of vectors in $V_i$, so $Tv_i=0$.
+    Thus $T_iv_i=0$ and so $v_i\in\kerof{T_i}$.
+    So $\kerof{T}\subseteq\bigoplus_{i=1}^n\kerof{T_i}$.
+    And the other direction of inclusion is trivial as $\kerof{T_i}\subseteq\kerof T$.
+
+    If $v\in V$, then there exist $v_i\in V_i$ such that $v=v_1+\cdots+v_n$ and so $Tv=T_1v_1+\cdots+T_nv_n\in\bigoplus_{i=1}^n\imageof{T_i}$.
+    And since $\imageof{T_i}\subseteq\imageof T$, the other direction of inclusion is trivial.
+    \qed
+
+\end{proof}
+
+Notice that if $V=\bigoplus_{i=1}^n V_i$ where $V_i$ are invariant under $T$, then if $B_i$ is a basis for $V_i$, then $B=B_1\dcup\cdots\dcup B_n$ is a basis for $V$ and
+\[ [T]_B = \pmat{[T_1]_{B_1} \\ & \ddots \\ & & [T_n]_{B_n}} \]
+Since if $v_i\in B_i$ then $[Tv_i]_{B_i}$ is equal to $[T_iv_i]_{B_i}$ but shifted vertically to the correct placement.
+
+\begin{defn*}
+
+    If $A\in M_n(\bF)$ and $B\in M_m(\bF)$ then we define $A\oplus B$ to be the matrix in $M_{n+m}(\bF)$ equal to
+    \[ A\oplus B = \parens{\!\!\!\begin{array}{c|c} A & \boldsymbol{0} \\\hline \boldsymbol{0} & B \end{array}\!\!\!} \]
+
+\end{defn*}
+
+Thus, if $V=\bigoplus_{i=1}^n V_i$ where $V_i$ are invariant under $T$, then
+\[ [T]_B = \bigoplus_{i=1}^n [T_i]_{B_i} \]
+
+Notice that if $\bigoplus_{\lambda\in\specof T}V_\lambda=V$ then let $B_\lambda$ be a basis of $V_\lambda$, and then $B=\bigdcup_{\lambda\in\specof T}B_\lambda$ is a basis of eigenvectors and so
+\[ [T]_B = \bigoplus_{\lambda\in\specof T}[T_{V_\lambda}]_{B_\lambda} \]
+And since $[T_{V_\lambda}]_{B_\lambda}=\lambda I$, $[T]_B$ is a diagonal matrix.
+This is nothing new, we just used a basis of eigenvectors to diagonalize $T$.
+
+Furthermore, recall that by \ppref[lemma]{blockMatrixDeterminant}, $\detof{A\oplus B}=\detof A\detof B$, and so
+\[ \detof{\bigoplus_{i=1}^n A_i} = \prod_{i=1}^n\detof{A_i} \]
+And so if $A=\bigoplus_{i=1}^n A_i$ then
+\[ p_A(x) = \detof{xI-\bigoplus_{i=1}^n A_i} = \detof{\bigoplus_{i=1}^n (xI-A_i)} = \prod_{i=1}^n\detof{xI-A_i} = \prod_{i=1}^n p_{A_i}(x) \]
+
+\begin{prop*}[invarUnderPoly]
+
+    If $U$ is invariant under $T$, it is also invariant under $p(T)$ for every polynomial $p(x)$.
+
+\end{prop*}
+
+\begin{proof}
+
+    We will show by induction that $U$ is invariant under $T^n$.
+    For $n=1$ this is trivial, as we are given that $U$ is invariant under $T$.
+    Now, let $u\in U$ then by our inductive assumption $T^nu\in U$, and since $U$ is invariant under $T$, $T(T^nu)=T^{n+1}u\in U$.
+    Thus $U$ is invariant under $T^{n+1}$, as required.
+
+    Now suppose $p(x)=\alpha_nx^n+\cdots+\alpha_0$.
+    Then if $u\in U$,
+    \[ p(T)u = \parens{\sum_{k=0}^n\alpha_kT^k}u = \sum_{k=0}^n\alpha_kT^ku \]
+    Since $T^ku\in U$ for each $k$, we have that $\alpha_kT^ku\in U$ for each $k$ and so $p(T)u\in U$ as required.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    If $T$ is a linear operator and $v\in V$, then we define $v$'s \ppemph{path} to be
+    \[ P_v = (T^{m-1}v, T^{m-2}v,\dots, Tv, v) \]
+    where $T^mv=0$ and $T^{m-1}v\neq0$.
+    $m$ is the \ppemph{length} of $P_v$.
+
+\end{defn*}
+
+Not every vector has a finite path, for example if $T$ is an isomorphism, then $T^mv\neq0$ if $v\neq0$, and so $v$'s path would be infinite.
+We are only interested currently in finite paths, so we restrict the definition to only vectors whose path is finite.
+
+\begin{prop*}
+
+    Paths are linearly independent.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $v$ is a vector whose path has a length of $m$.
+    Further suppose there exists a linear combination which is equal to zero,
+    \[ \sum_{k=0}^{m-1}\alpha_k T^kv = 0 \]
+    Let us compose both sides with $T^{m-1}$, then we have that
+    \[ \sum_{k=0}^{m-1}\alpha_k T^{m-1+k}v = 0 \]
+    Since $T^mv=0$, for $k>0$, $T^{m-1+k}v=0$ and so we get that
+    \[ \alpha_0 T^{m-1}v = 0 \implies \alpha_0 = 0 \]
+    And we can similarly compose both sides with $T^{m-2}$, we get
+    \[ \sum_{k=1}^{m-1}\alpha_k T^{m-2+k}v = \alpha_1T^{m-1}v = 0 \implies \alpha_1 = 0 \]
+    Continuing (via induction), we get that $\alpha_i=0$ for every relevant $i$.
+    Thus $P_v$ is indeed linearly independent.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    If $P_v$ is $v$'s path under $T$, $\lspanof{P_v}$ is invariant under $T$.
+
+\end{prop*}
+
+\begin{proof}
+
+    By \ppref[proposition]{invariantSpan}, it is sufficient to show that for $u\in P_v$, $Tu\in\lspanof{P_v}$.
+    This is trivial as $u=T^kv$ for some $k\geq0$ and thus $Tu=T^{k+1}v\in\lspanof{P_v}$ (by the definition of $P_v$).
+    \qed
+
+\end{proof}
+
+\begin{prop*}[nWillZeroYou]
+
+    Suppose $n=\dim V$, $T$ is a linear operator over $V$, and $\lambda$ is a scalar.
+    Then if $m$ is any natural number such that $(T-\lambda I)^kv=0$, then $(T-\lambda I)^nv=0$.
+
+\end{prop*}
+
+\begin{proof}
+
+    If $m\leq n$ this is trivial as
+    \[ (T-\lambda I)^nv = (T-\lambda I)^{n-m}(T-\lambda I)^mv = 0 \]
+    Otherwise, let $k\leq m$ be the minimum number where $(T-\lambda I)^kv=0$.
+    Let us construct $v$'s path in $T-\lambda I$,
+    \[ P_v = \Bigl((T-\lambda I)^{k-1}v,\dots,(T-\lambda I)v,v\Bigr) \]
+    And this is linearly independent, by the above proposition.
+    Since it has a size of $k$, and $n=\dim V$, we have that $k\leq n$ since bases are maximal linearly independent set.
+    So this just reduces down to the first case.
+    \qed
+
+\end{proof}
+
+Recall how $\dim V_\lambda=\gamma_\lambda\leq\mu_\lambda$ for eigenvalues $\lambda$.
+Now, if $\gamma_\lambda=\mu_\lambda$ for each eigenvalue, then $T$ is diagonalizable.
+But otherwise it is not.
+Recall how if $T$ is diagonalizable then
+\[ V = \bigoplus_{\lambda\in\specof T}V_\lambda \]
+And then if $B_\lambda$ is a basis for $V_\lambda$, and $B=\bigdcup_{\lambda\in\specof T}B_\lambda$,
+\[ [T]_B = \bigoplus_{\lambda\in\specof T}[T_{V_\lambda}]_{B_\lambda} \]
+is a diagonal matrix.
+
+But if $T$ is not a diagonal matrix, then we don't have the equality
+\[ V \neq \bigoplus_{\lambda\in\specof T}V_\lambda \]
+And thus we cannot define such a basis of eigenvectors.
+Our goal for the remainder of this section is to find an alternative type of subspace, and alternative to $V_\lambda$, where the equality does hold.
+This isn't enough, as the reason why eigenspaces are so useful is that $T_{V_\lambda}$ simply scales vectors.
+We'd like our alternative space to also have a nice property, similar to this, as well.
+
+Let me be a little more specific.
+For a linear operator $T$, we'd like to find a family of disjoint invariant subspaces $\set{K_\lambda}_{\lambda\in\specof T}$ such that $T_{K_\lambda}$ is ``well-behaved''.
+By ``well-behaved'' I mean that if we take $B_\lambda$ to be a basis for $K_\lambda$, and $B=\bigdcup_{\lambda\in\specof T}B_\lambda$, then
+\[ [T]_B = \bigoplus_{\lambda\in\specof T}[T_{K_\lambda}]_{B_\lambda} \]
+should be a ``nice'' matrix.
+This means that we want $T_{K_\lambda}$ to be a relatively simple linear operator.
+
+It turns out that the family of invariant subspaces that we are looking for are the \emph{generalized eigenspaces}:
+
+\begin{defn*}
+
+    Suppose $V$ is a vector space whose dimension is $n$.
+    If $T$ is a linear operator over $V$ and $\lambda$ is an eigenvalue of $T$, then we define the \ppemph{generalized eigenspace} of $\lambda$ to be
+    \[ K_\lambda = \ker\bigl((\lambda I-T)^n\bigr) \]
+    Elements of a generalized eigenspace are called \ppemph{generalized eigenvectors}.
+
+\end{defn*}
+
+Recall that by \ppref[proposition]{nWillZeroYou}, if $(\lambda I-T)^kv=0$ then $(\lambda I-T)^nv=0$.
+Thus, $v$ is a generalized eigenvector if and only if $(\lambda I-T)^kv=0$ for \emph{some} $k$.
+This means that if $v$ is an eigenvector, it is also a generalized eigenvector:
+\[ V_\lambda \subseteq K_\lambda \]
+
+\begin{prop*}
+
+    If $T$ is a linear operator and $p(x)$ is a polynomial, then $p(T)T=Tp(T)$.
+
+\end{prop*}
+
+\begin{proof}
+
+    This is because if $p(x)=\alpha_nx^n+\cdots+\alpha_0$ then
+    \[ Tp(T) = T\sum_{k=0}^n\alpha_kT^k = \sum_{k=0}^n\alpha_kT^{k+1} = \parens{\sum_{k=0}^n\alpha_kT^k}T = p(T)T \]
+    as required.
+    \qed
+
+\end{proof}
+
+This allows us to show that $K_\lambda$ is invariant under $T$.
+If $v\in K_\lambda$ then $(\lambda I-T)^nv=0$.
+Now we must show that $Tv\in K_\lambda$, meaning $(\lambda I-T)^nTv=0$.
+But since $(\lambda I-T)^n$ is a polynomial of $T$, we know that $(\lambda I-T)^nT=T(\lambda I-T)^n$ and so
+\[ (\lambda I-T)^nTv = T(\lambda I-T)^nv = T0 = 0 \]
+And so $Tv\in K_\lambda$ as required.
+By \ppref[proposition]{invarUnderPoly}, this means that $K_\lambda$ is also invariant under any polynomial of $T$.
+
+So we have shown that $K_\lambda$ is an invariant subspace of $T$.
+But we still must show that $\set{K_\lambda}_{\lambda\in\specof T}$ are all disjoint, and that $T_{K_\lambda}$ is ``nice''.
+
+\begin{lemm*}
+
+    Suppose $T$ is a linear operator and $K_\lambda$ is a generalized eigenspace.
+    Let $\mu\neq\lambda$.
+    If $v\in K_\lambda$ is non-zero then $(\mu I-T)v\in K_\lambda$ and $(\mu I-T)v\neq0$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Since $\mu I-T$ is a polynomial of $T$, and we showed that $K_\lambda$ is invariant under polynomials of $T$, we know that $(\mu I-T)v\in K_\lambda$ as required.
+
+    Suppose that $(\mu I-T)v=0$, so $Tv=\mu v$ (in other words, $v$ is an eigenvector whose eigenvalue is $\mu$).
+    Then,
+    \[ (\lambda I-T)^nv = (\lambda I-T)^{n-1}(\lambda I-T)v = (\lambda I-T)^{n-1}(\lambda v-\mu v) = (\lambda-\mu)(\lambda I-T)^{n-1}v \]
+    Continuing this inductively we get that this is equal to
+    \[ = (\lambda-\mu)^nv \]
+    But since $\lambda-\mu\neq0$ and $v\neq0$, we get that
+    \[ (\lambda I-T)^nv = (\lambda-\mu)^nv \neq 0 \]
+    Which contradicts $v$ being in $K_\lambda$.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    If $T$ is a linear operator and $\lambda\neq\mu$ then $K_\lambda$ and $K_\mu$ are disjoint.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $v\in K_\lambda\cap K_\mu$, and suppose that $v\neq0$.
+    Then by the previous lemma
+    \[ 0\neq(\mu I-T)v \in K_\lambda \]
+    Let $v_1=(\mu I-T)v$, then since $v\in K_\mu$ and generalized eigenspaces are invariant under polynomials of $T$, $v_1\in K_\lambda\cap K_\mu$.
+    Thus we can continue inductively and define $v_k=(\mu I-T)v_{k-1}$, and so $v_k\neq0$ and $v_k\in K_\lambda\cap K_\mu$.
+    But then $v_n\neq0$ and since
+    \[ v_n = (\mu I-T)^nv \]
+    this contradicts $v$ being in $K_\mu$.
+    \qed
+
+\end{proof}
+
+Thus we have shown that generalized eigenspaces form a family of invariant subspaces.
+But we still must show that $T_{K_\lambda}$ is interesting and that
+\[ V = \bigoplus_{\lambda\in\specof T}K_\lambda \]
+
+\begin{defn*}
+
+    Suppose $V$ is a vector space of dimension $n$.
+    If $T$ is a linear operator over $V$ and $\lambda$ a scalar, then we define the following space
+    \[ I_\lambda = \image\bigl((\lambda I-T)^n\bigr) \]
+
+\end{defn*}
+
+We will only be using $I_\lambda$ to be proving things about $K_\lambda$, so I will not be giving it the luxury of a name.
+
+Note that $I_\lambda$ is invariant under $T$.
+This is since if $v\in I_\lambda$ then $v=(\lambda I-T)^nu$ for some $u\in V$, and so
+\[ Tv = T(\lambda I-T)^nu = (\lambda I-T)^nTu \in \image\bigl((\lambda I-T)^n\bigr) = I_\lambda \]
+Where the second equality is due to $T$ commuting with polynomials of $T$.
+
+\begin{prop*}
+
+    If $T$ is a linear operator over $V$ and $\lambda$ is a scalar, then $V=K_\lambda\oplus I_\lambda$.
+
+\end{prop*}
+
+\begin{proof}
+
+    First we must show that $K_\lambda$ and $I_\lambda$ are disjoint.
+    Suppose that $v\in K_\lambda\cap I_\lambda$ then there exists a $u\in V$ such that $v=(\lambda I-T)^nu$ and $(\lambda I-T)^nv=0$.
+    This means that
+    \[ (\lambda I-T)^nv = (\lambda I-T)^{2n}u = 0 \]
+    and by \ppref[proposition]{nWillZeroYou}, this means that $(\lambda I-T)^nu=0$ so $v=0$.
+    Thus $K_\lambda\cap I_\lambda=\set0$ as required.
+
+    Now we must show that $K_\lambda+I_\lambda = V$.
+    We know that
+    \[ \dimof{K_\lambda + I_\lambda} = \dimof{K_\lambda} + \dimof{I_\lambda} - \dimof{K_\lambda\cap I_\lambda} = \dimof{K_\lambda} + \dimof{I_\lambda} \]
+    Now, since $K_\lambda$ and $I_\lambda$ are the kernel and image of the same linear operator ($(\lambda I-T)^n$), by the rank-nullity theorem,
+    \[ \dimof V = \dimof{K_\lambda} + \dimof{I_\lambda} \]
+    and thus
+    \[ \dimof{K_\lambda + I_\lambda} = \dimof V \]
+    meaning $K_\lambda+I_\lambda=V$ as required.
+    \qed
+
+\end{proof}
+
+\begin{lemm*}
+
+    Suppose $\dim V=n$.
+    If $T$ is a nilpotent linear operator, then its characteristic polynomial is $p_T(x)=x^n$ and in particular $T$'s only eigenvalue is $0$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    If $T=0$, this is trivial (as $p_T(x)=\detof{xI-T}=\detof{xI}=x^n$).
+    Otherwise, there exists an $m$ such that $T^m=0$.
+    So $p(x)=x^m$ is a zeroing polynomial of $T$, and since the minimal polynomial divides all zeroing polynomials, we have that $m_T(x)\divides x^m$.
+    This means that $m_T(x)=x^k$ for some $k\leq m$ as $x$ is irreducible.
+    And since $p_T(x)$ and $m_T(x)$ share the same irreducible factors, and $p_T(x)$ is of degree $n$, this means that $p_T(x)=x^n$.
+
+    Since $p_T(x)$'s only root is $0$, $T$'s only eigenvalue is $0$.
+    \qed
+
+\end{proof}
+
+\begin{lemm*}
+
+    Suppose $T$ is a linear operator, and $\lambda$ is a scalar.
+    Let $T_\lambda=T_{K_\lambda}$, then
+    \[ p_{T_\lambda}(x) = (x-\lambda)^{\dim K_\lambda} \]
+
+\end{lemm*}
+
+\begin{proof}
+
+    Suppose $T$ is a linear operator over $V$, and $\dim V=n$.
+
+    Let us define a linear operator $L\colon K_\lambda\to K_\lambda$ by $L=T_\lambda-\lambda I$.
+    Then $L$ is nilpotent since for every $v\in K_\lambda$, $(T-\lambda I)^nv=(-1)^n(\lambda I-T)^nv=0$ and so $L^nv=0$.
+    Thus $L^n=0$, so $L$ is nilpotent.
+
+    By the previous lemma, this means that
+    \[ p_L(x) = x^{\dim K_\lambda} \]
+    But we also know that
+    \[ p_L(x) = \detof{xI-L} = \detof{xI-T_\lambda+\lambda I} = \detof{(x+\lambda)I-T_\lambda} = p_{T_\lambda}(x+\lambda) \]
+    And so
+    \[ p_{T_\lambda}(x) = p_L(x-\lambda) = (x-\lambda)^{\dim K_\lambda} \]
+    as required.
+    \qed
+
+\end{proof}
+
+\begin{lemm*}
+
+    If $T$ is a linear operator over $V$, and $\lambda$ is a scalar, then the dimension of $K_\lambda$ is $\lambda$'s algebraic multiplicity.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Let $n=\dim V$.
+    Now let $B_1$ be a basis for $K_\lambda$ and $B_2$ be a basis for $I_\lambda$.
+    Then since $V=K_\lambda\oplus I_\lambda$, $B=B_1\dcup B_2$ is a basis for $V$.
+    Let $A=[T]_B$, then
+    \[ A = [T_{K_\lambda}]_{B_1}\oplus[T_{I_\lambda}]_{B_2} \]
+    And therefore we know
+    \[ p_T(x) = p_A(x) = p_{T_{K_\lambda}}(x)\cdot p_{T_{I_\lambda}}(x) \]
+    By our previous lemma, $p_{T_{K_\lambda}}(x)=(x-\lambda)^{\dim K_\lambda}$, and so
+    \[ p_T(x) = (x-\lambda)^{\dim K_\lambda} p_{T_{I_\lambda}}(x) \]
+
+    Now suppose that $p_{T_{I_\lambda}}(\lambda)=0$.
+    This means that $\lambda$ is an eigenvalue of $T_{I_\lambda}$ and so there exists a non-zero vector $v$ in $I_\lambda$ which is also an eigenvalue of $T$.
+    But this means that $v\in K_\lambda$ (as $V_\lambda\subseteq K_\lambda$), and $T_\lambda$ and $K_\lambda$ are disjoint, in contradiction.
+
+    Thus $p_{T_{I_\lambda}}(\lambda)\neq0$, so $\lambda$'s multiplicity in $p_T(x)$ is $\dim K_\lambda$, meaning $\dim K_\lambda=\mu_\lambda$ as required.
+    \qed
+
+\end{proof}
+
+Notice that this means that $K_\lambda\neq\set0$ if and only if $\lambda$ is an eigenvalue of $T$.
+This is because $\lambda$ is an eigenvalue of $T$ if and only if $\dim K_\lambda=\mu_\lambda>0$.
+
+Furthermore, $K_\lambda=V_\lambda$ if and only if $\mu_\lambda=\gamma_\lambda$, as these are the dimensions of the generalized eigenspace and eigenspace respectively.
+
+\begin{thrm*}[spectralFactorizationThrm,The\ Spectral\ Factorization\ Theorem]
+
+    If $T$ is a linear operator, then $p_T(x)$ is fully factorizable if and only if
+    \[ \bigoplus_{\lambda\in\specof T}K_\lambda = V \]
+
+\end{thrm*}
+
+\begin{proof}
+
+    $p_T(x)$ is fully factorizable if and only if $\sum_{\lambda\in\specof T}\mu_\lambda=\dim V$.
+    And by the previous lemma this is if and only if $\sum_{\lambda\in\specof T}\dim K_\lambda=\dim V$.
+    Since generalized eigenspaces are disjoint, 
+    \[ \dimof{\bigoplus_{\lambda\in\specof T}K_\lambda} = \sum_{\lambda\in\specof T}\dim K_\lambda \]
+    And so $\bigoplus_{\lambda\in\specof T}K_\lambda=V$ if and only if $\sum_{\lambda\in\specof T}\dim K_\lambda=\dim V$, which is if and only if $p_T(x)$ is fully factorizable, as required.
+    \qed
+
+\end{proof}
+
+So we have shown that if $p_T(x)$ is fully factorizable, then $\bigoplus_{\lambda\in\specof T}K_\lambda$.
+All that remains to be shown is that $T_{K_\lambda}$ is interesting.
+We will do this, and more, in the next subsection.
+

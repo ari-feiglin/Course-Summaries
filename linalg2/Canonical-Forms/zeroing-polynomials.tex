@@ -1,0 +1,302 @@
+If we have a polynomial in $\bF[x]$, then we can evaluate it at values in $\bF$.
+But we know we can take the power of matrices, scale them, and add them, so we can also evaluate it at matrices in $M_n(\bF)$.
+For example, suppose we have
+\[ p(x) = 2x^2 + 3x \]
+and we have a matrix $A\in M_n(\bF)$, then it makes total sense to say
+\[ p(A) = 2A^2 + 3A \]
+\newpage
+And if $p(x)=x+1$, then what would $p(A)$ mean?
+$1$ is the multiplicative identity in $\bF$, so it makes sense to have $p(A)=A+I$.
+
+\begin{defn*}
+
+    If $p(x)$ is a polynomial over $\bF$, suppose $p(x)=a_nx^n+a_{n-1}x^{n-1}+\cdots+a_1x+a_0x^0$, then if $A\in M_n(\bF)$, we define
+    \[ p(A) = a_nA^n + a_{n-1}A^{n-1} + \cdots + a_1A + a_0I \]
+    Or using sigma notation, if
+    \[ p(x) = \sum_{k=0}^n a_kx^k \]
+    then
+    \[ p(A) = \sum_{k=0}^n a_kA^k \]
+    where $A^0=I$ as always.
+
+    The definition for evaluating the polynomial at a linear operator is analogous.
+
+\end{defn*}
+
+So now we can ask ourselves the question, if $A$ is a matrix, can it be the root of a polynomial?
+It turns out that yes, it can.
+And the proof for this is not too complicated.
+Suppose $A\in M_n(\bF)$, then let us defune
+\[ S = \set{A^i}[0\leq i\leq n^2] \subseteq M_n(\bF) \]
+Then $S$ has a cardinality of $n^2+1$, while $M_n(\bF)$ has a dimension of $n^2$, and so $S$ cannot be linearly independent.
+So there exists values $\alpha_0,\dots,\alpha_n\in\bF$ such that
+\[ \sum_{k=0}^n \alpha_0 A^k = 0 \]
+And thus $A$ is a root of the polynomial $p(x)=\alpha_nx^n+\cdots+\alpha_0$.
+
+Proving existence is neat and all, but we can go one step further: we can actually compute for each matrix a ``zeroing polynomial'' for it.
+A good stepping-off point for this is the one polynomial we can associate with a specific matrix: its characteristic polynomial.
+As it turns out, this is precisely the polynomial we are looking for.
+
+\begin{thrm*}[cayleyHamilton,The\ Cayley-Hamilton\ Theorem]
+
+    If $A\in M_n(\bF)$ is a matrix and $p_A(x)$ its characteristic polynomial, then $p_A(A)=0$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Recall that the definition of the adjugate of a matrix requires just taking the determinants of the minors of the matrix, and so the adjugate of the matrix $xI-A$ is well-defined.
+    And recall that $A\cdot\adjof A=\detof AI$, and therefore
+    \[ (xI-A)\cdot\adjof{xI-A} = \detof{xI-A}I = p_A(x)I \]
+    Let $B=\adjof{xI-A}$, and since $[B]_{ij}=(-1)^{i+j}\cdot\detof{(xI-A)_{ji}}$, and by removing a column and row from $xI-A$ we are removing at least one component of the form $x-a_{ii}$, and thus the
+    determinant is a polynomial whose degree is less than $n$.
+    So $B$ is a matrix of polynomials of degree $\leq n-1$.
+
+    So suppose
+    \[ B = x^{n-1}B_{n-1} + x^{n-2}B_{n-2} + \cdots + xB_1 + B_0 \]
+    Then
+    \[ (xI-A)B = \sum_{k=0}^{n-1}x^k(xI-A)B_k = \sum_{k=0}^{n-1}x^{k+1}B_k - \sum_{k=0}^{n-1}x^kAB_k = B_{n-1}x^n + \sum_{k=1}^{n-1}x^k(B_{k-1}-AB_k) - AB_0 \]
+    Now suppose that
+    \[ p_A(x) = x^n + \sum_{k=0}^{n-1}c_kx^k \]
+    And since $(xI-A)B=p_A(x)\cdot I$, this means that
+    \[ x^nB_{n-1} + \sum_{k=1}^{n-1}x^k(B_{k-1}-AB_k) - AB_0 = x^nI + \sum_{k=0}^{n-1}c_kx^kI \]
+    And so we have that $B_{n-1}=I$, $-AB_0=c_0I$, and
+    \[ B_{k-1}-AB_k = c_kI \]
+    for $1\leq k\leq n-1$.
+    And so $c_kA^k=A^k(c_kI)=A^kB_{k-1}-A^{k+1}B_k$ and thus
+    \[ p_A(A) = A^n + \sum_{k=0}^{n-1} c_kA^k = A^n + \sum_{k=1}^{n-1}A^kB_{k-1}-A^{k+1}B_k - AB_0 = A^n + \sum_{k=1}^{n-1} A^kB_{k-1} - \sum_{k=1}^{n-1} A^{k+1}B_k - AB_0 \]
+    Now notice that
+    \[ \sum_{k=1}^{n-1} A^kB_{k-1} - \sum_{k=1}^{n-1} A^{k+1}B_k = AB_0 + \sum_{k=2}^{n-1} A^kB_{k-1} - \sum_{k=2}^{n-1} A^kB_{k-1} - A^nB_{n-1} = AB_0 - A^nB_{n-1} \]
+    Now recall that $B_{n-1}=I$ and so
+    \[ p_A(A) = A^n + AB_0 - A^n - AB_0 = 0 \]
+    as required.
+    \qed
+
+\end{proof}
+
+Thus, if $T$ is a linear operator then for any basis $B$, if we let $A=[T]_B$ then $p_A(A)=0$.
+Now, we know that for any polynomial $p(x)$, $p(A)=[p(T)]_B$.
+And furthermore, $p_A(x)$ is the same as $p_T(x)$, and so $p_A(A)=[p_T(T)]_B$, and thus
+\[ [p_T(T)]_B = 0 \implies p_T(T) = 0 \]
+so \ppref{cayleyHamilton} is true for linear operators as well:
+
+\begin{coro*}
+
+    If $T$ is a linear operator and $p_T(x)$ its characteristic polynomial, then $p_T(T)=0$.
+
+\end{coro*}
+
+In fact, notice that
+
+\begin{prop*}[zeroRepLO]
+
+    Suppose $T$ is a linear operator, and $p(x)$ is a polynomial.
+    Then the following are equivalent,
+    \benum
+        \item $p(T)=0$.
+        \item $p(A)=0$ for every matrix representation $A$ of $T$.
+        \item $p(A)=0$ for some matrix representation $A$ of $T$.
+    \eenum
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose
+    \[ p(x) = \sum_{k=0}^n \alpha_kx^k \]
+    Suppose $A=[T]_B$, then we know that $A^k=[T^k]_B$ and so
+    \[ p(A) = \sum_{k=0}^n \alpha_kA^k = \sum_{k=0}^n \alpha_k[T^k]_B = \bracks{\sum_{k=0}^n\alpha_kT^k}_B = [p(T)]_B \]
+    So for any matrix representation $A$, $p(A)=0$ if and only if $p(T)=0$.
+    This proves all of the equivalences.
+    \qed
+
+\end{proof}
+
+This means that similar matrices have the same zeroing polynomials.
+Since if $A$ and $B$ are similar, they both represent the linear operator $T$, then if $p(A)=0$ if and only if $p(T)=0$ if and only if $p(B)=0$.
+
+\begin{defn*}
+
+    An \ppemph{irreducible} polynomial is a non-constant polynomial which cannot be written as the product of two other non-constant polynomials.
+
+\end{defn*}
+
+We will also add the condition that an irreducible polynomial must be monic.
+This is not really faithful to the actual definition of irreducible, but it captures the essence of it without affecting it must.
+
+Now, using polynomial division we can show that every polynomial can be written as a unique product of irreducible polynomials.
+For example, $x^3+x^2+3x+3$ can be written as $(x^2+3)(x+1)$ in $\bR[x]$ and these components are irreducible.
+In $\bC[x]$, we can further write this as $(x+\sqrt3i)(x-\sqrt3i)(x+1)$.
+Obviously polynomials of the form $x+\alpha$ are irreducible.
+
+\begin{lemm*}
+
+    Every monic polynomial can be written as the unique product of irreducible polynomials.
+
+\end{lemm*}
+
+\begin{proof}
+
+    We can prove the existence of such a factorization with relative ease using induction on $n=\degof{p(x)}$.
+    If $n=1$ then $p(x)=x+\alpha$ which is irreducible, and so we have finished (it is irreducible since if $x+\alpha=q_1(x)q_2(x)$ then $\degof{q_1},\degof{q_2}\leq1$ and $\degof{q_1}+\degof{q_2}=1$ so one
+    of them must be constant).
+
+    Now for the inductive step.
+    If $p(x)$ is irreducible, we have finished.
+    Otherwise we can write $p(x)=q_1(x)q_2(x)$ where $q_1$ and $q_2$ are non-constant and so $1\leq\degof{q_1},\degof{q_2}<n$.
+    Inductively, we can write $q_1$ and $q_2$ as the product of irreducible polynomials.
+    Taking the product of these factorizations gives a product of irreducible polynomials which is equal to $p(x)$.
+
+    Now to show the uniqueness of the product, assume for the sake of a contradiction that there exists a polynomial $p(x)$ with two distinct factorizations
+    \[ p(x) = f_1(x)\cdots f_t(x) = g_1(x)\cdots g_s(x) \]
+    Suppose that $p(x)$ has the smallest degree of the polynomials with two distinct factorizations.
+    Then for every $1\leq i\leq t$ and $1\leq j\leq s$, $f_i(x)\neq g_i(x)$, as otherwise $\frac{p(x)}{f_i(x)}$ and $\frac{p(x)}{g_i(x)}$ would be equal, but have two distinct factorizations.
+    This would contradict the minimality of $p(x)$'s degree.
+    So let
+    \[ q(x) = f_2(x)\cdots f_t(x),\quad r(x) = g_2(x)\cdots g_s(x) \]
+    Then $f_1(x)q(x)=g_1(x)r(x)$ which means
+    \[ (f_1(x)-g_1)r(x) = f_1(x)r(x) - g_1(x)r(x) = f_1(x)r(x)-f_1(x)q(x) = f_1(x)(r(x)-q(x)) \]
+    Now, $f_1$ doesn't divide $f_1-g_1$ (as then $1-\frac{f_1}{g_1}$ would be a polynomial), and since $f_1$ is irreducible, $f_1$ must divide $r(x)$ and therefore be in its factorization.
+    But $f_1\neq g_i$ and since $r(x)$ has a smaller degree than $p(x)$, its factorization is unique, $f_1$ cannot be in its factorization in contradiction.
+    \qed
+
+\end{proof}
+
+\begin{note}
+
+    In the nature of rings, this means that $\bF[x]$ is a unique factorization domain (UFD).
+    This is because $\bF[x]$ is a euclidean domain (you can use the degree of a polynomial to define a euclidean norm), and therefore a prime ideal domain, and therefore a unique factorization domain.
+    Right now this should not make any sense to you, and that's fine.
+
+    The reason we don't allow constants to be irreducible is then because $1$ would have the factorization $cc^{-1}$ for every $0\neq c\in\bF$.
+
+    Similarly, the reason for requiring that irreducible polynomials be monic is that otherwise the unique factorization of a polynomial is not true.
+    This is because $2x^2+8x+6=(2x+2)(x+3)=(x+1)(2x+6)$ which gives two factorizations.
+    We can avoid this issue by weakening the concept of uniqueness, and saying that two factorizations are unique up to multiplication by constants.
+
+\end{note}
+
+\begin{coro*}
+
+    Every polynomial in $\bF[x]$ can be written uniquely as a constant multiplied by irreducible polynomials.
+
+\end{coro*}
+
+This is because every polynomial $p(x)$ has a unique constant (the leading coefficient) $c$ such that $p(x)=cq(x)$ where $q(x)$ is monic.
+And then $q(x)$ has a unique factorization.
+
+\begin{thrm*}[charDividesZeroing]
+
+    Suppose $A\in M_n(\bF)$.
+    If $f(x)$ is a zeroing polynomial of $A$ then $p_A(x)$ divides $f(x)^n$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let $d=\degof f$, then our goal is to find a matrix polynomial $B(x)=\sum_{k=0}^{d-1}x^kB_k$ such that
+    \[ (xI-A)B(x) = f(x)I \]
+    As the left hand side is equal to $\detof{xI-A}\cdot\detof{B(x)}=p_A(x)\cdot\detof{B(x)}$ and the right hand side is equal to $\detof{f(x)I}=f(x)^n$.
+    And so $p_A(x)\cdot\detof{B(x)}=f(x)^n$ and therefore $p_A(x)$ divides $f(x)^n$.
+
+    Now notice that
+    \begin{multline*}
+        (xI-A)B(x) = \sum_{k=0}^{d-1}x^{k+1}B_k - \sum_{k=0}^{d-1}x^kAB_k = x^dB_{d-1} + \sum_{k=1}^{d-1} x^kB_{k-1} - \sum_{k=1}^{d-1}x^kAB_k - AB_0 =\\
+        x^dB_{d-1} + \sum_{k=1}^{d-1}x^k(B_{k-1}-AB_k) - AB_0 
+    \end{multline*}
+    And so if
+    \[ f(x)I = x^dI + \sum_{k=0}^{d-1}c_kx^kI \]
+    And so $(xI-A)B(x)=f(x)I$ if and only if $B_{d-1}=I$, $AB_0=-c_0I$ and
+    \[ B_{k-1} - AB_k = c_kI \]
+
+    Thus let us \emph{define} $B_{d-1}=I$ and then recursively starting from $k=d-1$ and working downward:
+    \[ B_{k-1} = c_kI + AB_k \]
+    Now we must verify that defining let this leads to $AB_0=-c_0I$.
+    Since $f(A)=0$, we have
+    \[ 0 = A^d + \sum_{k=0}^{d-1} c_kA^k = A^d + \sum_{k=1}^{d-1}A^k(B_{k-1}-AB_k) + c_0I \]
+    And since
+    \[ \sum_{k=1}^{d-1}A^k(B_{k-1}-AB_k) = \sum_{k=1}^{d-1}A^kB_{k-1} - \sum_{k=2}^{d}A^kB_{k-1} = AB_0 - A^dB_{d-1} = AB_0 - A^d \]
+    And therefore
+    \[ 0 = A^d + AB_0 - A^d + c_0I \implies AB_0 = -c_0I \]
+    as required.
+    \qed
+
+\end{proof}
+
+So now that we know for every linear operator $T$, there exists a zeroing polynomial (eg. its characteristic polynomial), we can ask what the minimum degree of such a zeroing polynomial is.
+
+\begin{defn*}
+
+    The \ppemph{minimal polynomial} of a linear operator $T$ is a non-zero monic polynomial $m_T(x)$, such that $m_T(T)=0$ and the degree of $m_T$ is minimal.
+    In other words if $p(x)$ is a polynomial such that $p(T)=0$ then $\degof{m_T(x)}\leq\degof{p(x)}$.
+
+\end{defn*}
+
+Now, notice that the minimal polynomial of a linear operator is unique.
+Suppose that $m_1$ and $m_2$ are two minimal polynomials of $T$, then let $m(x)=m_1(x)-m_2(x)$, then $m(T)=m_1(T)-m_2(T)=0$.
+But, since $m_1$ and $m_2$ are monic, $\degof{m}<\degof{m_1},\degof{m_2}$.
+And since the degree of $m_1$ and $m_2$ are minimal, this means that $m(x)=0$.
+Thus $m_1=m_2$, as required.
+Let us summarize this with the following proposition:
+
+\begin{prop*}
+
+    The minimal polynomial of a linear operator is unique.
+
+\end{prop*}
+
+By \ppref[proposition]{zeroRepLO}, since zeroing polynomials of linear operators are precisely the zeroing polynomials of its representations, if two matrices are similar, they must have the same
+minimal polynomial.
+This is because $m_A(B)=0$ and $m_B(A)=0$, and so $\degof{m_A(x)}\leq\degof{m_B(x)}$ since $m_B$ is a zeroing polynomial of $A$.
+And since $m_A$ is a zeroing polynomial of $B$, $\degof{m_B(x)}\leq\degof{m_A(x)}$.
+Thus $\degof{m_A(x)}=\degof{m_B(x)}$, and by the uniqueness of minimal polynomials, $m_A(x)=m_B(x)$.
+So we have proven
+
+\begin{prop*}
+
+    Two similar matrices have the same minimal polynomials.
+
+\end{prop*}
+
+\begin{prop*}[minimalDividesZeroing]
+
+    If $T$ is a linear operator and $p(x)$ is a polynomial such that $p(T)=0$, then $m_T(x)$ divides $p(x)$.
+
+\end{prop*}
+
+\begin{proof}
+
+    By polynomial division, we know there exists a polynomial $r(x)$ such that $\degof{r(x)}<\degof{m_T(x)}$ and
+    \[ p(x) = q(x)\cdot m_T(x) + r(x) \]
+    for some polynomial $q(x)$.
+    But then
+    \[ 0 = p(T) = q(T)\cdot m_T(T) + r(T) = r(T) \]
+    So $r(T)=0$, and since $\degof{r(x)}<\degof{m_T(x)}$, and $m_T$ is the minimal polynomial, $r(x)=0$.
+    Thus $p(x)=q(x)\cdot m_T(x)$, so $m_T(x)$ does indeed divide $p(x)$.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}
+
+    If $T$ is a linear operator, then its characteristic polynomial and minimal polynomial have the same irreducible factorization, up to multiplicity.
+    In other words if $p_T(x)=f_1^{k_1}\cdots f_t^{k_t}$ where $f_i$ are irreducible polynomials, then $m_T(x)=f_1^{\ell_1}\cdots f_t^{\ell_t}$ where $k_i\geq\ell_i$ for each relevant $i$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    We know that by \ppref[proposition]{minimalDividesZeroing}, $m_T(x)$ divides $p_T(x)$.
+    And by \ppref[theorem]{charDividesZeroing}, $p_T(x)$ divides $m_T(x)^n$.
+    So we have the chain
+    \[ m_T(x) \divides p_T(x) \divides m_T(x)^n \]
+    So an irreducible element in $m_T(x)$'s factorization must be in $p_T(x)$'s factorization (since $m_T(x)\divides p_T(x)$), and an irreducible element in $p_T(x)$'s factorization is in $m_T(x)$'s
+    factorization, and is therefore in $m_T(x)$'s.
+    Thus, $p_T(x)$ and $m_T(x)$ must have the same irreducible elements in their factorizations.
+
+    So if $p_T(x)=f_1^{k_1}\cdots f_t^{k_t}$ then $m_T(x)=f_1^{\ell_1}\cdots f_t^{\ell_t}$.
+    Now, since $m_T(x)\divides p_T(x)$, we must have that $\ell_i\leq k_i$ (this is since each $p_T(x)=q(x)m_T(x)$, and so the irreducible polynomials in $q(x)$'s factorization must be in $p_T(x)$'s, ie
+    must be a $f_i$.)
+    \qed
+
+\end{proof}
+

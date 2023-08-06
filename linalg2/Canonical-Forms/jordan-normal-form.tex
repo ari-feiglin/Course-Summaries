@@ -1,0 +1,457 @@
+Let us restrict our initial conversation for this subsection on nilpotent linear operators.
+
+\begin{defn*}
+
+    If $T$ is a nilpotent linear operator, its \ppemph{degree of nilpotency} is the minimum natural number $k$ such that $T^k=0$.
+
+\end{defn*}
+
+We can also define the degree of nilpotency of a nilpotent linear operator as the maximum length of one of its paths.
+Suppose $T$ is a linear operator of degree $k$, then every path must have a length $\leq k$, and since its degree is $k$, this means that $T^{k-1}\neq0$ so there exists a vector $v$ such that $P_v$ has a
+length of exactly $k$ and so $k$ is indeed the maximum length of $T$'s paths.
+
+\begin{thrm*}
+
+    Suppose $T$ is a nilpotent linear operator, then there exists a basis of disjoint unions of paths of $T$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let $k$ be $T$'s degree of nilpotency, then since $\imageof{T^2}\subseteq\imageof T$ and $\imageof{T^k}=\set0$, we have the following inclusion chain:
+    \[ \set 0 \subset \imageof{T^{k-1}} \subseteq \cdots \subseteq \imageof{T^2} \subseteq \imageof{T} \subseteq V \]
+    Notice that if $v\in\imageof{T^{k-1}}$ then there exists a $u\in V$ such that $v=T^{k-1}u$ and so $Tv=T^ku=0$ and so $\imageof{T^{k-1}}\subseteq\kerof T$.
+    Thus $\imageof{T^{k-1}}\cap\kerof T=\imageof{T^{k-1}}$ and so we get the following inclusion chain
+    \[ \set 0 \subset \imageof{T^{k-1}} \subseteq \imageof{T^{k-2}}\cap\kerof T \subseteq\cdots\subseteq \imageof{T^2}\cap\kerof T \subseteq \imageof T\cap\kerof T \subseteq \kerof T \]
+    Now, suppose that $B_1=(T^{k-1}v_1,\dots,T^{k-1}v_{t_1})$ defines a basis for $\imageof{T^{k-1}}$, we can extend this to a basis of $\imageof{T^{k-2}}$ and so on.
+    In other words, for each $2\leq i\leq k$ let
+    \[ B_i = B_{i-1}\cup(T^{k-i}v_{t_{i-1}+1},\dots,T^{k-i}v_{t_i}) \]
+    be a basis for $\imageof{T^{k-i}}\cap\kerof T$.
+    This means that $B_k$ is a basis for $\kerof T$.
+    Let us look at the structure of $B_k$:
+    \[ B_k = \left\{ \begin{gathered}
+    T^{k-1}v_1,\dots,T^{k-1}v_{t_1}, \\
+    T^{k-2}v_{t_1+1},\dots,T^{k-2}v_{t_2}, \\
+    \vdots \\
+    Tv_{t_{k-2}+1},\dots,Tv_{t_{k-1}}, \\
+    v_{t_{k-1}+1},\dots,v_{t_k}
+    \end{gathered} \right\} \]
+    If $T^{k-i}v_j\in B_k$ then since $T^{k-i}v_j\in B_k\subseteq\kerof T$, it is the end of a path, and so
+    \[ P_{v_j} = (T^{k-i}v_j,\dots,Tv_j,v_j) \]
+    is $v_j$'s path in $T$.
+
+    Let us define
+    \[ B = \bigdcup_{v\in B_k}P_v \]
+    this is a disjoint union of paths (it is disjoint as the ends of each $P_v$ are distinct, as they are distinct elements in $B$, and so they must be disjoint).
+    We can also look at $B$'s structure:
+    \[ \def\arraycolsep{4pt}
+    B = \left\{ \begin{array}{ccccccccccccc}
+        T^{k-1}v_1&\dots&T^{k-1}v_{t_1}, & T^{k-2}v_{t_1+1}&\dots&T^{k-2}v_{t_2}, & \cdots & Tv_{t_{k-2}+1}&\dots&Tv_{t_{k-1}} & v_{t_{k-1}+1}&\dots&v_{t_k} \\
+        T^{k-2}v_1&\dots&T^{k-2}v_{t_1}, & T^{k-3}v_{t_1+1}&\dots&T^{k-3}v_{t_2}, & \cdots & v_{t_{k-2}+1}&\dots&v_{t_{k-1}} \\
+        \vdots&&\vdots&\vdots&&\vdots&\iddots\\
+        Tv_1&\dots&Tv_{t_1}, & v_{t_1+1}&\dots&v_{t_2} \\
+        v_1&\dots&v_{t-1}\\
+    \end{array}\right\} \]
+    The rows are the paths.
+    We will prove that $B$ is a basis of $V$.
+
+    Suppose that there exists a linear combination of elements in $B$ which is equal to zero, then we have scalars such that
+    \[ \sum_{i=1}^{t_k}\sum_{j=1}^{\abs{E_{v_i}}}\alpha_{ij}T^{j-1}v_i = 0 \]
+    If we compose this sum with $T^{k-1}$, then for every $i>t_1$ we see that $T^{k-1}v_i=0$ and so this means that
+    \[ \sum_{i=1}^{t_1}\sum_{j=1}^{\abs{E_{v_i}}}\alpha_{ij}T^{k+j-2}v_i = 0 \]
+    Since the degree of nilpotency is $k$, this means that
+    \[ \sum_{i=1}^{t_1}\alpha_{i1}T^{k-1}v_i = 0 \]
+    And since $B_1=(T^{k-1}v_1,\dots,T^{k-1}v_{t_1})$ is linearly independent, $\alpha_{i1}=0$ for $1\leq i\leq t_1$.
+
+    Similarly taking $T^{k-2}$ gives
+    \[ \sum_{i=1}^{t_2}\sum_{j=1}^{\abs{E_{v_i}}}\alpha_{ij}T^{k+j-3}v_i = 0 \]
+    and this means that
+    \[ \sum_{i=1}^{t_2}\alpha_{i1}T^{k-2}v_i + \alpha_{i2}T^{k-1}v_i = \sum_{i=t_1+1}^{t_2}\alpha_{i1}T^{k-2}v_i + \sum_{i=1}^{t_2}\alpha_{i2}T^{k-1}v_i = 0 \]
+    For $t_1+1\leq i\leq t_2$, $T^{k-1}v_i=0$ since and so this sum is equal to
+    \[ \sum_{i=t_1+1}^{t_2}\alpha_{i1}T^{k-2}v_i + \sum_{i=1}^{t_1}\alpha_{i2}T^{k-1}v_i = 0 \]
+    which is a linear combination of vectors in $B_2$, and so $\alpha_{i1}=0$ for $1\leq i\leq t_2$ and $\alpha_{i2}=0$ for $1\leq i\leq t_1$.
+    Continuing inductively we get that all $\alpha_{ij}=0$ and so $B$ is indeed linearly independent.
+
+    To show that $B$ spans $V$, we must first prove a lemma.
+
+\end{proof}
+
+\begin{lemm*}
+
+    If $T^mv\in T^m\lspanof B$, then $T^{m-1}v\in T^{m-1}\lspanof B$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Since $T^mv\in T^m\lspanof B$, there exists a $u\in\lspanof B$ such that $T^mv=T^mu$ and so
+    \[ T^mv-T^mu = T(T^{m-1}v-T^{m-1}u) = 0 \]
+    and so $T^{m-1}v-T^{m-1}u\in\kerof T$.
+    But we know that $T^{m-1}v-T^{m-1}u\in\imageof{T^{m-1}}$, and so $T^{m-1}v-T^{m-1}u\in\imageof{T^{m-1}}\cap\kerof T$.
+    Thus $T^{m-1}v-T^{m-1}u\in\lspanof{B_{k-m+1}}$, and since
+    \[ B_{k-m+1} = (T^{k-1}v_1,\dots,T^{k-1}v_{t_1},\dots,T^{k-m+1}v_{t_{m-2}+1},\dots,T^{k-m+1}v_{t_{m-1}}) \]
+    and so $T^{m-1}v-T^{m-1}u$ is equal to a linear combination of vectors of the form $T^{m-1}w$ (for $w\in B$ since vectors in $B_{k-m+1}$ are of this form), and so
+    \[ T^{m-1}v - T^{m-1}u = \sum_{i=1}^n T^{m-1}w_i \implies T^{m-1} = T^{m-1}\parens{\sum_{i=1}^n w_i + u} \]
+    and so $T^{m-1}v\in T^{m-1}\lspanof B$, as $w_i,u\in B$.
+    \qed
+
+\end{proof}
+
+This means that if $T^mv\in T^m\lspanof B$ for any $m$, then inductively $v\in\lspanof B$.
+Let us return to the proof of the theorem.
+
+\begin{blankpp}
+
+    Suppose $v\in V$ then since $T^{k-1}v\in\imageof{T^{k-1}}$, and since $B_1=(T^{k-1}v_1,\dots,T^{k-2}v_{t_1})$ is a basis for $\imageof{T^{k-1}}$,
+    \[ \imageof{T^{k-1}} = T^{k-1}\lspanof{v_1,\dots,v_{t_1}} \]
+    and since each $v_i$ is in $B$, this means that $T^{k-1}v\in T^{k-1}\lspanof B$, and so $v\in\lspanof B$.
+    Thus $\lspanof B=V$.
+
+    Therefore $B$ is a basis of $V$, as required.
+    \qed
+
+\end{blankpp}
+
+Notice that if $T$ is a nilpotent linear operator and $P_v=(T^{k-1}v,\dots,Tv,v)$ is a path, then let $U=\lspanof{P_v}$.
+Since $U$ is an invariant subspace, we can focus on $T_U$.
+And since $P_v$ is a basis for $U$ (it is linear independent, as we showed, and it spans $U$), we can discuss the matrix representation $[T_U]_{P_v}$.
+Since $T(T^{k-i}v)=T^{k-i+1}v$, we have that
+\[ [T_U]_{P_v} = \pmat{0 & 1 & 0 & \cdots & 0 \\ 0 & 0 & 1 & \cdots & 0 \\ & & & \ddots & \\ 0 & 0 & 0 & \cdots & 1 \\ 0 & 0 & 0 & \cdots & 0} \]
+And if $T$ is not nilpotent, but has an eigenvalue $\lambda$, then $T-\lambda I$ is nilpotent when restricted to $K_\lambda$ (since it is the kernel of $(T-\lambda I)^n$), and so if $P_v$ is a path in
+$T-\lambda I$, and we restrict $T-\lambda I$ to $U$, then we get as before
+\[ [(T-\lambda I)_U]_{P_v} = [T_U]_{P_v} - \lambda[I]_{P_v} = \pmat{0 & 1 & 0 & \cdots & 0 \\ 0 & 0 & 1 & \cdots & 0 \\ & & & \ddots & \\ 0 & 0 & 0 & \cdots & 1 \\ 0 & 0 & 0 & \cdots & 0} \]
+which then means that
+\[ [T_U]_{P_v} = \pmat{\lambda & 1 & 0 & \cdots & 0 \\ 0 & \lambda & 1 & \cdots & 0 \\ & & & \ddots & \\ 0 & 0 & 0 & \cdots & 1 \\ 0 & 0 & 0 & \cdots & \lambda} \]
+This is a special type matrix,
+
+\begin{defn*}
+
+    A \ppemph{Jordan block} is a matrix of the form
+    \[ J_n(\lambda) = \pmat{\lambda & 1 & 0 & \cdots & 0 \\ 0 & \lambda & 1 & \cdots & 0 \\ & & & \ddots & \\ 0 & 0 & 0 & \cdots & 1 \\ 0 & 0 & 0 & \cdots & \lambda} \]
+    where $J_n(\lambda)\in M_n(\bF)$.
+    Explicitly,
+    \[ [J_n(\lambda)]_{ij} = \begin{cases} \lambda & i=j \\ 1 & j = i+1 \\ 0 & \text{else} \end{cases} \]
+
+\end{defn*}
+
+Jordan blocks have interesting properties, for example if $n>1$ then $J_n(\lambda)$ is not diagonalizable.
+This is since its characteristic polynomial is
+\[ p_{J_n(\lambda)}(x) = (x-\lambda)^n \]
+as it is an upper triangle matrix, and so its only eigenvalue is $\lambda$.
+But $V_\lambda$ is the nullspace of $J_n(0)$ which has a dimension of one (since its rank is $n-1$).
+So $\mu_\lambda=n$ but $\gamma_\lambda=1$, and so when $n>1$ we have that $\mu_\lambda\neq\gamma_\lambda$ and therefore $J_n(\lambda)$ is not diagonalizable.
+
+Now, suppose that $T$ is a linear operator whose characteristic polynomial is fully factorizable.
+By \ppref{spectralFactorizationThrm} this means that
+\[ V = \bigoplus_{\lambda\in\specof T}K_\lambda \]
+And since for each $\lambda$, $T_{K_\lambda}-\lambda I$ is nilpotent, there exists a basis of paths $B_\lambda = \bigdcup_{i=1}^{n_\lambda}P_{v_i}$.
+Recall that when we defined $U=\lspanof{P_v}$, $[T_U]_{P_v}=J_{\abs{P_v}}(\lambda)$, so let us define $n_{v_i}=\abs{P_{v_i}}$, and so
+\[ [T_{K_\lambda}]_{B_\lambda} = \bigoplus_{i=1}^{n_\lambda}J_{n_{v_i}}(\lambda) \]
+And if we define $B=\bigdcup_{\lambda\in\specof T}B_\lambda$, then
+\[ [T]_B = \bigoplus_{\lambda\in\specof T}\bigoplus_{i=1}^{n_\lambda} J_{n_{v_i}}(\lambda) \]
+This is also a special form of matrix,
+
+\begin{defn*}
+
+    A \ppemph{Jordan Normal Form} of a linear operator is a matrix representation of the form
+    \[ \bigoplus_{i=1}^m J_{n_i}(\lambda_i) = \parens{\!\!\!\begin{array}{ccc} J_{n_1}(\lambda_1) \\ & \ddots \\ & & J_{n_m}(\lambda_m)\end{array}\!\!\!} \]
+
+\end{defn*}
+
+So we have proven the following important proposition:
+
+\begin{prop*}
+
+    If $T$ is a linear operator whose characteristic polynomial is fully factorizable, then $T$ has a Jordan normal form.
+
+\end{prop*}
+
+This is a very important result, but we have not finished yet.
+Because what makes this result even more significant is that (in a sense), then Jordan normal form of a linear operator is unique.
+That is, a linear operator cannot have two Jordan normal forms.
+This means that the Jordan normal form of a linear operator encodes a lot of important information about the linear operator.
+We need a few more tools in order to prove uniqueness though.
+
+Now, suppose $T$ is a nilpotent linear operator and notice that if $B$ is a basis such that
+\[ [T]_B = \bigoplus_{i=1}^m J_{n_i}(0) \]
+(The values on the diagonal, which are the $\lambda$s in $J_n(\lambda)$, must be zero as $T$ is nilpotent)
+then if
+\[ B = (v_1,\dots,v_{n_1},v_{n_1+1},\dots,v_{n_2},\dots,v_{n_{m-1}+1},\dots,v_{n_m}) \]
+And so $Tv_1=0$, $Tv_2=v_1$ and so in general
+\[ Tv_i = v_{i-1},\quad Tv_{n_i+1} = 0 \]
+where $n_0=0$.
+Thus $B$ corresponds to the basis of paths
+\[ B = \bigdcup_{i=1}^m P_{v_{n_i}} \]
+So we have shown
+
+\begin{prop*}
+
+    Every basis which induces a Jordan normal form in a nilpotent linear operator corresponds to a basis of paths.
+
+\end{prop*}
+
+\begin{lemm*}
+
+    Let $P$ be a path of length $m$ and let $U=\lspanof P$, then
+    \[ \dimof{\kerof{T_U}\cap\imageof{T_U^j}} = \begin{cases} 0 & j\geq m \\ 1 & j<m \end{cases} \]
+
+\end{lemm*}
+
+\begin{proof}
+
+    If $j\geq m$ then since for every $v\in P$, $T^mv=0$ this means that $T_U^j(U)=0$ and so $\imageof{T_U^j}=\set0$, and thus the dimension is zero as required.
+    And if $j<m$ and suppose $P$ is $v$'s path, then notice how $T_U^{m-1}v,\dots,T_Uv\in\imageof{T_U}$ and therefore $\dimof{T_U}\geq m-1$.
+    By the rank-nullity theorem
+    \[ \dim\kerof{T_U} + \dim\imageof{T_U} = \dimof U = m \implies \dim\kerof{T_U} = m - \dim\imageof{T_U} \leq 1 \]
+    Thus $\dimof{\kerof{T_U}\cap\imageof{T_U^j}}\leq1$.
+    Now, $T^{m-1}v\in\kerof{T_U}$ and since $j\leq m-1$, $T^{m-1}v$ is in $\imageof{T_U^j}$, and since $T^{m-1}v\neq0$ this means that $\kerof{T_U}\cap\imageof{T_U^j}$ is non-trivial and therefore has a
+    dimension larger than zero.
+    So
+    \[ \dimof{\kerof{T_U}\cap\imageof{T_U^j}} = 1 \qed \]
+
+\end{proof}
+
+\begin{lemm*}
+
+    Let $T$ be a nilpotent linear operator of degree $k$.
+    Let $B$ be a basis of paths of $T$, and let $1\leq j\leq k$.
+    Then the number of paths whose length is strictly greater than $j$ is equal $\dimof{\kerof T\cap\imageof{T^j}}$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    For each path $P_{v_i}$ in $B$, let $V_i=\lspanof{P_{v_i}}$ and let $T_i=T_{V_i}$.
+    And suppose that
+    \[ B = P_{v_1}\dcup\cdots\dcup P_{v_t} \]
+    Then
+    \[ V = V_1\oplus\cdots\oplus V_t \]
+    And since $V_i$ are disjoint and invariant under $T$ and therefore $T^j$, this means that
+    \[ \imageof{T^j} = \imageof{T_1^j}\oplus\cdots\oplus\imageof{T_t^j},\qquad \kerof T = \kerof{T_1}\oplus\cdots\oplus\kerof{T_t} \]
+    And since $\imageof{T_i^j}$ and $\kerof{T_i}$ are subspaces of $V_i$ which are disjoint, this means that
+    \[ \imageof{T^j}\cap\kerof{T} = \bigoplus_{i=1}^t \imageof{T_i^j}\cap\kerof{T_i} \]
+    Therefore
+    \[ \dimof{\kerof R\cap\imageof{T^j}} = \sum_{i=1}^t\dimof{\kerof{T_i}\cap\imageof{T_i^j}} \]
+    By the previous lemma, $\dimof{\kerof{T_i}\cap\imageof{T_i^j}}=1$ when $j$ is less than the length of $P_{v_i}$ and zero otherwise.
+    And so this is equal to the number of paths in $B$ whose length is greater than $j$, as required.
+    \qed
+
+\end{proof}
+
+This means that we can determine the number of paths of a specific length in a basis of paths.
+Specifically, if $T$ is a linear operator and $B$ a basis of paths, then the number of paths in $B$ whose length is precisely equal to $j$ is equal to the number of paths whose length is strictly greater
+than $j-1$ minus the number of paths whose length is strictly greater than $j$.
+So by the above lemma, the number of paths whose length is precisely $j$ is equal to
+\[ \dimof{\kerof T\cap\imageof{T^{j-1}}} - \dimof{\kerof T\cap\imageof{T^j}} \]
+This does not rely on anything specific of $B$, and so for any two bases of paths of $T$, for each length $j$, both bases must have the same number of paths of length $j$.
+
+\begin{thrm*}
+
+    Suppose $T$ is a nilpotent linear operator, then it has a Jordan normal form which is unique up to the order of the Jordan blocks.
+
+\end{thrm*}
+
+\begin{proof}
+
+    As $T$'s characteristic polynomial is of the form $x^n$, we have already shown existence (as we showed that linear operators whose characteristic polynomial is fully factorizable have a Jordan normal
+    form).
+    All that remains is to show uniqueness.
+
+    Suppose that $[T]_{B_1}$ and $[T]_{B_2}$ are two Jordan normal forms of $T$.
+    Recall that we showed that the bases which induces Jordan normal forms in $T$ are bases of paths, and so we know that $B_1$ and $B_2$ must have the same number of paths of a specific length.
+    The number of Jordan blocks of the form $J_m(0)$ in $[T]_{B_i}$ for some basis of paths is equal to the number of paths in $B_i$ of length $m$.
+    For every $m$, both $B_1$ and $B_2$ have the same number of paths of length $m$, and so they have the same number of Jordan blocks of the form $J_m(0)$.
+    And so $[T]_{B_2}$ is simply a reordering of the Jordan blocks in $[T]_{B_1}$.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}[jnf,The\ Jordan\ Normal\ Form]
+
+    If $T$ is a linear operator, then $T$ has a Jordan normal form if and only if $T$'s characteristic polynomial is fully factorizable.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Notice that the characteristic polynomial of a Jordan normal form is fully factorizable, so if $T$ has a Jordan normal form, its characteristic polynomial is fully factorizable as required.
+    Now, if $p_T(x)$ is fully factorizable, we showed that $T$ has a Jordan normal form.
+
+    Now suppose that $B$ induces a Jordan normal form of $T$.
+    Then we claim that $B$ is a basis of generalized eigenvectors.
+    Suppose that
+    \[ [T]_B = \bigoplus_{i=1}^m J_{n_i}(\lambda_i) \]
+    and
+    \[ B = (v_1,\dots,v_{n_1},v_{n_1+1},\dots,v_{n_2},\dots,v_{n_{m-1}+1},\dots,v_{n_m}) \]
+    Then we have that
+    \[ Tv_{n_i+1} = \lambda_iv_{n_i+1},\quad Tv_i = v_{i-1} + \lambda v_i \]
+    And so $v_{n_i+1}$ is an eigenvector and for $1\leq k<n_{i+1}-n_i$,
+    \[ (T - \lambda I)v_{n_i+k} = v_{n_i-1} \]
+    And this means that
+    \[ (T-\lambda I)^kv_{n_i+k} = v_{n_i} \implies (T-\lambda I)^{k+1}v_{n_i+k} = 0 \]
+    And so each vector in $B$ is a generalized eigenvector, as required.
+
+    For each $\lambda\in\specof T$, let $B_\lambda$ be the set of vectors in $B$ which are also in $K_\lambda$.
+    So
+    \[ B = \bigdcup_{\lambda\in\specof T}B_\lambda \]
+    This is necessarily a basis for $K_\lambda$ (since $B$ is a basis for $V$).
+    And so we have that
+    \[ [T]_B \sim \bigoplus_{\lambda\in\specof T}[T_{K_\lambda}]_{B_\lambda} \]
+    (We can only say that $[T]_B$ is similar, as we may have reordered the elements in $B$ when organizing them into $B_\lambda$s.)
+
+    Now, $[T_{K_\lambda}]_{B_\lambda}$ is a Jordan normal form of the form
+    \[ [T_{K_\lambda}]_{B_\lambda} = \bigoplus_{i=1}^m J_{n_i}(\lambda) \]
+    And so
+    \[ [T_{K_\lambda}-\lambda I]_{B_\lambda} = \bigoplus_{i=1}^m J_{n_i}(0) \]
+    And so the number of blocks of the form $J_{n_i}(\lambda)$ in $T_{K_\lambda}$ is equal to the number of blocks of the form $J_{n_i}(0)$ in $T_{K_\lambda}-\lambda I$, which is independent of $B_\lambda$,
+    as $T_{K_\lambda}-\lambda I$ is nilpotent.
+    Thus for any two bases $B$, we'd get the same number of Jordan blocks of each eigenvalue and size.
+    So the Jordan normal form is indeed unique.
+    \qed
+
+\end{proof}
+
+Note that we can determine if two matrices are similar by computing their Jordan normal form.
+If their Jordan normal forms are equal, then since they are similar to their Jordan normal forms, they are similar.
+And if they are similar, then since Jordan normal forms are unique, the computed Jordan normal forms must be equal (up to rearranging the blocks).
+
+\begin{note}
+
+    Take a look at the proof above, notice how for the basis $B$ to induce $T$'s Jordan normal form, we had the equalities
+    \[ (T-\lambda I)v_{n_i+k+1} = v_{n_i+k},\quad Tv_{n_i} = \lambda v_{n_i} \]
+    This gives us an algorithm for finding the Jordan normal form of a matrix.
+    First we find its eigenvalues and eigenvectors, and then if $v_1$ is an eigenvector of eigenvalue $\lambda$, we solve
+    \[ (T-\lambda I)v_2 = v_1 \]
+    and then
+    \[ (T-\lambda I)v_3 = v_2 \]
+    and so on.
+    In the end we will get to a point where there are no more solutions, this is because $v_1$ is the end of some paths, which must be linearly independent (and thus have a length of at most $n$).
+    Continuing this process on each eigenvector gives us a basis of paths which induces the Jordan normal form of $T$.
+
+\end{note}
+
+\begin{note}
+
+    In the case of matrices, recall that if $A$ is a matrix and $T_Av=Av$ is its standard linear operator over $\bF^n$, then if $B$ is a basis which induces $T_A$'s Jordan normal form then
+    \[ [T_A]_B = [I]^S_B[T_A]_S[I]^B_S = [I]^S_B\cdot A\cdot [I]^B_S\]
+    where $S$ is the standard basis of $\bF^n$.
+    Thus $P=[I]^B_S$ is the matrix which induces $A$'s Jordan normal form, ie $P^{-1}AP$ is $A$'s Jordan normal form.
+
+\end{note}
+
+As said before, Jordan normal forms encode a lot of information about the linear operator.
+
+\begin{thrm*}
+
+    Suppose $T$ is a linear operator whose characteristic polynomial fully factorizes, then
+    \benum
+        \item the number of Jordan blocks with $\lambda$ on their diagonals in $T$'s Jordan normal form is equal to $\gamma_\lambda$.
+        \item the sum of the sizes of the Jordan blocks with $\lambda$ on their diagonals in $T$'s Jordan normal form is equal to $\mu_\lambda$.
+        \item the maximum size of a Jordan block with $\lambda$ on its diahonal in $T$'s Jordan normal form is equal to $\lambda$'s multiplicity in $T$'s minimal polynomial.
+    \eenum
+
+\end{thrm*}
+
+\begin{proof}
+
+    Suppose $T$'s Jordan normal form is
+    \[ \bigoplus_{\lambda\in\specof T}\bigoplus_{i=1}^{n_\lambda}J_{t_{\lambda,i}}(\lambda) \]
+
+    \benum
+        \item Let $\xi$ be an eigenvalue of $T$.
+        We must show that $n_\xi=\gamma_\xi$.
+        This is because
+        \[ V_\xi = \kerof{\bigoplus_{\lambda\in\specof T}\bigoplus_{i=1}^{n_\lambda}J_{t_{\lambda,i}}(\lambda-\xi)} \]
+        And therefore
+        \[ \dimof{V_\xi} = \sum_{\lambda\in\specof T}\sum_{i=1}^{n_\lambda}\dim\kerof{J_{t_{\lambda,i}}(\lambda-\xi)} \]
+        For $\lambda\neq\xi$, $J_{t_{\lambda,i}}(\lambda-\xi)$ has full rank and is therefore invertible.
+        And when $\lambda=\xi$, $J_{t_{\lambda,i}}(\lambda-\xi)=J_{t_{\xi,i}}(0)$ has a rank of $t_{\lambda,i}-1$ and therefore the dimension of its kernel is one.
+        Therefore
+        \[ \gamma_\xi = \dimof{V_\xi} = \sum_{i=1}^{n_\xi}1 = n_\xi \]
+        as required.
+
+        \item We know that
+        \[ p_T(x) = \prod_{\lambda\in\specof T}\prod_{i=1}^{n_\lambda}(x-\lambda)^{t_{\lambda,i}} \]
+        as the characteristic polynomial of a Jordan block $J_n(\lambda)$ is $(x-\lambda)^n$.
+        Thus
+        \[ p_T(x) = \prod_{\lambda\in\specof T}(x-\lambda)^{\sum_{i=1}^{n_\lambda}t_{\lambda,i}} \]
+        And so
+        \[ \mu_\lambda = \sum_{i=1}^{n_\lambda}t_{\lambda,i} \]
+        and as $t_{\lambda,i}$ is the size of the $i$th Jordan block with $\lambda$'s on its diagonals, we have the result we needed.
+
+        \item Let us first show that if $\lambda\neq\mu$ and if $A=J_n(\lambda)\oplus J_m(\mu)$ then $m_A(x)=(x-\lambda)^n(x-\mu)^m$ (the minimal polynomial of $J_n(\lambda)$ is $(x-\lambda)^n$, which is
+        also its characteristic polynomial).
+        This is a zeroing polynomial as it is equal to $p_A(x)$ (since the characteristic polynomial of the direct sum of matrices is the product of their characteristic polynomials).
+        And notice that if either $n'<n$ or $m'<m$, then if
+        \[ p(x) = (x-\lambda)^{n'}(x-\mu)^{m'} \]
+        Suppose $n'<n$, then
+        \[ p(A) = (J_n(\lambda)-\lambda I)^{n'}(J_n(\lambda)-\mu I)^{m'}\oplus(J_m(\mu)-\lambda I)^{n'}(J_m(\mu)-\mu)^{m'} \]
+        Now, $(J_n(\lambda)-\lambda I)^{n'}(J_n(\lambda)-\mu I)^{m'}$ cannot be zero, as $(x-\lambda)^{n'}(x-\mu)^{m'}$ does not divide $J_n(\lambda)$'s minimal polynomial.
+        And so $p(A)\neq0$, so $m_A(x)$ is indeed $(x-\lambda)^n(x-\mu)^m$.
+
+        And if $m\leq n$ then $A=J_n(\lambda)\oplus J_m(\lambda)$ has a minimal polynomial of $(x-\lambda)^n$.
+        This is a zeroing polynomial as it is divisible by both $J_n(\lambda)$'s and $J_n(\lambda)$'s minimal polynomials.
+        And if $n'<n$, let $p(x)=(x-\lambda)^{n'}$ then
+        \[ p(A) = (J_n(\lambda)-\lambda I)^{n'}\oplus(J_m(\lambda)-\lambda I)^{n'} \]
+        and since $(J_n(\lambda)-\lambda I)^{n'}\neq0$, $p(A)\neq0$.
+        So $(x-\lambda)^n$ is indeed $A$'s minimal polynomial.
+
+        Putting this all together, we get that if we define $m_\lambda=\maxof{t_{\lambda,i}}[1\leq i\leq n_\lambda]$, then $T$'s minimal polynomial is
+        \[ m_T(x) = \prod_{\lambda\in\specof T}(x-\lambda)^{m_\lambda} \]
+        as required.
+        \qed
+    \eenum
+
+\end{proof}
+
+Notice that diagonal matrices are Jordan normal forms, just where the Jordan blocks all have a size of one.
+
+\begin{thrm*}
+
+    A linear operator $T$ is diagonalizable if and only if its minimal polynomial is of the form
+    \[ m_T(x) = \prod_{\lambda\in\specof T}(x-\lambda) \]
+
+\end{thrm*}
+
+\begin{proof}
+
+    By the previous theorem, multiplicity of $\lambda$ in $m_T(x)$ is equal to the size of $\lambda$'s largest Jordan block in $T$'s Jordan normal form.
+    This is one if and only if all of $\lambda$'s Jordan blocks are of size one, and this is true for all $\lambda\in\specof T$ if and only if $T$'s Jordan normal form consists only of Jordan blocks of size
+    one, which is just a diagonal matrix.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    For $n<7$, the Jordan normal form of a linear operator is uniquely determined by its minimal polynomial, characteristic polynomial, and its geometric multiplicities.
+
+\end{prop*}
+
+\begin{proof}
+
+    The minimum natural number which has two distinct ways of writing it as the sum of the same number of natural numbers is $4$:
+    \[ 4 = 2 + 2 = 3 + 1 \]
+    Every number smaller than $4$ cannot be written this way ($3$ must be written as $2+1$ or $1+1+1$).
+
+    Now, in order for us to determine the size of the blocks of $\lambda$ in a linear operator, we must be able to figure out the solution to the problem where we are given the maximum size of a block,
+    the sum of the sizes, and the number of blocks.
+    This is equivalent to determining a list of numbers when given the number of numbers, the largest number, and the sum of the numbers.
+    The minimum number which can be written in two different sums is $4$, and so the minimum number which can be written in two different sums where the maximum number is the same is $7$:
+    \[ 7 = 3 + 2 + 2 = 3 + 3 + 1 \]
+    (we take $4$ and add $3$, which is the maximum number used).
+    But for all numbers smaller than seven, we can determined the numbers in the list.
+    \qed
+
+\end{proof}
+
+The proof above gives matrices which do share minimal and characteristic polynomials and geometric multiplicities, but are not similar.
+These are
+\[ A = J_3(0)\oplus J_2(0)\oplus J_2(0),\quad B = J_3(0)\oplus J_3(0)\oplus J_1(0) \]
+these are not similar as they are distinct Jordan normal forms.
+But we know that both their characteristic polynomials are $x^7$ (the total size of the Jordan blocks), their minimal polynomials are $x^3$ (the maximum size of a Jordan block), and the geometric
+multiplicity of $0$ in both matrices is $3$ (the number of Jordan blocks).
+
+So the bound on $n<7$ is a strict bound.
+But when $n$ is less than seven, this gives us a simpler method of computing the Jordan normal form (no need to do a lot of row reduction).
+
