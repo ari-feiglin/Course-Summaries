@@ -1,0 +1,616 @@
+\begin{defn*}
+
+    A \ppemph{chart} for a topological space $M$ is a homeomorphism from an open set $\mU\subseteq M$ to an open subset of $\bR^n$.
+
+\end{defn*}
+
+\begin{defn*}
+
+    A \ppemph{surface} is a set $M\subseteq\bR^3$ such that for every $p\in M$ there exists a chart $\sigma_p\colon\mU\longto A$ where
+    \benum
+        \item $\mU$ is an open subset of $\bR^2$,
+        \item $A\subseteq M$,
+        \item $p\in A$
+    \eenum
+
+    A surface is \ppemph{regular} if for every $p\in M$, $\sigma_p\colon\mU\longto A$ is a \ppemph{diffeomorphism}, that is $J_{\sigma_p}$ has rank two (note that $J_{\sigma_p}$ is a $3\times2$ matrix).
+
+\end{defn*}
+
+\begin{defn*}
+
+    Suppose $M$ is a regular surface and $p\in M$, then we define the \ppemph{tangent space} of $M$ at $p$ to be
+    \[ T_pM = \set{\gamma'(0)}[\gamma\colon(-\epsilon,\epsilon)\longto M\text{ is a regular curve, and }\gamma(0)=p] \]
+
+\end{defn*}
+
+\begin{prop*}
+
+    If $M$ is a regular surface, and $p\in M$, then let $\sigma(u,v)\colon\mU\to M$ be a regular chart, and $p$ is in its image.
+    Suppose that $\sigma(q)=p$, then $T_pM=\lspanof{\sigma_1,\sigma_2}$ where
+    \[ \sigma_1 = \frac{d\sigma}{du}(q),\quad \sigma_2 = \frac{d\sigma}{dv}(q) \]
+
+\end{prop*}
+
+\begin{proof}
+
+    First we will prove that $\sigma_1,\sigma_2\in T_pM$.
+    Suppose that $q=(u_0,v_0)$, then let us define the curve
+    \[ \beta_1(t) = \pmat{u_0+t\\v_0} \]
+    and
+    \[ \gamma_1(t) = \sigma\circ\beta_1(t) = \sigma(u_0+t,v_0) \]
+    Now,
+    \[ \gamma_1' = \sigma_u(\beta_1)\beta_{1u} + \sigma_v(\beta_1)\beta_{1v} \]
+    And we know that $\beta_{1u}=1$ and $\beta_{1v}=0$ so we have that
+    \[ \gamma_1'(t) = \sigma_u(u_0+t,v_0) \]
+    And therefore $\gamma_1'(0)=\sigma_u(u_0,v_0)=\sigma_1$.
+    Therefore $\sigma_1\in T_pM$.
+    Similarly, $\sigma_2\in T_pM$.
+
+    Now, let $A$ and $B$ be constants, we will prove that $w=A\sigma_1+B\sigma_2$ is in $T_pM$.
+    Let us define
+    \[ \gamma(t) = \sigma(u_0+At, v_0+Bt) \]
+    Then
+    \[ \gamma'(t) = \sigma_u(u_0+At, v_0+Bt)\cdot A + \sigma_v(u_0+At,v_0+Bt)\cdot B \]
+    and therefore
+    \[ \gamma'(0) = \sigma_u(u_0,v_0)A + \sigma_v(u_0,v_0)B = \sigma_1A + \sigma_2B = w \]
+    and so $w\in T_pM$ as required.
+    Therefore
+    \[ \lspanof{\sigma_1,\sigma_2}\subseteq T_pM \]
+
+    Now suppose that $\gamma'(0)\in T_pM$.
+    Let us define the curve
+    \[ \beta(t) = \sigma^{-1}\circ\gamma(t) \]
+    Notice that
+    \[ \beta(0)=\sigma^{-1}(\gamma(0)) = \sigma^{-1}(p) = q \]
+    Since $\sigma$ is a diffeomorphism, its inverse is differentiable.
+    And since $\gamma$ is differentiable, we have that $\beta$ is differentiable.
+    Since $\gamma=\sigma\circ\beta$, we have that
+    \[ \gamma' = \sigma_u(\beta)\cdot\beta_u + \sigma_v(\beta)\cdot\beta_v \]
+    And so
+    \[ \gamma'(0) = \sigma_u(\beta(0))\beta_u(0) + \sigma_v(\beta(0))\beta_v(0) \]
+    Since $\sigma_u(\beta(0))=\sigma_u(q)=\sigma_1$ and similarly $\sigma_v(\beta(0))=\sigma_2$, let us define $A=\beta_u(0)$ and $B=\beta_v(0)$, and so we have that
+    \[ \gamma'(0) = A\sigma_1 + B\sigma_2 \]
+    and therefore $T_pM\subseteq\lspanof{\sigma_1,\sigma_2}$.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    Suppose $M$ is a regular surface, and let $p\in M$.
+    Then there exists a chart $\sigma_p\colon\mU\longto M$, where $\sigma_p(q)=p$.
+    We define its \ppemph{differential} to be a function
+    \[ d\sigma_p\colon T_q\mU\longto T_pM \]
+    Since $\mU\subseteq\bR^2$, $T_q\mU$ is a line in $\bR^2$, and so we define $d\sigma_p$ by its Jacobian,
+    \[ d\sigma_p\pmat{\delta u\\\delta v} = J_{\sigma_p}(q)\pmat{\delta u\\\delta v} = \sigma_1\delta u + \sigma_2\delta v \]
+    where $\sigma_1=\frac{d\sigma_p}{du}(q)$ and $\sigma_2=\frac{d\sigma_p}{dv}(q)$.
+
+    Since $J_{\sigma_p}(q)$ has rank two, as $M$ is regular, $d\sigma_p$ is invertible.
+
+\end{defn*}
+
+
+\begin{exam*}
+
+    Suppose $f$ is a function $X\to\bR$, where $X\subseteq\bR^2$.
+    Then let us define the surface
+    \[ M = \set{(x,y,f(x,y))}[x,y\in X] \]
+    Then let us define the chart
+    \[ \sigma\colon\mU\longto M,\qquad \sigma(u,v) = (u,v,f(u,v)) \]
+    Then
+    \[ \sigma_1 = \pmat{1\\0\\f_u},\quad \sigma_2 = \pmat{0\\1\\f_v} \]
+    These are linearly independent and so $J_\sigma$ does indeed have a rank of two, therefore $\sigma$ is indeed a regular chart.
+    Thus $M$ is regular.
+
+    And we can look at $M$'s tangent space:
+    \[ T_pM = \lspanof{\sigma_1,\sigma_2} = \set{\pmat{\delta u\\\delta v\\f_u\delta u+f_v\delta v}}[\delta u,\delta v\in\bR] \]
+
+\end{exam*}
+
+Suppose that $\gamma\colon[a,b]\longto\bR^3$ is a curve such that $\gamma([a,b])$ is contained within a surface $M$.
+Let us define $\beta\colon[a,b]\longto\bR^2$ by
+\[ \beta = \sigma^{-1}\circ\gamma \implies \gamma = \sigma\circ\beta \]
+Then the arclength of $\gamma$ is
+\[ L = \int_a^b \norm{\gamma'} = \int_a^b \norm{\sigma_u(\beta)\cdot\beta'_1 + \sigma_v(\beta)\cdot\beta'_2} \]
+Now recall that, as this is a norm generated by an inner product,
+\[ \norm{v+u} = \sqrt{\iprod{v,v} + 2\iprod{v,u} + \iprod{u,u}} \]
+and thus
+\[ L = \int_a^b\sqrt{(\beta'_1)^2\iprod{\sigma_u(\beta),\sigma_u(\beta)} + 2\iprod{\sigma_u,\sigma_v}\beta'_1\beta'_2 + (\beta'_2)^2\iprod{\sigma_v(\beta),\sigma_v(\beta)}} \]
+Let us define $g$ to be a matrix
+\[ g_{11} = \iprod{\sigma_u,\sigma_u},\quad g_{12} = g_{21} = \iprod{\sigma_u,\sigma_v},\quad g_{22} = \iprod{\sigma_v,\sigma_v} \]
+And thus
+\[ L = \int_a^b \parens{\pmat{\beta'_1 & \beta'_2}\pmat{g_{11} & g_{12} \\ g_{21} & g_{22}}\pmat{\beta'_1 \\ \beta'_2}}^{1/2} \]
+Notice that
+\[ g = \pmat{\hort & \sigma_u^\top & \hort \\ \hort & \sigma_v^\top & \hort}\pmat{\vert & \vert \\ \sigma_u & \sigma_v \\ \vert & \vert} = J_\sigma^\top J_\sigma \]
+
+\begin{prop*}
+
+    Suppose that $\sigma(q)=p$, then if $w,r\in T_q\mU$ then
+    \[ w^\top gr = \iprod{d\sigma_p(w),d\sigma_p(r)} \]
+    where $g$ is evaluated at $\sigma^{-1}(p)=q$.
+
+\end{prop*}
+
+\begin{proof}
+
+    We know that
+    \[ w^\top gr = \iprod{\sigma_u,\sigma_u}w_1r_2 + \iprod{\sigma_u,\sigma_v}w_1r_2 + \iprod{\sigma_u,\sigma_v}w_2r_1 + \iprod{\sigma_v,\sigma_v}w_2r_2 =
+    \iprod{\sigma_uw_1 + \sigma_vw_2,\,\sigma_ur_1+\sigma_vr_2} \]
+    Now, recall that since
+    \[ J_\sigma = \pmat{\vert & \vert \\ \sigma_u & \sigma_v \\ \vert & \vert} \]
+    and so this is equal to
+    \[ w^\top gr = \iprod{J_\sigma(q) w,J_\sigma(q) r} = \iprod{d\sigma_p(w),d\sigma_p(r)} \qed \]
+
+\end{proof}
+
+And so $g$ defines an inner product on $T_q\mU$, by
+\[ \iprod{w,r}_g = w^\top gr = \iprod{d\sigma_p(w),d\sigma_p(r)} \]
+This is an inner product as the inner product on $\bR^3$ and $d\sigma_p$ is an invertible linear transform.
+
+$g$ is called the \emph{metric}, and $\iprod{\cdot,\cdot}_g$ is called the \emph{pullback} inner product of $\iprod{\cdot,\cdot}_{\bR^3}$.
+
+Now, recall that we define the angle between two vectors by
+\[ \theta = \cos^{-1}\parens{\frac{\iprod{v,u}}{\norm v\norm u}} \]
+And so using the pullback inner product, if we have two tangent vectors $\gamma'(0)$ and $\delta'(0)$, then let
+\[ \beta = \sigma^{-1}\circ\gamma,\quad \gamma = \sigma^{-1}\circ\delta \]
+This means that
+\[ \gamma'(t) = J_\sigma(\beta(t))\cdot\beta'(t) \]
+and since $\beta(0)=\sigma^{-1}(\gamma(0))=\sigma^{-1}(p)$, so
+\[ \gamma'(0) = J_\sigma(\sigma^{-1}(p))\beta'(0) = d\sigma(\beta'(0)) \]
+And therefore
+\[ \iprod{\gamma'(0),\delta'(0)} = \iprod{d\sigma(\beta'(0)),d\sigma(\lambda'(0))} = \iprod{\beta'(0),\lambda'(0)}_g \]
+
+So the angle between $\gamma'(0)$ and $\delta'(0)$ is
+\[ \theta = \cos^{-1}\parens{\frac{\iprod{\gamma'(0),\delta'(0)}}{\norm{\gamma'(0)}\norm{\delta'(0)}}} = \cos^{-1}\parens{\frac{\iprod{\beta'(0),\lambda'(0)}_g}{\norm{\beta'(0)}_g\norm{\lambda'(0)}_g}} \]
+Using the definition of the pullback inner product,
+\[ \theta = \cos^{-1}\parens{\frac{\beta'(0)^\top g\lambda'(0)}{\bigl(\beta'(0)^\top g\beta'(0)\cdot\lambda'(0)^\top g\lambda'(0)\bigr)^{1/2}}} \]
+
+Suppose we have a surface $M$ and a subset $A\subseteq M$.
+We can approximate the area of $A$ by looking at the area of the parallelogram defined by $\delta u\sigma_u$ and $\delta v\sigma_v$ at every point $p\in A$ as $\delta u$ and $\delta v$ become smaller and
+smaller.
+The area of this parallelogram is
+\[ \norm{\delta u\sigma_u\times\delta v\sigma_v} = \delta u\delta v\norm{\sigma_u\times\sigma_v} \]
+Now we can show that the determinant of $g$ is equal to the square of this same volume, ie $\detof g=\norm{\sigma_u\times\sigma_v}^2$.
+
+So we can define area as follows:
+
+\begin{defn*}
+
+    So then the area of $A$ can be defined to be
+    \[ S(A) = \int_{\sigma^{-1}(A)}\norm{\sigma_u\times\sigma_v}\,dudv = \int_{\sigma^{-1}(A)}\sqrt{\detof g}\,dudv \]
+
+\end{defn*}
+
+\begin{exam*}
+
+    We can define a chart for polar coordinates:
+    \[ \sigma(r,\theta) = (r\cos\theta,\,r\sin\theta,\,0) \]
+    where $-\pi<\theta<\pi$ and $r>0$.
+    Then
+    \[ \sigma_r = (\cos\theta,\sin\theta,0),\quad \sigma_\theta = (-r\sin\theta,\,r\cos\theta,0) \]
+    And so
+    \[ g = \pmat{1 & 0 \\ 0 & r^2} \]
+    Then we can define the curve
+    \[ \beta(t) = (R,t) \]
+    And so $\sigma\circ\beta$ corresponds to a circle of radius $R$.
+    And so
+    \[ L(\sigma\circ\beta) = \int_{-\pi}^\pi \Bigl((\beta')^\top\cdot g(\beta)\cdot\beta'\Bigr)^{1/2} = \int_{-\pi}^\pi \parens{\pmat{0 & 1}\pmat{1 & 0 \\ 0 & R^2}\pmat{0 \\ 1}}^{1/2}
+    = \int_{-\pi}^\pi R = 2\pi R \]
+    So the area (but the surface $\sigma$ is a plane, so the area is really the length) of $\sigma\circ\beta$ (the circle of radius $R$) is $2\pi R$.
+
+\end{exam*}
+
+Our goal is to define the curvature of a surface, similar to how we defined the curvature of a curve.
+Suppose we have a point $p$ on the surface $M$, then we can define the unit normal to $M$ at $p$ to be a unit vector orthogonal to $T_pM$.
+Suppose $\sigma_1=\frac{d\sigma}{du}(q)$ and $\sigma_2=\frac{d\sigma}{dv}(q)$ where $q=\sigma^{-1}(p)$ then we showed $T_pM=\lspanof{\sigma_1,\sigma_2}$, so we could define
+\[ N(p) = \frac{\sigma_1\times\sigma_2}{\norm{\sigma_1\times\sigma_2}} \]
+And since $\sqrt g=\norm{\sigma_1\times\sigma_2}$, this is equal to
+\[ N(p) = \frac{\sigma_1\times\sigma_2}{\sqrt g} \]
+So $N$ is a function $M\longto S^2$, and we can define
+\[ \rho\colon\mU\longto S^2,\quad \rho = N\circ\sigma \]
+
+\begin{defn*}
+
+    The \ppemph{second fundamental form} of a surface $M$ gives the curvature of the surface at $p\in M$ in the direction of $v\in T_pM$.
+    For every $v\in T_pM$ there exists some curve $\gamma\colon(-\epsilon,\epsilon)\longto\bR$ such that $\gamma'(0)=v$ and $\gamma(0)=p$.
+    So we define the second fundamental form by
+    \[ \sff_p\colon T_pM\longto\bR,\quad \sff_p(v) = \iprod{-(N\circ\gamma)'(0),v} \]
+
+\end{defn*}
+
+This should be reminiscient of the curvature of a planar curve being defined by $\kappa=\iprod{-N',T}$.
+
+So if $v\in T_pM$ then there exists some curve $\gamma\colon(-\epsilon,\epsilon)\longto M$ such that $\gamma(0)=p$ and $\gamma'(0)=v$ then let us define a curve $\beta\colon(-\epsilon,\epsilon)\longto\mU$
+where
+\[ \gamma = \sigma\circ\beta \]
+Then
+\[ \gamma'(t) = d\sigma(\beta(t))\cdot\beta'(t) \]
+and so
+\[ p = \gamma(0) = \sigma(\beta(0)) \implies \beta(0) = q \]
+and
+\[ v = \gamma'(0) = d\sigma(q)\cdot\beta'(0) = d\sigma_p(\beta'(0)) \]
+thus
+\[ \beta'(0) = d\sigma_p^{-1}(v) \]
+Now let us show that the definition of the second form is independent on choice of $\gamma$.
+This is since
+\[ (N\circ\gamma)'(t) = (N\circ\sigma\circ\beta)'(t) = (\rho\circ\beta)'(t) = \rho_u(\beta(t))\cdot\beta'_1(t) + \rho_v(\beta(t))\cdot\beta'_2(t) = J_\rho(\beta(t))\cdot\beta'(t) \]
+Thus we get that
+\[ (N\circ\gamma)'(0) = J_\rho(p)\cdot\beta'(0) = J_\rho(p)\cdot d\sigma_p^{-1}v \]
+And so we get that $(N\circ\gamma)'(0)$ is dependent only on $\rho$ and $v$, and thus the second fundamental form $\sff_p(v)$ is independent on choice of $\gamma\in T_pM$ where $\gamma'(0)=v$.
+
+Furthermore, since
+\[ \gamma'(0) = d\sigma_p(\beta'(0)) = \pmat{\vert & \vert \\ \sigma_u & \sigma_v \\ \vert & \vert}\pmat{\beta'_1 \\ \beta'_2} = \sigma_u\beta'_1 + \sigma_v\beta'_2 \]
+we get that
+\[ \sff_p(v) = -\iprod{J_\rho(p)\beta'(0), \gamma'(0)} = -\iprod{\pmat{\vert & \vert \\ \rho_u & \rho_v \\ \vert & \vert}\pmat{\beta'_1 \\ \beta'_2},\,\pmat{\gamma'_1\\\gamma'_2}}
+= -\iprod{\rho_u\beta'_1+\rho_v\beta'_2,\sigma_u\beta'_1+\sigma_v\beta'_2} = -\sum_{i,j=1}^2\beta'_i\beta'_j\iprod{\rho_i,\sigma_j} \]
+Thus if we compute $\iprod{\rho_i(q),\sigma_j(q)}$ for each $1\leq i,j\leq2$ then we can compute $\sff_p(v)$ for each $v\in T_pM$.
+Let us summarize this in the following proposition
+
+\begin{prop*}
+
+    Suppose $M$ is a surface parameterized by the chart $\sigma$, and $p$ is a point in $M$ such that $\sigma(q)=p$.
+    Then for every $v\in T_pM$ given by the curve $\gamma$, if we define $\beta$ to be $\sigma^{-1}\circ\gamma$, then
+    \[ \beta'(0) = d\sigma_p^{-1}(v) \]
+    and
+    \[ \sff_p(v) = \sum_{i,j=1}^2\beta'_i\beta'_j\iprod{-\rho_i,\sigma_j} \]
+
+\end{prop*}
+
+Let us denote
+\[ b_{ij} = \iprod{-\rho_i,\sigma_j},\qquad B = \pmat{b_{11} & b_{12} \\ b_{21} & b_{22}} \]
+and so we get
+\[ \sff_p(v) = \beta'(0)^\top B\beta'(0) \]
+For this reason, some people refer to the function
+\[ \sff(x,y) = x^\top By \]
+as the \emph{second fundamental form} instead of how we defined it.
+
+Now, notice that
+\[ \iprod{\rho(q),\sigma_i(q)} = 0 \]
+since $\sigma_i(q)\in T_pM$ and $\rho(q)$ is its unit normal.
+Thus
+\[ 0 = \frac{d}{du_i}\iprod{\rho,\sigma_j} = \iprod{\rho_i,\sigma_j} + \iprod{\rho,\sigma_{ij}} \implies \iprod{-\rho_i,\sigma_j} = \iprod{\rho,\sigma_{ij}} \]
+And therefore we get that
+\[ b_{ij} = \iprod{\rho,\sigma_{ij}} = \iprod{\frac{\sigma_1\times\sigma_2}{\sqrt{\det g}},\sigma_{ij}} =
+\frac1{\sqrt{\det g}}\det\pmat{\hort & \sigma_1 & \hort \\ \hort & \sigma_2 & \hort \\ \hort & \sigma_{ij} & \hort} \]
+Which makes computing $b_{ij}$ much simpler, as we only need to differentiate $\sigma$ twice.
+But also notice that this means $b_{ij} = b_{ji}$, so $B$ is a symmetric matrix.
+
+Suppose $n$ is some unit vector, then $\iprod{v,n}$ is the distance between $v$ and $n^\perp$, as the projection of $v$ onto $n^\perp$ is $v-\iprod{v,n}n$.
+So if $p$ is on some surface $M$ and $v$ is in its tangent space $T_pM$ suppose that $q=\sigma^{-1}(p)$ and $x=\sigma_p^{-1}(v)$ then
+\[ D_x(t) = \iprod{\sigma(q+tx)-\sigma(q),\,\rho(q)} \]
+tells us the distance of $\sigma(q+tx)-\sigma(q)$ from $\rho(q)^\perp=T_pM$.
+Thus $D_x(t)$ tells us the distance between the surface and $T_pM$ after walking $t$ units in the direction of $x$ starting from $p$.
+
+\begin{prop*}
+
+    \[ D_x(t) = \frac{t^2}2\sff_p(v) + o(t^2) \]
+
+\end{prop*}
+
+\begin{proof}
+
+    We find the Taylor series of $\sigma(q+tx)-\sigma(q)$ centered at $q$,
+    \[ \sigma(q+tx) - \sigma(q) = \sigma_1(q)\cdot tx_1 + \sigma_2(q)\cdot tx^2 + \frac12\sum_{i,j=1}^2\sigma_{ij}(q)\cdot(tx_i)(tx_j) + o(t^2) \]
+    Now since $\sigma_i(q)$ are in $T_pM$, their inner product with $\rho(q)$ is zero.
+    Thus
+    \[ D_x(t) = \frac12\sum_{i,j=1}^2 (tx_i)(tx_j)\iprod{\sigma_{ij},\rho} + \iprod{o(t^2),\rho} = \frac{t^2}2 x^\top Bx + o(t^2) \]
+    Now recall that
+    \[ \sff_p(v) = \beta'(0)^\top B\beta'(0) \]
+    where $\beta'(0)=d\sigma_p^{-1}(v)=x$ and so
+    \[ D_x(t) = \frac{t^2}2\sff_p(v) + o(t^2) \]
+    as required.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    Let $\gamma\colon[0,T]\longto M$ be the natural parameterization of a curve on the surface $M$.
+    Then
+    \[ \iprod{\gamma''(s),\, N(\gamma(s))} = \sff_{\gamma(s)}(\gamma'(s)) \]
+    where $N(\gamma(s))$ is the unit normal to $\gamma(s)$ (not necessarily the Frenet-Serret frame).
+
+\end{prop*}
+
+\begin{proof}
+
+    Since $\gamma'(s)\in T_{\gamma(s)}M$ (define $\beta=\sigma^{-1}\circ\gamma$, then $\gamma'=\sigma_u(\beta)\beta'_1+\sigma_v(\beta)\beta'_2$ which is in $T_{\gamma(s)}M$), we have that it is orthogonal
+    to $N(\gamma(s))$.
+    So
+    \[ \iprod{\gamma'(s),\, N(\gamma(s))} = 0 \implies \iprod{\gamma''(s), N(\gamma(s))} + \iprod{\gamma'(s),\,(N\circ\gamma)'(s)} = 0 \]
+    And so
+    \[ \iprod{\gamma''(s), N(\gamma(s))} = \iprod{-(N\circ\gamma)'(s),\gamma'(s)} \]
+    and so
+    \[ \sff_{\gamma(s)}(\gamma'(s)) = \iprod{-(N\circ\gamma)'(s),\gamma'(s)} = \iprod{\gamma''(s),N(\gamma(s)} \]
+    The first equality is not trivial here, let us define $\lambda(t)=\gamma(t+s)$ and so $\lambda'(t)=\gamma'(t+s)$.
+    Then $\lambda'(0)=\gamma'(s)\in T_{\lambda(0)}M=T_{\gamma(s)}M$ and so
+    \[ \sff_{\gamma(s)}(\gamma'(s)) = \sff_{\lambda(0)}(\lambda'(0)) = \iprod{-(N\circ\lambda)'(0),\lambda'(0)} = \iprod{-(N\circ\gamma)'(s),\gamma'(s)} \qed \]
+
+\end{proof}
+
+\newpage
+This means that $\iprod{\gamma'',N}$ is dependent only on $\gamma'$.
+And also since the curvature of a three-dimensional curve is defined by $\kappa(s)=\norm{\gamma''(s)}$ we have
+\[ \abs{\sff_{\gamma(s)}(\gamma'(s))} = \abs{\iprod{\gamma''(s),N(\gamma(s))}} \leq \norm{\gamma''(s)}\cdot\norm{N(\gamma(s)} = \kappa(s) \]
+
+\begin{defn*}
+
+    Suppose $M$ is a surface, $p$ is a point on the surface, and $v$ is a unit vector in $p$'s tangent space.
+    Then the \ppemph{normal curvature of $M$ at $p$ in the direction of $v$} is defined to be $\sff_p(v)$.
+
+\end{defn*}
+
+Notice that since
+\[ D_x(t) = \frac{t^2}2\sff_p(v) + o(t^2) \]
+if the curvature in the direction $v$ is negative, then the curve is curving away from the normal at $p$.
+And if it is positive then the curve curves towards the normal.
+
+Now, suppose $\gamma$ is the natural parameterization of some curve.
+Then $N(\gamma(s))$, $\gamma'(s)$, and $R_{\frac\pi2}\gamma'(s)$ forms an orthonormal basis (where $R_{\frac\pi2}$ is the linear operator on $T_{\gamma(s)}M$).
+So
+\[ \gamma'' = \iprod{\gamma'',N}N + \iprod{\gamma'',\gamma'}\gamma' + \iprod{\gamma'',R_{\frac\pi2}\gamma'}R_{\frac\pi2}\gamma' \]
+We know that $\iprod{\gamma'',N}=\sff_\gamma(\gamma')$ and since $\norm{\gamma'}=1$ is constant, $\gamma''\perp\gamma'$.
+Thus
+\[ \gamma'' = \sff_\gamma(\gamma')N + \iprod{\gamma'',R_{\frac\pi2}\gamma'}R_{\frac\pi2}\gamma' \]
+These components of $\gamma''$ are significant:
+
+\begin{defn*}
+
+    If $\gamma$ is the natural parameterization of a curve on a surface $M$, then we define the \ppemph{normal curvature} of $\gamma$ to be
+    \[ \kappa_n(s) = \sff_{\gamma(s)}(\gamma'(s)) \]
+    and the \ppemph{geodesic curvature} of $\gamma$ to be
+    \[ \kappa_g(s) = \iprod{\gamma''(s),R_{\frac\pi2}\gamma'(s)} \]
+
+\end{defn*}
+
+The normal curvature of a curve is the curvature of the surface in the direction of the curve (the direction of its derivative).
+The geodesic curvature corresponds to how non-straight the curve is (how orthogonal $\gamma''$ is to $\gamma'$), relative to a straight line on $M$ (since $M$ itself may be curved, a straight line on $M$
+may not correspond to a straight line in $\bR^3$).
+
+And the curvature of $\gamma$ is given by
+\[ \kappa(s) = \norm{\gamma''(s)} = \sqrt{\kappa_n(s)^2 + \kappa_g(s)^2} \]
+
+\begin{defn*}
+
+    A \ppemph{geodesic} is a a curve whose geodesic curvature is zero.
+
+\end{defn*}
+
+So a geodesic has as little curvature as possible on $M$; its only curvature is curving in the direction of $M$.
+Thus a geodesic corresponds to a straight line on $M$.
+
+Recall that we showed that if $\gamma$ is a smooth curve where $\gamma(0)=p$ and $\gamma'(0)=w$ then
+\[ (N\circ\gamma)'(0) = J_\rho(p)\cdot d\sigma_p^{-1}(w) \]
+now since $\norm{N\circ\gamma}=1$, $(N\circ\gamma)'$ is orthogonal to $N\circ\gamma$.
+So $(N\circ\gamma)'(0)$ is orthogonal to $N\circ\gamma(0)=N(p)$, and so $(N\circ\gamma)'(0)$ is on the tangent space of $p$.
+Thus we can define
+
+\begin{defn*}
+
+    Let $M$ be a surface.
+    We define a linear transformation
+    \[ S\colon T_pM\longto T_{N(p)}S^2 \]
+    For every $w\in T_pM$, there exists a curve $\gamma$ such that $\gamma(0)=p$ and $\gamma'(0)=w$, and we define
+    \[ S(w) = -(N\circ\gamma)'(0) \]
+    $S$ is called the \ppemph{shape operator}.
+
+\end{defn*}
+
+Since $p$ is (a unit) normal to $T_pS^2$, we have that $T_pS^2=p^\perp$.
+And since $\norm{N\circ\gamma}=1$ is constant, $(N\circ\gamma)'$ is orthogonal to $N\circ\gamma$, and therefore $(N\circ\gamma)'(0)$ is on $T_{N\circ\gamma(0)}S^2=T_{N(p)}S^2$ as required.
+Notice that $v$ is in $T_{N(p)}S^2$ if and only if $v$ is tangent to $S^2$ at $N(p)$, which is if and only if $v$ is orthogonal to $N(p)$, which is if and only if $v\in T_pM$.
+Thus $T_{N(p)}S^2=T_pM$, and $(N\circ\gamma)'(0)$ is orthogonal to $N\circ\gamma(0)=N(p)$ (since the norm of $N$ is constant), and so $(N\circ\gamma)'(0)$ is in $T_pM=T_{N(p)}S^2$, so $S$'s codomain is
+indeed $T_{N(p)}S^2=T_pM$.
+As we showed,
+\[ S(w) = -J_\rho(p)\cdot d\sigma_p^{-1}(w) \]
+which is the product of linear transformations, and independent of the choice of $\gamma$, and therefore $S$ is therefore well-defined and a linear transformation.
+
+By definition,
+\[ \sff_p(v) = \iprod{S(v),v} \]
+
+\begin{exam*}
+
+    \benum
+        \item If $M$ is a plane, then $N$ is some constant vector.
+            Thus $(-N\circ\gamma)'=0$ and so $S=0$ and $\sff_p(v)=0$ for every $p$ and $v$.
+        \item On a sphere of radius $R$, $N(p)=\frac pR$ and so
+            \[ (N\circ\gamma)' = \parens{\frac\gamma R}' = \frac{\gamma'}R \]
+            and thus
+            \[ (N\circ\gamma)'(0)=\frac{\gamma'(0)}R = \frac vR \]
+            And so $S(v)=-\frac vR$, and therefore
+            \[ \sff_p(v) = \iprod{-\frac vR,v} = -\frac{\norm v^2}R = -\frac1R \]
+            since $v\in S^2$ so $\norm v=1$.
+    \eenum
+
+\end{exam*}
+
+In general it is hard to compute $S$.
+But since it is a linear transformation, we can compute it based on its image of a basis.
+Since $\set{\sigma_1,\sigma_2}$ is a basis for $T_pM$ where $\sigma_i=\frac\sigma{du_i}(q)$ ($\sigma(q)=p$), we get
+\[ S(\sigma_1) = S\parens{d\sigma_p\pmat{1\\0}} = -J_\rho(p)\cdot\pmat{1\\0} = -\frac{d\rho}{du}(q) = \rho_1 \]
+and similarly
+\[ S(\sigma_2) = \rho_2 \]
+Now, we said that the codomain of $S$ is $T_{N(p)}S^2=T_pM$, so let us find $-\rho_i$ in terms of the basis $\set{\sigma_1,\sigma_2}$.
+Suppose
+\[ -\rho_1 = c_1\sigma_1 + c_2\sigma_2 \]
+Now recall the following definitions
+\[ B = \pmat{b_{11} & b_{12} \\ b_{21} & b_{22}},\quad b_{ij} = \iprod{-\rho_i,\sigma_j} \]
+and
+\[ g = \pmat{g_{11} & g_{12} \\ g_{21} & g_{22}},\quad g_{ij} = \iprod{\sigma_i,\sigma_j} \]
+And so
+\[ b_{11} = \iprod{-\rho_1,\sigma_1} = c_1\iprod{\sigma_1,\sigma_1} + c_2\iprod{\sigma_1,\sigma_2} = c_1g_{11} + c_2g_{12} \]
+And similarly
+\[ b_{12} = \iprod{-\rho_1,\sigma_2} = c_1g_{12} + c_2g_{22} \]
+And since $b_{12}=b_{21}$ we get
+\[ g\pmat{c_1\\c_2} = \pmat{b_{11} \\ b_{12}} = R_1(B) \]
+Similarly we get that if $-\rho_2 = c_3\sigma_1 + c_4\sigma_2$, then
+\[ g\pmat{c_3\\c_4} = R_2(B) \]
+Thus we get
+\[ g\pmat{c_1 & c_3 \\ c_2 & c_4} = B \implies \pmat{c_1 & c_3 \\ c_2 & c_4} = g^{-1}B \]
+($g$ is invertible since it is the product $J_\sigma^\top J_\sigma$ which both have a rank of two.)
+This means that if we define the basis $B=(\sigma_1,\sigma_2)$, then
+\[ [S]_B = g^{-1}B \]
+So we have proven the following
+
+\begin{prop*}
+
+    If $S$ is the shape operator of a surface $M$ at the point $p$, $g$ is the metric at $p$, and $B$ is the second fundamental form at $p$ then if we take $B=(\sigma_1,\sigma_2)$ as a basis for $T_pM$, then
+    \[ [S]_B = g^{-1}B \]
+
+\end{prop*}
+
+\begin{prop*}
+
+    The shape operator is self-adjoint, ie. for every $x,y\in T_pM$:
+    \[ \iprod{x,S(y)} = \iprod{S(x),y} \]
+
+\end{prop*}
+
+\begin{proof}
+
+    Notice first that
+    \[ \iprod{S(\sigma_1),\sigma_2} = \iprod{-\rho_1,\sigma_2} = \iprod{\rho,\sigma_{12}} = b_{12} \]
+    the last equality was proven before.
+    Now
+    \[ \iprod{\sigma_1,S(\sigma_2)} = \iprod{\sigma_1,-\rho_2} = b_{12} \]
+    So $\iprod{S(\sigma_1),\sigma_2}=\iprod{\sigma_1,S(\sigma_2)}$.
+    The rest follows as $S$ is a linear transformation (operator) and $(\sigma_1,\sigma_2)$ is a basis for $T_pM$.
+    \qed
+
+\end{proof}
+
+Since $S$ is self-adjoint, it is diagonalizable.
+The eigenvalues and eigenvectors have an important geometric meaning.
+
+\begin{thrm*}[eulerTheorem,Euler's\ Theorem]
+
+    Let $w$ be a unit vector in $T_pM$, then for every angle $\theta$ we define $R_\theta$ to be the rotation operator on $T_pM$ which rotates by an angle of $\theta$.
+    For each $\theta$ we define the plane $p+\lspanof{N,R_\theta w}$ which intersects with $M$ to give some curve $n_\theta$.
+    Then we define $\kappa_n(\theta)$ as the function
+    \[ \kappa_n\colon[0,2\pi]\longto\bR,\quad \kappa_n(\theta) = \sff_p(R_\theta w) \]
+    Since $\sigma$ and $N$ are smooth, so is $\sff_p$ and $\kappa_n$ is continuous and therefore obtains a minimum and maximum $\kappa_1$ and $\kappa_2$ by $\theta_1$ and $\theta_2$ respectively.
+    Let us define $w_i=R_{\theta_i}w$, then
+    \benum
+        \item $w_1$ and $w_2$ are orthogonal.
+        \item Since $w_1$ and $w_2$ are orthogonal, there exists an angle $\alpha$ such that $w=w_1\cos\alpha+w_2\sin\alpha$ then
+            \[ \sff_p(w) = \kappa_1\cos^2\alpha + \kappa_2\sin^2\alpha \]
+    \eenum
+
+\end{thrm*}
+
+First let us prove a lemma:
+
+\begin{lemm*}
+
+    If $T\colon\bR^2\longto\bR^2$ is a self-adjoint linear operator then
+    \benum
+        \item There exists an orthonormal basis of eigenvectors of $A$.
+        \item If $\lambda_1\leq\lambda_2$ are $T$'s eigenvalues, then
+            \[ \lambda_1=\min_{\norm v=1}\iprod{Tv,v},\quad \lambda_2=\max_{\norm v=1}\iprod{Tv,v} \]
+        \item For every $v=v_1\cos\alpha+v_2\sin\alpha$,
+            \[ \iprod{Tv,v} = \lambda_1\cos^2\alpha + \lambda_2\sin^2\alpha \]
+    \eenum
+
+\end{lemm*}
+
+\begin{proof}
+
+    Since the function $f(v)=\iprod{Tv,v}$ over $\set{v}[\norm v=1]$ is a continuous function over a compact set, $f$ obtains a minimum $\lambda_1$ at $v_1$.
+    Let $v_2$ be any unit vector orthogonal to $v_1$, and let $\lambda_2=\iprod{Tv_2,v_2}$.
+    Since $(v_1,v_2)$ forms an orthonormal basis,
+    \[ Tv_1 = \iprod{Tv_1,v_1}v_1 + \iprod{Tv_2,v_2}v_2 \]
+    and so on.
+    Since $b=\iprod{Tv_1,v_2}=\iprod{v_1,Tv_2}$ as $T$ is self-adjoint, the matrix which represents $T$ relative to the basis $(v_1,v_2)$ is
+    \[ A = \pmat{\iprod{Tv_1,v_1} & \iprod{Tv_2,v_1} \\ \iprod{Tv_1,v_2} & \iprod{Tv_2,v_2}} = \pmat{\lambda_1 & b \\\ b & \lambda_2} \]
+
+    Now suppose $v=v_1\cos\alpha+v_2\sin\alpha$ then
+    \[ Tv = Tv_1\cos\alpha + Tv_2\sin\alpha \]
+    and so
+    \[ f(v) = \iprod{Tv,v} = \iprod{Tv_1\cos\alpha + Tv_2\sin\alpha,\, v_1\cos\alpha + v_2\sin\alpha} = \cos^2\alpha\iprod{Tv_1,v_1} + 2\cos\alpha\sin\alpha\iprod{Tv_1,v_2} + \sin^2\alpha\iprod{Tv_2,v_2} \]
+    which is equal to, by definition,
+    \[ = \lambda_1\cos^2\alpha + 2b\cos\alpha\sin\alpha + \lambda_2\sin^2\alpha \]
+    Since if we were to define $g(\alpha)=f(v_1\cos\alpha+v_2\sin\alpha)$ we'd get that $f(v)=g(\alpha)$.
+    And since $g(0)=f(v_1)$ is a minimum, $g'(0)=0$.
+    Thus
+    \[ g'(\alpha) = -2\lambda_1\sin(2\alpha) + 2b\cos(2\alpha) + \lambda_2\sin(2\alpha) \]
+    and so
+    \[ g'(0) = 2b = 0 \implies b = 0 \]
+
+    And so the representation of $T$ is
+    \[ A = \pmat{\lambda_1 \\ & \lambda_2} \]
+    thus $v_1$ and $v_2$ indeed form an orthonormal basis of eigenvectors (as they are orthogonal and induce $A$).
+    And
+    \[ f(v) = \iprod{Tv,v} = \lambda_1\cos^2\alpha + \lambda_2\sin^2\alpha \]
+    And since $\lambda_1$ is the minimum value of $f$, we have that $\lambda_1\leq\lambda_2$ and so
+    \[ f(v) \leq \lambda_2\cos^2\alpha + \lambda_2\sin^2\alpha = \lambda_2 \]
+    And so $f(v_2)=\lambda_2$ is the maximum value of $f$, as required.
+    \qed
+
+\end{proof}
+
+So let us now prove Euler's theorem:
+
+\begin{proof}[,Euler's\ Theorem]
+
+    We know that
+    \[ \sff_p(w) = \iprod{S(w),w} \]
+    and $S$ is self-adjoint, and so there exists $w_1$ and $w_2$ orthonormal such that
+    \[ \kappa_1 = \sff_p(w_1),\quad \kappa_2 = \sff_p(w_2) \]
+    where $\kappa_1$ and $\kappa_2$ are the minimum and maximum of $\sff_p$ respectively.
+    Since $w=w_1\cos\alpha+w_2\sin\alpha$, by the above lemma
+    \[ \sff_p(w) = \kappa_1\cos^2\alpha + \kappa_2\sin^2\alpha \qed \]
+
+\end{proof}
+
+\begin{defn*}
+
+    The unit vectors $w_1$ and $w_2$ are called the \ppemph{principal directions} of $M$ at $p$.
+    And $\kappa_1$ and $\kappa_2$ are the \ppemph{principal curvatures} of $M$ at $p$.
+
+\end{defn*}
+
+Now, notice that $\det S=\kappa_1\kappa_2$.
+And so if $\det S>0$ then $\kappa_1$ and $\kappa_2$ have the same parity and since $\kappa_1$ is the minimum and $\kappa_2$ the maximum normal curvatures of $M$ at $p$, all the curvatures of $M$ at $p$ have
+the same parity.
+And thus $M$ curves in the same direction in every direction from $p$.
+And similarly if $\det S<0$ then $M$ curves in different directions at $p$.
+
+For this reason we define
+
+\begin{defn*}
+
+    If $M$ is a surface then its \ppemph{Gaussian curvature} is defined to be $K(p)=\det S=\kappa_1\kappa_2$.
+
+\end{defn*}
+
+Now, recall that the representation of $S$ by the basis $(\sigma_1,\sigma_2)$ is equal to $g^{-1}B$ and thus
+\[ K = \det S = \frac{\det B}{\det g} \]
+
+\begin{exam*}
+
+    Let $f$ be a smooth function, and let us define the chart
+    \[ \sigma(u,v) = (u,v,f(u,v)) \]
+    Then
+    \[ \sigma_1 = (1,0,f_u),\quad \sigma_2 = (0,1,f_v),\quad \sigma_{12} = (0,0,f_{uv}) \]
+    Thus
+    \[ T_pM = \set{\pmat{\delta u \\ \delta v \\ \nabla f\pmat{\delta u\\\delta v}}}[\delta u,\delta v\in\bR] \]
+    And so
+    \[ g = \pmat{1+f_u^2 & f_uf_v \\ f_uf_v & 1+f_v^2} \implies \detof g = 1 + f_u^2 + f_v^2 \]
+    And since
+    \[ b_{ij} = \iprod{\rho,\sigma_{ij}} = \frac1{\sqrt{\det g}}\det\pmat{1 & 0 & f_u \\ 0 & 1 & f_v \\ 0 & 0 & f_{ij}} = \frac{f_{ij}}{\sqrt{1+f_u^2+f_v^2}} \]
+    Thus
+    \[ B = \frac1{\sqrt{1+f_u^2+f_v^2}}\pmat{f_{uu} & f_{uv} \\ f_{uv} & f_{vv}} \]
+    which is equal to $\frac1{\sqrt{1+f_u^2+f_v^2}}$ times the Hessian matrix of $f$, $H_f$.
+    And so
+    \[ \det B = \frac{f_{uu}f_{vv}-f_{uv}^2}{1+f_u^2+f_v^2} \]
+    And so
+    \[ K = \frac{\det B}{\det g} = \frac{f_{uu}f_{vv} - f_{uv}^2}{(1+f_u^2+f_v^2)^2} \]
+    Notice then that at critical points, $\nabla f=0$ and so
+    \[ K = \detof{H_f} \]
+
+    This tells us the significance of the Hessian, as if at a critical point $\detof{H_f}=K<0$ then the surface (and so $f$), curves both up and down, and so the critical point is an inflection point.
+    Otherwise if $K=\detof{H_f}>0$, the point is a maximum or a minimum (if the surface is locally above $T_pM$ then it is a maximum, and if the surface is locally below $T_pM$ then it is a minimum).
+
+\end{exam*}
+

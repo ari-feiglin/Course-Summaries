@@ -1,0 +1,374 @@
+Recall that for every curve $\gamma$ on a surface $M$, we defined its \emph{normal} and \emph{geodesic} curvature by
+\[ \kappa_n(s) = \sff_{\gamma(s)}(\gamma'(s)),\qquad \kappa_g(s) = \iprod{\gamma''(s),R_{\frac\pi2}\gamma'(s)} \]
+where $R_{\frac\pi2}$ is the rotation matrix on $T_{\gamma(s)}M$.
+The normal curvature, $\kappa_n(s)$, is equal to the curvature of $M$ at $\gamma(s)$ in the direction of its velocity ($\gamma'(s)$).
+The geodesic curvature measures how orthogonal $\gamma''(s)$ is from $\gamma'(s)$, or indeed how orthogonal it is from $\gamma(s)$'s tangent space.
+
+\begin{prop*}
+
+    The geodesic curvature of $\gamma$ is zero if and only if $\gamma''(s)$ is orthogonal to $T_{\gamma(s)}M$.
+
+\end{prop*}
+
+\begin{proof}
+
+    If $\kappa_g(s)=0$ then $\iprod{\gamma''(s),R_{\frac\pi2}\gamma'(s)}=0$.
+    And since $\norm{\gamma'(s)}=1$ is constant, $\gamma''(s)$ and $\gamma'(s)$ are orthogonal.
+    Now, $\set{R_{\frac\pi2}\gamma'(s),\gamma'(s)}$ form a basis for $T_{\gamma(s)}M$ and so $\gamma''(s)$ is orthogonal to $T_{\gamma(s)}M$ as required.
+
+    And if $\gamma''(s)$ is orthogonal to $T_{\gamma(s)}M$, then it is necessarily orthogonal to $R{\frac\pi2}\gamma'(s)$ and thus $\kappa_g(s)=0$ as required.
+    \qed
+
+\end{proof}
+
+This allows us to define what it means for a non-natural parameterization to be a geodesic:
+
+\begin{defn*}
+
+    Let $M$ be a surface and $\gamma\colon[a,b]\longto M$ an arbitrary curve on $M$.
+    $\gamma$ is a \ppemph{geodesic} if and only if $\gamma''(t)$ is orthogonal to $T_{\gamma(t)}M$ for every $t\in[a,b]$.
+
+\end{defn*}
+
+Note that the parameterization of a curve affects if it is a geodesic or not.
+Suppose that $\gamma$ is a geodesic and $\beta=\gamma\circ\phi$ is a reparameterization of $\gamma$.
+Then
+\[ \beta' = \gamma'(\phi)\cdot\phi' \implies \beta'' = \gamma''(\phi)\cdot(\phi')^2 + \gamma'(\phi)\cdot\phi'' \]
+Let $t=\phi(s)$, then $\gamma''(t)$ is orthogonal to $T_{\gamma(t)}M=T_{\beta(s)}M$.
+And so
+\[ \beta''(s) = \gamma''(t)\cdot(\phi'(s))^2 + \gamma'(t)\cdot\phi''(s) \]
+and this is orthogonal to $T_{\beta(s)}M=T_{\gamma(t)}M$ if and only if $\gamma'(t)\cdot\phi''(s)$ is (since $\gamma''(t)$ is, since $\gamma$ is a geodesic).
+But $\gamma'(t)\in T_{\gamma(t)}M$, and so $\beta(s)$ is orthogonal to $T_{\beta(s)}M$ if and only if $\phi''(s)=0$.
+So $\beta$ is a geodesic if and only if $\phi''=0$, meaning $\phi=at+b$.
+Let us summarize this in the following proposition:
+
+\begin{prop*}
+
+    If $\gamma$ is a geodesic, the only reparameterizations of $\gamma$ which are also geodesics are of the form $\gamma(at+b)$ (and all reparameterizations of this form are geodesics).
+
+\end{prop*}
+
+This is pretty significant, as generally up until now we've discussed properties of curves which are independent of the parameterization.
+
+\begin{prop*}
+
+    If $\gamma$ is a geodesic, then $\norm{\gamma'}$ is constant.
+
+\end{prop*}
+
+\begin{proof}
+
+    Since $\gamma''$ is orthogonal to $T_\gamma M$ and $\gamma$ is in $T_\gamma M$, we have that $\gamma''$ is orthogonal to $\gamma'$.
+    Thus $\iprod{\gamma'',\gamma'}=0$.
+    And since
+    \[ \iprod{\gamma',\gamma'}' = 2\iprod{\gamma'',\gamma'} = 0 \]
+    and so $\norm{\gamma'}^2=\iprod{\gamma',\gamma'}$ is constant, as required.
+    \qed
+
+\end{proof}
+
+\begin{exam*}
+
+    \benum
+        \item If $M$ is a plane, then $\gamma$ is a planar curve.
+        Then $\gamma''$ is on the plane $M$ shifted to the origin.
+        This is equal to $T_pM$, and so $\gamma''\in T_\gamma M$ and thus $\gamma''$ is orthogonal to $\gamma$'s tangent space if and only if $\gamma''=0$.
+        This is if and only if $\gamma(t)=c_0t+c_1$ for some vectors $c_0,c_1$.
+        So the only geodesics on a plane are lines.
+
+        \item Let $M$ be the sphere $S^2$.
+        Then let $u,v$ be orthonormal vectors then $\gamma(t)=u\cos(t)+v\sin(t)$ is a geodesic.
+        This is as
+        \[ \gamma''(t) = -u\cos(t) - v\sin(t) = -\gamma(t) \]
+        and $\gamma(t)$ is orthogonal to $T_{\gamma(t)}S^2$, and therefore so is $\gamma''(t)$.
+        Thus $\gamma$ is indeed a geodesic.
+
+        $\gamma$ corresponds to a circle around $S^2$ which passes through opposite ends on the sphere (great circle).
+
+        \item Let $M=\set{(x,y,z)}[x^2+y^2=1]$ be a cylinder.
+        There are two types of geodesics:
+        \benum
+            \item Helixes: $(\cos t,\sin t,ct)$
+            \item Lines: $(\cos\alpha,\sin\alpha,ct)$ for some constant $\alpha$.
+        \eenum
+        We can chart $M$ by $(u,v)\mapsto(\cos u,\sin u,v)$ and so the tangent space
+        \[ T_{(\cos u,\sin u,v)}M = \lspanof{\pmat{-\sin u \\ \cos u \\ 0},\pmat{0\\0\\1}} \]
+        A normal to this tangent space is $(\cos u,\sin u,0)$.
+
+        For helixes,
+        \[ \gamma''(t) = -(\cos t,\sin t,0) \]
+        which is orthogonal to the tangent space at $\gamma(t)=(\cos t,\sin t,ct)$, as we showed above.
+
+        And for lines, the second derivative is zero which is trivially orthogonal to the tangent space.
+    \eenum
+
+\end{exam*}
+
+So how do we find geodesics in general?
+Let $\sigma$ be a regular chart of the surface $M$, then $\set{\sigma_1,\sigma_2,N}$ is a basis of $\bR^3$ at $p\in M$.
+But $\sigma_1$ and $\sigma_2$ need not be orthogonal, and their norm need not be $1$.
+So this basis is not the simplest to deal with.
+
+Now, since this is a basis we have that there exist $\Gamma_{11}^1$ and $\Gamma_{11}^2$ where
+\[ \sigma_{11} = \Gamma_{11}^1\sigma_1 + \Gamma_{11}^2\sigma_2 + b_{11}N \]
+as $N$ is orthogonal to $\sigma_i$ and has a norm of one, and $\iprod{N,\sigma_{11}}=b_{11}$.
+Similarly
+\[ \sigma_{12} = \Gamma_{12}^1\sigma_1 + \Gamma_{12}^2\sigma_2 + b_{12}N,\quad \sigma_{21} = \Gamma_{21}^1\sigma_1 + \Gamma_{21}^2\sigma_2 + b_{21}N \]
+since $\sigma_{12}=\sigma_{21}$, $\Gamma_{12}=\Gamma_{21}$.
+And
+\[ \sigma_{22} = \Gamma_{22}^1\sigma_1 + \Gamma_{22}^2\sigma_2 + b_{22}N \]
+So in general
+\[ \sigma_{ij} = \Gamma_{ij}^1\sigma_1 + \Gamma_{ij}^2\sigma_2 + b_{ij}N \]
+The coefficients $\Gamma_{ij}^k$ are called \emph{Christoffel symbols}.
+
+\begin{thrm*}
+
+    Let $M$ be a surface and $\gamma=\sigma\circ\beta$ be a regular curve on $M$.
+    Then $\gamma$ is a geodesic if and only if
+    \[ 0 = \beta''_1 + (\beta'_1)^2\Gamma_{11}^1 + 2\beta'_1\beta'_2\Gamma_{12}^1 + (\beta'_2)^2\Gamma_{22}^1 \]
+    and
+    \[ 0 = \beta''_2 + (\beta'_1)^2\Gamma_{11}^2 + 2\beta'_1\beta'_2\Gamma_{12}^2 + (\beta'_2)^2\Gamma_{22}^2 \]
+    Or in other words for $i=1,2$:
+    \[ \beta''_i + \sum_{k,j=1}^2 \beta'_k\beta'_j\Gamma_{kj}^i = 0 \]
+
+\end{thrm*}
+
+These equations are called the \emph{geodesic equations}.
+
+\begin{proof}
+
+    By definition $\gamma$ is a geodesic if and only if $\gamma''(s)$ is orthogonal to $T_{\gamma(s)}M$.
+    Now, we know
+    \[ \gamma' = \sigma'(\beta)\cdot\beta' = \sigma_1(\beta)\beta'_1 + \sigma_2(\beta)\beta'_2 = \sum_i \sigma_i(\beta)\cdot\beta'_i \]
+    And so
+    \[ \gamma'' = \sum_i\parens{\beta'_i\sum_j \sigma_{ij}(\beta)\cdot\beta'_j} + \sum_i\sigma_i(\beta)\cdot\beta''_i \]
+    And since $\sigma_{ij} = \Gamma_{ij}^1\sigma_1 + \Gamma_{ij}^2\sigma_2 + b_{ij}N$, we have
+    \begin{multline*}
+        \gamma'' = \sum_i\sigma_i\beta''_i + \sum_i\parens{\beta'_i\sum_j \beta'_j\Bigl(\Gamma_{ij}^1\sigma_1 + \Gamma_{ij}^2\sigma_2 + b_{ij}N\Bigr)} =\\
+        \sigma_1\parens{\beta''_1 + \sum_{i,j} \beta'_i\beta'_j\Gamma_{ij}^1} + \sigma_2\parens{\beta''_2 + \sum_{i,j} \beta'_i\beta'_j\Gamma_{ij}^2} + N\parens{\sum_{ij}\beta'_i\beta'_j b_{ij}}
+    \end{multline*}
+
+    Since $N$ is orthogonal to $T_{\gamma}M$, and $\sigma_1$ and $\sigma_2$ are on it, $\gamma''$ is orthogonal to $T_\gamma M$ if and only if its coefficients for $\sigma_1$ and $\sigma_2$ are zero.
+    Meaning
+    \[ {\beta''_1 + \sum_{i,j} \beta'_i\beta'_j\Gamma_{ij}^1} = {\beta''_2 + \sum_{i,j} \beta'_i\beta'_j\Gamma_{ij}^2} = 0 \]
+    which are precisely the geodesic equations.
+    \qed
+
+\end{proof}
+
+We know that $g_{11}=\iprod{\sigma_1,\sigma_1}$ and differentiating this relative to $u$ gives
+\[ g_{11,1} = 2\iprod{\sigma_{11},\sigma_1} \]
+The notation $g_{ij,k}$ is used instead of $\frac d{u_k}g_{ij}$.
+Similarly
+\begin{align*}
+    g_{12,1} &= \iprod{\sigma_{11},\sigma_2} + \iprod{\sigma_1,\sigma_{12}} \\
+    g_{11,2} &= 2\iprod{\sigma_{12},\sigma_1} \\
+\end{align*}
+Thus
+\[ \iprod{\sigma_{11},\sigma_2} = g_{12,1} - \frac12g_{11,2} \]
+
+On the other hand, using Christoffel symbols:
+\[ \iprod{\sigma_{11},\sigma_1} = \Gamma_{11}^1\iprod{\sigma_1,\sigma_1} + \Gamma_{11}^2\iprod{\sigma_2,\sigma_1} = \Gamma_{11}^1g_{11} + \Gamma_{11}^2g_{12} \]
+and similarly
+\[ \iprod{\sigma_{11},\sigma_2} = \Gamma_{11}^1g_{12} + \Gamma_{11}^2g_{22} \]
+
+Thus we have
+\[ \pmat{g_{11} & g_{12} \\ g_{12} & g_{22}}\pmat{\Gamma_{11}^1 \\ \Gamma_{11}^2} = \pmat{\iprod{\sigma_{11},\sigma_1} \\ \iprod{\sigma_{11},\sigma_2}} =
+\pmat{\frac12g_{11,1} \\ g_{12,1} - \frac12g_{11,2}} \]
+Thus
+\[ \pmat{\Gamma_{11}^1 \\ \Gamma_{11}^2} = g^{-1}\pmat{\frac12g_{11,1} \\ g_{12,1}-\frac12g_{11,2}} \]
+Using the same process but with $\sigma_{12}$, we get
+\[ \pmat{g_{11} & g_{12} \\ g_{12} & g_{22}}\pmat{\Gamma_{12}^1 \\ \Gamma_{12}^2} = \pmat{\frac12g_{11,2} \\[3pt] \frac12g_{22,1}} \]
+and
+\[ \pmat{g_{11} & g_{12} \\ g_{12} & g_{22}}\pmat{\Gamma_{22}^1 \\ \Gamma_{22}^2} = \pmat{g_{12,2} - \frac12g_{22,1} \\ \frac12g_{22,2}} \]
+
+Using Einstein notation, we denote the inverse of $g$ by
+\[ g^{-1} = \pmat{g^{11} & g^{12} \\ g^{21} & g^{22}} \]
+and so by the equations above we get
+\[ \Gamma^k_{ij} = \frac12g^{k1}\bigl(g_{1i,j} + g_{j1,i} - g_{ij,1}\bigr) + \frac12g^{k2}\bigl(g_{2i,j} + g_{j2,i} - g_{ij,2}\bigr) \]
+Using Einstein notation
+\[ \Gamma^k_{ij} = \frac12g^{km}\bigl(g_{mi,j} + g_{jm,i} - g_{ij,m}\bigr) \]
+This means that the Christoffel symbols are dependent only on $g$, and not on a choice of $N$.
+
+Furthermore, notice that this means the geodesic equations give a system of second order ODEs (in terms of $\beta$), and so by the uniqueness and existence theorem, there exists an $\epsilon>0$ such that for
+every initial point $p$ and velocity $v$, there exists a unique curve $\beta\colon(-\epsilon,\epsilon)\longto\mU$ where $\beta(0)=\sigma^{-1}(p)$ and $\beta'(0)=d\sigma_p^{-1}(v)$.
+This means that $\gamma(0)=p$ and $\gamma'(0)=v$.
+So we have shown the following proposition
+
+\begin{prop*}
+
+    For any intial point $p$ and initial velocity $v\in T_pM$, there exists a geodesic $\gamma$ such that $\gamma(0)=p$ and $\gamma'(0)=v$.
+
+\end{prop*}
+
+Note that $\gamma$'s domain $(-\epsilon,\epsilon)$ may be arbitrarily small, so the geodesic exists within an arbitrarily small neighborhood of $p$.
+
+Suppose $p\in M$ and $v\in T_pM$ is a unit vector.
+Then let us define $\gamma_v\colon(-\epsilon,\epsilon)\longto M$ to be the geodesic starting at $p$ in the direction $v$.
+This means that $\gamma'(0)=v$, and so $\norm{\gamma'(0)}=1$.
+Since we showed that the norm of the derivative of a geodesic is constant, this means that $\norm{\gamma'}=1$ and so $\gamma$ is a natural parameterization.
+
+Let us define the function
+\[ \exp_p(v) = \begin{cases} 0 & v=0 \\ \gamma_{\frac v{\norm v}}(\norm v) & v\neq0 \end{cases} \]
+$\exp_p$ is a function $V\longto M$ where $V=\set{v\in T_pM}[\norm v<\epsilon]$ (since $\gamma_{\frac v{\norm v}}$ is defined on the domain $(-\epsilon,\epsilon)$).
+Geometrically, $\exp_p(v)$ is the point you'd end up after walking on the geodesic starting from $p$ in the direction of $v$ for $\norm v$ units.
+This is geometrically similar to what $\exp(it)$ does (it gives you the point you'd end up after walking $t$ units from $1$ on the unit circle).
+
+Using $\exp_p$ we will reparameterize $M$.
+\benum
+    \item Choose an orthonormal basis $\set{w_1,w_2}$ for $T_pM$.
+    \item Define the map $y(x)=w_1x_1+w_2x_2$ (this will become the differential operator of the new parameterization).
+    \item We define $\sigma\colon\mU\longto M$ by
+    \[ \sigma(u,v) = \exp_p(y(u,v)) = \exp_p(uw_1+vw_2) \]
+    where
+    \[ \mU =\set{(u,v)}[u^2+v^2<\epsilon^2] \]
+\eenum
+
+\begin{prop*}
+
+    For some $\epsilon>0$, the restriction of $\sigma$ to $B_\epsilon(0)$ is a diffeomorphism (a smooth bijection whose inverse is also smooth).
+
+\end{prop*}
+
+\begin{proof}
+
+    Taking the partial derivative of $\sigma$ at $q=(0,0)$ relative to $u$ gives
+    \[ \sigma_1(q) = \frac d{du}\exp_p(uw_1)\Bigl|_{u=0} = \frac d{du}\gamma_{w_1}(u)\Bigl|_{u=0} = \gamma'_{w_1}(0) = w_1 \]
+    similarly
+    \[ \sigma_2(q) = w_2 \]
+    This means that $\sigma_1(0)$ and $\sigma_2(0)$ are linearly independent (since $w_1$ and $w_2$ forms an orthonormal basis).
+    Since $\sigma$ is smooth, so are $\sigma_1$ and $\sigma_2$, which means that in a neighborhood of $0$, $\sigma_1$ and $\sigma_2$ are still linearly independent.
+    \qed
+
+\end{proof}
+
+This means that $\sigma$ is a reparameterization of $M$.
+
+Now let us define $\tilde\sigma$ to be $\sigma$ in polar coordinates:
+\[ \tilde\sigma(r,\theta) = \sigma(r\cos\theta,r\sin\theta) = \exp_p(r(w_1\cos\theta + w_2\sin\theta)) \]
+So $\tilde\sigma=\sigma\circ(r\cos\theta,r\sin\theta)$ and since $\sigma$ and $(r,\theta)\mapsto(r\cos\theta,r\sin\theta)$ are both diffeomorphisms, so is $\tilde\sigma$.
+Thus $\tilde\sigma$ is another reparameterization of $M$.
+
+\begin{defn*}
+
+    Let $M$ be a surface, then the reparameterization $\sigma$ defined above is called a \ppemph{normal coordinate chart} of $M$.
+    And the reparameterization $\tilde\sigma$ defined above is called a \ppemph{normal polar coordinate chart} of $M$.
+
+\end{defn*}
+
+Of course there exist many normal coordinate charts, as we could choose different vectors for $w_1$ and $w_2$.
+
+\begin{lemm*}[gaussLemma,Gauss's\ Lemma]
+
+    The metric induced by a polar coordinate chart $\tilde\sigma$ is equal to
+    \[ g_{\tilde\sigma} = \pmat{1 & 0 \\ 0 & G(r,\theta)} \]
+    where $G(r,\theta)$ is some function.
+
+\end{lemm*}
+
+\begin{proof}
+
+    So
+    \[ \tilde\sigma_r = \frac\partial{\partial r}\exp_p\bigl(r(\cos\theta w_1+\sin\theta w_2)\bigr) \]
+    let $w=\cos\theta w_1+\sin\theta w_2$, this is a unit vector and
+    \[ = \frac d{dr}\exp_p(rw) = \frac d{dr}\gamma_w(r) = \gamma'_w \]
+    So $\tilde\sigma_r$ is equal to the derivative of a geodesic in its natural parameterization (since $w$ is a unit vector).
+    Thus $\norm{\tilde\sigma_r}=1$ and so $\iprod{\tilde\sigma_r,\tilde\sigma_r}=1$.
+
+    And $\tilde\sigma_{rr}=\gamma''_w$, and so $\sigma_{rr}$ is orthogonal to $T_pM$ since $\gamma$ is a geodesic.
+    Therefore
+    \[ \frac\partial{\partial r}\iprod{\tilde\sigma_r,\tilde\sigma_\theta} = \iprod{\tilde\sigma_{rr},\tilde\sigma_\theta} + \iprod{\tilde\sigma_r,\tilde\sigma_{\theta r}} \]
+    Since $\tilde\sigma_\theta$ is on $T_pM$, $\tilde\sigma_{rr}$ is orthogonal to it and so
+    \[ = \iprod{\tilde\sigma_r,\tilde\sigma_{\theta r}} \]
+    Now since $\iprod{\sigma_r,\sigma_r}$ is constant,
+    \[ 0 = \frac\partial{\partial\theta}\iprod{\tilde\sigma_r,\sigma_r} = 2\iprod{\tilde\sigma_{r\theta},\tilde\sigma_r} \]
+    and so $\iprod{\tilde\sigma_r,\tilde\sigma_{\theta r}}=0$.
+    Thus
+    \[ \frac\partial{\partial r}\iprod{\tilde\sigma_r,\tilde\sigma_\theta} = 0 \]
+    so for a constant $\theta_0$, $g_{12}(r,\theta_0)=\iprod{\tilde\sigma_r,\tilde\sigma_\theta}$ is equal to some constant $c$, in other words $g_{12}$ is a function of $\theta$.
+
+    Let us define
+    \[ f(r,\theta) = \pmat{r\cos\theta \\ r\sin\theta} \]
+    thus $\tilde\sigma=\sigma\circ f$.
+    And
+    \[ \frac{\partial\tilde\sigma}{\partial\theta} = \sigma_1\cdot\frac{\partial f_1}{\partial\theta} + \sigma_2\cdot\frac{\partial f_2}{\partial\theta} = -\sigma_1 r\sin\theta + \sigma_2 r\cos\theta \]
+    As we let $r\to0$, this converges to zero.
+    And so $g_{12}=\iprod{\tilde\sigma_\theta,\tilde\sigma_r}$ and as we let $r\to0$, we get that $g_{12}\to\iprod{0,\sigma_r}=0$.
+    But since $g_{12}$ is constant in $r$, this means that $g_{12}=0$.
+
+    And so
+    \[ g_{11} = \iprod{\tilde\sigma_r,\tilde\sigma_r} = 1,\quad g_{12} = g_{21} = 0 \]
+    and so
+    \[ g = \pmat{1 & 0 \\ 0 & \iprod{\tilde\sigma_\theta,\tilde\sigma_\theta}} = \pmat{1 & 0 \\ 0 & G(r,\theta)} \]
+    as required.
+    \qed
+
+\end{proof}
+
+We will now prove the following remarkable theorem (its name is literally Latin for ``Remarkable Theorem'').
+
+\begin{thrm*}[thrmEgreg,Theorema\ Egregium]
+
+    The Gaussian curvature of a surface can be computed solely using the metric $g$ and its derivatives.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Now we will show later that there exists a reparameterization of the surface $M$, $\sigma(r,\theta)\colon\mU\longto M$ such that its metric is
+    \[ g = \pmat{1 & 0 \\ 0 & G(r,\theta)} \implies g^{-1} = \pmat{1 & 0 \\ 0 & \frac1{G(r,\theta)}} \]
+    This means that
+    \[ \pmat{\Gamma_{11}^1 \\ \Gamma_{11}^2} = g^{-1}\pmat{\frac12g_{11,1} \\ g_{12,1} - \frac12g_{11,2}} = g^{-1}\pmat{0 \\ 0} = 0 \]
+    thus $\Gamma_{11}^1=\Gamma_{11}^2=0$.
+    And
+    \begin{gather*}
+        \pmat{\Gamma_{12}^1 \\ \Gamma_{12}^2} = g^{-1}\pmat{0 \\ \frac12g_{22,1}} = g^{-1}\pmat{0 \\ \frac12 G_r} = \pmat{0 \\ \frac12\frac{G_r}G} \\[3pt]
+        \pmat{\Gamma_{22}^1 \\ \Gamma_{22}^2} = g^{-1}\pmat{-\frac12g_{22,1}\\\frac12g_{22,2}} = g^{-1}\pmat{-\frac12 G_r \\ \frac12 G_\theta} = \pmat{-\frac12 G_r \\ \frac12 \frac{G_\theta}G}
+    \end{gather*}
+    Thus
+    \[ \Gamma_{11}^1 = \Gamma_{11}^2 = \Gamma_{12}^1 = 0,\quad \Gamma_{12}^2 = \frac12\frac{G_r}G,\quad \Gamma_{22}^1 = -\frac12G_r,\quad \Gamma_{22}^2 = \frac12\frac{G_\theta}G \]
+    
+    So we have
+    \[ \sigma_{12} = \Gamma_{12}^1\sigma_1 + \Gamma_{12}^2\sigma_2 + b_{12}N = \Gamma_{12}^2\sigma_2 + b_{12}N \]
+    And so
+    \[ \sigma_{122} = \Gamma_{122}^2\sigma_2 + \Gamma_{12}^2\sigma_{22} + b_{122}N + b_{12}N_2 \]
+    The coefficients of $\sigma_1$ in $\sigma_{122}$ are found in $\Gamma_{12}^2\sigma_{22}$ which gives $\Gamma_{12}^2\Gamma_{22}^1$, and from $b_{12}N_2$.
+    Recall that $S(\sigma_2)=-\rho_2$ (recall that $\rho=N\circ\sigma$, which is really what we mean by $N$ above), and recall that the representation of the shape operator by $\set{\sigma_1,\sigma_2}$ is
+    \[ g^{-1}B = \pmat{S_{11} & S_{12} \\ S_{21} & S_{22}} \]
+    meaning that the coefficient of $\sigma_1$ in $-\rho_2$ is $S_{12}$.
+    Thus the coefficient of $\sigma_1$ in $b_{12}N_2$ is $-b_{12}S_{12}$.
+    Thus the coefficient of $\sigma_1$ in $\sigma_{122}$ is
+    \[ \Gamma_{12}^2\Gamma_{22}^1 - b_{12}S_{12} \]
+    
+    Similarly,
+    \[ \sigma_{22} = \Gamma_{22}^1\sigma_1 + \Gamma_{22}^2\sigma_2 + b_{22}N  \]
+    so
+    \[ \sigma_{221} = \Gamma_{22,1}^1\sigma_1 + \Gamma_{22}^1\sigma_{11} + \Gamma_{221}^2\sigma_2 + \Gamma_{22}^2\sigma_{21} + b_{221}N + b_{22}N_1 \]
+    Recall that
+    \begin{align*}
+        \sigma_{11} &= \Gamma_{11}^1\sigma_1 + \Gamma_{11}^2\sigma_2 + b_{11}N = b_{11}N \\
+        \sigma_{21} &= \Gamma_{21}^1\sigma_1 + \Gamma_{21}^2\sigma_2 + b_{21}N = \frac12\frac{G_r}G\sigma_2 + b_{21}N \\
+        N_1 &= -S_{11}\sigma_1 - S_{21}\sigma_2
+    \end{align*}
+    Thus the coefficient of $\sigma_1$ in $\sigma_{221}$ is
+    \[ \Gamma_{22,1}^1 - b_{22}S_{11} \]
+    
+    But since $\sigma_{122}=\sigma_{221}$ we get that
+    \[ \Gamma_{12}^2\Gamma_{22}^1 - b_{12}S_{12} = \Gamma_{22,1}^1 - b_{22}S_{11} \implies \Gamma_{22,1}^1 - \Gamma_{12}^2\Gamma_{22}^1 = b_{22}S_{11} - b_{12}S_{12} \]
+    
+    Now,
+    \[ \pmat{S_{11} & S_{12} \\ S_{21} & S_{22}} = g^{-1}B = \pmat{1 & 0 \\ 0 & \frac1G}\pmat{b_{11} & b_{12} \\ b_{21} & b_{22}} = \pmat{b_{11} & b_{12} \\ \frac{b_{21}}G & \frac{b_{22}}G} \]
+    Thus
+    \[ S_{11} = b_{11},\quad S_{12} = b_{12},\quad S_{21} = \frac{b_{12}}G,\quad S_{22} = \frac{b_{22}}G \]
+    This means that
+    \[ b_{22}S_{11} - b_{12}b_{12} = b_{22}b_{11} - b_{12}b_{12} = \detof B \]
+    meaning that
+    \[ \detof B = \Gamma_{22,1}^1 - \Gamma_{12}^2\Gamma_{22}^1 \]
+    And so the Gaussian curvature of $M$ is
+    \[ K = \detof S = \frac{\detof B}{\detof g} = \frac1G\bigl(\Gamma_{22,1}^1 - \Gamma_{12}^2\Gamma_{22}^1\bigr) \]
+    Recall that $\Gamma_{ij}^k$ is dependent only on $g$ and its derivatives.
+    Thus the Gaussian curvature of $M$ is dependent only on $g$ and its derivatives, as required.
+    \qed
+
+\end{proof}
+
