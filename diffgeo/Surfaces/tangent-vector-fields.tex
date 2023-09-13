@@ -1,0 +1,223 @@
+\begin{defn*}
+
+    Let $M$ be a surface, then a \ppemph{tangent vector field} on $M$ is an assignment of each point on $M$ to a vector in its tangent space, ie it is a function
+    \[ V\colon M\longto\bigcup_{p\in M}T_pM \]
+    which satisfies the condition that for every $p\in M$, $V(p)\in T_pM$.
+
+\end{defn*}
+
+Usually it is unnecessary for us to require a vector field on all of $M$, rather generally we need a tangent vector field to a curve on $M$.
+
+\begin{defn*}
+
+    Let $M$ be a surface and $\gamma\colon[a,b]\longto M$ be a curve on $M$, then a \ppemph{tangent vector field} on $\gamma$ is a function
+    \[ V\colon [a,b]\longto\bigcup_{p\in M}T_pM \]
+    where for every $t\in[a,b]$, $V(t)\in T_{\gamma(t)}M$.
+
+\end{defn*}
+
+\begin{defn*}
+
+    Suppose $V$ is a tangent vector field on the curve $\gamma$, then we define its \ppemph{covariant derivative} to be
+    \[ \bigl(\nabla_\gamma V\bigr)(t) = V'(t) - \iprod{V'(t),N(\gamma(t))}N(\gamma(t)) \]
+    Where $N$ is the unit normal vector to $M$.
+
+\end{defn*}
+
+The covariant derivative is the projection of $V'$ onto $N^\perp=T_\gamma M$ the tangent space of $M$.
+Thus $\nabla_\gamma V\in N^\perp = T_\gamma M$.
+
+\begin{prop*}
+
+    The covariant derivative satisfies the following properties:
+    \benum
+        \item $\nabla_\gamma(V_1+V_2)=\nabla_\gamma V_1+\nabla_\gamma V_2$
+        \item $\nabla_\gamma(f(t)\cdot V)=f'\cdot V+f\cdot\nabla_\gamma V$, where $f$ is a real-valued function.
+        \item $\iprod{V_1',V_2}=\iprod{\nabla_\gamma V_1,V_2}$
+        \item $\frac d{dt}\iprod{V_1,V_2}=\iprod{\nabla_\gamma V_1,V_2}+\iprod{V_1,\nabla_\gamma V_2}$
+    \eenum
+
+\end{prop*}
+
+\begin{proof}
+
+    The first two properties can be easily verified by applying the definition of the covariant derivative.
+    We can also directly verify the third property:
+    \[ \iprod{\nabla_\gamma V_1,V_2} = \iprod{V'_1-\iprod{V_1',N}N,\,V_2} \]
+    now, since $V_2$ is on $T_\gamma M$ and $N$ is orthogonal to this tangent space, we get
+    \[ = \iprod{V'_1,V_2} \]
+    as required.
+    And this implies the fourth property, as $\iprod{V_1,V_2}'=\iprod{V_1',V_2}+\iprod{V_1,V'_2}$.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    We say that a tangent vector field $V$ is a \ppemph{parallel vector field} if at every point, $V'$ is orthogonal to $T_\gamma M$.
+
+\end{defn*}
+
+Notice that if $V$ is parallel then $V'$ and $V$ are orthogonal, which means $\norm V$ is constant.
+(This is since the derivative of $\iprod{V,V}$ is zero, we discussed this before.)
+
+\begin{prop*}
+
+    The norm of a parallel vector field is constant.
+
+\end{prop*}
+
+This means that $V$ is a parallel vector field if and only if its covariant derivative is always zero.
+This is since the covariant derivative is the component of $V'$ on $T_\gamma M$, and $V'$ is orthogonal to $T_\gamma M$ if and only if its component in $T_\gamma M$ is zero.
+Formally,
+\[ V' = \nabla_\gamma V + \iprod{V',N}N \]
+And since $N$ is orthogonal to $T_\gamma M$, $V'$ is orthogonal to $T_\gamma M$ if and only if $\nabla_\gamma V=0$.
+Let us summarize this in the following proposition,
+
+\begin{prop*}
+
+    A tangent vector field is parallel if and only if its covariant derivative is always zero.
+
+\end{prop*}
+
+
+Now, how does one go about computing the covariant derivative?
+Since $V\in T_\gamma M$,
+\[ V=x^1\sigma_1+x^2\sigma_2 = x^i\sigma_i \]
+now recall that the derivative of $\sigma$ is being taken at $\gamma(t)$ on the surface, which is $\beta(t)=\sigma^{-1}\circ\gamma(t)$ in its origin.
+So we mean the derivative of $\sigma$ evaluated at $\beta(t)$, ie $\sigma_i(\beta(t))$.
+Thus
+\[ \frac d{dt}\sigma_i = \frac d{dt}\bigl(\sigma_i(\beta(t))\bigr) = \sigma_{i1}(\beta(t))\dot\beta^1 + \sigma_{i2}(\beta(t))\dot\beta^2 \]
+And so
+\[ V' = \dot x^i\sigma_i + x^i(\sigma_{i1}\dot\beta^1 + \sigma_{i2}\dot\beta^2) = \dot x^i\sigma_i + x^i\dot\beta^j\sigma_{ij} \]
+Now, since $\sigma_i$ is orthogonal to $N$, we get that
+\[ \iprod{V',N} = x^i\dot\beta^j\iprod{\sigma_{ij},N} = x^i\dot\beta^j b_{ij} \]
+So we get that
+\[ \nabla_\gamma V = \dot x^i\sigma_i + x^i\dot\beta^j\sigma_{ij} - x^i\dot\beta^j b_{ij}N \]
+Now let us recall that
+\[ \sigma_{ij} = \Gamma^k_{ij}\sigma_k + b_{ij}N \]
+And so
+\[ \nabla_\gamma V = \dot x^i\sigma_i + x^i\dot\beta^j\Gamma^k_{ij}\sigma_k + \bigl(x^i\dot\beta^j b_{ij} - x^i\dot\beta^j\bigr)N = \dot x^i\sigma_i + x^i\dot\beta^j\Gamma^k_{ij}\sigma_k \]
+Now, we can determine $x^i$ uniquely by the metric $g$, so this can be uniquely determined by $g$.
+We have proven
+
+\begin{prop*}
+
+    The covariant derivative is equal to
+    \[ \nabla_\gamma V = \dot x^k\sigma_k + x^i\dot\beta^j\Gamma^k_{ij}\sigma_k \]
+
+\end{prop*}
+
+\begin{note}
+
+    I have decided to use Einstein summation notation as well as physics notation for derivatives from here onward, since that is what is used in the course and it's important to use and understand it for
+    the sake of the course.
+
+\end{note}
+
+\begin{exam*}
+
+    Recall that
+    \[ \Gamma_{ij}^k = \frac12g^{km}(g_{mi,j}+g_{jm,i}-g_{ij,m}) \]
+    and so if $g=I$ (eg. on a plane), then $g$'s derivatives are zero and so $\Gamma_{ij}^k=0$ and thus
+    \[ \nabla_\gamma V = \dot x^i\sigma_i = \dot x^1\sigma_1 + \dot x^2\sigma_2 \]
+
+\end{exam*}
+
+Now, we know that $V$ is parallel if and only if $\nabla_\gamma V=0$ which is if and only if
+\[ \dot x^k\sigma_k+x^i\dot\beta^j\Gamma_{ij}^k\sigma_k = (\dot x^k+x^i\dot\beta^j\Gamma_{ij}^k)\sigma_k = 0 \]
+This means that we get the system of first order ODEs (the variables are $\dot x^k$),
+\begin{align*}
+    \dot x^1+x^i\dot\beta^j\Gamma_{ij}^1 &= 0 \\
+    \dot x^2+x^i\dot\beta^j\Gamma_{ij}^2 &= 0
+\end{align*}
+So given an initial condition on $x$ (ie. initial conditions on $x^1$ and $x^2$), then there exists a unique solution.
+So given some initial condition $V(t_0)\in T_{\gamma(t_0)}M$, then there exists a unique parallel vector field which satisfies this.
+
+\begin{prop*}
+
+    Let $M$ be a surface and $\gamma$ be a curve on $M$.
+    Then for an initial condition $V_0\in T_{\gamma(t_0)}M$, there exists a unique parallel vector field $V$ on $\gamma$ which satisfies $V(t_0)=V_0$.
+
+\end{prop*}
+
+Now we also claim that this parallel vector field is independent of the parameterization of $\gamma$.
+
+\begin{defn*}
+
+    If $V$ is a tangent vector field to the curve $\gamma$, and $\gamma\circ\phi$ is a reparameterization, then we define the reparameterization of $V$ to simply be $V(\phi(t))$.
+    And we define $\nabla_{\gamma\circ\phi}V$ to be the covariant derivative of the reparameterization of $V$ (otherwise this would not be well-defined).
+
+\end{defn*}
+
+Notice that if $V\circ\phi$ is a reparameterization of $V$, then
+\begin{multline*}
+    \nabla_{\gamma\circ\phi}V = \nabla_{\gamma\circ\phi}(V\circ\phi) = (V\circ\phi)' - \iprod{(V\circ\phi)',N(\gamma\circ\phi)}N(\gamma\circ\phi) =
+    \phi'V'(\phi) - \iprod{\phi'V'(\phi),N(\gamma\circ\phi)}N(\gamma\circ\phi) \\
+    = \phi'(t)\cdot\bigl(\nabla_\gamma V\bigr)(\phi(t))
+\end{multline*}
+
+So we have that
+\[ \nabla_{\gamma\circ\phi}V = \phi'\cdot\nabla_\gamma V(\phi(t)) \]
+Since $\gamma\circ\phi$ is a reparameterization, $\phi'>0$ and is bijective, so $\nabla_{\gamma\circ\phi}V=0$ if and only if $\nabla_\gamma V=0$.
+So we have shown that being parallel is independent of the parameterization of the curve.
+
+\begin{prop*}
+
+    Let $\gamma_1$ and $\gamma_2$ be reparameterizations of the same curve, and $V$ be a tangent vector field for this curve, then $V$ is parallel for $\gamma_1$ if and only if it is parallel for $\gamma_2$.
+
+\end{prop*}
+
+\begin{exam*}
+
+    Suppose $\gamma$ is the natural parameterization of a  curve on $M$, then we know $\gamma'\in T_\gamma M$, so $\gamma'$ is a tangent vector field to $\gamma$ so we can ask what $\nabla_\gamma\gamma'$ is
+    equal to.
+    We know that
+    \[ \gamma'' = \kappa_n N + \kappa_g R_{\frac\pi2}\gamma' \]
+    And so
+    \[ \nabla_\gamma\gamma' = \kappa_n N + \kappa_g R_{\frac\pi2}\gamma' - \iprod{\kappa_n N + \kappa_g R_{\frac\pi2}\gamma',N}N = \kappa_g R_{\frac\pi2}\gamma' \]
+    Let us denote
+    \[ V = R_{\frac\pi2}\gamma' \]
+    And so
+    \[ \nabla_\gamma\gamma' = \kappa_g V \]
+
+    Now, $V$ is also a tangent vector field to $\gamma$ (since $R_{\frac\pi2}$ operates on $T_\gamma M$).
+    Furthermore, we know that $(V,\gamma')$ is a basis for $T_\gamma M$ and so $\iprod{V,\gamma'}=0$ and furthermore
+    \[ 0 = \frac d{dt}\iprod{V,\gamma'} = \iprod{\nabla_\gamma V,\gamma'} + \iprod{V,\nabla_\gamma\gamma'} \]
+    Thus
+    \[ \iprod{\nabla_\gamma V,\gamma'} = -\iprod{V,\nabla_\gamma\gamma'} \]
+    Since $\gamma$ is a natural parameterization, $\norm{\gamma'}=1$ and so $\norm V=1$ as well, thus
+    \[ = -\iprod{V,\kappa_g V} = -\kappa_g \]
+    Now, since $\norm V$ is constant, $V$ is orthogonal with its derivative and so
+    \[ \iprod{\nabla_\gamma V,V} = \iprod{V',V} = 0 \]
+
+    Thus we get the system
+    \begin{align*}
+        \nabla_\gamma\gamma' &= \kappa_g V \\
+        \nabla_\gamma V &= -\kappa_g\gamma' \\ 
+    \end{align*}
+    This is similar to the Frenet-Serret frame for a plane, and when $M$ is a plane these are the same equations.
+
+\end{exam*}
+
+Let $\gamma$ be some curve on $M$, and let us choose some initial unit vector $W(t_0)\in T_{\gamma(t_0)}M$.
+We can then extend this to a unique parallel vector field on $\gamma$, let us denote it $W(t)$.
+Since parallel vector fields have a constant norm, $\norm{W(t)}=\norm{W(t_0)}=1$.
+Furthermore, since $W(t)\in T_{\gamma(t)}M$ which has a basis of $\set{\gamma'(t),V(t)}$ there exists a $\theta(t)$ such that
+\[ W(t) = \cos(\theta(t))\gamma'(t) + \sin(\theta(t))V(t) \]
+We get that
+\[ \nabla_\gamma W = -\theta'\sin(\theta)\gamma' + \cos(\theta)\nabla_\gamma\gamma' + \theta'\cos(\theta)V + \sin(\theta)\nabla_\gamma V \]
+Applying the equations from the above example we get
+\[ = \theta'\cdot\bigl(\cos(\theta)V - \sin(\theta)\gamma'\bigr) + \kappa_g\cdot\bigl(\cos(\theta)V - \sin(\theta)\gamma'\bigr) = (\theta'+\kappa_g)\bigl(\cos(\theta)V - \sin(\theta)\gamma'\bigr) \]
+Now, we know that $W(t)$ is parallel, and so $\nabla_\gamma W=0$.
+Since $V$ and $\gamma'$ are linearly independent, this is if and only if
+\[ \theta'(t) = -\kappa_g(t) \]
+So if we define
+\[ \theta(t) = \theta_0 - \int_{t_0}^t \kappa_g(s)\,ds \]
+Then we get the desired function,
+\[ W(t) = \cos(\theta(t))\gamma'(t) + \sin(\theta(t))V(t) \]
+
+If $W(t_0)$ isn't a unit vector, let $R=\norm{W(t_0)}$ then we instead get that $\frac{W(t)}R$ is still a parallel vector field, whose norm is one.
+Thus we get the result above for $\frac{W(t)}R$, and so
+\[ W(t) = R\cos(\theta(t))\gamma'(t) + R\sin(\theta(t))V(t),\qquad \theta(t) = \theta_0 - \int_{t_0}^t \kappa_g(s)\,ds \]
+\newpage

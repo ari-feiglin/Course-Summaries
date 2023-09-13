@@ -1,0 +1,271 @@
+\begin{defn*}
+
+    Suppose $M$ is a surface and $\gamma\colon[a,b]\longto M$ is a curve on $M$.
+    We define the \ppemph{parallel movement operator} to be the function
+    \[ P_\gamma\colon T_{\gamma(a)}M\longto T_{\gamma(b)}M \]
+    where for every $v_0\in T_{\gamma(a)}M$, let us denote $W_{v_0}$ to be the parallel vector field on $\gamma$ where $W_{v_0}(a)=v_0$ then we define
+    \[ P_\gamma(v_0) = W_{v_0}(b) \]
+
+\end{defn*}
+
+In other words,
+\[ P_\gamma(W_v(a)) = W_v(b) \]
+Now, notice that $W_{\alpha v+\beta u}=\alpha W_v+\beta W_u$, this is since $\alpha W_v+\beta W_u$ is a parallel vector field:
+\[ \nabla_\gamma(\alpha W_v+\beta W_u) = \alpha\nabla_\gamma W_v+\beta\nabla_\gamma W_u = 0 \]
+And also
+\[ \bigl(\alpha W_v+\beta W_u\bigr)(a) = \alpha v+\beta u \]
+So $\alpha W_v+\beta W_u$ is the parallel vector field which starts at $\alpha v+\beta u$, ie. it is $W_{\alpha v+\beta u}$.
+
+\begin{prop*}
+
+    $P_\gamma$ is an orthonormal linear transformation.
+
+\end{prop*}
+
+\begin{proof}
+
+    Firstly, suppose we will show that $P_\gamma$ is a linear transformation.
+    So let $v$ and $u$ be tangent vectors, and $\alpha$ and $\beta$ be scalars, then
+    \[ P_\gamma(\alpha v+\beta u) = W_{\alpha v+\beta u}(b) = \alpha W_v(b) + \beta W_u(b) = \alpha P_\gamma(v) + \beta P_\gamma(u) \]
+    as required.
+    Now, since $W_v$ is a parallel vector field, $\norm{W_v(t)}=\norm{W_v(a)}=\norm v$ for every $a\leq t\leq b$, and in particular $b$.
+    Therefore
+    \[ \norm{P_\gamma(v)} = \norm{W_v(b)} = \norm{W_v(a)} = \norm{v} \]
+    So $P_\gamma$ preserves the norm, and is therefore orthonormal.
+    \qed
+
+\end{proof}
+
+Let us denote $W_v^\gamma$ as the parallel vector field which begins at $v$ on $\gamma$.
+Now, further notice that if $\gamma\circ\phi$ is a reparameterization where $\phi\colon[c,d]\to[a,b]$, then
+\[ W_v^{\gamma\circ\phi}(t) = W_v^\gamma(\phi(t)) \]
+Since $W_v^\gamma\circ\phi$ is a reparameterization of a parallel vector field, it too remains parallel.
+And
+\[ W_v^\gamma(\phi(c)) = W_v^\gamma(a) = v \]
+So by the uniqueness of $W_v^{\gamma\circ\phi}$, it is equal to $W_v^\gamma\circ\phi$.
+Notice then that
+\[ P_{\gamma\circ\phi}(v) = W_v^{\gamma\circ\phi}(d) = W_v^\gamma\circ\phi(d) = W_v^\gamma(b) = P_\gamma(v) \]
+Thus $P_{\gamma\circ\phi}=P_\gamma$.
+
+But if $\gamma\circ\phi$ is an \emph{anti}-reparameterization, ie $\phi'<0$ then $\phi(d)=a$ and $\phi(c)=b$, so if $P_\gamma(v)=W_v^\gamma(b)=u$ then
+\[ W_u^{\gamma\circ\phi} = W_v^\gamma\circ\phi \]
+This is as $W_v^\gamma\circ\phi$ still remains a parallel vector field (our proof for reparameterizations works for anti-reparameterizations), and
+\[ W_u^\gamma\circ\phi(c) = W_v^\gamma(b) = u \]
+So again by the uniqueness of $W_u^{\gamma\circ\phi}$, it is equal to $W_v^\gamma\circ\phi$.
+And then
+\[ P_{\gamma\circ\phi}(u) = W_u^{\gamma\circ\phi}(d) = W_v^\gamma\circ\phi(d) = W_v^\gamma(a) = v \]
+
+\newpage
+Thus
+\[ P_{\gamma\circ\phi}(P_\gamma(v)) = P_{\gamma\circ\phi}(u) = v \]
+and by symmetry (since $\gamma$ is an anti-reparameterization of $\gamma\circ\phi$), we get that
+\[ P_\gamma(P_{\gamma\circ\phi}(u)) = u \]
+So they are inverses, thus we have proven
+
+\begin{prop*}
+
+    Let $P_\gamma$ be the parallel movement operator of $\gamma$.
+    Then if $\gamma\circ\phi$ is a reparameterization of $\gamma$,
+    \[ P_{\gamma\circ\phi} = P_\gamma \]
+    and if $\gamma\circ\phi$ is an anti-reparameterization of $\gamma$,
+    \[ P_{\gamma\circ\phi} = P_\gamma^{-1} \]
+
+\end{prop*}
+
+This should make sense as a reparameterization of the curve should not alter where moving $v$ goes to, but if we reverse the direction of the curve we move the vector to the opposite end.
+
+Now, recall that we showed if $W$ is a parallel vector field on a curve $\gamma$, then the angle between $W$ and $\gamma'$ is given by
+\[ \theta(t) = \theta_0 - \int_{t_0}^t \kappa_g(s)\,ds \]
+Let us denote
+\[ \Delta\theta = \theta(T) - \theta(t_0) = -\int_{t_0}^T \kappa_g(s)\,ds \]
+(Where $\gamma$'s domain is $[t_0,T]$.)
+But if we instead view $W$ as rotating around $\gamma'$, then we get that the angle between $W$ and $\gamma'$ is equal to
+\[ 2\pi-\theta(t) = (2\pi-\theta_0) + \int_{t_0}^t \kappa_g(s)\,ds \]
+This is why sometimes we actually define $\theta(t)$ as above,
+\[ \theta(t) = \theta_0 + \int_{t_0}^t \kappa_g(s) \]
+This is the angle between $\gamma'$ and $W$ (instead of between $W$ and $\gamma'$).
+
+\begin{defn*}
+
+    If $\gamma$ is a closed curve $\gamma\colon[a,b]\longto M$ then $P_\gamma$ forms a linear operator
+    \[ P_\gamma\colon T_p M\longto T_p M \]
+    where $p=\gamma(a)=\gamma(b)$.
+    In this case, $P_\gamma$ is called the \ppemph{holonomy operator}.
+
+\end{defn*}
+
+So if $P_\gamma$ is a holonomy operator, then $P_\gamma(v)$ will equal a rotation of $v$ on $T_pM$ (since $T_pM$ is two-dimensional).
+We know that $W_v$ rotates around $\gamma'$ with at angle of $\theta(t)$, and the total rotation is $\Delta\theta=\theta(T)-\theta(t_0)$, so $P_\gamma(v)$ is equal to the rotation of $v$ with an angle of
+$\Delta\theta$ (or $2\pi-\Delta\theta$ if we utilize the angle between $\gamma'$ and $W$).
+
+\begin{exam*}
+
+    Suppose we'd like to focus on the parallel movement operator on a great circle on a sphere.
+    This is a geodesic connecting two poles on the sphere, let them be $N$ and $S$.
+    Let this geodesic be $\gamma$, then by definition $\gamma''$ is orthogonal to $T_\gamma M$ at every point, which makes $\gamma'$ a parallel movement operator on $\gamma$.
+    Let us divide $\gamma$ into the first geodesic, $\gamma_1$, from $N$ to $S$ and then $\gamma_2$ which is from $S$ to $N$.
+    So
+    \begin{align*}
+        \gamma\colon&[0,2T]\longto M\\
+        \gamma_1\colon&[0,T]\longto M\\
+        \gamma_2\colon&[T,2T]\longto M\\
+    \end{align*}
+
+    To move $\gamma_1'(0)$ over $\gamma$ in parallel, first we move it parallel over $\gamma_1$, and since $\gamma_1'$ is parallel to $\gamma_1$ we get that this goes to $\gamma_1'(T)$.
+    Since $\gamma_1$ and $\gamma_2$ are both parts of the smooth geodesic $\gamma$, we have that $\gamma_2'(T)=\gamma_1'(T)$.
+    And so we now move $\gamma_1'(T)$ over $\gamma_2$ in parallel, since $\gamma_2'$ is parallel to $\gamma_2$ and starts at $\gamma_1'(T)$, this is equal to $\gamma_2'(2T)$.
+
+\end{exam*}
+
+\begin{thrm*}[gaussBonnet,Gauss-Bonnet\ Theorem]
+
+    Given three points $p_1$, $p_2$, and $p_3$ on a surface as well as geodesics $\gamma_1$ from $p_1$ to $p_2$, $\gamma_2$ from $p_2$ to $p_3$, and $\gamma_3$ from $p_3$ to $p_1$, let us define
+    $\alpha_i$ to be the angle created at $p_i$ by this triangle.
+    Then
+    \[ \sum \alpha_i = \pi + \iint_\triangle K\,dA \]
+    where $\triangle$ is the triangle enclosed within $\gamma_1,\gamma_2,\gamma_3$.
+
+\end{thrm*}
+
+Another way to formulate this more formally is that if we define the curve $\gamma$ to be the concatenation of $\gamma_1$, $\gamma_2$, and $\gamma_3$ then at every $p_i$ we are rotating $\pi-\alpha_i$
+clockwise and so we have that $P_\gamma=R_{2\pi-\Delta\theta}$ where
+\[ \Delta\theta = \sum\int_{\gamma_i}\kappa_g(s) + \pi - \alpha_i \]
+and since $\gamma_i$ is a geodesic, its geodesic curvature is zero and so
+\[ \Delta\theta = 3\pi - \sum\alpha_i \]
+And so what the Gauss-Bonnet theorem states is that
+\[ \Delta\theta = 2\pi - \iint_\triangle K\,dA \]
+So in other words, the holonomy operator corresponds to a rotation of $\iint_\triangle K\,dA$.
+
+\begin{proof}
+
+    Firstly let us assume that the entire triangle is contained within a region small enough such that the surface can be parameterized by polar coordinates with respect to $p_1$,
+    \[ \sigma(r,\theta) = \exp_{p_1}(r(\cos\theta w_1+\sin\theta w_2)) \]
+    where $w_1,w_2$ form an orthonormal basis for $T_{p_1}M$.
+    Let us further assume that $p_1$ is the origin (we may shift the surface).
+    Now, we can choose $w_1$ and $w_2$ such that the edge $p_1p_2$ is given by $\gamma_1(s)=\sigma(s,\theta_1)$ and the edge $p_1p_3$ is given by $\gamma_3(s)=\sigma(s,\theta_2)$.
+    So the angle at $p_1$ is $\theta_2-\theta_1$.
+    Now we have that
+    \[ \gamma(s) = \sigma(r(s),\theta(s)) = \sigma\circ\beta(s),\qquad \beta(s) = (r(s),\theta(s)) \]
+    Now we claim that $\dot\theta(s)\neq0$ for every $s$.
+    Assume that $\dot\theta(s_0)=0$ then we have that $\dot\beta(s_0)=(\dot r(s_0),0)$.
+    But the geodesic which goes from $\gamma(s_0)$ to $p_1$ has the same initial conditions as this, which is a contradiction of the uniqueness of geodesics.
+    Since we have assumed $\theta_2>\theta_1$, $\theta$ must increase and so we have that $\dot\theta>0$.
+    In particular, $\theta$ is invertible, so
+    \[ \tilde\beta(t) = \beta\circ\theta^{-1}(t) = \pmat{r\circ\theta^{-1}(t) \\ t} \]
+    is a reparameterization of $\beta$.
+
+    So we have
+    \[ \iint_\triangle K\,dA = \iint_{\sigma^{-1}(\triangle)}K\norm{\sigma_1\times\sigma_2}\,drd\theta = \iint_{\sigma^{-1}(\triangle)}K\sqrt{\det g}\,drd\theta \]
+    Now recall that since $\sigma$ is a normal polar coordinate chart, $\det g=G$ and $K=-\frac{(\sqrt G)_{rr}}{\sqrt G}$ so
+    \[ = -\iint_{\sigma^{-1}(\triangle)}(\sqrt G)_{rr}\,drd\theta \]
+    Now, since $\gamma(s)=\sigma(r(s),\theta(s))$ we have that $\triangle$ is the set $\set{\sigma(s,t)}[\theta_1\leq t\leq\theta_2,\,0\leq s\leq r(t)]$.
+    This is as $\theta$ takes on all values between $\theta_1$ and $\theta_2$.
+    And so
+    \[ = -\int_{\theta_1}^{\theta_2}\int_0^{r(t)}(\sqrt G)_{rr}(r(t),t)\,drdt = \int_{\theta_1}^{\theta_2}-(\sqrt G)_r(r(t),t) + (\sqrt G)_r(0,t)\,dt \]
+
+    Now we claim that $(\sqrt G)_r(0,t)=1$ (really the limit as $r\to0$, as the parameterization is not defined at $r=0$).
+    Now, let $\hat\sigma$ be the normal coordinate chart which gives $\sigma$ as its normal polar coordinate chart, meaning $\sigma(r,\theta)=\hat\sigma(r\cos\theta,r\sin\theta)$.
+    We showed that at $p$ (really $\hat\sigma^{-1}(p)=(0,0)$), $\hat\sigma_1=w_1$ and $\hat\sigma_2=w_2$.
+    And so we have that the second order Taylor series of $\hat\sigma$ is
+    \[ \hat\sigma(u,v) = p + uw_1 + uw_2 + o(\norm{(u,w)}^2) \]
+    Thus
+    \[ \sigma(r,\theta) = p + r\cos\theta w_1 + r\sin\theta w_2 + o(r^2) \]
+    Now we know
+    \[ G=\iprod{\sigma_2,\sigma_2} = r^2 + o(r^2) \]
+    Thus $\sqrt G=r+o(r)$ and so
+    \[ (\sqrt G)_r = 1 + O(r) \]
+    Which means precisely that $(\sqrt G)_r(0,t)=1$ (again meaning as $r\to0$).
+    And so we have that
+    \[ \iint_\triangle K\,dA = \theta_2 - \theta_1 - \int_{\theta_1}^{\theta_2}-(\sqrt G)_r(r(t),r)\,dt \]
+    Let us denote $I=\int_{\theta_1}^{\theta_2}(\sqrt G)_r(r(t),t)\,dt$.
+
+    Recall that we are trying to show
+    \[ \sum\alpha_i = \pi + \iint_\triangle K\,dA = \pi + \alpha_1 - I \]
+    So we are trying to show that 
+    \[ I = \pi - \alpha_2 - \alpha_3 \]
+    Let us denote $\gamma\colon[0,L]\longto M$ where $\gamma(0)=p_2$ and $\gamma(L)=p_3$.
+    Then let $V$ be the parallel vector field on $\gamma$ which moves $V(0)=\sigma_r(q_2)$ (where $q_i=\sigma^{-1}(p_i)$) in parallel.
+    Since $V$ is tangent, it is in $T_\gamma M$ meaning there exist $x^1$ and $x^2$ where
+    \[ V(t) = \sigma_r(\beta(t)) x^1(t) + \sigma_\theta(\beta(t)) x^2(t) \]
+    And we showed that
+    \[ \dot x^k\sigma_k + x^i\dot\beta^j\Gamma_{ij}^k\sigma_k = 0 \]
+    And so for $k=1,2$,
+    \[ \dot x^k + x^i\dot\beta^j\Gamma_{ij}^k \]
+    Now since $g=\pmat{1\\&G}$ we have
+    \[ \dot x^1 + x^i\dot\beta^j\Gamma_{ij}^1 = \dot x^1 - \frac12G_rx^2\dot\beta^2 = 0 \]
+    Since $\sigma_r$ and $\sigma_\theta$ are orthogonal (since $g_{12}=0$), and $g_{ii}=\norm{\sigma_i}^2$ so $\set{\sigma_r,\sigma_\theta/\sqrt G}$ is an orthonormal basis for $T_pM$.
+    And so
+    \[ V(t) = \sigma_r(\beta(t))x^1(t) + \frac{\sigma_\theta(\beta(t))}{\sqrt G(\beta(t))}\sqrt G(\beta(t))x^2(\beta(t)) \]
+    Since $\norm{V(0)}=\norm{\sigma_r(q_2)}=1$, we have that $V$'s norm is always one.
+    Thus since $\sigma_r,\sigma_\theta/\sqrt G$, we have that
+    \[ \pmat{x^1 \\ \sqrt Gx^2} = \pmat{\cos(\alpha(t)) \\ \sin(\alpha(t))} \]
+    Since $V,\sigma,G$ are all smooth, so is $\pmat{x^1\\\sqrt Gx^2}$ and therefore so is $\alpha=\arctan\frac{\sqrt Gx^2}{x^1}$.
+    Now, since
+    \[ 0 = \dot x^1 - \frac12G_rx^2\dot\beta^2 =  -\dot\alpha\sin(\alpha) - \frac12\frac{G_r}{\sqrt G}\dot\beta^2\sin(\alpha) \]
+    Meaning
+    \[ \dot\alpha = -\frac12\frac{G_r}G\dot\beta^2 = -(\sqrt G)_r\dot\beta^2 \]
+    Thus
+    \[ \alpha(L) - \alpha(0) = \int_0^L \dot\alpha(t)\,dt = \int_0^L -(\sqrt G)_r(\beta(t))\cdot\dot\beta^2(t)\,dt = -\int_0^L (\sqrt G)_r(r(t),\theta(t))\dot\theta(t)\,dt \]
+    Subtituting $u=\theta(t)$ we get $d\theta=\dot\theta dt$ (this is valid since $\dot\theta>0$) and so
+    \[ = -\int_0^L (\sqrt G)_r(r(u),u)\,du = -I \]
+    Now, $\alpha(L)=\alpha_2+\alpha_3-\pi$ and $\alpha(0)=0$ so we get that
+    \[ I = \pi - \alpha_2 - \alpha_3 \]
+    as required.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    Let $M$ be a surface, then suppose we take $V$ points on $M$ and connect them with $E$ edges such that $M$ is covered with $F$ triangles, then we define the \ppemph{Euler characteristic} of $M$ to be
+    \[ \chi(M) = V - E + F \]
+    (Such a process of splitting $M$ up into triangles is called a \emph{triangularization}.)
+    The \ppemph{genus} of $M$ is the number of holes in $M$, and is usually denoted $g$.
+
+\end{defn*}
+
+It turns out that $\chi(M)$ is independent of the triangularization and satisfies
+\[ \chi(M) = 2-2g \]
+
+\begin{coro*}[globalGaussBonnet,The\ Global\ Gauss-Bonnet\ Theorem]
+
+    Let $M$ be an orientable compact surface (meaning $N$ is smooth) without a boundary (this does not mean a topological boundary).
+    Then
+    \[ \iint_M K\,dA = 2\pi\chi(M) = 2\pi(2-2g) \]
+    Where $\chi(M)$ is the \ppemph{Euler characteristic} of the surface.
+
+\end{coro*}
+
+\begin{proof}
+
+    We can triangularize $M$ using small enough geodesics.
+    So for each triangle, we have
+    \[ \sum_1^3\text{angles} = \pi + \iint_\triangle K\,dA \]
+    Now if we sum this up for all $F$ triangles, since the triangles cover $M$ we have
+    \[ \sum\text{angles} = \pi\cdot F + \iint_M K\,dA \]
+    Now, every point contributes $2\pi$ to the sum of the angles (since it has triangles coming out of it from every direction), and so we get
+    \[ 2\pi V = \pi F + \iint_M K\,dA \]
+    Thus
+    \[ \iint_M K\,dA = 2\pi\parens{V - \frac12F} \]
+    If we iterate over every triangle and count each edge, we will get to $3F$ (there are three edges per triangle).
+    Now, each edge is in precisely two triangles and so we have counted each edge twice, meaning
+    \[ 2E = 3F \implies E = \frac32F \]
+    This means that
+    \[ V - E + F = V - \frac12F \]
+    Thus we have shown that indeed
+    \[ \iint_M K\,dA = 2\pi\parens{V - E + F} = 2\pi\chi(M) \qed \]
+
+\end{proof}
+
+\begin{coro*}[gaussBonnetAgain,Gauss-Bonnet\ for\ Simply\ Connected\ Domains]
+
+    Let $\beta$ be a regular Jordan curve and let $\gamma=\sigma\circ\beta$.
+    Let us assume that $\gamma$ is counterclockwise with respect to $N$.
+    Then the holonomy operator is
+    \[ P_\gamma = R_{\iint K\,dA} \]
+    In other words
+    \[ \Delta\theta = \int_a^b\kappa_g(t)\,dt = 2\pi - \iint K\,dA \]
+    Where the integral is done over the interior of $\gamma$.
+
+\end{coro*}
+

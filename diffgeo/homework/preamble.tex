@@ -11,39 +11,39 @@
 \def\nul{\noexpand\nul}
 \long\def\afterfi#1\fi{\fi#1}
 
-\newcount\num@coms
-\def\@grabparams#1{%
-    \ifx\nul#1%
-        \expandafter\let\csname com@\the\num@coms\endcsname=\curr@com%
-        \def\curr@com{}%
-        \expandafter\gobble%
-    \else%
-        \ifx#1,%
-            \expandafter\let\csname com@\the\num@coms\endcsname=\curr@com%
-            \def\curr@com{}%
-            \advance\num@coms by 1%
-        \else%
-            \edef\@@{\curr@com}%
-            \edef\curr@com{\@@#1}%
-        \fi%
-    \fi%
-    \@grabparams%
-}
-
-\def\grabvarparams#1{\num@coms=0 \def\curr@com{} \@grabparams #1\nul}
-
-\def\@@@grabparams#1{%
-    \ifx\nul#1%
-        \expandafter\gobble%
-    \else%
-        \edef#1{\csname com@\the\num@coms \endcsname}%
-        \advance\num@coms by 1%
-    \fi%
-    \@@@grabparams%
-}
-
-% \grabparams{e1,e2,...,eN}{\cs1,\cs2,...,\csN} -> \def\cs1{e1} ... \def\csN{eN}
-\def\grabparams#1#2{\grabvarparams{#1} \num@coms=0 \@@@grabparams#2\nul}
+%\newcount\num@coms
+%\def\@grabparams#1{%
+%    \ifx\nul#1%
+%        \expandafter\let\csname com@\the\num@coms\endcsname=\curr@com%
+%        \def\curr@com{}%
+%        \expandafter\gobble%
+%    \else%
+%        \ifx#1,%
+%            \expandafter\let\csname com@\the\num@coms\endcsname=\curr@com%
+%            \def\curr@com{}%
+%            \advance\num@coms by 1%
+%        \else%
+%            \edef\@@{\curr@com}%
+%            \edef\curr@com{\@@#1}%
+%        \fi%
+%    \fi%
+%    \@grabparams%
+%}
+%
+%\def\grabvarparams#1{\num@coms=0 \def\curr@com{} \@grabparams #1\nul}
+%
+%\def\@@@grabparams#1{%
+%    \ifx\nul#1%
+%        \expandafter\gobble%
+%    \else%
+%        \edef#1{\csname com@\the\num@coms \endcsname}%
+%        \advance\num@coms by 1%
+%    \fi%
+%    \@@@grabparams%
+%}
+%
+%% \grabparams{e1,e2,...,eN}{\cs1,\cs2,...,\csN} -> \def\cs1{e1} ... \def\csN{eN}
+%\def\grabparams#1#2{\grabvarparams{#1} \num@coms=0 \@@@grabparams#2\nul}
 
 % ISSUE: non-expandable
 \long\def\@map@#1#2{%
