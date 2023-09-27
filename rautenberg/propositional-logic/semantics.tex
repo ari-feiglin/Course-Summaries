@@ -1,0 +1,194 @@
+Propositional logic is the study of logic removed from interpretation of individual variables and context.
+I will assume that the reader already has experience with propositional logic, as this is something an undergraduate will cover in one of their first courses.
+While this subsection will focus mainly on the semantics of propositional logic, we will begin by defining its {\it syntax},
+
+\def\PV{{\it PV}}
+\def\mF{{\cal F}}
+\bdefn
+
+    Let $\PV$ be an arbitrary set of {\emphcolor propositional variables} (which are regarded as arbitrary symbols).
+    {\emphcolor Propositional formulas} are formulas defined recursively by the following rules,
+    \benum
+        \item Propositional variables in $\PV$ are formulas, called {\emphcolor prime}\addtoindex{prime formula} or {\emphcolor atomic} formulas\addtoindex{atomic formula}%
+        \alsosee{atomic formula}{Prime formula}{prime formula:}.
+        \item If $\alpha$ and $\beta$ are formulas, then so are $(\alpha\land\beta)$, $(\alpha\lor\beta)$, and $\neg\alpha$.
+    \eenum
+    The set of all the formulas constructed in this matter is denoted $\mF$.
+
+\edefn
+
+We can generalize this definition; instead of utilizing only the symbols $\land$ and $\lor$, we can take a general {\it logical signature} $\sigma$ consisting of logical connectives of differing arities.
+We then recursively define $\sigma$-formulas as following: if ${\tt c}$ is an $n$-ary logical connective in $\sigma$, and $\alpha_1,\dots,\alpha_n$ are formulas, then so is
+$$ ({\tt c}\alpha_1,\dots,\alpha_n) $$
+Aleternatively, if we only consider binary and unary connectives, then if ${\tt c}$ is a unary connective, we define ${\tt c}\alpha$ to be a formula, and if $\circ$ is a binary connective, then
+$(\alpha\circ\beta)$ is a formula.
+But we don't have much need for such generalizations, as $\set{\land, \lor, \neg}$ is complete, in the sense that all connectives can be defined using them.
+This is a fact we will discuss soon.
+
+We can define other connectives, for example $\to$ and $\oto$ are used as shorthands:
+$$ (\alpha\to\beta) \coloneqq \neg(\alpha\land\neg\beta),\qquad (\alpha\oto\beta) \coloneqq \bigl((\alpha\to\beta)\land(\beta\to\alpha)\bigr) $$
+We similarly define symbols for false and true:
+$$ \bot \coloneqq (p_1\land\neg p_1),\qquad \top = \neg\bot $$
+
+For readability, we will use the following conventions when writing formulas (this is not a change to the definition of a formula, rather conventions for writing them in order to enhance readability)
+\benum
+    \item We will omit the outermost parentheses when writing formulas, if there are any.
+    \item The order of operations for logical connectives is as follows, from first to last: $\neg,\land,\lor,\to,\oto$.
+    \item We associate $\to$ from the right, meaning $\alpha\to\beta\to\gamma$ is to be read as $\alpha\to(\beta\to\gamma)$.
+    All other connectives associate from the left, for example $\alpha\land\beta\land\gamma$ is to be read as $(\alpha\land\beta)\land\gamma$.
+    \item Instead of writing $\alpha_0\land\alpha_1\land\cdots\alpha_n$, we write $\bigwedge_{i=0}^n\alpha_i$, similar for $\lor$.
+\eenum
+
+Since formulas are constructed in a recursive manner, most of our proofs about them are inductive.
+
+\bprin[title=Principle of Formula Induction, hyperlink=predforminduct]
+
+    Let ${\cal E}$ be a property of strings which satisfies the following conditions:
+    \benum
+        \item ${\cal E}\pi$ for all prime formulas $\pi$,
+        \item If ${\cal E}\alpha$ and ${\cal E}\beta$, then ${\cal E}(\alpha\land\beta)$, ${\cal E}(\alpha\lor\beta)$, and ${\cal E}\neg\alpha$ for all formulas $\alpha,\beta\in{\cal F}$.
+    \eenum
+    Then ${\cal E}\phi$ is true for all formulas $\phi$.
+
+\eprin
+
+An example of this is that every formula $\phi\in{\cal F}$ is either prime, or of one of the following forms
+$$ \phi=\neg\alpha,\quad\phi=(\alpha\land\beta),\quad\phi=(\alpha\lor\beta) $$
+The proof of this is straightforward: let ${\cal E}$ be this property.
+Then trivially, ${\cal E}\pi$ for all prime formulas $\pi$.
+And if ${\cal E}\alpha$ and ${\cal E}\beta$, then of course we have
+$$ {\cal E}\neg\alpha,\quad{\cal E}(\alpha\land\beta),\quad{\cal E}(\alpha\lor\beta) $$
+This is the first step in showing the {\it unique formula reconstruction property}.
+Let us prove a lemma before proving the property itself,
+
+\blemm
+
+    Proper initial segments of formulas are not formulas.
+    Equivalently (by contrapositive), if $\alpha$ and $\beta$ are formulas and $\alpha\xi=\beta\eta$ for arbitrary strings $\xi$ and $\eta$, then $\alpha=\beta$.
+
+\elemm
+
+Let us prove this by induction on $\alpha$.
+If $\alpha$ is a prime formula, suppose that $\beta$ is not a prime formula, then its first character is either $($ or $\neg$, but then $\alpha=($ or $\alpha=\neg$, in contradiction.
+Thus $\beta$ is a prime formula and so $\alpha=\beta$ as they are both a single character.
+Now if $\alpha=(\alpha_1\circ\alpha_2)$, then the first character of $\beta$ must too be $($, so $\beta$ is of the form $(\beta_1*\beta_2)$.
+Thus
+$$ \alpha_1\circ\alpha_2)\xi = \beta_1*\beta_2)\eta $$
+and so by our inductive assumption, $\alpha_1=\beta_1$, and so $\circ=*$, and thus $\alpha_2=\beta_2$ by our inductive assumption again.
+And so $\alpha=\beta$ as required.
+The proof for the case that $\alpha=\neg\alpha'$ is similar.
+\qed
+
+\bprop[title=Unique Formula Reconstruction Property, hyperlink=uniqueformrecon]
+
+    Every compound formula $\phi\in{\cal F}$ is of one of the following forms:
+    $$ \phi=\neg\alpha,\quad\phi=(\alpha\land\beta),\quad\phi=(\alpha\lor\beta) $$
+    For some formulas $\alpha,\beta\in{\cal F}$.
+
+\eprop
+
+We have already shown existence.
+We will now show that this is unique, meaning that $\phi$ can be written uniquely as one of these strings.
+Using the lemma proven above, the proof for uniqueness of the reconstruction property is immediate.
+For example, if $\phi=(\alpha_1\land\beta_1)$ then obviously $\phi$ cannot be written as $\neg\alpha_2$ since $(\neq\neg$, and if $\phi=(\alpha_2\lor\beta_2)$ then by the lemma $\alpha_1=\alpha_2$, and
+so we get that $\land=\lor$ in contradiction.
+And finally if $\phi=(\alpha_2\land\beta_2)$, then again by the lemma, $\alpha_1=\alpha_2$ and $\beta_1=\beta_2$ as required.
+The proof for $\neg$ and $\lor$ are similar.
+\qed
+
+Utilizing formula recursion, we can define functions on formulas.
+For example,
+
+\def\Sf{{\rm Sf}}
+\def\rank{{\rm rank}}
+\def\Var{{\rm Var}}
+
+\bdefn
+
+    For a formula $\phi$, we define $\Sf\phi$ to be the set of all subformulas of $\phi$.
+    This is done recursively:
+    $$ \displaylines{\Sf\pi=\set\pi\hbox{ for prime formulas $\pi$},\cr
+    \Sf\neg\alpha=\Sf\alpha\cup\set\alpha,\quad \Sf(\alpha\circ\beta)=\Sf\alpha\cup\Sf\beta\cup\set{(\alpha\circ\beta)}\hbox{\ \ for a binary logical connective $\circ$}} $$
+
+    Similarly, we can define the {\emphcolor rank}\addtoindex{rank} of a formula $\phi$,
+    $$ \displaylines{\rank\pi=0\hbox{ for prime formulas $\pi$},\cr
+    \rank\neg\alpha=\rank\alpha+1,\quad \rank(\alpha\circ\beta)=\maxof{\rank\alpha,\,\rank\beta}+1\hbox{\ \ for a binary logical connective $\circ$}} $$
+
+    And we can also define the set of variables in $\phi$,
+    $$ \displaylines{\Var\pi=\set\pi\hbox{ for prime formulas $\pi$},\cr
+    \Var\neg\alpha=\Var\alpha,\quad \Var(\alpha\circ\beta)=\Var\alpha\cup\Var\beta\hbox{\ \ for a binary logical connective $\circ$}} $$
+    In all definitions $\circ$ is either $\land$ or $\lor$.
+
+\edefn
+
+\def\truthtable#1#2{%
+    \vtop{\ialign{\hfil\strut\ $##$\ \hfil&&\vrule\ \hfil\strut$##$\ \hfil\crcr%
+        #1\crcr\noalign{\hrule}%
+        #2\crcr
+    }}%
+}
+So now that we have discussed the syntax of propositional logic, it is time to discuss its semantics; how we assign to formulas truth values.
+Recall the truth tables for $\land$, $\lor$, and $\neg$:
+$$ \truthtable{\alpha&\beta&\alpha\land\beta}{1&1&1\cr1&0&0\cr0&1&0\cr0&0&0}\qquad
+\truthtable{\alpha&\beta&\alpha\lor\beta}{1&1&1\cr1&0&1\cr0&1&1\cr0&0&0}\qquad
+\truthtable{\alpha&\neg\alpha}{1&0\cr0&1} $$
+These define how the logical connectives function as functions on $\set{0,1}$.
+
+\bdefn
+
+    A {\emphcolor propositional valuation}\addtoindex{valuation}, or a {\emphcolor propositional model}\addtoindex{model}\alsosee{model}{Valuation}{valuation:}, is a function
+    $$ w\colon\PV\longto\set{0,1} $$
+    We can extend it to a function $w\colon\PV\longto{\cal F}$ as follows:
+    $$ w(\alpha\land\beta)=w\alpha\land w\beta,\quad w(\alpha\lor\beta)=w\alpha\lor w\beta,\quad w\neg\alpha=\neg w\alpha $$
+
+\edefn
+
+Notice that we would need to define, for example, $w(\alpha\to\beta)=w\alpha\to w\beta$ had $\to$ been an element of our logical signature.
+But since $\to$ is defined using $\land$ and $\neg$, we must prove this identity:
+$$ w(\alpha\to\beta) = w\neg(\alpha\land\neg\beta) = \neg w(\alpha\land\neg\beta) = \neg(w\alpha\land\neg w\beta) = w\alpha\to w\beta $$
+This is of course not a coincidence, but a result of the fact that $\alpha\to\beta=\neg(\alpha\land\neg\beta)$ (where $\alpha,\beta\in\set{0,1}$).
+Notice that furthermore,
+$$ w\top=1,\quad w\bot=0 $$
+
+\bprop
+
+    The valuation of a formula is dependent only on its variables.
+    Meaning if $\phi$ is a formula and $w$ and $w'$ are two valuations where $w\pi=w'\pi$ for all $\pi\in\Var\phi$, then $w\phi=w'\phi$.
+
+\eprop
+
+We will prove this by induction on $\phi$.
+For prime formulas, this is obvious as $\Var\phi=\set\phi$ and then $w\phi=w'\phi$ by the proposition's assumption.
+For $\phi=\alpha\land\beta$, we have that
+$$ w\phi = w\alpha\land w\beta = w'\alpha\land w'\beta = w'\phi $$
+where the second equality is our inductive assumption.
+The proof for $\phi=\alpha\lor\beta$ and $\phi=\neg\alpha$ is similar.
+\qed
+
+Let us suppose that $\PV=\set{p_1,p_2,\dots,p_n,\dots}$, then we define ${\cal F}_n$ to be the set of formulas $\phi$ such that $\Var\phi\subseteq\set{p_1,\dots,p_n}$.
+
+\bdefn
+
+    A {\emphcolor boolean function}\addtoindex{boolean function} is a function
+    $$ f\colon\set{0,1}^n\longto\set{0,1} $$
+    for some $n\geq0$.
+    The set of boolean functions of arity $n$ is denoted ${\bf B}_n$.
+    A formula $\phi\in{\cal F}_n$ {\emphcolor represents} a boolean function $f\in{\bf B}_n$ (similarly, $f$ is represented by $\phi$), if for all valuations $w$,
+    $$ w\phi = f(w\vec p\,) \qquad (w\vec p=(wp_1,\dots,wp_n)) $$
+
+\edefn
+
+So for example, $\alpha=p_1\land p_2$ represents the function $f(p,q)=p\land q$.
+This is since
+$$ f(wp_1,wp_2) = wp_1\land wp_2 = w(p_1\land p_2) = w\alpha $$
+
+Since valuations of $\phi\in{\cal F}_n$ are defined by their values on $p_1,\dots,p_n$, $\phi$ represents at most a single function $f$.
+In fact, it represents the function
+$$ \phi^{(n)}(x_1,\dots,x_n) = w\phi $$
+where $w$ is any valuation such that $wp_i=x_i$ (all of these valuations valuate $\phi$ the same).
+Now, notice that ${\cal F}_n\subset{\cal F}_{n+1}$ and ${\bf B}_n\subset{\bf B}_{n+1}$ and so $\phi\in{\cal F}_n$ represents a function in ${\cal B}_{n+1}$ as well.
+But this function is not essentially in ${\cal B}_n$ in the sense that its last argument does not impact its value.
+Formally we say that given a function $f\colon M^n\longto M$, we call its $i$th argument {\it fictional} if for all $x_1,\dots,x_i,\dots,x_n\in M$ and $x_i'\in M$:
+$$ f(x_1,\dots,x_i,\dots,x_n) = f(x_1,\dots,x'_i,\dots,x_n) $$
+An {\it essentially $n$-ary}\addtoindex{essentially $n$-ary function} function is a function with no fictional arguments.
+

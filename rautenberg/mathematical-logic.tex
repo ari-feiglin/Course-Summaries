@@ -1,0 +1,169 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+\parindent=0pt
+
+\input preamble
+\input pdfmsym
+
+\pdfmsymsetscalefactor{10}
+
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\def\coloneqq{\mathrel{{\mathop:}{=}}}
+
+\catcode`_=11
+\def\_addtoindex#1[#2]{%
+    \indexize{category=#1, item=#2, value=\the\pageno, expand value, add hyperlink}%
+}
+\def\addtoindex#1{%
+    \_ifnextchar[ {\_addtoindex{#1}}{\_addtoindex{#1}[]}%
+}
+
+\def\_alsosee#1[#2]#3#4{%
+    \seealso{category=#1, item=#2, dest=#3, hyperlink=#4, index link}%
+}
+\def\alsosee#1{%
+    \_ifnextchar[ {\_alsosee{#1}}{\_alsosee{#1}[]}%
+}
+\catcode`_=8
+
+\def\createfontselector#1#2#3{%
+    \edef#1{%
+        \noexpand\setfont{#2}%
+        \unless\ifnum#3<0 %
+            \fam=#3\relax%
+        \fi%
+    }%
+}
+\createfontselector\rm{rm}0
+\createfontselector\bf{bf}6
+\createfontselector\it{it}8
+\createfontselector\tt{tt}7
+
+\createcounter{math counter}[section]
+
+\def\curvewidth{1.5pt}
+\def\curvebuffer{10pt}
+
+\def\curremphcolor{black}
+{\catcode`_=11
+\gdef\emphcolor{\expanded{\noexpand\_setcolor{}{\curremphcolor}}\setfont{bf}}
+}
+
+\def\printmcount{\the\counter{section}.\the\counter{subsection}.\the\counter{math counter}}
+
+\catcode`_=11
+
+\def\createmathbox#1#2#3#4#5{%
+    \_xp\def\csname _b#1\endcsname[##1]{
+        \mapkeys{%
+            title={%
+                name=_title,
+                default=\novalue%
+            },
+            hyperlink={%
+                name=_hlink,
+                default=\novalue%
+            }%
+        }{##1}%
+        \bppbox{#3}{#4}{#5}%
+        {\globalsetters\advancecounter{math counter}{1}}%
+        \def\curremphcolor{#5}%
+        \hbox{%
+            \emphcolor\printmcount{} #2%
+            \unless\ifx\_title\novalue%
+                \ (\_title)%
+            \fi%
+            \unless\ifx\_hlink\novalue%
+                \_xp\anchor\_xp{\_hlink}%
+                \unless\ifx\_title\novalue%
+                    \addthreedepth{\_title}{\_hlink}%
+                \fi%
+            \fi%
+        }%
+        \medskip%
+    }%
+    \_xp\edef\csname b#1\endcsname{\noexpand\_ifnextchar[ {\_xp\noexpand\csname _b#1\endcsname}{\_xp\noexpand\csname _b#1\endcsname[]}}%
+    \_xp\let\csname e#1\endcsname=\eppbox%
+}
+
+\def\bproof{%
+    \blinedppbox{rgb{1 1 1}}{rgb{0 0 0}}{rgb{0 0 0}}
+    \hbox{\setfont{bf}Proof}
+    \medskip
+}
+\let\eproof=\elinedppbox
+
+\def\blankpp{%
+    \blinedppbox{rgb{1 1 1}}{rgb{0 0 0}}{rgb{0 0 0}}
+}
+\let\eblankpp=\elinedppbox
+
+\catcode`_=8
+
+\createmathbox{defn}{Definition}{rgb{1 .9 .9}}{rgb{1 .3 .3}}{rgb{.8 .1 .1}}
+\createmathbox{thrm}{Theorem}{rgb{.9 .9 1}}{rgb{.3 .3 1}}{rgb{.1 .1 .8}}
+\createmathbox{lemm}{Lemma}{rgb{1 .9 1}}{rgb{1 .3 1}}{rgb{.8 .1 .8}}
+\createmathbox{prop}{Proposition}{rgb{1 .9 1}}{rgb{1 .3 1}}{rgb{.6 .1 .6}}
+\createmathbox{prin}{Principle}{rgb{1 1 .5}}{rgb{.5 .3 0}}{rgb{.5 .3 0}}
+
+\def\qed{%
+    \ifmmode \eqno\mathchar"404%
+    \else%
+        \hskip1cm\penalty0\null\nobreak\hfill$\mathchar"404$%
+        \par\medskip%
+    \fi%
+}
+
+%\def\bdefn{%
+%    \bppbox{rgb{1 .9 .9}}{rgb{1 .3 .3}}{rgb{.8 .1 .1}}
+%    \advancecounter{math counter}{1}
+%    \def\curremphcolor{rgb{.8 .1 0}}
+%    \hbox{\emphcolor\the\counter{section}.\the\counter{subsection}.\the\counter{math counter} Definition}
+%}
+%
+%\def\edefn{
+%    \eppbox
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pageborder{rgb{1 1 .1}}{rgb{1 .4 0}}{5}
+
+\color rgb{.8 .1 0}
+
+{\def\boxshadowcolor{rgb{.8 .8 0}}
+\bppbox{rgb{1 1 .5}}{rgb{1 .4 0}}{rgb{.8 .1 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Mathematical Logic}
+    \smallskip
+    \centerline{\setfont{it}A summary of ``A Concise Introduction to Mathematical Logic'', W. Rautenberg}
+    \centerline{\setfont{it}Ari Feiglin}
+
+\eppbox
+}
+
+\bigskip
+
+\section*{Contents}
+
+\tableofcontents
+
+\vfill\break
+
+\color{black}
+
+\section{Propositional Logic}
+
+\subsection{Semantics of Propositional Logic}
+
+\input propositional-logic/semantics
+
+\vfill\break
+
+\index
+
+\bye
+
