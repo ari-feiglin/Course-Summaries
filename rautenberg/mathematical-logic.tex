@@ -8,10 +8,16 @@
 
 \pdfmsymsetscalefactor{10}
 
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
 \let\to=\varrightarrow
 \let\longto=\longvarrightarrow
 \let\oto=\varleftrightarrow
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
 \def\coloneqq{\mathrel{{\mathop:}{=}}}
+
+\mathchardef\nvDash="3532
+\mathchardef\varnothing="53F
 
 \catcode`_=11
 \def\_addtoindex#1[#2]{%
@@ -63,8 +69,8 @@
                 name=_title,
                 default=\novalue%
             },
-            hyperlink={%
-                name=_hlink,
+            name={%
+                name=_name,
                 default=\novalue%
             }%
         }{##1}%
@@ -76,13 +82,15 @@
             \unless\ifx\_title\novalue%
                 \ (\_title)%
             \fi%
-            \unless\ifx\_hlink\novalue%
-                \_xp\anchor\_xp{\_hlink}%
+            \unless\ifx\_name\novalue%
+                \_xp\anchor\_xp{\_name}%
+                \_xp\xdef\csname math@\_name\endcsname{\printmcount}%
                 \unless\ifx\_title\novalue%
-                    \addthreedepth{\_title}{\_hlink}%
+                    \addthreedepth{\_title}{\_name}%
                 \fi%
             \fi%
         }%
+        \hrule height\z@\relax%
         \medskip%
     }%
     \_xp\edef\csname b#1\endcsname{\noexpand\_ifnextchar[ {\_xp\noexpand\csname _b#1\endcsname}{\_xp\noexpand\csname _b#1\endcsname[]}}%
@@ -101,10 +109,21 @@
 }
 \let\eblankpp=\elinedppbox
 
+\def\bnote{%
+    \bppbox{rgb{1 1 .5}}{rgb{.5 .4 0}}{rgb{.5 .4 0}}
+    \hbox{\setfont{bf}Note}
+    \medskip
+}
+\let\enote=\eppbox
+
+\def\__refmath#1{\gotoanchor{#1}{\csname math@#1\endcsname}}
+\def\_refmath[#1]#2{\gotoanchor{#2}{#1 \csname math@#2\endcsname}}
+\def\refmath{\_ifnextchar[ {\_refmath}{\__refmath}}
 \catcode`_=8
 
 \createmathbox{defn}{Definition}{rgb{1 .9 .9}}{rgb{1 .3 .3}}{rgb{.8 .1 .1}}
 \createmathbox{thrm}{Theorem}{rgb{.9 .9 1}}{rgb{.3 .3 1}}{rgb{.1 .1 .8}}
+\createmathbox{coro}{Corollary}{rgb{.9 .9 1}}{rgb{.3 .3 1}}{rgb{.1 .1 .8}}
 \createmathbox{lemm}{Lemma}{rgb{1 .9 1}}{rgb{1 .3 1}}{rgb{.8 .1 .8}}
 \createmathbox{prop}{Proposition}{rgb{1 .9 1}}{rgb{1 .3 1}}{rgb{.6 .1 .6}}
 \createmathbox{prin}{Principle}{rgb{1 1 .5}}{rgb{.5 .3 0}}{rgb{.5 .3 0}}
@@ -143,13 +162,16 @@
     \centerline{\setfont{it}Ari Feiglin}
 
 \eppbox
-}
 
 \bigskip
 
+\bppbox{rgb{1 1 .5}}{rgb{1 .4 0}}{rgb{.8 .1 0}}
 \section*{Contents}
 
 \tableofcontents
+\eppbox
+
+}
 
 \vfill\break
 

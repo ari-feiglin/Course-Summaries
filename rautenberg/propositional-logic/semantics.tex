@@ -12,12 +12,15 @@ While this subsection will focus mainly on the semantics of propositional logic,
         \item Propositional variables in $\PV$ are formulas, called {\emphcolor prime}\addtoindex{prime formula} or {\emphcolor atomic} formulas\addtoindex{atomic formula}%
         \alsosee{atomic formula}{Prime formula}{prime formula:}.
         \item If $\alpha$ and $\beta$ are formulas, then so are $(\alpha\land\beta)$, $(\alpha\lor\beta)$, and $\neg\alpha$.
+        $(\alpha\land\beta)$ is called the {\emphcolor conjunction}\addtoindex{conjunction} of $\alpha$ and $\beta$, $(\alpha\lor\beta)$ their {\emphcolor disjunction}\addtoindex{disjunction}, and
+        $\neg\alpha$ the {\emphcolor negation}\addtoindex{negation} of $\alpha$.
     \eenum
     The set of all the formulas constructed in this matter is denoted $\mF$.
 
 \edefn
 
-We can generalize this definition; instead of utilizing only the symbols $\land$ and $\lor$, we can take a general {\it logical signature} $\sigma$ consisting of logical connectives of differing arities.
+We can generalize this definition; instead of utilizing only the symbols $\land$ and $\lor$, we can take a general {\it logical signature}\addtoindex{signature}[logical] $\sigma$ consisting of logical
+connectives of differing arities.
 We then recursively define $\sigma$-formulas as following: if ${\tt c}$ is an $n$-ary logical connective in $\sigma$, and $\alpha_1,\dots,\alpha_n$ are formulas, then so is
 $$ ({\tt c}\alpha_1,\dots,\alpha_n) $$
 Aleternatively, if we only consider binary and unary connectives, then if ${\tt c}$ is a unary connective, we define ${\tt c}\alpha$ to be a formula, and if $\circ$ is a binary connective, then
@@ -41,7 +44,7 @@ For readability, we will use the following conventions when writing formulas (th
 
 Since formulas are constructed in a recursive manner, most of our proofs about them are inductive.
 
-\bprin[title=Principle of Formula Induction, hyperlink=predforminduct]
+\bprin[title=Principle of Formula Induction, name=predforminduct]
 
     Let ${\cal E}$ be a property of strings which satisfies the following conditions:
     \benum
@@ -79,7 +82,7 @@ And so $\alpha=\beta$ as required.
 The proof for the case that $\alpha=\neg\alpha'$ is similar.
 \qed
 
-\bprop[title=Unique Formula Reconstruction Property, hyperlink=uniqueformrecon]
+\bprop[title=Unique Formula Reconstruction Property, name=uniqueformrecon]
 
     Every compound formula $\phi\in{\cal F}$ is of one of the following forms:
     $$ \phi=\neg\alpha,\quad\phi=(\alpha\land\beta),\quad\phi=(\alpha\lor\beta) $$
@@ -191,4 +194,253 @@ But this function is not essentially in ${\cal B}_n$ in the sense that its last 
 Formally we say that given a function $f\colon M^n\longto M$, we call its $i$th argument {\it fictional} if for all $x_1,\dots,x_i,\dots,x_n\in M$ and $x_i'\in M$:
 $$ f(x_1,\dots,x_i,\dots,x_n) = f(x_1,\dots,x'_i,\dots,x_n) $$
 An {\it essentially $n$-ary}\addtoindex{essentially $n$-ary function} function is a function with no fictional arguments.
+
+\bdefn
+
+    Two formulas $\alpha$ and $\beta$ are {\emphcolor equivalent}\addtoindex{equivalence}[of propositional formulas] if for every valuation $w$, $w\alpha=w\beta$.
+    This is denoted $\alpha\equiv\beta$.
+
+\edefn
+
+It is immediate that $\alpha$ and $\beta$ are equivalent if and only if they represent the same function.
+A simple example of equivalence is $\alpha\equiv\neg\neg\alpha$.
+The following equivalences are easy to verify and the reader should already be familiar with them ($\alpha$, $\beta$, and $\gamma$ are formulas):
+
+\medskip
+{\tabskip=0pt plus 1fil
+\halign to \hsize{\hfil$#$\tabskip=0pt&${}\equiv#$\hfil\tabskip=.5cm&\hfil$#$\tabskip=0pt&${}\equiv#$\hfil\tabskip=.5cm&(#)\hfil\tabskip=0pt plus 1fil\cr
+    \alpha\land(\beta\land\gamma)&\alpha\land\beta\land\gamma & \alpha\lor(\beta\lor\gamma) & \alpha\lor\beta\gamma & associativity\cr
+    \alpha\land\beta&\beta\land\alpha & \alpha\lor\beta&\beta\lor\alpha & commutativity\cr
+    \alpha\land\alpha&\alpha & \alpha\lor\alpha&\alpha & idempotency\cr
+    \alpha\land(\alpha\lor\beta)&\alpha & \alpha\lor\alpha\land\beta&\alpha & absorption\cr
+    \multispan4\hfil$\alpha\land(\beta\lor\gamma)\equiv\alpha\land\beta\lor\alpha\land\gamma$\hfil & $\land$-distributivity\cr
+    \multispan4\hfil$\alpha\lor\beta\land\gamma\equiv(\alpha\lor\beta)\land(\alpha\lor\gamma)$\hfil & $\lor$-distributivity\cr
+    \neg(\alpha\land\beta)&\neg\alpha\lor\neg\beta & \neg(\alpha\lor\beta)&\neg\alpha\land\neg\beta & de Morgan rules\cr
+}}
+
+Furthermore,
+$$ \alpha\lor\neg\alpha \equiv \top,\quad \alpha\land\neg\alpha\equiv\bot,\quad \alpha\land\top\equiv\alpha\lor\bot\equiv\alpha $$
+Since $\alpha\to\beta=\neg(\alpha\land\neg\beta)$, by de Morgan rules, this is equivalent to 
+$$ \equiv\neg\alpha\lor\neg\neg\beta \equiv \neg\alpha\lor\beta $$
+Notice that
+$$ \alpha\to\beta\to\gamma \equiv \neg\alpha\lor(\beta\to\gamma) \equiv \neg\alpha\lor\neg\beta\lor\gamma \equiv \neg(\alpha\land\beta)\lor\gamma \equiv \alpha\land\beta\to\gamma $$
+Inductively, we see that
+$$ \alpha_1\to\cdots\to\alpha_n\to\gamma \equiv \alpha_1\land\cdots\land\alpha_n\to\gamma $$
+We could go on, but I assume you get the point.
+
+$\equiv$ is obviously reflexive, symmetric, and transitive: therefore it is an equivalence relation on ${\cal F}$.
+But moreso it is a {\it congruence relation}\addtoindex{congruence relation}, meaning it respects connectives.
+Explicitly, for all formulas $\alpha,\beta,\alpha',\beta'\in{\cal F}$:
+$$ \alpha\equiv\alpha',\,\beta\equiv\beta' \implies \alpha\land\beta\equiv\alpha'\land\beta',\,\alpha\lor\beta\equiv\alpha'\lor\beta',\,\neg\alpha\equiv\neg\alpha' $$
+Congruence relations will be discussed in more generality in later sections.
+Inductively, we can prove the following result:
+
+\bthrm[title=The Replacement Theorem]
+
+    Suppose $\alpha$ and $\alpha'$ are equivalent formulas.
+    Let $\phi$ be some other formula, and define $\phi'$ to be the result of replacing all occurences of $\alpha$ within $\phi$ by $\alpha'$.
+    Then $\phi\equiv\phi'$.
+
+\ethrm
+
+This will be proven more generally later.
+
+\bdefn
+
+    Prime formulas and their negations are called {\emphcolor literals}\addtoindex{literal}.
+    A formula of the form $\alpha_1\lor\cdots\lor\alpha_n$ where each $\alpha_i$ is a conjunction of literals is called a {\emphcolor disjunctive normal form}\addtoindex{disjunctive normal form}.
+    And similarly a formula of the form $\alpha_1\land\cdots\land\alpha_n$ where each $\alpha_i$ is a disjunction of literals is called a {\emphcolor conjunctive normal form}\addtoindex{conjunctive normal
+    form}.
+    We will use the abreviations DNF and CNF for disjunctive and conjunctive normal forms, respectively.
+
+\edefn
+
+So a DNF is a formula of the form
+$$ \bigvee_{i=1}^n\bigwedge_{j=1}^{m_i}\ell_{i,j} $$
+where for every $i,j$, $\ell_{i,j}$ is a literal: a formula of the form $p_{i,j}$ or $\neg p_{i,j}$ for some prime formula $p_{i,j}$.
+Similarly a CNF is a formula of the form
+$$ \bigwedge_{i=1}^n\bigvee_{j=1}^{m_i}\ell_{i,j} $$
+
+Let us temporarily introduce the following notation: for a prime formula $p$, let
+$$ p^1 \coloneqq p,\qquad p^0 \coloneqq \neg p $$
+This allows us to more concisely state and prove the following theorem:
+
+\bthrm
+
+    Every boolean function $f\in{\bf B}_n$ for $n>0$ is representable by the DNF
+    $$ \alpha_f \coloneqq \bigvee_{f(\vec x)=1}p_1^{x_1}\land\cdots\land p_n^{x_n} $$
+    and a CNF
+    $$ \beta_f \coloneqq \bigwedge_{f(\vec x)=0}p_1^{\neg x_1}\land\cdots\land p_n^{\neg x_n} $$
+
+\ethrm
+
+Let $w$ be a valuation and $\vec p=(p_1,\dots,p_n)$ then
+$$ w\alpha_f = \bigvee_{f(\vec x)=1}wp_1^{x_1}\land\cdots\land wp_n^{x_n} $$
+Notice that $wp^x$ is equal to $1$ if and only if $wp=x$: suppose $x=0$ then $wp^x=\neg wp$, which is equal to $1$ if and only if $wp=0=x$, and similar for $x=1$.
+Thus $w\alpha_f=1$ if and only if there exists a $\vec x$ such that $f(\vec x)=1$ and $wp_1^{x_1}\land\cdots\land wp_n^{x_n}=1$, meaning that for each $i$, $wp_i=x_i$.
+This means that $\vec x=w\vec p$, and so $f(w\vec p)=f(\vec x)=1$.
+
+Similarly if $f(w\vec p)=1$ then let $\vec x=w\vec p$, and then $wp_1^{x_1}\land\cdots\land wp_n^{x_n}=1$ and $f(\vec x)=1$, so $w\alpha_f=1$.
+So $w\alpha_f=f(w\vec p)$ for all valuations $w$, which means that $f$ is represented by $\alpha_f$, as required.
+The proof for $\beta_f$ is similar.
+\qed
+
+Notice that since every formula represents a boolean function, which by above can be represented by a DNF and a CNF, we get that every formula is equivalent to a DNF and a CNF.
+
+\bcoro[name=dnfandcnf]
+
+    Every formula is equivalent to a DNF and a CNF.
+
+\ecoro
+
+\bdefn
+
+    A logical signature $\sigma$ is {\emphcolor functional complete} if every boolean function is representable by a formula in this signature.
+
+\edefn
+
+By \refmath[corollary]{dnfandcnf}, $\set{\neg,\land,\lor}$ is functional complete.
+Since
+$$ \alpha\lor\beta \equiv \neg(\neg\alpha\land\neg\beta),\quad \alpha\land\beta \equiv \neg(\neg\alpha\lor\neg\beta) $$
+$\set{\neg,\land}$ and $\set{\neg,\lor}$ are both functional complete.
+Thus in order to show that a logical signature $\sigma$ is functional complete, it is sufficient to show that $\neg$ and $\land$ or $\neg$ and $\lor$ can be represented by $\sigma$.
+
+\bnote
+
+    If $f$ is a function, instead of writing $f(x)$ or $fx$, many times we will instead write $x^f$.
+    This is more concise and may reduce confusion in the case that $x$ itself is a string wrapped in parentheses.
+
+\enote
+
+Let us define the function $\delta\colon{\cal F}\longto{\cal F}$ on formulas recursively by $p^\delta=p$ for prime formulas $p$ and
+$$ (\neg\alpha)^\delta = \neg\alpha^\delta,\quad (\alpha\land\beta)^\delta = \alpha^\delta\lor\beta^\delta,\quad (\alpha\lor\beta)^\delta=\alpha^\delta\land\beta^\delta $$
+Alternatively, $\alpha^\delta$ is simply the result of swapping all occurences of $\land$ with $\lor$, and all occurences of $\lor$ with $\land$.
+$\alpha^\delta$ is called the {\it dual formula}\addtoindex{dual formula} of $\alpha$.
+Notice that the dual formula of a DNF is a CNF, and vice versa.
+
+Now, suppose $f\in{\bf B}_n$, then let us define the {\it dual} of $f$,
+$$ f^\delta(\vec x) \coloneqq \neg f(\neg\vec x) $$
+where $\neg\vec x=(\neg x_1,\dots,\neg x_n)$.
+Notice that $\delta$ is idempotent:
+$$ f^{\delta^2}(\vec x) = \neg f^\delta(\neg\vec x) = \neg\neg f(\neg\neg\vec x) = f(\vec x) $$
+
+\bthrm[title=The Duality Principle for Two-Valued Logic, name=dualityprinciple]
+
+    If $\alpha$ represents the function $f$, then $\alpha^\delta$ represents $f^\delta$.
+
+\ethrm
+
+We will prove this by induction on $\alpha$.
+If $\alpha=p$ is prime, then this is trivial.
+Now suppose that $\alpha$ and $\beta$ represent $f_1$ and $f_2$ respectively.
+Then $\alpha\land\beta$ represents $f(\vec x)=f_1(\vec x)\land f_2(\vec x)$, and $(\alpha\land\beta)^\delta=\alpha^\delta\lor\beta^\delta$ represents $g(\vec x)=f_1^\delta(\vec x)\lor f_2^\delta(\vec x)$
+by the induction hypothesis.
+Now,
+$$ f^\delta(\vec x) = \neg f(\neg\vec x) = \neg(f_1(\neg\vec x)\land f_2(\neg\vec x)) = \neg f_1(\neg\vec x)\lor\neg f_2(\neg\vec x) = f_1^\delta(\vec x)\lor f_2^\delta(\vec x) = g(\vec x) $$
+So $f^\delta=g$, meaning that $(\alpha\land\beta)^\delta$ does indeed represent $f^\delta$.
+The proof for $\alpha\lor\beta$ is similar.
+Now suppose $\alpha$ represents $f$, then $\neg\alpha$ represents $\neg f$, and $\alpha^\delta$ represents $f^\delta$ by the induction hypothesis.
+And so $(\neg\alpha)^\delta=\neg\alpha^\delta$ represents $\neg f^\delta$, which is equal to $(\neg f)^\delta$ since
+$$ (\neg f)^\delta(\vec x) = (\neg\neg f)(\neg\vec x) = \neg(\neg f(\neg\vec x)) = \neg f^\delta(\vec x) $$
+And so $(\neg\alpha)^\delta$ represents $(\neg f)^\delta$, as required.
+\qed
+
+\bdefn
+
+    Suppose $\alpha$ is a formula and $w$ is a valuation.
+    Instead of writing $w\alpha=1$, we now write $w\vDash\alpha$, and this is read as ``{\it $w$ satisfies $\alpha$}''.
+    If $X$ is a set of formulas, we write $w\vDash X$ if $w\vDash\alpha$ for all $\alpha\in X$, and $w$ is called a {\emphcolor propositional model}\addtoindex{model}[propositional] for $X$.
+    A formula $\alpha$ (respectively a set of formulas $X$) is {\emphcolor satisfiable}\addtoindex{satisfiable} if there is some valuation $w$ such that $w\vDash\alpha$ (respectively $w\vDash X$).
+    $\vDash$ is called the {\emphcolor satisfiability relation}\addtoindex{satisfiability relation}.
+
+\edefn
+
+$\vDash$ has the following immediate properties:
+
+\medskip
+\tabskip=0pt plus 1fil
+\halign to \hsize{\hfil$#$\tabskip=0pt&${}\iff#$\hfil\tabskip=.5cm&\hfil$#$\tabskip=0pt&${}\iff#$\hfil\tabskip=0pt plus 1fil\cr
+    w\vDash p & wp=1\ (p\in\PV) & w\vDash\alpha & w\nvDash\alpha\cr
+    w\vDash\alpha\land\beta & w\vDash\alpha\hbox{ and }w\vDash\beta & w\vDash\alpha\lor\beta & w\vDash\alpha\hbox{ or }w\vDash\beta\cr
+}
+\medskip
+These properties uniquely define $\vDash$, meaning we could have defined $\vDash$ recursively by these properties.
+
+Notice that
+$$ w\vDash\alpha\to\beta \iff \hbox{if }w\vDash\alpha\hbox{ then }w\vDash\beta $$
+This is due to the definition of $\to$ coinciding with our common usage of implication.
+Had we not defined $\to$, but instead added it to our logical signature, this above equivalence would have to be taken in the definition of the satisfiability relation (when axiomized by the above
+properties).
+
+\bdefn
+
+    $\alpha$ is {\emphcolor logically valid}, or a {\emphcolor tautology}\addtoindex{tautology}, if $w\vDash\alpha$ for all valuations $w$.
+    This is abbreviated by $\vDash\alpha$.
+    A formula which cannot be satisfied; ie. for all valuations $w$, $w\nvDash\alpha$; is called a {\emphcolor contradiction}\addtoindex{contradiction}\alsosee{contradiction}{Tautology}{tautology:}.
+
+\edefn
+
+For example, $\alpha\lor\neg\alpha$ is a tautology, while $\alpha\land\neg\alpha$ and $\alpha\oto\neg\alpha$ are contradictions for all formulas $\alpha$.
+Notice that the negation of a tautology is a contradiction and vice versa.
+$\top$ is a tautology and $\bot$ is a contradiction.
+
+The following are important tautologies of implication (keep in mind how $\to$ associates from the right):
+
+\medskip
+\tabskip=0pt plus 1fil
+\halign to \hsize{$#$\hfil\tabskip=.5cm&(#)\hfil\tabskip=0pt plus 1fil\cr
+    p\to p & self-implication\cr
+    (p\to q)\to(q\to r)\to(p\to r) & chain rule\cr
+    (p\to q\to r)\to(q\to p\to r) & exchange of premises\cr
+    p\to q\to p & premise change\cr
+    (p\to q\to r)\to(p\to q)\to(p\to r) & Frege's formula\cr
+    ((p\to q)\to p)\to p & Peirce's formula\cr
+}
+\medskip
+
+\bdefn
+
+    Suppose $X$ is a set of formulas and $\alpha$ a formula, we say that $\alpha$ is a {\emphcolor logical consequence}\addtoindex{consequence relation}%
+    \alsosee{consequence relation}{Satisfiability relation}{satisfiability relation:} if $w\vDash\alpha$ for every model $w$ of $X$.
+    In other words,
+    $$ w\vDash X\implies w\vDash\alpha $$
+    This is denoted $X\vDash\alpha$.
+
+\edefn
+
+Notice that $\vDash$ here is used for logical consequence (the consequence relation), and we used it before as the symbol for the satisfiability relation.
+Context will make it clear as to its meaning.
+We use the notation $\alpha_1,\dots,\alpha_n\vDash\beta$ to mean $\set{\alpha_1,\dots,\alpha_n}\vDash\beta$.
+This justifies the notation for tautologies: $\alpha$ is a tautology if and only if $\varnothing\vDash\alpha$ (since every valuation models $\varnothing$), which is shortened by the above notation to
+$\vDash\alpha$.
+
+And we also use $X\vDash\alpha,\beta$ to mean $X\vDash\alpha$ and $X\vDash\beta$.
+And $X,\alpha\vDash\beta$ to mean $X\cup\set\alpha\vDash\beta$.
+
+The following are examples of logical consequences
+$$ \displaylines{
+    \alpha,\beta\vDash\alpha\land\beta,\quad\alpha\land\beta\vDash\alpha,\beta\cr
+    \alpha,\alpha\to\beta\vDash\beta\cr
+    X\vDash\bot\implies X\vDash\alpha\quad\hbox{for all formulas $\alpha$}\cr
+    X,\alpha\vDash\beta,\,X,\neg\alpha\vDash\beta\implies X\vDash\beta\cr
+} $$
+The final example is true because if $w\vDash X$ then either $w\vDash\alpha$ or $w\vDash\neg\alpha$, and in either case $w\vDash\beta$.
+
+Let us now state some obvious properties of the consequence relation:
+
+\medskip
+\tabskip=0pt plus 1fil
+\halign to \hsize{$#$\hfil\tabskip=.5cm&({\it#})\hfil\tabskip=0pt plus 1fil\cr
+    \alpha\in X \implies X\vDash\alpha & reflexivity\cr
+    X\vDash\alpha\hbox{ and }X\subseteq X'\implies X'\vDash\alpha & monotonicity\cr
+    X\vDash Y\hbox{ and }Y\vDash\alpha\implies X\vDash\alpha & transitivity\cr
+}
+
+\bdefn
+
+    A {\emphcolor propositional substitution}\addtoindex{substitution}[propositional] is a mapping from prime formulas to formulas, $\sigma\colon\PV\longto{\cal F}$, which is extended to a mapping between
+    formulas $\sigma\colon{\cal F}\longto{\cal F}$ recursively:
+    $$ (\alpha\land\beta)^\sigma = \alpha^\sigma\land\beta^\sigma,\quad (\alpha\lor\beta)^\sigma = \alpha^\sigma\lor\beta^\sigma,\quad (\neg\alpha)^\sigma = \neg\alpha^\sigma $$
+
+\edefn
 
