@@ -17,6 +17,7 @@
 \def\coloneqq{\mathrel{{\mathop:}{=}}}
 
 \mathchardef\nvDash="3532
+\mathchardef\nvdash="3530
 \mathchardef\varnothing="53F
 
 \catcode`_=11
@@ -48,7 +49,7 @@
 \createfontselector\it{it}8
 \createfontselector\tt{tt}7
 
-\createcounter{math counter}[section]
+\createcounter{math counter}[subsection]
 
 \def\curvewidth{1.5pt}
 \def\curvebuffer{10pt}
@@ -77,7 +78,7 @@
         \bppbox{#3}{#4}{#5}%
         {\globalsetters\advancecounter{math counter}{1}}%
         \def\curremphcolor{#5}%
-        \hbox{%
+        \hbox to\hsize{%
             \emphcolor\printmcount{} #2%
             \unless\ifx\_title\novalue%
                 \ (\_title)%
@@ -86,10 +87,11 @@
                 \_xp\anchor\_xp{\_name}%
                 \_xp\xdef\csname math@\_name\endcsname{\printmcount}%
                 \unless\ifx\_title\novalue%
+                    \_xp\xdef\csname math@\_name\endcsname{\_title}%
                     \addthreedepth{\_title}{\_name}%
                 \fi%
             \fi%
-        }%
+        \hfil}%
         \hrule height\z@\relax%
         \medskip%
     }%
@@ -147,6 +149,19 @@
 %    \eppbox
 %}
 
+\newcount\gentzencount
+\def\gentzen#1#2{%
+    \,\vcenter{%
+        \tabskip=.15cm\relax%
+        \gentzencount=1\relax%
+        \offinterlineskip%
+        \halign{\strut\hfil$\displaystyle{##}$\hfil&&\global\advance\gentzencount by 1\relax\vrule\kern.15cm$\displaystyle{##}$\cr%
+            #1\cr\noalign{\hrule\kern1\jot}%
+            \multispan{\the\gentzencount}\hfil$#2$\hfil\cr
+        }%
+    }\,%
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \pageborder{rgb{1 1 .1}}{rgb{1 .4 0}}{5}
@@ -182,6 +197,10 @@
 \subsection{Semantics of Propositional Logic}
 
 \input propositional-logic/semantics
+
+\subsection{Propositional Calculi}
+
+\input propositional-logic/calculi
 
 \vfill\break
 

@@ -441,6 +441,72 @@ Let us now state some obvious properties of the consequence relation:
     A {\emphcolor propositional substitution}\addtoindex{substitution}[propositional] is a mapping from prime formulas to formulas, $\sigma\colon\PV\longto{\cal F}$, which is extended to a mapping between
     formulas $\sigma\colon{\cal F}\longto{\cal F}$ recursively:
     $$ (\alpha\land\beta)^\sigma = \alpha^\sigma\land\beta^\sigma,\quad (\alpha\lor\beta)^\sigma = \alpha^\sigma\lor\beta^\sigma,\quad (\neg\alpha)^\sigma = \neg\alpha^\sigma $$
+    If $X$ is a set of formulas, we define
+    $$ X^\sigma = \set{\phi^\sigma}[\phi\in X] $$
 
 \edefn
+
+Besides being intuitively important, the following proposition gives more insight into the usefulness of substitutions:
+
+\bprop
+
+    Let $X$ be a set of formulas, and $\alpha$ a formula.
+    Then
+    $$ X\vDash\alpha\implies X^\sigma\vDash\alpha^\sigma $$
+    Thus in a sense consequence is invariant under substitution.
+
+\eprop
+
+Let $w$ be a valuation, then we define $w^\sigma$ as follows:
+$$ w^\sigma p = wp^\sigma $$
+for prime formulas $p$.
+Now we claim that
+$$ w\vDash\alpha^\sigma \iff w^\sigma\vDash\alpha $$
+We will prove this by induction on $\alpha$.
+In the case that $\alpha=p$ is prime, then $w\vDash p^\sigma$ if and only if $wp^\sigma=w^\sigma p=1$, and so this is if and only if $w^\sigma\vDash p$.
+Now by induction,
+$$ w\vDash(\alpha\land\beta)^\sigma \iff w\vDash\alpha^\sigma\hbox{ and }w\vDash\beta^\sigma \iff w^\sigma\vDash\alpha\hbox{ and } w^\sigma\vDash\beta \iff w^\sigma\vDash\alpha\land\beta $$
+where the second equivalence is due to the induction hypothesis.
+The proof for formulas of the form $\alpha\lor\beta$ and $\neg\alpha$ proceed in a similar fashion.
+
+Now, suppose $w\vDash X^\sigma$.
+This is if and only if $w\vDash\phi^\sigma$ for all $\phi\in X$, which is if and only if $w^\sigma\vDash\phi$ by above.
+So $w\vDash X^\sigma$ if and only if $w^\sigma\vDash X$.
+And so if $X\vDash\alpha$ then let $w\vDash X^\sigma$, then $w^\sigma\vDash X$ meaning $w^\sigma\vDash\alpha$ and so $w\vDash\alpha^\sigma$ by above.
+So $X^\sigma\vDash\alpha^\sigma$ as required.
+\qed
+
+These four properties,
+
+\medskip
+\tabskip=0pt plus 1fil
+\halign to \hsize{$#$\hfil\tabskip=.5cm&({\it#})\hfil\tabskip=0pt plus 1fil\cr
+    \alpha\in X \implies X\vDash\alpha & reflexivity\cr
+    X\vDash\alpha\hbox{ and }X\subseteq X'\implies X'\vDash\alpha & monotonicity\cr
+    X\vDash Y\hbox{ and }Y\vDash\alpha\implies X\vDash\alpha & transitivity\cr
+    X\vDash\alpha\implies X^\sigma\vDash\alpha^\sigma & substitution invariance\cr
+}
+\medskip
+
+are what define general consequence relations, and form the basis for a general theory of logical systems.
+Another property is
+$$ X\vDash\alpha \implies X_0\vDash\alpha\hbox{ for some finite $X_0\subseteq X$}\quad (\hbox{\it finitary}) $$
+We will show in the next subsection that this is a property of our consequence relation.
+
+Another property is the property
+$$ X,\alpha\vDash\beta \iff X\vDash\alpha\to\beta $$
+termed the {\it semantic deduction theorem}\addtoindex{deduction theorem}[semantic].
+Let us prove the first direction: suppose $w$ is a model of $X$, then if $w\vDash\alpha$ it is a model of $X\cup\set\alpha$ and so $w\vDash\beta$.
+So we have shown that if $w\vDash\alpha$, then $w\vDash\beta$, meaning $w\vDash\alpha\to\beta$ and so $X\vDash\alpha\to\beta$.
+end for the converse, if $w\vDash X,\alpha$ then it is a model of $X$ and so $w\vDash\alpha,\alpha\to\beta$ and thus $w\vDash\beta$.
+
+We can show by induction a generalization of this:
+$$ X,\alpha_1,\dots,\alpha_n\vDash\beta \iff X\vDash\alpha_1\to\cdots\to\alpha_n\to\beta \iff X\vDash \alpha_1\land\cdots\land\alpha_n\to\beta $$
+The induction step is simple: take $X'=X\cup\set{\alpha_1}$ we get by our induction hypothesis,
+\multlines{
+    X,\alpha_1,\dots,\alpha_n\vDash\beta \iff X',\alpha_2,\dots,\alpha_n\vDash\beta \iff X,\alpha_1\vDash\alpha_2\to\cdots\to\alpha_n\to\beta&
+    \iff X\vDash\alpha_1\to\alpha_2\to\cdots\to\alpha_n\to\beta
+}
+as required.
+The deduction theorem makes proving many tautologies relating to implication much easier.
 
