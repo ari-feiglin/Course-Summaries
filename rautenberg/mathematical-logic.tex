@@ -18,7 +18,10 @@
 
 \mathchardef\nvDash="3532
 \mathchardef\nvdash="3530
+\mathchardef\nless="3504
 \mathchardef\varnothing="53F
+
+\def\vsim{\mathrel{\vrule height 6.994pt width.3pt depth0pt\relax\mkern-1.25mu\raise1.6625pt\hbox{$\m@th\scriptstyle\sim$}}}
 
 \catcode`_=11
 \def\_addtoindex#1[#2]{%
@@ -162,6 +165,8 @@
     }\,%
 }
 
+\footline={}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \pageborder{rgb{1 1 .1}}{rgb{1 .4 0}}{5}
@@ -192,15 +197,30 @@
 
 \color{black}
 
+\pageno=1
+\newif\ifpageodd
+\pageoddtrue
+\headline={%
+    \hbox to \hsize{\color{black}%
+        \ifpageodd\hfil{\it\currsubsection\quad\bf\folio}\global\pageoddfalse%
+        \else{\bf\folio\quad\it\currsubsection}\hfil\global\pageoddtrue\fi%
+    }%
+}
+
+
 \section{Propositional Logic}
 
 \subsection{Semantics of Propositional Logic}
 
 \input propositional-logic/semantics
 
-\subsection{Propositional Calculi}
+\subsection{Gentzen Calculi}
 
-\input propositional-logic/calculi
+\input propositional-logic/gentzen-calculi
+
+\subsection{Hilbert Calculi}
+
+\input propositional-logic/hilbert-calculi
 
 \vfill\break
 
