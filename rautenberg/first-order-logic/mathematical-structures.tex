@@ -1,0 +1,55 @@
+Our first step in studying first order logic (which will be defined later) is defining the general notion of a {\it mathematical structure}.
+Mathematical structures (also known as first order structures) give a useful generalization of many of the algebraic and relational objects mathematicians study.
+
+\bdefn
+
+    A {\emphcolor extralogical signature}\addtoindex{signature}[extralogical] is a set $\sigma$ of symbols of three types: function symbols, relational symbols, and constant symbols.
+    Function symbols and relational symbols are also given an {\emphcolor arity}\addtoindex{arity}, a positive integer.
+
+    Formally, we can view $\sigma$ as a tuple: $\sigma=(\sigma_f,\sigma_r,\sigma_c,{\sf ar})$, where $\sigma_f$ is a set of function symbols, $\sigma_r$ is a set of relational symbols, and $\sigma_c$ is a
+    set of constant symbols (meaning that they are all just sets of symbols).
+    Further assume that $\sigma_f$, $\sigma_r$, and $\sigma_c$ are all disjoint.
+    ${\sf ar}$ is a function mapping symbols in $\sigma_f$ and $\sigma_r$ to positive integers.
+
+\edefn
+
+\bdefn
+
+    Let $\sigma$ be an extralogical signature (for short, a signature), {\emphcolor mathematical structure}\addtoindex{mathematical structure} over $\sigma$ (for short, a $\sigma$-structure) is a pair
+    ${\cal A}=(A,\sigma^{\cal A})$ where $A$ is some set, called the {\emphcolor domain} of the structure, and $\sigma^{\cal A}$ is an {\emphcolor interpretation} of $\sigma$.
+    This means that for every function symbol $f\in\sigma$, $\sigma^{\cal A}$ consists of an operation $f^{\cal A}\colon A^{{\sf ar}(f)}\longto A$, for every relational symbol $r\in\sigma$, $\sigma^{\cal A}$
+    contains a relation $r^{\cal A}\subseteq A^{{\sf ar}(r)}$, and for every constant symbol $c\in\sigma$, $\sigma^{\cal A}$ contains a constant $c^{\cal A}\in A$.
+
+    Constants may be viewed as $0$-ary operations.
+
+    The domain of a mathematical structure ${\cal A}$ will always be denoted by $A$.
+
+\edefn
+
+We now define some general notions relating to structures.
+
+Suppose $A\subseteq B$, and $f$ is an $n$-ary operation on $B$.
+Then $A$ is {\it closed under $f$} if $f(A^n)\subseteq A$, meaning that for every $\vec a\in A^n$, $f\vec a\in A$.
+If $n=0$, ie. if $f$ is a constant $c$, then this simply means that $c\in A$.
+It is obvious that the intersection of a family of sets closed under $f$ is itself closed under $f$, and thus we can discuss the smallest set closed under $f$.
+For example, ${\bb N}$ is closed under $+$ (when viewed as a binary operation of ${\bb N}$, ${\bb Q}$, etc.), but not under $-$.
+
+Suppose $A\subseteq B$ again, and $r^B$ is an $n$-ary relation on $B$.
+Then the {\it restriction} of $r^B$ to $A$ is the $n$-ary relation $r^A=r^B\cap A^n$.
+For example the restriction of $<^{\bb Z}$, the standard order of ${\bb Z}$, to ${\bb N}$ is $<^{\bb N}$, the standard order of ${\bb N}$.
+If $f^B$ is an $n$-ary operation on $B$ and $A\subseteq B$ is closed under $f^B$, then we define $f^B$'s restriction to $A$ to be the operation $f^A\vec a=f^B\vec a$.
+
+So if ${\cal B}$ is a $\sigma$-structure and $A\subseteq B$ is closed under all operations (including constants), then $A$ can be given the structure of a $\sigma$-structure naturally: define
+${\cal A}=(A,\sigma^{\cal A})$ where for $f\in\sigma_f$ take $f^{\cal A}=f^A$ the restriction of $f^{\cal B}$ to $A$, for $r\in\sigma_r$ take $r^{\cal A}=r^A$ the restriction of $r^{\cal B}$ to $A$, and
+for $c\in\sigma_c$ take $c^{\cal A}=c^{\cal B}$.
+${\cal A}$ is called a {\it substructure}\addtoindex{substructure} of ${\cal B}$, denoted ${\cal A}\subseteq{\cal B}$.
+
+Note that not every subset $A\subseteq B$ can be extended to a substructure of ${\cal B}$.
+For example, $\set1\subseteq{\bb Z}$ but if the signature $\sigma$ is taken to include the constant $0$, then since $\set1$ does not contain $0^{\bb Z}=0$ it cannot be extended to a substructure.
+And similarly if $\sigma$ includes $+$, then since $\set+$ is not closed under $+$, it cannot be extended to a substructure.
+
+Suppose ${\cal A}$ is a $\sigma$-structure and $\sigma_0\subseteq\sigma$ is another extralogical signature (meaning $\sigma_{0_x}\subseteq\sigma_x$ for $x=f,r,c$ and ${\sf ar}_0({\sf s})={\sf ar}({\sf s})$
+for all relational and function symbols ${\sf s}\in\sigma_0$).
+Then we define the $\sigma_0$-structure ${\cal A}_0$ where the interpretation of each symbol ${\sf s}\in\sigma_0$ is ${\sf s}^{{\cal A}_0}={\sf s}^{\cal A}$.
+${\cal A}_0$ is called the {\it $\sigma_0$-reduct}\addtoindex{mathematical structure}[reduct] of ${\cal A}$, and conversely ${\cal A}$ is called the {\it $\sigma$-expansion}%
+\addtoindex{mathematical structure}[expansion] of ${\cal A}_0$.

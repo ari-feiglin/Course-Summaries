@@ -6,7 +6,7 @@ In this subsection we will define another form of sequent calculus.
     Now, let $\Gamma$ be a set of {\emphcolor rules of inference}, predicates of the form $R\in\Lambda^n\times\Lambda$ for $n>0$, where $R((\phi_1,\dots,\phi_n),\phi)$ which is to be understood as
     ``{\it if $\phi_1,\dots,\phi_n$ then $\phi$}''.
 
-    If $X\subseteq{\cal F}$ is a set of formulas, then a {\emphcolor proof}\addtoindex{proof} is a sequence $\Phi=(\phi_0,\dots,\phi_n)$ where for every $i$, $\phi_i$ is either in $X\cup\Gamma$ or there
+    If $X\subseteq{\cal F}$ is a set of formulas, then a {\emphcolor proof}\addtoindex{proof} is a sequence $\Phi=(\phi_0,\dots,\phi_n)$ where for every $i$, $\phi_i$ is either in $X\cup\Lambda$ or there
     exists a rule of inference $R\in\Gamma$ and indexes $i_1,\dots,i_n<i$ such that $R((\phi_{i_1},\dots,\phi_{i_n}),\phi)$.
     In such a case, $\phi_n$ is termed {\emphcolor derivable} (or {\emphcolor provable}) from $X$, and is written $X\vsim\phi_n$ ($\vsim$ to differentiate it from the derivability relation $\vdash$ from
     the previous subsection).
@@ -18,8 +18,8 @@ Hilbert-style calculi will use the following axiom scheme $\Lambda$:
 \medskip
 \tabskip=0pt plus 1fil
 \halign to \hsize{$#$\hfil\tabskip=2cm&$#$\hfil\tabskip=0pt plus 1fil\cr
-    \Lambda1\quad (\alpha\to\beta\to\gamma)\to(\alpha\to\beta)\to\alpha\to\beta & \Lambda2\quad \alpha\to\beta\to\alpha\land\beta\cr
-    \Lambda3\quad \alpha\land\beta\to\alpha,\quad\alpha\land\beta\to\beta & \Lambda3\quad (\alpha\to\neg\beta)\to\beta\to\neg\alpha\cr
+    \Lambda1\quad (\alpha\to\beta\to\gamma)\to(\alpha\to\beta)\to\alpha\to\gamma & \Lambda2\quad \alpha\to\beta\to\alpha\land\beta\cr
+    \Lambda3\quad \alpha\land\beta\to\alpha,\quad\alpha\land\beta\to\beta & \Lambda4\quad (\alpha\to\neg\beta)\to\beta\to\neg\alpha\cr
 }
 
 And there is only a single rule of inference: $R((\alpha,\alpha\to\beta),\beta)$ called {\it modus ponens}, abbreviated MP.
@@ -32,4 +32,128 @@ Since if $\Phi_1=(\phi_0,\dots,\phi_n)$ is a proof of $\alpha$, and $\Phi_2=(\ph
 $$ \Phi=(\phi_0,\dots,\phi_n,\phi'_0,\dots,\phi'_m,\beta) $$
 is a proof of $\alpha\to\beta$.
 
+\bprop[title=Principle of Induction for $\vsim$, name=vsiminduct]
+
+    Let $X$ be a set of formulas and ${\cal E}$ a property of formulas.
+    Then if
+    \benum
+        \item ${\cal E}\alpha$ is true for all $\alpha\in X\cup\Lambda$, and
+        \item ${\cal E}\alpha$ and ${\cal E}\alpha\to\beta$ implies ${\cal E}\beta$ for all formulas $\alpha$, $\beta$.
+    \eenum
+    Then $X\vsim\alpha$ implies ${\cal E}\alpha$.
+
+\eprop
+
+We will prove this by induction on $n$, the length of the proof of $\alpha$.
+If $n=1$ then $\alpha$ is in $X\cup\Lambda$ and so by assumption ${\cal E}\alpha$.
+Now suppose $\Phi=(\phi_0,\dots,\phi_n)$ is a proof of $\alpha=\phi_n$.
+If $\alpha\in X\cup\Lambda$ then by assumption ${\cal E}\alpha$.
+Otherwise $\Phi$ must contain formulas of the form $\alpha_i$ and $\alpha_i\to\alpha$.
+Since initial segments of proofs are themselves proofs, by our inductive hypothesis ${\cal E}\phi_i$ for $i<n$.
+And thus ${\cal E}\alpha_i$ and ${\cal E}\alpha_i\to\alpha$ and so ${\cal E}\alpha$ as required.
+\qed
+
+This can obviously be generalized to a principle of induction for general rules of inferences, where the second condition is replaced with a general notion of closure under rules of inference.
+
+Now we can show that ${\vsim}\subseteq{\vDash}$, meaning if $X\vsim\alpha$ then $X\vDash\alpha$ by defining the property ${\cal E}\alpha\coloneqq X\vDash\alpha$.
+Since $\Lambda$ contains only tautologies, for every $\alpha\in X\cup\Lambda$, $X\vDash\alpha$ meaning ${\cal E}\alpha$ for all $\alpha\in X\cup\Lambda$.
+And if $X\vDash\alpha$ and $X\vDash\alpha\to\beta$ then we know $X\vDash\beta$.
+So ${\cal E}$ satisfies the inductive properties stated above, meaning $X\vsim\alpha$ implies $X\vDash\alpha$ as required.
+
+Now, obviously $\vsim$ is reflexive, monotonic, and transitive.
+Reflexivity follows directly from its definition.
+Monotonicity follows because a proof in $X$ is also a proof in $X\subseteq X'$.
+And transitivity follows because if $X\vsim Y$ and $Y\vsim\alpha$, then by concatenating the proofs of $\phi\in Y$ in $X$ together with the proof of $\alpha$ in $Y$ gives a proof of $\alpha$ in $X$.
+
+Our goal for the remainder of this subsection is showing that ${\vsim}={\vDash}$, we will do this by showing that ${\vdash}\subseteq{\vsim}$.
+As explained above, $\vsim$ is reflexive and monotonic, meaning it satisfies (IS) and (MR) of the Gentzen-style calculus $\vdash$.
+
+\blemm
+
+    \benum
+        \item If $X\vsim\alpha\to\neg\beta$ then $X\vsim\beta\to\neg\alpha$
+        \item $\vsim\alpha\to\beta\to\alpha$
+        \item $\vsim\alpha\to\alpha$
+        \item $\vsim\alpha\to\neg\neg\alpha$
+        \item $\vsim\beta\to\neg\beta\to\alpha$
+    \eenum
+
+\elemm
+
+\benum
+    \item By $\Lambda4$, we have $X\vsim(\alpha\to\neg\beta)\to\beta\to\neg\alpha$, and since $X\vsim\alpha\to\neg\beta$ by modus ponens we get $X\vsim\beta\to\neg\alpha$.
+    \item By $\Lambda3$, $\vsim\beta\land\neg\alpha\to\neg\alpha$, and so by (1) we have $\vsim\alpha\to\neg(\beta\land\neg\alpha)=\alpha\to\beta\to\alpha$.
+    \item Let $\gamma=\alpha$ and $\beta=\alpha\to\alpha$, then $\Lambda1$ gives
+    $$ \vsim(\alpha\to(\alpha\to\alpha)\to\alpha)\to(\alpha\to\alpha\to\alpha)\to\alpha\to\alpha $$
+    We know by (2), $\vsim\alpha\to(\alpha\to\alpha)\to\alpha$ and $\vsim\alpha\to\alpha\to\alpha$, so by applying modus ponens twice we get $\vsim\alpha\to\alpha$.
+    \item Since $\vsim\neg\alpha\to\neg\alpha$ by (3), and applying (1) gives $\vsim\alpha\to\neg\neg\alpha$.
+    \item By $\Lambda3$, $\vsim\neg\beta\land\neg\alpha\to\neg\beta$, applying (1) gives $\vsim\beta\to\neg(\neg\beta\to\neg\alpha)=\beta\to\neg\beta\to\alpha$.
+    \qed
+\eenum
+
+Since $\Lambda3$ gives $\alpha\land\beta\to\alpha,\beta$, $\vsim$ satisfies $(\land2)$ of $\vdash$.
+$\Lambda2$ gives $\alpha\to\beta\to(\alpha\land\beta)$ and so by applying MP twice, we get $\alpha,\beta\vsim\alpha\land\beta$ and so $\vsim$ satisfies $(\land1)$ of $\vdash$.
+Now by (5) of the above lemma, since $\vsim\alpha\to\neg\alpha\to\beta$, by applying MP twice we get that $X,\alpha,\neg\alpha\vsim\beta$ for all formulas $\beta$.
+By transitivity, this means that $X\vsim\alpha,\neg\alpha$ implies $X\vsim\beta$.
+Thus $\vsim$ satisfies (IS), (MR), $(\land1)$, $(\land2)$, and $(\neg1)$ of $\vdash$.
+We will now do a bit more work to show that it also satisfies $(\neg2)$.
+
+\blemm[title=The Deduction Theorem, name=deductthrm]
+
+    $X,\alpha\vsim\gamma$ implies $X\vsim\alpha\to\gamma$.
+
+\elemm
+
+We will prove this using the principle of induction for $\vsim$.
+Let ${\cal E}\gamma$ mean $X\vsim\alpha\to\gamma$, we will show that $X,\alpha\vsim\gamma$ implies ${\cal E}\gamma$ by showing ${\cal E}$ is closed under the inductive properties stated in the
+\refmath{vsiminduct}.
+If $\gamma\in\Lambda\cup X\cup\set\alpha$, if $\gamma=\alpha$ then we showed above that $X\vsim\alpha\to\alpha$.
+Otherwise if $\gamma\in X\cup\Lambda$ then $X\vsim\gamma$ and $X\vsim\gamma\to\alpha\to\gamma$, so by MP $X\vsim\alpha\to\gamma$ meaning ${\cal E}\gamma$ as required.
+
+Now, if ${\cal E}\beta$ and ${\cal E}\beta\to\gamma$, meaning $X\vsim\alpha\to\beta$ and $X\vsim\alpha\to\beta\to\gamma$.
+Then by $\Lambda1$, applying MP twice gives $X\vsim\alpha\to\gamma$ as required.
+\qed
+
+\blemm
+
+    $\vsim\neg\neg\alpha\to\alpha$
+
+\elemm
+
+By $\Lambda3$ and MP, we have $\neg\neg\alpha\land\neg\alpha\vsim\neg\alpha,\neg\neg\alpha$.
+Let $\tau$ be any formula where $\vsim\tau$, then since we have already verified rule $(\neg1)$, $\neg\neg\alpha\land\neg\alpha\vsim\neg\tau$.
+And so by the deduction theorem, $\vsim\neg\neg\alpha\land\neg\alpha\to\neg\tau$.
+We showed above that this means $\vsim\tau\to\neg(\neg\neg\alpha\land\neg\alpha)$, and since $\vsim\tau$ by MP we get $\vsim\neg(\neg\neg\alpha\land\neg\alpha)=\neg\neg\alpha\to\alpha$ as required.
+\qed
+
+\blemm
+
+    $\vsim$ also satisfies rule $(\neg2)$ of the Gentzen-style calculus $\vdash$.
+
+\elemm
+
+This is the rule that $X,\alpha\vsim\beta$ and $X,\neg\alpha\vsim\beta$ implies $X\vsim\beta$.
+If $X,\alpha\vsim\beta$ and $X,\neg\alpha\vsim\beta$ then $X,\alpha\vsim\neg\neg\beta$ and $X,\neg\alpha\vsim\neg\neg\beta$.
+By the deduction theorem, this means $X\vsim\alpha\to\neg\neg\beta,\neg\alpha\to\neg\neg\beta$.
+And thus $X\vsim\neg\beta\to\neg\alpha,\neg\beta\to\neg\neg\alpha$.
+Thus MP yields $X,\neg\beta\vsim\neg\alpha,\neg\neg\alpha$.
+So let $\vsim\tau$ and so by $(\neg1)$, we get $X,\neg\beta\vsim\neg\tau$, and so again by the deduction theorem, $X\vsim\neg\beta\to\neg\tau$, meaning $X\vsim\tau\to\neg\neg\beta$.
+Since $\vsim\tau$ by MP we get $X\vsim\neg\neg\beta$ and since $X\vsim\neg\neg\beta\to\beta$, by MP we get $X\vsim\beta$ as required.
+\qed
+
+\bthrm[title=The Completeness Theorem, name=completenessthrm]
+
+    $X\vsim\alpha$ if and only if $X\vDash\alpha$.
+    More suggestively,
+    $$ {\vsim} = {\vDash} $$
+
+\ethrm
+
+We have already shown ${\vsim}\subseteq{\vDash}$.
+Since $\vsim$ satisfies all the basic rules of $\vdash$, ${\vdash}\subseteq{\vsim}$ (by $\vdash$'s principle of induction).
+Now since ${\vdash}={\vDash}$, we get that ${\vDash}\subseteq{\vsim}\subseteq{\vDash}$, and so ${\vsim}={\vDash}$.
+\qed
+
+It is important to note that $\Lambda$ is sufficient to obtain all tautologies only because $\to$ was defined via $\neg$ and $\land$.
+Had it been taken as just another connective, we would've needed to add axioms to $\Lambda$ stating the relation between $\to$ and $\neg$ and $\land$.
 

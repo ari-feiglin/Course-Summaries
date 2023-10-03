@@ -1,0 +1,727 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    General TeX Utilities     %
+%  (Much credit to Plante <3)  %
+%                              %
+%     Slurp - April, 2022      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\catcode`@=11
+
+\def\gobble#1{}
+\def\nul{\noexpand\nul}
+\long\def\afterfi#1\fi{\fi#1}
+
+% ISSUE: non-expandable
+\long\def\@map@#1#2{%
+    \ifx\nul#2%
+        \let\next=\gobble%
+    \else%
+        #1{#2}%
+        \let\next=\@map@%
+    \fi%
+    \next{#1}%
+}
+
+\long\def\@map@#1#2{%
+	\ifx\nul#2%
+	\else%
+		\afterfi#1{#2}%
+		\@map@{#1}%
+	\fi%
+}
+
+% Suppose tokens is a list of tokens: t1 t2 t3 ... tN
+% \map{\cs}{tokens} -> \cs{t1}\cs{t2}...\cs{\tN}
+\long\def\map#1#2{\@map@{#1}#2\nul}
+
+\long\def\@twomap@#1#2#3{%
+	\ifx\nul#3%
+	\else%
+		\afterfi #1{#2}{#3}%
+		\@twomap@{#1}%
+	\fi%
+}
+
+% \twomap{\cs}{t1t2...t(2n-1)t(2n)} -> \cs{t1}{t2}...\cs{t(2n-1)}\cs{t(2n)}
+\long\def\twomap#1#2{\@twomap@{#1}#2\nul\nul}
+
+%% Various flavors of repeat %%
+
+% \repeatit{num}{\cs} -> \cs\cs...\cs (num times)
+\def\repeatit#1#2{%
+    \relax\ifnum #1=0%
+        \expandafter\gobble
+    \else%
+        \afterfi{#2%
+        \expandafter\repeatit\expandafter{\the\numexpr #1-1\relax}{#2}}%
+    \fi%
+}
+
+\def\@prepeat#1#2#3{%
+    \relax\ifnum #1>#2%
+    \else%
+        \afterfi #3{#1}%
+        \expandafter\@prepeat\expandafter{\the\numexpr #1+1\relax}{#2}{#3}%
+    \fi%
+}
+
+% \prepeat{num}{\cs} -> \cs{1}\cs{2}...\cs{num}
+\def\prepeat#1#2{\@prepeat{1}{#1}{#2}}
+
+% \repeated{num}{\cs}{x} -> \cs{\cs{...\cs{x}}...} num groups
+\def\repeated#1#2#3{%
+    \relax\ifnum #1=0%
+        #3%
+    \else%
+        #2{\repeated{\the\numexpr #1-1}{#2}{#3}}%
+    \fi%
+}
+
+\newcount\@len
+\def\@len@#1{%
+    \ifx\nul#1%
+        \let\next=\relax%
+    \else%
+        \ifx#1\ %
+        \else%
+            \advance\@len by 1%
+            \let\next=\@len@%
+        \fi%
+    \fi%
+    \next%
+}
+
+\def\len@norm#1{\@len=0 \@len@ #1\nul}
+\def\len@star#1{\len@norm{#1} \the\@len}
+
+% \len{str} -> puts the length of <str> into the register \@len
+% \len*{str} -> calls \len{str} then \the\@len
+\def\len{\@ifstar \len@star \len@norm}
+
+% \smean{cs} -> \meaning of cs and friends
+\def\@smean#1{\ifcsname #1\endcsname \hangindent=2cm \hangafter=1 \noindent$\underline{\hbox{\tt\detokenize\expanded{{#1}}}}$: \expandafter\meaning\csname #1\endcsname \par\fi}
+\def\smean#1{\bgroup\tt\frenchspacing
+    \@smean{#1} \@smean{#1 } \@smean{@#1} \@smean{@@#1} \@smean{@@@#1} \@smean{@#1@}
+\egroup%
+}
+
+% \literal<parameter text>{<replacement text>} -> defines and calls a function literal by the given parameter and replacement texts
+\def\literal{\afterassignment\@function@liter@l \def\@function@liter@l}
+
+% \fontuse <font name> -> switches font to <font name>
+\def\fontuse{\afterassignment\@temp@font \font\@temp@font=}
+
+\def\gobbletwo#1#2{}
+\def\gobblethree#1#2#3{}
+
+\def\@mapparamto#1#2{%
+	\expandafter\ifx\csname #1\endcsname\empty%
+		\expandafter\def\csname #1\endcsname{#2}%
+	\else%
+		\errmessage{mapparam->@mapparamto: macro not defined as empty}%
+	\fi%
+}
+
+\def\@mapparam@test@next{%
+	\ifx\@next\nul%
+		\expandafter\gobbletwo%
+	\else%
+		\ifx,\@next%
+			\expandafter\gobblethree%
+		\fi%
+	\fi%
+	\@mapparam
+}
+
+\def\@@mapparam{\futurelet\@next\@mapparam@test@next}
+
+\def\@mapparam#1=#2,{\@mapparamto{#1}{#2}\@@mapparam}
+
+\def\initialize@params#1{%
+	\ifx\nul#1%
+		\expandafter\gobble%
+	\else%
+		\let#1=\empty%
+	\fi%
+	\initialize@params%
+}
+
+% \mapparams{m1=p1,m2=p2,...,mN=pN}{\m1\m2...\mN} -> \def\m1{p1}...\def\mN{pN}
+% All macros given in #2 are defined to be \empty before being mapped to pN.
+% So if you do something like \mapparams{macroA=paramA}{\macroA\macroB},
+% \macroA will be defined to be {paramA} and \macroB will be \empty
+\def\mapparams#1#2{%
+	\initialize@params #2\nul%
+	\@mapparam #1,\nul%
+}
+
+\unless\ifcsname @ifnextchar\endcsname
+	\def\@nextchar@cmp{\if\reg@MA\@nextchar \let\cmp@next=\reg@MB \else \let\cmp@next=\reg@MC \fi \cmp@next}
+	\def\@ifnextchar#1#2#3{\def\reg@MA{#1}\def\reg@MB{#2}\def\reg@MC{#3} \futurelet\@nextchar\@nextchar@cmp}
+	\def\@ifstar#1#2{\@ifnextchar*{\expandafter#1\gobble}{#2}}
+\fi
+
+\def\newline{\hfill\penalty-10000}
+
+\def\hexdigit#1{\ifnum #1<10 #1\else\expandafter\char\the\numexpr #1-10 + `A\relax\fi}
+
+\def\seq#1#2{%
+	\ifnum #1<#2%
+		{#1}%
+		\expandafter\seq\expandafter{\the\numexpr #1+1\expandafter}%
+	\fi%
+	{#2}%
+}
+
+\def\emap#1#2{\expanded{\unexpanded{\map{#1}}{#2}}}
+
+\font\smalltt=cmtt8
+
+\def\@ftable@row#1#2{%
+	&\expandafter\char\the\numexpr #1 * 16 + #2\relax%
+}
+
+\def\@fonttable@row#1{%
+	{\smalltt"\hexdigit{#1}x}\expanded{\emap{\@ftable@row{#1}}{\seq0{15}}}\cr\noalign{\hrule}%
+}
+
+\def\@ftable@header#1{%
+	&\hss{\smalltt"x\hexdigit{#1}}\hss%
+}
+
+\def\ftable@strut{\vbox{\hrule width 0pt height 13.5pt depth 5pt}}
+
+\def\@fonttable{%
+	\toks0\expandafter{\fontname\font}
+	\openup\jot\offinterlineskip%
+	\halign{\ftable@strut\vrule\hskip.5em\hss##\hss\hskip.5em\vrule&&\hskip.5em\hss##\hss\hskip.5em\vrule\cr
+		\multispan{17}\hss{\fontuse cmcsc10 at 14pt \the\toks0\ Fonttable}\vrule width 0pt depth 5pt\hss\cr\noalign{\hrule}%
+		\emap\@ftable@header{\seq0{15}}\cr\noalign{\hrule}%
+		\emap\@fonttable@row{\seq0{7}}%
+	}%
+}
+
+\def\@@fonttable#1{\fontuse #1 \@fonttable}
+
+% \fonttable{<font>} -> font table of <font>
+\def\fonttable{\@ifnextchar\bgroup \@@fonttable\@fonttable}
+
+
+\newread\temp@in \newwrite\temp@out
+% \sctoks{<tok list>} -> retokenizes <tok list> into an auxillary macro \temp@output
+\def\sctoks#1{%
+	\immediate\openout\temp@out=temp%
+	\immediate\write\temp@out{#1}%
+	\immediate\closeout\temp@out\openin\temp@in=temp%
+	\read\temp@in to\temp@output%
+	\closein\temp@in%
+}
+
+\newtoks\c@toks
+\def\@@grabline#1{\expandafter\global\expandafter\c@toks\expanded{{\the\c@toks#1}}}
+
+\long\def\@grabline#1#2{%
+	\ifx\par#2%
+		\egroup\sctoks{\the\c@toks}\expandafter#1\expandafter{\temp@output}%
+	\else%
+		\afterfi\@@grabline{#2}\@grabline{#1}%
+	\fi%
+}
+
+% \grabline\cs <line of text> -> \cs{<line of text>}
+\long\def\grabline#1{\bgroup\obeylines\catcode`\ =11\@grabline{#1}}
+
+\def\@endcases{\noexpand\@endcases}
+\def\default{\noexpand\default}
+\let\@default=\default
+\def\@@default{\noexpand \@@default}
+
+% \strcmp{str1}{str2}{true}{false} -> if str1==str2 then true else false
+\def\strcmp#1#2#3#4{%
+	\edef\s@A{#1}\edef\s@B{#2}%
+	\ifx\s@A\s@B #3\else #4\fi%
+}
+
+\def\@@strcasecmp#1#2#3{%
+	\ifx\@default#2%
+		#3%
+	\else%
+		\strcmp{#1}{#2}{#3 \let\default=\@@default}{}%
+		\afterfi\ifstrcases{#1}%
+	\fi%
+}
+
+% \ifstrcases{str}{cases} -> matches str to cases
+% cases will be in the form of a list {<case 1>}...{<case n>} where each case is of the form {{match}{code}}
+% where if str==match, code is executed.
+% if match is \default, then code is executed by default.
+\def\ifstrcases#1#2{%
+	\ifx#2\@endcases%
+		\let\default=\@default%
+	\else%
+		\afterfi\@@strcasecmp{#1}#2%
+	\fi%
+}
+
+\def\bracedmacro@out#1#2{\def#1##1##{##1\bgroup #2 \let\next=}}
+\def\bracedmacro@in#1#2{\def#1##1##{\bgroup #2##1 \let\next=}}
+
+% \bracedmacro(*){\name}{\cs}
+% \ifstar: \name<toks>{...} -> {\cs<toks>...}
+% \else:   \name<toks>{...} -> <toks>{\cs...}
+\def\bracedmacro{\@ifstar \bracedmacro@in\bracedmacro@out}
+
+\bracedmacro\slanted\sl
+\bracedmacro\italics\it
+\bracedmacro\bold\bf
+\bracedmacro*\rehsize{\hsize=}
+\bracedmacro*\usefont\fontuse
+
+
+\def\funnyfonts{}
+
+\twomap{\literal#1#2{\expandafter\edef\expandafter\funnyfonts\expandafter{\funnyfonts\par#1}\expandafter\def\csname #1\endcsname{#2}}}
+	{{Calligraname}{callig}{Scriptname}{wednsl}{Acornname}{Acorn}{Starburstname}{Starburst}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%           Demobox            %
+%                              %
+%     Slurp - April, 2022      %
+%  (Much credit to Plante <3)  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newbox\b@xit
+\def\demo@boxit#1#2{%
+    \setbox\b@xit=\hbox{#1}%
+    \vbox{%
+        \hrule width \dimexpr \wd\b@xit + #2 * 2\relax height #2%
+        \hbox{%
+            \vrule height \ht\b@xit width #2%
+            \rlap{\vrule width \wd\b@xit height #2}%
+            \copy\b@xit%
+            \vrule height \ht\b@xit width #2%
+        }%
+        \hrule width \dimexpr \wd\b@xit + #2 * 2\relax height #2%
+    }%
+}
+
+\def\hband#1#2#3{%
+    \hbox{%
+        \vrule width #3 height #2%
+        \vrule width #1 height \dimexpr #3 + #2 / 2\relax  depth \dimexpr -#2 / 2\relax%
+        \vrule width #3 height #2%
+    }%
+}
+
+\def\vband#1#2#3{%
+    \vbox{%
+        \hrule width #1 height #3%
+        \hbox to #1{\hss\vrule height #2 width #3\hss}%
+        \hrule width #1 height #3%
+    }%
+}
+
+\font\fivett cmtt8
+
+\def\demobox@formatdimens#1#2{%
+    \bgroup\fivett\offinterlineskip%
+    \halign{\hfil##\quad\hfil&\hfil##\cr
+         &#1\cr
+        +&#2\cr%
+    }%
+    \egroup%
+}
+
+\newdimen\dem@b@xbandwidth \newdimen\dem@b@xbandheight
+\dem@b@xbandwidth=5pt      \dem@b@xbandheight=0.1pt
+\newbox\dem@b@x
+\newbox\demobox@dimens
+
+\def\demobox#1{%
+    \setbox\dem@b@x=\hbox{#1}%
+    \setbox\demobox@dimens=\vbox{\demobox@formatdimens{\the\ht\dem@b@x}{\the\dp\dem@b@x}}%
+    \vbox{%
+        \baselineskip=5pt%
+        \hbox to \dimexpr \dem@b@xbandwidth + 4pt + \wd\demobox@dimens + \wd\dem@b@x + \dem@b@xbandheight * 2\relax{%
+            \hfil\hbox to \wd\dem@b@x{\fivett\hss\the\wd\dem@b@x\hss}%
+        }%        
+        \hbox to \dimexpr \dem@b@xbandwidth + 4pt + \wd\demobox@dimens + \wd\dem@b@x + \dem@b@xbandheight * 2\relax{%
+            \hfil\hband{\wd\dem@b@x}{\dem@b@xbandwidth}{\dem@b@xbandheight}%
+        }%
+        \hbox{%
+            \raise\dimexpr(\ht\dem@b@x + \dp\dem@b@x - \ht\demobox@dimens)/2\relax\copy\demobox@dimens%
+            \kern2pt%
+            \vband{\dem@b@xbandwidth}{\dimexpr \ht\dem@b@x + \dp\dem@b@x\relax}{\dem@b@xbandheight}%
+            \kern2pt%
+            \demo@boxit{#1}{\dem@b@xbandheight}%
+        }%
+    }%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%         Gradient Macros          %
+%  (Macros for gradient-ing text)  %
+%                                  %
+%       Slurp - April, 2022        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcount\red@diff \newcount\green@diff \newcount\blue@diff \newcount\@red \newcount\@green \newcount\@blue
+\def\grad@diffs#1#2#3{%
+    \len{#3}%
+    \grabparams{#1}{\@red@\@green@\@blue@}%
+    \grabparams{#2}{\@@red\@@green\@@blue}%
+    \@red=\@red@ \@green=\@green@ \@blue=\@blue@%
+    \red@diff=\numexpr (\@@red-\@red@)/\the\@len\relax%
+    \green@diff=\numexpr (\@@green-\@green@)/\the\@len\relax%
+    \blue@diff=\numexpr (\@@blue-\@blue@)/\the\@len\relax%
+}
+
+\def\@grad@temp#1{%
+    \ifx#1\ %
+        \ %
+    \else%
+        \textcolor[RGB]{\the\@red, \the\@green, \the\@blue}{#1}%
+        \advance\@red by \red@diff%
+        \advance\@green by \green@diff%
+        \advance\@blue by \blue@diff%
+    \fi%
+}
+
+% \grad{color1}{color2}{text} -> writes <text> in a gradient from <color1> to <color2>
+\def\grad#1#2#3{\grad@diffs{#1}{#2}{#3}\map{\@grad@temp}{#3}}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%    Pixel Drawing    %
+%                     %
+%  Slurp - May, 2022  %
+%%%%%%%%%%%%%%%%%%%%%%%
+
+\newdimen\math@dimen@result
+\newdimen\math@dimen@input
+
+{
+	\catcode`\p=12 \catcode`\t=12%
+	\gdef\@smd@#1pt{#1}%
+}
+
+\def\@strip@math@dimen{\expandafter\@smd@\the\math@dimen@result}
+
+\newdimen\gpsize \gpsize=1pt
+
+\newdimen\boxdrawheight
+\newdimen\boxdrawwidth
+\newbox\drawbox
+
+\def\setdrawbox{\wd\drawbox=\boxdrawwidth \ht\drawbox=\boxdrawheight}
+
+\def\begindraw{\boxdrawheight=0pt \boxdrawwidth=0pt \setbox\drawbox=\vbox\bgroup\endlinechar=-1 \nullfont}
+\def\enddraw{\egroup\setdrawbox\hskip 1pt\box\drawbox\hskip 1pt}
+
+\let\beginboxdraw=\begindraw
+\def\endboxdraw{\egroup\setdrawbox\hskip 1pt\fbox{\box\drawbox}\hskip 1pt}
+
+\def\updatedrawbox#1#2{%
+	\ifdim #1 > \boxdrawwidth %
+		\global\boxdrawwidth = #1%
+	\fi%
+	\ifdim #2 > \boxdrawheight %
+		\global\boxdrawheight = #2%
+	\fi%
+}
+
+\def\point(#1,#2);{%
+	\updatedrawbox{\dimexpr \gpsize * #1 + \gpsize\relax}{\dimexpr \gpsize * #2 + \gpsize\relax}%
+	\noindent\leavevmode\hbox to 0pt{%
+		\vbox to 0pt{%
+			\vskip \dimexpr \gpsize * #2\relax%
+			\noindent\leavevmode\hskip \dimexpr \gpsize * #1\relax%
+			\vrule width \gpsize height \gpsize depth 0pt%
+			\vss%
+			}%
+		\hss%
+		}%
+	\ignorespaces%
+}
+
+\def\rect(#1,#2) to (#3,#4);{%
+	\ifnum #1 < #3 %
+		\edef\@dleft{#1}%
+		\edef\@dright{#3}%
+	\else%
+		\edef\@dleft{#3}%
+		\edef\@dright{#1}%
+	\fi%
+%
+	\ifnum #2 < #4 %
+		\edef\@dtop{#2}%
+		\edef\@dbot{#4}%
+	\else%
+		\edef\@dtop{#4}%
+		\edef\@dbot{#2}%
+	\fi%
+%
+	\updatedrawbox{\dimexpr \gpsize * (\@dright + 1)\relax}%
+				  {\dimexpr \gpsize * (\@dbot + 1)\relax}%
+	\noindent\leavevmode\hbox to 0pt{%
+		\vbox to 0pt{%
+			\vskip \dimexpr \gpsize * \@dtop\relax%
+			\noindent\leavevmode\hskip \dimexpr \gpsize * \@dleft\relax%
+			\vrule width \dimexpr \gpsize * (\@dright - \@dleft + 1)\relax height \dimexpr \gpsize * (\@dbot - \@dtop + 1)\relax depth 0pt%
+			\vss%
+			}%
+		\hss%
+		}%
+	\ignorespaces%
+}
+
+\newcount\draw@x
+\newcount\draw@y
+\def\dline(#1,#2) to (#3,#4);{%
+	\ifnum #1 = #3 %
+		\draw@y=#2%
+		\loop%
+			\point(#1,\the\draw@y);%
+			\advance\draw@y by 1%
+		\ifnum\draw@y < #4\repeat%
+	\else%
+		\draw@x=#1%
+		\loop%
+			\draw@y=\numexpr((#2 - #4) * (\the\draw@x - #1)) / (#1 - #3) + #2\relax%
+			\immediate\write16{(\the\draw@x,\the\draw@y)}%
+			\point(\the\draw@x,\the\draw@y);
+			\advance\draw@x by 1%
+		\ifnum\draw@x < #3\repeat%
+	\fi%
+}
+
+\newcount\draw@regA
+\newcount\draw@regB
+\def\circle(#1,#2) rad (#3);{%
+	\draw@x=\numexpr #1-#3\relax%
+	\draw@regA=#2%
+	\draw@regB=#2%
+	\loop%
+		\draw@y=\numexpr #3 * #3 - (\draw@x - #1) * (\draw@x - #1)\relax%
+		\expandafter\sqrt@into\expandafter{\the\draw@y}%
+		\setbox0=\hbox{\global\draw@y=\numexpr\@strip@math@dimen\relax}%
+		\draw@y=\numexpr\draw@y+#2\relax%
+		\rect(\the\draw@x,\the\draw@y) to (\the\draw@x,\the\draw@regA);%
+		\draw@regA=\draw@y%
+		\draw@y=\numexpr-\draw@y + #2 * 2\relax%
+		\rect(\the\draw@x,\the\draw@y) to (\the\draw@x,\the\draw@regB);%
+		\draw@regB=\draw@y%
+		\advance\draw@x by 1%
+	\ifnum\draw@x < \numexpr #1 + #3\relax\repeat%
+}
+
+\def\ucircle(#1,#2) rad (#3);{%
+	\draw@x=\numexpr #1-#3\relax%
+	\draw@regA=#2%
+	\loop%
+		\draw@y=\numexpr #3 * #3 - (\draw@x - #1) * (\draw@x - #1)\relax%
+		\expandafter\sqrt@into\expandafter{\the\draw@y}%
+		\setbox0=\hbox{\global\draw@y=\numexpr\@strip@math@dimen\relax}%
+		\draw@y=\numexpr-\draw@y + #2\relax%
+		\rect(\the\draw@x,\the\draw@y) to (\the\draw@x,\the\draw@regA);%
+		\draw@regA=\draw@y%
+		\advance\draw@x by 1%
+	\ifnum\draw@x < \numexpr #1 + #3\relax\repeat%
+}
+
+\def\bcircle(#1,#2) rad (#3);{%
+	\draw@x=\numexpr #1-#3\relax%
+	\draw@regA=#2%
+	\loop%
+		\draw@y=\numexpr #3 * #3 - (\draw@x - #1) * (\draw@x - #1)\relax%
+		\expandafter\sqrt@into\expandafter{\the\draw@y}%
+		\setbox0=\hbox{\global\draw@y=\numexpr\@strip@math@dimen\relax}%
+		\draw@y=\numexpr\draw@y+#2\relax%
+		\rect(\the\draw@x,\the\draw@y) to (\the\draw@x,\the\draw@regA);%
+		\draw@regA=\draw@y;
+		\advance\draw@x by 1%
+	\ifnum\draw@x < \numexpr #1 + #3\relax\repeat%
+}
+
+\def\graph@reg#1(#2:#3);{%
+	\edef\d@left{#2} \edef\d@right{#3}%
+	\let\g@f=#1%
+	\draw@x=\d@left%
+	\g@f\d@left\d@right%
+	\draw@regA=\draw@y%
+	\loop%
+		\g@f\d@left\d@right%
+		\rect(\the\draw@x,\the\draw@y) to (\the\draw@x,\the\draw@regA);
+		\draw@regA=\draw@y%
+		\advance\draw@x by 1%
+	\ifnum\draw@x<\d@right\repeat%
+}
+
+\let\graph=\graph@reg
+
+\def\fbox#1{\vbox{\hrule \hbox{\vrule #1\vrule} \hrule}}
+\def\@fbox{\fbox{\box0}}
+\def\boxit{\setbox0=\hbox\bgroup\aftergroup\@fbox \let\next=}
+
+\def\normparab#1#2{%
+	\draw@y=\numexpr (\draw@x - (#1 + #2) / 2) * (\draw@x - (#1 + #2) / 2)\relax%
+}
+
+\def\bpp{%
+	\beginboxdraw
+
+	\circle(50,50) rad (50);
+	\circle(150,50) rad (50);
+	\rect(50,100) to (50,300);
+	\rect(150,100) to (150,300);
+	\bcircle(100,300) rad (50);
+
+	\endboxdraw%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%       Math-cros      %
+%      Math macros     %
+%                      %
+%  Slurp - June, 2022  %
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\let\mbb=\mathbb
+\let\mfk=\mathfrak
+
+\map{\literal#1{\expandafter\def\csname b#1\endcsname{\mbb{#1}}}}{NZQRCPF}
+
+\def\newmathtype#1#2#3#4{%
+    \expandafter\def\csname @#1\endcsname##1[##2]{\begingroup\left#2 ##1 \;\middle#3\; ##2 \right#4\endgroup}%
+    \expandafter\def\csname @@#1\endcsname##1{\begingroup\left#2 ##1\right#4\endgroup}%
+    \expandafter\def\csname #1\endcsname##1{\@ifnextchar[ {\csname @#1\endcsname{##1}}{\csname @@#1\endcsname{##1}}}%
+}
+
+\newmathtype{set}\{\vert\}
+\newmathtype{condevent}.\vert.
+\newmathtype{excondevent}(\vert)
+\newmathtype{parens}({})
+\newmathtype{bracks}[{}]
+\newmathtype{iprod}\langle|\rangle
+\newmathtype{abs}\lvert{}\rvert
+\newmathtype{floor}\lfloor{}\rfloor
+\newmathtype{ceil}\lceil{}\rceil
+\newmathtype{norm}\|{}\|
+
+\def\@newfunc@#1#2#3#4#5{%
+    \expandafter\def\csname #1of@master\endcsname[##1]##2[##3]{\csname #1\endcsname_{##1}\left#3##2\;\middle#4\;##3\right#5}%
+    \expandafter\def\csname #1of@\endcsname[##1]##2{\@ifnextchar[ {\csname #1of@master\endcsname[##1]{##2}}{\csname #1\endcsname_{##1}\left#3##2\right#5}}%
+    \expandafter\def\csname #1of@@\endcsname##1{\@ifnextchar[ {\csname #1of@master\endcsname[]{##1}}{\csname #1\endcsname\left#3##1\right#5}}%
+    \expandafter\def\csname #1of\endcsname{\@ifnextchar[{\csname #1of@\endcsname}{\csname #1of@@\endcsname}}%
+}
+
+\def\@newfunc@star@#1#2{\expandafter\def\csname #1\endcsname{\mathop{#2\kern\z@}}}
+
+\def\newfunc@star#1#2#3#4#5{%
+    \@newfunc@star@{#1}{#2}%
+    \@newfunc@{#1}{#2}{#3}{#4}{#5}%
+}
+
+\def\@newfunc@reg@#1#2{\expandafter\def\csname #1\endcsname{\mathop{#2\kern\z@}\nolimits}}
+
+\def\newfunc@reg#1#2#3#4#5{%
+    \@newfunc@reg@{#1}{#2}%
+    \@newfunc@{#1}{#2}{#3}{#4}{#5}%
+}
+
+\def\newfunc{\@ifstar \newfunc@star \newfunc@reg}
+
+\newfunc*{max}{\rm max}\{\vert\}
+\newfunc*{min}{\rm min}\{\vert\}
+\newfunc{interior}{\rm int}({})
+\newfunc{exterior}{\rm ext}({})
+\newfunc{boundary}\partial({})
+\newfunc{sin}{{\rm sin}}({})
+\newfunc{cos}{{\rm cos}}({})
+\newfunc{tan}{{\rm tan}}({})
+\newfunc{powset}{{\cal P}}(|)
+
+\def\swapchars#1#2{%
+	\expanded{%
+		\mathchardef#1=\number#2%
+		\mathchardef#2=\number#1%
+	}%
+}
+
+\swapchars\epsilon\varepsilon
+\swapchars\phi\varphi
+\def\smiley{\hbox to 10pt{\pdfliteral{q 4.8611 0 0 4.8611 0 0 cm
+.03 w
+.9 .9 .3 rg
+2 1 m
+2 1.55228 1.55228 2 1 2 c
+0.44772 2 0 1.55228 0 1 c
+0 0.44772 0.44772 0 1 0 c
+1.55228 0 2 0.44772 2 1 c b
+1 J
+1.5 0.65 m
+1.3 0.35 0.7 0.35 0.5 0.65 c S
+.33 w
+.65 1.1 m .65 1.3 l S
+1.35 1.1 m 1.35 1.3 l S
+1 1 1 RG
+.3 w
+.65 1.1 m .65 1.3 l S
+1.35 1.1 m 1.35 1.3 l S
+.3 .7 1 RG
+.2 w
+.65 1.115 m .65 1.25 l S
+1.35 1.115 m 1.35 1.25 l S Q}\hss}}
+\def\crown{\hbox to 10pt{\pdfliteral{q 4.8611 0 0 4.8611 0 0 cm
+.1 w
+0 0 0 rg 0 0 0 RG
+1 j
+.2 1.7 m 1.8 1.7 l 1.8 2.2 l 1.4 2 l 1 2.2 l .6 2 l .2 2.2 l b
+.05 w
+.7 .65 .1 rg .7 .65 .1 RG
+.2 1.7 m 1.8 1.7 l 1.8 2.2 l 1.4 2 l 1 2.2 l .6 2 l .2 2.2 l b Q}\hss}}
+
+\def\smileycrown{\rlap{\smiley}\crown}
+
+\def\@crownit#1[#2]{{\setbox0=\hbox{#1}\leavevmode\rlap{\copy0}\lower#2\hbox to\wd0{\hss\crown\hss}}}
+\def\crownit#1{\@ifnextchar[ {\@crownit{#1}}{\@crownit{#1}[0pt]}}
+
+\def\slfrac#1#2{\left.{}^{#1}\mkern-2mu\middle/\mkern-3mu{}_{#2}\right.}
+\let\ds=\displaystyle
+
+\def\@blist[#1]{%
+    \bgroup\par%
+    \def\item{%
+        \par\egroup\bgroup\medskip\setbox0=\hbox{#1\quad}%
+        \advance\leftskip by \wd0\leavevmode\kern-\wd0\box0%
+    }%
+    \bgroup%
+}
+\def\blist{\@ifnextchar[ \@blist {\@blist[$\bullet$]}}
+\def\elist{\par\egroup\egroup\medskip}
+
+\newcount\enumcount
+\def\enumstyle#1{$(#1)$}
+\def\benum{\bgroup\par%
+    \enumcount=0 %
+    \def\item{%
+        \par\egroup\advance\enumcount by 1\bgroup\medskip%
+        \setbox0=\hbox{\enumstyle{\the\enumcount}\quad}%
+        \advance\leftskip by \wd0\leavevmode\kern-\wd0\box0%
+    }%
+    \bgroup%
+}
+\def\eenum{\par\egroup\egroup\par\medskip}
+
+\let\o@left=\left \let\o@right=\right
+\def\left{\mathopen{}\mathclose\bgroup\o@left}
+\def\right{\aftergroup\egroup\o@right}
+
+\def\multlines#1{%
+    \par\medskip%
+    \hbox{\m@th\valign{%
+        \hbox to\hsize{\kern.5cm$\displaystyle{##}$\hfil}\tabskip=1\jot&&\hbox to\hsize{\hfil$\displaystyle{##}$\kern.5cm}\tabskip=1\jot\crcr
+        #1\crcr
+    }}%
+    \medskip%
+}
+
