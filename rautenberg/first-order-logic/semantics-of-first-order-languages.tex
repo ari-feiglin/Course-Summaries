@@ -1,0 +1,166 @@
+Similar to how in propositional logic we defined models to give meaning to propositional formulas, we do the same for first-order logic.
+
+\bdefn
+
+    Suppose ${\cal L}$ is a first-order language, then an {\emphcolor ${\cal L}$-model}\addtoindex{model} (or an {\emphcolor ${\cal L}$-interpretation}) is a pair ${\cal M}=({\cal A},w)$ where ${\cal A}$ is
+    an ${\cal L}$-structure and $w$ is a {\emphcolor valuation function}\addtoindex{valuation}, $w\colon\Var\longto A,\,x\varmapsto x^w$.
+    We denote $f^{\cal A}$, $r^{\cal A}$, $c^{\cal A}$, and $x^w$ also by $f^{\cal M}$, $r^{\cal M}$, $c^{\cal M}$, and $x^{\cal M}$ respectively.
+
+\edefn
+
+We can extend valuations to ${\cal T}$ in an obvious manner:
+$$ c^{\cal M} = c\hbox{ for constant symbols $c$},\qquad (ft_1\cdots t_n)^{\cal M} = f^{\cal M}t_1^{\cal M}\cdots t_n^{\cal M} $$
+In place of $t^{\cal M}$ we may write $t^{{\cal A},w}$ or simply $t^w$ if the structure is understood.
+But we will usually stick with $t^{\cal M}$.
+
+Notice that the valuation of a term $t$ depends only on the valuation of the variables and extralogical symbols occurring in $t$:
+
+\bprop[name=termcoincidenceprop]
+
+    Suppose $t$ is an ${\cal L}$-term, and ${\cal M}$ and ${\cal M}'$ are two ${\cal L}$-models.
+    Let $V$ be a set of variables where $\var t\subseteq V$.
+    Now suppose that ${\cal M}$ and ${\cal M}'$ agree on their valuations of $V$ and extralogical symbols in $t$: for every $x\in V$, $x^{\cal M}=x^{{\cal M}'}$ and for every extralogical symbol ${\sf s}$
+    occuring in $t$, ${\sf s}^{\cal M}={\sf s}^{{\cal M}'}$.
+    Then $t^{\cal M}=t^{{\cal M}'}$.
+
+\eprop
+
+This is done by term induction.
+If $t$ is a prime term, then $t=c$ for some constant or $t=x$ for some variable.
+In either case the proposition is satisfied by its assumption (that ${\cal M}$ and ${\cal M}'$ agree on variables and extralogical symbols occurring in $t$).
+Now suppose $t=ft_1\cdots t_n$ then by the assumption of the proposition, $f^{\cal M}=f^{{\cal M}'}$ and by the induction hypothesis $t_i^{\cal M}=t_i^{{\cal M}'}$.
+Thus
+$$ t^{\cal M} = f^{\cal M}t_1^{\cal M}\cdots t_n^{\cal M} = f^{{\cal M}'}t_1^{{\cal M}'}\cdots t_n^{{\cal M}'} = t^{{\cal M}'} $$
+as required.
+\qed
+
+\bdefn
+
+    We now define the {\emphcolor satisfiability relation}\addtoindex{satisfiability relation} for first-order models.
+    Let ${\cal M}=({\cal A},w)$ be a model.
+    For every $a\in{\cal A}$ and $x\in\Var$ let us define the model ${\cal M}^a_x=({\cal A},w')$ where $y^{w'}=y^w$ for variables $y$ distinct from $x$, and $x^{w'}=a$.
+    Meaning
+    $$ y^{{\cal M}^a_x} = \cases{a & $y=x$\cr y^w & else} $$
+    So now we define the satisfiability relation $\vDash$ recursively as follows:
+
+    \medskip
+    \tabskip=0pt plus 1fil
+    \halign to\hsize{$#$\hfil\tabskip=0pt&${}\iff#$\hfil\tabskip=1cm&$#$\hfil\tabskip=0pt&${}\iff#$\hfil\tabskip=0pt plus 1fil\cr
+        {\cal M}\vDash s\eq t & s^{\cal M}=t^{\cal M}, & {\cal M}\vDash r\vec t & r^{\cal M}\vec t^{\cal M},\cr
+        {\cal M}\vDash (\alpha\land\beta) & {\cal M}\vDash\alpha\hbox{ and }{\cal M}\vDash\beta, & {\cal M}\vDash\neg\alpha & {\cal M}\nvDash\alpha,\cr
+        \multispan4\hfil${\cal M}\vDash \forall x\alpha\iff{\cal M}^a_x\vDash\alpha \hbox{ for all $a\in{\cal A}$}$\hfil\cr
+    }
+    \medskip
+
+    If ${\cal M}\vDash\phi$, then ${\cal M}$ is said to model $\phi$.
+    And if $X\subseteq{\cal L}$ is a set of formulas, we write ${\cal M}\vDash X$ if for all $\phi\in X$, ${\cal M}\vDash\phi$, and we similarly say ${\cal M}$ models  $X$.
+
+\edefn
+
+We can generalize ${\cal M}^a_x$ to ${\cal M}^{\vec a}_{\vec x}$ where the underlying structure remains the same and
+$$ y^{{\cal M}^{\vec a}_{\vec x}} = \cases{a_i & $y=x_i$\cr y^{\cal M} & else} $$
+Notice that ${\cal M}^{\vec a}_{\vec x} = ({\cal M}^{a_1}_{x_1})^{a_2}_{x_2}\dots$.
+It follows immediately that if we use $\forall\vec x$ as an abbreviation for $\forall x_1\forall x_2\cdots\forall x_n$, then we get
+$$ {\cal M}\vDash\forall\vec x\alpha \iff {\cal M}^{\vec a}_{\vec x}\vDash\alpha\hbox{ for all $\vec a\in{\cal A}^n$} $$
+
+It is easily verifiable that
+
+\medskip
+\tabskip=0pt plus 1fil
+\halign to\hsize{$#$\hfil\tabskip=0pt&${}\iff#$\hfil\tabskip=1cm&$#$\hfil\tabskip=0pt&${}\iff#$\hfil\tabskip=0pt plus 1fil\cr
+    {\cal M}\vDash(\alpha\lor\beta) & {\cal M}\vDash\alpha\hbox{ or }{\cal M}\vDash\beta & {\cal M}\vDash(\alpha\to\beta) & \hbox{if }{\cal M}\vDash\alpha\hbox{ then }{\cal M}\vDash\beta\cr
+    {\cal M}\vDash(\alpha\oto\beta) & {\cal M}\vDash\alpha\hbox{ if and only if }{\cal M}\vDash\beta\cr
+}
+\medskip
+
+And also ${\cal M}\vDash\exists x\alpha=\neg\forall x\neg\alpha$ if and only if ${\cal M}\nvDash\forall x\neg\alpha$ so there exists an $a\in{\cal A}$ such that ${\cal M}^a_x\nvDash\neg\alpha$,
+meaning there exists an $a\in{\cal A}$ such that ${\cal M}^a_x\vDash\alpha$.
+This chain of reasoning is readily seen to be reversible.
+So we have shown
+$$ {\cal M}\vDash\exists x\alpha \iff \hbox{there exists an $a\in{\cal A}$ such that }{\cal M}^a_x\vDash\alpha $$
+
+\bdefn
+
+    A formula or set of formulas is said to be {\emphcolor satisfiable} if it has a model.
+    $\phi\in{\cal L}$ is called a {\emphcolor tautology}\addtoindex{tautology} (or {\emphcolor generally/logically valid}), denoted $\vDash\phi$, if ${\cal M}\vDash\phi$ for every model ${\cal M}$.
+    Two formulas $\alpha$ and $\beta$ are said to be {\emphcolor logically equivalent}\addtoindex{equivalence}, denoted $\alpha\equiv\beta$, if for every model ${\cal M}$,
+    $$ {\cal M}\vDash\alpha \iff {\cal M}\vDash\beta $$
+
+    Now, say ${\cal A}$ is an ${\cal L}$-structure, then we write ${\cal A}\vDash\phi$ for a formula $\phi$ if $({\cal A},w)\vDash\phi$ for all valuations $w\colon\Var\longto A$.
+    Similarly one writes ${\cal A}\vDash X$ for a set of formulas $X$ if ${\cal A}\vDash\phi$ for all $\phi\in X$.
+
+\edefn
+
+\bdefn
+
+    Finally we define the {\emphcolor consequence relation}\addtoindex{consequence relation} for first-order logic.
+    Suppose $X$ is a set of formulas and $\phi$ is a formula, then we write $X\vDash\phi$ if every model of $X$ models $\phi$.
+    Meaning ${\cal M}\vDash X\implies{\cal M}\vDash\phi$.
+
+\edefn
+
+Again, $\vDash$ is used to denote both the satisfaction and consequence relations.
+The meaning of the notation is to be understood from context.
+Moreso, $\vDash$ is also used for the satisfaction relation of structures.
+And again we write $\phi_1,\dots,\phi_n\vDash\phi$ in place of $\set{\phi_1,\dots,\phi_n}\vDash\phi$ and all the usual shorthands.
+
+Notice that while by definition if ${\cal M}$ is a model then ${\cal M}\vDash\phi$ or ${\cal M}\vDash\neg\phi$ for all formulas $\phi$.
+But if ${\cal A}$ is a structure, then it is possible for ${\cal A}$ to satisfy neither $\phi$ nor $\neg\phi$ (but if it does satisfy one, it cannot satisfy the other obviously).
+Take for example the formula $x\eq y$, then if ${\cal A}$ is a structure with at least two elements, suppose $a\neq b\in{\cal A}$, then we can define a valuation which satisfies $x=y$ and one which does not.
+And so ${\cal A}$ satisfies neither $x\eq y$ nor $\neg x\eq y=x\neqb y$.
+
+Now suppose $\phi$ is a formula and let $x_1,\dots,x_n$ be an enumeration of $\free\phi$ (according to some accepted total order of $\Var$, for example by index), then we define the
+{\it generalized of $\phi$} or its {\it universal closure}\addtoindex{universal closure} to be the sentence
+$$ \phi^g \coloneqq \forall x_1\cdots\forall x_n\phi $$
+From the definitions provided above, it is immediate that if ${\cal A}$ is a structure then
+$$ {\cal A}\vDash\phi \iff {\cal A}\vDash\phi^g $$
+And in general ${\cal A}\vDash X\iff{\cal A}\vDash X^g\coloneqq\set{\phi^g}[\phi\in X]$.
+
+\bthrm[title=The Coincidence Theorem, name=coincidencetheorem]
+
+    Let $\phi$ be a formula, and $V$ be a set of variables such that $\free\phi\subseteq V$.
+    Let ${\cal M}$ and ${\cal M}'$ be two models over the same domain $A$ such that $x^{\cal M}=x^{{\cal M}'}$ for all variables $x\in V$, and ${\sf s}^{\cal M}={\sf s}^{\cal M'}$ for all extralogical
+    symbols ${\sf s}$ occurring in $\phi$.
+    Then ${\cal M}\vDash\phi$ if and only if ${\cal M}'\vDash\phi$.
+
+\ethrm
+
+We prove this by induction on $\phi$.
+If $\phi$ is a prime formula of the form $rt_1\cdots t_n$, by the assumptions of the theorem and \refmath[proposition]{termcoincidenceprop}, $t_i^{\cal M}=t_i^{\cal M'}$ for all $1\leq i\leq n$, and
+$r^{\cal M}=r^{\cal M'}$, so $r^{\cal M}\vec t^{\cal M}\iff r^{\cal M'}\vec t^{\cal M'}$ as required.
+This proof holds for equations as well.
+Now by the inductive hypothesis we get
+$$ {\cal M}\vDash\alpha\land\beta \iff {\cal M}\vDash\alpha\hbox{ and }{\cal M}\vDash\beta \iff {\cal M}'\vDash\alpha\hbox{ and }{\cal M}'\vDash\beta \iff {\cal M}'\vDash\alpha\land\beta $$
+Similar for formulas of the form $\neg\alpha$.
+
+Now, let $a\in{\cal A}$ and suppose ${\cal M}^a_x\vDash\phi$.
+Then let $V'=V\cup\set x$ then $\free\phi\subseteq V'$ (since $\free\phi\subseteq\free\forall x\phi\cup\set x\subseteq V\cup\set x$) and ${\cal M}^a_x$ and ${\cal M'}^a_x$ coincide for all $y\in V'$
+(though it is possible that $x^{\cal M}\neq x^{\cal M'}$).
+Thus by our inductive hypothesis ${\cal M}^a_x\vDash\phi$ if and only if ${\cal M'}^a_x\vDash\phi$.
+Thus
+$$ {\cal M}\vDash\forall x\phi \iff {\cal M}^a_x\vDash\phi\hbox{ for all $a\in{\cal A}$} \iff {\cal M'}^a_x\vDash\phi\hbox{ for all $a\in{\cal A}$} \iff {\cal M}'\vDash\forall x\phi $$
+as required.
+\qed
+
+Let $\sigma\subseteq\sigma'$ be two signatures, and ${\cal L}\subseteq{\cal L'}$ be their respective first-order languages.
+Now, if ${\cal M}=({\cal A},w)$ is an ${\cal L}$-model, it can be arbitrarily extended to an ${\cal L}'$-model ${\cal M}'=({\cal A}',w)$, where ${\cal A}'$ is the $\sigma'$-expansion of ${\cal A}$, by
+arbitrarily setting ${\sf s}^{\cal M'}$ for ${\sf s}\in\sigma'\setminus\sigma$.
+Now, let us set $V=\Var$ and by the coincidence theorem we get that for every $\phi\in{\cal L}$ since ${\cal M}$ and ${\cal M}'$ agree on the extralogical symbols (as ${\cal A}'$ is an expansion of
+${\cal A}$) and variables n $V$ (since the valuation remains the same), we get that
+$$ {\cal M}\vDash\phi \iff {\cal M}'\vDash\phi $$
+
+If we denote the consequence relation of ${\cal L}$ by $\vDash_{\cal L}$, then it follows that if ${\cal L}\subseteq{\cal L}'$, $\vDash_{\cal L'}$ is a {\it conservative} extension of $\vDash_{\cal L}$:
+for every $\phi\in{\cal L}$ and $X\subseteq{\cal L}$, $X\vDash_{\cal L'}\phi$ if and only if $X\vDash_{\cal L}\phi$.
+Indeed: if ${\cal M}'$ is an ${\cal L'}$-model then let ${\cal M}$ be the ${\cal L}$-reduct of ${\cal M}'$ and so ${\cal M}\vDash_{\cal L} X$ if and only if ${\cal M}'\vDash_{\cal L'}X$, and same for $\phi$.
+
+So the satisfiability of $\phi$ depends only on the symbols occurring in $\phi$, we need not the subscripts in $\vDash$.
+
+Another consequence of the coincidence theorem is the {\it omission of superfluous quantifiers}:
+$$ \forall x\phi \equiv \phi \equiv \exists x\phi \hbox{ if $x\notin\free\phi$} $$
+To see this, let ${\cal M}$ be a model and $a\in{\cal A}$ be arbitrary.
+Then let $V=\free\phi$ and ${\cal M}'={\cal M}^a_x$, and by the coincidence theorem since $y^{\cal M}=y^{\cal M'}$ for all $y\in V$ (since $x\notin\free\phi$) we have that ${\cal M}\vDash\phi$ if and
+only if ${\cal M}^a_x\vDash\phi$.
+So ${\cal M}\vDash\forall x\phi$ if and only if ${\cal M}^a_x\vDash\phi$ for all $a\in{\cal A}$, which is if and only if ${\cal M}\vDash\phi$, which is if and only if ${\cal M}^a_x\vDash\phi$ for some
+$a\in{\cal A}$, which is by definition ${\cal M}\vDash\exists x\phi$.
+
+This fact should be intuitive, for example $\forall x\exists x(x>0)$ is the same as $\exists x(x>0)$ and $\exists x\exists x(x>0)$ since the outermost quantifier is superfluous.

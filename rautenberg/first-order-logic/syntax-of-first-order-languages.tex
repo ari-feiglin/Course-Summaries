@@ -1,0 +1,253 @@
+First-order logic allow us to discuss precise concepts relating to mathematical structures.
+Unlike propositional logic, first-order logic has the ability to discuss individual variables within a mathematical structure, and it can {\it quantify} them as well.
+Like propositional logic, we must first discuss the syntax of first-order logic, which is more involved.
+
+Let us define a set of variables, which is taken to be a countably infinite set of distinct symbols: $\Var=\set{\v_1,\v_2,\dots}$.
+Like any language, we must first define the {\it alphabet} over which we define the language of first-order logic.
+First-order logic over an extralogical signature $\sigma$ has the alphabet consisting of: the extralogical symbols of $\sigma$; the variables in $\Var$; the logical connectives $\land$ and $\neg$;
+the quantifier $\forall$ ({\it for all}); the equality sign $\eq$ (in boldface to distinguish it from the metalogical symbol $=$); and parentheses $($ and $)$.
+Other logical connectives, like $\lor$, $\oto$, and $\to$ can be defined via $\land$ and $\neg$, as discussed before.
+Similarly other quantifiers like $\exists$ ({\it there exists}) and $\exists!$ ({\it there exists a unique}) can be defined as well, which will be discussed later.
+
+From the set of all strings over this alphabet are many meaningless ones, for example $)\forall\land$ would be a string over this alphabet, but it has no useful meaning.
+Like what we did in the previous section, we will recursively define meaningful strings from this alphabet.
+
+\bdefn
+
+    We first define {\emphcolor terms}\addtoindex{terms} in this language.
+    Terms are defined recursively as:
+    \benum
+        \item Variables and constant symbols in $\sigma$, are {\emphcolor prime terms}\addtoindex{terms}[prime].
+        \item If $f\in\sigma$ is an $n$-ary function symbol, and $t_1,\dots,t_n$ are terms, then $ft_1\cdots t_n$ is a term as well.
+    \eenum
+    The set of all terms (ie. all strings constructed in this matter) is denoted ${\cal T}$.
+
+\edefn
+
+Notice that we do not use parentheses with terms, as this simplifies syntax and parentheses turn out to be unnecessary.
+Despite this, when we actually need to write terms (ie. outside of proofs about terms), we may add parentheses for readability.
+Also note that all of these definitions (and all the coming definitions) are dependent on the choice of extralogical signature $\sigma$, so we may speak of {\it terms over $\sigma$}, or {\it $\sigma$-terms}.
+
+Notice that we can view ${\cal T}$ as a $\sigma'$-structure where $\sigma'$ is the signature obtained from $\sigma$ after removing all relational symbols.
+This is as for $f\in\sigma'$ we define $f^{\cal T}(t_1,\dots,t_n)=ft_1\cdots t_n$ (the right hand side is a term, a string, and is to be read literally) and for $c\in\sigma'$ we define $c^{\cal T}=c$.
+So ${\cal T}$ is also sometimes called the {\it term algebra}.
+
+\bprop[title=Principle of Term Induction, name=terminductprinciple]
+
+    Let ${\cal E}$ be a property of strings (over this language) such that ${\cal E}$ is true for all prime terms, and for all $n>0$ and each $n$-ary function symbol $f\in\sigma$,
+    ${\cal E}t_1,\dots,{\cal E}t_n$ implies ${\cal E}ft_1\cdots t_n$.
+    Then ${\cal E}$ holds for all terms.
+
+\eprop
+
+This is true since ${\cal T}$ is taken as the smallest set obtained by the two rules (that it contains all prime terms, and if $t_1,\dots,t_n$ are terms then so is $ft_1\cdots t_n$).
+So ${\cal E}$ must then contain ${\cal T}$.
+
+\blemm
+
+    Let $t$ be a term, then no proper intial segment of $t$ is a term.
+
+\elemm
+
+This follows from the principle of term induction: let ${\cal E}t$ be the property ``{\it no proper initial segment of $t$ is a term, and $t$ is not a proper initial segment of some other term}''.
+Then ${\cal E}$ holds for prime terms, as these are atomic characters from the alphabet and thus have no proper initial segments.
+And let $p$ be a prime term since all other terms are either prime, or of the form $ft_1\cdots t_n$, since $p\neq f$ are distinct symbols, $p$ cannot be a proper initial segment of another term.
+Now if ${\cal E}t_1,\dots,{\cal E}t_n$ and $f\in\sigma$ is $n$-ary then any proper initial segment of $ft_1\cdots t_n$ is of the form $ft_1\cdots t_k\xi$, where $\xi$ is a proper initial segment of
+$t_{k+1}$ (it may also be empty).
+But in order for $ft_1\cdots t_k\xi$ to be a term, it must be equal to $fs_1\cdots s_n$ for other terms $s_i$, but by ${\cal E}t_1$, $s_1$ can not be an initial segment of $t_1$ nor can $t_1$ be an initial
+segment of $s_1$, so $t_1=s_1$.
+Continuing inductively, we have that $t_i=s_i$ for $i\leq k$, and so we get that $\xi=s_{k+1}\cdots s_n$, but this implies $s_{k+1}$ is an initial segment of $\xi$, but then $s_{k+1}$ is a proper initial
+segment of $t_{k+1}$, and so it cannot be a term by ${\cal E}t_{k+1}$ in contradiction.
+
+So no proper initial segment of $ft_1\cdots t_n$ is a term.
+And if $ft_1\cdots t_n$ is the proper initial segment of some other term $fs_1\cdots s_n$, then by induction we see that $t_i=s_i$ (since $t_1$ is either an initial segment of $s_1$ or vice versa)
+contradicting it being proper.
+\qed
+
+\bprop[title=Unique Term Concatenation Property, name=uniquetermcat]
+
+    Suppose $t_i$ and $s_j$ are terms, then if $t_1\cdots t_n=s_1\cdots s_m$ then $n=m$ and $t_i=s_i$ for all $1\leq i\leq n$.
+
+\eprop
+
+If $t_1\cdots t_n=s_1\cdots s_m$ then $t_1$ is either a initial segment of $s_1$ or vice versa, but by the lemma above, this cannot be proper, so $t_1=s_1$.
+Thus $t_2\cdots t_n=s_2\cdots s_m$ and so inducting on $n$, we get $t_i=s_i$ and $n=m$ as required.
+\qed
+
+Using the unique term concatenation property, we can recursively define functions on terms without worrying about them being well-defined:
+
+\bdefn
+
+    Let $t$ be a term, then we define its {\emphcolor set of variables} recursively as follows:
+    $$ \var c=\varnothing\hbox{ for constant symbols $c$},\qquad \var x=\set x\hbox{ for $x\in\Var$},\qquad \var ft_1\cdots t_n=\var t_1\cup\cdots\cup\var t_n $$
+    Alternatively we could simply define it as the set of all symbols in $\Var$ which occur in $t$.
+
+\edefn
+
+\bdefn
+
+    We now define {\emphcolor formulas}\addtoindex{formulas} in our language (again, these are defined with respect to a specific signature, and may be called {\it formulas over $\sigma$} or
+    {\it $\sigma$-formulas}).
+    These are strings defined recursively by the rules
+    \benum
+        \item If $s$ and $t$ are terms, then $s\eq t$ is a formula, called an {\emphcolor equation}\addtoindex{formulas}[equations].
+        \item If $t_1,\dots,t_n$ are terms and $r\in\sigma$ is an $n$-ary relational symbol, then $rt_1\cdots t_n$ is a formula.
+        \item If $\alpha$ and $\beta$ are formulas and $x$ is a variable, then $(\alpha\land\beta)$, $\neg\alpha$, and $\forall x\alpha$ are formulas.
+    \eenum
+    Formulas defined by the first two rules are {\emphcolor prime formulas}\addtoindex{formulas}[prime].
+    Formulas which do not contain any quantifiers (no occurences of $\forall$, and since other quantifiers like $\exists$ are defined using $\forall$, this includes all other quantifiers) are called
+    {\emphcolor quantifier-free}\addtoindex{formulas}[quantifier-free].
+
+    The set of all formulas over a signature $\sigma$ is denoted ${\cal L}\sigma$.
+    In the case that $\sigma$ contains only a single symbol, $\sigma=\set{\sf s}$, we may write ${\cal L}_{\sf s}$ instead.
+    And the set of all formulas over the signature $\varnothing$ is denoted ${\cal L}_{\eq}$ and is called the {\emphcolor language of pure identity}.
+
+\edefn
+
+If $\circ$ is a binary operation, we will often write $t\circ s$ instead of $\circ ts$ as dictated by the definition of compound terms.
+Similarly if $\triangleleft$ is a binary relation, we will often write $t\triangleleft s$ instead of ${\triangleleft}\, ts$.
+Formally these are abbreviations which refer to the correct form of writing the terms and formulas.
+
+We define the following abbreviations:
+$$ \displaylines{
+    (\alpha\lor\beta)\coloneqq\neg(\neg\alpha\land\neg\beta),\qquad (\alpha\to\beta) \coloneqq \neg(\alpha\land\neg\beta),\qquad (\alpha\oto\beta) \coloneqq ((\alpha\to\beta)\land(\beta\to\alpha))\cr
+    \exists x\alpha \coloneqq \neg\forall x\neg\alpha\cr
+} $$
+The first line of definitions should be familiar; they are the same as those defined in the previous section.
+The definition on the second line should make sense intuitively: ``{\it there exists an $x$ such that $\alpha$}'' if and only if not all $x$s don't satisfy $\alpha$.
+The symbols $\forall$ and $\exists$ are called {\it quantifiers}\addtoindex{quantifiers}.
+$\forall$ is also called the {\it universal quantifier}\addtoindex{quantifiers}[universal], and $\exists$ is the {\it existential quantifier}\addtoindex{quantifiers}[existential].
+
+\bprop[title=Principle of Formula Induction, name=formulainduction]
+
+    If ${\cal E}$ is a property of strings such that ${\cal E}$ holds for all prime formulas and ${\cal E}\alpha$ and ${\cal E}\beta$ implies ${\cal E}(\alpha\land\beta)$, ${\cal E}\neg\alpha$, and
+    ${\cal E}\forall x\alpha$, then ${\cal E}$ holds for all formulas in ${\cal L}$.
+
+\eprop
+
+Again, this is directly due to the definition of ${\cal L}$.
+
+\bprop[title=Unique Formula Reconstruction Property, name=uniqueformulaproperty]
+
+    Every formula $\alpha\in{\cal L}$ is either prime or can be written uniquely as $(\alpha\land\beta)$, $\neg\alpha$, or $\forall x\alpha$ for $\alpha,\beta\in{\cal L}$ and $x\in\Var$.
+
+\eprop
+
+The proof of this is similar to all similar previous propositions: first show that no proper initial segment of a formula is itself a formula, then this follows immediately.
+
+Now, instead of discussing $\sigma$-structures and $\sigma$-terms, we will refer to them as ${\cal L}$-structures and ${\cal L}$-terms where ${\cal L}$ is a first-order language (which is itself defined
+over a signature $\sigma$.
+This is simply accepted terminology.)
+
+\def\qrank{{\sl qrank}}
+\bdefn
+
+    We define the set of variables in a formula $\phi$ recursively.
+    First we define it on equations: $\var s\eq t=\var s\cup\var t$, then we define it on prime formulas which are not equations: $\var t_1\cdots t_n=\var t_1\cup\cdots\var t_n$.
+    Now for the recursive par:
+    $$ \var(\alpha\land\beta) = \var\alpha\cup\var\beta,\quad \var\neg\alpha=\var\alpha,\quad \var\forall x\alpha = \var\alpha\cup\set x $$
+    Alternatively we could define it as all the variables which occur in $\phi$.
+
+    As before, we define the {\emphcolor rank}\addtoindex{rank} of a formula recursively as follows:
+    $$ \displaylines{
+        \rank\pi=0\hbox{ for prime formulas $\pi$},\quad \rank(\alpha\land\beta) = \maxof{\rank\alpha,\rank\beta} + 1,\quad \rank\neg\alpha = \rank\alpha+1,\cr
+        \rank\forall x\alpha=\rank\alpha + 1
+    } $$
+    And we similarly define the {\emphcolor quantifier rank}\addtoindex{rank}[quantifier rank] of a formula, which measures the maximum nesting depth of a quantifier in the formula:
+    $$ \displaylines{
+        \qrank\pi=0\hbox{ for prime formulas $\pi$},\quad \qrank(\alpha\land\beta) = \maxof{\qrank\alpha,\qrank\beta},\quad \qrank\neg\alpha=\qrank\alpha,\cr
+        \qrank\forall x\alpha=\qrank\alpha + 1
+    } $$
+
+    The set of {\emphcolor subformulas} of a formula is defined similar to before:
+    $$ \displaylines{
+        \Sf\pi=\set\pi\hbox{ for prime formulas $\pi$},\quad \Sf(\alpha\land\beta) = \Sf\alpha\cup\Sf\beta\cup\set{(\alpha\land\beta)},\quad \Sf\neg\alpha=\Sf\alpha\cup\set\alpha,\cr
+        \Sf\forall x\alpha=\Sf\alpha\cup\set{\forall x\alpha}
+    } $$
+
+\edefn
+
+\bdefn
+
+    A string of the form $\forall x$ (and by extension $\exists x$) is called a {\emphcolor prefix}.
+    And given a subformula of the form $\forall x\alpha$, $\alpha$ is called the {\emphcolor scope} of $\forall x$.
+    Occurrences of $x$ within the scope of an occurrence of $\forall x$ are termed {\emphcolor bound occurrences} of $x$, all other occurrences of $x$ are termed {\emphcolor free occurrences}%
+    \addtoindex{free occurrences} of $x$.
+    In general we say that a variable $x$ {\emphcolor occurs bound} in a formula $\phi$ if the prefix $\forall x$ occurs in $\phi$.
+
+    We define $\bnd\phi$ to be the set of all variables which occur bound in $\phi$, and $\free\phi$ to be the set of all variables which have free occurrences in $\phi$.
+
+\edefn
+
+$\bnd\phi$ and $\free\phi$ can also be defined recursively:
+$$ \displaylines{
+    \bnd\pi = \varnothing\hbox{ for prime formulas $\pi$},\quad \bnd(\alpha\land\beta) = \bnd\alpha\cup\bnd\beta,\quad \bnd\neg\alpha = \bnd\alpha,\cr
+    \bnd\forall x\alpha = \bnd\alpha\cup\set x\cr
+    \free\pi = \var\pi\hbox{ for prime formulas $\pi$},\quad \free(\alpha\land\beta) = \free\alpha\cup\free\beta,\quad \free\neg\alpha=\free\alpha,\cr
+    \free\forall x\alpha = \free\alpha\setminus\set x
+} $$
+
+Notice that a variable can occur both free and bound in a formula, for example in the below formula $x$ occurs both free and bound
+$$ \forall x(x\eq y)\land(x\eq y) $$
+This will generally be avoided, but it can happen.
+We could strengthen our definitions of formulas to ensure that this does not occur, but there is no need to do so.
+
+\bdefn
+
+    Let us define ${\cal L}^k$ to be the set of all formulas $\phi$ such that $\free\phi\subseteq\set{\v_0,\dots,\v_{k-1}}$.
+    Thus ${\cal L}^0\subseteq{\cal L}^1\subseteq\cdots$ and ${\cal L}=\bigcup_{k=0}^\infty{\cal L}^k$.
+    ${\cal L}^0$ is the set of all formulas which contain no free variables, formulas belonging to ${\cal L}^0$ are called {\emphcolor sentences}\addtoindex{sentences} or
+    {\emphcolor closed formulas}\addtoindex{formulas}[closed].
+    \alsosee{sentences}{Closed formulas}{formulas:closed}
+    \alsosee{formulas}[closed]{Sentences}{sentences:}
+
+\edefn
+
+\bnote
+
+    If $\phi$ is a formula, we write $\phi(\vec x)$ to mean that $\free\phi\subseteq\set{x_1,\dots,x_n}$, where $\vec x=(x_1,\dots,x_n)$ and $x_i$ are all arbitrary and distinct.
+    Similarly if $t$ is a term, $t(\vec x)$ means $\var t\subseteq\set{x_1,\dots,x_n}$.
+
+    And we write $f\vec t$ to mean the compound term $ft_1\cdots t_n$ where $\vec t=(t_1,\dots,t_n)$ where $t_i$ are terms.
+    Similarly we write $r\vec t$ to mean the prime formula $rt_1\cdots t_n$.
+
+\enote
+
+Now we would like to define a notion of substitution, which is a natural concept to have.
+But importantly we'd only like to substitute variables at their free occurrences, why?
+Suppose you have the formula $\phi(y)=\exists x(x+x=y)$ (in the context of integers, this means $y$ is even).
+We could substitute $y$ for $2$ and get $\exists x(x+x=2)$.
+But now say we wanted to substitute $x$ for $2$, then should we get $\exists 2(2+2=y)$ (which is not a valid formula), or $\exists x(2+2=y)$?
+Well, neither, because neither really makes sense.
+This is since bound occurrences already have meaning associated with them by their quantifier, so it makes little sense to substitute them.
+
+\bdefn
+
+    A {\emphcolor substitution}\addtoindex{substitution} (also called a {\it global} substitution) is a function which assigns to every variable a term, meaning it is a function
+    $\sigma\colon\Var\longto{\cal T}$, where $x\varmapsto x^\sigma$.
+    We first extend it to a substitution of terms, ie. a function $\sigma\colon{\cal T}\longto{\cal T}$ as follows:
+    $$ c^\sigma=c\hbox{ for constant symbols $c$},\quad (ft_1\cdots t_n)^\sigma = ft_1^\sigma\cdots t_n^\sigma $$
+    and now we extend it to a substitution of formulas, ie. a function $\sigma\colon{\cal L}\longto{\cal L}$ as follows:
+    $$ (s\eq t)^\sigma=s^\sigma\eq t^\sigma,\quad (rt_1\cdots t_n)^\sigma = rt_1^\sigma\cdots t_n^\sigma,\quad (\alpha\land\beta)^\sigma = \alpha^\sigma\land\beta^\sigma,\quad
+    (\neg\alpha)^\sigma = \neg\alpha^\sigma,\quad (\forall x\alpha)^\sigma = \forall x\alpha^\tau $$
+    where $\tau$ is the substitution $y^\tau=y^\sigma$ for variables $y$ distinct from $x$, and $x^\tau=x$ as we'd like to substitute only at free occurrences of variables.
+
+    A {\emphcolor simultaneous substitution}\addtoindex{substitution}[simultaneous] is a substitution $\sigma$ such that there exist variables $x_1,\dots,x_n\in\Var$ and terms $t_1,\dots,t_n\in{\cal T}$
+    such that
+    $$ x^\sigma = \cases{t_i & $x=x_i$\cr x & \hbox{else}} $$
+    So we substitute only $x_i$s with $t_i$s, and leave all other variables the same.
+    Instead of $\phi^\sigma$ we write instead $\phi\frac{t_1\cdots t_n}{x_1\cdots x_n}$.
+    In the case that $n=1$ (we only substitute a single variable), this is called a {\emphcolor simple substitution}\addtoindex{substitution}[simple].
+
+\edefn
+
+Notice that while by definition there is no significance in the order of writing the variables and their substitutions in a simultaneous substitution (meaning there is no difference between
+$\phi\frac{t_1\cdots t_n}{x_1\cdots x_n}$ and $\phi\frac{t_{\sigma1}\cdots t_{\sigma n}}{x_{\sigma1}\cdots x_{\sigma n}}$ where $\sigma$ is a permutation), it is not true in general that
+$$ \phi\frac{t_1t_2}{x_1x_2} = \phi\frac{t_1}{x_1}\frac{t_2}{x_2}\;\parens{=\Bigl(\phi\frac{t_1}{x_1}\Bigr)\frac{t_2}{x_2}} $$
+For example, let $\phi=x_1<x_2$, then $\phi\frac{x_2x_1}{x_1x_2} = x_2 < x_1$, while $\phi\frac{x_2}{x_1}\frac{x_1}{x_2}=x_2<x_2\frac{x_1}{x_2}=x_1<x_1$.
+Though it is the case that
+$$ \phi\frac{\vec t}{\vec x} = \phi\frac y{x_n}\frac{t_1\cdots t_{n-1}}{x_1\cdots x_{n-1}}\frac{t_n}y $$
+where $y$ is a variable not in $\var\phi\cup\var\vec x\cup\var\vec t$.
+This should make sense, as we substitute $x_n$ first with $y$, which remains unchanged by the next simultaneous substitution, and then substitute $y$ for $t_n$.
+Thus inductively we see that every simultaneous substitution can be written as a composition of simple substitutions.
+

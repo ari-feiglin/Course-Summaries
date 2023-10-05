@@ -3,7 +3,7 @@ Mathematical structures (also known as first order structures) give a useful gen
 
 \bdefn
 
-    A {\emphcolor extralogical signature}\addtoindex{signature}[extralogical] is a set $\sigma$ of symbols of three types: function symbols, relational symbols, and constant symbols.
+    An {\emphcolor extralogical signature}\addtoindex{signature}[extralogical] is a set $\sigma$ of symbols of three types: function symbols, relational symbols, and constant symbols.
     Function symbols and relational symbols are also given an {\emphcolor arity}\addtoindex{arity}, a positive integer.
 
     Formally, we can view $\sigma$ as a tuple: $\sigma=(\sigma_f,\sigma_r,\sigma_c,{\sf ar})$, where $\sigma_f$ is a set of function symbols, $\sigma_r$ is a set of relational symbols, and $\sigma_c$ is a
@@ -53,3 +53,203 @@ for all relational and function symbols ${\sf s}\in\sigma_0$).
 Then we define the $\sigma_0$-structure ${\cal A}_0$ where the interpretation of each symbol ${\sf s}\in\sigma_0$ is ${\sf s}^{{\cal A}_0}={\sf s}^{\cal A}$.
 ${\cal A}_0$ is called the {\it $\sigma_0$-reduct}\addtoindex{mathematical structure}[reduct] of ${\cal A}$, and conversely ${\cal A}$ is called the {\it $\sigma$-expansion}%
 \addtoindex{mathematical structure}[expansion] of ${\cal A}_0$.
+
+Many times, if $\sigma$ is a signature consisting of the symbols ${\sf s}_1,{\sf s}_2,\dots,$, we will write a $\sigma$-structure as $(A,{\sf s}_1,{\sf s}_2,\dots)$ instead of writing out the signature.
+And further, we will often write the signature as a set instead of as a tuple of sets and an arity function.
+What symbols are functions, relational, and constants, and their arities are to be understood from context.
+
+Mathematical structures defined over a signature without relational symbols are termed {\it algebraic structures}, while structures defined over a signature without function or constant symbols are termed
+{\it relational structures}.
+
+For example, mathematical structures of the form ${\cal A}=(A,\circ)$ where $\circ$ is a binary operation are called {\it magmas}.
+If $\circ$ is associative, ${\cal A}$ is a {\it semigroup}, if it is invertible in each argument then it is a {\it group}, etc.
+These are examples of very common algebraic structures.
+Another common algebraic structure are {\it rings} and {\it fields}: both are structures of the form ${\cal A}=(A,+,\cdot,0,1)$ which satisfy certain axioms.
+Notice that a structure of this form is not necessarily a ring, but all rings are structures of this form.
+
+A {\it semilattice} is another type of algebraic structure, and is a special case of a magma where $\circ$ is associative, commutative, and idempotent (meaning $a\circ a=a$ for all $a\in A$).
+For example $(\set{0,1},\land)$ is a semilattice.
+We can define the partial order $\leq$ by $a\leq b\iff a\circ b=a$.
+This is reflexive since $\circ$ is, anticommutative since $\circ$ is commutative, and if $a\leq b$ and $b\leq c$ then $a=a\circ b=a\circ(b\circ c)=(a\circ b)\circ c=a\circ c$ so $a\leq c$.
+And a {\it lattice} is an algebraic structure of the form ${\cal A}=(A,\cap,\cup)$ where $(A,\cap)$ and $(A,\cup)$ are both semilattices and the following absorption laws hold: $a\cap(a\cup b)=a$ and
+$a\cup(a\cap b)=a$.
+A {\it distributive lattice} is a lattice which satisfies the distributive properties: $x\cap(y\cup z)=(x\cap y)\cup(x\cap z)$ and $x\cup(y\cap z)=(x\cup y)\cap(z\cup z)$.
+For example if $M$ is a set, then $(\powsetof M,\cap,\cup)$ is a lattice.
+
+A {\it boolean algebra} is an algebraic structure ${\cal A}=(A,\cap,\cup,\neg)$ where the reduct $(A,\cap,\cup)$ is a distributive lattice and
+$$ \neg\neg x = x,\quad \neg(x\cap y)=\neg x\cup\neg y,\quad x\cap\neg x=y\cap\neg y $$
+The standard example is the boolean algebra ${\it2}=(\set{0,1},\land,\lor,\neg)$.
+
+A relational structure ${\cal A}=(A,\triangleleft)$ where $\triangleleft$ is a binary relation is often called a {\it graph} (this coincides with the definition of a directed graph).
+If $\triangleleft$ is irreflexive and transitive, this is a {\it (strict) partially ordered set}, or poset for short, and we generally write $<$ for $\triangleleft$.
+A {\it partially ordered set} is when $\triangleleft$ is reflexive, transitive, and antisymmetric, then we usually write $\leq$ for $\triangleleft$.
+Each partially ordered set gives rise to a strict partially ordered set and vice versa, by defining $a\leq b\iff a<b\lor a=b$
+
+\bdefn
+
+    Let $\sigma$ be some signature, and ${\cal A}$ and ${\cal B}$ be $\sigma$-structures.
+    Then a map $h\colon A\longto B$ (though we will generally write $h\colon{\cal A}\longto{\cal B}$) is called a {\emphcolor homomorphism}\addtoindex{homomorphism} provided that for every function
+    symbol $f$, relational symbol $r$, and constant symbol $c$ in $\sigma$, and $\vec a\in A^n$:
+    $$ h(f^{\cal A}(\vec a))=f^{\cal B}(h(\vec a)),\qquad h(c^{\cal A})=c^{\cal B},\qquad r^{\cal A}(\vec a)\implies r^{\cal B}(h(\vec a)) $$
+    where $h(\vec a)=(h(a_1),\dots,h(a_n))$.
+
+    A {\emphcolor strong homomorphism} is a homomorphism where the third condition on relations is replaced by the stronger $r^{\cal B}(h(\vec a))$ if and only if there exists a $\vec b\in A^n$ such that
+    $h(\vec a)=h(\vec b)$ and $r^{\cal A}(\vec b)$ (thus we need not require that every $\vec b$ with the same image as $\vec a$ under $h$ satisfy $r^{\cal A}$, only that one does).
+    In other words, the condition is replaced with
+    $$ r^{\cal B}(h(\vec a)) \iff (\exists\vec b\in A^n)\bigl(h(\vec a)=h(\vec b)\land r^{\cal A}(\vec b)\bigr) $$
+
+    An injective strong homomorphism ${\cal A}\longto{\cal B}$ is called an {\emphcolor embedding}\addtoindex{embedding} of ${\cal A}$ into ${\cal B}$.
+    If further the embedding is surjective, it is termed a {\emphcolor isomorphism}\addtoindex{isomorphism}.
+    If there exists an isomorphism between ${\cal A}$ and ${\cal B}$, the two structures are called {\emphcolor isomorphic}, and this is denoted ${\cal A}\cong{\cal B}$.
+    Similarly if ${\cal A}={\cal B}$ then an isomorphism is called a {\emphcolor automorphism}\addtoindex{automorphism}.
+    \alsosee{isomorphism}{Homomorphism}{homomorphism:}
+    \alsosee{embedding}{Homomorphism}{homomorphism:}
+    \alsosee{automorphism}{Homomorphism}{homomorphism:}
+    \alsosee{automorphism}{Isomorphism}{isomorphism:}
+
+\edefn
+    
+We will sometimes dispense of parentheses and write $f\vec a$ instead of $f(\vec a)$.
+
+Notice that for algebraic structures, strong and ``weak'' homomorphisms are one and the same.
+Furthermore, if $h\colon{\cal A}\longto{\cal B}$ is an embedding, the condition on $h$ being a strong isomorphism is simply
+$$ r^{\cal A}\vec a \iff r^{\cal B}h\vec a $$
+as $(\exists\vec b\in A^n)(h\vec a=h\vec b\land r^{\cal A}\vec a)$ is equivalent to $r^{\cal A}\vec a$ as $h\vec a=h\vec b$ implies $\vec a=\vec b$.
+
+The composition of homomorphisms is itself a homomorphism: if $h_1\colon{\cal A}\longto{\cal B}$ and $h_2\colon{\cal B}\longto{\cal C}$ are homomorphisms then
+$$ \displaylines{
+    h_2\circ h_1(f^{\cal A}\vec a) = h_2(f^{\cal B}h_1\vec a) = f^{\cal C}h_2\circ h_1(\vec a)\cr
+    h_2\circ h_1(c^{\cal A}) = h_2c^{\cal B} = c^{\cal C}\cr
+    r^{\cal A}\vec a \implies r^{\cal B}h_1\vec a \implies r^{\cal C}h_2h_1\vec a\cr
+} $$
+And if $h_1$ and $h_2$ are strong homomorphisms, and $h_1$ is surjective, then $h_2\circ h_1$ is also a strong homomorphism:
+$$ r^{\cal C}h_2\circ h_1\vec a \iff (\exists\vec b\in B^n)\bigl(h_2\vec b=h_2h_1\vec a\land r^{\cal B}\vec b\,\bigr) $$
+Since $h_1$ is surjective, suppose $h_1\vec a_0=\vec b$ then
+$$ \iff (\exists\vec a_0\in A^n)\bigl(h_2h_1\vec a_0=h_2h_1\vec a\land r^{\cal B}h_1\vec a_0\,\bigr) $$
+Since $r^{\cal B}h_1\vec a_0$ if and only if there exists an $a_1$ such that $h_1\vec a_0=h_1\vec a_1$ and $r^{\cal A}\vec a_1$, so this is equivalent to
+$$ \iff (\exists\vec a_1\in A^n)\bigl(h_2h_1\vec a_1=h_2h_1\vec a\land r^{\cal A}\vec a_1\,\bigr) $$
+As required.
+
+\bdefn
+
+    Let $\sigma$ be a signature and ${\cal A}$ be a $\sigma$-structure.
+    Then a {\emphcolor congruence}\addtoindex{congruence} on ${\cal A}$ is an equivalence relation on $A$, $\approx$, such that for all function symbols $f\in\sigma$ with arity $n>0$,
+    $$ \vec a\approx\vec b\implies f^{\cal A}\vec a\approx f^{\cal A}\vec b $$
+    where $\vec a\approx\vec b$ means $a_i\approx b_i$ for $i=1,\dots,n$ where $\vec a=(a_1,\dots,a_n)$ and $\vec b=(b_1,\dots,b_n)$.
+
+    Let us denote $a/{\approx}$ to be the equivalence class of $a$ under $\approx$, and $\vec a/{\approx}=(a_1/{\approx},\dots,a_n/{\approx})$ for $\vec a\in A^n$.
+    Let $f\in\sigma$ be a function symbol, $r\in\sigma$ be a relational symbol, and $c\in\sigma$ be a constant symbol, then let us define the $\sigma$-structure ${\cal A'}$ over the domain partition
+    $A/{\approx}$ by
+    $$ f^{\cal A'}(\vec a/{\approx}) \coloneqq (f^{\cal A}(\vec a))/{\approx},\qquad r^{\cal A'}(\vec a/{\approx}) \iff (\exists\vec b\approx\vec a)(r^{\cal A}\vec b),
+    \qquad c^{\cal A'}=(c^{\cal A})/{\approx} $$
+    These are well-defined as they are independent of the choice of representative from an equivalence class (only the first definition, for $f^{\cal A'}$, is not true for general equivalence relations).
+    ${\cal A}'$ is the {\emphcolor quotient structure}\addtoindex{mathematical structure}[quotient structure] of ${\cal A}$ modulo $\approx$, also denoted by ${\cal A}/{\approx}$
+    (the use of ${\cal A}'$ was to make it more readable in superscripts).
+
+\edefn
+
+Let $G$ be a group with the identity $e$ and $\approx$ be a congruence on $G$.
+Then let us define $N=\set{g\in G}[g\approx e]$, and $N$ is a normal subgroup: if $g\in N$ and $h\in G$ then $hgh^{-1}\approx heh^{-1}=e$, and so $hgh^{-1}\in N$.
+And if $N$ is a normal subgroup, let us define $a\approx_N b$ if and only if $ab^{-1}\in N$, then if $a_1\approx_N a_2$ and $b_1\approx_N b_2$ then
+$$ a_1b_1 \approx_N a_2b_2 \iff a_1b_1b_2^{-1}a_2^{-1}\in N \iff a_1(b_1b_2^{-1}a_2^{-1}a_1)a_1^{-1}\in N $$
+since $b_1b_2^{-1}\in N$ and $a_2^{-1}a_1\in N$, and since $N$ is normal, this is indeed correct.
+So $\approx_N$ is a congruence on $G$.
+This relation is deeper: recall that normal groups are simply kernels of group homomorphisms.
+So we can define the kernel of general homomorphisms:
+
+\bdefn
+
+    Let $h\colon{\cal A}\longto{\cal B}$ be a homomorphism of $\sigma$-structures.
+    Then $h$'s {\emphcolor kernel}\addtoindex{homomorphism}[kernel] is the congruence on ${\cal A}$ defined by
+    $$ a\approx_h b \iff h(a)=h(b) $$
+
+\edefn
+
+This is indeed a congruence on ${\cal A}$: if $\vec a\approx_h\vec b$ and $f\in\sigma$ then
+$$ f^{\cal A}\vec a\approx_h f^{\cal A}\vec b \iff hf^{\cal A}\vec a = hf^{\cal A}\vec b \iff f^{\cal B}h\vec a = f^{\cal B}h\vec b $$
+which is true since $h\vec a=h\vec b$ as $\vec a\approx_h\vec b$.
+
+Let $h$ be a group homomorphism, and $K$ be its kernel (viewed as a normal subgroup) then $\approx_h=\approx_K$ where $\approx_K$ is defined for groups as previously: $h(a)=h(b)$ if and only if
+$h(ab^{-1})=e$ if and only if $ab^{-1}\in K$ if and only if $a\approx_Kb$.
+So this definition of a kernel is natural, and generalizes much nicer than the group-theoretic definition.
+
+\bthrm[title=The Isomorphism Theorem, name=isothrm]
+
+    \benum
+        \item Let ${\cal A}$ be a $\sigma$-structure, and $\approx$ a congruence on ${\cal A}$.
+        Then $k\colon a\varmapsto a/{\approx}$ is a strong homomorphism from ${\cal A}$ onto ${\cal A}/{\approx}$.
+        \item Conversely, if $h\colon{\cal A}\longto{\cal B}$ is a surjective strong homomorphism of $\sigma$-structures, then $\iota\colon a/{\approx_h}\varmapsto h(a)$ is an isomorphism between
+        ${\cal A}/{\approx_h}$ and ${\cal B}$.
+        Furthermore, $h=\iota\circ k$.
+    \eenum
+
+\ethrm
+
+Let $f,r,c\in\sigma$ be function, relational, and constant symbols respectively.
+For readability, we will ignore superscripts.
+
+\benum
+    \item We do this directly:
+    $$ \displaylines{
+        k(f\vec a) = (f\vec a)/{\approx} = f\bigl(\vec a/{\approx}) = f(k\vec a)\cr
+        (\exists\vec b\in A^n)\bigl(k\vec a=k\vec b\land r\vec b) \iff (\exists\vec b\approx\vec a)(r\vec b) \iff r(\vec a/{\approx}) \iff rk\vec a\cr
+        k(c) = c/{\approx} = c^{\cal A/{\approx}}\cr
+    } $$
+    So $k$ is indeed a strong homomorphism.
+
+    \item The definition of $\iota$ is obviously sound (ie. it is well-defined) and injective by the definition of $\approx_h$:
+    $$ \iota(a/{\approx_h}) = \iota(b/{\approx_h}) \iff h(a) = h(b) \iff a\approx_h b \iff a/{\approx_h} = b/{\approx_h} $$
+    It is surjective since if $b\in{\cal B}$, since $h$ is surhjective there exists an $a\in{\cal A}$ such that $h(a)=b$ and so $\iota(a/{\approx_h})=h(a)=b$.
+    Now, $\iota$ is a strong homomorphism:
+    $$ \displaylines{
+        \iota f(\vec a/{\approx_h}) = \iota(f\vec a)/{\approx_h} = h(f\vec a) = f(h\vec a) = f\iota(a/{\approx_h})\cr
+        r\iota(\vec a/{\approx_h}) \iff rh(\vec a) \iff (\exists\vec b\approx_h\vec a)(r(\vec b)) \iff r(\vec a/{\approx_h})\cr
+        \iota c/{\approx_h} = h(c) = c\cr
+    } $$
+    By the definitions of $\iota$ and $k$, $h=\iota\circ k$.
+    \qed
+\eenum
+
+We need not require $h$ be surjective: instead we alter the claim and $\iota$ becomes an isomorphism between ${\cal A}$ and the image of ${\cal A}$ under $h$ (denoted $h{\cal A}$), which is a substructure
+of ${\cal B}$ (this is easy to verify).
+This corollary is a direct result of the above theorem, as $h$ is a strong homomorphism from ${\cal A}$ to $h{\cal A}$.
+
+\bdefn
+
+    Let $\set{A_i}_{i\in I}$ be a family of sets, then we define their {\emphcolor direct product}\addtoindex{direct product} to be the set of function $I\longto\bigcup_{i\in I}A_i$ such that for every
+    $i\in I$, $i\varmapsto a_i$ where $a_i\in A_i$.
+    Such a function is denoted $(a_i)_{i\in I}$ (similar to how a sequence is denoted $(a_n)_{n=1}^\infty$ as it represents a function ${\bb N}\longto{\bb R}$ which maps $n\varmapsto a_n$).
+    So the direct product is defined as, in set-theoretic terms:
+    $$ \prod_{i\in I}A_i = \set{f\colon I\longto\bigcup_{i\in I}A_i}[(\forall i\in I)(f(i)\in A_i)] $$
+    Where the function $f$ is written as $(f(i))_{i\in I}$ (this is generally more readable).
+
+    If $\set{{\cal A}_i}_{i\in I}$ is a family of $\sigma$-structures, we define their {\emphcolor direct product} to be a $\sigma$-structure ${\cal B}=\prod_{i\in I}{\cal A}_i$ whose domain is the direct
+    product of the domains of ${\cal A}_i$ (so if $A_i$ is the domain of ${\cal A}_i$, the domain is $B=\prod_{i\in I}A_i$) and for every function symbol $f$, relational symbol $r$, and constant symbol $c$
+    in $\sigma$ we define
+    $$ f^{\cal B}\vec a = (f^{{\cal A}_i}\vec a_i)_{i\in I},\qquad r^{\cal B}\vec a \iff r^{{\cal A}_i}\vec a_i\hbox{ for all $i\in I$},\qquad c^{\cal B}=(c^{{\cal A}_i})_{i\in I} $$
+    Where $\vec a=\bigl((a^1_i)_{i\in I},\dots,(a^n_i)_{i\in I}\bigr)\in B^n$ and $\vec a_i=(a^1_i,\dots,a^n_i)\in A_i^n$ is obtained by looking at the components of $\vec a$ at a specific $i\in I$ (take
+    care, this is not the $i$th component of $\vec a$).
+
+    If all the structures are the same, ${\cal A}_i={\cal A}$ for all $i\in I$, then $\prod_{i\in I}{\cal A}_i$ is called the {\emphcolor direct power}\addtoindex{direct power}%
+    \alsosee{direct power}{Direct product}{direct product:} of ${\cal A}$ and is denoted ${\cal A}^I$.
+    If $I=\set{1,\dots,n}$ then $\prod_{i\in I}{\cal A}_i$ is also written ${\cal A}_1\times\cdots\times{\cal A}_n$ and $\prod_{i\in I}{\cal A}$ is written ${\cal A}^n$.
+
+\edefn
+
+Notice that our concept of ${\bb R}^n$ as an abelian group corresponds with the above definition.
+But here we have also defined the coordinate-wise product of vectors in ${\bb R}^n$.
+
+We can define the {\it projection homomorphism} from a direct product to one of its components:
+$$ \pi_j\colon\prod_{i\in I}{\cal A}_i\longto{\cal A}_j,\qquad (a_i)_{i\in I}\varmapsto a_j $$
+where $j\in I$.
+This is indeed a homomorphism, let $\vec a=\bigl((a^1_i)_{i\in I},\dots,(a^n_i)_{i\in I}\bigr)$, then $f\vec a=\bigl((fa^1_i)_{i\in I},\dots,(fa^n_i)_{i\in I}\bigr)$ and so
+$$ \pi_jf\vec a = (fa^1_j,\dots,fa^n_j) = f(a^1_j,\dots,fa^n_j) = f\pi_j\vec a $$
+As required, and $r\vec a$ if and only if $r(a^1_i,\dots,a^n_i)$ for all $i\in I$, which implies $r(a^1_j,\dots,a^n_j)=r\pi_j\vec a$.
+The case for constants is implied by the proof for functions.
+
+But it is not necessarily strong: the condition for strongness is that $r\pi_j\vec a$ must be equivalent to
+$$ (\exists\vec b)(\pi_j\vec b=\pi_j\vec a\land r\vec b) \iff (\exists\vec b)\bigl(\pi_j\vec b=\pi_i\vec a\land(\forall i)(r\pi_i\vec b)\bigr) $$
+Since the definition of $r^{\cal B}\vec a$ is literally $r^{{\cal A}_i}\pi_i\vec a$ for all $i\in I$.
+So this is clearly stronger than $r\pi_j\vec a$, and unless we know that for every $i$, $r^{{\cal A}_i}$ can be satisfied, it is strictly stronger.
+But if we know that for all $i\in I$ (except for potentially $j$), there exists a $\vec a_i\in{\cal A}_i$ such that $r^{{\cal A}_i}\vec a_i$, then this is equivalent.
+
