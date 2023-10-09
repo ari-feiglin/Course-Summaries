@@ -83,7 +83,7 @@ $$ {\cal M}\vDash\exists x\alpha \iff \hbox{there exists an $a\in{\cal A}$ such 
 
     A formula or set of formulas is said to be {\emphcolor satisfiable} if it has a model.
     $\phi\in{\cal L}$ is called a {\emphcolor tautology}\addtoindex{tautology} (or {\emphcolor generally/logically valid}), denoted $\vDash\phi$, if ${\cal M}\vDash\phi$ for every model ${\cal M}$.
-    Two formulas $\alpha$ and $\beta$ are said to be {\emphcolor logically equivalent}\addtoindex{equivalence}, denoted $\alpha\equiv\beta$, if for every model ${\cal M}$,
+    Two formulas $\alpha$ and $\beta$ are said to be {\emphcolor logically equivalent}\addtoindex{equivalence}[logical], denoted $\alpha\equiv\beta$, if for every model ${\cal M}$,
     $$ {\cal M}\vDash\alpha \iff {\cal M}\vDash\beta $$
 
     Now, say ${\cal A}$ is an ${\cal L}$-structure, then we write ${\cal A}\vDash\phi$ for a formula $\phi$ if $({\cal A},w)\vDash\phi$ for all valuations $w\colon\Var\longto A$.
@@ -164,3 +164,300 @@ So ${\cal M}\vDash\forall x\phi$ if and only if ${\cal M}^a_x\vDash\phi$ for all
 $a\in{\cal A}$, which is by definition ${\cal M}\vDash\exists x\phi$.
 
 This fact should be intuitive, for example $\forall x\exists x(x>0)$ is the same as $\exists x(x>0)$ and $\exists x\exists x(x>0)$ since the outermost quantifier is superfluous.
+
+Another thing which is simple to show is that if ${\cal A}$ is a substructure of ${\cal B}$, and ${\cal M}=({\cal A},w)$ and ${\cal M}'=({\cal B},w)$ are models with the same valuation
+$w\colon\Var\longto A$, then for every term $t$, $t^{\cal M}=t^{\cal M'}$.
+For prime terms this is obvious (for terms of the form $x$, this is since the same valuation is used, and for constant terms this is by definition of substructures).
+Now inductively, if $t_i^{\cal M}=t_i^{\cal M'}$ then since $t_i^{\cal M}\in{\cal A}$, and $f^{\cal M'}\vec a=f^{\cal M}\vec a$ for values $\vec a\in{\cal A}^n$, we have that
+$$ (f\vec t)^{\cal M'} = f^{\cal M'}\vec t^{\cal M'} = f^{\cal M}\vec t^{\cal M} = (f\vec t)^{\cal M} $$
+
+Now by the coincidence theorem, we know that the satisfaction of a formula $\phi$ is dependent only on the valuations of variables occurring in $\phi$.
+So let $\phi=\phi(\vec x)$ (meaning $\free\phi\subseteq\set{x_1,\dots,x_n}$), then saying
+$$ ({\cal A},w)\vDash\phi\hbox{ for a valuation $w$ where $x_1^w=a_1,\dots,x_n^w=a_n$} $$
+can be written more suggestively by
+$$ ({\cal A},\vec a)\vDash\phi,\hbox{ or } {\cal A}\vDash\phi[a_1,\dots,a_n],\hbox{ or }{\cal A}\vDash\phi[\vec a] $$
+So there is no need to mention the global valuation $w$.
+
+\bthrm[title=The Substructure Theorem, name=substructuretheorem]
+
+    For $\cal L$-structures ${\cal A}$ and ${\cal B}$ such that $A\subseteq B$ (where $A$ represents the domain of ${\cal A}$, and so on), the following conditions are equivalent:
+    \benum
+        \item ${\cal A}$ is a substructure of ${\cal B}$: ${\cal A}\subseteq{\cal B}$,
+        \item ${\cal A}\vDash\phi[\vec a]$ if and only if ${\cal B}\vDash\phi[\vec a]$ for all quantifier-free $\phi=\phi(\vec x)$ and $\vec a\in A^n$,
+        \item ${\cal A}\vDash\phi[\vec a]$ if and only if ${\cal B}\vDash\phi[\vec a]$ for all prime $\phi=\phi(\vec x)$ and $\vec a\in A^n$.
+    \eenum
+
+\ethrm
+
+First we prove $(1)\implies(2)$: so we must show that for models ${\cal M}=({\cal A},w)$ and ${\cal M}'=({\cal B},w)$, ${\cal M}\vDash\phi$ if and only if ${\cal M}'\vDash\phi$.
+For prime formulas this is obvious as we showed that $\vec t^{\cal M}=\vec t^{\cal M'}$ for all vectors of terms $\vec t$.
+The inductive step for $\land$ and $\neg$ are simple.
+$(2)\implies(3)$ is trivial as prime formulas are quantifier-free.
+Now to show that $(3)\implies(1)$ we must show that $f^{\cal A}\vec a=f^{\cal B}\vec a$ and $r^{\cal A}\vec a\iff r^{\cal B}\vec a$ for $\vec a\in A^n$.
+By $(3)$, we know that
+$$ r^{\cal A}\vec a \iff {\cal A}\vDash r\vec x[\vec a] \iff {\cal B}\vDash r\vec x[\vec a] \iff r^{\cal B}\vec a $$
+($\vec x=(x_1,\dots,x_n)$ is any vector of $n$ distinct variables.)
+Similarly
+$$ f^{\cal A}\vec a = b \iff {\cal A}\vDash f\vec x\eq y[\vec a,b] \iff {\cal B}\vDash f\vec x\eq y[\vec a,b] \iff f^{\cal B}\vec a=b $$
+and so $f^{\cal A}\vec a=f^{\cal B}\vec a$, meaning ${\cal A}\subseteq{\cal B}$ as required (constants are viewed as $0$-ary functions; the proof is the same).
+\qed
+
+\bdefn
+
+    A {\emphcolor universal formula}\addtoindex{formulas}[universal] (or a {\emphcolor $\forall$-formula}) is a formula $\alpha$ of the form $\forall\vec x\beta$ where $\beta$ is quantifier-free.
+    If $\alpha$ is a sentence, it is also called a {\emphcolor universal sentence} or {\emphcolor $\forall$-sentence}.
+    Similarly, an {\emphcolor existential formula}\addtoindex{formulas}[existential] (or a {\emphcolor $\exists$-formula}) is a formula $\alpha$ of the form $\exists\vec x\beta$ where $\beta$ is
+    quantifier-free.
+    And again if $\alpha$ is a sentence, it is also called an {\emphcolor existential sentence} or {\emphcolor $\exists$-sentence}.
+
+\edefn
+
+For example, we can define the following existential sentences:
+$$ \exists_1 \coloneqq \exists\v_0\v_0\eq\v_0,\qquad \exists_n\coloneqq \exists\v_0\cdots\exists\v_{n-1}\bigwedge_{0\leq i<j<n}\v_i\neqb\v_j $$
+So $\exists_n$ states ``there exists at least $n$ (distinct) elements''.
+This means that $\neg\exists_{n+1}$ means ``there exists at most $n$ elements'', and so we can define $\exists_{=n}\coloneqq\exists_n\land\neg\exists_{n+1}$ which means ``there exists exactly $n$
+elements''.
+
+Since structures are non-empty by definition, $\exists_1$ is a tautology, and so we define $\top\coloneqq\exists_1$, and $\bot\coloneqq\exists_0\coloneqq\neg\top$.
+From the substructure theorem we get the following corollary:
+
+\bcoro
+
+    Let ${\cal A}\subseteq{\cal B}$, then every $\forall$-sentence which is valid in ${\cal B}$ is also valid in ${\cal A}$.
+    Conversely, every $\exists$-sentence which is valid in ${\cal A}$ is also valid in ${\cal B}$.
+
+\ecoro
+
+Suppose ${\cal B}\vDash\forall\vec x\beta$ where $\beta$ is quantifier-free.
+Then let $\vec a\in A^n$, and so ${\cal B}\vDash\beta[\vec a]$, and by the substructure theorem since $\beta$ is quantifier-free, we get ${\cal A}\vDash\beta[\vec a]$.
+Since $\vec a$ is arbitrary, this means ${\cal A}\vDash\forall\vec x\beta$ as required.
+And similarly, if ${\cal A}\vDash\exists\vec x\beta$ then there exists a $\vec a\in A^n$ such that ${\cal A}\vDash\beta[\vec a]$ and so again by the substructure theorem we get ${\cal B}\vDash\beta[\vec a]$,
+so ${\cal B}\vDash\exists\vec x\beta$.
+\qed
+
+\bthrm[title=The Invariance Theorem, name=invariancetheorem]
+
+    Suppose ${\cal A}$ and ${\cal B}$ are isomorphic $\cal L$-structures with an isomorphism $\iota\colon{\cal A}\longto{\cal B}$.
+    Then for every formula $\phi=\phi(\vec x)$, and all $\vec a\in A^n$:
+    $$ {\cal A}\vDash\phi[\vec a] \iff {\cal B}\vDash\phi[\iota\vec a] $$
+    where again, $\iota\vec a=(\iota a_1,\dots,\iota a_n)$.
+
+\ethrm
+
+It is sufficient to show that for models ${\cal M}=({\cal A},w)$ and ${\cal M'}=({\cal B},w')$ where $w'=\iota\circ w$, ${\cal M}\vDash\phi\iff{\cal M}'\vDash\phi$.
+We will first prove by term induction that for every term $t$, $\iota(t^{\cal M})=t^{\cal M'}$.
+For prime terms, this is obvious:
+$$ x^{\cal M'} = x^{w'} = \iota x^w = \iota(x^{\cal M}),\qquad c^{\cal M'} = c^{\cal B} = \iota(c^{\cal A}) = \iota(c^{\cal M}) $$
+For compound terms, suppose $\iota(t_i^{\cal M})=t_i^{\cal M'}$ for $1\leq i\leq n$, then we get $\vec t^{\cal M'}=\iota\vec t^{\cal M}$ and so
+$$ (f\vec t)^{\cal M'} = f^{\cal M'}\vec t^{\cal M} = f^{\cal B}\iota\vec t^{\cal M} = \iota(f^{\cal A}\vec t^{\cal M}) = \iota(f\vec t)^{\cal M} $$
+the third equality is due to $\iota$ being a homomorphism.
+
+Now we will prove the goal: ${\cal M}\vDash\phi\iff{\cal M}'\vDash\phi$, by formula induction on $\phi$.
+For prime formulas $\phi$:
+$$ \displaylines{
+    {\cal M'}\vDash t\eq s \iff t^{\cal M'}=s^{\cal M'} \iff \iota t^{\cal M}=\iota s^{\cal M} \iff t^{\cal M} = s^{\cal M} \iff {\cal M}\vDash t\eq s\cr
+    {\cal M'}\vDash r\vec t \iff r^{\cal B}\vec t^{\cal M'} \iff r^{\cal B}\iota\vec t^{\cal M} \iff r^{\cal A}\vec t^{\cal M} \iff {\cal M}\vDash r\vec t\cr
+} $$
+For compound formulas we use the inductive hypothesis:
+$$ \displaylines{
+    {\cal M'}\vDash\alpha\land\beta \iff {\cal M}'\vDash\alpha\hbox{ and }{\cal M'}\vDash\beta \iff {\cal M}\vDash\alpha\hbox{ and }{\cal M}\vDash\beta \iff {\cal M}\vDash\alpha\land\beta\cr
+    {\cal M'}\vDash\neg\alpha \iff {\cal M}'\nvDash\alpha \iff {\cal M}\nvDash\alpha \iff {\cal M}\vDash\neg\alpha\cr
+} $$
+And for quantified formulas, ${\cal M'}\vDash\forall x\phi$ if and only if ${\cal M'}^b_x\vDash\phi$ for all $b\in{\cal B}$.
+Since $\iota$ is surjective, $b=\iota a$ for some $a\in A$ and so if ${\cal M}^a_x=({\cal A},w_0)$ then ${\cal M'}^b_x=({\cal B},\iota\circ w_0)$ and so by our inductive hypothesis (as ${\cal M}$ and
+${\cal M'}$ are arbitrary), this is if and only if ${\cal M}^a_x\vDash\phi$.
+Since $b$ is arbitrary, and therefore so is $a$, ${\cal M}\vDash\forall x\phi$.
+This chain of logic is reversible, which can also be seen since $\iota^{-1}$ is also an isomorphism.
+So we have indeed shown that for all formulas, ${\cal M}\vDash\phi\iff{\cal M'}\vDash\phi$ as required.
+\qed
+
+This proof obviously covers sentences $\phi\in{\cal L}^0$.
+So for example, if $G$ is a group and $\iota$ is an isomorphism to some other $\circ$-structure, then $\iota(G)$ is also a group.
+This is as we can have $\phi$ run over the axioms of group theory (which are sentences) and $G\vDash\phi\implies\iota(G)\vDash\phi$.
+
+\bdefn
+
+    Two ${\cal L}$-structures are {\emphcolor elementarily equivalent}\addtoindex{equivalence}[elementary] if ${\cal A}\vDash\phi\iff{\cal B}\vDash\phi$ for all sentences $\phi\in{\cal L}^0$.
+    This is denoted ${\cal A}\equiv{\cal B}$.
+
+\edefn
+
+So by the invariance theorem isomorphic structures are elementarily equivalent.
+
+Notice that substitutions do not pay attention to {\it collision of variables}, for example if $\phi=\exists y(x\neqb y)$ then certainly $\forall x\phi$ is true when the domain has at least two elements.
+But $\phi\frac yx=\exists y(y\neqb y)$ is false.
+So we have shown that $\forall x\phi$ does not necessarily imply $\phi\frac tx$, as one may expect.
+But the issue is that we have changed the context of the variable $x$ from a free to a bound variable, and so the meaning of $\phi\frac yx$ is different from $\phi$.
+
+\bdefn
+
+    A simple substitution $\phi,\frac tx$ is called {\emphcolor collision-free}\addtoindex{substitution}[collision-free] if every $y\in\var t$ distinct from $x$ does not occur bound in $\phi$
+    (meaning $\bnd\phi\cap\var t\subseteq\set x$, or $y\in\var t\setminus\set x\implies y\notin\bnd\phi$).
+    This means that a variable being inserted into $\phi$ does not get potentially inserted into a scope of its own quantifier.
+
+    A global substitution $\sigma$ is collision-free if $\phi,\frac{x^\sigma}x$ is collision-free for every variable $x\in\Var$.
+    So for a simultaneous substitution $\phi,\frac{\vec t}{\vec x}$ it is only necessary to verify that $\phi,\frac{t_i}{x_i}$ is collision-free.
+
+\edefn
+
+The reason for not requiring $x\notin\bnd\phi$ in a substitution $\frac tx$ is since $t$ is only substituted at free occurrences of $x$, so whether or not $x$ occurs bound in $\phi$ is immaterial.
+(Though such a restriction wouldn't matter practically: it is bad practice to have a formula where the same variable occurs both free and bound.
+In some texts, different symbols are used for free and bound variables even.)
+
+This is a crude definition, for example if $\phi=\forall x(x=x)\land\forall y(y=y)$, then $\phi\frac yx$ is not collision-free since $y$ occurs bound in $\phi$.
+But such a substitution would not alter $\phi$.
+We could refine the definition of collision-free substitutions to mean that $x$ does not occur within the scope of any variable in $\var t$, other than potentially $x$ itself.
+Some texts refer to this definition as {\it $t$ is free for $x$ in $\phi$}.
+Such a refinement is unnecessary for our purposes though.
+
+For a model ${\cal M}=({\cal A},w)$ and a global substitution $\sigma$, we define ${\cal M}^\sigma=({\cal A},w^\sigma)$ where $x^{w^\sigma}=(x^\sigma)^{\cal M}$ (first substitute $x$ to get a term, and then
+valuate it via ${\cal M}$) for every $x\in\Var$.
+In other words $x^{{\cal M}^\sigma} = x^{\sigma{\cal M}}\mathrel{}(=(x^\sigma)^{\cal M})$.
+This extends to terms: $t^{{\cal M}^\sigma}=t^{\sigma{\cal M}}$.
+This is obvious for prime terms (variables and constants), and for compound terms:
+$$ (ft_1\cdots t_n)^{{\cal M}^\sigma} = f^{\cal M}t_1^{\cal M^\sigma}\cdots t_n^{\cal M^\sigma} = f^{\cal M}t_1^{\sigma\cal M}\cdots t_n^{\sigma\cal M} = (ft_1\cdots t_n)^{\sigma\cal M} $$
+Notice that in the case $\sigma=\frac{\vec t}{\vec x}$,
+$$ x^{\cal M^\sigma} = x^{\sigma\cal M} = \parens{x\frac{\vec t}{\vec x}}^{\cal M} $$
+and so ${\cal M}^\sigma$ coincides with ${\cal M}^{\vec t^{\cal M}}_{\vec x}$ ($\vec t^{\cal M}$ since the terms must be interpreted, ${\cal M}^{\vec t}_{\vec x}$ makes no sense sine $\vec t$ is not a
+vector in the domain).
+
+\bthrm[title=The Substitution Theorem, name=substitutiontheorem]
+
+    Let ${\cal M}$ be a model and $\sigma$ be a global substitution.
+    If $\phi,\sigma$ are collision-free then
+    $$ {\cal M}\vDash\phi^\sigma \iff {\cal M}^\sigma\vDash\phi $$
+    In particular, ${\cal M}\vDash\phi\frac{\vec t}{\vec x}$ if and only if ${\cal M}^{\vec t^{\cal M}}_{\vec x}\vDash\phi$, provided $\phi,\frac{\vec t}{\vec x}$ is collision-free.
+
+\ethrm
+
+This will be proven by formula induction.
+In the case that $\phi$ is an equation $t_1\eq t_2$,
+$$ {\cal M}\vDash(t_1\eq t_2)^\sigma \iff t_1^{\sigma\cal M} = t_2^{\sigma\cal M} \iff t_1^{\cal M^\sigma} = t_2^{\cal M^\sigma} \iff {\cal M}^\sigma\vDash t_1\eq t_2 $$
+Similarly, for prime formulas of the form $r\vec t$:
+$$ {\cal M}\vDash (r\vec t)^\sigma \iff r^{\cal M}\vec t^{\sigma\cal M} \iff r^{\cal M^\sigma}\vec t^{\cal M^\sigma} \iff {\cal M}^\sigma\vDash r\vec t $$
+The induction steps for $\land$ and $\neg$ are obvious and simple.
+Now, recall that ${\cal M}\vDash\forall x\phi$ if and only if ${\cal M}\vDash\forall x\phi^\tau$ where $x^\tau=x$ and $y^\tau=y^\sigma$ for $x\neq y$,
+$$ \iff {\cal M}^a_x\vDash\phi^\tau \hbox{ for every $a\in A$} \iff ({\cal M}^a_x)^\tau \vDash \phi $$
+now we claim that $({\cal M}^a_x)^\tau=({\cal M}^\sigma)^a_x$.
+Since $\forall x\phi,\sigma$ is collision-free, meaning $\forall x\phi,\frac{y^\sigma}y$ for every $y$ is collision-free so $x\notin\var y^\sigma$ for every $y\neq x$.
+And since $y^\tau=y^\sigma$, we get $y^{({\cal M}^a_x)^\tau}=y^{\tau{\cal M}^a_x}=y^{\sigma{\cal M}^a_x}=y^{\sigma\cal M}=y^{\cal M^\sigma}=y^{({\cal M}^\sigma)^a_x}$.
+And $x^{({\cal M}^a_x)^\tau} = x^{{\cal M}^a_x} = a = x^{({\cal M^\sigma})^a_x}$.
+Thus
+$$ \iff ({\cal M}^\sigma)^a_x\vDash\phi \hbox{ for every $a\in A$} \iff {\cal M}^\sigma\vDash\forall x\phi $$
+as required.
+\qed
+
+This proof also obviously works for the refinement of the concept of collision-free substitutions (what we termed ``\dots free for $x$ in $\phi$'').
+
+\bcoro[name=universaltosubstitution]
+
+    For all formulas $\phi$ and $\frac{\vec t}{\vec x}$ such that $\phi,\frac{\vec t}{\vec x}$ is collision-free, the following are true:
+    \benum
+        \item $\forall\vec x\phi\vDash\phi\frac{\vec t}{\vec x}$,
+        \item $\phi\frac{\vec t}{\vec x}\vDash\exists\vec x\phi$,
+        \item $\phi\frac sx,\,s\eq t\vDash\phi\frac tx$, provided $\phi,\frac sx$ and $\phi,\frac tx$ are collision-free.
+    \eenum
+
+\ecoro
+
+\benum
+    \item Let ${\cal M}\vDash\forall\vec\phi$, so ${\cal M}^{\vec a}_{\vec x}\vDash\phi$ for all $\vec a\in A^n$.
+    This means that ${\cal M}^{\vec t^{\cal M}}_{\vec x}\vDash\phi$, and so by the substitution theorem this is equivalent to ${\cal M}\vDash\phi\frac{\vec t}{\vec x}$.
+    \item Since $\neg\exists\vec x\phi=\forall\vec x\neg\phi$, by (1) $\neg\exists\vec x\phi\vDash\neg\phi\frac{\vec t}{\vec x}$.
+    And so $\phi\frac{\vec t}{\vec x}\vDash\exists\vec\phi$ (since $\neg X\vDash\neg Y$ if and only if $Y\vDash X$).
+    \item Suppose ${\cal M}\vDash\phi\frac sx,\,s\eq t$ so $s^{\cal M}=t^{\cal M}$ and ${\cal M}^{s^{\cal M}}_x\vDash\phi$ by the substitution theorem, and so ${\cal M}^{t^{\cal M}}_x\vDash\phi$, and
+    by applying the substitution theorem again we get ${\cal M}\vDash\phi\frac tx$.
+    \qed
+\eenum
+
+This shows that collision-free substitutions act as substitutions should: if $\phi$ is true for all $\vec x$, then we should be able to substitute any terms $\vec t$ in place of $\vec x$ and $\phi$ should
+hold.
+What we need to be careful of is that this substitution doesn't mess with the syntax of $\phi$, which is why it must be collision-free.
+
+Let us define the following quantifier, ``there exists exactly one'':
+$$ \exists!x\phi \coloneqq \exists x\phi\land\forall x\forall y(\phi\land\phi\tfrac yx\to y\eq x) $$
+where $y$ is any variable not in $\var\phi$.
+So if ${\cal M}\vDash\forall x\forall y(\phi\land\phi\frac yx\to y\eq x)$ means that ${\cal M}^a_x\vDash\phi$ and ${\cal M}^b_x\vDash\phi\frac yx$ implies $a=b$ (since $y\notin\var\phi$).
+Putting it all together, ${\cal M}\vDash\exists!x\phi$ if and only if there exists a single $a$ such that ${\cal M}^a_x\vDash\phi$.
+An example of a tautology is $\exists!x x\eq t$ for any term $t$.
+
+An equivalent definition of $\exists!$ is
+$$ \exists!x\phi \coloneqq \exists x\forall y(\phi\tfrac yx\oto y\eq x) $$
+
+\bexerc
+
+    Suppose $X\vDash\phi$ and $x\notin\free\phi$, then show that $X\vDash\forall x\phi$.
+
+\eexerc
+
+Suppose ${\cal M}\vDash X$ and let $a\in A$, then notice that ${\cal M}^a_x$ and ${\cal M}$ agree on all variables in $\free\phi$ and extralogical symbols (as they are defined over the same structure).
+So by \refmath{substitutiontheorem} since ${\cal M}\vDash\phi$, ${\cal M}^a_x\vDash\phi$.
+Since $a$ is arbitrary, this means ${\cal M}\vDash\forall x\phi$.
+
+\bexerc
+
+    Show that $\forall x(\alpha\to\beta)\vDash\forall x\alpha\to\forall x\beta$.
+
+\eexerc
+
+Let ${\cal M}\vDash\forall x(\alpha\to\beta)$.
+Then if ${\cal M}\vDash\forall x\alpha$ then let $a\in A$, so ${\cal M}^a_x\vDash\alpha,\alpha\to\beta$ so ${\cal M}^a_x\vDash\beta$ by modus ponens.
+Since $a$ is arbitrary, this means ${\cal M}\vDash\forall x\beta$.
+Thus ${\cal M}\vDash\forall x\alpha\to\forall x\beta$.
+
+\bexerc
+
+    Suppose ${\cal A}$ is an ${\cal L}$-structure and ${\cal A}'$ is obtained by adjoining a constant symbol $\boldsymbol{a}$ for some $a\in A$ (meaning $\boldsymbol{a}^{\cal A'}=a$).
+    Show that ${\cal A}\vDash\alpha[a]\iff{\cal A}'\vDash\alpha\frac{\boldsymbol a}{x}$ for a formula $\alpha=\alpha(x)$.
+
+\eexerc
+
+We will first show that $t(x)^{{\cal A},a}=(t\frac{\boldsymbol a}x)^{\cal A'}$.
+For prime terms this is obvious.
+For compound terms this is simple by induction.
+
+It is sufficient to show that for arbitrary ${\cal M}=({\cal A},w)$ and ${\cal M'}=({\cal A'},w)$ such that $x^w=a$, ${\cal M}\vDash\alpha\iff{\cal M}'\vDash\alpha\frac{\boldsymbol a}x$.
+By formula induction on $\alpha$: in the case that $\alpha=t_1\eq t_2$,
+$$ {\cal M'}\vDash t_1\tfrac{\boldsymbol a}x\eq t_2\tfrac{\boldsymbol a}x \iff \parens{t_1\tfrac{\boldsymbol a}x}^{\cal M'} = \parens{t_2\tfrac{\boldsymbol a}x}^{\cal M'} \iff
+t_1^{\cal M}=t_2^{\cal M} \iff {\cal M}\vDash t_1\eq t_2 $$
+Similar for prime formulas of the form $r\vec t$ (there is of course a similarity between equations and prime formulas of the form $r\vec t$, $\eq$ is a ``primitive'' binary relation; it represents the
+identity relation).
+For compound formulas using connectives $\land$ and $\neg$ the inductive step is clear.
+And for formulas $\alpha=\forall y\beta$, if $y\neq x$ then this is clear.
+If $y=x$ then this is clear by the substitution theorem, as ${\cal A}$ and ${\cal A'}$ act the same on $\alpha$ as it is a sentence.
+
+\bexerc
+
+    Prove the following:
+    \benum
+        \item A conjunction of formulas $\exists_i$ and their negations is logically equivalent to a formula of the form $\exists_n\land\neg\exists_m$ for suitable $n$ and $m$.
+        \item A boolean combination of $\exists_i$ is equivalent to a formula of the form $\bigvee_{i\leq n}\exists_{=k_i}$ or $\exists_k\lor\bigvee_{i\leq n}\exists_{=k_i}$ where $k_0<\cdots<k_n<k$.
+    \eenum
+
+\eexerc
+
+\benum
+    \item Every such conjunction is equivalent, by commutativity, to a formula of the form
+    $$ \bigwedge_{1\leq i\leq n}\exists_{k_i}\land\bigwedge_{1\leq j\leq m}\neg\exists_{\ell_j} $$
+    Where $k_1<\cdots<k_n$ and $\ell_1<\cdots<\ell_m$.
+    Since $\exists_i$ represents there existing at least $i$ elements, and $\neg\exists_i$ means there exists $<i$ elements, this is equivalent to $\equiv\exists_{k_n}\land\neg\exists_{\ell_1}$.
+    If $n=0$ then take $k_0=1$ (since $\exists_1$ is a tautology) and if $m=0$ then take $\ell_1=0$ (since $\neg\exists_0$ is a tautology).
+
+    \item Let us prove this by induction on the rank of the boolean combination, $r$.
+    If $r=0$ then the formula is $\exists_n$, which is of the second form.
+    Otherwise, there are three cases:
+    \benum
+        \item The formula is of the form $\neg\alpha$ where $\alpha\equiv\bigvee_{i\leq n}\exists_{=k_i}$ or $\exists_k\lor\bigvee_{i\leq n}\exists_{=k_i}$.
+        In the first case,
+        $$ \neg\alpha \equiv \bigwedge_{i\leq n}\neg\exists_{=k_i} \equiv \exists_{k_n+1}\lor\bigwedge_{i\leq k_n,i\neq k_j}\exists_{=i} $$
+        This is as the negation of $\alpha$ refers to there not existing precisely $k_i$ elements, so this means there is either $\geq k_n+1$ elements or precisely $i$ elements for $i\leq k_n$ where
+        $i$ differs from any $k_j$.
+        In the second case,
+        $$ \neg\alpha \equiv \neg\exists_k\land\bigwedge_{i\leq n}\neg\exists_{=k_i} $$
+        By above, both parts of the conjunction is equivalent to one of the forms required by the exercise, so this case is covered by case (3).
+        \item The formula is of the form $\alpha\land\beta$ where $\alpha$ and $\beta$ are boolean combinations.
+        It is obvious how this formula is equivalent to a formula of one of the forms required.
+        \item If the formula is of the form $\alpha\lor\beta$, then it is already (after $\alpha$ and $\beta$ are converted to the correct form) in a required form.
+    \eenum
+\eenum
+

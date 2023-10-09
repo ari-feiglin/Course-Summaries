@@ -23,13 +23,16 @@
 
 \def\vsim{\mathrel{\vrule height 6.994pt width.3pt depth0pt\relax\mkern-1.25mu\raise1.6625pt\hbox{$\m@th\scriptstyle\sim$}}}
 
+\def\boldsymbol#1{\mathchoice{\fakebold[.3]{#1}}{\fakebold[.3]{#1}}{\fakebold[.1]{#1}}{\fakebold[.1]{#1}}}
+
 \def\Var{{\sl Var}}
-\def\v{{\fakebold{v}}}
-\def\eq{\mathrel{\fakebold{=}}}
-\def\neqb{\mathrel{\fakebold{\neq}}}
+\def\v{{\boldsymbol{v}}}
+\def\eq{\mathrel{\boldsymbol{=}}}
+\def\neqb{\not\mathrel{\boldsymbol{=}}}
 \def\var{{\sl var}}
 \def\bnd{{\sl bnd}}
 \def\free{{\sl free}}
+\def\Q{{\tt Q}}
 
 \catcode`_=11
 \def\_addtoindex#1[#2]{%
@@ -112,7 +115,7 @@
 
 \def\bproof{%
     \blinedppbox{rgb{1 1 1}}{rgb{0 0 0}}{rgb{0 0 0}}
-    \hbox{\setfont{bf}Proof}
+    \hbox to \hsize{\setfont{bf}Proof\hfil}
     \medskip
 }
 \let\eproof=\elinedppbox
@@ -129,6 +132,14 @@
 }
 \let\enote=\eppbox
 
+\def\bexerc{%
+    \bppbox{rgb{.9 1 .9}}{rgb{.3 .8 .3}}{rgb{.1 .65 .1}}
+    \hbox to \hsize{\setfont{bf}Exercise\hfil}
+    \hrule height\z@%
+    \medskip
+}
+\let\eexerc=\eppbox
+
 \def\__refmath#1{\gotoanchor{#1}{\csname math@#1\endcsname}}
 \def\_refmath[#1]#2{\gotoanchor{#2}{#1 \csname math@#2\endcsname}}
 \def\refmath{\_ifnextchar[ {\_refmath}{\__refmath}}
@@ -140,6 +151,7 @@
 \createmathbox{lemm}{Lemma}{rgb{1 .9 1}}{rgb{1 .3 1}}{rgb{.8 .1 .8}}
 \createmathbox{prop}{Proposition}{rgb{1 .9 1}}{rgb{1 .3 1}}{rgb{.6 .1 .6}}
 \createmathbox{prin}{Principle}{rgb{1 1 .5}}{rgb{.5 .3 0}}{rgb{.5 .3 0}}
+\createmathbox{exam}{Example}{rgb{.9 1 .9}}{rgb{.3 .8 .3}}{rgb{.1 .65 .1}}
 
 \def\qed{%
     \ifmmode \eqno\mathchar"404%
@@ -160,15 +172,15 @@
 %    \eppbox
 %}
 
-\newcount\gentzencount
+\newcount\mlcount
 \def\gentzen#1#2{%
     \,\vcenter{%
         \tabskip=.15cm\relax%
-        \gentzencount=1\relax%
+        \mlcount=1\relax%
         \offinterlineskip%
-        \halign{\strut\hfil$\displaystyle{##}$\hfil&&\global\advance\gentzencount by 1\relax\vrule\kern.15cm$\displaystyle{##}$\cr%
+        \halign{\strut\hfil$\displaystyle{##}$\hfil&&\global\advance\mlcount by 1\relax\vrule\kern.15cm$\displaystyle{##}$\cr%
             #1\cr\noalign{\hrule\kern1\jot}%
-            \multispan{\the\gentzencount}\hfil$#2$\hfil\cr
+            \multispan{\the\mlcount}\hfil$#2$\hfil\cr
         }%
     }\,%
 }
@@ -248,6 +260,10 @@
 \subsection{Semantics of First-Order Languages}
 
 \input first-order-logic/semantics-of-first-order-languages
+
+\subsection{General Validity and Logical Equivalence}
+
+\input first-order-logic/general-validity-and-logical-equivalence
 
 \vfill\break
 

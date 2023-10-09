@@ -1,0 +1,170 @@
+\bexam
+
+    You may recall from set theory that the so-called ``Russellian set'' of sets not containing themselves is a proper class (not a set).
+    This is reflective of the more general logical result, $\vDash\neg\exists u\forall x(x\in u\oto x\notin x)$.
+    This sentence states that there does not exist a $u$ such that $x\in u$ if and only if $x\notin x$ for all $x$.
+    But note that we require no conditions on the binary relation $\in$, so this result is purely logical one.
+
+    We will prove this in steps.
+    Firstly, $\forall x(x\in u\oto x\notin x)\vDash u\in u\oto u\notin u$ which is due to \refmath[corollary]{universaltosubstitution}, using the substitution $\frac ux$.
+    Clearly $u\in u\oto u\notin u$ is not satisfiable, and thus neither is $\forall x(x\in u\oto x\notin x)$, and therefore neither is $\exists u\forall x(x\in u\oto x\notin x)$.
+    Therfore $\vDash\neg\exists u\forall x(x\in u\oto x\notin x)$.
+
+    This proof probably parallels the proof you are familiar with from an introductory set theory/discrete math course: one considers the Russelian set $u$ itself.
+
+\eexam
+
+It is obvious that $X\vDash\alpha\to\beta$ if and only if $X,\alpha\vDash\beta$.
+Suppose $X\vDash\alpha\to\beta$, and so suppose ${\cal M}\vDash X,\alpha$ then ${\cal M}\vDash\alpha\to\beta,\alpha$ and so ${\cal M}\vDash\beta$.
+Thus $X,\alpha\vDash\beta$.
+And conversely if $X,\alpha\vDash\beta$, suppose ${\cal M}\vDash X$.
+If ${\cal M}\vDash\alpha$ then ${\cal M}\vDash X\vDash\beta$, thus $X\vDash\alpha\to\beta$ as required.
+
+Thus we immediately get, for example
+$$ \forall\vec x\alpha\to\alpha\frac{\vec t}{\vec x} $$
+for collision-free $\alpha,\frac{\vec t}{\vec x}$.
+
+Now, ${\cal L}$ is a structure over the signature $\set{\land,\neg}\cup\set{\forall x}[x\in\Var]$.
+And so we can talk about {\it congruences\addtoindex{congruence} in ${\cal L}$}.
+These are equivalence relations $\approx$ such that for all formulas $\alpha,\alpha',\beta,\beta'\in{\cal L}$ and $x\in\Var$:
+$$ \alpha\approx\alpha',\,\beta\approx\beta' \implies \alpha\land\beta\approx\alpha'\land\beta',\,\neg\alpha\approx\neg\alpha',\,\forall x\alpha\approx\forall x\alpha' $$
+(As a technicality the symbol $\land$ represents the function $(\alpha,\beta)\varmapsto(\alpha\land\beta)$ and not $(\alpha,\beta)\varmapsto\alpha\land\beta$ but I digress.)
+
+\bthrm[title=The Replacement Theorem, name=replacementtheorem]
+
+    Let $\approx$ be a congruence in ${\cal L}$ and $\alpha\approx\alpha'$.
+    Let $\phi$ be an arbitrary formula.
+    If $\phi'$ is obtained by replacing some of the occurrences (meaning not necessarily all the occurrences are replaced) of $\alpha$ with $\alpha'$, then $\phi\approx\phi'$.
+
+\ethrm
+
+We will prove this by induction on $\phi$.
+If $\phi$ is a prime formula, then either $\phi=\alpha$ or $\phi\neq\alpha'$, but in any case $\phi'=\alpha'$ or $\phi'=\phi=\alpha$ (since prime formulas are the smallest units of formulas).
+And so $\phi\approx\phi$ since $\alpha\approx\alpha$ and $\alpha\approx\alpha'$.
+In general, the case where $\phi=\alpha$ is trivial.
+
+Now, if $\phi=\phi_1\land\phi_2$ then $\phi'=\phi_1'\land\phi_2'$ (since we don't consider $\phi=\alpha$) and inductively $\phi_i\approx\phi_i'$.
+Since $\approx$ is a congruence, $\phi'\approx\phi$.
+The steps for $\neg$ and $\forall x$ are analogous.
+\qed
+
+So for example, since $\equiv$ is a congruence in ${\cal L}$, the replacement theorem tells us that if we replace subformulas of $\phi$ with equivalent subformulas, the resulting formula remains equivalent
+to $\phi$.
+This is not surprising, but provides a rigorous proof of our intuition.
+
+By this theorem, the ``congruence-ness'' holds for all defined connectives and quantifiers (meaning $\alpha\approx\alpha',\beta\approx\beta'$ implies $\alpha\to\alpha'\equiv\beta\to\beta'$ and
+$\exists x\alpha\approx\exists x\alpha'$ and so on).
+
+\bdefn
+
+    Suppose ${\cal A}$ is an ${\cal L}$-structure.
+    Two ${\cal L}$-formulas $\alpha$ and $\beta$ are {\emphcolor equivalent in ${\cal A}$} (or {\emphcolor equivalent modulo ${\cal A}$})\addtoindex{equivalence}[in a structure] if ${\cal A},w\vDash\alpha$
+    if and only if ${\cal A},w\vDash\beta$ for all valuations $w\colon{\cal A}\longto\Var$.
+    This is denoted $\alpha\equiv_{\cal A}\beta$.
+
+\edefn
+
+Obviously $\alpha\equiv_{\cal A}\beta$ is equivalent to ${\cal A}\vDash\alpha\oto\beta$.
+And if $\alpha\equiv\beta$ then $\alpha\equiv_{\cal A}\beta$, or more suggestively: ${\equiv}\subseteq{\equiv_{\cal A}}$.
+
+\bprop
+
+    Suppose $\set{\approx_i}_{i\in I}$ is a non-empty family of congruences in ${\cal L}$, then so is their intersection, ${\approx}=\bigcap_{i\in I}{\approx_i}$.
+
+\eprop
+
+This is trivial.
+\qed
+
+Thus if $\boldsymbol K\neq\varnothing$ is a class of ${\cal L}$-structures, ${\cong_{\boldsymbol K}}\coloneqq\bigcap_{{\cal A}\in\boldsymbol K}{\equiv_{\cal A}}$ is also a congruence in ${\cal L}$.
+If $\boldsymbol K$ is the class of {\it all} ${\cal L}$-structures, then ${\equiv_{\boldsymbol K}}$ is equal to $\equiv$.
+
+We will state some basic properties of $\equiv$ below:
+
+\medskip
+\tabskip=0pt plus 1fil
+\mlcount=0
+\halign to\hsize{%
+    \global\advance\mlcount by 1\relax\hfil$(\the\mlcount)$#\tabskip=.25cm&$#$\hfil\tabskip=2cm&%
+    \global\advance\mlcount by 1\relax\hfil$(\the\mlcount)$#\tabskip=.25cm&$#$\hfil\tabskip=0pt plus 1fil\cr%
+    & \forall x(\alpha\land\beta)\equiv\forall x\alpha\land\forall x\beta &
+    & \exists x(\alpha\lor\beta)\equiv\exists x\alpha\lor\exists x\beta\cr
+    & \forall x\forall y\alpha\equiv\forall y\forall x \alpha&
+    & \exists x\exists y\alpha\equiv\exists y\exists x\alpha\cr\noalign{\hbox to\hsize{If $x$ does not occur free in the formula $\beta$, then\hfill}\smallskip}
+    & \forall x(\alpha\lor\beta)\equiv\forall x\alpha\lor\beta &
+    & \exists x(\alpha\land\beta)\equiv\exists x\alpha\land\beta\cr
+    & \forall x\beta\equiv\beta &
+    & \exists x\beta\equiv\beta\cr
+    & \forall x(\alpha\to\beta)\equiv\exists x\alpha\to\beta &
+    & \exists x(\alpha\to\beta)\equiv\forall x\alpha\to\beta\cr
+}
+
+These proofs are relatively simple.
+Proofs of $(5)$ through $(10)$ will of course rely on \refmath{substitutiontheorem}.
+
+Another important property is the {\it renaming of bound variables} ({\it bound renaming} for short): let $\alpha$ be a formula and $x\neq y$ be distinct variables where $y\notin\var\alpha$.
+Then
+$$ \forall x\alpha\equiv\forall y\parens{\alpha\tfrac yx},\qquad \exists x\alpha\equiv\exists y\parens{\alpha\tfrac yx} $$
+The second equivalence results from the first due to the replacement theorem (its necessity can easily be directly verified).
+So we prove the first equivalence (${\cal M}^y_x$ means ${\cal M}^{y^{\cal M}}_x$):
+
+\medskip
+\tabskip=0pt plus 1fil
+{\openup.5\jot\halign to\hsize{$#$\hfil\tabskip=0pt&${}\iff#$\hfil\tabskip=.25cm&#\hfil\tabskip=.5cm&(#)\hfil\tabskip=0pt plus 1fil\cr
+    {\cal M}\vDash\forall x\alpha & {\cal M}^a_x\vDash\alpha & for all $a$ & definition\cr
+                                  & ({\cal M}^a_y)^a_x\vDash\alpha & for all $a$ & by \refmath{coincidencetheorem}\cr
+                                  & ({\cal M}^a_y)^y_x\vDash\alpha & for all $a$ & $({\cal M}^a_y)^y_x = ({\cal M}^a_y)^a_x$\cr
+                                  & {\cal M}^a_y\vDash\alpha\tfrac yx & for all $a$ & by \refmath{substitutiontheorem}\cr
+                                  & {\cal M}\vDash\forall y\parens{\alpha\tfrac yx}.\span & definition\cr
+}}
+\medskip
+
+We also have the following properties: (assuming $\alpha,\frac tx$ are collision-free)
+
+\medskip
+\tabskip=0pt plus 1fil
+{\openup.5\jot\halign to\hsize{$#$\hfil\tabskip=.5cm&$(#)$\hfil\tabskip=0pt plus 1fil\cr
+    \forall x(x\eq t\to\alpha)\equiv\alpha\tfrac tx\equiv\exists x(x\eq t\land\alpha) & x\notin\var t\cr
+    \forall y\parens{y\eq t\to\alpha\tfrac yx}\equiv\alpha\tfrac tx\equiv\exists y\parens{y\eq t\land\alpha\tfrac yx} & y\notin\var\alpha,\var t\cr
+}}
+\medskip
+
+We will prove the first line of equivalences.
+$\forall x(x\eq t\to\alpha)\vDash(x\eq t\to\alpha)\tfrac tx=t\eq t\to\alpha\tfrac tx\vDash\alpha\tfrac tx$, by \refmath[corollary]{universaltosubstitution}.
+Conversely, let ${\cal M}\vDash\alpha\tfrac tx$, so by \refmath{substitutiontheorem} ${\cal M}^{t^{\cal M}}_x\vDash\alpha$.
+If ${\cal M}^a_x\vDash x\eq t$, then obviously $a=t^{\cal M}$, and so ${\cal M}^a_x\vDash\alpha$.
+So for all $a\in A$, ${\cal M}^a_x\vDash x\eq t\to\alpha$, thus ${\cal M}\vDash\forall x(x\eq t\to\alpha)$ as required.
+Now, for the rightmost formula by what we just proved,
+$$ \exists x(x\eq t\land\alpha) = \neg\forall x\neg(x\eq t\land\alpha) \equiv \neg\forall x(x\eq t\to\neg\alpha) \equiv \neg\neg\alpha\tfrac tx\equiv \alpha\tfrac tx $$
+The second line is proven similarly.
+
+\bdefn
+
+    A formula of the form $\alpha=\Q_1x_1\cdots\Q_nx_n\beta$ where $\Q_i$ are either universal or existential quantifiers and $\beta$ is quantifier-free is a {\emphcolor prenex normal form}%
+    \addtoindex{prenex normal form}, for short PNF.
+
+\edefn
+
+In PNFs, we may assume that all the variables $x_i$ are distinct, as we can drop superfluous quantifiers as stated earlier.
+For example, $\forall$- and $\exists$-formulas are prenex normal forms.
+
+\bthrm[name=pnftheorem]
+
+    Every formula is equivalent to a prenex normal form.
+
+\ethrm
+
+Let $\phi$ be a formula.
+Without loss of generality, we can assume that $\phi$ contains only $\neg,\land,\forall,\exists$ and not any other connectives or quantifiers (formally $\phi$ would not have $\exists$, but I digress).
+For each prefix $\Q x$ in $\phi$, consider the number of occurrences of the symbols $\neg$ and $\land$ to the left of the prefix, and let $s\phi$ be the sum of these numbers, summed over all prefixes in
+$\phi$.
+Obviously $\phi$ is a PNF if and only if $s\phi=0$.
+So we will induct on $s\phi$.
+In the case that $s\phi=0$, then $\phi$ is already a PNF.
+Otherwise, there must be some prefix $\Q x$ such that immediately to its left there is an occurrance of $\land$ or $\neg$.
+Applying the appropriate equivalence from the following
+$$ \neg\forall x\alpha\equiv\exists x\neg\alpha,\quad \neg\exists x\alpha\equiv\forall x\neg\alpha,\quad \beta\land\Q x\alpha\equiv\Q y\parens{\beta\land\alpha\tfrac yx}\ \ (y\notin\var\alpha,\var\beta) $$
+(the third equivalence is the result of applying the appropriate basic properties (1), (2), (5), (6), (7), (8) as well as renaming bound variables)
+will reduce $s\phi$, and the proof (and construction of a PNF for $\phi$) proceeds inductively.
+\qed
+
