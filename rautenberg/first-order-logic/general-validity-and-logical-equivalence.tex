@@ -168,3 +168,69 @@ $$ \neg\forall x\alpha\equiv\exists x\neg\alpha,\quad \neg\exists x\alpha\equiv\
 will reduce $s\phi$, and the proof (and construction of a PNF for $\phi$) proceeds inductively.
 \qed
 
+As a shorthand, if $\triangleleft$ is a binary relation and $t$ is a term, then we will write $(\forall x\triangleleft t)\alpha$ in place of $\forall x(x\triangleleft t\to\alpha)$.
+Similarly we will write $(\exists x\triangleleft t)\alpha$ in place of $\exists x(x\triangleleft t\land\alpha)$.
+So for example, in fields we may write $(\forall x\neqb0)\exists y\,x\cdot y\eq1$.
+
+\bexerc
+
+    Suppose $\alpha\equiv\beta$ are equivalent formulas, show that $\alpha\frac{\vec t}{\vec x}\equiv\beta\frac{\vec t}{\vec x}$ where the substitutions are collision-free.
+
+\eexerc
+
+We will use the notation ${\cal M}^{\vec t}_{\vec x}$ as an abbreviation for ${\cal M}^{\vec t^{\cal M}}_{\vec x}$.
+Then we have by \refmath{substitutiontheorem}:
+$$ {\cal M}\vDash\alpha\tfrac{\vec t}{\vec x} \iff {\cal M}^{\vec t}_{\vec x}\vDash\alpha \iff {\cal M}^{\vec t}_{\vec x}\vDash\beta \iff {\cal M}\vDash\beta\tfrac{\vec t}{\vec x} $$
+as required.
+
+\bexerc
+
+    Show that $\neg(\forall x\triangleleft t)\alpha\equiv(\exists x\triangleleft t)\neg\alpha$ and $\neg(\exists x\triangleleft t)\alpha\equiv(\forall x\triangleleft t)\neg\alpha$.
+
+\eexerc
+
+We know that
+$$ \neg(\forall x\triangleleft t)\alpha = \neg\forall x(x\triangleleft t\to\alpha) \equiv \exists x(x\triangleleft t\land\neg\alpha) = (\exists x\triangleleft t)\neg\alpha $$
+This means that
+$$ \neg(\exists x\triangleleft t)\alpha \equiv \neg\neg(\forall x\triangleleft t)\neg\alpha \equiv (\forall x\triangleleft t)\neg\alpha $$
+
+\bexerc
+
+    Show that the conjunction and disjunction of $\forall$-formulas is equivalent to a $\forall$-formula.
+    Show the same for $\exists$-formulas.
+
+\eexerc
+
+Suppose $\forall\vec x\alpha$ and $\forall\vec y\beta$ are $\forall$-formulas ($\alpha,\beta$ are quantifier-free).
+By bound renaming, we can assume that $\vec x$ is distinct from $\free\beta$ and $\vec y$, and $\vec y$ is distinct from $\free\alpha$ and $\vec x$.
+Thus by $\forall\vec x\alpha\land\beta\equiv\forall\vec x(\alpha\land\beta)$,
+$$ \forall\vec x\alpha\land\forall\vec y\beta \equiv \forall\vec x(\alpha\land\forall\vec y\beta) \equiv \forall\vec x\forall\vec y(\alpha\land\beta) $$
+similar for disjunction and $\exists$-formulas.
+
+\bexerc
+
+    Show that every formula $\phi\in{\cal L}$ is equivalent to some formula $\phi'\in{\cal L}$ built up from literals using only $\land$, $\lor$, and $\exists$.
+
+\eexerc
+
+We will prove this by induction on $\phi$.
+If $\phi$ is a prime formula, this is trivial.
+Now suppose $\phi=\neg\phi_1$, then by induction $\phi_1$ is equivalent to some formula built up from literals using only conjunction, disjunction, and existential quantifiers.
+Let us assume for simplicity that $\phi_1$ is (replace $\phi_1$ with its equivalent formula).
+Then $\phi_1$ is either a literal, a conjunction, a disjunction, or a combination quantified using an existential quantifier.
+If $\phi_1$ is a literal, then $\neg\phi_1$ is equivalent to a literal.
+If $\phi_1=\phi_2\lor\phi_3$, then $\phi\equiv\neg\phi_2\land\neg\phi_3$ and by induction $\neg\phi_2$ and $\neg\phi_3$ are equivalent to formulas of the required form, and so therefore so is their
+conjunction, $\phi$.
+Similar for $\phi_1=\phi_2\land\phi_3$.
+If $\phi_1=\exists x\phi_2$ then by induction $\phi_2$ is equivalent to a formula of the required form and therefore so is $\phi_1$.
+
+\bexerc
+
+    Let $P$ be a unary relational symbol, show that $\exists x(Px\to\forall yPy)$ is a tautology.
+
+\eexerc
+
+The negation of this is equivalent to $\forall x(Px\land\neg\forall yPy)\equiv\forall x(Px\land\exists y(\neg Py)\equiv\forall x\,Px\land\exists y(\neg Py)$ (since
+$\forall x(\alpha\land\beta)\equiv\forall x\alpha\land\forall x\beta$, and $\forall x\exists y(\neg Py)\equiv\exists y(\neg Py)$ by removing superfluous quantifiers).
+This is is obviously not satisfiable.
+

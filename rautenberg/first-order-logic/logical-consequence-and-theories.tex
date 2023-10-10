@@ -1,0 +1,181 @@
+Similar to the expansion and reduct of structures, if ${\cal L}\subseteq{\cal L'}$, ${\cal L}$ is called the {\it reduct} of ${\cal L}'$ and ${\cal L'}$ is called the {\it expansion} of ${\cal L}$.
+Since the satisfaction requirements for $\land$ and $\neg$ are the same as in propositional logic, the basic rules for $\vDash$ in propositional logic carry over to first order logic.
+These are
+
+\medskip
+\tabskip=0pt plus 1fil
+{\openup1\jot\halign to\hsize{($#$)\hfil\tabskip=.2cm&$#$\hfil\tabskip=2cm&($#$)\hfil\tabskip=.2cm&$#$\hfil\tabskip=0pt plus 1fil\cr
+    \hbox{IS} & \gentzen{}{\alpha\vDash\alpha} & \hbox{MR} & \gentzen{X\vDash\alpha}{X'\vDash\alpha}\quad (X\subseteq X')\cr
+    \land1 & \gentzen{X\vDash\alpha,\beta}{X\vDash\alpha\land\beta} & \land2 & \gentzen{X\vDash\alpha\land\beta}{X\vDash\alpha,\beta}\cr
+    \neg1 & \gentzen{X\vDash\alpha,\neg\alpha}{X\vDash\beta} & \neg2 & \gentzen{X,\alpha\vDash\beta & X,\neg\alpha\vDash\beta}{X\vDash\beta}\cr
+}}
+\medskip
+
+But we also have new properties:
+
+\medskip
+\tabskip=0pt plus 1fil
+\mlcount=0
+{\openup1\jot\halign to\hsize{\global\advance\mlcount by 1\relax\hfil$(\the\mlcount)$#\tabskip=.25cm&$\displaystyle#$\hfil\tabskip=.5cm&(#)\hfil\tabskip=0pt plus 1fil\cr
+    & \gentzen{X\vDash\forall x\alpha}{X\vDash\alpha\frac tx} & $\alpha,\frac tx$ collision-free\cr
+    & \gentzen{X\vDash\alpha\tfrac sx,\,s\eq t}{X\vDash\alpha\frac tx} & $\alpha,\frac sx$ and $\alpha,\frac tx$ collision-free\cr
+    & \gentzen{X,\beta\vDash\alpha}{X,\forall x\beta\vDash\alpha} & anterior generalization\cr
+    & \gentzen{X\vDash\alpha}{X\vDash\forall x\alpha} & $x\notin\free X$, posterior generalization\cr
+    & \gentzen{X,\beta\vDash\alpha}{X,\exists x\beta\vDash\alpha} & $x\notin\free X,\free\alpha$, anterior particularization\cr
+    & \gentzen{X\vDash\alpha\tfrac tx}{X\vDash\exists x\alpha} &  $\alpha,\frac tx$ collision-free, posterior particularization\cr
+}}
+
+\medskip
+$(1)$ is due to $\forall x\alpha\vDash\alpha\frac tx$ and the transititvity of $\vDash$.
+Similarly $(2)$ is due to $\alpha\frac sx,\,s\eq t\vDash\alpha\frac tx$.
+And $(3)$ is due to $\forall x\beta\vDash\beta$.
+We now prove $(4)$.
+Suppose $X\vDash\alpha$, ${\cal M}\vDash X$, and $x\notin\free X$.
+Then by \refmath{coincidencetheorem}, for every $a\in A$, ${\cal M}^a_x\vDash X$ and so ${\cal M}^a_x\vDash\alpha$ meaning ${\cal M}\vDash\forall x\alpha$ as required.
+For $(5)$, notice that by $(4)$:
+$$ X,\beta\vDash\alpha \implies X,\neg\alpha\vDash\neg\beta \implies X,\neg\alpha\vDash\forall x\neg\beta \implies X,\neg\forall x\neg\beta\vDash\alpha \implies X,\exists x\beta\vDash\alpha $$
+And by \refmath[corollary]{universaltosubstitution}, $\alpha\frac tx\vDash\exists x\alpha$ proving $(6)$.
+
+Some texts define a stricter consequence relation, which we call the {\it global consequence relation}\addtoindex{consequence relation}[global], denoted here by $\gvDash$.
+For a set of formulas $X\subseteq{\cal L}$ and a formula $\phi\in{\cal L}$, we define $X\gvDash\phi$ if and only if ${\cal A}\vDash X$ implies ${\cal A}\vDash\phi$ for all {\it structures} ${\cal A}$.
+(The difference here is subtle: the ``local'' consequence relation deals in models, while the global consequence relation deals in structures.)
+
+Obviously $X\vDash\phi$ implies $X\gvDash\phi$: let ${\cal A}\vDash X$ then since for every valuation ${\cal A},w\vDash X\implies{\cal A},w\vDash\phi$ so ${\cal A}\vDash\phi$.
+The converse is not true though: for example $x\eq y\gvDash\forall x\forall y\,x\eq y$ since if ${\cal A}\vDash x\eq y$ then ${\cal A}$ has a single element.
+But $x\eq y\nvDash\forall x\forall y\,x\eq y$, since any model over a structure with two or more elements whose valuations of $x$ and $y$ are equal is a counterexample.
+By posterior generalization, $X\vDash\phi\implies X\vDash\phi^g$ is true in general only if the free variables of $\phi$ do not occur free in $X$.
+But on the other hand $X\gvDash\phi\implies X\gvDash\phi^g$ is always true (since ${\cal A}\vDash\phi\iff{\cal A}\vDash\phi^g$).
+
+Now, since for every structure ${\cal A}$, valuation $w$, and set of formulas $X$: ${\cal A},w\vDash X^g\iff{\cal A}\vDash X^g$ by the coincidence theorem ($\free X^g=\varnothing$).
+Thus
+$$ X\gvDash\phi \iff X^g\vDash\phi $$
+If $X\gvDash\phi$, let ${\cal A},w\vDash X^g$ then ${\cal A}\vDash X^g$ (explained above) and so ${\cal A}\vDash X$ meaning ${\cal A}\vDash\phi$ and in particular ${\cal A},w\vDash\phi$.
+Conversely, if $X^g\vDash\phi$ suppose ${\cal A}\vDash X$ then ${\cal A}\vDash X^g$ and so ${\cal A}\vDash\phi$.
+If $S$ is a set of sentences, then $S^g=S$ and so we get that
+$$ S\gvDash\phi \iff S\vDash\phi $$
+so for sets of sentences, there is no difference.
+But otherwise the two consequence relations act differently, for example neither the rule of case distinction nor the deduction theorem hold.
+These are the rules:
+$$ \gentzen{X,\alpha\gvDash\beta & X,\neg\alpha\gvDash\beta}{X\gvDash\beta}\ (\hbox{rule of case distinction}),\qquad \gentzen{X,\alpha\gvDash\beta}{X\gvDash\alpha\to\beta}\ (\hbox{deduction theorem}) $$
+For example, $x\eq y\gvDash\forall x\forall y\,x\eq y$ but it is not necessarily true that $\gvDash x\eq y\to\forall x\forall y\,x\eq y$.
+
+\bdefn
+
+    A {\emphcolor first-order theory}\addtoindex{theory} over a language ${\cal L}$ (also a {\emphcolor ${\cal L}$-theory}), is a set of sentences $T\subseteq{\cal L}^0$ which is
+    {\emphcolor deductively closed} in ${\cal L}$, meaning $T\vDash\phi\iff\phi\in T$ for all sentences $\phi\in{\cal L}^0$.
+    If $\phi\in T$ then we say that $\phi$ is a {\emphcolor theorem}\addtoindex{theorem} of $T$ (or holds or is true in $T$).
+    If $T\subseteq T'$ are both ${\cal L}$-theories, then $T$ is called a {\emphcolor subtheory}\addtoindex{theory}[subtheory] of $T'$ and $T'$ is called an
+    {\emphcolor extension}\addtoindex{theory}[extension] of $T$.
+    An ${\cal L}$-structure ${\cal A}$ such that ${\cal A}\vDash T$ is called an {\emphcolor model} of $T$, we denote the class of all models of $T$ by $\Md T$.
+
+\edefn
+
+Different authors define theories slightly differently, for example some may not require the theory be deductively closed, etc.
+
+For example, if $X\subseteq{\cal L}$ is a set of formulas we define its {\it deductive closure} to be $\set{\alpha\in{\cal L}^0}[X\vDash\alpha]$.
+Since $\vDash$ is transitive, the deductive closure of a set of formulas is indeed a theory.
+When we discuss the {\it theory of $S$}, where $S$ is a set of sentences, we mean the deductive closure of $S$.
+A set $X\subseteq{\cal L}$ is called an {\it axiom system} for a theory $T$ if $T=\set{\alpha\in{\cal L}^0}[X^g\vDash\alpha]$.
+Notice how we tacitly generalize the free variables in axioms.
+
+Furthermore, if $T$ is a theory then $T\vDash\phi\iff{\cal A}\vDash\phi$ for all ${\cal A}\vDash T$ since $T$ is a set of sentences (in general we require that ${\cal M}\vDash\phi$ for all ${\cal M}\vDash T$
+but as discussed previously, there is no distinction between global and local consequence).
+And $T\vDash\phi\iff T\vDash\phi^g$.
+
+The smallest theory in ${\cal L}$ is the theory containing only tautologies, which we denote ${\sl Taut}_{\cal L}$.
+An axiom system for ${\sl Taut}_{\cal L}$ is the empty set.
+The set of all sentences, ${\cal L}^0$, is the largest theory in ${\cal L}$ which is also called the {\it inconsistent theory}, and all other theories are called
+{\it consistent}\addtoindex{theory}[consistent] or {\it satisfiable}.
+
+Notice that if $\set{T_i}_{i\in I}$ is a family of ${\cal L}$-theories, $T=\bigcap_{i\in I}T_i$ is also an ${\cal L}$-theory: if $T\vDash\alpha$ then $T_i\vDash\alpha$ for all $i\in I$ (by (MR)) and so
+$\alpha\in T$.
+
+\bdefn
+
+    Let $T$ be an ${\cal L}$-theory, and $\phi\in{\cal L}^0$ be a sentence.
+    Then we define $T+\phi$ to be the smallest theory which extends $T$ and contains $\phi$.
+    Similarly if $S\subseteq{\cal L}^0$ a set of sentences, then $T+S$ is the smallest theory which extends $T$ and contains $S$.
+    Alternatively,
+    $$ T + S = \bigcap\set{T'}[\hbox{$T'$ is a theory which extends $T$ and contains $S$}] $$
+    If $T+\phi$ is satisfiable, then $\phi$ is said to be {\emphcolor compatible with $T$}.
+    If $\neg\phi$ is compatible with $T$, then $\phi$ is said to be {\emphcolor refutable in $T$}.
+    If $\phi$ is both compatible and refutable (meaning $\neg\phi$ is also compatible) with $T$, then $\phi$ is said to be {\emphcolor independent of $T$}.
+
+\edefn
+
+\bdefn
+
+    If $T$ is a ${\cal L}$-theory and $\alpha,\beta\in{\cal L}$ are two formulas, we say $\alpha$ and $\beta$ are {\emphcolor equivalent modulo $T$}\addtoindex{equivalence}[in a theory], denoted
+    $\alpha\equiv_T\beta$, if $\alpha\equiv_{\cal A}\beta$ for all ${\cal A}\vDash T$.
+    Meaning
+    $$ {\equiv_T} \coloneqq \bigcap_{{\cal A}\in\Md T}{\equiv_{\cal A}} $$
+    So $\equiv_T$ is an intersection of congruences, and is therefore also a congruence.
+    Obviously
+    $$ \alpha\equiv_T\beta \iff T\vDash\alpha\oto\beta \iff T\vDash(\alpha\oto\beta)^g $$
+
+    Similarly if $t$ and $s$ are ${\cal L}$-terms, we call them {\emphcolor equivalent modulo $T$}\addtoindex{equivalence}[of terms], denoted $t\approx_Ts$, if $T\vDash s\eq t$ (meaning for all
+    ${\cal A}\vDash T$ and valuations $w\colon\Var\longto A$, ${\cal A},w\vDash s\eq t$).
+
+\edefn
+
+For example, let $T_G^=$ be the theory of groups in the signature $\set{\circ,e,{}^{-1}}$ (an equivalent formulation can be defined over the signature $\set{\circ,e}$ and gives us the equivalent theory
+$T_G$), then $(x\circ y)^{-1}\approx_{T_G^=}y^{-1}\circ x^{-1}$.
+
+Let ${\cal A}$ be an ${\cal L}$-structure, then we define its {\it theory} to be:
+$$ \Th{\cal A} \coloneqq \set{\alpha\in{\cal L}^0}[{\cal A}\vDash\alpha] $$
+this is indeed a theory, as if $\Th{\cal A}\vDash\alpha$ then since ${\cal A}\vDash\Th{\cal A}$ by definition, we have ${\cal A}\vDash\alpha$ so $\alpha\in\Th{\cal A}$.
+And if $\boldsymbol K$ is a class of ${\cal L}$-structures, then its theory is defined to be
+$$ \Th\boldsymbol K \coloneqq \bigcap_{{\cal A}\in\boldsymbol K}\Th{\cal A} $$
+which is a theory as the intersection of theories.
+
+\bexerc
+
+    Suppose $x\notin\free X$ and $c$ is not in $X$ or $\alpha$.
+    Prove
+    $$ X\vDash\alpha \iff X\vDash\forall x\alpha \iff X\vDash\alpha\tfrac cx $$
+
+\eexerc
+
+Since $x\notin\free X$, we have $X\vDash\alpha\implies\forall x\alpha$.
+And similarly $X\vDash\forall x\alpha\implies X\vDash\alpha$ since $\alpha,\frac xx$ is collision-free.
+And since $\alpha,\frac cx$ is collision-free, we have $X\vDash\forall x\alpha\implies X\vDash\alpha\tfrac cx$.
+
+Now suppose $X\vDash\alpha\tfrac cx$, then suppose ${\cal M}\vDash X$ then ${\cal M}^c_x\vDash\alpha$ by the substitution theorem.
+Let $a\in A$, since $c$ is not in $X$, if we set $c^{\cal M}=a$ then ${\cal M}$ still satisfies $X$, and so ${\cal M}^a_x\vDash\alpha$, thus ${\cal M}\vDash\forall x\alpha$.
+Thus $X\vDash\forall x\alpha$ as required.
+
+\bexerc
+
+    Let $S$ be a set of sentences, $\alpha$ and $\beta$ be formulas, $x\notin\free\beta$, and $c$ be a constant not occurring in $S$, $\alpha$, or $\beta$.
+    Show that
+    $$ S\vDash\alpha\tfrac cx\to\beta \iff S\vDash\exists x\alpha\to\beta $$
+
+\eexerc
+
+If $S\vDash\alpha\tfrac cx\to\beta$, then if ${\cal M}\vDash S$, if ${\cal M}\vDash\exists x\alpha$ then there exists an $a\in A$ such that ${\cal M}^a_x\vDash\alpha$.
+Since we can set $c^{\cal M}=a$ as $c$ does not occur in $S,\alpha,\beta$ (again, the coincidence theorem), so ${\cal M}\vDash\alpha\tfrac cx$ by the substitution theorem.
+Thus ${\cal M}\vDash\beta$, meaning ${\cal M}\vDash\exists x\alpha\to\beta$ so $S\vDash\exists x\alpha\to\beta$.
+
+And if $S\vDash\exists x\alpha\to\beta$ then since $\vDash\alpha\tfrac cx\to\exists x\alpha$ we have $S\vDash\alpha\tfrac cx\to\beta$ as required.
+
+\bexerc
+
+    Show that for all sentences $\alpha,\beta\in{\cal L}^0$, if $T$ is an ${\cal L}$-theory then
+    $$ \beta\in T+\alpha \iff \alpha\to\beta \in T $$
+
+\eexerc
+
+If $\beta\in T+\alpha$ then $T,\alpha\vDash\beta$ so $T\vDash\alpha\to\beta$ by the deduction theorem, thus $\alpha\to\beta\in T$ since $T$ is deductively closed.
+Conversely if $\alpha\to\beta\in T$ then $T,\alpha\vDash\alpha\to\beta,\alpha$ and so $T,\alpha\vDash\beta$ thus $\beta\in T+\alpha$.
+
+\bexerc
+
+    Let $T\subseteq{\cal L}$ be an ${\cal L}$-theory and ${\cal L}_0\subseteq{\cal L}$ a reduction of the language ${\cal L}$.
+    Show that $T_0\coloneqq T\cap{\cal L}_0$ is also a (${\cal L}_0$-)theory.
+
+\eexerc
+
+Suppose $T_0\vDash\alpha$ for a ${\cal L}_0$-sentence $\alpha$, then $T\vDash\alpha$ and so $\alpha\in T$ and $\alpha\in{\cal L}_0$ so $\alpha\in T_0$.
+(Note that $T_0$ is not necessarily a ${\cal L}$-theory.
+For example if $c$ is a constant symbol not occurring in ${\cal L}_0$ then $T_0\vDash c\eq c$ but $c\eq c$ is a sentence not in $\notin{\cal L}_0$, so $c\eq c\notin T_0$).
+
