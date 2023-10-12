@@ -1,0 +1,144 @@
+Let ${\cal L}$ be an arbitrary first-order language in the logical signature $\neg,\land,\forall,\eq$.
+We define a calculus $\vdash$ using the following basic rules (the definitions for sequents and proofs remain the same as they were in propositional logic):
+
+\medskip
+\tabskip=0pt plus 1fil
+{\openup1\jot\halign to\hsize{($#$)\hfil\tabskip=.25cm&$#$\hfil\tabskip=2cm&($#$)\hfil\tabskip=.2cm&$#$\hfil\tabskip=0pt plus 1fil\cr
+    \hbox{IR} & \gentzen{}{X\vdash\alpha}\quad (\alpha\in X\cup\set{t\eq t})    & \hbox{MR} & \gentzen{X\vdash\alpha}{X'\vDash\alpha}\quad (X\subseteq X')\cr
+    \land1 & \gentzen{X\vdash\alpha,\beta}{X\vdash\alpha\land\beta}             & \land2 & \gentzen{X\vdash\alpha\land\beta}{X\vdash\alpha,\beta}\cr
+    \neg1 & \gentzen{X\vdash\alpha,\neg\alpha}{X\vdash\beta}                    & \neg2 & \gentzen{X,\alpha\vdash\beta & X,\neg\alpha\vdash\beta}{X\vdash\beta}\cr
+    \forall1 & \gentzen{X\vdash\forall x\alpha}{X\vdash\alpha\frac tx}\quad (\alpha,\frac tx\hbox{ collision-free}) &
+    \forall2 & \gentzen{X\vdash\alpha\frac yx}{X\vdash\forall x\alpha}\quad (y\notin\free X\cup\var\alpha)\cr
+    = & \gentzen{X\vdash s\eq t,\alpha\frac sx}{X\vdash\alpha\frac tx}\quad (\alpha\hbox{ prime})\cr
+}}
+\medskip
+
+Note that $(\forall2)$ is the result of posterior generalization: if $X\vDash\alpha$ then $X\vDash\forall x\alpha$ for $x\notin\free X$.
+Set $\alpha=\alpha\frac yx$ then then $X\vDash\alpha\frac yx$ implies $X\vDash\forall y\alpha\frac yx\equiv\forall x\alpha$ for $y\notin\free X\cup\var\alpha$ by renaming bound variables.
+Thus all of these rules are sound in the sense that they are true for $\vDash$.
+The rule $(=)$ could be strengthened to require $\alpha,\frac tx,\frac sx$ be collision-free, but requiring $\alpha$ be prime instead is sufficient.
+
+Since this calculus is an extension of the Gentzen-style calculus of propositional logic, all of the rules we proved in propositional logic carry over here.
+
+Again, let $R$ be a rule of the form
+$$ R\colon\quad \gentzen{X_1\vdash\alpha_1 & \cdots & X_n\vdash\alpha_n}{X\vdash\alpha} $$
+Then we say that a property of sequents (which are again pairs $(X,\alpha)$ where $X\subseteq{\cal L}$ and $\alpha\in{\cal L}$) ${\cal E}$ is {\it closed under $R$} if
+${\cal E}(X_1,\alpha_1),\dots,{\cal E}(X_n,\alpha_n)$ implies ${\cal E}(X,\alpha)$.
+The same principle from propositional calculus holds here, and the proof is the same.
+
+\bprop[title=Principle of Rule Induction, name=ruleinductionprinciple]
+
+    Let ${\cal E}$ be a property of sequents $(X,\alpha)$ such that ${\cal E}$ is closed under all of the basic rules defined above, then $X\vdash\alpha$ implies ${\cal E}(X,\alpha)$.
+
+\eprop
+
+Thus if we let ${\cal E}(X,\alpha)$ be the property that $X\vDash\alpha$ then we get that ${\cal E}$ is closed under all of the basic rules, and so $X\vdash\alpha\implies X\vDash\alpha$, or more suggestively
+${\vdash}\subseteq{\vDash}$.
+Similarly if we have ${\cal L}\subseteq{\cal L'}$ and we let ${\cal E}(X,\alpha)$ be the property $X\vdash_{\cal L'}\alpha$ then we get $X\vdash_{\cal L}\alpha\implies X\vdash_{\cal L'}\alpha$, or
+${\vdash_{\cal L}}\subseteq{\vdash_{\cal L'}}$.
+
+Similarly let ${\cal E}(X,\alpha)$ be the property that there exists a finite $X_0\subseteq X$ and a finite ${\cal L}_0\subseteq{\cal L}$ (meaning the signature of ${\cal L}_0$ is finite, not
+${\cal L}_0$ itself, which is always infinite) where $X_0\vdash_{{\cal L}_0}\alpha$.
+Notice that this requires that $X_0\cup\set\alpha\subseteq{\cal L}_0$.
+We will first show that (IR) is closed under ${\cal E}$, so if $\alpha\in X\cup\set{t\eq t}$ then let $X_0=\set\alpha$ and let ${\cal L}_0$ be constructed from the symbols in $\alpha$ which is finite.
+And then we get $X_0\vdash_{{\cal L}_0}\alpha$.
+For (MR), it is trivial.
+For $(\land1)$ suppose $X_1\vdash_{{\cal L}_1}\alpha_1$ and $X_2\vdash_{{\cal L}_2}\alpha_2$ where $X_i\subseteq X$ and the signatures of ${\cal L}_i$ are finite.
+Then let ${\cal L}_0$ be constructed by taking the union of the signatures of ${\cal L}_1$ and ${\cal L}_2$, and $X_0=X_1\cup X_2$ then we get that $X_0\vdash_{\cal L}\alpha,\beta$ and so
+$X_0\vdash_{\cal L}\alpha\land\beta$ and $X_0\subseteq X$ is finite and ${\cal L}$ has a finite signature, as required.
+The proofs for the rest of the rules are similar.
+
+\bthrm
+
+    If $X\vdash_{\cal L}\alpha$ then there exists a finite $X_0\subseteq X$ and a language ${\cal L}_0\subseteq{\cal L}$ with finitely many symbols such that $X_0\vdash_{{\cal L}_0}\alpha$.
+
+\ethrm
+
+Let us now prove the following
+$$ (1)\ \gentzen{X\vdash s\eq t,s\eq t'}{X\vdash t\eq t'}\qquad (2)\ \gentzen{X\vdash s\eq t}{X\vdash t\eq s}\qquad (3)\ \gentzen{X\vdash t\eq s,s\eq t'}{X\vdash t\eq t'} $$
+To show $(1)$, let $x\notin\var t'$ and let $\alpha=x\eq t'$ then the premise of $(1)$ can be rewritten as $X\vdash s\eq t,\alpha\frac sx$.
+Rule $(=)$ yields $X\vdash\alpha\frac tx=t\eq t'$ as required.
+For $(2)$, by (IR) $X\vdash s\eq t,s\eq s$ so by $(1)$ we get $X\vdash t\eq s$.
+And so follows $(3)$, as the premise gives $X\vdash s\eq t,s\eq t'$ by $(2)$ which gives $X\vdash t\eq t'$ by $(1)$.
+
+Now we show ($f$ and $r$ are function and relation symbols of arity $n$),
+
+\medskip
+\tabskip=0pt plus 1fil
+{\openup1\jot\halign to\hsize{$#$\hfil\tabskip=.25cm&$#$\hfil\tabskip=2cm&$#$\hfil\tabskip=.25cm&$#$\hfil\tabskip=0pt plus 1fil\cr
+    (1) & \gentzen{X\vdash t_i\eq t}{X\vdash f\vec t\eq ft_1\cdots t_{i-1}tt_{i+1}\cdots t_n} & (2) & \gentzen{X\vdash\vec t\eq \vec t'}{X\vdash f\vec t\eq f\vec t'}\cr
+    (3) & \gentzen{X\vdash t_i\eq t,r\vec t}{X\vdash rt_1\cdots t_{i-1}tt_{i+1}\cdots t_n}    & (4) & \gentzen{X\vdash\vec t\eq\vec t',r\vec t}{X\vdash r\vec t'}\cr
+}}
+\medskip
+
+We prove $(1)$: let us define $\alpha=f\vec t\eq ft_1\cdots x\cdots t_n$ where $x$ does not occur  in any $t_j$.
+Then if $X\vdash t_i\eq t$ we also have $X\vdash\alpha\frac{t_i}x$ by (IR), as $\alpha\frac{t_i}x=f\vec t\eq f\vec t$.
+So by $(=)$ we get $X\vdash\alpha\frac tx=f\vec t\eq ft_1\cdots t\cdots t_n$, as required.
+for $(2)$, apply $(1)$ $n$ times (since $\vec t'\eq\vec t$ means $t_i'\eq t_i$ for each $i$).
+Rule $(3)$ is proven similarly to rule $(1)$, and $(4)$ is proven similar to $(2)$.
+
+We will also show
+$$ (1)\ \vdash\exists x\,t\eq x\ (x\notin\var t)\qquad (2)\ \vdash\exists x\,x\eq x $$
+These are trivial to show semantically, but require a bit more work to show derive them using our calculus.
+$(\forall1)$ gives $\forall x\,t\neqb x\vdash(t\neqb x)\frac tx=t\neqb t$.
+And by (IR), $\forall x\,t\neqb x\vdash t\eq t$, and so by $(\neg1)$ we get $\forall x\,t\neqb x\vdash\exists x\,t\eq x$.
+And so $\neg\forall x\,t\neqb x\vdash\exists x\,t\eq x$ (as by definition these are equal, so this is by (IR)).
+So by $(\neg2)$, we get $\vdash\exists x\,t\eq x$ as required.
+$(2)$ is verified similarly, starting with $\forall x\,x\neqb x\vdash x\neqb x,x\eq x$.
+
+\bdefn
+
+    A set $X\subseteq{\cal L}$ is called {\emphcolor inconsistent}\addtoindex{inconsistent} if $X\vdash\alpha$ for all formulas $\alpha\in{\cal L}$.
+    A non-inconsistent set is called {\emphcolor consistent}\addtoindex{consistent}.
+
+\edefn
+
+If a set is satisfiable, it is obviously consistent (since ${\vdash}\subseteq{\vDash}$).
+Also by $(\neg1)$, the inconsistency of $X$ is equivalent to $X\vdash\alpha,\neg\alpha$ for any $\alpha$, which is equivalent to $X\vdash\bot$ (since $\bot=\neg\top=\exists\v_0\,\v_0\eq\v_0$ and
+$X\vdash\top$ as we showed above).
+
+And as before (the proof remains valid), we have the following two equivalences:
+$$ {\tt C}^+\colon\quad X\vdash\alpha \iff X,\neg\alpha\vdash\bot\qquad {\tt C}^-\colon\quad X\vdash\neg\alpha\iff X,\alpha\vdash\bot $$
+
+Similarly again to propositional logic, a set $X$ is {\it maximally consistent}\addtoindex{consistent}[maximally] if $X$ is consistent but every $X\subset X'$ is inconsistent.
+
+\bexerc
+
+    Derive the rule $\gentzen{X\vdash\alpha\frac tx}{X\vdash\exists x\alpha}$ where $\alpha,\frac tx$ are collision-free.
+
+\eexerc
+
+By $(\forall1)$ we have $X,\forall x\neg\alpha\vdash\neg\alpha\frac tx$, then by the premise and (MR) we have $X,\forall x\neg\alpha\vdash\alpha\frac tx$.
+Thus by $(\neg1)$ we have $X,\forall x\neg\alpha\vdash\neg\forall x\neg\alpha$.
+And by (IR) and (MR) we also have $X,\neg\forall x\neg\alpha\vdash\neg\forall x\neg\alpha$, and so $X\vdash\neg\forall x\neg\alpha=\exists x\alpha$ as required.
+
+\bexerc
+
+    Prove $\forall x\alpha\vdash\forall y\parens{\alpha\frac tx}$ and $\forall y\parens{\alpha\frac yx}\vdash\forall x\alpha$ provided $y\notin\var\alpha$.
+
+\eexerc
+
+Since let $z\notin\var\alpha$ and $z\neq y$ then $\alpha\frac zx=\alpha\frac yx\frac zy$, and so by $(\forall1)$, $\forall x\alpha\vdash\alpha\frac yx\frac zy$.
+Then by $(\forall2)$ we get $\forall x\alpha\vdash\forall y\parens{\alpha\frac yx}$.
+
+\bexerc
+
+    Prove the rule $\gentzen{X\vdash\forall y\parens{\alpha\frac yx}}{X\vdash\forall z\parens{\alpha\frac zx}}$ where $y,z\notin\var\alpha$.
+
+\eexerc
+
+We have that $\forall y\parens{\alpha\frac yx}\vdash\forall z\parens{\alpha\frac yx\frac zy}=\forall z\parens{\alpha\frac zx}$ by the previous problem.
+So we have $X\vdash\forall y\parens{\alpha\frac yx}$ and $X,\forall y\parens{\alpha\frac yx}\vdash\forall z\parens{\alpha\frac zx}$ so by the cut rule, we get $X\vdash\forall z\parens{\alpha\frac zx}$,
+as required.
+
+\bexerc
+
+    Show that a consistent set $X\subseteq{\cal L}$ is maximally consistent if and only if for all $\phi\in{\cal L}$, $\phi\in X$ or $\neg\phi\in X$.
+    This means that maximally consistent sets are deductively closed, ie. $X\vdash\phi\implies\phi\in X$.
+
+\eexerc
+
+Let $\phi\in{\cal L}$ then suppose $\phi,\neg\phi\notin X$ then $X,\phi\vdash\bot$ and $X,\neg\phi\vdash\bot$ since $X$ is maximally consistent, so any extension is inconsistent.
+Thus by $(\neg2)$ we have $X\vdash\bot$ contradicting $X$ being consistent.
+Now, if $X\vdash\phi$ then if $\phi\notin X$ we have $\neg\phi\in X$ and so $X\vdash\phi,\neg\phi$ contradicting $X$'s consistency.
+
