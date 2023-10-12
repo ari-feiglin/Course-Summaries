@@ -1,0 +1,197 @@
+It is often very useful to define notions within a theory on top of the language of the theory.
+For example, in rings the concept of divisibility is often useful, where divisibility is defined by $x\divides y\iff\exists z\,x\cdot z=y$.
+
+In this section, if $\phi(\vec x)$ is a formula (meaning $\free\phi\subseteq\set{x_1,\dots,x_n}$), we use the notation $\phi(\vec t)$ in place of $\phi\frac{\vec t}{\vec x}$.
+Substitutions here are tacitly assumed to be collision-free.
+
+\bdefn
+
+    Let $r$ be an $n$-ary relational symbol not occurring in ${\cal L}$.
+    An {\emphcolor explicit definition of $r$ in ${\cal L}$}\addtoindex{definition}[explicit] is a formula of the form
+    $$ \eta_r\colon\qquad r\vec x\oto\delta(\vec x) $$
+    where $\delta(\vec x)\in{\cal L}$ and $\vec x$ is a vector of distinct variables.
+    $\delta$ is called the {\emphcolor defining formula of $r$}.
+    If $T$ is an ${\cal L}$-theory, then $T_r\coloneqq T+\eta_r^g$ is the {\emphcolor definitorial extension}\addtoindex{definitiorial extension} of $T$ by $r$.
+
+    Similarly if $f$ is an $n$-ary ($n\geq0$) function (or constant, in the case $n=0$) symbol not occurring in ${\cal L}$ its explicit definition is of the form
+    $$ \eta_f\colon\qquad y\eq f\vec x\oto\delta(\vec x,y) $$
+    where $\delta\in{\cal L}$ is the defining formula, and $\vec x,y$ are distinct.
+    $\eta_f$ is called {\emphcolor legitimate} in a theory $T$ if $T\vDash\forall\vec x\exists!y\delta$ (so $f$ is indeed a function), and if $\eta_f$ is legitimate then $T_f\coloneqq T+\eta_f^g$ is the
+    definitorial extension of $T$ by $f$.
+
+\edefn
+
+\bdefn
+
+    Let ${\sf s}$ be a (function, relational, or constant) symbol and ${\cal L}$ be a first-order language.
+    Then we define the {\emphcolor language extension} ${\cal L}[s]$ to be the first-order language obtained by adding ${\sf s}$ to the signature.
+
+    If $r$ is an $n$-ary relational symbol not occuring in ${\cal L}$ defined by $\eta_r$, then for every $\phi\in{\cal L}[r]$ we define the {\emphcolor reduced formula}\addtoindex{formula}[reduced]
+    $\phi^{rd}$ by replacing every prime formula $r\vec t$ in $\phi$ by $\delta_r(\vec t)$.
+
+    Now, if $f$ is an $n$-ary function symbol legitimately defined by $\eta_f$ in $T$, then for every $\phi\in{\cal L}[f]$ define $\phi^{rd}$ in steps: for the first occurrence of $f$ in $\phi$ on the left,
+    we may write $\phi=\phi_0\frac{f\vec t}y$ for appropriate $\phi_0$, $\vec t$, and $y\notin\var\phi$.
+    So $\phi\equiv_{T_f}\exists y(\phi_0\land y\eq f\vec t)\equiv_{T_f}\phi_1$ where $\phi_1=\exists y(\phi_0\land\delta_f(\vec t,y))$.
+    Continue inductively on $\phi_1$ until getting a formula $\phi_m$ in which $f$ does not occur, set $\phi^{rd}=\phi_m$.
+
+\edefn
+
+Obviously if $\phi\in{\cal L}$ (ie. they do not include the defined symbols), $\phi^{rd}=\phi$.
+For example, in $T_G$ we can define ${}^{-1}$ by $y\eq x^{-1}\oto x\circ y\eq e$, and this is legitimate in $T_G$.
+
+\bthrm[title=The Elimination Theorem, name=eliminationtheorem]
+
+    Let $T$ be an ${\cal L}$-theory, and $T_{\sf s}$ be the definitorial extension of $T$ by some $\eta_{\sf s}$.
+    Then for all $\phi\in{\cal L}[{\sf s}]$,
+    $$ T_{\sf s}\vDash\phi \iff T\vDash\phi^{rd} $$
+
+\ethrm
+
+We will prove this in the case that ${\sf s}=r$ is an $n$-ary relational symbol.
+If ${\cal A}\vDash T$ then ${\cal A}$ can be expanded to a model ${\cal A}'\vDash T_r$ by setting $r^{\cal A'}\vec a\iff{\cal A}\vDash\delta[\vec a]$.
+Since $r\vec t\equiv_{T_r}\delta(\vec t)$ for any $\vec t$, by \refmath{replacementtheorem} $\phi\equiv_{T_r}\phi^{rd}$ for all formulas $\phi\in{\cal L}[r]$.
+Thus
+
+\medskip
+\tabskip=0pt plus 1fil
+{\openup.5\jot\halign to\hsize{$#$\hfil\tabskip=0pt&${}\iff#$\hfil\tabskip=.25cm&#\hfil\tabskip=.5cm&(#)\hfil\tabskip=0pt plus 1fil\cr
+    T_r\vDash\phi & {\cal A'}\vDash\phi & for all ${\cal A}\vDash T$ & $\Md T_r=\set{{\cal A'}}[{\cal A}\vDash T]$\cr
+                  & {\cal A'}\vDash\phi^{rd} & for all ${\cal A}\vDash T$ & $\phi\equiv_{T_r}\phi^{rd}$\cr
+                  & {\cal A}\vDash\phi^{rd} & for all ${\cal A}\vDash T$ & \refmath{coincidencetheorem}\cr
+                  & T\vDash\phi^{rd}\cr
+}}
+\qed
+
+Sometimes function symbols are defined similar to
+$$ f\vec x \coloneqq t(\vec x) $$
+where $t$ is a term.
+This is simply equivalent to
+$$ \eta_f\colon\qquad y\eq f\vec x\oto y\eq t(\vec x) $$
+and so it is a special case of explicit definitions.
+And all definitions of this form are legitimate: $\forall\vec x\exists! y\,y\eq t(\vec x)$ is a tautology.
+
+\bdefn
+
+    Suppose $T$ is an ${\cal L}$-theory, and $\Delta$ is a set of explicit definitions, then $T'=T+\Delta$ is a {\emphcolor definitorial extension} of $T$.
+    Let ${\cal L}'$ be the language expansion of ${\cal L}$ obtained by adjoining all the new symbols defined in $\Delta$ to ${\cal L}$, then for $\phi\in{\cal L}'$, we define $\phi^{rd}$ as above where
+    the procedure is done stepwise for every new symbol in $\phi$.
+
+\edefn
+
+From \refmath{eliminationtheorem} it is immediate
+
+\bthrm[title=The General Elimination Theorem, name=generaleliminationtheorem]
+
+    Let $T'$ be a definitorial extension of $T$, then $\alpha\in T'\iff\alpha^{rd}\in T$ for all $\alpha\in{\cal L}'$.
+    In particular if $\alpha\in{\cal L}$, $\alpha\in T'\iff\alpha\in T$, thus $T'$ is a conservative extension of $T$.
+
+\ethrm
+
+\bdefn
+
+    Let $T$ be an ${\cal L}$-theory, and ${\sf s}$ be a symbol in ${\cal L}$.
+    Then ${\sf s}$ is {\emphcolor explicitly definable} in $T$ if $T$ contains an explicit definition of ${\sf s}$ where ${\sf s}$'s defining formula is in ${\cal L}_0$, the language obtained by removing
+    ${\sf s}$ from ${\cal L}$.
+
+\edefn
+
+For example, the constant $e$ is explicitly definable in the theory of groups $T_G$, since $x\eq e\oto x\circ x\eq x$ is an explicit definition of $e$ which is in $T_G$ (more specifically, its generalized
+is).
+
+\bprop
+
+    Suppose ${\sf s}$ is explicitly definable in $\Th{\cal A}$ and legitimate, suppose we extend ${\cal A}$ to ${\cal A}'$ by adding the symbol ${\sf s}$ to its signature.
+    Then automorphisms of ${\cal A}$ are automorphisms of ${\cal A}'$ (the converse is trivial).
+
+\eprop
+
+Let $\sigma$ be an automorphism of ${\cal A}$.
+If ${\sf s}=r$ is a relational symbol, we must show that $r\vec x\iff r\sigma\vec x$.
+Now suppose that $\delta$ is the defining formula of $r$, so this is equivalent to showing ${\cal A}\vDash\delta[\vec a]$ if and only if ${\cal A}\vDash\delta[\sigma\vec a]$ for all $\vec a\in A^n$.
+This is true by \refmath{invariancetheorem}.
+Now suppose that ${\sf s}=f$ is a function symbol, we must show that $f\sigma\vec x=\sigma f\vec x$.
+Since $y=f\vec x$ if and only if $\delta[\vec x,y]$, we must show that $\delta[\vec x,y]$ if and only if $\delta[\sigma\vec x,\sigma y]$.
+This is as then if $y=f\vec x\implies\sigma y=f\sigma\vec x$ so $\sigma f\vec x=f\sigma\vec x$.
+But this is again true by \refmath{invariancetheorem}.
+\qed
+
+Let us now turn our attention to another type of normal forms.
+We call two formulas $\alpha$ and $\beta$ {\it satisfiably equivalent} if they are both satisfiable (not necessarily by the same model) or they are both not satisfiable.
+Now suppose $\alpha$ is a formula, we assume without loss of generality that it is a PNF $\alpha=\Q_1x_1\cdots\Q_nx_n\beta$ ($\beta$ quantifier-free).
+We will construct a satisfiably equivalent $\forall$-formula $\hat\alpha$ such that $\alpha$ and $\hat\alpha$ are satisfiably equivalent.
+We do this inductively/stepwise: let $\alpha_0=\alpha$ and suppose we have already constructed $\alpha_i$.
+If $\alpha_i$ is already a $\forall$-formula, set $\hat\alpha=\alpha_i$, otherwise $\alpha_i$ has the form $\forall x_1\cdots\forall x_k\exists y\beta_i$ for $k\geq0$.
+Let $f$ be some $k$-ary (if $k=0$ this is a constant) function symbol not yet used (not in ${\cal L}$, not used in the previous $i$ steps) and let
+$\alpha_{i+1}=\forall x_1\cdots\forall x_k\beta_i\frac{f\vec x}y$.
+$\hat\alpha$ is called the {\it Skolem Normal Form}\addtoindex{Skolem normal form} (SNF for short) of $\alpha$.
+
+Essentially what is done here is that variables which are existentially quantified are viewed instead as functions of the universally quantified variables (which preceed them on the left).
+
+If $m$ is the number of $\exists$ quantifiers in $\Q_1,\dots,\Q_n$, then after $m$ steps we will have $\hat\alpha=\alpha_m$ and $\free\hat\alpha=\free\alpha$ (since $\free\alpha_i=\free\alpha$ for all $i$).
+And $\hat\alpha$ is a $\forall$-formula.
+
+For example, let $\alpha$ be the formula $\forall x\exists y\,x<y$ then $\hat\alpha$ is $\forall x\,x<fx$.
+And for $\alpha=\exists x\forall y\,x\cdot y\eq y$, we have $\hat\alpha=\forall y\,c\cdot y\eq y$.
+And for $\alpha=\forall x\forall y\exists z(x<z\land y<z)$ then $\hat\alpha=\forall x\forall y(x<fxy\land y<fxy)$.
+
+\bthrm
+
+    Let $\hat\alpha$ be the Skolem normal form of the formula $\alpha$.
+    Then
+    $$ (1)\ \hat\alpha\vDash\alpha\qquad (2)\ \hbox{$\hat\alpha$ and $\alpha$ are satisfiably equivalent} $$
+
+\ethrm
+
+To prove $(1)$, it is sufficient to show that $\alpha_{i+1}\vDash\alpha_i$ for each of the construction steps of $\hat\alpha$ (this is sufficient due to the transitivity of $\vDash$).
+Since $\beta_i,\frac{f\vec x}y$ is collision-free ($\beta_i$ is a PNF not containing quantifiers of $\vec x$) we have that $\beta_i\frac{f\vec x}y\vDash\exists y\beta_i$.
+Then by anterior and posterior generalization, $\alpha_{i+1}=\forall\vec x\beta_i\frac{f\vec x}y\vDash\forall\vec x\exists y\beta_i=\alpha_i$ as required.
+
+By $(1)$, if $\hat\alpha$ is satisfiable, so is $\alpha$.
+Conversely, if ${\cal A}\vDash\alpha_i[\vec c]=\forall\vec x\exists y\beta_i(\vec x,y,\vec z)[\vec c]$.
+For each $\vec a\in A^n$, choose a $b\in A$ such that ${\cal A}\vDash\beta_i[\vec a,b,\vec c]$ ({\it choosing} such a $b$ is possible due to the axiom of choice), and expand ${\cal A}$ to ${\cal A'}$ by
+setting $f^{\cal A'}\vec a=b$ where $f$ is the new function symbol.
+Then ${\cal A'}\vDash\alpha_{i+1}[\vec c]$.
+So if $\alpha$ is satisfiable, so is every $\alpha_i$, and in particular $\hat\alpha$ (and the model which satisfies $\hat\alpha$ is an expansion of the one which satisfies $\alpha$).
+\qed
+
+Notice that if $\alpha$ is a formula then $\neg\alpha$ has a SNF, and so its negation is an $\exists$-formula and is satisfiably equivalent to $\alpha$.
+We will denote this $\exists$-formula by $\check\alpha$: if $\beta=\neg\alpha$ then $\check\alpha=\neg\hat\alpha$.
+
+For example, if $\alpha=\exists x\forall y(ry\to rx)$ then $\neg\alpha\equiv\beta=\forall x\exists y(ry\land\neg rx)$ and then $\hat\beta=\forall x(rfx\land\neg rx)$ and so
+$\check\alpha=\exists x(rfx\to rx)$.
+This is actually a tautology.
+Skolem normal forms are used in model theory and logic programming.
+
+\bexerc
+
+    Let $T_f$ result from adjoining an explicit definition $\eta_f$ for $f$ to a theory $T$.
+    Show that $T_f$ is a conservative extension of $T$ if and only if $\eta_f$ is legitimate.
+
+\eexerc
+
+Suppose $\delta_f$ is the defining formula for $f$, meaning $\eta_f=y\eq f\vec x\oto\delta(\vec x,y)$.
+We have already shown that if $\eta_f$ is legitimate then $T_f$ is a conservative extension of $T$, we will now show that if $T_f$ is conservative then $\eta_f$ is legitimate.
+We know that $T_f\vDash\forall\vec x\exists!y\,y\eq f\vec x$ and since $y\eq f\vec x\equiv_{T_f}\delta(\vec x,y)$ we have that $T_f\vDash\forall\vec x\exists!y\,\delta(\vec x,y)$ and since $T_f$ is
+conservative this means $T\vDash\forall\vec x\exists!y\delta(\vec x,y)$ so $\eta_f$ is legitimate.
+
+\bexerc
+
+    Let ${\tt S}\colon n\varmapsto n+1$ be the successor function in ${\cal N}=({\bb N},0,{\tt S},+,\cdot)$.
+    Show that $\Th{\cal N}$ is a definitorial extension of $\Th({\bb N},{\tt S},\cdot)$; ie. $0$ and $+$ are explicitly definable by ${\tt S}$ and $\cdot$ in ${\bb N}$.
+
+\eexerc
+
+$0$ is the only number which is not the successor of some other number, so we could define $0$ by $\delta_0(x)=\forall y\,{\tt S}y\neqb x$.
+Alternatively $0$ is the only number whose product with every number is itself, so we could also define $\delta_0(x)=\forall y\,x\cdot y\eq x$.
+Addition requires more consideration.
+
+\bexerc
+
+    $<$ is explicitly definable in $({\bb N},0,+)$ by $x<y\oto(\exists z\neqb0)x+z=y$.
+    Show that $<$ is not explicitly definable in $({\bb Z},0,+)$.
+
+\eexerc
+
+We showed that explicitly definable relations are invariant under automorphisms.
+But $n\varmapsto-n$ is an automorphism of $({\bb Z},0,+)$ (since $-0=0$ and $(-x)+(-y)=-(x+y)$) but $<$ is certainly not invariant under it.
+
