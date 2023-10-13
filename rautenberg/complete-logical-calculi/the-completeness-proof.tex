@@ -1,0 +1,265 @@
+We previously used the notation ${\cal L}[{\sf s}]$ for the language obtained by adjoining the symbol ${\sf s}$ to the signature of ${\cal L}$.
+For a set of symbols $S$ we will similarly use the notation ${\cal L}[S]$ for the language obtained by adjoining the symbols in $S$ to the signature of ${\cal L}$.
+We will also sometimes omit the brackets and instead write ${\cal L}{\sf s}$ or ${\cal L}S$.
+
+If $C$ is a set of constants, then ${\cal L}C$ is a {\it constant expansion of ${\cal L}$}.
+If $\alpha\in{\cal L}c$ and $z\in\Var$ then we write $\alpha\frac zc$ to be the formula in ${\cal L}$ obtained by replacing every occurrence of $c$ in $\alpha$ with the variable $z$.
+Similarly if $X\subseteq{\cal L}c$, then $X\frac zc\coloneqq\set{\alpha\frac zc}[\alpha\in X]$.
+
+\blemm[name=constanteliminationlemma]
+
+    Suppose $X\vdash_{{\cal L}c}\alpha$ then $X\frac zc\vdash_{\cal L}\alpha\frac zc$ for almost all (meaning all but a finite number) of variables $z$.
+
+\elemm
+
+We do this by rule induction on $\vdash_{{\cal L}c}$.
+We start with (IR): if $\alpha\in X$ then $\alpha\frac zc\in X\frac zc$ as well, so $X\frac cz\vdash_{\cal L}\alpha\frac zc$ as required.
+If $\alpha=t\eq t$ then $\alpha\frac zc$ is also of the form $t'\eq t'$ and so $X\frac zc\vdash_{\cal L}\alpha\frac zc$ as well.
+(MR) through $(\neg2)$ are similarly obvious and impose no restrictions on $z$; only the steps for $(\forall1)$, $(\forall2)$, and $(=)$ aren't immediately obvious.
+We will show only $(\forall1)$ as the other two are proven in a similar manner.
+Let $\alpha,\frac tx$ be collision-free and $X\vdash_{{\cal L}c}\forall x\alpha$, then by induction we have $X\frac zc\vdash_{\cal L}(\forall x\alpha)\frac zc$ for almost all $z$.
+We may assume $z\notin\var\forall x\alpha,\var t$.
+We can verify through formula induction that $\alpha\frac tx\frac zc=\alpha'\frac{t'}x$ where $\alpha'=\alpha\frac zc$ and $t'=t\frac zc$.
+Then $\alpha',\frac{t'}x$ is collision-free (the bound variables of $\alpha'$ are the bound variables of $\alpha$, and $t'$ contains potentially only one more variable than $t$, $z$ which does not
+occur in $\alpha$).
+So we have that $X\frac zc\vdash_{\cal L}(\forall x\alpha)\frac zc=\forall x\alpha'$, thus by $(\forall1)$ we have $X\frac zc\vdash_{\cal L}\alpha'\frac{t'}x=\parens{\alpha\frac tx}\frac zc$, and this is
+true for almost all variables $z$, as required.
+\qed
+
+This lemma gives rise to the following rule:
+$$ (\forall3)\kern.25cm\gentzen{X\vdash\alpha\frac cx}{X\vdash\forall x\alpha}\quad(\hbox{$c$ not in $X,\alpha$}) $$
+Suppose $X\vdash\alpha\frac cx$, by the finiteness of $\vdash$ we may assume that $X$ is finite.
+By the above lemma, where ${\cal L}c={\cal L}$ (ie. we adjoin a constant already in ${\cal L}$), we can find a $y$ not occurring in $X\cup\set\alpha$ (as $X$ is finite) such that
+$X\frac yc\vdash\alpha\frac cx\frac yc=\alpha\frac yx$ (since $c$ does not occur in $\alpha$).
+Since $c$ does not occur in $X$, we have $X\frac yc=X$ and thus we get $X\vdash\alpha\frac yx$ and so $X\vdash\forall x\alpha$ by $(\forall2)$.
+
+\blemm
+
+    Let $C$ be a set of constant symbols and ${\cal L}'={\cal L}C$.
+    Then $X\vdash_{\cal L}\alpha\iff X\vdash_{\cal L'}\alpha$ for all $X\subseteq{\cal L}$ and $\alpha\in{\cal L}$.
+    Thus $\vdash_{\cal L'}$ is a conservative expansion of $\vdash_{\cal L}$.
+
+\elemm
+
+By the monotonicity of $\vdash$, we have $X\vdash_{\cal L}\alpha\implies X\vdash_{\cal L'}\alpha$.
+Now conversely, suppose $X\vdash_{\cal L'}\alpha$ then we may assume by finiteness that $C$ is finite, and since adjoining finitely many constants can be done stepwise, we may assume that
+${\cal L'}={\cal L}c$ for a single constant $c$ not occurring in ${\cal L}$ (if $c$ occurs in ${\cal L}$ this is trivial).
+Then \refmath[lemma]{constanteliminationlemma} tells us that $X\frac zc\vdash_{\cal L}\alpha\frac zc$ for some variable $z$, but since $X\subseteq{\cal L}$ and $\alpha\in{\cal L}$ so $c$ occurs in neither
+$X$ nor $\alpha$ so this is equivalent to $X\vdash_{\cal L}\alpha$ as required.
+\qed
+
+By this lemma, we may write $\vdash$ for the derivability relation ${\cal L}$ and every constant expansion ${\cal L'}$ and there will be no misunderstandings as the expansions are conservative.
+This also means that $X$ is consistent in ${\cal L}$ if and only if it is consistent in ${\cal L'}$ as $X\vdash_{\cal L}\bot\iff X\vdash_{\cal L'}\bot$.
+
+For every variable $x$ and formula $\alpha\in{\cal L}$ let us define a distinct constant symbol $c_{x,\alpha}$ which does not occur in ${\cal L}$.
+Then we define
+$$ \alpha^x \coloneqq \neg\forall x\alpha\land \alpha\frac{c_{x,\alpha}}x $$
+Notice that $\neg\alpha^x\equiv\exists x\neg\alpha\to\neg\alpha\frac cx$, meaning $\neg\alpha^x$ says that ``if $\alpha$ is not true for all $x$, $c$ provides a counterexample for $\alpha$''.
+Thus $\neg\alpha^x\equiv\top$ whenever $x\notin\free\alpha$ (since then $\neg\alpha^x\equiv\neg\alpha\to\neg\alpha$).
+
+\blemm
+
+    Let $\Gamma_{\cal L}\coloneqq\set{\neg\alpha^x}[\alpha\in{\cal L},\,x\in\Var]$, and let $X\subseteq{\cal L}$ be consistent.
+    Then $X\cup\Gamma_{\cal L}$ is also consistent.
+
+\elemm
+
+Suppose $X\cup\Gamma_{\cal L}\vdash\bot$, then by the finiteness of $\vdash$, there exist $\neg\alpha_0^{x_0},\dots,\neg\alpha_n^{x_n}\in\Gamma_{\cal L}$ such that
+$X\cup\set{\neg\alpha_i^{x_i}}[i\leq n]\vdash\bot$.
+Since $X$ is consistent and so $X\nvdash\bot$, we can assume that $n$ is minimal so that $X'=X\cup\set{\neg\alpha_i^{x_i}}[i<n]\nvdash\bot$.
+Let $x=x_n$, $\alpha=\alpha_n$, and $c=c_{x,\alpha}$ then $X'\cup\set{\neg\alpha^x}\vdash\bot$ and so by ${\tt C}^+$ we have $X'\vdash\alpha^x=\neg\forall x\alpha\land\alpha\frac cx$.
+Thus by $(\land2)$ we have $X'\vdash\neg\forall x\alpha,\,\alpha\frac cx$.
+By $(\forall3)$, we get that $X'\vdash\alpha\frac cx$ means $X'\vdash\forall x\alpha$, and this means that $X'$ is inconsistent, in contradiction.
+\qed
+
+\bdefn
+
+    A set $X\subseteq{\cal L}$ is called a {\emphcolor Henkin set}\addtoindex{henkin set} if $X$ satisfies the following two conditions:
+
+    \medskip
+    \tabskip=.25cm
+    {\openup1\jot\halign{(#)\hfil\tabskip=.25cm&#\hfil\cr
+        H1&$X\vdash\neg\alpha\iff X\nvdash\alpha$, (equivalently $X\vdash\alpha\iff X\nvdash\neg\alpha$)\cr
+        H2&$X\vdash\forall x\alpha\iff X\vdash\alpha\frac cx$ for all constants $c$ in ${\cal L}$.\cr
+    }}
+
+\edefn
+
+(H1) and (H2) imply a third property:
+$$ \hbox{(H3)}\quad\hbox{For each term $t$ there is a constant $c$ such that $X\vdash t\eq c$} $$
+We showed $X\vdash\neg\forall x\,t\neqb x\mathrel{}(=\exists x\,t\eq x)$, and so $X\nvdash\forall x\,t\neqb x$ by (H1) and so $X\nvdash t\neqb c$ for some $c$ by (H2) and thus $X\vdash t\eq c$ by (H1).
+
+\blemm
+
+    Let $X\subseteq{\cal L}$ be consistent.
+    Then there exists a Henkin set $Y\supseteq X$ in a suitable constant expansion ${\cal L}C$ of ${\cal L}$.
+
+\elemm
+
+Let ${\cal L}_0\coloneqq{\cal L}$ and $X_0\coloneqq X$, and assume that ${\cal L}_n$ and $X_n$ have already be defined.
+Then let ${\cal L}_{n+1}$ be obtained by adding new constants $c_{x,\alpha,n}$ for all $x\in\Var$ and $\alpha\in{\cal L}_n$, meaning ${\cal L}_{n+1}={\cal L}_nC_n$ where $C_n$ is the set of constants
+$c_{x,\alpha,n}$.
+Furthermore, let $X_{n+1}=X_n\cup\Gamma_{{\cal L}_n}$ (where $\Gamma_{{\cal L}_n}$ is defined as in the previous lemma), and so $X_{n+1}\subseteq{\cal L}_{n+1}$.
+Inductively we see that $X_n$ is consistent for each $n$ by the previous lemma.
+Let $X'=\bigcup_{n=0}^\infty X_n$ and ${\cal L}'=\bigcup_{n=0}^\infty{\cal L}_n={\cal L}C$ where $C=\bigcup_{n=0}^\infty C_n$.
+Thus $X'\subseteq{\cal L}'$, and $X'$ must be consistent: if $X'\vdash\bot$ then by the finiteness theorem we get that some $\phi_1,\dots,\phi_n\vdash\bot$.
+Since $X'$ is the union of a chain of sets, we have that $\phi_1,\dots,\phi_n\in X_m$ for some $m$ and thus $X_m\vdash\bot$ contradicting its consistency.
+
+Let $\alpha\in{\cal L}'$ and $x\in\Var$, then say $\alpha\in{\cal L}_n$ where $n$ is minimal, and take $\alpha^x$ defined with respect to ${\cal L}^n$, and so $\neg\alpha^x\in X_{n+1}\subseteq X'$.
+Let us define
+$$ H = \set{Y\subseteq{\cal L'}}[X'\subseteq Y\hbox{ and $Y$ is consistent}] $$
+the set of all consistent extensions of $X'$ in ${\cal L'}$.
+This is partially ordered by $\subseteq$.
+Let $K$ be a chain in $H$, then $\bigcup K$ is an upper bound of the chain since the union of a chain of consistent sets is consistent (we showed this earlier in the proof).
+And $H\neq\varnothing$ as $X\in H$, so by Zorn's lemma $H$ contains a maximal element $Y$; $Y$ is a maximally consistent extension of $X$.
+Since $\neg\alpha^x\in X'\subseteq Y$, we have that $Y\vdash\neg\alpha^x$ for all $\alpha\in{\cal L}'$.
+
+$Y$ is also Henkin: for (H1), $Y\vdash\neg\alpha$ implies $Y\nvdash\alpha$ by $Y$'s consistency.
+And if $Y\nvdash\alpha$ then $\alpha\notin Y$ and so $Y,\alpha\vdash\bot$ since $Y$ is maximally consistent and so by ${\tt C}^-$ we get $Y\vdash\neg\alpha$.
+For (H2), $Y\vdash\forall x\alpha\implies Y\vdash\alpha\frac cx$ is true in general by $(\forall1)$.
+Now, if $Y\vdash\alpha\frac cx$ for all $c$ in ${\cal L'}$ and thus also for $c=c_{x,\alpha,n}$ where $n$ is minimal such that $\alpha\in{\cal L}_n$.
+Assume $Y\nvdash\forall x\alpha$ then $Y\vdash\neg\forall x\alpha$ by (H1) and so $Y\vdash\neg\forall x\alpha,\alpha\frac cx$ implies $Y\vdash\neg\forall x\alpha\land\alpha\frac cx=\alpha^x$ by $(\land1)$.
+But $Y\vdash\neg\alpha^x$ and so this contradicts $Y$'s consistency.
+Therefore $Y\vdash\forall x\alpha$ as required.
+
+Thus $Y$ is indeed a Henkin extension of $X$.
+\qed
+
+This lemma is not true if we require $Y$ be Henkin in ${\cal L}$.
+For example, let ${\cal L}$ consist of constants $c_i$ for $i\in I$ where $I$ is infinite and let $X=\set{\v_0\neq c_i}[i\in I]$.
+Then $X$ is consistent, but in no consistent extension of $X$ in ${\cal L}$ can $\v_0=c_i$ be derived, contradicting (H3).
+
+\blemm
+
+    Every Henkin set $Y\subseteq{\cal L}$ possess a model.
+
+\elemm
+
+We will construct a model for $Y$ called a {\it term model}.
+Let us define $t\approx t'$ whenever $Y\vdash t\eq t'$, this is a congruence relation on the term algebra ${\cal T}$ of ${\cal L}$.
+This means that $\approx$ is an equivalence relation and $\vec t\approx\vec t'$ implies $f\vec t\approx f\vec t'$ for all vectors of terms $\vec t,\vec t'$ and function symbols $f$ of ${\cal L}$ (these
+were both proven explicitly in the previous subsection).
+Let us denote the equivalence class of $t$ under $\approx$ by $\overline t$, and let us denote the quotient algebra of ${\cal T}$ by $A$; meaning $A=\set{\overline t}[t\in{\cal T}]$.
+$A$ will be the domain of the model ${\cal M}$ of $Y$.
+
+Let $C$ be the set of constants in ${\cal L}$, then by (H3) for each term $t\in{\cal T}$ there exists a $c\in C$ such that $c\approx t$.
+This means that $A=\set{\overline c}[c\in C]$.
+For every variable $x$, let us define $x^{\cal M}=\overline x$ and for constants $c\in C$, define $c^{\cal M}=\overline c$.
+For a function symbol $f$ in ${\cal L}$ we define
+$$ f^{\cal M}(\overline t_1,\dots,\overline t_n) = \overline{ft_1\cdots t_n} $$
+This is well-defined since $\approx$ is a congruence: so if $t'_i\approx t_i$ then $ft'_1\cdots t'_n\approx ft_1\cdots t_n$.
+And if $r$ is a relation symbol, then define
+$$ r^{\cal M}\overline t_1\cdots\overline t_n \iff Y\vdash rt_1\cdots t_n $$
+this too is well-defined since we showed that $Y\vdash\vec t\eq\vec t',\,Y\vdash r\vec t$ implies $Y\vdash r\vec t'$.
+
+We will now show that
+$$ (1)\ t^{\cal M} = \overline t,\qquad (2)\ {\cal M}\vDash\alpha\iff Y\vdash\alpha $$
+$(2)$ is certainly sufficient to show that ${\cal M}$ models $Y$: if $\alpha\in Y$ then $Y\vdash\alpha$ and so ${\cal M}\vDash\alpha$, meaning ${\cal M}\vDash Y$.
+We prove $(1)$ by term induction.
+This is obvious by definition for prime terms.
+For compound terms
+$$ (ft_1\cdots t_n)^{\cal M} = f^{\cal M}t_1^{\cal M}\cdots t_n^{\cal M} = f^{\cal M}\overline t_1\cdots\overline t_n = \overline{ft_1\cdots t_n} $$
+by definition, as required.
+We prove $(2)$ by formula induction.
+
+\medskip
+\tabskip=0pt plus 1fil
+{\openup2\jot\halign to\hsize{$#$\hfil\tabskip=0pt&${}\iff#$\hfil\tabskip=0pt&${}\iff#$\hfil\tabskip=.25cm&(#)\hfil\tabskip=0pt plus 1fil\cr
+    {\cal M}\vDash t\eq s           & t^{\cal M} = s^{\cal M}       & \overline t = \overline s     & since $t^{\cal M}=\overline t$\cr
+                                    &\omit                          & Y\vDash t\eq s                & definition\cr
+    {\cal M}\vDash r\vec t          & r^{\cal M}\vec t^{\cal M}     & r^{\cal M}\overline{\vec t}   &\omit${}\iff Y\vdash r\vec t$\hfil\cr
+    {\cal M}\vDash\alpha\land\beta  & {\cal M}\vDash\alpha,\beta    & Y\vdash\alpha,\beta           & induction hypothesis\cr
+                                    &\omit                          & Y\vdash\alpha\land\beta       & by $(\land1)$ and $(\land2)$\cr
+    {\cal M}\vDash\neg\alpha        & {\cal M}\nvDash\alpha         & Y\nvdash\alpha                & induction hypothesis\cr
+                                    &\omit                          & Y\vdash\neg\alpha             & by (H1)\cr
+    {\cal M}\vDash\forall x\alpha   &\multispan2${}\iff{\cal M}^{\overline c}_x\vDash\alpha\hbox{ for all $c\in C$}$\hfil& since $A=\set{\overline c}[c\in C]$\cr
+                                    &\multispan2${}\iff{\cal M}^{c^{\cal M}}_x\vDash\alpha\hbox{ for all $c\in C$}$\hfil& since $c^{\cal M}=\overline c$\cr
+                                    &\multispan2${}\iff{\cal M}\vDash\alpha\frac cx\hbox{ for all $c\in C$}$\hfil& by \refmath{substitutiontheorem}\cr
+                                    &\multispan2${}\iff Y\vdash\alpha\frac cx\hbox{ for all $c\in C$}$\hfil& induction hypothesis\cr
+                                    &\multispan2${}\iff Y\vdash\forall x\alpha$\hfil& by (H2)\cr
+}}
+\medskip
+
+So we have shown $(2)$, and as explained $(2)$ is sufficient to show the premise of the lemma.
+\qed
+
+\bthrm[title=The Model Existence Theorem, name=modelexistencetheorem]
+
+    Every consistent set $X\subseteq{\cal L}$ has a model.
+
+\ethrm
+
+Let $Y\supseteq X$ be a Henkin expansion of $X$ in a suitable constant expansion ${\cal L}C$ of ${\cal L}$.
+By the above lemma, $Y$ has a model ${\cal M}'$ in ${\cal L}C$.
+Let ${\cal M}$ be the ${\cal L}$-reduct of ${\cal M}'$.
+Then since ${\cal M}'\vDash X$, by \refmath{coincidencetheorem} we get ${\cal M}\vDash X$.
+\qed
+
+\bthrm[title=The Completeness Theorem, name=completenesstheorem]
+
+    Let ${\cal L}$ be a first-order language, and $X\subseteq{\cal L}$ and $\alpha\in{\cal L}$.
+    Then $X\vdash\alpha\iff X\vDash\alpha$.
+    More suggestively, ${\vdash}={\vDash}$.
+
+\ethrm
+
+The soundness of $\vdash$ states $X\vdash\alpha\implies X\vDash\alpha$.
+If $X\nvdash\alpha$ then $X,\neg\alpha$ is consistent and therefore $X\cup\set{\neg\alpha}$ has a model and therefore $X\nvDash\alpha$.
+\qed
+
+So we can freely alternate between using $\vdash$ and $\vDash$, and we will often prove $X\vdash\alpha$ by showing $X\vDash\alpha$ in a semi-formal manner as is common in mathematics.
+In particular for theories $T$, $T\vDash\alpha$ is equivalent to $T\vdash\alpha$ and we will often write $\vdash_T\alpha$ in place of it.
+For sentences $\alpha$, $\vdash_T\alpha$ means the same as $\alpha\in T$.
+More generally, we write $X\vdash_T\alpha$ to mean $X\cup T\vdash\alpha$.
+Notice that
+$$ \alpha\vdash_T\beta \iff \vdash_T\alpha\to\beta \iff \vdash_{T+\alpha}\beta,\qquad \vdash_T\alpha \iff \vdash_T\alpha^g $$
+are all immediate due to ${\vdash}={\vDash}$.
+
+\bexerc
+
+    Let $K\neq\varnothing$ be a chain of theories in ${\cal L}$.
+    Show that $T_K=\bigcup K$ is a theory that is consistent if and only if every $T\in K$ is consistent.
+
+\eexerc
+
+If every $T\in K$ is consistent, then suppose $T_K\vdash\bot$ then by finiteness, we get $\phi_1,\dots,\phi_n\vdash\bot$ for $\phi_i\in T_K$.
+Since $T_K$ is the union of a chain, $\phi_1,\dots,\phi_n\in T$ for some $T\in K$ and thus $T\vdash\bot$, contradicting $T$'s consistency.
+If $T_K$ is consistent, since $T\subseteq T_K$ for every $T\in K$, $T$ is consistent as well.
+
+\bexerc
+
+    Suppose $T$ is consistent and $Y\subseteq{\cal L}$.
+    Prove that the following are equivalent:
+    \benum
+        \item $Y\vdash_T\bot$,
+        \item $\vdash_T\neg\alpha$ for some conjunction $\alpha$ of formulas in $Y$.
+    \eenum
+
+\eexerc
+
+$Y\vdash_T\bot$ if and only if $Y\cup T\vdash\bot$ and since $T$ is consistent and by finiteness, this is equivalent to $T,\alpha_1,\dots,\alpha_n\vdash\bot$.
+By ${\tt C}^-$, this is if and only if $T,\alpha_1,\dots,\alpha_{n-1}\vdash\neg\alpha_n$, which is equivalent to
+$$ \vdash_T\alpha_1\to\cdots\to\alpha_{n-1}\to\neg\alpha_n \equiv \alpha_1\land\cdots\land\alpha_{n-1}\to\neg\alpha_n \equiv \neg(\alpha_1\land\cdots\land\alpha_n) $$
+so setting $\alpha=\alpha_1\land\cdots\land\alpha_n$ gives the desired result.
+This chain is obviously reversible.
+
+\bexerc
+
+    Let $x\notin\var t$ and $\alpha,\frac tx$ collision-free.
+    Verify the following equivalence chain:
+
+    \multlines{%
+        (1)\ \vdash_T\alpha\frac tx \iff (2)\ x\eq t\vdash_T\alpha \iff (3)\ \vdash_T x\eq t\to\alpha&
+        \iff (4)\ \vdash_T\forall x(x\eq t\to\alpha) \iff (5)\ \vdash_T\exists x(x\eq t\land\alpha)
+    }
+
+\eexerc
+
+If $T\vdash\alpha\frac tx$ then $T,x\eq t\vdash x\eq t,\alpha\frac tx$ so by $(=)$ (but which is true, due to the completeness theorem for all formulas $\alpha$ where $\alpha,\frac tx$ is collision-free)
+we get $T,x\eq t\vdash\alpha$ as required.
+$(2)\implies(3)$ is due to the deduction theorem.
+As explained above (it is due to the completeness theorem), $\vdash_T\alpha\iff\vdash_T\alpha^g$ and in particular $\vdash_T\alpha\iff\vdash_T\forall x\alpha$, which proves $(3)\implies(4)$.
+$(4)\implies(5)$ is due to $(\forall x\eq t)\alpha\vDash\exists(x\eq t)\alpha$ which we showed in a previous exercise.
+For $(5)\implies(1)$: suppose ${\cal M}\vDash\exists x(x\eq t\land\alpha)$ then ${\cal M}^a_x\vDash x\eq t\land\alpha$ for some $a\in A$ and thus $t^{\cal M}=a$ and ${\cal M}^t_x\vDash\alpha$ thus
+${\cal M}\vDash\alpha\frac tx$ by the substitution theorem, so $\exists x(x\eq t\land\alpha)\vDash\alpha\frac tx$ and this is sufficient by the completeness theorem.
+
