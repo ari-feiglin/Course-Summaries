@@ -1,0 +1,256 @@
+By the completeness theorem, ${\vdash}={\vDash}$ and so immediately we get
+
+\bthrm[title=The Finiteness Theorem, name=finitenesstheorem]
+
+    $X\vDash\alpha$ implies $X_0\vDash\alpha$ for a finite $X_0\subseteq X$.
+
+\ethrm
+
+Let us define the sentence ${\tt char}_p=1+\cdots+1\eq0$ ($1$ is added $p$ times) in the language of rings ${\cal L}\set{+,\cdot,0,1}$.
+A {\it field of characteristic $p$} is a field $F$ such that $F\vDash{\tt char}_p$ and $F\nvDash{\tt char}_q$ for $q<p$ (it is simple to show that if a field is of characteristic $p$, then $p$ is prime).
+We define the first-order theory of fields of characteristic $0$ to be the theory axiomatized by $X$: the set of axioms for the theory of fields, as well as $\neg{\tt char}_p$ for all prime $p$.
+
+\bprop
+
+    A sentence $\alpha$ which is valid in all fields of characteristic $0$ is also valid in all fields of sufficiently high prime characteristic $p$ ($p$ is dependent on $\alpha$).
+
+\eprop
+
+A sentence $\alpha$ is valid in all fields of characteristic $0$ if and only if $X\vDash\alpha$.
+By the finiteness theorem this means $X_0\vDash\alpha$ for some finite $X_0\subseteq X$.
+Since $X_0$ is finite, this means it can only contain finitely many sentences of the form $\neg{\tt char}_q$, thus there exists some $p$ such that for all $\neg{\tt char}_q\in X_0$, $q<p$.
+Thus for all fields $F$ of characteristic $\geq p$, we have $F\vDash X_0$ and so $F\vDash\alpha$.
+Meaning $\alpha$ is valid in all fields whose characteristic is at least $p$, as required.
+\qed
+
+\bdefn
+
+    A set of strings $Z$ is {\emphcolor decidable}\addtoindex{decidable} if there is an algorithm (this will be formally defined later) which after finitely many steps provides an answer to whether a 
+    string of symbols $\xi$ belongs to $Z$.
+    Otherwise $Z$ is {\emphcolor undecidable}.
+    For example, it is intuitively clear that it is decidable whether $\xi$ is a formula (or a sentence).
+    A theory $T$ is {\emphcolor recursively axiomatizable}\addtoindex{recursively axiomatizable} (for short {\emphcolor axiomatizable}) if it possess a decidable axiom system.
+    For example, $T$ is recursively axiomatizable if it is finitely axiomatizable: if it has a finite axiom system.
+
+\edefn
+
+So by the above proposition, the theory of fields of characteristic zero is not finitely axiomatizable.
+For if $F$ were a finite set of axioms, then their conjunction $\alpha=\bigwedge F$ would be valid in fields of sufficiently large characteristic.
+But then these fields would be of characteristic zero, in contradiction.
+
+Here is another example: an abelian group ${\cal G}$ is {\it $n$-divisible} if $G\vDash\vartheta_n$ where $\vartheta_n=\forall x\exists y\,x\eq ny$ where $ny=y+\cdots+y$ ($n$ times).
+And ${\cal G}$ is {\it divisible} if it is $n$-divisible for all $n\geq1$.
+The theory of divisible abelian groups is denoted ${\sf DAG}$ and is axiomatized by the axioms of abelian groups and the sentences $\vartheta_n$ for $n\geq1$.
+
+\bprop
+
+    A sentence $\alpha\in{\cal L}\set{+,0}$ valid in all divisible abelian groups is also valid in at least one nondivisible abelian group.
+
+\eprop
+
+If ${\sf DAG}\vDash\alpha$ then $X_0\vDash\alpha$ for a finite subset of the axioms $X_0$.
+In particular there exists some $m$ such that for every $\vartheta_n\in X_0$, $n<m$, let $p$ be a prime larger than $m$.
+Now let ${\bb Z}_p$ be the cyclic group of order $p$, then ${\bb Z}_p\vDash\vartheta_n$ for $0<n<p$ (since $n$ is coprime with $p$, and thus is divisible in ${\bb Z}_p$ thus take $y=n^{-1}x$).
+Thus ${\bb Z}_p\vDash X_0$, but ${\bb Z}_p$ is not divisible, as ${\bb Z}_p\nvDash\vartheta_p$ (since $py=0$).
+\qed
+
+So ${\sf DAG}$ is not finitely axiomatizable, for the same reason that the theory of fields of characteristic zero is not finitely axiomatizable.
+
+\bthrm[title=The Compactness Theorem, name=compactnesstheorem]
+
+    A set of formulas $X$ is satisfiable if and only if every finite subset $X_0\subseteq X$ is satisfiable.
+
+\ethrm
+
+If $X$ is satisfiable, then so is every $X_0\subseteq X$.
+If $X$ is not satisfiable, then by the model existence theorem this is equivalent to $X$ being inconsistent so $X\vdash\bot$ and thus $X_0\vdash\bot$ meaning $X_0\vDash\bot$ for some finite subset
+$X_0\subseteq X$.
+\qed
+
+\bdefn
+
+    An ${\cal L}$-theory $T$ is {\emphcolor complete}\addtoindex{theory}[complete] if it is consistent and has no consistent proper extension in ${\cal L}^0$.
+
+\edefn
+
+If $T$ is complete and if $\nvdash_T\alpha,\neg\alpha$ then $T+\alpha$ and $T+\neg\alpha$ are consistent by ${\tt C}^+$ and ${\tt C}^-$ and are therefore consistent proper extensions in contradiction.
+So if $T$ is complete then $\vdash_T\alpha$ or $\vdash_T\neg\alpha$ (but not both, for then $T$ would not be consistent) for every $\alpha\in{\cal L}^0$.
+Conversely if this is true then $T$ is consistent as if $\vdash_T\bot$ then $\vdash_T\alpha,\neg\alpha$ contradicting the ``not both'' part.
+And it is maximally consistent as then if $\alpha\notin T$, $\neg\alpha\in T$ and so $T+\alpha\vdash\alpha,\neg\alpha$ and is therefore inconsistent.
+So $T$ is complete if and only if $\vdash_T\alpha$ or $\vdash_T\neg\alpha$ but not both, or equivalently $\vdash_T\alpha\iff\nvdash_T\neg\alpha$ for all sentences $\alpha$.
+
+So for example, if ${\cal A}$ is an ${\cal L}$-structure, then since for every sentence $\alpha$, either ${\cal A}\vDash\alpha$ or ${\cal A}\nvDash\alpha$, which is equivalent to ${\cal A}\vDash\neg\alpha$
+(since $\alpha$ this is true for specific models over ${\cal A}$, and since $\alpha$ is a sentence, all the models agree on the validity of $\alpha$).
+Thus for every sentence $\alpha$, ${\cal A}\vDash\alpha$ or ${\cal A}\nvDash\neg\alpha$, and it obviously cannot satisfy both.
+Thus $\Th{\cal A}$ is a complete theory for every structure ${\cal A}$.
+
+Now, a frequently occurring theory is the theory $\Th{\cal N}$, which is the theory of the structure ${\cal N}=({\bb N},0,{\tt S},+,\cdot)$ where ${\tt S}$ is the
+{\it successor function}\addtoindex{successor function}: ${\tt S}\colon n\varmapsto n+1$.
+${\cal N}$ is the standard structure of the arithmetical language ${\cal L}_{\it ar}\coloneqq{\cal L}\set{0,{\tt S},+,\cdot}$.
+We can define the relationship $\leq$ in ${\cal L}_{\it ar}$ by $x\leq y\oto\exists z\,x+z\eq y$ and the relationship $<$ by $x<y\oto x\leq y\land x\neqb y$.
+
+Even more frequent than $\Th{\cal N}$ is one of its subtheories: {\it Peano arithmetic}\addtoindex{Peano arithmetic} denoted ${\sf PA}$.
+It is axiomatized by
+
+\medskip
+\tabskip=0pt plus 1fil
+{\openup1\jot\halign to\hsize{$#$\hfil\tabskip=2cm&$#$\hfil\tabskip=2cm&$#$\hfil\tabskip=0pt plus 1fil\cr
+    \forall x\,{\tt S}x\neqb0 & \forall x\,x+0\eq x & \forall x\,x\cdot x\eq0\cr
+    \forall x\forall y\,({\tt S}x\eq{\tt S}y\to x\eq y) & \forall x\forall y\,x+{\tt S}y\eq{\tt S}(x+y) & \forall x\forall y\,x\cdot{\tt S}y\eq x\cdot y+x\cr
+    \multispan3\hfil IS: $\phi\frac 0x\land\forall x\parens{\phi\to\phi\frac{{\tt S}x}x}\to\forall x\phi$\hfil\cr
+}}
+\medskip
+
+IS is the {\it induction schema} and is a {\it schema} of rules: it runs over all formulas $\phi$ in ${\cal L}_{\it ar}$.
+Since $\phi$ may not be a sentence, and axioms are, by our convention IS must be generalized, so the correct axiom is
+$\bigl(\phi\frac 0x\land\forall x\parens{\phi\to\phi\frac{{\tt S}x}x}\to\forall x\phi\bigr)^g$.
+The purpose of IS is to prove $\forall x\phi$ {\it by induction on $x$}: first one proves $\phi$ for when $x=0$ (hence showing $\phi\frac 0x$), and then one shows that if $\phi$ then $\phi\frac{{\tt S}}x$.
+Proving $\vdash_{\sf PA}\forall x\parens{\phi\to\phi\frac{{\tt S}x}x}$ is equivalent to showing $\phi\vdash_{\sf PA}\phi\frac{{\tt S}x}x$.
+
+For example, let $\phi=x\eq0\lor\exists v\,{\tt S}v\eq x$.
+We will prove $\vdash_{\sf PA}\forall x\phi$, meaning every $x\neq0$ has a predecessor.
+Obviously $\phi\frac0x\mathrel{}(=0\eq0\lor\exists v\,{\tt S}v\eq x)$.
+Now we must show that $\phi\vdash_{\sf PA}\phi\frac{{\tt S}x}x$.
+In general we have ${\tt S}v\eq x\vdash_{\sf PA}{\tt SS}v\eq{\tt S}x$, and so by particularization we get $\exists v\,{\tt S}v\eq x\vdash_{\sf PA}\exists v\,{\tt SS}v\eq{\tt S}x$.
+And since $x\eq0\vdash_{\sf PA}\exists v\,{\tt S}v\eq{\tt S}x$, we get $\phi\vdash_{\sf PA}\exists v\,{\tt S}v\eq{\tt S}x\vdash_{\sf PA}{\tt S}x\eq0\lor\exists v\,{\tt S}v\eq{\tt S}x=\phi\frac{{\tt S}x}x$ as
+required.
+
+We will now show that $\Th{\cal N}$ and ${\sf PA}$ have what are called {\it nonstandard models}\addtoindex{nonstandard}[models], models which are not isomorphic to the standard model of the theory, which
+is ${\cal N}$ in this case.
+Let us define $\underline n\coloneqq{\tt S}^n0\coloneqq{\tt S}\cdots{\tt S}0$ where ${\tt S}$ is composed with itself $n$ times.
+So for example $\underline1={\tt S}0$, $\underline2={\tt S}1$ and in general $\underline{{\tt S}n}={\tt S}\underline n$.
+Let $x\in\Var$ and we define $X\coloneqq\Th{\cal N}\cup\set{\underline n<x}[n\in{\bb N}]$.
+
+Let $X_0\subseteq X$ be finite, then $X_0$ is satisfiable: since $X_0$ is finite, there must be some $m$ such that $X_0\subseteq\Th{\cal N}\cup\set{\underline n<x}[n<m]$.
+Thus, we can simply assign $x$ the value of $m$ and then $({\cal N},m)$ (meaning the valuation function maps $x$ to $m$) is a model of $X_0$.
+So by \refmath{compactnesstheorem}, $X$ has a model $({\cal N}',c)$ where the domain of the model is ${\bb N}'$ and $c\in{\bb N}'$ is the valuation of $x$.
+Since $\Th{\cal N}$ is a subset of $X$ and is complete, ${\bb N}'$ satisfies precisely the same sentences as ${\cal N}$.
+In particular the following sentences are valid in ${\cal N}'$: ${\tt S}\underline n\eq\underline{{\tt S}n}$, $\underline{n+m}=\underline n+\underline m$, and
+$\underline{n\cdot m}=\underline n\cdot\underline m$.
+Thus $n\varmapsto\underline n^{\cal N'}$ is an embedding of ${\cal N}$ into ${\cal N}'$.
+We can identify the image of this embedding with ${\cal N}$, meaning it is legitimate to assume $\underline n^{\cal N'}=n$ so ${\cal N}\subseteq{\cal N}'$.
+
+Since ${\cal N}'\vDash X$, ${\cal N}$ and ${\cal N}'$ are elementarily equivalent as $\Th{\cal N}$ is complete.
+But on the other hand, $n<a$ for any $a\in{\bb N}'\setminus{\bb N}$, since in ${\cal N}$ and thus in ${\cal N}'$ we have $(\forall x\leq\underline n)\bigvee_{i\leq\underline n}x\eq\underline i$.
+So if $a\leq n$ then we'd have $a\eq\underline i$ and so $a\in{\bb N}$ in contradiction.
+And since ${\bb N}'\setminus{\bb N}$ is nonempty by the formulas added to $X$, ${\bb N}$ is a proper initial segment of ${\bb N}'$.
+The elements of ${\bb N}'\setminus{\bb N}$ are called {\it nonstandard numbers}\addtoindex{nonstandard}[numbers] (the existence of nonstandard numbers are precisely what make ${\bb N}'$ and ${\bb N}$
+non-isomorphic).
+$c$ is an example of a nonstandard number, as well as $c+c$ and so on.
+
+Since $(\forall x\neqb0)\exists!y\,{\tt S}y\eq x$ is a theorem of ${\cal N}$ it too must be valid in ${\cal N}'$ and so $c$ must have an immediate successor.
+But if we were to chase the successors of $c$, we would never find one which is in ${\bb N}$ (ie. there is no natural $x$ and $n$ such that ${\tt S}^nx=c$ as then $c$ would be natural).
+
+In no nonstandard model ${\cal N}'$ of $\Th{\cal N}$ is ${\bb N}$ definable (for the same reason as above, ${\bb N}$ can be embedded in all models of $\Th{\cal N}$, so we really mean that the image of this
+embedding is not definable).
+In fact it is not even {\it parameter definable}, meaning there is no $\alpha=\alpha(x,\vec y)$ and $b_1,\dots,b_n\in{\bb N}'$ such that ${\bb N}=\set{a\in{\bb N}'}[{\cal N}'\vDash\alpha{[a,\vec b]}]$.
+Otherwise, we'd have ${\cal N}'\vDash\alpha\frac0x[\vec b]$ since $0\in{\bb N}$ and ${\cal N}'\vDash\forall x\parens{\alpha\to\alpha\frac{{\tt S}x}x}{}[\vec b]$ since ${\bb N}$ is closed under ${\tt S}$.
+Thus by IS we have ${\cal N}'\vDash\forall x\alpha[\vec b]$, which contradicts ${\bb N}'\setminus{\bb N}$ being nonempty.
+
+Similar to ${\cal N}$ we can find nonstandard models for the theory of real numbers, ${\cal R}=({\bb R},+,\cdot,<,\set{\boldsymbol a}[a\in{\bb R}])$ which contains a constant symbol $\boldsymbol a$ for every
+number $a\in{\bb R}$.
+Consider $X=\Th{\cal R}\cup\set{\boldsymbol a<x}[a\in{\bb R}]$, which is finitely satisfiable and therefore by \refmath{compactnesstheorem} $X$ has a model ${\cal R}^*$ which is a {\it nonstandard
+model of analysis}.
+${\cal R}^*$ models $\Th{\cal R}$ and therefore every theorem valid in ${\cal R}$ is valid in ${\cal R}^*$ and vice versa.
+We could also add functions like $\exp,\ln,\sin,\cos$ to the signature of ${\cal R}$ and obtain a model ${\cal R}^*$ where the properties of these functions which can be formulated in first-order language
+are preserved, like
+$$ \forall x,y\,\exp(x+y)=\exp x\cdot\exp y,\qquad (\forall x>0)\exp\ln x\eq x,\qquad \forall x\,\sin^2x+\cos^2x\eq1 $$
+Since continuity and differentiability can be formulated in first-order language (via $\epsilon$-$\delta$ shenanigans), these functions remain continuous and repeatedly differentiable.
+Though topological properties like Bolzano-Weirestrass are not generally true, but can be replaced by infinitesimal arguments.
+
+For a nonstandard model ${\cal R}^*$ of $\Th{\cal R}$, with ${\cal R}\subseteq{\cal R}^*$ contains infinitely large numbers (meaning numbers $c$ where $r<c$ for all $r\in{\bb R}$), but also infinitely
+small numbers (meaning numbers $\epsilon$ where $0<\epsilon<r$ for all $r\in{\bb R}$, as we can take $\epsilon\coloneqq\frac1c$).
+These infinitely small numbers are termed {\it infinitesimal numbers}, and utilizing their properties one can study {\it nonstandard analysis} which is a branch of analysis utilizing these nonstandard
+models of analysis and their infinitesimal numbers.
+This branch gives arguably more intuitive proofs for analytic results, which can more closely follow the arguments of the original analytical researchers like Leibniz.
+
+While every bounded set in ${\cal R}$ possesses a supremum, this is not true in ${\cal R}^*$.
+Rather we can only say that every bounded definable set in ${\cal R}^*$ possesses a supremum, as this is first-order formulatable,
+$$ \exists x\phi\land\exists y\forall x(\phi\to x\leq y)\to\exists z\forall x\bigl((\phi\to x\leq z)\land\forall y((\phi\to x\leq y)\to z\leq y)\bigr) $$
+(the set is defined by $\phi$, ie. it is the set $\set{x}[{\cal R}^*\vDash\phi]$.)
+
+\bexerc
+
+    Prove in ${\sf PA}$ the associativity, commutativity, and distributivity of $+$ and $\cdot$.
+
+\eexerc
+
+We will first derive ${\tt S}x+y\eq x+{\tt S}y$ by induction on $y$, ie. we define $\phi={\tt S}x+y\eq x+{\tt S}y$.
+The base case $\phi\frac0y={\tt S}x+0\eq x+{\tt S}0$: since ${\tt S}x+0\eq{\tt S}x$ and $x+{\tt S}0\eq{\tt S}(x+0)\eq{\tt S}x$, this is true.
+Now we show $\phi\vdash\phi\frac{{\tt S}y}y={\tt S}x+{\tt S}y\eq x+{\tt SS}y$.
+Now, ${\tt S}x+{\tt S}y\eq{\tt S}({\tt S}x+y)\eq{\tt S}(x+{\tt S}y)\eq x+{\tt SS}y$ as required.
+So we have shown $\forall y\phi$ as required.
+
+Now, we will also show that $0+y\eq y$ by induction on $y$: let $\phi=0+y\eq y$.
+Then $\phi\frac0y=0+0\eq0$ which is valid in ${\sf PA}$.
+Now we must show $0+y\eq y\vdash0+{\tt S}y\eq{\tt S}y$.
+Since $0+{\tt S}y\eq{\tt S}(0+y)\eq{\tt S}y$ we have finished.
+
+Now we will show associativity, by inducting $\phi=(x+y)+z\eq x+(y+z)$ on $y$.
+$\phi\frac0y=(x+0)+z\eq x+(0+z)$ and since $x+0\eq x$ and $0+z\eq z$ this is true.
+For the inductive step, $(x+{\tt S}y)+z\eq {\tt S}(x+y)+z\eq {\tt S}((x+y)+z)\eq {\tt S}(x+(y+z))\eq x+{\tt S}(y+z)\eq x+(y+{\tt S}z)\eq x+({\tt S}y+z)$ as required.
+
+For commutativity, we induct $x+y\eq y+x$ on $y$ (we could also on $x$, but why change?).
+This is obviously true when substituting $0$ for $y$, as $x+0\eq x\eq x+0$.
+Now $x+{\tt S}y\eq{\tt S}(x+y)\eq{\tt S}(y+x)\eq{\tt S}y+x$, as required.
+Proofs for $\cdot$ and distributivity are similar.
+
+\bexerc
+
+    Prove the antisymmetry of $\leq$ in ${\sf PA}$.
+
+\eexerc
+
+So we must show that $x\leq y$ and $y\leq x$ implies $x\eq y$.
+Now,
+$$ x\leq y\oto\exists z\,x+z\eq y,\qquad y\leq x\oto\exists u\,y+u\eq x $$
+This means that $x\leq y\land y\leq x\to\exists u,z\,y+u+z\eq y$.
+Now simple induction on $x$ will yield $y+x\eq y\to x\eq0$, and so $u+z\eq0$.
+And induction on $z$ will yield $u+z\eq0\to z\eq0,u\eq0$ (the base case is trivial, the inductive step holds vacuously).
+And so $u+z\eq0$ and thus $y\eq x$.
+
+\bexerc
+
+    Prove $x<y\equiv_{\sf PA}{\tt S}x\leq y$.
+    Use this to prove $\vdash_{\sf PA}x\leq y\lor y\leq x$ by induction on $x$.
+
+\eexerc
+
+We will first prove $x<y\vdash_{\sf PA}{\tt S}x\leq y$ 
+By definition if $x<y$ then $\exists z\,x+z\eq y$ and since $x\neqb y$ we have that $z\neqb0$ and so $z$ has a predecessor, $u$.
+Thus $x<y$ implies $\exists u\,x+{\tt S}u\eq y$ and since $x+{\tt S}u\eq{\tt S}x+u$ this means ${\tt S}\leq y$ as required.
+Conversely, since $x<{\tt S}x$ by induction on $x$, we have that if ${\tt S}x\leq y$ by transitivity $x<y$.
+
+Let $\phi=x\leq y\lor y\leq x$, then substituting $0$ for $x$, we get $0\leq y\lor y\leq0$ and since we know that $\forall y\,0\leq y$ (by induction on $y$), this is true.
+Now for the inductive step we must show ${\tt S}x\leq y\lor y\leq{\tt S}x\equiv x<y\lor y\leq{\tt S}x$.
+We know that $x\leq y\lor y\leq x$, so either $x<y$ in which case this is true, or $y\leq x$ in which case $y\leq{\tt S}x$.
+
+\bexerc
+
+    Let $\alpha,\beta,\gamma\in{\cal L}_{\it ar}$ and $y\notin\var\set{\alpha,\beta}$ and $z\notin\var\gamma$.
+    Verify the following:
+    \benum
+        \item $\vdash_{\sf PA}\forall x\parens{(\forall y<x)\alpha\frac yx\to\alpha}\to\forall x\alpha$, the {\it schema of $<$-induction} (or {\it strong induction}).
+        \item $\vdash_{\sf PA}\exists x\beta\to\exists x\parens{\beta\land(\forall y<x)\neg\beta\frac yx}$, the {\it minimum schema} (or {\it well-ordering principle}).
+        \item $\vdash_{\sf PA}(\forall x<v)\exists y\gamma\to\exists z(\forall x<v)(\exists y<z)\gamma$, the {\it schema of collection}.
+    \eenum
+
+\eexerc
+
+\benum
+    \item Let $\phi=(\forall y<x)\alpha\frac yx$, we will prove $\forall x(\phi\to\alpha)\vdash_{\sf PA}\phi\frac0x,\,\phi\to\phi\frac{{\tt S}x}x$ which proves $\forall x\phi$ by IS.
+    This means that in particular $\forall x\phi\frac{{\tt S}x}x$, and so for every $y<{\tt S}x$, $\alpha\frac yx$ and since $x<{\tt S}x$ we get $\alpha$ as required.
+    Since $\phi\frac0x=(\forall y<0)\alpha\frac yx$ which holds vacuously.
+    And since $\forall x(\phi\to\alpha)=\forall x\parens{(\forall y<x)\alpha\frac yx\to\alpha}$, we have that if $\phi=(\forall y<x)\alpha\frac yx$ then $\alpha$, meaning $(\forall y\leq x)\alpha\frac yx$,
+    which is equivalent to $\phi\frac{{\tt S}x}x$.
+    Thus $\forall x(\phi\to\alpha)\vdash_{\sf PA}\phi\to\phi\frac{{\tt S}x}x$, as required.
+    \item Note that the contrapositive of this is $\forall x\parens{(\forall y<x)\neg\beta\frac yx\to\neg\beta}\to\forall x(\neg\beta)$, which follows from $(1)$.
+    \item Let $\phi=(\forall x<v)\exists y\gamma\to\exists z(\forall x<v)(\exists y<z)\gamma$, we will prove $\forall v\phi$ by induction on $v$.
+    $\vdash_{\sf PA}\phi\frac 0v$ holds vacuously.
+    Now we must prove $\phi\vdash_{\sf PA}\phi\frac{{\tt S}v}v\equiv_{\sf PA}(\forall x\leq v)\exists y\gamma\to\exists z(\forall x\leq v)(\exists y<z)\gamma$.
+    By $\phi$, if $(\forall x\leq v)\exists y\gamma$, then we have $\exists z(\forall x<v)(\exists y<z)\gamma$.
+    So the only ``issue'' is when $x=v$, but in which case we know there exists a $y_x$ such that $\gamma$, so let $z'=\maxof{z,{\tt S}y_x}$ and we get that for every $x<v$ there exists a $y<z\leq z'$ such
+    that $\gamma$ and for $x=v$ there exists a $y_x<{\tt S}y_x\leq z'$ such that $\gamma$.
+    And so we get $\exists z(\forall x<v)(\exists y<z)\gamma$ (where the $z$ is $z'$) as required.
+\eenum
+
