@@ -1,0 +1,92 @@
+\bdefn
+
+    A countable set $M$ is {\it effectively enumerable}\addtoindex{effectively enumerable} if there exists an algorithm which produces as output every element in $M$ stepwise.
+    This definition will be made more formal in a later section.
+
+\edefn
+
+So for example, all provable finite sequents of countable first-order language (ie. $(X,\alpha)$ such that $X\vdash\alpha$ and $X$ is finite) is effectively enumerable.
+To do so, we can enumerate all initial sequents in a reproducible sequence $S_0,S_1,\dots$.
+Then at every iteration we check if one of the basic rules are applicable, and if so we form a second sequence of sequents and so on.
+And this can also help effectively enumerate all tautologies of such a language: in this enumeration, only output sequents with $X=\varnothing$.
+
+A similar argument can be applied to the theorems of an axiomatizable countable theory.
+One obtains an effective enumeration of the axioms (which exists as they are decidable) of the theory and adds those to the sequents (along with the initial sequents) of the machine described above.
+This is an intuitive explanation of the following theorem which will be formally proven in a later section.
+
+\bthrm
+
+    The theorems of an axiomatizable countable theory are effectively enumerable.
+
+\ethrm
+
+For example, ${\sf ZFC}$ and ${\sf PA}$ are axiomatizable as their axioms are decidable.
+Thus the theorems of these theories are effectively enumerable.
+But just because something is effectively enumerable does not mean that it is decidable: one has no method to determine whether an object will show up in the sequence.
+One just knows that if it belongs to the set then it will show up in the sequence, but if an object does not belong to the set they will have no way of knowing this.
+
+The following theorem is also only proven at present in an informal manner, a formal proof is provided later.
+
+\bthrm
+
+    A complete axiomatizable theory $T$ is decidable.
+
+\ethrm
+
+By the previous theorem, there exists an effective enumeration of all the theorems of $T$.
+Given a sentence $\phi$ we iterate over this enumeration and check for $\phi$ and $\neg\phi$.
+Since $T$ is complete, one of them must exist in the enumeration and so this takes finite time.
+If we find $\phi$ then $\phi$ belongs to $T$ so we can accept, and if we find $\neg\phi$ then $\phi$ does not belong to $T$ (as $T$ is consistent) and we can reject.
+\qed
+
+On the other hand, a complete decidable theory $T$ is axiomatizable by $T$ itself.
+Thus for complete theories, being decidable is equivalent to being axiomatizable.
+
+\bexerc
+
+    Let $T'=T+\alpha$ be a finite extension of $T$.
+    Show that if $T$ is decidable then so too is $T'$.
+
+\eexerc
+
+Notice that $T+\alpha\vdash\phi$ if and only if $T\vdash\alpha\to\phi$ and so we can check if $\phi\in T+\alpha$ by checking if $\alpha\to\phi\in T$ which is decidable as $T$ is.
+
+\bexerc
+
+    Suppose $T$ is consistent and has only finitely many completions.
+    Prove that every completion of $T$ is a finite extension.
+
+\eexerc
+
+Suppose $T$ had a completion which is an infinite extension, of the form $T'=T+\set{\alpha_i}_{i\in {\bb N}}$.
+We can assume that $\bigwedge_{i=1}^n\alpha_i\nvdash_T\alpha_{n+1}$ as otherwise we could just remove $\alpha_{n+1}$.
+But then $T+\bigwedge_{i=1}^n\alpha_i\land\neg\alpha_{n+1}$ is consistent, and therefore has a completion $T_n$.
+But for $n\neq m$ we have $T_n\neq T_m$ (since one contains $\neg\alpha_{n+1}$ and the other does not), and so $T$ has infinite distinct completions in contradiction.
+
+\bexerc
+
+    Show that an axiomatizable theory with finitely many completions is decidable.
+
+\eexerc
+
+We have shown previously that if $T$ is consistent then $T=\bigcap\set{T'\supseteq T}[T'\hbox{ complete}]$.
+By above, this set is finite and each $T'$ is a finite extension.
+Since $T'$ is a finite extension, and $T$ is axiomatizable, so is $T'$.
+By the above theorem, $T'$ is therefore decidable, and so $T$ is the finite intersection of decidable sets, which is decidable.
+
+\bexerc
+
+    Show that a decidable countable theory $T$ has a decidable completion.
+
+\eexerc
+
+Let $(\alpha_n)_{n=1}^\infty$ be an effective enumeration of the sentences in ${\cal L}^0$.
+Let us set $T_0\coloneqq T$ and $T_{n+1}\coloneqq T_n+\alpha_n$ if it is consistent, otherwise $T_{n+1}\coloneqq T_n$.
+Then $T'=\bigcup_{n=0}^\infty T_n$ is a complete theory: it being a theory and consistent are immediate from $T_n$ being a chain of consistent theories and the finiteness theorem.
+It is complete since if $\alpha,\neg\alpha\notin T'$ suppose $\alpha=\alpha_n$ and $\neg\alpha=\alpha_m$ and $n<m$ then $T_m+\neg\alpha_m$ was inconsistent and so $T_m,\neg\alpha\vdash\bot$ so
+$\alpha\in T_m$ but $T_n+\alpha\subseteq T_m+\alpha=T_m$ is also inconsistent, contradicting every $T_i$ being consistent.
+
+$T'$ is also effectively enumerable as it can be axiomatized: for every sentence, check if it is in $T$ or if $T_n+\alpha_n$ is consistent (which requires finding the $n$ and checking consistency, which
+can both be done in finite time).
+Since $T'$ is complete and axiomatizable, it is decidable.
+
