@@ -1,0 +1,203 @@
+We briefly review fundamentals of set theory.
+Recall that a set $M$ is {\it countable}\addtoindex{countable set} if there exists a surjection $f\colon{\bb N}\longto M$ (assuming the axiom of choice, this is equivalent to there being an injection
+$M\longto{\bb N}$).
+A set which is not countable is called {\it uncountable}.
+Two sets $M$ and $N$ are {\it equipotent}\addtoindex{equipotency} if there exists a bijection between $M$ and $N$, we denote this as $M\sim N$.
+If $M\sim{\bb N}$, $M$ is {\it countably infinite}.
+Recall that ${\bb R}$ is uncountable and equipotent to $\powsetof{\bb N}$.
+In general due to Cantor's theorem which states that the powerset of a set, $\powsetof M$, is of a higher cardinality than $M$ (meaning there is an injection $M\longto\powsetof M$ but no surjection).
+
+And if $M$ and $N$ are countable, than so is $M\times N$.
+And if $\set{M_i}_{i\in I}$ is a countable family of countable sets (meaning $I$ is countable and $M_i$ is countable for every $i\in I$), then their union $\bigcup_{i\in I}M_i$ is also countable.
+Notice then that if $M$ is countable, the set of all finite sequences of symbols in $M$ is $\bigcup_{n\in{\bb N}}M^n$, which is countable.
+Thus if ${\cal L}$ is a first-order language over a countable signature then ${\cal L}$ is countable as well.
+
+A {\it countable theory} is a theory formalized in a countable first-order language.
+
+\bthrm[title=L\"owenheim-Skolem Theorem, name=lowenheimskolem]
+
+    A countable consistent theory $T$ has a countable model.
+
+\ethrm
+
+By \refmath{modelexistencetheorem}, $T$ has a model whose domain $A$ consists of the equivalence classes $\overline c$ for $c\in C$, where $C=\bigcup_{n\in{\bb N}}C_n$ is a new set of constants.
+By definition, $C_0$ is equipotent to ${\cal L}\times\Var$ which is countable, and so ${\cal L}_1\coloneqq{\cal L}C_0$ is equipotent.
+And in general, $C_n$ is equipotent to ${\cal L}_n\times\Var$ so $C_n$ and ${\cal L}_{n+1}$ are countable for every $n$, by induction.
+Thus $C$ is also countable as the countable union of countable sets.
+The map $c\varmapsto\overline c$ is a surjection from $C$ to $A$, and therefore $A$ is also countable, as required.
+\qed
+
+This theorem will later be generalized, but this theorem already leads to interesting consequences.
+For example, there must be countable ordered fields which are nonstandard models of the first-order theory $\Th({\bb R},0,1,+,\cdot,<,\exp,\sin,\dots)$.
+Even more surprising (for reasons explained shortly) is that this theorem implies the existence of countable models of set theory.
+
+To explain why, we must first define set theory.
+The most common and thus most important formalization of set theory is ${\sf ZFC}$ (short for Zermelo-Fraenkel+Choice, after the two mathematicians which first formalized it as well as the axiom of choice
+${\sf AC}$.
+Excluding ${\sf AC}$ from the axioms of the theory, gives rise to a proper (this is not a trivial fact) subtheory, ${\sf ZF}$.).
+
+The language upon which ${\sf ZFC}$ is defined is ${\cal L}\set{\inb}$, it contains only the extralogical symbols $\inb$ (and of course $\eq$).
+We denote this set-theoretic language by ${\cal L}_{\inb}$.
+We use a boldface $\inb$ symbol in order to differentiate it from the metalogical $\in$ symbol, much like $\eq$.
+Importantly, in ${\sf ZFC}$ all objects are sets, there are no other types of objects like in other formulations of set theory.
+
+We define the relation $\subseteqb$ by $x\subseteqb y\oto\forall z(z\inb x\to z\inb y)$.
+
+We begin to list the axioms of ${\sf ZFC}$ (recall that these axioms must be generalized):
+
+\medskip
+\tabskip=0pt plus 1fil
+{\openup1\jot\halign to\hsize{${\sf#}:$\hfil\tabskip=.5cm&$#$\hfil\tabskip=.5cm&(#)\hfil\tabskip=0pt plus 1fil\cr
+    AE & \forall z(x\inb x\oto z\inb y)\to x\eq y & axiom of extensionality\cr
+    AS & \exists y\forall z(z\inb y\oto\phi\land z\inb x) & axiom of separation\cr
+}}
+\medskip
+
+${\sf AS}$ is an axiom schema: $\phi$ runs over all ${\cal L}_{\inb}$-formulas with $y\notin\free\phi$.
+Now, let $\phi=\phi(x,z,\vec a)$, then we can derive $\forall x\exists!y\forall z(z\inb y\oto\phi\land z\inb x)$, meaning that $y\eq\set{z\inb x}[\phi]\oto\forall z(z\inb y\oto\phi\land z\inb x)$ is a
+legitimate definition of the {\it set term} $\set{z\inb x}[\phi]$ (the set of all $z\in x$ such that $\phi(x,z,\vec a)$ holds).
+The set term $\set{z\inb x}[\phi]$ is simply a suggestive way of writing a function term $f_{\vec a}x$ (which depends on the ``parameter'' term $\vec a$).
+To derive the required formula for legitimacy, let $y,y'\notin\free\phi$ then it is obvious to see
+$$ (x\inb y\oto\phi\land z\inb x)\land(z\inb y'\oto\phi\land z\inb x)\to(z\inb y\oto z\inb y') $$
+This implies that $\forall z(x\inb y\oto\phi\land z\inb x)\land\forall z(z\inb y'\oto\phi\land z\inb x)\to y\eq y'$, and so we have proven the claim of legitimacy.
+
+We can explicitly define the empty set by $y\eq\varnothing\oto\forall z\,z\notinb y$.
+But we must show that this is legitimate.
+According to ${\sf AS}$, $\exists y\forall z(z\inb y\oto z\notinb x\land z\inb x)$.
+But since $z\inb y\oto z\inb x\land z\inb x\equiv z\notinb y$, so this is equivalent to $\exists y\forall z(z\notinb y)$ (proving the existence part of legitimacy; we must still prove uniqueness).
+Now by ${\sf AE}$, $\forall z\,z\notinb y\land\forall z\,z\notinb y'\to y\eq y'$, and since we just showed $\exists y\forall z(z\notinb y)$ gives the required $\exists!y\forall z(z\notinb y)$.
+
+We also have
+$$ {\sf AU}:\quad \forall x\exists y\forall z(z\inb y\oto(\exists u\inb x)z\inb u)\quad (\hbox{axiom of union}) $$
+$y$ here is the {\it union} of $x$, $z\inb y$ if and only if there exists a set $u\inb x$ such that $z\inb u$.
+By ${\sf AE}$, the $\exists y$ may be replaced with $\exists!y$.
+So we can define an operator (we use the word operator instead of function as the word function has a special meaning in ${\sf ZFC}$), the union operator $x\varmapsto\bigcup x$.
+In view of ${\sf AS}$, the axiom of union could be weakened to $\forall x\exists y\forall z((\exists u\inb x)z\inb u\to z\inb y)$ as then we can use ${\sf AS}$ to get the union from this set $y$.
+Similarly the following axiom could be weakened:
+$$ {\sf AP}:\quad \forall x\exists y\forall z(z\inb y\oto z\subseteqb x)\quad (\hbox{power set axiom}) $$
+And again, $\exists y$ can be replaced with $\exists!y$ due to ${\sf AE}$.
+We define the {\it powerset} of a set $x$ to be this unique $y$, which we denote ${\cal P}x$, which contains all the subsets of $x$.
+Now, since $x\subseteq\varnothing\oto\forall y\inb x\,y\inb\varnothing$, and $y\inb\varnothing\equiv_{\sf ZFC}\bot$, we have that $x\subseteq\varnothing\oto\bot$, so
+$\forall x(x\in{\cal P}\varnothing\oto x\eq\varnothing)$.
+Similarly $\forall x(x\in{\cal PP}\varnothing\oto x\eq\varnothing\lor x\eq{\cal P}\varnothing)$.
+Since ${\cal P}\varnothing\neqb\varnothing$ as it is not empty, ${\cal PP}\varnothing$ has precisely two elements.
+
+The following axiom was added by Fraenkel to the axioms formulated by Zermelo:
+$$ {\sf AR}:\quad \forall x\exists!y\phi\to\forall u\exists v\forall y(y\inb v\oto(\exists x\in u)\phi)\quad (\hbox{axiom of replacement}) $$
+Here $\phi=\phi(x,y,\vec a)$ is viewed as a function which maps $x$ to $y$, where $y$ is the unique value satisfying $\phi$ (hence the $\forall x\exists!y\phi$).
+If $\phi$ does represent such a function, ${\sf AR}$ says that for every $u$ we can define the image of $u$ under this function.
+More suggestively, we can define an operator $x\varmapsto Fx$ where $y\eq Fx\oto\phi$ (since $F$ actually is dependent on $\vec a$, we should instead write $F_{\vec a}$ for $F$).
+Then ${\sf AR}$ states that for every $u$ we can define its image under $u$ which is denoted $\set{Fx}[x\in u]$.
+
+For example, let us define $\phi=\phi(x,y,a,b)\coloneqq x\eq\varnothing\land y\eq a\lor x\neqb\varnothing\land y\eq b$.
+$\forall x\exists!y\phi$ is obvious, and so this defines an operator $F=F_{a,b}$ which satisfies $F\varnothing\eq a$ and $Fx\eq b$ for all $x\neqb\varnothing$ (and such an $x$ exists, for example
+${\cal P}\varnothing$).
+We then define
+$$ \set{a,b} \coloneqq \set{F_{a,b}x}[x\in{\cal PP}\varnothing] $$
+(since ${\cal PP}\varnothing$ contains ${\cal P}\varnothing$ and $\varnothing$, two distinct elements.)
+This is called the {\it pair set} of $a,b$.
+Then we can define the union of two sets (which would not necessarily exist, as we have only defined the union of a set) to be $a\cupb b\coloneqq\bigcup\set{a,b}$.
+The intersection of two sets already exists by ${\sf AS}$: $a\capb b\coloneqq\set{z\in a}[z\in b]$.
+But we can also define the intersection of a set as $\bigcap x\coloneqq\set{z\in\bigcup x}[(\forall y\in x)z\in y]$.
+Notice that $\bigcap\set{a,b}=\set{z\in a\cup b}[z\in a\land a\in b]$ which by ${\sf AE}$ is equal to $a\capb b$.
+We further define $\set a\coloneqq\set{a,a}$ and inductively $\set{a_1,\dots,a_{n+1}}\coloneqq\set{a_1,\dots,a_n}\cup\set{a_{n+1}}$.
+So for example, we can prove ${\cal P}\varnothing=\set{\varnothing},\,{\cal PP}\varnothing=\set{\varnothing,\set\varnothing}$.
+We define the {\it ordered pair} of $a,b$ to be $(a,b)\coloneqq\set{\set a,\set{a,b}}$.
+This definition is useful as it has the basic property $(a,b)\eq(c,d)\oto a\eq c\land b\eq d$.
+
+So far our theory has many features, but it lacks an important one: there does not necessarily exist an infinite set!
+Let us define the successor operator, defined by ${\tt S}\colon x\varmapsto x\cup\set x$.
+So for example ${\tt S}\varnothing=\set\varnothing,\,{\tt SS}\varnothing=\set{\varnothing,\set\varnothing},\dots$.
+Notice that ${\tt S}x$ contains precisely one more element than $x$ (assuming that $x\notin x$, which requires another axiom which will be stated next).
+So there is a natural correspondence between this successor operator and the one from ${\sf PA}$ (in fact, in some definitions of ${\bb N}$, these two operators are one and the same).
+Now we state the following axiom which asserts the existence of an infinite set
+$$ {\sf AI}:\quad \exists u(\varnothing\in u\land\forall(x\in u){\tt S}x\in u)\quad (\hbox{axiom of infinity}) $$
+This set $u$ is a so-called {\it inductive set}: it is closed under successors and contains $\varnothing$.
+
+We also have
+$$ {\sf AF}:\quad (\forall x\neqb\varnothing)(\exists y\inb x)x\capb y\eq\varnothing\quad (\hbox{axiom of foundation}) $$
+This means that every nonempty set $x$ has a $\inb$-minimal element: an element $y$ such that no other $y'\inb x$ is in $y$.
+The axiom of foundation implies that there cannot be a circular chain of inclusion, ie. $x_0\inb\cdots\inb x_n\inb x_0$, as then $y=\set{x_0,\dots,x_n}$ would have no $\inb$-minimal element.
+
+These previously mentioned axioms axiomatize the theory ${\sf ZF}$.
+If we adjoin to ${\sf ZF}$ the {\it axiom of choice}, we get the theory ${\sf ZFC}$.
+$$ {\sf AC}:\quad \forall u\bigl(\varnothing\notinb u\land(\forall x\inb u)(\forall y\inb u)(x\neqb y\to x\capb y\eq\varnothing)\to\exists z(\forall x\inb u)\exists!y(y\inb x\capb z)\bigr)\quad
+(\hbox{axiom of choice}) $$
+The axiom of choice states that if $u$ is a set of nonempty disjoint sets, then there exists a {\it choice set} $z$ which contains precisely one element from each $x\inb u$.
+Equivalent to ${\sf AC}$ (among many other important equivalences) is that $\prod_{i\in I}A_i\eq\varnothing$ for any index set $I$.
+
+${\sf ZFC}$ is often viewed as the purest of all first-order theories, as it is sophisticated and thought to be able to formalize (almost) all proofs in mathematics (the {\it almost} here is technical:
+${\sf ZFC}$ is not complete, and so some mathematicians may study results independent of it.
+One such example is the {\it continuum hypothesis}).
+But whether or not this is true is not of too much significance, as most mathematics does not care whether or not it can be formalized in ${\sf ZFC}$.
+
+If ${\sf ZFC}$ is consistent (which no one really doubts, although we cannot prove), then by the \refmath{lowenheimskolem}, it must contain a countable model ${\cal V}=(V,\inb^{\cal V})$.
+But certainly the existence of an uncountable set is provable within ${\sf ZFC}$: for every inductive set $u$, ${\cal P}u$ is uncountable.
+But at the same time, $({\cal P}u)^{\cal V}\subseteq V$ and so ${\cal P}u$ must be countable.
+The fallacy here is that our notion of {\it countable} ``outside'' of ${\cal V}$ is different from the notion ``within'' ${\cal V}$.
+This ``paradox'' is known as {\it Skolem's paradox}.
+
+The explanation of Skolem's paradox is that the countable model ${\cal V}$ contains fewer sets and functions than expected, and in particular there do not exist enough to satisfy a bijection between
+$u^{\cal V}$ and $({\cal P}u)^{\cal V}$ although ``outside'' of ${\cal V}$ such a bijection exists.
+
+Another ``paradox'' is that while $V$ is by definition a set, but $\vdash_{\sf ZFC}\neg\exists u\forall z\,z\inb u$, ie. there does not exist a universal set.
+This is derived as follows: $\exists u\forall z\,z\inb u$ implies, using ${\sf AE}$ and ${\sf AS}$, the existence of a Russelian set $v=\set{x\inb u}[x\notinb x]$.
+Thus $\exists u\forall z\,z\inb u\vdash_{\sf ZFC}\exists u\forall x(x\inb u\oto x\notinb x)$.
+Though we have previously shown that the right-hand formula is logically invalid, and thus equivalent to $\bot$.
+So $\exists u\forall z\,z\inb u\vdash_{\sf ZFC}\bot$ and so $\vdash_{\sf ZFC}\neg\exists u\forall z\,z\inb u$.
+So similar to how there is no absolute concept of countability, there is no absolute concept of a set: a set ``outside'' a model of ${\sf ZFC}$ is not necessarily a set within ${\sf ZFC}$.
+
+\bexerc
+
+    Let $T$ be an elementary theory with arbitrarily large finite models.
+    Prove that $T$ also has an infinite model.
+
+\eexerc
+
+Since $T$ has arbitrarily large finite models, $\exists_n$ does not contradict $T$ for every $n$ (since $T+\exists_n$ is not unsatisfiable).
+Thus let $X=\set{\exists_n}[n\in{\bb N}]$, then $T+X$ is satisfiable: let $X_0\subseteq T\cup X$ be finite then $X_0\subseteq T\cup\set{\exists_n}[n\leq m]$ for some $m$.
+Then $X_0$ is satisfiable as $T+\exists_m$ is satisfiable, and therefore so is $T\cup\set{\exists_n}[n\leq m]$ (as $\exists_m\to\exists_n$ is a tautology) and thus so is $X_0$.
+So every finite subset of $T\cup X$ is satisfiable, and so by \refmath{compactnesstheorem}, so is $T\cup X$.
+
+Now, a model of $T+X$ must satisfy $\exists_n$ for every $n$, and so it must have at least $n$ elements for every $n$.
+So it cannot be finite, and thus must be infinite.
+Furthermore, by definition a model of $T+X$ models $T$ as well.
+
+\bexerc
+
+    Suppose ${\cal A}=(A,<)$ is an infinite well-ordered set.
+    Show that there is a not well-ordered set elementarily equivalent to ${\cal A}$.
+    Thus being well-ordered is not a first-order property (at least in the language ${\cal L}\set<$).
+
+\eexerc
+
+Let us define $X=\Th{\cal A}\cup\set{\v_{n+1}<\v_n}[n\in{\bb N}]$.
+$X$ is finitely satisfiable (as finite subsets of $X$ can be modeled over ${\cal A}$), but every model of $X$ has an infinitely descending chain (and such a chain therefore has no minimum element) and
+therefore models of $X$ are not well-ordered.
+
+\bexerc
+
+    Prove that a consistent theory $T$ is equal to the intersection of all its complete extensions.
+    Meaning $T=\bigcap\set{T'\supseteq T}[T'\hbox{ complete}]$.
+
+\eexerc
+
+Firstly, $T$ does have a complete extension as there exists a ${\cal A}\vDash T$ and $\Th{\cal A}$ is a complete extension of $T$.
+Obviously then $T\subseteq\bigcap\set{T'\supseteq T}[T'\hbox{ complete}]$.
+Now suppose $\phi\in T'$ for every complete extension of $T$, then if $\phi\notin T$ then $\neg\phi$ doesn't contradict $T$ since $T,\neg\phi\nvdash\bot$ (in general if $X\nvdash\phi$ then by ${\tt C}^+$,
+$X,\neg\phi\nvdash\bot$).
+But then $T,\neg\phi$ is consistent and therefore has a complete extension, which contradicts $\phi$ being in every complete extension of $T$.
+
+\bexerc
+
+    Derive ${\sf AS}$ from ${\sf AR}$.
+
+\eexerc
+
+Let $\phi=\phi(x,z,\vec a)$ be a formula and let $y,b\notin\free\phi$.
+$$ \psi = \Bigl(\phi\tfrac bz\land\bigl((y\eq z\land\phi)\lor(y\eq b\land\neg\phi)\bigr)\Bigr)\lor\Bigl(\neg\phi\tfrac bx\land y\eq\varnothing\Bigr) $$
+Then $\forall z\exists!y\psi$, as either $\phi$ or $\neg\phi$ is true.
+This operator defined by $\psi$ maps $z$ to $z$ if $\phi$ and $z$ to $b$ otherwise.
+If $\set{z\in x}[\phi]$ is nonempty then there exists a $b$ such that $\phi\tfrac bz$ and for this $b$, the operator defined by $\psi$ when parameterized with $b$ and $x$ gives this set.
+If $\phi$ is invalid, then $\set{z\in x}[\phi]$ is the empty set which exists by definition.
+
