@@ -1,0 +1,184 @@
+As with propositional logic, we define Hilbert calculi for first-order logic.
+These are calculi defined by a logical axiom system and rules of inference.
+Here our only rule of inference is {\it modus ponens}\addtoindex{modus ponens} (MP): $\alpha,\alpha\to\beta{/}\beta$ (meaning if both $\alpha$ and $\alpha\to\beta$ are derivable then $\beta$).
+We will denote the derivation relation on a first-order language ${\cal L}$ by $\vsim$ (or $\vsim_{\cal L}$ if we are to specify the language).
+Again, $\alpha\to\beta$ is defined to mean $\neg(\alpha\land\neg\beta)$.
+The logical axiom scheme is defined to be all formulas of the form $\forall x_1\cdots\forall x_n\phi$ where $x_i$ are arbitrary and $\phi$ is a formula of one of the following forms:
+
+\medskip
+\tabskip=0pt plus 1fil
+{\openup1\jot\halign to \hsize{\hfil$#$:\tabskip=.25cm&$#$\hfil\tabskip=2cm&\hfil$#$:\tabskip=.25cm&$#$\hfil\tabskip=0pt plus 1fil\cr
+    \Lambda1 & (\alpha\to\beta\to\gamma)\to(\alpha\to\beta)\to\alpha\to\gamma               & \Lambda2 & \alpha\to\beta\to\alpha\land\beta\cr
+    \Lambda3 & \alpha\land\beta\to\alpha,\quad \alpha\land\beta\to\beta                     & \Lambda4 & (\alpha\to\neg\beta)\to\beta\to\neg\alpha\cr
+    \Lambda5 & \forall x\alpha\to\alpha\frac tx\ (\alpha,\frac tx\hbox{ collision-free})    & \Lambda6 & \alpha\to\forall x\alpha\ (x\notin\free\alpha)\cr
+    \Lambda7 & \forall x(\alpha\to\beta)\to\forall x\alpha\to\forall x\beta                 & \Lambda8 & \forall y\alpha\frac yx\to\forall x\alpha\ (y\notin\var\alpha)\cr
+    \Lambda9 & t\eq t                                                                       & \Lambda10& x\eq y\to\alpha\to\alpha\frac yx\ (\alpha\hbox{ prime})\cr
+}}
+\medskip
+
+These are all easy to see as tautologies.
+$\Lambda1$ to $\Lambda4$ are simply the axioms from Hilbert calculi in propositional logic.
+Now we say that $X\vsim\alpha$ ($\alpha$ is derivable from $X$) if there exists a {\it proof}\addtoindex{proof} from $X$, $\Phi=(\phi_0,\dots,\phi_n)$.
+This means that $\alpha=\phi_n$ and for every $i<n$, $\phi_i\in X\cup\Lambda$ or is derivable by MP from previous $\phi_j$s (meaning $\phi_j\to\phi_i$ and $\phi_j$ appear before $\phi_i$ in $\Phi$).
+This is the same definition as used in propositional logic, and so the principle of induction holds here too: let ${\cal E}$ be a property of formulas such that ${\cal E}\phi$ for all $\phi\in X\cup\Lambda$
+and ${\cal E}\alpha,\,{\cal E}(\alpha\to\beta)$ implies ${\cal E}\beta$, then $X\vsim\alpha$ implies ${\cal E}\alpha$.
+
+Again, we can prove by induction that ${\vsim}\subseteq{\vDash}$, meaning $X\vsim\alpha\implies X\vDash\alpha$.
+The proof is identical to the one provided for propositional logic.
+
+\bthrm[title=The Completeness Theorem for $\vsim$, name=vsimcompletenesstheorem]
+
+    $X\vsim\alpha$ if and only if $X\vDash\alpha$, ie. ${\vsim}={\vDash}$.
+
+\ethrm
+
+We need only show that $X\vDash\alpha$ implies $X\vsim\alpha$.
+Since ${\vDash}={\vdash}$, we will show that $\vsim$ satisfies all the basic rules of $\vdash$, which shows that ${\vdash}\subseteq{\vsim}$.
+The rules of (MR) through $(\neg2)$ are handled as in propositional logic, (IR) requires only the addition of $(\Lambda9)$.
+$(\forall1)$ follows from $\Lambda5$ by use of MP.
+So we need now only show $(\forall2)$ and $(=)$.
+
+For $(\forall2)$, we must show that if $X\vsim\alpha\frac yx$ then $X\vsim\forall x\alpha$ where $y\notin\free X\cup\var\alpha$.
+Let us first show by induction that if $x\notin\free X$ and $X\vsim\alpha$ then $X\vsim\forall x\alpha$.
+For the base case, if $\alpha\in X$ then $x\notin\free\alpha$ and so $\Lambda6$ yields $\alpha\to\forall x\alpha$ and by MP we get $X\vsim\forall x\alpha$.
+If $\alpha\in\Lambda$ then $\forall x\alpha\in\Lambda$ and so $X\vsim\forall x\alpha$ as required.
+For the inductive step, if $X\vsim\forall x(\alpha\to\beta)$ and $X\vsim\forall x\alpha$ then by $\Lambda7$ we get $X\vsim\forall x\alpha\to\forall x\beta$ and thus by MP we get the desired
+$X\vsim\forall x\beta$.
+To verify $(\forall2)$ if $X\vsim\alpha\frac yx$ and $y\notin\free X\cup\var\alpha$, then by what we just proved we get $X\vsim\forall y\alpha\frac yx$.
+So by $\Lambda8$ we have $X\vsim\forall y\alpha\frac yx\to\forall x\alpha$ and so MP gives $X\vsim\forall x\alpha$, as required.
+
+For $(=)$, we must show that if $X\vsim s\eq t,\alpha\frac sx$ then $X\vsim\alpha\frac tx$, where $\alpha$ is prime.
+Let $y$ be a variable distinct from $x$ not occurring in $s$ or $\alpha$.
+By $\Lambda10$ we have $X\vsim\forall x\forall y\parens{x\eq y\to\alpha\to\alpha\frac yx}$.
+$(\forall1)$ gives us
+$$ X\vsim\bigl(\forall y\parens{x\eq y\to\alpha\to\alpha\tfrac yx}\bigr)\tfrac sx = \forall y\parens{s\eq y\to\alpha\tfrac sx\to\alpha\tfrac yx} $$
+Then applying $(\forall1)$ again gives
+$$ X\vsim\bigl(s\eq y\to\alpha\tfrac sx\to\alpha\tfrac yx\bigr)\tfrac ty = s\eq t\to\alpha\tfrac sx\to\alpha\tfrac tx $$
+since $y$ does not occur in $\alpha$ or $s$, $\alpha\tfrac sx\tfrac ty=\alpha\tfrac sx$ and $s\tfrac ty=s$.
+So if $X\vsim s\eq t,\alpha\tfrac sx$ applying MP twice gives $\alpha\tfrac tx$.
+\qed
+
+Another rule of inference is MQ: $\alpha{/}\forall x\alpha$.
+This is not a rule of inference in this calculus, and it is not provable.
+But $\Lambda$ is, by definition, closed under MQ.
+
+\bcoro
+
+    For any $\alpha\in{\cal L}$, the following are equivalent
+    \benum
+        \item $\vsim\alpha$, meaning $\alpha$ is derivable from $\alpha$ be means of MP only,
+        \item $\alpha$ is derivable from $\Lambda1$ through $\Lambda10$ by means of MP and MQ only,
+        \item $\vDash\alpha$, meaning $\alpha$ is a tautology.
+    \eenum
+
+\ecoro
+
+$(1)\iff(2)$ is obvious, $\Lambda$ is simply the closure of $\Lambda1-\Lambda10$ by means of MQ.
+And $(1)\iff(3)$ is a direct result of the completeness theorem.
+\qed
+
+We define the Hilbert calculus $\gvsim$ which has the same logical axiom system as $\vsim$, but it has MQ as well as MP as its rules of inference.
+The definition of proofs and derivability in $\gvsim$ must take MQ into account.
+It is obvious to see that (like for every Hilbert calculus), $X\gvsim Y$ and $Y\gvsim\alpha$ implies $X\gvsim\alpha$.
+
+\bthrm[title=The Completeness Theorem for $\gvsim$, name=gvsimcompletenesstheorem]
+
+    $X\gvsim\alpha$ if and only if $X\gvDash\alpha$, ie. ${\gvsim}={\gvDash}$.
+
+\ethrm
+
+By induction on $\gvsim$, it is easy to see that ${\gvsim}\subseteq{\gvDash}$.
+If $X\gvDash\alpha$ then $X^g\vDash\alpha$, and so by completeness $X^g\vsim\alpha$.
+Since certainly by definition ${\vsim}\subseteq{\gvsim}$ we get $X^g\gvsim\alpha$.
+By MQ we also have $X\gvsim X^g$ and thus $X\gvsim\alpha$.
+\qed
+
+\bdefn
+
+    A sentence $\alpha\in{\cal L}^0$ is called {\emphcolor generally valid in the finite}\addtoindex{generally valid}[in the finite] if ${\cal A}\vDash\alpha$ for all finite ${\cal L}$-structures ${\cal A}$.
+    Let ${\sf Tautfin}_{\cal L}$ be the set of all generally valid in the finite sentences in ${\cal L}^0$.
+    Obviously ${\sf Taut}_{\cal L}\subseteq{\sf Tautfin}_{\cal L}$.
+
+\edefn
+
+For example, let $f$ be a unary function symbol.
+In finite sets, an injective endomorphism (meaning an operator from a structure to itself) is also surjective.
+Thus $\forall x\forall y(fx\eq fy\to x\eq y)\to\forall y\exists x\,y\eq fx$ ($f$ is injective implies $f$ is surjective) is generally valid in the finite, but not so in infinite structures (for example
+$n\varmapsto2n$ in ${\bb N}$).
+
+A theory $T$ has the {\it finite model property} if every compatible $\alpha\in{\cal L}^0$ has a finite $T$-model.
+In other words, if $T+\alpha$ is satisfiable then it can be satisfied by a finite model.
+For example if $\boldsymbol K$ is a class of finite ${\cal L}$-structures then $T=\Th\boldsymbol K$ has the finite model property: if $T+\alpha$ is consistent, meaning $\neg\alpha\notin T$ and so
+${\cal A}\nvDash\neg\alpha$ for some $\alpha\in\boldsymbol K$, meaning ${\cal A}\vDash\alpha$ so ${\cal A}$ is a finite model of $T+\alpha$.
+
+So for example ${\sf FSG}=\Th\set{S}[\hbox{$S$ is a finite semigroup}]$ and ${\sf FG}=\Th\set{G}[\hbox{$G$ is a finite group}]$ in ${\cal L}_\circ$.
+Both of these theories are undecidable (the tools to prove this will be discussed later).
+
+\blemm
+
+    Suppose $T$ has the finite model property, and $T$'s finite models are effectively enumerable (more precisely, it has an effectively enumerable family of representatives of isomorphism classes of
+    models of $T$).
+    Then the set of sentences refutable in $T$ are effectively enumerable and if $T$ is axiomatizable then it is decidable.
+
+\elemm
+
+To check if a sentence $\alpha$ is refutable with $T$, we need only to check that $T+\neg\alpha$ is consistent.
+Since $T$ has the finite model property, we need only check that $\neg\alpha$ has a finite $T$-model.
+So we can iterate over the enumeration of finite $T$-models, and for each model we iterate over all sentences $\alpha$ and check if the model models $\neg\alpha$.
+If so, we can add $\alpha$ to the sequence, then to ensure we go over every sentence we can go to the beginning of the sequence and begin checking from the next sentence and repeat.
+
+Notice that $\alpha\notin T$ is equivalent to $\nvdash_T\alpha$ which is equivalent to $T,\neg\alpha\nvdash\bot$ by ${\tt C}^+$ meaning $\neg\alpha$ is consistent with $T$, ie. $\alpha$ is refutable in $T$.
+So for every sentence $\alpha$, either $\alpha\in T$ or $\alpha$ is refutable in $T$.
+So we can simply check for every sentence if it is provable (which can be done since $T$ is axiomatizable: iterate over every possible proof), or if $\alpha$ is refutable in $T$ (which can be done by what
+we just proved).
+\qed
+
+\bthrm[title=Trachtenbrot's Theorem, name=tractenbrottheorem]
+
+    ${\sf Tautfin}_{\cal L}$ is not axiomatizable for any first-order language ${\cal L}$ containing at least one binary operation or binary relation symbol.
+
+\ethrm
+
+We will prove this for ${\cal L}$ containing a binary operation symbol.
+Notice how ${\sf Tautfin}_{\cal L}$'s finite models are effectively enumerable, as they are simply all the finite models.
+So by the above lemma if ${\sf Tautfin}_{\cal L}$ were axiomatizable, it would be decidable.
+Now, in the previous subsection we proved in the first exercise that if $T$ is decidable, then so is $T+\alpha$.
+If ${\sf Tautfin}_{\cal L}$ were decidable, then so too must ${\sf Tautfin}_{\cal L_\circ}$ be, and since ${\sf FSG}$ is simply the extension of this theory with the law of associativity, this would mean
+that ${\sf FSG}$ is decidable.
+But as said above, it is not.
+\qed
+
+\bexerc
+
+    Show that MQ is unprovable in $\vsim$, meaning $X\vsim\alpha$ does not mean $X\vsim\forall x\alpha$.
+
+\eexerc
+
+We know that $x\eq y\vsim x\eq y$, but $x\eq y\vsim\forall x\,x\eq y$ does not hold.
+
+\bexerc
+
+    Suppose $T$ is a finitely axiomatizable theory with the finite model property, show that $T$ is decidable.
+
+\eexerc
+
+Since $T$ is finitely axiomatizable, its finite models are effectively enumerable: enumerate all finite models and check that all the axioms hold (there are only finitely many).
+Since $T$ also has the finite model property, we showed that this means $T$ is decidable.
+
+\bexerc
+
+    Show that $\forall x\exists y\,y+y\eq x\to\forall x(x+x\eq0\to x\eq0)$ holds in all finite abelian groups.
+    Show that it does not hold in all infinite abelian groups.
+
+\eexerc
+
+Suppose $x+x=0$ in a finite abelian group, or $2x=0$.
+Let us denote $x=x_1$, then since there exists $2x_2=x_1$, we have $4x_2=0$, and so on we set $2x_{k+1}=x_k$ and so $2^kx_k=0$ for every $k$.
+Now since the group is finite, we must have $x_{k+\ell}=x_k$ for some $k,\ell>0$.
+But since $2^\ell x_{k+\ell}=x_k$ we get $2^\ell x_k=x_k$.
+Now let us assume that $x\neq0$ and so we must have $x_k\neq0$ as well and thus $2^\ell x_k\neq0$ and so $\ell<k$ (as otherwise we'd have that $2^\ell x_k=0$ since $2^kx_k=0$).
+Thus $0=2^kx_k=2^{k-\ell}x_k$, but since $2^{k-\ell}x_k=x_\ell$ we get that $x_\ell=0$ contradicting $x_k\neq0$ for every $k$.
+
+The group $({\bb C}\setminus\set0,\cdot)$ is a counterexample: every $x$ has a square root (two in fact), but $x^2=1$ (since $1$ is the unit) does not imply $x=1$.
+For example, take $x=-1$.
+
