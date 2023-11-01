@@ -1,0 +1,158 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=1.5cm, vertical margin=1.5cm}
+\parindent=.5cm
+\parskip=3pt plus 2pt minus 2pt
+
+\input pdfmsym
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+
+\footline={}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pageborder{rgb{1 .5 .5}}{rgb{1 0 0}}{5}
+
+\color rgb{1 0 0}
+
+{\def\boxshadowcolor{rgb{.8 0 0}}
+\bppbox{rgb{1 .7 .7}}{rgb{1 0 0}}{rgb{.8 0 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Introduction to Stochastic Processes}
+    \smallskip
+    \centerline{\setfont{it}Dr. Naomi Feldheim, \setfont{tt}naomi.feldheim@biu.ac.il}
+    \centerline{\setfont{it}Summary by Ari Feiglin}
+
+\eppbox
+
+\bigskip
+
+\bppbox{rgb{1 .7 .7}}{rgb{1 0 0}}{rgb{.8 0 0}}
+\section*{Contents}
+
+\tableofcontents
+\eppbox
+
+}
+
+\vfill\break
+
+\color{black}
+
+\pageborder{rgb{1 .5 .5}}{rgb{1 0 0}}{5}
+\null
+\vfill\break
+
+\pageno=1
+\newif\ifpageodd
+\pageoddtrue
+\headline={%
+    \hbox to \hsize{\color{black}%
+        \ifpageodd\hfil{\it\currsubsection\quad\bf\folio}\global\pageoddfalse%
+        \else{\bf\folio\quad\it\currsubsection}\hfil\global\pageoddtrue\fi%
+    }%
+}
+
+\section{Introduction}
+
+This course will focus on tools which can be used to study random processes.
+A random process is a sequence of random variables which represent measurements of the process.
+Examples of random processes are random walks (these are commonly described as the path a drunk man would take while trying to get home), card shuffles (which can be viewed as choosing a card and placing
+it randomly in the deck), and branching (for example the population of bunnies in a specific area: the random variable being the number of bunnies in each generation).
+
+\subsection{Markov Chains}
+
+\bdefn
+
+    A {\emphcolor discrete-time Markov process}\addtoindex{markov process}[discrete-time] is a sequence of random variables $\set{X_n}_{n\geq0}$.
+    This sequence is called a {\emphcolor Markov chain}\addtoindex{markov chain} on a set of states $S$ if:
+    \benum
+        \item For every $n$, $X_n\in S$ almost surely (meaning $\probof{X_n\in S}=1$),
+        \item For every $n\geq0$ and for every $s_0,\dots,s_{n+1}\in S$,
+        $$\probof{X_{n+1}=s_{n+1}}[X_0=s_0,\dots,X_n=s_n]=\probof{X_{n+1}=s_{n+1}}[X_n=s_n]$$
+        ie. the probability of the next measurement being some arbitrary value is dependent only on the previous measurement.
+        This is only necessary if $\probof{X_0=s_0,\dots,X_n=s_n}>0$.
+    \eenum
+
+\edefn
+
+In this course $S$ will always be countable.
+We can also write the second condition using distributive equivalence:
+$$ X_{n+1}\vert X_0,\dots,X_n \deq X_{n+1}\vert X_n $$
+
+If $\set{X_n}_{n\geq0}$ is a Markov chain then for every $n>m$,
+$$ \probof{X_n=s_n}[X_m=s_m,\dots,X_0=s_0] = \probof{X_n=s_n}[X_m=s_m] $$
+We can prove the equivalent $\probof{X_{n+k}=s_{n+k}}[X_n=s_n,\dots,X_0=s_0]=\probof{X_{n+k}=s_{n+k}}[X_n=s_n]$ by induction on $k$.
+For $k=1$ this is the definition of a Markov chain, then
+$$ \eqalign{
+    \probof{X_{n+k+1}=s_{n+k+1}}[X_n=s_n,\dots,X_0=s_0] &= \sum_{s_{n+1}\in S}\probof{X_{n+k+1}=s_{n+k+1}}[X_{n+1}=s_{n+1},\dots,X_0=s_0]\cdot\probof{X_{n+1}=s_{n+1}}\cr
+                                                        &= \sum_{s_{n+1}\in S}\probof{X_{n+k+1}=s_{n+k+1}}[X_{n+1}=s_{n+1}]\cdot\probof{X_{n+1}=s_{n+1}}\cr
+} $$
+
+\bdefn
+
+    For a Markov chain $\set{X_n}_{n\geq0}$ on a finite set of states $S$, we define the {\emphcolor adjacency matrix} at the $n$th measurement by
+    $$ P^{(n)}_{ij} = \probof{X_n=j}[X_{n-1}=i] $$
+    for $i,j\in S$.
+    This is also sometimes written as $P_n(i\to j)$ (the probability measuring $i$ on the $n-1$th measurement gives $j$ on the next).
+    If $P^{(n)}$ is the same for all $n$, then we say that the chain is {\emphcolor homogeneus in time}, and we generally write $P$ in place of $P^{(n)}$.
+
+\edefn
+
+For example, suppose a frog is hopping between $N$ leaves.
+The frog can hopping from every leaf to every other leaf, and it always chooses a leaf in an independent and uniform manner.
+This defines a Markov chain where the states are the leaves, and $X_n$ is the leaf the frog is on after $n$ hops.
+This Markov chain is even homogeneus since the frog makes its choices in a manner which does not take the current number of hops into account.
+The adjacency matrix is defined by
+$$ P_{ij} = \cases{\frac1{N-1} & $i\neq j$\cr 0 & $i=j$} $$
+This is the simple random process on the complete graph of $N$ vertices, $K_N$.
+
+Suppose $N=4$, and supppose that at the beginning the frog is on either the first or second leaf with equal probability.
+What is the probability that after one hop the frog is on the fourth leaf?
+The following notation will be used: $X\sim(a_0,\dots,a_n)$ will be used to mean $\probof{X=s_i}=a_i$, where $s_i$ is some understood ordering of the set of states $S$.
+Then
+$$ \probof{X_1=j}[X_0\sim\parens{\frac12,\frac12,0,0}] = \probof{X_1=j}[X_0=1]\cdot\frac12 + \probof{X_1=j}[X_0=2]\cdot\frac12 $$
+as the rest of the terms are zero.
+For $j=4$ we get that this is equal to $\frac13$.
+Notice that we can generalize this and get
+$$ \probof{X_{n+1}=j}[X_n\sim\vec v] = \sum_{i\in S}\probof{X_{n+1}=j}[X_n=i]\cdot\probof{X_n=i} = \sum_{i\in S}P^{(n+1)}_{ij}\vec v_i = (\vec v\cdot P^{(n+1)})_j $$
+So we have proven the following:
+
+\bprop
+
+    If $X_n\sim\vec v$ then $X_{n+1}\vert X_n\sim\vec v\cdot P^{(n+1)}$, and so $X_n\vert X_0\sim\vec v\cdot P^{(n)}\cdots P^{(1)}$.
+    In particular if the Markov chain is homogeneus, $X_n\vert X_0\sim\vec v\cdot P^n$.
+
+\eprop
+
+This simplifies dealing with Markov chains, especially homogeneus ones.
+
+\bexam
+
+    Suppose $\set{Y_n}_{n=1}^\infty$ is a sequence of random variables which have the distribution $Y_n\sim\Berof{\frac1n}$ (recall that $X\sim\Berof p$ means that $X$ is $1$ with probability $p$ and zero
+    otherwise).
+    And we define $X_n=\chi\set{(\exists m\leq n)\,Y_m=1}$, the indicator of the set of all values such that there is an index before $n$ where $Y_m=1$ ($\chi_S$ is the {\it indicator function} of the set
+    $S$, defined by $\chi_S(x)=1$ for $x\in S$ and zero otherwise).
+    We will prove $X_n$ is a Markov chain.
+    Notice that
+    $$ X_n = \chi\set{(\exists m\leq n)\,Y_m=1} = \chi\set{(\exists m\leq n-1)\,Y_m=1}\lor\chi\set{Y_n=1} = X_{n-1}\lor\chi\set{Y_n=1} $$
+    $\lor$ is bitwise or, or equivalently the maximum.
+    And therefore we get that $X_n=\bigvee_{i=1}^n\chi\set{Y_i=1}$.
+    This means that if $X_{n-1}=1$ then $X_n=1$, and if $X_{n-1}=0$ then $X_n=1$ if and only if $Y_n=1$.
+    And so $X_n$'s value depends only on $X_{n-1}$'s and not any previous $X_i$.
+    So $\set{X_n}_{n=1}^\infty$ is indeed a Markov chain.
+
+    Notice that
+    $$ \displaylines{
+        \probof{X_n=0}[X_{n-1}=0] = \probof{Y_n=0} = \frac{n-1}n,\quad \probof{X_n=1}[X_{n-1}=0] = \probof{Y_n=1} = \frac1n,\quad\cr
+        \probof{X_n=0}[X_{n-1}=1] = 0,\quad \probof{X_n=1}[X_{n-1}=1] = 1
+    } $$
+    And so we get that
+    $$ P^{(n)} = \pmat{\frac{n-1}n & \frac1n \cr 0 & 1} $$
+
+\eexam
+
+\bye
+
