@@ -1,7 +1,7 @@
 \input pdfToolbox
 
 \setlayout{horizontal margin=1.5cm, vertical margin=1.5cm}
-\parindent=.5cm
+\parindent=0cm
 \parskip=3pt plus 2pt minus 2pt
 
 \input pdfmsym
@@ -82,14 +82,30 @@ In this course $S$ will always be countable.
 We can also write the second condition using distributive equivalence:
 $$ X_{n+1}\vert X_0,\dots,X_n \deq X_{n+1}\vert X_n $$
 
-If $\set{X_n}_{n\geq0}$ is a Markov chain then for every $n>m$,
+Notice how the Markov property can be strengthened in various ways, for example if $n>m$ then
+
+\medskip
+{\tabskip=0pt plus 1fil
+\openup1\jot\halign to\hsize{\kern.5cm$\displaystyle#$\hfil\tabskip=0pt plus 1fil\cr
+    \omit$\displaystyle\probof{X_n=s_n}[X_{n-1}=s_{n-1},\dots,X_m=s_m]$\hfil\cr
+    = \sum_{s_m,\dots,s_0}\probof{X_n=s_n}[X_{n-1}=s_{n-1},\dots,X_0=s_0]\cdot\probof{X_{m-1}=s_{m-1},\dots,X_0=s_0}[X_{n-1}=s_{n-1},\dots,X_m=s_m]\cr
+    = \probof{X_n=s_n}[X_{n-1}=s_{n-1}]\cdot\sum\probof{X_{m-1}=s_{m-1},\dots,X_0=s_0}[X_{n-1}=s_{n-1},\dots,X_m=s_m]\cr
+    = \probof{X_n=s_n}[X_{n-1}=s_{n-1}]\cr
+}}
+
+\medskip
+\noindent We also get
 $$ \probof{X_n=s_n}[X_m=s_m,\dots,X_0=s_0] = \probof{X_n=s_n}[X_m=s_m] $$
-We can prove the equivalent $\probof{X_{n+k}=s_{n+k}}[X_n=s_n,\dots,X_0=s_0]=\probof{X_{n+k}=s_{n+k}}[X_n=s_n]$ by induction on $k$.
-For $k=1$ this is the definition of a Markov chain, then
-$$ \eqalign{
-    \probof{X_{n+k+1}=s_{n+k+1}}[X_n=s_n,\dots,X_0=s_0] &= \sum_{s_{n+1}\in S}\probof{X_{n+k+1}=s_{n+k+1}}[X_{n+1}=s_{n+1},\dots,X_0=s_0]\cdot\probof{X_{n+1}=s_{n+1}}\cr
-                                                        &= \sum_{s_{n+1}\in S}\probof{X_{n+k+1}=s_{n+k+1}}[X_{n+1}=s_{n+1}]\cdot\probof{X_{n+1}=s_{n+1}}\cr
-} $$
+We denote $m$ by $n$ and $n$ by $m+k$, then we prove this by induction on $k$:
+{\tabskip=0pt plus 1fil
+\openup1\jot\halign to\hsize{\kern.5cm$\displaystyle#$\hfil\tabskip=0pt plus 1fil\cr
+    \omit$\displaystyle\probof{X_{n+k}=s_{n+k}}[X_n=s_n,\dots,X_0=s_0]$\hfil\cr
+    = \sum\probof{X_{n+k}=s_{n+k}}[X_{n+1}=s_{n+1},\dots,X_0=s_0]\cdot\probof{X_{n+1}=s_{n+1}}[X_n=s_n,\dots,X_0=s_0]\cr
+    = \sum\probof{X_{n+k}=s_{n+k}}[X_{n+1}=s_{n+1},X_n=s_n]\cdot\probof{X_{n+1}=s_{n+1}}[X_n=s_n]\cr
+    = \probof{X_{n+k}=s_{n+k}}[X_n=s_n]\cr
+}}
+\medskip
+\noindent as required.
 
 \bdefn
 
