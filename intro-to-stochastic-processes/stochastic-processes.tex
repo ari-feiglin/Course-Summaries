@@ -85,27 +85,50 @@ $$ X_{n+1}\vert X_0,\dots,X_n \deq X_{n+1}\vert X_n $$
 Notice how the Markov property can be strengthened in various ways, for example if $n>m$ then
 
 \medskip
-{\tabskip=0pt plus 1fil
-\openup1\jot\halign to\hsize{\kern.5cm$\displaystyle#$\hfil\tabskip=0pt plus 1fil\cr
-    \omit$\displaystyle\probof{X_n=s_n}[X_{n-1}=s_{n-1},\dots,X_m=s_m]$\hfil\cr
-    = \sum_{s_m,\dots,s_0}\probof{X_n=s_n}[X_{n-1}=s_{n-1},\dots,X_0=s_0]\cdot\probof{X_{m-1}=s_{m-1},\dots,X_0=s_0}[X_{n-1}=s_{n-1},\dots,X_m=s_m]\cr
-    = \probof{X_n=s_n}[X_{n-1}=s_{n-1}]\cdot\sum\probof{X_{m-1}=s_{m-1},\dots,X_0=s_0}[X_{n-1}=s_{n-1},\dots,X_m=s_m]\cr
-    = \probof{X_n=s_n}[X_{n-1}=s_{n-1}]\cr
+{\tabskip=0pt
+\openup1\jot\halign to\hsize{$\displaystyle#$\hfil\tabskip=0pt plus 1fil&$\displaystyle#$\hfil\tabskip=0pt\cr
+    \omit\span\omit$\displaystyle\probof{X_n=s_n}[X_{n-1}=s_{n-1},\dots,X_m=s_m]$\cr
+    &= \sum_{s_m,\dots,s_0}\probof{X_n=s_n}[X_{n-1}=s_{n-1},\dots,X_0=s_0]\cdot\probof{X_{m-1}=s_{m-1},\dots,X_0=s_0}[X_{n-1}=s_{n-1},\dots,X_m=s_m]\cr
+    &= \probof{X_n=s_n}[X_{n-1}=s_{n-1}]\cdot\sum\probof{X_{m-1}=s_{m-1},\dots,X_0=s_0}[X_{n-1}=s_{n-1},\dots,X_m=s_m]\cr
+    &= \probof{X_n=s_n}[X_{n-1}=s_{n-1}]\cr
 }}
+\medskip
+
+This can be viewed as the base case for
+$$ \probof{X_{n+k}=s_{n+k}}[X_n=s_n,\dots,X_m=s_m] = \probof{X_{n+k}=s_{n+k}}[X_n=s_n,\dots,X_{m'}=s_{m'}] $$
+where $m'<m$.
+This is since for $k=1$, both of these are equal to $\probof{X_{n+1}=s_{n+1}}[X_n=s_n]$.
+The induction step follows by
 
 \medskip
-\noindent We also get
-$$ \probof{X_n=s_n}[X_m=s_m,\dots,X_0=s_0] = \probof{X_n=s_n}[X_m=s_m] $$
-We denote $m$ by $n$ and $n$ by $m+k$, then we prove this by induction on $k$:
-{\tabskip=0pt plus 1fil
-\openup1\jot\halign to\hsize{\kern.5cm$\displaystyle#$\hfil\tabskip=0pt plus 1fil\cr
-    \omit$\displaystyle\probof{X_{n+k}=s_{n+k}}[X_n=s_n,\dots,X_0=s_0]$\hfil\cr
-    = \sum\probof{X_{n+k}=s_{n+k}}[X_{n+1}=s_{n+1},\dots,X_0=s_0]\cdot\probof{X_{n+1}=s_{n+1}}[X_n=s_n,\dots,X_0=s_0]\cr
-    = \sum\probof{X_{n+k}=s_{n+k}}[X_{n+1}=s_{n+1},X_n=s_n]\cdot\probof{X_{n+1}=s_{n+1}}[X_n=s_n]\cr
-    = \probof{X_{n+k}=s_{n+k}}[X_n=s_n]\cr
+{\tabskip=0pt
+\openup1\jot\halign to\hsize{$\displaystyle#$\hfil\tabskip=0pt plus 1fil&$\displaystyle#$\hfil\tabskip=0pt\cr
+    \omit\span\omit$\displaystyle\probof{X_{n+k+1}=s_{n+k+1}}[X_n=s_n,\dots,X_m=s_m]$\cr
+    &= \sum_{s_{n+1}}\probof{X_{n+k+1}=s_{n+k+1}}[X_{n+1}=s_{n+1},\dots,X_m=s_m]\cdot\probof{X_{n+1}=s_{n+1}}[X_n=s_n,\dots,X_m=s_m]\cr
+    &= \sum_{s_{n+1}}\probof{X_{n+k+1}=s_{n+k+1}}[X_{n+1}=s_{n+1},\dots,X_{m'}=s_{m'}]\cdot\probof{X_{n+1}=s_{n+1}}[X_n=s_n,\dots,X_{m'}=s_{m'}]\cr
+    &= \probof{X_{n+k+1}=s_{n+k+1}}[X_n=s_n,\dots,X_{m'}=s_{m'}]\cr
 }}
 \medskip
-\noindent as required.
+
+By taking $m'=0$ and $m=n$ we get $\probof{X_{n+k}=s_{n+k}}[X_n=s_n] = \probof{X_{n+k}=s_{n+k}}[X_n=s_n,\dots,X_0=s_0]$, or in other words for all $m<n$,
+$$ \probof{X_n=s_n}[X_m=s_m,\dots,X_0=s_0] = \probof{X_n=s_n}[X_m=s_m] $$
+
+This can be even further strengthened: let $\varnothing\neq B\subseteq\set{0,\dots,n-1}$ and $m=\max B$ then
+$$ \probof{X_n=s_n}[\forall i\in B\colon X_i=s_i] = \probof{X_n=s_n}[X_m=s_m] $$
+To prove this let $C=\set{0,\dots,m}\setminus B$ then
+$$ \eqalign{
+    \probof{X_n=s_n}[\forall i\in B\colon X_i=s_i] &= \sum_{(s_i)_{i\in C}\in S^C}\probof{X_n=s_n}[X_m=s_m,\dots,X_0=s_0]\cdot\probof{\forall i\in C\colon X_i=s_i}[\forall i\in B\colon X_i=s_i]\cr
+    &= \probof{X_n=s_n}[X_m=s_m]\cdot\sum\probof{\forall i\in C\colon X_i=s_i}[\forall i\in B\colon X_i=s_i]\cr
+    &= \probof{X_n=s_n}[X_m=s_m]\cr
+} $$
+
+A consequence of this is that if $\set{X_n}_{n\geq0}$ is a Markov chain and $\set{a_n}_{n\geq0}$ is strictly monotonic then $Y_n=X_{a_n}$ is also a Markov chain.
+After all if we let $B=\set{a_{n-1},\dots,a_0}$ then $\max B=a_{n-1}$ and so
+\multlines{
+    \probof{Y_n=s_{a_n}}[Y_{n-1}=s_{a_{n-1}},\dots,Y_0=s_{a_0}] = \probof{X_{a_n}=s_{a_n}}[\forall i\in B\colon X_i=s_i] = \probof{X_{a_n}=s_{a_n}}[X_{a_{n-1}}=s_{a_{n-1}}]
+    &= \probof{Y_n=s_{a_n}}[Y_{n-1}=s_{a_{n-1}}]
+}
+as required.
 
 \bdefn
 
