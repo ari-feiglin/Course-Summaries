@@ -1,0 +1,87 @@
+A first-order fragment is a language which reduces the expressive power of first-order logic, for example by omitting some logical connectives.
+Fragments are useful as they can be more easily simulated by a computer, whose computational power is limited.
+We will deal with the {\it language of equations} closely here, whose formulas are equations over an algebraic signature (an extralogical signature with no relation symbols).
+The variables in these formulas are tacitly generalized, and such generalizations are called {\it identities}.
+Theories with an axiom system consisting of only identities are called {\it equational theories}\addtoindex{theory}[equational], and their model classes {\it varieties}\addtoindex{variety}.
+
+Suppose $\Gamma$ is a set of identities which form the axiom system of some equational theory, and suppose $\gamma$ is some equation.
+If $\Gamma^g\vDash\gamma$ then by the completeness theorem there is some proof of $\gamma$ from $\Gamma^g$.
+But one might expect that to verify $\Gamma^g\vdash\gamma$, we need not utilize every formula, and indeed we can restrict ourselves only to other identities.
+
+The following are the {\it Birkhoff rules}\addtoindex{birkhoff rules} which are the rules of inference of the Hilbert-style calculus $\Bvdash$,
+
+\medskip
+{\tabskip=0pt plus 1fil
+\openup1\jot\halign to\hsize{$(\rm#)$\hfil\tabskip=.25cm&$#$\hfil\tabskip=2cm&$(\rm#)$\hfil\tabskip=.25cm&$#$\hfil\tabskip=2cm&$(\rm#)$\hfil\tabskip=.25cm&$#$\hfil\tabskip=0pt plus 1fil\cr
+    B0 & /t\eq t & B1 & s\eq t/t\eq s & B2 & t\eq s,s\eq t'/t\eq t'\cr
+    B3 & \vec t\eq\vec t'/f\vec t\eq f\vec t' & B4 & s\eq t/s^\sigma\eq t^\sigma\cr
+}}
+\medskip
+
+These rules are all stated with respect to ungeneralized equations, but in a derivation sequence (a proof) we must generalize all equations as $\rm(B4)$ does not hold in general if its premise is not
+generalized, we have in general only $(s\eq t)^g\vDash s^\sigma\eq t^\sigma$.
+$\rm(B0)$ has no premise, meaning $t\eq t$ is derivable from every set $\Gamma$.
+Now we claim that for equations $\gamma$, $\Gamma\Bvdash\gamma\iff\Gamma^g\vDash\gamma$ (or $\Gamma\gvDash\gamma$).
+One direction is simpler than the other: to show $\Gamma\Bvdash\gamma\implies\Gamma^g\vDash\gamma$, we need only prove that $\gvDash$ is closed under $({\rm B}0)$ through $({\rm B}4)$.
+This is simple, and we have basically done it already.
+
+Let us define the congruence $\approx$ on ${\cal T}$ by $s\approx t\iff\Gamma\Bvdash s\eq t$.
+By $({\rm B}4)$, $\approx$ is also substitution invariant: $s\approx t\implies s^\sigma\approx t^\sigma$.
+Let ${\cal F}$ be the quotient algebra of ${\cal T}$ with respect to $\approx$, and let $\overline t$ be the congruence class of $t$ with respect to $\approx$.
+This means $\overline{t_1}=\overline{t_2}\iff\Gamma\Bvdash t_1\eq t_2$.
+Now let $w\colon\Var\longto{\cal F}$, and denote $x^w=\overline{t_x}$ ($t_x$ is an arbitrary representative of $x^w$).
+Any choice of representative defines a global substitution $\sigma\colon x\varmapsto t_x$.
+Term induction gives
+$$ t^{{\cal F},w}=\overline{t^{\sigma_w}} $$
+
+\blemm
+
+    $\Gamma\Bvdash t_1\eq t_2$ if and only if ${\cal F}\vDash t_1\eq t_2$.
+
+\elemm
+
+We prove the first direction: suppose $\Gamma\Bvdash t_1\eq t_2$, let $w\colon\Var\longto{\cal F}$ and $\sigma=\sigma_w$.
+By $\rm(B4)$ this means $\Gamma\Bvdash t_1^\sigma\eq t_2^\sigma$, meaning $\overline{t_1^\sigma}=\overline{t_2^\sigma}$, and so this means $t_1^{{\cal F},w}=t_2^{{\cal F},w}$.
+Since $w$ was arbitrary, this means ${\cal F}\vDash t_1\eq t_2$.
+Now suppose the other direction, ${\cal F}\vDash t_1\eq t_2$, and let $\varkappa$ be the {\it canonical evaluation} $x\varmapsto\overline x$, and we choose $\sigma_\varkappa=\iota$ (the identity
+substitution).
+Thus $t_i^{{\cal F},\varkappa}=\overline{t_i}$, and ${\cal F}\vDash t_1\eq t_2$ implies $t_1^{{\cal F},\varkappa}=t_2^{{\cal F},\varkappa}$ meaning $\overline{t_1}=\overline{t_2}$, so
+$\Gamma\Bvdash t_1\eq t_2$ as required.
+\qed
+
+Notice that if $\Gamma$ is a set of equations, then by this lemma ${\cal F}\vDash\Gamma$ and so ${\cal F}\vDash\Gamma^g$.
+
+\bthrm[title=Birkhoff's Completeness Theorem, name=birkhoffcompletenesstheorem]
+
+    Let $\Gamma$ be a set of identities and $t_1\eq t_2$ an equation, then $\Gamma\Bvdash t_1\eq t_2\iff\Gamma^g\vDash t_1\eq t_2$.
+
+\ethrm
+
+We have already shown $\implies$, we now show the other direction.
+Now if $\Gamma^g\vDash t_1\eq t_2$, then ${\cal F}\vDash t_1\eq t_2$ since ${\cal F}\vDash\Gamma^g$ and therefore by the above lemma $\Gamma\Bvdash t_1\eq t_2$.
+\qed
+
+This theorem has many variations, for example for sentences of the form $\forall\vec x\pi$ where $\pi$ is an arbitrary prime formula.
+In this case we must add $\vec t\eq\vec t',r\vec t/r\vec t'$ to the Birkhoff rules.
+
+\bexerc
+
+    Let $\boldsymbol K$ be a variety.
+    Show that it is closed with respect to homomorphic images, taking subalgebras, and forming arbitrary direct products of members of $\boldsymbol K$.
+
+\eexerc
+
+Essentially all we must prove is that if ${\cal A}\vDash t_1\eq t_2$, then (a) if $h\colon{\cal A}\longto{\cal B}$ is a homomorphism then $h{\cal A}\vDash t_1\eq t_2$, (b) if ${\cal B}\subseteq{\cal A}$ then
+${\cal B}\vDash t_1\eq t_2$, and (c) if $\set{{\cal A}_i}_{i\in I}\vDash t_1\eq t_2$ then $\prod_{i\in I}{\cal A}_i\vDash t_1\eq t_2$.
+(a) Let $w\colon\Var\longto h{\cal A}$, then suppose $x^w=h(a_x)$ ($a_x$ is arbitrary) then each choice of $a_x$ defines the valuation $w'\colon\Var\longto{\cal A}$ by $x^{w'}=a_x$.
+By term induction we get $t^w=h(t^{w'})$ and so since ${\cal A},w'\vDash t_1\eq t_2$ we must have $t_1^{w'}=t_2^{w'}$ and thus $h(t_1^{w'})=h(t_2^{w'})$ meaning $t_1^w=t_2^w$.
+Since $w$ is arbitrary this means $h{\cal A}\vDash t_1\eq t_2$ as required.
+
+(b) By \refmath{substructuretheorem}, for every $\vec b\in{\cal B}^n$, since ${\cal A}\vDash t_1\eq t_2[\vec b]$, we get ${\cal B}\vDash t_1\eq t_2[\vec b]$.
+Since $\vec b$ is arbitrary this means that ${\cal B}\vDash t_1\eq t_2$.
+
+(c) Let ${\cal B}=\prod_i{\cal A}_i$.
+Then let $w\colon\Var\longto{\cal B}$ be a valuation, so $x^w=(a_{i,x})_{i\in I}$ and this defines valuations $w_i\colon\Var\longto{\cal A}_i$ by $x^w=a_{i,x}$.
+Again by term induction $t^w=(t^{w_i})_{i\in I}$, and so $t_1^w=t_2^2$ if and only if $t_1^{w_i}=t_2^{w_i}$ for every $i\in I$.
+Thus if ${\cal A}_i\vDash t_1\eq t_2$ for every $i\in I$ we get ${\cal B}\vDash t_1\eq t_2$ as required.
+
