@@ -1,0 +1,137 @@
+In previous sections we proved various lemmas utilizing models whose domains are equivalence classes of terms of a first-order language.
+This method can and will be extended upon in this subsection.
+
+\bdefn
+
+    A {\emphcolor term model}\addtoindex{term model} over a first-order language ${\cal L}$ is an ${\cal L}$-model ${\cal F}$ whose domain is the quotient algebra ${\cal T}/\approx$, where $\approx$ is a
+    congruence of the term algebra ${\cal T}$.
+    We denote $\overline t=t/{\approx}$ to be the equivalence class of the term $t$.
+    In term models function and constant symbols are interpreted canonically: $f^{\cal F}\overline{t_1}\cdots\overline{t_n}=\overline{ft_1\cdots t_n}$ and $c^{\cal F}=\overline c$, but no condition is
+    required of the interpretations of relation symbols.
+
+\edefn
+
+Let $\varkappa$ be the canonical valuation $x\varmapsto\overline x$, and let ${\cal F}=({\cal T}/{\approx},\varkappa)$ be a term model (when discussing a term model, if its valuation is not explicitly
+defined then it is implicitly taken to be the canonical valuation).
+Then we claim that
+$$ t^{\cal F}=\overline t\hbox{ for all terms $t$},\qquad {\cal F}\vDash\forall\vec x\alpha\iff{\cal F}\vDash\alpha\tfrac{\vec t}{\vec x}\hbox{ for all $\vec t\in{\cal T}^n$ and $\alpha$ quantifier-free} $$
+The first claim is proven via term induction: it is true by definition for variables as $x^\varkappa=\overline x$, and $(f\vec t)^{\cal F}=f^{\cal F}\overline{\vec t}=\overline{f\vec t}$.
+For the second claim, the left-to-right direction is true in general for all formulas.
+The converse can be proven as follows: ${\cal F}\vDash\alpha\frac{\vec t}{\vec x}$ if and only if ${\cal F}^{\vec t^{\cal F}}_{\vec x}={\cal F}^{\overline{\vec t}}_{\vec x}\vDash\alpha$ by
+\refmath{substitutiontheorem} and the first claim.
+Since $\overline{\vec t}$ is arbitrary and encompasses all the elements of the domain, this means ${\cal F}\vDash\forall\vec x\alpha$ as required.
+
+\bdefn
+
+    Let $X\subseteq{\cal L}$ be a set of formulas, then its associated term model ${\cal F}={\cal F}X$ is the term model defined by the congruence $\approx_{{\cal F}X}$ and whose relations are defined by:
+    $$ s\approx_{{\cal F}X}t\iff X\vdash s\eq t,\qquad r^{{\cal F}X}\overline{\vec t}\iff X\vdash r\vec t $$
+    (Oftentimes this {\emphcolor term structure} is denoted $\frak F$.)
+
+\edefn
+
+It is readily verifiable that $\approx_{{\cal F}X}$ is indeed a congruence and that the definition of $r^{{\cal F}X}$ is independent on the choice of representatives.
+If $X$ is the axiom system of some theory $T$ then we may write ${\cal F}T$ and $\approx_T$ in place of ${\cal F}X$ and $\approx_{{\cal F}X}$ respectively.
+
+As proven above, ${\cal F}X\vDash s\eq t\iff s^{{\cal F}X}=t^{{\cal F}X}\iff\overline s=\overline t\iff X\vdash s\eq t$.
+And similarly ${\cal F}X\vDash r\vec t\iff X\vdash r\vec t$.
+Thus we get that
+$$ {\cal F}X\vDash\pi \iff X\vdash\pi\quad(\hbox{$\pi$ prime}) $$
+But ${\cal F}X$ is not necessarily a model of $X$.
+
+As before, let $\Var_k=\set{\v_0,\dots,\v_{k-1}}$ and ${\cal L}^k$ be the set of all formulas where $\free\phi\subseteq\Var_k$.
+Pairs $({\cal A},w)$ where ${\cal A}$ is an ${\cal L}$-structure and the domain of $w$ contains $\Var_k$ (so it can be viewed as a valuation $w\colon\Var_k\longto{\cal A}$) are called
+{\it ${\cal L}^k$-models}.
+Thus if $k=0$ then $w$ is the empty function (ie. $w=\varnothing$) and so ${\cal L}^0$-models can be identified with ${\cal L}$-structures.
+Let us define ${\cal T}_k=\set{t\in{\cal T}}[\var t\subseteq\Var_k]$.
+We tacitly assume that the set of ground terms ${\cal T}_0$ is nonempty by assuming that ${\cal L}$ contains at least one constant.
+${\cal T}_k$ is obviously a subalgebra of ${\cal T}$ since if $t_1,\dots,t_n\in{\cal T}_k$ then $f\vec t\in{\cal T}_k$.
+
+We can extend the definition of term models to ${\cal L}^k$: let $\approx$ be a congruence in ${\cal T}^k$ then we define the quotient structure by ${\frak F}_k$ (the interpretation of function and
+constant symbols are the same as for term models).
+We can canonically extend ${\frak F}_k$ to an ${\cal L}^k$-model by the (partial) valuation $x\varmapsto\overline x$ for $x\in\Var_k$ (for $k=0$ it is empty), and this defines the model ${\cal F}_k$.
+For $X\subseteq{\cal L}^k$ we define the ${\cal L}^k$-model ${\cal F}_kX$ analogously to as its term model was defined previously.
+Then as before we get the following
+$$ \displaylines{
+    t^{{\cal F}_k} = \overline t\hbox{ for $t\in{\cal T}_k$},\qquad {\cal F}_k\vDash\forall\vec x\alpha\iff{\cal F}_k\vDash\alpha\tfrac{\vec t}{\vec x}\hbox{ for all $\vec t\in{\cal T}_k^n$ and $\alpha$
+    quantifier-free},\cr
+    {\cal F}_kX\vDash\pi\iff X\vdash\pi\hbox{ ($\pi$ prime)}
+} $$
+
+Let $\phi=\forall\vec x\alpha$ be a universal formula, then we call $\alpha\frac{\vec t}{\vec x}$ an {\it instance}\addtoindex{instance} of $\phi$.
+If $\vec t\in{\cal T}^n_k$ then $\alpha\frac{\vec t}{\vec x}$ is a {\it ${\cal T}_k$-instance} of $\phi$, if $k=0$ also a {\it ground instance}.
+If $U$ is a set of universal formulas then we define ${\rm GI}(U)$ to be the set of all ground instances of $\phi\in U$.
+If $k=0$ and $U\neq\varnothing$ then ${\rm GI}(U)\neq\varnothing$ if ${\cal L}$ contains constants.
+
+\bthrm
+
+    Let $U$ be a set of universal formulas and $\tilde U$ be the set of all instances of formulas in $U$.
+    Then the following are equivalent:
+    \benum
+        \item $U$ is consistent,
+        \item $\tilde U$ is consistent,
+        \item $U$ has a term model in ${\cal L}$.
+    \eenum
+    If $U\subseteq{\cal L}^k$ and $\tilde U$ is the set of all ${\cal T}_k$-instances of formulas in $U$ then this holds as well.
+
+\ethrm
+
+Since $U\vdash\tilde U$ by particularization, we immediately get $(1)\implies(2)$.
+For $(2)\implies(3)$: let $X\supseteq\tilde U$ be maximally consistent, then ${\cal F}X\vDash\pi\iff X\vdash\pi$ for prime $\pi$.
+By induction on $\land$ and $\neg$ this immediately yields ${\cal F}X\vDash\alpha\iff X\vdash\alpha$ for quantifier-free $\alpha$.
+Since $\tilde U$ contains only quantifier-free formulas and $X\vdash\tilde U$, we get that ${\cal F}X\vDash\tilde U$, and so $U$ has a term model (${\cal F}X$).
+$(3)\implies(1)$ is trivial.
+For $U\subseteq{\cal L}^k$ the proof runs analogously but with ${\cal F}_kX$.
+\qed
+
+Notice then that if $U$ is a consistent set of universal sentences, it has a term model whose domain is a quotient algebra of ${\cal T}_0$, the set of all ground terms.
+If $U$ is $\eq$-free then there is no need to take a quotient, and so the domain is ${\cal T}_0$ itself.
+A model of $U$ whose domain is the set of ground terms ${\cal T}_0$ is called a {\it Herbrand model}\addtoindex{herbrand model} of $U$, and ${\cal T}_0$ is also called its {\it Herbrand universe}.
+In a Herbrand model ${\frak T}$ the interpretations of functions and constants are canonical: $c^{\frak T}=c$ and $f^{\frak T}\vec t=f\vec t$ for $\vec t\in{\cal T}_0^n$, the interpretations of relations
+may vary though.
+
+\bexam
+
+    Let $U\subseteq{\cal L}\set{0,{\tt S},<}$ contain the following two universal sentences:
+    $$ \forall x\,x<{\tt S}x,\qquad \forall x,y,z(x<y\land y<z\to x<z) $$
+    Then ${\cal N}=({\bb N},0,{\tt S},<)$ is a model of $U$.
+    Since for every ground term $t$ (meaning just for $0$), ${\tt S}^{\cal N}t={\tt S}t$, ${\cal N}$ is a Herbrand model of $U$.
+    There are many other Herbrand models for $U$ as $<$ may be interpreted in numerous ways.
+
+\eexam
+
+\blemm
+
+    If $X\cup\set{\neg\alpha}[\alpha\in Y]$ is inconsistent and $Y$ is nonempty, then there exist formulas $\alpha_0,\dots,\alpha_m\in Y$ such that $X\vdash\alpha_0\lor\cdots\lor\alpha_m$.
+
+\elemm
+
+We have that $X\cup\set{\neg\alpha}[\alpha\in Y]\vdash\bot$ since it is inconsistent, and so by the compactness theorem we have that there exist $\alpha_0,\dots,\alpha_m\in Y$ such that
+$X,\neg\alpha_0,\dots,\neg\alpha_m\vdash\bot$ and so $X,\neg\alpha_0,\dots,\neg\alpha_{m-1}\vdash\alpha_m$.
+By the deduction theorem we get that $X\vdash\neg\alpha_0\to\cdots\to\neg\alpha_{m-1}\to\alpha_m = \alpha_0\lor\cdots\lor\alpha_m$ as required.
+\qed
+
+\bthrm[title=Herbrand's Theorem, name=herbrandstheorem]
+
+    Let $U\subseteq{\cal L}$ be a set of universal formulas, $\exists\vec x\alpha\in{\cal L}$ with $\alpha$ quantifier-free, and let $\tilde U$ be the set of all instances of $U$.
+    Then the following are equivalent:
+    \benum
+        \item $U\vdash\exists\vec x\alpha$,
+        \item $U\vdash\bigvee_{i\leq m}\alpha\frac{\vec t_i}{\vec x}$ for some $m$ and $\vec t_0,\dots,\vec t_m\in{\cal T}^n$,
+        \item $\tilde U\vdash\bigvee_{i\leq m}\alpha\frac{\vec t_i}{\vec x}$ for some $m$ and $\vec t_0,\dots,\vec t_m\in{\cal T}^n$,
+    \eenum
+    The same holds if ${\cal L}$ is replaced with ${\cal L}^k$, ${\cal T}$ by ${\cal T}_k$, and $\tilde U$ is the set of all ${\cal T}_k$-instances of $U$.
+
+\ethrm
+
+Since $U\vdash\tilde U$, we get $(3)\implies(2)\implies(1)$.
+So we will show $(1)\implies(3)$: by $(1)$ we get that $X=U\cup\set{\forall\vec x\neg\alpha}$ is inconsistent and therefore by the previous theorem so is
+$\tilde X=\tilde U\cup\set{\neg\alpha\frac{\vec t}{\vec x}}[\vec t\in{\cal T}^n]$.
+So by the above lemma we get that there exist $\vec t_0,\dots,\vec t_m\in{\cal T}^n$ such that $\tilde U\vdash\bigvee_{i\leq m}\alpha\frac{\vec t_i}{\vec x}$.
+The proof in the case of ${\cal L}^k$ is analogous.
+\qed
+
+Notice that in the case $\exists x\alpha=\exists x\forall y(ry\to rx)$ and $U=\varnothing$, then $\vdash\exists x\alpha$ as it is a tautology.
+But there aren't necessarily terms (variables) such that $\vdash\bigvee_{i\leq m}\alpha\frac{t_i}x$: if there are $m+2$ elements in the domain then we can have it not satisfy $rx_i$ for $i\leq m$ but have
+it satisfy $rx_{m+1}$.
+So in Herbrand's theorem, the assumption that $\alpha$ is quantifier-free is necessary.
+
