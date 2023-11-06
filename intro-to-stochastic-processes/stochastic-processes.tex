@@ -125,7 +125,7 @@ $$ \eqalign{
 A consequence of this is that if $\set{X_n}_{n\geq0}$ is a Markov chain and $\set{a_n}_{n\geq0}$ is strictly monotonic then $Y_n=X_{a_n}$ is also a Markov chain.
 After all if we let $B=\set{a_{n-1},\dots,a_0}$ then $\max B=a_{n-1}$ and so
 \multlines{
-    \probof{Y_n=s_{a_n}}[Y_{n-1}=s_{a_{n-1}},\dots,Y_0=s_{a_0}] = \probof{X_{a_n}=s_{a_n}}[\forall i\in B\colon X_i=s_i] = \probof{X_{a_n}=s_{a_n}}[X_{a_{n-1}}=s_{a_{n-1}}]
+    \probof{Y_n=s_{a_n}}[Y_{n-1}=s_{a_{n-1}},\dots,Y_0=s_{a_0}] = \probof{X_{a_n}=s_{a_n}}[\forall i\in B\colon X_i=s_i] = \probof{X_{a_n}=s_{a_n}}[X_{a_{n-1}}=s_{a_{n-1}}]\cr
     &= \probof{Y_n=s_{a_n}}[Y_{n-1}=s_{a_{n-1}}]
 }
 as required.
@@ -192,6 +192,199 @@ This simplifies dealing with Markov chains, especially homogeneus ones.
     $$ P^{(n)} = \pmat{\frac{n-1}n & \frac1n \cr 0 & 1} $$
 
 \eexam
+
+\bdefn
+
+    A real $n\times n$ matrix $P$ such that $P_{ij}\geq0$ for every $i,j$, and for every row $i$ we have $\sum_{j=1}^n P_{ij}=1$ then $P$ is called an {\emphcolor stochastic matrix}.
+
+\edefn
+
+Notice that we can draw a diagram for every stochastic matrix and it will be the transition matrix of a Markov chain.
+Meaning every stochastic matrix is the transition matrix of some Markov chain, and every transition matrix is stochastic.
+Notice that the second condition for a matrix to be stochastic can be written as $P{\bf1}={\bf1}$ where ${\bf1}=(1,\dots,1)^\top$.
+
+\bdefn
+
+    Let $\set{X_n}_{n\geq0}$ be a Markov chain over a state space $S$, and let $A\subseteq S$.
+    Then we define the {\emphcolor hitting time} to $A$ to be the random variable
+    $$ T_A = \minof{t\geq1}[X_t\in A] $$
+    Note that if $X_t$ is never in $A$ then $T_A$ can be $\infty$, and so $T_A$ is a function from the probability space to the extended reals: $\Omega\longto{\bb R}\cup\set\infty$.
+    This means that $T_A^{-1}\set\infty$ must also be measurable (an event).
+
+\edefn
+
+In the case that $A$ is a singleton $A=\set a$ then we write $T_a$ in place of $T_A$.
+Notice that $T_A$ measures starting from $t=1$, while it is possible that the initial condition is in $A$, ie. $X_0\in A$.
+So in the case that $X_0\in A$, $T_A$ measures the {\it return time} to $A$, in particular if $X_0\sim\delta_a$ where $\delta_a=(0,\dots,1,\dots,0)$ ($1$ is at the index corresponding to the state $a$).
+We also use the following notation
+$$ \probof[V]E = \probof E[X_0\sim V],\qquad \probof[\delta_a]E = \probof[a]E = \probof{E}[X_0=a] $$
+
+If $P$ is the transition matrix of a homogeneus Markov chain, then $P^n(a\to b)$ means $P^n_{ba}=\probof{X_n=b}[X_0=a]$.
+
+\blemm
+
+    If $\set{X_n}$ is a homogeneus Markov chain, then
+    $$ P^n(a\to b)=\sum_{m=1}^n\probof[a]{T_b=m}P^{n-m}(b\to b) $$
+
+\elemm
+
+\multlines{%
+    P^n(a\to b) = \probof[a]{X_n=b} = \probof{\bigdcup_{m=1}^n\set{T_b=m},X_n=b}[X_0=b] = \sum_{m=1}\probof{T_b=m,X_n=b}[X_0=b]\cr
+    &= \sum_{m=1}^n\probof{X_n=b}[T_b=m,X_0=a]\cdot\probof{T_b=m}[X_0=a]\cr
+}
+Now, $\probof{X_n=b}[T_b=m,X_0=a]=\probof{X_n=b}[X_m=b,X_{m-1}\neq b,\dots,X_1\neq b,X_0=a]=\probof{X_n=b}[X_m=b]$ by the Markov property.
+Since $\set{X_n}$ is homogeneus this is just equal to $P^{n-m}(b\to b)$.
+Thus this formula is equal to
+$$ \sum_{m=1}^b\probof{X_n=b}[X_m=b]\cdot\probof[a]{T_b=m} = \sum_{m=1}^b P^{n-m}(b\to b)\cdot\probof[a]{T_b=m} \qed $$
+
+Let us introduce some more notation:
+$$ f_{a\to b} = \probof{T_b<\infty}[X_0=a],\qquad f_{a\to a}=f_a=\probof{T_a<\infty}[X_0=a] $$
+thus $f_{a\to b}$ is the probability that if we start at $a$, we eventually reach $b$.
+
+\blemm
+
+    $f_{a\to c}\geq f_{a\to b}\cdot f_{b\to c}$
+
+\elemm
+
+Notice that $\set{T_c<\infty}=\set{(\exists t>0)X_t=c}\supseteq\bigdcup_{k>0}\set{T_b=k,(\exists t>k)X_t=c}$.
+Thus we get
+\lmultlines{
+    f_{a\to c} = \probof{T_c<\infty}[X_0=a] \geq \sum_{k=1}^\infty\probof{T_b=k,(\exists t>k)X_t=c}[X_0=a]\cr
+    &= \sum_{k=1}^\infty\probof{T_b=k}[X_0=a]\cdot\probof{(\exists t>k)X_t=c}[T_b=k,X_0=a]\cr
+    &= \sum_{k=1}^\infty\probof{T_b=k}[X_0=a]\cdot\probof{(\exists t>k)X_t=c}[X_k=b,X_{k-1}\neq b,\dots,X_1\neq b,X_0=a]\cr
+    &\llap{(Markov property) }= \sum_{k=1}^\infty\probof{T_b=k}[X_0=a]\cdot\probof{(\exists t>k)X_t=c}[X_k=b]\cr
+    &\llap{(homogeneity) }= \sum_{k=1}^\infty\probof{T_b=k}[X_0=a]\cdot\probof{(\exists t>0)X_t=c}[X_0=b]\cr
+    &= \sum_{k=1}^\infty\probof{T_b=k}[X_0=a]\cdot f_{b\to c} = f_{a\to b}\cdot f_{b\to c}\hfill\mathchar"404\cr
+}
+
+In particular this means
+$$ f_a\geq f_{a\to b}\cdot f_{b\to a} $$
+
+For every $a\in S$ we define the random variable $N(a)=\sum_{n=1}^\infty\chi\set{X_n=a}$, which is the number of times the state $a$ is visited from time $1$ and onward.
+When $X_0\sim V$ we write $N_V(a)$.
+Notice then that $f_{a\to b}=\probof{N(b)\geq1}[X_0=a]$ and so $f_a=\probof{N(a)\geq1}[X_0=a]$.
+
+\bprop
+
+    $\probof{N(a)\geq k}[X_0=a]=f_a^k$
+
+\eprop
+
+We prove this by induction, for $k=1$ this is simply what we just said.
+Now
+\lmultlines{
+    \probof{N(a)\geq k+1}[X_0=a] = \sum_{m=1}^\infty\probof{T_a=m,\abs{\set{j>m}[X_j=a]}\geq k}[X_0=a]\cr
+    &\llap{(Markov property) }= \sum_{m=1}^\infty\probof{T_a=m}[X_0=a]\cdot\probof{\abs{\set{j>m}[X_j=a]}\geq k}[X_m=a]\cr
+    &\llap{(homogeneity) }=\sum_{m=1}^\infty\probof{T_a=m}[X_0=a]\cdot\probof[a]{N(a)\geq k}\cr
+    &\llap{(induction) }=f_a^k\sum_{m=1}^\infty\probof{T_a=m}[X_0=a] = f_a^{k+1}\hfill\mathchar"404\cr
+}
+
+Notice then that
+$$ \probof{N(a)=k}[X_0=a] = \probof[a]{N(a)\geq k} - \probof[a]{N(a)\geq k+1} = f_a^k - f_a^{k+1} = f_a^k(1-f_a) $$
+Thus $N_a(a)\sim\Geoof{1-f_a}-1$ (the $+1$ is since $X\sim\Geoof p$ means $\probof{X=k}=p(1-p)^{k-1}$).
+Thus
+$$ \expecof{N_a(a)} = \frac1{1-f_a} - 1 = \frac{f_a}{1-f_a} $$
+
+\bdefn
+
+    A state $b\in S$ is {\emphcolor recurrent} if $f_b=1$, equivalently if $\probof[b]{T_b<\infty}$ (the probability of returning to $b$ is $1$).
+    A non-recurrent state is called {\emphcolor transient}.
+    $b$ is {\emphcolor absorbing} if $P(b\to b)=1$.
+
+\edefn
+
+Notice that if $b$ is recurrent then if $f_b=1$, $N_b(b)\sim\Geoof{0}-1$, meaning $\probof[b]{N(b)=\infty}=1$.
+And if $b$ is transient then $N_b(b)$ is a finite geometric variable and so $\probof[b]{N(b)<\infty}=1$.
+And so
+$$ \eqalign{
+    \hbox{$b$ is recurrent} &\iff \probof{N(b)=\infty}[X_0=b] = 1,\cr
+    \hbox{$b$ is transient} &\iff \probof{N(b)<\infty}[X_0=b] = 1 \iff \probof{N(b)<\infty}[X_0\sim v] = 1
+} $$
+
+\bdefn
+
+    Let $a,b\in S$ be states.
+    Then $b$ is {\emphcolor reachable} from $a$ if $f_{a\to b}\neq0$ or $a=b$, this is denoted $a\to b$.
+    $a$ and $b$ are {\emphcolor connected} if both $a\to b$ and $b\to a$, this is denoted $a\oto b$.
+
+\edefn
+
+This means that $a\to b$ if and only if there exists some $n\geq0$ such that $P^n(a\to b)>0$.
+Furthermore, connectivity is an equivalence relation: it is obviously reflexive and symmetric and if $a\to b$ and $b\to c$, since $f_{a\to c}\geq f_{a\to b}\cdot f_{b\to c}>0$, we get that reachability
+and therefore connectivity is transitive.
+Thus $S$ can be partitioned into {\it connectivity classes}.
+
+\blemm
+
+    If $a\to b$ and $a\neq b$ then $\probof{T_b<T_a}[X_0=a]>0$.
+
+\elemm
+
+Since $a\to b$, there exists a sequence of states $a=s_0,\dots,s_m=b$ such that $P_{s_is_{i+1}}>0$ for all $i$.
+We can assume that for every $i>0$, $a\neq s_i$.
+So we have a sequence whose probability is positive and where the hitting time of $b$ is before that of $a$, so the probability that $T_b<T_a$ must be positive.
+\qed
+
+\bdefn
+
+    $A\subseteq S$ is {\emphcolor closed} if for every $a\in A$ and every $b\notin A$, $b$ is not reachable from $a$.
+    $A$ is also called {\emphcolor irreducible} if it is closed and connected.
+
+\edefn
+
+\bthrm
+
+    If $a$ is recurrent and $a\to b$, then also $b\to a$ and $b$ is recurrent.
+
+\ethrm
+
+We know
+$$ f_{a\to b} = \probof[a]{T_a>T_b} + \probof[a]{T_a<T_b}\cdot\probof{T_b<\infty}[T_a<T_b] $$
+by the above lemma $p=\probof[a]{T_b<T_a}>0$ and so by homogeneity
+$$ = p + (1-p)\cdot\probof{T_b<\infty}[X_0=a] = p + (1-p)f_{a\to b} $$
+Thus we get that $p\cdot f_{a\to b}=p$ and since $p\neq0$, $f_{a\to b}=1$.
+Now
+$$ f_{a\to b}(1-f_{b\to a}) = \probof{\hbox{$X_n$ hits $b$ and never returns to $a$}}[X_0=a] \leq \probof[a]{N(a)<\infty} = 0 $$
+Thus $f_{b\to a}=1$.
+Now $f_b\geq f_{b\to a}\cdot f_{a\to b}=1$ so $b$ is also recurrent.
+\qed
+
+So if $a\oto b$, then $a$ is recurrent if and only if $b$ is.
+If $b$ is reachable from $a$ but $a$ is not reachable from $b$, then $a$ is transient.
+And if $a$ is recurrent and $a\to b$ then $\probof[b]{N(a)=\infty}=1$.
+
+\bthrm
+
+    A finite closed set of states $A\subseteq S$ contains a recurrent state.
+
+\ethrm
+
+Suppose $A$ has only transient states.
+This means that $\probof[v]{N(a)<\infty}=1$ for every $a\in A$, and so we get that $\probof[v]{(\forall a\in A)N(a)<\infty}=1$ (as the intersection of a countable number of events with probability one).
+And this means $\probof[v]{\sum_{a\in A}N(a)<\infty}=1$ since $A$ is finite.
+But since $A$ is closed, we can never leave $A$ and so if $v$'s support is in $A$ then $\sum_{a\in A}N_v(a)=\infty$.
+\qed
+
+In particular, since $S$ is closed, if $S$ is finite it contains a recurrent state.
+
+\bthrm
+
+    If $S$ is a finite state space, then it can be uniquely partitioned into
+    $$ S = T\dcup C_1\dcup\cdots\dcup C_k $$
+    where $T$ is the set of all transient states, and $C_i$ are all disjoint irreducible (closed and connected) sets.
+
+\ethrm
+
+So $T$ is the set of all transient states, and for every recurrent state $a\in S\setminus T$ let $C_a=\set{b}[a\to b]$.
+By a previous theorem, for every $b\in C_a$, $b\to a$ so and if $b\to b'$ then $a\to b'$ meaning $b'\in C_a$, so $C_a$ is closed.
+And if $b,b'\in C_a$ then $a\to b$ and $a\to b'\implies b'\to a$ and therefore $b'\to b$, so $C_a$ is connected and therefore irreducible.
+By taking representatives of each $C_a$, let $C_i=C_{a_i}$, we get the partition.
+
+This partition is unique: since if $C_1\dcup\cdots\dcup C_k=C'_1\dcup\cdots\dcup C'_m$ let $a\in C_1$ then $a\in C'_i$ for some $i$, without loss of generality assume $a\in C'_1$.
+Then for every $b\in C_1$, since $C_1$ is connected $a\to b$ and so $b\in C'_1$ since $C'_1$ is closed, thus $C_1=C'_1$.
+Continuing inductively we get $k=m$ and $C_i=C'_i$ as required.
+\qed
 
 \bye
 
