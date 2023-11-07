@@ -1,0 +1,138 @@
+\bdefn
+
+    A {\emphcolor Horn formula}\addtoindex{horn formula} in a first-order language ${\cal L}$ is defined recursively as follows:
+    \benum
+        \item Literals (prime formulas and their negations) are {\it basic Horn formulas}.
+        If $\alpha$ is prime and $\beta$ is a basic Horn formula, then $\alpha\to\beta$ is also a basic Horn formula.
+        \item Basic Horn formulas are Horn formulas, and if $\alpha$ and $\beta$ are Horn formulas so too are $(\alpha\land\beta),\forall x\alpha,\exists x\alpha$.
+    \eenum
+    If a formula is equivalent to a (respectively, basic) Horn formula, it is also called a (respectively, basic) Horn formula.
+
+\edefn
+
+Thus the general form of a basic Horn formula is $\alpha_1\to\cdots\to\alpha_n\to\beta$ where $\alpha_i$ are prime and $\beta$ is a literal ($n\geq0$).
+This is logically equivalent to $\beta\lor\neg\alpha_1\lor\cdots\lor\neg\alpha_n$.
+If $\beta$ is prime, we write $\beta=\alpha_0$ and if $\beta$ is the negation of a prime formula we write $\beta=\neg\alpha_0$.
+So up to logical equivalence, all basic Horn formulas are equivalent to one of the following ($\alpha_i$ prime):
+$$ {\rm I:}\ \alpha_0\lor\neg\alpha_1\lor\cdots\lor\neg\alpha_n\qquad\hbox{or}\qquad{\rm II:}\ \neg\alpha_0\lor\neg\alpha_1\lor\cdots\lor\neg\alpha_n $$
+Basic Horn formulas of the first type are termed {\it positive} and basic Horn formulas of the second type are {\it negative}.
+Now recall that $\alpha_1\to\cdots\to\alpha_n\to\beta\equiv\alpha_1\land\cdots\land\alpha_n\to\beta$ and so such a formula is also a basic Horn formula.
+
+Reviewing our proof on the existence of prenex normal forms, it is apparent that all Horn formulas are equivalent to prenex Horn formulas.
+If the prefix of its prenex form contains only $\forall$-quantifiers, it is called a {\it universal Horn formula}\addtoindex{Horn formula}[universal].
+If its kernel of its prenex form is the conjunction of positive basic Horn formulas it is called a {\it positive Horn formula}.
+A Horn formula without free variables is called a {\it Horn sentence}.
+
+For example the following are positive Horn sentences which describe the congruence-ness of $\eq$:
+$$ (x\eq x)^g,\quad (x\eq y\land x\eq z\to y\eq z)^g,\quad (\vec x\eq\vec y\to r\vec x\to r\vec y)^g,\quad (\vec x\eq\vec y\to f\vec x\eq f\vec y)^g $$
+
+A {\it Horn theory}\addtoindex{horn theory} is a theory $T$ with an axiom system of Horn sentences.
+If these axioms are all universal Horn sentences, then $T$ is a {\it universal Horn theory}\addtoindex{horn theory}[universal].
+For example, the theory of groups and rings (in the appropriate languages) are universal Horn theories.
+
+\bthrm
+
+    Let $U$ be a consistent set of universal Horn formulas in a language ${\cal L}$.
+    Then ${\cal F}={\cal F}U$ is a model for $U$.
+    If $U\subseteq{\cal L}^k$ then ${\cal F}={\cal F}_kU$ is a model for $U$ as well.
+
+\ethrm
+
+We will show that $U\vdash\alpha\implies{\cal F}\vDash\alpha$ for all universal Horn formulas $\alpha$.
+We will prove this by induction on the recursive definition of Horn formulas.
+For prime formulas this holds in general ($U\vdash\alpha\iff{\cal F}\vDash\alpha$) and thus this holds for literals as well.
+Now let $\alpha$ be prime and $\beta$ be a basic Horn formula such that $U\vdash\alpha\to\beta$, then if ${\cal F}\vDash\alpha$ we have $U\vdash\alpha$ (again these are equivalent for prime formulas) and so
+$U\vdash\beta$ and thus ${\cal F}\vDash\beta$, meaning ${\cal F}\vDash\alpha\to\beta$ as required.
+Induction on $\land$ is clear.
+Now if $U\vdash\forall\vec x\alpha$ where $\alpha$ is quantifier-free, then let $t\in{\cal T}^n$ and we get $U\vdash\alpha\frac{\vec t}{\vec x}$ and so ${\cal F}\vDash\alpha\frac{\vec t}{\vec x}$ by
+induction.
+Since $\vec t$ is arbitrary and exhausts the domain of ${\cal F}$, we get ${\cal F}\vDash\forall\vec x\alpha$ as required.
+The proof for the case of ${\cal L}^k$ is analogous.
+\qed
+
+Then if $U$ is the axiom system of a universal Horn theory $T$, we get that ${\cal F}U\vDash T$ and since $U\subseteq{\cal L}^k$ for all $k$, also ${\cal F}_kU\vDash T$.
+
+Let $U\subseteq{\cal L}^0$ be a consistent set of $\eq$-free universal Horn sentences, and let $T$ be axiomatized by $U$.
+We assume ${\cal L}$ contains at least one constant symbol, so ${\cal F}_0U$ is well-defined and is a Herbrand model for $T$, called the {\it minimal Herbrand model for $T$}%
+\addtoindex{herbrand model}[minimal] and is denoted by ${\cal C}_U$ or ${\cal C}_T$.
+The domain of ${\cal C}_U$ is the set of ground terms (notice that denoting it by ${\cal C}_T$ will not cause any confusion as all term models agree in their interpretation of function and constant symbols,
+and their relations are defined by $r^{{\cal C}_T}\vec t\iff U\vdash r\vec t\iff T\vdash r\vec t$).
+
+\bexam
+
+    Let ${\cal N}=({\bb N},0,{\tt S},<)$ and $U$ be the set of universal Horn sentences:
+    $$ (1)\ \forall x\,x<{\tt S}x,\qquad (2)\ \forall x,y,z(x<y\land y<z\to x<z) $$
+    We will show that ${\cal N}\cong{\cal C}_U$ with the isomorphism $n\varmapsto\underline n$.
+    Since ${\cal C}_U\vDash\underline m<\underline k\iff U\vdash\underline m<\underline k$, to show that this is an isomorphism we must show only that $m<k\iff U\vdash\underline m<\underline k$.
+    We prove $\implies$ by induction on $k$, starting with $k={\tt S}m$ which is clear in lieu of $(1)$.
+    Now if $m<{\tt S}k$, then by the induction hypothesis we get that $m<k$ or $m=k$, and in both cases we get $U\vdash\underline m<\underline{{\tt S}k}$ by $(1)$ and $(2)$.
+
+    So this mapping preserves $<$, and it also preserves $0$ and ${\tt S}$ trivially.
+    It is also injective as $\underline m\eq\underline k$ if and only if $m=k$ as the domain of ${\cal C}_U$ is the set of all ground terms (and not a quotient of them).
+    It is also surjective as the set of ground terms of this language is the set of all terms of the form $\underline n$, so it is indeed an isomorphism.
+
+\eexam
+
+\bthrm
+
+    Let $U\subseteq{\cal L}^k$ be a consistent set of universal Horn formulas, and $\gamma=\gamma_0\land\cdots\land\gamma_m$ be a conjunction of prime formulas, and $\exists\vec x\gamma\in{\cal L}^k$.
+    Then the following are equivalent:
+    \benum
+        \item ${\cal F}_kU\vDash\exists\vec x\gamma$,
+        \item $U\vdash\gamma\frac{\vec t}{\vec x}$ for some $\vec t\in{\cal T}^n_k$,
+        \item $U\vdash\exists\vec x\gamma$.
+    \eenum
+    This theorem, and proof, holds if we replace ${\cal L}^k$ with ${\cal L}$ and ${\cal T}_k$ with ${\cal T}$.
+
+\ethrm
+
+$(1)\implies(2)$: if ${\cal F}_kU\vdash\exists\vec x\gamma$ then if ${\cal F}_kU\nvDash\gamma\frac{\vec t}{\vec x}$ for all $\vec t\in{\cal T}^n_k$, then we get that
+${\cal F}_kU\vDash\forall\vec x\neg\gamma$ which contradicts $(1)$.
+So ${\cal F}_kU\vdash\gamma_i\frac{\vec t}{\vec x}$ for all $i$, and since this is prime we get that $U\vdash\gamma_i\frac{\vec t}{\vec x}$ and thus $U\vdash\gamma\frac{\vec t}{\vec x}$.
+$(2)\implies(3)$ holds in general.
+$(3)$ implies ${\cal F}_kU\vDash\exists\vec x\gamma$ since ${\cal F}_kU$ is a model for $U$.
+\qed
+
+Notice then that if $T$ is a consistent universal Horn theory in a $\eq$-free language with constants, ${\cal C}_T\vDash\exists\vec x\gamma$ is equivalent to $\vdash_T\exists\vec x\gamma$.
+This is since we can take $k=0$ and so ${\cal C}_T={\cal F}_0U\vDash\exists\vec x\gamma\iff U\vdash\exists\vec x\gamma\iff\vdash_T\exists\vec x\gamma$ by $(1)\iff(3)$.
+
+\bexerc
+
+    Let $T$ be a Horn theory, show that $\Md T$ is closed under direct products.
+    And if $T$ is a universal Horn theory, it is also closed under substructures.
+
+\eexerc
+
+To show this we need to show that if $\phi$ is a Horn formula, then if ${\cal A}_i\vDash\phi$ for all $i\in I$ then ${\cal B}=\prod_{i\in I}{\cal A}_i\vDash\phi$.
+We will show this by induction on the construction of the Horn formula $\phi$.
+For prime formulas, this is a direct result of the definition of the direct product of structures: ${\cal B}\vDash r\vec t$ if and only if $r^{{\cal A}_i}\vec t^{{\cal A}_i}$ ie. if and only if
+${\cal A}_i\vDash r\vec t$.
+So here the converse holds as well, meaning ${\cal B}\vDash\pi$ if and only if ${\cal A}_i\vDash\pi$ for all $i\in I$.
+This holds for prime formulas of the form $t\eq s$ as well.
+Now if ${\cal A}_i\vDash\alpha\to\beta$ where $\alpha$ is prime and $\beta$ is a basic Horn formula, suppose ${\cal B}\vDash\beta$ then ${\cal A}_i\vDash\beta$ for all $i\in I$ by above and so
+${\cal A}_i\vDash\beta$ for all $i\in I$ and by induction ${\cal B}\vDash\beta$, thus ${\cal B}\vDash\alpha\to\beta$ as required.
+
+The induction step for $\land$ is obvious.
+Now if $\phi$ is a Horn formula and ${\cal A}_i\vDash\forall x\phi$, then let us add a constant symbol $\boldsymbol a$ to the language and so for every $a_i\in{\cal A}_i$ if we interpret $\boldsymbol a$ by
+$a_i$, then in ${\cal B}$ it is interpreted as $(a_i)_{i\in I}$.
+Now we also have that ${\cal A}_i\vDash\phi\frac{\boldsymbol a}x$ and so by induction we have ${\cal B}\vDash\phi\frac{\boldsymbol a}x$.
+Since the interpretation of $\boldsymbol a$ is arbitrary, this means that ${\cal B}\vDash\forall x\phi$ as required.
+The induction step for $\exists$ proceeds analogously.
+
+For a universal Horn theory, we proceed by induction as well.
+The step for basic Horn formulas is due to \refmath{substructuretheorem}.
+Now if ${\cal A}\vDash\forall\vec x\alpha$ where $\alpha$ is the conjunction of basic Horn formulas, and ${\cal A}'\subseteq{\cal A}$ then by \refmath[corollary]{substructurecoro} we get that
+${\cal A}'\vDash\forall\vec x\alpha$ as required.
+
+\bexerc
+
+    Prove that a set of positive Horn formulas is always consistent.
+
+\eexerc
+
+A positive Horn formula is equivalent to a formula of the form $\Q_1\cdots\Q_n(\alpha_1\land\cdots\land\alpha_m)$ where $\alpha_i$ are all positive (basic) Horn formulas.
+We can simply take the structure of one element, and so this formula is equivalent to $\alpha_1\land\cdots\land\alpha_m$, and so we must show that the one element structure satisfies any positive basic
+Horn formula and that is sufficient.
+A positive basic Horn formula is of the form $\alpha_0\lor\neg\alpha_1\lor\cdots\lor\neg\alpha_k$ where $\alpha_i$ are prime.
+In the structure of one element, we can interpret relations as always being true, and so $\alpha_0$ is always satisfied, as required.
+
