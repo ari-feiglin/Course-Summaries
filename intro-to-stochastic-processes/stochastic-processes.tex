@@ -189,7 +189,7 @@ This simplifies dealing with Markov chains, especially homogeneus ones.
         \probof{X_n=0}[X_{n-1}=1] = 0,\quad \probof{X_n=1}[X_{n-1}=1] = 1
     } $$
     And so we get that
-    $$ P^{(n)} = \pmat{\frac{n-1}n & \frac1n \cr 0 & 1} $$
+    $$ P^{(n)} = \pmatrix{\frac{n-1}n & \frac1n \cr 0 & 1} $$
 
 \eexam
 
@@ -385,6 +385,256 @@ This partition is unique: since if $C_1\dcup\cdots\dcup C_k=C'_1\dcup\cdots\dcup
 Then for every $b\in C_1$, since $C_1$ is connected $a\to b$ and so $b\in C'_1$ since $C'_1$ is closed, thus $C_1=C'_1$.
 Continuing inductively we get $k=m$ and $C_i=C'_i$ as required.
 \qed
+
+\bexam
+
+    Suppose Elise is in a room $0$, and can either stay in the room with probability $1-p_1-p_2$, go to room $1$ with probability $p_1$ or go to room $2$ with probability $p_2$.
+    If she goes to a new room, she stays there forever.
+    Knowing that ends up in room $2$, what is the expected amount of time she spends waiting in room $0$?
+
+    So we want to find the expected value of $N_0(0)$ knowing that $T_2<\infty$.
+    So we will compute
+    $$ \probof{N_0(0)=k}[T_2<\infty] = \frac{\probof{N_0(0)=k,T_2<\infty}}{\probof{T_2<\infty}} = \frac{\probof{X_1=\cdots=X_k=0,X_{k+1}=2}}{\probof{T_2<\infty}} $$
+    Now, utilizing conditional probability and the Markov property (this is all done under the assumption $X_0=0$),
+    $$ \probof{X_1=\cdots=X_k=0,X_{k+1}=2} = \probof{X_{k+1}=2}[X_k=0]\cdot\probof{X_k=0}[X_{k-1}=0]\cdots\probof{X_1=0} = p_2\cdot(1-p_1-p_2)^k $$
+    And $\probof{T_2<\infty}=\frac{p_2}{p_1+p_2}$ since to get to room $2$ we must visit room $0$ an arbitrary number of times, and then go to room $2$, so
+    $$ \probof{T_2<\infty} = \sum_{n=0}^\infty p_2\cdot(1-p_1-p_2)^n = \frac{p_2}{p_1+p_2} $$
+    Thus
+    $$ \probof{N_0(0)=k}[T_2<\infty] = (p_1+p_2)\cdot(1-p_1-p_2)^k $$
+    Which means that
+    $$ (N_0(0)\,|\,T_2<\infty) \sim \Geoof{p_1+p_2} - 1 \implies \expecof{N_0(0)}[T_2<\infty] = \frac{1-p_1-p_2}{p_1+p_2} $$
+
+    Notice two things: firstly, by symmetry this means that $(N_0(0)\,|\,T_1<\infty)\sim\Geoof{p_1+p_2}-1$ which is the same distribution.
+    And secondly, this is the same distribution as $N_0(0)$, so the expected time Elise waits at room $0$ does not change if we know which room she ends up in.
+
+\eexam
+
+\bdefn
+
+    Let $a\in S\setminus T$ be a recurrent state, then we define its {\emphcolor period} to be
+    $$ d(a) = \gcd\set{n\geq 1}[P^n(a\to a)>0] $$
+    An irreducible Markov chain is called {\emphcolor periodic} if every state is recurrent and has the same period greater than $1$, which is the {\emphcolor period} of the Markov chain.
+
+\edefn
+
+Notice that if $P(a\to a)>0$ then $d(a)=1$, and so a periodic chain can be made aperiodic by adding a self-edge whose probability is nonzero.
+
+\bprop
+
+    If $P$ is the transition matrix of some periodic chain with a period of $d$, then $P^d$ is reducible.
+
+\eprop
+
+\bprop
+
+    If the Markov chain is irreducible then every state has the same period.
+
+\eprop
+
+Let $P$ be the transition matrix of the chain.
+Since $x\oto y$, there exist natural $r,\ell$ such that $P^r(x,y),P^\ell(y,x)>0$.
+So let $m=r+\ell$ and so
+$$ P^m(x,x) \geq P^r(x,y)\cdot P^\ell(y,x) > 0,\qquad P^m(y,y) \geq P^\ell(y,x)\cdot P^r(x,y) > 0 $$
+So let $\tau(a)=\set{n\geq1}[P^n(a,a)>0]$, and by above we have shown that $m\in\tau(x)\cap\tau(y)$.
+Now for every $n\in\tau(x)$ we have that $P^{\ell+n+r}(y,y)\geq P^\ell(y,x)P^n(x,x)P^r(x,y)>0$ and so $n+m\in\tau(y)$.
+Thus $m+\tau(x)\subseteq\tau(y)$.
+By definition we have $d(y)=\gcd(\tau(y))$ and since $m\in\tau(y)$ we have $d(y)\divides m$ and since $m+\tau(x)\subseteq\tau(y)$ we must have that $d(y)\divides\tau(x)$.
+Thus $d(y)\divides d(x)$, and since $x,y$ are arbitrary we get $d(x)\divides d(y)$ and so $d(x)=d(y)$ as required.
+\qed
+
+This means that every irreducible Markov chain has a period, and if the period is $>1$, it is periodic.
+So in order for an irreducible Markov chain to be periodic, it is sufficient for there to exist a state $a$ with $d(a)>1$.
+
+A common Markov chain is a random walk on ${\bb Z}$, where
+$$ P(i,i+1) = p,\quad P(i,i-1) = 1-p,\quad P(i,j)=0\hbox{ for $j\notin\set{i\pm 1}$} $$
+Another way of representing $X_n$ is by $X_n=\sum_{k=1}^nB_k$ where $B_k=1$ with probability $p$ and $B_k=-1$ with probability $1-p$.
+$\set{B_k}$ is independent.
+If $p=\frac12$, the walk is called {\it fair}.
+
+\bthrm
+
+    If $p\neq\frac12$, every state in ${\bb Z}$ is transient.
+
+\ethrm
+
+Since all the states are connected, it is sufficient to show that $0$ is transient.
+So we set $X_0=0$ and notice that $\frac{B_k+1}2\sim\Berof p$ and thus $\frac{X_n+n}2\sim\Binof{n,p}$ thus
+$$ \probof{X_{2n}=0} = \probof{\frac{X_{2n}+2n}2=n} = {2n\choose n}p^n(1-p)^n $$
+and $\probof{X_{2n+1}=0}=\probof{\frac{X_{2n+1}+2n+1}2=n+\frac12}=0$ since binomial distributions take on only integer values.
+By Stirling's approximation: $k!\in\Theta(k^{k+1/2}e^{-k})$, we get that there exists some $c>0$ such that
+$$ \probof{X_{2n}=0} = \frac{(2n)!}{n!n!}p^n(1-p)^n \leq cp^n(1-p)^n\frac{(2n)^{2n+1/2}e^{-2n}}{n^{2n+1}e^{-2n}} = cp^n(1-p)^n\frac{2^{2n+1/2}}{\sqrt n} = c'\frac{\bigl(4p(1-p)\bigr)^n}{\sqrt n} $$
+This can be bound by a $q^n$ where $q\in[0,1)$, since $4p(1-p)<1$ for $p\neq\frac12$.
+Thus we get that $\sum_{k=1}^\infty\probof{X_k=0}[X_0=0]$ and so by Borel-Cantelli we then get that $\probof{X_k=0\ \hbox{i.o.}}[X_0=0]=0$, meaning that the probability $X_k=0$ an infinite number of times
+is zero.
+Thus $\probof{N(0)=\infty}[X_0=0]=0$, and so this means $0$ is transient as required.
+\qed
+
+If we have a Markov chain, and $A\subseteq S$, we can ask questions about hitting times in $A$ by removing all the states in $A$ and adding a new state $\hat A$.
+This can only be done if for every $a,a'\in A$ and $b\notin A$, $P(a\to b)=P(a'\to b)$, and we define that the probability $P(\hat A\to b)=P(a\to b)$.
+And $P(b\to\hat A)=\sum_{a\in A}P(b\to a)$.
+In particular this can be done if $A$ is closed.
+
+\bexam
+
+    Suppose we have the following Markov chain:
+    $$ P = \pmatrix{1 & 0 & 0\cr p & q & r\cr 0 & 0 & 1} $$
+    where $p,q,r\geq0$ and $p+q+r=1$.
+    If we know that $X_0=2$, what is the probability that the chain will be absorbed into $1$ or $3$?
+
+    Let us define
+    $$ \ell_j = \probof{T_1<\infty}[X_0=j] $$
+    since $1$ and $3$ are absorbing states, $\ell_1=1$ and $\ell_3=0$.
+    Now, we want to compute $\ell_2$:
+    \multlines{
+        \ell_2 = \probof{T_1<\infty}[X_0=2] = \sum_{j=1}^3\probof{T_1<\infty}[X_1=j,X_0=2]\cdot\probof{X_1=j}[X_0=2]\cr\noalign{\kern-.4cm}
+        &= \sum_{j=1}^3\probof{T_1<\infty}[X_1=j]\cdot P_{2j}
+    }
+    where the last step is due to homogeneity.
+    This is equal to $\sum_{j=1}^3\ell_jP_{2j}=\ell_1p+\ell_2q+\ell_3r=p+\ell_2r$.
+    Thus we get that $\ell_2=p+\ell_2r$ and so $\ell_2=\frac p{1-r}$.
+    Thus the probability that starting from $X_0=2$ we are absorbed into $1$ (meaning $T_1=\infty$) is $1-\ell_2=\frac q{1-r}$.
+    Since $2$ is transient, we are either absorbed into $1$ or $3$, so the probability of being absorbed into $3$ is $\frac p{1-r}$.
+
+    Let us now ask what the expected time until being absorbed is.
+    By the law of total expectation:
+    Now, $\expecof{T_{\set{1,3}}}[X_1=2]=\expecof{T_{\set{1,3}}}[X_0=2]+1$ since it takes one more step, and so
+    $$ = \bigl(1+\expecof{T_{\set{1,3}}}[X_0=2]\bigr)\cdot\probof[2]{X_1=2} + \probof[2]{X_1=1} + \probof[2]{X_1=3} $$
+    So let $x=\expecof{T_{\set{1,3}}}[X_0=2]$, we get
+    $$ x = (1+x)r + p + q = (1+x)r + (1-r) \implies x = \frac1{1-r} $$
+
+\eexam
+
+\bexam
+
+    Suppose we have the following Markov chain:
+    $$ P = \pmatrix{1 & 0 & 0 & 0 & 0 & 0\cr 0 & 1 & 0 & 0 & 0 & 0\cr a_1 & a_2 & 0 & a_4 & 0 & 0\cr 0 & 0 & b_3 & 0 & b_5 & b_6\cr 0 & 0 & 0 & 0 & 1 & 0\cr 0 & 0 & 0 & 0 & 0 & 1} $$
+    What is the probability of being absorbed into one of the absorbing states ($1,2,5,6$) if it starts on one of the non-absorbing states ($3,4$)?
+
+    Let us define $\ell_{m,k}=\probof[m]{T_k<\infty}$.
+    Now, let us notice that
+    $$ \ell_{m,k} = \probof{T_k<\infty}[X_0=m] = \sum_{j=1}^6\probof{T_k<\infty}[X_1=j]\cdot\probof{X_1=j}[X_0=m] = \sum_{j=1}^6 P_{mj}\ell_{jk} $$
+    So if we define $L_{ij}=\ell_{ij}$ then we get that $L=PL$ and we can solve for $L$.
+
+    What is the expected time until being absorbed?
+    We can consolidate $A=\set{1,2,5,6}$ to a state we will call $1$, then the new transition matrix is
+    $$ P' = \pmatrix{1 & 0 & 0\cr a_1+a_2 & 0 & a_4\cr b_5+b_6 & b_3 & 0} $$
+    Now let us define $r_j=\expecof{T_1}[X_0=j]$, then we get
+    $$ r_j = \sum_{i=1}^3\expecof{T_1}[X_1=i]P_{ji} = P_{j1} + \sum_{i=2}^3(r_i+1)P_{ji} = P_{j1} + P_{j2} + P_{j3} + r_2P_{j2} + r_3P_{j3} $$
+    Which is a linear system of equations which can be solved.
+
+\eexam
+
+\bdefn
+
+    Suppose $\abs S=N$, then a {\emphcolor stationary distribution} of $P$ is a row vector $\pi$ which represents a distribution (meaning $\pi_i\geq0$ and $\sum_{i=1}^N\pi_i=1$) such that $\pi=\pi P$.
+
+\edefn
+
+A stationary distribution is an eigenvector (or the transpose of one) of $P^\top$ whose eigenvalue is $1$.
+If $\pi$ is a stationary distribution, then $\pi P=\pi\implies\pi P^n=\pi$ for every $n\geq0$.
+This means that if $X_0\sim\pi$ then $X_n\sim\pi$ for every $n$ (since $\probof{X_n=k}[X_0\sim\pi]=(\pi P^n)_k=\pi_k$).
+
+For example if $G=(V,E)$ is an undirected graph where $\abs V=N$ and the transitions from each state are all uniform (meaning $\probof{X_n=v}[X_{n-1}=u]=\frac1{\deg(u)}$ if $v\oto u$), then let
+$$ \tilde\pi = (\deg(v_1),\dots,\deg(v_N)) $$
+Then (using the notation $\delta\phi$ which is $1$ if $\phi$ is true and $0$ otherwise) we have that $P_{xy}=\frac1{\deg(x)}\delta(x\oto y)$, so
+$$ (\tilde\pi P)_y = \sum_{x\in V}\tilde\pi_x P_{xy} = \sum_{x\in V}\deg(x)\frac1{\deg(x)}\delta(x\oto y) = \sum_{x\in V}\delta(x\oto y) = \deg(y) = \tilde\pi_y $$
+So $\tilde\pi$ is a non-negative row vector, but it must be normalized to become a distribution, so we define
+$$ \pi_v = \frac{\deg(v)}{\sum_{u\in V}\deg(u)} = \frac{\deg(v)}{2\abs E} $$
+If the degree of each vertex is constant, suppose $\deg(v)=d$ for all $v\in V$, then $\pi_v=\frac{d}{dN}=\frac1N$ so $\pi$ is a uniform distribution.
+
+\bthrm[title=Existence and Uniqueness Theorem for Stationary Distributions, name=eautheorem]
+
+    Let $P$ be the transition matrix of irreducible finite-state Markov chain, then there exists a unique stationary distribution $\pi$ for $P$.
+
+\ethrm
+
+We know that $P{\bf1}={\bf1}$ and so $1$ is an eigenvalue for $P$, and since $P$ and $P^\top$ are similar, they share eigenvalues.
+Thus $P^\top$ has an eigenvalue of $1$ and therefore must have a stationary distribution.
+To show that this eigenvector is unique, we will show that the column eigenspace of $P$ has a dimension of one, and since the eigenspaces of a matrix and its transpose are equal (think Jordan normal forms),
+this is sufficient.
+So we will show that if $h\in{\bb R}^N$ is an eigenvector of $P$ with an eigenvalue of $1$, it is of the form $h=(c,\dots,c)^\top$.
+Because $S$ is finite, there exists a state $a\in S$ such that $h_a=M$ is maximal.
+Now suppose there exists a $z\in S$ such that $h_z<M$ and $P_{az}>0$ then
+$$ h_a = (Ph)_a = \sum_{y\in S}P_{ay}h_y = P_{az}h_z + \sum_{y\neq z}P_{ay}h_y < M\parens{\sum_{y\in S}P_{ay}} = M = h_a $$
+since $P_{az}>0$ and $h_z<M$, and this is a contradiction.
+So for every state where $P_{az}>0$, $h_z=M$.
+If we continue this proof (since $P^nh=h$), we get that if $a\to z$ then $h_z=M$.
+Since the Markov chain is irreducible, it is closed and therefore $h_z=M$ for every $z\in S$.
+\qed
+
+We can also provide a constructive proof of the existence of a stationary distribution.
+But first, a lemma:
+
+\blemm
+
+    For every two states $x,y\in S$ in a finite irreducible state space $\expecof[x]{T_y}<\infty$.
+
+\elemm
+
+Since $S$ is irreducible and finite, there exists an $\epsilon>0$ and a $r\in{\bb N}$ such that for every $a,b\in S$, there exists a $j\leq r$ such that $P^j(a,b)>\epsilon$.
+This is since $S$ is connected and so between every two states there exists a path of length $\leq r$ (taking the maximum length of all paths, or just $N$) and so $P^j(a,b)>0$.
+Take $\epsilon$ to be less than the minimum of all such $P^j(a,b)$, which we can do since $S$ is finite.
+
+Thus
+$$ \probof{(\exists m\in[0,\dots,r])X_m=b}[X_n=a]>\epsilon $$
+Now we know that $T_b>kr$ if and only if $X_0,\dots,X_r\neq b$ and then we don't hit $b$ for another $(k-1)r$ rounds, meaning $T_b>(k-1)r$.
+By homogeneity this means
+\multlines{
+    \probof{T_b>kr}[X_0=a] \leq \max_{a'}\probof{T_b>(k-1)r}[X_0=a']\probof{(\forall m\in[0,r])X_m\neq b}[X_0=a]\cr
+    &\leq \max_{a'}\probof{T_b>(k-1)r}[X_0=a']\cdot(1-\epsilon)
+}
+and so by induction, this is $\leq(1-\epsilon)^k$.
+Thus
+$$ \expecof{T_b}[X_0=a] = \sum_{n=0}^\infty\probof{T_b>n}[X_0=a] \leq r\sum_{k=0}^\infty\probof{T_b>kr}[X_0=a] \leq r\sum_{k=0}^\infty(1-\epsilon)^k < \infty $$
+The first inequality is due to the series being decreasing, and so we can take a summand and copy it $r$ times, then take the $r$th next.
+\qed
+
+Now we can construct a stationary distribution.
+Let us define
+$$ \tilde\pi_y = \expecof[z_0]{\centermath{the number of times $y$ is visited,\cr including at time $0$,\cr before returning to $z_0$}} = \sum_{n=0}^\infty\probof{X_n=y,T_{z_0}>n}[X_0=z_0] $$
+The last equality is since this probability is equal to the number of visits being $\geq n$.
+This is well-defined as
+$$ \tilde\pi_y \leq \sum_{n=0}^\infty\probof{T_{z_0}>n}[X_0=z_0] = \expecof[z_0]{T_{z_0}} $$
+and this is finite by the above lemma, so $\tilde\pi_y<\infty$.
+Now we will compute $(\tilde\pi P)_y$:
+$$ \eqalign{
+    (\tilde\pi P)_y &= \sum_{x\in S}\tilde\pi_x P_{xy}\cr
+    &= \sum_{x\in S}\sum_{n=0}^\infty\probof[z_0]{X_n=x,T_{z_0}>n}P_{xy}\cr
+    &= \sum_{n=0}^\infty\sum_{x\in S}\probof[z_0]{X_n=x,T_{z_0}\geq n+1}\probof{X_{n+1}=y}[X_n=x]\cr
+    &= \sum_{n=0}^\infty\sum_{x\in S}\probof[z_0]{X_{n+1}=y,X_n=x,T_{z_0}\geq n+1}\cr
+    &= \sum_{n=0}^\infty\probof[z_0]{X_{n+1}=y,T_{z_0}\geq n+1}\cr
+    &= \sum_{k=1}^\infty\probof[z_0]{X_k=y,T_{z_0}\geq k}\cr
+    &= \sum_{k=0}^\infty\probof[z_0]{X_k=y,T_{z_0}\geq k} + \sum_{k=0}^\infty\probof[z_0]{X_k=y,T_{z_0}=k} - \probof[z_0]{X_0=y,T_{z_0}=0}\cr
+    &= \tilde\pi_y + \sum_{k=0}^\infty\probof[z_0]{X_k=y,T_{z_0}=k} - \delta(y=z_0)\cr
+} $$ 
+Notice that $X_k=y,T_{z_0}=k$ if and only if $T_{z_0}=k$ and $y=z_0$, and so the sum is equal to $\delta(y=z_0)$.
+So we get that $\tilde\pi P=\tilde\pi$ as required.
+So we just need to normalize it by
+$$ \sum_{x\in S}\tilde\pi_S = \expecof[z_0]{T_{z_0}} $$
+And thus the stationary distribution is
+$$ \pi_x = \frac{\tilde\pi_x}{\expecof[z_0]{T_{z_0}}} $$
+\qed
+
+\bcoro
+
+    If $P$ is irreducible then $\pi_a=\frac1{\expecof[a]{T_a}}$.
+
+\ecoro
+
+Since $\pi$ is unique we can choose any $z_0$ and get the same result.
+So we can choose $z_0=a$ and so
+$$ \pi_a = \frac{\expecof{\centermath{The number of times we visit $a$\cr before returning to $a$\cr including $t=0$}}[X_0=a]}{\expecof[a]{T_a}} $$
+The numerator here is obviously $1$, and so $\pi_a=\frac1{\expecof[a]{T_a}}$.
+\qed
+
+For example, we showed that for a connected graph where the degree of each vertex is $d$ (a connected $d$-regular graph), $\pi_v=\frac1N$ where $N=\abs V$.
+Thus since $P$ is irreducible, we get that
+$$ \frac1N = \pi_v = \frac1{\expecof[a]{T_a}} \implies \expecof[a]{T_a} = N $$
+This is independent of the structure of the graph.
+But importantly, $T_a$ is dependent on the structure of the graph!
+
+As another example, if $P$ is symmetric then ${\bf1}^\top P=(P{\bf1})^\top={\bf1}^\top$ and so $\frac1N{\bf1}$ is a stationary distribution of $P$.
+And thus $\expecof[a]{T_a}=N$ where $N=\abs S$.
 
 \bye
 
