@@ -62,7 +62,7 @@ A random process is a sequence of random variables which represent measurements 
 Examples of random processes are random walks (these are commonly described as the path a drunk man would take while trying to get home), card shuffles (which can be viewed as choosing a card and placing
 it randomly in the deck), and branching (for example the population of bunnies in a specific area: the random variable being the number of bunnies in each generation).
 
-\subsection{Markov Chains}
+\section{Markov Chains}
 
 \bdefn
 
@@ -524,6 +524,8 @@ In particular this can be done if $A$ is closed.
 
 \eexam
 
+\subsection{Stationary Distributions and the Convergence of Markov Chains}
+
 \bdefn
 
     Suppose $\abs S=N$, then a {\emphcolor stationary distribution} of $P$ is a row vector $\pi$ which represents a distribution (meaning $\pi_i\geq0$ and $\sum_{i=1}^N\pi_i=1$) such that $\pi=\pi P$.
@@ -542,7 +544,7 @@ So $\tilde\pi$ is a non-negative row vector, but it must be normalized to become
 $$ \pi_v = \frac{\deg(v)}{\sum_{u\in V}\deg(u)} = \frac{\deg(v)}{2\abs E} $$
 If the degree of each vertex is constant, suppose $\deg(v)=d$ for all $v\in V$, then $\pi_v=\frac{d}{dN}=\frac1N$ so $\pi$ is a uniform distribution.
 
-\bthrm[title=Existence and Uniqueness Theorem for Stationary Distributions, name=eautheorem]
+\bthrm[title=Existence and Uniqueness Theorem, name=eautheorem]
 
     Let $P$ be the transition matrix of irreducible finite-state Markov chain, then there exists a unique stationary distribution $\pi$ for $P$.
 
@@ -562,7 +564,8 @@ If we continue this proof (since $P^nh=h$), we get that if $a\to z$ then $h_z=M$
 Since the Markov chain is irreducible, it is closed and therefore $h_z=M$ for every $z\in S$.
 \qed
 
-We can also provide a constructive proof of the existence of a stationary distribution.
+Notice that the proof of existence here assumes nothing about $S$ other than it being finite.
+But in the case that the chain is irreducible, we can also provide a constructive proof of the existence of a stationary distribution.
 But first, a lemma:
 
 \blemm
@@ -635,6 +638,202 @@ But importantly, $T_a$ is dependent on the structure of the graph!
 
 As another example, if $P$ is symmetric then ${\bf1}^\top P=(P{\bf1})^\top={\bf1}^\top$ and so $\frac1N{\bf1}$ is a stationary distribution of $P$.
 And thus $\expecof[a]{T_a}=N$ where $N=\abs S$.
+
+\bthrm
+
+    If $a\in S$ is a transient state and $S$ is finite, then for every stationary distribution $\pi$, $\pi_a=0$.
+
+\ethrm
+
+There are two cases we will consider: that $a$ is connected to only transient states, and that there exists a recurrent state $b$ such that $a\to b$.
+In the second case we have that $b\notto a$ since $a$ is transient and $b$ is recurrent.
+Let $a_0=a\to a_1\to\cdots\to a_n\to b$ be the path from $a$ to $b$, and we can assume that all $a_i$ are transient (as otherwise we could set $b=a_i$ for the minimum $i$ where $a_i$ is recurrent).
+Let $C$ be the connected component of $b$ and $\pi$ be a stationary distribution on all of $S$.
+Then
+$$ \sum_{z\in C}\pi_z = \sum_{z\in C}(\pi P)_z = \sum_{z\in C}\parens{\sum_{y\in C}\pi_y P(y,z) + \sum_{y\notin C}\pi_y P(y,z)} = \sum_{y\in C}\pi_y\sum_{z\in C}P(y,z) +
+\sum_{z\in C}\sum_{y\notin C}\pi_y P(y,z) $$
+Since $C$ is closed and $y\in C$, we have that $\sum_{z\in C}P(y,z)=1$ and thus we get that the left sum is $\sum_{y\in C}\pi_y$, and since the entire expression is equal to $\sum_{z\in C}\pi_z$, we must
+have that the right sum is zero.
+So for every $z\in C$ and $y\notin C$, $\pi_yP(y,z)=0$.
+
+This must be true in particular for $y=a_n$ and $z=b$, and since $P(a_n,b)>0$ this means $\pi_{a_n}=0$.
+And we claim inductively that $\pi_{a_k}=0$, since
+$$ \pi_{a_k} = \sum_{y\in S}\pi_yP(y,a_k) $$
+and so if $\pi_{a_k}=0$ then $\pi_yP(y,a_k)=0$ for all $y\in S$.
+Since $P(a_{k-1},a_k)>0$ this means $\pi_{a_{k-1}}=0$.
+And so in particular we have that $\pi_a=\pi_{a_0}=0$ as required.
+\qed
+
+Now suppose $S$ is a finite state space, then it can be uniquely partitioned into
+$$ S = T\dcup C_1\dcup\cdots\dcup C_n $$
+where $T$ is the set of all transient states, and $C_i$ are irreducible components.
+We showed that for every stationary distribution $\pi$, for every $a\in T$ we have $\pi_a=0$.
+And we also showed that for every $1\leq i\leq n$ there exists a unique stationary distribution $\pi_i$ whose support is $C_i$ (meaning for every $a\notin C_i$, $\pi_i(a)=0$).
+Thus a general stationary distribution is a normalized vector (meaning the sum of its coefficients is one) in ${\rm span}\set{\pi_1,\dots,\pi_n}$.
+This is since the transition matrix $P$ can be viewed as a block matrix over the partition of $S$.
+
+For the next lemma, let us state a combinatorical fact: if $A\subseteq{\bb N}$ is closed under addition and has a greatest common divisor of $1$, then ${\bb N}\setminus A$ is finite.
+This is trivial if $1\in A$.
+
+\blemm
+
+    Suppose $P$ is the transition matrix of an irreducible, aperiodic, finite-state, homogeneus Markov chain.
+    Then there exists an $r_0>0$ such that for all $r\geq r_0$ and $a,b\in S$, $P^r(a,b)>0$.
+
+\elemm
+
+Let us define as before $\tau(a)=\set{n\geq1}[P^n(a,a)>0]$.
+Since $P$ is aperiodic, $d(a)=\gcd\tau(a)=1$, and $\tau(a)$ is closed under addition since $P^{n+m}(a,a)\geq P^n(a,a)P^m(a,a)$.
+This means that ${\bb N}\setminus\tau(a)$ is finite.
+This means that $\bigcup_{a\in S}\bigl({\bb N}\setminus\tau(a)\bigr)={\bb N}\setminus\bigcap_{a\in S}\tau(a)$ is finite as well as the finite union of finite sets.
+Let $t_0$ be an upper bound for ${\bb N}\setminus\bigcap_{a\in S}\tau(a)$, so for every $t\geq t_0$ we have that $t\in\bigcap_{a\in S}\tau(a)$ meaning $P^t(a,a)>0$ for all $a\in S$.
+
+Since $P$ is irreducible, for every $a,b\in S$ there exists an $n=n(a,b)$ such that $P^n(a,b)>0$.
+Now $n$ is bound by $\abs S$ and therefore we can define $n_0=\max_{a,b\in S}n(a,b)$ and so for every $r\geq t_0+n_0$ we have that $r-n_0\geq t_0$ and so $P^{r-n_0}(a,a)>0$.
+Thus
+$$ P^r(a,b) \geq P^{r-n_0}(a,a)P^{n_0}(a,b) > 0 $$
+so $r_0=t_0+n_0$ satisfies the condition.
+\qed
+
+\blemm
+
+    Again suppose $P$ is irreducible and aperiodic, and let $\pi$ be its unique stationary distribution.
+    Then there exists an $0<\alpha<1$ and a constant $c>0$ such that for every $k\in{\bb N}$ and every distribution vector $v$,
+    $$ \norm{vP^k-\pi}_1 \leq c\alpha^k $$
+    where $\norm{\,\cdot\,}_1$ is the $1$-norm on ${\bb R}^n$: $\norm{u}_1=\sum_{k=1}^n\abs{u_i}$.
+
+\elemm
+
+By the previous lemma, there exists an $r>0$ such that $P^r>0$ (meaning every coefficient of $P^r$ is positive).
+Since $P$ is finite, there exists a $0<\delta<1$ such that for every $a,b\in S\colon P^r(a,b)\geq\delta\pi_b$.
+Let $\Pi$ be the matrix whose rows are all $\pi$.
+Then let us define the matrix $Q$ by
+$$ P^r = \delta\Pi + (1-\delta)Q $$
+and since $P^r\geq\delta\Pi$ (pointwise), we have $Q\geq0$ (pointwise).
+Now notice that $\Pi$ is stochastic since $(\Pi{\bf1})_i=\pi{\bf1}=1$, and so $Q$ is also stochastic:
+$$ {\bf1} = P^r{\bf1} = \delta{\bf1} + (1-\delta)Q{\bf1} \implies (1-\delta){\bf1} = (1-\delta)Q{\bf1} $$
+and since $\delta<1$, $1-\delta\neq0$.
+Let us define $\theta\coloneqq1-\delta$ and we will prove by induction that for all $k\geq1$,
+$$ P^{rk} = (1-\theta^k)\Pi + \theta^kQ^k $$
+for $k=1$ this is trivial.
+For the induction step,
+$$ P^{r(k+1)} = P^{rk}P^r = \bigl((1-\theta^k)\Pi + \theta^kQ^k\bigr)P^r = (1-\theta^k)\Pi P^r + \theta^kQ^kP^r $$
+Since $\Pi P=\Pi$, we have that $\Pi P^r=\Pi$ and so this is equal to
+$$ = (1-\theta^k)\Pi + \theta^k\bigl((1-\theta)Q^k\Pi + \theta Q^{k+1}\bigr) = (1-\theta^k)\Pi + \theta^k(1-\theta)Q^k\Pi + \theta^{k+1}Q^{k+1} $$
+Now since $Q^k$ is stochastic and $\Pi$'s columns are constant, $Q^k\Pi=\Pi$.
+And so this is equal to
+$$ = (1-\theta^k+\theta^k-\theta^{k+1})\Pi + \theta^{k+1}Q^{k+1} = (1-\theta^{k+1})\Pi + \theta^{k+1}Q^{k+1} $$
+as required.
+
+And so now we have for all $j\geq0$, $P^{rk+j} = (1-\theta^k)\Pi + \theta^kQ^kP^j$ and so
+$$ P^{rk+j} - \Pi = \theta^k\bigl(Q^kP^j - \Pi\bigr) $$
+Since $Q^kP^j$ and $\Pi$ are all stochastic matrices and thus their coefficients all are bound by $1$, the coefficients of $Q^kP^j-\Pi$ all have an absolute value bound by $1$ as well.
+Now since $(v\Pi)_i$ is equal to $v$ times the $i$th column of $\Pi$ which is $\pi_i{\bf1}$, we have $(v\Pi)_i=\pi_iv{\bf1}=\pi_i$ (since $v$ is a distribution, $v{\bf1}=1$).
+And so $\pi=v\Pi$, so
+$$ \norm{vP^{rk+j}-\pi}_1 = \norm{vP^{rk+j}-v\Pi}_1 = \norm{v(P^{rk+j}-\Pi)}_1 = \theta^k\norm{v(Q^kP^j-\Pi)}_1 $$
+since $Q^kP^j-\Pi$'s coefficients are all bound by $1$, the norm is bound by a constant (which is the norm of $v$ times the matrix of all ones, since $v$ is positive).
+So we have that $\norm{vP^{rk+j}-\pi}_1\leq c\theta^k$ and finding the appropriate values, we can bound this by some $c'\alpha^{rk+j}$.
+\qed
+
+\bthrm
+
+    Let $P$ be the transition matrix of an irreducible aperiodic Markov chain, and let $\pi$ be its unique stationary distribution.
+    Then for every initial distribution $v$, $vP^n\xvarrightarrow{n\to\infty}\pi$ pointwise (meaning $(vP^n)_i\xvarrightarrow{n\to\infty}\pi_i$).
+    Since $(vP^n)_i=\probof[v]{X_n=i}$, equivalently $\probof[v]{X_n=i}\xvarrightarrow{n\to\infty}\pi_i$ or $X_n\xvarrightarrow{\,d\,}\pi$.
+
+\ethrm
+
+So we must simply show that $\abs{(vP^n)_i-\pi_i}\xvarrightarrow{n\to\infty}0$.
+This is an immediate consequence of the previous lemma, which gave us that $\norm{vP^n-\pi}_1\leq c\alpha^n$ and so in particular $\norm{vP^n-\pi}_1\xvarrightarrow{n\to\infty}0$.
+Since $\norm{vP^n-\pi}_1=\sum_{i=1}^N\abs{(vP^n)_i-\pi_i}$, certainly $\abs{(vP^n)_i-\pi_i}\xvarrightarrow{n\to\infty}0$, as required.
+(In general convergence in the $p$-norms of ${\bb R}^N$ is equivalent to pointwise convergence.)
+\qed
+
+\bcoro
+
+    If $P$ is a stochastic matrix then all of its eigenvalues are bound by $1$ (in absolute value).
+
+\ecoro
+
+Let $\gamma$ be an eigenvalue of $P$, then there exists a vector $v$ such that $Pv=\lambda v$.
+Let $j$ be the state in $S$ such that $\abs{v_j}=\max_{i\in S}\abs{v_i}$ and so
+$$ \abs\lambda\abs{v_j} = \abs{(Pv)_j} = \abs{\sum_{i\in S}P_{ji}v_i} \leq \sum_{i\in S}P_{ji}\abs{v_i} \leq \abs{v_j}\sum_{i\in S}P_{ji} = \abs{v_j} $$
+Thus $\abs\lambda\leq1$.
+\qed
+
+\bdefn
+
+    Let $\mu$ and $\nu$ be two be two probability measures over the same $\sigma$-algebra ${\cal F}$, then we define their {\emphcolor total variation} to be
+    $$ \norm{\mu-\nu}_{\rm TV} = \sup_{A\in{\cal F}}\abs{\mu(A)-\nu(A)} $$
+    This is also denoted $d_{\rm TV}(\mu,\nu)$, and this is in fact a metric over the space of probability measures on ${\cal F}$.
+
+\edefn
+
+\bdefn
+
+    Let $P$ be the transition matrix of an irreducible Markov chain whose stationary distribution is $\pi$, the we define
+    $$ d(k) = \max_{j\in S}d_{\rm TV}(e_jP^k,\pi) $$
+    Since $e_jP^k$ and $\pi$ are both distributions, they can be viewed as probability measures, and so we can discuss their total variation.
+    $e_jP^k$ is the distribution of $X_k$ if $X_0=j$, and so $d(k)$ gives us the maximum total variation of the distribution of $X_k$ and $\pi$ over all possible initial states.
+    Let us also define the {\emphcolor mixing time} to be
+    $$ t_{\rm mix}(\epsilon) = \min\set{k}[d(k)<\epsilon] $$
+    $t_{\rm mix}(\epsilon)$ gives us the minimum $k$ where the total variation of the distribution $X_k$ and $\pi$ is less than $\epsilon$, independent of the initial state.
+    Though generally if we talk about the ``mixing time'' of a Markov chain, we set $\epsilon=\frac14$.
+    And finally we also define
+    $$ \bar d(k) = \max_{i,j\in S}d_{\rm TV}(e_iP^k,e_jP^k) $$
+
+\edefn
+
+By the triangle inequality, $\bar d(k)\leq2d(k)$.
+And in fact $d(k)\leq\bar d(k)$ so
+$$ d(k) \leq \max_{i,j\in S}\norm{e_iP^k-e_jP^k}_{\rm TV} $$
+
+\bdefn
+
+    A {\emphcolor coupling} of two probability measures $\mu$ and $\nu$ over the same $\sigma$-algebra ${\cal F}$ is a pair of random variables $(X,Y)$ such that $X\sim\mu$ and $Y\sim\nu$.
+    Formally, a coupling is a new probability space and random variables whose codomain is ${\cal F}$ such that for every $A\in{\cal F}$, $\probof{X\in A}=\mu(A)$ and $\probof{Y\in A}=\nu(A)$.
+
+\edefn
+
+\bprop
+
+    If $\mu$ and $\nu$ are probability measures over the same $\sigma$-algebra, then
+    $$ \norm{\mu-\nu}_{\rm TV} \leq \inf\set{\probof{X\neq Y}}[\hbox{$(X,Y)$ is a coupling of $\mu$ and $\nu$}] $$
+
+\eprop
+
+Let $(X,Y)$ be a coupling and $A\in{\cal F}$ then
+$$ \mu(A) - \nu(A) = \probof{X\in A} - \probof{Y\in A} \leq \probof{X\in A,Y\notin A} \leq \probof{X\neq Y} $$
+and taking the infimum over all couplings $(X,Y)$ preserves this inequality.
+\qed
+
+In fact, there is actually an equality here but the other direction is harder to prove.
+
+\bthrm
+
+    Suppose $\set{X_n}$ and $\set{Y_n}$ are two Markov chains with the same transition matrix $P$.
+    Further suppose that if $X_s=Y_s$ then $X_t=Y_t$ for all $t\geq s$, then
+    $$ \norm{e_xP^t-e_yP^t}_{\rm TV} \leq \probof{X_t\neq Y_t}[X_0=x,Y_0=y] $$
+
+\ethrm
+
+This is as $e_xP^t$ and $e_yP^t$ are the distributions of $X_t$ and $Y_t$ under the assumption that $X_0=x$ and $Y_0=y$.
+And $(X_t,Y_t)$ is certainly a coupling of these distributions in $\probof{\,\cdot\,}[X_0=x,Y_0=y]$.
+\qed
+
+This means that if $\set{X_n}$ is a Markov chain, and $\set{Y_n}$ is some other Markov chain with the same transition matrix then $d(k)$ (for either $\set{X_n}$ or $\set{Y_n}$) can be bound by:
+$$ d(k) \leq \max_{i,j\in S}\probof{X_k\neq Y_k}[X_0=i,Y_0=j] $$
+
+\bexam
+
+    What is the mixing time of the random walk on the circle $C_N$ (this is the graph of $N$ nodes, $\set{v_1,\dots,v_N}$ with the edges $\set{v_i,v_i}$ and $\set{v_i,v_{i+1}}$)?
+    Let us define two Markov chains $X_n$ and $Y_n$ where at every step we choose a random chain with equal probability and that will be the chain which will make the next step.
+    As soon as the two chains intercept, they step together.
+    Let $T$ be the time that the two chains intercept, then by above and Markov's inequality
+    $$ d(t) \leq \max_{x,y}\probof[x,y]{T>t} \leq \max_{x,y}\frac{\expecof[x,y]T}t $$
+    The 
+
+\eexam
 
 \bye
 
