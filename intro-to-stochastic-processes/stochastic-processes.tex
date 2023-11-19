@@ -203,6 +203,8 @@ Notice that we can draw a diagram for every stochastic matrix and it will be the
 Meaning every stochastic matrix is the transition matrix of some Markov chain, and every transition matrix is stochastic.
 Notice that the second condition for a matrix to be stochastic can be written as $P{\bf1}={\bf1}$ where ${\bf1}=(1,\dots,1)^\top$.
 
+\subsection{Hitting Times and Classifying States}
+
 \bdefn
 
     Let $\set{X_n}_{n\geq0}$ be a Markov chain over a state space $S$, and let $A\subseteq S$.
@@ -761,6 +763,8 @@ $$ \abs\lambda\abs{v_j} = \abs{(Pv)_j} = \abs{\sum_{i\in S}P_{ji}v_i} \leq \sum_
 Thus $\abs\lambda\leq1$.
 \qed
 
+\subsection{Mixing Times}
+
 \bdefn
 
     Let $\mu$ and $\nu$ be two be two probability measures over the same $\sigma$-algebra ${\cal F}$, then we define their {\emphcolor total variation} to be
@@ -769,6 +773,31 @@ Thus $\abs\lambda\leq1$.
 
 \edefn
 
+If $\mu$ and $\nu$ are discrete probability distributions on $\Omega$, then let $B=\set{x}[\mu(x)\geq\nu(x)]$, and let $A\subseteq\Omega$ be any event.
+Then for any $x\in A\cap B^c$, $\mu(x)-\nu(x)<0$ and so $\mu(A\cap B^c)-\nu(A\cap B^c)\leq0$.
+Thus
+$$ \mu(A) - \nu(A) = \mu(A\cap B) - \nu(A\cap B) + \mu(A\cap B^c) - \nu(A\cap B^c) \leq \mu(A\cap B) - \nu(A\cap B) $$
+and for every $x\in B\cap A^c$, $\mu(x)-\nu(x)\geq0$ and so $\mu(B\cap A^c)-\nu(B\cap A^c)\geq0$ so
+$$ \leq \mu(B) - \nu(B) $$
+And similarly we have that $\nu(A)-\mu(A)\leq\nu(B^c)-\mu(B^c)=\mu(B)-\nu(B)$.
+Thus we have that for every event $A$, $\abs{\mu(A)-\nu(A)}\leq\mu(B)-\nu(B)$ and so
+\multlines{
+    \norm{\mu-\nu}_{\rm TV} = \mu(B) - \nu(B) = \frac12\bigl(\mu(B) - \nu(B) + \nu(B^c) - \mu(B^c)\bigr) = \frac12\parens{\sum_{x\in B}\bigl(\mu(x)-\nu(x)\bigr) + \sum_{x\notin B}\bigl(\nu(x)-\mu(x)\bigr)}
+    \cr
+    &= \frac12\sum_{x\in\Omega}\abs{\mu(x)-\nu(x)}
+}
+the second equality is since $\mu(B)-\nu(B)=\nu(B^c)-\mu(B^c)$.
+So we have proven
+
+\bprop
+
+    If $\mu$ and $\nu$ are two discrete probability measures over the same space, then their total variation distance is equal to half of their $L^1$ distance, ie.
+    $$ \norm{\mu-\nu}_{\rm TV} = \frac12\sum_{x\in\Omega}\abs{\mu(x)-\nu(x)} $$
+
+\eprop
+
+This holds in particular for when $\mu$ and $\nu$ are distribution vectors.
+
 \bdefn
 
     Let $P$ be the transition matrix of an irreducible Markov chain whose stationary distribution is $\pi$, the we define
@@ -776,7 +805,7 @@ Thus $\abs\lambda\leq1$.
     Since $e_jP^k$ and $\pi$ are both distributions, they can be viewed as probability measures, and so we can discuss their total variation.
     $e_jP^k$ is the distribution of $X_k$ if $X_0=j$, and so $d(k)$ gives us the maximum total variation of the distribution of $X_k$ and $\pi$ over all possible initial states.
     Let us also define the {\emphcolor mixing time} to be
-    $$ t_{\rm mix}(\epsilon) = \min\set{k}[d(k)<\epsilon] $$
+    $$ t_{\rm mix}(\epsilon) = \min\set{k}[d(k)\leq\epsilon] $$
     $t_{\rm mix}(\epsilon)$ gives us the minimum $k$ where the total variation of the distribution $X_k$ and $\pi$ is less than $\epsilon$, independent of the initial state.
     Though generally if we talk about the ``mixing time'' of a Markov chain, we set $\epsilon=\frac14$.
     And finally we also define
@@ -831,9 +860,164 @@ $$ d(k) \leq \max_{i,j\in S}\probof{X_k\neq Y_k}[X_0=i,Y_0=j] $$
     As soon as the two chains intercept, they step together.
     Let $T$ be the time that the two chains intercept, then by above and Markov's inequality
     $$ d(t) \leq \max_{x,y}\probof[x,y]{T>t} \leq \max_{x,y}\frac{\expecof[x,y]T}t $$
-    The 
+    The expected hitting time of $k\in\set{0,\dots,N}$ for a random walk on the circle is $k(N-k)$ (this will be shown later), which takes a maximum at $k=\frac N2$, and so
+    $\max\expecof[x,y]T\leq\frac{N^2}4$.
+    And since we measure mixing times with $\epsilon=\frac14$ we get that if $\frac{N^2}{4t}\leq\frac14$, meaning $t\geq N^2$ (and in particular if $t=N^2$), then $d(t)\leq\frac14$.
+    So $t_{\rm mix}\leq N^2$.
 
 \eexam
+
+\subsection{Famous Markov Chains}
+
+In this subsection we will discuss various useful Markov chains.
+
+\smallskip
+{\bf 1 Gambler's Ruin}
+
+The first one we will discuss is called the {\it Gambler's Ruin}: suppose a gambler goes to a casino with the goal of winning $n$ dollars.
+If the gambler reaches his goal of $n$ dollars or fails and loses all his money (reaches $0$ dollars), he leaves the casino.
+Suppose he bets a single dollar each time, and has a fair chance of winning.
+We can ask two questions: how much time will it take for the gambler to leave the casino, and what is the probability that the gambler goes broke (reaches $0$ before $n$)?
+
+So we can define a Markov chain $X_n$ where $X_n$ is the amount of money the gambler has after $n$ bets.
+The transition matrix here is
+$$ P(i\to i+1) = P(i\to i-1) = \frac12 \hbox{ for $0<i<n$},\qquad P(0\to0) = P(n\to n) = 1 $$
+Let us define $\tau=\minof{T_0,T_n}$ which is the time the gambler will leave the casino.
+We make two claims:
+$$ \probof[k]{X_\tau=n} = \frac kn,\qquad \expecof[k]\tau = 4k(n-k) $$
+so if the gambler starts with $k$ dollars, the probability he gets his goal of $n$ dollars is $\frac kn$, and the expected time it takes him to leave the casino is $4k(n-k)$.
+Note that $X_\tau=n$ is equivalent to $T_n<T_0$.
+
+To prove this let us define $p_k=\probof[k]{X_\tau=n}$.
+Then $p_0=0$ and $p_n=1$.
+And using first step analysis,
+$$ p_k = \probof{T_n<T_0}[X_0=k] = \frac12\probof{T_n<T_0}[X_1=k+1] + \frac12\probof{T_n<T_0}[X_1=k-1] = \frac12p_{k+1} + \frac12p_{k-1} $$
+Now given the initial conditions, there must be a unique solution to this.
+And since $p_k=\frac kn$ works as a solution, it must be the unique solution.
+
+Let us denote $\mu_k=\expecof[k]\tau$, and then $\mu_0=\mu_n=0$.
+And we also get
+\lmultlines{
+    \mu_k = \expecof{\tau}[X_0=k] = \frac12\expecof\tau{X_1=k+1} + \frac12\expecof\tau[X_1=k-1]\cr
+    &= \frac12\bigl(1+\expecof\tau[X_0=k+1]\bigr) + \frac12\bigl(1+\expecof\tau[X_0=k-1]\bigr)\cr
+    &= 1 + \frac12\mu_{k-1} + \frac12\mu_{k+1}
+}
+Again, this must have a unique solution due to the initial conditions, and $4k(n-k)$ satisfies this.
+
+\smallskip
+{\bf 2 Coupon Collector}
+
+There are $n$ types of coupons, and we would like to collect them all.
+When we are given a coupon, the probability it is a specific type distributes uniformly.
+So let us define $X_k$ to be the number of types of coupons we have after collecting $k$ coupons, and so
+$$ P(i\to i) = \frac in,\qquad P(i\to i+1) = 1-\frac in $$
+$n$ is the only absorbing state and so all other states are transient and we will eventually be absorbed by $n$ with probability $1$.
+What is the expected time that we hit $n$ for the first time?
+Now, $T_{k+1}-T_k$ is the number of times that we get one of the $k$ types of coupons we already have, and so $T_{k+1}-T_k\sim{\rm Geo}\parens{1-\frac kn}$.
+Thus
+$$ \expecof[0]{T_n} = \sum_{k=0}^{n-1}\expecof[0]{T_{k+1}-T_k} = \sum_{k=0}^{n-1}\frac1{1-\frac kn} = n\sum_{k=1}^n\frac1k \sim n\log(n) $$
+
+What is the probability it took ``much more time'' to get to $n$?
+We claim
+$$ \probof{T_n>\ceil{n\log n+cn}}\leq e^{-c} $$
+Let $A_i$ be the probability that after $\ceil{n\log n+cn}$ time, we have not collected the $i$th coupon type.
+Then
+$$ \probof{T_n>\ceil{n\log n+cn}} = \probof{\bigcup_{i=1}^n A_i} \leq \sum_{i=1}^n\probof{A_i} = \sum_{i=1}^n\parens{1-\frac1n}^{\ceil{n\log n+cn}} $$
+since $1-x\leq e^{-x}$ this can be further bound by
+$$ \leq n\parens{e^{-\frac1n}}^{n\log n+cn} = ne^{-\log n-c} = e^{-c} $$
+as required.
+
+\smallskip
+{\bf 3 P\'olya Urn}
+
+In an urn there are two balls: one white and one black.
+At every step we choose an arbitrary ball and add a new one of the same color.
+Let us define $(B_k,W_k)$ to be the number of black and white balls, respectively.
+The state space is then $S={\bb N}^2$.
+The transistion probabilities are
+$$ P\bigl((i,j)\to(i+1,j)\bigr) = \frac i{i+j},\qquad P\bigl((i,j)\to(i,j+1)\bigr) = \frac j{i+j} $$
+
+Is $B_k$ a Markov chain?
+Well if we know $B_k$ then we know that $W_k=(k+2)-B_k$ since the total number of balls after $k$ steps is $k+2$.
+And so we can then determine the probability for transitioning, so it is indeed a Markov chain.
+But it is not homogeneus: in order to determine the transition probability we must use $k$: $\probof{B_{k+1}=i+1}[B_k=i]=\frac i{k+2}$, which is dependent on $k$.
+
+Nevertheless we claim that $B_k\sim{\rm Unif}\set{1,2,\dots,k+1}$.
+We prove this by induction: for $k=1$ this is trivial as the probabilities that $B_k=1$ and $B_k=2$ are the same.
+And if $B_{k-1}\sim{\rm Unif}\set{1,2,\dots,k}$ then
+\multlines{
+    \probof{B_k=j} = \probof{B_k=j}[B_{k-1}=j-1]\cdot\probof{B_{k-1}=j-1} + \probof{B_k=j}[B_{k-1}=j]\cdot\probof{B_{k-1}=j}\cr
+    &= \frac{j-1}{k+1}\cdot\frac1k + \parens{1-\frac{k-1}{k+1}}\cdot\frac1k = \frac1k\cdot\parens{1-\frac1{k+1}} = \frac1{k+1}
+}
+as required.
+
+\smallskip
+{\bf 4 Random Walks on ${\bb Z}$}
+
+This is a homogeneus chain on ${\bb Z}$ whose transitions are
+$$ P(k\to k+1)=p,\quad P(k\to k)=r,\quad P(k\to k-1)=q\qquad\qquad (p+q+r=1) $$
+We will first focus on the case that $r=0$ and $p=q=\frac12$, which is a {\it fair} walk.
+In this case we claim that for all $t,j,k>0$,
+$$ \probof[k]{T_0<t,X_t=j} = \probof[k]{X_t=-j},\qquad \probof[k]{T_0<t,X_t>0} = \probof[k]{X_t<0} $$
+This is as if $T_0=s$ then the walk starting from time $s$ is equivalent to the walk starting from $X_0=0$.
+Thus
+$$ \probof[k]{T_0=s,X_t=j} = \probof[k]{T_0=s}\cdot\probof[0]{X_{t-s}=j} $$
+by symmetry this is equal to
+$$ = \probof[k]{T_0=s}\cdot\probof[0]{X_{t-s}=-j} = \probof[k]{T_0=s,X_t=-j} $$
+And so we get that
+$$ \probof[k]{T_0<t,X_t=j} = \sum_{s<t}\probof[k]{T_0=s,X_t=j} = \sum_{s<t}\probof[k]{T_0=s,X_t=-j} = \probof[k]{T_0<t,X_t=-j} $$
+if we start at $k$ and at time $t$, $X_t=-j<0$ then necessarily $T_0<t$ so this is equal to $\probof[k]{X_t=-j}$ as required.
+And now
+$$ \probof[k]{T_0<t,X_t>0} = \sum_{j>0}\probof[k]{T_0<t,X_t=s} = \sum_{j>0}\probof[k]{X_t=-s} = \probof[k]{X_t<0} $$
+as required.
+
+We further claim that for every $k>0$,
+$$ \probof[k]{T_0>t} = \probof[0]{-k<X_t\leq k} $$
+This is as
+$$ \probof[k]{X_t>0} = \probof[k]{X_t>0,T_0\leq t}+\probof[k]{T_0>t} $$
+now we showed that $\probof[k]{X_t>0,T_0\leq t}=\probof[k]{X_t<0}$ and by symmetry about $k$ this is equal to $\probof[k]{X_t>2k}$.
+Thus we get that
+$$ \probof[l]{T_0>t} = \probof[k]{X_t>0} - \probof[k]{X_t>2k} = \probof[k]{0<X_t\leq 2k} = \probof[0]{-k<X_t\leq k} $$
+as required.
+
+Notice that if we start at $X_0=0$ then in order to get to $X_t=k$, we must take $r$ steps to the right and $\ell$ steps to the left where $r+\ell=t$ and $r-\ell=k$.
+This means that $r=\frac{t+k}2$ and $\ell=\frac{t-k}2$.
+Thus
+$$ \probof[0]{X_t=k} = \cases{\displaystyle\binom{t}{\frac{t-k}2}2^{-t} & $t\equiv k\pmod2$\cr\noalign{\kern3pt} \hfil0 & else} $$
+And so by Stirling we get
+$$ \probof[0]{X_t=k} \leq \frac1{\sqrt\pi}\cdot\frac1{\sqrt t} = \frac c{\sqrt t} $$
+And this means that
+$$ \probof[k]{T_0>t} = \probof[0]{-k<X_t\leq k} = \sum_{j=-k+1}^k\probof[0]{X_t=j} \leq \frac{2ck}{\sqrt t} $$
+
+\bprop
+
+    For a fair walk on ${\bb Z}$, every state is transient but the expected return time to each state is infinite.
+
+\eprop
+
+We will prove that every state is transient in two ways.
+For the first way, let us define $A_k=\set{T_{\pm2^k}<T_0}$ the event that we get to $2^k$ or $-2^k$ before $0$.
+And so $\probof[0]{A_{k+1}}[A_k]=\probof[2^k]{T_0<T_{2^{k+1}}}=\frac12$ since the distance between $0$ and $2^k$ is the same as the distance between $2^k$ and $2^{k+1}$.
+Since $\probof[0]{A_1}=\frac12$ and $\probof[0]{A_k}=\probof[0]{A_k}[A_{k-1}]\cdot\probof[0]{A_{k-1}}$, by induction $\probof[0]{A_k}=2^{-k}$.
+And
+$$ \probof[0]{T_0<\infty} = \probof[0]{\bigcap_{k=1}^\infty A_k} = \lim_{n\to\infty}\probof{A_n} = \lim_{n\to\infty}2^{-n} = 0 $$
+where the second equality is since $\set{A_k}$ is a decreasing sequence and so this is due to the continuity of probability.
+So $0$ is recurrent and since all states are connected, so is every other state.
+
+For the second proof, by Stirling $\probof[0]{X_{2n}=0}=2^{-2n}\binom{2n}n\geq\frac c{\sqrt n}$ and so
+$$ \sum_{n=1}^\infty\probof[0]{X_n=0} = \sum_{n=1}^\infty\probof[0]{X_{2n}=0} \geq \sum_{n=1}^\infty\frac c{\sqrt n} = \infty $$
+and since $N_0(0)=\sum_{n=1}^\infty\chi\set{X_n=0}$, we get that
+$$ \expecof{N_0(0)} = \sum_{n=1}^\infty\probof{X_n=0} = \infty $$
+which means that $0$ is recurrent (since $N_0(0)\sim{\rm Geo}(1-f_0)$ if $f_0<0$ then its expected value would be finite, so $f_0=1$ meaning $0$ is recurrent).
+
+To compute the expected return time, let us denote $\alpha=\expecof[1]{T_0}=\expecof[n]{T_{n-1}}$.
+And by first step analysis,
+$$ \alpha = \expecof[1]{T_0} = \frac12\expecof{T_0}[X_1=0] + \frac12\expecof{T_0}[X_1=2] = \frac12 + \frac12\bigl(1+\expecof[2]{T_0}\bigr) $$
+Now, $\expecof[2]{T_0}=\expecof[2]{T_1}+\expecof[1]{T_0}$ since this is the expected time to go from $2$ to $1$ to $0$ (the only path from $2$ to $0$), and this is equal to $2\alpha$.
+Thus we get that $1+\alpha=\alpha$.
+But no finite number satisfies this, so $\alpha=\infty$.
+And so we have show that
+$$ \probof[0]{T_0<\infty} = 1,\qquad \expecof[0]{T_0} = \infty \qed $$
 
 \bye
 
