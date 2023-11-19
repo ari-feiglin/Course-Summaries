@@ -1019,5 +1019,84 @@ But no finite number satisfies this, so $\alpha=\infty$.
 And so we have show that
 $$ \probof[0]{T_0<\infty} = 1,\qquad \expecof[0]{T_0} = \infty \qed $$
 
+\subsection{Asymptotic Behavior}
+
+\bdefn
+
+    Let $\set{A_n}_{n=1}^\infty\subseteq{\cal F}$ be a sequence of events, then let us define
+    $$ \displaylines{
+        \set{A_n\hbox{ i.o.}} = \set{\omega\in\Omega}[(\forall k)(\exists m\geq k)\omega\in A_m] = \bigcap_{k=1}^\infty\bigcup_{m=k}^\infty A_m = \limsup A_n\cr
+        \set{A_n\hbox{ a.e.}} = \set{\omega\in\Omega}[(\exists k)(\forall m\geq k)\omega\in A_m] = \bigcup_{k=1}^\infty\bigcap_{m=k}^\infty A_m = \liminf A_n
+    } $$
+    So $\set{A_n\hbox{ i.o.}}$ is the set of all elements which are in infinitely many $A_n$s, and $\set{A_n\hbox{ a.e.}}$ is the set of all elements which are in all but finitely many $A_n$s.
+
+\edefn
+
+Notice that in general
+$$ \set{A_n\hbox{ i.o.}}^c = \set{A_n^c\hbox{ a.e.}},\qquad \set{A_n\hbox{ a.e.}} \subseteq \set{A_n\hbox{ i.o.}} $$
+
+So for example, let $(\set{0,1}^{\bb N},{\cal F},{\bb P})$ be the probability space of the flipping of a fair coin.
+Then let us define $A_n=\set{\omega}[\omega_n=1]$, the event that the $n$th flip resulted in $1$.
+Then $\set{A_n\hbox{ i.o.}}$ is the set of all $\omega$ with infinitely many $1$s, and $\set{A_n\hbox{ a.e.}}$ is the set of all $\omega$s with finitely many $0$s.
+Notice that all $A_n$ are independent since the coin flips are independent and so
+$$ \probof{A_n\hbox{ a.e.}} = \probof{\bigcup_k\bigcap_{m\geq k}A_m} \leq \sum_k\probof{\bigcap_{m\geq k}A_m} = \sum_k\lim_{n\to\infty}\probof{\bigcap_{m=k}^{k+n}A_m} =
+\sum_k\lim_n\prod_{m=k}^{k+n}\probof{A_m} = \sum_k\lim_n\frac1{2^n} = \sum_k0 = 0 $$
+
+\blemm[title=Borel-Cantelli Lemma, name=bclemm]
+
+    Let $\set{A_n}_{n=1}^\infty$ be a sequence of events, then
+    \benum
+        \item If $\sum\probof{A_n}<\infty$ then $\probof{A_n\hbox{ i.o.}}=0$.
+        \item If $\sum\probof{A_n}=\infty$ and $\set{A_n}$ is independent then $\probof{A_n\hbox{ i.o.}}=1$.
+    \eenum
+
+\elemm
+
+For the first, due to the continuity of measures
+$$ \probof{A_n\hbox{ i.o.}} = \lim_{n\to\infty}\probof{\bigcup_{k=n}^\infty A_k} \leq \lim_{n\to\infty}\sum_{k=n}^\infty\probof{A_k} = 0 $$
+the final equality is since the series $\sum_{k=1}^\infty\probof{A_k}$ converges and so its tail must converge to zero.
+For the second,
+$$ \probof{A_n\hbox{ i.o.}} = 1 - \probof{\bigcup_{m=1}^\infty\bigcap_{k=m}^\infty A_k^c} \geq 1 - \sum_{m=1}^\infty\probof{\bigcap_{k=m}^\infty A_k^c} $$
+We will show that for every $m$, $\probof{\bigcap_{k=m}^\infty A_k^c}=0$ and this will be sufficient.
+$$ \probof{\bigcap_{k=m}^\infty A_k^c} = \lim_{n\to\infty}\probof{\bigcap_{k=m}^{m+n}A_k^c} = \lim_{n\to\infty}\prod_{k=m}^{m+n}\probof{A_k^c} = \lim_{n\to\infty}\prod_{k=m}^{m+n}(1-\probof{A_k}) $$
+since $1-x\leq e^{-x}$,
+$$ \leq \lim_{n\to\infty}\exp\parens{-\sum_{k=m}^{m+n}\probof{A_k}} $$
+Since the sum goes to $-\infty$, this goes to zero, as required.
+\qed
+
+\bexam
+
+    We say that a number is {\it normal} if in its base $10$ representation, every finite string occurs infinitely many times.
+    What is the probability that a number chosen uniformly in $[0,1]$ is normal?
+    Suppose we choose $U=0.X_1X_2X_3\dots\in[0,1]$ where $X_i$ is uniformly chosen, $X_i\sim{\rm Unif}\set{0,\dots,9}$.
+    Let us set a finite string $S=S_1\cdots S_N$ and define
+    $$ A_i = \set{X_{iN+1}=S_1,X_{iN+2}=S_2,\dots,X_{(i+1)N}=S_N} $$
+    $A_i$ is the event that the string $S$ occurs in $U$ beginning at index $iN+1$.
+    $\set{A_i}$ are all independent since $A_i$ looks at a disjoint set of $X_k$s than $A_j$ does.
+    And $\probof{A_i}=\frac1{10^N}$ for every $i$, so $\sum_{i=1}^\infty\probof{A_i}=\infty$ and so by the \refmath{bclemm} we have that $\probof{A_n\hbox{ i.o}}=1$.
+    Meaning that the probability $S$ occurs infinitely many times in $U$ is $1$.
+
+    Notice that this does not mean the probability of $U$ being normal is $1$, rather that the probability that $U$ has an arbitrary finite string occurring infinitely many times is $1$.
+    But this does not necessarily mean that the probability of every finite string occurring infinitely many times is $1$.
+    Fortunately it does, since if we denote the events by $A_i^S$, then we want to compute the probability of $\bigcap_S(A_n^S\hbox{ i.o.})$.
+    Now, the countable intersection of probability-$1$ events also has probability $1$: if $\probof{B_n}=1$ then
+    $$ \probof{\bigcap_{n=1}^\infty B_n} = 1 - \probof{\bigcup_{n=1}^\infty B_n^c} \geq 1 - \sum_{n=1}^\infty\probof{B_n^c} = 1 $$
+    And so $\probof{\bigcap_S(A_n^S\hbox{ i.o.})}=1$ as required.
+
+\eexam
+
+\bexam
+
+    Suppose we have a random process $\set{X_n}$ where each step is independent and distributes the same.
+    Let us define $S_0=0$ and $S_n=\sum_{i=1}^n X_i$ then we claim
+    $$ \probof{S_n=S_m\hbox{ i.o.}} \in \set{0,1} $$
+    Suppose there exists an $N$ such that $p=\probof{X_1+\cdots+X_N=0}>0$ then let us define $A_i=\set{\sum_{j=iN}^{(i+1)N}X_j=0}$ then since $X_i$ are all independent and have the same distribution,
+    $\probof{A_i}=p>0$ for all $i$.
+    Then since $A_i$ are also all independent, by the \refmath{bclemm}, $\probof{A_i\hbox{ i.o.}}=\probof{S_{iN-1}=S_{(i+1)N}\hbox{ i.o.}}=1$ and this implies $\probof{S_n=S_m\hbox{ i.o}}=1$.
+    Alternatively, for every $N$, $\probof{X_1+\cdots+X_N}=0$ and this means that we can never have that $S_n=S_m$ for $n>m$, as then $X_{n+1}+\cdots+X_m=0$.
+    Thus $\probof{(\exists n>m)S_n=S_m}=0$, as required.
+
+\eexam
+
 \bye
 
