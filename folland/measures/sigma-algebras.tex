@@ -166,3 +166,91 @@ $$ \parens{\bigdcup_{m=1}^nA_m}^c = \bigcap_{m=1}^n\bigdcup_{j=1}^{J_m}B^j_m = \
 which is a disjoint union of elements in ${\cal E}$, and so is in ${\cal A}$.
 \qed
 
+\bexerc
+
+    A family of sets ${\cal R}\subseteq\powsetof X$ is called an {\emphcolor ring} if it is closed under finite unions and differences (meaning if $E,F\in{\cal R}$ then $E\setminus F\in{\cal R}$).
+    A ring closed under countable unions is called a {\emphcolor $\sigma$-ring}.
+    Show that
+    \benum
+        \item Rings (respectively $\sigma$-rings) are closed under finite (respectively countable) intersections,
+        \item If ${\cal R}$ is a ring (respectively $\sigma$-ring), then ${\cal R}$ is an algebra (respectively $\sigma$-algebra) if and only if $X\in{\cal R}$,
+        \item If ${\cal R}$ is a $\sigma$-ring then ${\cal F}_1=\set{E\subseteq X}[E\in{\cal R}\hbox{ or }E^c\in{\cal R}]$ is a $\sigma$-algebra,
+        \item If ${\cal R}$ is a $\sigma$-ring then ${\cal F}_2=\set{E\subseteq X}[E\cap F\in{\cal R}\hbox{ for all }F\in{\cal R}]$.
+    \eenum
+
+\eexerc
+
+\benum
+    \item If ${\cal R}$ is a ring then let $A,B\in{\cal R}$ and so $A\setminus(A\setminus B)=A\cap(A\cap B^c)^c=A\cap(A^c\cup B)=A\cap B\in{\cal R}$ as required.
+    If ${\cal R}$ is a $\sigma$-ring and $\set{A_n}_{n=1}^\infty\subseteq{\cal R}$ then
+    $$ A_1\setminus\parens{\bigcup_{n=1}^\infty A_1\setminus A_n} = \bigcap_{n=1}^\infty A_1\cap A_n = \bigcap_{n=1}^\infty A_n $$
+    so it is closed under countable intersections.
+    \item Obviously if ${\cal R}$ is a ring then $X\in{\cal R}$.
+    Conversely then ${\cal R}$ is nonempty and closed under unions and complements (since $A^c=X\setminus A$), and is thus a algebra.
+    And if it is a $\sigma$-ring it is further closed under countable unions and is thus a $\sigma$-algebra.
+    \item A ring is nonempty and so ${\cal F}_1$ is nonempty.
+    ${\cal F}_1$ is also obviously closed under complements.
+    And if $\set{A_n}_{n=1}^\infty\subseteq{\cal F}_1$ then if for every $n$, $A_n\in{\cal R}$ so is their union.
+    Otherwise let $I=\set{i}[A_i\in{\cal R}]$ and $J=\set{j}[A_j^c\in{\cal R}]$, then
+    $$ \parens{\bigcup_{n=1}^\infty A_n}^c = \bigcap_{j\in J}A_j^c\setminus\bigcup_{i\in I}A_i $$
+    since $\bigcap_{j\in J}A_j^c\in{\cal R}$ since $\sigma$-rings are closed under countable intersections by (1), and $\bigcup_{i\in I}A_i\in{\cal R}$, and rings are closed under differences, this means
+    that $\parens{\bigcup_{n=1}^\infty A_n}^c\in{\cal R}$ so $\bigcup_{n=1}^\infty A_n\in{\cal F}_1$ as required.
+    \item Since $X\in{\cal F}_2$, ${\cal F}_2$ is nonempty.
+    And if $E\in{\cal F}_2$ then $E\cap F\in{\cal R}$ for every $F\in{\cal R}$, since $E^c\cap F=F\setminus(E\cap F)\in{\cal R}$, this means that $E^c\in{\cal F}_1$.
+    And if $\set{A_n}_{n=1}^\infty\in{\cal F}_2$ then for every $F\in{\cal R}$, $F\cap\bigcup_{n=1}^\infty A_n=\bigcup_{n=1}^\infty A_n\cap F\in{\cal R}$ as required.
+\eenum
+
+\bexerc
+
+    Let ${\cal M}$ be an infinite $\sigma$-algebra, then
+    \benum
+        \item ${\cal M}$ contains an infinite sequence of nonempty disjoint sets,
+        \item ${\rm card}({\cal M})\geq{\frak c}$.
+    \eenum
+
+\eexerc
+
+\benum
+    \item Let $A_1\in{\cal M}$ be a nonempty set such that $\set{B\setminus A_1}[B\in{\cal M}]$ is infinite.
+    Otherwise for every $A\in{\cal M}$, we'd have that $\set{B\setminus A}[B\in{\cal M}]$ and $\set{B\cap A}[B\in{\cal M}]$ are finite (the second is for $A^c$), but ${\cal M}$ is just
+    $$ {\cal M} = \set{(B\setminus A)\cup(B\cap A)}[B\in{\cal M}] \subseteq \set{B\setminus A}[B\in{\cal M}] \cup \set{B\cap A}[B\in{\cal M}] $$
+    and so ${\cal M}$ would be finite, in contradiction.
+
+    Now similarly, for every $n$, we claim that if $A_1,\dots,A_n\in{\cal M}$ such that $\set{B\setminus\bigcup_{k=1}^n A_k}[B\in{\cal M}]$ is infinite, then there exists an $A_{n+1}$ disjoint from
+    $A_1,\dots A_n$ such that $\set{B\setminus\bigcup_{k=1}^{n+1}A_k}[B\in{\cal M}]$ is infinite.
+    There must exist such an $A_{n+1}$ as otherwise for every $A$,
+    $$ \set{B\setminus\bigcup_{k=1}^nA_k}[B\in{\cal M}] \subseteq \set{B\setminus\parens{\bigcup_{k=1}^nA_k\cup A}}[B\in{\cal M}]\cup\set{B\setminus\parens{\bigcup_{k=1}^nA_k\cup A'}}[B\in{\cal M}] $$
+    ($A'=A^c\setminus\bigcup_{k=1}^nA_k$) which is finite, in contradiction.
+    And so we have inductively created an infinite sequence of disjoint sets, as required.
+    \item Let $\set{A_n}_{n=1}^\infty$ be an infinite sequence of nonempty disjoint sets, then we can define an injection $\powsetof{{\bb N}}\to{\cal M}$ by $I\varmapsto\bigcup_{i\in I}A_i$.
+    Since all $A_n$ are disjoint, this is indeed an injection, and since ${\rm card}\bigl(\powsetof{{\bb N}}\bigr)={\frak c}$, this means that ${\rm card}({\cal M})\geq{\frak c}$.
+\eenum
+
+\bexerc
+
+    Show that an algebra ${\cal A}$ is a $\sigma$-algebra if and only if it is closed under countable increasing unions.
+
+\eexerc
+
+If ${\cal A}$ is a $\sigma$-algebra it is necessarily closed under countable increasing unions.
+Conversely suppose $\set{A_n}_{n=1}^\infty\subseteq{\cal A}$ then let us define $B_n=\bigcup_{k=1}^n A_k\in{\cal A}$ and $B_n\subseteq B_{n+1}$ so
+$$ \bigcup_{n=1}^\infty A_n = \bigcup_{n=1}^\infty B_n \in {\cal A} $$
+
+\bexerc
+
+    If ${\cal M}$ is the $\sigma$-algebra generated by ${\cal E}$ then it is the union of $\sigma$-algebras generated by ${\cal F}$ as ${\cal F}$ ranges over all countable subsets of ${\cal E}$.
+
+\eexerc
+
+Let us define
+$$ {\cal M}' = \bigcup\set{{\cal M}({\cal F})}[{\cal F}\subseteq{\cal E}\hbox{ is countable}] $$
+We will prove that ${\cal M}'$ is a $\sigma$-algebra.
+Firstly obviously ${\cal M}'$ is nonempty.
+If $E\in{\cal M}'$ then it is in some ${\cal M}({\cal F})$ and therefore so is $E^c$.
+And if $\set{A_n}_{n=1}^\infty\subseteq{\cal M}'$ then suppose $A_n\in{\cal M}({\cal F}_n)$ and then ${\cal F}=\bigcup_{n=1}^\infty{\cal F}_n$ is a countable subset of ${\cal E}$ and
+$A_n\in{\cal M}({\cal F}_n)\subseteq{\cal M}({\cal F})$ for every $n$ so $\bigcup_{n=1}^\infty A_n\in{\cal M}({\cal F})\subseteq{\cal M}'$.
+So ${\cal M}'$ is indeed a $\sigma$-algebra.
+Now suppose $A\in{\cal E}$ then it is certainly in ${\cal M}(\set A)\subseteq{\cal M}'$, thus ${\cal M}={\cal M}({\cal E})\subseteq{\cal M}'$.
+And if $A\in{\cal M}'$ then it is in some ${\cal M}({\cal F})\subseteq{\cal M}({\cal E})={\cal M}$.
+So ${\cal M}={\cal M}'$ as required.
+
