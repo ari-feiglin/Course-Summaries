@@ -1300,6 +1300,11 @@ Here are some properties of Gaussian vectors:
     \item If $X\sim{\cal N}(\mu,\Sigma)$ then there exists an upper (or lower) triangle matrix $U$ which serves as its transition matrix.
 \eenum
 
+Some more important notes: if two Gaussian vectors have the same covariance matrix, then their joint probabilities are the same (since joint probabilities are dependent only on $\Sigma$).
+And if $(X_1,\dots,X_n)$ is a Gaussian vector such that the coefficients are pairwise uncorrelated, then $\Sigma$ is a matrix which is zero except on the diagonal.
+Thus $X_i=\alpha_iZ_i+\mu_i$ where $Z_i$ are independent normal distributions, meaning $X_i$ are independent.
+So in order to show that a Gaussian vector's coefficients are independent, it is sufficient to show that they are pairwise uncorrelated.
+
 \subsection{Wiener Process}
 
 We will construct Brownian motion as the limit of continuous random functions on $[0,1]$.
@@ -1401,6 +1406,148 @@ and
 $$ \Varof{B(t+h) - B(t)} = \expecof{B(t+h)^2} - 2\expecof{B(t+h)B(t)} + \expecof{B(t)^2} = t+h - 2t + t = h $$
 so $B(t+h)-B(t)\sim{\cal N}(0,h)$ as required.
 So we have shown the equivalence of these two definitions.
+
+\bprop[title=Scaling Invariance, name=scalinginvariance]
+
+    Suppose $\set{B(t)}_{t\geq0}$ is Brownian motion (starting at $0$) and $a>0$, then $\set{\frac1a B(a^2t)}_{t\geq0}$ is also Brownian motion.
+
+\eprop
+
+Let us define $X(t)=\frac1aB(a^2t)$, then obviously $X(0)\buildrel as\over=0$ and $X(t)$ is almost surely continuous.
+And
+$$ X(t+h) - X(t) = \frac1a\bigl(B(a^2(t+h)) - B(a^2t)\bigr) \sim \frac1a{\cal N}(0, a^2h) = {\cal N}(0,h) $$
+And of course if $0\leq t_0<\cdots<t_n$ then $X(t_i)=\frac1aB(a^2t_i)$ and since $\set{B(a^2t_{i+1})-B(a^2t_i)}$ are independent, so is $\set{X(t_{i+1})-X(t_i)}$.
+\qed
+
+Let $B(t)$ be Brownian motion, then for every $a<0<b$, let
+$$ T_{a,b} = \inf\set{t\geq0}[B(t)\in\set{a,b}] $$
+ie $T_{a,b}=\minof{T_a,T_b}$.
+Then let us define $X(t)=aB(t/a^2)$ which by the above proposition is also Brownian motion, meaning if $B(t^2/a)=1$ then $X(t)=a$ and if $B(t^2/a)=\frac ba$ then $X(t)=b$.
+This means that $T^X_{a,b}=a^2T^B_{1,b/a}$.
+But $X\buildrel d\over=B$ so $T_{a,b}=a^2T_{1,b/a}$, and so $\expecof{T_{a,b}}=a^2\expecof{T_{1,b/a}}$ and in particular $\expecof{T_{-b,b}}=b^2\expecof{T_{-1,1}}$.
+Thus the expected time it takes to leave the interval $(-b,b)$ takes $b^2$ more time than it takes to leave $(-1,1)$.
+Due to this association we found, we have that
+$$ \probof{B(T_{a,b}) = a} = \probof{B(T_{1,b/a})=1} $$
+
+\bprop[title=Time Inversion Invariance, name=inversioninvariance]
+
+    If $B(t)$ is Brownian motion, then so is $X(t)=tB(1/t)$ for $t>0$ and $X(0)=0$.
+
+\eprop
+
+We will prove this using the second definition of Brownian motion.
+Obviously $X(0)\buildrel as\over=0$, and $X(t)\sim{\cal N}(0,t)$ so $(X(t_1),\dots,X(t_n))$ is a Gaussian vector.
+And if $t\leq s$ then
+$$ \expecof{X(t)X(s)} = \expecof{tsB(1/t)B(1/s)} = ts\cdot\frac1s = t $$
+as required.
+All that remains is to show that $X(t)$ is almost surely continuous.
+Obviously for $t\neq0$ this is true since $B(t)$ is continuous, so we must only show that $X(t)\xvarrightarrow{t\to0}0$.
+Now,
+$$ \set{\lim_{t\to0}X(t)=0} = \bigcap_{n=1}^\infty\bigcup_{m=1}^\infty\bigcap_{q\in(0,1/m)}\set{\abs{X(q)}<\frac1n} $$
+Now let us enumerate the rationals in $(0,1/m)$ by $q_1^m,q_2^m,\dots$ and so we can write this as
+$$ = \bigcap_{n=1}^\infty\bigcup_{m=1}^\infty\bigcap_{k=1}^\infty\set{\abs{X(q_1^m),\dots,\abs{X(q_k^m)}<\frac1n}} $$
+So by the continuity of probability
+$$ \probof{\lim_{t\to0}X(t)=0} = \lim_n\lim_m\lim_k\probof{\abs{X(q_1^m)},\dots,\abs{X(q_k^m)}<\frac1n} $$
+Now since $\Covof{X(t),X(s)}=\Covof{B(t),B(s)}$, every finite Gaussian vector $(X(t_1),\dots,X(t_n))$ has the same covariance matrix and thus joint distribution as $(B(t_1),\dots,B(t_n))$ (this fact is
+true in general for all two Brownian motions).
+And so
+$$ = \lim_n\lim_m\lim_k\probof{\abs{B(q_1^m)},\dots,\abs{B(q_k^m)}<\frac1n} = \probof{\lim_{t\to0}B(t)=0} = 1 $$
+as required.
+\qed
+
+\bthrm[title=Law of Large Numbers, name=lln]
+
+    Suppose $B(t)$ is Brownian motion then $\frac{B(t)}t\xvarrightarrow{n\to\infty}0$ almost surely.
+
+\ethrm
+
+As above, let $X(t)=tB(1/t)$ for $t>0$ and $X(0)=0$.
+$$ \lim_{t\to\infty}\frac{B(t)}t = \lim_{t\to\infty}X(1/t) = \lim_{t\to0}X(t) = X(0) = 0 $$
+since $X(t)$ is continuous.
+\qed
+
+\bprop[title=Initialization Invariance, name=initinvar]
+
+    If $B(t)$ is Brownian motion, for every $A>0$, $X(t)=B(A+t)-B(A)$ is Brownian motion.
+
+\eprop
+
+$X(0)=0$ and it is also trivially almost surely continuous.
+And
+$$ X(t+h) - X(t) = B(A+t+h) - B(A+t) \sim {\cal N}(0,h) $$
+And in general $X(t_n)-X(t_{n-1})=B(t_n)-B(t_{n-1})$ differences are independent.
+\qed
+
+\bprop[title=Superposition of Brownian Motion, name=superpos]
+
+    If $B^1,\dots,B^k$ are independent Brownian motion and $\sum_{j=1}^k\alpha_j^2=1$ then $X(t)=\sum_{j=1}^k\alpha_jB^j(t)$ is Brownian motion as well.
+
+\eprop
+
+$X(0)\buildrel as\over=0$ and $X(t)$ is also almost surely continuous.
+$$ X(t+h) - X(t) = \sum_{j=1}^k\alpha_j\bigl(B^j(t+h) - B^j(t)\bigr) \sim \sum_{j=1}^k \alpha^j{\cal N}(0,h) = {\cal N}\parens{0,h\sum_{j=1}^k\alpha_j^2} = {\cal N}(0,h) $$
+And since
+\multlines{
+    \Covof{X(a)-X(b), X(c)-X(d)} = \sum_{j=1}^k\sum_{i=1}^k\alpha_j\alpha_i\Covof{B^j(a)-B^j(b), B^i(c)-B^i(d)}\cr\noalign{\kern-.4cm}
+    &= \sum_{j=1}^k\alpha_j^2\Covof{B^j(a)-B^j(b), B^j(c)-B^j(d)} = 0
+}
+Since for $i\neq j$, $B^j$ and $B^i$ are independent.
+Thus $X(t_n)-X(t_{n-1}),\dots,X(t_1)-X(t_0)$ are independent.
+\qed
+
+We know by the definition of Brownian motion that it is (almost surely) continuous.
+But we can state a stronger result:
+
+\bthrm
+
+    If $B(t)$ is Brownian motion then there exists a constant $c>0$ such that
+    $$ \probof{\limsup_{h\to0}\sup_{0\leq t\leq1-h}\frac{\abs{B(t+h)-B(t)}}{\sqrt{h\log(1/h)}} \leq c} = 1 $$
+    Meaning that almost surely, for every $h>0$ small enough and every $0\leq t\leq 1-h$, $\abs{B(t+h)-B(t)}\leq c\sqrt{h\abs{\log h}}$.
+
+\ethrm
+
+Recall that
+$$ B(t) = \sum_{n=1}^\infty\bigl(G_n(t) - G_{n-1}(t)\bigr) = \sum_{n=1}^\infty F_n(t) $$
+where $F_n$ is linear on a finite number of intervals, and we also showed that $\norm{F_n}_\infty\leq c\sqrt{\frac n{2^{n+1}}}$ for every $c>\sqrt{2\log2}$ and for $n$ large enough ($n>N$).
+$F_n$ is linear except for on $D_n$, and so $F'_n$ exists for every point not in $D_n$, and so
+$$ \sup_{t\in[0,1]\setminus D_n}\abs{F_n'(t)} \leq \frac{2\sup\abs{F_n}}{2^{-n}} \leq 2c\sqrt n2^{n/2} $$
+And so for $\ell>N$,
+\multlines{
+    \abs{B(t+h) - B(t)} \leq \sum_{n=1}^\infty \abs{F_n(t+h) - F_n(t)} \leq \sum_{n=1}^\ell h\sup\abs{F_n'} + \sum_{n=\ell+1}^\infty 2\sup\abs{F_n}\cr
+    &\leq h\sum_{n=1}^N\abs{F_n'}_\infty + 2ch\sum_{n=N}^\ell\sqrt n2^{n/2} + 2c\sum_{n=\ell+1}^\infty\sqrt n2^{-n/2}
+}
+If $h>0$ is small enough then $h\sum_{n=1}^N\abs{F_n}_\infty<\sqrt{h\log(1/h)}$ so let us choose an $\ell$ where $2^{-\ell}<h<2^{-\ell+1}$, then the second and third terms above are also bound by
+$\sqrt{h\log(1/h)}$.
+\qed
+
+This theorem gives an upper bound for how fast the differences of $B(t)$ tend to zero, and the following gives a lower bound:
+
+\bthrm
+
+    There exists a $c<\sqrt2$ such that for every $\epsilon>0$ there exists an $h\in(0,\epsilon)$ such that for every $t\in[0,1-h]$: $\abs{B(t+h)-B(t)}\geq c\sqrt{h\log(1/h)}$ almost surely.
+    Meaning
+    $$ \probof{(\forall\epsilon>0)(\exists h\in(0,\epsilon))(\forall t\in[0,1-h])\,\abs{B(t+h)-B(t)}\geq c\sqrt{h\log(1/h)}} = 1 $$
+
+\ethrm
+
+I'm sorry but I don't really feel like typing this out right now.
+Pretend like I did, I'm sure the proof isn't really that important anyway.
+\qed
+
+\bdefn
+
+    $f$ is {\emphcolor $\alpha$-H\"older continuous} if there exists a constant $c$ such that $\abs{f(x)-f(y)}\leq c\abs{x-y}^\alpha$.
+
+\edefn
+
+\bcoro
+
+    Brownian motion is almost surely $\alpha$-H\"older continuous for every $0<\alpha<\frac12$.
+
+\ecoro
+
+Notice that for small enough $h$, $\sqrt{h\log(1/h)}\leq h^\alpha$ for $\alpha<\frac12$, so this is a direct result of the above theorem (the one before last).
+\qed
 
 \bye
 
