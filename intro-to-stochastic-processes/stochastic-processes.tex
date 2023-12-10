@@ -1300,7 +1300,8 @@ Here are some properties of Gaussian vectors:
     \item If $X\sim{\cal N}(\mu,\Sigma)$ then there exists an upper (or lower) triangle matrix $U$ which serves as its transition matrix.
 \eenum
 
-Some more important notes: if two Gaussian vectors have the same covariance matrix, then their joint probabilities are the same (since joint probabilities are dependent only on $\Sigma$).
+Some more important notes: if two Gaussian vectors have the same covariance matrix and the same expected value vector, then their joint probabilities are the same (since joint probabilities are dependent
+only on $\Sigma$ and $\mu$).
 And if $(X_1,\dots,X_n)$ is a Gaussian vector such that the coefficients are pairwise uncorrelated, then $\Sigma$ is a matrix which is zero except on the diagonal.
 Thus $X_i=\alpha_iZ_i+\mu_i$ where $Z_i$ are independent normal distributions, meaning $X_i$ are independent.
 So in order to show that a Gaussian vector's coefficients are independent, it is sufficient to show that they are pairwise uncorrelated.
@@ -1548,6 +1549,342 @@ Pretend like I did, I'm sure the proof isn't really that important anyway.
 
 Notice that for small enough $h$, $\sqrt{h\log(1/h)}\leq h^\alpha$ for $\alpha<\frac12$, so this is a direct result of the above theorem (the one before last).
 \qed
+
+We showed that almost surely $\frac{B(t)}t\xvarrightarrow{t\to\infty}0$, and in a similar vein we prove
+
+\bprop
+
+    Almost surely,
+    $$ \limsup_{t\to\infty}\frac{B(t)}{\sqrt t}=\infty,\qquad \liminf_{t\to\infty}\frac{B(t)}{\sqrt t}=-\infty $$
+
+\eprop
+
+Let $c>0$, then let us define
+$$ A_n = \set{B(n) > c\sqrt n} $$
+and we know $B(n)=\sum_{i=1}^nX_i$ where $X_i=B(i)-B(i-1)\sim{\cal N}(0,1)$ are independent.
+By Hewitt-Savage, since $\set{A_n\hbox{ i.o.}}$ is preserved under finite permutations of the indexes of $X_i$, we have that $\probof{A_n\hbox{ i.o.}}\in\set{0,1}$.
+But on the other hand
+$$ \probof{B(n)>c\sqrt n\hbox{ i.o.}} \geq \limsup_{n\to\infty}\probof{B(n)>c\sqrt n} = \limsup_{n\to\infty}\probof{B(1)>c} > 0 $$
+the final equality is since $\frac{B(n)}{\sqrt n}\sim{\cal N}(0,1)$.
+So $\probof{A_n\hbox{ i.o.}}=1$, meaning almost surely we can choose a subsequence $m_n$ such that $B(m_n)>c\sqrt{m_n}$, so $\limsup\frac{B(n)}{\sqrt n}>c$.
+Taking the countable intersection over all integers $c$, we get that $\limsup\frac{B(n)}{\sqrt n}>c$ for every integer $c$ almost surely, meaning  $\limsup\frac{B(n)}{\sqrt n}=\infty$ almost surely.
+Similar for $c<0$ and the limit inferior.
+\qed
+
+\bthrm
+
+    Let $0\leq t_0$ then almost surely $B(t)$ is not differentiable at $t_0$.
+    Furthermore almost surely
+    $$ \limsup_{h\to0}\frac{B(t_0+h) - B(t_0)}h = \infty,\qquad \liminf_{h\to0}\frac{B(t_0+h) - B(t_0)}h = -\infty $$
+
+\ethrm
+
+Let $X(t)=tB(1/t)$ for $t>0$ and $X(0)=0$, this is Brownian motion as we showed.
+Then
+$$ \limsup_{h\to0}\frac{X(h) - X(0)}h = \limsup_{h\to0}\frac{hB(1/h)}h = \limsup_{t\to\infty}B(t) \geq \limsup_{t\to\infty}\frac{B(t)}{\sqrt t} = \infty $$
+And similarly we have that
+$$ \liminf_{h\to0}\frac{X(h) - X(0)}h = -\infty $$
+So $X(t)$ is not differentiable at $0$ almost surely, and so neither is $B(t)$ as they are both Brownian motion.
+And for $t_0>0$, define $Y(s)=B(t_0+s)-B(t_0)$ which is Brownian motion as well, and not differentiable at $0$ which is equivalent to $B(t)$ not being differentiable at $t_0$.
+\qed
+
+Notice that this does not mean that $B(t)$ is almost surely nowhere differentiable, just that if we set any specific point $B(t)$ is almost surely not differentiable there.
+Though it does happen that $B(t)$ is almost surely nowhere differentiable:
+
+\bthrm[title={Paley, Wiener, Zygmund}, name=pwz]
+
+    Almost surely, Brownian motion is nowhere differentiable.
+
+\ethrm
+
+The proof of this can be found in other literature on Brownian motion.
+
+\bthrm
+
+    $\set{B(A+t) - B(A)}_{t\geq0}$ is Brownian motion independent of the history $\set{B(s)}_{0\leq s\leq A}$.
+
+\ethrm
+
+We have already shown that $B(A+t)-B(A)$ is Brownian motion, and it is independent of its history since differences in Brownian motion are independent.
+\qed
+
+So in a way, Brownian motion is a homogeneus Markov process.
+It is Markov in the way that conditioning under movement until time $t$ is equivalent to conditioning under movement at time $t$.
+And it is homogeneus meaning that starting measuring at time $A$ is equivalent to measuring at time $0$.
+
+\bthrm
+
+    $\set{B(A+t)-B(A)}_{t\geq0}$ is independent of ${\cal F}_A^+=\bigcap_{\epsilon>0}\sigma\parens{\set{B(s)}_{0\leq s\leq A+\epsilon}}$.
+
+\ethrm
+
+By the continuity of Brownian motion, almost surely $B(A+t)-B(A)=\lim_{n\to\infty}B(A_n+t)-B(A_n)$ where $A<A_n\to A$.
+And so for every finite number of measurements $t_1<\cdots<t_m$,
+$$ \bigl(B(A+t_1) - B(A),\cdots, B(A+t_m) - B(A)\bigr) = \lim_{n\to\infty}\bigl(B(A_n+t_1)-B(A_n),\dots,B(A_n+t_m) - B(A_n)\bigr) $$
+the right hand side is the limit of a Gaussian vector which is dependent only on $B(t)$ for $t>A$, thus for small enough $\epsilon>0$, it is independent of
+$\sigma\parens{\set{B(s)}_{0\leq s\leq A+\epsilon}}$.
+In particular it is independent of ${\cal F}_A^+$.
+Since Gaussian vectors converge to a Gaussian vector whose covariance matrix is the limit of the covariance matrices, we can conclude that $(B(A+t_1)-B(A),\dots,B(A+t_m)-B(A))$ is independent of
+${\cal F}_A^+$ as required.
+\qed
+
+Notice that ${\cal F}_A^+$ is the sigma algebra of all events which are dependent only on $B(s)$ for $s\leq A$ and a measurement an infinitesimal amount of time after $A$.
+
+\bthrm[title=Blumenthal's Zero-One Law, name=blumenzeroone]
+
+    For every $G\in{\cal F}_0^+$ and every initial measurement $B(0)=x$,
+    $$ \probof{G}[B(0)=x] = \probof[x]{G} \in \set{0,1} $$
+
+\ethrm
+
+By the above theorem, for $A=0$, $\set{B(t)}_{t\geq0}$ is independent of ${\cal F}_0^+$ and this means that every event in ${\cal F}_0^+$ is independent of itself (since it is in
+$\sigma\parens{\set{B(t)}_{t\geq0}}$), and so must have trivial probability.
+\qed
+
+\bthrm[name=Volatility of Brownian Motion]
+
+    Let us define $\tau=\infof{t>0}[B(t)>0]$ and $\sigma=\infof{t>0}[B(t)=0]$ then $\probof[0]{\tau=0}=\probof[0]{\sigma=0}=1$.
+
+\ethrm
+
+We know that
+$$ \set{\tau=0} = \bigcap_{n=1}^\infty\set{\parens{\exists\delta<\frac1n}\,B(\delta)>0} \in \bigcap_{\epsilon>0}\sigma\parens{\set{B(s)}_{0\leq s\leq\epsilon}} = {\cal F}_0^+ $$
+so by Blumenthal's zero-one law, $\probof{\tau=0}\in\set{0,1}$ so it is sufficient to show that $\tau=0$ has nonzero probability.
+Let $t>0$,
+$$ \probof[0]{\tau\leq t} \geq \probof[0]{B(t)>0} = \frac12 $$
+and by the continuity of probability
+$$ \probof[0]{\tau=0} = \lim_{t\to0^+}\probof[\tau\leq t] \geq \frac12 $$
+as required.
+Analogously we can show that $\probof[0]{\infof{t>0}[B(t)<0]=0}=1$.
+And so by the mean value theorem we get that $\sigma=0$ almost surely, since for every $\delta>0$ we have that there exists a $t_1<\delta$ and $t_2<\delta$ such that $B(t_1)>0$ and $B(t_2)<0$, so there
+must exist a $t<\delta$ where $B(t)=0$.
+And so for every $\delta>0$, $\probof[0]{\sigma<t}=1$, and taking this limit as $t\to0^+$ gives $\probof[0]{\sigma=0}=1$ by the continuity of probability.
+\qed
+
+\blemm
+
+    For every $a_1<b_1\leq a_2<b_2$, then let $m_i=\max_{[a_i,b_i]}B(t)$ for $i=1,2$.
+    Then $\probof{m_1=m_2}=0$.
+
+\elemm
+
+By the volatility of Brownian motion, there exists a $t$ in every neighborhood of $0$ such that $B(t)>0$, now by the Markov property of Brownian motion we can generalize this to mean that for every
+$\epsilon>0$ there exists a $a_2<t<a_2+\epsilon$ such that $B(t)>B(a_2)$.
+And so $\probof{B(a_2)<m_2}=1$.
+So there must exist an $n$ such that $m_2=\max_{[a_2+1/n,b_2]}B(t)$, and so if we swap $a_2$ with $a_2+1/n$ we can assume that $b_1<a_2$.
+By the Markov property at $b_1$, $m_1-B(b_1)$ is independent of $B(a_2)-B(b_1)$ and these are both independent of $m_2-B(a_2)$.
+And so the event that $\set{m_1=m_2}$ can be written as
+$$ B(a_2) - B(b_1) = \bigl(m_1 - B(b_1)\bigr) - \bigl(m_2-B(a_2)\bigr) $$
+so let $X=B(a_2)-B(b_1)$, $Y=m_1-B(b_1)$ and $Z=m_2-B(a_2)$.
+These are independent continuous random variables, which means that $\probof{X=Y-Z}=0$ (since $X-Y+Z$ is a continuous random variable, and so the probability it is equal to a singelton is zero).
+\qed
+
+\bthrm
+
+    For Brownian motion $\set{B(t)}[0\leq t\leq1]$, almost surely
+    \benum
+        \item every local maximum is a strong local maximum (meaning that there exists a neighborhood of the maximum in which it is {\it strictly} larger than all other points)
+        \item the set of points in which there is a local maximum is a countably dense set,
+        \item the global maximum in $[0,1]$ is obtained at a single point.
+    \eenum
+
+\ethrm
+
+\benum
+    \item By the above lemma, there cannot exist a weak maximum, as two adjacent intervals almost surely have distinct maximums.
+    \item For every $a<b$, almost surely $\max_{t\in[a,b]}B(t)\neq B(a),B(b)$.
+        This is true in particular for rational $a<b$.
+        And so almost surely for every rational $a<b$ there exists a local maximum in $(a,b)$.
+        And this means that the set of local maximums must be dense, as ${\bb Q}$ is.
+    \item For every rational $q$, almost surely $\max_{[0,q]}B(t)\neq\max_{[q,1]}B(t)$, but if there were two global maxima then there would be a rational between them and this would not be the case.
+        \qed
+\eenum
+
+\bthrm[title=The Reflection Principle, name=reflectionprinciple]
+
+    $\probof{\max_{[0,t]}B\geq\alpha,\,B(t)\leq\alpha}=\probof{B(t)\geq\alpha}$.
+
+\ethrm
+
+Let us define $\tau_\alpha=\infof{t>0}[B(t)=\alpha]$.
+And so since $B(t)$ is almost surely continuous,
+$$ \probof{\max_{[0,t]}B\geq\alpha,B(t)\leq\alpha} = \probof{\tau_\alpha\leq t,\,B(t-\tau_\alpha)\leq0} $$
+since $B(t)$ has a normal distribution, this is equal to
+$$ = \probof{\tau_\alpha\leq t,\,B(t-\tau_\alpha)\geq0} = \probof{\max_{[0,t]}B\geq\alpha,\,B(t)\geq\alpha} = \probof{B(t)\geq\alpha} \qed $$
+
+Furthermore, we get that
+$$ \probof{\max_{[0,t]}B\geq\alpha} = \probof{\max_{[0,t]}B\geq\alpha,\,B(t)\geq\alpha} + \probof{\max_{[0,t]}B\geq\alpha,B(t)\leq\alpha} = 2\probof{B(t)\geq\alpha} $$
+and since $B(t)\sim{\cal N}(0,t)$ we get that
+$$ \probof{\max_{[0,t]}B\geq\alpha} = 2\int_\alpha^\infty e^{-\frac{x^2}{2t}}\frac{dx}{\sqrt{2\pi t}} = 2\int_{\frac\alpha{\sqrt t}}^\infty e^{-x^2/2}\frac{dx}{\sqrt{2\pi}} $$
+
+And if we let $T_a=\infof{t>0}[B(t)=a]$ then we get that
+$$ \probof{T_a\leq t} = \probof{\sup_{[0,t]}B\geq a} = 2\probof{B(t)\geq a} = 2\parens{1-\Phi\parens{\frac a{\sqrt t}}} = 2\int_{a/\sqrt t}^\infty e^{-x^2/2}\frac{dx}{\sqrt{2\pi}} $$
+and so we get that the probability density of $T_a$ is, by differentiating the above expression,
+$$ f_{T_a}(t) = \frac a{\sqrt{2\pi}}t^{-3/2}e^{-a^2/2t} $$
+
+\subsection{Universal Scaling Limit of Random Walks}
+
+Let us return to a general random process, $S_n=X_1+\cdots+X_n$ where $\set{X_i}$ are independent equivalently-distributed random variables where $\expecof{X_i}=0$ and $\Varof{X_i}=1$.
+In Einstein's physical model, a particle impact with other particles and each impact displaces it slightly.
+Suppose within one unit of time there are $N$ impacts, and each impact displaces the particle by $\epsilon\cdot X_k$.
+Then the placement after $t$ units of time is
+$$ B_t^N = \epsilon X_1+\cdots+\epsilon X_{tN} $$
+Then we have that
+$$ \sigma^2 = \Varof{B_1^N} = \epsilon^2N\Varof{X_1} = \epsilon^2N $$
+This means that $\epsilon=\frac\sigma{\sqrt N}$ and so in the case that $\sigma=1$,
+$$ B^N_t = \frac\sigma{\sqrt N}(X_1+\cdots+X_{tN}) = \frac1{\sqrt N}(X_1+\cdots+X_{tN}) $$
+So by the central limit theorem, as $N\to\infty$, $B^N_t\xvarrightarrow{\,d\,}B(t)\sim{\cal N}(0,t)$.
+Now notice that if $t\leq s$,
+$$ \Covof{B^N_t,B^N_s} = \frac1N\expecof{\sum_{j=1}^{tN}X_j\sum_{i=1}^{sN}X_i} = \frac1N\sum_{j=1}^{tN}\sum_{i=1}^{sN}\Covof{X_i,X_j} $$
+for $i\neq j$ the covariance is zero, and when $i=j$ it is $1$, thus we get that this is equal to $t$.
+So we have that
+$$ \bigl(B^N_{t_1},\dots,B^N_{t_k}\bigr)\xvarrightarrow{\,d\,}\bigl(B_{t_1},\dots,B_{t_k}\bigr)\sim{\cal N}(0,\Sigma),\qquad \Sigma_{ij}=\minof{i,j} $$
+$\set{B_t}$ is indeed Brownian motion, as by the second definition we have proven all but almost sure continuity.
+This is true since $B_t^N$ and $B_{t+\delta}^N$ have a difference of
+$$ \abs{B_t^N - B_{t+\delta}^N} \buildrel d\over= \lim_N\abs{\frac1{\sqrt N}\sum_{i=0}^{\delta t}X_i} $$
+which can be made to be arbitrarily small.
+
+\vfill\break
+
+\section{Galton-Watson Processes}
+
+Suppose we had a petri dish containing a bacterial colony, and at constant intervals of time the bacteria reproduce randomly, in a way which is independent of the current time and of other bacteria.
+We can model this mathematically as follows: let $\set{\xi_{i,n}}_{i,n\in{\bb N}}$ be independent random variables which all have equivalent distributions, where $\xi_{i,n}$ represents the number of
+bacteria the $i$th bacterium reproduced into on the $n$th measurement.
+We denote the distribution vector of $\xi_{i,n}$ by $\bar B=(B_0,B_1,\dots)$ (meaning $\probof{\xi_{i,n}=k}=B_k$).
+If we denote $X_n$ to be the number of bacteria on the petri dish at time $n$, then
+$$ X_n \buildrel d\over= \sum_{i=1}^{X_{n-1}}\xi_{i,n-1} $$
+Let us notice that $\set{X_n}$ is a Markov chain; $(X_n\,|\,X_{n-1},\dots,X_0)\buildrel d\over=(X_n\,|\,X_{n-1})$.
+And at any point if $X_N=0$, then $X_n=0$ for every $n\geq N$, meaning $0$ is an absorbing state.
+$0$ is also the only absorbing state, unless $\probof{\xi=1}=1$.
+
+A central question to the study of such a process is the probability that the colony survives forever.
+We of course may also be interested in computing the expected values and variances of $X_n$.
+
+\blemm
+
+    Let $\set{X_j}$ be a set of independent, equivalently-distributed random variables and let $Y$ be a random variable whose support is in ${\bb N}_0$ which is independent of $\set{X_j}$.
+    Then
+    $$ \expecof{\sum_{j=1}^YX_j} = \expecof Y\expecof{X_1} $$
+
+\elemm
+
+By the law of total expectation,
+$$ \expecof{\sum_{j=1}^YX_j} = \sum_{n=1}^\infty\probof{Y=n}\expecof{\sum_{j=1}^nX_j} = \expecof{X_1}\sum_{n=1}^\infty n\probof{Y=n} = \expecof Y\expecof{X_1} \qed $$
+
+Thus we have that
+$$ \expecof{X_n} = \expecof{\sum_{j=1}^{X_{n-1}}\xi_{j,n-1}} = \expecof{X_{n-1}}\expecof{\xi} $$
+let us denote $\mu\coloneqq\expecof\xi$, which is equal to $\sum_{n=0}^\infty nB_n$, and so we have that
+$$ \expecof{X_n} = \mu\expecof{X_{n-1}} \implies \expecof{X_n} = \mu^n\expecof{X_0} $$
+We will assume that $X_0\buildrel as\over=1$, and so $\expecof{X_n}=\mu^n$.
+Similarly let us define $\sigma^2=\Varof\xi=\sum n^2B_n-\parens{\sum nB_n}^2$.
+Then
+\multlines{
+    \Varof{X_n} = \expecof{(X_n-\mu^n)^2} = \expecof{(X_n-\mu X_{n-1}+\mu X_{n-1}-\mu^n)^2}\cr
+    &= \expecof{(X_n-\mu X_{n-1})^2} + 2\expecof{(X_n-\mu X_{n-1})\mu(X_{n-1}-\mu^{n-1})} + \mu^2\expecof{(X_{n-1}-\mu^{n-1})^2}
+}
+Using the law of recurring expectation,
+$$ \eqalign{
+    \expecof{(X_n-\mu X_{n-1})\mu(X_{n-1}-\mu^{n-1})} &= \expecof{\expecof{(X_n-\mu X_{n-1})\mu(X_{n-1}-\mu^{n-1})}[X_{n-1}]}\cr
+    &= \expecof{\mu(X_{n-1}-\mu^{n-1})\bigl(\expecof{X_n}[X_{n-1}]-\mu X_{n-1}\bigr)}
+} $$
+Notice that
+$$ \expecof{X_n}[X_{n-1}] = \expecof{\sum_{j=1}^{X_{n-1}}\xi_{j,n-1}} = \mu X_{n-1} $$
+so this is equal to zero.
+Thus we have that
+$$ \Varof{X_n} = \expecof{(X_n-\mu X_{n-1})^2} + \mu^2\Varof{X_{n-1}} $$
+Now again using the law of total expectation,
+$$ \eqalign{
+    \expecof{(X_n-\mu X_{n-1})^2} &= \sum_{N=0}^\infty \expecof{(X_n-\mu X_{n-1})^2}[X_{n-1}=N]\probof{X_{n-1}=N}\cr
+    &= \sum_{N=0}^\infty \expecof{\parens{\sum_{j=1}^N(\xi_{j,N-1}-\mu)}^2}\probof{X_{n-1}=N}\cr
+    &= \sum_{N=0}^\infty\sum_{j=1}^N\Varof{\xi_{j,N-1}}\probof{X_{n-1}=N}\cr
+    &= \sigma^2\sum_{N=0}^\infty N\probof{X_{n-1}=N} = \sigma^2\expecof{X_{n-1}} = \sigma^2\mu^{n-1}
+} $$
+Thus we have the following linear recurrence
+$$ \Varof{X_n} = \sigma^2\mu^{n-1} + \mu^2\Varof{X_{n-1}} $$
+Solving it yields
+$$ \Varof{X_n} = \cases{\displaystyle\sigma^2\mu^{n-1}\frac{1-\mu^n}{1-\mu} & $\mu\neq1$\cr\noalign{\kern3pt} \displaystyle n\sigma^2\mu^{n-1} & $\mu=1$} $$
+
+\subsection{Extinction Time}
+
+Similar as with Markov chains and Brownian motion, let us define
+$$ T_0 = \minof{t\in{\bb N}}[X_t=0] $$
+As stated before, a big focus of the study of Galton-Watson processes is computing the probability that $T_0=\infty$.
+Obviously if $B_0\neq0$ then $\probof{T_0<\infty}>0$, as it is possible for $X_1=0$ for example.
+Furthermore, if $\mu<1$ then $\expecof{X_n}=\mu^n\to0$ and so $\probof{T_0<\infty}=1$.
+This is due to the Markov inequality: $\probof{X_n=0}=1-\probof{X_n\geq1}\geq1-\expecof{X_n}$, so $\probof{X_n=0}\to1$ so $X_n\xvarrightarrow{\,as\,}0$.
+Finally it is obvious that the whether or not the colony almost surely survives or goes extinct is independent on the initial state of the colony.
+
+Let us define the probability generating function of $B$:
+$$ \phi_\xi(s) = \phi_B(s) = \sum_{k=0}^\infty B_ks^k $$
+
+\bthrm[title=The Galton-Watson Theorem, name=galtonwatsonthrm]
+
+    $\probof{T_0<\infty}[X_0=1]=\min_{s\in[0,1]}\set{\phi_B(s)=s}$;
+    meaning that the minimal fixed point of $\phi_B$ is the probability that the colony goes extinct.
+    Furthermore, $\probof{T_0<\infty}[X_0=1]=1$ if and only if $\mu\leq1$ and $B_0>0$.
+
+\ethrm
+
+We will prove this after investigating probability generating functions more.
+
+\blemm
+
+    Suppose $\set{X_j}_{j=1}^\infty$ are independent, equivalently-distributed random variables taking on values in ${\bb N}_0$.
+    Further let $Y$ be another random variable taking on values in ${\bb N}_0$ independent of $\set{X_j}$.
+    Let us define $S=\sum_{j=1}^YX_j$, then
+    $$ \phi_S = \phi_Y\circ\phi_X $$
+
+\elemm
+
+Let us define $S_k=\probof{S=k}$ and so
+$$ \eqalign{
+    \phi_S(t) = \sum_{k=0}^\infty S_kt^k &= \sum_{k=0}^\infty\sum_{\stackmath{n\in{\bb N}\cr\ell_1+\cdots+\ell_n=k}}\probof{Y=n}\probof{X_1=\ell_1}\cdots\probof{X_n=\ell_n}t^k\cr
+    &= \sum_{\stackmath{n,k\in{\bb N}_0\cr\ell_1+\cdots+\ell_n=k}}\probof{Y=n}\probof{X_1=\ell_1}\cdots\probof{X_n=\ell_n}t^k\cr
+    &= \sum_{n=0}^\infty\probof{Y=n}\parens{\sum_{\ell=0}^\infty\probof{X_1=\ell}t^\ell}^n = \phi_Y(\phi_X(t))
+} $$
+as required.
+\qed
+
+Here are some traits of probability generating functions (we consider them as functions over the domain $[0,1]$):
+\benum
+    \item $\phi$ is nondecreasing: since if $s_1<s_2$ then $s_1^t\leq s_2^t$ we have that $\phi(s_1)=\sum_t X_ts_1^t\leq\sum_t X_ts_2^t=\phi(s_2)$.
+    \item $\phi$ is concave: this is immediate due to the fact that $(x+y)^n\geq x^n+y^n$.
+    \item $\phi$ is smooth: for every $0<\epsilon<1$, we have that $\abs{X_ts^t}\leq\epsilon^t$ on $[0,\epsilon]$ and so by the Weierstrass M-test, $\phi$ converges uniformly and since the partial
+        sums are smooth, so to is $\phi$ on every $[0,\epsilon]$ for $0<\epsilon<1$.
+        Smoothness at $1$ can also be shown.
+    \item $\phi(0)=B_0$ and $\phi(1)=\sum_{k=0}^\infty X_k=1$.
+    \item If $\phi'(1)>1$ then $\phi(s)=s$ has a unique solution on $(0,1)$, and otherwise there is no solution.
+        Let us define $f(s)=\phi(s)-s$ then $f'(1)>0$, meaning $f$ is increasing at $1$, and so $1$ is a local maximum of $f$, so it is negative in a neighborhood of $1$ since $f(1)=0$.
+        Since $f(0)=B_0>0$ this means that $f$ must be zero somewhere.
+\eenum
+
+\hbox{\bf Proof of \refmath{galtonwatsonthrm}:}
+
+As we proved, $\phi_{X_n}=\phi_{X_{n-1}}\circ\phi_B$, and so by induction we have that $\phi_{X_n}=\phi_B\circ\cdots\circ\phi_B$ ($n$ times), under the assumption $X_0=1$.
+Thus
+$$ \probof{X_n=0}[X_0=1] = \phi_{X_n}(0) = \phi_B\circ\cdots\circ\phi_B(0) $$
+And since $\set{T_0<\infty}=\bigcup\set{X_n=0}$ which is an increasing sequence, we have that $\probof{T_0<\infty}[X_0=1]=\lim_n\phi_B^n(0)$.
+In particular we have that $\phi_B(\probof{T_0<\infty}[X_0=1])=\probof{T_0<\infty}[X_0=1]$, meaning $\probof{T_0<\infty}[X_0=1]$ is a fixed point of $\phi_B$.
+We assume that $B_0>0$ (as otherwise the probability of extinction is zero).
+Let us notice that since $\phi_B$ converges uniformly, $\mu=\phi'_B(1)$ and so if $\mu\leq1$ then the only fixed point is $1$, meaning $\probof{T_0<\infty}[X_0=1]=1$ as required.
+
+Otherwise, there exists another fixed point $r\in(0,1)$.
+Since $\phi_B$ is non-decreasing,
+$$ B_0 = \probof{X_1=0}[X_0=1] = \phi_B(0) \leq \phi_B(r) = r $$
+and again since $\phi_B$ is non-decreasing, $\phi_B^2(0)\leq\phi_B(\phi_B(r))=r$ so inductively $\phi_B^n(0)\leq r$.
+And we have shown
+$$ 0 < \probof{T_0<\infty}[X_0=1] = \lim_n\phi_B^n(0) \leq r < 1 $$
+but since $r$ is the unique fixed point in $(0,1)$, this means that $\probof{T_0<\infty}[X_0=1]=r$ is the minimum fixed point.
+\qed
+
+Notice that if we begin with $k$ bacteria, then we can view this as $k$ independent colonies and so
+$$ \probof{T_0<\infty}[X_0=k] = \probof{T_0<\infty}[X_0=1]^k = \minof[s\in{[0,1]}]{\phi_B(s)=s}^k $$
+And what is the probability the colony goes extinct within $k$ generations?
+Let us define $u_k=\probof{T_0\leq k}[X_0=1]$, then using first step analysis,
+$$ u_k = \probof{T_0\leq k}[X_0=1] = \sum_{j=0}^\infty\probof{T_0\leq k}[X_1=j]\cdot\probof{X_1=j}[X_0=1] = \sum_{j=0}^\infty (u_{k-1})^jB_j $$
+which could be solved if the $B_j$s are known.
+Not that you'd know what a BJ is though.
 
 \bye
 
