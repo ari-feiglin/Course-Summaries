@@ -1,0 +1,188 @@
+Suppose ${\cal L}$ is a first-order language and $A$ is a set, then let us denote ${\cal L}A$ the language obtained by adjoining constant symbols $\boldsymbol a$ to ${\cal L}$ for every $a\in A$.
+Having $\boldsymbol a$ be boldface is in order to distinguish it from $a$, but we will later remove the boldface.
+Let ${\cal B}$ be an ${\cal L}$-structure, and $A\subseteq B$ be a subset of the domain of ${\cal B}$, then let us define the ${\cal L}A$-expansion of ${\cal B}$ by interpreting $\boldsymbol a$ as $a\in A$,
+and this structure will be denoted ${\cal B}_A$.
+We previously showed in an exercise that for every $\alpha(\vec x)\in{\cal L}$ and $\vec a\in A^n$,
+$$ {\cal B}\vDash\alpha[\vec a] \iff {\cal B}_A\vDash\alpha(\vec{\boldsymbol a})\qquad (\alpha(\vec{\boldsymbol a})\coloneqq\alpha\tfrac{\boldsymbol a_1\cdots\boldsymbol a_n}{x_1\cdots x_n}) $$
+Notice that every sentence in ${\cal L}A$ is of the form $\alpha(\vec{\boldsymbol a})$ for suitable $\alpha(\vec x)\in{\cal L}$ and $\vec a\in A^n$.
+So instead of ${\cal B}_A\vDash\alpha(\vec{\boldsymbol a})$ we may just write ${\cal B}_A\vDash\alpha(\vec a)$ or ${\cal B}\vDash\alpha(\vec a)$.
+Meaning we may sometimes disregard the distinction between ${\cal B}$ and its extension ${\cal B}_A$ if there can be no misunderstandings.
+
+\bdefn
+
+    Let ${\cal A}$ be an ${\cal L}$-structure, then its {\emphcolor diagram}\addtoindex{diagram} is the set of all variable-free literals $\lambda\in{\cal L}A$ such that ${\cal A}_A\vDash\lambda$.
+    ${\cal A}$'s diagram is denoted by $D{\cal A}$.
+
+\edefn
+
+So for example, $D({\bb R},<)$ contains for every $a,b\in{\bb R}$ one of the following, depending on the relationship between $a$ and $b$: $\boldsymbol a\eq\boldsymbol b$, $\boldsymbol a\neqb\boldsymbol b$,
+$\boldsymbol a<\boldsymbol b$, or $\boldsymbol b<\boldsymbol a$.
+
+In general if ${\cal A}$ can be embedded into ${\cal B}$ then this means that ${\cal A}$ is isomorphic to a substructure of ${\cal B}$, and so we can view ${\cal A}$ as a substructure of ${\cal B}$.
+Suppose ${\cal L}_0\subseteq{\cal L}$, then we may say that an ${\cal L}_0$-structure ${\cal A}$ can be embedded into an ${\cal L}$-structure ${\cal B}$ to mean that ${\cal A}$ can be embedded into the
+${\cal L}_0$-reduct of ${\cal B}$.
+And so we may also write ${\cal A}\subseteq{\cal B}$ in this case.
+So for example the ring ${\bb Z}$ is embeddable into the field ${\bb Q}$ in this sense.
+
+\bprop
+
+    Let ${\cal L}_0\subseteq{\cal L}$, ${\cal A}$ be an ${\cal L}_0$-structure, and ${\cal B}$ an ${\cal L}A$-structure.
+    Then ${\cal B}\vDash D{\cal A}$ if and only if $\iota\colon a\mapsto\boldsymbol a^{\cal B}$ is an embedding of ${\cal A}$ into ${\cal B}$.
+
+\eprop
+
+If ${\cal B}\vDash D{\cal A}$ then for every $a\neq b$, we have that ${\cal B}\vDash\boldsymbol a\neqb\boldsymbol b$ and so $\iota a\neq\iota b$, meaning $\iota$ is injective.
+And for relational symbols $r$,
+$$ r^{\cal A}\vec a\iff r\vec{\boldsymbol a}\in D{\cal A}\iff {\cal B}\vDash r\vec{\boldsymbol a}\iff r^{\cal B}\iota\vec a $$
+Similarly for function symbols $f$,
+$$ f^{\cal A}\vec a=b\iff f\vec{\boldsymbol a}\eq\boldsymbol b\in D{\cal A}\iff{\cal B}\vDash f\vec{\boldsymbol a}\eq\boldsymbol b\iff f^{\cal B}\iota\vec a=\iota b=\iota f\vec a $$
+Thus $\iota$ is an injective mapping which preserves relational and function symbols, meaning it is an embedding of ${\cal A}$ into ${\cal B}$.
+Now conversely, suppose $\iota$ is an embedding.
+For variable-free terms $t$ in ${\cal L}_0A$, it is easy to verify that $\iota t^{\cal A}=t^{\cal B}$ by term induction ($t^{\cal A}$ here is to be read as $t^{{\cal A}_A}$).
+So for variable-free equations $t_1\eq t_2$ in ${\cal L}_0A$,
+$$ t_1\eq t_2\in D{\cal A} \iff t_1^{\cal A}=t_2^{\cal A} \iff \iota t_1^{\cal B} = \iota t_2^{\cal B} \iff t_1^{\cal B} = t_2^{\cal B} \iff B\vDash t_1\eq t_2 $$
+we can similarly show this for inequalities and literals of the form $r\vec{\boldsymbol a}$ and its negation.
+So $B\vDash D{\cal A}$ as required.
+\qed
+
+\bcoro
+
+    Let ${\cal A}$ and ${\cal B}$ be ${\cal L}$-structures.
+    Then ${\cal A}$ is embeddable into ${\cal B}$ if and only if ${\cal B}$ has an ${\cal L}A$-extension ${\cal B}'$ such that ${\cal B}'\vDash D{\cal A}$.
+    Furthermore, if $A\subseteq B$, then ${\cal B}_A\vDash D{\cal A}$ if and only if ${\cal A}\subseteq{\cal B}$.
+
+\ecoro
+
+Using the above proposition with ${\cal L}={\cal L}_0$, we get that if ${\cal B}'\vDash D{\cal A}$ then $\iota\colon a\mapsto a^{\cal B'}$ embeds ${\cal A}$ into ${\cal B}$.
+And if $\iota$ is an embedding, then define $\boldsymbol a^{\cal B'}=\iota a$, and then ${\cal B}'\vDash D{\cal A}$.
+If $A\subseteq B$ then $\iota$ is the identity mapping, meaning ${\cal B}'={\cal B}_A$.
+\qed
+
+\bdefn
+
+    A {\emphcolor prime model}\addtoindex{prime model} of a theory $T$ is a $T$-model ${\cal A}$ which can be embedded into every other $T$ model.
+
+\edefn
+
+This corollary means that ${\cal A}_A$ is a prime model of the theory defined by $D{\cal A}$.
+
+\bdefn
+
+    Let ${\cal L}$ be a first-order language and ${\cal A},{\cal B}$ be ${\cal L}$-structures.
+    Then ${\cal A}$ is an {\emphcolor elementary substructure}\addtoindex{substructure}[elementary] of ${\cal B}$ (and ${\cal B}$ is an {\emphcolor elementary extension} of ${\cal A}$),
+    denoted ${\cal A}\preceq{\cal B}$, if $A\subseteq B$ and
+    $$ {\cal A}\vDash\alpha[\vec a]\iff {\cal B}\vDash\alpha[\vec a],\hbox{ for all $\alpha=\alpha(\vec x)\in{\cal L}$ and $\vec a\in A^n$} $$
+    Further let us define ${\cal A}$'s {\emphcolor elementary diagram}\addtoindex{diagram}[elementary] to be the set of ${\cal L}A$-sentences valid in ${\cal A}$:
+    $$ D_{\it el}{\cal A}\coloneqq\set{\alpha\in{\cal L}A^0}[{\cal A}_A\vDash\alpha] $$
+
+\edefn
+
+By \refmath{substructuretheorem}, if ${\cal A}\preceq{\cal B}$ then ${\cal A}\subseteq{\cal B}$, but the converse is not generally true.
+In fact being an elementary substructure is a very strong condition.
+It is obvious that ${\cal A}\preceq{\cal B}$ is equivalent to $A\subseteq B$ and ${\cal B}\vDash D_{\it el}{\cal A}$, as ${\cal A}\vDash\alpha[\vec a]\iff {\cal A}_A\vDash\alpha(\vec{\boldsymbol a})$.
+Notice that this is also equivalent to $A\subseteq B$ and ${\cal A}_A\equiv_{{\cal L}A}{\cal B}_A$.
+
+Again, elementary extensions is a strong condition: take for example ${\cal A}=({\bb N}_+,<)$ and ${\cal B}=({\bb N},<)$ then $A\subseteq B$ and since ${\cal A}\cong{\cal B}$, so we even have that
+${\cal A}\equiv{\cal B}$.
+But they are not equivalent modulo ${\cal L}A$; ${\cal A}$ is not an elementary substructure of ${\cal B}$ as $\exists x\,x<\boldsymbol1$ is true in ${\cal B}$ but not ${\cal A}$.
+
+\bthrm[title=Tarski's Criterion, name=tarskicriterion]
+
+    Let ${\cal A},{\cal B}$ be ${\cal L}$-structures with $A\subseteq B$, then the following are equivalent:
+    \benum
+        \item ${\cal A}\preceq{\cal B}$,
+        \item For all $\phi(\vec x,y)\in{\cal L}$ and $\vec a\in A^n$, one has ${\cal B}\vDash\exists y\phi(\vec a,y)$ implies ${\cal B}\vDash\phi(\vec a,a)$ for some $a\in A$.
+        In other words every existential formula, if witnessed in ${\cal B}$, is witnessed in ${\cal A}$.
+    \eenum
+
+\ethrm
+
+If ${\cal A}\preceq{\cal B}$ and ${\cal B}\vDash\exists y\phi(\vec a,y)$ then ${\cal A}\vDash\exists y\phi(\vec a,y)$ as a substructure.
+And so ${\cal A}\vDash\phi(\vec a,a)$ for some $a\in A$ and so ${\cal B}\vDash\phi(\vec a,a)$ since ${\cal B}$ is an elementary extension.
+Conversely, notice that the condition for elementary extensions holds for quantifier-free formulas (and in particular prime formulas).
+The induction step for $\neg$ and $\land$ are obvious, so all we must show is
+
+\medskip
+{\tabskip=0pt plus 1fil\openup1\jot\halign to\hsize{\hfil$#$\tabskip=0pt&${}#$\hfil\tabskip=.25cm&(#)\hfil\tabskip=0pt plus 1fil\cr
+    {\cal A}\vDash\forall y\phi(\vec a,y) &\iff {\cal A}\vDash\phi(\vec a,a)\hbox{ for all $a\in A$}\cr
+    &\iff{\cal B}\vDash\phi(\vec a,a)\hbox{ for all $a\in A$}&induction hypothesis\cr
+    &\iff{\cal B}\vDash\forall y\phi(\vec a,y)&see below\cr
+}}
+\medskip
+
+One direction of the final equivalence is trivial, we will prove the converse ($\implies$) by contrapositive: if ${\cal B}\nvDash\forall y\phi(\vec a,y)$ then
+${\cal B}\vDash\exists y\neg\phi(\vec a,y)$ and therefore ${\cal B}\vDash\neg\phi(\vec a,a)$ for some $a\in A$ and so we cannot have ${\cal B}\vDash\phi(\vec a,a)$ for all $a\in A$.
+\qed
+
+Tarski's Criterion allows us to prove nontrivial elementary extensions, for example we can utilize the following:
+
+\bthrm
+
+    Let ${\cal A}\subseteq{\cal B}$, and suppose that for all $n$ and $\vec a\in A^n$ and $b\in B$, there exists an automorphism $\iota\colon{\cal B}\longto{\cal B}$ such that $\iota\vec a=\vec a$
+    and $\iota b\in A$.
+    Then ${\cal A}\preceq{\cal B}$.
+
+\ethrm
+
+We will prove that Tarski's criterion holds: suppose ${\cal B}\vDash\exists y\phi(\vec a,y)$ and so ${\cal B}\vDash\phi(\vec a,b)$ for some $b\in B$.
+Then let $\iota$ be an automorphism of ${\cal B}$ where $\iota\vec a=\vec a$ and $\iota b\in B$, then ${\cal B}\vDash\phi(\iota\vec a,\iota b)=\phi(\vec a,a)$ with $a=\iota b\in A$.
+And so we have proven Tarski's criterion, meaning ${\cal A}\preceq{\cal B}$ as required.
+\qed
+
+Notice that we need consider only if $b\notin A$, as otherwise we can just take the identity mapping as the automorphism.
+
+\bexam
+
+    We claim that $({\bb Q},<)\preceq({\bb R},<)$.
+    Indeed, if $a_1<\cdots<a_n\in{\bb Q}$ and $b\in{\bb R}$ then we consider three cases: $b<a_1$, $a_i<b<a_{i+1}$, and $a_n<b$.
+    \benum
+        \item If $b<a_1$, then by the density of ${\bb Q}$ in ${\bb R}$ there must exist a rational $b<q<a_1$, and so let us define $\iota$ to map $x\varmapsto x$ for $x\geq a_1$.
+        And for $x<a_1$ let us define $\iota$ to be the linear function connecting $(b,q)$ to $(a_1,a_1)$, which is increasing and therefore an automorphism.
+        \item If $a_i<b<a_{i+1}$ we can similarly take a rational $b<q<a_{i+1}$, and have $\iota$ be the identity outside the interval $[a_i,a_{i+1}]$ and within this interval we split it up into the
+        linear function connecting $(a_i,a_i)$ with $(b,q)$ and the linear function connecting $(b,q)$ with $(a_{i+1},a_{i+1})$.
+        This is again an automorphism.
+        \item The case $b>a_n$ can be treated analogously to the case for $b<a_1$.
+    \eenum
+    So we have satisfied the condition for the above theorem, proving that $({\bb Q},<)$ is indeed an elementary substructure of $({\bb R},<)$.
+
+\eexam
+
+\bthrm[title=Downward L\"owenheim-Skolem Theorem, name=downlowskol]
+
+    Suppose ${\cal B}$ is an ${\cal L}$-structure such that $\abs{{\cal L}}\leq\abs{{\cal B}}$, and let $A_0\subseteq B$ be arbitrary.
+    Then ${\cal B}$ has an elementary substructure ${\cal A}$ of cardinality $\leq\maxof{\abs{A_0},\abs{{\cal L}}}$ such that $A_0\subseteq A$.
+
+\ethrm
+
+We will inductively define a sequence $A_0\subseteq A_1\subseteq\cdots\subseteq B$ as follows: assuming we have constructed $A_k$, for every $\alpha=\alpha(\vec x,y)$ and $\vec a\in A_k^n$ such that
+${\cal B}\vDash\exists y\alpha(\vec a,y)$, then arbitrarily choose a $b\in B$ such that ${\cal B}\vDash\alpha(\vec a,b)$ and add $b$ to $A_k$ to obtain $A_{k+1}$.
+In particular, if $\alpha$ is $f\vec x\eq y$ then certainly ${\cal B}\vDash\exists!y\,f\vec a\eq y$ and so $f^{\cal B}\vec a\in A_{k+1}$.
+Thus $A=\bigcup_{k=0}^\infty A_k$ is closed under the operations of ${\cal B}$, and therefore defines a substructure ${\cal A}\subseteq{\cal B}$.
+And we will show that ${\cal A}\preceq{\cal B}$ by Tarski's criterion: if ${\cal B}\vDash\exists y\phi(\vec a,y)$ for $\vec a\in A^n$, then there must be some $k$ such that $\vec a\in A_k^n$ and so
+${\cal B}\vDash\phi(\vec a,b)$ for some $b\in{\cal B}$ and by definition one of these $b$s is in $A_{k+1}\subseteq A$.
+Thus ${\cal A}$ is indeed an elementary substructure.
+
+Now all that remains to be shown is that $\abs A\leq\kappa\coloneqq\maxof{\abs{A_0},\abs{{\cal L}}}$.
+Notice that there are at most $\kappa$ formulas and $\kappa$ finite sequences of elements in $A_0$, and so we adjoin at most $\kappa$ new elements to $A_0$ in order to obtain $A_1$, meaning
+$\abs{A_1}\leq\kappa$.
+And inductively we have that $\abs{A_n}\leq\kappa$, meaning $\abs A=\abs{\bigcup A_k}\leq\kappa$ as required.
+\qed
+
+\bthrm[title=Upward L\"owenheim-Skolem Theorem, name=uplowskol]
+
+    Let ${\cal C}$ be any infinite ${\cal L}$-structure and $\kappa\geq\maxof{\abs{{\cal C}},\abs{{\cal L}}}$ then there exists an elementary extension ${\cal A}\succeq{\cal C}$ with $\abs{{\cal A}}=\kappa$.
+
+\ethrm
+
+Let $D\supseteq C$ with a cardinality of $\kappa$.
+Since the alphabet of ${\cal L}D$ has a cardinality of $\kappa$, $\abs{{\cal L}D}=\kappa$, and since $\abs{{\cal C}}\geq\aleph_0$.
+Now, $D_{\it el}{\cal C}\cup\set{c\neqb d}[c\neq d\in D]$ is finitely satisfiable: every finite subset contains only finitely many rules for $c\neq d\in D$ and so we can interpret these constants as
+elements of ${\cal C}$, and so it is satisfiable by the compactness theorem.
+Let this model be ${\cal B}$.
+And since $d\varmapsto d^{\cal B}$ is injective, we can assume $d^{\cal B}=d$ for all $d\in D$, ie. $D\subseteq B$.
+By the downward L\"owenheim-Skolem theorem with ${\cal L}={\cal L}D$ and $A_0=D$, there exists some ${\cal A}\preceq{\cal B}$ with $D\subseteq A$ and
+$\kappa=\abs D\leq\abs A\leq\maxof{\abs D,\abs{{\cal L}D}}=\kappa$, thus $\abs A=\kappa$.
+And since $C\subseteq D$ and ${\cal A}\equiv_{{\cal L}D}{\cal B}\vDash D_{\it el}{\cal C}$, we have that ${\cal A}\vDash D_{\it el}{\cal C}$ and since $C\subseteq A$, this means that
+${\cal C}\preceq{\cal A}$, as required.
+\qed
+
