@@ -1,0 +1,228 @@
+Recall that a theory $T\subseteq{\cal L}^0$ is consistent by definition if it has no consistent extensions $T\subseteq T'\subseteq{\cal L}^0$.
+Note that a complete theory $T$ may have a consistent extension in ${\cal L}$, as in general neither $\vdash_T x\eq y$ nor $\vdash_T x\neqb y$, so $T\cup\set{x\eq y}$ for example may be consistent.
+But this of course is not interesting: we want to deal with theories, not arbitrary sets of formulae.
+
+We can equivalently characterize completeness as follows:
+
+\bthrm
+
+    For a consistent theory $T$, the following are equivalent:
+    \benum
+        \item $T$ is complete,
+        \item $T=\Th{\cal A}$ for every ${\cal A}\vDash T$,
+        \item ${\cal A}\equiv{\cal B}$ for every ${\cal A},{\cal B}\vDash T$,
+        \item $\vdash_T\alpha\lor\beta$ implies $\vdash_T\alpha$ or $\vdash_T\beta$ for any $\alpha,\beta\in{\cal L}^0$,
+        \item $\vdash_T\alpha$ or $\vdash_T\neg\alpha$ for every $\alpha\in{\cal L}^0$.
+    \eenum
+
+\ethrm
+
+$(1)\implies(2)$: obviously if ${\cal A}\vDash T$, $T\subseteq\Th{\cal A}$ and since $\Th{\cal A}$ is consistent and an extension of $T$, there must be equality by definition of completeness.
+$(2)\implies(3)$: if ${\cal A},{\cal B}\vDash T$ then $\Th{\cal A}=\Th{\cal B}=T$ and so ${\cal A}\vDash{\cal B}$.
+$(3)\implies(4)$: let ${\cal A}\vDash T$ then ${\cal A}\vDash\alpha\lor\beta$ and so ${\cal A}\vDash\alpha$ or ${\cal A}\vDash\beta$.
+Suppose that ${\cal A}\vDash\alpha$, then if ${\cal B}\vDash T$ as well we have $\Th{\cal A}=\Th{\cal B}$ and so ${\cal B}\vDash\alpha$, meaning that $\alpha$ is modeled by every model of $T$, and so
+$\vdash_T\alpha$ as required.
+$(4)\implies(5)$: this is a specific case of $(4)$ for $\beta=\neg\alpha$.
+$(5)\implies(1)$: let $T\subset T'$ and let $\alpha\in T'\setminus T$, then $\nvdash_T\alpha$ so $\vdash_T\neg\alpha$ and therefore $\vdash_{T'}\neg\alpha,\alpha$ meaning $T'$ is inconsistent.
+Thus $T$ is complete as all of its extensions are inconsistent.
+\qed
+
+Notice that if we take the inconsistent theory $T={\cal L}^0$ to be complete, this theorem still holds even if we remove the condition that $T$ be consistent.
+
+\bdefn
+
+    A theory $T$ is {\emphcolor $\kappa$-categorical}\addtoindex{theory}[categorical] for a cardinal $\kappa$ if all of its models of cardinality $\kappa$ are isomorphic.
+
+\edefn
+
+\bexam
+
+    A trivial example is the theory ${\it Taut}_{\eq}$ of tautologies in ${\cal L}_{\eq}$.
+    This theory is $\kappa$-categorical for all cardinalities $\kappa$ as all models of ${\it Taut}_{\eq}$ are simply sets, and so if they have the same cardinality they are by definition isomorphic.
+
+\eexam
+
+\bexam
+
+    The theory ${\sf DO}$\addtoindex{theory of densely ordered sets} is the theory of densely ordered sets: it is obtained by adjoining the following two axioms:
+    $$ \exists x\exists y(x\neqb y),\qquad \forall x\forall y\exists z(x<y\to x<z\land z<y) $$
+    Let us further define ${\sf L}=\exists x\forall y(x\leq y)$ and ${\sf R}=\exists x\forall y(y\leq x)$.
+    And so we define extensions of ${\sf DO}$ as follows: ${\sf DO}_{ij}={\sf DO}+i{\sf L}+j{\sf R}$ where $i,j\in\set{0,1}$ and $i\phi$ is to mean $\phi$ for $i=1$ and $\neg\phi$ for $i=0$.
+    Thus for example ${\sf DO}_{00}={\sf DO}+\neg{\sf L}+\neg{\sf R}$ is the theory of densely ordered sets without endpoints.
+
+    It turns out that all ${\sf DO}_{ij}$ are $\aleph_0$-categorical, we will show this for ${\sf DO}_{00}$ (this proof is due to Cantor).
+    Let us call a function $f$ with ${\sl dom}f\subseteq M$ and ${\sl ran}f\subseteq N$ {\emphcolor partial function}\addtoindex{partial function} from $M$ to $N$.
+    Now let $A=\set{a_0,a_1,\dots}$ and $B=\set{b_0,b_1,\dots}$ be countable models of ${\sf DO}_{00}$.
+    We will define a sequence of partial functions from $A$ to $B$, $\set{f_i}_{i=0}^\infty$, by induction.
+    We begin with $f_0a_0=b_0$.
+    Now assuming that $f_n$ has been constructed such that $a<a'\iff f_na<f_na'$ for all $a,a'\in{\sl dom}f$ and $\set{a_0,\dots,a_n}\subseteq{\sl dom}f_n$ and $\set{b_0,\dots,b_n}\subseteq{\it ran}f_n$
+    (such a function is caled a {\emphcolor partial isomorphism}\addtoindex{partial isomorphism}), we construct $f_n$ (note that for $n=0$ these conditions have been satisfied trivially).
+
+    Let $m$ be the minimum index such that $a_m\in A\setminus{\sl dom}f_n$, choose $b\in B\setminus{\sl ran}f_n$ such that $g_n\coloneqq f_n\cup\set{(a_m,b)}$ is a partial isomorphism.
+    Such a $b$ exists since $B$ is dense.
+    Now similarly let $m$ be the minimum index such that $b_m\in B\setminus{\sl ran}g_n$, and choose $a\in A\setminus{\sl dom}f_n$ such that $f_{n+1}\coloneqq g_n\cup\set{(a,b_m)}$ is a partial isomorphism.
+
+    Notice that by this construction $a_n\in{\sl dom}f_n$ and $b_n\in{\sl ran}f_n$, so let us define $f=\bigcup_{n=0}^\infty f_n$.
+    $f$ is certainly a bijection between $A$ and $B$, and it is an isomorphism since for every $x,y\in A$, $x,y\in{\sl dom}f_n$ for some $n$ and so $x<y\iff f_nx<f_ny\iff fx<fy$ as $f_n$ is a partial
+    isomorphism.
+
+\eexam
+
+An interesting (and important!) result which we will not prove is the following:
+
+\bthrm[title=Morley's Theorem, name=morleystheorem]
+
+    If $T$ is a $\kappa$-categorical theory for some uncountably infinite cardinal $\kappa$, $T$ is $\kappa$-categorical for all uncountably infinite cardinals $\kappa$.
+
+\ethrm
+
+\bthrm[title=Vaught's Test, name=vaughtstest]
+
+    A countable consistent theory $T$ without finite models which is also $\kappa$-categorical for some cardinal $\kappa$ is complete.
+
+\ethrm
+
+Since $T$ has no finite models $\kappa$ must be infinite.
+And so if we assume that $T$ is incomplete, there must be an $\alpha$ such that $\nvdash\alpha,\neg\alpha$.
+Thus $T+\alpha$ and $T+\neg\alpha$ are both consistent, and since $T$ is countable they must have countably infinite models.
+By the \refmath{uplowskol}, $T+\alpha$ and $T+\neg\alpha$ must have models of cardinality $\kappa$.
+So let ${\cal A}\vDash T+\alpha$ and ${\cal B}\vDash T+\neg\alpha$ be models of cardinality $\kappa$, then ${\cal A},{\cal B}\vDash T$ and since $T$ is $\kappa$-categorical, this means that they are
+isomorphic and in particular elementarily equivalent.
+But ${\cal A}\vDash\alpha$ and ${\cal B}\vDash\neg\alpha$ in contradiction.
+\qed
+
+This means that ${\sf DO}_{ij}$ is complete for every $i,j$.
+Since $({\bb Q},<)$ and $({\bb R},<)$ are both densely ordered sets without endpoints, we have once again confirmed that $({\bb Q},<)\equiv({\bb R},<)$.
+
+\bdefn
+
+    Model classes of first-order sentences are {\emphcolor elementary classes}\addtoindex{elementary classes}.
+    An (arbitrary) intersection of elementary classes is called a {\emphcolor $\Delta$-elementary class}.
+    In particular, if $T$ is a theory then $\Md T=\bigcap_{\alpha\in T}\Md\alpha$ is a $\Delta$-elementary class.
+    If $T$ is a complete theory, then $\Md T$ is also termed an {\emphcolor elementary type}\addtoindex{elementary type}.
+
+\edefn
+
+Notice that the elementary class of a theory is equal to the union of its completion's elementary types (this is a mouthful, yet a trivial result).
+
+\bdefn
+
+    Let $X\subseteq{\cal L}$ be an arbitrary nonempty set of formulas and $T$ an ${\cal L}$-theory.
+    We define $\gen X_T$ (we will remove the subscript if the theory is understood) to be the set of all formulas equivalent modulo $T$ to a boolean combination of formulas in $X$.
+    Notice then that $\top\in\gen X_T$ since $\top\equiv_T\alpha\lor\neg\alpha$ for $\alpha\in X$, and therefore for every $\alpha\in T$ since $\alpha\equiv_T\top$ so we have that $T\subseteq\gen X_T$.
+    And we say that $X$ is a {\emphcolor boolean basis for ${\cal L}^0$ in $T$}\addtoindex{boolean basis} if $\gen X_T={\cal L}^0$.
+
+\edefn
+
+We write ${\cal A}\equiv_X{\cal B}$ to mean that ${\cal A}\vDash\alpha\iff{\cal B}\vDash\alpha$ for every $\alpha\in X$.
+
+\bthrm[title=Basis Theorem for Sentences, name=basistheorem]
+
+    Let $T$ be a theory and $X\subseteq{\cal L}^0$ a set of sentences with ${\cal A}\equiv_X{\cal B}\implies{\cal A}\equiv{\cal B}$ for all models ${\cal A},{\cal B}\vDash T$.
+    Then $X$ is a boolean basis for ${\cal L}^0$.
+
+\ethrm
+
+Let $\alpha\in{\cal L}^0$, and let us define $Y_\alpha\coloneqq\set{\beta\in\gen X}[\alpha\vdash_T\beta]$.
+Then we claim that $Y_\alpha\vdash_T\alpha$.
+Otherwise there must be a model ${\cal A}\vDash Y_\alpha,T,\neg\alpha$.
+So let us define $T_X{\cal A}\coloneqq\set{\gamma\in\gen X}[{\cal A}\vDash\gamma]$, and we have that $T_X{\cal A}\vdash\neg\alpha$ since if ${\cal B}\vDash T_X{\cal A}$ then for every $\beta\in X$ if
+${\cal A}\vDash\beta$ then $\beta\in T_X{\cal A}$ and so ${\cal B}\vDash\alpha$, and conversely if ${\cal A}\nvDash\beta$ then $\neg\beta\in T_X{\cal A}$ and so ${\cal B}\nvDash\beta$.
+Thus ${\cal A}\equiv_X{\cal B}$ so ${\cal A}\equiv{\cal B}$ and thus ${\cal B}\vDash\neg\alpha$.
+So by the compactness theorem, and since $T_X{\cal A}$ is closed under conjunctions, there exists a $\gamma\in T_X{\cal A}$ such that $\gamma\vdash\neg\alpha$ and so $\alpha\vdash\neg\gamma$, so
+$\neg\gamma\in Y_\alpha$ and thus ${\cal A}\vDash\neg\gamma$.
+But we know that $\gamma\in T_X{\cal A}$ so ${\cal A}\vDash\gamma$ in contradiction.
+
+Thus $Y_\alpha\vdash_T\alpha$ and therefore again by the compactness theorem there exist $\beta_1,\dots,\beta_m\in Y_\alpha$ such that $\beta=\bigwedge_{i=1}^m\beta_i\vdash_T\alpha$.
+And since $\alpha\vdash_T\beta_i$, we have that $\alpha\vdash_T\beta$ as well.
+Therefore $\alpha\equiv_T\beta\in\gen X$ and therefore $\alpha\in\gen X$.
+So indeed $\gen X={\cal L}^0$ as required.
+\qed
+
+\bexam
+
+    For $T={\sf DO}$ and $X=\set{{\sf L},{\sf R}}$, we have that ${\cal A}\equiv_X{\cal B}$ implies ${\cal A}\equiv{\cal B}$ for all ${\cal A},{\cal B}\vDash T$.
+    This is as if ${\cal A}$ and ${\cal B}$ are densely ordered sets which agree on $X$, meaning they have the same endpoint configuration, they belong to the same ${\sf DO}_{ij}$ which is complete.
+    Therefore $X$ is a boolean basis for ${\cal L}^0$ in $T$.
+
+\eexam
+
+\bcoro
+
+    Let $T\subseteq{\cal L}^0$ be a theory with arbitrarily large finite models, such that all finite models with the same number of elements and all infinite models are elementarily equivalent.
+    Then
+    \benum
+        \item the sentences $\exists_n$ form a Boolean basis for ${\cal L}^0$ in $T$, and
+        \item $T$ is decidable provided it is finitely axiomatizable.
+    \eenum
+
+\ecoro
+
+Let us define $X\coloneqq\set{\exists_n}[n\in{\bb N}]$, then by our assumption ${\cal A}\equiv_X{\cal B}$ implies that ${\cal A}\equiv{\cal B}$ for all ${\cal A},{\cal B}\vDash T$.
+Thus $X$ is a boolean basis for ${\cal L}^0$ in $T$, so we have proven $(1)$.
+For $(2)$ we claim that $T$ has the finite model property, and as shown earlier a theory which is finitely axiomatizable and has the finite model property is decidable.
+Since $X$ is a boolean basis, every $\alpha\in{\cal L}^0$ is equivalent modulo $T$ to a boolean combination of $\exists_n$s.
+As shown in a previous exercise, every boolean combination of $\exists_n$ is equivalent to one of the following forms: $\bigvee_{i=1}^n\exists_{=k_i}$ with $k_1<\cdots<k_n$ or
+$\exists_k\lor\bigvee_{i=1}^n\exists_{=k_i}$ for some $k$.
+Since $T$ has arbitrarily large models, $T+\alpha$ if satisfied must be so by a finite model as required.
+\qed
+
+Notice that if $\set{T+X_i}_{i\in I}$ is the set of all completions of a theory $T$ where $X_i\subseteq{\cal L}^0$, then $X=\bigcup_{i\in I}X_i$ forms a boolean basis for ${\cal L}^0$ in $T$.
+This is as for $T$-models ${\cal A}$ and ${\cal B}$, the models must also model some completions of $T$ suppose ${\cal A}\vDash T+X_i$ and ${\cal B}\vDash T+X_j$.
+So if ${\cal A}\equiv_X{\cal B}$ we must have $i=j$ and so ${\cal A}\equiv{\cal B}$ since $T+X_i$ is complete.
+Though finding this $X$ is not always trivial.
+
+Suppose though that $T$ has only finitely many completions, then all of its extensions must be finite (of the form $T+\alpha$).
+As otherwise if $T+\set{\alpha_i}_{i\in{\bb N}}$ is a nonfinite extension, we can assume that $\bigwedge_{i<n}\alpha_i\nvdash\alpha_n$ which would imply that $T$ has infinitely many completions
+(as each $T+\bigwedge_{i<n}\alpha_i+\neg\alpha_n$ is consistent and thus has a distinct completion), in contradiction.
+So now suppose that the completions of $T$ are $T+\alpha_1,\dots,T+\alpha_n$ then all of its consistent extensions are of the form $T+\bigvee_{i=1}^m\alpha_{k_i}$ for some $m\leq n$ and $k_1<\cdots<k_m$.
+
+On one hand all such extensions are consistent:
+$$ {\cal A}\vDash T+\bigvee_{i=1}^m\alpha_{k_i} \iff {\cal A}\vDash T\hbox{ and there exists an $1\leq i\leq m$ such that }{\cal A}\vDash\alpha_{k_i} $$
+this means that
+$$ \Md\parens{T+\bigvee_{i=1}^m\alpha_{k_i}} = \bigcup_{i=1}^m\Md(T+\alpha_{k_i}) $$
+and so surely $T+\bigvee\alpha_{k_i}$ is consistent.
+Conversely, if $T\subseteq T'$ then let $T+\alpha_{k_1},\dots,T+\alpha_{k_m}$ be all the completions of $T'$ (a completion of $T'$ is also a completion of $T$).
+We then claim that $T'=T+\bigvee_{i=1}^m\alpha_{k_i}$.
+Now, as a general lemma we have that $T=\bigcap_{{\cal A}\in\Md T}\Th{\cal A}$: obviously $T\subseteq\Th{\cal A}$ for every ${\cal A}\in\Md T$ so one inclusion is trivial.
+In the other direction suppose that there existed an $\alpha$ such that every $T$-model ${\cal A}\vDash\alpha$ but $\alpha\notin T$.
+This would mean $T+\neg\alpha$ is consistent and thus has a $T$-model, but this $T$-model would not satisfy $\alpha$ in contradiction.
+
+Thus a theory depends only on its models, so we need only show that $\Md T'=\Md\parens{T+\bigvee_{i=1}^m\alpha_{k_i}}=\bigcup_{i=1}^m\Md(T+\alpha_{k_i})$.
+Since $T'\subseteq T+\alpha_{k_i}$ we must have that $\Md(T+\alpha_{k_i})\subseteq\Md T'$ so one direction is trivial.
+Now suppose that ${\cal A}\vDash T'$ then $\Th{\cal A}$ is a completion of $T'$ and thus is equal to some $T+\alpha_{k_i}$ and so ${\cal A}\vDash T+\alpha_{k_i}$.
+So we have proven the equality and so $T'=\bigvee_{i=1}^m T+\alpha_{k_i}$.
+
+Notice that $T+\bigvee_{i=1}^n\alpha_i=T$, and so $T$ has exactly $2^n-1$ consistent extensions (as we have $2^n$ choices for $k_1<\cdots<k_m$, and one choice gives $T$).
+And these extensions are all distinct since the extensions are determined by their completions.
+So we have proven the following:
+
+\bprop
+
+    A theory with $n$ completions has $2^n-1$ consistent extensions.
+
+\eprop
+
+\bexerc
+
+    Show that the theory $T$ of torsion-free divisible abelian groups is $\aleph_1$-categorical and therefore complete.
+
+\eexerc
+
+A torsion-free divisible abelian group is simply a ${\bb Q}$-vector space where scalar multiplication is defined by for $g\in G$ and $\frac ab\in{\bb Q}$, $\frac abg=\frac{ag}b$.
+So if $G$ is a torsion-free divisible abelian group of cardinality $\aleph_1$ it is a vector space and thus must have a basis $B$, meaning $G\cong\bigoplus_{b\in B}{\bb Q}$.
+Notice that this cardinality is dependent only on the cardinality of $B$, and we can swap $B$ with any set of the same cardinality and get the same direct product.
+So all torsion-free divisible abelian groups are isomorphic to $\bigoplus_{b\in B}{\bb Q}$ and so $T$ is indeed $\aleph_1$-categorical.
+Since a torsion-free group cannot be finite, by Vaught's test $T$ is complete.
+
+\bexerc
+
+    Show that a countable $\aleph_0$-categorical theory $T$ with no finite models has an elementary prime model.
+
+\eexerc
+
+Let ${\cal P}$ be a $T$-model with cardinality $\aleph_0$.
+Let ${\cal B}\vDash T$ and since $T$ has no finite models it must be infinite.
+By the \refmath{downlowskol} ${\cal B}$ must have an elementary substructure ${\cal A}\preceq{\cal B}$ of cardinality $\aleph_0$.
+Since $T$ is $\aleph_0$-categorical, ${\cal P}\cong{\cal A}$ and so ${\cal P}$ can be elementarily embedded into ${\cal B}$ (using its isomorphism with ${\cal A}$), and is thus an elementary prime model.
+
