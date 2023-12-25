@@ -1,0 +1,248 @@
+\bdefn
+
+    A theory $T$ is {\emphcolor model complete}\addtoindex{theory}[model complete] if for every model ${\cal A}\vDash T$, then ${\cal L}A$-theory $T+D{\cal A}$ is complete.
+
+\edefn
+
+Notice that if ${\cal A},{\cal B}\vDash T$ where ${\cal A}\subseteq{\cal B}$ then since ${\cal B}_A\vDash D{\cal A}$ we have that ${\cal A}_A\equiv{\cal B}_A$ by the completeness of $T+D{\cal A}$.
+And so if $T$ is a model complete theory, then it has the property that for every ${\cal A},{\cal B}\vDash T$, ${\cal A}\subseteq{\cal B}\implies{\cal A}\preceq{\cal B}$.
+Conversely if a theory has this property then it must be model complete: let ${\cal B}\vDash T+D{\cal A}$ and so we can assume ${\cal A}\subseteq{\cal B}$ and thus ${\cal A}\preceq{\cal B}$ so
+${\cal B}$ is elementarily equivalent to ${\cal A}_A$ and this means that $T+D{\cal A}$ is complete.
+
+Clearly if $T$ is a model complete in ${\cal L}$ then so to is every one of its extensions (since $T+D{\cal A}\subseteq T'+D{\cal A}$).
+Furthermore a model complete theory is inductive: for if $K$ is a chain of $T$-models then by above it is an elementary chain and so ${\cal A}\preceq\bigcup K$ for every ${\cal A}\in K$.
+In particular ${\cal A}\equiv\bigcup K$ so $\bigcup K\vDash T$.
+Thus only $\forall\exists$-theories can be model complete.
+
+But not all $\forall\exists$-theories are model complete, for example ${\sf DO}$ is not model complete.
+Define ${\bb Q}_a\coloneqq\set{x\in{\bb Q}}[a\leq x]$ for every $a\in{\bb Q}$, then $({\bb Q}_1,<)\subseteq({\bb Q}_0,<)$ but not $({\bb Q}_1,<)\preceq({\bb Q}_1,<)$ since $\forall x\,1\leq x$ is valid only
+in ${\bb Q}_1$.
+These models also shows that the complete theory ${\sf DO}_{10}$ is not model complete.
+And similarly a model complete theory need not be complete: one such example is the theory of algebraically closed fields ${\sf ACF}$ which will be considered later on this section.
+
+\bthrm[name=modelcompleteprime]
+
+    A model complete theory $T$ with a prime model is complete.
+
+\ethrm
+
+Let ${\cal P}\vDash T$ be a prime model, then for every ${\cal A}\vDash T$ we have that ${\cal P}$ is up to isomorphism a substructure of ${\cal A}$, and thus ${\cal P}\preceq{\cal A}$.
+In particular ${\cal A}\equiv{\cal P}$ and so all $T$-models are elementarily equivalent, meaning $T$ is complete.
+\qed
+
+\bthrm[name=modelcompleteequiv]
+
+    For a theory $T$, the following are equivalent:
+    \benum
+        \item $T$ is model complete,
+        \item ${\cal A}\subseteq{\cal B}\implies{\cal A}\subseteq_{\it ec}{\cal B}$ for all $T$-models ${\cal A}\subseteq{\cal B}$,
+        \item every $\exists$-formula $\alpha$ is equivalent in $T$ to a $\forall$-formula $\beta$ with $\free\beta\subseteq\free\alpha$,
+        \item every formula $\alpha$ is equivalent in $T$ to a $\forall$-formula $\beta$ with $\free\beta\subseteq\free\alpha$.
+    \eenum
+
+\ethrm
+
+$(1)\implies(2)$ is trivial as ${\cal A}\preceq{\cal B}\implies{\cal A}\subseteq_{\it ec}{\cal B}$.
+$(2)\implies(3)$: by \refmath[theorem]{persequivuniversal}, it is sufficient to show that $\alpha$ is persistent in $T$.
+So suppose ${\cal A}\subseteq{\cal B}$ and ${\cal B}\vDash\alpha(\vec a)$ for $\vec a\in A^n$, and since ${\cal A}$ is existentially closed in ${\cal B}$ this means precisely that
+${\cal A}\vDash\alpha(\vec a)$, meaning $\alpha$ is persistent in $T$.
+$(3)\implies(4)$: we induct on $\alpha$.
+Prime formulas are $\exists$-formulas and are handled by assumption.
+The induction step for $\land$ and $\forall$ are obvious (since for $\forall x\alpha$, convert $\alpha$ to an equivalent $\forall$-formula and then you get a $\forall$-formula).
+For $\alpha=\neg\alpha'$ then $\alpha'$ is equivalent to a $\forall$-formula by induction, and so $\alpha$ is equivalent to an $\exists$-formula and thus by assumption a $\forall$-formula.
+$(4)\implies(1)$: let ${\cal A},{\cal B}\vDash T$ and ${\cal B}\vDash\alpha(\vec a)$ for $\vec a\in A^n$, then $\alpha(\vec x)$ is equivalent to a $\forall$-formula and since $\forall$-formulas are
+preserved by substructures, we have ${\cal A}\vDash\alpha(\vec a)$.
+And conversely if ${\cal A}\vDash\alpha(\vec a)$, notice that $\alpha(\vec x)$ is equivalent to an $\exists$-formula (since $\neg\alpha$ is equivalent to a $\forall$-formula) which are preserved
+by superstructures, so ${\cal B}\vDash\alpha(\vec a)$.
+Thus ${\cal A}\preceq{\cal B}$.
+\qed
+
+The implication $(2)\implies(1)$ is called {\it Robinson's test}\addtoindex{robinson's test} for model completeness.
+
+If $T$ is countable and has finite models only, then $(2)$ can be restricted to models ${\cal A},{\cal B}$ of any set cardinality $\kappa\geq\aleph_0$.
+Then it can be shown that every $\exists$-formula is $\kappa$-persistent, which is sufficient to show its equivalence to a $\forall$-formula as explained in the remark after
+\refmath[theorem]{persequivuniversal}.
+So this restricted $(2)$ still implies $(3)$ and thus the rest of the chain of implications holds.
+This remark is important for the proof of \refmath[Lindstr\"om's Criterion]{lindstromcriterion}.
+
+A simpler example of a model complete theory is the theory of nontrivial ${\bb Q}$-vector spaces $T_{V{\bb Q}}$ over the signature $\set{+,0,{\bb Q}}$ where $0$ is the zero vector and each $r\in{\bb Q}$
+is a unary operation corresponding to scalar multiplication by $r$ (so for example $\forall ab\bigl(r(a+b)\eq ra+rb\bigr)$ would be an axiom schema for all $r\in{\bb Q}$).
+Let ${\cal V},{\cal V}'\vDash T_{V{\bb Q}}$ be two ${\bb Q}$-vector spaces with ${\cal V}\subseteq{\cal V}'$ then we claim ${\cal V}\subseteq_{\it ec}{\cal V}'$ (ie. we are trying to use Robinson's test).
+Suppose ${\cal V}'\vDash\exists\vec x\alpha(\vec x,\vec a,\vec b)$ for $\vec a\in V^m,\vec b\in V^k$ where $\alpha$ is a conjunction of literals.
+Then $\alpha$ is equivalent to a system of the form
+$$ \left\{\matrix{r_{11}x_1+\cdots+r_{1n}x_n\eq a_1 & s_{11}x_1+\cdots+s_{1n}\neqb b_1\cr\vdots & \vdots\cr r_{m1}x_1+\cdots+r_{mn}x_n\eq a_m & s_{k1}x_1+\cdots+s_{kn}x_n\neqb b_k}\right. $$
+Now it can be shown that if this has a solution in ${\cal V}'$, it must have a solution in ${\cal V}$ as well.
+
+The following concept generalizes the idea of closures in algebra, like the algebraic closure of a field, real closure of an ordered field, and the divisible closure of an abelian group.
+
+\bdefn
+
+    Let $T$ be a theory and ${\cal A}\vDash T^\forall$ (ie. ${\cal A}$ is a substructure of some $T$-model).
+    Then the {\emphcolor closure of ${\cal A}$ in $T$}\addtoindex{closure operation} is the smallest $T$-model containing ${\cal A}$, ie. it is a $T$-model $\overline{{\cal A}}\supseteq{\cal A}$ such that
+    if ${\cal A}\subseteq{\cal B}\vDash T$ then $\overline{{\cal A}}\subseteq{\cal B}$, if it exists.
+    If every ${\cal A}\vDash T^\forall$ has a closure in $T$, then we say that $T$ {\emphcolor permits a closure operation}.
+
+\edefn
+
+Now suppose that $T$ does indeed permit a closure operation, and ${\cal A},{\cal B}\vDash T$ with ${\cal A}\subset{\cal B}$, then let $b\in B\setminus A$.
+Then let ${\cal A}(b)$ be the structure generated by $A\cup\set b$, which is a substructure of ${\cal B}$ and thus ${\cal A}(b)\vDash T^\forall$.
+We then denote the closure of ${\cal A}(b)$ in $T$ by ${\cal A}^b$.
+As ${\cal A}\subset{\cal A}^b\subseteq{\cal B}$, ${\cal A}^b$ is called an {\it immediate extension} of ${\cal A}$ in $T$.
+
+\bexam
+
+    Let $T={\sf ACF}$ be the theory of algebraically closed fields.
+    Then a $T^\forall$-model ${\cal A}$ is an integral domain (as every integral domain can be embedded into its field of fractions, which has an algebraic closure).
+    $\overline{{\cal A}}$ is the {\it algebraic closure} of the field of fractions of ${\cal A}$, this is a well-known result from field theory.
+    Now suppose ${\cal A},{\cal B}\vDash T$ with ${\cal A}\subset{\cal B}$ and let $b\in{\cal B}\setminus{\cal A}$, then $b$ is transcendental in ${\cal A}$ as it is algebraically closed, meaning that
+    $a_0+a_1b+\cdots+a_nb^n\neq0$ for $a_0,\dots,a_n\in A$ with $a_n\neq0$.
+    Thus ${\cal A}(b)$ is isomorphic to the ring of polynomials ${\cal A}[x]$, and so we have that for every ${\cal A},{\cal B},{\cal C}\vDash T$ with ${\cal A}\subset{\cal B},{\cal C}$ and
+    $b\in B\setminus A$ and $c\in C\setminus A$, ${\cal A}(b)\cong{\cal A}[x]\cong{\cal A}(c)$.
+    And so their closures ${\cal A}^b$ and ${\cal A}^c$ are also isomorphic.
+    Thus every algebraically closed field has up to isomorphism a single immediate extension.
+
+\eexam
+
+We can simplify Robinson's test in specific cases where the theory is inductive and permits a closure operation.
+
+\blemm
+
+    Let $T$ be an inductive theory which permits a closure operation.
+    Then further assume that ${\cal A}\subseteq_{\it ec}{\cal A}'$ for all ${\cal A},{\cal A}'\vDash T$ where ${\cal A}'$ is an immediate extension of ${\cal A}$ in $T$.
+    Then $T$ is model complete.
+
+\elemm
+
+Let ${\cal A}\subseteq{\cal B}$ be two $T$-models, then by Robinson's test it is sufficient to show that ${\cal A}\subseteq_{\it ec}{\cal B}$.
+Let us define $H$ to be the set of all ${\cal C}\subseteq{\cal B}$ such that ${\cal A}\subseteq_{\it ec}{\cal C}\vDash T$.
+We trivially have that ${\cal A}\in H$ and since $T$ is inductive, for every chain $K\subseteq H$ we have $\bigcup K\vDash T$.
+Since a chain $K\subseteq H$ is an existentially closed chain (since for every ${\cal A}_1\in K$ and ${\cal A}_2\in K$ with ${\cal A}_1\subseteq{\cal A}_2$ we have that ${\cal A}\subseteq_{\it ec}{\cal A}_2$
+so every $\exists$-formula valid in ${\cal A}_2$ is valid in ${\cal A}\subseteq{\cal A}_1$ and is thus valid in ${\cal A}_1$).
+We can add ${\cal A}$ to the chain which does not affect its union, and then we have that ${\cal A}\subseteq_{\it ec}\bigcup K$ by the chain lemma for existentially closed chains.
+This means that $\bigcup K\in H$ and so $H$ has a maximal element ${\cal A}_m$ by Zorn's lemma.
+
+We now claim that ${\cal A}_m={\cal B}$, which would mean ${\cal B}\in H$ and thus ${\cal A}\subseteq_{\it ec}{\cal B}$ as required.
+Assume that ${\cal A}_m\subset{\cal B}$ then there exists an immediate extension of ${\cal A}_m$ in $T$, ${\cal A}'_m\vDash T$ such that ${\cal A}_m\subset{\cal A}'_m\subseteq{\cal B}$.
+By assumption we have ${\cal A}\subseteq_{\it ec}{\cal A}_m\subseteq_{\it ec}{\cal A}_m'$, which means that ${\cal A}_m'\in H$ contradicting ${\cal A}_m$'s maximality.
+\qed
+
+\bthrm
+
+    ${\sf ACF}$ is model complete and therefore so too is ${\sf ACF}_p$, the theory of algebraically closed fields of characteristic $p$ ($=0$ or prime).
+    Furthermore ${\sf ACF}_p$ is complete.
+
+\ethrm
+
+We will use the above lemma to prove ${\sf ACF}$'s model completeness.
+Let ${\cal A},{\cal B}\vDash{\sf ACF}$ with ${\cal A}\subset{\cal B}$ and $b\in B\setminus A$, then by the above lemma all we must show is that ${\cal A}\subseteq_{\it ec}{\cal A}^b$.
+Let $\alpha\coloneqq\exists\vec x\beta(\vec x,\vec a)\in{\cal L}A$, $\beta$ quantifier-free, and suppose that ${\cal A}^b\vDash\alpha$.
+We must prove ${\cal A}\vDash\alpha$.
+Let us define
+$$ X \coloneqq {\sf ACF}\cup D{\cal A}\cup\set{p(x)\neqb0}[\hbox{$p(x)$ is a monic polynomial over ${\cal A}$}] $$
+We see that $({\cal A}^b,b)\vDash X$ (with $b$ for $x$, since $\free X=\set x$) since $b$ is transcendental over ${\cal A}$ so by definition $p(b)\neq0$ for any monic polynomial over ${\cal A}$.
+Let $({\cal C},c)\vDash X$, since ${\cal C}\vDash D{\cal A}$ without loss of generality ${\cal A}\subseteq{\cal C}$.
+By the above example we have that ${\cal A}^c\cong{\cal A}^b$ and therefore ${\cal A}^c\vDash\alpha$ and as an $\exists$-formula, ${\cal C}\vDash\alpha$.
+Since $({\cal C},c)$ is arbitrary we have that $X\vdash\alpha$, and by the compactness theorem
+$$ D{\cal A},\bigwedge_{i=1}^k p_i(x)\neqb0\vdash_{{\sf ACF}}\alpha $$
+for some $k$ where $p_1(x),\dots,p_k(x)$ are monic polynomials over ${\cal A}$.
+Then by particularization and the deduction theorem we have $D{\cal A}\vdash_{{\sf ACF}}\exists x\bigwedge_{i=1}^k p_i(x)\neqb0\to\alpha$.
+Therefore ${\cal A}\vDash\exists x\bigwedge_{i=1}^k p_i(x)\neqb0\to\alpha$.
+Since ${\cal A}$ is an algebraically closed field it is infinite (as if it were finite $\prod_{a\in A}(x-a)+1$ would have no zeroes), and polynomials have finitely many zeroes in fields, meaning that
+${\cal A}\vDash\exists x\bigwedge_{i=1}^k p_i(x)\neqb0$ and so ${\cal A}\vDash\alpha$ as required.
+
+${\sf ACF}_p$ is model complete as an extension of ${\sf ACF}$, and it has a prime model --- the algebraic closure of the prime field of characteristic $p$.
+Thus by \refmath[theorem]{modelcompleteprime}, ${\sf ACF}_p$ is complete.
+\qed
+
+\bdefn
+
+    The {\emphcolor model completion}\addtoindex{model completion} of an ${\cal L}$-theory $T_0$ is an extension $T\subseteq{\cal L}^0$, such that $T+D{\cal A}$ is complete for every ${\cal A}\vDash T_0$.
+
+\edefn
+
+Obviously the model completion of a theory, if one exists, is model complete (since a model of $T$ is a model of $T_0$).
+$T$ is also model compatible with $T_0$, since if ${\cal A}\vDash T_0$ then since $T+D{\cal A}$ is consistent, there exists a ${\cal B}\vDash T+D{\cal A}$ so ${\cal B}$ is a $T$-model in which one can embed
+${\cal A}$ (and trivially every $T$ model can be embedded in itself, a $T_0$ model).
+If a model completion exists, it is unique: suppose $T$ and $T'$ are model completions of $T_0$.
+Since both theories a model compatible with $T_0$, they are with each other.
+And further since they are model complete and therefore inductive, we showed in an exercise that $T+T'$ is also model compatible with $T$.
+So if ${\cal A}\vDash T$ then it can be embedded into some ${\cal B}\vDash T+T'$.
+Since $T$ is model complete this means ${\cal A}\preceq{\cal B}$ and so ${\cal A}\equiv{\cal B}$, meaning ${\cal A}\vDash T'$.
+By symmetry we have that every $T'$-model is a $T$-model and thus $\Md T=\Md T'$, so $T=T'$.
+
+\bexam
+
+    ${\sf ACF}$ is the model completion of the theory $T_J$ of integral domains, and thus also the theory $T_F$ of fields (since if ${\cal A}\vDash T_F$ then ${\cal A}\vDash T_J$ so ${\sf ACF}+D{\cal A}$ is
+    complete).
+    To show this, let ${\cal A}\vDash T_J$, and since ${\sf ACF}$ is model complete so too is $T\coloneqq{\sf ACF}+D{\cal A}\subseteq{\cal L}A$
+    $T$ also has a prime model, the closure $\overline{{\cal A}}$, and so is complete as required.
+
+\eexam
+
+\bdefn
+
+    ${\cal A}\vDash T$ is {\emphcolor existentially closed}\addtoindex{existentially closed} in $T$, for short $\exists$-closed, if ${\cal A}\subseteq_{\it ec}{\cal B}$ for every ${\cal B}\vDash T$
+    where ${\cal A}\subseteq{\cal B}$.
+
+\edefn
+
+For example every algebraically closed field is $\exists$-closed in the theory of fields.
+Let ${\cal A}\vDash{\sf ACF}$ and ${\cal A}\subseteq{\cal B}\vDash T_F$, and then let ${\cal C}$ be an algebraic extension of ${\cal B}$ then by the model completeness of ${\sf ACF}$ we have
+${\cal A}\preceq{\cal C}$, and thus by \refmath[lemma]{eclosureequiv}, we have that ${\cal A}\subseteq_{\it ec}{\cal B}$.
+The following lemma, in a sense, generalizes the fact that every field is embeddable in an algebraically closed field.
+
+\blemm
+
+    Let $T$ be a $\forall\exists$-theory over some countable language ${\cal L}$.
+    Then every infinite $T$-model ${\cal A}$ can be extended to a $T$-model ${\cal A}^*$ which is $\exists$-closed in $T$ and $\abs{{\cal A}}=\abs{{\cal A}^*}$.
+
+\elemm
+
+We assume for simplicity that ${\cal A}$ is countably infinite, if ${\cal A}$ is uncountable then the following proof proceeds similarly but utilizing an ordinal enumeration instead of a normal one when
+necessary.
+Since ${\cal A}$ is countable, so too is ${\cal L}A$, so let $\alpha_0,\alpha_1,\dots$ be an enumeration of the $\exists$-sentences of ${\cal L}A$.
+Let ${\cal A}_0={\cal A}_A$, and inductively define ${\cal A}_{n+1}$ to be an extension of ${\cal A}_n$ in ${\cal L}A$ such that ${\cal A}_{n+1}\vDash T+\alpha_n$ if such an extension exists, otherwise
+have ${\cal A}_{n+1}\coloneqq{\cal A}_n$.
+Since $T$ is inductive, ${\cal B}_0\coloneqq\bigcup_{n=0}^\infty{\cal A}_n\vDash T$.
+If $\alpha=\alpha_n$ is valid in some extension ${\cal B}\vDash T$ of ${\cal B}_0$, then ${\cal A}_{n+1}\vDash\alpha$ and so ${\cal B}_0\vDash\alpha$ as it is an $\exists$-sentence.
+Now we repeat this construction with an enumeration of all the $\exists$-sentences in ${\cal L}B_0$ to obtain a ${\cal L}B_0$-structure ${\cal B}_1\vDash T$.
+In such a way we get a sequence ${\cal B}_0\subseteq{\cal B}_1\subseteq{\cal B}_2\subseteq\cdots$ of ${\cal L}B_n$-structures ${\cal B}_{n+1}\vDash T$.
+Let ${\cal A}^*$ be the ${\cal L}$-reduct of $\bigcup_{n=0}^\infty{\cal B}_n\vDash T$.
+Now suppose ${\cal A}^*\subseteq{\cal B}\vDash T$, and assume ${\cal B}\vDash\exists\vec x\beta(\vec a,\vec x)$ for $\vec a\in(A^*)^n$.
+This means that $\vec a\in B_m^n$ and ${\cal B}_m\vDash\beta(\vec a,\vec b)$ for suitable $m$, and so $\bigcup_{n=0}^\infty{\cal B}_n\vDash\beta(\vec a,\vec b)$ so
+${\cal A}^*\vDash\exists\vec x\beta(\vec a,\vec x)$.
+Notice that a countable amount of countable unions were performed to construct ${\cal A}^*$ and thus it too is countable.
+\qed
+
+\bthrm[title=Lindstr\"om's Criterion, name=lindstromcriterion]
+
+    A countable $\kappa$-categorical $\forall\exists$-theory $T$ without finite models is model complete.
+
+\ethrm
+
+Since all $T$-models are infinite, $T$ has a model of cardinality $\kappa$ by the L\"owenheim-Skolem theorems.
+And by the above lemma, $T$ has a model which is $\exists$-closed in the theory.
+This means that all $T$-models of cardinality $\kappa$ are $\exists$-closed as they are all isomorphic, and so ${\cal A}\subseteq{\cal B}\implies{\cal A}\subseteq_{\it ec}{\cal B}$ for all $T$-models
+${\cal A},{\cal B}$ of cardinality $\kappa$.
+By the remark after \refmath[theorem]{modelcompleteequiv}, this means that $T$ is model complete.
+\qed
+
+By Vaught's test, any theory satisfying Lindstr\"om's criterion is also complete.
+
+\bexam
+
+    The following theories are therefore model complete:
+    \benum
+        \item The $\aleph_0$-categorical theory of atomless Boolean algebras.
+        An atomless Boolean algebra is a Boolean algebra ${\cal B}$ where for every $a\neq0$ (where $0=x\cap\neg x$) there is some $b\neq0$ such that $b<a$ ($<$ is the partial lattice order
+        $a\leq b\iff a\cup b=b\iff a\cap b=a$).
+        \item The $\aleph_1$-categorical theory of ${\bb Q}$-vector spaces.
+        This is as a rational vector space of cardinality $\aleph_1$ has a basis of cardinality $\aleph_1$ and so all rational vector spaces of cardinality $\aleph_1$ are isomorphic.
+        \item The $\aleph_1$-categorical theory of ${\sf ACF}_p$ for any prime $p$ or $p=0$.
+        Notice that we get the model completeness of ${\sf ACF}_p$ in a method independent of ${\sf ACF}$, and this implies the model completeness of ${\sf ACF}$: if ${\cal A},{\cal B}\vDash{\sf ACF}$
+        and ${\cal A}\subseteq{\cal B}$ then both fields have the same characteristic $p\geq0$, and so ${\cal A},{\cal B}\vDash{\sf ACF}_p$.
+        Since ${\sf ACF}_p$ is model complete, we have that ${\cal A}\preceq{\cal B}$, so ${\sf ACF}$ is also model complete.
+    \eenum
+
+\eexam
+
