@@ -1,0 +1,215 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+\parindent=0pt
+\parskip=3pt plus 2pt minus 2pt
+
+\input preamble
+
+\footline={}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\headline={\pageborder{rgb{.5 1 .5}}{rgb{0 .4 0}}{5}}
+
+\color rgb{.1 .8 0}
+
+{\def\boxshadowcolor{rgb{.3 .8 .3}}
+\bppbox{rgb{.5 1 .5}}{rgb{0 .4 0}}{rgb{.1 .4 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Modern Analysis }
+    \smallskip
+    \centerline{\setfont{it}Lectures by Shimon Brooks \setfont{rm}({\tt brookss@math.biu.ac.il})}
+    \centerline{\setfont{it}Summary by Ari Feiglin \setfont{rm}({\tt ari.feiglin@gmail.com})}
+
+\eppbox
+
+\bigskip
+
+\bppbox{rgb{.5 1 .5}}{rgb{0 .4 0}}{rgb{.1 .4 0}}
+    \section*{Contents}
+    
+    \tableofcontents
+\eppbox
+
+}
+
+\vfill\break
+
+\color{black}
+
+\pageno=1
+\newif\ifpageodd
+\pageoddtrue
+\headline={%
+    \hbox to \hsize{\color{black}%
+        \ifpageodd\hfil{\it\currsubsection\quad\bf\folio}\global\pageoddfalse%
+        \else{\bf\folio\quad\it\currsubsection}\hfil\global\pageoddtrue\fi%
+    }%
+}
+
+\section{Introduction}
+
+\subsection*{The Riemann Integral and its Faults}
+
+Recall the definition of the Riemann integral: given a function $f(x)$ on an interval $[a,b]$ we take a partition of this interval and representatives from each partition, $x_i$.
+Then the Riemann sum of this function over this partition is $\sum f(x_i)\Delta x_i$.
+Then if this sum converges to a value as $\sup\Delta x_i$ converges to $0$, this function is {\it Riemann integrable} and has an integral represented by $\int_a^b f(x)\,dx$.
+Previously we have shown that a function is Riemann integrable if and only if it is almost always continuous, in particular all continuous functions are continuous.
+
+But take for example ${\bb Q}$'s indicator function
+$$ \chi_{{\bb Q}}(x) \coloneqq \cases{1 & $x\in{\bb Q}$\cr 0 & $x\notin{\bb Q}$} . $$
+This function is nowhere continuous and thus is not Riemann integrable.
+But we argue that it {\it should} be integrable.
+
+Any theory if an integral should have the following two basic properties:
+\benum
+    \item {\it monotonicity\/}: if $f(x)\leq g(x)$ for every $x$ in the domain then $\int f(x)\,dx\leq\int g(x)\,dx$.
+    \item {\it linearity\/}: $\int(\alpha f(x)+\beta g(x))\,dx=\alpha\int f(x)\,dx+\beta\int g(x)\,dx$.
+\eenum
+
+Let $\set{q_n}_{n=1}^\infty$ be an enumeration of the rationals and $\epsilon>0$.
+Let us define $E_n\coloneqq\parens{q_n-\frac\epsilon{2^{n+1}},q_n+\frac\epsilon{2^{n+1}}}$, then we should think that
+$$ \int\sum_{n=1}^\infty\chi_{E_n}(x)\,dx = \sum_{n=1}^\infty\int\chi_{E_n}(x)\,dx = \sum_{n=1}^\infty\frac\epsilon{2^n} = \epsilon \eqnum $$
+Now $\chi_{\bb Q}(x)\leq\sum_{n=1}^\infty\chi_{E_n}(x)$ for all $x$ and so $\int\chi_{\bb Q}(x)\,dx\leq\epsilon$ for every $\epsilon>0$ and so we should think that $\int\chi_{\bb Q}(x)\,dx=0$.
+
+Now obviously $\chi_{\bb Q}$ is not Riemann-integrable, and so there is an issue with the above argument.
+In fact there are two: firstly in $(1)$ we assumed that $\int\sum_{n=1}^\infty\chi_{E_n}=\sum_{n=1}^\infty\int\chi_{E_n}$, which only holds if the sum converges uniformly.
+Secondly, $\sum_{n=1}^\infty\chi_{E_n}(x)$ takes on infinite values (for every rational number, the sum is infinite) and so it is not even Riemann integrable.
+
+So we want a theory of integration which allows for two things: 1) the ability to deal with convergence of an integral without necessarily needing uniform convergence, 2) the ability to deal with functions
+which are not Riemann-integrable.
+Lebesgue's theory of integration is based on the following observation: partitioning the domain of the function will necessarily require some form of continuity, so instead try partitioning the {\it range}
+of the function.
+So given the partition $y_0<\cdots<y_n$ we can imagine some Lebesgue sum of this partition to be
+$$ \sum_{i=0}^n y_i\cdot\abs{E_i},\qquad E_i=\set{x\in[a,b]}[y_i\leq f(x)\leq y_{i+1}] $$
+where $\abs S$ is some notion of the ``width'' of the set $S$, {\it which we have not yet defined} (it is not the cardinality of the set).
+For an interval this should be the length of the interval, but for arbitrary sets it becomes harder to understand how we should approach defining it.
+And in order to define the integral of $\chi_{\bb Q}$, it is necessary to define this width for arbitrary sets, or at least for a larger family of sets than just intervals, since computing the Lebesgue
+sums of $\chi_{\bb Q}$ will involve terms containing $\abs{{\bb Q}}$.
+
+This ``Lebesgue sum'' will not be precisely how we define Lebesgue integration, but it does give us a starting point: how do we define the ``width'' of a set $E\subseteq{\bb R}$.
+
+\vfill\break
+
+\section{Lebesgue Integration}
+
+\subsection{The Lebesgue Measure}
+
+We would like a function $m$ which measures the width of arbitrary sets $E\subseteq{\bb R}$.
+Such a function would ideally satisfy the following properties:
+{\def\enumstyle#1{$\m@th\bf(m#1)$}
+\benum
+    \item $m$ is a function $m\colon\powsetof{\bb R}\longto[0,\infty]$,
+    \item for every interval $I$, $m(I)$ is the length of $I$,
+    \item the measure of a set is preserved under movement, ie. $m(E+\alpha)=m(E)$ for every $\alpha\in{\bb R}$ where $E+\alpha=\set{x+\alpha}[x\in E]$,
+    \item if $\set{E_n}_{n=1}^\infty$ is a sequence of disjoint sets then $m\parens{\bigdcup_{n=1}^\infty E_n}=\sum_{n=1}^\infty m(E_n)$.
+        This is called {\it $\sigma$-additivity}.
+\eenum}
+
+\bdefn[title=The Outer Measure]
+
+    Let $E\subseteq{\bb R}$, then we define $E$'s {\emphcolor outer measure} to be
+    $$ m^*(E) \coloneqq \infof{\sum_{n=1}^\infty\abs{I_n}}[E\subseteq\bigcup_{n=1}^\infty I_n\hbox{ where $I_n$ are all open intervals}] $$
+
+\edefn
+
+This set is nonempty since ${\bb R}$ can be covered by open intervals (eg. $\set{(n,n+2)}_{n\in{\bb Q}}$) and therefore so can every subset.
+Obviously we have that $m^*(\varnothing)=0$ since we can take arbitrarily small arbitrary intervals.
+Notice that for every $\epsilon>0$, we showed in the previous section there exists open intervals $\set{E_n}_{n=1}^\infty$ such that ${\bb Q}\subseteq\bigcup_{n=1}^\infty E_n$ and
+$\sum_{n=1}^\infty\abs{E_n}=\epsilon$.
+Thus we have that $m^*({\bb Q})\leq\epsilon$ for every $\epsilon>0$ and so $m^*({\bb Q})=0$ as well.
+
+Notice that we can also take a finite set of $I_n$s, as we can add infinitely many $I_n$s of arbitrarily small width (eg. add $I_n$s of length $\frac\epsilon{2^n}$) and this will add $\epsilon$ to the
+sum, and so the infimum remains the same.
+Thus we have that
+$$ m^*(E) = \infof{\sum_{n=1}^\infty\abs{I_n}}[E\subseteq\bigcup_{j\in J}I_j\hbox{ where $I_n$ are all open intervals and $J$ is countable}] $$
+
+Now, does the outer measure satisfy the conditions $\rm m1$ through $\rm m4$?
+\benum
+    \item $m^*$ is indeed a function from $\powsetof{\bb R}$ to $[0,\infty]$,
+    \item $m^*(I)=\abs I$ for all intervals $I$ (proven below).
+    \item $m^*(E+\alpha)=m^*(E)$ as there is a width-preserving bijection between collections of intervals covering $E$ and $E+\alpha$ (in particular $I\mapsto I+\alpha$).
+\eenum
+
+But $m^*$ is not $\sigma$-additive, and we can only ensure $\sigma$-subadditivity:
+
+\bthrm
+
+    Let $\set{E_n}_{n=1}^\infty$ be a sequence of (not necessarily disjoint) subsets of ${\bb R}$, then
+    $$ m^*\parens{\bigcup_{n=1}^\infty E_n} \leq \sum_{n=1}^\infty m^*(E_n) $$
+
+\ethrm
+
+\Proof for every $E_n$, let us take a cover for $E_n$ of open intervals $\set{I_k^{(n)}}_{k=1}^\infty$ such that $m^*(E_n)\geq\sum_{k=1}^\infty\abs{I_k^{(n)}}+\frac\epsilon{2^n}$.
+Then we have that
+$$ \sum_{n=1}^\infty m^*(E_n) \geq \sum_{n=1}^\infty\parens{\sum_{k=1}^\infty\abs{I_k^{(n)}}+\frac\epsilon{2^n}} = \sum_{n,k=1}^\infty\abs{I_k^{(n)}}+\epsilon $$
+Since $\set{I_k^{(n)}}_{n,k=1}^\infty$ is a cover of $\bigcup_{n=1}^\infty E_n$, we have that
+$$ \sum_{n=1}^\infty m^*(E_n) \geq \sum_{n,k=1}^\infty\abs{I_k^{(n)}}+\epsilon \geq m^*\parens{\bigcup_{n=1}^\infty E_n}+\epsilon $$
+Since $\epsilon>0$ is arbitrary, we get the desired inequality (by taking $\epsilon\to0$, the above inequality is preserved).
+\qed
+
+Of course this does not prove that $m^*$ is not $\sigma$-additive, we have simply proven a weaker condition.
+
+This helps us show that $m^*(I)=\abs I$ for all intervals $I$.
+For open intervals this is trivial, and we have that $m^*(E\cup\set a)\leq m^*(E)+m^*(\set a)=m^*(E)$ (the measure of a singleton is obviously zero) and $m^*(E\cup\set a)\geq m^*(E)$ by monotonicity.
+All intervals are obtained by adding a finite number of points to an open interval, so for example $m^*([a,b])=m^*\bigl((a,b)\cup\set{a,b}\bigr)=m^*((a,b))=b-a$ as required.
+
+\bprop[title=The Vitali Set]
+
+    There exists no function which satisfies properties $\rm m1$ through $\rm m4$.
+
+\eprop
+
+\Proof let us define an equivalence relation on ${\bb R}$ as follows: $x\sim y\iff x-y\in{\bb Q}$.
+Notice that the equivalence classes of this relation are of the form $x+{\bb Q}$ for some $x\in{\bb R}$ and thus they are all countable and dense.
+For every equivalence class choose a single representative in $[0,1]$ to form the set $E\subseteq[0,1]$.
+Notice then that
+$$ {\bb R} = \bigdcup_{q\in{\bb Q}}(E+q) = E+{\bb Q} = \set{x+q}[x\in E,q\in{\bb Q}] $$
+this union is disjoint since if $x\in E+q\cap E+p$ then $x=x_1+q$ and $x=x_2+p$ so $x\sim x_1\sim x_2$ but we put only a single representative of each equivalence class into $E$.
+For every $y\in[0,1]$, there exists an $x\in E$ such that $x\sim y$ so $x-y\in{\bb Q}\cap[-1,1]$, and so if $y\in E+q$ for some $q\in[-1,1]$.
+Thus
+$$ [0,1] \subseteq \bigdcup_{q\in{\bb Q}\cap[-1,1]}E+q = E + {\bb Q}\cap[-1,1] \subseteq [-1,2] $$
+If $m$ is a function which satisfies the four properties above, it is also monotonic (which can be derived from $\sigma$-additivity: if $A\subseteq B$ then $m(B)=m(A)+m(B\setminus A)\geq m(A)$), and so
+$$ m([0,1]) = 1 \leq \sum_{q\in{\bb Q}\cap[-1,1]}m(E) \leq 3 $$
+Since ${\bb Q}\cap[-1,1]$ is infinite, we must have that $m(E)=0$ as otherwise the sum is infinite.
+But then the sum is $0$ and not greater than $1$, which is a contradiction.
+So the {\it Vitali set\/} $\bigcup_{q\in{\bb Q}\cap[-1,1]}E+q$ cannot be measurable.
+\qed
+
+So we must weaken one of the conditions.
+$m^*$ is already an example of a function which satisfies $\rm m1$ through $\rm m3$ so they are not contradictory.
+But $\sigma$-additivity is extremely important to Lebesgue's theory of integration, so we will instead weaken $\rm m1$ to be
+$$ \hbox{$({\bf m1})$\kern.25cm $m$ is a function ${\cal L}({\bb R})\longto[0,\infty]$} $$
+where ${\cal L}({\bb R})$ is the set of all Lebesgue-measurable sets of ${\bb R}$:
+
+\bdefn[title=Carath\'eodory]
+
+    A set $E\subseteq{\bb R}$ is called {\emphcolor Lebesgue measurable} (or just {\it measurable}) if for every $A\subseteq{\bb R}$, $m^*(A)=m^*(A\cap E)+m^*(A\cap E^c)$.
+
+\edefn
+
+Notice that by subadditivity $m*(A)\leq m^*(A\cap E)+m^*(A\cap E^c)$, to show that $E$ is Lebesgue measurable it is sufficient to show the other direction ($\geq$).
+This implies that all sets $E$ with zero outer measure are Lebesgue measurable: $m^*(A\cap E)+m^*(A\cap E^c)=m^*(A\cap E^c)\leq m^*(A)$ as required ($m^*(A\cap E)\leq m^*(E)=0$).
+Further notice that $E$ is measurable if and only if $E^c$ is by symmetry of the definition.
+
+\bthrm
+
+    Every open interval of the form $(a,\infty)$ is measurable.
+
+\ethrm
+
+\Proof let $A$ be a subset of ${\bb R}$.
+Let us define
+$$ A^+ \coloneqq A\cap(a,\infty),\qquad A^- \coloneqq A\cap(a,\infty)^c = A\cap(-\infty,a] $$
+We must show that $m^*(A^+)+m^*(A^-)\leq m^*(A)$.
+Let $\epsilon>0$ and let $\set{I_n}_{n=1}^\infty$ be a cover of $A$ consisting of open intervals where $\sum_{n=1}^\infty\abs{I_n}\leq m^*(A)+\epsilon$.
+Then for every $n$, define $I_n^+=I_n\cap(a,\infty)$ and $I_n^-=I_n\cap(a,\infty)^c$, so $\set{I_n^+}$ is a cover for $A^+$ and $\set{I_n^-}$ is a cover for $A^-$.
+And since these are intervals we have $\abs{I_n}=\abs{I_n^+}+\abs{I_n^-}$.
+So we have
+$$ m^*(A) \geq \sum_{n=1}^\infty\abs{I_n}-\epsilon = \sum_{n=1}^\infty\abs{I_n^+} + \sum_{n=1}^\infty\abs{I_n^-} + \epsilon \geq m^*(A^+) + m^*(A^-) + \epsilon $$
+And since $\epsilon>0$ is arbitrary, we get $m^*(A)\geq m^*(A^+)+m^*(A^-)$ as required.
+\qed
+
+\bye
+
