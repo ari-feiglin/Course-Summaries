@@ -280,7 +280,63 @@ this is continuous, $K(0,t)=H(0,t)=0$ and $K(1,t)=G(1,t)=1$ so it is a homotopy 
 Notice that concatenation is not necessarily associative, since in $(\gamma*\delta)*\epsilon$, the speed of $\gamma$ and $\delta$ is quadrupled while in $\gamma*(\delta*\epsilon)$, $\gamma$'s speed is only
 doubled.
 But it is the case that $[\gamma]\bigl([\delta][\epsilon]\bigr)=\bigl([\gamma][\delta]\bigr)[\epsilon]$, so in homotopy concatenation is associative.
-So we need to prove $\gamma(\delta\epsilon)\hdi(\gamma\delta)\epsilon$, this can be done by.
+So we need to prove $\gamma(\delta\epsilon)\hdi(\gamma\delta)\epsilon$, the idea behind this is that for every $x$ and $y$ where $\gamma(\delta\epsilon)(x)=(\gamma\delta)\epsilon(y)$, define in $I\times I$
+the line between $(x,0)$ and $(y,1)$.
+These lines cover $I\times I$ and for every point $(t,s)$ which is on the line from $(x,0)$ map it to $\gamma(\delta\epsilon)(x)$.
+
+We can prove in a similar manner that for $\gamma\in\Gamma_{ab}$, $[K_a][\gamma]=[\gamma][K_b]=[\gamma]$.
+
+And so we have defined a category.
+The objects of this category are the points $a\in X$ and the morphisms between $a$ and $b$ are $\hat\Gamma_{ab}$ (notice that $[\gamma]\in\hat\Gamma_{ab}$ can be composed with elements from
+$\hat\Gamma_{bc}$, so the order of composition is reversed).
+Here the identity morphisms are $[K_a]$.
+
+Notice that every morphism in this category is an isomorphism.
+This is since for every $\gamma\in\Gamma_{ab}$ we defined its reverse $\overline\gamma\in\Gamma_{ba}$ by $\overline\gamma(t)\coloneqq\gamma(1-t)$.
+
+\bprop
+
+    $[\gamma][\overline\gamma]=[K_a]$ and $[\overline\gamma][\gamma]=[K_b]$.
+
+\eprop
+
+The idea is that at time $t$ we take the path $\gamma$ but not all the way, then wait, then take the reverse path $\overline\gamma$.
+So
+$$ H(x,t) = \cases{\gamma(2x) & $0\leq x\leq\frac{1-t}2$\cr \gamma(1-t) & $\frac{1-t}2\leq x\leq\frac{1+t}2$\cr \gamma(2-2x) & $\frac{1+t}2\leq x\leq1$} $$
+is a homotopy from $\gamma*\overline\gamma$ to $K_a$.
+\qed
+
+\bdefn
+
+    A {\emphcolor groupoid} is a small category (a category whose objects form a set, not a pure class) such that every morphism is an isomorphism.
+    If ${\cal C}$ is a groupoid, then $\Mor(A,B)$ is then a group for every $A,B\in{\cal C}$.
+
+\edefn
+
+\bdefn
+
+    Given a pointed topological space $(X,a)$ (call $a$ the basis point), define the {\emphcolor first homotopy group} $\pi_1(X,a)\coloneqq\hat\Gamma_{aa}$.
+    And given a morphism $f\colon(X,a)\longto(Y,b)$ (meaning $f$ is continuous and $f(a)=b$), then we define a group homomorphism $f_*\colon\pi_1(X,a)\longto\pi_1(Y,b)$ by $f_*([\gamma])=[f\circ\gamma]$.
+    The correspondence $(X,a)\mapsto\pi_1(X,a)$ and $f\mapsto f_*$ is a functor.
+
+\edefn
+
+We need to show that $f_*$ is well-defined and also a group homomorphism.
+To show that it is well-defined, suppose $\gamma\hdi\delta$, then we must show $f\circ\gamma\hdi f\circ\delta$.
+Now we showed that if $f\htopic Af'$ and $g\htopic Bg'$ such that $f(A),f'(A)\subseteq B$ then $g\circ f\htopic Ag'\circ f'$.
+And we have that $\gamma\hdi\delta$ and $f\htopic{\set a}f$ so $f\circ\gamma\hdi f\circ\delta$ as required.
+Now we must show that $f_*$ is a homomorphism, ie.
+$$ f_*([\gamma][\delta]) = [f\circ(\gamma*\delta)] = [(f\circ\gamma)*(f\circ\delta)] = f_*([\gamma])f_*([\delta]) $$
+Actually a stronger result holds, $f\circ*(\gamma*\delta)=(f\circ\gamma)*(f\circ\delta)$, as both are given by
+$$ \cases{f\circ\gamma(2t) & $0\leq t\leq\frac12$\cr f\circ\delta(2t-1) & $\frac12\leq t\leq1$} $$
+
+To finish the proof that the correspondence is a functor, we need to show that $(g\circ f)_*=g_*\circ f_*$ and $({\rm id}_X)_*={\rm id}_{\pi_1(X,a)}$.
+We do so directly:
+$$ (g\circ f)_*([\gamma]) = [(g\circ f)\circ\gamma] = [g\circ(f\circ\gamma)] = g_*([f\circ\gamma]) = g_*\circ f_*([\gamma]) $$
+and
+$$ ({\rm id}_X)_*([\phi]) = [{\rm id}_X\phi] = [\phi] $$
+so $({\rm id}_X)_*={\rm id}_{\pi_1(X,a)}$ as required.
+Thus we have defined a functor from the category of pointed topological spaces to the category of groups.
 
 \bye
 
