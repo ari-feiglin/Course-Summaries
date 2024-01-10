@@ -178,18 +178,19 @@ So the {\it Vitali set\/} $\bigcup_{q\in{\bb Q}\cap[-1,1]}E+q$ cannot be measura
 \qed
 
 So we must weaken one of the conditions.
-$m^*$ is already an example of a function which satisfies $\rm m1$ through $\rm m3$ so they are not contradictory.
+$m^*$ is already an example of a function which satisfies $\rm m1$ through $\rm m3$ so they are not contradictory (also notice that this means $m^*$ cannot be $\sigma$-additive).
 But $\sigma$-additivity is extremely important to Lebesgue's theory of integration, so we will instead weaken $\rm m1$ to be
 $$ \hbox{$({\bf m1})$\kern.25cm $m$ is a function ${\cal L}({\bb R})\longto[0,\infty]$} $$
 where ${\cal L}({\bb R})$ is the set of all Lebesgue-measurable sets of ${\bb R}$:
 
 \bdefn[title=Carath\'eodory]
 
-    A set $E\subseteq{\bb R}$ is called {\emphcolor Lebesgue measurable} (or just {\it measurable}) if for every $A\subseteq{\bb R}$, $m^*(A)=m^*(A\cap E)+m^*(A\cap E^c)$.
+    A set $E\subseteq{\bb R}$ is called {\emphcolor Lebesgue measurable} (or just {\it measurable}) if for every $A\subseteq{\bb R}$,
+    $$ m^*(A)=m^*(A\cap E)+m^*(A\cap E^c) $$
 
 \edefn
 
-Notice that by subadditivity $m*(A)\leq m^*(A\cap E)+m^*(A\cap E^c)$, to show that $E$ is Lebesgue measurable it is sufficient to show the other direction ($\geq$).
+Notice that by subadditivity $m^*(A)\leq m^*(A\cap E)+m^*(A\cap E^c)$, to show that $E$ is Lebesgue measurable it is sufficient to show the other direction ($\geq$).
 This implies that all sets $E$ with zero outer measure are Lebesgue measurable: $m^*(A\cap E)+m^*(A\cap E^c)=m^*(A\cap E^c)\leq m^*(A)$ as required ($m^*(A\cap E)\leq m^*(E)=0$).
 Further notice that $E$ is measurable if and only if $E^c$ is by symmetry of the definition.
 
@@ -210,6 +211,153 @@ So we have
 $$ m^*(A) \geq \sum_{n=1}^\infty\abs{I_n}-\epsilon = \sum_{n=1}^\infty\abs{I_n^+} + \sum_{n=1}^\infty\abs{I_n^-} + \epsilon \geq m^*(A^+) + m^*(A^-) + \epsilon $$
 And since $\epsilon>0$ is arbitrary, we get $m^*(A)\geq m^*(A^+)+m^*(A^-)$ as required.
 \qed
+
+\bprop
+
+    The set of all measurable sets is invariant under movement, meaning if $E$ is measurable so too is $E+\alpha$.
+
+\eprop
+
+\Proof let $A\subseteq{\bb R}$ then notice that $x-\alpha\in A\cap(E+\alpha)-\alpha\iff x\in A\cap(E+\alpha)\iff x\in A,E+\alpha\iff x-\alpha\in A-\alpha,E$.
+So $A\cap(E+\alpha)-\alpha=(A-\alpha)\cap E$, and so we get
+\multlines{
+    m^*(A\cap(E+\alpha)) + m^*(A\cap(E+\alpha)^c) = m^*(A\cap(E+\alpha)-\alpha) + m^*(A\cap(E+\alpha)^c-\alpha)\cr
+    &= m^*((A-\alpha)\cap E) + m^*((A-\alpha)\cap E^c) = m^*(A-\alpha) = m^*(A)
+}
+as required.
+\qed
+
+\blemm
+
+    The finite union of measurable sets is measurable.
+    And if $\set{E_k}_{k=1}^n$ are disjoint and measurable, then
+    $$ m^*\parens{\bigdcup_{k=1}^nE_k} = \sum_{k=1}^n m^*(E_k) $$
+
+\elemm
+
+\Proof it is sufficient to prove this for two measurable sets and then to proceed inductively for arbitrary $n$.
+So suppose $E,F$ are measurable, we must show that $E\cup F$ is.
+Let $A\subseteq{\bb R}$, then
+\multlines{
+    m^*(A\cap(E\cup F)) + m^*(A\cap(E\cup F)^c) = m^*((A\cap E)\cup(A\cap F)) + m^*(A\cap E^c\cap F^c)\cr
+    &= m^*((A\cap E)\dcup(A\cap F\cap E^c)) + m^*(A\cap E^c\cap F^c)\leq m^*(A\cap E) + m^*(A\cap E^c\cap F) + m^*(A\cap E^c\cap F)\cr
+    &= m^*(A\cap E) + m^*(A\cap E^c) = m^*(A)
+}
+The final equality is due to $F$ being measurable, and so it satisfies Carath\'eodory's definition for $A\cap E^c$.
+
+And we similarly prove additivity by induction on $n$.
+For two disjoint measurable sets $E,F$, we have by Carath\'eodory on $E$:
+$$ m^*(E\dcup F) = m^*((E\dcup F)\cap E) + m^*((E\dcup F)\cap E^c) = m^*(E) + m^*(F) $$
+\qed
+
+Since the complement of a set is measurable, and the empty set is measurable, this proposition tells us that ${\cal L}({\bb R})$, the set of all Lebesgue measurable sets, is an algebra of sets
+(non-empty, closed under complements and unions/intersections).
+Intersections are of course measurable since $\bigcap_{k=1}^nE_k=\parens{\bigcap_{k=1}^nE_k^c}^c$, and so are differences since $E\setminus F=E\cap F^c$.
+Notice that since $m^*(E)=m^*(E\cap F)+m^*(E\cap F^c)$, we have
+$$ m^*(E\setminus F) = m^*(E\cap F^c) = m^*(E) - m^*(E\cap F) $$
+But stronger than this, ${\cal L}({\bb R})$ is in fact a $\sigma$-algebra (to be defined later).
+
+\blemm
+
+    Suppose $E_1,\dots,E_n$ are measurable and disjoint, then for every $A\subseteq{\bb R}$,
+    $$ m^*\parens{A\cap\bigdcup_{k=1}^n E_k} = \sum_{k=1}^n m^*(A\cap E_k) $$
+
+\elemm
+
+\Proof We prove this by induction on $n$; for $n=1$ this is trivial.
+If this holds for $n$, then using the inductive assumption for $E_1,\dots,E_{n-1},E_n\dcup E_{n+1}$
+$$ m^*\parens{A\cap\bigdcup_{k=1}^{n+1}E_k} = \sum_{k=1}^{n-1}m^*(A\cap E_k) + m^*(A\cap(E_n\dcup E_{n+1})) $$
+Now,
+\multlines{
+    m^*(A\cap(E_n\dcup E_{n+1})) = m^*(A\cap(E_n\dcup E_{n+1})\cap E_n) = m^*(A\cap(E_n\dcup E_{n+1})\cap E_n^c)\cr
+    &= m^*(A\cap E_n) + m^*(A\cap E_{n+1})
+}
+and so we get that indeed
+$$ m^*\parens{A\cap\bigdcup_{k=1}^{n+1}E_k} = \sum_{k=1}^{n+1}m^*(A\cap E_k) \qed $$
+
+\bthrm
+
+    Let $\set{E_n}_{n=1}^\infty$ be Lebesgue measurable, then $\bigcup_{n=1}^\infty E_n$ is also Lebesgue measurable (equivalently ${\cal L}({\bb R})$ is a $\sigma$-algebra).
+    Furthermore if the sets are disjoint, then we have $\sigma$-additivity:
+    $$ m^*\parens{\bigdcup_{n=1}^\infty E_n} = \sum_{n=1}^\infty m^*(E_n) $$
+
+\ethrm
+
+\Proof we can assume from the outset that $\set{E_n}$ are disjoint as we can define $F_n\coloneqq E_n\setminus\bigcup_{k=1}^{n-1}E_k$.
+This is measurable by the previous lemmas, and $\bigcup_{n=1}^\infty E_n=\bigdcup_{n=1}^\infty F_n$.
+Now define
+$$ E \coloneqq \bigdcup_{n=1}^\infty E_n,\qquad G_n\coloneqq\bigdcup_{k=1}^nE_k $$
+Let $A\subseteq{\bb R}$, and by $G_n$'s measurability we have that
+$$ m^*(A) = m^*(A\cap G_n) + m^*(A\cap G_n^c) \geq m^*(A\cap G_n) + m^*(A\cap E^c) $$
+By the above lemma this means $m^*(A) \geq \sum_{k=1}^nm^*(A\cap E_k) + m^*(A\cap E^c)$, and this inequality is preserved by taking the limit $n\to\infty$ so
+$$ m^*(A) \geq \sum_{k=1}^\infty m^*(A\cap E_k) + m^*(A\cap E^c) \eqnum $$
+By subadditivity, we have that $m^*(A\cap E)=m^*\parens{\bigdcup_{k=1}^\infty(A\cap E_k)}\leq\sum_{k=1}^\infty m^*(A\cap E_k)$, so
+$$ m^*(A) \geq m^*(A\cap E) + m^*(A\cap E^c) $$
+so $E$ is indeed measurable, as required.
+If we let $A=E=\bigdcup_{n=1}^\infty E_n$, then we get that $A\cap E_k=E_k$ and so by ({\bf1}) we get that
+$$ m^*(E) \geq \sum_{k=1}^\infty m^*(E_k) $$
+and $\leq$ is given by subadditivity so we have equality.
+\qed
+
+Notice that the Lebesgue outer measure defines a pseudometric on $\powsetof{\bb R}$ by $d(A,B)\coloneqq m^*(A\symdiff B)$.
+
+\bthrm
+
+    $E\subseteq{\bb R}$ is Lebesgue measurable if and only if forall $\epsilon>0$ there exists a countable union of open intervals $\bigcup_{n=1}^\infty I_n$ such that
+    $d\parens{\bigcup_{n=1}^\infty I_n,E}<\epsilon$.
+
+\ethrm
+
+\Proof suppose $E$ is measurable, then for every $\epsilon>0$ there exists a cover $E\subseteq\bigcup I_n$ of open intervals such that $m^*(E)+\epsilon>m^*\parens{\bigcup I_n}$.
+Now
+$$ d\parens{\bigcup I_n,E} = m^*\parens{\bigcup I_n\setminus E} = m^*\parens{\bigcup I_n} - m^*(E) < \epsilon $$
+since all the sets in play are measurable, as required.
+Now suppose that the condition holds, we must prove that $E$ is measurable.
+We can assume without loss of generality that $E\subseteq\bigcup I_n$ (as we can cover the symmetric difference with open intervals).
+Now let us take a sequence of such covers $U_k$ such that $m^*(U_k\setminus E)<\frac1k$, and define $U=\bigcap U_k$.
+And $m^*(U\setminus E)\leq m^*(U_k\setminus E)<\frac1k$ so $m^*(U\setminus E)=0$, and this means that $U\setminus E$ is measurable.
+Since $U_k$ are all measurable, so is $U$ and since $E=U\setminus(U\setminus E)$, $E$ is measurable.
+\qed
+
+In fact what we have shown is that every measurable set $E$ is of the form $G\setminus N$, where $G$ is a countable intersection of open sets (a $G_\delta$ set), and $N$ is a set of zero measure.
+This theorem implies that every open interval is Lebesgue measurable, as just define $I_n=I$.
+Recall that ${\bb R}$ is a second-countable topological space, meaning it has a countable basis, namely the basis $\set{(p,q)}[p<q\in{\bb Q}]$.
+This means that every open set in ${\bb R}$ is the countable union of open intervals, and therefore every open set is contained in ${\cal L}({\bb R})$.
+And so closed sets, which are complements of open sets, are also measurable.
+And so too are $G_\delta$ sets as the countable intersection of measurable sets, and so sets of the form $G\setminus N$ where $G$ is $G_\delta$ and $m^*(N)=0$ are measurable.
+So we have proven
+
+\bprop
+
+    $E$ is measurable if and only if there exists a $G_\delta$ set $G$ and a zero-measure set $N$ such that $E=G\setminus N$.
+
+\eprop
+
+\bdefn
+
+    Let $X$ be a set, then a non-empty collection $\Sigma\subseteq\powsetof X$ is called a {\emphcolor $\sigma$-algebra} if it satisfies
+    \benum
+        \item $S\in\Sigma\iff S^c\in\Sigma$
+        \item if $\set{S_n}_{n=1}^\infty\subseteq\Sigma$ then $\bigcup_{n=1}^\infty S_n\in\Sigma$
+    \eenum
+    By $(1)$ and $(2)$ we get that $\sigma$-algebras are also closed under intersections, and so $\varnothing=S\cap S^c\in\Sigma$ and $X=\varnothing^c\in\Sigma$.
+
+    If $X$ is a set and $\Sigma$ a $\sigma$-algebra over $X$, then $(X,\Sigma)$ is called a {\emphcolor measurable space}.
+    And a {\emphcolor measure space} is a triplet $(X,\Sigma,\mu)$ where $\mu$ is a $\sigma$-algebra over $X$, and $\mu$ is a {\emphcolor measure} over $\Sigma$:
+    \benum
+        \item $\mu\colon\Sigma\longto[0,\infty]$,
+        \item $\mu$ is $\sigma$-additive: if $\set{S_n}_{n=1}^\infty\subseteq\Sigma$ are disjoint $\mu\parens{\bigdcup_{n=1}^\infty S_n}=\sum_{n=1}^\infty\mu(S_n)$
+        \item $\mu(\varnothing)=0$.
+    \eenum
+
+\edefn
+
+\bexam
+
+    Let $m$ be the {\emphcolor Lebesgue measure} over ${\bb R}$, the restriction of $m^*$ to the collection of Lebesgue measurable sets: $m\coloneqq m^*\bigr|_{{\cal L}({\bb R})}$.
+    Then $({\bb R},{\cal L}({\bb R}),m)$ is a measure space.
+
+\eexam
 
 \bye
 
