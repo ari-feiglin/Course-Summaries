@@ -333,6 +333,8 @@ So we have proven
 
 \eprop
 
+\subsection{General Measure Spaces, Briefly}
+
 \bdefn
 
     Let $X$ be a set, then a non-empty collection $\Sigma\subseteq\powsetof X$ is called a {\emphcolor $\sigma$-algebra} if it satisfies
@@ -358,6 +360,159 @@ So we have proven
     Then $({\bb R},{\cal L}({\bb R}),m)$ is a measure space.
 
 \eexam
+
+Measures are obviously monotonic: if $E,F\in\Sigma$ and $E\subseteq F$ then $\mu(F)=\mu((F\setminus E)\dcup E)=\mu(F\setminus E)+\mu(E)\geq\mu(E)$ (since recall that $\sigma$-algebras are closed under
+differences, as they are just the intersections of the complement).
+And measures are subadditive:
+
+\bthrm
+
+    Let $(X,\Sigma,\mu)$ be a measure space, then for any $\set{A_n}_{n=1}^\infty\subseteq\Sigma$ (not necessarily disjoint):
+    $$ \mu\parens{\bigcup_{n=1}^\infty A_n}\leq\sum_{n=1}^\infty\mu(A_n) $$
+
+\ethrm
+
+\Proof define $B_n\coloneqq A_n\setminus\bigcup_{k=1}^{n-1}A_k$, these are all disjoint and $\bigdcup_{n=1}^\infty B_n=\bigcup_{n=1}^\infty A_n$.
+And since $B_n\subseteq A_n$, $\mu(B_n)\leq\mu(A_n)$.
+Thus
+$$ \mu\parens{\bigcup_{n=1}^\infty A_n} = \mu\parens{\bigdcup_{n=1}^\infty B_n} = \sum_{n=1}^\infty \mu(B_n) \leq \sum_{n=1}^\infty\mu(A_n) \qed $$
+
+One of the most important properties of measure spaces is {\it continuity from below} and {\it continuity from above}:
+
+\bthrm[title=Continuity of Measures, name=contofmeasures]
+
+    Let $(X,\Sigma,\mu)$ be a measure space, then
+    \benum
+        \item {\emphcolor Continuity from below}: if $E_1\subseteq E_2\subseteq\cdots$ is an increasing sequence in $\Sigma$, then
+            $$ \mu\parens{\bigcup_{n=1}^\infty E_n} = \lim_{n\to\infty}\mu(E_n) $$
+        \item {\emphcolor Continuity from above}: if $E_1\supseteq E_2\supseteq\cdots$ is a decreasing sequence in $\Sigma$ such that $\mu(E_1)<\infty$, then
+            $$ \mu\parens{\bigcap_{n=1}^\infty E_n} = \lim_{n\to\infty}\mu(E_n) $$
+    \eenum
+
+\ethrm
+
+\Proof notice that the limits in both cases exist since the sequences are monotonic.
+\benum
+    \item Let $E\coloneqq\bigcup_{n=1}^\infty E_n$, then $E\supseteq E_n$ so $\mu(E)\geq\mu(E_n)$ and so $\mu(E)\geq\lim_{n\to\infty}\mu(E_n)$.
+        Define $F_n\coloneqq E_n\setminus E_{n-1}$, so that $F_n$ are disjoint and $\bigdcup_{k=1}^nF_k=E_n$ for all $n$, and so $\bigdcup_{k=1}^\infty F_k=E$, so
+        $$ \mu(E) = \sum_{k=1}^\infty \mu(F_k) = \lim_{n\to\infty}\sum_{k=1}^n\mu(F_k) = \lim_{n\to\infty}\mu\parens{\bigdcup_{k=1}^nF_k}=\lim_{n\to\infty}\mu(E_n) $$
+        as required.
+    \item Define $E\coloneqq\bigcap_{n=1}^\infty E_n$, $F_n\coloneqq E_1\setminus E_n$, $F\coloneqq\bigcup_{n=1}^\infty F_n$.
+        Thus $E=E_1\setminus F$, and so by above
+        $$ \mu(E) = \mu(E_1) - \mu(F) = \mu(E_1) - \lim_{n\to\infty}\mu(F_n) = \mu(E_1) - \lim_{n\to\infty}\bigl(\mu(E_1)-\mu(E_n)\bigr) = \lim_{n\to\infty}\mu(E_n) $$
+        \qed
+\eenum
+
+\subsection{Measurable Functions}
+
+\bthrm
+
+    Let $(X,\Sigma)$ be a measureable space, and $f\colon X\longto\overline{\bb R}\ (={\bb R}\cup\set{\pm\infty})$ be an extended real function.
+    Then the following are equivalent:
+    \benum
+        \item for every $\alpha\in{\bb R}$, $\set{x\in X}[f(x)>\alpha]\in\Sigma$,
+        \item for every $\alpha\in{\bb R}$, $\set{x\in X}[f(x)\geq\alpha]\in\Sigma$,
+        \item for every $\alpha\in{\bb R}$, $\set{x\in X}[f(x)<\alpha]\in\Sigma$,
+        \item for every $\alpha\in{\bb R}$, $\set{x\in X}[f(x)\leq\alpha]\in\Sigma$.
+    \eenum
+
+\ethrm
+
+\Proof notice that $(1)\iff(4)$ and $(2)\iff(3)$ are trivial since $\set{x\in X}[f(x)>\alpha]^c=\set{x\in X}[f(x)\leq\alpha]$ and similar, and $S$ is measurable if and only if $S^c$ is.
+Now we prove $(1)\iff(2)$, notice that
+$$ \set{x\in X}[f(x)\geq\alpha] = \bigcap_{n=1}^\infty\set{x\in X}[f(x)>\alpha-\frac1n] $$
+so if $(1)$ then the right side is the countable intersection of measurable sets and is therefore measurable, so $(1)\implies(2)$.
+And
+$$ \set{x\in X}[f(x)>\alpha] = \bigcup_{n=1}^\infty\set{x\in X}[f(x)\geq\alpha+\frac1n] $$
+so anlogously $(2)\implies(1)$.
+Similarly for $(3)\iff(4)$.
+\qed
+
+\bdefn
+
+    Let $(X,\Sigma)$ be a measurable space and $f\colon X\longto\overline{\bb R}$ an extended real function.
+    If any of the above equivalent conditions hold, then $f$ is a {\emphcolor $\Sigma$-measurable function} (if $\Sigma$ is understood, just measurable).
+
+\edefn
+
+Notice that constant functions $f\colon x\mapsto c$ are measurable: for $\alpha\geq c$, $\set{x\in X}[f(x)>\alpha]=\varnothing$ which is measurable.
+And for $\alpha<c$, $\set{x\in X}[f(x)>\alpha]=X$ which is measurable.
+
+\bcoro
+
+    Let $f$ be an extended real function, then
+    \benum
+        \item if $f$ is measurable, for every $x_0\in\overline{\bb R}$, $f^{-1}(x_0)\in\Sigma$,
+        \item if $f$ is measurable, for every interval $I\subseteq\overline{\bb R}$, $f^{-1}(I)\in\Sigma$,
+        \item if $f\colon{\bb R}\longto{\bb R}$ is continuous, then $f$ is Lebesgue measurable (ie. measurable in $({\bb R},{\cal L}({\bb R}))$).
+    \eenum
+
+\ecoro
+
+\Proof
+\benum
+    \item Notice that
+        $$ f^{-1}(x_0) = \set{x\in X}[f(x)\geq x_0]\cap\set{x\in X}[f(x)\leq x_0] $$
+        which is the intersection of measurable sets.
+    \item For an interval of the form $I=[a,b)$,
+        $$ f^{-1}(I) = \set{x\in X}[f(x)\geq a]\cap\set{x\in X}[f(x)<b] $$
+        which is the intersection of measurable sets.
+        All other intervals are done similarly.
+    \item Let $\alpha\in{\bb R}$, then $E=(\alpha,\infty)$ is open and so $f^{-1}(E)$ is open and thus Lebesgue measurable.
+        And $f^{-1}(E)=\set{x\in{\bb R}}[f(x)>\alpha]\in{\cal L}({\bb R})$ as required.
+        \qed
+\eenum
+
+\bthrm
+
+    Let $(X,\Sigma)$ be a measurable space, $f,g\colon X\longto{\bb R}$ and $c\in{\bb R}$.
+    Then $f\pm g,c\cdot f,f\cdot g$ are measurable.
+
+\ethrm
+
+\benum
+    \item Let $\alpha\in{\bb R}$, then $f(x)+g(x)<\alpha$ if and only if $f(x)<\alpha-g(x)$ if and only if there exists a $\beta\in{\bb Q}$ such that $f(x)<\beta<\alpha-g(x)$.
+        So
+        $$ \set{x\in X}[f(x)+g(x)<\alpha] = \bigcup_{\beta\in{\bb Q}}\bigl(\set{x\in X}[f(x)<\beta]\cap\set{x\in X}[g(x)<\alpha-\beta]\bigr) $$
+        which is the countable union of the intersection of measurable sets, which is measurable.
+        For $f-g$, this is due to $(2)$ which states that $-g$ is measurable.
+    \item Notice that for $\alpha\in{\bb R}$, if $c>0$ then $\set{x\in X}[c\cdot f(x)<\alpha]=\set{x\in X}[f(x)<\frac\alpha c]$ which is measurable.
+        If $c<0$ then $\set{x\in X}[c\cdot f(x)<\alpha]=\set{x\in X}[f(x)>\frac\alpha c]$.
+        If $c=0$, then $c\cdot f=0$, and constant functions are measurable always.
+        This combined with $(1)$ show us that all linear combinations of measurable functions are measurable.
+    \item First we will prove that $f^2$ is measurable.
+        Notice that for $\alpha\geq0$, the set $\set{x\in X}[f(x)^2\geq\alpha]=\set{x\in X}[f(x)\geq\sqrt\alpha]$ is measurable.
+        And for $\alpha<0$, $\set{x\in X}[f(x)\geq\alpha]=X$ is measurable.
+        And
+        $$ f\cdot g = \frac14\parens{(f+g)^2 - (f-g)^2} $$
+        We just showed that $f\pm g$ are measurable, and so too are $(f\pm g)^2$ and any of their linear combinations, so $f\cdot g$ is measurable.
+        \qed
+\eenum
+
+Notice that for $f,g\colon X\longto\overline{\bb R}$, $f(x)+g(x)$ is undefined when $f(x)=\infty$ and $g(x)=-\infty$ or vice versa.
+We generally take that $\pm\infty\cdot0\coloneqq0$, but $f(x)\cdot g(x)$ is not necessarily defined when $f(x)=\pm\infty$ and $g(x)=0$ or vice versa.
+But if we define $f\pm g$ and $f\cdot g$ to be any arbitrary constant (eg. $0$) at these problematic points, we can similarly show that $f\pm g$ and $f\cdot g$ are measurable.
+
+\bthrm
+
+    Let $(X,\Sigma)$ be a measurable space and $\set{f_n}_{n=1}^\infty$ a sequence of extended real measurable functions.
+    Then $\sup_nf_n(x),\inf_nf_n(x),\limsup f_n(x),\liminf f_n(x)$, and $\lim f_n(x)$ if it exists are measurable.
+
+\ethrm
+
+\Proof first we prove it for $f(x)=\sup_nf_n(x)$.
+Let $\alpha\in{\bb R}$, then $f(x)\leq\alpha$ if and only if $f_n(x)\leq\alpha$ for all $\alpha$, so
+$$ \set{x\in X}[f(x)\leq\alpha] = \bigcap_{n=1}^\infty\set{x\in X}[f_n(x)\leq\alpha] $$
+which is the countable intersection of measurable sets.
+Similar for $g(x)=\inf_nf_n(x)$.
+
+Now define $h(x)=\limsup_nf_n(x)$, then $h(x)=\inf_k\sup_{n\geq k}f_n(x)$.
+Let us define $g_k(x)=\sup_{n\geq k}f_n(x)$, so $h(x)=\inf_kg_k(x)$.
+Since $g_k$ is the supremum of a sequence of measurable functions, it is measurable.
+And so $h$ is the infimum of measurable functions, meaning it too is measurable.
+We use an analogous proof for the case $\liminf_nf_n(x)=\sup_k\inf_{n\geq k}f_n(x)$.
+If $\lim_nf_n(x)$ exists, then it is just equal to $\limsup_nf_n(x)=\liminf_nf_n(x)$.
+\qed
 
 \bye
 
