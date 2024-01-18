@@ -118,7 +118,7 @@ Notice that $1_A$ is an isomorphism and it is its own inverse.
 So $F(f^{-1})$ is indeed the inverse of $F(f)$.
 \qed
 
-\subsection{Homotopy Equivalence}
+\subsection{Homotopies}
 
 \bdefn
 
@@ -178,7 +178,7 @@ We give these isomorphisms a different name:
 
     Let $X$ and $Y$ be topological spaces, then $f\colon X\longto Y$ is a {\emphcolor homotopic equivalence} if there exists a $g\colon Y\longto X$ such that $g\circ f\sim{\rm id}_X$ and
     $f\circ g\sim{\rm id}_Y$.
-    If a homotopic equivalence exists between $X$ and $Y$, then $X$ and $Y$ are said to be {\emphcolor homotopy equivalent}, denoted $X\simeq Y$.
+    If a homotopy equivalence exists between $X$ and $Y$, then $X$ and $Y$ are said to be {\emphcolor homotopy equivalent}, denoted $X\simeq Y$.
 
 \edefn
 
@@ -240,7 +240,7 @@ A morphism $f$ is called {\it null-homotopic} if it is homotopic to a constant m
     Let $X$ be a topological space and $f\colon S^1\longto X$, then the following are equivalent
     \benum
         \item $f$ is null-homotopic,
-        \item $f$ is null-homotopic relative to a point on $S^1$,
+        \item $f$ is null-homotopic relative to any point on $S^1$,
         \item $f$ can be expanded to a morphism on $D^2$ (the disk in ${\bb R}^2$), meaning there exists an $F\colon D^2\longto X$ such that $F\bigr|_{S'}=f$.
     \eenum
 
@@ -309,7 +309,7 @@ is a homotopy from $\gamma*\overline\gamma$ to $K_a$.
 \bdefn
 
     A {\emphcolor groupoid} is a small category (a category whose objects form a set, not a pure class) such that every morphism is an isomorphism.
-    If ${\cal C}$ is a groupoid, then $\Mor(A,B)$ is then a group for every $A,B\in{\cal C}$.
+    If ${\cal C}$ is a groupoid, then $\Mor(A,A)$ is then a group for every $A\in{\cal C}$.
 
 \edefn
 
@@ -337,6 +337,164 @@ and
 $$ ({\rm id}_X)_*([\phi]) = [{\rm id}_X\phi] = [\phi] $$
 so $({\rm id}_X)_*={\rm id}_{\pi_1(X,a)}$ as required.
 Thus we have defined a functor from the category of pointed topological spaces to the category of groups.
+
+\bprop
+
+    Let $X$ be a topological space, $a\in X$, and $A$ be $a$'s connected component.
+    Let $\iota\colon A\longto X$ be the inclusion map, then $\iota_*\colon\pi_1(A,a)\longto\pi_1(X,a)$ is an isomorphism.
+
+\eprop
+
+\Proof $\iota_*$ is injective: $\iota_*([\gamma])=[K_a]$ if and only if $[\iota\circ\gamma]=[K_a]$, which means $\iota\circ\gamma\hdi K_a$, let $H$ be such a homotopy.
+Then $H\colon I\times I\longto X$, but we claim that $H$'s image is contained in $A$ so that it is also a homotopy $\gamma\hdi K_a$, meaning $[\gamma]=[K_a]$.
+Suppose not, that $H(t_0,s_0)\notin A$, then define $\delta(t)=H(t_0\cdot t,s_0)$.
+Then $\delta(0)=H(0,s_0)=a$ since $H$ is a homotopy relative to $\partial I$, and $\delta(1)=H(t_0,s_0)\notin A$, so $a$ is connected to a value not in $A$, in contradiction.
+So $\iota_*$ is indeed injective.
+
+Now suppose $[\gamma]\in\pi_1(X,a)$, meaning $\gamma$ is a path connecting $a$ to itself in $X$.
+But every point in $\gamma$'s image must also be connected to $a$, meaning $\gamma$ is a path connecting $a$ to itself contained within $A$.
+So there exists a $\gamma'\in\Gamma_{aa}^A$ such that $\gamma=\iota\circ\gamma'$ and in particular $\iota_*([\gamma'])=[\gamma]$ as required.
+So $\iota_*$ is a bijective homomorphism, an isomorphism.
+\qed
+
+Suppose $a,b\in X$ such that there exists a path between them, $\gamma\colon I\longto X,\gamma(0)=a,\gamma(1)=b$.
+Let us define
+$$ F_\gamma\colon\pi_1(X,a)\longto\pi_1(X,b),\qquad F_\gamma[\phi] = [\overline\gamma*\phi*\gamma] =[\overline\gamma][\phi][\gamma] $$
+so $F_\gamma[\phi]$ is the class of curves homotopic to the curve obtained by walking from $b$ along $\gamma$ backward to $a$, then going back along $\gamma$ to $b$.
+Notice that $F_\gamma[\phi]=[\gamma]^{-1}[\phi][\gamma]$, so $F_\gamma$ is simply conjugation by $[\gamma]$.
+
+In general, suppose ${\cal G}$ is a groupoid and let $A,B\in{\cal G}$ such that $\Mor(A,B)\neq\varnothing$.
+Then $\Mor(A,A)$ and $\Mor(B,B)$ are isomorphic groups.
+Let $\phi\in\Mor(A,B)$ and define $F_\phi\colon\Mor(A,A)\longto\Mor(B,B)$ by $F_\phi(\varkappa)=\phi\circ\varkappa\circ\phi^{-1}$.
+This is a group homomorphism:
+$$ F_\phi(\varkappa_1)\circ F_\phi(\varkappa_2) = \phi\circ\varkappa_1\circ\phi^{-1}\circ\phi\circ\varkappa_2\circ\phi^{-1} = \phi\circ(\varkappa_1\circ\varkappa_2)\circ\phi^{-1} = F_\phi(\varkappa_1\circ\varkappa_2) $$
+and it is injective:
+$$ F_\phi(\varkappa) = 1_B \iff \phi\circ\varkappa\circ\phi^{-1} = 1_B \iff \phi\circ\varkappa=\phi \iff \varkappa = \phi^{-1}\circ\phi = 1_A $$
+and it is surjective: let $\varkappa'\in\Mor(B,B)$ and define $\varkappa\coloneqq\phi^{-1}\circ\varkappa'\circ\phi$, it is clear $F_\phi(\varkappa)=\varkappa'$.
+It is clear that $F_\phi^{-1}=F_{\phi^{-1}}$ by this.
+
+Our $F_\gamma$ above is precisely this $F_{[\gamma]}$ defined in the groupoid of first homotopy groups above $X$, meaning it is an isomorphism between $\pi_1(X,a)$ and $\pi_1(X,b)$.
+And so $F_\gamma^{-1}=F_{\overline\gamma}$.
+Let us summarize this:
+
+\bprop
+
+    Let $a,b\in X$ be two points in $X$ connected by a path $\gamma$.
+    Then $\pi_1(X,a)$ and $\pi_1(X,b)$ are isomorphic.
+
+\eprop
+
+\bprop
+
+    Suppose $H\colon I\times I\longto X$ is a homotopy from the closed loop $\phi$ to the closed loop $\psi$ such that for all $t\in I$, $H(0,t)=H(1,t)$.
+    Define the path $\gamma(t)=H(0,t)=H(1,t)$, then
+    $$ [\psi] = [\overline\gamma][\phi][\gamma] $$
+
+\eprop
+
+\Proof this is equivalent to saying
+$$ [\overline\psi][\overline\gamma][\phi][\gamma] = [K_p] \iff \overline\psi*\overline\gamma*\phi*\gamma \hdi K_p $$
+Now, $\overline\psi*\overline\gamma*\phi*\gamma$ is a curve $I\longto X$ whose endpoints are the same, so it can be viewed as a curve $S^1\longto X$.
+And it can be extended to the curve $H$ on $D^2$ (since the unit disc and unit square are homeomorphic), which we showed above is equivalent to $\overline\psi*\overline\gamma*\phi*\gamma$ being
+null-homotopic relative to any point on $S^1$, so we can choose the point which corresponds to $0$ and $1$.
+\qed
+
+\bthrm
+
+    Let $f,g\colon X\longto Y$ be homotopic with homotopy $H$.
+    Define $\gamma(t)\coloneqq H(a,t)$, so $\gamma(0)=f(a)$ and $\gamma(1)=g(a)$.
+    Then $g_*=F_\gamma\circ f_*$ (recall that $f_*\colon\pi_1(X,a)\longto\pi_1(Y,f(a))$ and $g_*\colon\pi_1(X,a)\longto\pi_1(Y,g(a))$).
+
+\ethrm
+
+\Proof let $[\phi]\in\pi_1(X,a)$ then
+$$ F_\gamma(f_*[\phi]) = [\overline\gamma][f\circ\gamma][\gamma],\qquad g_*[\phi] = [g\circ\phi] $$
+Define $K(s,t)\coloneqq H(\phi(s),t)$ which is continuous and
+$$ K(s,0) = H(\phi(s),0) = f\circ\phi(s),\quad K(s,1) = H(\phi(s),1) = g\circ\phi(s),\quad K(0,t) = H(\phi(0),t) = H(a,t) = K(1,t) $$
+so by the above proposition, since $K$ is a homotopy from the closed loop $f\circ\phi$ to the closed loop $g\circ\phi$,
+$$ [g\circ\phi] = [\overline\gamma][f\circ\phi][\gamma] $$
+as required.
+\qed
+
+Notice then that $g_*=f_*$ if and only if $F_\gamma={\rm id}$ (requiring $f(a)=g(a)=b$).
+This happens when $[\gamma]=[K_b]$ for example, which can happen when $\gamma=K_b$.
+Ie. if $H(a,t)=b$ for all $t\in I$, then $f_*=g_*$.
+But notice that this is simply the condition for $H$ to be a homotopy relative to $\set a$, so
+
+\bprop
+
+    If $f\htopic{\set a}g$ then $f_*=g_*$.
+
+\eprop
+
+\bthrm
+
+    If $f\colon X\longto Y$ is a homotopy equivalence, then $f_*\colon\pi_1(X,a)\longto\pi_1(Y,f(a))$ is an isomorphism of groups.
+
+\ethrm
+
+\Proof there exists a $g\colon Y\longto X$ such that $g\circ f\sim{\rm id}_X$ and $g\circ f\sim{\rm id}_Y$.
+Now since $g\circ f\sim{\rm id}_X$, then by above $(g\circ f)_*=F_\gamma\circ({\rm id}_X)_*=F_\gamma$, since ${(\cdot)}_*$ is a functor, $g_*\circ f_*=F_\gamma$.
+Now recall that $F_\gamma=g_*\circ f_*\colon\pi_1(X,a)\longto\pi_1(X,g(f(a)))$ is an isomorphism.
+And similarly $f\circ g\sim{\rm id}_Y$, so there exists an $F_\delta$ such that $(f\circ g)_*=f_*\circ g_*=F_\delta\colon\pi_1(Y,f(a))\longto\pi_1(X,f(g(f(a))))$ is an isomorphism.
+
+Recall that if $f\circ g$ is injective, then $g$ is injective, and if $f\circ g$ is surjective, $f$ is surjective.
+Thus $f_*$ is injective and surjective, meaning it is a bijective homomorphism, an isomorphism.
+\qed
+
+Thus if $X$ is contractible, then it is homotopic to the singleton space (an exercise in homework), $\set b$.
+Thus $\pi_1(X,a)\cong\pi_1(\set b,b)$, and $\pi_1(\set b,b)$ has a single point, meaning $\pi_1(X,a)$ is the trivial group.
+
+\bcoro
+
+    If $X$ is contractible, then $\pi_1(X,a)$ is trivial.
+
+\ecoro
+
+\bdefn
+
+    Let $E,B$ be topological spaces, then a map $p\colon E\longto B$ is a {\emphcolor covering map} (or just a {\it covering}) if
+    \benum
+        \item $p$ is surjective,
+        \item for every $x\in B$, there exists a neighborhood $x\in{\cal U}$ such that $p^{-1}({\cal U})$ is the disjoint union of open sets $\set{{\cal V}_\alpha}_{\alpha\in I}$ such that for every
+            $\alpha\in I$, $p\bigl|_{{\cal V}_\alpha}\colon{\cal V}_\alpha\longto{\cal U}$ is a homeomorphism.
+    \eenum
+
+\edefn
+
+For example, take $B=S^1$ and $E={\bb R}$.
+Define $p(t)\coloneqq(\cos(2\pi t),\sin(2\pi t))$, or if we identify $S^1$ with $S^1=\set{z\in{\bb C}}[\abs z=1]$, then $p(t)=e^{2\pi it}$.
+This is like spiraling the real line so that all the integers are all on a vertical line (they all map to $1\in S^1$), and projecting this spiral onto a plane to form the circle $S^1$.
+$p$ is obviously a surjective continuous map.
+For every $e^{2\pi it}$, let $\epsilon<2\pi$ then the preimage of the open set ${\cal U}_t\coloneqq\set{e^{2\pi is}}[t-\epsilon<s<t+\epsilon]$ is
+$\bigdcup_{n\in{\bb Z}}\bigl(n+(t-\epsilon,t+\epsilon)\bigr)$ and every $n+(t-\epsilon,t+\epsilon)$ is homeomorphic (via $p$) to this ${\cal U}_t$.
+
+\bthrm
+
+    Suppose $p\colon E\longto B$ is a covering, $b\in B$ and $e\in E$ such that $p(e)=b$.
+    Now suppose $\gamma\colon I\longto B$ is a curve starting at $b$, $\gamma(0)=b$.
+    Then there exists a unique curve $\delta\colon I\longto E$ starting at $e$ such that $p\circ\delta=\gamma$.
+
+\ethrm
+
+\Proof let $\set{{\cal U}_\beta}_{\beta\in J}$ be an open covering of $B$, then $\set{\gamma^{-1}({\cal U}_\beta)}_{\beta\in J}$ is an open covering of $I$.
+Since $I$ is a compact metric space, it has a Lebesgue number, and so we can take $n$ small enough such that for every $k$, $I_k\coloneqq\bracks{\frac{k-1}n,\frac kn}$ is contained within a single
+$\gamma^{-1}({\cal U}_\beta)$.
+Meaning for every $1\leq k\leq n$ there exists a $\beta_k\in J$ such that $I_k\subseteq\gamma^{-1}({\cal U}_{\beta_k})$, so $\gamma(I_k)\subseteq{\cal U}_{\beta_k}$.
+
+Now since $p$ is a covering, there exists a neighborhood $b\in{\cal U}$ such that $p^{-1}({\cal U})=\bigdcup_{\alpha\in I}{\cal V}_\alpha$.
+Since this is a disjoint union and $p(e)\in{\cal U}$, there exists a single $\alpha\in I$ such that $e\in{\cal V}_\alpha$, and let us denote this neighborhood by ${\cal V}$.
+And so $p\bigl|_{\cal V}$ is a homeomorphism from ${\cal V}$ to ${\cal U}$.
+So define
+$$ \delta\bigl|_{I_1}\coloneqq \parens{p\bigl|_{\cal V}}^{-1}\circ\gamma\bigl|_{I_1} $$
+We have then that $p\circ\parens{\delta\bigl|_{I_1}}=\gamma\bigl|_{I_1}$ and $\delta(0)=\parens{p\bigl|_{\cal V}}^{-1}\circ\gamma(0)=e$.
+This is the only such transform of $\gamma\bigl|_{I_1}$ which satisfies $\delta\bigl|_{I_1}(0)=e$ since every transform $\delta\colon I_1\longto E$ where $p\circ\delta=\gamma$,
+$\delta(I_1)=p^{-1}\gamma(I_1)\subseteq p^{-1}({\cal U})=\bigdcup_{\alpha\in I}{\cal V}_\alpha$.
+Since $\delta(I_1)$ is connected, it must be contained within a single ${\cal V}_\alpha$, this being ${\cal V}$ since it contains $e$.
+
+We continue with $\gamma\bigl|_{I_2}$ which starts at $\frac1n$ to get $\delta\bigl|_{I_2}$, and so on.
+Together these form $\delta$, which is continuous as $\set{I_k}_{1\leq k\leq n}$ is a finite partition of $I$ into closed sets and $\delta$ is continuous over each of these closed sets.
+\qed
 
 \bye
 
