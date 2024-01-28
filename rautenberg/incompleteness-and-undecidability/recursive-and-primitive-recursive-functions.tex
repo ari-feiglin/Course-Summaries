@@ -1,0 +1,275 @@
+For $n\in{\bb N}$ let ${\bf F}_n$ be the set of all $n$-ary functions over ${\bb N}$, ie. all functions ${\bb N}^n\longto{\bb N}$, and define
+${\bf F}\coloneqq\bigcup_{n\in{\bb N}}{\bf F}_n$.
+For $f\in{\bf F}_m$ and $g_1,\dots,g_m\in{\bf F}_n$ define $h\in{\bf F}_n$ by $\vec a\mapsto f(g_1\vec a,\dots,g_m\vec a)$, this is the
+{\it composition} of $f$ and the $g_i$s, and is denoted $h=f[g_1,\dots,g_m]$.
+Similarly if $P\subseteq{\bb N}^m$ is an $m$-ary predicate, define $P[g_1,\dots,g_m]\coloneqq\set{\vec a\in{\bb N}^n}[P(g_1\vec a,\dots,g_m\vec a)]$.
+
+Intuitively, a function $f\in{\bf F}_n$ is computable if there exists an algorithm which given an input $\vec a$, computes $f\vec a$ in finitely many
+steps.
+Using this intuitive, yet informal, definition, since every computable function must be representable by a finite-length sequence of finite
+instructions, there can be only a countable number of computable functions.
+And so there must exist noncomputable functions.
+
+Computable functions must have the following properties:
+
+\blist
+    \item[$\boldsymbol{Oc}$:] If $h\in{\bf F}_m$ and $g_1,\dots,g_m\in{\bf F}_n$ are computable, so too is the composition $h[g_1,\dots,g_m]$.
+    \item[$\boldsymbol{Op}$:] If $g\in{\bf F}_n$ and $h\in{\bf F}_{n+2}$ are computable, then so too is $f\in{\bf F}_{n+1}$, defined uniquely by
+    $$ f(\vec a,0) = g\vec a,\qquad f(\vec a,{\tt S}b) = h(\vec a,b,f(\vec a,b)) $$
+    These are called {\it recursion equations} for $f$, and $f$ {\it results from $g,h$ by primitive recursion}, denoted $f=\boldsymbol{Op}(g,h)$.
+    \item[$\boldsymbol{O\mu}$:] If $g\in{\bf F}_{n+1}$ is computable and it satisfies $\forall\vec a\exists bg(\vec a,b)=0$, then so too is $f$ defined
+    by $f\vec a=\mu_b[g(\vec a,b)=0]$, where the right-hand side is the smallest $b$ with $g(\vec a,b)=0$.
+    $f$ then results from $g$ be the {\it $\mu$-operation}.
+\elist
+
+\bdefn
+
+    The set of {\emphcolor primitive recursive}\addtoindex{recursive function}[primitive recursive] (pr) functions are all functions in ${\bf F}$ which
+    can be obtained by finitely many applications of $\boldsymbol{Oc}$ and $\boldsymbol{Op}$, starting with the following {\it initial functions}: the
+    constant $0$, the successor function ${\tt S}$, and the projection functions $I^n_i\in{\bf F}_n$ defined by $\vec a\mapsto a_i$ for $1\leq i\leq n$.
+    If one considers the generating schema $\boldsymbol{O\mu}$ as well, one obtains the set of all {\emphcolor recursive}%
+    \addtoindex{recursive function} or {\emphcolor $\mu$-recursive} functions.
+
+    A predicate $P\subseteq{\bb N}^n$ is called pr or recursive (also {\it decidable}) if its characteristic function $\chi_P$ has the respective
+    property, where
+    $$ \chi_P\vec a\coloneqq\cases{1 & $\hphantom{\neg}P\vec a$,\cr 0 & $\neg P\vec a$} $$
+
+\edefn
+
+The following are important examples of pr functions:
+
+\bexam
+
+    Let ${\tt S}^0=I^1_1$ and ${\tt S}^{k+1}={\tt S}[{\tt S}^k]$, so ${\tt S}^k\colon a\mapsto a+k$.
+    By $\boldsymbol{Oc}$, these are all pr.
+    Define the $n$-ary constant function $K^n_c\colon\vec a\mapsto c$ so $K^n_c\in{\bf F}_n$.
+    We show this is pr as follows: $K^0_c={\tt S}^c[0]$ for any $c\in{\bb N}$, and $K^1_c0=c=K^0_c$ and $K^1_c{\tt S}b=c=I^2_2(b,K^1_cb)$.
+    Therefore $K^1_c=\boldsymbol{Op}(K^0_c,I^2_2)$, meaning it is pr.
+    For $n>1$, $K^n_c=K^1_c[I^n_1]$, so $K^n_c$ is pr as required.
+
+    Addition is pr by the recursion equations
+    $$ a + 0 = a = I^1_1(a),\qquad a+{\tt S}b = {\tt S}(a+b) = {\tt S}I^3_3(a,b,a+b) $$
+    meaning $+=\boldsymbol{Op}(I^1_1,{\tt S}[I^3_3])$, so it is pr.
+    Similarly multiplication is pr
+    $$ a\cdot0=0=K^1_0a,\qquad a\cdot{\tt S}b=a\cdot b+a = I^3_3(a,b,a\cdot b) + I^3_1(a,b,a\cdot b) $$
+    meaning $\cdot=\boldsymbol{Op}(K^1_0,+[I^3_3,I^3_1])$.
+    And again similarly exponentiation $(a,b)\mapsto a^b$ is pr:
+    $$ a^0=1=K^1_1a,\qquad a^{{\tt S}b}=a^b\cdot a = I^3_3(a,b,a^b) \cdot I^3_1(a,b,a^b) $$
+    meaning exponentiation is $\boldsymbol{Op}(K^1_1,\cdot[I^3_3,I^3_1])$.
+    Similarly the predecessor function is pr since ${\tt Pd}0=0$ and ${\tt Pd}{\tt S}b=b=I^2_1(b,{\tt Pd}b)$.
+
+    Define ``cut-off subtraction'' by $a\cosub b\coloneqq a-b$ for $a\geq b$ and $a\cosub b=0$ otherwise.
+    This is pr, $\cosub=\boldsymbol{Op}(I^1_1,{\tt Pd}I^3_3)$:
+    $$ a\cosub0=a,\qquad a\cosub{\tt S}b={\tt Pd}(a\cosub b) = {\tt Pd}I^3_3(a,b,a\cosub b) $$
+    And then the absolute difference $\abs{a-b}$ is pr since $\abs{a-b}=(a\cosub b)+(b\cosub a)$.
+
+\eexam
+
+It is easy to see that if $f$ is pr (respectively recursive), then so too is every function resulting from swapping arguments, equating arguments, or
+adding fictional arguments.
+For example, if $f\in{\bf F}_2$ then $f_1\coloneqq f[I^2_2,I^2_1]$ satisfies $f_1(a,b)=f(b,a)$ and so if $f$ is pr or recursive so too is $f_1$.
+And similarly $f_2\coloneqq f[I^1_1,I^1_1]$ satisfies $f_2(a)=f(a,a)$ so equating arguments keeps the function pr or recursive.
+And again $f_3\coloneqq f[I^3_1,I^3_2]$ satisfies $f_3(a,b,c)=f(a,b)$ so adding fictional arguments keeps the function pr or recursive.
+
+Notice that if $f\in{\bf F}_{n+1}$ is pr, then $(\vec a,b)\mapsto\prod_{k<b}f(\vec a,k)$ is also pr since
+$$ \prod_{k<0}f(\vec a,k) = 1,\qquad \prod_{k<{\tt S}b}f(\vec a,k) = \prod_{k<b}f(\vec a,k)\cdot f(\vec a,b) $$
+Similarly $(\vec a,b)\mapsto\sum_{k<b}f(\vec a,k)$ is pr:
+$$ \sum_{k<0}f(\vec a,k) = 0,\qquad \sum_{k<{\tt S}b}f(\vec a,k) = \sum_{k<b}f(\vec a,k) + f(\vec a,b) $$
+$<$ can be made into an weak inequality $\leq$ by mapping $(\vec a,b)$ to the value of $(\vec a,{\tt S}b)$.
+
+Define the {\it $\delta$-function} by $\delta0=1$ and $\delta{\tt S}n=0$, which is pr.
+Then $\chi_=(a,b)=\delta\abs{a-b}$, so $=$ is a pr relation.
+Then every finite subset of ${\bb N}$ is pr, since $\chi_\varnothing=K^1_0$ and if $E=\set{a_1,\dots,a_n}$ then
+$$ \chi_E(a) = \chi_=(a,a_1) + \cdots + \chi_=(a,a_n) $$
+The {\it signum function} is defined by $\sigma0=0$ and $\sigma{\tt S}n=1$, which is pr.
+And so $\chi_{\neq}(a,b)=\sigma\abs{a-b}$, meaning $\neq$ is pr.
+Then $\chi_\leq(a,b)=\sigma({\tt S}b\cosub a)$, so $\leq$ is pr.
+In general if $P$ is pr (or recursive) so is $\neg P$, since $\chi_{\neg P}=\delta\chi_P$.
+
+We can also use case distinction to define pr or recursive functions.
+If $P,g,h$ are pr (respectively recursive), then so is $f$ defined by $f\vec a=g\vec a\cdot\chi_P\vec a+h\vec a\cdot\chi_{\neg P}\vec a$, or
+$$ f\vec a = \cases{g\vec a & $\hphantom{\neg}P\vec a$,\cr h\vec a & $\neg P\vec a$} $$
+One such usage is that the function $(a,b)\mapsto\maxof{a,b}$ is pr, defined by $\maxof{a,b}=b$ if $a\leq b$ and $a$ otherwise.
+As proven above, $\leq$ is pr, and therefore so too is $\max$.
+
+Case distinction generalizes easily to more than two cases (by induction).
+Sometimes $\boldsymbol{Op}$ are given by case distinction, for example the remainder function $\remof{a,b}$ whose value is the remainder of $a$ after division by $b$.
+This is defined by $\remof{0,b}=0$, $\remof{{\tt S}a,b}=0$ if $b\bdivs{\tt S}a$ and $\remof{{\tt S}a,b}={\tt S}\remof{a,b}$ otherwise ($\bdivs$ being pr will be proven soon).
+Thus we get that $a\mapsto{\tt b}_ia$ which is the $i$th digit in the binary representation of $a$, $\sum_{i=0}^\infty{\tt b}_ia\cdot2^i$ is also pr: ${\tt b}_ia=0$ if $\remof{a,2^{i+1}}<2^i$ and
+${\tt b}_ia=1$ otherwise.
+
+The reason for caring about recursive functions is the so-called {\it Church's thesis\/}: that recursive functions coincide with all computable functions over ${\bb N}$.
+A precise definition for computable functions will not, and cannot, be given.
+But all attempts at formulating a notion of computability have been shown to be equivalent to recursive functions.
+One such example is the concept of Turing machines, which are relatively simple and easy to understand; and standard programming languages.
+
+For the following, $P,Q,R$ denote predicates of ${\bb N}$ of arbitrary arity.
+We now state some basic facts about pr and recursive predicates:
+
+\benum
+    \item The set of pr (respectively recursive) predicates is closed under complements; unions and intersections (of the same arity); inserting pr (respectively recursive) functions; and under swapping
+    arguments, equating arguments, and adjoining fictional arguments.
+    To prove so, suppose $P\subseteq{\bb N}^n$ then $\chi_{\neg P}=\delta[\chi_P]$, so $\neg P$ is also pr (respectively recursive).
+    Similarly if $P,Q\subseteq{\bb N}^n$ then $\chi_{P\cap Q}=\chi_P\cdot\chi_Q$ and $\chi_{P\cup Q}=\sigma[\chi_P+\chi_Q]$.
+    And $\chi_{P[g_1,\dots,g_n]}=\chi_P[g_1,\dots,g_n]$.
+    Notice too that $\chi_{{\rm graph}f}(\vec a,b)=\chi_{\eq}(f\vec a,b)$, ${\rm graph}f$ is pr (respectively recursive) provided $f$ is (although the converse is not generally true).
+    The other facts can be obtained by utilizing similar results of characteristic functions.
+
+    \item Let $P,Q,R\subseteq{\bb N}^{n+1}$, and suppose that $Q(\vec a,b)\iff(\forall k<b)P(\vec a,k)$ and $R(\vec a,b)\iff(\exists k<b)P(\vec a,k)$.
+    Then $Q$ and $R$ are said to result from $P$ by {\it bounded quantification}, the same can be said if $<$ is replaced with $\leq$.
+    If $P$ is pr (respectively recursive), so are $Q$ and $R$, since $\chi_Q(\vec a,b)=\prod_{k<b}\chi_P(\vec a,k)$ and $\chi_R(\vec a,b)=\sigma\parens{\sum_{k<b}\chi_P(\vec a,k)}$.
+    Similarly if we replace $<$ with $\leq$.
+    In other words, the set of pr (respectively recursive) predicates is closed under bounded quantification.
+
+    For example, $\bdivs$ is pr: $a\bdivs b\iff(\exists k\leq b)[a\cdot k\eq b]$.
+    And so therefore so too is $\prim$, where $\prim p$ means $p$ is prime: $\prim p\iff p\neq 0,1\land(\forall k\leq p)[k\bdivs p\implies k\eq1]$.
+    Notice that $k\bdivs p\implies k\eq1$ is equivalent to $\neg(k\bdivs p)\lor(k\eq 1)$ and is therefore a union of pr predicates (this holds for any logical connective since they all can be constructed
+    from $\land,\neg$).
+
+    \item Suppose $P\subseteq{\bb N}^{n+1}$ satisfies $\forall\vec a\exists b\,P(\vec a,b)$.
+    Then let $f\vec a=\mu_k[P(\vec a,k)]$ be the smallest $k$ such that $P(\vec a,k)$.
+    By $\boldsymbol{O\mu}$, if $P$ is recursive then so is $f$, because $f\vec a=\mu_k[\delta\chi_P(\vec a,k)=0]$.
+    This is an important generalization of $\boldsymbol{O\mu}$ and will also be referred to as $\boldsymbol{O\mu}$.
+
+    But if $P$ were pr, $f$ is not necessarily.
+    But $f$ does remain pr if it arises from $P$ by the {\it bounded $\mu$-operation}: let $P\subseteq{\bb N}^{n+1}$ be pr and define $f\vec a=\mu_{k\leq m}[P(\vec a,k)]$ where
+    $$ \mu_{k\leq m}[P(\vec a,k)] = \left\{\vcenter{\openup1\jot\halign{#\hfil\cr the smallest $k\leq m$ with $P(\vec a,k)$ if such a $k$ exists,\cr$m$ otherwise\cr}}\right. $$
+    This is since we can give the following recurrence relations for $f$: $f(\vec a,0)=0$ and $f(\vec a,{\tt S}m)=f(\vec a,m)$ if $(\exists k\leq m)P(\vec a,k)$ (which is pr by bounded quantification) and
+    $f(\vec a,{\tt S}m)={\tt S}m$ otherwise.
+    Explicitly, define the pr function
+    $$ g(\vec a,m,b) = \cases{b & $(\exists k\leq m)P(\vec a,k)$\cr {\tt S}m & else} $$
+    then $f(\vec a,{\tt S}m)=g(\vec a,m,f(\vec a,m))$.
+    So $f$ is indeed pr.
+
+    If $h$ is also pr, then $\mu_{k\leq h\vec a}[P(\vec a,k)]$ is pr, as if we define $g(\vec a,m)=\mu_{k\leq m}[P(\vec a,k)]$ this is pr and then $\mu_{k\leq h\vec a}[P(\vec a,k)]=g(\vec a,h\vec a)$.
+\eenum
+
+One example of the bounded $\mu$-operation is for the {\it pairing function} $\scrp\colon{\bb N}^2\longto{\bb N}$ which forms the classic bijection from ${\bb N}^2$ to ${\bb N}$.
+It is defined by $\scrp(a,b)=\sum_{i=0}^{a+b}i+a=\frac12(a+b+1)(a+b)+a$.
+But this is not immediately pr, since we divide by $2$, so we use the bounded $\mu$-operation:
+$$ \scrp(a,b) = \mu_{k\leq(a+b+1)(a+b)+a}[2k=(a+b+1)(a+b)+2a] $$
+Though this is not a particularly interesting application of the bounded $\mu$-operation.
+A more interesting usage is showing that the prime enumeration $n\mapsto p_n$ (the $n$th prime) is pr.
+Notice that if $p$ is prime then $p!+1$ is not divisible by a prime $q\leq p$ as then $q\divides p!$ so $q\divides p!+1-p!=1$, contradicting $q$ being prime.
+So a prime divisor of $p!+1$ must be a new prime, meaning there must be a new prime $p<q\leq p!+1$.
+So we use the following recurrence
+$$ p_0=2,\qquad p_{n+1}=\mu_{q\leq p_n!+1}[\prim q\land q>p_n] $$
+
+Notice that the set of recursive functions cannot be effectively enumerated (obviously they can be enumerated as they are countable), not even the unary ones can.
+Suppose $(f_n)_{n\in{\bb N}}$ is an effective enumeration, then by Church's thesis $f\colon n\mapsto f_n(n)+1$ is recursive.
+But then $f=f_m$ for some $m$, but $f(m)=f_m(m)+1$ in contradiction.
+
+\bdefn
+
+    Define $\gen{a_0,\dots,a_n}\coloneqq p_0^{a_0+1}\cdots p_n^{a_n+1}=\prod_{i=0}^np_i^{a_i+1}$.
+    This is the {\emphcolor G\"odel number}\addtoindex{godel number} of $(a_0,\dots,a_n)$.
+    The empty sequence has G\"odel number $1$, denoted $\gen{}$.
+    Define $\GN$ to be the set of all G\"odel numbers.
+
+\edefn
+
+By the prime factorization theorem, $\gen{a_0,\dots,a_n}=\gen{b_0,\dots,b_m}$ implies $n=m$ and $a_i=b_i$ for every $0\leq i\leq n$.
+Certainly $(a_0,\dots,a_n)\mapsto\gen{a_0,\dots,a_n}$ is pr.
+And by above, so too is $\GN$ as
+$$ a\in\GN \iff a\neq0\land(\forall p\leq a)(\forall q\leq p)[\prim p,q\land p\bdivs a\implies q\bdivs a] $$
+
+We will now define a small arsenal of pr functions useful for the encoding we will undertake next section.
+Define the pr function $a\mapsto\ell a$ by
+$$ \ell a=\mu_{k\leq a}[p_k\bndivs a] $$
+Clearly $\ell1=0$ and $\ell\gen{a_0,\dots,a_n}=\ell\prod_{i=0}^np_i^{a_i+1}=n+1$, so that $\ell a$ gives the length of the encoding $a$.
+Notice that always $\ell a\leq a$ and for $a\neq0$ even $\ell a<a$ since $p_{a-1}>a$ and so $p_{a-1}\bndivs a$, meaning $\ell a\leq a-1$.
+Also define the binary operation $(a,i)\mapsto\bparens a_i$ where
+$$ \bparens a_i = \mu_{k\leq a}[p_i^{k+2}\bndivs a] $$
+Meaning that $p_i^{k+1}\bdivs a$ and $p_i^{k+2}\bndivs a$ implies $k=\bparens a_i$, so $\parens{\gen{a_0,\dots,a_n}}_i=a_i$ for all $i\leq n$.
+This function begins indexing at $0$, and so we define $\bparens a_{\it last}\coloneqq\bparens a_{\ell a\cosub1}$ is the final component for a G\"odel number $a\neq1$ and $\bparens1_{\it last}=0$.
+The value of these functions for $a\notin\GN$ is unimportant.
+
+And so we see that for a G\"odel number $a$ (including $a=1$, since the empty product is $1$):
+$$ a = \prod_{i<\ell a}p_i^{\bparens a_i+1} $$
+Next we define {\it arithmetic concatenation}\addtoindex{concatenation}[arithmetic], $*\in{\bf F}_2$ by
+$$ a*b = a\cdot\prod_{i<\ell b}p_{i+\ell a}^{\bparens b_i+1} \hbox{ if $a*b\in\GN$, otherwise } a*b = 0 $$
+so that $\gen{a_0,\dots,a_n}*\gen{b_0,\dots,b_m}=\gen{a_0,\dots,a_n,b_0,\dots,b_m}$, meaning $\GN$ is closed under concatenation.
+And immediately, if $a,b\in\GN$ then $a,b\leq a*b$.
+Interestingly, notice that if $a*b\in\GN$ then $a,b\in\GN$ by definition.
+$*$ is pr since its definition is by pr case distinction.
+
+We can utilize $*$ to define a powerful generalization of $\boldsymbol{Op}$.
+For every function $f\in{\bf F}_{n+1}$ there exists a function $\bar f\in{\bf F}_{n+1}$ given by
+$$ \bar f(\vec a,0) = \gen{} = 1,\qquad \bar f(\vec a,b) = \gen{f(\vec a,0),\dots,f(\vec a,b-1)}\hbox{ for $b>0$} $$
+Now suppose $F\in{\bf F}_{n+2}$, then there exists a single $f\in{\bf F}_{n+1}$ such that
+$$ \boldsymbol{Oq}:\qquad f(\vec a,b) = F(\vec a,b,\bar f(\vec a,b)) $$
+Namely, $f(\vec a,0)=F(\vec a,0,1)$, $f(\vec a,1)=F(\vec a,1,\gen{f(\vec a,0)})$, $f(\vec a,2)=F(\vec a,2,\gen{f(\vec a,0),f(\vec a,1)})$ and so on.
+In $\boldsymbol{Oq}$, $f(\vec a,b)$ depends on the values $f(\vec a,0),\dots,f(\vec a,b-1)$ and not just $f(\vec a,b-1)$ as in $\boldsymbol{Op}$, and so $\boldsymbol{Oq}$ is called the schema of
+{\it course-of-values recursion}.
+
+One simple example is the Fibonacci sequence given by $f0=0$, $f1=1$, and $fn=f(n-1)+f(n-2)$.
+Then define $F(b,c)=b$ for $b\leq1$ and $F(b,c)=\bparens c_{b-1}+\bparens c_{b-2}$ otherwise.
+Then $f0=F(0,1)=0$, $f1=F(1,\gen0)=1$, and $fn=F(n,\bar fn)=\bparens{\bar fn}_{n-1}+\bparens{\bar fn}_{n-2}=f(n-1)+f(n-2)$.
+
+In fact, $\boldsymbol{Op}$ is a special case of $\boldsymbol{Oq}$,
+If $f=\boldsymbol{Op}(g,h)$ and $F$ is defined by $F(\vec a,0,c)=g\vec a$ and $F(\vec a,{\tt S}b,c)=h(\vec a,b,\bparens c_b)$ then notice that $f(\vec a,0)=g\vec a=F(\vec a,0,\gen{})$,
+$f(\vec a,{\tt S}b)=h(\vec a,b,f(\vec a,b))=h(\vec a,b,\bparens{\bar f{\tt S}b}_b)=F(\vec a,{\tt S}b,\bar f{\tt S}b)$.
+
+\bthrm
+
+    Let $f$ satisfy $\boldsymbol{Oq}$.
+    If $F$ is pr (respectively recursive), then so too is $f$.
+
+\ethrm
+
+Notice that $\bar f$ is given by
+$$ \bar f(\vec a,0) = 1,\qquad \bar f(\vec a,{\tt S}b)=\bar f(\vec a,b) * \gen{f(\vec a,b)} = \bar f(\vec a,b) * \gen{F(\vec a,b,\bar f(\vec a,b)} $$
+Since $F$ is pr (respectively recursive), then this recurrence tells us $\bar f$ is pr (respectively recursive).
+But then $f(\vec a,b)=F(\vec a,b,\bar f(\vec a,b))$, so $f$ is pr (respectively recursive) as the composition of pr functions.
+\qed
+
+\bdefn
+
+    $M\subseteq{\bb N}$ is {\emphcolor recursively enumerable}\addtoindex{recursively enumerable} (in short, re) if there is some recursive $R\subseteq{\bb N}^2$ such that
+    $M=\set{b\in{\bb N}}[(\exists a\in{\bb N})Rab]$, in other words, $M$ is the image of some recursive relation.
+    Notice that for $R^rba\iff Rab$, $b\in M\iff(\exists a\in{\bb N})R^rba$, $M$ is also the image of some recursive relation, $R^r$.
+
+    Generally, $P\subseteq{\bb N}^n$ is re if $P\vec a\iff(\exists x\in{\bb N})Q(x,\vec a)$ for some recursive $Q$ of arity $(n+1)$.
+
+\edefn
+
+Note that a recursive predicate $P$ is also re: $P\vec a\iff(\exists x\in{\bb N})P'(x,\vec a)$ where $P'(x,\vec a)\iff P(\vec a)$.
+
+\bprop
+
+    A non-empty $M\subseteq{\bb N}$ is re if and only if $M={\sl ran}f$ for some recursive $f\in{\bf F}_1$.
+
+\eprop
+
+If $M$ is re, suppose $P$ is the predicate such that $Ma\iff(\exists b)Pba$.
+Let $c\in M$, then we can define an algorithm $f$ such that $fn$ looks at $P1$ (the set of $a$ such that $P1a$), and if $f(n-1)$ is not in it, it goes to $P2$ and so on.
+So $fn$ gets to $Pm$, if $f(n-1)$ is the greatest value in $Pm$, then $fn$ is equal to the smallest value in $Pk$ where $n\geq k>m$ is the smallest such that $Pk\neq\varnothing$.
+If $fn$ reaches $n+1$ in search of $k$, just set $fn=c$.
+In such a way, $M={\sl ran}f$.
+By Church's thesis, $f$ is recursive as required.
+\qed
+
+The empty set is re since it is pr, and thus recursive: its characteristic function is $K^1_0$.
+
+Notice that a function $f\in{\bf F}_n$ is recursive if ${\rm graph}f$ is: $f\vec a=\mu_b[\delta\chi_{{\rm graph}f}(\vec a,b)=0]$.
+And if $f$ is recursive, so is ${\rm graph}f$ since $\chi_{{\rm graph}f}(\vec a,b)=\chi_{\eq}(f\vec a,b)$, and this also tells us that ${\rm graph}f$ is pr whenever $f$ is.
+But the converse only holds for recursive $f$, not generally for pr.
+For example, the famous {\it Ackermann function} $\circ\in{\bf F}_2$, defined by
+$$ 0\circ b={\tt S}b,\qquad {\tt S}a\circ0=a\circ1,\qquad {\tt S}a\circ{\tt S}b=a\circ({\tt S}a\circ b) $$
+And so not every recursive function is pr.
+
+\bexerc
+
+    Suppose $a\leq fa$ for all $a$.
+    Show that if $f$ is pr (resp. recursive), then so is ${\sl ran}f$.
+    The same holds for $f\in{\bf F}_n$ where $a_1,\dots,a_n\leq f\vec a$.
+
+\eexerc
+
+Note $b\in{\sl ran}f$ if and only if there exists an $a\leq b$ such that $fa=b$.
+So
+$$ \chi_{{\sl ran}f}(b) = \chi_{\neq}\Bigl(\mu_{a\leq{\tt S}b}[f(a)=b],\,{\tt S}b\Bigr) $$
+Since if $b\notin{\sl ran}f$ then the bounded $\mu$-operator will equal ${\tt S}b$, and if it is then the value will be $\leq b$.
+This generalizes to $f\in{\bf F}_n$:
+$$ \chi_{{\sl ran}f}(b) = \chi_{\neq}\Bigl(\mu_{a_1\leq{\tt S}b}[\cdots[\mu_{a_n\leq{\tt S}b}[f(\vec a)=b]\neq{\tt S}b]\cdots],\,{\tt S}b\Bigr) $$
+
