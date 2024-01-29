@@ -300,8 +300,83 @@ Notice that $\diamond$ is a special case of $\U$: $\diamond\phi\equiv\true\U\phi
 And $\square$ is a special case of $\V$: $\square\phi\equiv\false\V\phi$ (since $\false$ can never relase $\phi$).
 $\square$ and diamond are also related through $\neg\square\phi\equiv\diamond\neg\phi$.
 
+We can also relate $\U$ and $\V$ by $\neg(\phi\V\psi)\equiv(\neg\phi)\U(\neg\psi)$.
+We will prove this directly from definition:
+$$ \xi^k\vDash\phi\V\psi \iff \bigl((\forall i\geq k)\xi^i\vDash\psi\bigr)\lor\bigl((\exists j\geq k)(\forall k\leq i<j)\xi^i\vDash\psi\land\psi^j\vDash\phi\bigr) $$
+and so
+$$ \xi^k\vDash\neg(\phi\V\psi) \iff \bigl((\exists i\geq k)\xi^i\vDash\neg\psi\bigr)\land\bigl((\forall j\geq k)(\exists k\leq i<j)\xi^i\vDash\neg\psi\lor\psi^j\vDash\neg\phi\bigr) $$
+So at every $j\geq k$, either $\neg\phi$ or $\neg\psi$ holds, and eventually $\neg\psi$ holds.
+This just means that $\neg\phi$ holds until $\neg\psi$ holds, ie. $(\neg\phi)\U(\neg\psi)$.
+
+Thus, we could've defined LTL with only the operators $\neg,\land,\bigcirc,\U$ (in other words, these form a {\it complete bundle}).
+
 We can combine operators: for example $\square\diamond\phi$ means that always, $\phi$ eventually happens; or equivalently $\phi$ happens infinitely many times.
 $\diamond\square\phi$ means that at some point, $\phi$ will hold forever.
+$\bigcirc\bigcirc\phi$ means that $\phi$ holds after two steps.
+Notice that $\xi\vDash\diamond\phi$ if and only if there exists some $n$ such that $\xi\vDash\bigcirc^n\phi$ ($\bigcirc^n$ meaning $\bigcirc\cdots\bigcirc$ $n$ times).
+
+Let $P$ be a system which has multiple executions, then we write $P\vDash\phi$ if $\xi\vDash\phi$ for all executions $\xi$ of $P$.
+Importantlu $P\nvDash\phi$ does not imply $P\vDash\neg\phi$, since one execution not satisfying $\phi$ does not mean all executions don't satisfy $\phi$.
+
+\bexam
+
+    \def\mal{{\it malfunctioned}}\def\ext{{\it extended}}
+    Let us consider a simple model of a spring.
+    The spring can be in one of the following three states: $\set{{\it initial},{\it extended},{\it extended\ and\ malfunctioned}}$ which we denote $s_1,s_2,s_3$ respectively.
+    So our propositional variables are $\PV=\set{\ext,\mal}$.
+    Since $s_1$ is neither extended nor malfunctioned, $s_1\vDash\neg\ext\land\neg\mal$, $s_2\vDash\ext\land\neg\mal$, $s_3\vDash\ext\land\mal$.
+
+    We can transition from $s_1$ to $s_2$ via pulling the spring, and releasing the spring can either transition to $s_1$ or to $s_3$.
+    From $s_3$ we transition only to $s_3$.
+
+    This system has an infinite number of executions, for example
+    $$ \eqalign{
+        \xi_0 &= s_1s_2s_1s_2s_3s_3s_3s_3\cdots\cr
+        \xi_1 &= s_1s_2s_3s_3s_3s_3s_3s_3\cdots\cr
+        \xi_2 &= s_1s_2s_1s_2s_1s_2s_1s_2\cdots\cr
+    } $$
+    Let us investigate $\xi_0$:
+    \benum
+        \item $\xi_0\nvDash\ext$ since $\ext$ is a formula of the underlying logic of the LTL and so $\xi_0$ satisfies $\ext$ if and only if its first state, $s_1$, does.
+            It does not.
+        \item $\xi_0\vDash\bigcirc\ext$ (``nexttime extended'') since $\xi_0\vDash\bigcirc\ext\iff\xi_0^1\vDash\ext\iff s_2\vDash\ext$ which it does.
+        \item $\xi_0\nvDash\bigcirc\bigcirc\ext$ (``nexttime nexttime extended'') since $\xi_0^2$ begins with $s_1$ which does not satisfy $\ext$.
+        \item $\xi_0\vDash\diamond\ext$ (``eventually extended'') since eventually the spring is extended (this is since $\xi_0\vDash\bigcirc\ext$).
+        \item $\xi_0\nvDash\square\ext$ (``always extended'') since the spring is not always extended.
+        \item $\xi_0\vDash\diamond\square\ext$ (``eventually always extended'') since eventually the spring remains in $s_3$ where it is extended.
+        \item $\xi_0\nvDash(\neg\ext)\U\mal$ (``not extended until malfunctioned'') since the spring is not extended, then extended and not malfunctioned.
+    \eenum
+
+    Let us now investigate the system $P$ as a whole:
+    \benum
+        \item $P\vDash\diamond\ext$ since for the spring to not extend, it would need to forever remain in $s_1$, which is impossible.
+        \item $P\vDash\square(\neg\ext\to\bigcirc\ext)$ which means that always, if the spring is not extended then the next time it is.
+            This is since in order for the spring to not be extended, it must be in $s_1$, which means that the next time it is in $s_2$, extended.
+        \item $P\nvDash\diamond\square\ext$, since $\xi_2$ is a counterexample: here we have that we never are only extended, in other words $\xi_2\vDash\square\diamond\neg\ext$.
+        \item $P\nvDash\neg\diamond\square\ext$, since $\xi_0$ is a counterexample: here we have that eventually we are only extended.
+        \item $P\nvDash\square(\ext\to\bigcirc\neg\ext)$ since it is possible to go from extended to extended ($s_2$ to $s_3$).
+            The only sequence in which this is true is $\xi_2$.
+    \eenum
+
+\eexam
+
+We can form a Hilbert calculus to axiomatize LTL with respect to a system $P$.
+To form it we adjoin to the Hilbert calculus of ${\cal L}$ (which is either first-order or propositional, usually propositional. But importantly these axioms now range over all LTL formulas, not just
+formulas in ${\cal L}$) the following eight axioms:
+
+\medskip
+{\tabskip=0pt plus 1fil
+\halign to\hsize{(#)\hfil\tabskip=.25cm&$#$\hfil\tabskip=.5cm&(#)\hfil\tabskip=.25cm&$#$\hfil\tabskip=.5cm&(#)\hfil\tabskip=.25cm&$#$\hfil\tabskip=0pt plus 1fil\cr
+    A1&\neg\diamond\phi\oto\square\neg\phi&A2&\square(\phi\to\psi)\to(\square\phi\to\square\psi)&A3&\square\phi\to(\phi\land\bigcirc\square\phi)\cr
+    A4&\bigcirc\neg\phi\oto\neg\bigcirc\phi&A5&\bigcirc(\phi\to\psi)\to(\bigcirc\phi\to\bigcirc\psi)&A6&\square(\phi\to\bigcirc\phi)\to(\phi\to\square\phi)\cr
+    A7&(\phi\U\psi)\oto\bigl(\psi\lor(\phi\land\bigcirc(\phi\U\psi))\bigr)&A8&(\phi\U\psi)\to\diamond\psi\cr
+}}
+\medskip
+
+Here we take $\V$ as defined by $(\phi\V\psi)\coloneqq\neg((\neg\phi)\V(\neg\psi))$.
+We use the following rule of reference (temporal generalization) as well as MP
+$$ \vbox{\halign{\hfil$#$\hfil\cr\square\phi\cr\noalign{\kern2pt\hrule\kern2pt}\ \square\phi\ \cr}} $$
+meaning that if $\phi$ then $\square\phi$ (notice that here we do not have an initial state, and hence we obtain the soundness of generalization).
 
 \bye
 
