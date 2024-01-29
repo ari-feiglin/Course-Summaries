@@ -1,0 +1,307 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+\parindent=0pt
+\parskip=3pt plus 2pt minus 2pt
+
+\input preamble
+
+\footline={}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\headline={\pageborder{rgb{1 .7 .1}}{rgb{.6 .4 0}}{5}}
+
+\color rgb{.8 .5 .1}
+
+{\def\boxshadowcolor{rgb{.8 .6 0}}
+\bppbox{rgb{1 .8 .1}}{rgb{.6 .4 0}}{rgb{.4 .2 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Formal Verification Methods}
+    \smallskip
+    \centerline{\setfont{it}Lectures by Doron Peled}
+    \centerline{\setfont{it}Summary by Ari Feiglin \setfont{rm}({\tt ari.feiglin@gmail.com})}
+
+\eppbox
+
+\bigskip
+
+\bppbox{rgb{1 .8 .1}}{rgb{.6 .4 0}}{rgb{.4 .2 0}}
+    \section*{Contents}
+    
+    \tableofcontents
+\eppbox
+
+}
+
+\vfill\break
+
+\color{black}
+
+\pageno=1
+\newif\ifpageodd
+\pageoddtrue
+\headline={%
+    \hbox to \hsize{\color{black}%
+        \ifpageodd\hfil{\it\currsubsection\quad\bf\folio}\global\pageoddfalse%
+        \else{\bf\folio\quad\it\currsubsection}\hfil\global\pageoddtrue\fi%
+    }%
+}
+
+\section{Transition Systems}
+
+When modelling systems, one must take into consideration a variety of factors: for example, is the system sequential or concurrent? When investigating the transitions between states, how granular should they
+be?
+These questions are common questions in computer science, the terms may not be though.
+A sequential system is a system with only one thread of execution, while a concurrent system may be multithreaded/multiprogrammed/multiprocessed.
+The granularity of a transition refers to how detailed we view the transition: is the command $\tt x\coloneqq y$ atomic? Or do the variables first need to be loaded into memory?
+
+We now begin to discuss how we model systems.
+
+\bdefn
+
+    A {\emphcolor transition system} over a first-order language ${\cal L}$ is a triplet $({\cal S},T,\Theta)$, where
+    \benum
+        \item ${\cal S}$ is a (potentially many-sorted) ${\cal L}$-structure.
+            The symbols of ${\cal L}$ correspond to the symbols utilized within the program in question.
+            For example, ${\cal L}$ may contain the $+$ operator, $<$ relation, etc.
+            As opposed to general first-order logic, the set of variables $V$ is taken to be finite here.
+            This set of variables correspond to precisely what you'd expect: the set of all variables in the program.
+            This includes internal registers utilized by the program, called the {\it program counters}, for which there is one for each concurrent process, and they point to the location of the next
+            instruction to be executed.
+        \item $T$ is a {\it finite} set of {\emphcolor transitions}.
+            Each transition $t\in T$ has the form (${\cal T}_{\cal L}$ is the set of ${\cal L}$-terms)
+            $$ p\longto (v_1,\dots,v_n)\coloneqq(e_1,\dots,e_n) \qquad (v_1,\dots,v_n\in V,e_1,\dots,e_n\in{\cal T}_{\cal L}) $$
+            $p$ is a quantifier-free formula in ${\cal L}$.
+            Notice that even in concurrent systems, there is a single set of transitions, meaning all the transitions are grouped together.
+        \item $\Theta$ is the {\it initial condition}, a quantifier-free formula in ${\cal L}$.
+    \eenum
+
+    In this model, a {\emphcolor state} is an assignment of the variables in $V$ to elements of the domain of ${\cal S}$.
+    In other words, a state is a valuation $s\colon V\longto S$ ($S={\sl dom}{\cal S}$), so ${\cal S}$ together with a state form an ${\cal L}$-model.
+    The {\emphcolor state space} is the set of all possible states, which can be taken to be $S^V$ or a subset of this (if for example, ${\cal S}$ contains all the naturals, but our computer's memory is
+    bound in size).
+\edefn
+
+A transition of the form $p\longto(v_1,\dots,v_n)\coloneqq(e_1,\dots,e_n)$ intuitively can execute from any state which satisfies the condition $p$.
+The condition $p$ is called the {\it enabledness condition} of the transition $t$, and if $p$ is satisfied by the state $s$, ie. ${\cal S},s\vDash p$ (recall that ${\cal S},s$ is simply an ${\cal L}$-model),
+then $t$ is said to be {\it enabled} at $s$.
+$t$ transitions from a state $s$ in which it is enabled to a state where the value of each $v_i$ is set to $e_i^{\cal S}$ for $1\leq i\leq n$, denoted $s'=t(s)=s[e_1/v_1,\dots,e_n/v_n]$.
+
+Note that the assignment is simultaneous: $(x,y)\coloneqq(y,x)$ has the effect of swapping the values of $x$ and $y$.
+Allowing for simultaneous assignments may seem contrary to the idea of having transitions be atomic.
+But this again goes back to the notion of granularity: we decide what transitions are atomic, and it can be useful to view assignments, even simultaneous ones, as atomic.
+
+\bdefn
+
+    Given a system $({\cal S},T,\Theta)$, an {\emphcolor execution} is an infinite sequence of states $s_0,s_1,s_2,\dots$ such that ${\cal S},s_0\vDash\Theta$ (we will also use the notation
+    $s_0\vDash^{\cal S}\Theta$), meaning the first state satisfies the initial condition, and for every $i\geq0$ one of the following holds:
+    \benum
+        \item There exists some transition $p\longto(v_1,\dots,v_n)\coloneqq(e_1,\dots,e_n)\in T$ that is enabled at $s_i$, ie. $s_i\vDash^{\cal S}p$, and $s_{i+1}$ is obtained by this assignment, meaning
+        $s_{i+1}=s_i[e_1^{\cal S}/v_1,\dots,e_n^{\cal S}/v_n]$.
+        \item There is no transition enabled at $s_i$, meaning for every transition $t\in T$ whose enabledness condition is $p$, $s_i\nvDash^{\cal S}p$.
+            In this case, for every $j\geq i$ we set $s_j=s_i$.
+            So in such a case, we manually extend the sequence if it can no longer be extended.
+    \eenum
+
+\edefn
+
+Instead of the second condition, we could add a new transition to $T$ of the form $\neg(p_1\lor\cdots\lor p_n)\to(v\coloneqq v)$ where $p_1,\dots,p_n$ exhaust all the enabledness conditions of
+transitions in $T$, and $v\in V$ is arbitrary.
+Alternatively we could allow for finite sequences of states, provided the final state enables no transition.
+
+A state which appears in some execution of a program (system) is called {\it reachable}.
+Not every state needs to be reachable: consider a program that can hold (bounded) natural numbers with variables $y_1,y_2$ and the program is written in such a way that $y_1\geq y_2$ always.
+But the state $s[y_1]=1$ and $s[y_2]=2$ is a valid, yet unreachable, state.
+
+We can view the execution of a system as a {\it scheduler} which can generate interleaved sequences (sequences where a single transition is executed at a time)
+
+\medskip
+\algorithm
+    \Function{Scheduler}{${\cal S},T,\Theta$}
+        \State\textbf{choose} some initial state $s$ such that $s\vDash^{\cal S}\Theta$
+        \While{$s$ has an enabled transition}
+            \State\textbf{choose} a transition $t$ enabled by $s$
+            \State $s\gets t(s)$
+        \EndWhile
+        \Comment Extend the sequence infinitely if the final state has no enabled transition\EndComment
+        \State \textbf{repeat} $s$ forever
+    \EndFunc
+\ealgorithm
+\medskip
+
+This scheduler is non-deterministic as the choice for the initial state and the choices between transitions enabled at each state along the execution are made non-deterministically.
+
+\bexam
+
+    Let us give an example of {\it mutual exclusion}: we have two programs sharing a shared {\it critical section} (here the variable {\tt turn}):
+    
+    \medskip
+    \hbox to \hsize{
+        \hfil\vbox{\hsize=.4\hsize
+        \algorithm
+            \InnerText{\textbf{routine} {\tencsc Program1}}
+                \While{{\sf true}}
+                    \Comment wait until ${\tt turn}$ is zero\EndComment
+                    \State {\sf wait}(${\tt turn}=0$)
+                    \State ${\tt turn}\gets1$
+                \nonum\EndWhile
+            \InnerText{\textbf{end routine}}
+        \ealgorithm
+        }
+        \hfil\vbox{\hsize=.4\hsize
+        \algorithm
+            \InnerText{\textbf{routine} {\tencsc Program2}}
+                \While{{\sf true}}
+                    \Comment wait until ${\tt turn}$ is one\EndComment
+                    \State {\sf wait}(${\tt turn}=1$)
+                    \State ${\tt turn}\gets0$
+                \nonum\EndWhile
+            \InnerText{\textbf{end routine}}
+        \ealgorithm
+        }
+        \hfil
+    }
+    \medskip
+    
+    \def\turn{{\tt turn}}
+    \def\pc{{\tt pc}}
+    In this example, we have three variables: $\turn$, the first program counter $\pc_1$, and the second program counter $\pc_2$.
+    The transitions are as follows:
+    $$ \displaylines{
+        t_0\colon \pc_1=1\longto\pc_1\coloneqq2,\ t_1\colon(\pc_1=2\land\turn=0)\longto \pc_1\coloneqq3,\ t_2\colon(\pc_1=3)\longto(\pc_1,\turn)\coloneqq(1,1)\cr
+        t_3\colon \pc_2=1\longto\pc_2\coloneqq2,\ t_4\colon(\pc_2=2\land\turn=1)\longto \pc_2\coloneqq3,\ t_5\colon(\pc_2=3)\longto(\pc_2,\turn)\coloneqq(1,0)
+    } $$
+    Then the initial condition is
+    $$ \Theta = \pc_1=1\land\pc_2=1 $$
+    
+    Viewing states as $(\turn,\pc_1,\pc_2)$, then we can draw the following diagram for the transition system, initial states are bold:
+    
+    \centerline{\vbox{\drawdiagram{%
+                 &$\bf(0,1,1)$&&$\bf(1,1,1)$\cr
+        $(0,1,2)$&$(0,2,1)$&&$(1,1,2)$&$(1,2,1)$\cr
+        $(0,2,2)$&$(0,3,1)$&&$(1,1,3)$&$(1,2,2)$\cr
+                 &$(0,3,2)$&&$(1,2,3)$\cr
+    }{%
+        \diagarrow{from={1,2}, to={2,1}, color=rgb{.1 .65 .1}}%t3
+        \diagarrow{from={1,2}, to={2,2}, color=rgb{.1 .65 .1}}%t0
+        \diagarrow{from={2,1}, to={3,1}, color=rgb{.1 .65 .1}}%t0
+        \diagarrow{from={2,2}, to={3,1}, color=rgb{.1 .65 .1}}%t3
+        \diagarrow{from={2,2}, to={3,2}, color=rgb{.1 .65 .1}}%t1
+        \diagarrow{from={3,1}, to={4,2}, color=rgb{.1 .65 .1}}%t1
+        \diagarrow{from={3,2}, to={4,2}, color=rgb{.1 .65 .1}}%t3
+        %                              , color=rgb{.1 .65 .1}}
+        \diagarrow{from={1,4}, to={2,4}, color=rgb{.1 .65 .1}}%t3
+        \diagarrow{from={1,4}, to={2,5}, color=rgb{.1 .65 .1}}%t0
+        \diagarrow{from={2,5}, to={3,5}, color=rgb{.1 .65 .1}}%t0
+        \diagarrow{from={2,4}, to={3,5}, color=rgb{.1 .65 .1}}%t3
+        \diagarrow{from={2,4}, to={3,4}, color=rgb{.1 .65 .1}}%t1
+        \diagarrow{from={3,5}, to={4,4}, color=rgb{.1 .65 .1}}%t1
+        \diagarrow{from={3,4}, to={4,4}, color=rgb{.1 .65 .1}}%t3
+        %                              , color=rgb{.1 .65 .1}}
+        \diagarrow{from={3,2}, to={1,4}, color=rgb{.1 .65 .1}}
+        \diagarrow{from={3,4}, to={1,2}, color=rgb{.1 .65 .1}}
+        \diagarrow{from={4,2}, to={2,4}, color=rgb{.1 .65 .1}}
+        \diagarrow{from={4,4}, to={2,2}, color=rgb{.1 .65 .1}}
+    }}}
+    
+    Now notice that we do indeed have mutual exclusion, where formally this means always $\neg(\pc_1=3\land\pc_2=3)$.
+    Furthermore we have that if $\turn=0$ then eventually $\turn=1$, to prove this we must go through every possible execution which starts with $\turn=0$ and to show that eventually $\turn=1$.
+
+    Say instead of implementing {\sf wait} via a lock (eg. mutex), we utilize busy waiting, adding the following two transitions:
+    $$ t_1'\colon(\pc_1=2\land\turn=1)\longto\pc_1\coloneqq2,\qquad t_4'\colon(\pc_2=2\land\turn=0)\longto\pc_2\coloneqq2 $$
+    then we no longer have that if $\turn=0$ then eventually $\turn=1$.
+    For example $(0,1,1)\to(0,1,2)$ and then $(0,1,2)$ is extended forever via $t_4'$.
+
+\eexam
+
+Suppose we have $n$ concurrent processes, each with a variable $v_i$ and the transitions
+$$ t^i_1\colon v_i=1\longto v_i\coloneqq2,\quad t^i_2\colon v_i=2\longto v_i\coloneqq3,\quad t^i_3\colon v_i=3\longto v_i\coloneqq1 $$
+in other words, if $v_i$ is $1$, then it is $2$, then it is $3$, then it is $1$.
+Since this is a concurrent system, we must combine these states together, and then we get that the number of global states becomes $3^n$ (each state is $(v_1,\dots,v_n)$ and each $v_i$ can take on three
+values).
+This is called {\it combinatorial explosion}: a relatively simple transition system becomes exponentially larger with the growth of concurrent processes.
+
+\vfill\break
+
+\section{Specification Formalisms}
+
+We now introduce language which allows us to formally discuss properties of systems and their executions.
+By doing so, we can prove these properties formally and without room for interpretative error.
+
+Let ${\cal L}$ be a set logic (either propositional or first-order),
+${\cal S}$ will be an ${\cal L}$-structure, but in general we will refrain from mentioning it instead; we will write $\vDash$ in place of $\vDash^{\cal S}$.
+
+\bdefn
+
+    {\emphcolor Linear temporal logic} (abbreviated LTL) is an instance of modal logic.
+    It is defined over ${\cal L}$ recursively as follows:
+    \benum
+        \item Every formula of ${\cal L}$ is also a formula of LTL,
+        \item if $\phi$ and $\psi$ are LTL formulas, so too are $\neg\phi,(\phi\land\psi),\bigcirc\phi,\diamond\phi,\square\phi,\phi\U\psi,\phi\V\psi$.
+    \eenum
+    An LTL formula is interpreted over an infinite sequence of states $\xi=x_0x_1x_2\dots$.
+    Let us write $\xi^k$ for the suffix $\xi^k\coloneqq x_kx_{k+1}\dots$, then we define
+    \benum
+        \item if $\phi\in{\cal L}$ then $\xi^k\vDash\phi$ if $x_k\vDash\phi$ in ${\cal L}$,
+        \item $\xi^k\vDash\neg\phi$ if $\xi^k\nvDash\phi$,
+        \item $\xi^k\vDash\phi\land\psi$ if $\xi^k\vDash\phi$ and $\xi^k\vDash\psi$,
+        \item $\xi^k\vDash\bigcirc\phi$ if $\xi^{k+1}\vDash\phi$,
+        \item $\xi^k\vDash\diamond\phi$ if there is an $i\geq k$ such that $\xi^i\vDash\psi$,
+        \item $\xi^k\vDash\square\phi$ if $\xi^i\vDash\psi$ for every $i\geq k$,
+        \item $\xi^k\vDash\phi\U\psi$ if there is an $i\geq k$ such that $\xi^i\vDash\psi$ and for all $k\leq j<i$, $\xi^j\vDash\psi$,
+        \item $\xi^k\vDash\phi\V\psi$ if for every $i\geq k$, $\xi^i\vDash\psi$; or for some $i\geq k$, $\xi^i\vDash\phi$ and for every $k\leq j\leq i$, $\xi^j\vDash\psi$.
+    \eenum
+
+\edefn
+
+\def\sqwd{.5cm}
+\def\sqht{.5cm}
+\def\sqstroke{.3pt}
+\def\sq{\hbox{$\vcenter to\sqht{\hrule height\sqstroke\hbox to\sqwd{\vrule width\sqstroke height\dimexpr\sqht-\sqstroke * 2\relax\hfil\vrule width\sqstroke}\hrule height\sqstroke}$}}
+\def\tosq#1{\hbox to\sqwd{\hss#1\hss}}
+
+Intuitively we can explain the new operators as follows:
+\benum
+    \global\enumcount=3
+    \item $\bigcirc$ is the {\it nexttime} operator: $\bigcirc\phi$ holds in the sequence $x_kx_{k+1}\dots$ if $\phi$ holds starting from the next state $x_{k+1}$.
+        Visually we can view it like so:
+
+        \medskip
+        \moveright\leftskip\hbox to\dimexpr\hsize-\leftskip\relax{\rlap{\kern\sqwd\tosq{$\phi$}}\leaders\sq\hfill\null}
+    \item $\diamond$ is the {\it eventually} operator: $\diamond\phi$ holds in the sequence $\xi$ provided there exists a suffix in which $\phi$ holds.
+        Visually:
+
+        \medskip
+        \moveright\leftskip\hbox to\dimexpr\hsize-\leftskip\relax{\rlap{\kern\dimexpr\sqwd * 10\relax\tosq{$\phi$}}\leaders\sq\hfill\null}
+    \item $\square$ is the {\it always} operator: $\square\phi$ holds in the sequence $\xi$ provided it holds in every suffix of $\xi$.
+        Visually:
+
+        \medskip
+        \moveright\leftskip\hbox to\dimexpr\hsize-\leftskip\relax{\leaders\tosq{$\phi$}\hfill\kern-\dimexpr\hsize-\leftskip\relax\leaders\sq\hfill\null}
+    \item $\U$ is the {\it until} operator: $\phi\U\psi$ holds in the sequence $\xi$ if $\psi$ holds eventually and $\phi$ holds up until then:
+
+        \medskip
+        \moveright\leftskip\hbox to\dimexpr\hsize-\leftskip\relax{\leaders\tosq{$\phi$}\hskip\dimexpr\sqwd * 20\relax\tosq{$\psi$}\kern-\dimexpr\sqwd * 21\relax\leaders\sq\hfill\null}
+    \item $\V$ is the {\it release} operator: $\phi\V\psi$ holds if $\psi$ either holds forever, or up until some point when both $\phi$ and $\psi$ hold.
+        The reasoning for the name is that $\phi$ ``releases'' $\psi$ from having to hold for forever.
+
+        \medskip
+        \moveright\leftskip\hbox to\dimexpr\hsize-\leftskip\relax{\leaders\tosq{$\psi$}\hfill\kern-\dimexpr\hsize-\leftskip\relax\leaders\sq\hfill\null}
+        \medskip
+
+        \centerline{Or:}
+        \medskip
+        \moveright\leftskip\hbox to\dimexpr\hsize-\leftskip\relax{%
+            \def\sqht{1cm}\leaders\tosq{$\psi$}\hskip\dimexpr\sqwd * 20\relax\tosq{$\stackmath{\psi\cr\noalign{\kern.2cm}\phi}$}\kern-\dimexpr\sqwd * 21\relax\leaders\sq\hfill\null}
+\eenum
+
+Notice that $\diamond$ is a special case of $\U$: $\diamond\phi\equiv\true\U\phi$.
+And $\square$ is a special case of $\V$: $\square\phi\equiv\false\V\phi$ (since $\false$ can never relase $\phi$).
+$\square$ and diamond are also related through $\neg\square\phi\equiv\diamond\neg\phi$.
+
+We can combine operators: for example $\square\diamond\phi$ means that always, $\phi$ eventually happens; or equivalently $\phi$ happens infinitely many times.
+$\diamond\square\phi$ means that at some point, $\phi$ will hold forever.
+
+\bye
+
