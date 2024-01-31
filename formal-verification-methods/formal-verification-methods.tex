@@ -177,33 +177,33 @@ This scheduler is non-deterministic as the choice for the initial state and the 
     
     Viewing states as $(\turn,\pc_1,\pc_2)$, then we can draw the following diagram for the transition system, initial states are bold:
     
-    \centerline{\vbox{\drawdiagram{%
+    \centerline{\drawdiagram{%
                  &$\bf(0,1,1)$&&$\bf(1,1,1)$\cr
         $(0,1,2)$&$(0,2,1)$&&$(1,1,2)$&$(1,2,1)$\cr
         $(0,2,2)$&$(0,3,1)$&&$(1,1,3)$&$(1,2,2)$\cr
                  &$(0,3,2)$&&$(1,2,3)$\cr
     }{%
-        \diagarrow{from={1,2}, to={2,1}, color=rgb{.1 .65 .1}}%t3
-        \diagarrow{from={1,2}, to={2,2}, color=rgb{.1 .65 .1}}%t0
-        \diagarrow{from={2,1}, to={3,1}, color=rgb{.1 .65 .1}}%t0
-        \diagarrow{from={2,2}, to={3,1}, color=rgb{.1 .65 .1}}%t3
-        \diagarrow{from={2,2}, to={3,2}, color=rgb{.1 .65 .1}}%t1
-        \diagarrow{from={3,1}, to={4,2}, color=rgb{.1 .65 .1}}%t1
-        \diagarrow{from={3,2}, to={4,2}, color=rgb{.1 .65 .1}}%t3
+        \diagarrow{from={1,2}, to={2,1}, color=rgb{.1 .65 .1}, text=$t_3$, x distance=-.4cm, slide=.4}%t3
+        \diagarrow{from={1,2}, to={2,2}, color=rgb{.1 .65 .1}, text=$t_0$, x distance=-.25cm}%t0
+        \diagarrow{from={2,1}, to={3,1}, color=rgb{.1 .65 .1}, text=$t_0$, x distance=-.25cm}%t0
+        \diagarrow{from={2,2}, to={3,1}, color=rgb{.1 .65 .1}, text=$t_3$, x distance=-.4cm, slide=.4}%t3
+        \diagarrow{from={2,2}, to={3,2}, color=rgb{.1 .65 .1}, text=$t_1$, x distance=-.25cm}%t1
+        \diagarrow{from={3,1}, to={4,2}, color=rgb{.1 .65 .1}, text=$t_1$, x distance=-.4cm, slide=.6}%t1
+        \diagarrow{from={3,2}, to={4,2}, color=rgb{.1 .65 .1}, text=$t_3$, x distance=-.25cm}%t3
         %                              , color=rgb{.1 .65 .1}}
-        \diagarrow{from={1,4}, to={2,4}, color=rgb{.1 .65 .1}}%t3
-        \diagarrow{from={1,4}, to={2,5}, color=rgb{.1 .65 .1}}%t0
-        \diagarrow{from={2,5}, to={3,5}, color=rgb{.1 .65 .1}}%t0
-        \diagarrow{from={2,4}, to={3,5}, color=rgb{.1 .65 .1}}%t3
-        \diagarrow{from={2,4}, to={3,4}, color=rgb{.1 .65 .1}}%t1
-        \diagarrow{from={3,5}, to={4,4}, color=rgb{.1 .65 .1}}%t1
-        \diagarrow{from={3,4}, to={4,4}, color=rgb{.1 .65 .1}}%t3
+        \diagarrow{from={1,4}, to={2,4}, color=rgb{.1 .65 .1}, text=$t_3$, x distance=.25cm}%t3
+        \diagarrow{from={1,4}, to={2,5}, color=rgb{.1 .65 .1}, text=$t_0$, x distance=.4cm, slide=.4}%t0
+        \diagarrow{from={2,5}, to={3,5}, color=rgb{.1 .65 .1}, text=$t_3$, x distance=.25cm}%t3
+        \diagarrow{from={2,4}, to={3,5}, color=rgb{.1 .65 .1}, text=$t_0$, x distance=.4cm, slide=.4}%t0
+        \diagarrow{from={2,4}, to={3,4}, color=rgb{.1 .65 .1}, text=$t_4$, x distance=.25cm}%t4
+        \diagarrow{from={3,5}, to={4,4}, color=rgb{.1 .65 .1}, text=$t_4$, x distance=.5cm, slide=.6}%t4
+        \diagarrow{from={3,4}, to={4,4}, color=rgb{.1 .65 .1}, text=$t_0$, x distance=.25cm}%t0
         %                              , color=rgb{.1 .65 .1}}
-        \diagarrow{from={3,2}, to={1,4}, color=rgb{.1 .65 .1}}
-        \diagarrow{from={3,4}, to={1,2}, color=rgb{.1 .65 .1}}
-        \diagarrow{from={4,2}, to={2,4}, color=rgb{.1 .65 .1}}
-        \diagarrow{from={4,4}, to={2,2}, color=rgb{.1 .65 .1}}
-    }}}
+        \diagarrow{from={3,2}, to={1,4}, color=rgb{.1 .65 .1}, text=$t_2$, x distance=.4cm, slide=.6}%t2
+        \diagarrow{from={3,4}, to={1,2}, color=rgb{.1 .65 .1}}%t2
+        \diagarrow{from={4,2}, to={2,4}, color=rgb{.1 .65 .1}}%t5
+        \diagarrow{from={4,4}, to={2,2}, color=rgb{.1 .65 .1}}%t5
+    }}
     
     Now notice that we do indeed have mutual exclusion, where formally this means always $\neg(\pc_1=3\land\pc_2=3)$.
     Furthermore we have that if $\turn=0$ then eventually $\turn=1$, to prove this we must go through every possible execution which starts with $\turn=0$ and to show that eventually $\turn=1$.
@@ -215,12 +215,96 @@ This scheduler is non-deterministic as the choice for the initial state and the 
 
 \eexam
 
+In the above example, the focus was more on the states and the possible transitions between them rather than the explicit content of each transition.
+We can generalize this idea to the concept of {\it state spaces}:
+
+\bdefn
+
+    A {\emphcolor state space} is a triplet $(S,\Delta,I)$, where $S$ is a set of states, $\Delta\subseteq S\times S$ is the transition relations, and $I\subseteq S$ are the initial transitions.
+    This defines a graph, called an {\emphcolor automaton}.
+    A {\emphcolor run} of the automaton is a sequence $s_0s_1s_2\dots$ such that $s_0\in I$ is an initial state and for every $i\geq0$, $(s_i,s_{i+1})\in\Delta$.
+    Such a run must be maximal, meaning it is either infinite or it reaches a state with no successor.
+
+    Sometimes we give names to the transitions in $\Delta$ in which case our state space becomes $(S,\Delta,\Sigma,I)$ where $\Delta$ now is a subset of $S\times\Sigma\times S$.
+    Every transition gets its own name, so if $(s,\alpha,s'),(r,\alpha,r')\in\Delta$ then $s=r$ and $s'=r'$.
+
+\edefn
+
+In particular, a transition system defines a state space where $S$ is the set of all states, which are valuations $V\longto{\cal S}$.
+Then $(s,s')\in\Delta$ if and only if there is a transition $t$ enabled at $s$ such that $s'=t(s)$.
+And $I$ is the set of states which satisfy the initial condition, $I=\set{s\in S}[s\vDash\Theta]$.
+
 Suppose we have $n$ concurrent processes, each with a variable $v_i$ and the transitions
 $$ t^i_1\colon v_i=1\longto v_i\coloneqq2,\quad t^i_2\colon v_i=2\longto v_i\coloneqq3,\quad t^i_3\colon v_i=3\longto v_i\coloneqq1 $$
 in other words, if $v_i$ is $1$, then it is $2$, then it is $3$, then it is $1$.
 Since this is a concurrent system, we must combine these states together, and then we get that the number of global states becomes $3^n$ (each state is $(v_1,\dots,v_n)$ and each $v_i$ can take on three
 values).
 This is called {\it combinatorial explosion}: a relatively simple transition system becomes exponentially larger with the growth of concurrent processes.
+
+Let us examine this above example more closely: notice how we took multiple transition systems and combined them into one.
+We will define this notion formally: suppose we have a transition system whose transitions $T$ is constructed from {\it local} components $T_1,\dots,T_n$.
+Here, each $T_i$ refers to a local component of the system, be it a concurrent process, a variable, or whatever.
+For each $T_i$ we also have a set of {\it transition names} $\Sigma_i$ and a {\it labelling function} which is a bijection $L_i\colon T_i\longto\Sigma_i$.
+Importantly while the $T_i$s are disjoint, $\Sigma_i$ need not be.
+
+If two transitions have the same name, then we execute them together.
+Formally, from each global state $s$, we can execute all the transitions with the name $d$ (meaning $L_i(t)=d$) provided {\it all of them} are enabled at $s$.
+So suppose we have the transitions $t_i\colon p_i\longto(v_1^i,\dots,v_{n_i}^i)\coloneqq(e_1^i,\dots,e_{n_i}^i)$ for $1\leq i\leq k$ such that $L_i(t_i)=d$ for all $1\leq i\leq k$.
+Then the resulting transition is
+$$ \bigl(p_1\land\cdots\land p_k\bigr)\longto(v_1^1,\dots,v_{n_1}^1,\dots,v_1^k,\dots,v_{n_k}^k)\coloneqq(e_1^1,\dots,e_{n_1}^1,\dots,e_1^k,\dots,e_{n_k}^k) $$
+
+Now suppose that each local component can be represented as a local state space $G_i=(S_i,\Sigma_i,\Delta_i,I_i)$ which corresponds to the local component $T_i$.
+We assume that the set of local states $S_i$ are disjoint, but $\Sigma_i$ need not be.
+If the label $\alpha$ appears in both $\Sigma_i$ and $\Sigma_j$, then $G_i$ and $G_j$ must be synchronized to perform $\alpha$ at the same time.
+
+We define the operator $\circ$ to combine two state spaces $G_1$ and $G_2$ as follows: let $G_1\circ G_2=(S,\Sigma,\Delta,I)$ as follows:
+\benum
+    \item $S=S_1\times S_2$, each state is a pair of a state from $G_1$ and $G_2$,
+    \item $\Sigma=\Sigma_1\cup\Sigma_2$, the transition names include all the names in both $G_1$ and $G_2$,
+    \item The set of transitions $\Delta$ is the union of the following three sets:
+        \benum
+            \item $\set{\bigl((s,r),\alpha,(s',r)\bigr)}[(s,\alpha,s')\in\Delta_1,\,\alpha\in\Sigma_1\setminus\Sigma_2,\,r\in S_2]$.
+                In this case, we have a transition $(s,\alpha,s')$ in $G_1$ with no transition of the same name in $\Sigma_2$, so we transition from $(s,r)$ to $(s',r)$, leaving the state in $G_2$
+                unchanged.
+            \item $\set{\bigl((s,r),\beta,(s,r')\bigr)}[(r,\beta,r')\in\Delta_2,\,\beta\in\Sigma_2\setminus\Sigma_1,\,s\in S_1]$.
+                This is similar to the previous set, but for $G_2$ instead of $G_1$.
+            \item $\set{\bigl((s,r),\gamma,(s',r')\bigr)}[(s,\gamma,s')\in\Delta_1,\,\gamma\in\Sigma_1\cap\Sigma_2,\,(r,r')\in\Delta_2]$.
+                Here, we have a transition in both $G_1$ and $G_2$, so the transition is done simultaneously.
+        \eenum
+\eenum
+
+So for example, the following two state spaces combine together to give
+
+\medskip
+\hbox to\hsize{\hfil
+    \drawdiagram{%
+        $\bf s_1$\cr
+        \cr
+        $s_2$\cr
+    }{%
+        \diagarrow{from={1,1}, to={3,1}, x off=-.25cm, text=$\alpha$, x distance=-.5cm}
+        \diagarrow{from={3,1}, to={1,1}, x off=.25cm, text=$\beta$, x distance=.5cm}
+    }\kern.75cm$\circ$\kern.75cm
+    \drawdiagram{%
+        $\bf r_1$\cr
+        \cr
+        $r_2$\cr
+    }{%
+        \diagarrow{from={1,1}, to={3,1}, x off=-.25cm, text=$\beta$, x distance=-.5cm}
+        \diagarrow{from={3,1}, to={1,1}, x off=.25cm, text=$\gamma$, x distance=.5cm}
+    }\kern1cm$=$\kern.5cm
+    \drawdiagram{%
+        &$\bf(s_1,r_1)$\cr
+        $(s_1,r_2)$&&$(s_2,r_1)$\cr
+        &$(s_2,r_2)$\cr
+    }{
+        \diagarrow{from={1,2}, to={2,3}, text=$\alpha$, slide=.4, x distance=.4cm}
+        \diagarrow{from={2,1}, to={1,2}, text=$\gamma$, slide=.6, x distance=-.4cm}
+        \diagarrow{from={2,3}, to={2,1}, text=$\beta$, y distance=.25cm}
+        \diagarrow{from={2,1}, to={3,2}, text=$\alpha$, slide=.6, x distance=-.4cm}
+        \diagarrow{from={3,2}, to={2,3}, text=$\gamma$, slide=.3, x distance=.5cm}
+    }\hfil
+}
 
 \vfill\break
 
