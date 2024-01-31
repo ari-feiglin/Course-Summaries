@@ -514,5 +514,135 @@ We use an analogous proof for the case $\liminf_nf_n(x)=\sup_k\inf_{n\geq k}f_n(
 If $\lim_nf_n(x)$ exists, then it is just equal to $\limsup_nf_n(x)=\liminf_nf_n(x)$.
 \qed
 
+\subsection{The Lebesgue Integral}
+
+\bdefn
+
+    Let $(X,\Sigma,\mu)$ be a measure space, and $A\in\Sigma$ be measurable.
+    Then we define the {\emphcolor Lebesgue integral} of $\chi_A$ to be
+    $$ \int_X\chi_A\,d\mu = \mu(A) $$
+
+    And if the measurable function $\phi\colon X\longto[0,\infty)$ is {\emphcolor simple}, meaning it takes on only a finite number of values $a_1,\dots,a_n$, then define $A_i=\phi^{-1}\set{a_i}$ such that
+    $\phi=\sum_{i=1}^na_i\chi_{A_i}$ where $A_i$ are disjoint, define its Lebesgue integral to be
+    $$ \int_X\phi\,d\mu = \sum_{i=1}^na_i\mu(A_i) $$
+
+    If $f$ is a function whose Lebesgue integral is defined, and $E\in\Sigma$ is measurable, then $f$'s Lebesgue integral over $E$ is defined to be
+    $$ \int_Ef\,d\mu = \int_Xf\cdot\chi_E\,d\mu $$
+\edefn
+
+\bprop
+
+    For $\phi,\psi$ simple,
+    \benum
+        \item $\int_X(\phi+\psi)=\int_X\phi+\int_X\psi$,
+        \item if $c\geq0$ then $\int_Xc\phi=c\int_X\phi$,
+        \item if $E$ and $F$ are disjoint measurable sets then $\int_{E\dcup F}\phi=\int_E\phi+\int_F\phi$,
+        \item if $\phi\leq\psi$ (pointwise, meaning $\phi(x)\leq\psi(x)$ for every $x\in X$), then $0\leq\int_X\phi\leq\int_X\psi$,
+        \item if $m\leq\phi\leq M$ and $E$ is measurable, then $m\mu(E)\leq\int_E\phi\leq M\mu(E)$.
+    \eenum
+
+\eprop
+
+\Proof\benum
+    \item Firstly, notice that if $\phi=\sum_{i=1}^na_i\chi_{A_i}$ where $A_i$ are not necessarily disjoint, still $\int_X\phi=\sum_{i=1}^na_i\mu(A_i)$.
+        This is since $a\chi_A+b\chi_B=a\chi_{A\setminus B}+b\chi_{B\setminus A}+(a+b)\chi_{A\cap B}$ and so the integral is $a\mu(A\setminus B)+b\mu(B\setminus A)+(a+b)\mu(A\cap B)=a\mu(A)+b\mu(B)$.
+        Then $(1)$ is a direct result of this: write $\phi$ and $\psi$ as linear combinations of characteristic functions.
+    \item This is direct from definition: $c\phi=\sum ca_i\chi_{A_i}$ so its integral is $c\sum a_i\mu(A_i)$.
+    \item This is since $\chi_{E\dcup F}=\chi_E+\chi_F$ and so
+        $$ \int_{E\dcup F}\phi = \int(\phi\chi_E+\phi\chi_F) = \int\phi\chi_E + \int\phi\chi_F = \int_E\phi + \int_F\phi $$
+    \item Notice that integrals are non-negative by definition.
+        And then $\psi=\phi+(\psi-\phi)$, and $\psi-\phi$ is still simple, so $\int\psi=\int\phi+\int(\psi-\phi)\geq\int\phi$ as required.
+    \item This is due to $\int_E c=\int_Xc\chi_E=c\mu(E)$.
+        \qed
+\eenum
+
+\bdefn
+
+    Let $f\colon X\longto[0,\infty]$ be measurable, then define its {\emphcolor Lebesgue integral}
+    $$ \int_X f\,d\mu = \sup_{\stackmath{0\leq\phi\leq f\cr\phi\hbox{\setscale{7pt} simple}}}\int_X\phi\,d\mu $$
+
+\edefn
+
+Notice that we define the integral of a nonnegative function using the supremum of the set of simple functions bound by $f$.
+Why not use the infimum of the simple functions which bound $f$? ie, why not have
+$$ \int_X f\,d\mu \buildrel?\over= \inf_{\stackmath{\phi\geq f\cr\phi\hbox{\setscale{7pt} simple}}}\int_X\phi\,d\mu $$
+Take for example $f(x)=e^{-x^2}$ which has a finite (Riemann) integral, we would like its Lebesgue integral to be finite as well.
+But every simple function $\phi$ which bounds it must have an infinite integral: it must have a minimum value $m$, and this minimum value $m$ cannot be $0$ since $f$ is never zero.
+And so $\int\phi\geq\int m=\infty$ for every $\phi$ which bounds $f$, so by this definition $\int f=\infty$, which is not ideal.
+
+Note that if $f$ itself is simple, then every $\phi\leq f$ has an integral $\int\phi\leq\int f$ by the above theorem.
+And since $f\leq f$, $\int f$ is in the set over which we take the supremum, so this definition of the integral does not contradict the previous definition.
+
+\bthrm
+
+    For $f,g$ measurable and nonnegative,
+    \benum
+        \item if $0\leq f\leq g$ then $0\leq\int_Xf\leq\int_Xg$,
+        \item if $E\subseteq F$ are measurable then $\int_Ef\leq\int_Ff$,
+        \item if $f=0$ almost always on $E$ then $\int_Xf=0$,
+        \item if $\mu(E)=0$ then $\int_Ef=0$,
+        \item if $m\leq f\leq M$ on $E$ then $m\mu(E)\leq\int_Xf\leq M\mu(E)$.
+    \eenum
+
+\ethrm
+
+\Proof\benum
+    \item This is since simple functions $\phi\leq f$ are also bound by $g$.
+    \item This is since $\int_Ef=\int_Xf\cdot\chi_E$ and $f\cdot\chi_E\leq f\cdot\chi_F$, so this is a direct result of $(1)$.
+    \item Let $E_1=f^{-1}\set0$ and $E_2=E\setminus E_1$.
+        Then for $\phi\leq f$, $\phi$ must be zero on $E_1$ and so $\phi=\epsilon\chi_{E_2}$.
+        So $\int\phi=\epsilon\mu(E_2)=0$ since $f$ is zero almost everywhere, meaning $\mu(E_2)=0$.
+    \item This is since $f\cdot\chi_E$ is zero almost everywhere.
+    \item This is since $\int_Ec=c\mu(E)$ still.
+        \qed
+\eenum
+
+\bthrm[title=The Monotone Convergence Theorem, name=monothrm]
+
+    Let $f_n\colon X\longto[0,\infty]$ be a monotonically increasing sequence of measurable functions (meaning $0\leq f_1(x)\leq f_2(x)\leq\cdots$ for every $x\in X$), define $f=\lim_{n\to\infty}f_n(x)$.
+    Then
+    $$ \int_Xf\,d\mu = \lim_{n\to\infty}\int_Xf_n\,d\mu $$
+    meaning we can swap the integral and limit, if the sequence is increasing.
+
+\ethrm
+
+At this point in time, the lecturer drew a tree on the board to make some point about Lebesgue basing his theory of integration off of this theorem.
+It was a nice tree, I didn't really listen too much to his explanation of why he drew the tree, but the tree itself was nice.
+
+\Proof Notice that $f_n\leq f$ since $f_n$ is increasing, so $\int_Xf_n\leq\int_Xf$, and so $\lim\int_Xf_n\leq\int_Xf$.
+So all that remains to show is the other direction: $\lim\int_Xf_n\geq\int_Xf$.
+By definition, this is equivalent to
+$$ \sup_{0\leq\phi\leq f}\int_X\phi \leq \lim_{n\to\infty}\int_Xf_n $$
+Let $0\leq\phi\leq f$, set $\alpha\in(0,1)$, and define $E_n=\set{x\in X}[f_n(x)\geq\alpha\phi(x)]$.
+Then $\set{E_n}$ is increasing (since $f_n$ is), and since if $x\in X$ then $f(x)>\alpha\phi(x)$ so there is an $n$ such that $f_n(x)\geq\alpha\phi(x)$, since $\alpha<1$.
+Meaning there is an $n$ such that $x\in E_n$, so $\bigcup E_n=X$.
+
+Now, suppose $\phi=\sum_ia_i\chi_{A_i}$, then since $E_n\cap A_i$ is increasing for every $n$, $\lim_n\mu(E_n\cap A_i)=\mu(A_i)$ since the union of $E_n$ is $X$.
+So
+$$ \lim\int_{E_n}\phi = \lim_n\sum_ia_i\chi_{A_i}\chi_{E_n} = \lim_n\sum_ia_i\mu(A_i\cap E_n) = \sum_ia_i\cdot\lim_n\mu(E_n\cap A_i) = \sum_ia_i\cdot\mu(A_i) = \int_X\phi $$
+So we have that $f_n(x)\geq\alpha\phi(x)$ on $E_n$, so $\int_Xf_n\geq\int_{E_n}f_n\geq\int_{E_n}\alpha\phi=\alpha\int_{E_n}\phi$.
+Taking the limit gives us $\lim_n\int_Xf_n\geq\alpha\int_X\phi$.
+Since this is true for all $\alpha<1$, it is true for $\alpha=1$, so $\lim_n\int_Xf_n\geq\int_X\phi$, so taking the supremum over all $\phi\leq f$ gives $\lim_n\int_Xf_n\geq\int_Xf$ as required.
+\qed
+
+\bexam
+
+    Let $f_n=\chi_{(n,\infty)}$, then $f_n$ is monotonically decreasing to $0$.
+    But $\int f_n=\infty$ which does not converge to $\int0=0$.
+    So the monotone convergence theorem does not hold in the case that the sequence is monotonically decreasing.
+
+\eexam
+
+\bthrm[title=Fatou's Lemma, name=fatou]
+
+    Let $f_n\colon X\longto[0,\infty]$ be measurable, then
+    $$ \int_X(\liminf f_n)\,d\mu \leq \liminf\int_X f_n $$
+
+\ethrm
+
+\Proof Recall that $\liminf f_n(x)=\lim_n\inf_{k>n}f_k(x)$, which is the limit of an increasing sequence.
+So by \refmath{monothrm},
+$$ \int_X\liminf f_n\,d\mu = \lim_n\int_X\inf_{k>n}f_k\,d\mu = \liminf_n\int_X\inf_{k\geq n}f_k\,d\mu \leq \liminf_n\int_X f_n\,d\mu \qed $$
+
 \bye
 
