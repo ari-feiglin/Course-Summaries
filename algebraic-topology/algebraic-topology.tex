@@ -315,7 +315,7 @@ is a homotopy from $\gamma*\overline\gamma$ to $K_a$.
 
 \bdefn
 
-    Given a pointed topological space $(X,a)$ (call $a$ the basis point), define the {\emphcolor first homotopy group} $\pi_1(X,a)\coloneqq\hat\Gamma_{aa}$.
+    Given a pointed topological space $(X,a)$ (call $a$ the basis point), define the {\emphcolor first homotopy group} (or the {\emphcolor fundamental group}) $\pi_1(X,a)\coloneqq\hat\Gamma_{aa}$.
     And given a morphism $f\colon(X,a)\longto(Y,b)$ (meaning $f$ is continuous and $f(a)=b$), then we define a group homomorphism $f_*\colon\pi_1(X,a)\longto\pi_1(Y,b)$ by $f_*([\gamma])=[f\circ\gamma]$.
     The correspondence $(X,a)\mapsto\pi_1(X,a)$ and $f\mapsto f_*$ is a functor.
 
@@ -494,6 +494,97 @@ Since $\delta(I_1)$ is connected, it must be contained within a single ${\cal V}
 
 We continue with $\gamma\bigl|_{I_2}$ which starts at $\frac1n$ to get $\delta\bigl|_{I_2}$, and so on.
 Together these form $\delta$, which is continuous as $\set{I_k}_{1\leq k\leq n}$ is a finite partition of $I$ into closed sets and $\delta$ is continuous over each of these closed sets.
+\qed
+
+Since this curve is unique, we can denote it by $\hat\gamma^e$ (since there is a unique curve for every $e\in p^{-1}(b)$).
+
+\bprop
+
+    Let $p\colon E\longto B$ be a covering, $\gamma,\delta\colon I\longto B$ are curves such that $\gamma\hdi\delta$.
+    Let $a=\gamma(0)=\delta(0)$, and let $e\in E$ such that $p(e)=a$.
+    Then $\hat\gamma^e\hdi\hat\delta^e$, and in particular $\hat\gamma^e(1)=\hat\delta^e(1)$; both of the curves finish on the same point.
+
+\eprop
+
+\Proof let $H\colon I\times I\longto B$ be a homotopy relative to $\partial I$ from $\gamma$ to $\delta$.
+Let $\set{\U_\alpha}_{\alpha\in I}$ be an open cover of $B$ by good open sets, then $\set{H^{-1}(\U_\alpha)}_{\alpha\in I}$ is an open cover of $I\times I$.
+Since $I\times I$ is a compact metric space, it has a Lebesgue number and so there is an $n$ large enough so that we can partition $I\times I$ into squares
+$S_{ij}=\bracks{\frac in,\frac{i+1}n}\times\bracks{\frac jn,\frac{j+1}n}$ such that each $S_{ij}$ is contained within some $H^{-1}(\U_\alpha)$.
+
+Continuing similar to the previous proof, we get a homotopy $\hat H\colon I\times I\longto E$ such that $p\circ\hat H=H$ and $\hat H(0,0)=e$.
+So $p\circ\hat H(t,0)=H(t,0)=\gamma(t)$ and since $\hat\gamma^e$ is unique, this means $\hat H(t,0)=\hat\gamma^e(t)$.
+And similarly $p\circ\hat H(t,1)=H(t,1)=\delta(t)$ so $\hat H(t,1)=\hat\delta^e(t)$.
+And $p\circ\hat H(0,s)=H(0,s)=a$, we can view this as the curve $K_a$ from $a$ to $a$, and so by uniqueness we have again that $\hat H(0,s)=\hat K_a^e(s)=e$.
+Similar for $\hat H(1,s)$.
+Thus $\hat H$ is a homotopy from $\hat\gamma^e$ to $\hat\delta^e$ relative to $\partial I$.
+\qed
+
+Let $p\colon E\longto B$ be a covering, $a\in B$, and $p(e)=a$.
+Then we define a function $F\colon\pi_1(B,a)\longto p^{-1}(a)$ by $F([\gamma])\coloneqq\hat\gamma^e(1)$.
+This is well-defined by the previous proposition (it is in $p^{-1}(a)$ since $p\circ\hat\gamma^e=\gamma$, so $p\circ\hat\gamma^e(1)=a$).
+
+\bprop
+
+    \benum
+        \item If $E$ is path connected, then $F$ is surjective.
+        \item If $E$ is simply connected (see homework $2+3$, for every two $a,b\in E$ every two paths between them are homotopic relative to $\partial I$), then it is also injective (it is bijective).
+    \eenum
+
+\eprop
+
+\Proof
+\benum
+    \item Let $p(x)=a$ then $x$ and $e$ are connected since $E$ is path connected, so let $\delta$ be a path $e$ to $x$, then $\widehat{p\circ\delta}^e=\delta$ by uniqueness.
+        And so $F[p\circ\delta]=\delta(1)=x$.
+        So $F$ is surjective.
+    \item Suppose $F[\gamma]=F[\delta]$, then $\hat\gamma^e(1)=\hat\delta^e(1)$.
+        Of course $\hat\gamma^e(0)=\hat\delta^e(0)=e$, and so by simple connectivity, $\hat\gamma^e\hdi\hat\delta^e$ since they begin at the same point and end at the same point.
+        Now recall that $\gamma=p\circ\hat\gamma^e$ and since homotopy respects the composition of homotopic functions, $\gamma\hdi\delta$.
+        \qed
+\eenum
+
+So for example, the covering $p\colon{\bb R}\longto S^1$ by $t\mapsto e^{2\pi it}$ is a covering from a simply connected space (since contractible implies simply connected, homework $2$) to $S^1$, this
+means that $F\colon\pi_1(S^1,e^{2\pi it})\longto\set{t+n}[n\in{\bb Z}]\cong{\bb Z}$ is a bijection.
+Since the fundamental group of a simply connected space is trivial, $S^1$ is not simply connected.
+
+Notice that $F^{-1}$ can be viewed as mapping a curve $\gamma$ which starts at $e$ and ends at $b\in p^{-1}(a)$ to $[p\circ\gamma]$.
+So for example, $\pi_1(S^1,1)$ is $\set{[\hbox{the curve which winds around the circle $n$ times}]}[n\in{\bb Z}]$.
+This is since a curve from $0$ to $n$ in ${\bb R}$ is mapped to a curve which winds around the circle $n$ times (for negative $n$ this winds in the opposite direction).
+Notice that $F$ is a group isomorphism here, since concatenating two curves which wind around the circle $n$ and $m$ times gives a curve which winds around the circle $n+m$ times.
+So $\pi_1(S^1)\cong{\bb Z}$.
+
+Now, since $S^1$ is a deformation retract of ${\bb R}^2\setminus\set0$, so the inclusion map is a homotopic equivalence and thus defines an isomorphism of their fundamental groups.
+So $\pi_1({\bb R}^2\setminus\set0)\cong\pi_1(S^1)\cong{\bb Z}$ as well.
+
+Now suppose $A\subseteq X$ is a retract, meaning there exists a retraction $r\colon X\longto A$ such that $r\circ\iota={\rm id}_A$.
+So $\iota_*\colon\pi_1(A,a)\longto\pi_1(X,a)$ and $r_*\colon\pi_1(X,a)\longto\pi_1(A,a)$ and since this is a functor, $r_*\circ\iota_*=(r\circ\iota)_*=({\rm id}_A)_*={\rm id}_{\pi_1(A,a)}$.
+So $\iota_*$ is injective.
+Let us summarize this:
+
+\bprop
+
+    If $A\subseteq X$ is a retract, then $\iota_*\colon\pi_1(A,a)\longto\pi_1(X,a)$ is a monomorphism (injective).
+
+\eprop
+
+Now, for example $S^1=\partial D^2\subseteq D^2$ is not a retract: if it were then $\iota_*$ would be a monomorphism $\pi_1(S^1,1)\longto\pi_1(D^2,1)$.
+But $\pi_1(S^1,1)\cong{\bb Z}$ and $\pi_1(D^2,1)=1$ since $D^2$ is contractible ($H(x,t)=(1-t)x$).
+And there is no monomorphism ${\bb Z}\longto1$.
+
+\bthrm[title=Brouwer Fixed-Point Theorem (for $D^2$), name=fpthrm]
+
+    If $f\colon D^2\longto D^2$ is continuous, then it has a fixed point: a point $x\in D^2$ such that $f(x)=x$.
+
+\ethrm
+
+\Proof suppose not, then $f(x)\neq x$ for all $x$.
+Using this $f$ we will construct an $r\colon D^2\longto S^1$ such that $r\circ\iota={\rm id}_{S^1}$, meaning then $S^1$ would be a retract of $D^2$, which we just showed it is not.
+For $x\in D^2$, look at the segment which begins at $f(x)$ to $x$, and set $r(x)$ to be the intersection of this line with the segment.
+The segment is $f(x)+t(x-f(x))$ and so we want to solve (setting $f(x)=(f_1,f_2)$ and $x=(x_1,x_2)$)
+$$ \bigl(f_1+t(x_1-f_1)\bigr)^2 + \bigl(f_2+t(x_2-f_2)\bigr)^2 = 1 $$
+which can be solved, and gives a $t$ which is continuous in $f$ and $x$.
+Notice that if $x\in S^1$ then by definition $r(x)=x$ since the intersection of the segment with the boundary of the circle is $x$.
+So $r$ is indeed a retract, in contradiction.
 \qed
 
 \bye
