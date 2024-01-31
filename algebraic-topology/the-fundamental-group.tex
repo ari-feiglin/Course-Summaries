@@ -1,0 +1,327 @@
+\bdefn
+
+    Let $X$ be a topological space, and for every $a,b\in X$ define $\Gamma_{ab}$ to be the set of all paths from $a$ to $b$, which are continuous maps $I\longto X$.
+    On $\Gamma_{ab}$ we take the equivalence relation of homotopy relative to $\partial I=\set{0,1}$.
+    Take $\hat\Gamma_{ab}$ to be the partition defined by this relation, ie. $\hat\Gamma_{ab}=\slfrac{\Gamma_{ab}}{\buildrel\partial I\over\sim}$.
+
+    If $[\gamma]\in\hat\Gamma_{ab}$ and $[\delta]\in\hat\Gamma_{bc}$ then we define $[\gamma][\delta]\coloneqq[\gamma*\delta]$ (their concatenation).
+
+\edefn
+
+We must show that this is well-defined, meaning we must show that if $\gamma\hdi\gamma'$ and $\delta\hdi\delta'$ then $\gamma*\delta\hdi\gamma'*\delta'$.
+So let $H\colon I\times I\longto X$ be a homotopy relative to $\partial I$ between $\gamma$ and $\gamma'$, and $G\colon I\times I\longto X$ between $\delta$ and $\delta'$.
+Then define
+$$ K(s,t) \coloneqq \cases{H(2s,t) & $0\leq s\leq\frac12$\cr G(2s-1,t) & $\frac12\leq s\leq1$} $$
+this is continuous, $K(0,t)=H(0,t)=0$ and $K(1,t)=G(1,t)=1$ so it is a homotopy between the concatenations relative to $\partial I$.
+
+Notice that concatenation is not necessarily associative, since in $(\gamma*\delta)*\epsilon$, the speed of $\gamma$ and $\delta$ is quadrupled while in $\gamma*(\delta*\epsilon)$, $\gamma$'s speed is only
+doubled.
+But it is the case that $[\gamma]\bigl([\delta][\epsilon]\bigr)=\bigl([\gamma][\delta]\bigr)[\epsilon]$, so in homotopy concatenation is associative.
+So we need to prove $\gamma(\delta\epsilon)\hdi(\gamma\delta)\epsilon$, the idea behind this is that for every $x$ and $y$ where $\gamma(\delta\epsilon)(x)=(\gamma\delta)\epsilon(y)$, define in $I\times I$
+the line between $(x,0)$ and $(y,1)$.
+These lines cover $I\times I$ and for every point $(t,s)$ which is on the line from $(x,0)$ map it to $\gamma(\delta\epsilon)(x)$.
+
+We can prove in a similar manner that for $\gamma\in\Gamma_{ab}$, $[K_a][\gamma]=[\gamma][K_b]=[\gamma]$.
+
+And so we have defined a category.
+The objects of this category are the points $a\in X$ and the morphisms between $a$ and $b$ are $\hat\Gamma_{ab}$ (notice that $[\gamma]\in\hat\Gamma_{ab}$ can be composed with elements from
+$\hat\Gamma_{bc}$, so the order of composition is reversed).
+Here the identity morphisms are $[K_a]$.
+
+Notice that every morphism in this category is an isomorphism.
+This is since for every $\gamma\in\Gamma_{ab}$ we defined its reverse $\overline\gamma\in\Gamma_{ba}$ by $\overline\gamma(t)\coloneqq\gamma(1-t)$.
+
+\bprop
+
+    $[\gamma][\overline\gamma]=[K_a]$ and $[\overline\gamma][\gamma]=[K_b]$.
+
+\eprop
+
+The idea is that at time $t$ we take the path $\gamma$ but not all the way, then wait, then take the reverse path $\overline\gamma$.
+So
+$$ H(x,t) = \cases{\gamma(2x) & $0\leq x\leq\frac{1-t}2$\cr \gamma(1-t) & $\frac{1-t}2\leq x\leq\frac{1+t}2$\cr \gamma(2-2x) & $\frac{1+t}2\leq x\leq1$} $$
+is a homotopy from $\gamma*\overline\gamma$ to $K_a$.
+\qed
+
+\bdefn
+
+    A {\emphcolor groupoid} is a small category (a category whose objects form a set, not a pure class) such that every morphism is an isomorphism.
+    If ${\cal C}$ is a groupoid, then $\Mor(A,A)$ is then a group for every $A\in{\cal C}$.
+
+\edefn
+
+\bdefn
+
+    Given a pointed topological space $(X,a)$ (call $a$ the basis point), define the {\emphcolor first homotopy group} (or the {\emphcolor fundamental group}) $\pi_1(X,a)\coloneqq\hat\Gamma_{aa}$.
+    And given a morphism $f\colon(X,a)\longto(Y,b)$ (meaning $f$ is continuous and $f(a)=b$), then we define a group homomorphism $f_*\colon\pi_1(X,a)\longto\pi_1(Y,b)$ by $f_*([\gamma])=[f\circ\gamma]$.
+    The correspondence $(X,a)\mapsto\pi_1(X,a)$ and $f\mapsto f_*$ is a functor.
+
+\edefn
+
+We need to show that $f_*$ is well-defined and also a group homomorphism.
+To show that it is well-defined, suppose $\gamma\hdi\delta$, then we must show $f\circ\gamma\hdi f\circ\delta$.
+Now we showed that if $f\htopic Af'$ and $g\htopic Bg'$ such that $f(A),f'(A)\subseteq B$ then $g\circ f\htopic Ag'\circ f'$.
+And we have that $\gamma\hdi\delta$ and $f\htopic{\set a}f$ so $f\circ\gamma\hdi f\circ\delta$ as required.
+Now we must show that $f_*$ is a homomorphism, ie.
+$$ f_*([\gamma][\delta]) = [f\circ(\gamma*\delta)] = [(f\circ\gamma)*(f\circ\delta)] = f_*([\gamma])f_*([\delta]) $$
+Actually a stronger result holds, $f\circ*(\gamma*\delta)=(f\circ\gamma)*(f\circ\delta)$, as both are given by
+$$ \cases{f\circ\gamma(2t) & $0\leq t\leq\frac12$\cr f\circ\delta(2t-1) & $\frac12\leq t\leq1$} $$
+
+To finish the proof that the correspondence is a functor, we need to show that $(g\circ f)_*=g_*\circ f_*$ and $({\rm id}_X)_*={\rm id}_{\pi_1(X,a)}$.
+We do so directly:
+$$ (g\circ f)_*([\gamma]) = [(g\circ f)\circ\gamma] = [g\circ(f\circ\gamma)] = g_*([f\circ\gamma]) = g_*\circ f_*([\gamma]) $$
+and
+$$ ({\rm id}_X)_*([\phi]) = [{\rm id}_X\phi] = [\phi] $$
+so $({\rm id}_X)_*={\rm id}_{\pi_1(X,a)}$ as required.
+Thus we have defined a functor from the category of pointed topological spaces to the category of groups.
+
+\bprop
+
+    Let $X$ be a topological space, $a\in X$, and $A$ be $a$'s connected component.
+    Let $\iota\colon A\longto X$ be the inclusion map, then $\iota_*\colon\pi_1(A,a)\longto\pi_1(X,a)$ is an isomorphism.
+
+\eprop
+
+\Proof $\iota_*$ is injective: $\iota_*([\gamma])=[K_a]$ if and only if $[\iota\circ\gamma]=[K_a]$, which means $\iota\circ\gamma\hdi K_a$, let $H$ be such a homotopy.
+Then $H\colon I\times I\longto X$, but we claim that $H$'s image is contained in $A$ so that it is also a homotopy $\gamma\hdi K_a$, meaning $[\gamma]=[K_a]$.
+Suppose not, that $H(t_0,s_0)\notin A$, then define $\delta(t)=H(t_0\cdot t,s_0)$.
+Then $\delta(0)=H(0,s_0)=a$ since $H$ is a homotopy relative to $\partial I$, and $\delta(1)=H(t_0,s_0)\notin A$, so $a$ is connected to a value not in $A$, in contradiction.
+So $\iota_*$ is indeed injective.
+
+Now suppose $[\gamma]\in\pi_1(X,a)$, meaning $\gamma$ is a path connecting $a$ to itself in $X$.
+But every point in $\gamma$'s image must also be connected to $a$, meaning $\gamma$ is a path connecting $a$ to itself contained within $A$.
+So there exists a $\gamma'\in\Gamma_{aa}^A$ such that $\gamma=\iota\circ\gamma'$ and in particular $\iota_*([\gamma'])=[\gamma]$ as required.
+So $\iota_*$ is a bijective homomorphism, an isomorphism.
+\qed
+
+Suppose $a,b\in X$ such that there exists a path between them, $\gamma\colon I\longto X,\gamma(0)=a,\gamma(1)=b$.
+Let us define
+$$ F_\gamma\colon\pi_1(X,a)\longto\pi_1(X,b),\qquad F_\gamma[\phi] = [\overline\gamma*\phi*\gamma] =[\overline\gamma][\phi][\gamma] $$
+so $F_\gamma[\phi]$ is the class of curves homotopic to the curve obtained by walking from $b$ along $\gamma$ backward to $a$, then going back along $\gamma$ to $b$.
+Notice that $F_\gamma[\phi]=[\gamma]^{-1}[\phi][\gamma]$, so $F_\gamma$ is simply conjugation by $[\gamma]$.
+
+In general, suppose ${\cal G}$ is a groupoid and let $A,B\in{\cal G}$ such that $\Mor(A,B)\neq\varnothing$.
+Then $\Mor(A,A)$ and $\Mor(B,B)$ are isomorphic groups.
+Let $\phi\in\Mor(A,B)$ and define $F_\phi\colon\Mor(A,A)\longto\Mor(B,B)$ by $F_\phi(\varkappa)=\phi\circ\varkappa\circ\phi^{-1}$.
+This is a group homomorphism:
+$$ F_\phi(\varkappa_1)\circ F_\phi(\varkappa_2) = \phi\circ\varkappa_1\circ\phi^{-1}\circ\phi\circ\varkappa_2\circ\phi^{-1} = \phi\circ(\varkappa_1\circ\varkappa_2)\circ\phi^{-1} = F_\phi(\varkappa_1\circ\varkappa_2) $$
+and it is injective:
+$$ F_\phi(\varkappa) = 1_B \iff \phi\circ\varkappa\circ\phi^{-1} = 1_B \iff \phi\circ\varkappa=\phi \iff \varkappa = \phi^{-1}\circ\phi = 1_A $$
+and it is surjective: let $\varkappa'\in\Mor(B,B)$ and define $\varkappa\coloneqq\phi^{-1}\circ\varkappa'\circ\phi$, it is clear $F_\phi(\varkappa)=\varkappa'$.
+It is clear that $F_\phi^{-1}=F_{\phi^{-1}}$ by this.
+
+Our $F_\gamma$ above is precisely this $F_{[\gamma]}$ defined in the groupoid of first homotopy groups above $X$, meaning it is an isomorphism between $\pi_1(X,a)$ and $\pi_1(X,b)$.
+And so $F_\gamma^{-1}=F_{\overline\gamma}$.
+Let us summarize this:
+
+\bprop
+
+    Let $a,b\in X$ be two points in $X$ connected by a path $\gamma$.
+    Then $\pi_1(X,a)$ and $\pi_1(X,b)$ are isomorphic.
+
+\eprop
+
+\bprop
+
+    Suppose $H\colon I\times I\longto X$ is a homotopy from the closed loop $\phi$ to the closed loop $\psi$ such that for all $t\in I$, $H(0,t)=H(1,t)$.
+    Define the path $\gamma(t)=H(0,t)=H(1,t)$, then
+    $$ [\psi] = [\overline\gamma][\phi][\gamma] $$
+
+\eprop
+
+\Proof this is equivalent to saying
+$$ [\overline\psi][\overline\gamma][\phi][\gamma] = [K_p] \iff \overline\psi*\overline\gamma*\phi*\gamma \hdi K_p $$
+Now, $\overline\psi*\overline\gamma*\phi*\gamma$ is a curve $I\longto X$ whose endpoints are the same, so it can be viewed as a curve $S^1\longto X$.
+And it can be extended to the curve $H$ on $D^2$ (since the unit disc and unit square are homeomorphic), which we showed above is equivalent to $\overline\psi*\overline\gamma*\phi*\gamma$ being
+null-homotopic relative to any point on $S^1$, so we can choose the point which corresponds to $0$ and $1$.
+\qed
+
+\bthrm
+
+    Let $f,g\colon X\longto Y$ be homotopic with homotopy $H$.
+    Define $\gamma(t)\coloneqq H(a,t)$, so $\gamma(0)=f(a)$ and $\gamma(1)=g(a)$.
+    Then $g_*=F_\gamma\circ f_*$ (recall that $f_*\colon\pi_1(X,a)\longto\pi_1(Y,f(a))$ and $g_*\colon\pi_1(X,a)\longto\pi_1(Y,g(a))$).
+
+\ethrm
+
+\Proof let $[\phi]\in\pi_1(X,a)$ then
+$$ F_\gamma(f_*[\phi]) = [\overline\gamma][f\circ\gamma][\gamma],\qquad g_*[\phi] = [g\circ\phi] $$
+Define $K(s,t)\coloneqq H(\phi(s),t)$ which is continuous and
+$$ K(s,0) = H(\phi(s),0) = f\circ\phi(s),\quad K(s,1) = H(\phi(s),1) = g\circ\phi(s),\quad K(0,t) = H(\phi(0),t) = H(a,t) = K(1,t) $$
+so by the above proposition, since $K$ is a homotopy from the closed loop $f\circ\phi$ to the closed loop $g\circ\phi$,
+$$ [g\circ\phi] = [\overline\gamma][f\circ\phi][\gamma] $$
+as required.
+\qed
+
+Notice then that $g_*=f_*$ if and only if $F_\gamma={\rm id}$ (requiring $f(a)=g(a)=b$).
+This happens when $[\gamma]=[K_b]$ for example, which can happen when $\gamma=K_b$.
+Ie. if $H(a,t)=b$ for all $t\in I$, then $f_*=g_*$.
+But notice that this is simply the condition for $H$ to be a homotopy relative to $\set a$, so
+
+\bprop
+
+    If $f\htopic{\set a}g$ then $f_*=g_*$.
+
+\eprop
+
+\bthrm
+
+    If $f\colon X\longto Y$ is a homotopy equivalence, then $f_*\colon\pi_1(X,a)\longto\pi_1(Y,f(a))$ is an isomorphism of groups.
+
+\ethrm
+
+\Proof there exists a $g\colon Y\longto X$ such that $g\circ f\sim{\rm id}_X$ and $g\circ f\sim{\rm id}_Y$.
+Now since $g\circ f\sim{\rm id}_X$, then by above $(g\circ f)_*=F_\gamma\circ({\rm id}_X)_*=F_\gamma$, since ${(\cdot)}_*$ is a functor, $g_*\circ f_*=F_\gamma$.
+Now recall that $F_\gamma=g_*\circ f_*\colon\pi_1(X,a)\longto\pi_1(X,g(f(a)))$ is an isomorphism.
+And similarly $f\circ g\sim{\rm id}_Y$, so there exists an $F_\delta$ such that $(f\circ g)_*=f_*\circ g_*=F_\delta\colon\pi_1(Y,f(a))\longto\pi_1(X,f(g(f(a))))$ is an isomorphism.
+
+Recall that if $f\circ g$ is injective, then $g$ is injective, and if $f\circ g$ is surjective, $f$ is surjective.
+Thus $f_*$ is injective and surjective, meaning it is a bijective homomorphism, an isomorphism.
+\qed
+
+Thus if $X$ is contractible, then it is homotopic to the singleton space (an exercise in homework), $\set b$.
+Thus $\pi_1(X,a)\cong\pi_1(\set b,b)$, and $\pi_1(\set b,b)$ has a single point, meaning $\pi_1(X,a)$ is the trivial group.
+
+\bcoro
+
+    If $X$ is contractible, then $\pi_1(X,a)$ is trivial.
+
+\ecoro
+
+\bdefn
+
+    Let $E,B$ be topological spaces, then a map $p\colon E\longto B$ is a {\emphcolor covering map} (or just a {\it covering}) if
+    \benum
+        \item $p$ is surjective,
+        \item for every $x\in B$, there exists a neighborhood $x\in{\cal U}$ such that $p^{-1}({\cal U})$ is the disjoint union of open sets $\set{{\cal V}_\alpha}_{\alpha\in I}$ such that for every
+            $\alpha\in I$, $p\bigl|_{{\cal V}_\alpha}\colon{\cal V}_\alpha\longto{\cal U}$ is a homeomorphism.
+    \eenum
+
+\edefn
+
+For example, take $B=S^1$ and $E={\bb R}$.
+Define $p(t)\coloneqq(\cos(2\pi t),\sin(2\pi t))$, or if we identify $S^1$ with $S^1=\set{z\in{\bb C}}[\abs z=1]$, then $p(t)=e^{2\pi it}$.
+This is like spiraling the real line so that all the integers are all on a vertical line (they all map to $1\in S^1$), and projecting this spiral onto a plane to form the circle $S^1$.
+$p$ is obviously a surjective continuous map.
+For every $e^{2\pi it}$, let $\epsilon<2\pi$ then the preimage of the open set ${\cal U}_t\coloneqq\set{e^{2\pi is}}[t-\epsilon<s<t+\epsilon]$ is
+$\bigdcup_{n\in{\bb Z}}\bigl(n+(t-\epsilon,t+\epsilon)\bigr)$ and every $n+(t-\epsilon,t+\epsilon)$ is homeomorphic (via $p$) to this ${\cal U}_t$.
+
+\bthrm
+
+    Suppose $p\colon E\longto B$ is a covering, $b\in B$ and $e\in E$ such that $p(e)=b$.
+    Now suppose $\gamma\colon I\longto B$ is a curve starting at $b$, $\gamma(0)=b$.
+    Then there exists a unique curve $\delta\colon I\longto E$ starting at $e$ such that $p\circ\delta=\gamma$.
+
+\ethrm
+
+\Proof let $\set{{\cal U}_\beta}_{\beta\in J}$ be an open covering of $B$, then $\set{\gamma^{-1}({\cal U}_\beta)}_{\beta\in J}$ is an open covering of $I$.
+Since $I$ is a compact metric space, it has a Lebesgue number, and so we can take $n$ small enough such that for every $k$, $I_k\coloneqq\bracks{\frac{k-1}n,\frac kn}$ is contained within a single
+$\gamma^{-1}({\cal U}_\beta)$.
+Meaning for every $1\leq k\leq n$ there exists a $\beta_k\in J$ such that $I_k\subseteq\gamma^{-1}({\cal U}_{\beta_k})$, so $\gamma(I_k)\subseteq{\cal U}_{\beta_k}$.
+
+Now since $p$ is a covering, there exists a neighborhood $b\in{\cal U}$ such that $p^{-1}({\cal U})=\bigdcup_{\alpha\in I}{\cal V}_\alpha$.
+Since this is a disjoint union and $p(e)\in{\cal U}$, there exists a single $\alpha\in I$ such that $e\in{\cal V}_\alpha$, and let us denote this neighborhood by ${\cal V}$.
+And so $p\bigl|_{\cal V}$ is a homeomorphism from ${\cal V}$ to ${\cal U}$.
+So define
+$$ \delta\bigl|_{I_1}\coloneqq \parens{p\bigl|_{\cal V}}^{-1}\circ\gamma\bigl|_{I_1} $$
+We have then that $p\circ\parens{\delta\bigl|_{I_1}}=\gamma\bigl|_{I_1}$ and $\delta(0)=\parens{p\bigl|_{\cal V}}^{-1}\circ\gamma(0)=e$.
+This is the only such transform of $\gamma\bigl|_{I_1}$ which satisfies $\delta\bigl|_{I_1}(0)=e$ since every transform $\delta\colon I_1\longto E$ where $p\circ\delta=\gamma$,
+$\delta(I_1)=p^{-1}\gamma(I_1)\subseteq p^{-1}({\cal U})=\bigdcup_{\alpha\in I}{\cal V}_\alpha$.
+Since $\delta(I_1)$ is connected, it must be contained within a single ${\cal V}_\alpha$, this being ${\cal V}$ since it contains $e$.
+
+We continue with $\gamma\bigl|_{I_2}$ which starts at $\frac1n$ to get $\delta\bigl|_{I_2}$, and so on.
+Together these form $\delta$, which is continuous as $\set{I_k}_{1\leq k\leq n}$ is a finite partition of $I$ into closed sets and $\delta$ is continuous over each of these closed sets.
+\qed
+
+Since this curve is unique, we can denote it by $\hat\gamma^e$ (since there is a unique curve for every $e\in p^{-1}(b)$).
+
+\bprop
+
+    Let $p\colon E\longto B$ be a covering, $\gamma,\delta\colon I\longto B$ are curves such that $\gamma\hdi\delta$.
+    Let $a=\gamma(0)=\delta(0)$, and let $e\in E$ such that $p(e)=a$.
+    Then $\hat\gamma^e\hdi\hat\delta^e$, and in particular $\hat\gamma^e(1)=\hat\delta^e(1)$; both of the curves finish on the same point.
+
+\eprop
+
+\Proof let $H\colon I\times I\longto B$ be a homotopy relative to $\partial I$ from $\gamma$ to $\delta$.
+Let $\set{\U_\alpha}_{\alpha\in I}$ be an open cover of $B$ by good open sets, then $\set{H^{-1}(\U_\alpha)}_{\alpha\in I}$ is an open cover of $I\times I$.
+Since $I\times I$ is a compact metric space, it has a Lebesgue number and so there is an $n$ large enough so that we can partition $I\times I$ into squares
+$S_{ij}=\bracks{\frac in,\frac{i+1}n}\times\bracks{\frac jn,\frac{j+1}n}$ such that each $S_{ij}$ is contained within some $H^{-1}(\U_\alpha)$.
+
+Continuing similar to the previous proof, we get a homotopy $\hat H\colon I\times I\longto E$ such that $p\circ\hat H=H$ and $\hat H(0,0)=e$.
+So $p\circ\hat H(t,0)=H(t,0)=\gamma(t)$ and since $\hat\gamma^e$ is unique, this means $\hat H(t,0)=\hat\gamma^e(t)$.
+And similarly $p\circ\hat H(t,1)=H(t,1)=\delta(t)$ so $\hat H(t,1)=\hat\delta^e(t)$.
+And $p\circ\hat H(0,s)=H(0,s)=a$, we can view this as the curve $K_a$ from $a$ to $a$, and so by uniqueness we have again that $\hat H(0,s)=\hat K_a^e(s)=e$.
+Similar for $\hat H(1,s)$.
+Thus $\hat H$ is a homotopy from $\hat\gamma^e$ to $\hat\delta^e$ relative to $\partial I$.
+\qed
+
+Let $p\colon E\longto B$ be a covering, $a\in B$, and $p(e)=a$.
+Then we define a function $F\colon\pi_1(B,a)\longto p^{-1}(a)$ by $F([\gamma])\coloneqq\hat\gamma^e(1)$.
+This is well-defined by the previous proposition (it is in $p^{-1}(a)$ since $p\circ\hat\gamma^e=\gamma$, so $p\circ\hat\gamma^e(1)=a$).
+
+\bprop
+
+    \benum
+        \item If $E$ is path connected, then $F$ is surjective.
+        \item If $E$ is simply connected (see homework $2+3$, for every two $a,b\in E$ every two paths between them are homotopic relative to $\partial I$), then it is also injective (it is bijective).
+    \eenum
+
+\eprop
+
+\Proof
+\benum
+    \item Let $p(x)=a$ then $x$ and $e$ are connected since $E$ is path connected, so let $\delta$ be a path $e$ to $x$, then $\widehat{p\circ\delta}^e=\delta$ by uniqueness.
+        And so $F[p\circ\delta]=\delta(1)=x$.
+        So $F$ is surjective.
+    \item Suppose $F[\gamma]=F[\delta]$, then $\hat\gamma^e(1)=\hat\delta^e(1)$.
+        Of course $\hat\gamma^e(0)=\hat\delta^e(0)=e$, and so by simple connectivity, $\hat\gamma^e\hdi\hat\delta^e$ since they begin at the same point and end at the same point.
+        Now recall that $\gamma=p\circ\hat\gamma^e$ and since homotopy respects the composition of homotopic functions, $\gamma\hdi\delta$.
+        \qed
+\eenum
+
+So for example, the covering $p\colon{\bb R}\longto S^1$ by $t\mapsto e^{2\pi it}$ is a covering from a simply connected space (since contractible implies simply connected, homework $2$) to $S^1$, this
+means that $F\colon\pi_1(S^1,e^{2\pi it})\longto\set{t+n}[n\in{\bb Z}]\cong{\bb Z}$ is a bijection.
+Since the fundamental group of a simply connected space is trivial, $S^1$ is not simply connected.
+
+Notice that $F^{-1}$ can be viewed as mapping a curve $\gamma$ which starts at $e$ and ends at $b\in p^{-1}(a)$ to $[p\circ\gamma]$.
+So for example, $\pi_1(S^1,1)$ is $\set{[\hbox{the curve which winds around the circle $n$ times}]}[n\in{\bb Z}]$.
+This is since a curve from $0$ to $n$ in ${\bb R}$ is mapped to a curve which winds around the circle $n$ times (for negative $n$ this winds in the opposite direction).
+Notice that $F$ is a group isomorphism here, since concatenating two curves which wind around the circle $n$ and $m$ times gives a curve which winds around the circle $n+m$ times.
+So $\pi_1(S^1)\cong{\bb Z}$.
+
+Now, since $S^1$ is a deformation retract of ${\bb R}^2\setminus\set0$, so the inclusion map is a homotopic equivalence and thus defines an isomorphism of their fundamental groups.
+So $\pi_1({\bb R}^2\setminus\set0)\cong\pi_1(S^1)\cong{\bb Z}$ as well.
+
+Now suppose $A\subseteq X$ is a retract, meaning there exists a retraction $r\colon X\longto A$ such that $r\circ\iota={\rm id}_A$.
+So $\iota_*\colon\pi_1(A,a)\longto\pi_1(X,a)$ and $r_*\colon\pi_1(X,a)\longto\pi_1(A,a)$ and since this is a functor, $r_*\circ\iota_*=(r\circ\iota)_*=({\rm id}_A)_*={\rm id}_{\pi_1(A,a)}$.
+So $\iota_*$ is injective.
+Let us summarize this:
+
+\bprop
+
+    If $A\subseteq X$ is a retract, then $\iota_*\colon\pi_1(A,a)\longto\pi_1(X,a)$ is a monomorphism (injective).
+
+\eprop
+
+Now, for example $S^1=\partial D^2\subseteq D^2$ is not a retract: if it were then $\iota_*$ would be a monomorphism $\pi_1(S^1,1)\longto\pi_1(D^2,1)$.
+But $\pi_1(S^1,1)\cong{\bb Z}$ and $\pi_1(D^2,1)=1$ since $D^2$ is contractible ($H(x,t)=(1-t)x$).
+And there is no monomorphism ${\bb Z}\longto1$.
+
+\bthrm[title=Brouwer Fixed-Point Theorem (for $D^2$), name=fpthrm]
+
+    If $f\colon D^2\longto D^2$ is continuous, then it has a fixed point: a point $x\in D^2$ such that $f(x)=x$.
+
+\ethrm
+
+\Proof suppose not, then $f(x)\neq x$ for all $x$.
+Using this $f$ we will construct an $r\colon D^2\longto S^1$ such that $r\circ\iota={\rm id}_{S^1}$, meaning then $S^1$ would be a retract of $D^2$, which we just showed it is not.
+For $x\in D^2$, look at the segment which begins at $f(x)$ to $x$, and set $r(x)$ to be the intersection of this line with the segment.
+The segment is $f(x)+t(x-f(x))$ and so we want to solve (setting $f(x)=(f_1,f_2)$ and $x=(x_1,x_2)$)
+$$ \bigl(f_1+t(x_1-f_1)\bigr)^2 + \bigl(f_2+t(x_2-f_2)\bigr)^2 = 1 $$
+which can be solved, and gives a $t$ which is continuous in $f$ and $x$.
+Notice that if $x\in S^1$ then by definition $r(x)=x$ since the intersection of the segment with the boundary of the circle is $x$.
+So $r$ is indeed a retract, in contradiction.
+\qed
+
+

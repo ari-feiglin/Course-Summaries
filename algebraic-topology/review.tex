@@ -1,0 +1,192 @@
+First, let us review a few concepts from point-set topology.
+Namely, we will review product and quotient topologies, since they are the most complicated constructions we had, the rest should not be too hard to recall.
+
+Recall that if $B$ is a set of subsets of $X$, then we define $\tau_B$ to be the set of all unions of sets from $B$:
+$$ \tau_B = \set{\bigcup_{A\in L}A}[L\subseteq B] $$
+then $\tau_B$ is a topology if and only if $X\in\tau_B$ and for every $\U,\V\in B$, $\U\cap\V\in\tau_B$.
+If $\tau_B$ is a topology, these hold because $X$ and the intersection of open sets are open.
+Conversely, $\varnothing\in\tau_B$ vacuously, if $\set{\U_\alpha}_{\alpha\in I}\in\tau_B$ then suppose $\U_\alpha=\bigcup_{i\in J_\alpha}\V_i^\alpha$ then
+$\bigcup\U_\alpha=\bigcup_I\bigcup_{J_\alpha}\V_i^\alpha\in\tau_B$ so the union of open sets is open.
+And similarly if $\U=\bigcup_I\U_\alpha$ and $\V=\bigcup_I\V_\beta$ then $\U\cap\V=\bigcup_{I,J}\U_\alpha\cap\V_\beta\in\tau_B$, so the intersection of open sets is open.
+
+\bdefn
+
+    Now if $\set{(X_\alpha,\tau_\alpha)}_{\alpha\in I}$ is a collection of topological spaces then we define $X=\prod_{\alpha\in I}X_\alpha$
+    $$ B = \set{\prod_{\alpha\in I}\U_\alpha}[\hbox{$\U_\alpha\in\tau_\alpha$ and all but a finite number of $\alpha$ satisfy $\U_\alpha=X_\alpha$}] $$
+    then we define the {\emphcolor product topology} on $X$ by $\tau=\tau_B$.
+
+\edefn
+
+Firstly $X\in B$, and if $\U=\prod_{\alpha\in I}\U_\alpha\in B$ and $\V=\prod_{\alpha\in I}\V_\alpha\in B$ then $\U\cap\V=\prod_{\alpha\in I}(\U_\alpha\cap\V_\alpha)$ and all but a finite number of these
+are $X_\alpha$, so $\U\cap\V\in B$.
+So $\tau_B$ is indeed a topology.
+
+Let $X=\prod_{\alpha\in I}X_\alpha$ be equipped with the product topology.
+We now state a few facts of product topologies without proving them (proofs can be found in my topology summary):
+
+\benum
+    \item Let $\pi_\beta\colon X\longto X_\beta$ be the projection map $(x_\alpha)_{\alpha\in I}\mapsto x_\beta$.
+    Then $\pi_\beta$ is an open and continuous map.
+    \item Let $Y$ be an arbitrary topological space.
+    Then $f\colon Y\longto X$ is continuous if and only if $\pi_\alpha\circ f$ is for every $\alpha\in I$.
+    \item If $X_\alpha$ has a basis $B_\alpha$ then $B=\set{\prod_{\alpha\in I}\U_\alpha}[\hbox{$\U_\alpha\in B_\alpha$ and all but a finite number are $X_\alpha$}]$ is a basis for $X$.
+    \item If $Y=\prod_{\alpha\in I}Y_\alpha$ and $f_\alpha\colon X_\alpha\longto Y_\alpha$ are functions, define $f\colon X\longto Y$ by $(x_\alpha)_{\alpha\in I}\mapsto(f(x_\alpha))_{\alpha\in I}$.
+    Then
+    \benum
+        \item $f$ is continuous if and only if every $f_\alpha$ is,
+        \item if $f$ is open then each $f_\alpha$ is, and this becomes if and only if if $I$ is finite or $f_\alpha$ are all surjective,
+        \item $f$ is a homeomorphism if and only if each $f_\alpha$ is.
+    \eenum
+    \item If $f_\alpha\colon Y\longto X_\alpha$ is continuous, so is $f\colon Y\longto X$ defined by $x\mapsto(f_\alpha(x))_{\alpha\in I}$.
+    \item If every $X_\alpha$ is connected (respectively, path connected), so is $X$.
+    \item $X$ is compact if and only if every $X_\alpha$ is compact.
+\eenum
+
+Now let us discuss quotient spaces, and in more depth than products.
+
+\bdefn
+
+    If $(X,\tau)$ is a topological space and $\rho\colon X\longto Y$ is a surjection, then $\sigma$ is a {\emphcolor quotient topology} of $Y$ if
+    \benum
+        \item $\rho\colon(X,\tau)\longto(Y,\sigma)$ is continuous,
+        \item if $\gamma$ is another topology on $Y$ such that $\rho$ is continuous with respect to it, then $\gamma\subseteq\sigma$.
+    \eenum
+
+\edefn
+
+In such a case, $\sigma=\set{\U\subseteq Y}[\rho^{-1}(\U)\in\tau]$.
+To prove this, set $\sigma'=\set{\U\subseteq Y}[\rho^{-1}(\U)\in\tau]$, our goal is to of course show that $\sigma=\sigma'$.
+First notice that $\sigma'$ is a topology: $\rho^{-1}(Y)=X,\rho^{-1}(\varnothing)=\varnothing$ so both $Y$ and the empty set are in $\sigma'$.
+If $\rho^{-1}(\U),\rho^{-1}(\V)\in\tau$ then $\rho^{-1}(\U)\cap\rho^{-1}(\V)=\rho^{-1}(\U\cap\V)\in\tau$.
+$\sigma'$ is also closed under unions since $\bigcup_{i\in I}\rho^{-1}(\U_i)=\rho^{-1}\parens{\bigcup_{i\in I}\U_i}$.
+
+$\sigma'$ makes $\rho$ continuous by definition so $\sigma'\subseteq\sigma$.
+And if $\U\in\sigma$ then $\rho^{-1}(\U)\in\tau$ since $\rho$ is continuous with respect to $\sigma$, so $\U\in\sigma'$.
+Thus $\sigma=\sigma'$ as required.
+
+And so we have shown that $\rho$ is a quotient map if and only if it is a surjection and $\U\subseteq Y$ is open if and only if $\rho^{-1}(\U)$ is.
+
+\bprop
+
+    Suppose $\rho\colon X\longto Y$ is a quotient map, and $q\colon Y\longto Z$ is continuous.
+    Then $q$ is a quotient map if and only if $q\circ\rho$ is.
+
+\eprop
+
+\Proof if $q$ is a quotient map then $q\circ\rho$ is a surjection.
+And $\U\subseteq Z$ is open if and only if $q^{-1}(\U)$ is, if and only if $\rho^{-1}\circ q^{-1}(\U)=(q\circ\rho)^{-1}(\U)$ is.
+So $q\circ\rho$ is a quotient map.
+Conversely, if $q\circ\rho$ is a quotient map then it is a surjection and therefore so is $q$.
+Now if $\U\subseteq Y$ is open then so is $q^{-1}(\U)$ since it is continuous.
+And if $q^{-1}(\U)$ is open, then so is $\rho^{-1}\circ q^{-1}(\U)=(\rho\circ q)^{-1}(\U)$ and therefore so is $\U$.
+\qed
+
+\bprop
+
+    If $\rho\colon X\longto Y$ is a quotient map, and $f\colon Y\longto Z$ is a function, then $f$ is continuous if and only if $f\circ\rho$ is.
+
+\eprop
+
+\Proof if $f$ is continuous, then so is the composition of continuous functions $f\circ\rho$.
+If $f\circ\rho$ is continuous, then let $\U\subseteq Z$ open, then $(f\circ\rho)^{-1}(\U)=\rho^{-1}\circ f^{-1}(\U)$ is open, and therefore so is $f^{-1}(\U)$ since $\rho$ is a quotient map.
+\qed
+
+This is an important result, as it allows us to prove that a function from a quotient space $Y$ is continuous by proving that a function from a simpler space $X$ is.
+
+\bprop
+
+    If $\rho\colon X\longto Y$ is surjective, continuous, and open, then it is a quotient map.
+
+\eprop
+
+\Proof if $\U\subseteq Y$ is open then $\rho^{-1}(\U)$ is open since $\rho$ is continuous.
+If $\rho^{-1}(\U)$ is open then $\rho\circ\rho^{-1}(\U)=\U$ is open since $\rho$ is.
+\qed
+
+This shows us that the projection maps $\pi_\alpha$ are quotient maps.
+
+\bprop
+
+    If $\rho\colon X\longto Y$ is a continuous bijection, it is a quotient map if and only if it is a homeomorphism.
+
+\eprop
+
+\Proof if $\rho$ is a homeomorphism then by above it is a quotient map.
+If $\rho$ is a quotient map then $\rho(\U)$ is open if and only if $\rho^{-1}\circ\rho(\U)=\U$ is, so $\rho$ is an open map and thus a homeomorphism.
+\qed
+
+\bprop
+
+    If $\rho\colon X\longto Y$ is continuous and there exists an $A\subseteq X$ such that $\rho\bigl|_A\colon A\longto Y$ is a quotient map, then $\rho$ itself is a quotient map.
+
+\eprop
+
+\Proof $\rho$ is surjective since its restriction is.
+Now suppose $\U\subseteq Y$ such that $\rho^{-1}(\U)$ is open.
+Then $\rho\bigl|_A^{-1}(\U)=\rho^{-1}(\U)\cap A$ is open with respect to $A$, and so $\U$ is open since $\rho\bigl|_A$ is a quotient map.
+\qed
+
+\bdefn
+
+    Let $X$ be a topological space and $\sim$ an equivalence relation on $X$.
+    Then we define $\rho\colon X\longto\slfrac X\sim$ by $\rho(x)=[x]_{\sim}$, then this is a quotient map with respect to the topology
+    $\set{\U\subseteq\slfrac X\sim}[\hbox{$\rho^{-1}(\U)$ is open in $X$}]$.
+    $\slfrac X\sim$ equipped with this topology is called the {\emphcolor quotient topology} of $X$ with respect to $\sim$.
+
+\edefn
+
+Since $\rho$ is a quotient map, everything we proved above about quotient maps holds true for it.
+
+Let us say that $f\colon X\longto Y$ {\it preserves} $\sim$ if $a\sim b$ implies $f(a)=f(b)$.
+And $f$ {\it strongly preserves} $\sim$ if $a\sim b$ is equivalent to $f(a)=f(b)$.
+Then we have
+
+\bthrm
+
+    Let $f\colon X\longto Y$ be continuous.
+    Then there exists a continuous $F\colon\slfrac X\sim\longto Y$ such that $f=F\circ\rho$ if and only if $f$ preserves $\sim$.
+    $F$ is injective if and only if $f$ strongly preserves $\sim$.
+
+\ethrm
+
+\Proof if $f=F\circ\rho$ then $a\sim b$ implies $\rho(a)=\rho(b)$ and so $f(a)=F\rho(a)=F\rho(b)=f(b)$, so $f$ preserves $\sim$.
+And if $f$ preserves $\sim$, then define $F[a]=f(a)$.
+This is well-defined since if $[a]=[b]$ then $a\sim b$ so $f(a)=f(b)$.
+And we showed that since $\rho$ is a quotient map, $F$ is continuous if and only if $F\circ\rho$ is already.
+
+If $F$ is injective, suppose $f(a)=f(b)$ then this means $F[a]=F[b]$, so $[a]=[b]$, meaning $a\sim b$, by injectivity.
+So $f$ strongly preserves $\sim$.
+And if $f$ strongly preserves $\sim$, then $F[a]=F[b]$ implies $f(a)=f(b)$ so $a\sim b$, and so $[a]=[b]$.
+Meaning $F$ is injective.
+\qed
+
+This theorem gives us the following commutative diagram:
+
+\medskip
+\centerline{
+\def\diagrowheight{1cm}
+\def\diagcolwidth{1cm}
+\drawdiagram{
+    $X$\cr
+    $\slfrac X\sim$&$Y$\cr
+}{%
+    \diagarrow{from={1,1}, to={2,1}, text=$\rho$, x distance=-.25cm}
+    \diagarrow{from={1,1}, to={2,2}, text=$f$, x distance=.4cm, slide=.4}
+    \diagarrow{from={2,1}, to={2,2}, text=$F$, y distance=-.25cm}
+}}
+\medskip
+
+\bprop
+
+    If $f\colon X\longto Y$ is a quotient map that strongly preserves $\sim$ if and only if $F$ is a homeomorphism.
+
+\eprop
+
+\Proof if $f$ is a quotient map and strongly preserves $\sim$, then $F$ is injective.
+And since $f=F\circ\rho$ and $\rho$ and $f$ are quotient maps, so is $F$.
+So $F$ is an injective quotient map, which is a homeomorphism.
+
+And if $F$ is a homeomorphism, then since $f=F\circ\rho$, $f$ is a quotient map as well since homeomorphisms are quotient maps.
+Since $F$ is injective, it trivially strongly preserves $\sim$ as well.
+\qed
+
