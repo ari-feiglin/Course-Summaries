@@ -200,9 +200,9 @@ This scheduler is non-deterministic as the choice for the initial state and the 
         \diagarrow{from={3,4}, to={4,4}, color=rgb{.1 .65 .1}, text=$t_0$, x distance=.25cm}%t0
         %                              , color=rgb{.1 .65 .1}}
         \diagarrow{from={3,2}, to={1,4}, color=rgb{.1 .65 .1}, text=$t_2$, x distance=.4cm, slide=.6}%t2
-        \diagarrow{from={3,4}, to={1,2}, color=rgb{.1 .65 .1}}%t2
-        \diagarrow{from={4,2}, to={2,4}, color=rgb{.1 .65 .1}}%t5
-        \diagarrow{from={4,4}, to={2,2}, color=rgb{.1 .65 .1}}%t5
+        \diagarrow{from={3,4}, to={1,2}, color=rgb{.1 .65 .1}, text=$t_5$, x distance=-.4cm, slide=.6}%t2
+        \diagarrow{from={4,2}, to={2,4}, color=rgb{.1 .65 .1}, text=$t_2$, x distance=-.4cm, slide=.4}%t2
+        \diagarrow{from={4,4}, to={2,2}, color=rgb{.1 .65 .1}, text=$t_5$, x distance=.4cm, slide=.4}%t5
     }}
     
     Now notice that we do indeed have mutual exclusion, where formally this means always $\neg(\pc_1=3\land\pc_2=3)$.
@@ -459,8 +459,57 @@ formulas in ${\cal L}$) the following eight axioms:
 
 Here we take $\V$ as defined by $(\phi\V\psi)\coloneqq\neg((\neg\phi)\V(\neg\psi))$.
 We use the following rule of reference (temporal generalization) as well as MP
-$$ \vbox{\halign{\hfil$#$\hfil\cr\square\phi\cr\noalign{\kern2pt\hrule\kern2pt}\ \square\phi\ \cr}} $$
+$$ \vbox{\halign{\hfil$#$\hfil\cr\phi\cr\noalign{\kern2pt\hrule\kern2pt}\ \square\phi\ \cr}} $$
 meaning that if $\phi$ then $\square\phi$ (notice that here we do not have an initial state, and hence we obtain the soundness of generalization).
+
+\bexam
+
+    Let us look at a model of a traffic light, which can transition between colors as follows:
+
+    \def\gr{{\it green}}\def\ye{{\it yellow}}\def\re{{\it red}}
+    \medskip
+    \centerline{\drawdiagram{
+        $\gr$&$\ye$&$\re$&\cr
+    }{%
+        \diagarrow{from={1,1}, to={1,2}, color=rgb{.1 .65 .1}}
+        \diagarrow{from={1,2}, to={1,3}, color=rgb{.1 .65 .1}}
+        \diagarrow{from={1,3}, to={1,1}, curve=1cm, origin orient={xcenter, bottom}, dest orient={xcenter, bottom}, color=rgb{.1 .65 .1}}
+    }}
+    \kern.5cm
+
+    The traffic light is only ever in one color, which can be expressed in LTL as:
+    $$ \square\bigl(\neg(\gr\land\ye)\land\neg(\ye\land\re)\land\neg(\re\land\gr)\land(\gr\lor\ye\lor\re)\bigr) $$
+    Specifying the transition of colors can be done via
+    $$ \square\bigl((\gr\U\ye)\lor(\ye\U\re)\lor(\re\U\gr)\bigr) $$
+    Now suppose we alter the state graph to be
+
+    \medskip
+    \centerline{\drawdiagram{
+        $\gr$&$\ye$&$\re$&$\ye$&\cr
+    }{%
+        \diagarrow{from={1,1}, to={1,2}, color=rgb{.1 .65 .1}}
+        \diagarrow{from={1,2}, to={1,3}, color=rgb{.1 .65 .1}}
+        \diagarrow{from={1,3}, to={1,4}, color=rgb{.1 .65 .1}}
+        \diagarrow{from={1,4}, to={1,1}, curve=1cm, origin orient={xcenter, bottom}, dest orient={xcenter, bottom}, color=rgb{.1 .65 .1}}
+    }}
+    \kern.5cm
+
+    Specifying the colors is now harder, since $\square(\ye\to\ye\U\re)$ is no longer necessarily true.
+    We could attemp $\square\bigl(((\gr\lor\re)\U\ye)\lor(\ye\U(\gr\lor\re))\bigr)$, but $(\gr\lor\re)\U\ye$ allows the light to switch between $\gr$ and $\re$ before turning $\ye$.
+    A correct specification would be
+
+    \medskip
+    \centerline{\vbox{\halign{$#$\hfil&\hfil$#$&$#$\hfil\cr
+        \square\bigl(&(\gr\to&(\gr\U(\ye\land(\ye\U\re))))\cr
+        \land        &(\re\to&(\re\U(\ye\land(\ye\U\gr))))\cr
+        \land        &(\ye\to&(\ye\U(\re\U\gr)))\bigr)\cr
+    }}}
+    \medskip
+
+    The first line allows $\gr\to\ye\to\re$, the second allows $\re\to\ye\to\gr$.
+    These two lines deal only with the case that the light begins on $\gr$ or $\re$, the third line deals with the case when it starts on $\ye$.
+
+\eexam
 
 \bye
 
