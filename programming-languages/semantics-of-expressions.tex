@@ -1,0 +1,173 @@
+In this section, we will define a simple programming language called {\bf While}.
+The syntax of {\bf While} has five categories: numerals {\bf Num}, variables {\bf Var}, arithmetic expressions {\bf Aexp}, boolean expressions {\bf Bexp}, and statements {\bf Stm}.
+The structure for {\bf Aexp}, {\bf Bexp}, and {\bf Stm} are given respectively as follows:
+
+\medskip
+\centerline{\vbox{\openup1\jot\ialign{\bf(#)\hfil\tabskip=1cm&$#{}$\hfil\tabskip=.15cm&$#$\hfil\cr
+    Aexp&a\colcoleqq\quad& n\;|\;x\;|\;a_1+a_2\;|\;a_1\star a_2\;|\;a_1-a_2\cr
+    Bexp&b\colcoleqq\quad& {\sf true}\;|\;{\sf false}\;|\;a_1=a_2\;|\;a_1\leq a_2\;|\;\neg b\;|b_1\land b_2\cr
+    Stm&S\colcoleqq\quad& x\coloneqq a\;|\;{\tt skip}\;|\;S_1;S_2\;|\;\ifelse b{S_1}{S_2}\;|\;\whiledo bS\cr
+}}}
+
+Explicitly, arithmetic expressions are defined recursively as so:
+\benum
+    \item numerals and variables are arithmetic expressions,
+    \item if $a_1,a_2\in{\bf Aexp}$ then $a_1+a_2,a_1\star a_2,a_1-a_2\in{\bf Aexp}$.
+\eenum
+
+Similarly boolean expressions are defined recursively
+\benum
+    \item ${\sf true}$ and ${\sf false}$ are boolean expressions,
+    \item if $a_1,a_2\in{\bf Aexp}$ then $a_1=a_2,a_1\leq a_2\in{\bf Bexp}$,
+    \item if $b_1,b_2\in{\bf Bexp}$ then $\neg b_1,b_1\land b_2\in{\bf Bexp}$.
+\eenum
+
+And finally statements:
+\benum
+    \item if $x$ is a variable and $a$ is an arithmetic expression then $x\coloneqq a$ is a statement,
+    \item ${\tt skip}$ is a statement,
+    \item if $S_1,S_2$ are statements, then $S_1;S_2$ is a statement,
+    \item if $b\in{\bf Bexp}$ and $S_1,S_2$ are statements then $\ifelse b{S_1}{S_2}$ and $\whiledo b{S_1}$ are statements.
+\eenum
+
+So for example, if $x,y$ are variables then
+$$ x\coloneqq5;\ y\coloneqq10;\ \whiledo{x\leq10}{\ifelse{0\leq y}{y\coloneqq y-x}{{\tt skip}};\ x\coloneqq x+y} $$
+is a statement.
+What exactly it does is not important yet, but what is important is that it's a statement.
+
+\bdefn
+
+    A {\emphcolor state} is a function ${\bf Var}\longto{\bb Z}$, define ${\bf State}$ to be the set of all states (all functions ${\bf Var}\longto{\bb Z}$).
+
+\edefn
+
+\bdefn
+
+    We define the function $\A\colon{\bf Aexp}\longto({\bf State}\longto{\bb Z})$, which assigns to every {\bf Aexp} its numerical value when evaluated at a specific state.
+    We define $\A$ recursively on the structure of ${\bf Aexp}$:
+    \benum
+        \item for a numeral $n$, $\A\[n\]s=n$,
+        \item for a variable $x$, $\A\[x\]s=s\,x$,
+        \item $\A\[a_1+a_2]s=\A[a_1]s+\A[a_2]s$,
+        \item $\A\[a_1\star a_2]s=\A[a_1]s\cdot\A[a_2]s$,
+        \item $\A\[a_1-a_2]s=\A[a_1]s-\A[a_2]s$.
+    \eenum
+
+\edefn
+
+So for example, if $s$ is a state which maps $x\to1$ and $y\to3$ then
+\multlines{
+    \A\[x+((x\star y)+1)\]s=\A\[x\]s+\A\[(x\star y)+1\] = \A\[x\]s + \A\[x\star y\]s + \A\[1\]s\cr
+    &= \A\[x\]s + \A\[x\]s\cdot\A\[y\]s + \A\[1\]s = 1 + 1\cdot3 + 1 = 5
+}
+
+\bdefn
+
+    We define $\B\colon{\bf Bexp}\longto({\bf State}\longto\set{\TT,\FF})$ which assigns to every boolean expression a boolean value when evaluated at a specific state.
+    Similar to $\A$, we define it recursively:
+    \benum
+        \item $\B\[{\sf true}\]s=\TT$, $\B\[{\sf false}\]s=\FF$,
+        \item $\B\[a_1=a_2\]s$ is $\TT$ if $\A[a_1]s=\A[a_2]s$ and $\FF$ otherwise,
+        \item $\B\[a_1\leq a_2\]s$ is $\TT$ if $\A\[a_1\]s\leq\A\[a_2\]s$ and $\FF$ otherwise,
+        \item $\B\[\neg b\]s=\neg\B\[b\]s$,
+        \item $\B\[b_1\land b_2\]s=\B\[b_1\]s\land\B\[b_2\]s$.
+    \eenum
+    Where $\neg$ and $\land$ are defined as one would expect on $\set{\TT,\FF}$.
+
+\edefn
+
+\bdefn
+
+    Let $s$ be a state, $x$ a variable, and $v$ a number.
+    Define $s[x\mapsto v]$ to be the state defined by
+    $$ s[x\mapsto v]y = \cases{v & $x=y$\cr s\,y & else} $$
+    So $s[x\mapsto v]$ is the state obtained by overwriting the value of $x$ in $s$ to be $v$.
+
+\edefn
+
+We now define the semantics of {\bf While}.
+A program in {\bf While} is a statement and a state, then the statement is run and a new state is produced.
+Formally we define a transition relation $\gen{\cdot,\cdot}\to\cdot\subseteq({\bf Stm}\times{\bf State}\times{\bf State})$, here we read $\gen{S,s}\to s'$ as ``$s'$ is derivable from $S,s$''.
+We write
+$$ \syntaxtree{{\gen{S,s}\to s'}{{\gen{S_1,s_1}\to s_1',\dots\gen{S_n,s_n}\to s_n'}\noc}}\ \hbox{if \dots} $$
+To mean that if $\gen{S_i,s_i}\to s_i'$ hold for $1\leq i\leq n$ and the condition in \dots{} holds, then $\gen{S,s}\to s'$.
+If there are no conditions, then we will forgo the horizontal line and just write $\gen{S,s}\to s'$.
+
+We now list the transitions:
+
+\medskip
+\centerline{\vbox{\openup3\jot\ialign{#\hfil\tabskip=1cm&#\hfil\cr
+$\rm[ass_{ns}]$&$\gen{x\coloneqq a,s}\to s\bigl[x\mapsto\A\[a\]s\bigr]$\cr
+$\rm[skip_{ns}]$&$\gen{{\tt skip},s}\to s$\cr
+$\rm[comp_{ns}]$&$\syntaxtree{{\gen{S_1;S_2,s}\to s''}{{\gen{S_1,s}\to s'}\noc{\gen{S_2,s'}\to s''}\noc}}$\cr
+$\rm[if^{tt}_{ns}]$&$\syntaxtree{{\gen{\ifelse b{S_1}{S_2}}\to s'}{{\gen{S_1,s}\to s'}\noc}}\hbox{ if $\B\[b\]s=\TT$}$\cr
+$\rm[if^{tt}_{ns}]$&$\syntaxtree{{\gen{\ifelse b{S_1}{S_2}}\to s'}{{\gen{S_2,s}\to s'}\noc}}\hbox{ if $\B\[b\]s=\FF$}$\cr
+$\rm[while^{tt}_{ns}]$&$\syntaxtree{{\gen{\whiledo bS}\to s''}{{\gen{S,s}\to s'}\noc{\gen{\whiledo bS,s'}\to s''}\noc}}$ if $\B\[b\]s=\TT$\cr
+$\rm[while^{ff}_{ns}]$&$\gen{\whiledo bS,s}\to s$ if $\B\[b\]s=\FF$\cr
+}}}
+
+We can compute transitions by successive applications of axioms (transitions without assumptions) and transitions.
+
+\bdefn
+
+    The {\emphcolor deductive tree} of $\gen{S,s}\to s'$ is a tree whose root is $\gen{S,s}\to s'$ and the leaves are axioms.
+    Every inner node is a transition which is a consequence of its children.
+    We define $\gen{S,s}\to s'$ if the sequent has a deductive tree.
+
+\edefn
+
+The deductive tree will be written with the root on the bottom.
+For example, let $s_0$ be the state such that $x\mapsto5$ and $y\mapsto7$, define $s_1=s_0[z\mapsto5]$, $s_2=s_1[x\mapsto7]$, and $s_3=s_2[y\mapsto5]$.
+We claim that $\gen{(z\coloneqq x;x\coloneqq y);y\coloneqq z,s_0}\to s_3$.
+
+$$ \syntaxtree{{\gen{(z\coloneqq x;x\coloneqq y);y\coloneqq z,s_0}\to s_3}[comp]{{\gen{z\coloneqq x;x\coloneqq y,s_0}\to s_2}[comp]{{\gen{z\coloneqq x,s_0}\to s_1}[ass]\noc
+{\gen{x\coloneqq y,s_1}\to s_2}[ass]\noc}{\gen{y\coloneqq z,s_2}\to s_3}[ass]\noc}} $$
+
+\bdefn
+
+    We say that two statements $S_1,S_2$ are {\emphcolor semantically equivalent} if for every two states $s,s'$, $\gen{S_1,s}\to s'$ if and only if $\gen{S_2,s}\to s'$.
+
+\edefn
+
+So for example, $S$ is semantically equivalent to $S;{\tt skip}$ for every $S\in{\bf Stm}$.
+We will prove this: suppose $\gen{S,s}\to s'$ then it has a deductive tree $T$, and so
+$$ \syntaxtree{{\gen{s;{\tt skip},s}\to s'}{{\gen{s,s}\to s'}{T\noc}{\gen{{\tt skip},s'}\to s'}[skip]\noc}} $$
+So we have that $\gen{S;{\tt skip},s}\to s'$.
+Now suppose the converse, but its deductive tree must end with
+$$ \syntaxtree{{\gen{s;{\tt skip},s}\to s'}{{\gen{s,s}\to s'}{T\noc}{\gen{{\tt skip},s'}\to s'}[skip]\noc}} $$
+and so $\gen{S,s}\to s'$.
+\qed
+
+In general if we want to prove something about the transition relation, we can induct on the shape of derivation trees: first we prove it for all simple derivation trees (which have a single axioms);
+then for each rule, assume the property holds for its premises and then show it holds for the conclusion of the rule.
+
+\bthrm
+
+    If $\gen{S,s}\to s'$ and $\gen{S,s}\to s''$ then $s'=s''$.
+
+\ethrm
+
+\Proof first we prove it for simple derivation trees, which are formed from $\rm[ass_{ns}]$ or $\rm[skip_{ns}]$.
+Then we proceed to the other rules.
+\benum
+    \item $\rm[ass_{ns}]$: suppose $S$ is $x\coloneqq a$ and then $s'$ is $s[x\mapsto\A\[a\]s]$, which is unique ($s''$ must also be this).
+    \item $\rm[skip_{ns}]$: $S$ is ${\tt skip}$ and so $s'=s$.
+    \item $\rm[comp_{ns}]$: assume $\gen{S_1;S_2,s}\to s'$ holds because $\gen{S_1,s}\to s_0$ and $\gen{S_2,s_0}\to s'$ for some $s_0$.
+    The only rule which can be applied to get $\gen{S_1;S_2,s}\to s''$ is $\rm[comp_{ns}]$, so there is a state $s_1$ such that $\gen{S_1,s}\to s_1$ and $\gen{S_2,s_1}\to s''$.
+    But by induction, $s_1=s_0$ and then applying induction again, $s'=s''$.
+    \item $\rm[if^{tt}_{ns}]$: assume that $\gen{\ifelse b{S_1}{S_2},s}\to s'$ holds because $\B\[b\]s=\TT$ and $\gen{S_1,s}\to s'$.
+    Since $\B\[b\]s=\TT$, the only rule which can be applied to get $\gen{\ifelse b{S_1}{S_2},s}\to s''$ is $\rm[if^{tt}_{ns}]$, so $\gen{S_1,s}\to s''$, and by induction $s'=s''$.
+    \item $\rm[if^{ff}_{ns}]$: similar.
+    \item $\rm[while^{tt}_{ns}]$: assume that $\gen{\whiledo bS,s}\to s'$ because $\B\[b\]s=\TT$, $\gen{S,s}\to s_0$, and $\gen{\whiledo bS,s_0}\to s'$ for some $s_0$.
+    The only rule which could be applied to get $\gen{\whiledo bS,s}\to s''$ is $\rm[while^{tt}_{ns}]$ in lieu of $\B\[b\]s=\TT$.
+    So there exists a $s_1$ such that $\gen{S,s}\to s_1$ and $\gen{\whiledo bS,s_1}\to s'$.
+    But then by induction $s_0=s_1$ and by induction again, $s'=s''$.
+    \item $\rm[while^{ff}_{ns}]$: straightforward.
+    \qed
+\eenum
+
+Note that not every statement can derive a state: for example $\whiledo{{\tt true}}{{\tt skip}}$ has an infinite derivation tree and thus derives no state (for any initial state $s$).
+Thus we could define $\gen{\cdot,\cdot}$ to be a partial function
+$$ \gen{\cdot,\cdot}\colon{\bf Stm}\longto({\bf State}\longvaruphookrightarrow{\bf State}) $$
+which accepts a statement and a state and returns the state which it derives, if it exists.
+
