@@ -1,0 +1,178 @@
+\bdefn
+
+    We define {\emphcolor types} in our simply typed lambda calculus recursively as follows:
+    \benum
+        \item ${\sf Bool}$ is a type,
+        \item if $T_1,T_2$ are types, so is $T_1\to T_2$.
+    \eenum
+
+\edefn
+
+Here $\to$ is right-associative, meaning $T_1\to T_2\to T_3$ is taken to mean $T_1\to(T_2\to T_3)$.
+
+\bdefn
+
+    We define terms once again recursively:
+    \benum
+        \item every variable is a term,
+        \item if $x$ is a variable, $t$ a term, and $T$ a type, then $\lambda x\colon T.t$ is a term (here the type refers to the variable, we will explain later),
+        \item if $t_1,t_2$ are terms then so is $t_1\,t_2$,
+        \item ${\sf true},{\sf false}$ are terms,
+        \item if $t_1,t_2,t_3$ are terms, then so is ${\tt if\;}t_1{\tt\;then\;}t_2{\tt\;else\;}t_3$.
+    \eenum
+
+\edefn
+
+Let us define $\id=\lambda x\colon{\sf Bool}.x$, then $\id$ is a term.
+
+\bdefn
+
+    We define $\beta$-reduction on simply typed redexes as follows:
+    \benum
+        \item $(\lambda x\colon T.t)t'\xvarrightarrow{\,\beta\,}t[x\mapsto t']$,
+        \item ${\tt if\;}{\sf true}{\tt\;then\;}t_1{\tt\;else\;}t_2\xvarrightarrow{hello}[there]t_1$,
+        \item ${\tt if\;}{\sf false}{\tt\;then\;}t_1{\tt\;else\;}t_2\xvarrightarrow{\,\beta\,}t_2$.
+    \eenum
+
+\edefn
+
+So for example, let \lcalc{f=\lambda x:\Bool\to\Bool.\lambda y:\Bool.x y}, then
+
+\expansion{
+    &f \id {\sf true}\cr
+    =&\underline{(\lambda x:\Bool\to\Bool.\lambda y:\Bool.x y)\id} {\sf true}&definition\cr
+    \to&\underline{(\lambda y:\Bool.\id\ y) {\sf true}}&$\beta$-reduction on the underlined redex\cr
+    \to&\underline{\id\ {\sf true}}&$\beta$-reduction on the underlined redex\cr
+    \to&{\sf true}&$\beta$-reduction on the underlined redex
+}
+
+And
+
+\expansion{
+    &f {\sf true} \id\cr
+    =&\underline{(\lambda x:\Bool\to\Bool.\lambda y:\Bool.x y){\sf true}} \id&definition\cr
+    \to&\underline{(\lambda y:\Bool.{\sf true} y) \id}&$\beta$-reduction on the underlined redex\cr
+    \to&{\sf true} \id&$\beta$-reduction on the underlined redex\cr
+}
+
+We'd like to assign to terms a type.
+Suppose $\Gamma$ is a set containing elements of the form $t'\colon T'$, then we write $\Gamma\vdash t\colon T$ to mean that if we assume $\Gamma$ then $t$ has the type $T$.
+If $\Gamma$ is a such a set, we write $\Gamma,t'\colon T'$ to mean $\Gamma\cup\set{t'\colon T'}$, and instead of $\varnothing\vdash t\colon T$ we write $\vdash t\colon T$.
+We utilize Gentzen-style rules to form a deductive system for deducing the type of an abstraction.
+The first rule is for abstractions,
+$$ \gentzen{\Gamma,\lcalc{x:\T}\vdash\lcalc{t:\T'}}{\Gamma\vdash\lcalc{\lambda x:\T.t : \T\to \T'}} \eqno{(\hbox{\tensc T-Abs})}$$
+
+This just means that if we assume {\tt x} has type \T{} then {\tt t} has type \T', then we can conclude that \lcalc{\lambda x:\T.t} has type \T\to\T'.
+Suppose for example we take the language C, and we set {\tt t=x+x}, then if \lcalc{x:float} we can conclude that \lcalc{t:float} as well, so \lcalc{\lambda x:float.x+x} has type \lcalc{float\to float}.
+But if {\tt x} is of type {\tt int}, then {\tt t} is of the same type and \lcalc{\lambda x:int.x+x} has type \lcalc{int\to int}.
+Importantly, these examples are given to give some intuition for the rule, they are not valid $\lambda$-terms!
+
+Obviously if \lcalc{x:\T} is already in $\Gamma$ then $\Gamma$ should deduce \lcalc{x:\T}:
+$$ \gentzen{\lcalc{x:\T}\in\Gamma}{\Gamma\vdash\lcalc{x:\T}} \eqno{(\hbox{\tensc T-Var})} $$
+We also need a rule for applications:
+$$ \gentzen{\Gamma\vdash\lcalc{t:\T'\to\T}&\Gamma\vdash\lcalc{t':\T'}}{\Gamma\vdash \lcalc{t t':\T}} \eqno{(\hbox{\tensc T-App})} $$
+Which means that if {\tt t} is a function \T'\to\T{} and {\tt t'} has type {\tt\T'}, then the application \lcalc{t t'} has type \T.
+And for conditionals
+$$ \gentzen{\Gamma\vdash\lcalc{t\scr{1}:\Bool}&\Gamma\vdash\lcalc{t\scr2:\T}&\Gamma\vdash\lcalc{t\scr3:\T}}{\Gamma\vdash\lcalc{if t\scr1 then t\scr2 else t\scr3 : \T}}
+\eqno{(\hbox{\tensc T-If})} $$
+And of course ${\sf true}$ and ${\sf false}$ are Boolean types:
+
+\hbox to\hsize{\hfil$\gentzen{}{\Gamma\vdash{\sf true}:\Bool},\qquad \gentzen{}{\Gamma\vdash{\sf false}:\Bool}$\hfil\llap{({\tensc T-True}),({\tensc T-False})}}
+
+\medskip
+Let us now show that $\vdash\lcalc{\lambda x:\Bool. if x then {\sf true} else x}: \Bool\to\Bool$.
+We form a deductive tree:
+$$ \syntaxtree{
+    {\vdash\lcalc{\lambda x:\Bool. if x then {\sf true} else x}: \Bool\to\Bool}[{\sevensc T-Abs}]{%
+        {\lcalc{x:\Bool}\vdash\lcalc{if x then {\sf true} else x}}[{\sevensc T-If}]{%
+            {\lcalc{x:\Bool}\vdash\lcalc{x:\Bool}}[{\sevensc T-Var}]\noc
+            {\lcalc{x:\Bool}\vdash{\sf true}:\Bool}[{\sevensc T-True}]\noc
+            {\lcalc{x:\Bool}\vdash{\sf false}:\Bool}[{\sevensc T-False}]\noc
+        }%
+    }%
+} $$
+
+\bdefn
+
+    A term $t$ is {\emphcolor well-typed} if its type can be deduced from the empty set, ie. $\vdash\lcalc{t:\T}$ for some \T.
+
+\edefn
+
+\bdefn
+
+    A term of the form ${\sf true},{\sf false},$ or \lcalc{\lambda x:\T.t} (an abstraction) is called a {\emphcolor value}.
+
+\edefn
+
+\blemm[title=Progress Lemma]
+
+    If $t$ is a closed (meaning it has no free variables) well-typed term.
+    Then $t$ is either a value or there is some $t'$ with $t\to t'$ through a step of $\beta$-reduction.
+
+\elemm
+
+\Proof if $t$ is a boolean or an abstraction, then it is a value.
+Otherwise ${\tt t}=\lcalc{if t\scr1 then t\scr2 else t\scr3}$, then ${\tt t}$ is closed if and only if all \lcalc{t\scr i} are and by the derivation rule \lcalc{t\scr1:\Bool} which means that \lcalc{t\scr1}
+must be a Boolean, and so ${\tt t}$ can be reduced.
+Finally if ${\tt t}=\lcalc{t\scr1 t\scr2}$ then ${\tt t}$ is closed and well-typed, then \lcalc{t\scr1:T'\to T} and \lcalc{t\scr2:T'}, which means that \lcalc{t\scr1} is either a value or can be
+reduced, likewise for \lcalc{t\scr2}.
+If either can be reduced, then so too can {\tt t} (since if \lcalc{t\to t\scr0} then \lcalc{t t'\to t\scr0 t'} and similar for {\tt t'}).
+If both are a values, then \lcalc{t\scr1} is of the form \lcalc{\lambda x.t\scr{11}} and so it can be applied to a value and reduced.
+\qed
+
+\blemm[title=Substitution Lemma]
+
+    If $\Gamma,\lcalc{x:\T'}\vdash\lcalc{t:\T}$ and $\Gamma\vdash\lcalc{t':\T'}$, then $\Gamma\vdash\lcalc{t[x\mapsto t']:\T}$.
+
+\elemm
+
+\Proof by induction on the derivation of $\Gamma,\lcalc{x:\T'}\vdash\lcalc{t:\T}$.
+\benum
+    \item {\tensc T-Var}: so $\tt t=z$ and ${\tt z}\colon\T\in\Gamma,{\tt x}\colon\T'$.
+    If $\tt z=x$ then $\tt t=z=x$, so $\T=\T'$ and $\tt t[x\mapsto t']=t'$.
+    We must prove that $\Gamma\vdash\tt t'\colon\T$, but we know that $\tt t'\colon\T'=\T$ so this holds.
+    If $\tt z\neq x$ then $\tt t[x\mapsto t']=z$ and this is satisfied trivially.
+
+    \item {\tensc T-Abs}: then $\tt t=\lambda y\colon\T_2.t_1$, $\T=\T_2\to\T_1$, and $\Gamma\tt,x\colon\T'\vdash\lambda y\colon\T_2.t_1\colon\T$ so that
+    $\Gamma\tt,x\colon\T',y\colon\T_2\vdash t_1\colon\T_1$.
+    We may assume by convention that $\tt x\neq y$ and that $\tt y$ is not free in $t'$.
+    Since $\Gamma\vdash\tt t'\colon\T'$, we get $\Gamma,\tt y\colon\T_2\vdash t'\colon\T'$, and so by the induction hypothesis $\Gamma,\tt y\colon\T_2\vdash\tt t[x\mapsto t']\colon\T_1$.
+    By {\tensc T-Abs}, we get $\Gamma\vdash\tt\lambda y.t_1[x\mapsto t']\colon\T$, but $\tt\lambda y.t_1[x\mapsto t']=(\lambda y.t_1)[x\mapsto t']=t[x\mapsto t']$ as required.
+
+    \item {\tensc T-True} and {\tensc T-False} are immediate since $\tt t={\sf true}$ or ${\sf false}$ and $\T=\Bool$ and so $\tt t[x\mapsto t']=t$.
+
+    \item {\tensc T-If} is straightforward.
+    \qed
+\eenum
+
+\bthrm[title=Preservation Theorem]
+
+    If $\Gamma\vdash\tt t\colon\T$ and $\tt t\to t'$ by $\beta$-reduction, then $\Gamma\vdash\tt t'\colon\T$.
+
+\ethrm
+
+\Proof suppose $\tt t=(\lambda x\colon\T_1.t_1)t_2\colon\T_2$ then let us look at the derivation of $t$:
+$$ \syntaxtree{{\Gamma\vdash\lcalc{(\lambda x:\T\scr1.t\scr1) t\scr2: \T\scr2}}[{\sevensc T-App}]{
+    {\Gamma\vdash\lcalc{\lambda x:\T\scr1.t\scr1: \T\scr1\to\T\scr2}}[{\sevensc T-Abs}]{
+        {\Gamma,\lcalc{x:\T\scr1}\vdash\lcalc{t\scr1:\T\scr2}}\noc
+    }
+    {\Gamma\vdash\lcalc{t\scr2:\T\scr2}}\noc
+}} $$
+Our goal is to show $\Gamma\vdash\tt t_1[x\mapsto t_2]$.
+But we have that $\Gamma,\tt x\colon\T_1\vdash t_1\colon\T_2$ and $\Gamma\vdash\tt t_2\colon\T_2$ which gives us by the substitution lemma precisely this.
+\qed
+
+\bdefn
+
+    A term $t$ {\emphcolor can be normalized} if there exists a value $t'$ such that $t$ can be reduced to $t'$.
+
+\edefn
+
+\bthrm
+
+    Every closed well-typed term $t$ can be normalized.
+
+\ethrm
+
+\Proof in the book.
+\qed
