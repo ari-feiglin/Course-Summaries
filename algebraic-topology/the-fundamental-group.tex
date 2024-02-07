@@ -193,8 +193,9 @@ Thus $\pi_1(X,a)\cong\pi_1(\set b,b)$, and $\pi_1(\set b,b)$ has a single point,
     Let $E,B$ be topological spaces, then a map $p\colon E\longto B$ is a {\emphcolor covering map} (or just a {\it covering}) if
     \benum
         \item $p$ is surjective,
-        \item for every $x\in B$, there exists a neighborhood $x\in{\cal U}$ such that $p^{-1}({\cal U})$ is the disjoint union of open sets $\set{{\cal V}_\alpha}_{\alpha\in I}$ such that for every
-            $\alpha\in I$, $p\bigl|_{{\cal V}_\alpha}\colon{\cal V}_\alpha\longto{\cal U}$ is a homeomorphism.
+        \item There exists an open cover $\set{\U_\alpha}_{\alpha\in I}$ of $B$ such that for every $\alpha\in I$, $p^{-1}\U_\alpha\subseteq E$ is equal to the disjoint union of open sets
+        $\bigdcup_{\beta\in J}\tilde\U_\beta$ such that $p$ forms a homeomorphism from $\tilde\U_\beta$ to $\U_\alpha$.
+        For the sake of conciseness, such an open cover will be called an {\emphcolor open cover for $p$}.
     \eenum
 
 \edefn
@@ -206,34 +207,46 @@ $p$ is obviously a surjective continuous map.
 For every $e^{2\pi it}$, let $\epsilon<2\pi$ then the preimage of the open set ${\cal U}_t\coloneqq\set{e^{2\pi is}}[t-\epsilon<s<t+\epsilon]$ is
 $\bigdcup_{n\in{\bb Z}}\bigl(n+(t-\epsilon,t+\epsilon)\bigr)$ and every $n+(t-\epsilon,t+\epsilon)$ is homeomorphic (via $p$) to this ${\cal U}_t$.
 
+\bdefn
+
+    If $p\colon E\longto B$ is a covering, $F\colon X\longto B$ a map, a {\emphcolor lift} of $F$ is a function $\tilde F\colon X\longto E$ such that $F=p\circ\tilde F$.
+
+\edefn
+
+\blemm
+
+    Let $p\colon E\longto B$ be a covering, $F\colon X\times I\longto B$ be a map such that there exists an initial lift of $F\bigl|_{X\times\set0}$, $\tilde F\colon X\times\set0\longto E$, then there is a
+    unique extension of $\tilde F$ to a lift $X\times I\longto E$.
+
+\elemm
+
+\Proof let $\set{\U_\alpha}_{\alpha\in J}$ be a covering of $B$ for $p$, and $x_0\in X$ and $t\in I$.
+Then $(x_0,t)\in F^{-1}(\U_\alpha)$ for some $\alpha\in J$, and since $X\times I$ is a product space, there exists an open neighborhood $N_t$ of $x_0$ and $(a_t,b_t)$ a neighborhood of $t$ such that
+$N_t\times(a_t,b_t)\subseteq F^{-1}(\U_\alpha)$ so $F(N_t\times(a_t,b_t))\subseteq\U_\alpha$.
+Now $\set{N_t\times(a_t,b_t)}_{t\in I}$ forms an open cover of $\set{x_0}\times I$, and therefore it has a finite subcover and $\set{(a_t,b_t)}_{t\in I}$ has a Lebesgue number.
+Let $N$ be the (finite) intersection of the $N_t$ in the subcover, and $0=t_0<\cdots<t_n=1$ be a partition of $I$ where the difference between subsequent $t_i$s is less than the Lebesgue number.
+This means that $N\times[t_i,t_{i+1}]\subseteq N_t\times(a_t,b_t)$ and thus is mapped into a single $\U_\alpha$, let it be denoted by $\U_i$.
+
+Let us assume inductively that $\tilde F$ has been constructed on $X\times[0,t_i]$, we will extend it to $X\times[0,t_{i+1}]$.
+Since $p$ is a covering, there exists a $\tilde\U_i$ homeomorphic by $p$ to $\U_i$ which contains $\tilde F(x_0,t_i)$ (which is in $p^{-1}F(x_0,t_i)\in p^{-1}\U_i$).
+We can assume that $\tilde F(N\times\set{t_i})$ is contained within $\tilde\U_i$ by replacing $N\times\set{t_i}$ with its intersection with $\tilde F\bigl|_{N\times\set{t_i}}^{-1}(\tilde\U_i)$.
+Then since $p\circ\tilde F=F$, we must have that on $N\times[t_i,t_{i+1}]$, $\tilde F=p^{-1}\circ F$ for the restriction $p\colon\tilde\U_i\longto\U_i$.
+So define $\tilde F\bigl|_{N\times[t_i,t_{i+1}]}=p^{-1}\circ F\bigl|_{N\times[t_i,t_{i+1}]}$ where $p$ is the restriction.
+Since $\tilde F(N\times\set{t_i})$ is contained within $\tilde\U_i$, its definition in $[t_{i-1},t_i]$ must agree with this definition, so $\tilde F$ is well-defined and continuous.
+\qed
+
 \bthrm
 
     Suppose $p\colon E\longto B$ is a covering, $b\in B$ and $e\in E$ such that $p(e)=b$.
     Now suppose $\gamma\colon I\longto B$ is a curve starting at $b$, $\gamma(0)=b$.
-    Then there exists a unique curve $\delta\colon I\longto E$ starting at $e$ such that $p\circ\delta=\gamma$.
+    Then there exists a unique lift of $\gamma$ which starts at $e$, ie. a curve $\hat\gamma^e\colon I\longto E$ such that $\hat\gamma^e(0)=e$.
 
 \ethrm
 
-\Proof let $\set{{\cal U}_\beta}_{\beta\in J}$ be an open covering of $B$, then $\set{\gamma^{-1}({\cal U}_\beta)}_{\beta\in J}$ is an open covering of $I$.
-Since $I$ is a compact metric space, it has a Lebesgue number, and so we can take $n$ small enough such that for every $k$, $I_k\coloneqq\bracks{\frac{k-1}n,\frac kn}$ is contained within a single
-$\gamma^{-1}({\cal U}_\beta)$.
-Meaning for every $1\leq k\leq n$ there exists a $\beta_k\in J$ such that $I_k\subseteq\gamma^{-1}({\cal U}_{\beta_k})$, so $\gamma(I_k)\subseteq{\cal U}_{\beta_k}$.
-
-Now since $p$ is a covering, there exists a neighborhood $b\in{\cal U}$ such that $p^{-1}({\cal U})=\bigdcup_{\alpha\in I}{\cal V}_\alpha$.
-Since this is a disjoint union and $p(e)\in{\cal U}$, there exists a single $\alpha\in I$ such that $e\in{\cal V}_\alpha$, and let us denote this neighborhood by ${\cal V}$.
-And so $p\bigl|_{\cal V}$ is a homeomorphism from ${\cal V}$ to ${\cal U}$.
-So define
-$$ \delta\bigl|_{I_1}\coloneqq \parens{p\bigl|_{\cal V}}^{-1}\circ\gamma\bigl|_{I_1} $$
-We have then that $p\circ\parens{\delta\bigl|_{I_1}}=\gamma\bigl|_{I_1}$ and $\delta(0)=\parens{p\bigl|_{\cal V}}^{-1}\circ\gamma(0)=e$.
-This is the only such transform of $\gamma\bigl|_{I_1}$ which satisfies $\delta\bigl|_{I_1}(0)=e$ since every transform $\delta\colon I_1\longto E$ where $p\circ\delta=\gamma$,
-$\delta(I_1)=p^{-1}\gamma(I_1)\subseteq p^{-1}({\cal U})=\bigdcup_{\alpha\in I}{\cal V}_\alpha$.
-Since $\delta(I_1)$ is connected, it must be contained within a single ${\cal V}_\alpha$, this being ${\cal V}$ since it contains $e$.
-
-We continue with $\gamma\bigl|_{I_2}$ which starts at $\frac1n$ to get $\delta\bigl|_{I_2}$, and so on.
-Together these form $\delta$, which is continuous as $\set{I_k}_{1\leq k\leq n}$ is a finite partition of $I$ into closed sets and $\delta$ is continuous over each of these closed sets.
+\Proof using the lemma above, take $X$ to be the trivial space of a single point so we can ignore it in the proof and result of the lemma above.
+So the initial $\hat\gamma^e$ ($\tilde F$ in the proof) is a single point, which we can define to be $e$ (which is an initial lift since $p(e)=b$).
+And by the lemma, $\gamma$ has a unique lift which extends this.
 \qed
-
-Since this curve is unique, we can denote it by $\hat\gamma^e$ (since there is a unique curve for every $e\in p^{-1}(b)$).
 
 \bprop
 
@@ -244,13 +257,9 @@ Since this curve is unique, we can denote it by $\hat\gamma^e$ (since there is a
 \eprop
 
 \Proof let $H\colon I\times I\longto B$ be a homotopy relative to $\partial I$ from $\gamma$ to $\delta$.
-Let $\set{\U_\alpha}_{\alpha\in I}$ be an open cover of $B$ by good open sets, then $\set{H^{-1}(\U_\alpha)}_{\alpha\in I}$ is an open cover of $I\times I$.
-Since $I\times I$ is a compact metric space, it has a Lebesgue number and so there is an $n$ large enough so that we can partition $I\times I$ into squares
-$S_{ij}=\bracks{\frac in,\frac{i+1}n}\times\bracks{\frac jn,\frac{j+1}n}$ such that each $S_{ij}$ is contained within some $H^{-1}(\U_\alpha)$.
-
-Continuing similar to the previous proof, we get a homotopy $\hat H\colon I\times I\longto E$ such that $p\circ\hat H=H$ and $\hat H(0,0)=e$.
-So $p\circ\hat H(t,0)=H(t,0)=\gamma(t)$ and since $\hat\gamma^e$ is unique, this means $\hat H(t,0)=\hat\gamma^e(t)$.
-And similarly $p\circ\hat H(t,1)=H(t,1)=\delta(t)$ so $\hat H(t,1)=\hat\delta^e(t)$.
+We can then lift $H$ to a homotopy $\hat H\colon I\times I\longto E$, using the lemma above with $X=I$ we must have that the initial lift satisfies $p\circ\hat H(t,0)=H(t,0)=\gamma(t)$ so
+$\hat H(t,0)=\hat\gamma^e(t)$ is the initial lift.
+And similarly $p\circ\hat H(t,1)=H(t,1)=\delta(t)$ so $\hat H(t,1)=\hat\delta^e(t)$ by the uniqueness of lifts (since $t\mapsto\hat H(t,1)$ forms a lift of $\delta$).
 And $p\circ\hat H(0,s)=H(0,s)=a$, we can view this as the curve $K_a$ from $a$ to $a$, and so by uniqueness we have again that $\hat H(0,s)=\hat K_a^e(s)=e$.
 Similar for $\hat H(1,s)$.
 Thus $\hat H$ is a homotopy from $\hat\gamma^e$ to $\hat\delta^e$ relative to $\partial I$.
@@ -324,4 +333,32 @@ Notice that if $x\in S^1$ then by definition $r(x)=x$ since the intersection of 
 So $r$ is indeed a retract, in contradiction.
 \qed
 
+\blemm
+
+    Let $f,g\colon X\longto{\bb C}\setminus\set0$ such that $\abs{f(x)-g(x)}<\abs{g(x)}$ for all $x\in X$.
+    Then $f$ and $g$ are homotopic.
+
+\elemm
+
+\Proof define $H(x,t)=(1-t)g(x)+tf(x)$, then $\abs{H(x,t)}=\abs{(1-t)g(x)+tf(x)}\geq\abs{g(x)}-t\abs{f(x)-g(x)}>0$ so $H(x,t)$ is indeed a homotopy to ${\bb C}\setminus\set0$.
+\qed
+
+\bthrm[title=The Fundamental Theorem of Algebra]
+
+    If $p(z)$ is a non-constant polynomial over ${\bb C}$, then it has a root.
+
+\ethrm
+
+\Proof we can assume $p(z)=z^n+a_{n-1}z^{n-1}+\cdots+a_1z+a_0$ for $n>0$.
+Suppose that $p(z)\neq0$ for all $z\in{\bb C}$, so $p$ is a map ${\bb C}\longto{\bb C}\setminus\set0$.
+For $r>0$ define $S_r=\set{z}[\abs z=r]$ and $D_r=\set{z}[\abs z\leq r]$ so that $\partial D_r=S_r$.
+Then $p\bigl|_{S_r}\colon S_r\longto{\bb C}\setminus\set0$, and $p\bigl|_{D_r}$ is an extension of $p\bigl|_{S_r}$ to $D_r$, so $p\bigl|_{S_r}$ is null-homotopic.
+Define $g(z)=z^n$, then $p(z)-g(z)=a_{n-1}z^{n-1}+\cdots+a_0$, then
+$$ \frac{\abs{p(z)-g(z)}}{\abs{g(z)}} \leq \frac{\abs{a_{n-1}}\abs{z^{n-1}}+\cdots+\abs{a_0}}{\abs{z^n}} = \abs{a_{n-1}}\frac1{\abs z}+\cdots+\abs{a_0}\frac1{\abs{z^n}} $$
+let $r=\abs z$, then for $r$ large enough this becomes less than $1$, so $\abs{p(z)-g(z)}<\abs{g(z)}$ on $S_r$, so $p\bigl|_{S_r}\sim g\bigl|_{S_r}$.
+
+Now recall that for $a\in X$, if $f\sim g$ then $f_*=0$ if and only if $g_*=0$, so since $p\bigl|_{S_r}$ is null-homotopic this means $\parens{g\bigl|_{S_r}}_*$ is trivial.
+But notice that $g_*\colon\pi_1(S_r)\longto\pi_1(S_{r^n})$ maps the generator of $S_r$ (which is the loop which wraps around $S_r$ once) to the loop which wraps around $S_{r^n}$ $n$ times.
+So $g_*$ (the restriction) maps $1$ to $n$, which is not a trivial homomorphism.
+\qed
 
