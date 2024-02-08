@@ -644,5 +644,144 @@ Since this is true for all $\alpha<1$, it is true for $\alpha=1$, so $\lim_n\int
 So by \refmath{monothrm},
 $$ \int_X\liminf f_n\,d\mu = \lim_n\int_X\inf_{k>n}f_k\,d\mu = \liminf_n\int_X\inf_{k\geq n}f_k\,d\mu \leq \liminf_n\int_X f_n\,d\mu \qed $$
 
+\blemm
+
+    For every nonnegative measurable function $f\colon X\longto[0,\infty]$ there exists a sequence of nonnegative simple functions $\set{\phi_n}_{n=1}^\infty$ which increases pointwise to $f$.
+    And so by the monotone convergence theorem, $\int_Xf\,d\mu=\lim_{n\to\infty}\int_X\phi_n\,d\mu$.
+
+\elemm
+
+\Proof define $A_{n,k}=f^{-1}\bracks{\frac k{2^n},\frac{k+1}{2^n}}$, then define $\phi_n(A_{n,k})=\frac k{2^n}$.
+For $x\in A_{n,k}\cap A_{n,k+1}$ we can set $\phi_n(x)=\frac{k+1}{2^n}$.
+We define this for $0\leq k\leq 2^{2n}$.
+This obviously converges to $f$ pointwise and is increasing.
+\qed
+
+\bthrm
+
+    \benum
+        \item if $f,g\colon X\longto[0,\infty]$ are measurable then
+            $$ \int_X(f+g)\,d\mu = \int_Xf\,d\mu + \int_Xg\,d\mu $$
+        \item if $f_n\colon X\longto[0,\infty]$ is a countable sequence of nonnegative measurable functions then
+            $$ \int_X\parens{\sum_nf_n}\,d\mu = \sum_n\int_Xf_n\,d\mu $$
+        \item if $E=\bigdcup_nE_n$ are all measurable then
+            $$ \int_Ef\,d\mu = \sum_n\int_{E_n}f\,d\mu $$
+        \item for every $E\in\Sigma$, define $\nu_f(E)=\int_Ef\,d\mu$.
+            Then $\nu_f$ is a measure on $(X,\Sigma)$.
+    \eenum
+
+\ethrm
+
+\Proof\benum
+    \item By above let $\phi_n$ be a sequence of simple functions which increase to $f$ and $\psi_n$ be to $g$.
+        Then $\phi_n+\psi_n$ increases to $f+g$ and so by the monotone convergence theorem
+        $$ \int_X(f+g) = \lim_n\int_X(\phi_n+\psi_n) = \lim_n\int_X\phi_n+\int_X\psi_n = \int_Xf + \int_Xg $$
+    \item Define $S_n=\sum_{k=1}^nf_k$, then $S_n$ increases to $\sum_nf_n$ so by the monotone convergence theorem and $(1)$,
+        $$ \int_X\sum_nf_n = \lim_n\int_XS_n = \lim_n\sum_{k=1}^n\int_Xf_k = \sum_n\int_Xf_n $$
+    \item Define $f_n=f\cdot\chi_{E_n}$ so that $f\cdot\chi_E=\sum_nf_n$, then this follows from $(2)$.
+    \item This is a direct result of $(3)$.
+        \qed
+\eenum
+
+\bdefn
+
+    We say that a trait occurs {\emphcolor almost everywhere} (concisely, ae) if the set of all points where it doesn't occur has measure zero.
+
+\edefn
+
+So for example $\chi_{\bb Q}=0$ ae since it is not zero only on ${\bb Q}$ which has measure zero.
+
+\bthrm
+
+    Let $f,g\colon X\longto[0,\infty]$ be measurable.
+    \benum
+        \item if $f(x)=g(x)$ almost everywhere, then $\int_Xf=\int_Xg$.
+        \item $\int_Xf=0$ if and only if $f=0$ almost everywhere.
+        \item if $\int_Xf<\infty$ then $f<\infty$ almost everywhere.
+    \eenum
+
+\ethrm
+
+\benum
+    \item Let $E=\set{x\in X}[f(x)\neq g(x)]$ then $\mu(E)=0$ and so $\int_Ef=0$ by a previous theorem, and $f(x)=g(x)$ for $x\in E^c$,
+        $$ \int_Xf = \int_Ef + \int_{E^c}f = \int_{E^c}g = \int_Xg $$
+    \item If $f=0$ almost everywhere then by above its integral is zero.
+        Otherwise define $E_n=\set{x\in X}[f(x)>\frac1n]$ then
+        $$ 0 = \int_Xf \geq \int_{E_n}f \geq \int_{E_n}\frac1n = \frac1n\mu(E_n) $$
+        so $\mu(E_n)=0$.
+        And $f(x)>0$ if and only if $x\in E_n$ for some $n$, thus $E=\set{x\in X}[f(x)>0]=\bigcup_nE_n$ and so $\mu(E)=\lim_n\mu(E_n)=0$ by continuity of $\mu$.
+    \item Set $E=\set{x\in X}[f(x)=\infty]$, then
+        $$ \infty > \int_Xf \geq \int_Ef = \infty\mu(E) $$
+        So $\mu(E)$ must be zero.
+        \qed
+\eenum
+
+\bdefn
+
+    Let $f\colon X\longto[-\infty,\infty]$ be measurable, then define
+    $$ f^+(x) \coloneqq \cases{f(x) & $f(x)\geq0$\cr 0 & $f(x)<0$},\qquad f^-(x) \coloneqq \cases{0 & $f(x)\geq0$\cr -f(x) & $f(x)<0$} $$
+    so that $f(x)=f^+(x)-f^-(x)$ for all $x\in X$.
+    Notice that $f^+(x)=\maxof{f(x),0}$ and $f^-(x)=\maxof{-f(x),0}$ so that $f^+$ and $f^-$ are measurable.
+
+\edefn
+
+\bdefn
+
+    Let $f\colon X\longto[-\infty,\infty]$ be measurable, then $f$ is {\emphcolor Lebesgue integrable} if
+    $$ \int_Xf^+\,d\mu < \infty \quad\hbox{and}\quad \int_Xf^-\,d\mu < \infty $$
+    and if so, define
+    $$ \int_Xf\,d\mu \coloneqq \int_Xf^+\,d\mu - \int_Xf^-\,d\mu $$
+
+\edefn
+
+Notice that $\abs f=f^++f^-$ so that
+$$ \int_X\abs f\,d\mu \coloneqq \int_Xf^+\,d\mu + \int_Xf^-\,d\mu $$
+And in particular $f$ is integrable if and only if $\abs f$ is.
+It is also direct from the triangle inequality that $\abs{\int_Xf}\leq\int_X\abs f$.
+
+\bthrm
+
+    Let $f,g\colon X\longto\overline{\bb R}$ be integrable, then
+    \benum
+        \item if $h\colon X\longto\overline{\bb R}$ is measurable and satisfies $\abs{h(x)}\leq\abs{f(x)}$ almost everywhere, then $h$ is integrable.
+        \item $f$ is integrable on every measurable set, and
+            $$ \int_{A\dcup B}f\,d\mu = \int_Af\,d\mu + \int_Bf\,d\mu $$
+        \item $\abs{f(x)}<\infty$ almost everywhere,
+        \item if $\mu(E)=0$ then $\int_Ef\,d\mu=0$,
+        \item $c\cdot f$ is integrable and $\int_X(cf)\,d\mu=c\int_Xf\,d\mu$,
+        \item $f+g$ is integrable and satisfies $\int_X(f+g)\,d\mu=\int_Xf\,d\mu+\int_Xg\,d\mu$,
+        \item if $f(x)\leq g(x)$ almost everywhere then $\int_Xf\,d\mu\leq\int_Xg\,d\mu$.
+    \eenum
+
+\ethrm
+
+For $(1)$: $\abs h$ is then integrable and so therefore is $h$.
+$(5)$ results in $f+g=(f+g)^+-(f+g)^-=f^+-f^-+g^+-g^-$ and $\abs{f+g}=(f+g)^++(f+g)^-=f^++f^-+g^++g^-$.
+So $(f+g)^+=f^++g^+$ and $(f+g)^-=f^-+g^-$ are integrable.
+The rest of the statements are proven utilizing properties of nonnegative measurable functions.
+\qed
+
+\bthrm[title=Dominated Convergence Theorem, name=domconv]
+
+    Let $f_n\colon X\longto\overline{\bb R}$ be a sequence of measurable functions which converge pointwise to $f$.
+    Now suppose there exists an integrable function $g$ such that $\abs{f_n(x)}\leq g(x)$ for every $x\in X$ and $n\in{\bb N}$.
+    Then
+    $$ \int_Xf\,d\mu = \lim_{n\to\infty}\int_Xf_n\,d\mu $$
+
+\ethrm
+
+\Proof since $\abs{f_n}\leq g$, $f_n$ is integrable by the previous theorem.
+Furthermore $\abs f=\lim_n\abs{f_n}\leq g$, so $f$ is also integrable.
+Now, we know $-g\leq f_n\leq g$ so $f_n+g\geq0$ and $g-f_n\geq0$.
+By Fatou:
+$$ \int_X(f+g) = \int_X\lim_n(f_n+g) \leq \liminf_n\int_X(f_n+g) = \liminf_n\int_Xf_n + \int_Xg $$
+So $\int_Xf\leq\liminf_n\int_Xf_n$.
+And by Fatou on $g-f_n$,
+$$ \int_X(g-f) = \int_X\lim_n(g-f_n) \leq \liminf_n\int_X(g-f_n) = \int_Xg + \liminf_n-\int_Xf_n = \int_Xg - \limsup_n\int_Xf_n $$
+So we have
+$$ \limsup_n\int_Xf_n \leq \int_Xf \leq \liminf_n\int_Xf_n $$
+so $\int_Xf=\lim_n\int_Xf_n$ as required.
+\qed
+
 \bye
 
