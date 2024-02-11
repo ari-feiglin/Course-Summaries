@@ -1,0 +1,254 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{diam}{{\rm diam}}(\vert)
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+\newfunc{cis}{{\rm cis}}({})
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{sup}{{\rm sup}}\{\vert\}
+\newfunc{Res}{{\rm Res}}({})
+\newfunc{wind}n({})
+
+\font\bigbf = cmbx12 scaled 2000
+\@undervecc@def{underbar}\@linecap\@linecap
+
+\def\mO{{\cal O}}
+\def\mU{{\cal U}}
+\let\lineseg=\overleftrightvecc
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=10
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Complex Functions}
+
+    \medskip
+    \textit{Lecture \thesection, Wednesday June 21, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+Notice that if $f(z)$ has a pole of degree $m$ at $z=\alpha$, then
+\[ f(z) = \sum_{k=-m}^\infty c_k (z-\alpha)^k \]
+and so
+\[ (z-\alpha)^mf(z) = \sum_{k=-m}^\infty c_k(z-\alpha)^{k+m} = \sum_{k=0}^\infty c_{k-m}(z-\alpha)^k \]
+Meaning that $c_{-1}$ is the coefficient of $(z-\alpha)^{m-1}$ in $(z-\alpha)^mf(z)$.
+So let $g(z)=(z-\alpha)^mf(z)$ be the analytic continuation of $(z-\alpha)^mf(z)$ to include $\alpha$, and then we have that
+\[ g^{(m-1)}(\alpha)\cdot\frac1{(m-1)!} = c_{-1} \]
+And since $(z-\alpha)^mf(z)$ is analytic about $\alpha$, so are its derivatives and so we get the following
+
+\begin{prop*}
+
+    If $f(z)$ has a pole of degree $m$ at $z=\alpha$ then
+    \[ \Resof{f(z),\alpha} = \frac1{(m-1)!}\cdot\lim_{z\to\alpha}\frac{d^{m-1}}{dz^{m-1}}\bigl((z-\alpha)^mf(z)\bigr) \]
+    In the case that $\alpha$ is a simple pole, $m=1$ and so
+    \[ \Resof{f(z),\alpha} = \lim_{z\to\alpha}(z-\alpha)f(z) \]
+
+\end{prop*}
+
+\begin{defn*}
+
+    Let $\gamma$ be a smooth closed curve and $\alpha\in\bC$ is not on $\gamma$, then
+    \[ \windof{\gamma,\alpha} = \frac1{2\pi i}\int_\gamma\frac{dz}{z-\alpha} \]
+    is called the \ppemph{winding number} of $\gamma$ about $\alpha$.
+
+\end{defn*}
+
+For example, if $\gamma$ is the curve $C_r$ if $\abs\alpha<r$ it is in the interior of $C_r$, then by Cauchy's Integral Formula,
+\[ \windof{\gamma,\alpha} = \frac1{2\pi i}\int_{C_r}\frac{dz}{z-\alpha} = 1 \]
+and if $\abs\alpha>r$ then $\frac1{z-\alpha}$ is analytic within $C_r$ so the integral is $0$.
+So
+\[ \windof{C_r,\alpha} = \begin{cases} 1 & \abs\alpha<r \\ 0 & \abs\alpha>r \end{cases} \]
+
+\begin{prop*}
+
+    For every smooth closed curve $\gamma$ and $\alpha\notin\gamma$, $\windof{\gamma,\alpha}$ is an integer.
+
+\end{prop*}
+
+\begin{proof}
+
+    We will assume that $\gamma$ has a continuous derivative.
+    Let us define $\Gamma\colon[0,1]\longto\bC$ by
+    \[ \Gamma(s) = \int_0^s \frac{\gamma'(t)}{\gamma(t)-\alpha}\,dt \]
+    Since the integrand is continuous, so is $\Gamma$, and $\Gamma$ is differentiable everywhere
+    \[ \Gamma'(s) = \frac{\gamma'(s)}{\gamma(s)-\alpha} \]
+    Then let us define
+    \[ G(s) = (\gamma(s)-\alpha)e^{-\Gamma(s)} \]
+    And so
+    \[ G'(s) = \gamma'(s)e^{-\Gamma(s)} - \gamma'(s)e^{-\Gamma(s)} = 0 \]
+    So $G$ is constant, and since
+    \[ G(0) = (\gamma(0)-\alpha)e^0 = \gamma(0)-\alpha \]
+    So we have that
+    \[ (\gamma(s)-\alpha)e^{-\Gamma(s)} = \gamma(0)-\alpha \implies e^{\Gamma(s)} = \frac{\gamma(s)-\alpha}{\gamma(0)-\alpha} \]
+    Therefore we have that
+    \[ e^{\Gamma(1)} = \frac{\gamma(1)-\alpha}{\gamma(0)-\alpha} = 1 \]
+    since $\gamma$ is closed so $\gamma(0)=\gamma(1)$.
+    Therefore there exists a $k\in\bZ$ such that
+    \[ \Gamma(1) = 2\pi ik \]
+
+    But notice that
+    \[ \Gamma(1) = \int_0^1 \frac1{\gamma(t)-\alpha}\cdot\gamma'(t)\,dt = \int_\gamma\frac1{z-\alpha}\,dz = 2\pi i\windof{\gamma,\alpha} \]
+    So we have that
+    \[ \windof{\gamma,\alpha} = k \]
+    as required.
+    \qed
+
+\end{proof}
+
+By definition, $\windof{\gamma,\alpha}=\frac1{2\pi i}\int_\gamma\frac{dz}{z-\alpha}$, so $\windof{\gamma,\alpha}$ is continuous in $\alpha$, within the connected components of $\bC\setminus\gamma$.
+(It is continuous everywhere it is defined, but these are connected.)
+But it is also an integer, and therefore is constant within the connected components.
+
+\begin{prop*}
+
+    $\windof{\gamma,\alpha}$ is constant within the connected components of $\bC\setminus\gamma$.
+
+\end{prop*}
+
+\begin{defn*}
+
+    A curve is a \ppemph{closed regular curve} if it is a simple closed curve and its winding numbers are either $0$ or $1$.
+    In this case $\set{\alpha}[\windof{\gamma,\alpha}=1]$ is $\gamma$'s interior and $\set{\alpha}[\windof{\gamma,\alpha}=0]$ is its exterior (since both these sets must be $\gamma$'s connected components
+    since it is a simple closed curve and therefore only has two, and the exterior has winding number zero in general).
+
+\end{defn*}
+
+\newpage
+\begin{thrm*}[residueTheorem,The\ Residue\ Theorem]
+
+    Suppose $f$ is analytic in $D$ except for a finite number of isolated singularities $z_1,\dots,z_n$.
+    Let $\gamma$ be a closed curve in $D$ which doesn't intersect any of the singularities, then
+    \[ \frac1{2\pi i}\int_\gamma f(z)\,dz = \sum_{k=1}^n \windof{\gamma,z_k}\cdot\Resof{f,z_k} \]
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let $P_i\parens{\frac1{z-z_i}}$ be the essential part of the Laurent series of $f$ in the ring $0<\abs{z-z_i}<R_i$, suppose
+    \[ f(z) = \sum_{k=-\infty}^\infty c_k(z-z_i)^k \]
+    then
+    \[ P_i\parens{\frac1{z-z_i}} = \sum_{k=-\infty}^{-1} c_k(z-z_i)^k \]
+    And so
+    \[ P_i(z) = \sum_{k=1}^\infty c_{-k}z^k \]
+    So $P_i(z)$ defines an analytic function.
+    Now, $P_i$ must be defined on all of $\bC$ since if $z=\frac1{w-z_i}$ and so $w-z_i=\frac1z$, so if $\abs{\frac1z}<R_i$ then plugging $w$ into the essential part of $f$ must converge, and so $P_i(z)$
+    must converge.
+    Since $P_i$ is analytic this means it has an infinite radius of convergence, and so $P_i\parens{\frac1{z-z_i}}$ is analytic in $\bC\setminus\set{z_i}$.
+
+    So let
+    \[ g(z) = f(z) - P_1\parens{\frac1{z-z_1}} - \cdots - P_n\parens{\frac1{z-z_n}} \]
+    And so $g$ is analytic in $D$, and so since $\gamma$ is closed,
+    \[ \int_\gamma g(z)\,dz = 0 \implies \int_\gamma f(z)\,dz = \sum_{i=1}^m\int_\gamma P_i\parens{\frac1{z-z_i}} \]
+
+    Now,
+    \[ \int_\gamma P_i\parens{\frac1{z-z_i}} = \int_\gamma \sum_{k=1}^\infty c_{-k}(z-z_i)^{-k} \]
+    which is equal to, by uniform convergence,
+    \[ = \sum_{k=1}^\infty c_{-k}\int_\gamma (z-z_i)^{-k} \]
+    Note that for $k\neq1$,
+    \[ (z-z_i)^{-k} = \frac d{dz}\parens{\frac{(z-z_i)^{-k+1}}{-k+1}} \]
+    So the integral $\int_\gamma (z-z_i)^{-k}=0$ (since it has an antiderivative, and the curve is closed).
+    Thus
+    \[ \int_\gamma P_i\parens{\frac1{z-z_i}} = c_{-1}\int_\gamma\frac1{z-z_i} = 2\pi i\cdot c_{-1}\windof{\gamma,z_i} = 2\pi i\Resof{f(z),z_i}\cdot\windof{\gamma,z_i} \]
+
+    So all in all
+    \[ \frac1{2\pi i}\int_\gamma f(z) = \sum_{i=1}^m \Resof{f(z),z_i}\cdot\windof{\gamma,z_i}\qed \]
+
+\end{proof}
+
+\begin{coro*}
+
+    If $f$ is analytic in $D$ except for a finite number of singularities, and if $\gamma$ is a closed regular curve in $D$ which doesn't intersect any singularity, then
+    \[ \frac1{2\pi i}\int_\gamma f(z)\,dz = \sum_{k=1}^m \Resof{f,z_k} \]
+    where the sum is over singularities contained within $z_k$.
+
+\end{coro*}
+
+This is because the residue of all the other singularities are on the exterior of $\gamma$ and thus have a winding number of zero.
+And the winding number of all the singularities in $\gamma$'s interior is one.
+
+\begin{defn*}
+
+    We say that $f$ is \ppemph{meromorphic} in a domain $D$ if it is analytic except for isolated poles.
+
+\end{defn*}
+
+\begin{thrm*}[argumentPrinciple,The\ Argument\ Principle]
+
+    Suppose $\gamma$ is a closed regular curve and $f$ is meromorphic in and on $\gamma$, and it has no poles on $\gamma$ then
+    \[ \frac1{2\pi i}\int_\gamma\frac{f'(z)}{f(z)} = Z(f) - P(f) \]
+    where $Z(f)$ is the number of zeros of $f$ within $\gamma$, and $P(f)$ is the number of poles of within $\gamma$ (counted with multiplicity).
+
+\end{thrm*}
+
+\begin{proof}
+
+    The only poles of $\frac{f'(z)}{f(z)}$ are at the zeros of $f(z)$ and the poles of $f(z)$.
+
+    If $z=\alpha$ is a zero of $f$ of order $k$ then
+    \[ f(z) = (z-\alpha)^k g(z) \]
+    where $g(\alpha)\neq0$, then
+    \[ f'(z) = k(z-\alpha)^{k-1}g(z) + (z-\alpha)^k g'(z) \]
+    and so
+    \[ \frac{f'(z)}{f(z)} = \frac k{z-\alpha} + \frac{g'(z)}{g(z)} \]
+    since $g(z)$ is non-zero and analytic at $\alpha$, $\frac{g'(z)}{g(z)}$ is analytic at $\alpha$ and therefore does not contribute to the residue.
+    So
+    \[ \Resof{\frac{f'}f,\alpha} = k\cdot\Resof{1{z-\alpha},\alpha} = k \]
+
+    And if $z=\alpha$ is a pole of order $k$ then
+    \[ f(z) = (z-\alpha)^{-k}g(z) \]
+    where $g(z)$ is analytic at $\alpha$ and $g(\alpha)\neq0$.
+    Then similarly
+    \[ f'(z) = -k(z-\alpha)^{k-1}g(z) + (z-\alpha)^{-k}g'(z) \]
+    so
+    \[ \frac{f'(z)}{f(z)} = -\frac k{z-\alpha} + \frac{g'(z)}{g(z)} \]
+    and so
+    \[ \Resof{\frac{f'}f,\alpha} = -k \]
+
+    Thus we have that by \ppref{residueTheorem},
+    \[ \frac1{2\pi i}\int_\gamma\frac{f'(z)}{f(z)}\,dz = \sum_\alpha \Resof{\frac{f'}f,\alpha} = Z(f) - P(f) \]
+    since the sum over $\alpha$ zeros gives $Z(f)$ and the sum over $\alpha$ poles gives $-P(f)$.
+    \qed
+
+\end{proof}
+
+\end{document}
+

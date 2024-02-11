@@ -1,0 +1,300 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input ../preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{ker}{{\rm ker}}({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{atan}{{\rm tan}^{-1}}({})
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\openset{{\cal O}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\def\bexerc{\begin{exercise*}}
+\def\eexerc{\end{exercise*}}
+\def\bblank{\begin{blankpp}}
+\def\eblank{\end{blankpp}}
+
+\begin{document}
+
+\c@section=8
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infintesimal Calculus 3}
+
+    \medskip
+    \textit{Assignment \thesection}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\bexerc
+
+    Find the crtitical points of the following functions and determine their types:
+    \benum
+        \item $f(x,y) = (x-1)^2 - 2y^2$
+        \item $f(x,y) = x^4 + y^4 - 2x^2 + 4xy - 2y^2$
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item The gradient here is
+        \[ \nabla f = \begin{pmatrix} 2(x-1) \\ -4y \end{pmatrix} \]
+        which is equal to $0$ only at $(1,0)$, so this is the only critical point.
+        If we hold $y$ constant at $0$, then $x=1$ is a minimum, ie $x=1$ is the minimum of $f(x,0)=(x-1)^2$ as it is a positive parabola.
+        But if we hold $x$ constant at $1$ then $y=0$ is the maximum of $f(1,y)=-2y^2$ so $(1,0)$ is an inflection point (neither a maximum nor a minimum).
+
+        \item The gradient here is
+                \[ \nabla f = \pmat{4x^3 - 4x + 4y \\ 4y^3 + 4x - 4y} \]
+        which, if when $0$, means that $4x^3+4y^3=0$ and so $y=-x$ and therefore $4x^3-8x=0$ and so $x=0$ or $x=\pm\sqrt2$.
+        So the crtitical points are
+        \[ \pmat{0\\0} \quad \pmat{\sqrt2\\-\sqrt2} \quad \pmat{-\sqrt2\\\sqrt2} \]
+        We will now compute the hessian:
+        \[ H_f(x,y) = \pmat{12x^2-4 & 4 \\ 4 & 12y^2-4} \]
+        So for $\pm\sqrt2(1,-1)$, the hessian is the same:
+        \[ \pmat{20 & 4 \\ 4 & 20} \]
+        And therefore they are minima.
+        For $(0,0)$, $x=0$ is a maximum of $f(x,0)=x^4-2x^2$ but $x=0$ is a minimum of $f(x,x)=2x^4$, and so $(0,0)$ is an inflection point.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    We define the following function:
+    \[ f(x,y) = (y-3x^2)(y-x^2) \]
+    \benum
+        \item Show that $(0,0)$ is a critical point.
+        \item Show that for every $a,b\in\bR$, $f(at,bt)$ has a local minimum at $(0,0)$.
+        \item Show that $(0,0)$ is not a minimum of $f$.
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item The gradient is
+        \[ \nabla f = \pmat{-6x(y-x^2)-2x(y-3x^2) \\ y-x^2+y-3x^2} = \pmat{12x^3-8xy \\ -4x^2+2y} \]
+        And since $\nabla f(0,0)=0$, $(0,0)$ is indeed a critical point.
+
+        \item We know that $d_t\bigl(f(at,bt)\bigr)=d_{x,y}f(at,bt)\cdot\pmat{a\\b}=\nabla f(at,bt)\cdot\pmat{a\\b}$ by the chain rule.
+        This is equal to $12a^4t^3-12a^2bt^2+2b^2t$.
+        This is equal to $0$ at $t=0$ (as it should since $(0,0)$ is a critical point of $f$'s), so $t=0$ is a critical point.
+        And its second derivative relative to $t$ at $t=0$ is $2b^2$ which is positive if $b\neq0$, so if $b\neq0$ then $t=0$ is a minimum, as required.
+        If $b=0$ then
+        \[ f(at,0) = (-3a^2t^2)(-a^2t^2) = a^4t^4 \]
+        which obviously has a minimum at $t=0$ as required.
+
+       \item Take $y=2x^2$ then
+       \[ f(x,2x^2) = -x^2\cdot x^2 = -x^4 \]
+       and so $x=0$ is a maximum here, so $(0,0)$ cannot be a minimum.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Find the critical points of the following function and categorize them:
+    \[ f(x,y) = x^3y^2(1-x-y) \]
+
+\eexerc
+
+\bblank
+
+    We first find $f$'s gradient:
+    \[ \nabla f = \pmat{x^2y^2(-4x-3y+3) \\ x^3y(-2x-3y+2)} \]
+    And so $\nabla f=0$ if and only if $x=0$ or $y=0$ or at the point $\parens{\frac12, \frac13}$.
+    We will first deal with the case that $x=0$ and $y\neq0$.
+
+    Here, notice that if we consider $y$ to be constant then $f(x,y)$ has an extrema (relative to $x$) whenever $x^3(1-x-y)$ does, and it is of the same type since $y^2>0$.
+    So we now ask a more general question: when does a function $g(x)=-x^4+\alpha x^3$ have an extrema at $x=0$?
+    Notice that $g'(x)=-4x^3+3\alpha x^2$ and so $g(x)$ has critical points at $x=0$ and $x=\frac{3\alpha}4$.
+    Computing $g'\parens{\frac\alpha2}$ gives $\frac{\alpha^3}4$.
+    So if $\alpha<0$ then $g'(x)<0$ for $x>0$ and it is also negative at $\frac\alpha2$. 
+    So around $x=0$, the derivative of $g$ is negative and therefore $x=0$ is an inflection point.
+    If $\alpha>0$ then $g'(x)>0$ for $x<0$ and it is also positive at $\frac\alpha2$ and therefore $x=0$ is an inflection point.
+    If $\alpha=0$ then $g(x)=-x^4$ and therefore $x=0$ is a maximum.
+    In our case $\alpha=1-y$ so unless $y=1$, $(0,y)$ is an inflection point.
+
+    We now deal with the case that $x\neq0$ and $y=0$.
+    We split it up into cases:
+    \blist
+        \item If $x>1$ then $(x,0)$ is above the line $y=1-x$ and therefore there exists a ball around $(x,0)$ such that for every $(a,b)\in B$, $b>1-a$ and $a>0$ so $1-a-b<0$ and therefore
+        $f(a,b)<0=f(x,0)$.
+        So $(x,0)$ is a local maximum for $x>1$.
+        \item If $x<0$ then $(x,0)$ is below the line $y=1-x$ so there exists a ball around $(x,0)$ which is also underneath $y=1-x$ and its $x$ values are negative.
+        So for every $(a,b)\in B$, $f(a,b)<0=f(x,0)$ and so $(x,0)$ is a local maximum for $0<x<1$.
+        \item If $0<x<1$ then $(x,0)$ is below the line $y=1-x$, so there exists a ball around $(x,0)$ which is underneath the line and has positive $x$ values, and so for every $(a,b)\in B$, $f(a,b)>0$,
+        so $(x,0)$ is a local minimum for $0<x<1$.
+        \item If $x=1$, then it lies on the line $y=1-x$, so every ball around $(x,0)$ has values above and below this line, and for radii small enough, the $x$ values are positive, so there are elements in
+        the ball whose image is positive and some whose image is negative, so $(1,0)$ is an inflection point.
+        \item For reasons nearly identical to the ones given above, $(0,1)$ and $(0,0)$ are also an inflection points.
+    \elist
+
+    Lastly, for the point $\parens{\frac12,\frac13}$ we find the Hessian of the function:
+    \[ H_f = \pmat{y^2\bigl(2x(-4x-3y+3)-4x^2\bigr) & x^2\bigl(2y(-4x-3y+3)-3y^2\bigr) \\ x^2\bigl(2y(-4x-3y+3)-3y^2\bigr) & x^3\bigl(-2x-3y+2-3y\bigr)} \]
+    Specifically at this point
+    \[ H_f\parens{\frac12,\frac13} = -\pmat{\frac19 & \frac1{12} \\ \frac1{12} & \frac18} \]
+    which is a negative-definite matrix (the negative of a positive-definite matrix), and therefore $\parens{\frac12,\frac13}$ is a maximum.
+
+    I summarize the findings below:
+    \blist
+        \item Maxima: $(x,0)$ for $x>1$ or $x<0$, and $\parens{\frac12,\frac13}$.
+        \item Minima: $(x,0)$ for $0<x<1$.
+        \item Inflection points: $(0,y)$ for $y\in\bR$ and $(1,0)$.
+    \elist
+
+\eblank
+
+\bexerc
+
+    Show that the following equations define $z$ as a function of $x$ and $y$ in a neighborhood of the given point, and further find $z_x$ and $z_y$ in this neighborhood.
+    \benum
+        \item $F(x,y,z)=y^2+xy+z^2-e^z-4=0$ around $(0,e,2)$, further compute $z_{yy}$.
+        \item $F(x,y,z)=xz+y\ln z+x^2=0$ around $(-2,0,2)$, further compute $z_{xy}$.
+    \eenum
+
+\eexerc
+
+\bblank
+
+    Both functions here are functions $F\colon\bR^{2\times1}\longvarrightarrow\bR^1$, so by using the implicit function theorem at the given point, if the restricted Jacobian is invertible, then $z$ is
+    indeed a function of $x$ and $y$.
+    Note that the reduced Jacobian is simply $J_{f,z}=(f_z)$, so all we need to show is that at this point, $f_z\neq0$.
+    Further, it satisfies
+    \[ \pmat{z_x & z_y} = J_z = -J^{-1}_{f,z}\cdot J_{f,\binom xy} = -f_z^{-1}\cdot J_{f,\binom xy} \]
+
+    \benum
+        \item Here
+        \[ f_z = 2z - e^z \]
+        so at this point $f_z=4-e^2\neq0$, as required.
+        And so
+        \[ \pmat{z_x & z_y} = -\frac1{2z-e^z}\cdot\pmat{y & 2y + x} = \pmat{\frac{y}{e^z-2z} & \frac{2y+x}{e^z-2z}} \]
+        and by further differentiating $z_y$ by $y$, we find that:
+        \[ z_{yy} = \frac{2(e^z-2z)-(2y+x)\cdot z_y(e^z-2)}{(e^z-2z)^2} \]
+        And so
+        \begin{align*}
+                z_x(0,e) &= \frac e{e^2-4} \\
+                z_y(0,e) &= \frac{2e}{e^2-4} \\
+                z_{yy}(0,e) &= \frac{2(e^2-4)-2e\cdot\frac{2e}{e^2-4}(e^2-2)}{(e^2-4)^2}
+        \end{align*}
+
+        \item Here
+        \[ f_z = x + \frac yz \]
+        and at this point $f_z=-2\neq0$, as required.
+        And so
+        \[ \pmat{z_x & z_y} = -\frac1{x+\frac yz}\cdot\pmat{z + 2x & \ln(z)} = \pmat{-\frac{z^2 + 2xz}{xz+y} & \frac{-z\ln(z)}{xz+y}} \]
+        and by further differentiating $z_x$ by $y$:
+        \[ z_{xy} = -z_y\frac{2(z+x)(xz+y)^2-xz(z+2x)}{(zx+y)^2} \]
+        And so
+        \begin{align*}
+                z_x(-2,0) &= -1 \\
+                z_y(-2,0) &= \frac{\ln(2)}{2} \\ 
+                z_{xy}(-2,0) &= \frac{\ln(2)}4
+        \end{align*}
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Does the following equation define $z$ as a function of $x$ and $y$ around $(-1,0,0)$?
+    Does it define a $y$ as a function of $x$ and $z$?
+    $x$ as a function of $y$ and $z$?
+
+\eexerc
+
+\bblank
+
+    \blist
+        \item It does not.
+        Since $z^4$ and $\cos(z)$ are even, if $z$ is a solution to this equation then so is $-z$, and so there can be no function which maps from values of $x$ and $y$ to values of $z$ unless it is
+        the constant zero function.
+        But $z=0$ is a solution if and only if $x^2+y^5=1$, but this does not define an open set.
+
+        \item It does, and we can find the function explicitly:
+        \[ y = \root 5\of{\bigl(z^4+1\bigr)^2 - \cos(z) - x^2 + 1} \]
+        Since this is defined on all of $\bR^2$, it is defined over every neighborhood of $(-1,0,0)$.
+
+        \item Using the implicit function theorem, since
+        \[ \pdv fx(-1,0,0) = \frac{x}{\sqrt{x^2+y^5+\cos(z)-1}}(-1,0,0) = -1 \]
+        and therefore the differential of $x$ is invertible, so by the implicit function theorem, $x$ can be written as a function of $y$ and $z$ in some environment of the point, as required.
+
+    \elist
+
+\eblank
+
+\bexerc
+
+    Prove that there exists a ball $B\subseteq\bR^4$ whose center is at $(2,1,-1,-2)$ and functions $f,g\colon B\longvarrightarrow\bR$ continuously differentiable such that
+    \[ f(2,1,-1,-2) = 4 \quad g(2,1,-1,2) = 3 \]
+    and for every $(x,y,z,a)\in B$:
+    \[ f^2+g^2+a^2 = 29 \quad \frac{f^2}{x^2} + \frac{g^2}{y^2} + \frac{a^2}{z^2} = 17 \]
+
+\eexerc
+
+\bblank
+
+    We can use the implicit function theorem to prove this.
+    We first define the function $h\colon\bR^{4\times2}\longvarrightarrow\bR^2$ by
+    \[ h(x,y,z,a,f,g) = \parens{f^2+g^2+a^2 - 29,\mkern8mu \frac{f^2}{x^2} + \frac{g^2}{y^2} + \frac{a^2}{z^2} - 17} \]
+    Notice then that
+    \[ J_{h,\binom fg}(x,y,z,a,f,g) = \pmat{2f & 2g \\ \frac{2f}{x^2} & \frac{2g}{y^2}} \]
+    so at $(2,1,-1,2,4,3)$:
+    \[ J_{h,\binom fg} = \pmat{8 & 6 \\ \frac12 & 6} \]
+    which is invertible as it has a non-zero determinant.
+    Thus by the implicit function theorem, in a neighborhood of $(2,1,-1,2)$ (which contains a ball centered at this point $B$, so we'll just take the ball $B$) such that $f$ and $g$ are indeed continuously
+    differentiable functions of $x,y,z,a$ where $h\bigl(x,y,z,a,f(x,y,z,a),g(x,y,z,a)\bigr)=0$ (which exactly defines the equations given in the question) and $f(2,1,-1,2)=4$ and $g(2,1,-1,2)=3$ (which are
+    the initial conditions given in the question), as required.
+
+\eblank
+
+\bexerc
+
+    Show that the function $f(x,y)=\bigl(e^x\cos(y),\: e^x\sin(y)\bigr)$ is not invertible but is locally invertible in a neighborhood of every point in $\bR^n$.
+
+\eexerc
+
+\bblank
+
+    Firstly we know that $f$ is continuously differentiable.
+    And
+    \[ J_f = \pmat{e^x\cos(y) & -e^x\sin(y) \\ e^x\sin(y) & \mathbin{\hphantom{-}}e^x\cos(y)} = e^x\pmat{\cos(y) & -\sin(y) \\ \sin(y) & \mathbin{\hphantom{-}}\cos(y)} \]
+    which has a determinant of
+    \[ e^{2x}\bigl(\cos^2(y)+\sin^2(y)\bigr) + e^{2x} \neq 0\]
+    so $J_f$ is always invertible, and since $f$ is continuously differentiable, for every point there is a neighborhood of it in which $f$ is locally invertible.
+
+    $f$ itself is not globally invertible since $f(0,0)=f(0,2\pi)=(1,0)$ so it is not injective.
+
+\eblank
+
+\end{document}

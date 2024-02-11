@@ -1,0 +1,225 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{diam}{{\rm diam}}(\vert)
+
+\font\bigbf = cmbx12 scaled 2000
+\@undervecc@def{underbar}\@linecap\@linecap
+
+\def\openset{{\cal O}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=22
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infinitesimal Calculus 3}
+
+    \medskip
+    \textit{Lecture \thesection, Wednsday January 18, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{thrm*}
+
+    If $f,h_1,\dots,h_k\colon\bR^{n+k}\longvarrightarrow\bR$ functions in $C^1$.
+    We define
+    \[ S = \set{x\in\bR^{n+k}}[h_1(x)=\dots=h_k(x)=0] \]
+    If $f\big|_S$ has a critical point $p\in S$ and $\set{\nabla h_i(p)}_{i=1,\dots,k}$ are linearly independent then there exists $\lambda_1,\dots,\lambda_k$ such that
+    \[ \nabla f(p) = \sum_{i=1}^k\lambda_i\cdot\nabla h_i(p) \]
+
+\end{thrm*}
+
+\begin{proof}
+
+    Since $\set{\nabla h_i}$ are independent, then the function $h=(h_1,\dots,h_k)$ has an invertible Jacobian at $p$ and therefore by the implicit function theorem, $S$ is the graph of an implicit function
+    around $p$ in $C^1$.
+    Let $\mathrm{TS}$ be the tangent space to $S$.
+    We know that by the previous lemma $\nabla f(p)\in\mathrm{TS}$, and since $S$ is defined via $k$ variables, $\mathrm{TS}$ has a dimension of $n$ so
+    $\mathrm{TS}=\spa\set{\nabla h_1(p),\dots,\nabla h_k(p)}^\top$, and so $\nabla f(p)$ is in this span.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\subsection{Integrals}
+
+\begin{defn*}
+
+    A set $D\subseteq\bR^n$ is a \ppemph{open domain} if it is an open and connected set.
+    And $\bar D$ is called a \ppemph{closed domain}.
+
+\end{defn*}
+
+A prism $T=\set{(x_1,\dots,x_n)}[a_i<x_j<b_j]=\prod_{i=1}^n (a_i,b_i)$ has volume
+\[ \abs T = \prod_{i=1}^n (b_i-a_i) \]
+For a set $D$ we define its \emph{internal volume} to be
+\[ \abs{D}_{\rm int} = \sup\sum_{i=1}^k\abs{T_i} \]
+where the supremum is taken over all sets of prisms $\set{T_i}_{i=1}^k$ where $\dcup T_i\subseteq D$.
+The \emph{external volume} is defined to be
+\[ \abs{D}_{\rm ext} = \inf\sum_{i=1}^k\abs{T_i} \]
+where the infimum is taken over all sets of prisms where $\dcup T_i\supseteq D$.
+
+\begin{defn*}
+
+    A set $D$ is \ppemph{contented} if its internal and external volumes are equal.
+
+\end{defn*}
+
+It can be shown that $D$ is contented if and only if $\abs{\partial D}_{\rm ext}=0$.
+
+\begin{defn*}
+
+    A \ppemph{partition} of the domain $\bar D$ is a set $\set{\bar D_i}[1\leq i\leq k]$ of contented closed domains which are pairwise disjoint and
+    \[ \bigdcup_{i=1}^k \bar D_i = \bar D \]
+
+\end{defn*}
+
+\begin{defn*}
+
+    Given a partition $P=\set{\bar D_i}_{i=1}^k$ we define
+    \[ M_i = \sup\set{f(x)}[x\in\bar D_i] \qquad m_i = \inf\set{f(x)}[x\in\bar D_i] \]
+    The \ppemph{upper sum} of $P$ is
+    \[ \bar S(f,P) = \sum_{i=1}^k M_j\cdot\abs{\bar D_j} \]
+    and the \ppemph{lower sum} of $P$
+    \[ \underbar S(f,P) = \sum_{i=1}^k m_j\cdot\abs{\bar D_j} \]
+
+\end{defn*}
+
+\begin{defn*}
+
+    The \ppemph{width} of a partition $P$ is $\lambda(P)=\max\diam(D_j)$.
+
+\end{defn*}
+
+
+Suppose $D$ is contented, and so is every $D_j$.
+Further suppose $f\colon\bar D\longvarrightarrow\bR$ is bounded, then
+\[ m\abs{\bar D} = m\sum_{i=1}^k\abs{D_j} = \sum_{i=1}^k m\abs{D_j} \leq \sum_{i=1}^k m_j\abs{D_j} \leq \sum_{i=1}^k M_j\abs{D_j} \leq M\sum_{i=1}^k\abs{D_j} \leq M\abs{\bar D_j} \]
+And specifically
+\[ m\abs{\bar D} \leq \underbar S(f,P) \leq \bar S(f,P) \leq M\abs D \]
+Thus all the lower and upper sums are bounded by constants and thus the following is well-defined:
+
+\begin{defn*}
+
+    The \ppemph{upper integral} and \ppemph{lower integral} are defined as followed, respectively:
+    \[ \overline{\int_D}f = \inf_P\bar S(f,P) \qquad \underline{\int_D} f = \sup_P\underbar S(f,P) \]
+    And $f$ is \ppemph{integrable} over $D$ if
+    \[ \int_D f(x_1,\dots,x_n)dx_1\dots dx_n = S_D = \underline{\int_D}f = \overline{\int_D}f \]
+
+\end{defn*}
+
+\begin{defn*}
+
+    A partition $Q$ is a \ppemph{refinement} of a partition $P=\set{P_i}_{i=1}^k$ if it is obtained from $P$ by further partitioning each $P_i$.
+
+\end{defn*}
+
+\begin{prop*}
+
+    If $Q$ is a refinement of $P$ then
+    \[ \underbar S(f,P) \leq \underbar S(f,Q) \leq \bar S(f,Q) \leq \bar S(f,P) \]
+
+\end{prop*}
+
+\begin{proof}
+
+    We can write $Q$ as the ``union'' of partitions $Q_j$ (partitions, not domains) which partition $P_j$.
+    It is then trivial to see that
+    \[ \bar S(f,Q) = \sum_{j=1}^k \bar S(f,Q_j) \]
+    and we know by the previous proposition that
+    \[ \bar S(f,Q_j) \leq M_j\abs{P_j} \]
+    where $M_j$ is taken from $P_j$, since $Q_j$ is a partition of the domain $P_j$.
+    Thus
+    \[ \bar S(f,Q) \leq \sum_{j=1}^k M_j\abs{P_j} = \bar S(f,P) \]
+    as required.
+    Similar for lower sums.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{prop*}
+
+    If $P$ and $Q$ are \emph{any} two partitions then
+    \[ \underbar S(f,P) \leq \bar S(f,Q) \]
+
+\end{prop*}
+
+\begin{proof}
+
+    We define a new partition $T$ which is a refinement of both $P$ and $Q$, this can be done by taking all possible intersections of $P_i$ and $Q_j$, that is:
+    \[ T = \set{T_{ij}}[T_{ij} = P_i\cap Q_j\neq\varnothing] \]
+    This is a contented partition since $\partial(P_i\cap Q_j)\subseteq\partial P_i\cup\partial Q_j$ and it can be shown that $\abs{A\cup B}\leq\abs A+\abs B$, and so $\partial{P_i\cap Q_j}=0$.
+    Thus
+    \[ \underbar S(f,P) \leq \underbar S(f,T) \leq \bar S(f,T) \leq \bar S(f,Q) \]
+    as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{prop*}
+
+    \[ \underline{\int_D}f\leq\overline{\int_D}f \]
+
+\end{prop*}
+
+This is true because the set of lower integrals is less than the set of upper integrals.
+
+\begin{prop*}
+
+    $f$ is integrable in $D$ if and only if for every $\epsilon>0$ there is a partition $P$ such that
+    \[ \bar S(f,P) - \underbar S(f,P) < \epsilon \]
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose this is true for every $\epsilon>0$, then
+    \[ \overline{\int_D}f - \underline{\int_D}f \leq \bar S(f,P) - \underbar S(f,P) < \epsilon \]
+    so the upper and lower integrals are equal, and therefore $f$ is integrable.
+
+    And if $f$ is integrable, take $\epsilon>0$ then there are partitions $P$ and $Q$ such that
+    \[ 0\leq \bar s(f,P) - \overline\int f < \frac\epsilon2 \]
+    and
+    \[ 0\leq \underline{\int} f - \underbar s(f,Q) < \frac\epsilon 2 \]
+    If we take a common refinement $K$ of $P$ and $Q$ then we get the same inequalities.
+    Then adding both inequalities gives
+    \[ 0 \leq \bar s(f,K) - \underbar S(f,K) < \epsilon \]
+    since the upper and lower integrals are equal.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\end{document}
+

@@ -1,0 +1,250 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input ../preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\def\openset{{\cal O}}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\pdf@drawing@macro{check}{0 1 0 RG 1.2 w 1 j 1 J 0 5 m 3 0 l 8 10 l S}{9.2pt}{12pt}{1pt}{1pt}
+\pdf@drawing@macro{ecks}{1 0 0 RG 0 0 m 1 j 1 J 10 10 l 0 10 m 10 0 l S}{11.2pt}{12pt}{1pt}{1pt}
+
+\let\lineseg=\overleftrightvecc
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=6
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infintesimal Calculus 3}
+
+    \medskip
+    \textit{Assignment \thesection}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{exercise*}
+
+    Compute the partial derivatives of each of the following functions:
+    \benum
+        \item $f(x,y)=x^3+3y^2-\frac xy$
+        \item $f(x,y)=e^{\cos(xy)}$
+        \item $f(x,y,z)=\sqrt{x^2+y^2+z^2}$
+        \item $f(x,y,z)=\log(x^3+y^3-z^3)$
+    \eenum
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    \benum
+        Partial derivatives are simply derivatives of functions where all other variables are held constant, we will use this fact to compute the partial derivatives:
+        \item $f_x(x,y)=3x^2-\frac1y$ and $f_y(x,y)=6y+\frac x{y^2}$.
+        This is defined for $\bR^2\setminus\set{(x,0)}$ which is the domain of the function as well, so the partial derivatives cannot be defined anywhere else.
+        \item $f_x(x,y)=-y\sin(xy)\cdot e^{\cos(xy)}$ and by symmetry $f_y(x,y)=-x\sin(xy)\cdot e^{\cos(x,y)}$.
+        This is defined on all of $\bR^2$.
+        \item In general we can write this as a specific case of the function
+        \[ f(x_1,\dots,x_n) = \sqrt{\sum_{i=1}^n x_i^2} \]
+        Whose partial derivatives are
+        \[ f_{x_i}(x_1,\dots,x_n) = \frac{2x_i}{\sqrt{\sum_{i=1}^n x_i^2}} = \frac{x_i}{\sqrt{\sum_{i=1}^n x_i^2}} \]
+        This is defined only when the denominator is non-zero which can only be when $(x_1,\dots,x_n)=0$ since $x_i^2\geq0$.
+        If $(x_1,\dots,x_n)=0$ then the $i$th partial derivative is (since $f(0)=0$):
+        \[ f_{x_i}(0,\dots,0) = \lim\frac{f(0,\dots,\Delta,\dots,0)}{\Delta} = \lim_{\Delta\varrightarrow0}\frac{\abs\Delta}\Delta \]
+        Which doesn't converge since for $\Delta<0$ it is $-1$ and for $\Delta>0$ it is $1$.
+        So the partial derivatives are defined over $\bR^n\setminus\set{(0,\dots,0)}$.
+        \item In this case:
+        \[ f_x(x,y,z) = \frac{3x^2}{x^3+y^3-z^3} \quad f_y(x,y,z) = \frac{3y^2}{x^3+y^3-z^3} \quad f_z(x,y,z)=\frac{-3z^2}{x^3+y^3-z^3} \]
+        Which are defined except for when $x^3+y^3-z^3=0$, but this is outside the domain of the function, which is the set of all points where $x^3+y^3-z^3>0$ so the partial derivatives are defined
+        where ever the function is.
+    \eenum
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Determine the differentiability of the following functions:
+    \benum
+        \item $\displaystyle f(x,y)=\begin{cases}\frac{x^3+y^4}{x^2+y^2} & (x,y)\neq0 \\ 0 & (x,y)=0\end{cases}$
+        \item $\displaystyle f(x,y)=\begin{cases}\frac{x^3-y^2}{\sqrt{x^2+y^2}} & (x,y)\neq0 \\ 0 & (x,y)=0\end{cases}$
+        \item $\displaystyle f(x,y)=\begin{cases}x\sinof{\frac{y^2}x} & x\neq0 \\ 0 & x=0\end{cases}$ 
+    \eenum
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    \benum
+        \item Since for when $(x,y)\neq0$ this is simply the composition of elementary functions which are defined in this domain, it is differentiable there.
+        For when $(x,y)=0$ we have that:
+        \[ f_x(0,0) = \lim_{x\varrightarrow0}\frac{f(x,0)-f(0,0)}x=\lim\frac xx=1 \]
+        And
+        \[ f_y(0,0) = \lim_{y\varrightarrow0}\frac{f(0,y)-f(0,0)}y=\lim\frac{y^2}y=0 \]
+        So $\nabla f\big|_{(0,0)}=(1,0)^T$ and to determine differentiability we must show that the following limit converges to $0$:
+        \[ \lim_{(x,y)\varrightarrow0}\frac\epsilon{\norm{(x,y)}} = \lim\frac{f(x,y)-f(0,0)-\nabla f\big|_{(0,0)}\cdot(x,y)}{\sqrt{x^2+y^2}} = \lim\frac{x^3+y^4-x}{(x^2+y^2)^{1.5}} \]
+        For $y=0$ this is the tail
+        \[ \lim\frac{x^3-x}{x^3} = \lim 1-x^{-2} \]
+        Which does not converge to $0$, so the function is not differentiable at $(0,0)$.
+        So the domain of differentiability for the function is $\bR^2\setminus\set{(0,0)}$.
+
+        \item For the same reason as above when $(x,y)\neq0$ the function is differentiable as the composition of elementary functions.
+        And for $(0,0)$:
+        \[ f_x(0,0) = \lim_{x\varrightarrow0}\frac{x^3}{\abs x\cdot x} = \lim_{x\varrightarrow0}\frac{x^2}{\abs x} = \lim_{x\varrightarrow0}\abs x = 0 \]
+        And
+        \[ f_y(0,0) = \lim_{y\varrightarrow0}\frac{-y^2}{\abs y\cdot y}= \lim_{y\varrightarrow0}\frac{-y}{\abs y} \]
+        Which does not converge, so $f$ does not have a $y$ partial derivative at $(0,0)$ and is therefore not differentiable there.
+        So the domain of differentiability is $\bR^2\setminus\set{(0,0)}$.
+
+        \item Since when $x\neq0$, this is the composition of elementary functions, and $\set{x\neq0}$ is open, $f$ is differentiable when $x\neq0$.
+        When $x=0$:
+        \[ f_x(0,y) = \lim_{x\varrightarrow0}\frac{x\sinof{\frac{y^2}x}}x = \lim_{x\varrightarrow0}\sinof{\frac{y^2}x} \]
+        This does not converge unless $y=0$ as well (since $\sinof{\frac1x}$ is discontinuous at $x=0$).
+        And if $y=0$ then it is equal to $0$.
+        And
+        \[ f_y(0,0) = \lim_{y\varrightarrow0}\frac{0}y = 0 \]
+        So $\nabla f\big|_{(0,0)}=(0,0)^T$.
+        So in order to show differentiability we must show that the following limit exists and is equal to $0$:
+        \[ \lim_{(x,y)\varrightarrow0}\frac{f(x,y)-f(0,0)-\nabla f\big|_{(0,0)}\cdot(x,y)}{\norm{(x,y)}} = \lim_{(x,y)\varrightarrow0}\frac{x\sinof{\frac{y^2}x}}{\sqrt{x^2+y^2}} \]
+        since for $x=0$ this limit is trivially equal to $0$.
+        We can rewrite this as
+        \[ \frac{\sinof{\frac{y^2}x}}{\sqrt{1+\frac{y^2}{x^2}}} \]
+        Now suppose we have a sequence $(x_n,y_n)\in\bR^2$, we can assume that $\frac{y_n^2}{x_n}$ is a convergent sequence.
+        If it is not a convergent sequence there must be a convergent subsequence since $\bR$ is sequentially compact, and we will show that if this sequence converges then the limit above converges to $0$.
+        So every convergent subsequence of any sequence which converges to $0$ has the limit converge to $0$, so the limit converges to $0$.
+        If $\frac{y_n^2}{x_n}$ converges to $0$ then so does the limit, since the numerator converges to $0$ and the denominator is larger than $1$.
+        Otherwise if it doesn't converge to $0$ then since $\abs{\frac1{x_n}}$ converges to infinity (since $x_n$ converges to $0$), $\frac{y_n^2}{x_n^2}$ converges to infinity as well.
+        So in this case the denominator converges to infinity and the numerator is bounded (since $\sin$ is bounded), so the limit also converges to $0$.
+
+        So the limit does indeed converge to $0$ as required, so $f$ is differentiable at $(0,0)$.
+        Thus the domain of differentiability is $\bR^2\setminus\set{(0,y)}[y\neq0]$.
+    \eenum
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Suppose $f$ is differentiable at $(0,0)$, then we define:
+    \[ h(x,y) = \begin{cases} f(x,y) & xy>0 \\ 0 & xy\leq0 \end{cases} \]
+    Show that if $f(0,0)=f_x(0,0)=f_y(0,0)=0$ then $h$ is differentiable at $(0,0)$.
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    We know that
+    \[ h_x(0,0) = \lim_{x\varrightarrow0}\frac{h(x,0)-h(0,0)}x = \lim_{x\varrightarrow0}\frac0x = 0 \]
+    And similarly $h_y(0,0)=0$ so $\nabla h\big|_{(0,0)}=(0,0)^T$.
+    And so all that remains to show is that the following limit converges to $0$:
+    \[ \lim_{(x,y)\varrightarrow0}\frac{h(x,y)-h(0,0)-\nabla h\big|_{(0,0)}}{\norm{(x,y)}} = \lim_{(x,y)\varrightarrow0}\frac{h(x,y)}{\sqrt{x^2+y^2}} \]
+    If $xy\leq0$ then $h(x,y)=0$ so the limit holds.
+    Otherwise if $xy>0$ then the limit is equal to the limit of
+    \[ \frac{f(x,y)}{\sqrt{x^2+y^2}} = \frac{f(0,0)+\nabla f\big|_{(0,0)}\cdot(x,y)+\epsilon(x,y)}{\sqrt{x^2+y^2}} = \frac{\epsilon(x,y)}{\sqrt{x^2+y^2}} \]
+    since $f$ is differentiable at $(0,0)$.
+    And since $\epsilon$ is an $\epsilon$ function, this limit is indeed $0$ as required.
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Write the second order Taylor polynomial for $f(x,y)=\sinof{xe^y}$ about the point $\parens{\frac\pi2,0}$.
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    First we compute the partial derivatives:
+    \begin{align*}
+        f_x     &= e^y\cosof{xe^y}          & f_y &= xe^y\cosof{xe^y} \\
+        f_{xx}  &= -e^{2y}\sinof{xe^y}      & f_{yy} &= xe^y\bigl(\cosof{xe^y} - xe^y\sinof{xe^y}\bigl) \\
+        f_{xy}  &= e^y\bigl(\cosof{xe^y}-xe^y\sinof{xe^y}\bigl) 
+    \end{align*}
+    And so:
+    \[ f(x,y) \approx 1 + \parens{x-\frac\pi2}\cdot0 + y\cdot0 + \frac12\biggl(-\parens{x-\frac\pi2}^2-\pi\parens{x-\frac\pi2}y-\frac{\pi^2y^2}4\biggr) \]
+    Simplifying gives:
+    \[ f(x,y) \approx -\frac12\parens{x-\frac\pi2}^2 - \frac\pi2\parens{x-\frac\pi2}y - \frac{\pi^2y^2}8 + 1 \]
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Find the Taylor series expansions of the following functions about $(1,1)$ of order $2$:
+    \benum
+        \item $f(x,y)=x^y$
+        \item $f(x,y)=\frac xy$
+    \eenum
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    \benum
+        \item We will find partial derivatives:
+            \begin{align*}
+                f_x     &= yx^{y-1}                 & f_y       &= x^y\log x \\
+                f_{xx}  &= y(y-1)x^{y-2}            & f_{yy}    &= x^y\bigl(\log x\bigr)^2 \\
+ %               f_{xxx} &= y(y-1)(y-2)x^{y-3}       & f_{yyy}   &= x^y\bigl(\log x\bigr)^3 \\
+                f_{xy}  &= yx^{y-1}\log x+x^{y-1}
+            \end{align*}
+            And so:
+            \[ f(x,y) \approx 1 + (x-1) + (y-1)\cdot0 + \frac12\bigl((x-1)^2\cdot0+2(x-1)(y-1)+(y-1)^2\cdot0\bigr) = x + (x-1)(y-1) \]
+        \item We will find partial derivatives:
+            \begin{align*}
+                f_x     &= \frac1y          & f_y   &= -\frac x{y^2} \\
+                f_{xx}  &= 0                & f_{yy}&= \frac{2x}{y^3} \\
+                f_{xy}  &= -\frac1{y^2}
+            \end{align*}
+            And so:
+            \begin{align*}
+                f(x,y) &\approx 1 + (x-1) - (y-1) + \frac12\bigl((x-1)^2\cdot0-2(x-1)(y-1)+2(y-1)^2\bigr) \\
+                       &= 1 + x - y - (x-1)(y-1) + (y-1)^2
+            \end{align*}
+    \eenum
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Find the Taylor polynomial of $f(x,y)=\frac1{1-x^2y}$ about $(0,0)$ and using it find $\partial_{x^4y^2}f(0,0)$.
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    If we let $t=x^2y$ then we have that $f(t)=\frac1{1-t}$ and this has a well-known Taylor series:
+    \[ f(t) = \sum_{n=0}^\infty t^n \]
+    This is the taylor series around $t=0$, which is given by $x=y=0$.
+    And so
+    \[ f(x,y) = \sum_{n=0}^\infty x^{2n}y^n \]
+    this is the taylor series of $f$ around $(0,0)$ since the terms are of the form $(x-0)^n(y-0)^k$, as required.
+
+    To find $\partial_{x^4y^2}f(0,0)$ recall that
+    \[ f(x,y) = \sum_{m=0}^\infty\frac1{m!}\sum_{\ell=0}^m\binom m\ell\cdot\partial_{x^\ell y^{m-\ell}}f(0,0)x^\ell y^{m-\ell} \]
+    And the summand which has $\partial_{x^4y^2}f(0,0)$ is given when $\ell=4$ and $m=6$, which is the only summand with the term $x^4y^2$, which has a coefficient of $1$ in $f$'s Taylor series found above
+    (it is given by $n=2$).
+    So:
+    \[ \frac1{m!}\binom m\ell\cdot\partial_{x^\ell y^{m-\ell}}f(0,0) = 1 \implies \frac1{6!}\binom64\cdot\partial_{x^4y^2}f(0,0)=1 \]
+    And so
+    \[ \partial_{x^4y^2}f(0,0) = 48 \]
+
+\end{blankpp}
+
+\end{document}
+

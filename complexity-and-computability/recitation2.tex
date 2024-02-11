@@ -1,0 +1,175 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{conj}{Conjecture}{255,130,130}{150,0,0}{200,0,0}
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\PF{\mathbf{PF}}
+\def\PC{\mathbf{PC}}
+\def\P{\mathbf{P}}
+\def\NP{\mathbf{NP}}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mN{\mathcal{N}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=2
+
+\barcolorbox{255, 220, 220}{130, 0, 0}{200, 80, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Computability and Complexity}
+
+    \medskip
+    \textit{Recitation \thesection, Thursday August 3, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\def\dubis{\mathsf{DoubleIS}}
+\def\is{\mathsf{IS}}
+\begin{exercise*}
+
+    Let us define the decision problem
+    \[ \dubis = \set{(G,k)}[\text{$G$ has two distinct independent sets whose size is at least $k$}] \]
+    Define a Karp reduction from $\is$ (the decision problem of $G$ having an independent set of size $k$, check recitation 1) to $\dubis$.
+
+\end{exercise*}
+
+Let us define a function $f\colon\is\longto\dubis$ where $f(G,k)=(G',k)$ where we define $G'$ as follows:
+if $G=(V,E)$ then we define $G_i=(V_i,E_i)$ to be two distinct copies of $G$ and
+\[ G' = \bigl(V_1\dcup V_2, E_1\dcup E_2\dcup\set{(v,u)}[v\in V_1,\,u\in V_2]\bigr) \]
+Then if $(G,k)\in\is$ then $(G',k)\in\dubis$ since the independent set in $G$ is copied twice into $G'$.
+
+And if $(G',k)\in\dubis$ then $(G',k)$ has an independent set $S$, and $S$ is either contained entirely within $G_1$ or entirely within $G_2$, as otherwise there would be an edge connecting two nodes
+of $S$ (since all nodes in $G_1$ are connected with all nodes in $G_2$).
+Thus $S$ corresponds with an independent set in $G$.
+
+Thus $f(G,k)\in\dubis$ if and only if $(G,k)\in\is$, so $f$ is a Karp reduction as required.
+
+\begin{defn}
+
+    A set of nodes $S$ in a graph are \ppemph{almost independent} if there is at most one pair of nodes in $S$ with an edge between them.
+
+\end{defn}
+
+\def\almostIS{\mathsf{AlmostIS}}
+\begin{exercise*}
+
+    We define the problem $\almostIS$ by
+    \[ \almostIS = \set{(G,k)}[\text{$G$ has an almost independent set whose size is at least $k$}] \]
+    Define a Karp reduction from $\is$ to $\almostIS$.
+
+\end{exercise*}
+
+So we need to define a function $f\colon\is\longto\almostIS$.
+Let $G=(V,E)$ be a graph, then we define $G'=(V',E')$ where $V'=V\dcup\set{u_1,u_2}$ where $u_1,u_2\notin V$, and $E'=E\cup\set{(u_1,u_2)}$, and set $f(G,k)=(G',k+2)$.
+
+If $(G,k)\in\is$ then $(G',k+2)\in\almostIS$ as if $S$ is independent in $G$ then we can take the almost independent set $S\cup\set{u_1,u_2}$ in $G'$.
+Since $\abs k\geq k$, $\abs{S\cup\set{u_1,u_2}}\geq k+2$, and so $(G',k+2)\in\almostIS$ as required.
+
+Now, if $(G',k+2)\in\almostIS$, then let $S$ be the almost independent set of size $\geq k+2$ in $G'$.
+We split into cases:
+\benum
+    \item If $u_1,u_2\in S$ then $S\setminus\set{u_1,u_2}$ is an independent set in $G$ of size $\geq k$ (since otherwise $S$ would have two edges), and so $(G,k)\in\is$ as required.
+    \item Otherwise, let $S'=S\setminus{u_1,u_2}$ and so $\abs{S'}\geq k+1$ (since not both $u_1$ and $u_2$ are in $S'$), and $S'\subseteq G$, and we split into two subcases:
+    \benum
+        \item If $S'$ is independent, then $(G,k)\in\is$ as required.
+        \item Otherwise, since $S'$ is still almost independent, there exist $u,v\in S$ such that $(u,v)\in E$ and so $S''=S\setminus\set u$ is independent and of size $\abs{S''}\geq k$, and so
+        $(G,k)\in\is$ as required.
+    \eenum
+\eenum
+
+\def\sat{\mathsf{SAT}}
+\begin{exercise*}
+
+    Define a Karp reduction from $\sat$ to $\is$.
+
+\end{exercise*}
+
+So we need a function $f\colon\sat\longto\is$ which satisfies the conditions for a Karp reduction.
+Let $(\phi,\tau)\in\sat$, and suppose
+\[ \phi = \bigwedge_{i=1}^m\bigvee_{j=1}^n\epsilon_{ij}x_j \]
+where $\epsilon_{ij}$ is either $\neg$ or nothing.
+Let us define a graph $G=(V,E)$ where $V=\set{(i,j)}[1\leq i\leq m,\,1\leq j\leq n]$.
+The vertex $(i,j)$ represents $\epsilon_{ij}x_j$, and we define edges
+\[ E = \set{\bigl((i,j_1),\,(i,j_2)\bigr)}[1\leq i\leq n,\,1\leq j_1,j_2\leq n]\cup\set{\bigl((i_1,j),\,(i_2,j)\bigr)}[\epsilon_{i_1j}\neq\epsilon_{i_2j}] \]
+And let us define $k=m$.
+
+So we must show that $\phi\in\sat$ if and only if $(G,m)\in\is$.
+
+If $\phi\in\sat$ then there exists a boolean vector $\tau$ which satisfies $\phi$.
+Then for every disjunction ($\bigvee_{j=1}^n\epsilon_{ij}x_j$), there exists at least one variable which is satisfies by $\tau$.
+So from the $i$th disjunction, suppose $\epsilon_{ij}x_j$ is satisfied by $\tau$, then we add $(i,j)$ to $S$.
+Since there are $m$ disjunctions, $\abs S=m$, and $S$ is also independent as if $(i_1,j_1)$ and $(i_2,j_2)$ are neighbors and in $S$, then since we only choose one node from each disjunction, $i_1\neq i_2$.
+Then $j_1=j_2=j$ and $\epsilon_{i_1j}\neq\epsilon_{i_2j}$, but then $\epsilon_{i_1j}x_j$ and $\epsilon_{i_2j}x_j$ can't both be satisfied by $\tau$, in contradiction.
+
+So $S$ is independent and of size $m$, meaning $(G,n)\in\is$.
+
+Suppose that $(G,n)\in\is$, so there exists an independent set of size $n$.
+If $(i,j)\in S$ then if $\epsilon_{ij}=\neg$ set $\tau_j=0$ and otherwise if $\epsilon_{ij}$ is empty set $\tau_j=1$.
+The rest of the indexes of $\tau$ can be set as wanted.
+
+$\tau$ is well-defined since if $(i_1,j),(i_2,j)\in S$ then they are not neighbors so $\epsilon_{i_1j}=\epsilon_{i_2j}$, so $\tau_j$ is set to one value.
+Since $S$ is of size $n$ and independent, for every $1\leq i\leq m$ there exists a $1\leq j\leq n$ such that $(i,j)\in S$ (as otherwise there would be an $i$ such that $(i,j_1),(i,j_2)\in S$ but these are
+neighbors).
+And so every disjunction has a variable which is satisfied, and thus every disjunction is satisfied, and so $\phi$ is satisfied.
+
+Thus $\phi\in\sat$ if and only if $(G,n)\in\is$.
+
+\end{document}
+

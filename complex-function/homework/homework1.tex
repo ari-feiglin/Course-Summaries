@@ -1,0 +1,532 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input ../preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{ker}{{\rm ker}}({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{atan}{{\rm tan}^{-1}}({})
+\newfunc{lag}{{\cal L}}({})
+\newfunc{sin}{{\rm sin}}({})
+\newfunc{cos}{{\rm cos}}({})
+\newfunc{arg}{{\rm arg}}({})
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\iff{\,\longvarLeftRightarrow\,}
+\def\implies{\,\longvarRightarrow\,}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\openset{{\cal O}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\let\ds=\displaystyle
+
+\def\bexerc{\begin{exercise*}}
+\def\eexerc{\end{exercise*}}
+\def\bblank{\begin{blankpp}}
+\def\eblank{\end{blankpp}}
+
+\begin{document}
+
+\c@section=1
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Complex Functions}
+
+    \medskip
+    \textit{Assignment \thesection}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\bexerc
+
+    Write the following in rectangular form:
+    \benum
+        \item $\ds\frac{(2+i)(3+2i)}{1-i}$
+        \item $\ds\parens{-\frac12+i\frac{\sqrt3}2}^4$
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item We first expand the numerator to get $4+7i$ then we multiply the numerator and denominator by the conjugate of the
+        denominator to get
+        \[ \frac{(4+7i)(1+i)}{(1-i)(1+i)} = \frac{-3+11i}{2} = -\frac32 + \frac{11}2i \]
+        \item We convert this to polar form, $r^2=\frac14+\frac34=1$ so $r=1$ and $\theta=\frac23\pi$.
+        So $z=e^{i\frac23\pi}$ and so 
+        \[ z^4=e^{i\frac83\pi}=\cosof{\frac83\pi}+i\sinof{\frac83\pi} = -\frac12+\frac{\sqrt3}2i \]
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Find the values of $\sqrt{-8+6i}$ (ie the solutions to $z^2=-8+6i$).
+
+\eexerc
+
+\bblank
+
+    Using some basic trigonometry we see that $\abs{-8+6i}=10$ and $2\theta=\argof{-8+6i}\approx\pi-\atanof{\frac34}$.
+    And so since
+    \[ z^n = re^{i\theta} \iff z = \sqrt[n]r e^{i\frac\theta n+\frac{2\pi k}n} \]
+    we get that
+    \[ \sqrt{-8+6i} \approx \sqrt{10}e^{\theta i}, \sqrt{10}e^{(\theta+\pi)i} = 1 + 3i, -1 - 3i \]
+
+\eblank
+
+\bexerc
+
+    Find the solutions to $z^2+\sqrt{32}iz-6i=0$.
+
+\eexerc
+
+\bblank
+
+    Using the quadratic formula, we have to compute $\sqrt{(\sqrt{32}i)^2-4(-6i)} = \sqrt{-32+24i}$.
+    If $2\theta$ is the argument of $-32+24i$ then it equals $40e^{2\theta i}$ and so the square roots are
+    $\pm2\sqrt{10}e^{\theta i}$.
+    And since $\theta=\frac12(\pi-\atanof{\frac34})$ we get that the square roots are
+    \[ \pm2\sqrt{10}\bigl(\cosof\theta + i\sinof\theta\bigr) = \pm(2 + 6i) \]
+    And so the solutions are
+    \[ \frac{-\sqrt{32}i\pm(2+6i)}{2} = 1 + (3-2\sqrt2)i,\, -1 - (3+2\sqrt2)i \]
+
+\eblank
+
+\bexerc
+
+    Prove the following identities:
+    \benum
+        \item $\overline{z_1+z_2}=\overline{z_1}+\overline{z_2}$
+        \item $\overline{z_1\cdot z_2}=\overline{z_1}\cdot\overline{z_2}$
+        \item If $p\in\bR[x]$ then $\overline{p(z)}=p\bigl(\overline z\bigr)$
+        \item $\overline{\overline z}=z$
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item Suppose $z_k=a_k+b_ki$ then $z_1+z_2=(a_1+a_2)+(b_1+b_2)i$ and so
+        \[ \overline{z_1+z_2}=(a_1+a_2)-(b_1+b_2)i = (a_1 - b_1i) + (a_2 - b_2i) \]
+        And $\overline{z_i}=a_k-b_ki$ so
+        \[ = \overline{z_1} + \overline{z_2} \]
+        as required.
+
+        \item Recall that $\overline{re^{i\theta}}=re^{-i\theta}$.
+        So if $z_k=r_ke^{i\theta_k}$ then
+        \[ \overline{z_1z_2} = \overline{r_1r_2e^{i(\theta_1+\theta_2)}} = r_1r_2e^{-i(\theta_1+\theta_2)} \]
+        And
+        \[ \overline{z_1}\cdot\overline{z_2} = r_1e^{-i\theta_1}\cdot r_2e^{-i\theta_2} = r_1r_2e^{-i(\theta_1+\theta_2)} 
+        = \overline{z_1z_2} \]
+        As required.
+
+        \item Notice that the above two identities can be generalized to any finite number of complex numbers by induction.
+        ie $\overline{\sum z_k}=\sum\overline{z_k}$ and similar for products.
+        Specifically $\overline{z^k}=\overline{z}^k$.
+        Then if
+        \[ p(x) = \sum_{k=0}^n a_kx^k \]
+        We have that
+        \[ \overline{p(z)} = \overline{\sum_{k=0}^n a_kz^k} = \sum_{k=0}^n\overline{a_kz^k} =
+        \sum_{k=0}^n\overline{a_k}\cdot\overline{z}^k \]
+        Since $a_k\in\bR$ we have that $\overline{a_k}=a_k$ and so
+        \[ = \sum_{k=0}^n a_k\cdot\overline{z}^k = p\bigl(\overline z\bigr) \]
+        where the last equality comes from the definition of $p$.
+
+        \item $\overline{\overline{a+bi}}=\overline{a-bi}=a+bi=z$.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Prove that $\abs{z^2}=\abs{z}^2$ both in polar and rectangular coordinates.
+
+\eexerc
+
+\bblank
+
+    We will show that for every $z,w\in\bC: \abs{zw}=\abs z\abs w$.
+    Thus when $z=w$ this proves what we have been asked to prove.
+    Suppose $z=a+bi$ and $w=c+di$ then $zw=(ac-bd)+i(ad+cb)$ so
+    \[ \abs{zw}=\sqrt{(ac-bd)^2+(ad+bc)^2} = \sqrt{a^2c^2+b^2d^2+a^2d^2+b^2c^2 -2acbd + 2adbc} =
+    \sqrt{a^2c^2+b^2d^2+a^2d^2+b^2c^2} \]
+    And
+    \[ \abs{z}\abs{w}=\sqrt{a^2+b^2}\cdot\sqrt{c^2+d^2} = \sqrt{a^2c^2 + a^2d^2 + b^2c^2 + b^2d^2} = \abs{zw} \]
+    As required.
+
+    And if $z=re^{i\alpha}$ and $w=se^{i\beta}$ we have that $\abs z=r,\,\abs w=s$ and $zw=rse^{i(\alpha+\beta)}$ so
+    $\abs{zw}=rs=\abs z\abs w$.
+
+\eblank
+
+\bexerc
+
+    Prove the following:
+    \benum
+        \item $\abs{z^n}=\abs{z}^n$
+        \item $\abs{z}^2=z\overline z$
+        \item $\abs{\Reof z},\abs{\Imof z}\leq\abs z\leq\abs{\Reof z}+\abs{\Imof z}$.
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item Inductively, by my proof of the previous problem $\abs{z_1\cdots z_n}=\abs{z_1}\cdots\abs{z_n}$.
+        The base case where $n=2$ was shown in the proof of the previous problem.
+        Then $\abs{z_1\cdot z_2\cdots z_n}=\abs{z_1}\cdot\abs{z_2\cdots z_n}$ by the $n=2$ case, and inductively
+        $\abs{z_2\cdots z_n}=\abs{z_2}\cdots\abs{z_n}$ and so all in all we get that $\abs{z_1\cdots z_n}=\abs{z_1}\cdots\abs{z_n}$.
+
+        So when all the $z_k=z$ we get that $\abs{z^n}=\abs{z\cdots z}=\abs{z}\cdots\abs{z}=\abs{z}^n$ as required.
+
+        \item Suppose $z=re^{i\theta}$ then $z\overline z=re^{i\theta}re^{-i\theta}=r^2e^{i(\theta-\theta)}=r^2$, and since
+        $\abs{z}^2=r^2$ we have finished.
+
+        \item Note that $\Imof{z}^2,\Reof{z}^2 \leq \Reof{z}^2 + \Imof{z}^2$, and since the square root function is monotonic
+        (these are nonnegative real numbers) we get that (since $\sqrt{a^2}=\abs a$):
+        \[ \abs{\Reof z},\abs{\Imof z}\leq\sqrt{\Reof z^2 + \Imof z^2}=\abs z \]
+        And since
+        \[ \Reof z^2+\Imof z^2\leq\Reof z^2 + 2\abs{\Reof z}\abs{\Imof z} + \Imof z^2 = \bigl(\abs{\Reof z}+\abs{\Imof z}\bigr)^2 \]
+        taking the square root of both sides we get
+        \[ \abs z\leq\abs{\Reof z}+\abs{\Imof z} \]
+        as required.
+
+        Note that by our proof, the left inequality is an equality when $\Reof z^2,\Imof z^2=\Reof z^2+\Imof z^2$.
+        So in order to get both equalities we get $\Reof z=\Imof z=0$ (ie. $z=0$) and for just one, $z\in\bR$ or $z\in i\bR$.
+
+        And the right inequality is an equality when
+        \[ \Reof z^2 + \Imof z^2 = \Reof z^2 + 2\abs{\Reof z}\abs{\Imof z} + \Imof z^2 \]
+        so $\abs{\Reof z}\abs{\Imof z}=0$, and so $\Reof z=0$ or $\Imof z=0$.
+
+        That is, in order to get all inequalities ($\abs{\Reof z}=\abs{\Imof z}=\dots$), $z$ must be $0$.
+        And to get just one set of inequalities ($\abs{\Reof z}=\abs z=\dots$ or $\abs{\Imof z}=\abs{z}=\dots$),
+        $z\in\bR$ or $z\in i\bR$ respectively.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    \benum
+        \item Prove that $\abs{z_1+z_2}\leq\abs{z_1}+\abs{z_2}$ (follow the proof given).
+        \item When does the inequality become an equality?
+        \item Prove that $\abs{z_1}-\abs{z_2}\leq\abs{z_1-z_2}$.
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item We know that $\abs{z_1+z_2}^2=(z_1+z_2)\cdot\overline{(z_1+z_2)}$ by the identity we showed before, and by linearity
+        of the conjugate we get that this is equal to $(z_1+z_2)\cdot(\overline{z_1}+\overline{z_2})$ and distributing we get that
+        this is equal to $z_1\overline{z_1}+z_2\overline{z_1}+z_1\overline{z_2}+z_1\overline{z_2}$ which is equal, again by that
+        same identity, to $\abs{z_1}^2+\abs{z_2}^2+z_1\overline{z_2}+z_2\overline{z_1}$.
+        Notice that $\overline{z_1\overline{z_2}}=\overline{z_1}\cdot\overline{\overline{z_2}}=\overline{z_1}\cdot z_2$.
+        And since $z+\overline{z}=2\Reof{z}$, this is equal to $\abs{z_1}^2+\abs{z_2}^2+2\Reof{z_1\overline{z_2}}$.
+        And by above, this is
+        \[ \leq\abs{z_1}^2+\abs{z_2}^2+2\abs{z_1\overline{z_2}}=\abs{z_1}^2+\abs{z_2}^2+2\abs{z_1}\abs{\overline{z_2}}
+        =\abs{z_1}^2+\abs{z_2}^2+2\abs{z_1}\abs{z_2} = \bigl(\abs{z_1}+\abs{z_2}\bigr)^2 \]
+        And so we have that
+        \[ \abs{z_1+z_2}^2 \leq \bigl(\abs{z_1}+\abs{z_2}\bigr)^2 \implies \abs{z_1+z_2} \leq \abs{z_1} + \abs{z_2} \]
+
+        \item This is an inequality when our inequality in the proof, $2\Reof{z_1\overline{z_2}}\leq2\abs{z_1\overline{z_2}}$ is
+        an equality.
+        Recall that from before, $\Reof{z}=\abs z$ only when $z\in\bR$ and so this is an inequality only when
+        $z_1\overline{z_2}\in\bR$.
+        So if $z_1=r_1e^{i\theta_1}$ and $z_2=r_2e^{i\theta_2}$, $z_1\overline{z_2}=r_1r_2e^{i(\theta_1-\theta_2)}$, and this is
+        real only when $\theta_1-\theta_2=0$, that is this is an equality only when $\argof{z_1}=\argof{z_2}$.
+
+        \item We know that
+        \[ \abs{z_1} = \abs{(z_1-z_2)+z_2} \leq \abs{z_1-z_2} + \abs{z_2} \]
+        And so we have that, after subtracting $\abs{z_2}$ from both sides:
+        \[ \abs{z_1} - \abs{z_2} \leq \abs{z_1-z_2} \]
+        as required.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Suppose $z=a+bi$.
+    Explain the connection between $\argof z$ and $\atanof{\frac ba}$.
+
+\eexerc
+
+\bblank
+
+    Let $\theta=\argof z$.
+    Then we know that the line connecting $(a,b)$ and $(0,0)$ creates an angle of $\theta$ with the $x$ axis.
+    This means that $\tanof\theta=\frac ba$, and in general
+    \blist
+        \item If $(a,b)$ is in the first quadrant $\theta=\atanof{\frac ba}$.
+        \item If $(a,b)$ is in the second quadrant $\theta=\pi+\atanof{\frac ba}$.
+        \item If $(a,b)$ is in the third quadrant $\theta=\pi+\atanof{\frac ba}$.
+        \item If $(a,b)$ is in the fourth quadrant $\theta=2\pi+\atanof{\frac ba}$.
+    \elist
+
+\eblank
+
+\bexerc
+
+    Solve the equation $z^4=-1+\sqrt3i$.
+
+\eexerc
+
+\bblank
+
+    In polar coordinates $-1+\sqrt3i=2e^{i\frac23\pi}$ and so the solutions are
+    \[ z_k = \sqrt[4]2e^{i(16+\frac k2)\pi} \]
+    And so
+    \[ z_0 = \sqrt[4]2\parens{\frac{\sqrt3}2+\frac12i},\quad z_1=\sqrt[4]2\parens{-\frac12+\frac{\sqrt3}2i},\quad
+    z_2=\sqrt[4]2\parens{-\frac{\sqrt3}2-\frac12},\quad z_3=\sqrt[4]2\parens{\frac12-\frac{\sqrt3}2i} \]
+
+\eblank
+
+\bexerc
+
+    Describe the following complex sets.
+    Which of them are domains?
+
+    \benum
+        \item $\abs{z-i}\leq1$
+        \item $\ds\abs{\frac{z-1}{z+1}}=1$
+        \item $\abs{z-2}>\abs{z-3}$
+        \item $\abs{z}<1$ and $\Imof{z}>0$
+        \item $\ds\frac1z=\overline z$
+        \item $\abs{z}^2=\Imof z$
+        \item $\abs{z^2-1}<1$
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item This is by definition $\bar D_1(i)$ (the closed disk around $i$) which is closed.
+        Since $\bC$ is connected, it can't be open (the only clopen sets in a connected space is the space itself and
+        $\varnothing$).
+        So it's not open and therefore not a domain.
+
+        \item This is equivalent to $\abs{z-1}=\abs{z+1}$.
+        So if $z=a+bi$ this is equivalent to
+        \[ (a-1)^2 + b^2 = (a+1)^2 + b^2 \iff (a-1)^2 = (a+1)^2 \iff 1-a = a+1 \iff a=0 \]
+        And so this is equivalent to $z\in i\bR$, so the set is $i\bR$ (since $z+1=0\iff z=-1$ is not in the domain, this is still
+        true).
+        This too is closed and therefore not a domain.
+
+        \item Suppose $z=a+bi$, this is equivalent to
+        \[ (a-2)^2 + b^2 > (a-3)^2 + b^2 \iff (a-2)^2 > (a-3)^2 \]
+        There is equality when $a=2.5$ and for $a\leq 2.5$ this is false, and for $a>2.5$ this is true (it is sufficient to check
+        one such $a$ for each case since the functions are continuous).
+        So the set is $\set{\Reof{z}>2.5}$ which is open and (line) connected and therefore a domain.
+
+        \item This is $D_1(0)\cap\set{\Imof z>0}$, which is the open unit half circle above the real axis, and is (line) connected
+        and open.
+        So it's a domain.
+
+        \item This is equivalent $1=z\overline z=\abs{z}^2$ and equivalent to $\abs z=1$.
+        So it is the unit circle, or $\partial D_1(0)$, which is closed and therefore not a domain.
+
+        \item Let $z=a+bi$ then this is
+        \[ a^2 + b^2 = b \iff a^2 + b^2 - b + \frac14 = \frac14 \iff a^2 + \parens{b-\frac12}^2 = \frac14 \]
+        which is the circle around $i\frac12$ of radius $\frac12$, ie $\partial D_{\frac12}\parens{i\frac12}$ which is closed and
+        therefore not a domain.
+
+        \item Let $z=re^{i\theta}$ then we are looking for $\abs{r^2\cosof{2\theta}-1+ir^2\sinof{2\theta}}<1$, this is equivalent
+        to (squaring both sides):
+        \[ \bigl(r^2\cosof{2\theta}-1\bigr)^2 + r^4\sinof{2\theta}^2 = r^4 - 2\cosof{2\theta} + 1 < 1 \]
+        which is equivalent to $r^2 < 2\cosof{2\theta}$.
+
+        We claim that this set, let it be $S$, is not connected.
+        We claim that for every $z=ix\in i\bR$, ie. $\Reof{z}=0$, $z\notin S$.
+        This is true since $\Reof{z}=0$ which means that (if $z\neq0$) $\theta=\argof{z}=\pm\frac\pi2$, and so
+        $\cosof{2\theta}=\cosof{\pm\pi}=-1$, and since $r^2\geq0>-2=2\cosof{2\theta}$ this means that $z\notin S$ and $0\notin S$
+        either since $\abs{0-1}=1\not<1$.
+
+        And so $S\subseteq\set{z\in\bC}[\Reof{z}>0]\dcup\set{z\in\bC}[\Reof{z}<0]$ and the intersections between $S$ and these sets
+        are non-empty (for example $\pm1\in S$), and these sets are open so by definition $S$ is not connected and therefore is not
+        a domain.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Describe the complex sets which satisfy:
+    \benum
+        \item $\abs{z}=\Reof{z}+1$
+        \item $\abs{z-1}+\abs{z+1}=4$
+        \item $z^{n-1}=\bar z$
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item If we let $z=a+bi$ then this becomes $a^2+b^2=(a+1)^2\iff b^2=2a+1$, so $a=\frac{b^2-1}2$.
+        Since we must further require $a>-1$, this becomes $b^2>-1$, which is true, so this is true for all $b$.
+        So the set is $\set{\frac{b^2-1}2+bi}[b\in\bR]$, which is a rotated parabola.
+
+        \item If we let $z=a+bi$ then this becomes
+        \begin{align*}
+            \sqrt{(a-1)^2+b^2} + \sqrt{(a+1)^2+b^2} &= 4 \\
+            (a-1)^2 + b^2 &= 16 - 8\sqrt{(a+1)^2+b^2}  + (a+1)^2 + b^2 \\
+            -4a - 16 &= -8\sqrt{(a+1)^2+b^2} \\
+            a^2 + 8a + 16 &= 4\bigl(a^2+2a+1+b^2\bigr) \\
+            3a^2 + 4b^2 &= 12 \\
+            \frac{a^2}4 + \frac{b^2}3 &= 1
+        \end{align*}
+        This is the canonical ellipse with width $2$ and height $\sqrt{3}$.
+
+        \item $z=0$ satisfies this, otherwise this is equivalent to the solution given by multiplying both sides by $z$:
+        \[ z^n = \abs{z}^2 \]
+        And so $z$ is any of the $n$-degree roots of unity multiplied $\abs{z}^{\frac2n}$.
+        This means that $\abs{z}=\abs{z}^{\frac2n}$ and so $\abs{z}^{\frac2n-1}=1$ which means that $\abs{z}=1$ or
+        $\frac2n=1\iff n=2$.
+
+        If $n\neq2$ then $\abs{z}=1$ so this set is $\Omega_n=\set{e^{i\frac{2\pi k}n}}[k=0,\dots,n-1]$.
+        Otherwise $n=2$ and so this is $z^2=\abs{z}^2$ and so $z=\pm\abs{z}$ meaning that $z\in\bR$, so the set for $n=2$ is $\bR$.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Prove the following:
+    \benum
+        \item $\ds f(z)=\sum_{k=0}^\infty kz^k$ is continuous for $\abs{z}<1$.
+        \item $\ds g(z)=\sum_{k=1}^\infty\frac1{k^2+z}$ is continuous for $\Reof z>0$.
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item Let $0<r<1$ then for any $\abs z<r$ we have that $\abs{kz^k}<kr^k$ and it is well-known that this series
+        converges.
+        This is because using the ratio test we have $\frac{(k+1)r^{k+1}}{kr^k}=\frac{k+1}k\cdot r$ which converges to $r<1$.
+        And so $f_k(z)=kz^k$ satisfies $\abs{f_k(z)}\leq M_k=kr^k$ where $\sum M_k$ is convergent, so by the Weierstrass $M$ test,
+        $\sum f_k$ converges uniformly for $\abs z<r$ and since $f_k$ is continuous, so is $\sum f_k$ for $\abs z<r$.
+        Since this is true for all $r<1$, taking any $\abs z<1$ then there is an $r$ satisfying $\abs z<r<1$ and so $\sum f_k$ is
+        continuous at $z$, as required.
+
+        \item Notice that
+        \[ \frac1{k^2+z} = \frac{k^2+\overline z}{\abs{k^2+z}^2} \]
+        And since $\Reof z>0$, $\abs{k^2+z}\geq k^2$ since the former has a factor of $(k^2+\Reof z)^2\geq k^2$.
+        And $\abs{k^2+\overline z}\leq\abs{k^2}+\abs{\overline z}=\abs{k^2}+\abs z$.
+        \[ \abs{\frac1{k^2+z}} = \frac{\abs{k^2+\overline z}}{\abs{k^2+z}^2} \leq \frac1{k^2} + \frac{\abs z}{k^2} \]
+        So if we let $r>0$ then for any $\abs z<r$ with $\Reof z>0$ we have that
+        \[ \abs{f_k(z)} = \abs{\frac1{k^2+z}} \leq \frac1{k^2} + \frac{r}{k^2} = M_k \]
+        and since $\sum M_k$ converges (since $\sum\frac1{k^2}$ converges), by Weierstrass $\sum f_k$ converges to a continuous
+        function for $\abs z<r$ and $\Reof z>0$ (note $f_k$ is defined for all such $z$ obviously) since $f_k$ itself are
+        continuous.
+        And since this is true for every $r>0$, this is true for every $\Reof z>0$ as required.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Let $T\subseteq\bC$ and $\Sigma$ be the sphere used for stereographic projection onto the plane.
+    Suppose that $S\subseteq\Sigma$ is the preimage of $T$ under the stereographic projection, then
+    \benum
+        \item $S$ is a circle if $T$ is a circle.
+        \item $S$ is a circle without the point $(0,0,1)$ if $T$ is a line.
+    \eenum
+
+\eexerc
+
+\bblank
+
+    Recall that
+    \[ \iprojof{u,v} = \parens{\frac u{u^2+v^2+1}, \frac v{u^2+v^2+1}, \frac{u^2+v^2}{u^2+v^2+1}} \]
+    Or in terms of complex numbers:
+    \[ \iprojof z = \parens{\frac{\Reof z}{\abs z^2+1}, \frac{\Imof z}{\abs z^2+1}, \frac{\abs z^2}{\abs z^2+1}} \]
+    So we will show that if $P$ is a plane $Ax+By+Cz=D$ then $\projof P$ is a circle if $(0,0,1)\notin P$ ($C\neq D$) and a line if $(0,0,1)\in P$ ($C=D$).
+
+    Let $z=x+yi$.
+    Notice that $\iprojof z\in P$ if and only if
+    \[ \frac1{x^2+y^2+1}(x, y, x^2+y^2) \in P \iff Ax + By + C(x^2+y^2) = D(x^2+y^2+1) \]
+    If $C=D$ this becomes $Ax + By = D$ which is the equation of a line, so $z\in\projof P$ if and only if $z$ is on some line.
+    So the image of a circle with (without) the north pole is a line.
+    And notice that for any line we can write it as $Ax+By=1$ and this line is the image of the intersection of the plane $Ax+By+z=1$ with the sphere (and this intersection is not trivial since $A$ and $B$
+    can't both be zero).
+    And so every line is the image of the circle with (without) the north pole.
+
+    Otherwise we end up with (after completing the square):
+    \[ \parens{x-\frac A{2(D-C)}}^2 + \parens{y-\frac B{2(D-C)}}^2 = \frac D{C-D} + \frac{A^2+B^2}{4(D-C)^2} \]
+    This is the formula for a circle, so if the circle doesn't contain the north pole, its projection is the circle.
+    And suppose we have a circle around $a+bi$ with radius $r$ then we need to find $A$, $B$, $C$, and $D$ such that $\frac A{2(D-C)}=a$ and $\frac B{2(D-C)}=b$ and
+    $r^2=\frac D{C-D}+\frac{A^2+B^2}{4(D-C)^2}$.
+    This means solving
+    \begin{align*}
+        a &= \frac A{2(D-C)} \\
+        b &= \frac B{2(D-C)} \\
+        r^2 - a^2 - b^2 &= \frac D{C-D}
+    \end{align*}
+    This has a solution since for any choice of $D$ and $C$ which satisfies the bottom equation we can find $A$ and $B$ to satisfy the top two.
+    So the circle around $a+bi$ with radius $r$ is the image of the intersection of a plane which doesn't pass through the point $(0,0,1)$ with the sphere (ie. a circle).
+
+\eblank
+
+\bexerc
+
+    We are given that $z$ is the stereographic projection of $(u,v,w)$ onto $\bC$ and $\frac1z$ is the projection of $(u',v',w')$.
+    Prove that $(u',v',w')=(u,-v,1-w)$.
+
+\eexerc
+
+\bblank
+    So we have that
+    \[ \iprojof{z} = (u,v,w) = \parens{\frac{\Reof z}{\abs z^2+1}, \frac{\Imof z}{\abs z^2+1}, \frac{\abs z^2}{\abs z^2+1}} \]
+    And since $\frac1z=\frac{\overline z}{\abs z^2}$ we have that $\Reof{\frac1z}=\frac{\Reof{z}}{\abs z^2}$ and $\Imof{\frac1z}=-\frac{\Imof{z}}{\abs z^2}$ and $\abs{\frac1z}=\frac1{\abs z}$.
+    And so
+    \begin{align*}
+        \frac{\Reof{\frac1z}}{\abs{\frac1z}^2+1} &= \frac{\Reof{z}}{\frac{\abs z^2}{\abs z^2}+\abs z^2} = \frac{\Reof{z}}{\abs z^2+1} = u \\
+        \frac{\Imof{\frac1z}}{\abs{\frac1z}^2+1} &= -\frac{\Imof{z}}{\frac{\abs z^2}{\abs z^2}+\abs z^2} = -\frac{\Imof z}{\abs z^2+1} = -v \\
+        \frac{\abs{\frac1z}^2}{\abs{\frac1z}^2+1} &= \frac1{\frac{\abs z^2}{\abs z^2}+\abs z^2} = \frac1{\abs z^2+1} = 1-w
+    \end{align*}
+    So we have that
+    \[ \iprojof{\frac1z} = (u',v',w') = \parens{\frac{\Reof{\frac1z}}{\abs{\frac1z}^2+1}, \frac{\Imof{\frac1z}}{\abs{\frac1z}^2+1}, \frac{\abs{\frac1z}^2}{\abs{\frac1z}^2+1}} = (u, -v, 1-w) \]
+    as required.
+\eblank
+
+\end{document}
+

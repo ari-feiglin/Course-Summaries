@@ -1,0 +1,236 @@
+\documentclass[10pt]{article}
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+\usepackage{mathrsfs}
+
+\catcode`\@=11
+\input pdfmsym
+
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\implies{\,\mathrel{\longvarRightarrow}\,}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\divides{{\mid}}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\newfunc{eulerg}{{\rm Euler}}({})
+\newfunc{order}o({})
+\newfunc{ker}{{\rm Ker}}({})
+\newfunc{image}{{\rm Im}}({})
+\newfunc{lattice}{{\cal L}}(\vert)
+\newfunc{powset}{{\cal P}}(\vert)
+\newfunc{center}{{\rm Z}}({})
+\newfunc{units}{{\cal U}}(\vert)
+\newfunc{sign}{{\rm sgn}}({})
+\newfunc{aut}{{\rm Aut}}({})
+\newfunc{speclinear}{{\rm SL}}({})
+\newfunc{genlinear}{{\rm GL}}({})
+\newfunc{projlinear}{{\rm PGL}}({})
+\newfunc{specprojlinear}{{\rm PSL}}({})
+\newfunc{core}{{\rm Core}}(\vert)
+\newfunc{inner}{{\rm Inn}}(\vert)
+\newfunc{outer}{{\rm Out}}(\vert)
+\newfunc{conj}{{\rm conj}}({})
+\newfunc{ev}{{\rm ev}}({})
+\newfunc{Frac}{{\rm Frac}}({})
+\newfunc{Tor}{{\rm Tor}}(\vert)
+\newfunc{Ann}{{\rm Ann}}(\vert)
+\newfunc{deg}{{\rm deg}}({})
+
+\def\maxdivs{\mathrel{\|}}
+
+\let\ideal=\trianglelefteq
+\let\pideal=\triangleleft
+\def\normal{\mathrel\triangleleft}
+\let\mmorph=\longvarhookrightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\hbox{}\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\mN{\mathcal N}
+\def\mG{\mathcal G}
+\def\sS{\mathscr S}
+
+\begin{document}
+
+\c@section=16
+
+\barcolorbox{220, 220, 255}{0, 0, 130}{80, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Introduction to Rings and Modules}
+
+    \medskip
+    \textit{Lecture \thesection, Wednesday June 14 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{Cannonical Forms}
+
+\begin{thrm*}
+
+    Let $A$ be a matrix of size $d\times d$ over the field $F$.
+    Then there exists monic polynomials (polynomials with a leading coefficient of $1$) $d_1,\dots,d_n\in F[x]$ such that $d_i\divides d_{i+1}$ and
+    \[ A\sim\bigoplus_{i=1}^n C_{d_i} \]
+    ie. $A$ is similar to the direct sum of the companion matrices of $d_i$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let $V$ be an $n$-dimensional vector space over $F$, and let $B$ be a basis of $V$.
+    Further let $\phi$ be the linear transformation represented by $A$ under the basis $B$.
+    Together $V$ and $\phi$ define an $F[x]$-module $M$.
+
+    We claim that $M$ is finitely generated.
+    Suppose $B=(b_1,\dots,b_n)$, and since $M=V$ (as sets), every element $m\in M$ can be written as
+    \[ m = a_1b_1 + \cdots + a_nb_n \]
+    where $a_i\in F$.
+    Since $a_i$ is also a constant polynomial and $B\subseteq M$, we have that $B$ generates $M$.
+    Thus $M$ is a finitely-generated module.
+
+    Since $M$ is an $F[x]$-module, and since $F$ is a field, $F[x]$ is a PID, we have that
+    \[ M\cong F[x]^r\times\slfrac{F[x]}{(d_1)}\times\cdots\times\slfrac{F[x]}{(d_t)} \]
+    such that $d_i\divides d_{i+1}$, and $d_i$ are unique up to friends.
+    Note that $r=0$ since $F[x]$ is an infinite-dimension vector space over $F$, as we can take the infinite basis $(1,x,x^2,\dots)$.
+    And since $\dim M=n<\infty$, this means $r=0$.
+
+    Since $F$ is a field, the units of $F[x]$ are those of $F$, which is $F\setminus\set 0$.
+    Thus every polynomial is friends with a unique monic polynomial, so we can assume $d_i$ are monic polynomials.
+
+    For every component $\slfrac{F[x]}{(d_i)}$ we will choose the basis $B_i=(1+(d_i), x+(d_i), \dots, x^{\deg d_i-1}+(d_i))$.
+    Relative to this basis, the scalar multiplication mapping of $x$ is represented by $C_{d_i}$.
+    We can take a basis of $M$ as the set
+    \[ B' = \bigcup_{i=1}^t \set{0}^{i-1}\times B_i\times\set{0}^{t-i} \]
+    essentially we take all elements of $B_i$ and place them in a tuple which is $0$ except for at the index $i$.
+    Relative to this basis, the scalar multiplication mapping of $x$ is represented by
+    \[ \bigoplus_{i=1}^t C_{d_i} \]
+
+    But by definition, the scalar multiplication mapping is represented by $A$ (under the original basis $B$), and thus we have
+    \[ A\sim\bigoplus_{i=1}^t C_{d_i} \]
+    as required.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}[cayleyHamiltonTheorem,Cayley-Hamilton\ Theorem]
+
+    Suppose $F$ is a field and $A\in M_n(F)$.
+    Let $p(x)=x^n+a_{n-1}x^{n-1}+\cdots+a_0$ be $A$'s characteristic polynomial, then
+    \[ p(A) = A^n + a_{n-1}A^{n-1} + \cdots + a_0I_n = 0 \]
+
+\end{thrm*}
+
+\begin{proof}
+
+    We know that $A$ is similar to a matrix of the form
+    \[ A\sim\bigoplus_{i=1}^t C_{d_i} \]
+    and it can be shown that the characteristic polynomial of $C_{d_i}$ is $d_i$, and so
+    \[ p(x) = d_1\cdots d_t \]
+    Let $M$ be the module defined above to show this similarity, then $A$ represents scalar multiplication by $x$.
+    This means that $p(A)$ represents scalar multiplication by $p(x)$.
+    Let us represent scalar multiplication by $x$ by $\phi_x$, and so $A=[\phi_x]^B_B$ and thus
+    \[ p(A) = p\bigl([\phi_x]^B_B\bigr) = \bigl[p(\phi_x)\bigr]^B_B \]
+    and $p(\phi_x)$ is precisely $\phi_{p(x)}$ as required.
+
+    So
+    \[ M\cong\slfrac{F[x]}{(d_1)}\times\cdots\times\slfrac{F[x]}{(d_t)} \]
+    And since $p(x)$ is the product of $d_i$s, it is divisible by every $d_i$.
+    But since multiplying by $d_i$ equals zero on the component $\slfrac{F[x]}{(d_i)}$, we have that multiplication by $p(x)$ is zero on every component and thus is zero on $M$.
+    So we have that $\phi_{p(x)}=0$ and since $p(A)$ represents it, we have that $p(A)=0$ as required.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}[jordanFormTheorem,Jordan\ Cannonical\ Form]
+
+    Let $F$ be a field, and $A\in M_d(F)$ then suppose $F$ contains every eigenvalue of $A$, then $A$ is similar to the direct sum of Jordan blocks
+    \[ A \sim \bigoplus_{i=1}^n J_{n_i}(\lambda_i) \]
+    where the $\lambda_i\in F$s are not necessarily distinct, and this form is unique up to the order of the Jordan blocks.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Since $F[x]$ is a PID, it is a UFD.
+    By assumption, the characteristic polynomial $p(x)$ can be factorized into linear terms (otherwise there would exist an irreducible term of degree $>n$ which would not have a root in $F$).
+    We know that if $M$ is the module defined by a finite dimensional vector space $V$ and $A$ for the linear transform defining scalar multiplication by $x$, we have
+    \[ M\cong \slfrac{F[x]}{(p_1^{n_1})}\times\cdots\times\slfrac{F[x]}{(p_t^{n_t})} \]
+    For $p_i$ irreducible, not necessarily distinct, and unique up to friends.
+
+    For the same reason as above (using the companion matrices), we have that the characteristic polynomial of the scalar multiplication mapping of $x$ is equal to the product of $p_i^{n_i}$, and since
+    scalar multiplication of $x$ is represented by $A$ we have
+    \[ p(x) = p_1(x)^{n_1}\cdots p_t(x)^{n_t} \]
+    where $p(x)$ is the characteristic polynomial of $A$.
+    Since $p$ can be factored into linear terms $x-\lambda_i$, and $F[x]$ is a UFD, this means that $p_i(x)=x-\lambda_i$.
+
+    Thus
+    \[ M\cong\slfrac{F[x]}{((x-\lambda_1)^{n_1})}\times\cdots\times\slfrac{F[x]}{((x-\lambda_t)^{n_t})} \]
+    and taking the basis $B_i=\bigl((x-\lambda_i)^{n_i-1}+\bigl((x-\lambda_i)^{n_i}\bigr),\dots,1+\bigl((x-\lambda_i)^{n_i}\bigr)\bigr)$ gives a representation of scalar multiplication of $x$ as
+    $J_{n_i}(\lambda_i)$ on the $i$th component, as shown previously.
+    Thus scalar multiplication by $x$ is represented by
+    \[ \bigoplus_{i=1}^t J_{n_i}(\lambda_i) \]
+    and since $A$ represents scalar multiplication of $x$, we have
+    \[ A\sim\bigoplus_{i=1}^t J_{n_i}(\lambda_i) \]
+    as required.
+    \qed
+
+\end{proof}
+
+Note that $A$ is diagonalizable if and only if every Jordan block is of size $1\times1$ if and only if
+\[ M\cong\slfrac{F[x]}{(x-\lambda_1)}\times\cdots\times\slfrac{F[x]}{(x-\lambda_t)} \]
+
+\subsection{Completeness}
+
+\begin{defn*}
+
+    Let $R\subseteq S$ commutative rings.
+    An element $s\in S$ is \ppemph{algebraic} over $R$ if it is the root of a polynomial over $R$.
+    If $s$ is the root of a monic polynomial over $R$, then it is called \ppemph{integral} over $R$.
+
+\end{defn*}
+
+If $R$ is a field, $s$ is algebraic if and only if it is integral.
+
+\begin{defn*}
+
+    If $R$ is an integral domain, let $F=\Frac R$.
+    $R$ is called an \ppemph{integrally closed domain} if for every $s\in F$ if $s$ is integral over $R$, then $s\in R$.
+
+\end{defn*}
+
+\begin{prop*}
+
+    Every UFD is completely closed.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $R$ be a UFD.
+    Let $\alpha\in\Frac R$ integral over $R$, suppose $\alpha=\frac rs$ is a reduced fraction.
+    By definition $\alpha$ is the root of some monic polynomial
+    \[ f=x^n+a_{n-1}x^{n-1} + \cdots + a_0 \]
+    and by proposition $11.0.9$, $s\divides1$ and $r\divides a_0$.
+    In particular this means that $s$ is invertible, and so $\alpha=rs^{-1}\in R$, as required.
+
+\end{proof}
+
+\end{document}
+

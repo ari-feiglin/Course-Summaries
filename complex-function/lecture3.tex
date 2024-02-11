@@ -1,0 +1,224 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{diam}{{\rm diam}}(\vert)
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+\newfunc{cis}{{\rm cis}}({})
+
+\font\bigbf = cmbx12 scaled 2000
+\@undervecc@def{underbar}\@linecap\@linecap
+
+\def\openset{{\cal O}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{sup}{{\rm sup}}(\vert)
+
+%\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=3
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Complex Functions}
+
+    \medskip
+    \textit{Lecture \thesection, Wednesday March 29, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{The Cauchy-Riemann Equations}
+
+Recall that if $f=u+iv$ is differentiable at $z$ then the partial derivatives of $u$ and $v$ exist at $z$ and satisfy the Cauchy-Riemann equations:
+\[ \begin{gathered} u_x(z) = v_y(z) \\ u_y(z) = -v_x(z) \end{gathered} \iff f_y(z) = if_x(z) \]
+
+But this is not a sufficient condition, for example:
+\begin{exam*}
+
+    Take the function
+    \[ f(z) = f(x,y) = \begin{cases} 0 & z=0 \\ \frac{xy(x+iy)}{x^2+y^2} & z\neq0 \end{cases} \]
+    this satisfies the Cauchy-Riemann equations at $z=0$ since:
+    \[ f_x(0) = \lim_{x\varrightarrow0}\frac{f(x,0)-f(0,0)}x = \lim_{x\varrightarrow0}\frac{0-0}x = 0 \]
+    And similarly $f_y(0)=0$, so the Cauchy-Riemann equations hold.
+    But for $f$ to be differentiable at $0$ it must satisfy:
+    \[ f(x) = f(0) + \nabla f(0)\cdot x + \epsilon(x) \iff f(x) = \epsilon(x) \]
+    So $f$ must satisfy $\frac{f(x)}{\sqrt{x^2+y^2}}$ converges to $0$ as $(x,y)$ does.
+    If we take the path $x=y$ then this means
+    \[ \frac{xy(x+iy)}{(x^2+y^2)^{1.5}} = \frac{x^3(1+i)}{2^{1.5}x^3} = \frac{1+i}{2^{1.5}} \]
+    must converge to $0$, which it doesn't.
+
+\end{exam*}
+
+But what this does tell us is that  if $f$ is differentiable at $z$ then its Jacobian (as a function $\bR^2\longvarrightarrow\bR^2$) is of the form $\pmat{a & b \\ -b & a}$ by the Cauchy-Riemann
+inequalities, which is a representation of a complex number.
+So if a function is complex differentiable it should act like complex multiplication.
+This makes sense since by the chain rule, $(f\circ g)'(z)=f'(g(z))g'(z)$, but by calculus we know that it should also be $Df(g(z))\cdot Dg(z)$ where $Df$ is the differential of $f$.
+So $Df$ should act like $f'$, ie. its Jacobian should represent a complex number.
+
+Recall that in order for $f(x,y)$ to be differentiable at $(x_0,y_0)$ it must satisfy
+\[ f(x_0+r, y_0+s) - f(x_0,y_0) = Ar + Bs + \alpha(r,s)r + \beta(r,s)s \]
+where $\alpha(r,s),\beta(r,s)\xvarrightarrow{}[(r,s)\varrightarrow0]0$ (we sometimes write $\epsilon(r,s)=\alpha(r,s)r+\beta(r,s)s$ and require
+$\frac{\epsilon(r,s)}{\sqrt{r^2+s^2}}\xvarrightarrow{}[(r,s)\varrightarrow0]0$.
+
+\begin{thrm*}
+
+    $f=u+iv$ is differentiable at $z_0\in\bC$ if and only if $u$ and $v$ are differentiable at $z_0$ and $u$ and $v$ satisfy the Cauchy-Riemann equations.
+
+\end{thrm*}
+
+\begin{proof}
+
+    We showed that if $f$ is differentiable at $z_0$ then $u$ and $v$ have partial derivatives and satisfy the Cauchy-Riemann equations.
+    So all we need to show is that $u$ and $v$ are differentiable.
+    Since $f$ is (complex) differentiable, we have that
+    \[ \frac{f(z_0+h) - f(z_0)}h = f'(z_0) + \alpha(h) + i\beta(h) \]
+    Since the right hand side approaches $f'(z_0)$ (so subtracting $f'(z_0)$ from both sides gives a function $\alpha+i\beta$ which satisfies that $\alpha$ and $\beta$ converge to $0$ as $h$ does).
+    And so
+    \[ f(z_0+h) - f(z_0) = f'(z_0)h + \alpha(h)h + i\beta(h)h \]
+    And so if we have $z_0=x_0+iy_0$ and $h=h_1+ih_2$ and $f'(z_0)=A+iB$ then:
+    \[ \bigl(u(x_0+h_1, y_0+h_2) - u(x_0, y_0)\bigr) + i\bigl(v(x_0+h_1, y_0+h_2) - v(x_0, y_0)\bigr) = \bigl(A+iB + \alpha(h_1,h_2) + i\beta(h_1,h_2)\bigr)(h_1+ih_2) \]
+    And so we have that
+    \[ \Delta u = Ah_1 - Bh_2 + \alpha(h_1,h_2)h_1 - \beta(h_1,h_2)h_2 \]
+    which means $u$ is differentiable at $(x_0,y_0)$ and similar for $v$.
+
+    To show the converse, suppose $u$ and $v$ are differentiable and satisfy the Cauchy-Riemann equations.
+    Notice that by differentiability:
+    \begin{gather*}
+        \Delta u = u_x(x_0,y_0)h_1 + u_y(x_0,y_0)h_2 + \alpha_1(h_1,h_2)h_1 + \beta_1(h_1,h_2)h_2 \\
+        \Delta v = v_x(x_0,y_0)h_1 + v_y(x_0,y_0)h_2 + \alpha_2(h_1,h_2)h_1 + \beta_2(h_1,h_2)h_2
+    \end{gather*}
+    Where $\alpha_i$ and $\beta_i$ approach $0$ as their input does.
+    Now note
+    \[ \frac{f(z_0+h)-f(z_0)}h = \frac{\Delta u + i\Delta v}{h_1+ih_2} = \frac{u_xh_1+u_yh_2+i(v_xh_1+v_yh_2)}{h_1+ih_2} + \frac{\alpha_1h_1+\beta_1h_2+i(\alpha_2h_1+\beta_2h_2)}{h_1+ih_2} \]
+    Let the rightmost fraction be $\gamma(h_1,h_2)$.
+    The left fraction is equal, by the Cauchy-Riemann equations, to:
+    \[ \frac{u_xh_1-v_xh_2 + i(v_xh_1+u_xh_2)}{h_1+ih_2} = \frac{u_x(h_1+ih_2)+v_x(ih_1-h_2)}{h_1+ih_2} = u_x + iv_x \]
+    So we get that
+    \[ \frac{f(z_0+h) - f(z_0)}h = u_x + iv_x + \gamma(h_1,h_2) \]
+    So all that is left to show is that $\gamma(h_1,h_2)$ approaches $0$ as $h$ does.
+    By the triangle inequality, for every $(h_1,h_2)\neq0$, $\abs{h_1}\leq\abs{h_1+ih_2}$ by the triangle inequality and so $\abs{\frac{h_1}{h_1+ih_2}}\leq1$.
+    So
+    \[ \abs{\gamma} \leq \abs{\alpha_1} + \abs{\beta_1} + \abs{\alpha_2} + \abs{\beta_2} \]
+    which converges to $0$ as $h$ does, and that means so does $\gamma$ as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{exam*}
+
+    Take $f(z)=\abs{z}^2$ and so $f(x,y)=x^2+y^2$ so $v=0$ and $u=0$.
+    Notice that $f_x=2x$ and $f_y=2y$ which are differentiable over all $\bR^2$.
+    So $f$ is differentiable at $z=x+iy$ if and only if $f_y=if_x$, which is if and only if $2y=2ix$ which means that $x=y=0$ (since $x$ and $y$ are real).
+
+\end{exam*}
+
+This should make sense since as we said, if a function is differentiable, its Jacobian should act like a complex number which it doesn't.
+
+\begin{defn*}
+
+    A complex function $f$ is \ppemph{analytic} at $z\in\bC$ if it is (complex) differential in a neighborhood of $z$.
+    And $f$ is analytic over a set $S\subseteq\bC$ if it is analytic at every point in $S$.
+    If $f$ is analytic over all of $\bC$, then $f$ is an \ppemph{entire function}.
+
+\end{defn*}
+
+$z^n$ is entire, and therefore so is every complex polynomial.
+
+And the division of two analytic functions $\frac pq$ is analytic in $\set{z\in\bC}[q(z)\neq0]$.
+
+\begin{prop*}
+
+    If $f=u+iv$ is analytic over the domain $D$ and $u$ is constant, then $f$ is constant over $D$.
+
+\end{prop*}
+
+This is true by Cauchy-Riemann since we get that $v_x=v_y=0$, so $v$ is constant over $D$ and therefore so is $f$.
+
+\begin{prop*}
+
+    If $f$ is analytic over $D$ and $\abs f$ is constant, then so is $f$.
+
+\end{prop*}
+
+\begin{defn*}
+
+    If $z\in\bC$ where $z=x+iy$ then we define $e^z=e^xe^{iy}=e^x\bigl(\cos(y)+i\sin(y)\bigr)$.
+
+\end{defn*}
+
+Notice then that
+
+\benum
+    \item $e^{z_1+z_2}=e^{x_1+x_2+i(y_1+y_2)}=e^{x_1}e^{x_2}\bigl(\cos(y_1+y_2)+i\sin(y_1+y_2)\bigr)=e^{x_1}e^{x_2}\cis(y_1)\cdot\cis(y_2)=e^{z_1}e^{z_2}$.
+    \item $\abs{e^z}=e^x=e^{\Reof z}\leq e^{\abs z}$
+    \item $e^z=\alpha=re^{i\theta}$ has infinite solutions for $0\neq\alpha\in\bC$ since $e^x=\abs\alpha$ (which defines $x$) and then $e^{iy}=e^{i\theta}$ so $y=\theta+2\pi k$, which gives a countably
+    infinite number of solutions.
+    \item By our proof above $e^z=e^{z+2\pi k}$ for every $k\in\bZ$, so $\exp$ (which is another notation for $e^{\textstyle\cdot}$) is periodic with period $2\pi i$.
+    \item $e^z$ is entire.
+    \item $f(z)=e^z$ is the only function satisfying $f'(z)=f(z)$ and $f(0)=1$.
+    \item It is also the only analytic function satisfying $f(z_1+z_2)=f(z_1)f(z_2)$ and $f(x)=e^x$ for $x\in\bR$.
+\eenum
+
+We define the complex trigonometric functions:
+\[ \sinof z = \frac1{2i}\parens{e^{zi}-e^{-iz}},\qquad \cosof z = \frac12\parens{e^{iz}+e^{-iz}} \]
+These are analytic since the linear combinations of analytic functions are analytic.
+Furthermore
+\[ \sin^2 z + \cos^2 z = 1 \]
+But notice that these functions aren't bounded on $\bC$, for example
+\[ \cosof{ir} = \frac12\parens{e^{-r}+e^r} \xvarrightarrow{}[r\varrightarrow\infty]\infty \]
+
+\subsection{Power Series}
+
+\begin{defn*}
+
+    A \ppemph{complex power series} is a function of the form
+    \[ f(z) = \sum_{k=0}^\infty c_kz^k \]
+    where $c_k\in\bC$.
+    For a power series about $z_0\in\bC$ this is of the form
+    \[ f(z) = \sum_{k=0}^\infty c_k(z-z_0)^k \]
+    which is just a shift of a power series about $0$.
+
+\end{defn*}
+
+\begin{defn*}
+
+    The \ppemph{domain of convergence} of a power series $\sum c_kz^k$ is the set $\set{w\in\bC}[\sum_{k=0}^\infty c_kw^k\in\bC]$.
+    And the \ppemph{radius of convergence} is $R=\sup\set{\abs w}[\sum_{k=0}^\infty c_kw^k\in\bC]$.
+
+\end{defn*}
+
+It can be shown that
+\[ R = \frac1{\limsup\limits_{k\varrightarrow\infty}\abs{c_k}^{\frac1k}} \]
+and if the limit exists:
+\[ R = \lim_{k\varrightarrow\infty}\abs{\frac{c_k}{c_{k+1}}} \]
+
+\end{document}
+

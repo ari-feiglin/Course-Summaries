@@ -511,5 +511,124 @@ meaning that if $\phi$ then $\square\phi$ (notice that here we do not have an in
 
 \eexam
 
+\subsection{Automata on Infinite Words}
+
+A {\it B\"uchi Automata} is a tuple ${\cal A}=(\Sigma,S,\Delta,I,L,F)$ where
+\benum
+    \item $\Sigma$ is the finite alphabet,
+    \item $S$ is a finite set of states,
+    \item $\Delta\subseteq S\times S$ is the transition relation,
+    \item $I\subseteq S$ is the set of initial states,
+    \item $L\colon S\longto\Sigma$ is a labeling of the states,
+    \item $F\subseteq S$ is the set of accepting states.
+\eenum
+A {\it run} of ${\cal A}$ on a word $v\in\Sigma^\omega$ (the set of all infinite words over $\Sigma$) is a sequence $\rho\colon{\bb N}\longto S$ such that
+\benum
+    \item $\rho(0)\in I$, the first state is an initial state,
+    \item for all $i\geq0$, $(\rho(i),\rho(i+1))\in\Delta$, meaning the transition from $\rho(i)$ to $\rho(i+1)$ is a transition recognized by $\Delta$,
+    \item for all $i\geq0$, $v(i)=L(\rho(i))$, meaning the $i$th state has the same label as the $i$th letter in $v$.
+\eenum
+Let us define
+$$ \infof\rho \coloneqq \set{s\in S}[\hbox{there exist infinitely many $i$ such that $\rho(i)=s$}] $$
+A run $\rho$ of ${\cal A}$ is {\it accepting} if an accepting state appears infinitely many times in $\rho$, meaning $\infof\rho\cap F\neq\varnothing$.
+If $\rho$ is a run of the word $v$, then we say that $v$ is {\it accepted} by ${\cal A}$.
+The language of ${\cal A}$, denoted ${\cal L}({\cal A})\subseteq\Sigma^\omega$, is the set of all words accepted by ${\cal A}$.
+
+For the visual representation of B\"uchi automata, we circle accepting states and bold initial states.
+So for example
+
+\bigskip
+\centerline{\drawdiagram{
+    \circleit{$\bf s_1$}&&$\bf s_2$\cr
+}{
+    \diagarrow{from={1,1}, to={1,3}, curve=.4cm, text=$\alpha$, slide=0, y distance=.4cm, y off=.15cm}
+    \diagarrow{from={1,3}, to={1,1}, curve=.4cm, text=$\beta$, slide=0, y distance=.4cm, y off=-.15cm}
+    \diagarrow{from={1,1}, to={1,1}, origin orient={right, bottom}, dest orient={left, bottom}, curve=1cm, y off=-.1cm}
+    \diagarrow{from={1,3}, to={1,3}, dest orient={right, bottom}, origin orient={left, bottom}, curve=-1cm}
+}}
+\bigskip
+
+Here the initial states are $s_1$ and $s_2$, and the single accepting state is $s_1$.
+${\cal L}({\cal A})$ contains letters with infinitely many $\alpha$s, or as a regular expression $(\beta^*\alpha)^\omega$.
+This describes an infinite concatenation of words of the form $\beta^*\alpha$ which is formed by an arbitrary number of $\beta$s and then an $\alpha$.
+
+We can alter the definition of a B\"uchi automaton for a transition system ${\cal A}$ as follows:
+\benum
+    \item $\Sigma$ becomes the set of states of ${\cal A}$ (which are valuations of ${\cal A}$, not to be confused with the states in $S$),
+    \item $L$ now becomes a labeling function from $S\to{\cal L}$ the set of (propositional) formulas over ${\cal A}$,
+    \item A run $\phi$ of $v$ now must satisfy instead of $v(i)\in L(\rho(i))$ instead that $v(i)\vDash L(\rho(i))$.
+\eenum
+
+We will show that a LTL specification $\phi$ can be represented as a B\"uchi automata ${\cal B}$.
+Then a state space ${\cal A}$ satisfies the specification if ${\cal L}({\cal A})\subseteq{\cal L}({\cal B})$, meaning every sequence of states valid in ${\cal A}$ are valid in ${\cal B}$ (meaning they
+satisfy $\phi$).
+
+\vfill\break
+\section{Automatic Verification}
+
+Suppose we have a finite state (transition) system with a set of initial set of states $I$.
+We below define an algorithm which searches the state space for every state reachable from the set of initial states.
+
+\algorithm
+    \InnerText{\textbf{routine} {\tencsc Search}}
+    \State {\bf let} {\it new} contain the set of initial states $I$, and {\it old} be empty
+    \While{{\it new} is not empty}
+        \State {\bf choose} $s$ from {\it new}
+        \State {\bf remove} $s$ from {\it new}
+        \State {\bf add} $s$ to {\it old}
+        \For{$t$ transition enabled at $s$}
+            \State $s'\gets t(s)$
+            \lIf{$s'$ is not in {\it new} or {\it old}} {\bf add} $s'$ to {\it new}
+        \EndFor
+    \EndWhile
+\ealgorithm
+
+Here we do not specify how to choose $s$ from {\it new} or how to store elements in {\it new}.
+One could use a queue for {\it new}, forming the breadth-first-search (BFS) search algorithm.
+Or one could use a stack, defining depth-first-search (DFS).
+
+We can add a conditional check to this algorithm to check that every state added to {\it new} satisfies some property $\phi$ (a propositional or first order formula).
+In this way we can check whether or not $\phi$ is an invariant: meaning $\square\phi$ holds.
+Similarly we can check for deadlocks by checking if we visit a state with no successors.
+
+Notice though that this algorithm works only for finite state systems, as there needs to be a finite number of states in order for the algorithm to check every one.
+So this algorithm cannot work for programs which utilize unbounded integers for example, and larger programs are prone to combinatorial explosion.
+
+\subsection{Closure of B\"uchi Automata}
+
+Suppose we have B\"uchi automata over the same alphabet ${\cal A}_i=(\Sigma,S_i,\Delta_i,I_i,L_i,F_i)$ for $i=1,2$.
+We want to define a new B\"uchi automaton ${\cal A}=(\Sigma,S,\Delta,I,L,F)$ such that ${\cal L}({\cal A})={\cal L}({\cal A}_1)\cup{\cal L}({\cal A}_2)$.
+This can be done with relative ease, as we can assume without loss of generality that $S_1$ and $S_2$ are disjoint, so define
+$$ S = S_1\dcup S_2,\quad \Delta=\Delta_1\dcup\Delta_2,\quad I=I_1\dcup I_2,\quad L=L_1\dcup L_2,\quad F=F_1\dcup F_2 $$
+where $L=L_1\dcup L_2$ means $L(r)=L_1(r)$ for $r\in S_1$ and $L_2(r)$ for $r\in S_2$.
+Then a run of ${\cal A}$ begins with either $I_1$ or $I_2$, and then proceeds as it would with ${\cal A}_1$ or ${\cal A}_2$ respectively.
+
+To define ${\cal A}$ for $\Lof{\cal A}=\Lof{\cal A_1}\cap\Lof{\cal A_2}$, we must somehow run both automata in parallel.
+We attempt a definition as follows:
+\benum
+    \item $S=S_1\times S_2$,
+    \item $((r_1,r_2),(s_1,s_2))\in\Delta$ if and only if $(r_1,s_1)\in\Delta_1$ and $(r_2,s_2)\in\Delta_2$,
+    \item $I=I_1\times I_2$
+    \item $L(r,s)=L_1(r)\land L_2(s)$ as these are formulas, if $L(r,s)\equiv\false$ then we can remove $(r,s)$ and all its outgoing and ingoing edges,
+\eenum
+Now all that remains is to define $F$, the set of accepting states.
+Here we must be careful: as a first attempt we may define $F=F_1\times F_2$, but then suppose ${\cal A}_1$ and ${\cal A}_2$ are never simultaneously on an accepting state.
+Then even though they may both accept the word, since they are never on an accepting state at the same time, this automaton will never be in $F$.
+So maybe we try $F=(F_1\times S_2)\cup(S_1\times F_2)$?
+But then if ${\cal A}_1$ accepts the word and ${\cal A}_2$ doesn't, the automaton would still accept the word.
+
+So let us first define what a {\it generalized B\"uchi automaton} is to make this proof easier.
+
+\bdefn
+
+    A {\emphcolor generalized B\"uchi automaton} is a tuple ${\cal A}=(\Sigma,S,\Delta,I,L,F)$ where all the components are the same as for normal B\"uchi automaton except for $F$.
+    $F$ is now a set $\set{f_1,\dots,f_m}$ for $m\geq0$ where $f_i\subseteq S$.
+    A run $\rho$ is accepted ${\cal A}$ if and only if $\infof\rho\cap f_i\neq\varnothing$ for all $f_i\in F$.
+
+\edefn
+
+Now if ${\cal A}_1$ and ${\cal A}_2$ are two B\"uchi automaton, we can define their intersection to be a generalized B\"uchi automaton whose components are defined as above and
+$F=\set{F_1\times S_2,S_1\times F_1}$, so an accepted run must pass through both $F_1$ and $F_2$ an infinite number of times.
+
 \bye
 

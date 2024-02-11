@@ -1,0 +1,293 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\slfrac#1#2{\left.{}^{#1}\mkern-4mu\middle/\mkern-3mu{}_{#2}\right.}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\newfunc{eulerg}{{\rm Euler}}({})
+\newfunc{order}o({})
+\newfunc{ker}{{\rm Ker}}({})
+\newfunc{image}{{\rm Im}}({})
+\newfunc{lattice}{{\cal L}}(\vert)
+\newfunc{powset}{{\cal P}}(\vert)
+\newfunc{units}{{\cal U}}(\vert)
+\newfunc{sign}{{\rm sgn}}({})
+
+\let\normalsub=\trianglelefteq
+
+\begin{document}
+
+\c@section=6
+
+\barcolorbox{220, 220, 255}{0, 0, 130}{80, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Group Theory}
+
+    \medskip
+    \textit{Lecture \thesection, Sunday November 27, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{The Symmetric Group}
+
+\begin{defn*}
+
+    If $X$ is a set, then we define the \ppemph{symmetric group} of $X$ as:
+    \[ S_X = \set{\sigma\colon X\longvarrightarrow X}[\sigma \text{ is invertible}] \]
+
+\end{defn*}
+
+It is trivial to see that $\unitsof{X^X}=S_X$ (recall that $X^X$ is a monoid).
+
+\begin{prop*}
+
+    If $X$ and $Y$ are sets with the same cardinality, $S_X\cong S_Y$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $f\colon X\longvarrightarrow Y$ is a bijection.
+    Then we define an isomorphism $\phi\colon S_X\longvarrightarrow S_Y$ by
+    \[ \phi(\sigma) = f\circ\sigma\circ f^{-1} \]
+    This is of course well defined since both $\sigma$ and $f$ are bijections.
+    It is a bijection since for any $\tau\in S_Y$, $f^{-1}\circ\tau\circ f\in S_X$ and $\phi(f^{-1}\circ\tau\circ f)=\tau$ so it is surjective and since $f$ is bijective, $\phi$ is injective.
+    It is a homomorphism since $\phi(\sigma_1\circ\sigma_2)=f\circ\sigma_1\circ \sigma_2\circ f^{-1}=f\circ\sigma_1\circ f^{-1}\circ f\circ\sigma_2\circ f^{-1}=\phi(\sigma_1)\circ\phi(\sigma_2)$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+So for every $X$ finite of cardinality $n$:
+\[ S_X \cong S_n = S_{\set{1,\dots,n}} \]
+And further it can be shown combinatorically that $\abs{S_n}=n!$.
+The elements of $S_n$ are called \emph{permutations}.
+
+There are a few ways of writing out a permutation, suppose $\sigma\in S_5$ then we can write it out as a table where the top row is $\set{1,\dots,5}$ and the bottom row is their image, for example:
+\[ \sigma = \begin{pmatrix} 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\ 5 & 6 & 3 & 9 & 1 & 4 & 8 & 7 & 2 \end{pmatrix} \]
+This is caled the tabular representation of a permutation.
+We can also write this in cycles.
+If we take $1$, it maps to $5$ which maps to $1$, creating a cyle, so we can write this cycle as $\pmat{1&5}$:
+\[ \sigma = \pmat{1&5}\pmat{2&6&4&9}\pmat{3}\pmat{7&8} \]
+
+\begin{defn*}
+
+    A \ppemph{cycle} is a permutation $\sigma$ such that there exists elements $k_1,\dots,k_t$ such that $\sigma(k_i)=k_{i+1}$ for $i<t$ and $\sigma(k_t)=k_1$.
+    And for every other element other than these elements, $\sigma$ maps it to itself.
+    And two cycles are \ppemph{disjoint} if the set of values they permute are disjoint.
+
+\end{defn*}
+
+As said above, we can express a cycle as a tuple:
+\[ \sigma = \pmat{k_1&k_2&\ldots&k_t} \]
+Notice then that a permutation of the form $\pmat{k}$ is just the identity function.
+Also notice that the composition of disjoint cycles is commutative since they don't affect each other's permuted elements.
+
+\begin{thrm*}
+
+    Every (finite) permutation can be written as a unique (up to order) composition of disjoint cycles.
+
+\end{thrm*}
+
+\begin{proof}
+
+    We will prove existence by induction on $S_n$ (since every finite symmetry group is isomorphic to some $S_n$).
+    For $n=1$, this is trivial since every permutation is the identity function.
+    Suppose this is true for $k<n$, suppose $\sigma\in S_n$.
+    Then we can take the cycle created by $1$ (which must exist, since we can exhaust all the elements in $\set{1,\dots,n}$), let this cycle be $\sigma_1$.
+    Then we can create a new permutation defined by $\sigma'(i)=i$ if $i$ is in $\sigma_1$'s permuted elements and $\sigma(i)$ otherwise.
+    Thus $\sigma=\sigma'\circ\sigma_1$, and since $\sigma'$ is in a symmetric group isomorphic to some $S_k$ for $k<n$, it has a disjoint cycle decomposition.
+    And therefore so does $\sigma$ as a whole.
+
+    This decomposition must be unique (up to order) because the decomposition is of disjoint cycles, so each cycle represents the cycle its elements take in the permutation.
+    And this is unique, since it is simply $\pmat{i&\sigma(i)&\ldots&\sigma^k(i)}$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+It is immediate then that the set of cycles in $S_n$ generate $S_n$.
+
+\begin{defn*}
+
+    We define the \ppemph{sign} function to be a function:
+    \[ \sign\colon S_n\longvarrightarrow\set{-1,1} \]
+    Where $\signof\sigma=(-1)^k$ where $k=\abs{\set{(i,j)}[i<j, \sigma(i)>\sigma(j)]}$.
+    Essentially the sign function indicates whether or not the number of times $\sigma$ reverses the order of numbers is even or odd.
+
+\end{defn*}
+
+Similarly, we can define
+\[ \delta_{ij} = \begin{cases} +1 & \sigma(i)<\sigma(j) \\ -1 \sigma(i)>\sigma(j) \end{cases} \]
+and then
+\[ \signof\sigma = \prod_{i<j}\delta_{ij} \]
+We can also think of the sign function geometrically: if we draw a line between $k$ and $\sigma(k)$ in $\sigma$'s tabular form, counting the number of intersections between these lines and raising $-1$ to
+that power gives $\signof\sigma$.
+This is because two lines orignating from $i$ and $j$ where $i<j$ intersect if and only if $\sigma(i)>\sigma(j)$.
+
+\begin{prop*}
+
+    The sign function is a homomorphism between $S_n$ and $\set{\pm1}$.
+
+\end{prop*}
+
+$\set{\pm1}$ is a group under multiplication, and it is isomorphic to $\eulergof 3$.
+
+\begin{proof}
+
+    Suppose $\sigma,\tau\in S_n$.
+    For every $1\leq i<j\leq n$ there are four possibilities:
+    \benum
+        \item $\tau$ preserves the order and $\sigma$ preserves the order of their images.
+        \item $\tau$ preserves the order and $\sigma$ does not preserve the order of the images.
+        \item $\tau$ does not preserve the order, $\sigma$ does.
+        \item $\tau$ does not preserve the order, $\sigma$ does not.
+    \eenum
+    If we focus on the product definition of sign: the first and fourth options provides a $+1$ (since order is preserved, for the fourth option the order is reversed twice, so at the end it is preserved).
+    And the second and third options provide a $-1$.
+    So if we use $\delta_{ij}^\sigma$ as the indicator for $\sigma$, the first option corresponds to $\delta_{ij}^\sigma=\delta_{ij}^\tau=1$, and so on.
+    And so we can see that:
+    \[ \delta_{ij}^{\sigma\circ\tau} = \delta_{ij}^\sigma\cdot\delta_{ij}^\tau \]
+    And therefore:
+    \[ \signof{\sigma\circ\tau} = \prod_{i<j}\delta_{ij}^{\sigma\circ\tau} = \prod_{i<j}\delta_{ij}^\sigma\cdot\delta_{ij}^\tau = \signof\sigma\cdot\signof\tau \]
+    as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{defn*}
+
+    A permutation is \ppemph{even} if its sign is $1$ and \ppemph{odd} if its sign is $-1$.
+
+\end{defn*}
+
+\begin{defn*}
+
+    A \ppemph{transposition} is a cycle of length $2$.
+
+\end{defn*}
+
+Since all a transposition does is permute two elements, one of which must be greater than the other, the sign of a transposition is $-1$, and thus every transposition is odd.
+
+Notice that for a cycle $\pmat{k_1&\ldots&k_t}$, this can be written the composition of transpositions:
+\[ \pmat{k_1&\ldots&k_t} = \pmat{k_1&k_2}\pmat{k_2&k_3}\cdots\pmat{k_{t-1}&k_t} \]
+Since for $k_i$, it gets swapped to $k_{i+1}$ in the $i$th transposition in this decomposition, and $k_{i+1}$ is not in any of the subsequent transpositions.
+It can also be written as:
+\[ \pmat{k_1&k_t}\pmat{k_1&k_{t-1}}\cdots\pmat{k_1&k_2} \]
+Since $k_i$ is mapped to $k_1$, which is mapped to $k_{i+1}$ in the next transposition, which is not in any of the other transpositions.
+For $k_1$, it is mapped back and fourth until the final transposition when it is mapped to $k_t$.
+And since the sign function is a homomorphism:
+\[ \signof{\pmat{k_1&\ldots&k_t}} = (-1)^{t-1} \]
+
+So even length cycles are odd, and odd length cycles are even (the identity cycle is considered odd length, since it is actually of the form $(i)$).
+
+Also notice that we showed that cycles can be written as a product of transpositions, so the set of transpositions also generates $S_n$.
+And the sign of a permutation equals to the parity of the number of transpositions in its decomposition into transpositions.
+
+\begin{note}
+
+    For any $n\geq3$, $S_n$ is not abelian.
+    This much should not be surprising.
+
+\end{note}
+
+For $n\geq2$, $\sign$ is surjective (since there exists transpositions in $S_n$ for $n\geq2$, $S_1$ only contains the identity).
+And we define:
+\[ A_n = \kerof{\sign} = \set{\sigma\in S_n}[\sigma \text{ even}] \]
+And so by the first isomorphism theorem:
+\[ \slfrac{S_n}{A_n}\cong\set{\pm1} \implies \abs{A_n} = \frac{S_n}2 \]
+Notice that the order of a cycle of length $t$ is $t$.
+This is a direct result of the definition of a cycle.
+
+\begin{prop*}
+
+    $A_n$ is generated by the set $\set{\pmat{a&b}\pmat{c&d}}$ where $a\neq b$ and $c\neq d$.
+
+\end{prop*}
+
+This is obvious since every permutation in $A_n$ can be written as a product of an even number of transpositions.
+
+There are three types of this product of transpositions: the identity, the product of two disjoint transpositions, and the product of two transpositions which intersect at only one point.
+Notice that the last type is a product of the form $\pmat{a&b}\pmat{b&c}=\pmat{a&b&c}$.
+So $A_n$ is generated by the set of disjoint products of two transpositions and cycles of length three.
+Notice that:
+\[ \pmat{k_1&k_2&k_3}\pmat{k_1&k_2&k_4} = \pmat{k_1&k_3}\pmat{k_2&k_4} \]
+And so every product of two disjoint transpositions can be written as the product of two cycles of length $3$.
+Therefore $A_n$ is generated by the set of cycles of length $3$, thus we have proven the following proposition:
+
+\begin{prop*}
+
+    $A_n$ is generated by the set of cycles of length $3$.
+
+\end{prop*}
+
+\begin{defn*}
+
+    The \ppemph{periodic structure} of a permutation is a multiset which encodes the number of cycles of each length there are in its disjoint cycle decomposition.
+    So for example if the decomposition of a permutation is $\sigma_1\cdots\sigma_t$ where $\sigma_i$ are disjoint (non trivial) cycles, the periodic structure is:
+    \[ \set{[n]^k}[k=\abs{\set{i}[\abs{\sigma_i}=n]}, k>0] \]
+
+\end{defn*}
+
+\begin{defn*}
+
+    Two elements $a,b\in G$ are \ppemph{conjugates} are if there exists a $g\in G$ such that $b=gag^{-1}$.
+
+\end{defn*}
+
+It is trivial to see that this is an equivalence relation.
+In an abelian group, this relation is the trivial relation.
+
+Notice that the inverse of a cycle $\pmat{k_1&\ldots&k_t}$ is $\pmat{k_t&k_{t-1}&\ldots&k_1}$ which is just the reverse order of the permutation.
+
+\begin{thrm*}
+
+    Elements of $S_n$ are conjugates if and only if they have the same periodic structure.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Suppose $\sigma$ is a cycle $\sigma=\pmat{k_1&\ldots&k_n}$ then for any permutation $g$:
+    \[ g\sigma g^{-1} = \pmat{g(k_1)&\ldots&g(k_n)} \]
+    since $\sigma g^{-1}$ only affects elements of the for $g(k_i)$, which converts them to $g\sigma g^{-1}(g(k_i))=g\sigma(k_i)=g(k_{i+1})$.
+    So the conjugate of a cycle is a cycle of the same length (since $g$ is bijective, $g(k_i)$ are distinct).
+
+    So if $\sigma$ is a permutation with a decomposition $\sigma_1\cdots\sigma_t$, then:
+    \[ g\sigma g^{-1} = g\sigma_1\cdots\sigma_t g^{-1} = g\sigma_1 g^{-1} g\sigma_2 g^{-1}\cdots g\sigma_t g^{-1} \]
+    And since $g\sigma_i g^{-1}$ is a cycle of the same length as $\sigma_i$, the periodic structure of $g\sigma g^{-1}$ is the same as that of $\sigma$.
+
+    Now suppose $\sigma$ and $\tau$ have the same periodic structures, suppose $\sigma$ and $\tau$ have the following decompositions:
+    \begin{align*}
+        \sigma &= \sigma_1\cdots\sigma_n \\
+        \tau &= \tau_1\cdots\tau_n \\
+    \end{align*}
+    Where $\sigma_i$ and $\tau_i$ have the same length (since $\sigma$ and $\tau$ have the same periodic structure).
+    So we can define $g$ such that if $\sigma_i=\pmat{k_1&\ldots&k_t}$ and $\tau_i=\pmat{j_1&\ldots&j_t}$, $g$ maps $k_i$ to $j_i$.
+    So then we have that $g\sigma g^{-1}(j_i) = g\sigma(k_i)=g(k_{i+1})=j_{i+1}=\tau(j_i)$.
+    So $g\sigma g^{-1}=\tau$, so $\sigma$ and $\tau$ are conjugates.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\end{document}
+

@@ -1,0 +1,252 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\usepackage{tikz-cd}
+
+\catcode`\@=11
+\input pdfmsym
+
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\implies{\,\mathrel{\longvarRightarrow}\,}
+
+\def\slfrac#1#2{\left.{}^{#1}\mkern-4mu\middle/\mkern-3mu{}_{#2}\right.}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\newfunc{eulerg}{{\rm Euler}}({})
+\newfunc{order}o({})
+\newfunc{ker}{{\rm Ker}}({})
+\newfunc{image}{{\rm Im}}({})
+\newfunc{lattice}{{\cal L}}(\vert)
+\newfunc{powset}{{\cal P}}(\vert)
+\newfunc{units}{{\cal U}}(\vert)
+\newfunc{sign}{{\rm sgn}}({})
+\newfunc{aut}{{\rm Aut}}({})
+\newfunc{speclinear}{{\rm SL}}({})
+\newfunc{genlinear}{{\rm GL}}({})
+\newfunc{projlinear}{{\rm PGL}}({})
+\newfunc{specprojlinear}{{\rm PSL}}({})
+\newfunc{core}{{\rm Core}}(\vert)
+\newfunc{inner}{{\rm Inn}}(\vert)
+\newfunc{outer}{{\rm Out}}(\vert)
+\newfunc{conj}{{\rm conj}}({})
+\newfunc{fp}{{\rm FP}}({})
+
+\def\maxdivs{\mathrel{\|}}
+
+\let\normalsub=\trianglelefteq
+\def\normal{\mathrel\triangleleft}
+\let\mmorph=\longvarhookrightarrow
+
+\begin{document}
+
+\c@section=1
+
+\barcolorbox{220, 220, 255}{0, 0, 130}{80, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Introduction to Rings and Modules}
+
+    \medskip
+    \textit{Lecture \thesection, Wednsday March 15 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{Rings}
+
+The definition of mathematical objects is (usually) the product of decades of research, and are the abstraction of more specific exhaustively studied mathematical objects which have common characteristics
+with one another.
+When studying math, especially on an undergraduate level, we are more or less oblivious to this fact, as we are served these definitions on a silver platter and are not made aware of the arduous process
+which lead to the modern definition.
+The following definition is not universally accepted, as different authors may define the following mathematical object in different (non-equivalent) ways:
+
+\begin{defn*}
+
+    A \ppemph{ring} is a set $R$ equipped with two binary operations $(+, \cdot)$ (remember that this is just a notation and does not necessarily correlate with real/complex addition and multiplication), 
+    which satisfy the following axioms:
+    \benum
+        \item $(R, +)$ is an abelian group, ie:
+        \benum
+            \item $+$ is associative.
+            \item There exists an identity element $0_R\in R$ such that for every $a\in R$, $a+0_R=0_R+a=a$.
+            \item For every $a\in R$, $a$ has an additive inverse $-a\in R$ such that $a+(-a)=(-a)+a=0_R$.
+            \item $+$ is commutative (abelian).
+        \eenum
+        \item $(R, \cdot)$ is a monoid, ie:
+        \benum
+            \item $\cdot$ is associative.
+            \item There exists an identity element $1_R\in R$ such that for every $a\in R$, $a\cdot 1_R=1_R\cdot a=a$.
+        \eenum
+        \item $\cdot$ and $+$ are distributive:
+        \benum
+            \item For every $a,b,c\in R$: $a\cdot(b+c)=(a\cdot b) + (a\cdot c)$ (left distributivity).
+            \item For every $a,b,c\in R$: $(b+c)\cdot a=(b\cdot a) + (c\cdot a)$ (right distributivity).
+        \eenum
+    \eenum
+
+    We say that a ring $R$ is \ppemph{commutative} if $(R,\cdot)$ is abelian (for every $a,b\in R: a\cdot b=b\cdot a$).
+
+\end{defn*}
+
+Note that multiplication in a ring need not be commutative.
+
+For example, it is trivial to see why the following are true (the operations are obvious):
+\benum
+    \item $R=\bZ$ is a commutative ring.
+    \item $R=\bZ_n\cong\slfrac\bZ{n\bZ}$ is a commutative ring.
+    \item $R=M_n(\bR)$ ($M_n(\bR)$ is the set of all real square matrices of size $n\times n$) is a ring, and for $n\geq2$ it is non-commutative.
+    \item If $S$ is a ring, $M_n(S)$ is also a ring (the operations defined on $M_n(S)$ are analogous to those defined when $S$ is a field, it should be obvious why this is a ring).
+\eenum
+
+\begin{defn*}
+
+    A similar mathematical object where $(R,\cdot)$ is instead a semigroup (it doesn't necessarily have an identity), is called an \ppemph{rng} (a ring without an \textit{i}dentity).
+
+\end{defn*}
+
+An example of an rng which is not a ring is $R=2\bZ$ with normal addition and multiplication.
+It is obviously a group under addition, and multiplication is associative.
+And since $1\notin2\bZ$, multiplication has no identity.
+
+\begin{defn*}
+
+    Suppose $R$ is a ring such that for every $0_R\neq a\in\ R$ has a multiplicative inverse, $R$ is called a \ppemph{division ring}.
+    If furthermore multiplication is commutative, $R$ is a \ppemph{field}.
+
+\end{defn*}
+
+Note that a ring $R$ is a division ring (respectively field) if $(R\setminus\set{0_R},\cdot)$ is a group (respectively abelian group) or empty.
+We will soon show that $0_R=1_R$ if and only if $\abs R=1$ (the trivial ring), so we can remove the ``or empty'' part of the previous observation if we assume $R$ is non-trivial, and a trivial ring is
+trivially a field.
+
+\def\qi{{\rm i}} \def\qj{{\rm j}} \def\qk{{\rm k}} \def\bH{\mathbb{H}}
+One example of a division ring is the \emph{quaternions} which were defined in our Group Theory course, but another definition is $\bH$ (the set of quaternions) is the real vector space with basis
+$\set{1, \qi, \qj, \qk}$ such that:
+\[ \qi^2 = \qj^2 = \qk^2 = 1,\quad \qi\qj = \qk,\quad \qj\qk=\qi,\quad \qk\qi=\qj,\quad \qj\qi=-\qk,\quad \qk\qj=-\qi,\quad \qi\qk=-\qj \]
+So:
+\[ \bH = \set{a+b\qi+c\qj+d\qk}[a,b,c,d\in\bR] \]
+It can be shown that $\bH$ is a division ring, and it is obviously not a field since multiplication is not commutative (for example $\qi\qj\neq\qj\qi$).
+
+\begin{prop*}
+
+    Suppose $R$ is a ring, then for every $a\in R$:
+    \[ a\cdot0_R=0_R\cdot a = 0_R \]
+
+\end{prop*}
+
+\begin{proof}
+
+    This is quite simple:
+    \[ a\cdot0_R = a\cdot(0_R+0_R) = a\cdot0_R + a\cdot0_R \]
+    So if we let $b=a\cdot0_R$ (just to make it easier on the eyes), by the ring axioms, we have that:
+    \[ b+b = b \]
+    and since by the ring axioms $-b\in R$, we have that:
+    \[ b+b-b = b-b \implies b=0_R \]
+    that is, $a\cdot0_R=0_R$.
+
+    The proof for $0_R\cdot a=0_R$ is similar.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{prop*}
+
+    If $R$ is a ring, then $1_R=0_R$ if and only if $R$ is trivial.
+
+\end{prop*}
+
+\begin{proof}
+
+    If $R$ is trivial, this is trivial (there is only one element).
+    To show the converse, notice that on one hand since $1_R$ is the multiplicative identity, for every $a\in R$, $1_R\cdot a=a$.
+    But by above, $1_R\cdot a=0_R\cdot a=0_R$, so $a=0_R$ for every $a\in0_R$ and therefore $R$ is trivial.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{defn*}
+
+    A \ppemph{left zero divisor} in a ring $R$ is an element $0_R\neq a\in R$ such that there exists $0_R\neq b\in R$ such that $ab=0_R$.
+    Similarly, $b$ is a \ppemph{right zero divisor}.
+    If an element is a left or right zero divisor, it is also simply known as a \ppemph{zero divisor}.
+
+\end{defn*}
+
+\begin{defn*}
+
+    A commutative ring is known as an \ppemph{integral domain} if it contains no zero divisors.
+
+\end{defn*}
+
+\begin{prop*}
+
+    If $R$ is a finite integral domain, then $R$ is a field.
+
+\end{prop*}
+
+\begin{proof}
+
+    Since $R$ is necessarily commutative, all we need to show is that $(R,\cdot)$ is a group (the trivial case is trivial).
+    We showed that a reducible monoid is a group in Group Theory, and $(R,\cdot)$ is a group by assumption, but we will prove this differently.
+
+    Let $0_R\neq a\in R$ then there exists two numbers $m<n$ such that $a^m=a^n$, so $a^m-a^n=0_R$ (otherwise all $a^m$ are distinct and then $R$ is infinite).
+    Notice that $a^m\neq0_R$, this can be shown inductively since $a\neq0_R$ and $a^{m-1}\neq0_R$ and $R$ has no zero divisors.
+    So:
+    \[ a^m(a^{n-m}-1_R) = 0_R \]
+    which means that $a^{n-m}=1_R$ and so $aa^{n-m-1}=a^{n-m-1}a=1_R$ so $a^{n-m-1}=a^{-1}$, as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{prop*}
+
+    The axiom that $(R,+)$ is abelian follows from the rest of the axioms.
+
+\end{prop*}
+
+\begin{proof}
+
+    Notice that:
+    \[ a + a + b + b = a(1_R+1_R) + b(1_R+1_R) = (a+b)(1_R+1_R) = (a+b)1_R + (a+b)1_R = a + b + a + b \]
+    and so by subtracting $a$ from the left and $b$ from the right, we have that:
+    \[ a + b = b + a \]
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+If $S$ is a ring, we define the \emph{ring of polynomials} over $S$ to be:
+\[ R = S[x] = \set{a_0+a_1x+\cdots+a_nx^n}[n\in\bN_{\geq0}, a_i\in S] \]
+with the usual operations of polynomial addition and multiplication.
+
+If we have two variables, $x$ and $y$ which commute, then we can define the two-variable polynomials over $S$ to be all the polynomials with $x$ and $y$:
+\[ S[x,y] = \bigl(S[x]\bigr)[y] = \bigl(S[y]\bigr)[x] \]
+And we can inductively define $S[x_1,\dots,x_n]$.
+The symbols $x_i$ are called \emph{indeterminates}.
+
+If the two variables don't commute, this is denoted as $S\gen{x,y}$.
+
+The ring of power series over a ring $S$ is defined as:
+\[ S[\![x]\!] = \set{\sum_{k=0}^\infty a_kx^k}[a_k\in S] \]
+with the usual operations.
+
+If $S$ is a set, we can define operations over $\powset S$ to turn it into a ring: $A+B=A\symdif B$ and $A\cdot B=A\cap B$.
+
+\end{document}
+

@@ -1,0 +1,267 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz-cd}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{conj}{Conjecture}{255,130,130}{150,0,0}{200,0,0}
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\undersumtext#1{\vtop{\hsize=2cm\relax\centering\small #1}}
+
+\newfunc{oracle}{\hbox{\tencsc oracle}}({})
+\newfunc{dspace}{\mathsf{DSPACE}}({})
+\newfunc{dtime}{\mathsf{DTIME}}({})
+\newfunc{nspace}{\mathsf{NSPACE}}({})
+\newfunc{nspaceoff}{\mathsf{NSPACE}_{\mathsf{offline}}}({})
+\newfunc{totreach}{\textsf{Total-Reach}}({})
+\newfunc{prob}{\mathbb P}(|)
+\newfunc{expec}{\mathbb E}[|]
+
+\def\quant{\mathtt{Q}}
+\def\off{\mathsf{off}}
+
+\def\sps{\texttt{\char32}}
+\def\sat{\mathsf{SAT}}
+\def\csat{\mathsf{CSAT}}
+\def\is{\mathsf{IS}}
+\def\threesat{\mathsf{3SAT}}
+\def\clique{\mathsf{Clique}}
+\def\vertcover{\textsf{Vertex-Cover}}
+\def\domset{\textsf{Dom-Set}}
+\def\dhp{\mathsf{DHP}}
+\def\dhc{\mathsf{DHC}}
+\def\hc{\mathsf{HC}}
+\def\tsp{\mathsf{TSP}}
+\def\threecolor{\mathsf{3Color}}
+\def\twocolor{\mathsf{2Color}}
+\def\kcolor{k\mathsf{Color}}
+\def\Color{\mathsf{Color}}
+\def\subsum{\mathsf{SubsetSum}}
+\def\maxclique{\mathsf{MaxClique}}
+\def\minexpr{\mathsf{MinExpression}}
+\def\sparse{\mathsf{Sparse}}
+\def\stconn{\textsf{st-conn}}
+\def\polyidtest{\mathsf{PolyIdTesting}}
+
+\def\PH{\mathbf{PH}}
+\def\PF{\mathbf{PF}}
+\def\PC{\mathbf{PC}}
+\def\P{\mathbf{P}}
+\def\NP{\mathbf{NP}}
+\def\NPH{\mathbf{NPH}}
+\def\NPC{\mathbf{NPC}}
+\def\co{\mathsf{co}}
+\def\coNP{\mathbf{coNP}}
+\def\poly{\mathsf{poly}}
+\def\Ppoly{\slfrac\P\poly}
+\def\L{\mathbf{L}}
+\def\NL{\mathbf{NL}}
+\def\RP{\mathbf{RP}}
+\def\BPP{\mathbf{BPP}}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mN{\mathcal{N}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=12
+
+\barcolorbox{255, 220, 220}{130, 0, 0}{200, 80, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Computability and Complexity}
+
+    \medskip
+    \textit{Lecture \thesection, Thursday September 7, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{defn*}
+
+    Given a probabilistic algorithm $M(x)$ whose time complexity is $t(n)$, we define a deterministic algorithm $M_{\mathsf{off}}(x,r)$ which gets a second input $r$ whose length is $t(\abs x)$.
+    $M_\off(x,r)$ runs $M(x)$ and it uses $r$ to make the decisions for $M(x)$.
+    For example, for its first decision the simulation of $M(x)$ will use the value of $r_1$ (or $r[1]$) to determine which choice to make.
+
+    $M_\off$ is called $M$'s \ppemph{offline algorithm}.
+
+\end{defn*}
+
+Without loss of generality, we can assume that all choices are binary and so for every $x$,
+\[ \probof{M_\off(x,r)\text{ is correct}}[r\in\set{0,1}^{t(\abs x)}] = \probof{M(x)\text{ is correct}} \]
+This is pretty immediate (keep in mind that in the case that $M(x)$ makes fewer than $t(\abs x)$ decisions, the remaining bits of $r$ will not affect $M'(x,r)$'s running and thus will not affect the
+probability).
+Notice that the run time of $M_\off(x,r)$ is also $O(t(n))$.
+
+\begin{thrm*}
+
+    \[ \BPP \subseteq \Ppoly \]
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let $S$ be a problem in $\BPP$, so there exists a probabilistic polynomial-time algorithm $M$ which always has a non-zero probability of being correct.
+    By a previous theorem, we can assume that $M$'s probability of being correct is greater than $1-2^{-p(n)}$ for a polynomial $p$.
+    Let us take $p(n)=n+1$ (the reasoning for this is that there are $2^n$ possible inputs, so this works).
+
+    So we know that $M_\off$ also satisfies this probability:
+    \[ \probof{M_\off(x,r)\text{ is correct}}[r\in\set{0,1}^t] \geq 1-\frac1{2^{n+1}} \]
+    We need to show that there exists a sequence of advice (previously called commands), $\set{a_n}_{n=0}^\infty$ such that $M_\off(x,a_{\abs x})=1$ where $a_n$'s length is bound polynomially.
+    We can't just take an $r$ which makes $M_\off(x,r)$ correct, as this $r$ may differ for every $x$, and the advice must be the same for all $x$ of the same length.
+
+    We say that a sequence of choices $r_n$ is \emph{accurate} if for every input $x$ of length $n$, $M_\off(x,r_n)$ returns the correct answer.
+    So to define our advice, we just take accurate sequences of choices.
+    Therefore we need to show that for every $n>0$, there exists an accurate sequence of choices.
+    We will do this by showing that the probability a sequence of choices is accurate is non-zero, which necessitates the existence of an accurate sequence of choices.
+    So let $r_n$ be a random (uniformly chosen) sequence of choices of length $n$, we will compute the probability that it is accurate.
+    \begin{multline*}
+        \probof{\text{$r_n$ is an accurate sequence of choices}} = \probof{\forall \abs x=n\colon M_\off(x,r_n)\text{ is correct}} \\
+        = 1 - \probof{\exists\abs x=n\colon M_\off(x,r_n)\text{ is incorrect}} \geq 1 - \sum_{\abs x=n}\probof{M_\off(x,r_n)\text{ is incorrect}}
+    \end{multline*}
+    Now, the probability $M_\off(x,r_n)$ is incorrect is equal to the probability $M(x)$ is incorrect, which is less than $\frac1{2^{n+1}}$ and since there are $2^n$ strings of length $n$, we get that this
+    is greater than
+    \[ \geq 1-2^n\cdot\frac1{2^{n+1}} = 1-\frac12 = \frac12 \]
+    And so the probability that $r_n$ is accurate is non-zero, meaning there must exist an accurate sequence of choices of length $n$.
+
+    So if we take our sequence of advice to be $\set{r_n}_{n=0}^\infty$, then we have that firstly, $\abs{r_n}\leq t(n)$ and so the length of the advice is polynomially bound.
+    And for every $x$,
+    \[ M_\off(x,r_{\abs x}) = 1 \iff x\in S \]
+    since $r_{\abs x}$ is accurate.
+    This is precisely the definition of a problem being in $\Ppoly$, meaning $S\in\Ppoly$.
+    So we have shown that $\BPP$ is contained within $\Ppoly$, as required.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}
+
+    \[ \BPP \subseteq \Sigma_2 \]
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let $S$ be a problem in $\BPP$, so there exists a deterministic polynomial-time algorithm $M$ such that
+    \[ \probof{M(x,r)\text{ is correct}}[r\in\set{0,1}^t] \geq \frac23 \]
+    where $t(n)$ is the polynomial runtime bound of $M$ (this is the offline equivalent definition of $\BPP$).
+
+    We showed last lecture that given a probabilistic algorithm $M$ which solves a problem in $\BPP$, we can do an amplification of $M$ to get $M'$ which runs $M$ $k$ times and satisfies
+    \[ \probof{M'(x,r)\text{ is correct}}[r\in\set{0,1}^{t(n)\cdot k(n)}] \geq 1-e^{-k(n)/18} \]
+    (We are viewing these algorithms as their offline equivalents.)
+    The reason we must choose $r\in\set{0,1}^{t\cdot k}$ is since we are running $M$ $k$ times, so each time we run it we need a new sequence of choices.
+    Each sequence of choices must be of length $t$, and so in total we need a length of $t\cdot k$.
+    So if we define $k(n)=18\log(2t^2(n))$, then eventually $t\geq k$ and so we get that 
+    \[ \probof{M'(x,r)\text{ is correct}}[r\in\set{0,1}^{18t\log(2t^2(n))}] \geq 1-e^{-\log(2t^2(n))} = 1-\frac1{2t^2(n)} \geq 1-\frac1{2t(n)k(n)} \]
+    Let us define $q(n)=t(n)k(n)$, so we have that $M'(x,r)$ is correct with a probability greater than $1-\frac1{2q}$.
+
+    So $M'$ utilizes $q$ bits for $r$ and returns a correct answer with a probability greater than $1-\frac1{2q}$.
+    Let us define $M^*(x,r,\overline s)$ where $\overline s$ is a sequence of \emph{masks}: $s_1,\dots,s_q$ where for every $i$, $s_i\in\set{0,1}^q$.
+    $M^*$ will run $M'$ $q$ times, and on the $i$th iteration it will run $M'(x,r\otimes s_i)$ and it returns one if and only if at any point $M'$ returns one.
+    ($\otimes$ means XOR: exclusive-or).
+
+    \algorithm
+        \Function{$M^*$}{$x,r,\overline s$}
+            \For{$i$ \textbf{from} $1$ \textbf{to} $q(\abs x)$}
+                \lIf{$M'(x,r\otimes s_i)=1$} \Return $1$
+            \EndFor
+            \State\Return $0$
+        \EndFunc
+    \ealgorithm
+
+    So we claim that $M^*$ satisfies the requirements for $\Sigma_2$:
+    \[ x\in S \iff \exists\overline s\forall r\colon M^*(x,r,\overline s)=1 \]
+    Let us first show that if $x\notin S$ then for all $\overline s$ there exist an $r$ where $M^*(x,r,\overline s)=0$.
+    Let us randomly choose an $r$, and show that the probability $M^*(x,r,\overline s)=0$ is non-zero.
+    Notice that since $r$ is uniformly chosen, so is $s_i\otimes r$ (since $s_i\otimes r=a$ if and only if $r=s_i\otimes a$, which has uniform probability).
+    Thus
+    \begin{multline*}
+        \probof{M^*(x,\overline s,r)=0}[r\in\set{0,1}^q] = \probof{\forall i\colon M'(x,s_i\otimes r)=0}[r\in\set{0,1}^q] \\
+        \geq 1 - \probof{\exists i\colon M'(x,s_i\otimes r)=1}[r\in\set{0,1}^q] \geq 1- \sum_{i=1}^q\probof{M'(x,s_i\otimes r)=1}[r\in\set{0,1}^q] = 1- q\cdot\frac1{2q} = \frac12
+    \end{multline*}
+    Since the probability that $M'(x,s_i\otimes r)=1$ when $x\notin S$ is less than $\frac1{2q}$ (since as stated before, $s_i\otimes r$ distributes uniformly).
+    So there must exist an $r$ such that $M^*(x,r,\overline s)=1$ for any $\overline s$, as required.
+
+    Now we will show that if $x\in S$, there exists a sequence of masks $\overline s$ where for every sequence of choices $r$, $M^*(x,r,\overline s)=1$.
+    Again here we will randomly choose a sequence of masks $\overline s=s_1,\dots,s_q$ and show that with a non-zero probability, it satisfies the condition.
+    \begin{multline*}
+        \probof{\forall r\colon M^*(x,\overline s,r)=1}[s_i\in\set{0,1}^q] = \probof{\forall r\exists i\colon M'(x,r\otimes s_i)=1}[s_i\in\set{0,1}^q] \\
+        = 1 - \probof{\exists r\forall i\colon M'(x,r\otimes s_i)=0}[s_i\in\set{0,1}^q] \geq 1 - \sum_{r\in\set{0,1}^q}\probof{\forall i\colon M'(x,r\otimes s_i)=0}[s_i\in\set{0,1}^q]
+    \end{multline*}
+    Since each $s_i$ is chosen independently, $r\otimes s_i$ is independent and so the events where $M'(x,r\otimes s_i)=0$ are independent.
+    This means that
+    \[ \probof{\forall i\colon M'(x,r\otimes s_i)=0}[s_i\in\set{0,1}^q] = \prod_{i=1}^q\probof{M'(x,r\otimes s_i)=0}[s_i\in\set{0,1}^q] \geq \frac1{(2q)^q} \]
+    So continuing our computations, we get
+    \[ \probof{\forall r\colon M^*(x,\overline s,r)=1}[s_i\in\set{0,1}^q] \geq 1 - \sum_{r\in\set{0,1}^q}\frac1{(2q)^q} = 1 - 2^q\cdot\frac1{(2q)^q} = 1 - \frac1{q^q} \]
+    This is non-zero, meaning that there must exist such a sequence of masks.
+
+    So we have shown that
+    \[ x\in S \iff \exists\overline s\forall r\colon M^*(x,r,\overline s)=1 \]
+    meaning that $S\in\Sigma_2$, as required.
+    \qed
+
+\end{proof}
+
+Since $\BPP$ is closed under complements, we have that $\BPP=\co\BPP\subseteq\co\Sigma_2=\Pi_2$.
+Thus we have shown
+
+\begin{coro*}
+
+    \[ \BPP \subseteq \Sigma_2\cap\Pi_2 \]
+
+\end{coro*}
+
+\end{document}
+

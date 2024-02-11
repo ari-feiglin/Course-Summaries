@@ -1,0 +1,299 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input ../preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{ker}{{\rm ker}}({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{atan}{{\rm tan}^{-1}}({})
+\newfunc{lag}{{\cal L}}({})
+\newfunc{sin}{{\rm sin}}({})
+\newfunc{sinh}{{\rm sinh}}({})
+\newfunc{cosh}{{\rm cosh}}({})
+\newfunc{cos}{{\rm cos}}({})
+\newfunc{arg}{{\rm arg}}({})
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+\newfunc{cis}{{\rm cis}}({})
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\iff{\,\longvarLeftRightarrow\,}
+\def\implies{\,\longvarRightarrow\,}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\mO{{\cal O}}
+\def\mU{{\cal U}}
+\def\mV{{\cal V}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\let\ds=\displaystyle
+\let\longto=\longvarrightarrow
+\let\to=\varrightarrow
+
+\def\bexerc{\begin{exercise*}}
+\def\eexerc{\end{exercise*}}
+\def\bblank{\begin{blankpp}}
+\def\eblank{\end{blankpp}}
+
+\begin{document}
+
+\c@section=4
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Complex Functions}
+
+    \medskip
+    \textit{Assignment \thesection}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\bexerc
+
+    Find the radius of convergence for
+    \benum
+        \item $\ds\sum_{n=0}^\infty z^{n!}$
+        \item $\ds\sum_{n=0}^\infty (n+2^n)z^n$
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item The coefficient of $z^n$ in the series is
+        \[ a_n = \begin{cases} 1 & \exists k: n=k! \\ 0 & \text{else} \end{cases} \]
+        And so we can see that $\limsup\sqrt[n]{\abs{a_n}}=1$ since $\abs{a_n}\leq1$ and we can choose a subsequence where $a_n=1$.
+        And so the radius of convergence is
+        \[ r = \frac1{\limsup\sqrt[n]{\abs{a_n}}} = 1 \]
+
+        \item Notice that
+        \[ 2 = \sqrt[n]{2^n} \leq \sqrt[n]{n+2^n} \leq \sqrt[n]{n\cdot2^n} = 2\cdot\sqrt[n]{n} \]
+        And since $\sqrt[n]n$ converges to $1$, by the squeeze theorem, $\lim\sqrt[n]{n+2^n}=2$, and so the radius of convergence is
+        \[ r = \frac1{\limsup\sqrt[n]{\sqrt[n]{n+2^n}}} = \frac12 \]
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Suppose $\sum c_nz^n$ has a radius of convergence of $R$.
+    Find the radius of convergence of
+    \benum
+        \item $\ds\sum_{n=0}^\infty n^pc_nz^n$
+        \item $\ds\sum_{n=0}^\infty\abs{c_n}z^n$
+        \item $\ds\sum_{n=0}^\infty c_n^2z^n$
+    \eenum
+
+\eexerc
+
+\bblank
+
+    Because the radius of convergence of $\sum c_nz^n$ is $R$, we know
+    \[ \limsup_{n\to\infty}\sqrt[n]{\abs{c_n}} = \frac1R \]
+
+    \benum
+        \item We know
+        \[ \limsup\sqrt[n]{\abs{n^p\cdot c_n}} = \limsup\sqrt[n]{n}^p\cdot\limsup\sqrt[n]{\abs{c_n}} = \frac1R \]
+        since the limit of $\sqrt[n]n$ is $1$.
+        So the radius of convergence is $R$.
+
+        \item We know that $\sqrt[n]{\abs{\abs{c_n}}}=\sqrt[n]{\abs{c_n}}$, and so the radius of convergence is also $R$.
+
+        \item We know
+        \[ \limsup\sqrt[n]{\abs{c_n^2}} = \limsup\sqrt[n]{\abs{c_n}}^2 = \bigl(\limsup\sqrt[n]{\abs{c_n}}\bigr)^2 = \frac1{R^2} \]
+        and so the radius of convergence is $R^2$.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Given that
+    \[ \sum_{n=0}^\infty a_n = A,\quad \sum_{n=0}^\infty b_n = B \]
+    absolutely, show that
+    \[ \sum_{n=0}^\infty c_n = AB,\quad c_n = \sum_{k=0}^n a_kb_{n-k} \]
+
+\eexerc
+
+\bblank
+
+    Let us define
+    \[ A' = \sum_{n=0}^\infty \abs{a_n} \]
+    and $A_N$, $B_N$, and $C_N$ to be the partial sums of $a_n$, $b_n$, and $c_n$ respectively, ie.
+    \[ X_N = \sum_{n=0}^N x_n \]
+    Let us notice that
+    \[ C_N = \sum_{n=0}^N\sum_{k=0}^n a_kb_{n-k} \]
+    Let us rewrite this as the sum
+    \[ C_N = \sum_{(a,b)\in S} ab \]
+    where $S=\set{(a_k,b_{n-k})}[0\leq n\leq N, 0\leq k\leq n]$, but this is equal to $S'=\set{(a_n,b_k)}[0\leq n\leq N, 0\leq k\leq N-n]$.
+    If $(a_k,b_{n-k})\in S$ then $0\leq k\leq n$ and so $0\leq n-k\leq N-k$ and $0\leq k\leq N$ so $(a_k,b_{n-k})\in S'$.
+    And if $(a_n,b_k)\in S'$ then we can rewrite it as $(a_n, b_{(n+k)-n})$ and $0\leq n+k\leq N$ and $0\leq n\leq n+k$ so $(a_n,b_k)\in S$ as required.
+    So
+    \[ C_N = \sum_{(a,b)\in S'} ab = \sum_{n=0}^N\sum_{k=0}^{N-n} a_nb_k = \sum_{n=0}^N a_nB_{N-n} \]
+
+    Then notice that
+    \[ A_N\cdot B - C_N = B\sum_{n=0}^N a_n - \sum_{n=0}^N a_nB_{N-n} = \sum_{n=0}^N a_n(B-B_{N-n}) = \sum_{n=0}^N a_n\cdot R_{N-n} \]
+    where $R_N$ is the remainder of the series of $b_n$, ie $R_N=\sum_{n=N+1}^\infty b_n$.
+
+    Let $\epsilon>0$, since $\sum a_n$ converges absolutely, its own absolute tail must converge to $0$, and so there exists an $M$ such that
+    \[ \sum_{n=M+1}^\infty \abs{a_n} < \epsilon \]
+    and since $\sum b_n$ converges, there must be an $M'$ such that for every $m\geq M'$, $\abs{R_m}<\epsilon$.
+    By taking the maximum between $M$ and $M'$, we can assume without loss of generality that $M=M'$.
+    So we have that
+    \[ \abs{A_N\cdot B - C_N} \leq \overbrace{\abs{\sum_{n=0}^M a_nR_{N-n}}}^{(1)} + \overbrace{\abs{\sum_{n=M+1}^N a_nR_{N-n}}}^{(2)} \]
+
+    Let us focus briefly on $(1)$.
+    Notice that if $N\geq2M$ then $N-n\geq N-M\geq M$ and so $\abs{R_{N-n}}<\epsilon$.
+    So if $N\geq2M$ then
+    \[ (1) \leq \sum_{n=0}^M \abs{a_n}\cdot\epsilon \leq A'\cdot\epsilon \]
+
+    Now for $(2)$, since $\sum b_n$ converges, $R_m$ must converge to $0$, and therefore $R_m$ is bound, suppose $\abs{R_m}\leq R$.
+    Thus
+    \[ (2) \leq \sum_{n=M+1}^N \abs{a_n}\cdot\abs{R_{N-n}} \leq R\cdot\sum_{n=M+1}^N \abs{a_n} \leq R\cdot\epsilon \]
+
+    And so all in all we have that for every $\epsilon>0$ there exists an $M'$ ($=2M$) such that for every $N\geq M'$,
+    \[ \abs{A_N\cdot B-C_N} \leq \epsilon(R+A') \]
+    and so $A_N\cdot B-C_N\xvarrightarrow{}[N\to\infty]0$.
+    But since $A_N\xvarrightarrow{}[N\to\infty]A$ by definition, this means that
+    \[ C_N\xvarrightarrow{}[N\to\infty0] A\cdot B \]
+    as required.
+
+\eblank
+
+\bexerc
+
+    Let $\sum a_nz^n$ and $\sum b_nz^n$ be two powerseries with radii of convergence $R_1$ and $R_2$ respectively.
+    Show that the Cauchy product (defined in the previous exercise) $\sum c_nz^n$ converges for $\abs z<\minof{R_1,R_2}$.
+
+\eexerc
+
+\bblank
+
+    If $\abs z<\minof{R_1,R_2}$ then $\sum a_nz^n$ and $\sum b_nz^n$ converge absolutely, and therefore does $\sum c'_n$ where
+    \[ c'_n = \sum_{k=0}^n a_kz^kb_{n-k}z^{n-k} = \parens{\sum_{k=0}^n a_kb_{n-k}}z^n = c_nz^n \]
+    that is, $\sum c_nz^n$ converges, as required.
+
+\eblank
+
+\bexerc
+
+    Show that there does not exist a powerseries $f(z)=\sum c_nz^n$ such that $f(z)$ for $z=\frac12,\frac13,\frac14,\dots$ and also $f'(0)>0$.
+
+\eexerc
+
+\bblank
+
+    Let $z_n=\frac1n$, then $f(z_n)=1$ for every $n$.
+    But since $1$ is itself a powerseries:
+    \[ 1 = 1\cdot z^0 + \sum_{n=1}^\infty 0\cdot z^n \]
+    So if we let $g(z)=1$ (so $g$ is a powerseries), then $f(z_n)=g(z_n)$ and $z_n\longto0$ and $z_n\neq0$.
+    We showed in lecture that this means $f(z)=g(z)$ for every $z\in\bC$.
+    This means that $f(z)=1$ for every $z\in\bC$, meaning $f$ is constant and therefore $f'(z)=0$ for every $z\in\bC$ and specifically for $z=0$.
+
+\eblank
+
+\bexerc
+
+    Show that if $\limsup\abs{c_n}^{\frac1n}<\infty$ then if we define
+    \[ f(z) = \sum_{n=0}^\infty c_n(z-\alpha)^n \]
+    then
+    \[ c_n = \frac{f^{(n)}(\alpha)}{n!} \]
+
+\eexerc
+
+\bblank
+
+    Let $R$ be the radius of convergence of the series, since $\limsup\abs{c_n}^{\frac1n}<\infty$, $R>0$.
+    We showed in lecture that if we define the partial sum to be $f_n$:
+    \[ f_n(z) = \sum_{k=0}^n c_k(z-\alpha)^k \]
+    then $f_n\varrightarrows f$ in $D_R(\alpha)$.
+    (We showed this in the case $\alpha=0$, so we can define $g(z)=f(z+\alpha)$ and then $g_n(z)=f(z+\alpha)$, and then we have that $g_n\varrightarrows g$ in $D_R(0)$ as $g$ is centered about $z=0$.
+    And from this it follows directly that $f_n\varrightarrows f$ in $D_R(0)+\alpha=D_R(\alpha)$.)
+    Thus $f_n'(z)\longto f'(z)$ for $z\in D_R(\alpha)$.
+    And since
+    \[ f_n'(z) = \sum_{k=0}^n k\cdot c_k(z-\alpha)^{k-1} = \sum_{k=1}^n k\cdot c_k(z-\alpha)^{k-1} \]
+
+    So we claim inductively that for every $m\in\bN_0$ and $z\in D_R(\alpha)$.
+    \[ f^{(m)}(z) = \sum_{k=m}^\infty k\cdots(k-m+1)\cdot c_k(z-\alpha)^{k-m} = \sum_{k=0}^\infty (k+m)\cdots(k+1)\cdot c_{k+m}(z-\alpha)^k \]
+    The base cases for $m=0$ and $m=1$ were shown above.
+
+    Suppose that this is true for $m$, then notice that the radius of convergence of $f^{(m)}$ is
+    \[ \frac1{\limsup\sqrt[k]{\abs{c_k^{(m)}}}} \]
+    where $c_k^{(m)}=(k+m)\cdots(k+1)\cdot c_{k+m}$ and so
+    \[ \sqrt[k]{\abs{c_k^{(m)}}} = \sqrt[k]{k+m}\cdots\sqrt[k]{k+1}\cdot\sqrt[k]{\abs{c_{k+m}}} \]
+    Since the number of elements in the product is constant ($m$), and the limit of $\sqrt[k]{k+i}$ is $1$, the limit superior of this is
+    \[ \limsup\sqrt[k]{\abs{c_{k+m}}} = \limsup\sqrt[k]{\abs{c_k}} = \frac1R \]
+    And so we have that $f_n^{(m)}\varrightarrows f^{(m)}$ in $D_R(\alpha)$ and so this means that $\bigl(f_n^{(m)}\bigr)'\longto f^{(m+1)}$.
+    So by taking the derivatives of $f_n^{(m)}$ we get
+    \[ f^{(m+1)}(z) = \sum_{k=0}^\infty (k+m)\cdots(k+1)\cdot k\cdot c_{k+m}(z-\alpha)^{k-1} = \sum_{k=m+1}^\infty (k+m)\cdots k\cdot c_{k+m+1}(z-\alpha)^k \]
+    as required.
+
+    And so we have that
+    \[ f^{(m)}(\alpha) = \sum_{k=0}^\infty (k+m)\cdots(k+1)\cdot c_{k+m}(z-\alpha)^k \]
+    since $(z-\alpha)^k=0^k$, this is zero when $k\neq0$ and $1$ when $k=0$.
+    So we have
+    \[ f^{(m)}(\alpha) = m\cdots1\cdot c_m = m!\cdot c_m \implies c_m = \frac{f^{(m)}(\alpha)}{m!} \]
+    as required.
+
+\eblank
+
+\bexerc
+
+    Find the radius of convergence of
+    \benum
+        \item $\ds\sum_{n=0}^\infty n(z-1)^n$
+        \item $\ds\sum_{n=0}^\infty \frac{(-1)^n}{n!}\cdot(z+1)^n$
+        \item $\ds\sum_{n=0}^\infty n^2(2z-1)^n$
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item Here we have $c_n=n$ and $\lim\sqrt[n]{n}=1$, so the radius of convergence is $\frac1{\limsup\sqrt[n]n}=\frac11=1$.
+
+        \item Here we have $c_n=\frac{(-1)^n}{n!}$ and so $\abs{c_n}=\frac1{n!}$.
+        Notice that if $n$ is even, $n!\geq\parens{\frac n2}^{n/2}$ as
+        \[ n! = \prod_{k=1}^n k \geq \prod_{k=n/2}^n k \geq \prod_{k=n/2}\frac n2 = \parens{\frac n2}^{n/2} \]
+        So if we take a subsequence of even $n$s, we get that
+        \[ \limsup \frac1{n!} \leq \limsup \frac1{\parens{n/2}^{n/2}} = 0 \]
+        since the limit of $\parens{\frac n2}^{n/2}$ is infinity.
+        And so the radius of convergence is $\infty$.
+
+        \item We can rewrite $n^2(2z-1)^n$ as $2^nn^2\parens{z-\frac12}^n$.
+        So $c_n=2^nn^2$, and
+        \[ \sqrt[n]{c_n} = 2\cdot\sqrt[n]n^2 \]
+        since the limit of $\sqrt[n]n$ is $1$, we get that the limit of $\sqrt[n]{c_n}$ is $2$ and so the radius of convergence is $\frac12$.
+    \eenum
+
+\eblank
+
+\end{document}
+

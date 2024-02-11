@@ -1,0 +1,110 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=1.5cm, vertical margin=1.5cm}
+\parindent=0cm
+\parskip=3pt plus 2pt minus 2pt
+
+\input pdfmsym
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+
+\footline={}
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+\setcounter{section}{8}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{\bppbox{rgb{1 .7 .7}}{rgb{1 0 0}}{rgb{.8 0 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Introduction to Stochastic Processes}
+    \smallskip
+    \centerline{\setfont{it}Assignment \the\counter{section}}
+    \centerline{\setfont{it}Ari Feiglin}
+
+\eppbox}
+
+\bigskip
+
+\bexerc
+
+    Assuming $B^1(t)$ and $B^2(t)$ are two independent Brownian motions, show that the following are also Brownian motion:
+    \benum
+        \item $X(t)=B^1(A+t)-B^1(A)$ for $A>0$.
+        \item $X(t)=\alpha B^1(t) + \sqrt{1-\alpha^2}B^2(t)$ for $0<\alpha<1$.
+    \eenum
+
+\eexerc
+
+\benum
+    \item $X(0)=0$ and it is also trivially almost surely continuous.
+    And
+    $$ X(t+h) - X(t) = B^1(A+t+h) - B^1(A+t) \sim {\cal N}(0,h) $$
+    And in general $X(t_n)-X(t_{n-1})=B(t_n)-B(t_{n-1})$ so differences are independent.
+    \item We will show in general that if $\sum_{j=1}^k\alpha_j^2=1$ and $B^1,\dots,B^k$ are independent, then $X(t)=\sum_{j=1}^k\alpha_jB^j$ is Brownian motion.
+    $X(0)\buildrel as\over=0$ and $X(t)$ is also almost surely continuous as the sum of almost surely continuous functions.
+    $$ X(t+h) - X(t) = \sum_{j=1}^k\alpha_j\bigl(B^j(t+h) - B^j(t)\bigr) \sim \sum_{j=1}^k \alpha^j{\cal N}(0,h) = {\cal N}\parens{0,h\sum_{j=1}^k\alpha_j^2} = {\cal N}(0,h) $$
+    And since
+    \multlines{
+        \Covof{X(a)-X(b), X(c)-X(d)} = \sum_{j=1}^k\sum_{i=1}^k\alpha_j\alpha_i\Covof{B^j(a)-B^j(b), B^i(c)-B^i(d)}\cr\noalign{\kern-.4cm}
+        &= \sum_{j=1}^k\alpha_j^2\Covof{B^j(a)-B^j(b), B^j(c)-B^j(d)} = 0
+    }
+    Since for $i\neq j$, $B^j$ and $B^i$ are independent.
+    Thus $X(t_n)-X(t_{n-1}),\dots,X(t_1)-X(t_0)$ are independent (since if coefficients of a Gaussian vector are pairwise uncorrelated, the coefficients are independent).
+\eenum
+
+\bexerc
+
+    Set $0\leq a<b$, show that Brownian motion is almost surely not monotonic on $[a,b]$.
+    Then show that Brownian motion is almost surely not monotonic on any $[a,b]$.
+
+\eexerc
+
+Set a sequence $t_1<\cdots<t_n<\cdots$ where $a\leq t_i\leq b$.
+Then $\probof{B(t_i)-B(t_{i-1})>0}=\probof{{\cal N}(0,t_i-t_{i-1})>0}=\frac12$ and similarly $\probof{B(t_i)-B(t_{i-1})<0}=\frac12$.
+And we know that $\set{B(t_i)-B(t_{i-1})}$ is independent, and since
+$$ \sum_{i=1}^\infty\probof{B(t_i) - B(t_{i-1})>0} = \sum_{i=1}^\infty\probof{B(t_i) - B(t_{i-1})<0} = \infty $$
+Thus by Borel-Cantelli, $\probof{B(t_i)>B(t_{i-1})\hbox{ i.o.}}=\probof{B(t_i)<B(t_{i-1})\hbox{ i.o.}}=1$.
+So almost surely, there is a subsequence of $t_n$ on which $B$ is strictly increasing and another on which $B$ is stricly decreasing.
+So $B(t)$ is almost surely not monotonic on $t_n$ and therefore almost surely not monotonic on $[a,b]$.
+
+Now, $B(t)$ is monotonic on some $[a,b]$ if and only if it is monotonic on some $[p,q]$ for $p,q\in{\bb Q}$ by the density of the rationals.
+Thus
+\multlines{
+    \probof{\hbox{$B(t)$ is monotonic on some $[a,b]$}} = \probof{\bigcup_{p<q\in{\bb Q}}\hbox{$B(t)$ is monotonic on $[p,q]$}}\cr
+    &\leq \sum_{p<q\in{\bb Q}}\probof{\hbox{$B(t)$ is monotonic on $[p,q]$}} = 0
+}
+The last equality is since $B(t)$ is almost surely not monotonic on any set $[a,b]$.
+Thus $B(t)$ is almost surely not monotonic on any $[a,b]$.
+
+\bexerc
+
+    Suppose $f$ is a continuous function on $[0,1]$ such that $f(0)=0$.
+    Let $\epsilon>0$, show that
+    $$ \probof{\sup_{0\leq t\leq1}\abs{B(t)-f(t)}<\epsilon} > 0 $$
+
+\eexerc
+
+Using L\`evy's construction, we have that $G_n\varrightarrows B$ in $[0,1]$ where $G_n$ are functions which are linearly interpolated through points in $D_n$.
+Since $G_n$ converges to $B$ uniformly, there exists an $N$ such that for every $n\geq N$, $\norm{B-G_n}_\infty<\frac\epsilon3$.
+And since $[0,1]$ is compact and $f$ is continuous, it is uniformly continuous.
+So let us define $f_n(d)=f(d)$ for $d\in D_n$ and interpolate $f_n$ linearly through the points in $D_n$.
+Since $f$ is uniformly continuous on $[0,1]$ there exists a $\delta>0$ such that if $\abs{x-y}<\delta$ then $\abs{f(x)-f(y)}<\frac\epsilon6$.
+There must exist an $n$ such that the difference in points in $D_n$ ($=\frac1{2^n}$) is less than $\delta$, and so if $x\in[d_1,d_2]$ for $d_1,d_2\in D_n$,
+$$ \abs{f(x) - f_n(x)} \leq \abs{f(x) - f(d_1)} + \abs{f(d_1) - f_n(d_1)} + \abs{f_n(d_1) - f_n(x)} < \frac\epsilon3 $$
+The final inequality is due to $f(d_1)=f_n(d_1)$ and $\abs{f_n(d_1)-f_n(x)}\leq\abs{f_n(d_1)-f_n(d_2)}$ since $f_n$ is linear in $[d_1,d_2]$.
+
+So there exists an $N$ such that for every $n\geq N$ and $0\leq t\leq1$, $\abs{B(t)-G_n(t)},\abs{f(t)-f_n(t)}<\frac\epsilon3$.
+Now,
+$$ \abs{B(t) - f(t)} \leq \abs{B(t) - G_n(t)} + \abs{G_n(t) - f_n(t)} + \abs{f_n(t) - f(t)} < \frac{2\epsilon}3 + \abs{G_n(t) - f_n(t)} $$
+So we must show there is a non-zero probability that $\abs{G_n(t)-f_n(t)}<\frac\epsilon3$.
+Since $f_n$ and $G_n$ are both linearly interpolated through points on $D_n$, their maximum distance will be taken on $D_n$.
+For every $d\in D_n\setminus D_{n-1}$, by definition
+$$ G_n(t) = \frac{G_{n-1}(d-2^{-n}) + G_{n-1}(d+2^{-n})}2 + \frac{Z_d}{\sqrt{2^{n+1}}} $$
+And so
+$$ \probof{\abs{G_n(t) - f_n(t)}<\frac\epsilon3} = \probof{(\forall d\in D_n)\,\abs{G_n(d)-f_n(d)}<\frac\epsilon3} $$
+Now since the values of $G_n(d)$ are determined by a finite number of independent normal distributions (which have full range), this probability must be nonzero.
+
+\bye
+

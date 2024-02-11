@@ -1,0 +1,178 @@
+\documentclass[10pt]{article}
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+\usepackage{mathrsfs}
+
+\catcode`\@=11
+\input pdfmsym
+
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\implies{\,\mathrel{\longvarRightarrow}\,}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\divides{{\mid}}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\newfunc{eulerg}{{\rm Euler}}({})
+\newfunc{order}o({})
+\newfunc{ker}{{\rm Ker}}({})
+\newfunc{image}{{\rm Im}}({})
+\newfunc{lattice}{{\cal L}}(\vert)
+\newfunc{powset}{{\cal P}}(\vert)
+\newfunc{center}{{\rm Z}}({})
+\newfunc{units}{{\cal U}}(\vert)
+\newfunc{sign}{{\rm sgn}}({})
+\newfunc{aut}{{\rm Aut}}({})
+\newfunc{speclinear}{{\rm SL}}({})
+\newfunc{genlinear}{{\rm GL}}({})
+\newfunc{projlinear}{{\rm PGL}}({})
+\newfunc{specprojlinear}{{\rm PSL}}({})
+\newfunc{core}{{\rm Core}}(\vert)
+\newfunc{inner}{{\rm Inn}}(\vert)
+\newfunc{outer}{{\rm Out}}(\vert)
+\newfunc{conj}{{\rm conj}}({})
+\newfunc{ev}{{\rm ev}}({})
+\newfunc{Frac}{{\rm Frac}}({})
+\newfunc{Tor}{{\rm Tor}}(\vert)
+\newfunc{Ann}{{\rm Ann}}(\vert)
+\newfunc{deg}{{\rm deg}}({})
+
+\def\maxdivs{\mathrel{\|}}
+
+\let\ideal=\trianglelefteq
+\let\pideal=\triangleleft
+\def\normal{\mathrel\triangleleft}
+\let\mmorph=\longvarhookrightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\hbox{}\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\mN{\mathcal N}
+\def\mO{\mathcal O}
+\def\mG{\mathcal G}
+\def\sS{\mathscr S}
+
+\begin{document}
+
+\c@section=18
+
+\barcolorbox{220, 220, 255}{0, 0, 130}{80, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Introduction to Rings and Modules}
+
+    \medskip
+    \textit{Lecture \thesection, Monday June 19 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{prop*}
+
+    Let $R\subseteq S$ be commutative rings, and let $f\colon S\to S$ be a homomorphism such that for every $r\in R$, $f(r)\in R$.
+    Then for every integral $s\in S$, $f(s)$ is also integral over $R$.
+    If $f(r)=r$ for every $r\in R$, then $f(s)$ is the root of the same polynomials as $s$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $s$ is the root of $x^n+a_{n-1}x^{n-1}+\cdots+a_0$, that is $s^n+a_{n-1}s^{n-1}+\cdots+a_0$ where $a_i\in R$.
+    Taking the image of this we get, since $f(x^n)=f(x)^n$
+    \[ f(s)^n+f(a_{n-1})f(s)^{n-1}+\cdots+f(a_0) \]
+    since $a_i\in R$, we have $f(a_i)\in R$ so $f(s)$ is also a root of a monic polynomial over $R$, and is thus integral over $R$.
+    If $f(r)=r$ for every $r\in R$, then we have $f(a_i)=a_i$ so we have that
+    \[ f(s)^n+a_{n-1}f(s)^{n-1}+\cdots+a_0 \]
+    meaning $f(s)$ is the root of the same polynomial as $s$.
+    \qed
+
+\end{proof}
+
+Let $0,1\neq d\in\bZ$ that is not divisible by any squares.
+So we showed before that
+\[ \bQ(\sqrt d) = \set{a+b\sqrt d}[a,b\in\bQ] \]
+is a field.
+What is the integral closure of $\bZ$ under $\bQ(\sqrt d)$?
+Let us define
+\[ f\colon\bQ(\sqrt d)\longto\bQ(\sqrt d),\quad a+b\sqrt d\varmapsto a-b\sqrt d \]
+$f$ is an endomorphism over $\bQ(\sqrt d)$ where $f(n)=n$ for every $n\in\bZ$.
+We will show $f$ is indeed a homomorphism:
+\[ f\bigl((a+b\sqrt d) + (c+e\sqrt d)\bigr) = f(a+c+(e+d)\sqrt d) = a+c - (b+e)\sqrt d = (a - b\sqrt d) + (c - e\sqrt d) = f(a+b\sqrt d) + f(c+e\sqrt d) \]
+We can do the same for multiplication, and is trivial to see that for $n\in\bZ$, then $f(n)=f(n+0\sqrt d)=n-0\sqrt d=n$.
+
+Thus by the previous proposition, if $a+b\sqrt d$ is integral over $\bZ$, so is $a-b\sqrt d$.
+We showed that the integral closure is a ring, and so it is closed under multiplication.
+Thus the sum $(a+b\sqrt d) + (a-b\sqrt d)=2a$ is also integral over $\bZ$.
+And the product $(a+b\sqrt d)(a-b\sqrt d)=a^2-db^2$.
+
+Since $a,b\in\bQ$ and $d\in\bZ$, $2a$ and $a^2-db^2$ are in $\bQ$.
+But we showed that every UFD, and thus $\bZ$, is integrally closed so every $q\in\Fracof\bZ=\bQ$ which is integral over $\bZ$ is in $\bZ$.
+Thus if $a+b\sqrt d$ is integral over $\bZ$, then $2a$ and $a^2-db^2$ are in $\bZ$.
+
+If $2a\in\bZ$ then $a=\frac k2$ where $k\in\bZ$, and suppose $b=\frac mn$ is a reduced fraction.
+So we get
+\[ a^2-db^2 = \frac{k^2}4 - d\frac{m^2}{n^2} = \frac{k^2n^2-4dm^2}{4n^2} \in \bZ \]
+Thus $4n^2$ divides $k^2n^2-4dm^2$.
+If $k$ is even then $4n^2$ divides $k^2n^2$, and so $4n^2$ divides $4dm^2$, meaning $n^2$ divides $dm^2$.
+Since $n$ and $m$ are coprime, so are $n^2$ and $m^2$, and therefore $n^2$ divides $d$.
+But since $d$ is not divisible by any squares, this means that $n=1$.
+Thus $b=m\in\bZ$, and since $k$ is even we get $a\in\bZ$ as well.
+
+Thus if $a$ is an integer, so is $b$.
+
+If $k$ is odd, but since $4n^2$ divides $k^2n^2-4dm^2$, this means $4$ divides $k^2n^2-4dm^2$, and so $4$ divides $k^2n^2$, and thus $2$ divides $kn$.
+Since $k$ is odd, $n$ must be even.
+But similarly $n^2$ divides $k^2n^2-4dm^2$ so $n^2$ divides $4dm^2$, since $n^2$ and $m^2$ are coprime, $n^2$ divides $4d$.
+Suppose $n=2t$, thus $n^2=4t^2$ and so $4t^2$ divides $4d$ meaning $t^2$ divides $d$, so $t=1$.
+So we have $n=2$.
+
+So we have $4n^2=16$ divides $4k^2-4dm^2$ and so $4$ divides $k^2-dm^2$, but since $k$ and $m$ are odd ($m$ is coprime from $n=2$) by Euler, we have $k^2,m^2\equiv1\pmod4$.
+Since $k^2\equiv dm^2$, we ahev $d\equiv1$.
+Thus in this case we have $a=\frac k2$ and $b=\frac m2$ for $k,m$ odd.
+
+\newpage
+So in both cases, we get that $a=\frac k2$ and $b=\frac m2$ where $k\equiv m\pmod2$.
+We can continue this proof, to show that
+\[ \mO_d = \begin{cases} \bZ[\sqrt d] & d\equiv2,3\pmod4 \\ \bZ\bracks{\frac{1+\sqrt d}2} & d\equiv1\pmod4 \end{cases} \]
+Where $\mO_d=\mO_{\bQ(\sqrt d)}$ is the integral closure of $\bZ$ over $\bQ(\sqrt d)$.
+These are very nice rings.
+
+\begin{defn*}
+
+    A ring $R$ is a \ppemph{Dedekind domain} if it has the properties
+    \benum
+        \item $R$ is an integral domain
+        \item $R$ is noetherian
+        \item $R$ is integrally closed
+        \item $\dim R=1$
+    \eenum
+
+\end{defn*}
+
+Recall that the dimension of a ring is the maximum length of an ascending chain of prime ideals (minus one).
+
+\begin{prop*}
+
+    Every (non-trivial) PID is a Dedekind domain.
+
+\end{prop*}
+
+This is true since a PID is by definition an integral domain, we showed it is noetherian, and every PID is a UFD which is integrally closed, and we showed that the dimension of a PID is $1$.
+
+\end{document}
+

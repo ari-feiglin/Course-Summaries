@@ -1,0 +1,211 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\Language{\mathcal{L}}
+\def\theory{\mathcal{T}}
+
+\def\qed{\hskip.5cm\hbox{}\hfill$\blacksquare$}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\def\true{\mathsf{true}}
+\def\false{\mathsf{false}}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+
+\begin{document}
+
+\c@section=2
+
+\barcolorbox{220, 255, 255}{0, 130, 130}{80, 200, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Mathematical Logic}
+
+    \medskip
+    \textit{Lecture \thesection, Monday April 17, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{Normal Forms}
+
+Recall that every boolean function/formula can be written in \textit{conjunctive normal form}, that is it can be written in the form
+\[ (\delta_1^1A_1\land\dots\land\delta_n^1A_n)\lor\dots\lor(\delta_1^mA_1\land\dots\land\delta_n^mA_n) = \bigvee_{i=1}^m\bigwedge_{j=1}^n\delta_j^iA_j \]
+where $\delta_i^j$ is either negation or nothing.
+Now notice that if we denote this formula as $\phi$ then we know that $\neg\phi$ has its own conjuctive normal form:
+\[ \neg\phi = \bigvee_{i=1}^m\bigwedge_{j=1}^n\epsilon_j^iA_j \]
+and so if we negate both sides above recalling that $\neg(A\lor B)=\neg A\land\neg B$ and $\neg(A\land B)=\neg A\lor\neg B$, we get
+\[ \phi = \neg\parens{\bigvee_{i=1}^m\bigwedge_{j=1}^n\epsilon_j^iA_j} = \bigwedge_{i=1}^m\bigvee_{j=1}^n\neg\epsilon_j^iA_j \]
+Thus if we define $\delta_j^i=\neg\epsilon_j^i$ we get that
+\[ \phi = \bigwedge_{i=1}^m\bigvee_{j=1}^n\delta_j^iA_j \]
+This is called the \textit{disjunctive normal form of $\phi$}.
+
+Since every formula can be written in disjunctive normal form, so can $A\to B$.
+Specifically its disjunctive normal form is $\neg A\lor B$.
+
+Notice that not every formula can be written using just conjunction, disjunction, and implication.
+This is because the value of any of these connectives when both input values are $\true$ is $\true$.
+Thus any arbitrary composition of these connectives must have an output value of $\true$ when both inputs are $\true$, and so these connectives cannot compose to create formulas like negation.
+
+\begin{defn*}
+
+    \ppemph{nor} is a connective, denoted $\nor$ with the following truth table
+    \[ \begin{array}{c|c|c} & & \nor \\ \hline \true & \true & \false \\ \true & \false & \false \\ \false & \true & \false \\ \false & \false & \true \end{array} \]
+    and \ppemph{nand} is a connective denoted $\nand$:
+    \[ \begin{array}{c|c|c} & & \nand \\ \hline \true & \true & \true \\ \true & \false & \true \\ \false & \true & \true \\ \false & \false & \false \end{array} \]
+
+\end{defn*}
+
+Notice that $\neg A\eiff(A\nor A)$ and $A\land B\eiff(A\nor A)\nor(B\nor B)$, and since every formula can be written using just conjunctions and negations, every formula can be written with nor.
+Similarly $\neg A\eiff(A\nand A)$ and $A\land B\eiff(A\nand A)\nand(B\nand B)$, so every formula can also be written using nand.
+
+\begin{prop*}
+
+    Nand and nor are the only connectives which are sufficient for constructing any formula.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $\star$ is a connective which can construct any formula.
+    Notice that $\true\star\true$ must be $\false$ since otherwise any formula which maps two true values to a false value cannot be written as a composition of $\star$.
+    Similarly we must have $\false\star\false=\true$.
+    Now if $\star$ isn't $\nand$ or $\nor$ then $\true\star\false=\true$ and $\false\star\true=\false$ or $\true\star\false=\false$ and $\false\star\true=\true$.
+    But then notice that $p\star q=\neg q$ or $p\star q=\neg p$ and these cannot construct any formula dependent on two variables.\qed
+
+\end{proof}
+
+\subsection{Formal Theories}
+
+\begin{defn*}
+
+    Given a countble set of symbols $\Language$, any finite string composed of characters in $\Language$ (the elements of $\Language^*$) is called a \ppemph{experssion}.
+
+    A \ppemph{formal language} is a subset of $\Language^*$, its elements are called \ppemph{well-formed formulas}.
+
+    A \ppemph{formal theory} is a formal language in which there is a subset of well-formed formulas called \ppemph{axioms}.
+    If there exists an algorithm to determine if a well-formed formula is an axiom, then the theory is called \ppemph{axiomatic}.
+    Furthermore a formal theory must be equipped with a finite set of relations between well-formed formulas $R_1,\dots,R_n$ called \ppemph{rules of inference} such that for every $i$ there is a unique $j$
+    where every set of $j$ well-formed formulas and every well-formed formula $\phi$, we can determine whether or not the $j$ well-formed formulas are in relation $R_i$ with $\phi$.
+
+\end{defn*}
+
+\begin{defn*}
+
+    A \ppemph{proof} in a formal theory $\theory$ is a sequence of $\phi_1,\dots,\phi_n$ of well-formed formulas such that for every $i$ either $\phi_i$ is an axiom or $\phi_i$ follows from some
+    $\phi_{i_1},\dots,\phi_{i_\ell}$ by the rules of inference of the theory for $i_1,\dots,i_\ell<i$.
+    If a well-formed formula $\phi$ can be proven then we write $\vdash\phi$.
+
+    A \ppemph{theorem} is a well-formed formula which is used in a proof (that is, it can be proven by the theory).
+
+    A theory is \ppemph{decidable} if given any well-formed formula, it can be determined if it is a theorem (can be proven) or not.
+    Otherwise the theory is \ppemph{undecidable}.
+
+\end{defn*}
+
+We can create a formal theory over the language $\Language=\set{(, ), \neg, \to, A_1, \dots, A_n, \dots}$ where well-formed formulas are constructed recursively:
+\benum
+    \item All statement letters $A_i$ are well-formed.
+    \item If $\phi$ and $\psi$ are well-formed, then so are $(\neg\phi)$ and $(\phi\to\psi)$.
+\eenum
+Furthermore the axioms of the theory are
+\benum
+    \item $(\psi\to(\phi\to\psi))$
+    \item $\Bigl(\bigl(\phi\to(\psi\to\mu)\bigr)\to\bigl((\phi\to\psi)\to(\phi\to\mu)\bigr)\Bigr)$
+    \item $\Bigl(\bigl((\neg\psi)\to(\neg\phi)\bigr)\to\bigl(((\neg\psi)\to\phi)\to\psi\bigr)\Bigr)$
+\eenum
+Note that this actually defined countably many axioms, as $\phi$, $\psi$, and $\mu$ may be any well-formed formulas.
+
+Finally, the only rule of inference is that the well-formed formulas $\phi$ and $(\phi\to\psi)$ infer $\psi$ (inference is denoted by $\varRightarrow$ as well).
+This rule of inference is famously called modus ponens.
+
+\begin{lemm*}
+
+    $\vdash(\phi\to\phi)$
+
+\end{lemm*}
+
+\begin{proof}
+
+    By the second axiom where we have replaced $\psi$ by $(\phi\to\phi)$ and $\mu$ with $\phi$ we have:
+    \[ \bigl((\phi\to((\phi\to\phi)\to\phi)\bigr)\to\bigl((\phi\to(\phi\to\phi))\to(\phi\to\phi)\bigr) \]
+    and by the first axiom we have
+    \[ \phi\to\bigl((\phi\to\phi)\to\phi\bigr) \]
+    By modus ponens we have then that
+    \[ (\phi\to(\phi\to\phi))\to(\phi\to\phi) \]
+    And by the first axiom we have $\phi\to(\phi\to\phi)$ so again by modus ponens we have $\phi\to\phi$, as required.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    If $\Gamma$ is a set of well-formed formulas, we say that $\Gamma\vdash\phi$ if there exists a sequence of well-formed formulas $\phi_1,\dots,\phi_n=\phi$ where every $\phi_i$ is either an axiom or in
+    $\Gamma$ or is inferred from previous $\phi_j$s by the rules of inference.
+
+\end{defn*}
+
+\begin{thrm*}[deductionTheorem,The\ Deduction\ Theorem]
+
+    If $\Gamma$ is a set of well-formed formulas and $\phi$ and $\psi$ are well-formed formulas where $\Gamma,\phi\vdash\psi$ then $\Gamma\vdash(\phi\to\psi)$.
+    In particular $\phi\vdash\psi$ means that $\vdash(\phi\to\psi)$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    We will show inductively on the length of the proof $\psi_1,\dots,\psi_n$.
+
+    For the base case, notice that either $\psi_1\in\Gamma$, $\psi_1=\phi$, or $\psi_1$ is an axiom.
+    \benum
+        \item If $\psi_1\in\Gamma$: since $\psi_1\to(\phi\to\psi_1)$ and $\psi_1\in\Gamma$ so when proving with $\Gamma$ by modus ponens we have $\phi\to\psi_1$, so $\Gamma\vdash(\phi\to\psi_1)$.
+        \item If $\psi_1=\phi$: by our lemma above, $\vdash(\phi\to\phi)$ and thus it is also true when proving with $\Gamma$.
+        \item If $\psi_1$ is an axiom: similarly we have $\psi_1\to(\phi\to\psi_1)$ and since $\psi_1$ is an axiom, by modus ponens we have $\phi\to\psi_1$.
+    \eenum
+
+    Now inductively, we know that $\psi_i$ is either in $\Gamma$, equal to $\phi$, is an axiom, or is inferred by previous $\phi_j$s.
+    The first three cases are identical by above.
+    Otherwise, since the only rule of inference is modus ponens, we must must show that there is some $j<i$ such that $\psi_j$ and $\psi_j\to\psi_i$ are proven.
+    We know that $\Gamma\vdash(\phi\to\psi_j)$ for $j<i$ by induction since the proof of $\psi_j\to\psi_i$ is fewer than $i$ steps (since it is used to prove $\psi_i$), we have that
+    $\Gamma\vdash\bigl(\phi\to(\psi_j\to\psi_i)\bigr)$ also by induction.
+    By the second axiom we have:
+    \[ \Gamma\vdash\bigl(\phi\to(\psi_j\to\psi_i)\bigr)\to\bigl((\phi\to\psi_j)\to(\phi\to\psi_i)\bigr) \]
+    Since we know that $\Gamma\vdash\bigl(\phi\to(\psi_j\to\psi_i)\bigr)$ we have
+    \[ \Gamma\vdash(\phi\to\psi_j)\to(\phi\to\psi_i) \]
+    and since $\Gamma\vdash(\phi\to\psi_j)$ this means $\Gamma\vdash(\phi\to\psi_i)$ as required.
+    \qed
+
+\end{proof}
+
+\end{document}

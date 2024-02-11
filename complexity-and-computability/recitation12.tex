@@ -1,0 +1,284 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz-cd}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{conj}{Conjecture}{255,130,130}{150,0,0}{200,0,0}
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\undersumtext#1{\vtop{\hsize=2cm\relax\centering\small #1}}
+
+\newfunc{oracle}{\hbox{\tencsc oracle}}({})
+\newfunc{dspace}{\mathsf{DSPACE}}({})
+\newfunc{dtime}{\mathsf{DTIME}}({})
+\newfunc{nspace}{\mathsf{NSPACE}}({})
+\newfunc{nspaceoff}{\mathsf{NSPACE}_{\mathsf{offline}}}({})
+\newfunc{totreach}{\textsf{Total-Reach}}({})
+\newfunc{prob}{\mathbb P}(|)
+\newfunc{expec}{\mathbb E}[|]
+
+\def\quant{\mathtt{Q}}
+\def\off{\mathsf{off}}
+
+\def\sps{\texttt{\char32}}
+\def\sat{\mathsf{SAT}}
+\def\csat{\mathsf{CSAT}}
+\def\is{\mathsf{IS}}
+\def\threesat{\mathsf{3SAT}}
+\def\clique{\mathsf{Clique}}
+\def\vertcover{\textsf{Vertex-Cover}}
+\def\domset{\textsf{Dom-Set}}
+\def\dhp{\mathsf{DHP}}
+\def\dhc{\mathsf{DHC}}
+\def\hc{\mathsf{HC}}
+\def\tsp{\mathsf{TSP}}
+\def\threecolor{\mathsf{3Color}}
+\def\twocolor{\mathsf{2Color}}
+\def\kcolor{k\mathsf{Color}}
+\def\Color{\mathsf{Color}}
+\def\subsum{\mathsf{SubsetSum}}
+\def\maxclique{\mathsf{MaxClique}}
+\def\minexpr{\mathsf{MinExpression}}
+\def\sparse{\mathsf{Sparse}}
+\def\stconn{\textsf{st-conn}}
+\def\polyidtest{\mathsf{PolyIdTesting}}
+
+\def\PH{\mathbf{PH}}
+\def\PF{\mathbf{PF}}
+\def\PC{\mathbf{PC}}
+\def\P{\mathbf{P}}
+\def\NP{\mathbf{NP}}
+\def\NPH{\mathbf{NPH}}
+\def\NPC{\mathbf{NPC}}
+\def\co{\mathsf{co}}
+\def\coNP{\mathbf{coNP}}
+\def\poly{\mathsf{poly}}
+\def\Ppoly{\slfrac\P\poly}
+\def\L{\mathbf{L}}
+\def\NL{\mathbf{NL}}
+\def\RP{\mathbf{RP}}
+\def\BPP{\mathbf{BPP}}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mN{\mathcal{N}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=12
+
+\barcolorbox{255, 220, 220}{130, 0, 0}{200, 80, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Computability and Complexity}
+
+    \medskip
+    \textit{Recitation \thesection, Thursday September 7, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\def\MA{\mathbf{MA}}
+\begin{defn*}
+
+    We define the class $\MA$ (Merlin-Arthur) to consist of all decision problems $S$ where there exists a probabilistic polynomial-time algorithm $A$ and a polynomial $p$ such that
+    \benum
+        \item If $x\in S$, then there exists a $y$ whose length is bound by $p(\abs x)$ where $\probof{M(x,y)=1}\geq\frac23$.
+        \item If $x\notin S$, then for every $y$ whose length is bound by $p(\abs x)$, $\probof{M(x,y)=0}\geq\frac23$.
+    \eenum
+
+\end{defn*}
+
+Firstly, it is obvious that $\BPP\subseteq\MA$ as if $S\in\BPP$ and $M$ is the probabilistic algorithm which satisfies the condition for $S$ to be in $\BPP$, then defining $M'(x,y)=M(x)$ satisfies the
+condition for $S$ to be in $\MA$.
+And secondly, $\NP\subseteq\MA$ as if $S\in\NP$ and $V(x,y)$ is its polynomial-time verifier, then $V$ satisfies the condition for $S\in\MA$ (for condition $(1)$, the $y$ is taken to be $x$'s witness), as
+we get that the probabilities are exactly $1$.
+
+\begin{exercise*}
+
+    \benum
+        \item We define a class similar to $\MA$, $\MA'$, where the probability when $x\in S$ is equal to $1$, and when $x\notin S$ the probability is greater than $\frac12$.
+        \item We define another class similar to $\MA$, $\MA''$, where the probability when $x\in S$ is greater than $\frac12$, and when $x\notin S$ the probability is equal to $1$.
+    \eenum
+
+\end{exercise*}
+
+\benum
+    \item We claim here that $\MA'=\NP$.
+    It is clear that $\NP\subseteq\MA'$ for the same reason that $\NP\subseteq\MA$.
+
+    Now if $S\in\MA'$ then there exists a probabilistic algorithm $M$ and polynomial $p$ which satisfy the conditions for $S$ to be in $\MA'$.
+    Let us define $V(x,y,r)$ which takes as input $x$, a witness $y$, and a sequence of choices $r$, and it runs $M(x,y)$ with the sequence of choices $r$.
+    Now, if $x\in S$ then there exists an $r$ such that for at least half of the sequences of choices, $M(x,y)=1$.
+    So let $r$ be one of these sequences, and so we have that $V(x,y,r)=1$.
+    So we have shown that
+    \[ x\in S \implies \exists y\exists r\colon V(x,y,r)=1 \]
+    And if $x\notin S$ then for every $y$, $M(x,y)=0$ (since the probability that this occurs is $1$), meaning for any $r$ we have $V(x,y,r)=0$.
+    So we have shown
+    \[ x\in S \implies \exists y\exists r\colon V(x,y,r)=1 \]
+
+    \item Here we claim $\MA''=\MA$.
+    If $S\in\MA''$ then there exists a probabilistic algorithm $M$ which satisfies the conditions for $S$ to be in $\MA''$.
+    We amplify $M$ by running it twice, and return one if and only if both runs returned one, let us denote this by $M'$.
+    If $x\in S$ then there exists a $y$ where $M(x,y)=1$ always and so running it twice will always return one, meaning $\probof{M'(x,y)=1}=1$.
+    And if $x\notin S$ then for every $y$, $\probof{M'(x,y)=0}=1-\probof{M'(x,y)=1}=1-\probof{M(x,y)=1}^2\geq\frac34$, so $M'$ satisfies the conditions for $S\in\MA$.
+
+    Now, if $S\in\MA$ suppose $M$ satisfies the conditions for $S$ to be in $M$:
+    \[ x\in S\implies \exists y\colon \probof{M(x,y)=1}\geq\frac23,\qquad x\in S\implies\forall y\colon \probof{M(x,y)=0}\geq\frac23 \]
+    When showing that $\BPP\subseteq\Sigma_2$, that there exists a deterministic algorithm $M'(x,y,r)$ ($q$ is a bound on the runtime and lengths of $x,y,r$) which returns the correct solution with a
+    probability greater than $1-\frac1{2q}$.
+    We can then define $M^*(x,y,\overline s,r)$ where $\overline s=s_1,\dots,s_q$ is a sequence of masks of length $q$ and $M^*$ runs $M'(x,y,r\otimes s_i)$ for every $1\leq i\leq q$ and returns one if
+    and only if $M'$ returns one at least once.
+
+    We showed in the proof that
+    \[ x\in S \implies \exists y,\overline s\,\forall r\colon M^*(x,y,\overline s,r) = 1 \]
+    and
+    \[ x\notin S \implies \forall y,\overline s\colon \probof{M^*(x,y,\overline s,r)=0}[r\in\set{0,1}^q] \geq \frac12 \]
+    So using $y^*=(y,\overline s)$, this means that $M^*$ satisfies the conditions for $S$ to be in $\MA'$.
+
+    Notice that in our proof, the factor of $2$ is arbitrary and if we were to define $k(t)=18\log\bigl((1-a)^{-1}t^2\bigr)$ we'd get that the probability that $M^*(x,y,\overline s,r)=0$ is greater than $a$.
+    So for every $0<a<1$ we get that $\MA_a=\MA$ ($\MA_a$ is where the probability that $M$ returns one when $x\in S$ is one, and when $x\notin S$, $M$ returns zero with a probability greater than $a$).
+\eenum
+
+\def\ZPP{\mathbf{ZPP}}
+\begin{defn*}
+
+    We define the class $\ZPP_1$, consisting of decision problems $S$ where there exists a probabilistic polynomial-time algorithm $M$, where
+    \benum
+        \item If $x\in S$ then the probability $M(x)$ returns the correct answer is greater than $\frac12$.
+        \item For every $x$, $M(x)$ either returns the correct answer or $\perp$.
+    \eenum
+
+    We also define the class $\ZPP_2$ , consisting of decision problems $S$ where there exists a probabilistic algorithm $M$, which isn't necessarily polynomial-time,
+    such that for every $x$, $M(x)$ is correct and the expected runtime complexity is polynomial in $\abs x$.
+
+    Finally we define $\ZPP_3=\RP\cap\co\RP$.
+
+\end{defn*}
+
+\begin{exercise*}
+
+    Show that the three definitions above are equivalent:
+    \[ \ZPP_1 = \ZPP_2 = \ZPP_3 \]
+    This class is denoted $\ZPP$ (zero-error probabilistic polynomial time).
+
+\end{exercise*}
+
+We will show that
+\[ \ZPP_3 \subseteq \ZPP_1 \subseteq \ZPP_2 \subseteq \ZPP_3 \]
+
+So we first show that $\ZPP_3\subseteq\ZPP_1$.
+If $S\in\ZPP_3$ there exist $M_S$ and $M_{S^c}$ for $S$ and $S^c$ respectively which satisfy the conditions for $S$ adn $S^c$ to be in $\RP$.
+Let us define
+
+\algorithm
+    \Function{$M$}{$x$}
+        \lIf{$M_S(x)=1$} \Return $1$
+        \lIf{$M_{S^c}(x)=1$} \Return $0$
+        \State \Return $\perp$
+    \EndFunc
+\ealgorithm
+
+So if $x\in S$ then
+\[ \probof{M'(x)=1} = \probof{M_S(x)} \geq \frac12 \]
+since $M_S$ satisfies the conditions for $S$ to be in $\RP$.
+If $x\notin S$, then $M_S(x)=0$ by definition and so
+\[ \probof{M'(x)=0} = \probof{M_{S^c}(x)=1} \geq \frac12 \]
+Furthermore, $M'(x)$ will either return the correct answer (since $M_S$ and $M_{S^c}$ will only return $1$ if their answer is correct).
+And so $M'(x)$ will return the correct answer with a probability greater than $\frac12$ and it always returns the correct answer, meaning $S\in\ZPP_1$.
+
+Now we will show that $\ZPP_1\subseteq\ZPP_2$.
+If $S\in\ZPP_1$, it has a polynomial-time probabilistic algorithm $M$ which returns the correct answer with a probability greater than $\frac12$, and if it doesn't return $\perp$ then its answer is correct.
+So we define $M'$ to run $M(x)$ until it gets an answer.
+
+\algorithm
+    \Function{$M'$}{$x$}
+        \While{\textsf{true}}
+            \State $\alpha\gets M(x)$
+            \lIf{$\alpha\neq\perp$} \Return $\alpha$
+        \EndWhile
+    \EndFunc
+\ealgorithm
+
+$M'(x)$ will always return a correct answer.
+Let us denote $T$ to be the number of times $M'$ runs until it gives an answer.
+Since the probability $M'$ returns $\perp$ is bound by $\frac12$, $T$ is a geometric random variable whose parameter is bound by $\frac12$ and so its expected value is bound by $2$.
+Since $M(x)$ is polynomial-time, let its runtime complexity be $t_M$.
+$M'(x)$ will run $M$ $T$ times, and so its expected runtime is
+\[ \expecof{T\cdot t_M}=t_M\cdot\expecof T= 2t_M \]
+And since $t_M$ is polynomial, the expected runtime is polynomial, as required.
+
+Now we will show $\ZPP_2\subseteq\ZPP_3$
+So suppose $S\in\ZPP_2$, so there exists a probabilistic algorithm $M$ which always returns a correct answer, and whose expected runtime is polynomial, which we denote $t_M$.
+Let us define $M'(x)$ to run $M(x)$ for $2t_M(\abs x)$ steps, and if it hasn't returned a value yet, $M'(x)$ will return zero.
+$M'(x)$ is obviously polynomial, since its runtime is $O(2t_M)$.
+
+If $x\notin S$, then $M'(x)$ will always return zero (since $M(x)$ will not return one).
+And if $x\in S$ then
+\[ \probof{M'(x)=1} = 1 - \probof{M'(x)=0} = 1 - \probof{\text{$M(x)$ ran more than $2t_M(\abs x)$ steps}} \]
+Let us denote the number of steps $M(x)$ took to be $T(x)$, then by definition $\expecof{T(x)}=t_M(x)$.
+Recall Markov's inequality, for a random variable $X$ and $a>0$.
+\[ \probof{X>a\expecof X} \leq \frac1a \]
+So we have that
+\[ \probof{M'(x)=1} = 1 - \probof{T(x)>2t_M(x)} \geq 1-\frac12 = \frac12 \]
+This means that if $x\in S$, then $M'(x)$ returns the correct answer with a probability greater than $\frac12$.
+And if $x\notin S$, then $M'(x)$ always returns the correct answer.
+This means that $S\in\RP$.
+
+Now, if instead of returning $0$ when $M(x)$ hasn't finished, have $M'(x)$ return $1$.
+By symmetry (since we can view $M(x)$ as acting for $S^c$), we get that $S^c\in\RP$ and so $S\in\RP\cap\co\RP$.
+So we have finished.
+
+\end{document}
+

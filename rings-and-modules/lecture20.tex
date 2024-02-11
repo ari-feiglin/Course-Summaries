@@ -1,0 +1,291 @@
+\documentclass[10pt]{article}
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+\usepackage{mathrsfs}
+
+\catcode`\@=11
+\input pdfmsym
+
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\implies{\,\mathrel{\longvarRightarrow}\,}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\divides{{\mid}}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\newfunc{eulerg}{{\rm Euler}}({})
+\newfunc{order}o({})
+\newfunc{ker}{{\rm Ker}}({})
+\newfunc{image}{{\rm Im}}({})
+\newfunc{lattice}{{\cal L}}(\vert)
+\newfunc{powset}{{\cal P}}(\vert)
+\newfunc{center}{{\rm Z}}({})
+\newfunc{units}{{\cal U}}(\vert)
+\newfunc{sign}{{\rm sgn}}({})
+\newfunc{aut}{{\rm Aut}}({})
+\newfunc{speclinear}{{\rm SL}}({})
+\newfunc{genlinear}{{\rm GL}}({})
+\newfunc{projlinear}{{\rm PGL}}({})
+\newfunc{specprojlinear}{{\rm PSL}}({})
+\newfunc{core}{{\rm Core}}(\vert)
+\newfunc{inner}{{\rm Inn}}(\vert)
+\newfunc{outer}{{\rm Out}}(\vert)
+\newfunc{conj}{{\rm conj}}({})
+\newfunc{ev}{{\rm ev}}({})
+\newfunc{Frac}{{\rm Frac}}({})
+\newfunc{Tor}{{\rm Tor}}(\vert)
+\newfunc{Ann}{{\rm Ann}}(\vert)
+\newfunc{deg}{{\rm deg}}({})
+
+\def\maxdivs{\mathrel{\|}}
+
+\let\ideal=\trianglelefteq
+\let\pideal=\triangleleft
+\def\normal{\mathrel\triangleleft}
+\let\mmorph=\longvarhookrightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\mN{\mathcal N}
+\def\mO{\mathcal O}
+\def\mG{\mathcal G}
+\def\sS{\mathscr S}
+
+\begin{document}
+
+\c@section=20
+
+\barcolorbox{220, 220, 255}{0, 0, 130}{80, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Introduction to Rings and Modules}
+
+    \medskip
+    \textit{Lecture \thesection, Thursday June 22 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+Recall the product of ideals is given by
+\[ IJ = \set{\sum_{i=1}^n a_ib_i}[a_i\in I,\,b_i\in J] \]
+and thus inductively
+\[ I_1\cdots I_k = \set{\sum_{i=1}^n a_i^1\cdots a_i^k}[a_i^j\in I_j] \]
+
+And suppose $M,N$ are sub-$R$-modules (of some larger $R$-module), then so is
+\[ MN = \set{\sum_{i=1}^k m_in_i}[m_i\in M,\,n_i\in N] \]
+
+\begin{lemm*}
+
+    Suppose $R$ is left/right noetherian and $\sS$ is a set of left/right ideals.
+    Then $R$ contains a maximal ideal.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Since every chain in $\sS$ has a maximal element by $R$ being noetherian, Zorn's lemma tells us $\sS$ has a maximal element.
+    \qed
+
+\end{proof}
+
+\begin{lemm*}
+
+    Suppose $R$ is a noetherian ring, and $0\neq I\ideal R$.
+    Then $I$ contains a product of non-zero prime ideals.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Let
+    \[ \sS = \set{0\neq I\ideal R}[I\text{ does not contain a product of non-zero prime ideals}] \]
+    we must prove $\sS=\varnothing$.
+
+    Suppose not, then by the previous lemma $\sS$ has a maximal element, $J$.
+    $J$ cannot be prime as then it would contain a product of primes (itself).
+    Since $J$ is not prime there exist ideals $I_1$ and $I_2$ which are not subsets of $J$, but $I_1I_2\subseteq J$.
+    Thus $J$ is a proper subset of $I_1+J$ and $I_2+J$, and so by $J$'s maximality $I_1+J,I_2+J\notin\sS$.
+    Thus
+    \[ P_1\cdots P_n\subseteq I_1+J,\quad Q_1\cdots Q_m\subseteq I_2+J \]
+    where $P_i$ and $Q_i$ are prime.
+    But $(I_1+J)(I_2+J)=I_1I_2+I_1J+JI_2+J^2$, and since $I_1I_2\subseteq J$ by our definition of $I_1$ and $I_2$, and $I_1J,JI_2,j^2\subseteq J$ since $J$ is an ideal, we have that
+    $(I_1+J)(I_2+J)\subseteq J$ and so
+    \[ P_1\cdots P_nQ_1\cdots Q_m\subseteq J \]
+    meaning $J\notin\sS$ in contradiction.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    Suppose $R$ is an integral domain, and $(0)\neq P\pideal R$ is a prime ideal.
+    We define
+    \[ P^{-1} = \set{z\in\Fracof R}[zP\subseteq R] \]
+
+\end{defn*}
+
+$P^{-1}$ is closed under $R$-scalar multiplication and is thus an $R$-submodule of $\Fracof R$.
+Since $P$ is an ideal, $R\subseteq P^{-1}$.
+
+\begin{lemm*}
+
+    Suppose $R$ is a noetherian integral domain, and $\dim R=1$.
+    Suppose $(0)\neq P\pideal R$ a prime ideal, then $R\subset P^{-1}$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Let $0\neq y\in P$ and $(0)\neq I=(y)=Ry$.
+    By the previous lemma there exist $P_i$ prime such that
+    \[ P_1\cdots P_n \subseteq I\subseteq P \]
+    we assume $n$ is minimal.
+    Since $P$ is prime, there exists an $i$ such that $P_i\subseteq P$, without loss of generality $i=n$.
+    But $P_n$ and $P$ are non-zero ideals and since $\dim R=1$ this means they are maximal so $P_n=P$.
+    By the minimality of $n$,
+    \[ P_1\cdots P_{n-1}\nsubseteq I \]
+    and so there exists an $x\in P_1\cdots P_{n-1}$ where $x\notin I$.
+    Let $z=\frac xy\in\Fracof R$.
+    Note that $z\notin R$ since if so $x=zy\in(y)=I$ in contradiction.
+
+    We will show $z\in P^{-1}$, meaning $zP\subseteq R$.
+    Let $a\in P$, so
+    \[ za = \frac{xa}y \]
+    since $x\in P_1\cdots P_{n-1}$ and $a\in P=P_n$, we have $xa\in P_1\cdots P_n\subseteq I=Ry$.
+    So there exists an $r\in R$ such that $xa=ry$ and so $\frac{xa}y=r\in R$ meaning $za\in P$ as required.
+    \qed
+
+\end{proof}
+
+\begin{lemm*}
+
+    Suppose $R$ is a Dedekind domain and $(0)\neq I\ideal R$.
+    Suppose $I\subseteq P$ for $P$ prime ideal.
+    Then $I\subset IP^{-1}$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Since $1\in R\subset P^{-1}$, for every $x\in I$, $x=x\cdot1\in IP^{-1}$ as required.
+    Now suppose $I=IP^{-1}$.
+    Let $z\in P^{-1}$ such that $z\notin R$, and since $I$ is closed under multiplication by $z$, it is closed under multiplication by any exponent of $z$.
+    Since $I$ is closed under multiplication by $R$, it has the structure of an $R[z]$ module.
+
+    Since $R$ is noetherian, $I$ is finitely generated as an ideal, meaning an $R$-module.
+    We will show that $I$ is a faithful $R[z]$-module.
+    Suppose
+    \[ b\in\Annof[{R[z]}]I \]
+    then $ba=0$ for every $i\in I$.
+    But since $R[z],I\subseteq\Fracof R$ which is a field and thus has no zero divisors and $I\neq(0)$ so $b=0$, meaning
+    \[ \Annof[{R[z]}]I = (0) \]
+
+    Thus $I$ is a faithful finitely generated $R[z]$-module, and thus $z$ is integral over $R$.
+    But $z\in\Fracof R$, and $R$ is a Dedekind domain so it is integrally closed, and so $z\in R$.
+    Thus $\Fracof R=R$, and so $z\in R$.
+    But $z\notin R$ in contradiction.
+    \qed
+
+\end{proof}
+
+\begin{lemm*}
+
+    Suppose $R$ is a Dedekind domain and $P$ a non-trivial prime ideal.
+    Then $PP^{-1}=R$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    By definition $PP^{-1}\subseteq R$.
+    Since $P$ and $P^{-1}$ are sub-$R$-modules of $\Fracof R$, we have $PP^{-1}$ is an $R$ module, and thus an ideal.
+    But we know $P\subset PP^{-1}$, but since $P$ is non-trivial and $\dim R=1$ so $P$ is maximal, thus $PP^{-1}=R$.
+
+\end{proof}
+
+\begin{thrm*}
+
+    Suppose $R$ is a Dedekind domain and $(0)\neq I\ideal R$ is a non-zero ideal.
+    Then $I$ factorizes uniquely as a product of non-trivial prime ideals:
+    \[ I = P_1\cdot P_2\cdots P_n \]
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let us first prove the existence of such a factorization.
+    Let us define
+    \[ \sS = \set{(0)\neq I\ideal R}[I\text{ does not factorize as a product of non-trivial prime ideals}] \]
+    suppose that $\sS\neq\varnothing$.
+    Thus since $R$ is noetherian, $\sS$ has a maximal ideal $I$, and $I$ is contained in a maximal (and thus prime) ideal $I\subseteq P$.
+    Since $I\subset IP^{-1}$, but $IP^{-1}\subseteq PP^{-1}=R$, thus $IP^{-1}$ is an ideal of $R$.
+    Since $I\subset IP^{-1}$ and $I$ is maximal, $IP^{-1}\notin\sS$ so $IP^{-1}$ factorizes, suppose
+    \[ IP^{-1} = P_1\cdots P_n \]
+    but then
+    \[ P_1\cdots P_nP = IP^{-1}P = IR = I \]
+    meaning $I\notin\sS$ in contradiction.
+
+    Thus $\sS=\varnothing$ and so every non-zero ideal factorizes as a product of non-trivial prime ideals.
+
+    Now suppose that
+    \[ I = P_1\cdots P_n = Q_1\cdots Q_m \]
+    we will assume without loss of generality that $n\leq m$.
+    We will prove on induction of $n$ that this factorization is unique.
+    If $n=0$ then suppose $m>0$, so $I=R=Q_1\cdots Q_m$ but $I\subseteq Q_1\subset R$ which is a contradiction.
+
+    Now suppose that the factorization is unique for $n$, then suppose
+    \[ P_1\cdots P_n\cdot P_{n+1} = Q_1\cdots Q_m \]
+    Thus $Q_1\cdots Q_m\subseteq P_{n+1}$, but since $P_{n+1}$ is prime there exists an $i$ such that $Q_i\subseteq P_{n+1}$.
+    But $\dim R=1$ and $Q_i$ and $P_{n+1}$ are non-trivial so $Q_i=P_{n+1}$.
+    Thus
+    \[ P_1\cdots P_{n+1} = Q_1\cdots Q_m = (Q_1\cdots Q_{i-1}\cdot Q_i\cdots Q_m)P_{n+1} \]
+    multiplying both sides by $P^{-1}_{n+1}$ we get
+    \[ P_1\cdots P_n = Q_1\cdots Q_{i-1}\cdot Q_i\cdots Q_m \]
+    and thus by our inductive assumption, $m=n+1$ and the above products have the same coefficients.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    Suppose $R$ is a Dedekind domain, then $R$ is a UFD if and only if $R$ is a PID.
+
+\end{prop*}
+
+\begin{proof}
+
+    If $R$ is a PID, then $R$ is a UFD.
+    For the converse, suppose $R$ is a Unique factorization Dedekind domain.
+    Let $P$ be a prime ideal of $R$, if $P=(0)$ then $P$ is of course principal.
+    Otherwise suppose $0\neq y\in P$ then since $R$ is a UFD, there exist $p_i$ irreducible such that
+    \[ y = p_1\cdots p_n \]
+    but $P$ is prime, and so there exists a $p_i\in P$.
+    Since in a UFD every irreducible element is prime, $p_i$ is prime and so $(p_i)\subseteq P$ is prime.
+    But since $0\neq p_i$, $(0)\neq(p_i)\subseteq P$ and $\dim R=1$ so $P=(p_i)$.
+
+    Thus every prime ideal is principal.
+    If $I$ is any ideal, then since it is the product of prime ideals, which are of the form $(p_i)$, we have
+    \[ I = (p_1)\cdots(p_n) = (p_1\cdots p_n) \]
+    and so $R$ is a PID.
+    \qed
+
+\end{proof}
+
+\end{document}
+

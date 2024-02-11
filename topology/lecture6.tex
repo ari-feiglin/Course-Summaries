@@ -1,0 +1,226 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\qed{\hskip1cm\penalty-100\hbox{}\hfill$\blacksquare$}
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\bS{\mathbb{S}}
+\def\mU{\mathcal{U}}
+\def\mV{\mathcal{V}}
+\def\mO{\mathcal{O}}
+\def\mF{\mathcal{F}}
+
+\def\to{\varrightarrow}
+\def\longto{\longvarrightarrow}
+
+\newfunc{metric}{\rho}({})
+\newfunc{metricA}{\sigma}({})
+\newfunc{powset}{{\cal P}}(|)
+
+\let\divides=\mid
+\let\to=\varrightarrow
+\def\implies{\,\longvarRightarrow\,}
+
+\def\mathresize#1#2{\mathpalette\@mathresize{{#1}{#2}}}
+\def\@mathresize#1#2{\@@mathresize#1#2}
+\def\@@mathresize#1#2#3{\hbox to #2{\hss$#1#3$\hss}}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\begin{document}
+
+\c@section=6
+
+\barcolorbox{255, 220, 255}{130, 0, 130}{200, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Topology}
+
+    \medskip
+    \textit{Lecture \thesection, Sunday April 7, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{defn*}
+
+    If $X$ is a topological space, a \ppemph{curve} in $X$ is a continuous function $\gamma\colon[0,1]\longto X$.
+    It is called a curve from $\gamma(0)$ to $\gamma(1)$.
+
+\end{defn*}
+
+If $\gamma$ is a curve we define its reverse as $\overline\gamma(t)=\gamma(1-t)$ which is a curve (continuous) as the composition of continuous functions.
+Note that $\overline\gamma(0)=\gamma(1)$ and $\overline\gamma(1)=\gamma(0)$.
+
+If $\gamma_1$ and $\gamma_2$ are two curves such that $\gamma_1(1)=\gamma_2(0)$ then we define their \emph{concatenation} as
+\[ (\gamma_1*\gamma_2)(t) = \begin{cases} \gamma_1(2t) & 0\leq t\leq\frac12 \\ \gamma_2(2t-1) & \frac12\leq t\leq1 \end{cases} \]
+This is continuous since its restrictions under the finite closed cover $\bracks{0,\frac12}\cup\bracks{\frac12,1}$ are continuous as the composition of continuous functions.
+
+\begin{defn*}
+
+    A topological space $X$ is \ppemph{pathwise connected} if for every $a,b\in X$ there exists a curve from $a$ to $b$ in $X$.
+
+\end{defn*}
+
+\begin{prop*}
+
+    If $X$ is pathwise connected, $X$ is connected.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose for the sake of a contradiction that $X=\mU\dcup\mV$ which are non-empty closed sets.
+    Then there exists $a\in\mU$ and $b\in\mV$, and so there exists a curve $\gamma$ from $a$ to $b$.
+    But since $\mU$ is closed in $X$, $\gamma^{-1}(\mU)$ is closed in $[0,1]$ and it is open, so it is also open in $[0,1]$.
+    The same is true for $\mV$, so $\gamma^{-1}(\mV)$ is also clopen in $[0,1]$.
+    But $[0,1]$ is connected so the only clopen sets are $\varnothing$ and $[0,1]$.
+    Since $a\in\mU$, $0\in\gamma^{-1}(\mU)$ and $1\in\gamma^{-1}(\mV)$ so they cannot be empty and so are both equal to $[0,1]$.
+    But then they cannot be disjoint, as then their preimages would have to be disjoint, which is a contradiction.
+    \qed
+
+\end{proof}
+
+Alternatively, for every $a,b\in X$ there exists a path $\gamma$ between them and so $a,b\in\gamma([0,1])=A$.
+Since $\gamma$ is continuous and $[0,1]$ is connected, $A$ is connected.
+So every two points in $X$ are contained in a connected set, and so $X$ is connected.
+
+\begin{prop*}
+
+    If $X$ and $Y$ are topological spaces where $X$ is pathwise connected, if there exists a surjective continuous function $f\colon X\longto Y$, then $Y$ is also pathwise connected.
+
+\end{prop*}
+
+\begin{proof}
+
+    If $a,b\in Y$ then there exists $x,y\in X$ such that $f(x)=a$ and $f(y)=b$ since $f$ is surjective.
+    There exists a path $\gamma$ from $x$ to $y$, so $f\circ\gamma$ is continuous and $f\circ\gamma(0)=f(x)=a$ and $f\circ\gamma(1)=f(y)=b$ so $f\circ\gamma$ is a curve from $a$ to $b$ as required.
+    \qed
+
+\end{proof}
+
+Thus if $f\colon X\longto Y$ is a continuous function from a pathwise connected space $X$, then $f(X)$ is pathwise connected.
+This is because $f\colon X\longto f(X)$ is surjective and continuous.
+
+We define an equivalence relation on $X$ where $a\sim b$ if and only if there exists a curve from $a$ to $b$.
+This is reflexive (constant curve), symmetric (reverse curve), and transitive (concatenation of curves), so it is indeed an equivalence relation.
+This defines a partition of $X$, $\slfrac X\sim$.
+The equivalence classes under this relation are called \emph{pathwise connected components}.
+
+Note that if $a\sim b$ then $\gamma([0,1])$ is connected and contains $a$ and $b$, so if $a$ and $b$ are in a pathwise connected relation, they are in a connected relation (the relation from last lecture).
+
+\begin{prop*}
+
+    \benum
+        \item If $A\subseteq X$ is pathwise connected, it is contained within one of pathwise connected components.
+        \item Pathwise connected components are pathwise connected.
+    \eenum
+
+\end{prop*}
+
+\begin{proof}
+
+    \benum
+        \item For every $a,b\in A$ then there exists a path $\gamma\colon[0,1]\longto A$ from $a$ to $b$.
+        But expanding the codomain of $\gamma$ to $X$ (composing with the inclusion function) gives a curve in $X$ from $a$ to $b$, so $a\sim b$.
+        So for every $b\in A$, $a\sim b$, so $A\subseteq\slfrac a\sim$ as required.
+        \item Let $C$ be a pathwise connected component.
+        Let $a,b\in C$ then $a\sim b$ so there exists a curve $\gamma\colon[0,1]\longto X$ from $a$ to $b$.
+        Note that $[0,1]$ is pathwise connected (this is trivial), so $\gamma([0,1])$ is pathwise connected and so $\gamma([0,1])\subseteq C'$ for some connected component $C'$ by above.
+        Since $a,b\in\gamma([0,1])$, $C'=C$ so restricting the codomain to get $\gamma\colon[0,1]\longto C$ gives a continuous curve from $a$ to $b$ in $C$.
+        So for every $a,b\in C$ there exists a curve in $C$ from $a$ to $b$, so $C$ is pathwise connected.
+        \qed
+    \eenum
+
+\end{proof}
+
+Thus the partition of $X$ into pathwise connected components partitions $X$ into maximal pathwise connected components.
+Thus $X$ is pathwise connected if and only if there exists a single pathwise connected component.
+
+Since every pathwise connected component is pathwise connected and therefore connected, every pathwise connected component is contained within a connected component.
+
+\begin{exam*}
+
+    We define $C\subseteq\bR^2$ as:
+    \[ C = [0,1]\times\set 0\cup\bigcup_{n\in\bN}\set{\tfrac1n}\times[0,1] \]
+    $C$ is a line on the $x$ axis from $0$ to $1$ with lines sticking up at every $x=\frac1n$ from $y=0$ to $y=1$.
+    Let $S$ be th point $(0,1)$, then define
+    \[ X = C\cup\set S \]
+
+    We now claim that $X$ is connected, but not pathwise.
+
+    $C$ is path connected, since for every $p,q\in C$ we can take the composition of lines from $p=(p_x,p_y)$ to $(p_x,0)$ to $(q_x,0)$ to $q=(q_x,q_y)$.
+
+    $C$ is also dense in $X$, since for every $x\in X$ if $x\in C$ then $x\in\overline C$.
+    Otherwise $x=S$ and for every $B_r(S)$, there is a $\frac1n<r$ and so $\parens{0,\frac1n}$ is in $C$ and in $B_r(S)$ as required.
+    So for every open neighborhood of $S$, it has non-trivial intersection with $C$ and therefore $S\in\overline C$.
+    Therefore $\overline C=X$ as required.
+
+    Since $C$ is dense in $X$ and is connected, then $X$ is connected (proven last lecture).
+
+    But $X$ is not path connected.
+    We show this by defining:
+    \[ \mU_1 = \set{(x,y)\in X}[y>\frac13],\qquad \mU_2=\set{(x,y)\in X}[y<\frac23] \]
+    this is an open cover of $X$.
+    Let $\gamma\colon[0,1]\longto X$ be a curve such that $\gamma(0)=S$, we claim that $\gamma$ is constant.
+    Since $\gamma^{-1}(\mU_1)\cup\gamma^{-1}(\mU_2)$ is an open cover of $[0,1]$
+    Since $[0,1]$ is compact, this open cover has a Lebesgue number $\epsilon>0$.
+    Let $m$ be a number such that $\frac1m<2\epsilon$, then we define
+    \[ I_k = \bracks{\frac{k-1}m, \frac km} \]
+    for $1\leq k\leq m$.
+    This is a finite closed cover of $[0,1]$.
+    And since every $I_k$ is contained within a ball of radius $\epsilon$, every $I_k$ is contained within one of $\gamma^{-1}(\mU_i)$.
+
+    Since $0\in I_1$, and $S\notin\mU_2$, we have that $0\notin\gamma^{-1}(\mU_2)$ so $I_1\subseteq\gamma^{-1}(\mU_1)$.
+
+    Now for every $k$ we define
+    \[ w_k = \set{(x,y)\in\mU_1}[x<\frac1{k+\frac12}],\qquad w'_k=\set{(x,y)\in\mU_1}[x>\frac1{k+\frac12}] \]
+    Since any point with $x$ value $\frac1{k+\frac12}$ cannot be in $\mU_1$ (it can only have $y$ value $0$ if it is in $X$), $w_k$ and $w'_k$ form an open cover of $\mU_1$.
+    Since $S\in w_k$, and we can restrict $\gamma\colon I_1\longto\mU_1$.
+    $\gamma(I_1)$ is connected, and so $\gamma(I_1)\subseteq w_k$ since $S\in\gamma(I_1)\cap w_k$, and $\gamma(I_1)\subseteq w_k\dcup w'_k$ and is connected.
+    So then
+    \[ \gamma(I_1) \subseteq \bigcap_{k=1}^\infty w_k = \set S \]
+    Thus $\gamma\bigl|_{I_1}$ is constant.
+
+    Since the right endpoint of $I_1$ is the left endpoint of $I_2$, this proof continues the same on $I_2$ and so on until $I_k$.
+    So $\gamma$ is constant on all $I_k$ to $S$.
+    So if $x\in X$ is not equal to $S$ then $S$ cannot be connected to $x$ by a continuous curve, so $X$ is not pathwise connected.
+
+    The path connected components here are $C$ and $\set S$.
+
+\end{exam*}
+
+\begin{defn*}
+
+    Suppose $V$ is a real linear space and $X\subseteq V$.
+    $X$ is called \ppemph{convex} if for every $p,q\in V$ and every $0\leq t\leq1$, $p+t(q-p)\in X$.
+
+\end{defn*}
+
+\begin{prop*}
+
+    If $X\subseteq\bR^n$ is convex, it is path connected.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $p,q\in X$ then $\gamma\colon[0,1]\longto\bR^n$ by $\gamma(t)=p+t(q-p)$ is a continuous function from $p$ to $q$.
+    Since scalar multiplication is continuous, this is indeed a curve from $p$ to $q$.
+    And since $X$ is convex, $\gamma(t)\in X$ so we can restrict the codomain of $\gamma$ to $X$ and get a continuous curve $\gamma\colon[0,1]\longto X$ as required.
+    \qed
+
+\end{proof}
+
+\end{document}
+

@@ -1,0 +1,446 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz-cd}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{conj}{Conjecture}{255,130,130}{150,0,0}{200,0,0}
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\undersumtext#1{\vtop{\hsize=2cm\relax\centering\small #1}}
+
+\newfunc{oracle}{\hbox{\tencsc oracle}}({})
+\newfunc{dspace}{\mathsf{DSPACE}}({})
+\newfunc{dtime}{\mathsf{DTIME}}({})
+\newfunc{nspace}{\mathsf{NSPACE}}({})
+\newfunc{nspaceoff}{\mathsf{NSPACE}_{\mathsf{offline}}}({})
+\newfunc{totreach}{\textsf{Total-Reach}}({})
+\newfunc{prob}{\mathbb P}(|)
+\newfunc{expec}{\mathbb E}[|]
+
+\def\quant{\mathtt{Q}}
+
+\def\sps{\texttt{\char32}}
+\def\sat{\mathsf{SAT}}
+\def\csat{\mathsf{CSAT}}
+\def\is{\mathsf{IS}}
+\def\threesat{\mathsf{3SAT}}
+\def\clique{\mathsf{Clique}}
+\def\vertcover{\textsf{Vertex-Cover}}
+\def\domset{\textsf{Dom-Set}}
+\def\dhp{\mathsf{DHP}}
+\def\dhc{\mathsf{DHC}}
+\def\hc{\mathsf{HC}}
+\def\tsp{\mathsf{TSP}}
+\def\threecolor{\mathsf{3Color}}
+\def\twocolor{\mathsf{2Color}}
+\def\kcolor{k\mathsf{Color}}
+\def\Color{\mathsf{Color}}
+\def\subsum{\mathsf{SubsetSum}}
+\def\maxclique{\mathsf{MaxClique}}
+\def\minexpr{\mathsf{MinExpression}}
+\def\sparse{\mathsf{Sparse}}
+\def\stconn{\textsf{st-conn}}
+\def\polyidtest{\mathsf{PolyIdTesting}}
+
+\def\PH{\mathbf{PH}}
+\def\PF{\mathbf{PF}}
+\def\PC{\mathbf{PC}}
+\def\P{\mathbf{P}}
+\def\NP{\mathbf{NP}}
+\def\NPH{\mathbf{NPH}}
+\def\NPC{\mathbf{NPC}}
+\def\co{\mathsf{co}}
+\def\coNP{\mathbf{coNP}}
+\def\poly{\mathsf{poly}}
+\def\Ppoly{\slfrac\P\poly}
+\def\L{\mathbf{L}}
+\def\NL{\mathbf{NL}}
+\def\RP{\mathbf{RP}}
+\def\BPP{\mathbf{BPP}}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mN{\mathcal{N}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=11
+
+\barcolorbox{255, 220, 220}{130, 0, 0}{200, 80, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Computability and Complexity}
+
+    \medskip
+    \textit{Lecture \thesection, Tuesday September 5, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{Probabilistic Algorithms}
+
+\begin{defn*}
+
+    A \ppemph{probabilistic algorithm} (Turing machine) is a non-deterministic algorithm (respectively, Turing machine) such that whenever there are multiple choices for a step, each choice is chosen with
+    uniform probability.
+    So the output of a probabilistic algorithm is a random variable, in the case of an algorithm which solves a decision problem will take on boolean values.
+
+\end{defn*}
+
+\begin{exam*}
+
+    Let us define the decision problem $\polyidtest$ where given two multivariate polynomials, it determines if they are identically equal.
+    The input for the problem are two polynomials, which are represented as an algebraic formula which can contain addition, multiplication, and parentheses.
+
+    The naive solution here is to expand out the algebraic formula and add the terms (of the form $c\cdot x_1^{k_1}\cdots x_n^{k_n}$) together, and compare the results for both polynomials.
+    But this is exponential, if there are $n$ variables then let us look at $(x_1+\cdots+x_n)^d$ then this will end up having $\binom{n+d}d$ terms (the number of terms is equal to the number of ways to
+    have $k_1+\cdots+k_n=d$, and this is equal to the number of ways to order $n$ dividers with $d$ units).
+    If we take $d=\frac n2$ this becomes exponential, so this naive solution will not solve the problem in exponential time.
+
+    Our probabilistic algorithm will function as follows: first it finds the maximum degree of a term in both $p$ and $q$, let it be $d$ (this can be done deterministically).
+    Then if there are $n$ variables, it chooses $n$ values from $S=\set{1,\dots,2d}$.
+    It then evaluates the polynomials at these values, and if the results are equal it returns one, otherwise it returns zero.
+    This algorithm runs in polynomial time.
+
+    Note that this algorithm will always return the correct answer when the correct answer is ``yes'' (no false negatives).
+    If the polynomials are not identical, the algorithm can be incorrect (false positive).
+    The Schwartz-Zippel lemma states that if values $r_1,\dots,r_n$ are chosen uniformly from a set $S$ then
+    \[ \probof{p(r_1,\dots,r_n)=q(r_1,\dots,r_n)}[p\neq q] \leq \frac d{\abs S} \]
+    and since $\abs S=2d$ here, the algorithm will give a false positive with a probability of $\leq\frac12$.
+
+    Notice that this algorithm does not decide $\polyidtest$, but we will discuss soon what we care about with regards to decision making with probabilistic algorithms.
+    This algorithm does show that $\polyidtest\in\coNP$, but that's not what we're focusing on right now.
+
+\end{exam*}
+
+\begin{prop*}
+
+    Let $S$ be a decision problem and $M$ be a polynomial-time probabilistic Turing machine such that for every $x$,
+    \[ \probof{\text{$M(x)$ returns the correct answer}} = 1 \]
+    Then there exists a polynomial-time deterministic Turing machine $M'$ which solves $S$.
+
+\end{prop*}
+
+\begin{proof}
+
+    We define $M'$ such to be like $M$, but we remove every choice.
+    Meaning if there are multiple possible transitions from a state in $M$, we will define $M'$ to only have one of the transitions.
+    Equivalently, we could say that $M'$ always chooses the first choice.
+    Suppose that $M'$ does not decide $S$, so there is some string $x$ for which $M'(x)$ does not return the correct answer.
+    But then there is a sequence of choices which $M$ could make to return the wrong answer for $x$, meaning the probability that $M(x)$ returns the correct answer is less than one, in contradiction.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    We define the class $\RP$ (randomized polynomial time) to be the set of decision problems $S$ such that there exists a polynomial-time probabilistic algorithm $M$ where if
+    \begin{align*}
+        x\in S &\implies \probof{M(x)=1}\geq\frac12 \\ 
+        x\notin S&\implies \probof{M(x)=0}=1
+    \end{align*}
+
+\end{defn*}
+
+Notice then that $S$ is in $\co\RP$ if and only if there exists a probabilistic algorithm $M$ (which is the inversion of probabilistic algorithm for $S^c$) where if
+\begin{align*}
+    x\in S &\implies \probof{M(x)=1}=1 \\
+    x\notin S &\implies \probof{M(x)=0}\geq\frac12
+\end{align*}
+So $\polyidtest\in\co\RP$.
+
+If $S\in\RP$ and $M$ satisfies the definition, then $M$ satisfies the requirements for $S$ to be in $\NP$.
+This is because if $x\in S$ then there exists a run of $M$ where $M(x)=1$ (since the probability is non-zero), and if $x\notin S$ then since the probability that $M(x)=0$ is one, $M(x)$ will always return
+zero.
+This is precisely the requirement for $S$ to be in $\NP$.
+Also trivially $\P\subseteq\RP$, so we have shown
+
+\begin{prop*}
+
+    \[ \P \subseteq \RP \subseteq \NP \]
+
+\end{prop*}
+
+\begin{defn*}
+
+    We define the class $\BPP$ (bounded-error probabilistic polynomial time) to be the class of decision problems $S$ where there exists a probabilistic algorithm $M$ such that for every $x$,
+    \[ \probof{\text{$M(x)$ gives the correct answer}} \geq \frac23 \]
+
+\end{defn*}
+
+\begin{prop*}
+
+    \[ \RP \subseteq \BPP \]
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $S\in\RP$, and $M$ is a probabilistic algorithm which satisfies the requirements for $S$ to be in $\RP$.
+    Let $x$ be a string, let us define $M'(x)$ which runs $M(x)$ twice and return one if either run returns one.
+    If $x\in S$ then the probability $M(x)$ returns zero both times (meaning $M'(x)$ returns the wrong answer) is $\leq\frac14$.
+    So if $x\in S$ the probability $M'(x)$ returns the correct answer is $\geq\frac34\geq\frac23$.
+    And if $x\notin S$ then $M'(x)$ will always return the correct answer.
+    Therefore $M'(x)$ will always return the correct answer with a probability of at least $\frac23$, meaning $S\in\BPP$.
+    \qed
+
+\end{proof}
+
+Notice that $\co\BPP=\BPP$.
+This is because if $S^c\in\BPP$ then suppose $M$ satisfies the condition for $S^c$ to be in $\BPP$.
+If we define $M'=1-M$, then 
+\[ \probof{M'(x)=(x\in S)} = \probof{1-M(x)=(x\in S)} = \probof{M(x)=x\notin S} = \probof{M(x)=x\in S^c} \geq\frac23 \]
+(The notation $(x\in S)$ is the boolean value of the formula, it is $1$ if $x$ is in $S$ and zero otherwise.)
+Thus by the above proposition, $\co\RP\subseteq\BPP$ as well.
+
+The strategy used in the proof of the proposition above, of running a probabilistic algorithm multiple times in order to improve the probability of success, is called \emph{amplification}.
+
+\begin{defn*}
+
+    Let $\alpha\colon\bN\longto[0,1]$ be a function.
+    We define the class $\RP_\alpha$ similar to $\RP$, where $S$ is in $\RP$ if and only if there exists a probabilistic algorithm $M$ such that
+    \begin{align*}
+        x\in S &\implies \probof{M(x)=1}\geq\alpha(\abs x) \\
+        x\notin S&\implies \probof{M(x)=0}=1
+    \end{align*}
+
+\end{defn*}
+
+Notice that $\RP=\RP_{\frac12}$.
+And that for every $\alpha$, $\RP_\alpha\subseteq\NP$.
+And $\NP=\RP_{\frac1{2^{p(n)}}}$ (meaning the union of the classes over $p(n)$ polynomial), since $\NP$ makes an exponential number of guesses.
+
+\begin{prop*}
+
+    Let $p$ and $q$ be two polynomials (bound below by $2$), then
+    \[ \RP_{\frac1{p(n)}} = \RP = \RP_{1-\frac1{2^{q(n)}}} \]
+    This bounds the probability of error for $\RP$ from below and from above.
+    Meaning the error can get polynomially close to $0$ and exponentially close to $1$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Obviously if $\alpha(n)\leq\beta(n)$ then $\RP_\beta\subseteq\RP_\alpha$.
+    So we have
+    \[ \RP_{\frac1{p(n)}} \supseteq \RP \supseteq \RP_{1-\frac1{2^{q(n)}}} \]
+    So we will show that
+    \[ \RP_{\frac1{p(n)}} \subseteq \RP_{1-\frac1{2^{q(n)}}} \]
+    and then we will have finished.
+    Let $S\in\RP_{\frac1{p(n)}}$ so there exists a probabilistic algorithm $M$ such that when $x\in S$, $\probof{M(x)=1}\geq\frac1{p(n)}$.
+    Suppose we run $M(x)$ for $f(n)$ times, and we return one if at least one of these times returns one.
+
+    Meaning we define
+
+    \algorithm
+        \Function{$M'$}{$x$}
+            \Repeat{$f(\abs x)$}
+                \lIf{$M(x)=1$} \Return $1$
+            \EndRepeat
+            \State\Return $0$
+        \EndFunc
+    \ealgorithm
+
+    If $x\notin S$, then $M(x)=0$ no matter what so $M'(x)=0$.
+    If $x\in S$, then the probability $M'(x)$ returns the wrong answer ($0$) is if $M(x)=0$ every time.
+    This has a probability of
+    \[ \leq \parens{1-\frac1{p(n)}}^{f(n)} \]
+    So
+    \[ \probof{M'(x)=1} \geq 1 - \parens{1-\frac1{p(n)}}^{f(n)} \]
+    we want this to be greater than $1-\frac1{2^{q(n)}}$ and so we need
+    \[ \parens{1-\frac1{p(n)}}^{f(n)} \leq 2^{-q(n)} \]
+    Now, notice that
+    \[ \parens{1-\frac1{p(n)}}^{p(n)} \leq e^{-1} \leq 2^{-1} \]
+    and so
+    \[ \parens{1-\frac1{p(n)}}^{p(n)\cdot q(n)} \leq 2^{-q(n)} \]
+    So let us choose $f(n)=p(n)\cdot q(n)$.
+    Now, since $f(n)$ is polynomial in $n$, $M'$'s runtime is polynomial in $n$ (it runs $M$, which is polynomial-time, a polynomial number of times).
+    And so $M'$ satisfies the conditions for $S\in\RP_{1-\frac1{2^{q(n)}}}$, as required.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    For a function $\alpha\colon[0,1]\longto\bN$ we define the class $\BPP_\alpha$ of decision problems $S$ where there exists a polynomial-time probabilistic algorithm $M$ such that the probability $M(x)$
+    returns a correct answer is greater than $\alpha(\abs x)$.
+
+\end{defn*}
+
+\begin{thrm*}
+
+    Let $p,q$ are polynomials (greater than $2$), then
+    \[ \BPP_{\frac12+\frac1q} = \BPP = \BPP_{1-2^{-p}} \]
+
+\end{thrm*}
+
+\begin{proof}
+
+    Obviously again if $\alpha\leq\beta$ then $\BPP_\beta\subseteq\BPP_\alpha$.
+    We will show the second equality, so all we need to do is show $\BPP\subseteq\BPP_{1-2^{-p}}$.
+    If $S\in\BPP$, let $M$ satisfy the conditions for $S$ to be in $\BPP$.
+    We define
+
+    \algorithm
+        \Function{$M'$}{$x$}
+            \State $c_0,c_1\gets 0$
+            \Repeat{$k(\abs x)$}
+                \lIf{$M(x)=1$} $c_1\gets c_1+1$
+                \lElse $c_0\gets c_0+1$
+            \EndRepeat
+            \State\Return $1$ \textbf{if} $c_1>c_0$, \textbf{else} $0$
+        \EndFunc
+    \ealgorithm
+
+    Let us define the indicator $\omega_i$ which indicates if $M$ was incorrect on the $i$th iteration.
+    Thus
+    \[ \expecof{\omega_i} = \probof{\text{$M(x)$ is incorrect}} \leq \frac13 \]
+    And so
+    \[ \expecof{\frac{\sum_{i=1}^k\omega_i}k} = \frac1k\sum_{i=1}^k\expecof{\omega_i} \leq \frac k{3k} = \frac13 \]
+    This means that we expect at most $\frac13$ of the iterations will give the incorrect result.
+    And we know that $M'(x)$ is incorrect when most of the results are incorrect, ie. $M'(x)$ is incorrect when
+    \[ \frac{\sum_{i=1}^k\omega_i}k > \frac12 \]
+    Recall Chernoff's inequality: if $\omega_1,\dots,\omega_k$ are random variables with the same distributions bounded by $a<b$, then
+    \[ \probof{\frac1k\sum_{i=1}^k\omega_i > \mu + \epsilon} \leq e^{-2\epsilon^2k/(b-a)^2},\qquad \mu=\expecof{\frac1k\sum_{i=1}^k\omega_i} \]
+
+    So from Chernoff's inequality, we get that (the bounds are $a=0$ and $b=1$)
+    \[ \probof{\text{$M(x)$ is incorrect}} = \probof{\frac1k\sum_{i=1}^k\omega_i > \frac12 = \mu + \frac16} \leq e^{-k/18} \]
+    So let $k(n)=18p(n)$, then we get that
+    \[ \probof{\text{$M(x)$ is incorrect}} \leq e^{-p(n)} \leq 2^{-p(n)} \]
+    and so $M(x)$ is correct with probability greater than $1-2^{-p(n)}$.
+
+    Since $M'$ runs $M$, which is polynomial-time, a polynomial number of times ($k(n)$ is polynomial), $M'$ is polynomial-time.
+    And we showed that it is correct with probability greater than $1-2^{-p}$, meaning $S\in\BPP_{1-2^{-p}}$ as required.
+
+    The first equality is proven in a similar matter.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    $\BPP$ is closed under unions.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $S_1$ and $S_2$ are in $\BPP$.
+    By above, there exist probabilistic algorithms $M_1$ and $M_2$, for $S_1$ and $S_2$, which return the correct answer with probabilities $\geq\frac56$.
+    Let us define $M(x)$ which simply runs $M_1(x)$ and $M_2(x)$ and returns one if either returns one.
+
+    If $x\in S_1\cup S_2$, without loss of generality $x\in S_1$.
+    Then
+    \[ \probof{M(x)=1} \geq \probof{M_1(x)=1} \geq \frac56 \geq \frac23 \]
+    Now if $x\notin S_1\cup S_2$ then
+    \[ \probof{M(x)=0} = \probof{M_1(x)=M_2(x)=0} = \probof{M_1(x)=0}\cdot\probof{M_2(x)=0} \geq \frac{25}{36} \geq \frac23 \]
+    So $M$ satisfies the conditions for $S_1\cup S_2\in\BPP$.
+    \qed
+
+\end{proof}
+
+Note that it is an unknown what the relation between $\BPP$ and $\NP$.
+
+\begin{prop*}
+
+    If $\NP\subseteq\BPP$ then $\NP=\RP$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Firstly, in general $\RP\subseteq\NP$, so all we must show is the other direction: that $\NP\subseteq\RP$.
+    We will show that $\sat\in\RP$, and since $\RP$ is closed under Karp reductions (this is simple to prove) this means that $\NP\subseteq\RP$.
+    Since $\sat\in\NP\subseteq\BPP$, there exists a probabilistic algorithm $M(\phi)$ which returns correct answers for $\phi\in\sat$ with a probability of $\alpha(n)$.
+    We don't know what $\alpha$ is yet, we will show that there exists an $\alpha$ which helps us solve the problem later in the proof.
+
+    Let us define
+
+    \def\Var{\mathrm{Var}}
+    \algorithm
+        \Function{$M'$}{$\phi$}
+            \State Let $\tau$ be a boolean vector
+            \State $\phi'\gets\phi$
+            \For{$i$ \textbf{from} $1$ \textbf{to} $\abs{\Var{\phi}}$}\lComment $\Var\phi$ are the variables in $\phi$
+                \State Evaluate the first variable $x$ as true, and simplify $\phi'$
+                \lIf{$M(\phi')=1$} $\tau_i\gets\mathsf{true}$
+                \lElse $\tau_i\gets\mathsf{false}$
+            \EndFor
+            \State Check if $\tau$ satisfies $\phi$, and return $1$ if it does, $0$ otherwise.
+        \EndFunc
+    \ealgorithm
+
+    If $\phi\notin\sat$ then $M'(\phi)$ will return zero as the boolean vector $\tau$ which it constructs will not satisfy $\phi$.
+    And if $\phi\in\sat$, if $M$ returned a correct answer over every iteration then $\tau$ will indeed satisfy $\phi$ and so $M'(\phi)=1$.
+    So then
+    \[ \probof{M'(\phi)=1} \geq \probof{\text{$M(\phi)$ returned the correct answer over every iteration}} \]
+    The complement of this is (let $k=\abs{\Var\phi}$)
+    \[ \probof{\text{$M(\phi)$ gave an incorrect answer for some iteration}} = \probof{\bigcup_{i=1}^k\text{$M(\phi)$ gave an incorrect answer on the $i$th iteration}} \]
+    By the union bound, we get
+    \[ \leq \sum_{i=1}^k \probof{\text{$M(\phi)$ gave an incorrect answer on the $i$th iteration}} \]
+    The probability $M(\phi)$ is false is $1-\alpha$, so this is equal to $n(1-\alpha)$.
+    Thus we get that
+    \[ \probof{M'(\phi)=1} \geq 1 - n(1-\alpha) \]
+    We want $\probof{M'(\phi)=1}\geq\frac12$ by the definition of $\RP$, and so we require
+    \[ 1 - n(1-\alpha) \geq \frac12 \]
+    And so we set
+    \[ \alpha(n) = 1 - \frac1{2n} \]
+    And so if we can show that $\BPP\subseteq\BPP_\alpha$, we have shown that $\sat$ is in $\RP$ (since then this would justify our claim that $M$ succeeds with probability $\alpha$).
+    But this is true since $1-2^{-n}\geq1-\frac1{2n}$ and we showed in a theorem above that for $\alpha$s of the form $1-2^{-p}$, $\BPP_\alpha=\BPP$.
+    \qed
+
+\end{proof}
+
+\end{document}
+

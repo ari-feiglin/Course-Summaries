@@ -1,0 +1,539 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{axiom}{Axiom}{255,255,200}{150,100,0}{200,150,100}			% yellow
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\aone#1#2{#2\to(#1\to#2)} \def\Aone{\textbf{A1}}
+\def\atwo#1#2#3{\bigl(#1\to(#2\to#3)\bigr)\to\bigl((#1\to#2)\to(#1\to#3)\bigr)} \def\Atwo{\textbf{A2}}
+\def\athree#1#2{(\neg#2\to\neg#1)\to\bigl((\neg#2\to#1)\to#2\bigr)} \def\Athree{\textbf{A3}}
+\def\afour#1#2#3{(\forall #2#1)\to#1\frac{#3}{#2}}  \def\Afour{\textbf{A4}}
+\def\afive#1#2#3{\bigl(\forall #3(#1\to#2)\bigr)\to\bigl(#1\to(\forall#3#2)\bigr)} \def\Afive{\textbf{A5}}
+\def\MP{\textit{MP}} \def\Gen{\textit{Gen}}
+
+\def\beqq{\mathrel{\vbox{\hbox{$=$}\kern-\baselineskip\kern.3pt\hbox{$=$}}}}
+
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\Var{\mathrm{Var}}
+
+\newfunc{var}{{\rm var}}({})
+\newfunc{bound}{{\rm bound}}({})
+\newfunc{free}{{\rm free}}({})
+
+\def\qed{\hskip.5cm\hbox{}\hfill$\blacksquare$}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\def\true{\mathsf{true}}
+\def\false{\mathsf{false}}
+
+%\def\Aone#1#2{#1\to(#2\to#1)}
+%\def\Atwo#1#2#3{\bigl(#1\to(#2\to#3)\bigr)\to\bigl((#1\to#2)\to(#1\to#3)\bigr)}
+%\def\Athree#1#2{(\neg#2\to\neg#1)\to\bigl((\neg#2\to#1)\to#2\bigr)}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+
+\begin{document}
+
+\c@section=8
+
+\barcolorbox{220, 255, 255}{0, 130, 130}{80, 200, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Mathematical Logic}
+
+    \medskip
+    \textit{Lecture \thesection, Monday May 29, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+Recall the axioms of a first order theory:
+\blist
+    \item First order theories inherit axioms from predicate calculus.
+    \item (\textbf{A4}): If $\phi\frac tx$ is collision-free then  $(\forall x\phi)\to\phi\parens{\frac tx}$.
+    \item (\textbf{A5}): If $x$ is not free in $\phi$ then $(\forall x)(\phi\to\psi)\to(\phi\to(\forall x)\psi)$.
+    \item Other axioms are unique to the first order theory.
+        A first order theory with no other axioms is called a \emph{predicate calculus}.
+\elist
+
+And the rules of inference are
+\blist
+    \item Modus ponens (\textit{MP}).
+    \item Generalization (\textit{Gen}): if $\phi$ then $\forall x\phi$.
+\elist
+
+\begin{defn*}
+
+    Let $\Gamma$ be an $\mL$-theory.
+    $\Gamma$ is \ppemph{contradictory} if there exists a well-formed formula $\phi$ such that $\Gamma\vdash\phi$ and $\Gamma\vdash\neg\phi$.
+    A non-contradictory theory is also known as \ppemph{consistent}.
+
+    A set of formulas $\Gamma$ is \ppemph{satisfiable} if it has a model.
+
+\end{defn*}
+
+\begin{prop*}
+
+    Every satisfiable set of closed formulas is consistent.
+
+\end{prop*}
+
+\begin{proof}
+
+    Since the rules of inference are valid under satisfiability, if $\mM$ is a model of $\Gamma$, any formula which can be proven using formulas from $\Gamma$ must be modeled by $\mM$.
+    Formally, this is shown by induction on the length of the proof.
+    For a length of $0$, this is simply an element of $\Gamma$ which is by definition satisfiable.
+    If the proof of $\phi$ is $n$ steps, $\mM$ models all the formulas used previously in the proof by induction, and since we must now use a rule of inference using only these formulas and formulas from
+    $\Gamma$ which are all satisfiable, so must $\phi$.
+    Again, this is due to the rules of inference being valid for satisfiability.
+ 
+    So if $\Gamma\vdash\phi,\neg\phi$ then $\mM\models\phi,\neg\phi$ which is a contradiction to the definition of satisfiability.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    If $x\neq y\in\Var$ and $\phi$ is a formula, then $\phi$ and $\phi\frac yx$ are \ppemph{similar} if the substitution is collision-free and $\phi$ has no free instances of $y$.
+
+\end{defn*}
+
+So for example if $\phi=\forall x_3\bigl(A_1(x_3,x_1)\lor A_2(x_1)\bigr)$ then $\phi\frac{x_2}{x_1}=\forall x_3\bigl(A_1(x_3,x_2)\lor A_2(x_2)\bigr)$ and these are similar since the substitution is
+collision-free and $\phi$ contains no (free) instances of $x_2$.
+
+We will write $\phi(x)$ and $\phi(y)$ for $\phi$ and $\phi\frac yx$.
+
+\begin{lemm*}
+
+    If $\phi(x)$ and $\phi(y)$ are similar then $\vdash(\forall x\phi(x))\oto(\forall y\phi(y))$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Recall that this is just $\vdash(\forall x\phi)\oto(\forall y\phi\frac yx)$.
+
+    $$ \blproof
+        \afour\phi xy & \Afour\cr
+        \forall y\bigl(\afour\phi xy\bigr) & \Gen\cr\noalign{\kern3pt}
+        \afive{\forall x\phi}{\phi\frac yx}y & \Afive\cr
+        (\forall x\phi)\to(\forall y\phi\frac yx) & \MP
+    \elproof $$
+
+    We similarly have $(\forall y\phi\frac yx)\to(\forall x\phi)$ (take $\psi=\phi\frac yx$ then $\phi=\psi\frac xy$ and $\phi$ and $\psi$ are similar).
+    Thus as we showed for propositional calculus (which this has boiled down to): $\vdash(\forall x\phi)\oto(\forall y\phi\frac yx)$.
+    \qed
+
+\end{proof}
+
+\begin{lemm*}
+
+    Suppose $K$ is a consistent.
+    If $\neg\phi$ is a closed formula and is not provable in $K$, then $K'$, the theory obtained by adding $\phi$ as a new axiom to $K$, is also consistent.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Suppose $K'$ is contradictory, then $\vdash_{K'}\psi,\neg\psi$.
+    Again, this is simply propositional calculus, so $\vdash_{K'}\neg\phi$.
+    Thus we have $\phi\vdash_K\neg\phi$ as we can regard $\phi$ as a hypothesis instead of an axiom in the proof of $\neg\phi$ in $K'$.
+    Since $\phi$ is closed, $\vdash_K\phi\to\neg\phi$ and since $\vdash_K(\phi\to\neg\phi)\to\neg\phi$, and so by modus ponens $\vdash_K\neg\phi$ in contradiction.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    A theory $K$ is \ppemph{complete} if for every formula $\phi$ either $\vdash_K\phi$ or $\vdash_K\neg\phi$.
+
+\end{defn*}
+
+\begin{defn*}
+
+    An \ppemph{extension} of a theory $K$ is a theory $K'$ where if $\vdash_K\phi$ then $\vdash_{K'}\phi$ (everything provable in $K$ is provable in $K'$).
+    In other words, $K\subseteq K'$ (as theories are seen as the set of their theorems).
+
+\end{defn*}
+
+\begin{prop*}
+
+    If $K$ is inconsistent, then for any formula $\psi$, $\vdash_K\psi$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Since $\vdash_K\phi$ and $\vdash_K\neg\phi$ for some formula $\phi$, by \Aone{} we have
+    \[ \aone{\neg\psi}\phi,\quad\aone{\neg\psi}{\neg\phi} \]
+    Since we can prove $\phi$ and $\neg\phi$, by \MP{} we have $\neg\psi\to\phi$ and $\neg\psi\to\neg\phi$.
+    and by \Athree{} we have
+    \[ \athree\phi\psi \]
+    so by applying \MP{} twice we get $\psi$, as required.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    If $K$ is a consistent theory, then there is a consistent and complete extension of $K$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $\set{\phi_n}_{n=1}^\infty$ be an enumeration of all the closed well-formed formulas of the language of the theory.
+    We define a sequence of theories $\set{J_n}_{n=0}^\infty$ recursively, where $J_0=K$ and $J_{n+1}$ is defined where if $\vdash_{J_n}\neg\phi_{n+1}$ then $J_{n+1}=J_n$.
+    Otherwise let $J_{n+1}$ be obtained from $J_n$ by adding $\phi_{n+1}$ as an axiom to $J_n$.
+
+    Let $J$ be the theory obtained by taking all the axioms in any $J_n$.
+    If $\vdash_J\phi,\neg\phi$ then since these proofs must be finite, all the theorems must be contained within a theory $J_n$, and so $J_n$ is inconsistent.
+    Thus it is sufficient to show that every $J_n$ is consistent.
+    We prove the consistency of $J_n$ via induction: since $J_0=K$ is consistent by assumption, and either $J_{n+1}=J_n$ (in which case $J_{n+1}$ is consistent) or $J_{n+1}$ is obtained by adding
+    $\phi_{n+1}$ as an axiom to $J_n$ where $\nvdash_{J_n}\neg\phi_{n+1}$ so by the lemma above, $J_{n+1}$ is consistent.
+
+    $J$ is clearly complete as $\vdash_{J_n}\phi_n$ for every $n$, and it is obviously an extension of $K$.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    A \ppemph{closed term} is a term without variables (a constant or the function of constants).
+    A theory $K$ is called a \ppemph{scapegoat theory} if for every formula $\phi$ where $\free\phi=\set x$ there is a closed term $t$ such that
+    \[ \vdash_K(\exists x\phi)\to\phi\frac tx \]
+    $t$ is called the \ppemph{scapegoat} of $\phi$.
+
+\end{defn*}
+
+Meaning if $K$ is a scapegoat theory, then if $\phi$ is true for some $x$ then it is true if we substitute any constant value for $x$.
+
+\begin{lemm*}
+
+    Any consistent theory $K$ has a consistent extension $K'$ which is a scapegoat theory.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Let $\set{\phi_n}_{n=1}^\infty$ be an enumeration of the formulas in $K$ with exactly one free variable.
+    We recursively define a sequence of theories starting with $K_0=K$.
+    Let $x_n$ be the free variable of $\phi_n$.
+    If $\phi_n$ has a scapegoat, then $K_n=K_{n-1}$.
+    Otherwise we can extend $K_{n-1}$ by defining a new constant $b_n$ and add it to the signature of $K_{n-1}$, and we add the additional axiom $(\exists x_n\neg\phi_n)\to\phi_n\frac{b_n}{x_n}$, we will
+    denote this axiom as $X(b_n)$.
+    This gives a theory $K_n$.
+
+    We now define $K'$ by taking the union of all the signatures of $K_n$ and all the axioms in any $K_n$.
+    We claim that $K'$ is a consistent scapegoat theory.
+    As before, it is sufficient to show that $K_n$ is consistent for each $n$ in order to show $K'$ is consistent.
+
+    We prove the consistency of $K_n$ inductively, the base case is true since the assumption of the lemma is that $K=K_0$ is consistent.
+    So if $K_n$ is consistent, let us assume that $K_{n+1}$ is not, so then $\vdash_{K_{n+1}}\neg X(b_{n+1})$.
+    So $\neg X(b_{n+1})$ is deducible from $X(b_{n+1})$.
+    If we replace all instance of $b_{n+1}$ in this proof with a variable $y$ not present in the proof, then we get a valid deduction from $X(y)$ to $\neg X(y)$, where
+    $X(y)=(\exists y\phi_n)\to\phi_n\frac y{x_n}$.
+    If we let $U$ be $\exists x_n\neg\phi_n$ and $V$ be $\neg\phi_n\frac y{x_n}$, so $X(y)=U\to V$ and so we have that
+    \[ U\to V\vdash_{K_n}\neg(U\to V) \]
+    We recall that this means that $U\to V\vdash U$ and $U\to V\vdash\neg V$ ($\vdash$ meaning $\vdash_{K_n}$).
+    Since $y$ is the only free variable in $U$ and is never generalized (since $b_{n+1}$ was not a variable), the deduction theorem holds and we have
+    \[ \vdash (U\to V)\to V, \vdash (U\to V)\to\neg V \]
+    but note that $\neg U\to\neg\bigl((U\to V)\to V)$ and so $\bigl((U\to V)\to U\bigr)\to U$ is a tautology, so we have $\vdash U$ by \MP.
+    But as this includes a predicate calculus, $V$ is true or false, but the formula $(U\to V)\to\neg V$ is false if $V$ is true, so $V$ is false.
+    Meaning $\vdash_{K_n}\neg V$ so $\vdash_{K_n}\phi_n\frac y{x_n}$, and by generalizing $\forall y(\phi_n\frac y{x_n})$.
+    But we know $\vdash_{K_n}U=\exists x_n\neg\phi_n$ which means that $K_n$ is inconsistent, in contradiction.
+
+    And of course $K$ is a scapegoat theory.
+    \qed
+
+\end{proof}
+
+\begin{lemm*}
+
+    Let $K$ be a consistent, complete scapegoat theory.
+    Then $K$ has a model $\mM$ whose domain is the set $D$ of closed terms in $K$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    If $c$ is a constant symbol in $K$, then let $c^\mM=c$.
+    This is well-defined as $c$ is a closed term, so is in $D$.
+    If $f$ is a function symbol then define $f^\mM$ by setting $f^\mM(t_1,\dots,t_n)=f(t_1,\dots,t_n)$ for $t_1,\dots,t_n$ closed terms of $K$.
+    And if $P$ is a predicate symbol, then $P^\mM(t_1,\dots,t_n)$ if and only if $\vdash_K P(t_1,\dots,t_n)$.
+
+    We will show that for any closed formula $\phi$, $\mM\vDash\phi$ if and only if $\vdash_K\phi$.
+    This is sufficient since if $\psi$ is an axiom of $K$, then let $\phi$ be a closure of $\psi$ (prepending $\forall x$s before $\psi$), then by \Gen{} we have $\vdash_K\phi$ and so $\mM\vDash\phi$.
+    And since $\phi$ is the closure of $\psi$, this means that $\mM\vDash\psi$ as required.
+
+    We prove this by formula induction.
+    If $\phi=P(t_1,\dots,t_n)$ for closed $t_i$ (these must be closed terms as $\phi$ is closed), then this is a direct result of the definition of $\phi^\mM$.
+
+    If $\phi=\neg\psi$, since $\phi$ is closed so too must $\psi$ be.
+    Then if $\mM\vDash\psi$ we have that $\mM\neg\vDash\psi$ and so by our inductive hypothesis, $\nvdash\psi$.
+    Since $K$ is complete, this means that $\vdash\neg\psi$ as required.
+    And if $\vdash\neg\psi$, since $K$ is consistent this means that $\nvdash\psi$ so $\mM\nvDash\psi$ by our inductive hypothesis, so $\mM\vDash\neg\psi$ as required.
+
+    If $\phi=\psi\to\mu$, similar as before $\psi$ and $\mu$ must be closed.
+    So $\mM\nvDash\phi$ if and only if $\mM\vDash\psi$ and $\mM\nvDash\mu$, by our inductive hypothesis this is if and only if $\vdash\psi$ and $\nvdash\mu$.
+    Since $K$ is complete and consistent, this is if and only if $\vdash\psi$ and $\nvdash\mu$.
+    By applying the tautology $A\to(\neg B\to\neg(A\to B))$ and using \MP{} twice we get $\vdash\neg(\psi\to\mu)=\vdash\neg\phi$, and by the consistency of $K$ this means $\nvdash\phi$ as required.
+    And if $\nvdash\phi$ then $\vdash\neg(\psi\to\mu)$ which means $\vdash\phi$ and $\nvdash\mu$ which we showed means $\mM\nvDash\phi$ as required.
+
+    If $\phi=\forall x\psi$, then we split into two more cases.
+    If $\psi$ is closed, then $\mM\vDash\forall x\psi$ if and only if $\mM\vDash\psi$, so $\mM\vDash\phi$ if and only if $\mM\vDash\psi$ if and only if $\vdash\psi$.
+    And since $\psi$ is closed, $\vdash\psi$ if and only if $\vdash\forall x\psi$ (one direction is due to \Gen{} and the other is due to \Afour{} with $t=x$).
+    So $\mM\vDash\forall x\psi$ if and only if $\vdash\psi$ if and only if $\vdash\forall x\psi$ as required.
+
+    If $\psi$ is not closed, since $\phi$ is closed this means that $\free(\psi)=\set x$.
+    Suppose $\mM\vDash\phi$ but not $\vdash\phi$, so $\vdash\neg\phi=\neg(\forall x\psi)$ so $\vdash\exists x\neg\psi$.
+    Since $K$ is a scapegoat theory this means $\vdash\neg\psi\frac tx$ for some closed term $t$.
+    But since $\mM\vDash\phi$ we have $\mM\vDash\forall x\psi$, and $\forall x\psi\to\psi\frac tx$ is true for $\mM$ so we have $\mM\vDash\psi\frac tx$, so by induction $\vdash\psi\frac tx$.
+    But this contradicts the consistency of $K$, so $\vdash\phi$ as required.
+
+    And for the converse, suppose $\vdash\phi$ but not $\mM\vDash\phi$.
+    So there must be some valuation $w$ of $D$ such that $w$ does not satisfy $\psi$, let $t=w(x)$.
+    Then $\psi\frac tx$ is closed (since $\free\psi=\set x$) and so by induction $\mM\vDash\psi\frac tx$ if and only if $\vdash\psi\frac tx$.
+    But by \Afour{} we know that $\vdash\psi\frac tx$, so $\mM\vDash\psi\frac tx$.
+    This means that $w$ satisfies $\psi$, since this means $\mM^t_x\vDash\psi$ and all variables other than $x$ are not free in $\psi$.
+    But this is a contradiction to $w$ not satisfying $\psi$.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    Every consistent theory $K$ has a countable model.
+
+\end{prop*}
+
+\begin{proof}
+
+    We know $K$ has an extension $K'$ which is a consistent scapegoat theory.
+    $K'$ also has an extension to $J$ which is a complete consistent theory with the same symbols as $K'$, and is therefore a complete, consistent, scapegoat theory.
+    By above this means that $J$ has a model whose domain is the set of all closed terms, which is countable, so $J$ has a countable model.
+    Since $J$ is an extension of $K$, this model models $K$ as well as required.
+    \qed
+
+\end{proof}
+
+\begin{coro*}
+
+    Any logically valid formula $\phi$ of a theory $K$ is a theorem of $K$.
+
+\end{coro*}
+
+\begin{proof}
+
+    We can assume $\phi$ is closed since $\phi$ is logically valid if and only if its closure is, and $\phi$ is provable if and only if its closure is.
+    If $\nvdash_K\phi$ then we can obtain a consistent theory $K'$ by adding $\neg\phi$ as an axiom.
+    So $K'$ has a model $\mM$, so $\mM\vDash\neg\phi$ since $\neg\phi$ is an axiom and $\mM\vDash\phi$ since $\mM$ is a model of $K$ as well and $\phi$ is logically valid.
+    But this is a contradiction to the definition of the satisfiability of $\neg\phi$.
+    \qed
+
+\end{proof}
+
+Of course the converse is not true: you can have an axiom of $K$ which is not logically valid (not true in every model).
+But if there are no additional axioms, then it is true:
+
+\begin{thrm*}[godelTheorem,Godel\ Completeness\ Theorem\ (1930)]
+
+    In any predicate calculus, the theorems are precisely the logically valid formulas.
+
+\end{thrm*}
+
+The first direction (theorem implies logically valid) is obvious as the rules of inference and axioms are all logically valid, and the second direction was proven right above this theorem.
+
+\begin{defn*}
+
+    If $K$ is a theory and $\Gamma$ is a set of formulas, we denote $K+\Gamma$ as the theory obtained by adding $\Gamma$ as axioms to the existing axioms of $K$.
+    In the case of a single formula, we also write $K+\phi$.
+
+\end{defn*}
+
+\begin{coro*}
+
+    Let $K$ be a theory, then
+    \benum
+        \item A formula $\phi$ is true in every countable model of $K$ if and only if $\vdash_K\phi$.
+        \item If every model of a set of formulas $\Gamma$ satisfies $\phi$, then $\Gamma\vdash_K\phi$.
+    \eenum
+
+\end{coro*}
+
+\begin{proof}
+
+    \benum
+        \item We may assume that $\phi$ is closed, in which case if $\nvdash_K\phi$ then $K'=K+\neg\phi$ is consistent.
+            Thus $K'$ has a countable model $\mM$, and so $\mM\vDash\neg\phi$.
+            But $\mM$ is a model of $K$ as well, and since $\phi$ is true in any countable model so $\mM\vDash\phi$ in contradiction.
+            The converse is immediate since if $\vdash_K\phi$, then since the rules of inference are valid for models, any model of $K$ must also model $\phi$.
+
+        \item Let $K'=K+\Gamma$, then for every model of this theory $\mM$, we have $\mM\vDash\phi$ and so by above this means $\vdash_{K+\Gamma}\phi$, ie. $\Gamma\vdash_K\phi$.
+            \qed
+    \eenum
+
+\end{proof}
+
+\begin{coro*}[lowenheimSkolemThrm,Lowenheim-Skolem\ Theorem]
+
+    Any theory that has a model has a countable model.
+
+\end{coro*}
+
+\begin{proof}
+
+    If $K$ has a model, it must be consistent and therefore must have a countable model.
+    \qed
+
+\end{proof}
+
+\begin{lemm*}
+
+    If $\fm$ and $\fn$ are two cardinal numbers where $\fm\geq\fn$, and a theory $K$ has a model of cardinality $\fm$ then $K$ has a model of cardinality $\fn$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Let $\mM$ be a model of $K$ with domain $D$ of cardinality $\fm$.
+    Let $D\subseteq D'$ have cardinality $\fn$, and extend $\mM$ to $\mM'$ with domain $D'$ like so: fix an element $c\in D$ and have every $d'\in D'\setminus D$ behave like $c$ in the context of
+    functions and predicates.
+    Formally, define $W\colon D'\to D$ where $W(d)=d$ for $d\in D$ and $W(d')=c$ for $d'\in D'\setminus D$, then $f^{\mM'}(d_1,\dots,d_n)=f^\mM(W(d_1),\dots,W(d_n))$ and $P^{\mM'}(d_1,\dots,d_n)$ if and
+    only if $P^\mM(W(d_1),\dots,W(d_n))$.
+    The valuation function of $\mM'$ is equal to that of $\mM$'s.
+
+    We claim that $\mM'\vDash K$.
+    Since the valuation of $\mM'$ is equal to that of $\mM$ this is obvious.
+    \qed
+
+\end{proof}
+
+\begin{coro*}
+
+    For any infinite cardinal number $\fm\geq\aleph_0$, any consistent theory $K$ has a model of cardinality $\fm$.
+
+\end{coro*}
+
+\begin{proof}
+
+    Since $K$ is consistent, it has a countable model and so by the lemma above $K$ has a model of cardinality $\fm$ as required.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}[compactThrm,Compactness\ Theorem]
+
+    A theory $K$ is satisfiable if and only if every finite subset of $K$ is satisfiable.
+
+\end{thrm*}
+
+\begin{proof}
+
+    If $K$ is satisfiable, every subset of $K$ is satisfiable.
+    To show the converse, suppose $K$ is not satisfiable, then $K$ is inconsistent (since every consistent theory has a model).
+    Let $\sigma$ be a proof of a contradiction in $K$.
+    Because $\sigma$ is finite, it uses only a finite number of axioms from $K$, and if we take the set of all these axioms as $K_0$ then $K_0$ is inconsistent and therefore is not satisfiable.
+    So if $K$ is not satisfiable then there exists a finite subset which is also not satisfiable.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    Let $\mL$ be a language containing $\set{\cdot,e}$ the language of groups.
+    Let $T$ be an $\mL$-theory extending the theory of groups, and let $\phi(v)$ be an $\mL$-formula.
+    Suppose that for every $n$ there is a model (group) $G_n$ such that $G_n\vDash T$ and $g_n\in G_n$ with finite order greater than $n$ such that $G_n\vDash\phi(g_n)$.
+    Then there is $G\vDash T$ such that $G\vDash\phi(g)$ and $g$ has infinite order.
+
+\end{prop*}
+
+In particular, there is no formula that defines the torsion points in every model of $G$.
+This is because if there was a formula $\phi(v)$ which did, we can take $G_n=\bZ_{n+1}$ and $g_n=1$.
+But then $G\vDash\phi(g)$ where $g$ has infinite order.
+
+\begin{proof}
+
+    Let $\mL^*=\mL\cup\set c$ where $c$ is a new constant symbol.
+    Let $T^*$ be the $\mL^*$-theory
+    \[ T\cup\set{\phi(c)}\cup\set{c\cdot c\cdots c\neq e\quad (c^n\neq e)}[n=1,2,\dots] \]
+    If $G$ is a model of $T^*$ and $g$ is the valuation of $c$ in $G$ then $G\vDash\phi(g)$ and $g$ has infinite order.
+    So it is sufficient to show that $T^*$ is consistent, and therefore has a model.
+
+    Let $\Delta\subseteq T^*$ be finite.
+    Then
+    \[ \Delta \subseteq T\cup\set{\phi(c)}\cup\set{c\cdots c\neq e}[n=1,\dots,m] \]
+    for some $m$.
+    View $G_m$ as an $\mL^*$-structure by interpreting $c$ as $g_m$.
+    Since $G_m\vDash T\cup\set{\phi(g_m)}$ and $g_m$ has order greater than $m$, we have $G_m\vDash\Delta$ and so $\Delta$ is consistent.
+
+    So by the compactness theorem, $T^*$ is consistent as required.
+    \qed
+
+\end{proof}
+
+\newfunc{Th}{{\it Th}}({})
+
+\begin{prop*}
+
+    Let $\mL=\set{\cdot,+,<,0,1}$ and let $\Thof\bN$ be the full $\mL$-theory of the naturals (ie. all first order sentences which are true for $\bN$).
+    Then there is a model $\mM$ of $\Thof\bN$ such that there exists an $a\in\mM$ which is larger than every natural number (a number which is a finite sum of $1$s).
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $\mL^*=\mL\cup\set c$ where $c$ is a new constant symbol and let
+    \[ T = \Thof\bN\cup\set{1+\cdots+1<c\quad (n\text{ times})}[n=1,2,\dots] \]
+    We claim that $T$ is consistent.
+    Let $\Delta\subseteq T$ be finite, then there exists an $m$ such that
+    \[ \Delta\subseteq\Thof\bN\cup\set{1+\cdots+1<c\quad (n\text{ times})}[n=1,\dots,m] \]
+    Then $\bN$ is a model of $\Delta$ by valuating $c$ as $m+1$ for example.
+    So $\Delta$ is consistent and therefore by the compactness theorem, so is $T$.
+    Therefore $\mM$ has a model, and if $a\in\mM$ is the valuation of $c$ then $a$ is larger than every natural number, as required.
+    \qed
+
+\end{proof}
+
+\end{document}
+

@@ -1,0 +1,322 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\beqq{\mathrel{\vbox{\hbox{$=$}\kern-\baselineskip\kern.3pt\hbox{$=$}}}}
+
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mD{\mathcal{D}}
+
+\def\Var{\mathrm{Var}}
+
+\newfunc{var}{{\rm var}}({})
+\newfunc{bound}{{\rm bound}}({})
+
+\def\qed{\hskip.5cm\hbox{}\hfill$\blacksquare$}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\def\true{\mathsf{true}}
+\def\false{\mathsf{false}}
+
+\def\Aone#1#2{#1\to(#2\to#1)}
+\def\Atwo#1#2#3{\bigl(#1\to(#2\to#3)\bigr)\to\bigl((#1\to#2)\to(#1\to#3)\bigr)}
+\def\Athree#1#2{(\neg#2\to\neg#1)\to\bigl((\neg#2\to#1)\to#2\bigr)}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+
+\begin{document}
+
+\c@section=6
+
+\barcolorbox{220, 255, 255}{0, 130, 130}{80, 200, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Mathematical Logic}
+
+    \medskip
+    \textit{Lecture \thesection, Monday May 15, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{Zermelo-Frankel Set Theory}
+
+In this lecture we present \emph{Zermelo-Frankel Set Theory}.
+As a first order language, it contains no functional symbols, no constants, and just the predicate symbol $\in$ ($x\in y$ can be thought of as ``$x$ is an element of $y$'').
+This language is an identity language, meaning it also has the equality symbol, or it can be thought of as its own predicate symbol $=$.
+We now present the axioms of the theory:
+
+\benum
+    \item Axiom of extensionality: $\forall x\forall y\bigl(x=y\oto\forall z(z\in x\oto z\in y)\bigr)$ (two-sided inclusion)
+
+    \item Axiom of the empty set: $\exists x\forall y\neg(y\in x)$ (there exists an empty set)
+    By the axiom of extensionality, the empty set is unique.
+    We denote the empty set by the constant $\varnothing$ (or $0$).
+
+    \item Axiom of pairing: $\forall x\forall y\exists z\forall u\bigl(u\in z\oto(x=u\lor y=u)\bigr)$ ($z$ is taken to be thought of as the set $\set{x,y}$).
+
+    \btext If $x=y$, by this axiom you get a set $z=\set x$, meaning a set consisting of just $x$.
+    So $\varnothing$ is a set by the axiom of the empty set, $\set\varnothing$ is a set by the axiom of pairing (for $x=y=\varnothing$), and $\set{\varnothing, \set\varnothing}$ is a set by the axiom of
+    pairing yet again.
+    These sets are denoted $0$, $1$, and $2$ respectively.
+
+    If we have two elements, $x$ and $y$, we define $(x,y)=\set{\set x,\set{x,y}}$ which exists by the axiom of pairing.
+    And if $(x,y)=(a,b)$ then $\set{\set x,\set{x,y}}=\set{\set a,\set{a,b}}$ which means that $x=a$ and $y=b$.
+
+    \item Axiom of union: $\forall x\exists y\forall z\bigl(z\in y\oto\exists w(z\in w\land w\in x)\bigr)$ ($z$ is in $y$ if and only if there exists a set $w\in x$ such that $z\in w$).
+    $y$ is denoted by $\cup x$.
+
+    \btext By the axiom of union, we can recursively define $n$ by $n+1=\set{0,1,\dots,n}$.
+    We have that $\cup(n+1)=n$ and $\cup0=0$.
+
+    \item Axiom of power: $\forall x\exists y\forall z\bigl(z\in y\oto\forall w(w\in z\to w\in x)\bigr)$ ($z$ is in $y$ if and only if when $w\in z$ then $w\in x$).
+    If we define the predicate $\subseteq$ by $x\subseteq y$ if and only if $\forall z(z\in x\to z\in y)$, then the axiom of power can be written as
+    $\forall x\exists y\forall z\bigl(z\in y\oto z\subseteq x\bigr)$.
+    $y$ is denoted as $\powsetof x$, or $2^x$.
+
+    \btext Notice that $x\in\powsetof x$ since $w\in x\to w\in x$ is a tautology.
+    And $\powsetof\varnothing=\set{\varnothing}$, $\powsetof{\set\varnothing}=\set{\set\varnothing,\varnothing}$.
+    So $2^0=1$ and $2^1=2$ (in general this is true for all $n$).
+
+    Notice that a possible model of the above axioms are the natural numbers where $\in$ is taken to mean $<$.
+    This is is not desirable, as natural numbers do not have some desired properties.
+
+    \item Axiom of infinity: $\exists x\Bigl(\!\exists y(y\in x)\land\forall y\bigl(y\in x\to\exists z(y\in z\land z\in x)\bigr)\!\Bigr)$.
+    This means that $x$ is non-empty ($\exists y(y\in x)$), and if $y\in x$ then there exists a $z\in x$ such that $y\in z$.
+    For example, if we define $\omega=\set{0,1,2,\dots,n,\dots}$, $\omega$ satisfies the axiom of infinity.
+
+    \item Axiom of regularity: $\forall x\Bigl(\!\exists y(y\in x)\to\exists y\bigl(y\in x\land\forall z(z\notin y\lor z\notin x)\bigr)\!\Bigr)$ (if $x$ is non empty, then there exists a $y\in x$ disjoint
+    from $x$).
+    Despite not defining intersections yet, we can reformulate this informally as follows: $\forall x\neq\varnothing\exists y\in x(x\cap y\neq\varnothing)$.
+\eenum
+
+\begin{lemm*}
+
+    $\forall x(x\notin x)$
+
+\end{lemm*}
+
+\begin{proof}
+
+    Suppose $x\in x$, then let $y=\set x$, then $y$ is non-empty and $x$ intersects with $y$ since $x\in x$ and $x\in y$.
+    Thus $y$ does not satisfy the axiom of regularity.
+    \qed
+
+\end{proof}
+
+This proof uses just the axiom of regularity and pairing.
+
+\begin{lemm*}
+
+    There exists no cycle where $x_1\in x_2\in\cdots\in x_n\in x_1$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Suppose it is possible, then let $y=\set{x_1,\dots,x_n}$, which exists as the recursive union of $\set{x_i}$s.
+    Then for every $x_i\in y$, $x_i$ intersects with $y$ since $x_{i-1}\in x_i$ and $x_{i-1}\in y$.
+    \qed
+
+\end{proof}
+
+\benum
+    \global\enumcount=7
+    \item Axiom schema of separation: if $\phi(x,y)$ is a first order formula, then
+    \[ \forall x\forall u\exists z\forall y\bigl(y\in z\oto(y\in u\land\phi(x,y))\bigr) \]
+    meaning that there exists a $z$ such that $y\in z$ if and only if $y\in u$ and $\phi(x,y)$ is true.
+    $z$ is denoted $\set{y\in u}[\phi(x,y)]$.
+
+    \item Axiom schema of replacement: if $\phi(x,y,u,\dots)$ is a first order formula, then
+    \[ \forall u\biggl(\!\bigl(\forall x\exists!z\phi(x,z,u,\dots)\bigr)\to\Bigl(\!\exists y\forall z\bigl(z\in y\oto\exists x(x\in u\land\phi(x,z,u,\dots))\bigr)\!\Bigr)\!\biggr) \]
+    in words, if $\phi$ is a ``mapping'', as in for every $x$ there is a unique ``image'' ($\phi(x,z,u,\dots)$ is true), then there exists a $y$ such that $z\in y$ if and only if there exists an $x\in u$
+    such that $z$ is the ``image'' of $x$.
+    This $y$ can be thought of as the image of $u$, and specifically if you have a function definable using this first order theory, the image of any set under this function is also a set.
+
+    We haven't yet defined $\exists!$, it means ``there exists a unique'', and we can define satisfability in the obvious way.
+\eenum
+
+\begin{lemm*}
+
+    Any chain $x_1\ni x_2\ni\cdots\ni x_n\ni x_{n+1}\ni\cdots$ is finite.
+    Meaning there exists an $N$ such that for every $M\geq N$, $x_N=x_M$.
+
+\end{lemm*}
+
+What this lemma implies, informally, is that every set can be thought of being constructed by pairing with empty sets.
+
+\begin{proof}
+
+    If there does exist such a chain, let $y=\set{x_1,x_2,\dots}$ then for any $x_i$, $x_{i+1}\in y$ and $x_{i+1}\in x_i$.
+    This contradicts regularity.
+    \qed
+
+\end{proof}
+
+This lemma relies on the definability of $y$.
+Assuming one can define the natural numbers (which is possible), one can use the axiom schema of replacement in order to define $y$ (mapping $n\varmapsto x_n$).
+
+\subsection{Ordinals}
+
+If $X$ is a set, then $X$ is partially ordered by $\subseteq$ (recall: all sets are sets of sets).
+$X$ is called an \emph{chain} if it is linearly (or totally) ordered by $\subseteq$ (meaning for every $x_1,x_2\in X$, $x_1\subseteq x_2$ or $x_2\subseteq x_1$).
+$X$ is called a \emph{well-ordered chain} if it well-ordered by $\subseteq$.
+All of these notioncs can be formulated in a first-order manner, and it does not pay to repeat it here.
+
+\begin{defn*}
+
+    An \ppemph{ordinal} is a set $\alpha$ such that
+    \benum
+        \item $\forall\beta(\beta\in\alpha\to\beta\subseteq\alpha)$
+        \item $\alpha$ is well-ordered by $\in$
+    \eenum
+
+\end{defn*}
+
+For example, natural numbers are ordinals.
+
+\begin{lemm*}
+
+    Every element of an ordinal is itself an ordinal.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Suppose $\alpha$ be an ordinal, and $x\in\alpha$.
+    Then $x\subseteq\alpha$, so $x$ is well-ordered (since every subset of $x$ is a subset of $\alpha$ and therefore must have a minimum element).
+    If $y\in x$, we must show $y\subseteq x$, meaning if $z\in y$ then $z\in x$.
+    So $y\in x\subseteq\alpha$ so $y\in\alpha$ and therefore $y\subseteq\alpha$, and so $z\in\alpha$.
+    So $z\in y$ and $y\in x$ and $x,y,z\in\alpha$.
+    Since $\in$ is a well-order and therefore a partial order on $\alpha$, it is transitive, and so $z\in x$ as required (so $y\subseteq x$).
+    \qed
+
+\end{proof}
+
+\begin{lemm*}
+
+    If $\alpha$ and $\beta$ are ordinals, then $\alpha\subseteq\beta$ if and only if $\alpha\in\beta$ or $\alpha=\beta$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    If $\alpha\in\beta$ or $\alpha=\beta$ this is trivial, by definition (or by triviallity).
+    To show the converse, suppose $\alpha\subseteq\beta$ and $\alpha\neq\beta$.
+    We can look at the set $\beta\setminus\alpha$ (which exists by the axiom of separation), let $\gamma\in\beta\setminus\alpha$ be the minimum in this set.
+    We will attempt to show that $\gamma=\alpha$.
+    Let $\delta\in\gamma$, then $\delta\in\beta$ since $\beta$ is an ordinal, and since $\gamma$ is a minimum, $\delta\notin\beta\setminus\alpha$ so $\delta\in\alpha$.
+    So we have inclusion in one direction.
+    Suppose now that $\delta\in\alpha$, so $\delta\in\beta$ and since $\gamma\in\beta$ and $\beta$ is well-ordered.
+    So either $\gamma\in\delta$, $\gamma=\delta$, or $\delta\in\gamma$.
+    If either of the first two are true, then since $\delta\in\alpha$, we have $\gamma\in\alpha$, which is a contradiction to its definition.
+    So $\delta\in\gamma$ and therefore $\alpha=\gamma$, and specifically $\alpha\in\beta$.
+    \qed
+
+\end{proof}
+
+\begin{lemm*}
+
+    Every ordinal $\alpha$ is a well-ordered chain by $\subseteq$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Let $\beta,\gamma\in\alpha$ then $\beta$ and $\gamma$ are ordinals and $\beta,\gamma\subseteq\alpha$.
+    We must show that $\beta\subseteq\gamma$ or $\gamma\subseteq\beta$.
+    Since $\alpha$ is well-ordered by $\in$, either $\beta\in\gamma$ or $\gamma\in\beta$, and therefore $\beta\subseteq\gamma$ or $\gamma\subseteq\beta$.
+
+    And if $x\subseteq\alpha$, then there is a minimum $\beta\in x$ relative to $\in$.
+    And so for every $\gamma\in x$, $\beta\in\gamma$ and so $\beta\subseteq\gamma$, so $\beta$ is also a minimum relative to $\subseteq$.
+    \qed
+
+\end{proof}
+
+\begin{lemm*}
+
+    \benum
+        \item Every set of ordinals is well-ordered by $\in$.
+        \item Every set of ordinals is a well-ordered chain.
+    \eenum
+
+\end{lemm*}
+
+\begin{proof}
+
+    \benum
+        \item Suppose $\varnothing\neq Y\subseteq X$.
+        Let $\alpha=\bigcap_{\beta\in Y}\beta$, then this is an ordinal since if $\gamma\in\alpha$ then $\gamma\in\beta$ for $\beta\in Y$ and so $\gamma\subseteq\beta$, so $\gamma\subseteq\alpha$.
+        And if $Z\subseteq\alpha$, $Z\subseteq\beta$ for every $\beta\in Y$ and so there exists a minimum element.
+
+        So $\alpha$ is an ordinal, and we claim it is the minimum element of $Y$.
+        First we must show that $\alpha\in Y$, let $\alpha^+=\alpha\cup\set\alpha$.
+        So for every $\beta\in Y$, either $\beta\in\alpha^+$ or $\alpha^+\in\beta$.
+        If $\alpha^+\in\beta$ then $\alpha^+\subseteq\beta$ for every $\beta\in Y$ and so $\alpha^+\subseteq\alpha$ since $\alpha$ is the intersection, which is a contradiction.
+        So there exists a $\beta\in\alpha^+$, so $\beta\in\alpha$ or $\beta=\alpha$.
+        If $\beta\in\alpha$ then $\beta\subseteq\alpha$, but $\alpha\subseteq\beta$ so $\alpha=\beta$ (which is a contradiction), so $\alpha=\beta$ and therefore $\alpha\in Y$.
+
+        Now suppose $\beta\in Y$, since $\alpha\subseteq\beta$, either $\alpha=\beta$ or $\alpha\in\beta$, as required.
+
+        \item Let $\alpha\neq\beta\in X$ and suppose that $\beta$ is not a subset of $\alpha$, we will show $\alpha\subseteq\beta$.
+        Let $\gamma$ be the minimum of $\beta\setminus\alpha$, then if $\delta\in\gamma$, $\delta\in\beta$ and since it is smaller than $\gamma$, $\delta\in\alpha$.
+        So $\gamma\subseteq\alpha$ and so $\gamma\in\alpha$ or $\gamma=\alpha$, but $\gamma\in\beta\setminus\alpha$, so $\gamma=\alpha$ and therefore $\alpha\in\beta$.
+        So $X$ is totally ordered.
+
+        Now we show that $X$ is well-ordered, suppose $\varnothing\neq Y\subseteq X$.
+        Let $\alpha\in Y$.
+        If $\alpha\cap Y=\varnothing$ then let $\beta\in Y$, then $\beta\notin\alpha$ since $\alpha$ and $Y$ are disjoint, but since $X$ is totally-ordered, $\alpha\subseteq\beta$ or $\beta\subseteq\alpha$.
+        But if $\beta\subseteq\alpha$ then $\beta\in\alpha$ or $\beta=\alpha$, so $\beta=\alpha$ or $\alpha\subseteq\beta$, and so $\alpha$ is the minimum of $Y$.
+        Otherwise, if $\alpha\cap Y$ is a subset of an ordinal ($\alpha$), and so it has a smallest element $\gamma$ with respect to $\in$.
+        Then if $\beta\in\gamma\cap Y$ then $\beta\in\alpha\cap Y$ and $\beta\in\gamma$ which contradicts $\gamma$'s minimumness.
+        So $\gamma\cap Y=\varnothing$ and so from above, $\gamma$ is the minimum.
+        \qed
+    \eenum
+
+\end{proof}
+
+\begin{defn*}
+
+    If $\alpha$ is an ordinal, we define the \ppemph{successor} of $\alpha$ to be $\alpha+1=\alpha\cup\set\alpha$.
+    If $\alpha$ is not a successor for any ordinal $\beta$, it is called a \ppemph{limit ordinal}.
+
+\end{defn*}
+
+$0$ and $\omega$ are examples of limit ordinals.
+
+\end{document}
+

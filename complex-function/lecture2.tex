@@ -1,0 +1,279 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{diam}{{\rm diam}}(\vert)
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+
+\font\bigbf = cmbx12 scaled 2000
+\@undervecc@def{underbar}\@linecap\@linecap
+
+\def\openset{{\cal O}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{sup}{{\rm sup}}(\vert)
+
+%\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=2
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Complex Functions}
+
+    \medskip
+    \textit{Lecture \thesection, Wednesday March 22, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{Complex Functions}
+
+\begin{defn*}
+
+    A complex series $\sum_{n=1}^\infty z_n$ \ppemph{converges} to $s$ if the sequence of partial sums:
+    \[ s_n = \sum_{k=1}^n z_n \]
+    converges to $s$.
+
+    A complex series $\sum_{n=1}^\infty z_n$ \ppemph{absolutely converges} if the real series $\sum_{n=1}^\infty\abs{z_n}$ converges.
+
+\end{defn*}
+
+\begin{prop*}
+
+    A complex series $\sum_{n=1}^\infty z_n$ converges to $a+bi$ if and only if $\sum_{n=1}^\infty\Reof{z_n}$ converges to $a$ and $\sum_{n=1}^\infty\Imof{z_n}$ converges to $b$.
+
+    Specifically, a complex series converges if and only if its real and imaginary parts both converge.
+
+\end{prop*}
+
+\begin{proof}
+
+    Notice that by linearity:
+    \[ \Reof{s_n} = \sum_{k=1}^n \Reof{z_n},\qquad \Imof{s_n} = \sum_{k=1}^n \Imof{z_n} \]
+    and since $s_n$ converges to $a+bi$ if and only if $\Reof{s_n}$ converges to $a$ and $\Imof{s_n}$ converges to $b$, we have finished.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{prop*}
+
+    If a complex series absolutely converges, it converges.
+
+\end{prop*}
+
+\begin{proof}
+
+    Since
+    \[ \sum_{n=1}^\infty \abs{z_n}=\sum_{n=1}^\infty\sqrt{\Reof{z_n}^2+\Imof{z_n}^2} \]
+    Since $\abs{\Reof{z_n}},\abs{\Imof{z_n}}\leq\sqrt{\Reof{z_n}^2+\Imof{z_n}^2}$, since these are nonnegative sequences, both $\sum_{n=1}^\infty\abs{\Reof{z_n}}$ and $\sum_{n=1}^\infty\abs{\Imof{z_n}}$
+    converge.
+    Since absolute convergence implies convergence in $\bR$, this means that the sums of $\Reof{z_n}$ and $\Imof{z_n}$ converge, and by above this means that the series converges.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{note}
+
+    The topological definitions on $\bC$ are equivalent to the topological definitions on $\bR^2$.
+    Eg. $B_r(z)=\set{w\in\bC}{\abs{z-w}<r}$, but balls are referred to as \ppemph{disks} and denoted $D_r(z)$.
+    The open sets is the topology defined by the open disks, and so on.
+
+    One final note is that an open connected set is called a \ppemph{domain}.
+    This is equivalent to being open and polygonal connected.
+
+\end{note}
+
+Notice that if we have a function $f\colon\bC\longvarrightarrow\bC$, we can define $u(x,y)=\Re\bigl(f(x+iy)\bigr)$ and $v(x,y)=\Im\bigl(f(x+iy)\bigr)$ then $f(x+iy)=u(x,y)+i\cdot v(x,y)$.
+So a function $\bC\longvarrightarrow\bC$ is equivalent in a sense to two functions $\bR^2\longvarrightarrow\bR$, this shouldn't be surprising since we can generalize this to any function
+$\bR^n\longvarrightarrow\bR^m$ as we have in infinitesimal calculus $3$.
+
+Notice then that $f$ is continuous if and only if both $u$ and $v$ are.
+If $u$ and $v$ are, this is trivial by arithmetic of continuous functions.
+If $f$ is continuous then this follows directly from the equivalence of complex and pointwise convergence of sequences (and thus functions).
+
+\begin{defn*}
+
+    We say that $f\in C^n(E)$ for $E\subseteq\bC$ if $u,v\in C^n(\tilde E)$ where $\tilde E=\set{(x,y)}[x+iy\in E]\subseteq\bR^2$.
+
+\end{defn*}
+
+\begin{defn*}
+
+    A sequence of complex functions $\set{f_n}_{n=1}^\infty$ \ppemph{converges uniformly} to a complex function $f$ on a domain $D$ if for every $\epsilon>0$ there is an $N\in\bN$ such that for every
+    $n\geq N$ and $z\in D$
+    \[ \abs{f_n(z) - f(z)} < \epsilon \]
+
+\end{defn*}
+
+\begin{prop*}
+
+    $f_n$ uniformly converges to $f$ if and only if $\supof[z\in D]{\abs{f_n(z)-f(z)}}\xvarrightarrow{}[n\varrightarrow\infty]0$.
+
+\end{prop*}
+
+This is simple since for every $\epsilon>0$ there must be an $N$ such that for every $n\geq N$ and for every $z\in D$: $\abs{f_n(z)-f(z)}\leq\supof[z\in D]{\abs{f_n(z)-f(z)}}<\epsilon$.
+
+\begin{prop*}
+
+    If $f_n$ are all continuous and uniformly converge to $f$, then $f$ is also continuous.
+
+\end{prop*}
+
+\begin{thrm*}[weirMtest,Weierstrass\ M\ Test]
+
+    Suppose $\set{f_n}_{n=1}^\infty$ are complex functions such that there exists numbers $M_n$ such that for every $n$, $\abs{f_n(z)}\leq M_n$ for every $z\in D$ and $\sum_{n=1}^\infty M_n$ converges, then
+    $\sum_{n=1}^\infty f_n$ converges absolutely and uniformly on $D$.
+
+\end{thrm*}
+
+\subsection{Stereographical Projection}
+
+We define the boundary of the ball $B_{\frac12}\parens{0,0,\frac12}$ by $\Sigma$, ie
+\[ \Sigma = \set{(x,y,z)\in\bR^3}[x^2+y^2+\parens{z-\frac12}^2=\frac14] \]
+And we define $\Sigma_0$ to be $\Sigma$ without its ``northern point'' $\parens{0,0,1}$.
+And we define a projection from $\Sigma_0$ to $\bC$
+\[ \pi\colon\Sigma_0\longvarrightarrow\bC \]
+where $\pi(u,v,w)$ is defined to be the (unique) point on $\bC\cong\set{(x,y,0)\in\bR^3}$ which is also on the line which passes through $(0,0,1)$ and $(u,v,w)$.
+This line is given by
+\[ (0,0,1) + t\bigl((u,v,w) - (0,0,1)\bigr) \]
+and so this is equal to $(x,y,0)$ when $1+t(w-1)=0$ and so $t=\frac1{1-w}$, thus
+\[ \pi(u,v,w) = \frac u{1-w} + i\frac v{1-w} \]
+this a bijection, it is obviously surjective and we can see why geometrically this is injective.
+If two lines starting from the same point intersect then they must be the same line:
+\[ v + t(v-u) = v + t'(v-u') \implies t(v-u) = t'(v-u') \implies v-u' = \alpha(v-u) \]
+So the lines are equal and since $\Sigma_0$ is on a sphere, it this would mean $v-u'=v-u$ (this is not a formal proof).
+
+We can extend the projection to $\pi\colon\Sigma\longvarrightarrow\bC\cup\set\infty$ where $\pi(0,0,1)=\infty$, and this is still a bijection, so there is an inverse projection $\iproj$.
+
+\newpage
+\begin{defn*}
+
+    A sequence $\set{z_n}_{n=1}^\infty\in\bC$ converges/diverges to $\infty$ if $\abs{z_n}\xvarrightarrow{}[n\varrightarrow\infty]\infty$.
+
+\end{defn*}
+
+A neighborhood of $(0,0,1)$ in $\Sigma$ is an intersection of a neighborhood of $(0,0,1)$ in $\bR^3$ with $\Sigma$.
+And a neighborhood of $\infty$ in $\bC\cup\set\infty$ is an image of a neighborhood of $(0,0,1)$ in $\Sigma$ under $\proj$.
+And a \emph{circle} in $\Sigma$ is an intersection of a hyperplane in $\bR^3$ ($Ax+By+Cz=D$) with $\Sigma$.
+
+\begin{prop*}
+
+    If $S$ is a circle in $\Sigma$, then if $(0,0,1)\in S$, $\projof{0,0,1}$ is a plane.
+    Otherwise $\projof{0,0,1}$ is a circle.
+
+\end{prop*}
+
+The stereographical projection is useful for some reason.
+
+\subsection{Complex Derivatives}
+
+\begin{defn*}
+
+    Suppose $f=u+iv$ is a complex function then its \ppemph{partial derivatives} are:
+    \[ f_x = u_x + iv_x,\qquad f_y = u_y + iv_y \]
+    The alternative notations used in Infinitesimal Calculus $3$ are used as well.
+
+    And its \ppemph{complex derivative} at $z\in\bC$ is:
+    \[ f'(z) = \lim_{h\varrightarrow0}\frac{f(z+h)-f(z)}h \]
+    If this limit exists, then $f$ is called \ppemph{differentiable} at $z$.
+
+\end{defn*}
+
+It is simple to see why the usual results of differentiation hold (derivatives of sums and products and scalings) with complex derivatives as well.
+
+Notice that if $f$ is differentiable at $z=x+iy$ then taking the path $h\varrightarrow$ where $h\in\bR$ then we get that $f'(z)=\lim_{h\varrightarrow0}\frac{f(x+h+iy)-f(x+iy)}h$, but:
+\[ f'(z)=\lim_{h\varrightarrow0}\frac{f(x+h+iy)-f(x+iy)}h = \lim_{h\varrightarrow0}\frac{u(x+h,y)+iv(x+h,y)-u(x,y)-iv(x+h,y)}h = u_x(x,y) + iv_x(x,y) \]
+The final equality is due to convergence in $\bC$ being equivalent to pointwise convergence (of the real and complex parts).
+So $u_x(x,y)$ and $v_x(x,y)$ exist and $f'(z)=u_x(x,y)+iv_x(x,y)$.
+And if we take $h\in\bR$ then notice that $f(z+ih)=f(x+i(y+h))=u(x,y+h)+iv(x,y+h)$ and so:
+\[ f'(z) = \lim_{h\varrightarrow0}\frac{u(x,y+h)-u(x,y) + i\bigl(v(x,y+h)-v(x,y)\bigr)}{ih} = -i(u_y(x,y) + iv_y(x,y)) = v_y(x,y) - iu_y(x,y) \]
+So if $f'(z)$ exists then so does $u_y(x,y)$ and $u_y(x,y)$ and satisfies $f'(z)=v_y(x,y) - iu_y(x,y)$.
+Thus we get the following result:
+
+\begin{prop*}
+
+    If $f$ is differentiable at $z\in\bC$ then its derivative satisfies:
+    \[ f'(z) = u_x(x,y) + iv_x(x,y) = v_y(x,y) - iu_y(x,y) \]
+    and specifically
+    \[ u_x(x,y) = v_y(x,y),\qquad v_x(x,y) = -u_y(x,y) \]
+
+\end{prop*}
+
+\newpage
+\begin{exam*}
+
+    The derivative of $f(z)=\bar z$ does not exist at any $z\in\bC$.
+    The derivative at $z$ is equal to:
+    \[ \lim_{h\varrightarrow}\frac{\overline{z+h}-\overline z}h = \lim\frac{\overline h}h \]
+    This limit does not exist, since if we take $h\in\bR$ it equals $1$ but if we take $h\in i\bR$ this equals $-1$.
+    And in general if $h=re^{i\theta}$ then $\frac{\overline h}h = e^{i2\theta} = \cosof{2\theta}+i\sinof{2\theta}$, so this isn't even dependent on $r$ and the limit doesn't exist.
+
+\end{exam*}
+
+
+\begin{prop*}
+
+    If $f$ is differentiable at $z_0$ and $g$ is differentiable at $f(z_0)$ then $h=g\circ f$ is differentiable at $z_0$ and satisfies:
+    \[ h'(z_0) = g\bigl(f(z_0)\bigr)\cdot f(z_0) \]
+
+\end{prop*}
+
+\begin{proof}
+
+    Note that a function $f$ is differentiable at $z_0$ if and only if there exists a function $\epsilon\colon\bC\longvarrightarrow\bC$ and a value $f'(z_0)$ such that:
+    \[ f(z) = f(z_0) + (z-z_0)f'(z_0) + \epsilon(z-z_0) \]
+    where $\frac{\epsilon(h)}h\xvarrightarrow{}[h\varrightarrow0]0$.
+    This is trivial and is very reminiscent of infinitesimal calculus $3$.
+
+    And so we have $\epsilon_1$ and $\epsilon_2$ where:
+    \[ f(z) = f(z_0) + (z-z_0)f'(z_0) + \epsilon_1(z-z_0),\qquad g(z) = g\bigl(f(z_0)\bigr) + \bigl(z-f(z_0)\bigr)g'\bigl(f(z_0)\bigr) + \epsilon_2\bigl(z-f(z_0)\bigr) \]
+    And we need to find an $\epsilon_3$ such that
+    \[ g\circ f(z) = g\circ f(z_0) + (z-z_0)\biggl(f'(z_0)\cdot g'\bigl(f(z_0)\bigr)\biggr) + \epsilon_3(z-z_0) \] 
+    So then:
+    \begin{align*}
+        g\circ f(z) &= g\bigl(f(z_0)\bigr) + \bigl(f(z)-f(z_0)\bigr)g'\bigl(f(z_0)\bigr) + \epsilon_2\bigl(f(z)-f(z_0)\bigr) \\
+                    &= g\circ f(z_0) + (z-z_0)\biggl(f'(z_0)\cdot g'\bigl(f(z_0)\bigr)\biggr) + \epsilon_1(z-z_0)g'\bigl(f(z_0)\bigr) + \epsilon_2\bigl((z-z_0)f'(z_0) + \epsilon_1(z-z_0)\bigr)
+    \end{align*}
+    So we define
+    \[ \epsilon_3(h) = \epsilon_1(h)\cdot g'\bigl(f(z_0)\bigr) + \epsilon_2\bigl(hf'(z_0) + \epsilon_1(h)\bigr) \]
+    And we claim that $\frac{\epsilon_3(h)}h$ converges to $0$ as $h$ approaches $0$.
+    This is simple for the $\epsilon_1\dots$ part, let us look at the $\epsilon_2$ part:
+    \[ \frac{\epsilon_2\bigl(hf'(z_0) + \epsilon_1(h)\bigr)}h = \frac{\epsilon_2\biggl(h\parens{f'(z_0)+\frac{\epsilon_1(h)}h}\biggr)}{h\parens{f'(z_0)+\frac{\epsilon_1(h)}h}}
+       \parens{f'(z_0)+\frac{\epsilon_1(h)}h} \]
+    Which converges to $0$ (the left converges to $0$ by the characteristic of $\epsilon_2$ and the right converges to $f'(z_0)$), as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\end{document}
+

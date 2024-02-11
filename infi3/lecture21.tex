@@ -1,0 +1,129 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\openset{{\cal O}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=21
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infinitesimal Calculus 3}
+
+    \medskip
+    \textit{Lecture \thesection, Wednsday January 11, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{thrm*}
+
+    Our goal is to find a crtitical point for $f(x,y,z)\in C^1$ with constraint $h(x,y,z)=0$.
+    Then there is a $\lambda\in\bR$ such that $\nabla f=\lambda\nabla g$ at the critical point.
+
+\end{thrm*}
+
+\begin{proof}
+
+    By the implicit function theorem there is a function $\phi(x,y)\in C^1$ such that $z=\phi(x,y)$ and the constraint is $h(x,y,\phi(x,y))=0$ in a neighborhood.
+    So our function becomes $f(x,y,\phi(x,y))$.
+    And so by the chain rule at the crtitical point
+    \[ \left\{\begin{aligned} f_x + f_z\cdot\pdv\phi x &= 0 \\ f_y + f_z\cdot\pdv\phi y &= 0 \end{aligned}\right. \]
+    So
+    \begin{align*}
+    f_x &= -f_z\pdv\phi x \\ 
+    f_y &= -f_z\pdv\phi y
+    \end{align*}
+    since $h(x,y,\phi(x,y))=0$ in a neighborhood, it is constant and therefore we must have
+    \begin{align*}
+    h_x &= -h_z\pdv\phi x \\
+    h_y &= -h_z\pdv\phi y
+    \end{align*}
+    And so we have that
+    \[ \pdv\phi x = -\frac{h_x}{h_z} \qquad \pdv\phi y = -\frac{h_y}{h_z} \]
+    And so
+    \begin{align*}
+    f_x &= f_z\cdot\frac{h_x}{h_z} = h_x\cdot\frac{f_z}{h_z} \\
+    f_y &= f_z\cdot\frac{h_y}{h_z} = h_y\cdot\frac{f_z}{h_z}
+    \end{align*}
+    So if we define $\lambda=\frac{f_z}{h_z}$ at the critical point then we have that
+    \begin{align*}
+    f_x &= \lambda h_x \\
+    f_y &= \lambda h_y \\
+    f_z &= \lambda h_z
+    \end{align*}
+    at the critical point, so $\nabla f = \lambda\nabla h$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{lemm*}
+
+    Suppose a curve $\lambda\in C^1$ is parameterized by $x(t)=(x_1(t),\dots,x_n(t))$, and its tangent is $(x_1'(t),\dots,x_n'(t))$ ($\lambda$ is the image of the parameterization).
+    \benum
+        \item Suppose $f\colon\bR^n\longvarrightarrow\bR$ is defined and in $C^1$ in some neighborhood of $\lambda$.
+            If the restriction of $f$ onto $\lambda$ has a crtitical point at $x(t_0)$, then $x'(t_0)\bot\nabla f(x(t_0))$.
+        \item If $k\in C^1$ is constant in $\lambda$ then $\nabla\bot x'(t)$ in $\lambda$.
+    \eenum
+
+\end{lemm*}
+
+\begin{proof}
+
+    \benum
+        \item Let $g(t)=f(x(t))$, so $g$ has a critical point at $t_0$, so $\frac d{dt}g(t_0)=0$ so by the chain rule
+        \[ J_f(x(t_0)) J_x(t_0) = \nabla f(x(t_0))\cdot x'(t_0) = 0 \]
+        as required.
+
+        \item This is true since every point in $\lambda$ is a crtitical point of $k$'s.
+    \eenum
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{thrm*}
+
+    If $f,h_1,h_2\colon\bR^3\longvarrightarrow\bR$ are functions in $C^1$, if $f$ has a crtitical point under the constraints $h_1,h_2=0$, if $\nabla h_1\big|_P$ and $\nabla h_1\big|_P$ are linearly
+    independent then $\nabla f\big|_P=\lambda_1\nabla h_1+\lambda_2\nabla h_2$ for some $\lambda_1,\lambda_2\in\bR$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let $\lambda=\set{x\in\bR^3}[h_1(x)=h_2(x)=0]$, then this is the contour of $x=(h_1,h_2)$, we can 
+
+\end{proof}
+
+\end{document}
+

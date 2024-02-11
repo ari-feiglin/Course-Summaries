@@ -1,0 +1,185 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\@blist[#1]{%
+    \bgroup\bgroup\par\vskip-\medskipamount%
+    \gdef\item{%
+        \par\egroup\bgroup\medskip\setbox0=\hbox{#1\quad}%
+        \advance\leftskip by \wd0\leavevmode\kern-\wd0\box0%
+    }%
+}
+\def\blist{\@ifnextchar[ \@blist {\@blist[$\bullet$]}}
+\def\elist{\par\egroup\egroup\medskip}
+
+\def\mB{\mathbb{B}}
+\def\true{\mathsf{true}}
+\def\false{\mathsf{false}}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\begin{document}
+
+\c@section=1
+
+\barcolorbox{220, 255, 255}{0, 130, 130}{80, 200, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Mathematical Logic}
+
+    \medskip
+    \textit{Lecture 1, Monday March 20, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+Lectures are given by Professor Elena Bunina, email {\tt helenbunina@gmail\!.\!com} (because I couldn't find her email elsewhere).
+
+Mathematical logic has its origins in the mid-nineteenth century with the formalization of modern mathematics.
+The main motivation of formalizing mathematics is to answer some apparent paradoxes, for example:
+
+\benum
+    \item \textbf{Russell's Paradox} ($1902$): since the notion of a set was not formalized, it was believed that anything could be a set (since why not? The definition wasn't formalized/axiomized).
+    So let $S$ be the set of all which do not contain themselves as elements, ie. $S=\set{A}[A\notin A]$.
+    Is $S\in S$?
+    If so then by definition $S$ cannot be in $S$, in contradiction.
+    So $S\notin S$, but then by definition $S\in S$, in contradiction.
+    Thus resulting in an apparent paradox.
+
+    This paradox is resolved by axiomizing set theory (ZF, ZFC, etc).
+
+    \item \textbf{Liar Paradox}: If a man says ``I am lying'', is he lying?
+    If he is lying, then he is not lying in contradiction.
+    If he is not lying, then he is lying in contradiction.
+    While this paradox may seem stupid, it raises an interesting point that not every possible statement may have a truth value.
+
+    \item \textbf{Richard's Paradox} ($1905$): This paradox is similar to Cantor's diagonal argument.
+    English (and many other languages) give ways to unambiguously define a real number (eg. ``the number whose integer part is $10$ and the $n$th decimal is
+    $n\bmod9$'').
+    Thus we can take all the English expressions which define real numbers and order them lexicographically to give $r_1,r_2,\dots$.
+    Then we can define a new real number $r$ whose integer part is $0$ and $n$th decimal is $1$ if the $n$th decimal of $r_n$ is not $1$ and $2$ if it is.
+    Thus $r$ is unambiguously expressed in English, but $r\neq r_n$ for all $n$ since their $n$th decimal places differ.
+    This is a contradiction since $r_n$ is the list of all such real numbers.
+
+    \item \textbf{Berry's Paradox} ($1906$): Notice that there is only a finite number of phrases of length less than $200$.
+    Thus there is a finite number of natural numbers definable in fewer than $200$ words, and therefore an infinite number of natural numbers not definable in fewer than $200$ words.
+    Let $A$ be the set of all natural numbers not definable in fewer than $200$ words.
+    Since the naturals are well-ordered, there is a minimum element in $A$.
+    Thus we can \textit{define} a number to be the ``minimum element not definable in fewer than $200$ words''.
+    But this is a definition which uses fewer than $200$ words, and so this number \textit{can} be defined in fewer than $200$ words, which is a contradiction since it is in $A$.
+
+    \item \textbf{L\"ob Paradox} ($1955$): Let $A$ be any formal sentence.
+    Let $B$ be the sentence ``if this sentence is true, then $A$ is true.''
+    If $B$ is true, then $A$ is true.
+    If $B$ is false, suppose $A$ is false then $B$ is of the form $\mathsf{false}\varrightarrow\mathsf{false}$ so $B$ is true, in contradiction.
+    So $B$ is true and therefore $A$ is true.
+    Thus we have shown that every formal sentence is true, which obviously is a contradiction.
+\eenum
+
+Without the foundation of mathematical logic, we are susceptible to these paradoxes.
+But if we formalize what exactly we mean, these paradoxes are no longer an issue.
+
+\subsection{Propositional Calculus}
+
+The following are logical connectives which we covered in discrete mathematics:
+\blist
+    \item $\neg A$ (also written as $\overline A$) called \emph{negation}.
+    \item $A\land B$ (also written as $A\&B$ or $A\text{ and }B$) called \emph{conjunction}.
+    \item $A\lor B$ (also written as $A\text{ or }B$) called \emph{disjunction}.
+    \item $A\varrightarrow B$ (also written as $A\varRightarrow B$, $A$ implies $B$, $B$ follows from $A$, if $A$ then $B$) called \emph{implication}.
+\elist
+
+\begin{defn*}
+
+    A \ppemph{statement form} is defined recursively:
+    \benum
+        \item Every variable (a basic statement) is a statement form.
+        \item If $A$ is a statement form, so is $\neg A$.
+        \item If $A$ and $B$ are statement forms, so is $A\land B$, $A\lor B$, and $A\varrightarrow B$.
+    \eenum
+
+\end{defn*}
+
+\begin{defn*}
+
+    The \ppemph{boolean set}, denoted $\mB$ is the set $\set{\false,\true}$ or $\set{0,1}$.
+    A \ppemph{boolean function} is a function $f\colon\mB^n\longvarrightarrow\mB$ for some number $n\in\bN_{\geq1}$.
+
+\end{defn*}
+
+All statement forms are boolean functions, this is true recursively since a basic statement is by definition a boolean function.
+The converse is also true:
+
+\begin{prop*}
+
+    All boolean functions are statement forms.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $S=f^{-1}\set\true$, then for every $v\in S$ let $a_v=\bigwedge_{i=1}^n a_{v,i}$ where $a_{v,i}=x_i$ if $v_i=\true$ and $a_{v,i}=\neg x_i$ otherwise.
+    Notice that $a_v$ is true only under $v$, since $a_v$ is true under $u$ only if every $a_{v,i}$ is true under $u$ so if $v_i=\true$, then $x_i(u)=u_i$ must be true, and if $v_i=\false$,
+    $\neg x_i(u)=\neg u_i$ is true, and so $u_i=\false$.
+    So $u_i=v_i$ which means $u=v$.
+    And for every $a_{v,i}$, $a_{v,i}(v)$ is by definition true, so $a_v(v)$ is true.
+    So $a_v(u)$ is true if and only if $v=u$.
+    Then we can define $A=\bigvee_{v\in S} a_v$
+
+    We claim that $f=A$.
+    Notice that $A(u)$ is true if and only if there exists a $v\in S$ such that $a_v(u)$ is true which is if and only if $v=u$.
+    So $A(u)$ is true if and only if $u\in S$, ie. $f(u)=\true$.
+    So $f=A$ as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+This representation of a statement form is called \emph{conjunctive normal form}.
+Thus this shows that every statement form (equivalently every boolean table) can be formed using just the conjunction, disjunction, and negation connectives.
+
+\begin{defn*}
+
+    A \ppemph{tautology} is a boolean function (equivalently a statement form) $f\colon\mB^n\longvarrightarrow\mB$ such that $f(v)=\true$ for all $v\in\mB$.
+
+    Two statements $\psi$ and $\phi$ are \ppemph{equivalent} if $\psi\varleftrightarrow\phi$ is a tautology, where $\psi\varleftrightarrow\phi$ is $(\psi\varrightarrow\phi)\land(\phi\varrightarrow\psi)$.
+    This is denoted as $\psi\eiff\phi$ or $\psi\equiv\phi$.
+
+\end{defn*}
+
+The following are equivalent (these are all easily verified):
+\benum
+    \item $(A\land B)\eiff(B\land A)$.
+    \item $\bigl((A\land B)\land C\bigr)\eiff\bigl(A\land(B\land C)\bigr)$.
+    \item $(A\lor B)\eiff(B\lor A)$.
+    \item $\bigl((A\lor B)\lor C\bigr)\eiff\bigl(A\lor(B\lor C)\bigr)$.
+    \item $\bigl(A\land(B\lor C)\bigr)\eiff\bigl((A\land B)\lor(A\land C)\bigr)$.
+    \item $\bigl(A\lor(B\land C)\bigr)\eiff\bigl((A\lor B)\land(A\lor C)\bigr)$.
+    \item $\neg(A\land B)\eiff(\neg A\lor\neg B)$.
+    \item $\neg(A\lor B)\eiff(\neg A\land\neg B)$.
+    \item $\bigl(A\lor(A\land B)\bigr)\eiff A$.
+    \item $\bigl(A\land(A\lor B)\bigr)\eiff A$.
+\eenum
+
+Note that $7$ and $8$ mean every statement form can be written using just conjunction and negation or disjunction and negation.
+
+\end{document}
+

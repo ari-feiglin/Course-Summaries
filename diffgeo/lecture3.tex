@@ -1,0 +1,206 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{diam}{{\rm diam}}(\vert)
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+\newfunc{cis}{{\rm cis}}({})
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{sup}{{\rm sup}}\{\vert\}
+\newfunc{Res}{{\rm Res}}({})
+\newfunc{wind}n({})
+\newfunc{pv}{{\rm pv}}({})
+\newfunc{lspan}{{\rm span}}({})
+
+\font\bigbf = cmbx12 scaled 2000
+\@undervecc@def{underbar}\@linecap\@linecap
+
+\def\pmat#1{\begin{pmatrix}#1\end{pmatrix}}
+
+\def\mO{{\cal O}}
+\def\mU{{\cal U}}
+\let\lineseg=\overleftrightvecc
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=3
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Differential and Analytic Geometry}
+
+    \medskip
+    \textit{Lecture \thesection, Monday July 17, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+Recall that if $\alpha\colon[a,b]\longto\bR^n$ is a regular smooth curve, then we define its \emph{natural parameterization} as the curve
+\[ \beta\colon[0,L]\longto\bR^n \]
+where $L=s_\alpha(b)$ is the arclength of $\alpha$ by
+\[ \beta(u) = \alpha\circ s_\alpha^{-1}(u) \]
+And this is unique (up to reparameterization).
+A curve from $[0,L]$ is a natural parameterization if and only if $\norm{\alpha'}=1$.
+
+\begin{defn*}
+
+    Let $\alpha$ be a natural parameterization.
+    We define $T_\alpha(s)=\alpha'(s)$, and in the case that we are in $2$ dimensions, we define $N_\alpha(s)=R_{\frac\pi2}\cdot T(s)$.
+    $R_\theta$ is the rotation matrix
+    \[ R_\theta = \pmat{\cos\theta & -\sin\theta \\ \sin\theta & \cos\theta} \]
+
+    Since $\alpha$ is a natural parameterization and $R_\theta$ is orthogonal, $\norm{T_\alpha}=\norm{N_\alpha}=1$ and thus $\set{T(s),N(s)}$ forms an orthonormal basis, called the
+    \ppemph{Frenet-Serret Frame}.
+
+\end{defn*}
+
+We can think of $T_\alpha$ as the direction of motion, or the velocity, of $\alpha$, and $T'_\alpha$ as its acceleration.
+Since $T_\alpha$ is constant, its derivative is perpendicular to itself, meaning the acceleration of $\alpha$ is orthogonal to its velocity.
+We will prove this formally:
+
+\begin{prop*}
+
+    Suppose $V\colon\bR\longto\bR^n$ (ie. $V$ is a vector field over $\bR$), if $\norm V=c$ then $V'\perp V$ whenever $V$ is differentiable.
+
+\end{prop*}
+
+\begin{proof}
+
+    Since $\iprod{V,V}=c^2$ is constant, we have that the function
+    \[ f(t) = \iprod{V(t),V(t)} = \sum_{k=1}^n V_i(t)V_i(t) \]
+    Is constant and therefore if $V$ is differentiable at $t$, then so must $V_i$ be, and therefore $f(t)$ is.
+    And since $f$ is constant, $f'(t)=0$.
+    Therefore
+    \[ f'(t) = \sum_{k=1}^n V_i'(t)V_i(t) + V_i(t)V_i'(t) = \iprod{V'(t),V(t)} + \iprod{V(t),V'(t)} = 0 \]
+    And since this inner product is over $\bR$, this means $\iprod{V,V'}=0$ so $V'\perp V$ as required.
+    \qed
+
+\end{proof}
+
+So when $n=2$, this means that $T'_\alpha$ is parallel with $N_\alpha$ and so
+\[ T'_\alpha(s) = k(s)\cdot N_\alpha(s) \]
+For some function $k\colon\bR\longto\bR$.
+In fact, since $\set{T_\alpha,N_\alpha}$ is an orthonormal basis,
+\[ T' = \iprod{T',T}T + \iprod{T',N}N = \iprod{T',N}N \]
+So $k(s)=\iprod{T'(s),N(s)}$.
+
+Let us look at this function $k$.
+\benum
+    \item When $k(s)=0$, then $T'(s)=0$ and so there is no acceleration, and we are moving in a straight line.
+    \item When $k(s)>0$, then the curve $\alpha$ is accelerating away from $T$ ``upward'' (toward $N$), and this creates a steep curve.
+    \item When $k(s)<0$, the curve is accelerating away from $T$ ``downward'', also creating a steep curve.
+\eenum
+
+Thus $k$ can be seen as a measure of curvature.
+
+\begin{defn*}
+
+    The \ppemph{curvature} of a regular two-dimensional curve $\alpha$ at point $s$ is defined to be
+    \[ k(s) = \iprod{T'_\alpha(s), N_\alpha(s)} \]
+    Where $T_\alpha$ and $N_\alpha$ are taken as their values for the natural reparameterization of $\alpha$.
+
+\end{defn*}
+
+Notice that
+\[ N' = \parens{\pmat{0 & -1 \\ 1 & 0}T}' = \pmat{0 & -1 \\ 1 & 0}T' = k\pmat{0 & -1 \\ 1 & 0}N = k\pmat{0 & -1 \\ 1 & 0}^2T = k\pmat{-1 & 0 \\ 0 & -1}T = -kT \]
+Therefore $T$ and $N$ are solutions to the ODE,
+\[ T' = kN,\quad N'=-kT \]
+Thus by the uniqueness theorem for ODEs, if we are given the function $k(s)$, and $N(0)$ and $T(0)$, then we can solve for $N$ and $T$.
+Since $N$ is determined by $T$, we need only $T(0)$ and $k(s)$.
+And since $T=\alpha'$,
+\[ \alpha(s) - \alpha(0) = \int_0^s T \]
+for all $s$, so if we are given $T$ and $\alpha(0)$, we can find $\alpha(s)$.
+Thus given $k(s)$, $\alpha(0)$, and $T(0)$ we can determine $\alpha$.
+
+\begin{thrm*}[ftoc,The\ Fundamenta\ Theorem\ of\ Curves]
+
+    Every regular curve is uniquely determined by its curvature, initial position, and $T(0)$.
+
+\end{thrm*}
+
+Now, recall that
+\[ k(s) = \iprod{T'(s), N(s)} = \iprod{\alpha''(s), \pmat{0 & -1 \\ 1 & 0}\alpha'(s)} = \iprod{\pmat{\alpha''_1(s) \\ \alpha''_2(s)}, \pmat{-\alpha'_2(s) \\ \alpha'_1(s)}} =
+\alpha''_2(s)\alpha'_1(s) - \alpha'_2(s)\alpha''_1(s) \]
+And so
+\[ k(s) = \alpha''_2\alpha'_1 - \alpha'_2\alpha''_1 \]
+Where $\alpha$ is the natural parameterization.
+
+\begin{exam*}
+
+    Suppose $\alpha$ is the curve in $\bR^2$ connecting $x$ and $y$, ie.
+    \[ \alpha\colon[0,1]\longto\bR^2,\quad s\mapsto x\cdot\frac sL+y\cdot\frac{1-s}L \]
+    where $L=\norm{x-y}$.
+    Thus
+    \[ \alpha'(s) = \frac xL - \frac yL \]
+    And so $\alpha''(s)=0$, meaning $k(s)=0$.
+
+\end{exam*}
+
+\begin{exam*}
+
+    Suppose $\alpha$ is the curve which parameterizes the circle of radius $R$,
+    \[ \alpha\colon[0,2\pi R]\longto\bR^2,\quad s\mapsto R\parens{\cos\frac sR, \sin\frac sR} \]
+    Thus
+    \[ \alpha'(s) = \parens{-\sin\frac sR, \cos\frac sR},\qquad \alpha''(s) = -\frac1R\parens{\cos\frac sR,\sin\frac sR} \]
+    $\norm\alpha=1$, so $\alpha$ is the natural parameterization.
+    And thus
+    \[ k(s) = -\frac1R\Bigl(-\sin^2\frac sR + \cos^2\frac sR\Bigr) = \frac1R \]
+    So the curvature of a circle of radius $R$ is $\frac1R$.
+
+\end{exam*}
+
+Since the curves are determined by $\alpha(0)$, $T(0)$, and their curvature, by the above two examples, if
+\benum
+    \item $k(s)=c\neq0$ then $\alpha$ is a circle.
+    If $k(s)>0$ then the curve is drawn counterclockwise, and if $k(s)<0$ the curve is parameterized clockwise (the proof above means that $\alpha(-s)$ is a circle of radius $-R$).
+    \item $k=0$ then $\alpha$ is a line.
+\eenum
+
+Notice that if $\gamma$ is a natural parameterization then
+\[ \gamma'(s) = T(s) = \pmat{\cos(\alpha(s)) \\ \sin(\alpha(s))} \]
+This means that
+\[ \alpha(s) = \mathrm{atan2}(\cos\alpha(s),\sin\alpha(s)) \]
+
+Now we claim that $k(s)=\alpha'(s)$.
+Since
+\[ T(s) = \pmat{\cos(\alpha(s)) \\ \sin(\alpha(s))} \implies T'(s) = \pmat{-\sin(\alpha(s)) \\ \cos(\alpha(s))}\cdot\alpha'(s) = \pmat{0 & -1 \\ 1 & 0}T\cdot\alpha'(s) = \alpha'(s)N \]
+And since $T'(s)=k(s)N$ this means that $\alpha'(s)=k(s)$ as required.
+
+So if we are given $\gamma'=T$, then we can compute $\alpha$ based on $T$ and then taking its derivative gives $k(s)$.
+
+\end{document}

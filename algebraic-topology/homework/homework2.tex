@@ -1,0 +1,138 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+\parindent=0pt
+\parskip=3pt plus 2pt minus 2pt
+
+\input ../preamble
+
+\footline={}
+
+\setcounter{section}{2}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+
+{\bppbox{rgb{.5 1 .5}}{rgb{0 .4 0}}{rgb{.1 .4 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Modern Analysis}
+    \smallskip
+    \centerline{\setfont{it}Homework \the\counter{section}}
+    \centerline{\setfont{it}Ari Feiglin}
+
+\eppbox}
+
+\bexerc
+
+    Let $X=S^1\times I$, show that $A=S^1\times\set{\frac12}$ is a deformation retract.
+
+\eexerc
+
+Define $r\colon X\longto A$ by $r(x,t)=(x,1/2)$.
+This is continuous (the composition of $(x,t)\mapsto x$ and $x\mapsto(x,1/2)$) and $r(x,1/2)=(x,1/2)$ for all $(x,1/2)\in A$ so it is a retraction.
+Now we must show that $\iota\circ r\htopic A{\rm id}_X$, so we need to define a homotopy $H\colon X\times I\longto X$ such that $H((x,t),0)=r(x,t)=(x,1/2)$, $H((x,t),1)=(x,t)$ and $H((x,1/2),s)=(x,1/2)$.
+So let us define $H((x,t),s)\coloneqq\parens{x,\frac12-s\parens{\frac12-t}}$.
+This is continuous and indeed we have
+$$ H((x,t),0) = \parens{x,\frac12},\qquad H((x,t),1) = (x,t),\qquad H\parens{\parens{x,\frac12},s} = \parens{x,\frac12} $$
+meaning $r$ is a deformation retract, as required.
+
+\bexerc
+
+    Let $X$ be a contractible space and $Y$ an arbitrary topological space.
+    \benum
+        \item show that all morphisms $Y\longto X$ are null-homotopic, and all are homotopic to one another.
+        \item show that all morphisms $X\longto Y$ are null-homotopic, and if $Y$ is path connected they are all homotopic to one another.
+    \eenum
+
+\eexerc
+
+\benum
+    \item Since $X$ is contractible, the identity map is homotopic to some constant map, suppose ${\rm id}_X\sim p$.
+    Now let $f\colon Y\longto X$, we claim that $f\sim p$ (here $y\mapsto p$ is a map $Y\longto X$, above it is $X\longto X$).
+    Suppose $H\colon X\times I\longto X$ is a homotopy from ${\rm id}_X$ to $p$, so $H(x,0)=x$ and $H(x,1)=p$.
+    Then define $K\colon Y\times I\longto X$ by $K(y,t)=H(f(y),t)$ which is continuous as the composition of continuous functions.
+    And
+    $$ K(y,0) = H(f(y),0) = f(y),\qquad K(y,1) = H(f(y),1) = p $$
+    so $K$ is a homotopy from $f$ to $p$, meaning all maps $Y\longto X$ are homotopic to the constant map $y\mapsto p$, meaning they are all homotopic to one another and null-homotopic.
+
+    \item Let $f\colon X\longto Y$ and $H$ be a homotopy from ${\rm id}_X$ to $p$ as above, then define $K\colon X\times I\longto Y$ by $K=f\circ H$ which is continuous and
+    $$ K(x,0) = f\circ H(x,0) = f(x),\qquad K(x,1) = f\circ H(x,1) = f(p) $$
+    So $f$ is homotopic to the constant map $x\mapsto f(p)$, and is therefore null-homotopic.
+
+    If $Y$ is path connected, then every two constant maps $x\mapsto p$ and $x\mapsto q$ (which are morphisms $X\longto Y$) are homotopic.
+    This is since if $\gamma$ is a path from $p$ to $q$, define $H(x,t)=\gamma(t)$.
+    So $H(x,0)=\gamma(0)=p$ and $H(x,1)=\gamma(1)=q$, so $p\sim q$ as required.
+    And since all maps $X\longto Y$ are homotopic to a constant map, which are all homotopic, all maps $X\longto Y$ are homotopic.
+\eenum
+
+\bexerc
+
+    \benum
+        \item Show that a contractible space is path connected.
+        \item $X$ is called {\emphcolor simply connected} if it is path connected and every morphism $S^1\longto X$ is null-homotopic.
+        Show that a contractible space is simply connected.
+    \eenum
+
+\eexerc
+
+\benum
+    \item First we claim that $X$ is contractible if and only if ${\rm id}_X\sim p$ for all $p\in X$.
+    The right-to-left direction is trivial.
+    Now suppose ${\rm id}_X\sim p$ and $q\in X$, then we claim $p\sim q$ and so ${\rm id}_X\sim q$ as required.
+    Let $H\colon X\times I\longto X$ be a homotopy from ${\rm id}_X$ to $p$, then define $K(x,t)=H(q,t)$ which is continuous.
+    Then $K(x,0)=H(q,0)=q$ and $K(x,1)=H(q,1)=p$, so $K$ is a homotopy from $p$ to $q$ as required.
+
+    Now let $p,q\in X$, then there exists a homotopy $H\colon X\times I\longto X$ between them.
+    Define $\gamma(t)=H(x_0,t)$ for any $x_0\in X$.
+    This is continuous and $\gamma(0)=H(x_0,0)=p$ and $\gamma(1)=H(x_0,1)=q$ so $p$ and $q$ are path connected.
+
+    \item By $2(1)$, every morphism $Y\longto X$ is null-homotopic, and so in particular every morphism $S^1\longto X$.
+\eenum
+
+\bexerc
+
+    Show that a retract of a contractible space is contractible.
+
+\eexerc
+
+Let $X$ be contractible, $r\colon X\longto A$ a retraction.
+Take $a\in A$, then by the previous question ${\rm id}_X\sim a$, so let $H\colon X\times I\longto X$ be a homotopy from ${\rm id}_X$ to $a$.
+Define $K\colon A\times I\longto A$ by $K=r\circ H$, then
+$$ K(x,0) = r\circ H(x,0) = r(x) = x\hbox{ (since $x\in A$ so $r(x)=x$)},\qquad K(x,1) = r\circ H(x,1) = r(a) = a $$
+and so ${\rm id}_A\sim a$, meaning $A$ is contractible as well.
+
+\bexerc
+
+    Show that a space is contractible if and only if it is homotopically equivalent to a space with a single point.
+
+\eexerc
+
+Suppose $X$ is contractible, and let $a\in X$, we claim $X\simeq\set a$.
+Since $X$ is contractible, by above we have ${\rm id}_X\sim a$ and so there exists a homotopy $H\colon X\times I\longto X$ from ${\rm id}_X$ to $a$.
+Define $f\colon X\longto\set a$ and $g\colon\set a\longto X$ by $f(x)=a$ and $g(a)=a$.
+Then $f\circ g={\rm id}_{\set a}$ and $g\circ f=a\sim{\rm id}_X$, so $f$ is a homotopic equivalence between $X$ and $\set a$ as required.
+
+Now suppose $X\simeq\set a$, so there exists homotopic equivalences $f\colon X\longto\set a$ and $g\colon\set a\longto X$.
+Necessarily $f(x)=a$, and so $g\circ f=a$.
+But since we are given that these are homotopic equivalences, $g\circ f\sim{\rm id}_X$, so ${\rm id}_X\sim a$, meaning $X$ is contractible.
+
+\bexerc
+
+    Let $f,g\colon(X,a)\longto(Y,b)$ two morphisms homotopic relative to $\set a$.
+    Show that $f_*=g_*$.
+
+\eexerc
+
+Recall that $f_*([\gamma])=[f\circ\gamma]$, so we must show that $f\circ\gamma\hdi g\circ\gamma$ for every $\gamma\in\Gamma_{aa}$.
+Since $f\htopic{\set a}g$, there exists a homotopy relative to $\set a$: $H(x,0)=f(x)$, $H(x,1)=g(x)$, and $H(a,t)=f(a)=g(a)$.
+So define $K\colon I\times I\longto Y$ by $K(t,s)=H(\gamma(t),s)$.
+Then
+$$ \displaylines{
+    K(t,0) = H(\gamma(t),0) = f\circ\gamma(t),\qquad K(t,1) = H(\gamma(t),1) = g\circ\gamma(t),\cr
+    K(0,s) = H(\gamma(0),s) = H(a,s) = f(a) = f\circ\gamma(0),\qquad K(1,s) = H(a,s) = f\circ\gamma(1)
+} $$
+So $K$ is a homotopy relative to $\partial I=\set{0,1}$ between $f\circ\gamma$ and $g\circ\gamma$ as required.
+
+\bye
+

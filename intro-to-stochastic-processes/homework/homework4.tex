@@ -1,0 +1,176 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=1.5cm, vertical margin=1.5cm}
+\parindent=0cm
+\parskip=3pt plus 2pt minus 2pt
+
+\input pdfmsym
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+
+\footline={}
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+\setcounter{section}{4}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{\bppbox{rgb{1 .7 .7}}{rgb{1 0 0}}{rgb{.8 0 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Introduction to Stochastic Processes}
+    \smallskip
+    \centerline{\setfont{it}Assignment \the\counter{section}}
+    \centerline{\setfont{it}Ari Feiglin}
+
+\eppbox}
+
+\bigskip
+
+\bexerc
+
+    Given the following transition matrix,
+    $$ P = \pmatrix{
+        \frac16 & \frac16 & \frac16 & \frac16 & \frac16 & \frac16\cr\noalign{\kern3pt}
+        0 & 0 & \frac12 & \frac12 & 0 & 0\cr
+        0 & 0 & 1 & 0 & 0 & 0\cr
+        \frac14 & 0 & 0 & \frac14 & 0 & \frac12\cr\noalign{\kern3pt}
+        0 & 0 & 0 & 0 & \frac23 & \frac13\cr\noalign{\kern3pt}
+        0 & 0 & 0 & 0 & \frac13 & \frac23\cr
+    } $$
+    \benum
+        \item Find the general form of a stationary distribution of $P$.
+        \item Compute $\expecof{T_5}[X_0=5]$ and $\expecof{T_6}[X_0=6]$.
+    \eenum
+
+\eexerc
+
+\benum
+    \item A stationary distribution of $P$ is just an eigenvector of $P^\top$ whose coefficients are all nonnegative and sum to $1$.
+    The eigenspace of eigenvalue $1$ of $P^\top$ can be readily computed through row reduction, and it gives ${\rm span}\set{(0,0,0,0,1,1),\,(0,0,1,0,0,0)}$.
+    So the stationary distributions of $P$ are
+    $$ \parens{0,0,1-p,0,\frac p2,\frac p2}\qquad (0\leq p\leq1) $$
+    \item Since $\set{5,6}$ is an irreducible component, there exists a unique stationary distribution $\pi$ which is zero on all coefficients other than $5$ and $6$.
+    And for $k=5,6$, $\pi_k=\frac1{\expecof[k]{T_k}}$.
+    This stationary distribution is $\parens{0,0,0,0,\frac12,\frac12}$, and so $\expecof{T_6}[X_0=6]=\expecof{T_5}[X_0=5]=2$.
+    And
+    \multlines{
+        \expecof{T_6}[X_0=5] = \expecof{T_6}[X_1=6]\cdot\probof{X_1=6}[X_0=5] + \expecof{T_6}[X_1=5]\cdot\probof{X_1=5}[X_0=5]\cr
+        &= \frac13 + \bigl(1+\expecof{T_6}[X_0=5]\bigr)\cdot\frac23
+    }
+    Solving this gives $\expecof{T_6}[X_0=5]=3$.
+\eenum
+
+\bexerc
+
+    You are given a deck of $52$ cards, enumerated from $1$ to $52$, to shuffle.
+    In order to shuffle them, you take the top card and arbitrarily place it back into the deck.
+    \benum
+        \item Is there a limit to the probability that the cards are ordered from $1$ to $52$ after $n$ shuffles, as $n$ goes to infinity?
+        If so, what is it?
+        \item If the deck begins ordered, what is the expected amount of shuffles it will take for the deck to become ordered again?
+    \eenum
+
+\eexerc
+
+\benum
+    \item Let $S=S_{52}$ be the state space of all possible orderings of the cards.
+    Notice that each state is connected with equal probability to $52$ other states, as the top card can be inserted into $52$ different spots in the deck with equal probability.
+    So this Markov chain, which we will denote by $\set{X_n}$, corresponds to a random walk on the (directed) graph $S$ (the edges of this graph aren't important).
+    This graph is obviously connected, and it is also aperiodic since if $a$ is any state it is possible to reach $a$ again in a single move by placing the card back on top.
+    (Note that if this move isn't allowed, then $a$ can be reached in two moves by placing the card below the new top card, and then placing the new top card beneath that.
+    And it can similarly be reached in $3$ moves, and since these are coprime, $d(a)=1$ still.)
+
+    So by the convergence theorem for finite state, irreducible, aperiodic Markov chains $\probof{X_n={\rm id}}[X_0\sim v]\xvarrightarrow{n\to\infty}\pi({\rm id})$ where $\pi$ is the chain's unique
+    stationary distribution.
+    So it does indeed converge.
+    And since the Markov chain is irreducible, we have that $\pi_a=\frac1{\expecof[a]{T_a}}$.
+    By symmetry, we have that $\expecof[a]{T_a}=\expecof[b]{T_b}$ for all two states $a,b$ (since there is a symmetry between starting at $a$ and $b$ since the way we can shuffle cards is not affected by
+    the current permutation).
+    This means that $\pi=\frac1{\abs S}{\bf1}$ (where ${\bf1}$ is the vector of all $1$s), and so $\pi({\rm id})=\frac1{\abs S}=\frac1{52!}$, so the probability converges to $\frac1{52!}$.
+
+    Instead of relying on symmetry, we can just show that ${\bf1}$ is a row eigenvector of $P$ (since $P(x\to y)=\frac1{52}$ if $x$ is connected to $y$ and $0$ otherwise),
+    $$ ({\bf1}P)_y = \sum_{x\in S}P_{xy} = \sum_{x\in S}\frac1{52}\delta(x\to y) = \frac1{52}\sum_{x\in S}\delta(x\to y) = \frac{{\rm indeg}(y)}{52} $$
+    The in-degree of $y$ is $52$ as there are exactly possible $52$ previous states, depending which card was previously at the top.
+    So $({\bf1}P)_y=1$ meaning ${\bf1}P={\bf1}$, so $\pi=\frac1{\abs S}\pi$ as required.
+
+    \item As said before, $\pi_a=\frac1{\expecof[a]{T_a}}$ and since $\pi_a=\frac1{\abs S}=\frac1{52!}$ we have that $\expecof[a]{T_a}=52!$ for all states $a$, and in particular for $a={\rm id}$.
+    So the expected hitting time is $52!$.
+\eenum
+
+\bexerc
+
+    $N$ balls are divided between two containers, one white and one black.
+    At every step a ball is randomly chosen and moved to the other container.
+    Let $X_k$ be the number of balls in the white container after $k$ steps.
+    \benum
+        \item Show that $\set{X_k}$ is a Markov chain over the state space $\set{0,\dots,N}$, and compute its transistion matrix.
+        \item Show that ${\rm Bin}\parens{N,\frac12}$ is a stationary distribution of the Markov chain, meaning
+        $$ \pi(j) = \binom{N}{j}2^{-N} $$
+        \item Assuming $X_0=0$, does $X_n$ converge in distribution?
+        Does $X_{2n}$ converge in distribution?
+        If so, to what limit?
+        \item Assuming that $N$ is even, show that the expected return time to $0$ is at least $2^N$, and that the expected return time to $\frac N2$ is at most $10\sqrt N$.
+    \eenum
+
+\eexerc
+
+\benum
+    \item It is obviously a Markov chain as the number of balls in the white container is dependent only on how many balls was in the container previously.
+    $$ P(i\to j) = \cases{\frac iN & $j=i-1$\cr 1-\frac iN & $j=i+1$\cr 0 & else} $$
+    since the probability of going from $i$ balls to $i-1$ balls is the probability of choosing one of the $i$ balls in the white container, and the probability of going from $i$ balls to $i+1$ balls is
+    the probability of choosing one of the balls in the black container.
+    \item We compute $\pi P$, for $0<j<N$:
+    \multlines{
+        (\pi P)_j = \sum_{i=0}^N\pi_iP(i\to j) = \pi(j-1)P(j-1\to j) + \pi(j+1)P(j+1\to j)\cr
+        &= 2^{-N}\parens{\binom N{j-1}\cdot\frac{N-j+1}N + \binom N{j+1}\cdot\frac{j-1}N}
+    }
+    And
+    $$ \eqalign{
+        \binom N{j-1}\cdot\frac{N-j+1}N + \binom N{j+1}\cdot\frac{j+1}N &= \frac1N\cdot\parens{\frac{N!\cdot(N-j+1)}{(j-1)!(N-j+1)!} + \frac{N!(j+1)}{(j+1)!(N-j-1)!}}\cr
+        &= \frac1N\cdot\parens{\frac{N!}{(j-1)!(N-j)!} + \frac{N!}{j!(N-j-1)!}}\cr
+        &= \frac{N!}N\cdot\frac{N}{j!(N-j)!} = \binom Nj
+    } $$
+    So we have that $(\pi P)_j=\binom Nj2^{-N}=\pi_j$ for $0<j<N$.
+    And for $j=0,N$:
+    $$ \displaylines{
+        (\pi P)_0 = \pi(1)P(1\to0) = 2^{-N}\cdot\binom N1\cdot\frac1N = 2^{-N}\binom N0 = \pi_0\cr
+        (\pi P)_N = \pi(N-1)P(N-1\to N) = 2^{-N}\cdot\binom N{N-1}\frac1N = 2^{-N}\binom NN = \pi_N
+    } $$
+    So $\pi P=\pi$ as required.
+    \item Firstly notice that $X_n$ is periodic since for every state $a\in S$, its period is $2$.
+    This is since in order to get back to $a$, an even amount of steps must be taken, as the same amount of balls must be moved from the white container to the black and vice versa.
+    And furthermore $P^2(a\to a)>0$ since it is possible to move a ball from white to black, then black to white.
+    So the convergence theorem does not hold here.
+    And in general the probability that $X_n=a$ if $n\not\equiv i\pmod2$ is zero, and otherwise it is non-zero.
+    So $\probof[0]{X_n=a}$ cannot converge, meaning $X_n$ does not converge in probability.
+
+    But $X_{2n}$ is indeed aperiodic since $P^2(a\to a)>0$ (this corresponds to $n=1$, since the transition matrix for $X_{2n}$ is $P^2$).
+    If we reduce the state space to the set of all even numbers between $0$ and $N$, then $X_{2n}$ is also irreducible as it is obvious you can get from any even number to any other even number (for example,
+    to get from $0$ to any even number you just repeatedly move balls to the white container.
+    And to get from any even number to $0$, you just remove balls, so everything is connected to $0$ and so the chain is irreducible).
+    Thus by the convergence theorem, $X_{2n}$ does indeed converge in distribution.
+
+    Viewing $X_{2n}$ as a chain over $\set{0,\dots,N}$, its transition matrix is $P^2$, which has a stationary distribution of $\pi$ since $\pi P^2=\pi P=\pi$.
+    This stationary distribution is the convex sum of the stationary distribution for the chain over both of its irreducible components (even and odd numbers).
+    Let $\tilde\pi$ be the stationary distribution for $X_{2n}$ over the state space of even numbers, and so there exists a $0\leq c\leq 1$ such that $\pi(i)=c\tilde\pi(i)$ for every even $i$.
+    Thus
+    $$ c = \sum_{\stackmath{i=0\cr\hbox{\setscale{7pt}$i$ even}}}\pi(i) = 2^{-N}\sum_i\binom Ni $$
+    The sum is the number of even subsets of a set of size $N$, which is equal to $2^{N-1}$.
+    This is as there is the same number of even subsets as odd subsets, since $0=(1-1)^N=\sum_{i\ {\rm even}}\binom Ni-\sum_{i\ {\rm odd}}\binom Ni$, and their sum is $2^N$.
+    Thus $c=\frac12$ and so $\tilde\pi(i)=2\pi(i)$ for all even $i$.
+    And so by the convergence theorem
+    $$ \probof{X_{2n}=i}[X_0=0] \xvarrightarrow{n\to\infty} \tilde\pi(i) = 2\pi(i) = 2^{-N+1}\binom Ni\qquad (i\hbox{ even}) $$
+    and $\probof{X_{2n}=i}[X_0=0]=0$ for odd $i$.
+
+    \item We want to compute $\expecof[0]{T_0}$ and $\expecof[N/2]{T_{N/2}}$.
+    Since $X_n$ is irreducible, $\pi(i)=\frac1{\expecof[i]{T_i}}$ for all $0\leq i\leq N$ and so $\expecof[0]{T_0}=\frac1{\pi(0)}=2^N$.
+    And $\expecof[N/2]{T_{N/2}}=\frac1{\pi(N/2)}=\frac{2^N}{\binom N{N/2}}=\frac{2^N(N/2)!(N/2)!}{N!}$.
+    Using the inequalities: $\sqrt{2\pi N}\parens{\frac Ne}^N\exp\parens{\frac1{12N+1}}\leq N!\leq\sqrt{2\pi N}\parens{\frac Ne}^N\exp\parens{\frac1{12N}}$, we get
+    $$ \expecof[N/2]{T_{N/2}} \leq \frac{\exp\parens{\frac1{3N}}}{\exp\parens{\frac1{12N+1}}}\cdot\sqrt{2\pi}\cdot\sqrt N = \exp\parens{\frac1{3N}-\frac1{12N+1}}\cdot\sqrt{2\pi}\cdot\sqrt N $$
+    Since $\frac1{3N}-\frac1{12N+1}$ is decreasing, this takes a maximum at $N=1$ and so we can bound this by $\exp\parens{\frac13-\frac1{13}}\leq1.3$.
+    So we get that the expected value is $\leq1.3\sqrt{2\pi}\sqrt N\leq3.3\sqrt N$.
+\eenum
+
+\bye
+

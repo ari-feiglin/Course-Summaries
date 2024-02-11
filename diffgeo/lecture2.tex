@@ -1,0 +1,319 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{diam}{{\rm diam}}(\vert)
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+\newfunc{cis}{{\rm cis}}({})
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{sup}{{\rm sup}}\{\vert\}
+\newfunc{Res}{{\rm Res}}({})
+\newfunc{wind}n({})
+\newfunc{pv}{{\rm pv}}({})
+\newfunc{lspan}{{\rm span}}({})
+
+\font\bigbf = cmbx12 scaled 2000
+\@undervecc@def{underbar}\@linecap\@linecap
+
+\def\pmat#1{\begin{pmatrix}#1\end{pmatrix}}
+
+\def\mO{{\cal O}}
+\def\mU{{\cal U}}
+\let\lineseg=\overleftrightvecc
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=2
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Differential and Analytic Geometry}
+
+    \medskip
+    \textit{Lecture \thesection, Monday July 17, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+Recall the following definition
+
+\begin{defn*}
+
+    If $(M,\rho)$ and $(X,\sigma)$ are two metric spaces, a function
+    \[ f\colon M\longto X \]
+    is an \ppemph{isometry} if $\rho(x,y)=\sigma(f(x),f(y))$ for every $x,y\in M$.
+    $M$ and $X$ are called \ppemph{isometric}.
+
+\end{defn*}
+
+It is obvious that isometries are injective (if $f(x)=f(y)$ then $\rho(x,y)=0$ so $x=y$).
+
+If $X$ is a normed vector space, and $A$ is an orthogonal transformation then recall $\norm{Ax}=\norm x$, so
+\[ \norm{Ax-Ay}=\norm{A(x-y)} = \norm{x-y} \]
+so $A$ is an isometry.
+
+\begin{defn*}
+
+    If $X$ is a normed vector space, and $a$ is a unit vector then define
+    \[ S_a(x) = x - 2\iprod{x,a}\cdot a \]
+    This is the reflection about $\set a^\bot$.
+
+\end{defn*}
+
+Recall that $x-\iprod{x,a}a\in\set a^\bot$, since
+\[ \iprod{x-\iprod{x,a}a,a} = \iprod{x,a} - \iprod{\iprod{x,a}a,a} = \iprod{x,a} - \iprod{x,a}\iprod{a,a} = \iprod{x,a} - \iprod{x,a} = 0 \]
+
+Now notice that
+\blist
+    \item If $x\in a^\bot$ then $S_a(x)=x$.
+    \item $S_a(a)=-a$.
+    \item $S_a^2(x)=S_a(x-2\iprod{x,a}a)=x-2\iprod{x,a}a-2\iprod{x-2\iprod{x,a}a,a}=x-2\iprod{x,a}a+2\iprod{x,a}=x$.
+    So $S_a^2(x)=x$.
+    \item $S_a(x+y)=S_a(x)+S_a(y)$ and $S_a(\lambda x)=\lambda S_a(x)$, so $S_a$ is a linear transformation.
+\elist
+
+Also notice that $\iprod{x,a}a=a\iprod{x,a}=aa^Tx$, thus
+\[ S_a(x) = (I-2aa^T)x \]
+this is another proof that $S_a$ is a linear transformation, as $S_a(x)=Ax$ where $A=I-2aa^T$.
+Now notice that $A^T=A$, we have that $A$ is orthogonal, so $S_a$ is an isometry.
+
+\begin{prop*}
+
+    If $f\colon\bR^n\longto\bR^n$ is an isometry which preserves the origin, ie. $f(0)=0$, then $f$ is an orthogonal linear transformation.
+
+\end{prop*}
+
+\begin{proof}
+
+    Notice that $f$ preserves norms, since $\norm x=\norm{x-0}=\norm{f(x)-f(0)}=\norm{f(x)}$.
+    And so $f$ preserves the inner product since
+    \[ \norm{x-y}^2 = \iprod{x-y,x-y} = \norm x^2-2\iprod{x,y}+\norm y^2 \]
+    And thus
+    \[ 2\iprod{x,y} = \norm x^2-\norm{x-y}^2+\norm y^2 \]
+    So
+    \[ 2\iprod{x,y} = \norm{f(x)}^2-\norm{f(x)-f(y)}^2+\norm{f(y)}^2 \]
+    But the equality is true for any $x,y$ and so
+    \[ 2\iprod{f(x),f(y)} = \norm{f(x)}^2-\norm{f(x)-f(y)}^2+\norm{f(y)}^2 \]
+    Thus $\iprod{x,y}=\iprod{f(x),f(y)}$ as required.
+
+    Let us define
+    \[ A = \pmat{\vert & & \vert \\ f(e_1) & \cdots & f(e_n) \\ \vert & & \vert} \]
+    Now recall that
+    \[ \iprod{e_i,e_j} = \delta_{ij} = \begin{cases} 1 & i=j \\ 0 & i\neq j \end{cases} \]
+    And so $\iprod{f(e_i),f(e_j)}=\delta_{ij}$.
+    Thus the rows of $A$ form an orthogonal basis, meaning $A$ is an orthogonal matrix.
+
+    Now let us define
+    \[ g(x) = A^{-1}f(x) \]
+    and we will prove that $g(x)=x$, which means that $f(x)=Ax$.
+    Notice that
+    \[ g(e_i) = A^{-1}f(e_i) = A^{-1}C_i(A) = C_i(A^{-1}A) = e_i \]
+    Now, if $g$ were a linear transformation, we could finish here.
+    Since $g(0)=0$, $g$ is an isometry (as the composition of isometries) which preserves the origin, so it preserves inner products.
+
+    Now let $x\in\bR^n$ have coefficients $x_i$, meaning $\iprod{x,e_i}=x_i$, now let $g(x)=y$ with coefficients $y_i$.
+    So
+    \[ x_i = \iprod{x,e_i} = \iprod{g(x),g(e_i)} = \iprod{y,e_i} = y_i \]
+    Thus $x=y$, so $g(x)=x$ and thus $f(x)=Ax$, so $f$ is indeed an orthogonal transformation.
+    \qed
+
+\end{proof}
+
+Thus if $f$ is an isometry, let $g(x)=f(x)-f(0)$, then $g$ is also an isometry which preserves the origin and so $g(x)=Ax$ where $A$ is orthogonal.
+And so $f(x)=Ax+f(0)$.
+
+\begin{thrm*}[cartanDieudonne,Cartan-Dieudonne\ Theorem]
+
+    If $f\colon\bR^n\longto\bR^n$ is an isometry, then
+    \[ f = T\circ S_1\circ\cdots S_m \]
+    where $T$ is a shift, and $S_i$ are reflections, and $m\leq n$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    We will prove this by induction on $n$.
+    For $n=1$, then we know that $f(x)=Ax+c$ where $A$ is orthogonal, and in $\bR$ that means that $A=\pm1$.
+    So $f(x)=\pm x+c$.
+    The $+c$ is a shift, and $-x$ is a reflection about $1$.
+
+    Now, for the inductive step let $g(x)=f(x)-f(0)$ so $g(x)=Ax$ where $A$ is orthogonal.
+    If $A=\mathrm{id}$, then $f(x)=x+c$ which is just a shift, and we have finished.
+    Otherwise there exists an $a\in\bR^n$ such that $g(a)\neq a$.
+    Now, we want a $b\in\lspan{a,g(a)}$ such that $\norm b=1$ and $S_b(a)=g(a)$.
+    Let
+    \[ d = \frac a{\norm a}+\frac{g(a)}{\norm{g(a)}} \]
+    And let $b$ be the unit normal to $d$ in $\lspan{a,g(a)}$.
+    Then $S_b(a)$ is the reflection of $a$ about $d$, which gives $g(a)$.
+
+    Now let
+    \[ h = S_b\circ g \]
+    then $h$ is the composition of two orthogonal transformations, and is therefore also an orthogonal transformation.
+    Let $\hat a=\frac a{\norm a}$, and let us extend this to an orthogonal basis
+    \[ B = \set{\hat a,b_2,\cdots,b_n} \]
+    And since $h$ is orthogonal, $h(B)$ is also an orthogonal basis.
+    And $h(a)=S_b(g(a))=S_b(S_b(a))=a$, and so $h(\hat a)=\hat a$.
+    Thus
+    \[ h(\set{b_2,\dots,b_n})\perp\hat a \]
+    And so $h(\set{b_2,\dots,b_n})$ is an orthogonal basis of $V=\hat a^\perp$, which has a dimension of $n-1$.
+    And so $h\bigl\vert_V\colon V\to V$ is an orthogonal transformation, since $\set{b_2,\dots,b_n}$ is an orthogonal basis of $V$, and so is its image.
+    So by our inductive assumption,
+    \[ h\bigl\vert_V = S_2\circ\cdots\circ S_m \]
+    where $S_i$ are reflections with respect to $u^\perp\subseteq V$, and $m\leq n$.
+
+    Let $\ell=\lspan{\hat a}$, and $h\bigl\vert_\ell=\mathrm{id}$, and since $h$ is linear
+    \[ h = S_2\circ\cdots\circ S_m \]
+    where $S_i$ is a reflection with respect to $u^\perp\subseteq\bR^n$.
+    And since $h=S_b\circ g$, and $f=T\circ g$, where $T$ is a shift (adding $f(0)$), we have
+    \[ T = T\circ S_b\circ S_2\circ\cdots\circ S_m \]
+    where $m\leq n$ as required.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    A \ppemph{curve} is a continuous function
+    \[ \gamma\colon[a,b]\longto\bR^n \]
+    A curve is \ppemph{smooth} if it is differentiable, and it is \ppemph{regular} if its derivative is never zero.
+    If $\gamma'(t)=0$ then $t$ is called a \ppemph{singularity} of $\gamma$.
+
+\end{defn*}
+
+\begin{defn*}
+
+    Suppose $\alpha\colon[a,b]\longto\bR^n$ is a curve, and $\phi\colon[c,d]\longto[a,b]$ is differentiable and $\phi'>0$, then we define $\beta\colon[c,d]\longto\bR^n$ by $\beta=\alpha\circ\phi$.
+    This is called a \ppemph{reparametrization} of $\alpha$.
+
+\end{defn*}
+
+\begin{prop*}
+
+    ``$x$ is a reparametrization of $y$'' is an equivalence relation.
+
+\end{prop*}
+
+\begin{proof}
+
+    Obviously this is reflexive (take $\phi$ to be the identity function).
+    And it is transitive since if $\beta=\alpha\circ\phi$ and $\gamma=\beta\circ\psi$ then $\gamma=\alpha\circ(\phi\circ\psi)$ (the derivative of the composition is still positive).
+    restrict the definition, this still works).
+    Now suppose $\beta=\alpha\circ\phi$, then since $\phi'>0$, we know that $\phi$ is strictly increasing (and therefore injective).
+    And so we can also assume that $\phi$ is surjective, since $\phi([a,b])=[\phi(a),\phi(b)]$.
+    So $\phi$ is bijective and so $\alpha=\beta\circ\phi^{-1}$, and $(\phi^{-1})'>0$ (since it is equal to the inverse of $\phi'$ of some point).
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    Let $\alpha\colon[0,T]\to\bR^n$ be a curve, let
+    \[ s_\alpha(t) = \int_0^t\norm{\alpha'(f)} = \int_a^T\parens{\sum_{k=1}^n\alpha_k'(f)^2}^{1/2} \]
+    $s_\alpha(t)$ is the \ppemph{arclength} of $\alpha$.
+
+    $\alpha'$ is the componentwise derivative of $\alpha$, which is equal to the Jacobian of $\alpha$.
+    We can continue with higher order componentwise derivatives.
+
+\end{defn*}
+
+The intuition behind the definition of $s(t)$ is that by the definition of integrals (using Riemman sums), we can partition $[0,T]$ into $t_0=0<t_1<\cdots<t_n=t$, and
+\[ \alpha'(f) \approx \frac{\alpha(t_{i+1})-\alpha(t_i)}{\Delta_i} \implies \norm{\alpha'(f)}\cdot\Delta_i \approx \norm{\alpha(t_{i+1})-\alpha(t_i)} \]
+
+\newpage
+And $\norm{\alpha(t_{i+1})-\alpha(t_i)}$ approximates the length of $\alpha$ between $t_i$ and $t_{i+1}$.
+And as we make the partition finer and finer, these approximations get more and more accurate.
+
+\begin{prop*}
+
+    Arclength is invariant under reparameterization.
+    Meaning if $\alpha\colon[a,b]\longto\bR^n$ and $\beta=\alpha\circ\phi$ then
+    \[ \int_a^b\norm{\alpha'(t)} = \int_c^d\norm{\beta'(t)} \]
+
+\end{prop*}
+
+\begin{proof}
+
+    Notice that
+    \[ \beta'(t) = \phi'(t)\cdot\alpha'\bigl(\phi(t)\bigr) \]
+    Since $\phi'(t)>0$ we have that
+    \[ \int_c^d\norm{\beta'(t)} = \int_c^d\norm{\alpha'(\phi(t))}\cdot\phi'(t)\,dt \]
+    Let $u=\phi(t)$ then $\phi'(t)\,dt=du$ and since $\phi(c)=a$ and $\phi(d)=b$, so
+    \[ = \int_a^b\norm{\alpha'(u)}\,du \]
+    as required.
+    \qed
+
+\end{proof}
+
+What we have shown is that $s_{\alpha\circ\phi}(t)=s_\alpha(\phi(t))$, ie
+\[ s_{\alpha\circ\phi} = s_\alpha\circ\phi \]
+
+Notice that $s_\alpha'(t)=\norm{\alpha'(t)}$.
+If $\alpha$ is regular then $\alpha'(t)\neq0$ and so $s_\alpha'>0$ so $s_\alpha$ is smooth and strictly increasing, meaning $s_\alpha$ is invertible.
+Now let us define
+\[ \beta(u) = \alpha\circ s_\alpha^{-1}(u) = \alpha(t) \]
+where
+\[ u = \int_0^t \norm{\alpha'(x)} \]
+So $\beta(u)$ is equal to the value of $\alpha$ after walking $u$ units on the arc $\alpha$.
+$\beta$ is called the \emph{natural parameterization} of $\alpha$.
+
+Notice that if $\beta$ is a reparameterization of $\alpha$, then they both have the same natural parameterizations, since if $\beta=\alpha\circ\phi$ then
+\[ \beta\circ s_\beta^{-1} = \beta\circ s_{\alpha\circ\phi}^{-1} = \beta\circ(s_\alpha\circ\phi)^{-1} = \alpha\circ\phi\circ\phi^{-1}\circ s_\alpha^{-1} = \alpha\circ s_\alpha^{-1} \]
+So the natural parameterization of a regular curve is unique.
+
+Notice that $\alpha$ is a natural parameterization if and only if $s_\alpha=\mathrm{id}$.
+If $\alpha$ is a natural parameterization, then $\alpha=\alpha\circ s_\alpha^{-1}$, and so $s_\alpha=\mathrm{id}$.
+And if $s_\alpha=\mathrm{id}$, then $\alpha\circ s_\alpha^{-1}=\alpha$.
+
+\begin{prop*}
+
+    If $\alpha$ is a curve, it is a natural parameterization if and only if $\norm{\alpha'}=1$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Since
+    \[ s_\alpha(t) = \int_0^t \norm{\alpha'(u)} \]
+    so $s_\alpha'=\norm{\alpha'}$, so if $s_\alpha=\mathrm{id}$ then $s_\alpha'=\norm{\alpha'}=1$.
+    And if $\norm{\alpha'}=1$ then $s_\alpha'=1$ so $s_\alpha(t)=t+c$ and since $s_\alpha(0)=0$, $c=0$ as required.
+    \qed
+
+\end{proof}
+
+\end{document}
+

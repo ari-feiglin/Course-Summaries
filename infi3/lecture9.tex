@@ -1,0 +1,159 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\@blist[#1]{%
+    \bgroup\par%\vskip-\medskipamount%
+    \def\item{%
+        \par\egroup\bgroup\medskip\setbox0=\hbox{#1\quad}%
+        \advance\leftskip by \wd0\leavevmode\kern-\wd0\box0%
+    }%
+    \bgroup%
+}
+\def\blist{\@ifnextchar[ \@blist {\@blist[$\bullet$]}}
+\def\elist{\par\egroup\egroup\medskip}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\openset{{\cal O}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\begin{document}
+
+\c@section=9
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infinitesimal Calculus 3}
+
+    \medskip
+    \textit{Lecture 9, Sunday November 20, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{Continuity Continued}
+
+Notice that $f$ is continuous at $x$ if and only if for every $x_n\longvarrightarrow x$ (and there exists such a sequence, since we can take $x_n=x$), $f(x_n)\longvarrightarrow f(x)$.
+Suppose $f$ is continuous at $x$, let $\epsilon>0$ and $\delta>0$ satisfy continuity.
+Then since $\metricof{x_n,x}\longvarrightarrow0$, so for some $N$ for every $n\geq N$, $\metricof{x_n,x}<\delta$ and so $\metricof{f(x_n),f(x)}<\epsilon$.
+And therefore $f(x_n)\longvarrightarrow f(x)$.
+To show the converse, suppose that $f$ isn't continuois at $x$.
+Then there is an $\epsilon>0$ such that every $\delta>0$ doesn't satisfy continuity.
+So for $\frac1n$ there is a $x_n$ such that $\metricof{x_n,x}<\frac1n$ but $\metricof{f(x_n),f(x)}\geq\epsilon$.
+So while $x_n\longvarrightarrow x$, $f(x_n)$ doesn't converge to $f(x)$, in contradiction.
+
+\begin{prop*}
+
+    We define the function $\chi_k\colon\bR^n\longvarrightarrow\bR$ by $f_k(x_1,\dots,x_n)=x_k$.
+    Then $f_k$ is continuous.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $x^m\longvarrightarrow x=(x_1,\dots,x_n)$.
+    Then we must have that $x^m_k\longvarrightarrow x_k$ since pointwise convergence in $\bR^n$ is equivalent to convergence.
+    And so $f_k(x^m)=x^m_k\longvarrightarrow x_k = f_k(x)$, and so $f_k$ is continuous.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+
+\begin{exam}
+
+    The function $f(x,y,z)=z^3e^{\sin z}$ is continuous since if we define $g(z)=z^3 e^{\sin z}$, we have that $f(x,y,z)=g(f_3(x,y,z))$.
+    And $g$ and $f_3$ are continuous, and the composition of continuous functions is continuous, so $f$ is continuous.
+
+\end{exam}
+
+\begin{prop*}
+
+    If $f,g\colon E\longvarrightarrow\bR$ are continuous at $p\in E$ and if $c\in\bR$ then the following are also continuous at $p$:
+    \begin{gather*}
+        f + g \\
+        f + cg \\
+        f\cdot g \\
+        \frac fg \rlap{\quad If $g(p)\neq0$}
+    \end{gather*}
+
+\end{prop*}
+
+This is trivial to prove.
+
+Also notice that $f\colon X\longvarrightarrow\bR^n$ is continuous if and only if $\chi_k\circ f$ is continuous for every $1\leq k\leq n$.
+This is due to a proposition we proved in the previous lecture.
+
+\begin{exam}
+
+    Circles are continuous.
+    We define the function:
+    \[ f\colon[0,2\pi)\longvarrightarrow\bR,\qquad t\varmapsto(\cos(t), \sin(t)) \]
+    which is the parametric representation of the unit circle.
+    Since both of the coordinate functions, $\chi_1\circ f$ and $\chi_2\circ f$ ($\cos t$ and $\sin t$ respectively) are continuous, so is $f$.
+    Notice that this parametric representation is the \emph{counter-clockwise} representation.
+    The clockwise representation, $(\cos t, -\sin t)$ is also continuous.
+
+\end{exam}
+
+\newpage
+\subsection{Surfaces}
+
+\begin{defn*}
+
+    If $\vec v,\vec n\in\bR^k$ if $\vec n\neq0$, the \ppemph{hyperplane} normal to $\vec n$ which contains $\vec v$ is defined as:
+    \[ H_{v,n} = \set{\vec u\in\bR^k}[n\cdot(u-v)=0] = \set{\vec u\in\bR^k}[n\cdot u = n\cdot v] \]
+
+\end{defn*}
+
+Notice that if $u\in H_{v,n}$ then $H_{v,n}=H_{u,n}$ and for every $\alpha\neq0$, $H_{v,\alpha n}=H_{v,n}$.
+Further notice that the set $\set{\vec u\in\bR^k}[n\cdot u=d]$ for any $d\in\bR$ defines a hyperplane.
+And if $u\in\bR^n$ then $H_{v,n}+u=\set{u+w\in\bR^k}[n\cdot(w-v)=0] = \set{w\in\bR^k}[n\cdot(w-v-u)=0] = H_{v+u,n}$.
+And if $0\in H_{v,n}$ then $H_{v,n}$ represents a subspace of $\bR^k$ whose dimension is $k-1$, and so $H_{v,n}-v=H_{0,n}$ is a $k-1$ dimension subspace of $\bR^k$.
+
+\begin{defn*}
+
+    If $f\colon\bR\longvarrightarrow\bR$ is a real-valued function, then its rotation around an axis, for example the $z$ axis is defined as the set:
+    \[ \set{(x,y,f(\sqrt{x^2+y^2}))}[x,y\in\bR] \]
+
+\end{defn*}
+
+If we intersect a rotation with some plane $z=c$ then we get the set of points $(x,y,c)$ where $f(\sqrt{x^2+y^2})=c$.
+This is either empty or contains circles whose radii are in $f^{-1}(c)$.
+
+\begin{exam}
+
+    If $f(x)=\alpha x$, then rotating it around $z$ creates the set: $\set{(x,y,\alpha\sqrt{x^2+y^2})}[x,y\in\bR]$ which is called a \ppemph{cone}.
+    And for $f(x)=\alpha x^2$, rotating it gives $z=\alpha(x^2+y^2)$, this is called an elliptical parabola.
+
+\end{exam}
+
+\begin{exam}
+
+    If we look at $f(x,y)=\frac{x^2}{a^2}+\frac{y^2}{b^2}$, $z=f(x,y)$.
+    Cutting this at $z=c$ yields an ellipse, and thus this is not a rotation.
+    Cutting this at $y=0$ gives $z=\frac{x^2}{a^2}$ which is a parabola.
+
+\end{exam}
+
+\end{document}
+

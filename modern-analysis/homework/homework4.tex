@@ -1,0 +1,111 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+\parindent=0pt
+\parskip=3pt plus 2pt minus 2pt
+
+\input ../preamble
+
+\footline={}
+
+\setcounter{section}{4}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+
+{\bppbox{rgb{.5 1 .5}}{rgb{0 .4 0}}{rgb{.1 .4 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Modern Analysis}
+    \smallskip
+    \centerline{\setfont{it}Homework \the\counter{section}}
+    \centerline{\setfont{it}Ari Feiglin}
+
+\eppbox}
+
+\bexerc
+
+    Give an example of a function $f$ which isn't Lebesgue measurable, such that $\abs f$ is.
+
+\eexerc
+
+Let $S$ be non-measurable, then define $f=\chi_S-\chi_{S^c}$.
+Since $f^{-1}\set1=S$ which isn't measurable, $f$ is not measurable.
+But $\abs f=1$ is measurable.
+
+\bexerc
+
+    Let $\set{A_i}_{i=1}^\infty$ be a sequence of disjoint measurable sets in $(X,\Sigma)$.
+    \benum
+        \item let $\set{g_i}_1^\infty$ be a sequence of $S$-measurable functions $g_i\colon X\longto{\bb R}$.
+        Show that $g(x)=\sum_{i=1}^\infty\chi_{A_i}g_i$ converges and is measurable.
+        \item suppose $\bigdcup_{i=1}^\infty A_i=X$, let ${\cal F}=\sigma\set{A_i}_1^\infty$.
+        Show that $h$ is ${\cal F}$-measurable if and only if $h$ is constant on each $A_i$.
+    \eenum
+
+\eexerc
+
+\benum
+    \item Let $x\in X$ then either $x\notin A_i$ for all $i$ in which case $g(x)=0$, or $x\in A_i$ for a single $i$, in which case $g(x)=g_i(x)$.
+    So $g$ converges.
+    Let $\alpha\geq0$ and $x\in X$, then $g(x)>\alpha$ if $x\in A_i$ for some $i$ and $g_i(x)>\alpha$.
+    So $g^{-1}(\alpha,\infty)=\bigcup_ig_i^{-1}(\alpha,\infty)\cap A_i$, which is measurable since $g_i$ is.
+    If $\alpha<0$ then $g(x)>\alpha$ if $g(x)=0$, meaning $x\in\bigcap_iA_i^c$ or $x\in\bigcup_ig_i^{-1}(\alpha,\infty)\cap A_i$.
+    Both sets are measurable.
+    \item If $h$ is constant on ${\cal A}_i$ then $h=\sum_ia_i\chi_{A_i}$ which is measurable by above (constant functions are measurable).
+    Conversely, let $\sigma=\set{\bigcup_{n\in M}A_n}[M\subseteq{\bb N}]$, this is a $\sigma$-algebra: $X,\varnothing\in\sigma$ since the union of all $A_i$ is $X$, it is obviously closed under
+    arbitrary unions, and it is closed under complements:
+    $$ \parens{\bigcup_{n\in M}A_n}^c = \bigcup_{n\in{\bb N}}A_n\setminus\bigcup_{n\in M}A_n = \bigcup_{n\in M^c}A_n $$
+    Since for all $i$, $A_i\in\sigma$ and so ${\cal F}\subseteq\sigma$, and obviously the converse holds as well so ${\cal F}=\sigma$.
+
+    So let $x\in A_i$, then $h^{-1}\set{h(x)}$ is measurable, so it is a union of $A_j$s.
+    But it includes $x$, so $A_i$ must be in this union meaning $A_i\subseteq h^{-1}\set{h(x)}$, so $h(A_i)=h(x)$, meaning $h$ is constant over $A_i$.
+\eenum
+
+\bexerc
+
+    Let $(X,\Sigma)$ be a measurable space, $f_1,f_2,f_3\colon X\longto{\bb R}$ measurable.
+    For $x\in X$ define the polynomial $p_x(t)=f_1(x)t^2+f_2(x)t+f_3(x)$.
+    Show that the set of $x\in X$ for which $p_x$ has two roots is measurable.
+
+\eexerc
+
+Recall that the polynomial has two roots if and only if $f_1(x)\neq0$ and $f_2(x)^2-4\cdot f_1(x)f_3(x)\geq0$.
+Define $g(x)=f_2(x)^2-4\cdot f_1(x)f_3(x)$ which is measurable since arithmetic operations on measurable functions produce measurable functions.
+Then the set is $f_1^{-1}({\bb R}\setminus\set0)\cap g^{-1}[0,\infty)$ which is measurable (since $f_1^{-1}({\bb R}\setminus\set0)=f_1^{-1}\set0^c$ is measurable).
+
+\bexerc
+
+    Let $(X,\Sigma)$ be a measurable space, let $f,g\colon X\longto{\bb R}$ be measurable.
+    Show that $h(x)=\frac{f(x)}{g(x)}\chi_{\set x[g(x)\neq0]}$ is measurable.
+
+\eexerc
+
+It is sufficient to prove this for $f=1$ since then we can multiply $h$ by $f$.
+For $\alpha\geq0$, $h(x)>\alpha$ if and only if $\frac1{g(x)}>\alpha$, if and only if $0<g(x)<\frac1\alpha$, so $h^{-1}(\alpha,\infty)=g^{-1}(0,\alpha^{-1})$ ($0^{-1}=\infty$) is measurable.
+And for $\alpha<0$, $h(x)>\alpha$ if and only if $g(x)=0$ or $\frac1{g(x)}>\alpha$, which is if and only if $g(x)<\frac1\alpha$.
+So $h^{-1}(\alpha,\infty)=g^{-1}\set0\cup g^{-1}(-\infty,\alpha^{-1})$ is measurable.
+
+\def\A{{\bb A}}
+\bexerc
+
+    Define $\A=\set{E\in{\frak B}({\bb R})}[E=-E]$.
+    \benum
+        \item show that $\A$ is a $\sigma$-algebra.
+        \item show that $f$ is $\A$-measurable if and only if it is Borel measurable and even.
+    \eenum
+
+\eexerc
+
+\benum
+    \item ${\bb R},\varnothing\in\A$ obviously.
+    If $E\in\A$ then $x\in -E^c\iff -x\notin E\iff x\notin E\iff x\in E^c$ so $E^c=-E^c$ as well, meaning $E^c\in\A$.
+    And if $\set{E_i}\subseteq\A$ then $-\bigcup E_i=\bigcup-E_i=\bigcup E_i$ so $\bigcup E_i\in\A$.
+    \item If $f$ is $\A$ measurable then it is also Borel measurable by definition.
+    And $x\in X$ then $x\in f^{-1}\set{f(x)}$ is measurable so $-x\in f^{-1}\set{f(x)}$ meaning $f(x)=f(-x)$, so an $\A$-measurable function is Borel-measurable and even.
+    If $f$ is Borel measurable and even, then let $\alpha\in{\bb R}$ then if $x\in f^{-1}(\alpha,\infty]$ then $f(x)\in(\alpha,\infty]$ so $f(-x)\in(\alpha,\infty]$.
+    So $x\in f^{-1}(\alpha,\infty]\implies-x\in f^{-1}(\alpha,\infty]$, meaning $f^{-1}(\alpha,\infty]\in\A$, so $f$ is $\A$-measurable.
+\eenum
+
+\bye
+

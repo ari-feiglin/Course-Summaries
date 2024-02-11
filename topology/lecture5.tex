@@ -1,0 +1,265 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\qed{\hskip1cm\penalty-100\hbox{}\hfill$\blacksquare$}
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\bS{\mathbb{S}}
+\def\mU{\mathcal{U}}
+\def\mV{\mathcal{V}}
+\def\mO{\mathcal{O}}
+\def\mF{\mathcal{F}}
+
+\def\to{\varrightarrow}
+\def\longto{\longvarrightarrow}
+
+\newfunc{metric}{\rho}({})
+\newfunc{metricA}{\sigma}({})
+\newfunc{powset}{{\cal P}}(|)
+
+\let\divides=\mid
+\let\to=\varrightarrow
+\def\implies{\,\longvarRightarrow\,}
+
+\def\mathresize#1#2{\mathpalette\@mathresize{{#1}{#2}}}
+\def\@mathresize#1#2{\@@mathresize#1#2}
+\def\@@mathresize#1#2#3{\hbox to #2{\hss$#1#3$\hss}}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\begin{document}
+
+\c@section=5
+
+\barcolorbox{255, 220, 255}{130, 0, 130}{200, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Topology}
+
+    \medskip
+    \textit{Lecture \thesection, Sunday April 30, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{defn*}
+
+    A \ppemph{disconnected} topological space $(X,\tau)$ is a topological space where there exists two non-empty open sets $\mU$ and $\mO$ such that $X=\mU\dcup\mO$.
+    If there does not exist two such open sets, then $X$ is \ppemph{connected}.
+
+\end{defn*}
+
+Equivalently, $X$ is \ppemph{connected} if when $X=\mU\dcup\mO$ for open sets $\mU$ and $\mO$, $\mU$ or $\mO$ must be empty.
+
+Notice that $X$ is disconnected if and only if there exist non-trivial (not $X$ or $\varnothing$) clopen (closed and open) sets.
+This is because if $X$ is disconnected then $\mU^c=\mO$ so $\mU$ (and $\mO$) is closed, and therefore clopen.
+And if $\mU$ is non-trivial and clopen then $X=\mU\dcup\mU^c$ is a non-trivial disjoint union of $X$ into open sets, and therefore $X$ is disconnected.
+So $X$ is connected if and only if the only clopen sets are $X$ and $\varnothing$.
+
+\begin{thrm*}
+
+    Suppose $X$ and $Y$ are toplogical spaces and $X$ is connected.
+    If $f\colon X\longto Y$ is continuous and onto $Y$, then $Y$ is also connected.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Suppose $Y=\mU\dcup\mO$ for open sets.
+    Then $f^{-1}(\mU)$ and $f^{-1}(\mO)$ are open sets since $f$ is continuous.
+    And so $X=f^{-1}(Y)=f^{-1}(\mU)\dcup f^{-1}(\mO)$ and so either $f^{-1}(\mU)$ or $f^{-1}(\mO)$ is empty, suppose $f^{-1}(\mU)$ is.
+    Then since $f$ is surjective, $\mU=\varnothing$, so $Y$ is connected as required.
+    \qed
+
+\end{proof}
+
+Notice then that if $f\colon X\longto Y$ is not necessarily onto and $X$ is connected, then $f(X)$ is connected.
+This is because the restriction $f\colon X\longto f(X)$ is continuous and surjective, the rest follows from the previous theorem.
+
+\begin{prop*}
+
+    A topological space $X$ is connected if and only if there is a continuous surjective mapping from $X$ to the discrete topology on two points.
+
+\end{prop*}
+
+\begin{proof}
+
+    If $X$ is connected then there cannot exist such a mapping since the discrete toplogy is disconnected (if the discrete topology is not on a singleton).
+    If $X$ is disconnected then $X=\mU\dcup\mO$ non-trivial.
+    Let $Y=\set{a,b}$ is a topological space (with any topology, specifically here the discrete topology), then we define
+    \[ f(x) = \begin{cases} a & x\in\mU \\ b x\in\mO \end{cases} \]
+    Since $\mU$ and $\mO$ are disjoint, this is well-defined, and since they cover $X$ this is surjective.
+    Since $\set{\mU, \mO}$ is an open cover of $X$ and the restriction of $f$ to these sets is constant (and therefore continuous), $f$ is itself continuous as required.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}
+
+    $\bR$ is connected.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Suppose $\bR$ is not connected.
+    Then there exists a continuous surjection $f\colon\bR\longto\set{0,1}$.
+    But this contradicts the mean value theorem (since $f$ must take on values in $(0,1)$).
+    \qed
+
+\end{proof}
+
+Since we showed the mean value theorem for intervals as well, the above proof holds for intervals.
+Thus real intervals are connected as well (any interval).
+Singletons are also connected in general as they cannot form a surjection to a set of two elements.
+It just so happens that these are the only connected subspaces of $\bR$.
+We will show this after proving the following lemma:
+
+\begin{lemm*}
+
+    Let $A\subseteq\bR$ be non-empty then the following are equivalent:
+    \benum
+        \item $A$ is some interval.
+        \item If $a<c$ are in $A$ and $a<b<c$ then $b\in A$.
+        \item $(\inf A,\sup A)\subseteq A$.
+    \eenum
+
+\end{lemm*}
+
+This is also true for the empty set, but due to pedantic definitions of the supremum and infimum of empty sets.
+
+\begin{proof}
+
+    The first condition obviously implies the second.
+    Now suppose $\inf A<b<\sup A$, then there exists $\inf A\leq a<b$ where $a\in A$ and $b<c\leq\sup A$ where $c\in A$.
+    Thus $a<b<c$ and $a,c\in A$ so $b\in A$.
+    So $(\inf A,\sup A)\subseteq A$ as required.
+
+    Now showing that the third condition implies the first is simple.
+    Then $A$ either contains some of the end points $\inf A$ and $\sup A$ or it doesn't, but in any case this is an interval.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    Every connected subspace of $\bR$ is an interval or a singleton, and every interval or singleton of $\bR$ is connected.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $A\subseteq\bR$ is not a singleton or an interval.
+    Then there exists $a,c\in A$ such that there exists a $b\in\bR$ where $a<b<c$ and $b\notin A$.
+    Then let $\mU=(-\infty,b)\cap A$ and $\mV=(b,\infty)\cap A$ which are open in $A$ and cover $A$.
+    But neither of them are empty since $a\in\mU$ and $c\in\mV$ so $A$ is disconnected.
+
+    The other direction was proven above.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    \benum
+        \item If $X$ is a topological space such that $X=\mU\dcup\mV$ for disjoint open sets $\mU$ and $\mV$, then if $A\subseteq X$, $A\subseteq\mU$ or $A\subseteq\mV$.
+        \item If $A\subseteq X$ and $A$ is dense in $X$ and connected.
+        Then $X$ is also connected.
+        \item If $A$ and $B$ are non-disjoint connected sets such that $X=A\cup B$ then $X$ is connected as well.
+        \item $X$ is connected if and only if for every $a,b\in X$ there is a $A\subseteq X$ connected such that $a,b\in A$.
+    \eenum
+
+\end{prop*}
+
+\begin{proof}
+
+    \benum
+        \item As $A=(A\cap\mU)\dcup(A\cap\mV)$, and both of these sets are open in $A$, $A=A\cap\mU$ or $A=A\cap\mV$ so $A\subseteq\mU$ or $A\subseteq\mV$ as required.
+        \item Suppose $\overline A=X=\mU\dcup\mV$ is a disjoint open cover.
+        $A$ is connected so $A\subseteq\mU$ or $A\subseteq\mV$, suppose the former.
+        Then $\overline A\subseteq\overline\mU=\mU$ since $\mU$ is closed, so its closure is itself.
+        So $X=\mU$ and therefore $X$ is connected.
+        \item Suppose $X=\mU\dcup\mV$, suppose $A\subseteq\mU$.
+        Then $B\subseteq\mU$ as otherwise $B\subseteq\mV$ and then $A\cap B=\varnothing$ which is a contradiction.
+        So $X=A\cup B\subseteq\mU$, so $X$ is connected as required.
+        \item If $X$ is connected then take $A=X$.
+        If $X$ is disconnected, then $X=\mU\dcup\mV$ non-empty disjoint open cover.
+        Take $a\in\mU$ and $b\in\mV$ then there cannot be a connected set $A$ such that $a,b\in A$ as we showed that $A\subseteq\mU$ or $A\subseteq\mV$.
+        \qed
+    \eenum
+
+\end{proof}
+
+We define an equivalence relation on a topological space $X$ as follows: $a\sim b$ if and only if there exists a connected subspace $E\subseteq X$ where $a,b\in E$.
+This is an equivalence relation since:
+\blist
+    \item It is reflexive: $a\in\set a$ and singletons are connected so $a\sim a$.
+    \item It is obviously symmetric.
+    \item If $a\sim b$ and $b\sim c$ then $a,b\in E_1$ and $b,c\in E_2$ where $E_i$ are connected.
+    Since their intersection is non trivial, $E_1\cup E_2$ is connected and $a,c\in E_1\cup E_2$ and so $a\sim c$.
+\elist
+
+\newpage
+Equivalence classes under this relation are called \emph{connected components} of $X$.
+We will denote the equivalence classes as $\set{C_\alpha}_{\alpha\in I}$.
+These are disjoint and their union is $X$ as they form a partition of $X$/
+
+\begin{prop*}
+
+    If $A$ is connected then
+    \benum
+        \item $A\subseteq C$ for some equivalence class $C$.
+        \item If $A\cap C\neq\varnothing$ then $A\subseteq C$.
+        \item If $C\subseteq A$ then $A=C$.
+        \item The connected components are connected.
+    \eenum
+
+\end{prop*}
+
+\begin{proof}
+
+    \benum
+        \item Let $x\in A$ and $x\in C$.
+        Then for every $y\in A$, by definition $x\sim y$ so $y\in C$, so $A\subseteq C$.
+        \item Since $A\subseteq C$ for some $C$, and the $C$s are disjoint, this must mean $A\subseteq C$.
+        \item $A\cap C=A\neq\varnothing$ so $A\subseteq C$ and so $A=C$.
+        \item Let $a,b\in C$ then there exists $E\subseteq X$ connected such that $a,b\in E$ by the definition of $\sim$.
+        So $E\cap C\neq\varnothing$ so $E\subseteq C$, and therefore $C$ is connected.
+        \qed
+    \eenum
+
+\end{proof}
+
+So the connected components are connected, but we also showed that they are maximal.
+So this equivalence relation partitions $X$ into maximal connected sets.
+
+\begin{prop*}
+
+    Connected components are closed.
+
+\end{prop*}
+
+\begin{proof}
+
+    $C$ is dense in $\overline C$ (this is true in general), and since $C$ is connected so is $\overline C$.
+    But since $C$ is maximal, $\overline C=C$, so $C$ is closed.
+    \qed
+
+\end{proof}
+
+Thus if there is a finite number of connected components, since the complement of a connected component is the union of all other connected components (as they form a partition), since this union is a finite
+union of closed sets, $C^c$ is closed and so $C$ is open.
+That is: if there is a finite number of connected components, the connected components are clopen.
+
+\end{document}
+

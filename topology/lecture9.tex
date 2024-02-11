@@ -1,0 +1,505 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\qed{\hskip1cm\penalty-100\hbox{}\hfill$\blacksquare$}
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\bS{\mathbb{S}}
+\def\mU{\mathcal{U}}
+\def\mV{\mathcal{V}}
+\def\mO{\mathcal{O}}
+\def\mF{\mathcal{F}}
+\def\mW{\mathcal{W}}
+\def\mC{\mathcal{C}}
+
+\def\to{\varrightarrow}
+\def\longto{\longvarrightarrow}
+
+\newfunc{metric}{\rho}({})
+\newfunc{metricA}{\sigma}({})
+\newfunc{powset}{{\cal P}}(|)
+
+\let\divides=\mid
+\let\to=\varrightarrow
+\def\implies{\,\longvarRightarrow\,}
+
+\def\mathresize#1#2{\mathpalette\@mathresize{{#1}{#2}}}
+\def\@mathresize#1#2{\@@mathresize#1#2}
+\def\@@mathresize#1#2#3{\hbox to #2{\hss$#1#3$\hss}}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\begin{document}
+
+\c@section=9
+
+\barcolorbox{255, 220, 255}{130, 0, 130}{200, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Topology}
+
+    \medskip
+    \textit{Lecture \thesection, Sunday June 18, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{prop*}
+
+    If $X=\prod_{\lambda\in\Lambda}X_\lambda$ is a product topology, and $f_\lambda\colon X_\lambda\longto Y_\lambda$ be functions, then let $Y=\prod_{\lambda\in\Lambda}Y_\lambda$ and
+    \[ f\colon X\longto Y,\qquad (x_\lambda)_\Lambda\varmapsto(f_\lambda(x_\lambda))_\Lambda \]
+    then
+    \benum
+        \item $f$ is continuous if and only if each $f_\lambda$ is continuous.
+        \item If $f$ is open then each $f_\lambda$ is open.
+        \item If $f_\lambda$ are all surjective, or $\Lambda$ is finite, then $f$ is open if and only if each $f_\lambda$ is open.
+        \item $f$ is a homeomorphism if and only if each $f_\lambda$ is a homeomorphism.
+    \eenum
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $f_\lambda$ are continuous.
+    Let $\mU=\prod_{\lambda\in\Lambda}\mU_\lambda$ be an element of the standard basis of the product topology $Y$, then
+    \[ (x_\lambda)_\Lambda\in f^{-1}(\mU) \iff (f_\lambda(x_\lambda))_\Lambda\in\prod_{\lambda\in\Lambda}\mU_\lambda \]
+    which is if and only if $f_\lambda(x_\lambda)\in\mU_\lambda$ for each $\lambda\in\Lambda$, and so
+    \[ f^{-1}(\mU) = \prod_{\lambda\in\Lambda}f^{-1}_\lambda(\mU_\lambda) \]
+    and since $f^{-1}_\lambda(\mU_\lambda)$ is open in $X$ and since all but a finite number of $\mU_\lambda\neq Y_\lambda$, so all but a finite number of $f^{-1}_\lambda(\mU_\lambda)\neq X_\lambda$,
+    meaning $f^{-1}(\mU)$ is an element of the basis of the product topology $X$, so it is open as required.
+
+    Now suppose $f$ is continuous, then let $\mV_\lambda$ be open in $Y_\lambda$, then we must show $f_\lambda^{-1}(\mV_\lambda)$ is open in $X_\lambda$.
+    If we take the open set $\mV$ in $Y$ which is the product of $Y_\gamma$ with $\mV_\lambda$ in the $\lambda$th index then we get that $f^{-1}(\mV)$ is equal to the product of $X_\gamma$ with
+    $f_\lambda^{-1}(\mV_\lambda)$.
+    Since $f^{-1}(\mV)$ is open, $\pi_\lambda(f^{-1}(\mV))=f_\lambda^{-1}(\mV_\lambda)$ is open as required.
+
+    Now if $f$ is open, let $\mU_\lambda$ be open in $X_\lambda$, and let $\mU$ be the product of $X_\gamma$ with $\mU_\lambda$ then $\mU$ is open in $X$.
+    So $f(\mU)$ is open and so $\pi_\lambda(f(\mU))=f_\lambda(\mU_\lambda)$ is open, so $f_\lambda$ is open.
+
+    And if $f_\lambda$ are all open and surjective or $\Lambda$ is finite, then let $\mU=\prod_\Lambda\mU_\lambda$ be open in $X$ then
+    \[ f(\mU) = \prod_\Lambda f_\lambda(\mU_\lambda) \]
+    is open in $Y$ (all but a finite number of $f_\lambda(\mU_\lambda)\neq Y_\lambda$).
+    So $f$ is open.
+
+    Now suppose $f$ is a homeomorphism, then $f$ is necessarily bijective and so each $f_\lambda$ must be bijective as well.
+    If $f_\lambda(x_\lambda)=f_\lambda(y_\lambda)$ then if we take a $x\in X$ and $y\in X$ which are equal except at the $\lambda$th coefficient, for which $x$'s is $x_\lambda$ and $y$'s is $y_\lambda$, then
+    we have by definition $f(x)=f(y)$ so $x=y$ meaning $x_\lambda=y_\lambda$.
+    And if $y_\lambda\in Y_\lambda$, then the sequence $y$ whose $\lambda$th coefficient is $y_\lambda$ has an origin in $X$, and so if $x_\lambda$ is the $\lambda$th coefficient in $y$'s origin, then by
+    definition $f_\lambda(x_\lambda)=y_\lambda$, so $f_\lambda$ are all bijective.
+    By above, $f_\lambda$ are all continuous and open bijective mappings, meaning they are homeomorphisms.
+
+    And if $f_\lambda$ are all homeomorphisms, then $f$ is also bijective and open and continuous and is therefore also a homeomorphism.
+    \qed
+    
+\end{proof}
+
+\begin{prop*}
+
+    Similarly if $f_\lambda\colon X\longto Y_\lambda$ is continuous, so is
+    \[ f\colon X\longto\prod_\Lambda Y_\lambda,\qquad f(x) = (f_\lambda(x))_{\lambda\in\Lambda} \]
+
+\end{prop*}
+
+\begin{proof}
+
+    This is because if $\prod_\Lambda\mU_\lambda$ is in the basis of the product topology $Y$, then
+    \[ x\in f^{-1}\parens{\prod_\Lambda\mU_\lambda} \iff (f_\lambda(x))_\Lambda \in \prod_\Lambda\mU_\lambda \iff f_\lambda(x)\in\mU_\lambda \iff x\in f^{-1}(\mU_\lambda) \]
+    for each $\lambda\in\Lambda$.
+    So
+    \[ f^{-1}\Bigl(\prod_\Lambda\mU_\lambda\Bigr) = \bigcap_\Lambda\mU_\lambda \]
+    Since all but a finite of $\lambda$ satisfy $f^{-1}(\mU_\lambda)=X_\lambda$, this is a finite intersection, so it is open.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    Let $X=\prod_{\lambda\in\Lambda}X_\lambda$ be a product topology, then if every $X_\lambda$ is path connected then so is $X$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $(x_\lambda)_\Lambda,(y_\lambda)_\Lambda\in X$, then for every $\lambda\in\Lambda$ there exists a curve
+    \[ \gamma_\lambda\colon[0,1]\longto X_\lambda,\quad \gamma_\lambda(0)=x_\lambda,\: \gamma_\lambda(1)=y_\lambda \]
+    Then let us define
+    \[ \gamma\colon[0,1]\longto X,\qquad \gamma(t) = (\gamma_\lambda(t))_\Lambda \]
+    This is continuous since its components are.
+    And it satisfies $\gamma(0)=(\gamma_\lambda(0))=(x_\lambda)_\Lambda$ and similarly $\gamma(1)=(y_\lambda)_\Lambda$.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    If $X_\lambda$ are all connected, so is $X=\prod_\Lambda X_\lambda$.
+
+\end{prop*}
+
+\begin{proof}
+
+    First we show this for the finite case, when $X=X_1\times X_2$.
+    Let $(a,b)\in X$ then $\set a\times Y\cong Y$ and $X\times\set b\cong X$ so these are both connected.
+    And $(\set a\times Y)\cap(X\times\set b)=\set{(a,b)}\neq\varnothing$ and so $(\set a\times Y)\cup(X\times\set b)=X\times Y$ is connected as the non-disjoint union of two connected spaces.
+    Therefore by induction $X_1\times\cdots\times X_n$ is connected.
+
+    Let $(q_\lambda)_\Lambda\in X$ and let $F\subseteq\Lambda$ be finite, let
+    \[ Q_F = \prod_\Lambda G_\lambda,\qquad G_\lambda = \begin{cases} X_\lambda & \lambda\in F \\ \set{q_\lambda} & \lambda\notin F \end{cases} \]
+    Then $Q_F\cong\prod_{f\in F}X_f$, so $Q_F$ is connected.
+    Let
+    \[ Y = \bigcup_{F\subseteq I\text{ finite}}Q_F \]
+    and if $a,b\in Y$ then $a\in Q_{F_1}$ and $b\in Q_{F_2}$ so $a,b\in Q_{F_1\cup F_2}$ and so every two points in $Y$ are contained within a connected subspace, and therefore $Y$ is connected.
+
+    We now claim that $Y$ is dense in $X$.
+    Suppose $\mU=\prod_\Lambda\mU_\lambda$ is in the basis of $X$, suppose $F=\set{\lambda_1,\dots,\lambda_n}$ is the set of indexes for which $\mU_{\lambda_i}\neq X_{\lambda_i}$.
+    Then we claim that $\mU\cap Q_F\neq\varnothing$.
+    This is equal to
+    \[ \prod_\Lambda \mU_\lambda\cap G_\lambda \]
+    So for $\lambda\in F$, $G_\lambda=X_\lambda$ otherwise $G_\lambda=\set{q_\lambda}$ and $\mU_\lambda=X_\lambda$ so $\mU_\lambda\cap G_\lambda$ is non-empty for every $\lambda\in\Lambda$ (either
+    $\mU_\lambda$ or $\set{q_\lambda}$).
+    And so $\mU\cap Q_F\neq\varnothing$ as required.
+    \qed
+
+\end{proof}
+
+\subsection{Tychonoff's Theorem}
+
+\begin{lemm*}[tubeLemma,Tube\ Lemma]
+
+    Suppose $X$ and $Y$ are topological spaces, $Y$ is compact, and $a\in X$.
+    Then for every neighborhood of $\set a\times Y\subseteq\mO$, there exists an open set $\mU\subseteq X$ such that
+    \[ \set a\times Y\subseteq \mU\times Y\subseteq \mO \]
+
+\end{lemm*}
+
+\begin{proof}
+
+    Recall that the basis of $X\times Y$ is the set of rectangles $\mU\times\mV$ for $\mU$ and $\mV$ open in $X\times Y$.
+    So $\mO$ is a union of sets of this form, and since for every $y\in Y$, $(a,y)\in\mO$ and so there exists $a\in\mU_y$ and $y\in\mV_y$ open such that
+    \[ (a,y) \in \mU_y\times\mV_y \subseteq \mO \]
+    Then $\set{\mV_y}_{y\in Y}$ is an open cover of $Y$ and so there is a finite subcover $\set{\mV_{y_i}}_{i=1}^n$, and so let us define
+    \[ \mU = \mU_{y_1}\cap\cdots\cap\mU_{y_n} \]
+    Then $a\in\mU$ is an open neighborhood of $a$, and since
+    \[ \mU\times Y = \bigcup_{i=1}^n\mU\times\mV_{y_i} \]
+    and since $\mU\times\mV_{y_i}\subseteq\mU_{y_i}\times\mV_{y_i}\subseteq\mO$ and so
+    \[ \set a\times Y\subseteq\mU\times Y\subseteq\mO \]
+    as required.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    If $X$ is a set and $B\subseteq\powsetof X$, let $\tau_B$ be the smallest topology on $X$ which contains $B$.
+    This is well-defined since the arbitrary intersection of topologies is a topology, so we can take
+    \[ \tau_B = \bigcap\set{\tau}[B\subseteq\tau\text{ is a topology on }X] \]
+    $\tau_B$ is called the \ppemph{topology generated by $B$}.
+
+\end{defn*}
+
+Notice that if $X\in B$ and $B$ is closed under intersections then $\tau_B$ as defined previously is equal to the $\tau_B$ defined above (sicne $\tau_B$ is a topology and obviously any topology containing
+$B$ must contain $\tau_B$).
+
+If we define $B^\cap$ to be the set of all finite unions of elements of $B$, then
+\[ \tau_B = \tau_{B^\cap\cup\set X} \]
+this is because obviously any topology which contains $B$ must contain $B^\cap\cup\set X$ and vice versa, and so the topology generated by $B$ is equal to the topology generated by $B^\cap\cup\set X$.
+Since $B^\cap\cup\set X$ contains $X$ and is closed under intersections, $\tau_B$ is equal to the union of finite intersections of elements in $B$ and $X$.
+Thus if $B$ is a subbasis, $B^\cap\cup\set X$ is a basis of the topology.
+
+\begin{defn*}
+
+    If $(X,\tau)$ is a topological space, then $B\subseteq\tau$ is a \ppemph{subasis} of $\tau$ if the topology generated by $B$ is $\tau$, and $X$ is the union of elements in $B$.
+
+\end{defn*}
+
+This is equivalent to saying that $\tau_{B^\cap}=\tau$ in the sense of the previous lecture (every element of $\tau$ can be written as the union of elements in $B^\cap$).
+Or equivalently, $B^\cap$ is a basis of $\tau$.
+
+Note if $B$ is a basis of $\tau$, then $\tau_B=\tau$ and so $B$ is a subasis.
+
+\begin{lemm*}[alexanderSubbase,Alexander\ Subbase\ Theorem]
+
+    If $X$ is a topological space and $B$ is a subasis, then $X$ is compact if and only if for every open cover of $X$ $\mC=\set{\mU_\lambda}_{\lambda\in\Lambda}\subseteq B$, there exists a finite subcover.
+
+\end{lemm*}
+
+\begin{proof}
+
+    If $X$ is compact, this is obvious.
+    To show the converse, suppose $X$ is not compact.
+    Let $S$ be the set of all open covers of $X$ which have no finite subcover, and so by assumption $S\neq\varnothing$.
+    So $S$ is partially ordered by inclusion, we will use Zorn's Lemma to show that $S$ contains a maximal element.
+
+    Let $\set{\mC^\gamma}_{\gamma\in\Gamma}$ be a chain of covers in $S$, then we claim that $\mC=\bigcup_{\gamma\in\Gamma}\mC^\gamma$ is in $S$.
+    $\mC$ obviously covers $X$ (since it is a superset of an open cover).
+    But if $\mC$ had a finite subcover, then since $\set{\mC^\gamma}_{\gamma\in\Gamma}$ forms a chain, this finite subcover is contained entirely within some $\mC^\gamma$ and so $\mC^\gamma$ has a finite
+    subcover, which contradicts it being in $S$.
+    Thus every chain has an upper bound in $S$ and therefore $S$ has a maximal element.
+
+    Suppose $\mC\in S$ is a maximal element.
+    Since $\mC$ is maximal, if $\mU\notin\mC$ then $\mC\cup\set\mU\notin S$ and so $\mC\cup\set\mU$ has a finite subcover, which is of the form $\mC_\mU\cup\set\mU$ for some finite subset $\mC_\mU$ of $\mC$.
+    But $\mC\cap B$ cannot cover $X$ as if it did, since $\mC\cap B\subseteq B$, by our assumption in the lemma, $\mC\cap B$ and in particular $\mC$ would have a finite subcover.
+    Thus there exists a $x\in X$ which is not covered by $\mC\cap B$, but there exists a $\mV\in\mC$ such that $x\in\mV$, and s
+
+    Since $B^\cap$ is a basis there exists a $\mO\in B^\cap$ such that $x\in\mO\subseteq\mV$, and $\mO=\mO_1\cap\cdots\mO_n$ for $\mO_i\in B$, so
+    \[ x\in\mO_1\cap\cdots\cap\mO_n\subseteq\mV \]
+    But $\mO_i\notin\mC$, since then $\mC$ would cover $x$, and so by above, there exist $\mC_i=\mC_{\mO_i}\subset\mC$ finite such that $\mC_i\cup\set{\mO_i}$ is a finite cover of $X$.
+    Thus if we denote $\mU_i=\bigcup\mC_i$, then $\mU_i\cup\mO_i=X$ and so
+    \[ X = \bigcap_{i=1}^n\mU_i\cup\mO_i \subseteq \bigcup_{i=1}^n\mU_i\cup\bigcap_{i=1}^n\mO_i\subseteq \bigcup_{i=1}^n\mU_i\cup\mV \]
+    But this means $X$ is equal to a finite union of elements of $\mC$ ($\mU_i$ is the union of $\mC_i$ which is finite), in contradiction to $\mC$ not having a finite subcover.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}[tychonoffTheorem,Tychonoff\ Theorem]
+
+    If $\set{X_\lambda}_{\lambda\in\Lambda}$ is a family of compact topological spaces, then $X=\prod_{\lambda\in\Lambda}X_\lambda$ is compact if and only if every $X_\lambda$ is compact.
+
+\end{thrm*}
+
+\begin{proof}
+
+    If $X$ is compact, then since $\pi_\lambda$ is continuous, $\pi_\lambda(X)=X_\lambda$ is compact as well.
+    To show the converse, let
+    \[ B = \set{\pi_\lambda^{-1}(\mU_\lambda)}[\mU_\lambda\in\tau_\lambda,\,\lambda\in\Lambda] \]
+    this is the standard subasis of the product topology (since $B^\cap$ is the standard basis of the product topology).
+    Let us assume that $X$ is not compact, then there exists $\mC\subseteq B$, an open cover of $X$ without a finite subcover.
+
+    For $\lambda\in\Lambda$, let $\mC_\lambda$ be the set of all $\pi_\lambda^{-1}(\mU_\lambda)\in\mC$ (the set of all elementary prisms of the coefficient $X_\lambda$ in $\mC$).
+    So $\mC=\bigcup_{\lambda\in\Lambda}\mC_\lambda$.
+    Then for every $\lambda\in\Lambda$, $\pi_\lambda(\mC_\lambda)$ contains no finite subcover of $X_\lambda$, since if $\set{\mU_n}_{n=1}^N\subseteq\pi_\lambda(\mC_\lambda)$ is a finite subcover of
+    $X_\lambda$ then
+    \[ \bigcup_{n=1}^N\pi_\lambda^{-1}(\mU_n) = X \]
+    (since $\pi_\lambda^{-1}(\mU_n)$ is the vector whose $\lambda$th coefficient is $\mU_n$ and all other are $X_\gamma$).
+    And so $\mC_\lambda\subseteq\mC$ would have a finite subcover.
+
+    But since $X_\lambda$ is compact, $\pi_\lambda(\mC_\lambda)$ cannot cover $X$, and so there exists a $x_\lambda\in X_\lambda$ not covered by $\pi_\lambda(\mC_\lambda)$.
+    Then $x=(x_\lambda)_{\lambda\in\Lambda}\in X$ is not covered by $\mC$ in contradiction.
+    \qed
+
+\end{proof}
+
+Since
+\[ \prod_{\lambda\in\Lambda}X = X^\Lambda \]
+we have that $X^\Lambda$ is compact if and only if $X$ is compact for any set $\Lambda$.
+For example $[0,1]^S$ are called \emph{Tychonoff cubes}, and if $S=\bN$ it is called a \emph{Hilbert cube}.
+
+\newpage
+\subsection{Disjoint Unions}
+
+\begin{defn*}
+
+    Let $\set{X_\lambda}_{\lambda\in\Lambda}$ be a family of topological spaces, then we can ensure they are disjoint by replacing them with $X_\lambda\times\set\lambda$ which is homeomorphic with
+    $X_\lambda$, then we define
+    \[ \coprod_{\lambda\in\Lambda}X_\lambda = \bigcup_{\lambda\in\Lambda}X_\lambda \]
+    with the topology
+    \[ \tau = \set{\bigcup_{\lambda\in\Lambda}\mU_\lambda}[\mU_\lambda\text{ is open in }X_\lambda] \]
+
+\end{defn*}
+
+This is a topology since obviously $\varnothing,\coprod_\Lambda X_\lambda\in\tau$ and
+\[ \parens{\bigcup \mU_\lambda}\cap\parens{\bigcup \mV_\lambda} = \bigcup \mU_\lambda\cap\mV_\lambda \]
+and
+\[ \bigcup_{\gamma\in\Gamma}\bigcup_{\lambda\in\Lambda}\mU_\lambda^\gamma = \bigcup_{\lambda\in\Lambda}\bigcup_{\gamma\in\Gamma}\mU_\lambda^\gamma \]
+
+Since $X_\lambda$ are all disjoint, $X_\lambda$'s topology is equal to its subspace topology as a subspace of $\coprod_{\lambda\in\Lambda}X_\lambda$.
+
+Notice that if we define $\iota_\lambda$ as the inclusion function from $X_\lambda$ to $\coprod_\Lambda X_\lambda$ (which is continuous as the inclusion function from a subspace), then a function
+\[ f\colon\coprod_\Lambda X_\lambda\longto Y \]
+is continuous if and only if $f\circ\iota_\lambda\colon X_\lambda\longto Y$ is continuous.
+If $f$ is continuous, this is obvious.
+For the converse, this is because then $f$ is continuous over every $X_\lambda$ which form an open cover of the disjoint union.
+
+\subsection{Quotient Spaces}
+
+\begin{defn*}
+
+    If $(X,\tau)$ is a topological space and $q\colon X\longto Y$ is a surjective function, then $\sigma$ is a \ppemph{quotient topology of $Y$} if
+    \benum
+        \item $q\colon(X,\tau)\longto(Y,\sigma)$ is continuous
+        \item If $q\colon(X,\tau)\longto(Y,\gamma)$ is continuous then $\gamma\subseteq\sigma$ ($\sigma$ is the finest topology which makes $q$ surjective).
+    \eenum
+    We call $q$ the \ppemph{quotient mapping}.
+
+\end{defn*}
+
+\begin{prop*}
+
+    $\sigma=\set{\mU\subseteq Y}[q^{-1}(\mU)\in\tau]$
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $\sigma'=\set{\mU\subseteq Y}[q^{-1}(\mU)\in\tau]$.
+    Obviously since $\sigma$ makes $q$ continuous, if $\mU$ is open then $q^{-1}(\mU)\in\tau$ so $\sigma\subseteq\sigma'$.
+    So now we show that $\sigma'$ is a topology, and thus $\sigma'\subseteq\sigma$, meaning $\sigma=\sigma'$.
+    Firstly, $q^{-1}(Y)=X$ and $q^{-1}(\varnothing)=\varnothing$ and so $Y,\varnothing\in\sigma'$.
+    If $\mU,\mV\in\sigma'$ then
+    \[ q^{-1}(\mU\cap\mV) = q^{-1}(\mU)\cap q^{-1}(\mV)\in\tau \]
+    so $\mU\cap\mV\in\sigma'$.
+    And if $\set{\mU_\lambda}_\Lambda\subseteq\sigma'$ then
+    \[ q^{-1}\parens{\bigcup_{\lambda\in\Lambda}\mU_\lambda} = \bigcup_{\lambda\in\Lambda} q^{-1}(\mU_\lambda) \in \tau \]
+    so $\bigcup_\Lambda\mU_\lambda\in\tau$, thus $\sigma'$ is a topology as required.
+    \qed
+
+\end{proof}
+
+Thus $q$ is a quotient map if and only if $q$ is surjective and for every $\mU\subseteq Y$, $\mU$ is open if and only if $q^{-1}(\mU)$ is open in $X$.
+
+\begin{prop*}
+
+    Suppose $q\circ X\longto Y$ is a quotient map and $f\colon Y\longto Z$, then $f$ is a quotient map if and only if $f\circ q$ is a quotient map.
+
+\end{prop*}
+
+\begin{proof}
+
+    If $f$ is a quotient map then $f\circ q$ is surjective as the composition of surjective functions.
+    We must show that $\mU\subseteq Y$ is open if and only if $(f\circ q)^{-1}(\mU)$ is open.
+    $\mU$ is open if and only if $f^{-1}(\mU)$ is open, and since $q$ is a quotient map this is if and only if $q^{-1}(f^{-1}(\mU))=(f\circ q)^{-1}(\mU)$ is open as required.
+
+    And if $f\circ q$ is surjective, so is $f$.
+    And so we must show that $\mU\subseteq Y$ is open if and only if $f^{-1}(\mU)$ is.
+    $\mU$ is open if and only if $(f\circ q)^{-1}(\mU)=q^{-1}(f^{-1}(\mU))$ is open and $q^{-1}(\mV)$ is open if and only if $\mV$ is open, so this is open if and only if $f^{-1}(\mU)$ is open.
+
+\end{proof}
+
+\begin{prop*}
+
+    Suppose $q\circ X\longto Y$ is a quotient map and $f\colon Y\longto Z$, then $f$ is a continuous function if and only if $f\circ q$ is continuous.
+
+\end{prop*}
+
+\begin{proof}
+
+    Obviously if $f$ and $q$ are continuous, so is $f\circ q$.
+    To show the converse, let $\mU\subseteq Z$ is open then we must show $f^{-1}(\mU)$ is open in $Y$, but this is equivalent to $q^{-1}(f^{-1}(\mU))$ being open in $X$, and since
+    \[ q^{-1}(f^{-1}(\mU)) = (q\circ f)^{-1}(\mU) \]
+    which is open, this is indeed true.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    If $q\colon X\longto Y$ is surjective, continuous, and open (or closed) then it is a quotient map.
+
+\end{prop*}
+
+\begin{proof}
+
+    We must show $\mU\subseteq Y$ is open if and only if $q^{-1}(\mU)$ is open.
+    If $\mU$ is open then since $q$ is continuous, $q^{-1}(\mU)$ is open.
+    And if $q^{-1}(\mU)$ is open then $q(q^{-1}(\mU))=\mU$ since $q$ is surjective, and since $q$ is open it is open as well.
+    \qed
+
+\end{proof}
+
+Thus every projective function $\pi_\lambda\colon\prod_\Lambda X_\lambda$ is a quotient map.
+
+\begin{prop*}
+
+    If $f\colon X\longto Y$ is bijective and continuous, then $f$ is a quotient map if and only if $f$ is a homeomorphism.
+
+\end{prop*}
+
+\begin{proof}
+
+    If $f$ is a homeomorphism, then by above it is a quotient map.
+    Otherwise, $f$ is a quotient map, let us show that $f$ is an open mapping.
+    Suppose $\mU$ is open in $X$ then $f(\mU)$ is an open in $Y$ if and only if $f^{-1}(f(\mU))=\mU$ is open in $X$, which is true.
+    So $f$ is an open, continuous, bijective map and is therefore a homeomorphism.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    If $q\colon X\longto Y$ is continuous and $A\subseteq X$ such that $q\bigl|_A\colon A\longto Y$ is a quotient map, then $q$ is a quotient map.
+
+\end{prop*}
+
+\begin{proof}
+
+    $q$ is surjective since its restriction is.
+    We must show that $\mU\subseteq Y$ is open if and only if $q^{-1}(\mU)$ is.
+    If $\mU$ is open, then $q^{-1}(\mU)$ is since it is continuous.
+    If $q^{-1}(\mU)$ is open then $q\bigl|_A^{-1}(\mU)=q^{-1}(\mU)\cap A$ is open as well and so $\mU$ is open.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    Let $X$ be a topological space and $\sim$ an equivalence relation on $X$.
+    Let us denote $\overline X=\slfrac X\sim$ be the partition of $X$ with respect to $\sim$, then let us define
+    \[ \rho\colon X\longto\overline X,\qquad \rho(x)=[x]_\sim \]
+    and we define the \ppemph{quotient topology} on $\overline X$ by
+    \[ \set{\mU\subseteq\overline X}[\rho^{-1}(\mU)\text{ is open in }X] \]
+
+\end{defn*}
+
+This is indeed a topology, since final topologies are topologies.
+Thus $\rho$ is a quotient map for $\overline X$.
+
+\begin{prop*}
+
+    Suppose $f\colon X\longto Y$ is continuous, then there exists a continuous function $\bar f\colon\overline X\longto Y$ such that $f=\bar f\circ\rho$ if and only if $a\sim b$ implies $f(a)=f(b)$.
+
+    $\bar f$ is injective if and only if $a\sim b\iff f(a)=f(b)$.
+
+\end{prop*}
+
+\begin{proof}
+
+    If $f=\bar f\circ\rho$ then if $a\sim b$ then $\rho(a)=\rho(b)$ and so $f(a)=\bar f(\rho(a))=\bar f(\rho(b))=f(b)$.
+    And if the condition holds then let us define $\bar f([a])=f(a)$.
+    This is well-defined since if $a\sim b$ then $f(a)=f(b)$, and we showed that $\bar f$ is continuous if and only if $\bar f\circ\rho=f$ is.
+
+    Now suppose $\bar f$ is injective then we already know that $a\sim b$ implies $f(a)=f(b)$ so it remains to be shown that $f(a)=f(b)$ implies $a\sim b$.
+    If $f(a)=f(b)$ then $\bar f([a])=\bar f([b])$ which means $[a]=[b]$ so $a\sim b$ as required.
+    To show the converse, suppose $\bar f([a])=\bar f([b])$ then $f(a)=f(b)$ which means $a\sim b$ so $[a]=[b]$.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    A function $f\colon X\longto Y$ \ppemph{preserves} $\sim$ if $a\sim b\implies f(a)=f(b)$.
+    And $f$ \ppemph{strongly preserves} $\sim$ if $a\sim b\iff f(a)=f(b)$.
+
+\end{defn*}
+
+Thus we can rephrase the result above as there exists a continuous function $\bar f$ such that $f=\bar f\circ\rho$ if and only if $f$ preserves $\sim$, and $\bar f$ is injective if and only if $f$ strongly
+preserves $\sim$.
+
+\begin{prop*}
+
+    If $f\colon X\longto Y$ is a quotient map then $f$ strongly preserves $\sim$ if and only if $\bar f$ is a homeomorphism.
+
+\end{prop*}
+
+\begin{proof}
+
+    If $f$ strongly preserves $\sim$ then $\bar f$ is injective, and since $f=\bar f\circ q$ and $f$ and $q$ are quotient maps, $\bar f$ is a quotient map as well.
+    So $\bar f$ is an injective quotient map, and is therefore a homeomorphism.
+
+    And if $\bar f$ is a homeomorphism, then since $f=\bar f\circ q$, $f$ is a quotient map.
+    And since $\bar f$ is injective, $f$ strongly preserves $\sim$.
+    \qed
+
+\end{proof}
+
+\end{document}
+

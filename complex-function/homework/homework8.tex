@@ -1,0 +1,317 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input ../preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{ker}{{\rm ker}}({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{atan}{{\rm tan}^{-1}}({})
+\newfunc{lag}{{\cal L}}({})
+\newfunc{sin}{{\rm sin}}({})
+\newfunc{sinh}{{\rm sinh}}({})
+\newfunc{cosh}{{\rm cosh}}({})
+\newfunc{cos}{{\rm cos}}({})
+\newfunc{arg}{{\rm arg}}({})
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+\newfunc{cis}{{\rm cis}}({})
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\iff{\,\longvarLeftRightarrow\,}
+\def\implies{\,\longvarRightarrow\,}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\mO{{\cal O}}
+\def\mU{{\cal U}}
+\def\mV{{\cal V}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\let\ds=\displaystyle
+\let\longto=\longvarrightarrow
+\let\to=\varrightarrow
+
+\def\bexerc{\begin{exercise*}}
+\def\eexerc{\end{exercise*}}
+\def\bblank{\begin{blankpp}}
+\def\eblank{\end{blankpp}}
+
+\begin{document}
+
+\c@section=8
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Complex Functions}
+
+    \medskip
+    \textit{Assignment \thesection}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\bexerc
+
+    Suppose $f$ is analytic and not constant on a compact domain $D$.
+    Show that $\Re f$ and $\Im f$ obtain their maxima and minima on the boundary of $D$.
+
+\eexerc
+
+\bblank
+
+    I will prove this using the result of the next exercise.
+    Suppose $z_0$ induces a maximum or minimum for $\Re f$ or $\Im f$, then $f(z_0)$ is on the boundary of $f(D)$.
+    This is because either $f(z_0)\pm\frac\epsilon2$ or $f(z_0)\pm i\frac\epsilon2$ is not in $f(D)$ for any $\epsilon>0$ (depending on whether $f(z_0)$ is a maximum or minimum, and for which function).
+    And since $f(z_0)$ is necessarily in $f(D)$, we have that for every $\epsilon>0$, $D_\epsilon(z_0)$ is not disjoint with $f(D)$ or $f(D)^c$, which is precisely what $f(z_0)$ being a boundary point
+    of $f(D)$ means.
+
+    Thus by the result of the next question, $z_0\in\partial D$ as required.
+
+\eblank
+
+\bexerc
+
+    \benum
+        \item Show that if $f$ is analytic and not constant on $S$, and $f(S)=T$ then if $f(z)$ is a boundary point of $T$ then $z$ is a boundary point of $S$.
+        \item Let $f(z)=z^2$, and let $S$ be the union of $S_1$ and $S_2$ where
+        \[ S_1=\set{z}[\abs z\leq2,\,\Re z\leq0],\qquad S_2=\set{z}[\abs z\leq1,\,\Re z\geq0] \]
+        Show that there exists a boundary point of $S$, $z$, such that $f(z)$ is an interior point of $f(S)$.
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item Since we know non-constant analytic functions are open maps, $f(\interior S)$ is open in $T$, and since the interior of a set is the largest open set contained within said set, we have that
+        $f(\interior S)\subseteq\interior T$.
+        Since $f(z)\in\boundary T$, this means that $f(z)\notin\interior T$ and thus $z\notin\interior S$.
+        So $z\in S\setminus\interior S\subseteq\boundary S$ as required.
+
+        \item Notice that $f(S_1)=\bar D_4(0)$ and $f(S_2)=\bar D_1(0)$.
+        This is because if $z=re^{i\theta}\in S_2$ then $r\leq2$ and $\frac\pi2\leq\theta\leq\frac32\pi$.
+        Thus $f(re^{i\theta})=r^2e^{2i\theta}$ and since $r^2\leq4$, $f(z)\in\bar D_4(0)$.
+        And if $re^{i\theta}\in\bar D_4(0)$, let $z=\sqrt re^{i\alpha}$ where $\alpha=\frac\theta2$ if $\pi\leq\theta$, and $\alpha=\frac\theta2+\pi$ otherwise.
+        In any case, we have that $z\in S_1$, and $f(z)=re^{i\theta}$.
+        Thus $f(S_1)=\bar D_4(0)$ as required.
+        A nearly identical proof holds for $S_2$.
+
+        Thus $f(S)=\bar D_4(0)$.
+        So let us take $z=1$, which is on the boundary of $S$ (for any $\epsilon>0$, $z+\frac\epsilon2$ is not in $S$), but $f(z)=1$ which is in the interior of $f(S)=\bar D_4(0)$ ($D_1(1)$ is contained
+        within $f(S)$).
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Suppose $f$ is an analytic function strictlu bounded by $1$ on the unit disk.
+    Further suppose that there exists an $\alpha$ on the unit disk where $f(\alpha)\neq0$.
+    Show that there exists an analytic function $g$ which is also strictly bounded by $1$ on the unit disk where $\abs{f'(\alpha)}<\abs{g'(\alpha)}$.
+
+\eexerc
+
+\bblank
+
+    Let us define
+    \[ g(z) = \frac{f(z) - f(\alpha)}{1-f(z)\cdot\overline{f(\alpha)}} \]
+    We note that this is defined over all of $D_1(0)$, since it is only undefined when
+    \[ f(z) = \frac1{\overline{f(\alpha)}} \implies \abs{f(z)} = \frac1{\abs{f(\alpha)}} > 1 \]
+    since $\abs f<1$, this is a contradiction.
+    And since $g(z)$ is the quotient of two analytic functions, it itself is analytic in $D_1(0)$.
+
+    $g(z)$ is also strictly bounded by $1$ in $D_1(0)$ since
+    \[ \abs{g(z)} < 1 \iff \abs{f(z)-f(\alpha)} < \abs{1-f(z)\cdot\overline{f(\alpha)}} \iff \abs{f(z)-f(\alpha)}^2 < \abs{1-f(z)\cdot\overline{f(\alpha)}}^2 \]
+    Let us compute both sides with the identity $\abs z^2=z\cdot\overline z$:
+    \[ \abs{f(z)-f(\alpha)}^2 = (f(z) - f(\alpha))(\overline{f(z)} - \overline{f(\alpha)}) = \abs{f(z)}^2 + \abs{f(\alpha)}^2 - f(z)\overline{f(\alpha)} - f(\alpha)\overline{f(z)} \]
+    and
+    \[ \abs{1-f(z)\cdot\overline{f(\alpha)}}^2 = (1-f(z)\cdot\overline{f(\alpha)})(1-\overline{f(z)}f(\alpha)) = 1 + \abs{f(z)}^2\abs{f(\alpha)}^2 - f(z)\overline{f(\alpha)} - f(\alpha)\overline{f(z)} \]
+    Thus the inequality holds if and only if
+    \[ \abs{f(z)}^2 + \abs{f(\alpha)}^2 < 1 + \abs{f(z)}^2\abs{f(\alpha)}^2 \]
+    Which is if and only if
+    \[ \abs{f(\alpha)}^2\bigl(1-\abs{f(z)}^2\bigr) < 1 - \abs{f(z)}^2 \]
+    and since $\abs{f(z)}<1$, we can divide both sides by $1-\abs{f(z)}^2$ and preserve the inequality, meaning this is if and only if
+    \[ \abs{f(\alpha)}^2 < 1 \]
+    Thus we have shown that $\abs{g(z)}<1$ in $D_1(0)$ as required.
+
+    Now notice that $g(\alpha)=0$ and so
+    \[ g'(\alpha) = \lim_{z\to\alpha}\frac{g(z)}{z-\alpha} = \lim_{z\to\alpha}\frac{f(z)-f(\alpha)}{z-\alpha}\cdot\frac1{1-f(z)\cdot\overline{f(\alpha)}}
+    = f'(\alpha)\cdot\frac1{1-f(\alpha)\cdot\overline{f(\alpha)}} = f'(\alpha)\cdot\frac1{1-\abs{f(\alpha)}^2} \]
+    Since $0<\abs{f(\alpha)}<1$ we have that $\frac1{1-\abs{f(\alpha)}^2}>1$ and so
+    \[ \abs{g'(\alpha)} = \abs{f'(\alpha)}\cdot\frac1{1-\abs{f(\alpha)}^2} > \abs{f'(\alpha)} \]
+    as required.
+
+\eblank
+
+\bexerc
+
+    Suppose $f$ is an entire function such that $\abs{f(z)}\leq\frac1{\Reof z^2}$.
+    Prove that $f$ is identically zero.
+
+\eexerc
+
+\bblank
+
+    Let $R>0$ and let us define for $\abs z<R$
+    \[ g(z) = (z^2 + R^2)^4f(z) \]
+    Let $\abs z=R$, and notice that for such a $z$, suppose $z=a+bi$ then $R^2=a^2+b^2$ and so
+    \[ z^2+R^2 = a^2 - b^2 + 2abi + a^2 + b^2 = 2a^2 + 2abi = 2a(a+bi) = 2z\Re z \]
+    and so
+    \[ \abs{g(z)} = \abs{z^2 + R^2}^4\cdot\abs{f(z)} \leq \abs{2z\Re z}^4\cdot\frac1{\Reof z^2} \leq 16R^4\Re z^4\cdot\frac1{\Reof z^2} = 16R^4\Reof z^2 \leq 16R^6 \]
+    since $\Reof z\leq R$.
+
+    So for every $z\in\boundary D_R(0)$ we have $\abs{g(z)}\leq 16R^6$.
+    But by the maximum modulus principal, for the maximum of $g(z)$ on $D_R(0)$ is obtained on its boundary, ie when $\abs z=R$.
+    Thus for every $\abs z\leq R$, $\abs{g(z)}\leq 16R^6$.
+
+    So let $z\in\bC$, then for every $R>0$ such that $\abs z\leq R$, we have
+    \[ \abs{f(z)}\cdot\abs{z^2+R^2}^4 \leq 16R^6 \implies \abs{f(z)} \leq \frac{16R^6}{\abs{z^2+R^2}^4} \]
+    And by letting $R\to\infty$, we get that $\frac{16R^6}{\abs{z^2+R^2}^4}\to0$ and so $\abs{f(z)}\leq0$ meaning $f(z)=0$ for every $z\in\bC$ as required.
+
+\eblank
+
+\bexerc
+
+    Show that
+    \[ f(z) = \int_0^1 \frac{\sin(zt)}t\,dt \]
+    is an entire function by
+    \benum
+        \item Morera's theorem
+        \item Finding a powerseries for $f$
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item Let $\Gamma$ be the boundary of a complex rectangle, we must show that
+        \[ \int_\Gamma f(z)\,dz = 0 \]
+        and then by Morera's theorem, $f$ is analytic.
+
+        Notice that
+        \[ \int_\Gamma\int_0^1\abs{\frac{\sin(zt)}t}\,dt\,dz \]
+        converges since the inner integral converges (we showed this in calculus $2$), and is bounded.
+
+        Thus by Fubini-Tonelli, we have that
+        \[ \int_\Gamma f(z)\,dz = \int_\Gamma\int_0^1\frac{\sin(zt)}t\,dtdz = \int_0^1\int_\Gamma\frac{\sin(zt)}t\,dzdt \]
+        by Cauchy's theorem, since $z\varmapsto\frac{\sin(zt)}t$ is analytic in $\Gamma$'s interior, the inner integral is $0$, and thus the integral as a whole is zero, as required.
+
+        \item Using $\sin$'s powerseries
+        \[ \sin(z) = \sum_{n=0}^\infty (-1)^n\frac{z^{2n+1}}{(2n+1)!} \]
+        and thus
+        \[ \frac{\sin(zt)}t = \sum_{n=0}^\infty (-1)^n\frac{z^{2n+1}t^{2n}}{(2n+1)!} \]
+        This still has a radius of convergence of infinity (both as a powerseries for $z$ and $t$, since we are taking a powerseries defined everywhere and dividing it by $t$, and this still results in a
+        powerseries).
+        Thus since powerseries converge uniformly
+        \[ \int_0^1\frac{\sin(zt}t\,dt = \sum_{n=0}^\infty (-1)^n\frac{z^{2n+1}}{(2n+1)!}\cdot\int_0^1 t^{2n}\,dt = \sum_{n=0}^\infty (-1)^n\frac{z^{2n+1}}{(2n+1)!\cdot(2n+1)} \]
+
+        And this has a radius of convergence of infinity, as is obviously apparent by the ratio test.
+        Thus $f(z)$ has a powerseires which is convergent everywhere, meaning it is entire.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Show that the function $f$ from the previous exercise satisfies
+    \[ f'(z) = \int_0^1\cos(zt)\,dt \]
+    by
+    \benum
+        \item Using the change of order of integration.
+        \item Using the powerseries from the previous exercise.
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item Notice that
+        \[ \int_0^z \cos(wt)\,dw = \frac{\sin(wt)}w\biggl|_0^z = \frac{\sin(zt)}z \]
+        and thus
+        \[ f(z) = \int_0^1\int_0^z \cos(wt)\,dwdt \]
+        Now for any $z\in\bC$, since
+        \[ \int_0^z\int_0^1 \abs{\cos(wt)}\,dt\abs{dw} \leq \int_0^z \abs{dw} \]
+        is convergent, by Fubini-Tonelli we have
+        \[ f(z) = \int_0^1\int_0^z \cos(wt)\,dwdt = \int_0^z\int_0^1 \cos(wt)\,dtdw \]
+        and by the Fundamental theorem of calculus, this means
+        \[ f'(z) = \int_0^1 \cos(zt)\,dt \]
+        as required.
+
+        \item Using the powerseries of $\cos$,
+        \[ \cos(z) = \sum_{n=0}^\infty (-1)^n\frac{z^{2n}}{(2n)!} \]
+        we have that
+        \[ \int_0^1 \cos(zt)\,dt = \int_0^1 \sum_{n=0}^\infty (-1)^n\frac{z^{2n}t^{2n}}{(2n)!}\,dt = \sum_{n=0}^\infty (-1)^n\frac{z^{2n}}{(2n)!}\int_0^1 t^{2n}\,dt =
+        \sum_{n=0}^\infty (-1)^n\frac{z^{2n}}{(2n+1)!} \]
+        And we know that by the previous exercise
+        \[ f(z) = \sum_{n=0}^\infty (-1)^n\frac{z^{2n+1}}{(2n+1)!\cdot(2n+1)} \]
+        So
+        \[ f'(z) = \sum_{n=0}^\infty (-1)^n\frac{(2n+1)z^{2n}}{(2n+1)!\cdot(2n+1)} = \sum_{n=0}^\infty (-1)^n\frac{z^{2n}}{(2n+1)!} = \int_0^1 \cos(zt)\,dt \]
+        as required.
+
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Show that
+    \[ L(z) = \pi i + \int_{-1}^z \frac{dw}w \]
+    is a branch of the complex logarithm in $D=\set{z\in\bC}[z\in\bR\implies z<0]$.
+    And further show that
+    \[ 0 < \Im L(z) = \argof z < 2\pi \]
+
+\eexerc
+
+\bblank
+
+    We showed in lecture that if $D$ is a simply connected domain where $0\notin D$, and $e^{L_0}=z_0$ then
+    \[ L(z) = L_0 + \int_{z_0}^z \frac{dw}w \]
+    is an analytic branch of the complex logarithm in $D$.
+
+    Since the domain $D$ defined in the question is simply connected, and $e^{i\pi}=-1$, we have that the $L$ defined in the question is indeed an analytic branch of the complex logarithm.
+
+    For $z\in D$ let us define the smooth curve $\Gamma$ as the concatenation of the curve from $-1$ to $-\abs z$ (contained within $\bR$), and then the arc from $-\abs z$ to $z$ (this is part of the
+    circle around $0$ of radius $\abs z$).
+    Let us denote the first part of this curve by $\Gamma_1$, and the second (the arc) by $\Gamma_2$.
+    So we have that
+    \[ L(z) = i\pi + \int_\Gamma \frac{dw}w = i\pi + \int_{\Gamma_1} \frac{dw}w + \int_{\Gamma_2} \frac{dw}w \]
+    Since $\Gamma_1$ is contained entirely within $\bR$, the integral over $\Gamma_1$ does not contribute to $\Imof{L(z)}$.
+
+    Suppose $z=re^{i\alpha}$, we can parameterize $\Gamma_2$ by
+    \[ [\pi,\alpha]\longto\Gamma_2,\quad \theta\varmapsto re^{i\theta} \]
+    and thus we have that
+    \[ \int_{\Gamma_2} \frac{dw}w = \int_{\Gamma_2} \frac{\overline w}{\abs w^2}\,dw = \int_\pi^\alpha \frac{re^{-i\theta}}{r^2}\cdot rie^{i\theta}\,d\theta = i\int_\pi^\alpha d\theta = i(\alpha-\pi) \]
+    So we have
+    \[ \Imof{L(z)} = \Imof{i\pi + \int_{\Gamma_1}\frac{dw}w + \int_{\Gamma_2}\frac{dw}w} = \pi + \Imof{i(\alpha-\pi)} = \pi + \alpha - \pi = \alpha = \argof{z} \]
+    as required.
+    ($\argof z>0$ since if $\argof z=0$ then $z\in\bR$ and $z\geq0$, so $z\notin D$).
+
+\eblank
+
+\end{document}
+

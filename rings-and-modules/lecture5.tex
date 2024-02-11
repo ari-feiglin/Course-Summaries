@@ -1,0 +1,137 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\catcode`\@=11
+\input pdfmsym
+
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\implies{\,\mathrel{\longvarRightarrow}\,}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\newfunc{eulerg}{{\rm Euler}}({})
+\newfunc{order}o({})
+\newfunc{ker}{{\rm Ker}}({})
+\newfunc{image}{{\rm Im}}({})
+\newfunc{lattice}{{\cal L}}(\vert)
+\newfunc{powset}{{\cal P}}(\vert)
+\newfunc{center}{{\rm Z}}({})
+\newfunc{units}{{\cal U}}(\vert)
+\newfunc{sign}{{\rm sgn}}({})
+\newfunc{aut}{{\rm Aut}}({})
+\newfunc{speclinear}{{\rm SL}}({})
+\newfunc{genlinear}{{\rm GL}}({})
+\newfunc{projlinear}{{\rm PGL}}({})
+\newfunc{specprojlinear}{{\rm PSL}}({})
+\newfunc{core}{{\rm Core}}(\vert)
+\newfunc{inner}{{\rm Inn}}(\vert)
+\newfunc{outer}{{\rm Out}}(\vert)
+\newfunc{conj}{{\rm conj}}({})
+\newfunc{ev}{{\rm ev}}({})
+
+\def\maxdivs{\mathrel{\|}}
+
+\let\ideal=\trianglelefteq
+\def\normal{\mathrel\triangleleft}
+\let\mmorph=\longvarhookrightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+
+\def\qed{\hskip1cm\hbox{}\hfill$\blacksquare$}
+
+\begin{document}
+
+\c@section=5
+
+\barcolorbox{220, 220, 255}{0, 0, 130}{80, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Introduction to Rings and Modules}
+
+    \medskip
+    \textit{Lecture \thesection, Monday April 24 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{exam*}
+
+    Suppose that $R$ is commutative and $I=(a)$ and $J=(b)$ are two ideals, then $IJ=(ab)$.
+    This is because $a\in I$ and $b\in J$ so $ab\in IJ$ and thus $(ab)\subseteq IJ$ (since $(ab)=abR$).
+    And every element in $IJ$ is of the form $\sum_{k=1}^n i_kj_k$ where $i_k\in I$ and $j_k\in J$ so $i_k=ar_n$ and $j_k=bs_n$.
+    Thus the element is
+    \[ \sum_{k=1}^n ar_nbs_n = ab\sum_{k=1}^n r_ns_n \in abR = (ab) \]
+    so $IJ\subseteq(ab)$ and thus $IJ=(ab)$ as required.
+
+\end{exam*}
+
+Notice that if $R=\bR[x]$ and $I=(x-1)$ and $J=(x+1)$ then by above $IJ=(x^2-1)$ so by the chinese remainder theorem:
+\[ \slfrac{\bR[x]}{(x^2-1)} \cong \slfrac{\bR[x]}{(x-1)} \times \slfrac{\bR[x]}{(x+1)} \cong \bR\times\bR \]
+where the last equality is true since we showed that $\slfrac{\bR[x]}{(x-a)}\cong\bR$.
+So notice that while $\slfrac{\bR[x]}{(x^2+1)}\cong\bC$ is a field, $\slfrac{\bR[x]}{(x^2-1)}\cong\bR^2$ is not a field since there are zero divisors: $(1,0)\cdot(0,1)=0$.
+
+The chinese remainder theorem has its limits, specifically when the ideals are not comaximal.
+For example $\slfrac{\bR[x]}{(x^2)}$ since $(x^2)=(x)(x)$ and $(x)$ is not comaximal with itself (in general groups $G$ satisfy $G\cdot G=G$, and this holds with ideals $I+I=I$).
+But we can take $y=x+(x^2)\in\slfrac{\bR[x]}{(x^2)}$ and so $y^2=x^2+(x^2)=(x^2)=0_R$ ($y$ is nilpotent).
+Notice that $\slfrac{\bR[x]}{(x^2-1)}$ has no such non-trivial element since $(x,y)^2=0\implies(x,y)=0$, and therefore these two rings cannot be isomorphic.
+
+So these three rings are all non-isomorphic.
+
+\begin{prop*}
+
+    Suppose $f\colon R\longto S$ is a ring homomorphism, then
+    \benum
+        \item If $R'\subseteq R$ is a subring or subrng of $R$ then $f(R')$ is a subring or subrng of $S$.
+        \item If $J\subseteq S$ is a (left, right, or bidirectional) ideal of $S$ then $f^{-1}(J)$ is a (left, right, or bidirectional) ideal of $R$.
+        \item If $I\subseteq R$ is a (left, right, or bidirectional) ideal of $R$ then $f(I)$ is a (left, right, or bidirectional) ideal of $f(R)$.
+    \eenum
+
+\end{prop*}
+
+\begin{proof}
+
+    Notice that in all cases, $f(X)$ or $f^{-1}(X)$ are abelian groups as the image or preimage of an abelian group.
+    So for these proofs all we need to show is the multiplicative nature of whatever we're investigating.
+    \benum
+        \item Suppose $f(x),f(y)\in f(R')$ then $f(x)f(y)=f(xy)\in R'$ as required.
+        And if $f$ is a ring homomorphism and $R'$ is a subring then $1_R\in R'$ so $f(1_R)=1_S\in f(R')$ as required.
+        \item We will assume that $J$ is a right ideal, the proofs for the other cases are identical.
+        Suppose $x\in f^{-1}(J)$ then we must show for any $r\in R$, $xr\in f^{-1}(J)$.
+        This is if and only if $f(xr)=f(x)f(r)$, since $f(x)\in J$ and $f(r)\in S$, $f(x)f(r)\in J$ so $f(xr)\in J$ and so $xr\in f^{-1}(J)$ as required.
+        \item Again we suppose $I$ is a right ideal.
+        Suppose $f(x)\in f(I)$ and $f(r)\in f(R)$ then $f(x)f(r)=f(xr)$, and since $xr\in I$, $f(x)f(r)\in f(I)$ as required.
+        \qed
+    \eenum
+
+\end{proof}
+
+Notice that since $\set0$ is an ideal of $S$, we get that $\ker f=f^{-1}\set0\ideal R$ from the above proposition.
+
+\begin{note}
+
+    If $\bF$ is a field and $I\ideal\bF$ is an ideal, if $I\neq(0)$ then there exists an $a\in I$ such that $a\neq0$ so $a^{-1}\cdot a=1\in I$ and so $I=\bF$.
+    Thus the ideals of fields are all trivial.
+
+\end{note}
+
+\begin{thrm*}
+
+    Suppose $R$ is a ring and $I\ideal R$ is a bidirectional ideal, then there is a pairing between right/left/bidirectional ideals of $\slfrac RI$ and right/left/bidirectional ideals of $R$ which contain
+    $I$.
+
+\end{thrm*}
+
+\end{document}
+

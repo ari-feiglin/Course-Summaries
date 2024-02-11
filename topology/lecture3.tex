@@ -1,0 +1,297 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\qed{\hskip1cm\penalty-100\hbox{}\hfill$\blacksquare$}
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\bS{\mathbb{S}}
+\def\mU{\mathcal{U}}
+\def\mV{\mathcal{V}}
+\def\mO{\mathcal{O}}
+
+\def\to{\varrightarrow}
+\def\longto{\longvarrightarrow}
+
+\newfunc{metric}{\rho}({})
+\newfunc{metricA}{\sigma}({})
+\newfunc{powset}{{\cal P}}(|)
+
+\let\divides=\mid
+\let\to=\varrightarrow
+\def\implies{\,\longvarRightarrow\,}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\pdf@drawing@macro{check}{0 1 0 RG 1.2 w 1 j 1 J 0 5 m 3 0 l 8 10 l S}{9.2pt}{12pt}{1pt}{1pt}
+\pdf@drawing@macro{ecks}{1 0 0 RG 0 0 m 1 j 1 J 10 10 l 0 10 m 10 0 l S}{11.2pt}{12pt}{1pt}{1pt}
+
+\begin{document}
+
+\c@section=3
+
+\barcolorbox{255, 220, 255}{130, 0, 130}{200, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Topology}
+
+    \medskip
+    \textit{Lecture \thesection, Sunday April 16, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{Conditions for Compactness}
+
+\begin{defn*}
+
+    If $\set{\mU_\lambda}_{\lambda\in\Lambda}$ is an open cover of $X$, then a \ppemph{Lebesgue Number} of the open cover is a number $\epsilon>0$ such that for every $x\in X$ there exists a
+    $\lambda\in\Lambda$ such that $B_\epsilon(x)\subseteq\mU_\lambda$.
+
+\end{defn*}
+
+\begin{thrm*}
+
+    A metric space is compact if and only if for every sequence there exists a convergent subsequence.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let us prove that if $M$ is compact then every sequence of points has a convergent subsequence.
+    Suppose there is not a convergent subsequence.
+    Then for every $a\in M$, since $x_n$ does not have a convergent subsequence to $a$, so there exists an $\epsilon_a>0$ such that the only element of $x_n$ contained in $B_{\epsilon_a}(a)$ is $a$ itself if
+    it is in $x_n$.
+    This is true since otherwise for every $\epsilon>0$ there is an $x_n$ in $B_\epsilon(a)$ which is not $a$ and so we could construct a subsequence $x_{n_k}$ for $\epsilon=\frac1k$.
+    But notice that
+    \[ M = \bigcup_{a\in M} B_{\epsilon_a}(a) \]
+    And since $M$ is compact, there exists a finite subcovering, ie. there exists $a_1,\dots,a_N\in M$ such that
+    \[ M = \bigcup_{n=1}^N B_{\epsilon_{a_n}}(a_n) \]
+    But since every ball contains at most once instance of $x_n$, this means there are at most $N$ different values of $x_n$.
+    So there must be some $a\in M$ where $x_n=a$ for an infinite number of $a$s, and so we can take a subsequence of $x_n$s which are equal to $a$.
+    Since this subsequence is constant, it is convergent (to $a$) in contradiction.
+
+    Now suppose that every sequence has a convergent subsequence, and let $\set{\mU_\lambda}_{\lambda\in\Lambda}$ be an open cover of $M$.
+    Then we claim that the open set has a Lebesgue number, let us assume the opposite.
+    Then for every $n$ there exists an $x_n\in M$ such that $B_{\frac1n}(x_n)$ is not contained in any $\mU_\lambda$.
+    We can assume $x_n$ is convergent since it has a convergent subsequence so it can be chosen to converge, let its limit be $x_0$.
+    Since $x_0\in M$ there is a $\lambda\in\Lambda$ such that $x_0\in\mU_\lambda$ which is open so there exists an $\epsilon>0$ such that $B_\epsilon(x_0)\subseteq\mU_\lambda$.
+    Then we can choose an $x_n$ for which $\frac1n,\metricof{x_n,x_0}<\frac\epsilon2$ then if $\metricof{x_n,y}<\frac1n$ then $\metricof{x_0,y}<\metricof{x_0,x_n}+\metricof{x_n,y}<\epsilon$ so
+    $B_{\frac1n}(x_n)\subseteq B_\epsilon(x_0)\subseteq\mU_\lambda$ which contradicts the assumption that the balls around $x_n$ are not contained in elements of the open cover.
+
+    Assume for the sake of a contradiction that there is no finite subcover.
+    Let $\epsilon>0$ be the Lebesgue number of this open cover and so
+    \[ M = \bigcup_{x\in X} B_\epsilon(x) \]
+    If there is a finite subcover of this open covering of balls, then since $B_\epsilon(x)\subseteq\mU_\lambda$ for some $\lambda\in\Lambda$, this generates some finite subcovering of the original
+    cover, so by our assumption there cannot be a finite subcover.
+    Now we choose $x_n\in M$ inductively such that $x_n$ is not in any $B_\epsilon(x_m)$ for $x_m\neq x_n$.
+    But since $x_n$ has a convergent subsequence, it must be Cauchy so there must be some $N$ for which $\metricof{x_n,x_m}<\epsilon$ which is a contradiction.
+    \qed
+
+\end{proof}
+
+The idea of for every sequence there existing a convergent subsequence is called \emph{sequential compactness}, and it is in general weaker than compactness (that is, it is implied by compactness).
+
+\begin{exam*}
+
+    Notice that if $X$ is the discrete metric space, then every open cover has a Lebesgue number, namely $\epsilon<1$.
+    But if $X$ is infinite then the open cover $\set{\set x}_{x\in X}$ has no finite subcover.
+    So the existence of a Lebesgue number is not sufficient for $X$ to be compact.
+
+\end{exam*}
+
+\begin{thrm*}
+
+    $A\subseteq\bR^n$ is compact if and only if $A$ is closed and bounded.
+
+\end{thrm*}
+
+\begin{proof}
+
+    If $A$ is compact, then take
+    \[ A\subseteq\bigcup_{a\in A}B_1(a) \]
+    Then since $A$ is compact there is a subcover where
+    \[ A\subseteq\bigcup_{n=1}^n B_1(a_n) \]
+    this is bounded since we can take the maximum distance between $a_n$s and add $2$ to get a bound for the diameter of $A$.
+    And we will show later on in more generality that compact sets are bounded in general.
+
+    Suppose $A$ is closed and bounded, then let $\set{x_m}_{m=1}^\infty$ be a sequence in $A$ then we can show that every element of the vectors of $x_n$ form a bounded sequence and therefore by the
+    completeness of $\bR$, for every $k$ there is a convergent subsequence $x_{m_j^{(k)}}^{(k)}$.
+    We can construct these subsequences as subsequences of $m_j^{(k-1)}$, and so we finally get a subsequence $m_j=m_j^{(n)}$ where $x_{m_j}^{(k)}$ converges for every $k$ to some $x^{(k)}$.
+    We know that pointwise convergence in $\bR^n$ is equivalent to convergence, so $x_{m_j}$ converges to $x$ (where the indexes of $x$ are $x^{(k)}$).
+    Since $A$ is closed, all its limit points are in $A$, so $x\in A$ and thus $x_n$ has a convergent subsequence in $A$, so $A$ is compact.
+    \qed
+
+\end{proof}
+
+\subsection{Topologies}
+
+The following definition is a generalization of the concept of open sets generated by metrics:
+
+\begin{defn*}
+
+    A \ppemph{topological space} is a pair $(X,\tau)$ where $X$ is a set and $\tau$ is a family of subsets of $X$ where
+    \benum
+        \item $\varnothing, X\in\tau$
+        \item If $\set{\mU_\lambda}_{\lambda\in\Lambda}$ is an arbitrary family of sets in $\tau$ then $\bigcup_{\lambda\in\Lambda}\mU_\lambda\in\tau$
+        \item If $\set{\mU_n}_{n=1}^N$ is a finite family of sets in $\tau$ then $\bigcap_{n=1}^N\mU_n\in\tau$
+    \eenum
+    $\tau$ is called a \ppemph{topology} on $X$, and a set $\mU\in\tau$ is called a \ppemph{open set}.
+
+\end{defn*}
+
+\begin{exam*}
+
+    If $M$ is a metric space, then the set of all open sets generated by its metric is a topology on $M$.
+
+\end{exam*}
+
+\begin{exam*}
+
+    Take an arbitrary set $X$ and the topology $\tau=\set{\varnothing, X}$.
+    This is called the \ppemph{trivial topology} on $X$.
+    No metric can generate this if $X$ is non-empty and not a singleton since this would imply that for every $x\in X$, every open ball around $x$ is $X$.
+    But if we take another $y\in X$ and take $r<\metricof{x,y}$ then $B_r(x)$ does not contain $y$ and therefore is not $X$.
+
+    Thus not every topology can be generated by a metric, but every metric generates a topology.
+
+\end{exam*}
+
+\begin{defn*}
+
+    A topological space $(X,\tau)$ is called \ppemph{metrizable} if there exists a metric $\rho$ on $X$ which generates $\tau$.
+
+\end{defn*}
+
+By the example above, not every topology is metrizable.
+
+\begin{exam*}
+
+    Given an arbitrary set $X$, the topology $\tau=\powsetof X$ is called the \ppemph{discrete topology} on $X$.
+    This topology is metrizable, as it is generated by the discrete metric on $X$.
+
+\end{exam*}
+
+\begin{defn*}
+
+    If $(X,\tau_1)$ and $(Y,\tau_2)$ are two topological spaces, then a function $f\colon X\longvarrightarrow Y$ is \ppemph{continuous} if for every $\mU\in\tau_2$, $f^{-1}(\mU)\in\tau_1$.
+    That is, the preimage of every open set is open.
+
+\end{defn*}
+
+\begin{defn*}
+
+    If $(X,\tau_1)$ and $(Y,\tau_2)$ are two topological spaces, then a function $f\colon X\longvarrightarrow Y$ is \ppemph{continuous} at $a\in X$ if and only if for every neighborhood $\mU\in\tau_2$ of
+    $f(a)$, there exists a neighborhood $\mO\in\tau_1$ of $a$ such that $f(\mO)\subseteq\mU$.
+
+\end{defn*}
+
+Notice that if $f$ is continuous at every $a\in X$ and if $\mU\in\tau_2$ then for every $a\in f^{-1}(\mU)$, there is a neighborhood $\mO_a\in\tau_1$ such that $f(\mO_a)\subseteq\mU$.
+And since
+\[ f^{-1}(\mU) = \bigcup_{a\in f^{-1}(\mU)} \mO_a \]
+so the preimage of $\mU$ is open as the union of open sets.
+
+And if $f$ is continuous and $a\in X$ let $\mU$ be a neighborhood of $f(a)$ then $\mO=f^{-1}(\mU)$ is a neighborhood of $a$ and $f(\mO)\subseteq\mU$.
+
+So $f$ is continuous if and only if it is continuous at every $a\in X$.
+
+\begin{prop*}
+
+    Every constant function is continuous.
+
+\end{prop*}
+
+
+\begin{proof}
+
+    Let $f(x)=a\in Y$ be a constant function.
+    Let $\mU$ be an open set in the codomain $Y$.
+    If $a\in\mU$ then $f^{-1}(\mU)=X$ which is open, and if $a\notin\mU$ then $f^{-1}(\mU)=\varnothing$ which is open.
+    So the preimage of every open set (and in fact every set) is open, so $f$ is continuous.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    Suppose $X$, $Y$, and $Z$ are topological spaces where $f\colon X\longto Y$ and $g\colon Y\longto Z$ are continuous, then so is $g\circ f\colon X\longto Z$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $\mU\subseteq Z$ is open, then $(g\circ f)^{-1}(\mU)=f^{-1}\bigl(g^{-1}(\mU)\bigr)$ (recall that these are preimages) is open since $g^{-1}(\mU)$ is open.
+    So the preimage of every open set is open as required.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    Suppose $(X,\tau)$ is a topological space, and $A\subseteq X$ is an arbitrary subset.
+    We denote
+    \[ \tau_A = \set{\mU\cap A}[\mU\in\tau] \]
+    then $(A,\tau_A)$ is a topological space and $\tau_A$ is called the \ppemph{subspace topology} of $A$.
+
+\end{defn*}
+
+$\tau_A$ is indeed a topology on $A$:
+\benum
+    \item It contains $\varnothing=\varnothing\cap A$ and $A=X\cap A$.
+    \item If $\set{\mU_\lambda\cap A}_{\lambda\in\Lambda}$ are open sets in $\tau_A$ then
+    \[ \bigcup_{\lambda\in\Lambda}\mU_\lambda\cap A=\parens{\bigcup_{\lambda\in\Lambda}\mU}\cap A \]
+    is also in $\tau_A$ since arbitrary unions of open sets are open.
+    \item If $\set{\mU_n\cap A}_{n=1}^N$ are open sets in $\tau_A$ then
+    \[ \bigcap_{n=1}^N \mU_n\cap A = \parens{\bigcap_{n=1}^N\mU_n}\cap A \]
+    is also in $\tau_A$ as finite intersections of open sets are open.
+\eenum
+
+Notice that if $A\subseteq B\subseteq X$, $\tau_A$ generated from $\tau_X$ is equal to $\tau_A'$ generated from $\tau_B$ since
+\[ \tau_A' = \set{\mU\cap A}[\mU\in\tau_B] = \set{\mU\cap B\cap A}[\mU\in\tau_X] = \set{\mU\cap A}[\mU\in\tau_X] = \tau_A \]
+
+\begin{exam*}
+
+    Suppose $A\subseteq X$ then the \ppemph{inclusion map} $\iota\colon A\longto X$ is defined by $\iota(x)=x$.
+
+    If $(X,\tau)$ is a topology, then $\iota$ is a continuous mapping from $(A,\tau_A)$ to $(X,\tau)$.
+    Let $\mU\in\tau$ be open, then
+    \[ \iota^{-1}(\mU)=\set{x\in A}[\iota(x)\in\mU]=\set{x\in A}[x\in\mU]=\mU\cap A \]
+    which is in $\tau_A$.
+    Thus $\iota$ is continuous.
+
+\end{exam*}
+
+Notice that if $\tau'$ is a topology on $A$ such that $\iota$ is continuous, then we showed that $\mU\cap A\in\tau'$ by above.
+Thus $\tau_A\subseteq\tau'$, and so $\tau_A$ is the minimal topology on $A$ for which $\iota$ is continuous.
+It may not be the only topology since the discrete topology $\tau'=\powsetof A$ also creates a topology where $\iota$ is continuous (in general, every mapping where the domain has the discrete topology is
+continuous).
+
+\begin{prop*}
+
+    If $f\colon X\longto Y$ is continuous and $A\subseteq X$ then $f\big|_A\colon A\longto Y$ is continuous as well.
+
+\end{prop*}
+
+This is trivial since $f\bigl|_A=f\circ\iota_A$ ($\iota_A$ is the inclusion mapping from $A$ to $X$) and the composition of continuous functions is continuous.
+
+\begin{prop*}
+
+    Suppose $f\colon X\longto Y$ is continuous and $f(X)\subseteq B\subseteq Y$, and let $\tilde f\colon X\longto B$ be the generated function, then $\tilde f$ is continuous.
+
+\end{prop*}
+
+The proof is simple, let $\mU\cap B\in\tau_B$ then $\tilde f^{-1}(\mU\cap B)=f^{-1}(\mU\cap B)=f^{-1}(\mU)\cap f^{-1}(B)=f^{-1}(\mU)$ since the preimage of $B$ is $X$.
+Since $f$ is continuous, this is open.
+So the preimage of every open set in $\tau_B$ is open and so $\tilde f$ is continuous as required.
+
+\end{document}
+

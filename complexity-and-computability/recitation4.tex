@@ -1,0 +1,172 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz-cd}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{conj}{Conjecture}{255,130,130}{150,0,0}{200,0,0}
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\sps{\texttt{\char32}}
+\def\sat{\text{SAT}}
+\def\is{\text{IS}}
+
+\def\PF{\mathbf{PF}}
+\def\PC{\mathbf{PC}}
+\def\P{\mathbf{P}}
+\def\NP{\mathbf{NP}}
+\def\NPH{\mathbf{NPH}}
+\def\NPC{\mathbf{NPC}}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mN{\mathcal{N}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=4
+
+\barcolorbox{255, 220, 220}{130, 0, 0}{200, 80, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Computability and Complexity}
+
+    \medskip
+    \textit{Recitation \thesection, Thursday August 10, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{defn}
+
+    A \ppemph{Hamiltonian cycle} is a Hamiltonian path which at the end returns to the first vertex.
+
+\end{defn}
+
+\def\dhc{\mathsf{DHC}}
+\def\dhp{\mathsf{DHP}}
+\begin{exercise*}
+
+    Show that the decision problem
+    \[ \dhc = \set{G}[\text{$G$ is a directed graph which has a Hamiltonian cycle}] \]
+    is $\NP$-complete.
+
+\end{exercise*}
+
+$\dhc$ is obviously in $\NP$.
+We will create a reduction from $\dhp$ to $\dhc$.
+Let $G=(V,E)$ be some graph, let us define $G'=(V',E')$ by
+\[ V' = V\dcup\set u,\quad E'=E\cup\set{(v,u),(v,u)}[v\in V] \]
+If $G$ is in $\dhp$ then suppose $P$ is the Hamiltonian path in $G$.
+Then $u\to P\to u$ is a Hamiltonian cycle in $G'$.
+
+And if $G'$ has a Hamiltonian cycle, then it is of the form $u\to P\to u$ (since it is a cycle, it has no start point).
+Then $P$ is a Hamiltonian path in $G$, as it must visit every vertex in $G$ (since $u\to P\to u$ is a Hamiltonian cycle), and visits them only once and does not visit $u$ so it is indeed a path in $G$ (since
+each vertex is visited only once in a Hamiltonian cycle).
+
+\def\hc{\mathsf{HC}}
+\begin{exercise*}
+
+    Show that the decision problem
+    \[ \hc = \set{G}[\text{$G$ is an undirected graph which has a Hamiltonian cycle}] \]
+    is $\NP$-complete.
+
+\end{exercise*}
+
+We will define a reduction from $\dhc$ to $\hc$.
+Suppose $G=(V,E)$ is a directed graph, then we define $G'=(V',E')$ by
+\[ V' = \set{v_{\rm in},v_{\rm out},v_{\rm mid}}[v\in V],\quad E' = \set{(u_{\rm out},v_{\rm in})}[(u,v)\in E]\cup\set{(v_{\rm in},v_{\rm mid}), (v_{\rm mid},v_{\rm out})}[v\in V] \]
+Now suppose $G$ has a Hamiltonian cycle $v_1\to v_2\to\cdots\to v_n\to v_{n+1}=v_1$.
+Then
+\[ v_{1,\rm in}\to v_{1,\rm mid}\to v_{1,\rm out}\to v_{2,\rm in}\to v_{2,\rm mid}\to v_{2,\rm out}\to\cdots\to v_{n,\rm in}\to v_{n,\rm mid}\to v_{n,\rm out}\to v_{1,\rm in} \]
+is a Hamiltonian cycle in $G'$.
+
+Now suppose $G'$ has a Hamiltonian cycle.
+Suppose it starts at $v_{1,\rm mid}$, then the next vertex must be $v_{1,\rm out}$ or $v_{1,\rm in}$, since these are the only neighbors of $v_{1,\rm mid}$, the cycle must contain both of these edges.
+And so we can choose whatever one we'd like to ``start'' with, suppose $v_{1,\rm mid}\to v_{1,\rm out}$.
+Then since $v_{1,\rm out}$ is connected only to in-nodes and $v_{1,\rm in}$.
+Since we've already visited $v_{1,\rm mid}$, we must go to $v_{2,\rm in}$.
+Now suppose we go to $v_{3,\rm out}$, then at some point later we must go to $v_{2,\rm mid}$ and the only way to get there is via $v_{2,\rm out}\to v_{2,\rm mid}$.
+But then from $v_{2,\rm mid}$ we cannot move (since we've visited both of its neighbors), but this is a cycle so it must end at $v_{1,\rm mid}$.
+So we must go from $v_{2,\rm in}$ to $v_{2,\rm mid}$.
+
+The same argument can be used recursively to state that in the Hamiltonian cycle, we move from $v_{i,\rm out}\to v_{i+1,\rm in}\to v_{i+1,\rm mid}\to v_{i+1,\rm out}$.
+Thus the Hamiltonian cycle has the form
+\[ v_{1,\rm mid}\to v_{1,\rm out}\to v_{2,\rm in}\to v_{2,\rm mid}\to v_{2,\rm out}\to\cdots\to v_{n,\rm in}\to v_{n,\rm mid}\to v_{n,\rm out}\to v_{1,\rm in}\to v_{1,\rm mid} \]
+And so
+\[ v_1\to v_2\to\cdots\to v_n\to v_1 \]
+is a Hamiltonian cycle in $G$.
+
+Thus $G$ has a Hamiltonian cycle if and only if $G'$ does.
+Thus $G\varmapsto G'$ is a Karp reduction from $\dhc$ to $\hc$ as required.
+
+\def\tsp{\mathsf{TSP}}
+\begin{exercise*}
+
+    We define the \ppemph{travelling salesman problem},
+    \[ \tsp = \set{(X,d,D)}[\vcenter{\advance\hsize by -5cm\relax
+    $X$ is a set of targets, $d$ is a (symmetric) distance function $X\times X\longto\bN$, and $D$ is a natural number such that there exists a cycle which visits every
+    target whose total distance/weight is at most $D$.}] \]
+    Show that $\tsp$ is $\NP$-complete.
+
+\end{exercise*}
+
+We define a reduction from $\hc$ to $\tsp$.
+Given a graph $G$, we define $X=V$ and $d(u,v)=1$ if $(u,v)\in E$ and otherwise $d(u,v)=\abs V+1$, and $D=\abs V$.
+Then if $G$ has a Hamiltonian cycle, then this cycle is also a cycle which visits every node in $X$, which is $V$, and its length is $\abs V$, so $(X,d,D)\in\tsp$.
+And if $X$ has a cycle which visits every node and has a distance $\leq\abs V$, then it can only use $(u,v)\in E$.
+Thus it is a cycle which visits every vertex in $G$, and it cannot visit a vertex twice as then its distance would be greater than $\abs V$.
+So this cycle is a Hamiltoniian cycle in $G$.
+
+\end{document}
+

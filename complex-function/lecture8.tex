@@ -1,0 +1,270 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{diam}{{\rm diam}}(\vert)
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+\newfunc{cis}{{\rm cis}}({})
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{sup}{{\rm sup}}\{\vert\}
+\newfunc{arg}{{\rm arg}}({})
+
+\font\bigbf = cmbx12 scaled 2000
+\@undervecc@def{underbar}\@linecap\@linecap
+
+\def\mO{{\cal O}}
+\def\mU{{\cal U}}
+\let\lineseg=\overleftrightvecc
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\qed{\hskip1cm\hbox{}\hfill$\blacksquare$}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=8
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Complex Functions}
+
+    \medskip
+    \textit{Lecture \thesection, Wednesday June 7, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{thrm*}[moreraTheorem,Morera's\ Theorem]
+
+    Let $f$ be a continuous function in an open set $D$, if for every $\Gamma$ which is a boundary of a rectangle in $D$, we have
+    \[ \int_\Gamma f\,dz = 0 \]
+    then $f$ is analytic in $D$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let $z_0\in D$ and take an $\epsilon>0$ small enough such that $D_\epsilon(z_0)\subseteq D$, then for every $z\in D_\epsilon(z_0)$ define
+    \[ F(z) = \int_{z_0}^z f(w)\,dw \]
+    where the path chosen is $[z_0,\Re(z)+i\Im(z_0)]+[\Re(z)+i\Im(z_0),z]$.
+    We have shown already that $F'(z)=f(z)$ for every $z$ in the disk, and thus $F$ is analytic in the disk.
+    Since the derivative of an analytic function is analytic, $f$ is analytic.
+    \qed
+
+\end{proof}
+
+Recall the following theorem from Calculus $3$:
+
+\begin{thrm*}[fubiniToneliTheorem,Fubini\ Toneli\ Theorem]
+
+    Suppose $f(x,y)$ is a real function continuous in the rectangle $R=[a_1,b_1]\times[a_2,b_2]\subseteq\overline\bR^2$ ($\overline\bR=\bR\dcup\set{\pm\infty}$), then
+    \[ \int_{a_1}^{b_1}\parens{\int_{a_2}^{b_2}\abs{f(x,y)}\,dy}\,dx = \int_{a_2}^{b_2}\parens{\int_{a_1}^{b_1}\abs{f(x,y)}\,dx}\,dy = \iint_R\abs{f(x,y)}\,dxdy \]
+    and if these integrals are finite then
+    \[ \int_{a_1}^{b_1}\parens{\int_{a_2}^{b_2}f(x,y)\,dy}\,dx = \int_{a_2}^{b_2}\parens{\int_{a_1}^{b_1}f(x,y)\,dx}\,dy = \iint_Rf(x,y)\,dxdy \]
+
+\end{thrm*}
+
+So for example let us define
+\[ f(z) = \int_0^\infty \frac{e^{zt}}{t+1}\,dt \]
+for $z=x+iy$ where $x<0$.
+It can be shown that $f$ is continuous.
+Note that
+\[ \abs{f(z)} \leq \int_0^\infty \frac{\abs{e^{zt}}}{t+1}\,dt = \int_0^\infty\frac{e^{xt}}{t+1}\,dt \leq \int_0^\infty e^{xt}\,dt = \frac{e^{xt}}x\Bigl|_0^\infty = -\frac1x \]
+thus the integral converges absolutely, and thus converges.
+So $f$ is well-defined.
+
+We will show that $f$ is analytic in its domain $D$ by \ppref{moreraTheorem}.
+Let $\Gamma$ be the boundary of a rectangle in $D$, then
+\[ \int_\Gamma\abs{f(z)}\,dz = \int_\Gamma\parens{\int_0^\infty\frac{e^{xt}}{t+1}\,dt}\,dz \leq \int_\Gamma-\frac1{\Re z}\,dz \]
+which is finite, and thus by \ppref{fubiniToneliTheorem} we can swap the order of integration and have
+\[ \int_\Gamma f(z)\,dz = \int_0^\infty\int_\Gamma\frac{e^{zt}}{t+1}\,dzdt = \int_0^\infty0\,dt = 0\]
+where the second equality is due to Cauchy's theorem since $\frac{e^{zt}}{t+1}$ is analytic within $\Gamma$.
+
+Thus by \ppref{moreraTheorem}, we have shown that $f$ is analytic in its domain.
+
+\begin{prop*}
+
+    Let $\set{f_n}_{n=1}^\infty$ be a sequence of analytic functions in a domain $D$.
+    And for every compact $K\subseteq D$, 
+    \[ \sup_{x\in K}\abs{f_n-f}\longto 0 \]
+    for some complex function $f$ on $D$ (ie. $f_n\varrightarrows f$ on every compact subspace of $D$), then $f$ is analytic on $D$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $z_0\in D$ then there exists a compact set $K_0$ such that $z_0\in K_0\subseteq D$ and in $K_0$ $f$ is the uniform limit of $f_n$, and since $f_n$ are continuous at $z_0$, $f$ is continuous at $z_0$.
+    Thus $f$ is continuous in $D$.
+    Let $\Gamma$ be the boundary of some rectangle $R$ in $D$ then since every rectangle is contained within some compact subspace of $D$, suppose $R\subseteq K_R$ for $K_R\subseteq D$ compact.
+    Then since $f_n\varrightarrows f$ in $K_R$, we have
+    \[ \int_\Gamma f(z)\,dz = \int_\Gamma \lim f_n(z)\,dz = \lim\int_\Gamma f_n(z)\,dz = \lim 0 = 0 \]
+    where the third equality is due to Cauchy.
+    Thus by \ppref{moreraTheorem}, $f$ is analytic in $D$.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    Suppose $f$ is continuous in an open set $D$ then suppose $L$ is a line in $D$.
+    If $f$ is analytic in $D\setminus L$ then $f$ is analytic in $D$.
+
+\end{prop*}
+
+\begin{proof}
+
+    We will assume that $L\subseteq\bR$ since $L$ is of the form $z(t)=(x_0,y_0) + t(a,b)$ for $(a,b)=e^{i\theta}$.
+    Let us look at $e^{-i\theta}(z(t)-x_0-iy_0) = te^{-i\theta}(a+ib)=t$.
+    Thus we can instead look at $\tilde f(z)=f(e^{-i\theta}(z-x_0-iy_0))$ which is just a shift and stretch of $f$, and thus the transform of $L$ is $\tilde L=e^{-i\theta}(L-x_0-iy_0)\subseteq\bR$.
+
+    Let $z_0\in L$.
+    We will show that $f$ is analytic in $D_r(z_0)$ for some $r>0$.
+    Note that $D_r(z_0)\cap L=(z_0-r,z_0+r)$.
+    Let $\Gamma$ be a rectangle $R$'s boundary in $D_r(z_0)$.
+    If $\varnothing=\overline R\cap L$ then $\overline R\subseteq D\setminus L$ and so $f$ is analytic in $\overline R$ and so by Cauchy $\int_\Gamma f=0$ by Cauchy.
+
+    Otherwise if one of $R$'s edges in on $L$, let us define a new rectangle $R_t$ with boundary $\Gamma_t$, which shares its edges with $R$ other than the edge touching $L$, which we move away by $t$ units.
+    Since $f$ is continuous on $\overline R$, which is compact, $f$ is uniformly continuous on $\overline R$.
+    Let
+    \[ \Delta = \int_\Gamma f - \int_{\Gamma_t}f \]
+    this is the integral of $f$ over the path which goes over the remaining edges of $R$ not removed by $R_t$ plus the reversed edge on $R_t$ parallel to $L$, 
+
+\end{proof}
+
+\subsection{Branches of the logarithm}
+
+We'd like to find a continuous inverse to $e^z$.
+But $e^z$ is not surjective, its image is $\bC\setminus\set0$, and it is periodic: $e^{z+2\pi ik}=e^z$.
+Thus we'd like to find a function such that
+\[ e^{\log z} = z \]
+for every $0\neq z\in\bC$.
+
+Suppose $\log=u+iv$ then suppose $re^{i\theta}$
+\[ e^{u(z)+iv(z)} = e^{u(z)}e^{iv(z)} = re^{i\theta} \]
+if and only if $e^{u(z)}=r$ and $v(z)-\theta=2\pi k$.
+Thus we can define $u(z)=\log\abs z=\log r$ and $v(z)=\argof z+2\pi k=\theta+2\pi k$.
+If $z\neq0$ then $r>0$ so this is well-defined for any choice of $k$.
+So all in all we have
+\[ \log(z) = \log(re^{i\theta}) = \log r+i\theta + i2\pi ik \]
+
+Suppose we have a circle $\abs z=R$, parameterized by $\gamma(\theta)=Re^{i\theta}$ then
+\[ \log(\gamma(0)) = \log R + 2\pi ik \]
+Despite this
+\[ \lim_{\theta\to2\pi^-}\log(\gamma(\theta)) = \lim(\log R+i\theta+i2\pi ik) = \log R + i2\pi(k+1) \neq \log(\gamma(0)) \]
+Thus the function we've defined is not continuous on any canonical circle.
+
+\begin{defn*}
+
+    We say that $f(z)$ is an \ppemph{analytic branch} of $\log(z)$ on a domain $D$ if $f$ is analytic on $D$ and for every $z\in D$, $e^{f(z)}=z$.
+
+\end{defn*}
+
+\begin{lemm*}
+
+    If $f$ iz an analytic branch of $\log$ on $D$ then for every $k\in\bZ$, so is $g(z)=f(z)+2\pi ik$.
+
+\end{lemm*}
+
+This is trivial.
+
+\begin{thrm*}
+
+    Let $D\subseteq\bC$ be a simple domain where $0\notin D$.
+    For every choice of $z_0\in D$ and choice of $\log(z_0)$ define
+    \[ f(z) = \int_{z_0}^z\frac1w\,dw + \log(z_0) \]
+    where the integral is integrated over a smooth curve in $D$, is an analytic branch of $\log$ in $D$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Since $0\notin D$, $\frac1w$ is analytic.
+    Since the choice of smooth curve does not matter in simple domains $f$ is well-defined.
+    We have shown that
+    \[ F(z) = \int_{z_0}^z\frac1w\,dw \]
+    is an antiderivative of $\frac1z$ in $D$ and thus so is $f(z)$, so $f$ is analytic in $D$.
+
+    Let us define
+    \[ g(z) = ze^{-f(z)} \]
+    then $g$'s derivative is
+    \[ g'(z) = e^{-f(z)}(1+z(-f'(z))) = e^{-f(z)}\parens{1-z\cdot\frac1z} = 0 \]
+    and so $g$ is constant, suppose $g\equiv c$.
+    For $z=z_0$ we get that
+    \[ g(z_0) = z_0e^{-f(z_0)} = z_0e^{-\log(z_0)} = c \]
+    if and only if $z_0=ce^{\log(z_0)}$ if and only if $z_0=cz_0$ so $c=1$.
+    Thus $g\equiv 1$ and so
+    \[ ze^{-f(z)} = 1 \implies e^{f(z)} = z \]
+    for every $z\in D$ as required.
+
+\end{proof}
+
+\begin{lemm*}
+
+    If $f_1$ and $f-2$ are two analytic branches of $\log$ in $D$ then $f_1(z)-f_2(z)=2\pi ik$ for every $z\in D$ for some $k\in\bZ$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Notice that
+    \[ e^{f_1(z)-f_2(z)} = \frac{e^{f_1(z)}}{e^{f_2(z)}} = \frac zz = 1 \]
+    Recall $e^u=1$ if and only if $u=2\pi ik$ for some $k\in\bZ$.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    For an analytic function $G\colon V\longto V$ surjective, we define an analytic branch of $G^{-1}$ on a domain $V_1\subseteq V$ as an analytic function $g\colon V_1\longto V$ such that for every
+    $z\in V_1$, $G(g(z))=z$.
+
+\end{defn*}
+
+For example take $G(z)=z^2$ for $V=\bC$ and then for an analytic branch of $\log$ on a domain $0\notin D$, $f$, we can define
+\[ g(z) = \exp\parens{\frac12 f(z)} \]
+and this defines a branch of $G^{-1}$:
+\[ G(g(z)) = \exp(f(z)) = z \]
+
+\begin{prop*}
+
+    For every simply connected domain $D$ where $0\notin D$, $\sqrt z$ has two branches given by the formula above.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $D$ be such a domain, and $f$ a branch of $\log$.
+    Since every other branch of $\log$ is of the form $f_k=f+2\pi ik$, we have
+    \[ g_k(z) = \exp\parens{\frac12 f_k(z)} = \exp\parens{\frac12f(z)+\pi ik} = \exp\parens{\frac12f(z)}\exp(\pi ik) \]
+    so all $k$ even give the same $g_k$ and all $k$ odd give the same $g_k$.
+    \qed
+
+\end{proof}
+
+\end{document}
+

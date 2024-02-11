@@ -1,0 +1,143 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=1.5cm, vertical margin=1.5cm}
+\parindent=0cm
+\parskip=3pt plus 2pt minus 2pt
+
+\input pdfmsym
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+
+\footline={}
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+\setcounter{section}{3}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{\bppbox{rgb{1 .7 .7}}{rgb{1 0 0}}{rgb{.8 0 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Introduction to Stochastic Processes}
+    \smallskip
+    \centerline{\setfont{it}Assignment \the\counter{section}}
+    \centerline{\setfont{it}Ari Feiglin}
+
+\eppbox}
+
+\bigskip
+
+\bexerc
+
+    Given an undirected graph $G=(V,E)$, what are the requirements for the simple random walk on it to
+    \benum
+        \item be irreducible?
+        \item contain a transient state?
+        \item be $2$-periodic?
+        \item be $3$-periodic?
+        \item be aperiodic?
+    \eenum
+
+\eexerc
+
+\benum
+    \item A Markov chain is irreducible if and only if it is connected (as $S$ is by definition closed).
+    Since for every $a,b\in V$, $a\to b$ if and only if $a$ and $b$ are connected in $G$ (as if there exists a path of length $n$ then $P^n(a\to b)>0$).
+    Thus in order for the walk to be irreducible, $G$ must be connected (these are equivalent).
+
+    \item Suppose $G$ contains a transient state $a\in V$.
+    Then define $C=\set{b\in V}[a\to b]$, and since $C\subseteq V$, $C$ is finite.
+    And $C$ must be closed: if $b\in C$ and $b\to b'$ then $a\to b\to b'$ and so $a\to b'$ meaning $b'\in C$.
+    Therefore this means $C$ contains a recurrent state as a finite closed set.
+    But if $b\in C$ is recurrent, since $a\to b$ and therefore $b\to a$ since $G$ is undirected, we must have that $a$ is recurrent, in contradiction.
+    So $G$ cannot have a transient state.
+
+    \item We claim that $G$ is $2$-periodic if and only if it contains no odd cycles.
+    Any cycle containing $a$ of length $n$ means that $n\in\tau(a)=\set{t\geq1}[P^t(a\to a)>0]$, and so $d(a)\divides n$.
+    So if $G$ is $2$-periodic, it cannot contain odd cycles as $2$ must divide the length of any cycle.
+    And if $G$ contains no odd cycles, then for every $a\in V$, $\set{a,a}$ cannot be an edge as it is a $1$-cycle, and so $a$ must be connected to some $b\neq a$.
+    But then $a,b,a$ is a $2$-cycle and so $P^2(a\to a)>0$ and therefore $2\in\tau(a)$.
+    And since all cycles are even, this means that $\tau(a)$ contains only even numbers, so $d(a)=2$.
+
+    \item $G$ must contain two vertices $a,b$ such that $\set{a,b}\in E$ ($a$ and $b$ need not be distinct) then $a,b,a$ is a path and so $2\in\tau(a)$.
+    Thus $d(a)\neq3$ as it doesn't divide $2$.
+
+    \item We already showed that $2\in d(a)$ for every $a\in V$.
+    So for every $a\in V$, either $d(a)=2$ or $d(a)=1$.
+    So $G$ is aperiodic if and only if there exists a vertex $a$ whose period is $1$ (for the converse, if $d(a)=1$ then either all vertices have degree one or some vertices have different periods, and in
+    either case the graph is then aperiodic).
+    This is if and only if there exists a path of odd length (since $2\in\tau(a)$, $d(a)=2$ if and only if there exists an odd number in $\tau(a)$, which corresponds to an odd cycle).
+    So $G$ is aperiodic if and only if there exists an odd cycle.
+\eenum
+
+\bexerc
+
+    Cookie Monster is collecting cookies.
+    At every step, he either buys a new cookie or eats all the cookies he has collected, each with the same probability (when he has no cookies, he buys one with probability $1$).
+    \benum
+        \item What is the probability that within a finite amount of time, he will have half a million cookies?
+        \item If Cookie Monster starts with $3$ cookies, what is the expected time that it will take him to return to having $3$ cookies?
+        \item One day Cookie Monster decides that he will limit himself to only a million cookies, and once he gets to a million cookies, he eats them all.
+        How will your previuous answers change?
+    \eenum
+
+\eexerc
+
+\benum
+    \item Let us define $X_n$ to be the number of cookies Cookie Monster has on the $n$th step.
+    So
+    $$ \probof{X_n=i+1}[X_{n-1}=i] = \frac12,\quad\probof{X_n=0}[X_{n-1}=i] = \frac12,\quad \probof{X_n=1}[X_{n-1}=0] = 1\qquad (i>0) $$
+    This is asking for $\probof{T_{\frac12{\rm mil}}}[X_0=0]$.
+    We claim that all states (which are ${\bb N}_{\geq0}$) are recurrent, meaning that this probability is $1$.
+    Since $0$ is connected to all the states, it is sufficient to show that $0$ is recurrent.
+    Notice that the probability that $T_0>n$ is $\frac12^n$, and by the continuity of probability, $\probof{T_0=\infty}[X_0=0]=0$.
+    Thus $\probof{T_0<\infty}[X_0=0]=1$ and so $0$ is recurrent, therefore so is half a million, so the probability is one.
+
+    \item Let us define $e_k=\expecof{T_k}[X_0=0]$.
+    Let us denote $t\coloneqq T_k$, and so ($\expecof[t]{T_{k+1}}\coloneqq\expecof{T_{k+1}}[T_k]$, and all probability is implicitly under the assumption that $X_0=0$),
+    $$ \expecof[t]{T_{k+1}} = \frac12\expecof[t]{T_{k+1}}[X_{t+1}=k_1] + \frac12\expecof[t]{T_{k+1}}[X_{t+1}=0] = \frac12(t+1) + \frac12\expecof[t]{T_{k+1}}[X_{t+1}=0] $$
+    Now, $\expecof[t]{T_{k+1}}[X_{t+1}=0]=\expecof[t]{T_{k+1}}+t+1$ since this is like starting over but having ``wasted'' $t+1$ steps (due to homogeneity).
+    Thus
+    $$ \expecof[t]{T_{k+1}} = \frac12\expecof[t]{T_{k+1}} + t + 1 \implies \expecof[t]{T_{k+1}} = 2t + 2 $$
+    By the law of total expectation, we then get $\expecof{T_{k+1}}=2\expecof{T_k}+2$, so $e_{k+1}=2e_k+2$.
+    Solving this recurrence we get $e_k=2^k+2^{k-1}-2$.
+
+    Now, let us define $\tilde e_k=\expecof{T_k}[X_0=3]$, so we are attempting to comput $\tilde e_3$.
+    Then we get that, now with probability being conditioned under $X_0=3$,
+    $$ \expecof[t]{T_{k+1}} = \frac12\expecof[t]{T_{k+1}}[X_{t+1}=k_1] + \frac12\expecof[t]{T_{k+1}}[X_{t+1}=0] = \frac12(t+1) + \frac12(e_{k+1}+t+1) = t+1 + \frac12e_{k+1} $$
+    Thus again by the law of total expectation, $\tilde e_{k+1}=\tilde e_{k+1}+2^k+2^{k-1}$.
+    Now, notice that $\probof[3]{T_0=k}=\frac1{2^k}$ since in order for $T_0=k$, Cookie Monster must buy $k-1$ cookies and then eat them all, so $\frac1{2^{k-1}}\cdot\frac12$.
+    Thus $T_0\,|\,X_0=3\sim\Geoof{\frac12}$ and so $\tilde e_0=2$.
+    And so we get from our recurrence that $\tilde e_1=3,\tilde e_2=6,\tilde e_3=12$.
+    So the answer is $12$.
+
+    \item For the first subquestion, the answer will not change as Cookie Monster will reach half a million cookies before one million, and so all the probabilities will remain the same.
+    For the second subquestion, all the computations remain valid until computing $\probof[3]{T_0=k}$.
+    While for $k\leq 1{\rm mil}-2$ this remains the same, for $k=1{\rm mil}-1$ this is just $\probof[3]{T_0=k}=\frac1{2^{k-1}}$, as the probability of returning to zero is one.
+    And for larger $k$ it is zero.
+    Thus the difference between this new $\expecof[3]{T_0}$ by
+    $$ \frac{a}{2^{a-1}} + \sum_{k=a+1}^\infty\frac k{2^k} \qquad (a=1{\rm mil}-1) $$
+    this is very very small, so the change in the answer is negligible.
+\eenum
+
+\bexerc
+
+    Let $p\in[0,1]$ and $X_n$ be a random walk on ${\bb Z}$ where the transition probabilities are
+    $$ P(i,j) = \cases{p & $j=i+1,i>0$\cr 1-p & $j=i-1,i>0$\cr \frac12 & $j=i+1,i\leq0$\cr \frac12 & $j=i-1,i\leq0$\cr 0 & $\abs{i-j}\neq1$} $$
+    Determine, for each $p$, whether or not $0$ is transient or recurrent.
+
+\eexerc
+
+If $p>\frac12$, then $0$ must be transient.
+This is as $0\to1$ and $1$ is transient:
+$$ \probof{T_1<\infty}[X_0=1] = p\probof{T_1<\infty}[X_1=2] + (1-p)\probof{T_1<\infty}[X_1=0] $$
+The probability being summed on the left is the same if we replaced $X_n$ with a random walk on ${\bb Z}$ of probability $p$: all the probabilities until it hits $1$ again are the same.
+Now since $p>\frac12$, if we were to replace this with a random walk of probability $p$, $\probof{T_1<\infty}[X_1=2]\leq\probof{T_1<\infty}[X_1=1]$.
+And since all states in a random walk of probability $p$ are transient, this means that this is less than $1$, and so $\probof{T_1<\infty}[X_0=1]<1$ so $1$ is transient and therefore so is $0$.
+
+If $p\leq\frac12$, then the probability of returning to zero if we go to the right is more than it would be on a fair walk.
+And the left is a fair walk.
+We showed last assignment that in a fair walk, all states are recurrent, so $0$ must be a recurrent state.
+
+\bye
+

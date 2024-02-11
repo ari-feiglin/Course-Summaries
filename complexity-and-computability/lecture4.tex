@@ -1,0 +1,264 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz-cd}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{conj}{Conjecture}{255,130,130}{150,0,0}{200,0,0}
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\sps{\texttt{\char32}}
+\def\sat{\mathsf{SAT}}
+\def\is{\mathsf{IS}}
+
+\def\PF{\mathbf{PF}}
+\def\PC{\mathbf{PC}}
+\def\P{\mathbf{P}}
+\def\NP{\mathbf{NP}}
+\def\NPH{\mathbf{NPH}}
+\def\NPC{\mathbf{NPC}}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mN{\mathcal{N}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=4
+
+\barcolorbox{255, 220, 220}{130, 0, 0}{200, 80, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Computability and Complexity}
+
+    \medskip
+    \textit{Lecture \thesection, Thursday August 10, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\def\threesat{\mathsf{3SAT}}
+Let us define the following decision problem,
+\[ \threesat = \set{\phi}[\vcenter{\advance\hsize by-3cm\relax $\phi$ is a satisfiable boolean formula in CNF, and each part of the conjunction is the disjunction of at most three literals}] \]
+This is a restriction of the decision problem $\sat$.
+We've actually already proved that $\threesat$ is $\NP$-complete since our proof of the Cook-Levin theorem actually gave us a reduction from CSAT to $\threesat$, as our reduction to $\sat$ defined a formula
+where each part of the conjunction is the disjunction of three literals.
+This shows that $\sat$ is not $\NP$-hard since we can't restrict the number of literals in each disjunction, as $\threesat$ is also $\NP$-hard.
+
+But it turns out that
+\[ \mathsf{2SAT} = \set{\phi}[\vcenter{\advance\hsize by-3cm\relax $\phi$ is a satisfiable boolean formula in CNF, and each part of the conjunction is the disjunction of at most two literals}] \]
+is in $\P$.
+
+\def\clique{\mathsf{Clique}}
+\begin{exam*}
+
+    Let us define the following decision problem,
+    \[ \clique = \set{(G,k)}[\text{$G$ is an unordered graph with a clique whose size is at least $k$}] \]
+    then $\clique$ is $\NP$-complete.
+
+    Obviously $\clique$ is in $\NP$, as we can define the verifier $V\bigl((G,k),C\bigr)$ and verify that $C$ is a clique of $G$ of size $\geq k$.
+    Since $\abs C\leq\abs G$ for a clique, and this can be done in polynomial time on $\abs C$, this is a polynomial proof system as required.
+
+    Let us define a reduction from $\is$ to $\clique$, meaning $\is\leq\clique$ and so $\clique$ is $\NP$-hard.
+    Given an input $\bigl(G=(V,E),k\bigr)$ we define the graph $G'=(V,E^c)$.
+    Then $(G,k)\in\is$ if and only if $(G',k)\in\clique$ (ie. $(G,k)\varmapsto(G',k)$ is a Karp reduction from $\is$ to $\clique$).
+    If $(G',k)\in\clique$ then suppose $C$ is a clique of $G$ of size $\geq k$, then for every $u,v\in C$ then $(u,v)\in E^c$ and so $(u,v)\notin E$.
+    So $C$ is an independent set of size $\geq k$ in $G'$, and so $(G,k)\in\is$ as required.
+    The proof for the converse is similar.
+
+    Thus $\clique$ is indeed $\NP$-complete as required.
+
+\end{exam*}
+
+\begin{defn*}
+
+    If $G=(V,E)$ is a graph, a \ppemph{vertex cover} is a set of vertices $S$ which touches every edge in $G$.
+    In other words, for every $(u,v)\in E$, either $u$ or $v$ is in $S$.
+
+\end{defn*}
+
+\def\vertcover{\mathsf{VertexCover}}
+\begin{exam*}
+
+    We define the following decision problem,
+    \[ \vertcover = \set{(G,k)}[\text{$G$ has a vertex cover whose size is at most $k$}] \]
+    We will show that $\vertcover$ is $\NP$-complete.
+
+    It is easy to see that $\vertcover$ is in $\NP$.
+    Notice that $C$ is a vertex covering if and only if $V\setminus C$ is an independent set: if $u,v\in V\setminus C$ then $(u,v)\notin E$ (as then either $u$ or $v$ would be in $C$).
+    And if $V\setminus C$ is an independent set, then for every $(u,v)\in E$ then $u$ or $v$ cannot be in $V\setminus C$ (ie. one is in $C$) as $V\setminus C$ is independent.
+
+    So $G$ has a vertex covering of size $k$ if and only if it has an independent set of size $\abs V-k$, and therefore the mapping $(G,k)\varmapsto(G,\abs V-k)$ is a Karp reduction from $\is$ to
+    $\vertcover$, and therefore $\vertcover$ is $\NP$-complete as required.
+
+\end{exam*}
+
+\begin{defn*}
+
+    A \ppemph{dominating set} of a graph $G=(V,E)$ is a set of vertices $S$ such that for every $u\in V$, either $u$ is in $S$ or $u$ has a neighbor which is in $S$.
+
+\end{defn*}
+
+\def\domset{\mathsf{DominatingSet}}
+\begin{exam*}
+
+    We define the following decision problem,
+    \[ \domset = \set{(G,k)}[\text{$G$ has a dominating set whose size is at most $k$}] \]
+    We will show that $\domset$ is $\NP$-complete.
+
+    Again, it is easy to see that $\domset$ is in $\NP$.
+    We will prove this by defining a reduction from $\vertcover$ to $\domset$.
+    Notice that if $C$ is a vertex cover, and there are no isolated vertices, then $C$ is a dominating set: for $u\in V$ there exists a $(u,v)\in E$ and thus $u\in C$ or $v\in C$ as $C$ is a vertex cover.
+
+    Suppose $G=(V,E)$ is a graph (without isolated vertices), we define a new graph $G'=(V',E')$ where
+    \[ V' = V\cup\set{uv}[(u,v)\in E],\quad E'=E\cup\set{(u,uv),(uv,v)}[(uv)\in E] \]
+    So for every edge in $G$, we insert a vertex which is also connected to both ends of the edge.
+    We claim that $(G,k)\varmapsto(G',k)$ is a Karp reduction from $\vertcover$ to $\domset$.
+
+    If $G=(V,E)$ has isolated vertices, then we remove the isolated vertices and then construct $G'$.
+    Since a vertex cover need not contain isolated vertices, we can assume that they don't (we are minimizing the size of the vertex covers and dominating sets).
+
+    If $(G,k)\in\vertcover$ then the vertex cover of size $\leq k$ in $G$ is also a dominating set in $G'$.
+    Suppose that $C$ is a vertex cover in $G$, then for every $x\in V'$, if
+    \benum
+        \item $x=u\in V$ then since $C$ is a vertex cover, and $u$ is not isolated, there exists a $(u,v)\in E$ and so $u\in C$ or $v\in C$ as required.
+        \item $x=uv$ then since $(u,v)\in E$, either $u$ or $v$ is in $C$ and so $x$ has a neighbor in $C$, as required.
+    \eenum
+    and so $C$ is a dominating set in $G'$.
+    And therefore $(G',k)\in\domset$ as required.
+
+    And if $(G',k)\in\domset$ then let $S$ be a dominating set of size $\leq k$ in $G'$, then let us define a new set $S'$, where for every $x\in S$ if
+    \benum
+        \item $x=u\in V$, add $u$ to $S'$.
+        \item $x=uv$ then add either $u$ or $v$ to $S'$.
+    \eenum
+    Then $\abs{S'}\leq\abs S\leq k$, and $S'$ is a vertex cover of $G$: if $(u,v)\in E$ then since $uv\in V'$ and $S$ is a dominating set, either $uv\in S$, or $u\in S$, or $v\in S$.
+    This means that either $u\in S'$ or $v\in S'$, and thus $S'$ is indeed a vertex cover of $G$.
+    Therefore $(G,k)\in\vertcover$ as required.
+
+\end{exam*}
+
+\begin{defn*}
+
+    A \ppemph{Hamiltonian path} in a graph is a path which visits every vertex exactly once.
+
+\end{defn*}
+
+\def\dhp{\mathsf{DHP}}
+\begin{exam*}
+
+    We define the decision problem
+    \[ \dhp = \set{G}[\text{$G$ is a directed graph which has a Hamiltonian path}] \]
+    We claim that this is $\NP$-complete.
+
+    It is easy to see that this is in $\NP$.
+    We will define a reduction from $\sat$ to $\dhp$.
+    Suppose we are given a boolean formula in CNF,
+    \[ \phi = \bigwedge_{i=1}^m\bigvee_{j=1}^n\epsilon_{ij}x_j \]
+    We define a graph $G=(V,E)$ where we define the following types of vertices:
+    \benum
+        \item For each variable $x_i$ we define $3m+3$ copies of it as vertices, which we will denote $x_{i,1},\dots,x_{i,3m+3}$.
+        \item For $i=1,\dots,m$ we add a vertex $b_i$ which corresponds to the $i$th disjunction in $\phi$.
+        \item We add start and end nodes, $s$ and $t$.
+    \eenum
+    We also define the following types of edges
+    \benum
+        \item For each variable $x_i$, we define the edges $(x_{i,j},x_{i,j+1})$ and $(x_{i,j+1},x_{i,j})$.
+        \item For each variable $x_i$, we define the edges $(x_{i,1},x_{i+1,1})$, $(x_{i,1},x_{i+1,3m+3})$, $(x_{i,3m+3},x_{i+1,1})$, and $(x_{i,3m+3},x_{i+1,3m+3})$.
+        \item For each disjunction $D_i$ and each variable $x_j$ which appears in $D_i$, then
+        \benum
+            \item if $x_j$ appears in $D_i$ as-is, then we add edges $(x_{j,3i},b_i)$ and $(b_i,x_{j,3i+1})$.
+            \item if $\neg x_j$ appears in $D_i$, then we add edges $(x_{j,3i+1},b_i)$ and $(b_i,x_{j,3i})$.
+        \eenum
+        \item We add edges $(s,x_{1,1})$ and $(s,x_{1,3m+3})$, and $(x_{n,1},t)$ and $(x_{n,3m+3,t})$.
+    \eenum
+
+    Now, if $\phi\in\sat$ then suppose $\tau$ satisfies it.
+    Then we define a Hamiltonian path in $G$ as follows:
+    \benum
+        \item We start at $S$.
+        \item For every $i=1,\dots,n$ if $\tau_i$ is true then we move on the row $x_{i,1},\dots,x_{i,3m+3}$ from left to right.
+        Otherwise we move from right to left.
+
+        At each $x_{i,j}$ we check if we can visit some $b_k$ and continue (ie. if we are going from left to right, we must check if we can go from $b_k$ to $x_{i,j+1}$).
+        If we can then we go to that $b_k$ and then $x_{i,j\pm1}$ (if we are going from left to right, then it is $+1$, and right to left is $-1$).
+
+        If we can't go to some $b_k$, then we go to the next $x_{i,j\pm1}$ (again, the sign depends on the direction of movement).
+        If $j\pm1=0$ or $3m+4$ (ie we've reached the end of the row), then we go to $x_{i+1,1}$ or $x_{i+1,3m+3}$ depending on whether on the row $x_{i+1,1},\dots,x_{i+1,3m+3}$ depending on if we are moving
+        left or right on the row for $x_{i+1,j}$.
+        \item Once we get to $x_{n,1}$ or $x_{n,3m+3}$, and this is the final vertex in $x_{n,j}$, then we go to $t$.
+    \eenum
+    This is a well-defined path.
+    We claim it is Hamiltonian.
+    Since we necessarily traverse every vertex of the form $x_{i,j}$ or $s$ or $t$, we must confirm that we also visit every vertex of the form $b_i$.
+    For every $b_i$, some $\epsilon_{ij}x_j$ must be satisfied by $\tau$, and so if we let $j$ the minimum such value, we will visit $b_i$ on the row of $x_j$.
+
+    Now suppose $G$ has a Hamiltonian path.
+    Suppose that from $x_{i,j}$ we visit $b_k$, then from $b_k$ we go to $x_{a,b}$.
+    Suppose for the sake of a contradiction that $a\neq i$.
+    Further suppose that on the $x_i$th row, we are going from left to right.
+    So let $j$ be the minimum such $j$ where this occurs on the $x_i$th row, so by this point we must have visited all $x_{i,j'}$ for $j'\leq j$.
+    Then at some other point we must go back to the $x_i$ row, and since $j$ is the minimum where this anomaly occurred, we must go to $x_{i,j'}$ for some $j'>j$ and visit $x_{i,j}$ from its right.
+    But then from $x_{i,j}$ we will not have a place to go (since it can only go to $x_{i\pm1,j}$, which have been visited), and thus we cannot have reached $t$ (this must be the final vertex in the
+    Hamiltonian cycle).
+
+    So this means that if we go from $x_{i,j}$ to $b_k$ then we return to $x_{i\pm1,j}$, depending on the direction of movement in the $x_i$th row.
+    So if we go from left to right in $x_i$, let $\tau_i$ be true, and otherwise let it be false.
+    This satisfies $\phi$ as each disjunction ($b_i$) is satisfied.
+
+    Thus $\phi\varmapsto G$ is a reduction from $\sat$ to $\dhp$, and so $\dhp$ is $\NP$-complete.
+
+\end{exam*}
+
+\end{document}
+

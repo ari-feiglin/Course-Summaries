@@ -1,0 +1,402 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\usepackage{tikz-cd}
+
+\catcode`\@=11
+\input pdfmsym
+
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\slfrac#1#2{\left.{}^{#1}\mkern-4mu\middle/\mkern-3mu{}_{#2}\right.}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\newfunc{eulerg}{{\rm Euler}}({})
+\newfunc{order}o({})
+\newfunc{ker}{{\rm Ker}}({})
+\newfunc{image}{{\rm Im}}({})
+\newfunc{lattice}{{\cal L}}(\vert)
+\newfunc{powset}{{\cal P}}(\vert)
+\newfunc{units}{{\cal U}}(\vert)
+\newfunc{sign}{{\rm sgn}}({})
+\newfunc{aut}{{\rm Aut}}({})
+\newfunc{speclinear}{{\rm SL}}({})
+\newfunc{genlinear}{{\rm GL}}({})
+\newfunc{projlinear}{{\rm PGL}}({})
+\newfunc{specprojlinear}{{\rm PSL}}({})
+\newfunc{core}{{\rm Core}}(\vert)
+\newfunc{inner}{{\rm Inn}}(\vert)
+\newfunc{outer}{{\rm Out}}(\vert)
+\newfunc{conj}{{\rm conj}}({})
+\newfunc{fp}{{\rm FP}}({})
+
+\def\maxdivs{\mathrel{\|}}
+
+\let\normalsub=\trianglelefteq
+\def\normal{\mathrel\triangleleft}
+\let\mmorph=\longvarhookrightarrow
+
+\begin{document}
+
+\c@section=13
+
+\barcolorbox{220, 220, 255}{0, 0, 130}{80, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Group Theory}
+
+    \medskip
+    \textit{Lecture \thesection, Friday January 20 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{Subgroups}
+
+\begin{defn*}
+
+    A group is \ppemph{solvable} if it has a subnormal series with abelian factors.
+
+\end{defn*}
+
+Note that this means that an abelian group is necessarily solvable since the series $\set e\normal A$ is a subnormal series whose factor is isomorphic to $A$.
+We can further prove inductively that a finite abelian group has cyclic factors, we start by taking a non-trivial element $a\in A$ and constructing $\set e\normal\cycle a\normal A$.
+Then the factor $\slfrac A{\cycle a}$ is abelian and so inductively has a subnormal series with cyclic factors:
+\[ \set{\cycle a} = \slfrac{A_n}{\cycle a} \normal \cdots \normal \slfrac{A_0}{\cycle a} = \frac{A}{\cycle a} \]
+note that these factors are
+\[ \slfrac{\slfrac{A_i}{\cycle a}}{\slfrac{A_{i+1}}{\cycle a}} \cong \slfrac{A_i}{A_{i+1}} \]
+thus the quotient of 
+\[ \set e \normal \cycle a = A_n \normal \cdots \normal A_0 = A \]
+are cyclic, and this is a subnormal series of cyclic factors, we can further refine this series to a series of cyclic groups of prime order (since these are the only simple cyclic groups).
+Thus, if a finite group is solvable, it has a subnormal series of abelian factors, which in turn have subnormal series with factors of cyclic groups of prime order.
+This condition is obviously sufficient, and so we summarize this result in the following proposition:
+
+\begin{prop*}
+
+    A finite group is solvable if and only if it has a subnormal series with factors which are cyclic groups of prime order.
+
+\end{prop*}
+
+\begin{lemm*}
+
+    Suppose $A,B,C\leq G$ where $C$ is normal and $A\subseteq B$, then
+    \[ (B\cap C)A = B\cap(CA) \]
+
+\end{lemm*}
+
+Note that this multiplication is a group because $C$ is normal.
+
+\begin{proof}
+
+    We already know $(B\cap C)A\subseteq B\cap(CA)$ since $B\cap C\subseteq B, CA$ and $A\subseteq B,CA$.
+    Now suppose $b\in B\cap(CA)$, then $b=ca$ for some $c\in C$ and $a\in A$.
+    Then $c=ba^{-1}\in B$, so $c\in B\cap C$ so $ca\in(B\cap C)A$ as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{prop*}
+
+    Suppose $N$ is a normal subgroup of $G$, then $G$ is solvable if and only if both $N$ and $\slfrac GN$ are solvable.
+
+\end{prop*}
+
+\begin{proof}
+
+    First, suppose $G$ is solvable, so there is a subnormal series
+    \[ \set e = G_t \normal G_{t-1} \normal \cdots \normal G_1 \normal G_0 = G \]
+    where $\slfrac{G_i}{G_{i+1}}$ are abelian.
+    Then we can take the two series: $G_{i+1}\cap N\normal G_i\cap N$, and $\slfrac{G_{i+1}\cdot N}N\normal\slfrac{G_i\cdot N}N$.
+    Note that by the lemma above:
+    \[ (G_i\cap N)G_{i+1} = G_i\cap(N\cdot G_{i+1}) \]
+    And since $G_{i+1}\cap N=G_{i+1}\cap(G_i\cap N)$ (since $G_{i+1}\subseteq G_i$) so:
+    \[ \slfrac{G_i\cap N}{G_{i+1}\cap N} = \slfrac{G_i\cap N}{G_{i+1}\cap(G_i\cap N)} \cong \slfrac{(G_i\cap N)G_{i+1}}{G_{i+1}} = \slfrac{G_i\cap(N\cdot G_{i+1}}{G_{i+1}} \leq \slfrac{G_i}{G_{i+1}} \]
+    and so the factors of $G_i\cap N$ are abelian, as the subgroups of abelian groups.
+    This defines a subnormal series with abelian factors:
+    \[ \set e = G_t\cap N \normal G_{t-1}\cap N \normal \cdots \normal G_1\cap N \normal G_0\cap N = G\cap N = N \]
+    so $N$ is solvable, as required.
+
+    And:
+    \[ \slfrac{\slfrac{G_iN}{N}}{\slfrac{G_{i+1}N}{N}} \cong \slfrac{G_iN}{G{i+1}N} \cong \slfrac{G_i}{G_i\cap(G_{i+1}N)} = \slfrac{G_i}{(G_i\cap N)G_{i+1}} \]
+    and this can be embedded in $\slfrac{G_i}{G_{i+1}}$, so it is also abelian.
+    Thus the subnormal series:
+    \[ \set{G} = \slfrac{G_tN}{N} \normal \slfrac{G_{t-1}N}N \normal \cdots \normal \slfrac{G_1N}N \normal \slfrac{G_0N}N = \slfrac{G}N \]
+    has abelian factors and so $\slfrac GN$ is solvable.
+
+    To show the converse, suppose that there are subnormal series
+    \begin{gather*}
+        \set e = N_s \normal \cdots \normal N_1 \normal N_0 = N \\
+        \set N = B_r \normal \cdots \normal B_1 \normal B_0 = \slfrac GN
+    \end{gather*}
+    with abelian factors.
+    Since $B_i$ is a subgroup of $\slfrac GN$ there is some subgroup $N\leq H_i\leq G$ such that $B_i=\slfrac{H_i}N$.
+    And so
+    \[ \set N = \slfrac{H_r}N \normal \cdots \normal \slfrac{H_1}N \normal \slfrac{H_0}N = \slfrac GN \]
+    This means that
+    \[ N = H_r \normal \cdots \normal H_1 \normal H_0 = G \]
+    where the factors are abelian.
+    Appending this to $N$'s series gives
+    \[ \set e = N_s \normal \cdots \normal N_1 \normal N_0 = N = H_r \normal \cdots \normal H_1 \normal H_0 = G \]
+    which has abelian factors (since it is concatenation of two series with abelian factors) and so $G$ is solvable, as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+We could use this as an alternative definition for the solvability of a finite group.
+
+\begin{exam}
+
+    We can construct the following subnormal series:
+    \[ 1 \overset{\bZ_3}\normal A_3 \overset{\bZ_2}\normal S_3 \]
+    so $S_3$ is solvable, and
+    \[ 1 \overset{\bZ_2\times\bZ_2}\normal K_4 \overset{\bZ_3}\normal A_4\overset{\bZ_2}\normal S_4 \]
+    so is $S_4$.
+    But for $n\geq5$ then since $A_n$ is simple and the only normal subgroup of $S_n$'s then the only non-trivial subnormal series is
+    \[ 1\overset{A_n}\normal A_n\overset{\bZ_2}\normal S_n \]
+    which doesn't have abelian factors, so $S_n$ is not solvable for $n\geq5$.
+
+\end{exam}
+
+\subsection{Commutator Subgroups}
+
+\begin{defn*}
+
+    For $a,b\in G$, their \ppemph{commutator} is
+    \[ [a,b] = aba^{-1}b^{-1} \]
+    We define the commutator of two subgroups $A$ and $B$ to be
+    \[ [A,B] = \cycle{[a,b]}[a\in A, b\in B] \]
+    The group generated by all commutators of $G$ is defined to be
+    \[ G' = [G, G] = \cycle{[a,b]}[a,b\in G] \]
+    this is the \ppemph{commutator subgroup} of $G$.
+
+\end{defn*}
+
+Note that $[a,b]$ is trivial if and only if $a$ and $b$ commute.
+Further note that
+\[ [a,b]\cdot[b,a] = aba^{-1}b^{-1}bab^{-1}a^{-1} = e \]
+so $[a,b]^{-1}=[b,a]$, so commutators are closed under inversions, so $G'$ is simply the group of all finite products of commutators.
+We will quickly prove some basic characteristics of the commutator subgroup
+
+\benum
+    \item $G'$ is normal: suppose $c\in G$ then
+    \[ c[a,b]c^{-1} = caba^{-1}b^{-1}c^{-1}=(cac^{-1})(cbc^{-1})(cac^{-1})^{-1}(cbc^{-1})^{-1}=\bigl[cac^{-1},cbc^{-1}\bigr] \]
+    and since elements of $G'$ are products of commutators, and this holds for products of commutators, $G'$ is normal.
+
+    \item $G'=\set e$ if and only if $G$ is abelian, this is trivial.
+
+    \item If $K\normalsub G$ then
+    \[ \parens{\slfrac GK}' = \cycle{[aK,bK]}[a,b\in G] = \cycle{[a,b]K}[a,b\in G] = \slfrac{G'K}K \]
+
+    \item And so
+    \[ \parens{\slfrac G{G'}}' = \slfrac{G'G'}{G'} = \slfrac{G'}{G'} = 1 \]
+    So $\slfrac G{G'}$ is abelian.
+
+    \item And $\slfrac GK$ is abelian if and only if $\slfrac{G'K}{K}=1$ which is if and only if $G'K=K$ which occurs if and only if $G'\subseteq K$.
+    That is, $\slfrac GK$ is abelian if and only if $G'\subseteq K$.
+    So $G'$ is the minimal normal subgroup whose quotient is abelian, and so $\slfrac{G}{G'}$ is the maximal abelian quotient, this is called the \emph{abelization}.
+
+    \item If $A,B\normalsub G$ then $A\ni a(ba^{-1}b^{-1})=(aba^{-1})b^{-1}\in B$, so $[A,B]\leq A\cap B$.
+    Furthermore, $c[a,b]c^{-1}=\bigl[cac^{-1},cbc^{-1}\bigr]\in[A,B]$, so $[A,B]$ is normal.
+\eenum
+
+\begin{exam}
+
+    Notice that $S_n'\leq A_n$ since the sign of a commutator must be even since it is multiplicative.
+    And since $\bigl[\pmat{i & j}, \pmat{i & k}\bigr] = \pmat{i & j & k}$, so all the three-cycles are commutators.
+    $A_n$ is generated by the three-cycles, and so every element of $A_n$ is a product of commutators and therefore in $S_n'$.
+
+    So $S'_n=A_n$.
+    And so $\slfrac{S_n}{A_n}\cong\bZ_2$ is the maximal abelian quotient.
+
+\end{exam}
+
+\begin{defn*}
+
+    The \ppemph{derived series} of a group $G$ is
+    \[ \cdots \normal G''' \normal G'' \normal G' \normal G \]
+    we further recursively define $G^{(n+1)}=\bigl(G^{(n)}\bigr)'$, where $G^{(0)}=G$.
+
+\end{defn*}
+
+\begin{thrm*}
+
+    A group $G$ is solvable if and only if $G^{(n)}=1$ for some $n$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    If $G^{(n)}=1$ then the derived series
+    \[ 1 = G^{(n)} \normal G^{(n-1)} \normal \cdots \normal G^{(1)} \normal G^{(0)} = G \]
+    is a subnormal series whose quotients are abelian (recall that $\slfrac{G}{G'}$ is abelian), so $G$ is solvable.
+
+    To show the converse, suppose $G$ is solvable, so it has a subnormal series
+    \[ 1 = G_t \normal \cdots \normal G_1 \normal G_0 = G \]
+    where $\slfrac{G_i}{G_{i+1}}$ is abelian, so $G_i'\subseteq G_{i+1}$, thus $G'\subseteq G_1$, and so $G''\subseteq G_1'\subseteq G_2$, and inductively $G^{(i)}\subseteq G_i$.
+    So $G^{(t)}\subseteq G_t=1$, as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+Notice that we showed in this proof that the derived series is the quickest subnormal series with abelian factors.
+
+\begin{coro*}
+
+    If $G$ is solvable, so are all of its subgroups.
+
+\end{coro*}
+
+This is because if $H\leq G$, $H^{(n)}\subseteq G^{(n)}=1$, so $H$ is solvable by the theorem above.
+
+Note that $(A\times B)'=A'\times B'$ since the group operation is done elementwise.
+And more general:
+\[ \parens{\prod_{\lambda\in\Lambda}A_\lambda} = \prod_{\lambda\in\Lambda}A_\lambda' \]
+Thus $\prod A_\lambda$ is solvable if and only each $A_\lambda$ is solvable in $n$th class for a constant $n$ (meaning $A_\lambda^{(n)}=1$).
+
+\subsection{Nilpotent Groups}
+
+\begin{defn*}
+
+    A \ppemph{central series} is a normal series (every element is normal in $G$) where for every $i$:
+    \[ \slfrac{G_i}{G_{i+1}} \leq Z\parens{\slfrac{G}{G_{i+1}}} \]
+
+\end{defn*}
+
+In order to give an example of such a series, we define the \emph{lower central series} where $G_{(1)}=G$ and recursively $G_{(n)}=[G,G_{(n-1)}]\subseteq G_{(n-1)}$.
+This is inductively a normal series (since $[A,B]$ is normal when $A$ and $B$ are).
+Now notice that $\slfrac BA\in Z\parens{\slfrac GA}$ if and only if for every $g\in G$ and $b\in B$, $bA$ and $gA$ commute, that is $[bA,gA]=[b,g]A=1$.
+So $\slfrac BA\in Z\parens{\slfrac GA}$ if and only if $1=\bracks{\slfrac BA,\slfrac GA}=\slfrac{[B,G]A}A$ which is if and only if $[B,G]\subseteq A$ (the order of $B$ and $G$ doesn't matter here).
+So a normal series is central if and only if for every $i$:
+\[ \bigl[G, G_i\bigr] \subseteq G_{i+1} \]
+Thus by definition the lower central series is in fact a central series.
+We define this inductively: $\zeta_0=1$ and $\zeta_{i+1}=\set{x\in G}[\forall y\in G: [x,y]\in\zeta_i]$, notice here that inductively $\zeta_i$ are all normal, and so if $x\in\zeta_i$ then for any $y\in G$,
+$[x,y]\in\zeta_i$ so $\zeta_i\leq\zeta_{i+1}$.
+So here we have an ascending series
+\[ 1 = \zeta_0 \normal \zeta_1 \normal \zeta_2 \normal \cdots \]
+This is central since
+\[ \bracks{G, \zeta_{i+1}} \subseteq \zeta_i \]
+by definition (we reverse $i$ and $i+1$ since the series is descending).
+But notice that if $x\zeta_i\in Z\parens{\slfrac G{\zeta_i}}$ then for every $y\zeta_i\in\slfrac G{\zeta_i}$ we have that
+\[ \zeta_i = \bracks{x\zeta_i, y\zeta_i} = \bracks{x,y}\zeta_i \]
+so $[x,y]\in\zeta_i$ and then by definition $x\in\zeta_{i+1}$, so $x\zeta_i\in\slfrac{\zeta_{i+1}}{\zeta_i}$, and therefore we have that
+\[ \slfrac{\zeta_{i+1}}{\zeta_i} = Z\parens{\slfrac G{\zeta_i}} \]
+
+\begin{prop*}
+
+    If $\cdots\normal H_2\normal H_1=G$ is a central series then $G_{(n)}\subseteq H_n$.
+    And if $1=K_0\normal K_1\normal K_2\normal\cdots$ then $K_n\subseteq\zeta_n$.
+
+\end{prop*}
+
+This means that the lower central series is the quickest descending central series and the upper central series is the quickest ascending central series.
+
+\begin{proof}
+
+    We show this inductively (the base being $H_1=G_{(1)}=G$):
+    \[ G_{(n+1)} = [G, G_{(n)}] \subseteq [G,H_n] \subseteq H_{n+1} \]
+    where the last equality is because $H_n$ is a central series.
+
+    Again we show this inductively: let $x\in K_{n+1}$ and $y\in G$ then $[x,g]\in K_n\subseteq\zeta_n$, so $\bracks{x\zeta_n,g\zeta_n}=1$ so
+    $x\zeta_n\in Z\parens{\slfrac G{\zeta_n}}=\slfrac{\zeta_{n+1}}{\zeta_n}$, so $x\in\zeta_{n+1}$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{defn*}
+
+    A group is \ppemph{nilpotent} if it has a central sequence from $G$ to $1$.
+
+\end{defn*}
+
+So $G$ is nilpotent if there is a series
+\[ 1 = H_n \normal H_{n-1} \normal \cdots \normal H_2 \normal H_1 = G \]
+and we know that $G_{(i)}\subseteq H_i\subseteq\zeta_{n-i}(G)$ (we need to reindex $\zeta$ since it is defined as an increasing series).
+
+\begin{prop*}
+
+    $G$ is nilpotent if and only if there exists an $n$ and $m$ such that $G_{(n)}=1$ and $\zeta_m(G)=G$ (even one is sufficient).
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $G$ is nilpotent then $G_{(n)}\subseteq H_n=1$ and $G=H_1\subseteq\zeta_{n-1}$
+    For the converse notice that the series (either $G_{(n)}$ or $\zeta_{m-n}$) defines a central series from $1$ to $G$, and thus $G$ is nilpotent by definition.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+Notice that every abelian group is nilpotent since $A_{(2)}=1$ and $\zeta_1(A)=A$.
+Furthermore, since the factors of a central group are subgroups of the center of another group, they are necessarily abelian, and therefore every nilpotent group is solvable.
+
+It isn't hard to see that $\zeta_i(G\times H)=\zeta_i(G)\times\zeta_i(H)$ and so the finite direct product of nilpotent groups is also nilpotent.
+Note that by the definition of $\zeta_i$, $G$ is nilpotent if and only if $G=1$ or $Z(G)\neq1$ and $\slfrac G{Z(G)}$ is nilpotent.
+
+\begin{lemm*}
+
+    For every proper subgroup of a nilpotent group $H<G$, $H$ is a proper subgroup of its normalizer.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Take the maximal $n$ such that $\zeta_n(G)\subseteq H$ (meaning $\zeta_{n+1}\not\subseteq H$).
+    We will show that $\zeta_{n+1}(G)\subseteq N_G(H)$.
+    Let $x\in\zeta_{n+1}(G)$ and $h\in H$ then $xhx^{-1}=[x,h]h\in\bigl[\zeta_{n+1},G\bigr]\cdot H\subseteq\zeta_n\cdot H=\zeta_n$, where the final inequality comes from the necessary and sufficient
+    condition for central series, and the final equality since $\zeta_n\subseteq H$.
+    So $x\in N_G(H)$, and since $\zeta_{n+1}$ is not a subset of $H$, $H$ must be a proper subset of $N_G(H)$.
+
+\end{proof}
+
+\begin{thrm*}
+
+    Let $G$ be a group, then the following are equivalent:
+    \benum
+        \item $G$ is nilpotent
+        \item For every proper subgroup of $H$ of $G$, $H$ is a proper subgroup of its normalizer
+        \item Every maximal subgroup is normal
+        \item Every $p$-Sylow subgroup is normal
+        \item $G$ is the direct product of $p$-groups
+    \eenum
+
+\end{thrm*}
+
+\let\implies=\longvarRightarrow
+
+\begin{proof}
+
+    \blist
+        \item $(1\implies2)$ We just proved this.
+        \item $(2\implies3)$ Since $H\subset N_G(H)$, and $H$ is maximal, this means that $N_G(H)=G$, so $H$ is normal.
+        \item $(3\implies4)$ If $P$ is a $p$-Sylow subgroup, suppose $P$ is not normal.
+        Then $P\subseteq N_G(P)<G$, then let $N_G(P)\leq M<G$ be maximal.
+        Then we know $N_G(M)=M$ so $M$ isn't normal but this is a contradiction.
+        \item $(4\implies5)$ We proved this last lecture.
+        \item $(5\implies1)$ We first show that a $p$-group is nilpotent.
+        Since the center of a $p$-group is non-trivial, and $\slfrac{P}{Z(P)}$ is itself a $p$-group, this is proven inductively.
+        So $G$ is the product of $p$-groups, specifically $G$ is the product of nilpotent groups, and is therefore itself nilpotent.
+    \elist
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\end{document}
+

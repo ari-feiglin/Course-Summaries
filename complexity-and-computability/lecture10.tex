@@ -1,0 +1,443 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz-cd}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{conj}{Conjecture}{255,130,130}{150,0,0}{200,0,0}
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\undersumtext#1{\vtop{\hsize=2cm\relax\centering\small #1}}
+
+\newfunc{oracle}{\hbox{\tencsc oracle}}({})
+\newfunc{dspace}{\mathsf{DSPACE}}({})
+\newfunc{dtime}{\mathsf{DTIME}}({})
+\newfunc{nspace}{\mathsf{NSPACE}}({})
+\newfunc{nspaceoff}{\mathsf{NSPACE}_{\mathsf{offline}}}({})
+\newfunc{totreach}{\textsf{Total-Reach}}({})
+
+\def\quant{\mathtt{Q}}
+
+\def\sps{\texttt{\char32}}
+\def\sat{\mathsf{SAT}}
+\def\csat{\mathsf{CSAT}}
+\def\is{\mathsf{IS}}
+\def\threesat{\mathsf{3SAT}}
+\def\clique{\mathsf{Clique}}
+\def\vertcover{\textsf{Vertex-Cover}}
+\def\domset{\textsf{Dom-Set}}
+\def\dhp{\mathsf{DHP}}
+\def\dhc{\mathsf{DHC}}
+\def\hc{\mathsf{HC}}
+\def\tsp{\mathsf{TSP}}
+\def\threecolor{\mathsf{3Color}}
+\def\twocolor{\mathsf{2Color}}
+\def\kcolor{k\mathsf{Color}}
+\def\Color{\mathsf{Color}}
+\def\subsum{\mathsf{SubsetSum}}
+\def\maxclique{\mathsf{MaxClique}}
+\def\minexpr{\mathsf{MinExpression}}
+\def\sparse{\mathsf{Sparse}}
+\def\stconn{\textsf{st-conn}}
+
+\def\PH{\mathbf{PH}}
+\def\PF{\mathbf{PF}}
+\def\PC{\mathbf{PC}}
+\def\P{\mathbf{P}}
+\def\NP{\mathbf{NP}}
+\def\NPH{\mathbf{NPH}}
+\def\NPC{\mathbf{NPC}}
+\def\co{\mathsf{co}}
+\def\coNP{\mathbf{coNP}}
+\def\poly{\mathsf{poly}}
+\def\Ppoly{\slfrac\P\poly}
+\def\L{\mathbf{L}}
+\def\NL{\mathbf{NL}}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mN{\mathcal{N}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=10
+
+\barcolorbox{255, 220, 220}{130, 0, 0}{200, 80, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Computability and Complexity}
+
+    \medskip
+    \textit{Lecture \thesection, Thursday August 31, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+Recall that we showed that $L$ is closed under log-space reductions.
+The proof that we provided can be used to prove the following more general statement:
+
+\begin{prop*}
+
+    For every space function $S(n)\geq\log(n)$, $\dspaceof{O(f(n))}$ and $\nspaceof{O(f(n))}$ are closed under log-space reductions.
+
+\end{prop*}
+
+\begin{thrm*}[savitchTheorem,Savitch's\ Theorem]
+
+    \[ \NL \subseteq \dspaceof{O(\log(n)^2)} \]
+
+\end{thrm*}
+
+\begin{proof}
+
+    We will show that $\stconn\in\dspaceof{O(\log(n)^2)}$ and since $\dspaceof{O(\log(n)^2)}$ is closed under log-space reductions, we get that for every $S\in\NL$, since there exists a log-space reduction
+    from $S$ to $\stconn$, $S\in\dspaceof{\log(n)^2}$.
+    So we must formulate an algorithm for solving $\stconn$ in $O(\log(n)^2)$ time.
+
+    Given a tuple $(G,u,v,k)$ where $G$ is a graph, $u$ and $v$ are vertices, and $k$ is a natural number, let us define
+    \[ \phi(G,u,v,k) = \begin{cases*} 1 & There exists a path from $u$ to $v$ whose length is $\leq k$ \\ 0 & Else \end{cases*} \]
+    Obviously $(G,s,t)\in\stconn$ if and only if $\phi(G,u,v,\abs V)=1$.
+    So let us define an algorithm to compute $\phi$:
+
+    \algorithm
+        \Function{$M$}{$G,u,v,k$}
+            \lIf{$k=1$}\Return $1$ \textbf{if} $(u,v)\in E$, \textbf{else} $0$
+            \For{$w\in V$}
+                \State $\sigma_1\gets M\parens{G,u,w,\ceil{\frac k2}}$
+                \State $\sigma_2\gets M\parens{G,w,v,\floor{\frac k2}}$
+                \lIf{$\sigma_1=1$ \textbf{and} $\sigma_2=1$} \Return $1$
+            \EndFor
+            \State\Return $0$
+        \EndFunc
+    \ealgorithm
+
+    This computes $\phi$, as if $\phi(G,u,v,k)=1$ then there exists a path from $u$ to $v$ whose length is $\leq k$ and if we take the midway point on this path to be $w$, then $\sigma_1=1$ and
+    $\sigma_2=1$, so $M$ will return one.
+    If $\phi(G,u,v,k)=0$ then there is no path from $u$ to $v$, so there cannot exist a point whose distance from $u$ is $\leq\ceil{\frac k2}$ and from $w$ is $\leq\floor{\frac k2}$, as then the
+    concatenation of these paths forms a path from $u$ to $v$ whose length is $\leq k$.
+    So if $\phi(G,u,v,k)=0$ then $M$ returns zero.
+
+    At each level of the iteration, we need three pointers: one to $u$, one to $v$, and one to $w$.
+    Each of these pointers take $\log(n)$ space.
+    This is because after we finish the recursive call on line $4$, we can get rid of all the pointers used by the recursion and reuse it for the recursion on line $5$.
+    So we get the recursive function for the space complexity
+    \[ S(k) = O(\log(n)) + S\parens{\frac k2} \]
+    Expanding this $t$ times gives
+    \[ S(k) = O(\log(n)) + O(\log(n)) + \cdots + O(\log(n)) + S\parens{\frac k{2^t}} = O(t\cdot\log(n)) + S\parens{\frac k{2^t}} \]
+    setting $t=\log(k)$ gives
+    \[ S(k) = O(\log(n)\log(k)) + S(1) \]
+    thus the space complexity of the algorithm is $O(\log(n)\log(k))$ as required.
+
+    \begin{note}
+        The reuse of the space used in line $4$ for line $5$ is important, as otherwise our space complexity would satisfy
+        \[ S(k) = O(\log(n)) + 2S\parens{\frac k2} \]
+        this is in $O(\log(n)^3)$.
+    \end{note}
+
+    So to determine if $(G,s,t)\in\stconn$, we need only to run $M(G,s,t,\abs V)$ which takes $O(\log(n)\cdot\log(\abs V))\subseteq O(\log(n)^2)$ time, as required.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}[savitchTheoremGeneral,Generalized\ Savitch's\ Theorem]
+
+    For every $S(n)\geq\log(n)$,
+    \[ \nspaceof{S(n)} \subseteq \dspaceof{O(S(n)^2)} \]
+
+\end{thrm*}
+
+We can use our proof of \ppref{savitchTheorem} with the graph of configurations of the non-deterministic Turing machine which solves the problem in $O(S(n))$-space and determine the connectivity of the
+graph.
+But we will prove this another way.
+
+\begin{proof}
+
+    Let $A\in\nspaceof{S(n)}$, so there exists a non-deterministic Turing machine $N$ which decides $A$ in $S(n)$ space.
+    Let us define
+    \[ A' = \set{x10^{2^{S(\abs x)}}}[x\in A] \]
+    We claim $A'\in\NL$.
+    Let us define the non-deterministic Turing machine $N'(y)$ which functions as follows:
+    \benum
+        \item First verify that $y$ is of the form $x10^{2^{S(\abs x)}}$, ie. that the string of zeroes at the end has a length of $2^{S(\abs x)}$.
+        To do this, we need to count how many zeroes there are at the end of $y$, so we'd need to count at most $\abs y$ bits, meaning the counter whose size is $\log\abs y$.
+        \item Simulate $N(x)$ and return the answer.
+    \eenum
+    We know $N(x)$ takes $S(\abs x)$ space, but notice that
+    \[ \abs y = \abs x+1+2^{S(\abs x)} \geq 2^{S(\abs x)} \implies S(\abs x)\leq \log\abs y \]
+    and so the space needed to run $N(x)$ is bound by $\log\abs y$.
+    So $N'$ requires $O(\log\abs y)$ space, meaning it is in $\NL$.
+    By \ppref{savitchTheorem}, there exists a deterministic Turing machine $M'$ which decides $A'$ in $\log(n)^2$ time.
+
+    So we define $M(x)$ which simulates $M'\bigl(x10^{2^{S(\abs x)}}\bigr)$.
+    $M$ then obviously decides $A'$, and it requires
+    \[ O\parens{\parens{\log\abs{x10^{2^{S(\abs x)}}}}^2} = O\parens{\log\parens{\abs x+1+2^{S(\abs x)}}^2} = O\parens{\log\parens{2^{3S(\abs x)}}^2} = O(S(\abs x)^2) \]
+    space, as required.
+
+    There is actually a nuance here, since in order to simulate $M'\bigl(x10^{2^{S(\abs x)}}\bigr)$, we must somehow access the string $x10^{2^{S(\abs x)}}$, whose length is exponential in $S(\abs x)$.
+    But we need not actually store $x10^{2^{S(\abs x)}}$ on the working tape, instead we can store a pointer to where $M'$ is pointer, and from this we can determine whether to simulate a bit in $x$ (if
+    the pointer is pointing at $x$), or $1$ (if the pointer is at index $\abs x+1$), or $0$ (if the pointer is between $\abs x+2$ and $\abs x+1+2^{S(\abs x)}$), or empty (otherwise).
+    So maximum value of this pointer is $\abs x+2+2^{S(\abs x)}$ which is bound by $4\cdot2^{S(\abs x)}$, which can be stored in $O(S(\abs x))$ bits.
+
+    So all in all, we only need $O(S(n)^2)+O(S(n))=O(S(n)^2)$ space to run $M$, as required.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    Similar to how a deterministic Turing machine can compute a function $f$, we say that a non-deterministic Turing machine $M$ computes a function $f$ if
+    \benum
+        \item There exists a run of $M$ on $x$ such that $M(x)=f(x)$.
+        \item For all other runs of $M$ on $x$, $M(x)=\perp$.
+    \eenum
+
+\end{defn*}
+
+\begin{thrm*}[isTheorem,Immerman–Szelepcsenyi\ Theorem]
+
+    \[ \NL = \co\NL \]
+
+\end{thrm*}
+
+\begin{proof}
+
+    \def\tr{\mathsf{TR}}
+
+    We will show that $\stconn\in\co\NL$, this means that $\NL\subseteq\co\NL$ (since $\co\NL$ is closed under log-space reductions, for similar reasons as before).
+    This means that $\NL=\co\NL$ (since $\mathcal C\subseteq\co\mathcal C$ implies $\mathcal C=\co\mathcal C$, since if $S\in\co\mathcal C$ then $S^c\in\mathcal C\subseteq\co\mathcal C$ so $S\in\mathcal C$).
+
+    Our first goal is find a non-deterministic Turing machine which computes the following function in logarithmic space:
+    \[ \totreachof{G,s} = \text{The number of vertices in $G$ which can be reached from the vertex $s$} \]
+    If we can find a log-space non-deterministic Turing machine $M_\tr$ which computes $\totreach$, then we claim that $\stconn^c\in\NL$ (ie. $\stconn\in\co\NL$).
+    This is since we can define the following non-deterministic algorithm:
+
+    \algorithm
+        \Function{$M$}{$G,s,t$}
+            \State $c_1\gets M_\tr(G,s)$
+            \State Construct the graph $G'$ which is obtained by removing the vertex $t$ from $G$
+            \State $c_2\gets M_\tr(G',s)$
+            \lIf{$c_1=\perp$ \textbf{or} $c_2=\perp$ \textbf{or} $c_1\neq c_2$} \Return $0$
+            \lElse \Return $1$
+        \EndFunc
+    \ealgorithm
+
+    This decides $\stconn^c$ as if $(G,s,t)\in\stconn^c$ then $s$ and $t$ are disconnected so removing $t$ from $G$ does not impact the number of vertices reachable from $s$, so when $M_\tr$ returns the
+    proper value (and not $\perp$), $c_1=c_2$ and so $M$ returns one.
+    Otherwise if $(G,s,t)\in\stconn$ then removing $t$ \emph{does} impact the number of vertices reachable from $s$, so either $c_1=\perp$ or $c_2=\perp$ or $c_1\neq c_2$.
+    So $M$ does indeed decide $\stconn^c$.
+    And if $M_\tr$ runs in logarithmic space, then so too does $M$.
+    Thus $\stconn\in\co\NL$.
+
+    So we now must find $M_\tr$.
+    For every $i\geq0$, let us define $R_i$ to be the set of vertices in $G$ which are reachable by $s$ within a path whose length is at most $i$.
+    Notice that
+    \begin{align*}
+        R_0 &= \set s \\
+        R_{i+1} &= R_i\cup\set{u}[\exists w\colon (w,u)\in E]
+    \end{align*}
+    In the end we want a non-deterministic algorithm which computes $\abs{R_{\abs V}}$.
+    We will do this by first defining an algorithm which determines the size of $R_i$ given the size of $R_{i-1}$.
+
+    \def\Rnext{\mathsf{R_{next}}}
+    \algorithm
+        \Function{$\Rnext$}{$G,s,R_{i-1}$}
+            \State \textbf{choose} $1\leq g\leq\abs V$
+            \Comment Suppose we can determine if $\abs{R_i}\geq g$ and if $\abs{R_i}\leq g$, then we can continue with this algorithm,\EndComment
+            \lIf{$\abs{R_i}\geq g$ \textbf{and} $\abs{R_i}\leq g$}\Return $g$
+            \State\Return $\perp$
+        \EndFunc
+    \ealgorithm
+
+    Obviously assuming that we can determine if $\abs{R_i}\geq g$ and if $\abs{R_i}\leq g$, then $\Rnext$ will compute $\abs{R_{i+1}}$.
+    So we must demonstrate that we can determine if $\abs{R_i}\geq g$ in logarithmic space.
+    We do this as follows
+
+    \algorithm
+        \State $\mathit{counter}\gets0$
+        \For{$v\in G$}
+            \State\textbf{if} there exists a path from $s$ to $v$ whose length is $\leq i$: $\mathit{counter}\gets\mathit{counter}+1$
+        \EndFor
+        \State\Return $1$ \textbf{if} $\mathit{counter}\geq g$, \textbf{else} $0$
+    \ealgorithm
+
+    We can determine non-deterministically if there exists a path from $s$ to $v$ whose length is at most $i$ similar to how we did for $\stconn$: we find neighbors of the current node and if within $i$
+    iterations we reach $v$, return one and otherwise return zero.
+    If $\abs{R_i}\geq g$ then as we iterate over $v\in R_i$ and as we find paths from $s$ to $v$ whose length is bound by $i$, then $\mathit{counter}$ will be equal to $\abs{R_i}$, so this will return one.
+    If $\abs{R_i}<g$ then since the maximum value $\mathit{counter}$ can equal is $\abs{R_i}$, this will return zero.
+    So this algorithm works for determining if $\abs{R_i}\geq g$ non-deterministically.
+
+    \begin{note}
+
+        Just because we can determine if $\abs{R_i}\geq g$ non-deterministically doesn't mean we can determine if $\abs{R_i}\leq g$.
+        While it is true that
+        \[ \abs{R_i}\leq g \iff \neg\bigl(\abs{R_i}\geq g+1\bigr) \]
+        simply returning the inverse of the algorithm above will not work.
+        This is because if $\abs{R_i}\geq g+1$ then this algorithm will sometimes return one, but it may also return zero.
+        And then negating this means that we will return one even though $\abs{R_i}$ is not bound by $g$.
+
+    \end{note}
+
+    In order to determine if $\abs{R_i}\leq g$, we will determine if $\abs{R_i^c}\geq\abs V-g$.
+    We do this by
+
+    \def\ctr{\mathit{counter}}
+    \algorithm
+        \State $\ctr_1\gets0$
+        \For{$v\in V$}
+            \State $\ctr_2\gets0$
+            \For{$u\in V,\,u\neq v$}
+                \lIf*{there exists a path from $u$ to $s$ whose length is $\leq i-1$, and $(v,u)\notin E$} $\ctr_2\gets\ctr_2+1$
+                \Comment This counts the number of vertices $u$ found in $R_{i-1}$ \EndComment
+            \EndFor
+            \lIf{$\ctr_2=\abs{R_{i-1}}$} $\ctr_1\gets\ctr_1+1$
+        \EndFor
+        \State\Return $1$ \textbf{if} $\ctr_1\geq\abs V-g$, \textbf{else} $0$
+    \ealgorithm
+
+    If $\abs{R_i^c}\geq\abs V-g$ then then for every $v\notin R_i$, for every $u\neq v$, if $u$ is connected to $s$ by a path of length $\leq i-1$, $(v,u)\notin E$.
+    So if when iterating over $u\in R_{i-1}$ we get $1$ (meaning there exists a path of length $\leq i-1$, this is non-deterministic though) and for every other $u$ it will return zero, and so we get that
+    $\ctr_2=\abs{R_{i-1}}$ and so $\ctr_1$ will become equal to the number of vertices not in $R_i$, ie $\abs{R_i^c}\geq\abs V-g$ so this will return one.
+    And if $\abs{R_i^c}<\abs V-g$ then since the maximum value for $\ctr_1$ which is computable is $\abs{R_i^c}$, this will return zero.
+
+    This also takes logarithmic space, as we need only to store two counters, two vertices, and the space required to find a path.
+    All of these take logarithmic space.
+
+    Now we define $M_\tr$:
+
+    \algorithm
+        \Function{$M_\tr$}{$G,s$}
+            \State $R\gets1$\lComment since $R_0=\set s$
+            \For{$1\leq i\leq\abs V$}
+                \State $R\gets\Rnext(G,s,R)$\lComment computes $R_i$ from $R_{i-1}$
+                \lIf{$R=\perp$} \Return $\perp$
+            \EndFor
+            \State\Return $R$\lComment returns $\abs{R_{\abs V}}$
+        \EndFunc
+    \ealgorithm
+
+    Then since at every iteration of $i$, $R=R_i$ or $\perp$ since $\Rnext(G,s,\abs{R_{i-1}})=\abs{R_i}$ or $\perp$, if $\Rnext$ always returns a non-$\perp$ value, we will get $\abs{R_{\abs V}}$ at the end.
+    Otherwise it will return $\perp$.
+    So $M_\tr$ computes $\totreachof{G,s}$ as required.
+    \qed
+
+\end{proof}
+
+\begin{exam*}
+
+    We will show that $\twocolor\in\NL$ by showing that $\twocolor^2\in\NL$.
+    From graph theory we know that $G$ is two-colorable if and only if every cycle in $G$ has an even length.
+    So we will define an algorithm which determines if the graph has an odd length cycle, which would mean it is in $\twocolor^c$.
+    We can do this by choosing a vertex $v$ and finding if there exists a cycle containing $v$.
+
+    \algorithm
+        \Function{$M$}{$G$}
+            \State \textbf{choose} $v\in V$
+            \State $c\gets v$
+            \State $i\gets1$
+            \While{$i\leq\abs V+1$}
+                \State \textbf{choose} $c\in N(c)$
+                \State $i\gets i+1$
+                \lIf{$c=v$}\Return $1$ \textbf{if} $i$ is odd, \textbf{else} $0$
+            \EndWhile
+            \State\Return $0$
+        \EndFunc
+    \ealgorithm
+
+    If there exists an odd-length cycle, given the correct choices $M$ will find it and return one.
+    Otherwise $M$ will always return zero.
+    So $M$ decides $\twocolor^c$ in logarithmic space, meaning $\twocolor^c\in\NL$ so $\twocolor\in\NL$.
+
+\end{exam*}
+
+\begin{defn*}
+
+    Let $S(n)$ be a space function, we define the class $\nspaceoffof{S(n)}$ to be the set of all decision problems $A$ such that there exists a \emph{deterministic} Turing machine $M$ which has spatial
+    complexity of $S(n)$ and a fourth tape, called the ``witness tape'' which is read-only such that $x\in A$ if and only if there exists a $y$ such that $M(x,y)=1$.
+
+    By $M(x,y)$ we mean running $M$ on an input $x$ and a witness $y$.
+    The witness is not viewed as input (it is on a different tape), so we do not take it into account when computing the spatial complexity.
+    So $M(x,y)$ takes $S(\abs x)$ space.
+
+\end{defn*}
+
+\begin{thrm*}
+
+    For every space function $S(n)\geq\log(n)$,
+    \benum
+        \item $\nspaceof{S(n)}\subseteq\nspaceoff\bigl(O(\log(S(n)))\bigr)$
+        \item $\nspaceoffof{S(n)}\subseteq\nspaceof{2^{O(S(n))}}$
+    \eenum
+
+\end{thrm*}
+
+\begin{proof}
+
+    \benum
+        \item Suppose $A\in\nspaceof{S(n)}$, so there exists a non-deterministic Turing machine $N$ which decides $A$ and whose spatial complexity is $S(n)$.
+        Let us define a deterministic Turing machine $M$ whose witness is a sequence of configurations of $N$, $c_1\cdots c_k$ which returns $1$ if and only if
+        \benum
+            \item $c_1$ is the initial configuration of $N(x)$
+            \item $c_k$ is an accepted configuration.
+            \item For every $i$, $c_{i+1}$ can be reached by $c_i$.
+        \eenum
+
+        So $N(x)=1$ if and only if there is a sequence of configurations $y$ such that $M(x,y)=1$, so $M$ decides $A$ as required.
+
+        To run this $M$, we need only to store pointers to two consecutive configurations in order to verify $\rm iii$.
+        We can use these pointers to also verify $\rm i$ and $\rm ii$.
+        Since each configuration has a size of $O(S(n))$, the total size needed is $O(\log(S(n)))$ as required.
+    \eenum
+
+\end{proof}
+
+\end{document}

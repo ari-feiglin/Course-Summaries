@@ -1,0 +1,250 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{diam}{{\rm diam}}(\vert)
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+\newfunc{cis}{{\rm cis}}({})
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{sup}{{\rm sup}}\{\vert\}
+\newfunc{Res}{{\rm Res}}({})
+\newfunc{wind}n({})
+\newfunc{pv}{{\rm pv}}({})
+
+\font\bigbf = cmbx12 scaled 2000
+\@undervecc@def{underbar}\@linecap\@linecap
+
+\def\mO{{\cal O}}
+\def\mU{{\cal U}}
+\let\lineseg=\overleftrightvecc
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=11
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Complex Functions}
+
+    \medskip
+    \textit{Lecture \thesection, Wednesday June 21, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{thrm*}[roucheTheorem,Rouche's\ Theorem]
+
+    Suppose $f$ and $g$ are analytic functions on and in a regular closed curve $\gamma$, such that $\abs{g(z)}<\abs{f(z)}$ for every $z\in\gamma$.
+    Then $f+g$ has the same number of zeros as $f$ in $\gamma$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Note that this means that on $\gamma$, $f(z)\neq0$.
+    So
+    \[ f+g = f\parens{1+\frac gf} \]
+    In general
+    \[ \frac{(A(z)B(z))'}{A(z)B(z)} = \frac{A'B+AB'}{AB} = \frac{A'}A + \frac{B'}B \]
+    This means that
+    \[ \frac{(f+g)'}{f+g} = \frac{f'}f + \frac{\parens{1+\frac gf}'}{1+\frac gf} \]
+    Since $f$ and $g$ are analytic and therefore have no poles,
+    \[ Z(f+g) = \frac1{2\pi i}\int_\gamma \frac{f'}f + \frac{\parens{1+\frac gf}'}{1+\frac gf}\,dz = Z(f) + \frac1{2\pi i}\int_\gamma\frac{\parens{1+\frac gf}'}{1+\frac gf}\,dz \]
+
+    Let us define
+    \[ w(z) = 1 + \frac{g(z)}{f(z)} \]
+    is analytic in a neighborhood of $\gamma$ since $f(z)\neq0$ on $\gamma$.
+    Thus
+    \[ \Gamma\colon[0,1]\longto\bC,\quad t\varmapsto w(\gamma(t)) \]
+    is a closed smooth curve.
+    So
+    \[ \frac1{2\pi i}\int_\gamma\frac{w'(z)}{w(z)}\,dz = \frac1{2\pi i}\int_\Gamma\frac{dz}{z} = \windof{\Gamma,0} \]
+    But notice that
+    \[ \abs{1-\Gamma(t)} = \abs{1-w(\gamma(t))} = \abs{\frac{g(\gamma(t))}{f(\gamma(t))}} < 1 \]
+    And so $\Gamma\subseteq D_1(1)$, meaning $0$ is in $\Gamma$'s exterior, meaning $\windof{\Gamma,0}=0$.
+
+    So we have that
+    \[ Z(f+g) = Z(f) + \windof{\Gamma,0} = Z(f) \qed \]
+
+\end{proof}
+
+\subsection{Computing real integrals with complex analysis}
+
+\begin{exam*}
+
+    Let us compute
+    \[ I = \int_0^{2\pi}\frac{\sin^2\theta}{5-4\cos\theta}\,d\theta \]
+
+    Let us define
+    \[ z\colon[0,2\pi]\longto\bC,\quad \theta\varmapsto e^{i\theta} \]
+    Then $z'=ie^{i\theta}=iz$ so $d\theta=\frac{dz}{iz}$.
+    Now we know that
+    \[ \cos\theta = \frac{e^{i\theta} + e^{-i\theta}}2 = \frac12\parens{z+\frac1z},\quad \sin\theta = \frac1{2i}\parens{z-\frac1z} \]
+    So
+    \[ \frac{\sin^2(\theta)}{5-4\cos\theta} = -\frac14\frac{\parens{z-\frac1z}^2}{5-2\parens{z+\frac1z}} = -\frac14\frac{(z^2-1)^2}{5z^2-2\parens{z^3+z}}
+    = \frac18\frac{(z^2-1)}{z(z-2)\parens{z-\frac12}} \] 
+    Since we have parameterized $\abs z=1$, substituting is simply the same as integrating over $\abs z=1$.
+    \[ I = \int_{\abs z=1}\frac18\frac{(z^2-1)^2}{z(z-2)\parens{z-\frac12}}\frac{dz}{di} = \frac{-i}8\int_{\abs z=1}\frac{(z^2-1)^2)}{z^2(z-2)\parens{z-\frac12}}\,dz \]
+    This is a rational function, and it has poles at $z=0,2,\frac12$.
+    $2$ and $\frac12$ are simple poles, and $0$ has degree two.
+    Since $2$ is not in $\abs z=1$, we ignore it.
+    The residues are
+    \[ \Resof0 = \lim_{z\to0}(z^2f(z))' = \lim_{z\to0}\parens{\frac{(z^2-1)^2}{(z-2)\parens{z-\frac12}}}' = \frac52 \]
+    and
+    \[ \Resof{\frac12} = -\frac32 \]
+    So we get that
+    \[ I = -\frac i8\cdot2\pi i\parens{\frac52-\frac32} = \frac\pi4 \]
+
+\end{exam*}
+
+\begin{prop*}
+
+    If $p(x)$ and $q(x)$ are real polynomials such that $d=\deg q-\deg p\geq2$ and $q(x)$ has no real zeros, then
+    \[ I = \int_{-\infty}^\infty\frac{p(x)}{q(x)}\,dx = 2\pi i\sum\Resof{\frac pq,z_k} \]
+    Where the sum is over the singularities of $\frac{p(z)}{q(z)}$ for $0<\Imof z$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Recall that if $\lim_{x\to\infty}\frac{f(x)}{g(x)}=L\in[0,\infty]$ for non-negative $f$ and $g$, if
+    \benum
+        \item $L\in(0,\infty)$ then $\int_0^\infty f$ converges if and only if $\int_0^\infty g$ does.
+        \item If $L=0$ then if $\int_0^\infty g$ converges so does $\int_0^\infty f$.
+        \item If $L=\infty$ then if $\int_0^\infty f$ converges so does $\int_0^\infty g$.
+    \eenum
+
+    Since
+    \[ \lim_{x\to\pm\infty}\frac{\abs{\frac pq}}{\frac1{\abs x^d}} \]
+    exists and is finite, and
+    \[ \int_{\pm1}^{\pm\infty}\frac1{\abs x^d} \]
+    exists and is finite (since $d>1$), then $\int_{\pm1}^{\pm\infty}\abs{\frac pq}$ also converges and so the integral of $\frac pq$ converges absolutely.
+    Since
+    \[ I = \int_{-\infty}^{-1} \frac pq + \int_{-1}^1 \frac pq + \int_1^\infty \frac pq \]
+    $I$ converges absolutely as well (since $q$ has no real zeros, $\frac pq$ has no singularities and is therefore continuous in $(-1,1)$ so its integral exists).
+
+    Let us denote $\Delta_R$ as the top half of the circle $C_R$, and $\Gamma_R$ be the top half of the circle with the line $[-R,R]$.
+    Notice that $f(x)=\frac{p(x)}{q(x)}$ is meromorphic in $\bC$.
+    We can assume that $\Gamma_R$ does not intersect any of its singularities.
+    Notice that $\Gamma_R$ is a closed regular curve and so
+    \[ \int_{\Gamma_R} f(z)\,dz = 2\pi i\sum \Resof{f,z_k} \]
+    where the sum is over the singularities of $f$ within $\Gamma_R$.
+
+    Now notice that
+    \[ \int_{\Gamma_R} f(z) = \int_{-R}^R f(x)\,dx + \int_{\Delta_R}f(z)\,dz \]
+    And so
+    \[ \abs{\int_{\Delta R}f(z)\,dz} \leq \sup_{z\in\Delta_R}\abs{f(z)}\cdot\pi R \]
+    But since $z^2\frac{p(z)}{q(z)}$ is bounded (since it is the division of two polynomials of equal degree), we get that there exists an $A$ such that $\abs{z^2}\cdot\abs{f(z)}<A$.
+    And so
+    \[ \abs{\int_{\Delta_R}f(z)} \leq \frac A{R^2}\cdot\pi R\xvarrightarrow{}[R\to\infty] 0 \]
+    Meaning that
+    \[ \lim_{R\to\infty}\int_{\Gamma_R}f(z)\,dz = \lim_{R\to\infty}\int_{-R}^Rf(x)\,dx = \int_{-\infty}^\infty f(x)\,dx \]
+    And since
+    \[ \int_{\Gamma_R}f(z) = 2\pi i\sum\Resof{f,z_k} \]
+    where $z_k$ are singularities in $\Gamma_R$.
+    Since $\Gamma_R$ is a half-circle with a positive imaginary part, for any singularity such that $\Imof{z_k}>0$, eventually $z_k$ will be in $\Gamma_R$.
+    So
+    \[ \int_{-\infty}^\infty f(x)\,dx = 2\pi i\sum\Resof{f,z_k},\qquad z_k\text{ singularity, }\Imof{z_k}>0 \]
+
+\end{proof}
+
+\begin{prop*}
+
+    Let $R(x)=\frac{p(x)}{q(x)}$ be a rational function (assume $p$ and $q$ are coprime in $\bC[z]$; that they have no common root), and $q$ is not zero on the real line.
+    Suppose $\deg q>\deg p$ then
+    \[ \int_{-\infty}^\infty R(x)\cos(x) = \Reof{2\pi i\sum \Resof{R(z)e^{iz}, z_k}} \]
+    and
+    \[ \int_{-\infty}^\infty R(x)\sin(x) = \Imof{2\pi i\sum \Resof{R(z)e^{iz}, z_k}} \]
+    Where the sum is over singularities of $R(z)e^{iz}$ with positive imaginary parts.
+
+\end{prop*}
+
+\begin{proof}
+
+    Notice that
+    \[ R'(x) = \frac{p'q - pq'}{q^2} \]
+    and since $\deg(p'q-pq')>0$, and eventually polynomials are either always negative or positive (since otherwise they'd have infinite roots), $R'(x)$ is either always negative or positive in some
+    ray $[a,\infty)$ and $(-\infty,b]$ meaning $R$ is eventually monotonic.
+
+    Now note that if we define
+    \[ F_+(x) = \int_b^x \cos(t)\,dt,\qquad F_-(x) = \int_x^b \cos(t)\,dt \]
+    Then $F_+$ and $F_-$ are bounded in $[b,\infty)$ and $(-\infty,b]$ respectively, and so by Dirichlet's test
+    \[ \int_{-\infty}^\infty R(x)\cos(x)\,dx \]
+    exists.
+    Similar for $\sin(x)$.
+
+    Let us use the same $\Gamma_R$ and $\Delta_R$ as last proof, and for $0<h<R$ let us define
+    \[ \Delta_{R,+} = \set{z\in\Delta_R}[\Imof z\geq h],\quad \Gamma_{R,-} = \set{z\in\Delta_R}[\Imof z<h] \]
+    Since $\deg q>\deg p$, there exists a $k>0$ such that for $\abs z$ sufficiently large
+    \[ \abs{R(z)} < \frac k{\abs z} \]
+    Then
+    \[ \sup_{z\in\Delta_{R,+}}\abs{R(z)e^{iz}} = \sup_{z\in\Delta_{R,+}} \abs{R(z)}\cdot e^{-\Im(z)} \leq \frac kR\cdot e^{-h} \]
+    So
+    \[ \abs{\int_{\Delta_{R,+}}R(z)e^{iz}} \leq \frac kRe^{-h}\pi R = k\pi e^{-h} \]
+    And since the perimiter of $\Delta_{R,-}\leq4h$ (this involves some trigonometry), we have
+    \[ \abs{\int_{\Delta_{R,-}}R(z)e^{iz}} \leq \frac kR4h \]
+    So
+    \[ \abs{\int_{\Delta_R}R(z)e^{iz}} \leq k\pi e^{-h} + \frac{4k}Rh \]
+    Let $h=\sqrt R$ and we get
+    \[ \abs{\int_{\Delta_R}R(z)e^{iz}} \leq k\pi e^{-\sqrt{R}} + \frac{4k}{\sqrt R}\xvarrightarrow{}[R\to\infty] 0 \]
+
+    So we get
+    \[ \lim\int_{\Gamma_R}R(z)e^{iz} = \lim\int_{-R}^R R(z)e^{iz} = \int_{-\infty}^\infty R(x)e^{ix} \]
+    And since
+    \[ \int_{\Gamma_R}R(z)e^{iz} = 2\pi i\sum\Resof{R(z)e^{iz},z_k} \]
+    where $z_k$ are singularities in $\Gamma_R$ we get
+    \[ \int_{-\infty}^\infty R(x)e^{ix}\,dx = 2\pi i\sum\Resof{R(z)e^{iz},z_k} \]
+    where $\Imof{z_k}>0$.
+
+    The imaginary and real parts of this integral correspond with the integrals of $R(x)\cos(x)$ and $R(x)\sin(x)$ respectively, as required.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    The \ppemph{principal value} of the integral $\int_{-\infty}^\infty f(x)\,dx$ is defined as
+    \[ \pv\int_{-\infty}^\infty f(x)\,dx = \lim_{R\to\infty}\int_{-R}^R f(x)\,dx \]
+
+\end{defn*}
+
+The principal value of an integral may exist without the integral existing, but if the integral exists then they are equal.
+For example if $f(x)=x$ then $\pv\int_{-\infty}^\infty x\,dx=0$ but the indefinite integral does not exist.
+
+\end{document}
+

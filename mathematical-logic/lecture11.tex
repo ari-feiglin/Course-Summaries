@@ -1,0 +1,414 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{axiom}{Axiom}{255,255,200}{150,100,0}{200,150,100}			% yellow
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\aone#1#2{#2\to(#1\to#2)} \def\Aone{\textbf{A1}}
+\def\atwo#1#2#3{\bigl(#1\to(#2\to#3)\bigr)\to\bigl((#1\to#2)\to(#1\to#3)\bigr)} \def\Atwo{\textbf{A2}}
+\def\athree#1#2{(\neg#2\to\neg#1)\to\bigl((\neg#2\to#1)\to#2\bigr)} \def\Athree{\textbf{A3}}
+\def\afour#1#2#3{(\forall #2#1)\to#1\frac{#3}{#2}}  \def\Afour{\textbf{A4}}
+\def\afive#1#2#3{\bigl(\forall #3(#1\to#2)\bigr)\to\bigl(#1\to(\forall#3#2)\bigr)} \def\Afive{\textbf{A5}}
+\def\MP{\textit{MP}} \def\Gen{\textit{Gen}}
+
+\def\beqq{\mathrel{\vbox{\hbox{$=$}\kern-\baselineskip\kern.3pt\hbox{$=$}}}}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mN{\mathcal{N}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\Var{\mathrm{Var}}
+
+\newfunc{var}{{\rm var}}({})
+\newfunc{bound}{{\rm bound}}({})
+\newfunc{free}{{\rm free}}({})
+\newfunc{theory}{{\rm Th}}({})
+\newfunc{Diag}{{\rm Diag}}({})
+\newfunc{elDiag}{{\rm Diag}_{\rm el}}({})
+
+\def\qed{\hskip.5cm\hbox{}\hfill$\blacksquare$}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\def\true{\mathsf{true}}
+\def\false{\mathsf{false}}
+
+%\def\Aone#1#2{#1\to(#2\to#1)}
+%\def\Atwo#1#2#3{\bigl(#1\to(#2\to#3)\bigr)\to\bigl((#1\to#2)\to(#1\to#3)\bigr)}
+%\def\Athree#1#2{(\neg#2\to\neg#1)\to\bigl((\neg#2\to#1)\to#2\bigr)}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+
+\begin{document}
+
+\c@section=11
+
+\barcolorbox{220, 255, 255}{0, 130, 130}{80, 200, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Mathematical Logic}
+
+    \medskip
+    \textit{Lecture \thesection, Monday June 12, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\def\DLO{\mathit{DLO}}
+
+Let $\mL=\set<$ and le $\DLO$ be the theory of dense linear orders without endpoints.
+That is $\DLO$ consists of all the axioms of linear (total) orders, as well as the two axioms:
+\begin{gather*}
+    \forall x\forall y\bigl((x < y)\to\exists z(x<z<y)\bigr) \\
+    \forall x\exists y\exists z(y<x<z)
+\end{gather*}
+
+\begin{prop*}
+
+    $\DLO$ is $\aleph_0$-categorical and complete.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $(A,<)$ and $(B,<)$ be two countable models of $\DLO$, let us enumerate them by $\set{a_n}_{n=1}^\infty$ and $\set{b_n}_{n=1}^\infty$.
+    We construct a sequence of bijections $f_i\colon A_i\to B_i$ for $A_i\subseteq A$ and $B_i\subseteq B$ recursively.
+    Our goal is to construct such bijections such that $A_i\subseteq A$ and $B_i\subseteq B$ and $f_i\subseteq f_{i+1}$ (ie $f_{i+1}\bigl|_{A_i}=f_i$).
+    We also want $\bigcup_{i=0}^\infty A_i=A$ and $\bigcup_{i=0}^\infty B_i=B$.
+    In order for our bijections to have meaning we finally desire that $x<y\in A_i$ if and only if $f_i(x)<f_i(y)$.
+
+    Such functions are called \emph{partial embeddings}.
+
+    For $n=0$, let $A_n=B_n=\varnothing$, and $f_n$ the empty function (formally $f_n=\varnothing$).
+
+    When $n=2m+1$, we will construct $A_n$ such that $a_m\in A_n$, as this is a surefire way of ensuring the union of $A_n$s is $A$.
+    If $a_m\in A_{n-1}$ then we simply take $A_n=A_{n-1}$, $B_n=B_{n-1}$, $f_n=f_{n-1}$.
+    Otherwise, if $a_m\notin A_{n-1}$ then we know that for every $a\in A_{n-1}$ if $a<a_m$, then $f_{n-1}(a)=f_n(a)<f_n(a_m)$.
+    So we must find a $b\in B\setminus B_{n-1}$ such that $b>f_{n-1}(a)$ for all such $a\in A_{n-1}$.
+
+    If $a_m$ is greater than every $a\in A_{n-1}$ then this means that $b>f_{n-1}(a)$ for every $a\in A_{n-1}$, and such a $b$ exists since the theory requires the model have no endpoints.
+    If $a_m$ is less than every $a\in A_{n-1}$ then we can take $b\in B\setminus B_{n-1}$ less than every other element in $B_{n-1}$.
+    Otherwise $a_i<a_m<a_j$ and so we must have a $b$ such that $f_{n-1}(a_i)<b<f_{n-1}(a_j)$ which exists since the theory requires the model be dense.
+    Thus in any case such a $b$ exists.
+
+    Now we define $A_n=A_{n-1}\cup\set{a_m}$, $B_n=A_{n-1}\cup\set{b}$ and $f_n=f_{n-1}\cup\set{(a_m,b)}$.
+
+    When $n=2m+2$, we will construct $B_n$ such that $b_m\in B_n$, as this ensures the union of $B_n$s is $B$.
+    If $b_m\in B_{n-1}$, we change nothing.
+    Otherwise, we do the same process as above but on $f_{n-1}^{-1}$ to generate $f_n^{-1}$ (since all these functions are bijections).
+
+    As explained above, we have that the unions of $A_n$ and $B_n$ are $A$ and $B$ respectively.
+    So for every $a\in A$ we can take an $n$ such that $a\in A_n$ and define $f(a)=f_n(a)$.
+    The choice of $n$ is immaterial since $f_n\subseteq f_{n+1}$, and since the $f_n$s are partial embeddings (bijective), $f$ is a bijection.
+    $f$ is an isomorphism since $a<a'$ if and only if $f(a)<f(a')$ and thus the two models are isomorphic.
+
+    Therefore $\DLO$ is $\aleph_0$-categorical.
+    Since there are no finite dense linear orders, by Vaught's test, $\DLO$ is complete, as required.
+    \qed
+
+\end{proof}
+
+Note that $\DLO$ is satisfiable as $(\bQ,<)$ models it.
+
+\begin{defn*}
+
+    A theory $T$ has \ppemph{quantifier elimination} if for every formula $\phi$ there exists a quantifier-free formula $\psi$ such that
+    \[ T\vDash\phi\oto\psi \]
+    (meaning every model of $T$ satisfies $\phi\oto\psi$).
+
+\end{defn*}
+
+\begin{lemm*}
+
+    If $(A,<)$ and $(B,<)$ are countable dense linear orders, and $a_1<\cdots<a_n\in A$ and $b_1<\dots<b_n\in B$ then there exists an isomorphism $f\colon A\to B$ such that $f(a_i)=f(b_i)$ for every relevant
+    $i$.
+
+\end{lemm*}
+
+The proof of this is the same as the proof of the proposition above, but we have $A_0=\set{a_1,\dots,a_n}$ and $B_0=\set{b_1,\dots,b_n}$ and $f_0(a_i)=f_0(b_i)$.
+
+\begin{thrm*}
+
+    $\DLO$ has quantifier elimination.
+
+\end{thrm*}
+
+\begin{proof}
+
+    We begin by assuming that $\phi$ is a sentence (a closed formula, ie. it has no free variables).
+    We know that $\DLO\vdash\phi$ if and only if $\bQ\vDash\phi$ since $\DLO$ is complete.
+    So if $\bQ\vDash\phi$ then $\DLO\vdash\phi$ and so
+    \[ \DLO\vdash\phi\oto x=x \]
+    where $x$ is some variable.
+    And if $\bQ\vDash\neg\phi$ then $\DLO\vdash\neg\phi$ and so
+    \[ \DLO\vdash\phi\oto x\neq x \]
+    and thus $\DLO$ has quantifier elimination for sentences (what we have shown is that this is true for complete theories, not just $\DLO$).
+
+    Suppose that $\phi$ has free variables $x_1,\dots,x_n$ where $n\geq1$.
+    We will denote $\vec x=(x_1,\dots,x_n)$.
+
+    For every function
+    \[ \sigma\colon\set{(i,j}[1\leq i<j\leq n]\longto\set{0,1,2} \]
+    we define the formula
+    \[ \chi_\sigma(\vec x)\colon\quad \bigwedge_{\sigma(i,j)=0}(x_i=x_j)\land\bigwedge_{\sigma(i,j)=1}(x_i<x_j)\land\bigwedge_{\sigma(i,j)=2}(x_i>x_j) \]
+    thus $\chi_\sigma$ only evaluates as true if $\sigma(i,j)=0$ when $i=j$, $\sigma(i,j)=1$ when $x_i<x_j$, and $\sigma(i,j)=2$ when $x_i>x_j$.
+    We call such $\sigma$ and $\chi_\sigma$ \emph{sign conditions}.
+
+    Let $\Lambda_\phi$ be the set of sign conditions such that there is a $\vec a\in\bQ^n$ where
+    \[ \bQ\vDash\chi_\sigma(\vec a)\land\phi(\vec a) \]
+    If $\Lambda_\phi$ is empty, then for every $\vec a\in\bQ^n$ since $\chi_\sigma(\vec a)$ is true for some sign condition, we have that $\bQ\nvDash\phi(\vec a)$ and so
+    \[ \bQ\vDash\forall\vec x\neg\phi(\vec x) \]
+    and so
+    \[ \DLO\vDash\phi\oto x_1\neq x_1 \]
+    for some variable $x_1$.
+
+    Otherwise, $\Lambda_\phi$ is non-empty (and by definition finite), so let
+    \[ \psi_\phi(\vec x) = \bigvee_{\sigma\in\Lambda_\phi}\chi_\sigma(\vec x) \]
+    If $\bQ\vDash\phi(\vec x)$ since there is a sign condition such that $\bQ\vDash\chi_\sigma(\vec x)$, we have $\bQ\vDash\chi_\sigma(\vec x)\land\phi(\vec x)$.
+    Thus $\bQ\vDash\phi(\vec x)\to\psi_\phi(\vec x)$.
+
+    To show the converse, suppose that $\vec b\in\bQ^n$ and $\bQ\vDash\psi_\phi(\vec b)$.
+    Let $\sigma\in\Lambda_\phi$ such that $\bQ\vDash\chi_\sigma(\vec b)$ then by definition there exists an $\vec a\in\bQ^n$ such that $\bQ\vDash\phi(\vec a)\land\chi_\sigma(\vec a)$.
+    By the lemma above there exists an automorphism of $(\bQ,<)$ such that $f(\vec a)=\vec b$ and so $\bQ\vDash\phi(\vec b)\land\chi_\sigma(\vec b)$, in particular $\bQ\vDash\phi(\vec b)$.
+    Thus we also have $\bQ\vDash\psi_\phi(\vec b)\to\phi(\vec b)$, as required.
+    \qed
+
+\end{proof}
+
+Let us take the signature $\mL=\set{=,0,S}$ where $S$ is a unary function (the successor function, in $\bZ$ taken to mean $x\varmapsto x+1$).
+
+\begin{thrm*}
+
+    $(\bZ,=,0,S)$ has quantifier elimination.
+
+\end{thrm*}
+
+\begin{proof}
+
+    We will show this by formula induction.
+    Instead of using the universal quantifier, we will use the existence quantifier.
+
+    If $\phi$ is a prime formula, then this is true since it by definition has no quantifiers.
+    If $\phi$ is the logical connective of two other formulas, it is sufficient to induct over those and replace them with their quantifier-free equivalents.
+
+    Otherwise $\phi$ is of the form $\exists x\psi$.
+    We can assume by induction that $\psi$ is quantifier-free.
+    Since $\psi$ can have other free variables, we will write $\psi(x,x_1,\dots,x_n)$.
+
+    Since the atomic formulas of this theory are formulas of the form
+    \[ S(\dots(S(u))\dots) = S(\dots(S(v))\dots) \]
+    where $u$ and $v$ are either variables or $0$.
+    $\psi$ is some boolean combination of these atomic formulas (eg. using conjunction and negation).
+    Let us focus on the atomic formulas in $\psi$ which contain $x$.
+    If in such an atomic formula, $u=v=x$ then this atomic formula is either always true or always false (as it essentially says $x+n=x+m$), and so it can be replaced with an equivalent formula which is
+    always true/always false which does not contain $x$.
+
+    The other atomic formula in $\psi$ which contain $x$ are of the form $S^n(x)=S^m(x_i)$ meaning they are all of the form $x=t_j$ where $t_j=x_i+c$ for some $i$ and integer $c$.
+    And so let us define
+    \[ \psi' = \lor_j \psi(t_j,x_1,\dots,x_n) \]
+    For some $x_1,\dots,x_n$, if $\psi'$ is true then obviously $\phi$ is true.
+    If $\phi(x_1,\dots,x_n)$ is true then suppose $\psi'(x_1,\dots,x_n)$ is false, then this means that there is an $x$ where $\psi(x,x_1,\dots,x_n)$ is true, and so $x\neq t_j$ for any $j$.
+    But as we discussed above, all such $x$ must make all the atomic formula in $\psi$ false.
+
+    So let $\psi''$ be the formula obtained by replacing all atomic formula in $\psi$ with identically false formulas.
+    Thus $\psi'\lor\psi'$ is equivalent to $\phi$.
+    \qed
+
+\end{proof}
+
+The structure $(\bZ,=,<,S)$ also has quantifier elimination, for a similar reason.
+Instead of just having atomic formulas of the form $x=t_i$ we also have of the form $x<t_i$.
+But the last step when considering when $x\neq t_i$ fails here.
+
+\begin{defn*}
+
+    Two $\mL$-structures $\mM$ and $\mN$ are \ppemph{elementarily equivalent} if for every $\mL$-sentence $\phi$, $\mM\vDash\phi$ if and only if $\mN\vDash\psi$.
+    This is denoted $\mM\equiv\mN$.
+
+\end{defn*}
+
+Thus $\mM\equiv\mN$ if and only if $\theoryof\mM=\theoryof\mN$.
+
+\begin{thrm*}[invarTheorem,Invariance\ Theorem]
+
+    If $\mM$ and $\mN$ are isomorphic $\mL$-structures with an isomorphism $\iota$, and $\phi(\vec x)$ is an $\mL$-formula, then for every $\vec a\in\mM^n$
+    \[ \mM\vDash\phi(\vec a) \iff \mN\vDash\phi(\iota(\vec a)) \]
+
+\end{thrm*}
+
+\begin{proof}
+
+    We first prove that for terms $t(\vec x)$, $t(\iota(\vec a))=\iota(t(\vec a))$.
+    This is done by term induction, if $t$ is a variable then this is obviously true.
+    Otherwise suppose $t=f(t_1,\dots,t_n)$ then
+    \[ t(\iota(\vec a)) = f\bigl(t_1(\iota(\vec a)),\dots,t_n(\iota(\vec a))\bigr) = f\bigl(\iota(t_1(\vec a)),\dots,\iota(t_n(\vec a))\bigr) = \iota\bigl(f(t_1(\vec a),\dots,t_n(\vec a))\bigr) =
+    \iota(t(\vec a)) \]
+    where the second equality is due to term induction, and the third is due to $\iota$ being an isomorphism.
+
+    We now prove the theorem using formula induction.
+    For prime formulas, suppose $\phi=R(\vec t)$ we have that $\mN\vDash\phi(\iota(\vec a))$ if and only if $R(\vec t(\iota(\vec a)))$ which is if and only if $R\bigl(\iota(\vec t(\vec a))\bigr)$, which
+    is if and only if $R(\vec t(\vec a))$ since $\iota$ is a isomorphism which is if and only if $\mM\vDash\phi(\vec a)$ as required.
+
+    For conjugate formulas, this is trivial.
+    Suppose $\phi=\forall x\psi$ then we will take $\mM$ as a model with any valuation function $w$, and we view the valuation function of $\mN$ as $\iota\circ w$.
+    $\mM\vDash\phi$ if and only if every $b$, $\mM^b_x\vDash\psi$, since the inductive result is true for any valuation function, this is if and only $\mN^{\iota(b)}_x\vDash\psi$ for every $b\in\mN$.
+    But since $\iota$ is surjective, this is if and only if $\mN\vDash\phi$ as required.
+    \qed
+
+\end{proof}
+
+Thus we get the following corollary easily
+
+\begin{coro*}
+
+    Isomorphic structures are elementarily equivalent.
+
+\end{coro*}
+
+This is since $\mM\vDash\phi$ if and only if $\mN\vdash\phi$ if $\phi$ is a sentence (so it has no free variables to substitute).
+
+\begin{prop*}
+
+    A theory is complete if and only if all of its models are elementarily equivalent.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $T$ is a complete theory and $\mM,\mN\vDash T$, then let $\phi$ be a sentence.
+    If $\mM\vDash\phi$ then $T$ cannot prove $\neg\phi$ so $T\vdash\phi$ and so $\mN\vDash\phi$.
+    By symmetry, $\mM\vDash\phi$ if and only if $\mN\vDash\phi$, so $\mM\equiv\mN$.
+
+    And suppose that $T$ is a theory such that all of its models are elementarily equivalent, and let $\phi$ be a sentence.
+    Now suppose that $T$ does not prove or disprove $\phi$, then $T\cup\set\phi$ and $T\cup\set{\neg\phi}$ are both consistent and therefore have models, let them be $\mM$ and $\mN$ respectively.
+    So then $\mM$ and $\mN$ are models of $T$, and are therefore elementarily equivalent, but $\mM\vDash\phi$ and $\mN\vDash\neg\phi$ which is a contradiction.
+    \qed
+
+\end{proof}
+
+Thus for example, $(\bR,<)$ and $(\bQ,<)$ are elementarily equivalent (but not isomorphic) models of $\DLO$.
+And any two algebraically closed fields of the same characteristic are equivalent.
+
+\begin{defn*}
+
+    Suppose $\mM$ and $\mN$ are $\mL$-structures and $\mu\colon\mM\longto\mN$ is an $\mL$-embedding (injection preserving constants, functions, and relations).
+    Then $\mu$ is an \ppemph{elementary embedding} if
+    \[ \mM\vDash\phi(a_1,\dots,a_n) \iff \mN\vDash\phi(\mu(a_1),\dots,\mu(a_n)) \]
+    for every $\mL$-formula $\phi(x_1,\dots,x_n)$ and $a_1,\dots,a_n\in\mM$.
+
+    Suppose $\mM\subseteq\mN$ is a substructure (meaning it contains all of $\mN$'s constants, the functions are closed under $\mM$, and the relations $R^\mM=R^\mN\cap\mM^n$).
+    Then $\mM$ is called an \ppemph{elementary substructure} of $\mN$ and $\mN$ an \ppemph{elementary extension} of $\mM$, denoted $\mM\prec\mN$, if the inclusion mapping is an elementary embedding.
+
+\end{defn*}
+
+\begin{defn*}
+
+    If $\mM$ is an $\mL$-structure, let $\mL_\mM$ be the language where a constant symbol $c_m$ is added for every $m\in\mM$.
+    We extend $\mM$ to an $\mL_\mM$-structure by interpreting each such constructed constant symbol as its actual value in $\mM$ (ie. interpreting $c_m$ as $m$).
+
+    The \ppemph{atomic diagram} of $\mM$ is the set of atomic $\mL_\mM$-formulas or negation of atomic $\mL_\mM$-formulas which are satisfied by $\mM$.
+    Or in other words:
+    \[ \Diagof\mM = \set{\phi(c_{m_1},\dots,c_{m_n})}[\phi\text{ is an atomic }\mL\text{ formula, or the negation of one, and }\mM\vDash\phi(m_1,\dots,m_n)] \]
+    Note that it is necessary to define $\mL_\mM$ in order to talk about $\phi(m_1,\dots,m_n)$.
+
+    And the \ppemph{elementary diagram} of $\mM$ is the set of all $\mL_\mM$-formulae which are satisfied by $\mM$:
+    \[ \elDiagof\mM = \set{\phi(c_{m_1},\dots,c_{m_n})}[\phi\text{ is a }\mL\text{-formula, and }\mM\vDash\phi(m_1,\dots,m_n)] \]
+
+\end{defn*}
+
+\begin{lemm*}
+
+    \benum
+        \item Suppose $\mN$ is an $\mL_\mM$-structure such that $\mN\vDash\Diagof\mM$ then viewing $\mN$ as an $\mL$-structure, there is an $\mL$-embedding of $\mM$ into $\mN$.
+        \item If $\mN\vDash\elDiagof\mM$, then there exists an elementary $\mL$-embedding of $\mM$ into $\mN$.
+    \eenum
+
+\end{lemm*}
+
+\begin{proof}
+
+    \benum
+        \item Let us define $\mu\colon\mM\longto\mN$ by $\mu(m)=c_m^\mN$, $\mN$'s interpretation of the constant symbol $c_m$.
+        Since if $m_1\neq m_2\in\mM$ then
+        \[ c_{m_1}\neq c_{m_2}\in\Diagof\mM \]
+        and so $c_{m_1}^\mN\neq c_{m_2}^\mN$ and so $\mu$ is injective.
+
+        If $f$ is a function symbol of $\mL$ and $f^\mM(m_1,\dots,m_n)=m$, then $f(c_{m,1},\dots,c_{m,n})=c_m$ is a formula in $\Diagof\mM$, and so
+        \[ f^\mN(c_{m,1}^\mN,\dots,c_{m,n}^\mN) = c_m^\mN \]
+        meaning
+        \[ f^\mN(\mu(m_1),\dots,\mu(m_n)) = \mu(f^\mM(m_1,\dots,m_n)) \]
+        so $\mu$ preserves functions.
+
+        Similarly if $R$ is a relation symbol and $R^\mM(m_1,\dots,m_n)$, then $R(c_{m,1},\dots,c_{m,n})\in\Diagof\mM$ and so
+        \[ R^\mN(c_{m,1}^\mN,\dots,c_{m,n}^\mN) \iff R^\mN(\mu(m_1),\dots,\mu(m_n)) \]
+        thus if $R^\mM(m_1,\dots,m_n)$ then $R^\mN(\mu(m_1),\dots,\mu(m_n))$ so $\mu$ is an $\mL$-embedding.
+
+        \item If $\mN\vDash\elDiagof\mM$ then this embedding is elementary.
+        This is because $\mM\vDash\phi(m_1,\dots,m_n)$ if and only if $\mN\vDash\phi(c_{m,1},\dots,c_{m,n})$ which is if and only if
+        \[ \mN\vDash\phi(c_{m,1}^\mN,\dots,c_{m,n}^\mN) = \phi(\mu(c_{m,1}),\dots,\mu(c_{m,n})) \]
+        as required.
+        \qed
+    \eenum
+
+\end{proof}
+
+\begin{thrm*}[upwardLowenheinSkolem,Upward\ Lowenheim-Skolem\ Theorem]
+
+    Let $\mM$ be an infinite $\mL$-structure and $\varkappa$ be an infinite cardinal $\varkappa\geq\abs\mM+\abs\mL$.
+    Then there exists an $\mL$-structure $\mN$ of cardinality $\varkappa$ and $\mu\colon\mM\longto\mN$ elementary.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Since $\mM\vDash\elDiagof\mM$, the theory $\elDiagof\mM$ is satisfiable and thus since $\abs{\mL_\mM}=\abs\mL+\abs\mM\leq\varkappa$, there exists a model of $\elDiagof\mM$ of cardinality $\varkappa$.
+    Let this model be $\mN$, so $\mN\vDash\elDiagof\mM$.
+    By the above lemma, there exists an elementary embedding of $\mM$ into $\mN$.
+    \qed
+
+\end{proof}
+
+Since an elementary embedding can be viewed as an elementary extension (swap out $\mu(m)$ with $m$), the Upward L\:owenheim-Skolem Theorem tells us that structures have arbitrarily large elementary
+extensions.
+
+\end{document}
+

@@ -1,0 +1,385 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\qed{\hskip1cm\penalty-100\hbox{}\hfill$\blacksquare$}
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\bS{\mathbb{S}}
+\def\mU{\mathcal{U}}
+\def\mV{\mathcal{V}}
+\def\mO{\mathcal{O}}
+\def\mF{\mathcal{F}}
+\def\mW{\mathcal{W}}
+
+\def\to{\varrightarrow}
+\def\longto{\longvarrightarrow}
+
+\newfunc{metric}{\rho}({})
+\newfunc{metricA}{\sigma}({})
+\newfunc{powset}{{\cal P}}(|)
+
+\let\divides=\mid
+\let\to=\varrightarrow
+\def\implies{\,\longvarRightarrow\,}
+
+\def\mathresize#1#2{\mathpalette\@mathresize{{#1}{#2}}}
+\def\@mathresize#1#2{\@@mathresize#1#2}
+\def\@@mathresize#1#2#3{\hbox to #2{\hss$#1#3$\hss}}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\begin{document}
+
+\c@section=8
+
+\barcolorbox{255, 220, 255}{130, 0, 130}{200, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Topology}
+
+    \medskip
+    \textit{Lecture \thesection, Sunday June 11, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{defn*}
+
+    Let $(X,\tau)$ be a topological space.
+    $B\subseteq\tau$ is a \ppemph{basis} for $\tau$ if every open set $\mU\in\tau$ is the union of open sets in $B$.
+
+\end{defn*}
+
+Equivalently, $B$ is a basis such that for every open set $\mU$ and every $p\in\mU$, there exists an $\mV\in B$ such that $p\in\mV\subseteq\mU$.
+This is equivalent since if $B$ satisfies this then for every open $\mU$ we can take the union of $\mV_p$ for $p\in\mU$ and this gives $\mU$, so $B$ is a basis.
+And if $B$ is a basis then for every $p\in\mU$ then since $B$ is a basis $\mU$ is a union of open sets in $B$ so $p$ must be in the union, so $p\in\mV\subseteq\mU$ for $\mV\in B$.
+
+\begin{exam*}
+
+    If $(X,\metric)$ is a metric space, $B=\set{B_r(x)}[r>0, x\in X]$ the set of all open balls, is a basis for the topology of $X$.
+    This is by definition.
+
+\end{exam*}
+
+\begin{prop*}
+
+    Let $X$ and $Y$ be topological spaces and $B$ a basis for $Y$.
+    Then $f\colon X\longto Y$ is a continuous function if and only if for every $\mU\in B$, $f^{-1}(\mU)$ is open in $X$.
+
+\end{prop*}
+
+\begin{proof}
+
+    If $f$ is continuous, this is trivial.
+    Otherwise, let $\mV$ be open in $Y$, then it is the union of elements of $B$:
+    \[ \mV = \bigcup_{\lambda\in\Lambda}\mU_\lambda \]
+    and so we have that the preimage of $\mV$ under $f$ is
+    \[ f^{-1}(\mV) = f^{-1}\parens{\bigcup_{\lambda\in\Lambda}\mU_\lambda} = \bigcup_{\lambda\in\Lambda}f^{-1}(\mU_\lambda) \]
+    and since $f^{-1}(\mU_\lambda)$ is open for every $\lambda\in\Lambda$ we have that $f^{-1}(\mV)$ is open.
+    Thus $f$ is continuous.
+    \qed
+
+\end{proof}
+
+Similarly we can show that
+
+\begin{prop*}
+
+    Let $X$ and $Y$ be topological spaces and $B$ a basis for $X$.
+    Then $f\colon X\longto Y$ is open if and only if for every $\mU\in B$, $f(\mU)$ is open.
+
+\end{prop*}
+
+\begin{prop*}
+
+    If $X$ is a topological space and $B$ is a basis and $A\subseteq X$ is a subspace, then $B_A=\set{\mU\cap A}[\mU\in B]$ is a basis for $A$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $\mV$ be open in $A$ then $\mV=\mV'\cap A$ for $\mV'$ open in $A$.
+    Then since $B$ is a basis, $\mV'=\bigcup_{\lambda\in\Lambda}\mU_\lambda$ and so $\mV=\bigcup_{\lambda\in\Lambda}\mU_\lambda\cap A$ which is a union of elements in $B_A$.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    Let $X$ be a topological space and $B$ a basis.
+    Then $A\subseteq X$ is dense in $X$ if and only if for every $\varnothing\neq\mU\in B$, $\mU\cap A\neq\varnothing$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Since $A$ is dense if and only if it intersects every open set, one direction is trivial.
+    Otherwise, let $\mU$ be open then since it is the union of open sets in $B$ which have non-trivial intersection with $A$, so does $\mU$, so $A$ is dense.
+    \qed
+
+\end{proof}
+
+\begin{lemm*}
+
+    If $X$ is a topological space with a basis $B$, then there exists a dense set $A$ with cardinality $\abs A\leq\abs B$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Construct $A$ by choosing a $p\in\mU$ for every $\varnothing\neq\mU\in B$.
+    Then for every $\varnothing\neq\mU\in B$, $A\cap\mU$ is non-empty and so $A$ is dense by above.
+    By $A$'s construction, $\abs A\leq\abs B$ as required.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}
+
+    Let $M$ be a metric space, then $M$ has a countable basis if and only if it is separable (has a countable dense set).
+
+\end{thrm*}
+
+\begin{proof}
+
+    If $M$ has a countable basis then by the above lemma $M$ has a basis which is countable.
+    If $M$ has a countable dense set $A$ then we construct a basis $B$ as follows:
+    \[ B = \set{B_p(x)}[x\in A,\, p>0,\, p\in\bQ] \]
+    This is countable since $A$ and $\bQ$ are countable.
+    And for every open set $\mU$ and for every $x\in\mU$ there exists an $r>0$ such that $B_r(x)\subseteq\mU$.
+    There exists a $p\in\bQ$ such that $2p<r$ and an $a\in A$ such that $\metricof{a,x}<p$ and so $B_p(a)\subseteq B_r(x)$ since if $\metricof{a,y}<p$ then
+    $\metricof{y,x}<\metricof{a,y}+\metricof{a,x}<2p=r$ as required.
+
+    So for every $x\in\mU$ there exists a $B_p(a)\in B$ such that $x\in B_p(a)\subseteq\mU$ so $B$ is a basis.
+    Note that in general the cardinality of this $B$ will be $\leq\aleph_0\cdot\abs A$.
+    \qed
+
+\end{proof}
+
+\begin{exam*}
+
+    The \ppemph{Sorgenfrey topology} on $\bR$ is defined as the topology $\tau_\bS$ consisting of all unions of sets of the form $[a,b)$.
+    Thus we can take the basis
+    \[ \bS = \set{[a,b)}[a,b\in\bR] \]
+    $\bQ$ is still dense in $\bR$ under this topology since it intersects every set in the basis $\bS$.
+    We will show that $\tau_\bS$ has no countable basis.
+
+    Let $B$ be a basis for $\tau_\bS$, then notice that if $x\in\bR$ then since $x\in[x,x+1)$ there exists an $\mV\in B$ such that $x\in\mV\subseteq[x,x+1)$.
+    So we define a mapping $f\colon\bR\longto B$ by $f(x)=\mV$.
+    We claim that this is injective since if $f(x)=\mV$ then since $\mV\subseteq[x,x+1)$ for every $y<x$, $y\notin\mV$ and so $f(y)\neq\mV$.
+    Since this is true for every $x$ and $y<x$, this means that if $x\neq y$, $f(x)\neq f(y)$ so $f$ is injective.
+    Thus $\abs\bR\leq\abs B$ meaning $B$ is uncountable for any basis $B$.
+
+    We just showed that every metric space has a countable basis if and only if it is separable, but $\tau_\bS$ is separable but does not have a countable basis.
+    This means that $\tau_\bS$ is not metricizable.
+
+\end{exam*}
+
+\begin{prop*}
+
+    If $X$ is a topological space with a countable basis then $\tau$'s cardinality is at most the cardinality of the continuum.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $B$ be the countable basis.
+    Then we define $f\colon\powsetof B\longto\tau$ by
+    \[ f(L) = \bigcup_{\mU\in L}\mU \]
+    this is surjective since $B$ is a basis, and so $\abs\tau\leq\abs{\powsetof B}=2^{\abs B}=2^{\aleph_0}$.
+    \qed
+
+\end{proof}
+
+In general if $\tau$ has a basis $B$ then
+\[ \abs\tau\leq 2^{\abs B} \]
+
+Since $\bR^n$ is separable, we know then that it has a countable basis and so the cardinality of its topology is at most the cardinality of the continuum.
+Since we can map $x$ to $B_1(x)$, we know that the topology is actually equal to the cardinality of the continuum.
+
+\begin{prop*}
+
+    If $X$ is a topological space and $B$ a basis, then $X$ is compact if and only if every open cover of $X$ by open sets in $B$ has an open subcover.
+
+\end{prop*}
+
+\begin{proof}
+
+    One direction is trivial.
+    Suppose $\set{\mU_\lambda}_{\lambda\in\Lambda}$ is an open cover, then every $\mU_\lambda$ can be written as a union of sets in the basis, so
+    \[ X = \bigcup_{\lambda\in\Lambda'}\mV_\lambda \]
+    where $\mV_\lambda\in B$, and so there exists a finite subcover
+    \[ X = \bigcup_{n=1}^N \mV_n \]
+    And since $\mV_n\subseteq\mU_n$ for some $\mU_n$ in the open cover, we get
+    \[ X = \bigcup_{n=1}^N\mU_n \]
+    so $X$ is compact.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    Let $X$ be a set and $B$ be a set of subsets of $X$.
+    We define $\tau_B$ as the set of all unions of sets from $B$:
+    \[ \tau_B = \set{\bigcup_{A\in L}A}[L\subseteq B] \]
+
+\end{defn*}
+
+Note $B\subseteq\tau_B$.
+
+\begin{thrm*}
+
+    $\tau_B$ is a topology on $X$ if and only if:
+    \benum
+        \item $X\in\tau_B$.
+        \item For every $\mU,\mV\in B$, $\mU\cap\mV\in\tau_B$ (the intersection of sets in $B$ is equal to some union of sets in $B$).
+    \eenum
+
+\end{thrm*}
+
+\begin{proof}
+
+    If $\tau_B$ is a topology then these conditions hold trivially.
+    In general $\tau_B$ is closed under arbitrary unions and contains the empty set.
+    Furthermore given this condition, we know that $X\in\tau_B$.
+    All that remains is to show that $\tau_B$ is closed under finite intersections.
+
+    Let $\mU,\mV\in\tau_B$ suppose $\mU=\bigcup_{\lambda\in\Lambda}\mU_\lambda$ and $\mV=\bigcup_{\gamma\in\Gamma}\mV_\gamma$ and so
+    \[ \mU\cap\mV = \bigcup_{\lambda\in\Lambda}\bigcup_{\gamma\in\Gamma}\mU_\lambda\cap\mV_\gamma \]
+    by the conditions given, $\mU_\lambda\cap\mV_\gamma\in\tau_B$ and so the union, $\mU\cap\mV$, is in $\tau_B$ as required.
+    \qed
+
+\end{proof}
+
+Thus if $B$ is closed under intersections, then by the above theorem $\tau_B$ is necessarily a topology.
+
+The conditions are also equivalent to that for every $a\in X$ there is a $\mU\in B$ where $x\in\mU$, and for every $\mU,\mV\in B$ and every $a\in\mU\cap\mV$ there is a $\mW\in B$ where
+$a\in\mW\subseteq\mU\cap\mV$.
+This is trivial and left as an exercise.
+
+\begin{defn*}
+
+    If $\set{(X_\lambda,\tau_\lambda)}_{\lambda\in\Lambda}$ is a collection of topological spaces, we define $X=\prod_{\lambda\in\Lambda}X_\lambda$ and
+    \[ B = \set{\prod_{\lambda\in\Lambda}\mU_\lambda}[\mU_\lambda\in\tau_\lambda\text{ and all but a finite number of }\mU_\lambda=X_\lambda] \]
+    then we define a topology on $X$ by $\tau_B$.
+    This is called the \ppemph{product topology}.
+
+\end{defn*}
+
+Since $X_\lambda\in\tau_\lambda$, we have $X\in B$.
+And if $\mU=\prod_{\lambda\in\Lambda}\mU_\lambda,\mV=\prod_{\lambda\in\Lambda}\mV_\lambda\in B$ then
+\[ \mU\cap\mV = \parens{\prod_{\lambda\in\Lambda}\mU_\lambda}\cap\parens{\prod_{\lambda\in\Lambda}\mV_\lambda} = \prod_{\lambda\in\Lambda}\mU_\lambda\cap\mV_\lambda \]
+and since $\mU_\lambda\cap\mV_\lambda\in\tau_\lambda$ and the only $\mU_\lambda\cap\mV_\lambda\neq X_\lambda$ is when either is not $X_\lambda$ which is finite, so we have that $\mU\cap\mV\in B$ so $B$ is
+indeed a basis and this definition is well-defined.
+
+\begin{prop*}
+
+    Let $\pi_\gamma$ denote the function $\pi_\gamma\colon\prod_{\lambda\in\Lambda}X_\lambda\longto X_\gamma$ which maps $(x_\lambda)_{\lambda\in\Lambda}\varmapsto x_\gamma$.
+    Then $\pi_\gamma$ is open and continuous.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $\mU_\gamma\subseteq X_\gamma$ be open then $\pi_\gamma^{-1}(\mU_\gamma)=(\mV_\lambda)_{\lambda\in\Lambda}$ where $\mV_\gamma=\mU_\gamma$ and $\mV_\lambda=X_\lambda$ for $\lambda\neq\gamma$.
+    This is in $B$ and so is open.
+    Thus $\pi_\gamma$ is continuous.
+
+    And if $\prod_{\lambda\in\Lambda}\mU_\lambda$ is in $B$ then its image in $\pi_\gamma$ is by definition $\mU_\gamma$ which is open (by the definition of $B$).
+    Thus $\pi_\gamma$ is open as well.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    Let $X=\prod_{\lambda\in\Lambda}X_\lambda$ be the product topology, and let $Y$ be another topological space.
+    Then a function $f\colon Y\longto X$ is continuous if and only if $\pi_\gamma\circ f$ is for every $\gamma\in\Gamma$.
+
+\end{prop*}
+
+\begin{proof}
+
+    If $f$ is continuous then $\pi_\gamma\circ f$ is as the composition of continuous functions.
+    Notice that $f(y)=(f_\lambda(y))_{\lambda\in\Lambda}$ where $\pi_\gamma\circ f=f_\gamma$.
+    It is sufficient to show that the preimage of $\prod_{\lambda\in\Lambda}\mU_\lambda$ where all but a finite number of $\mU_\lambda=X_\lambda$ under $f$ is open.
+    Notice that
+    \[ f(y) \in \prod_{\lambda\in\Gamma}\mU_\lambda \iff f_\lambda(y) \in \mU_\lambda \iff y\in f^{-1}_\lambda(\mU_\lambda) \]
+    for every $\lambda\in\Gamma$.
+    So
+    \[ f^{-1}\parens{\prod_{\lambda\in\Gamma}\mU_\lambda} = \bigcap_{\lambda\in\Lambda}f_\lambda^{-1}(\mU_\lambda) \]
+    Since $f_\lambda^{-1}(\mU_\lambda)$ is open as $f_\lambda$ is continuous, and since only a finite number of $\mU_\lambda\neq X_\lambda$ and thus only a finite number of
+    $f_\lambda^{-1}(\mU_\lambda)\neq Y$, this intersection is finite, and so we get that the preimage of every open set is open.
+    Therefore $f$ is continuous.
+    \qed
+
+\end{proof}
+
+This shows the significance of requiring that all but a finite number of $\mU_\lambda=X_\lambda$.
+
+If $A\subseteq X$ and $B\subseteq Y$ where $X$ and $Y$ are topological spaces, there are two ways of defining a topology on $A\times B$.
+We can view $A\times B$ as a subspace of $X\times Y$, or we can view $A$ and $B$ as subspaces and take their product topology.
+But notice that if $B$ defines $X\times Y$ then
+\[ B' = \set{\mU\times\mV\cap A\times B}[\mU\times\mV\in B] = \set{\mU\times\mV\cap A\times B}[\mU\in\tau_X,\,\mV\in\tau_Y] \]
+is a basis for $A\times B$.
+But since $\mU\times\mV\cap A\times B=(\mU\cap A)\times(\mV\cap B)$, and the basis which defines $A\times B$ as the product of two subspace topologies is
+\[ B'' = \set{(\mU\cap A)\times(\mV\cap B)}[\mU\in\tau_x,\,\mV\in\tau_Y] \]
+we have $B''=B'$ and so the topology defined for $A\times B$ is the same with both methods.
+
+\begin{prop*}
+
+    If $X_1,\dots,X_n$ are topological spaces with respective basis $B_i$ then
+    \[ C = \set{\mV_1\times\cdots\times\mV_n}[\mV_i\in B_i] \]
+    is a basis for $X=X_1\times\cdots\times X_n$.
+
+\end{prop*}
+
+\begin{proof}
+
+    By definition, $C$ is a set of open sets in $X$.
+    We must show that every set in $B$ (the basis for $X$) can be written as a union of elements in $C$.
+    Let $\mU_1\times\cdots\times\mU_n\in B$ then $\mU_i$ is open in $X_i$ and thus a union of elements in $B_i$, so let
+    \[ \mU_i = \bigcup_{\lambda_i\in\Lambda_i}\mV_{\lambda_i} \]
+    thus
+    \[ \mU_1\times\cdots\times\mU_n = \prod_{i=1}^n\parens{\bigcup_{\lambda_i\in\Lambda_i}\mV_{\lambda_i}} =
+    \bigcup_{\lambda_1\in\Lambda_1}\cdots\bigcup_{\lambda_n\in\Lambda_n}\prod_{i=1}^n\mV_{\lambda_i} \]
+    which is a union of elements in $C$, as required.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    If $\set{X_\lambda}_{\lambda\in\Lambda}$ is a collection of topological spaces with respective bases $B_\lambda$ then
+    \[ C = \set{\prod_{\lambda\in\Lambda}\mV_\lambda}[\mV_\lambda\in B_\lambda\text{ and all but a finite number of }\mV_\lambda=X_\lambda] \]
+    is a basis for $X=\prod_{\lambda\in\Lambda}X_\lambda$.
+
+\end{prop*}
+
+\begin{proof}
+
+    By definition all elements of $C$ are open in $X$.
+    Let $\mU\in B$ then $\mU$ is of the form $\prod_{\lambda\in\Lambda}\mU_\lambda$ where all but a finite number of $\mU_\lambda=X_\lambda$.
+    Since every $\mU_\lambda$ can be written as a union of sets in $B_\lambda$, for instance
+    \[ \mU_\lambda = \bigcup_{\gamma_\lambda\in\Gamma_\lambda}\mV_{\gamma_\lambda} \]
+    then we get that
+    \[ \mU=\prod_{\lambda\in\Lambda}\mU_\lambda=\prod_{\lambda\in\Lambda}\bigcup_{\gamma_\lambda\in\Gamma_\lambda}\mV_{\gamma_\lambda} =
+    \bigcup_{\substack{\lambda\in\Lambda\\\gamma_\lambda\in\Gamma_\lambda}}\prod_{\gamma\in\Gamma}\mV_{\gamma_\lambda} \]
+    Now, note that since all but a finite number of $\mU_\lambda=X_\lambda$, we can assume that if $\mU_\lambda=X_\lambda$ then we just take $\mU_\lambda=X_\lambda$ as $\mV_\gamma$, and so every product in
+    the above union has all but a finite amount of $\mV_{\gamma_\lambda}=X_\lambda$, and so the product is in $C$.
+    \qed
+
+\end{proof}
+
+\end{document}
+

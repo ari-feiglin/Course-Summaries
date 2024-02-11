@@ -1,0 +1,121 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=1.5cm, vertical margin=1.5cm}
+\parindent=0cm
+\parskip=3pt plus 2pt minus 2pt
+
+\input pdfmsym
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+
+\footline={}
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+\setcounter{section}{5}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{\bppbox{rgb{1 .7 .7}}{rgb{1 0 0}}{rgb{.8 0 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Introduction to Stochastic Processes}
+    \smallskip
+    \centerline{\setfont{it}Assignment \the\counter{section}}
+    \centerline{\setfont{it}Ari Feiglin}
+
+\eppbox}
+
+\bigskip
+
+\bexerc
+
+    Given a fair walk on ${\bb Z}$, compute $\expecof{\minof{T_0,T_N}}[S_0=k]$ for all $k\in{\bb Z}$.
+
+\eexerc
+
+Let us define $\tau=\minof{T_0,T_N}$ and $\mu(k)=\expecof\tau[S_0=k]$.
+Then $\mu(0)=\mu(N)=0$.
+Using first step analysis,
+\multlines{
+    \mu(k) = \expecof{\tau}[S_1=k+1]\cdot\probof{S_1=k+1}[S_0=k] + \expecof\tau[S_1=k-1]\cdot\probof{S_1=k-1}[S_0=k]\cr
+    &= \frac12(1+\mu(k+1)) + \frac12(1+\mu(k-1))
+}
+and so we get the linear recurrence
+$$ \mu(k) = 1 + \frac12\mu(k+1) + \frac12\mu(k-1) \implies \mu(k) = 2\mu(k-1) - \mu(k-2) - 2 $$
+Let us define $\Delta(k)=\mu(k)-\mu(k-1)$ and so we have that $\Delta(k)-\Delta(k-1)=\mu(k)-2\mu(k-1)+\mu(k-2)=-2$.
+This means that $\Delta(k)$ is an arithmetic sequence and so $\Delta(k)=c-2k$.
+Now, $\sum_{k=1}^N\Delta(k)=\mu(N)-\mu(0)=0$ and so $0=\frac N2(\Delta(1)+\Delta(N))=\frac N2(c-2+c-2N)$ thus $c=N+1$, meaning $\Delta(k)=N+1-2k$.
+And in general
+$$ \mu(n) = \mu(n) - \mu(0) = \sum_{k=1}^n\Delta(k) = \frac n2(\Delta(1) + \Delta(n)) = \frac n2(N-1+N+1-2n) = \frac n2(2N-2n) = n(N-n) $$
+And so
+$$ \expecof{\minof{T_0,T_N}}[S_0=n] = n(N-n) $$
+
+\bexerc
+
+    Suppose $p\neq\frac12$, then let $S_n$ be a $p$-weighted walk on ${\bb Z}$, meaning $P(i\to i+1)=p$ and $P(i\to i-1)=1-p$ for every $i\in{\bb Z}$.
+    Find a formula for $p(k)=\probof{T_N<T_0}[S_0=k]$.
+    Show that if $p<\frac12$ then there exists an $\alpha\in(0,1)$ and a $c>0$ such that $p(k)<c\alpha^{N-k}$.
+
+\eexerc
+
+Using first step analysis,
+\multlines{
+    p(k) = \probof{T_N<T_0}[S_1=k+1]\cdot\probof{S_1=k+1}[S_0=k] + \probof{T_N<T_0}[S_1=k-1]\cdot\probof{S_1=k-1}[S_0=k]\cr
+    &= p\cdot p(k+1) + (1-p)\cdot p(k-1)
+}
+and so we get the recurrence
+$$ p(k) = \frac1pp(k-1) + \frac{p-1}pp(k-2) $$
+The characteristic polynomial of this recurrence is $x^2-\frac1px+\frac{1-p}p$ which has the same roots as $px^2-x+(1-p)$, the roots being
+$$ \frac{1\pm\sqrt{1-4p(1-p)}}{2p} = \frac{1\pm\sqrt{4p^2-4p+1}}{2p} = \frac{1\pm(2p-1)}{2p} $$
+so the roots are $1$ and $\frac1p-1$, thus the general solution to this recurrence is
+$$ p(k) = c_1 + c_2\parens{\frac1p-1}^k $$
+The initial conditions are $p(0)=0$ and $p(N)=1$, so
+$$ 0 = c_1+c_2,\qquad 1 = c_1+c_2\parens{\frac1p-1}^N $$
+solving this gives
+$$ p(k) = a\parens{\frac1p-1}^k - a,\qquad a=\parens{\parens{\frac1p-1}^N-1}^{-1} $$
+
+Now if $p<\frac12$ then $\frac1p-1>1$ and so if we let $\alpha=\parens{\frac1p-1}^{-1}$ then $\alpha<1$ and we get that
+$$ p(k) = \frac{\alpha^{-k}}{\alpha^{-N}-1} - \frac1{\alpha^{-N}-1} = \frac{\alpha^{N-k}}{1-\alpha^N} - \frac{\alpha^N}{1-\alpha^N} $$
+So if we set $c=\frac1{1-\alpha^N}>0$ then we have that $p(k)<c\alpha^{N-k}$ as required.
+
+\bexerc
+
+    Show that for every $d>3$, the fair walk on ${\bb Z}^d$ is transient.
+
+\eexerc
+
+The transition probabilities for a fair walk on ${\bb Z}^d$ is $P(v\to v\pm e_i)=\frac1{2d}$ (where $e_i$ is the standard vector).
+And since all states in the walk are connected, it is sufficient to show that $0$ is transient.
+We will progress with a proof similar to showing that $0$ is recurrent for $d=1$.
+Notice that if $X_0=0$ then we can only reach $0$ again on even steps, ie. $X_{2n}=0$.
+And in order for us to reach $0$ again we must take $t_i$ steps in the direction of $e_i$ and $t_i$ steps in the direction of $-e_i$.
+And so the total number of steps is $2t_1+\cdots+2t_d=2n$, thus
+$$ \probof{X_{2n}=0} = \sum_{t_1+\cdots+t_d=n}\binom{2n}{t_1,t_1,\dots,t_d,t_d}\frac1{(2d)^{2n}} $$
+this is since of the $2n$ steps we must choose $t_1$ steps in $e_1$, $t_1$ steps in $-e_1$, etc. and the number of ways to choose these steps is $\binom{2n}{t_1,t_1,\dots,t_d,t_d}$.
+And for each choice of $t_1,\dots,t_d$ the probability of taking this specific path is $\frac1{2d}\cdots\frac1{2d}=\frac1{(2d)^{2n}}$.
+Now,
+\multlines{
+    \binom{2n}{t_1,t_1,\dots,t_d,t_d} = \frac{(2n)!}{(t_1!\cdots t_d!)^2} = \binom n{t_1,\dots,t_d}\cdot\frac{(n+1)\cdots(2n)}{t_1!\cdots t_d!} = \binom n{t_1,\dots,t_d}^2\cdot\frac{(n+1)\cdots(2n)}{n!}\cr
+    &= \binom n{t_1,\dots,t_d}^2\cdot\binom{2n}n
+}
+Thus
+$$ \probof{X_{2n}=0} = \binom{2n}n\cdot\frac1{2^{2n}}\cdot\frac1{d^n}\sum_{t_1+\cdots+t_d=n}\binom n{t_1,\dots,t_d}^2\cdot\frac1{d^n} $$
+Now if we let $m=\frac nd$ ($n$ not being divisible by $d$ is not really a concern since we will use Stirling's approximation which holds for non-integers), then we have that
+$\binom n{t_1,\dots,t_d}\leq\binom n{m,\dots,m}$ and so
+$$ \probof{X_{2n}=0} \leq \binom{2n}n\cdot\frac1{2^{2n}}\cdot\frac1{d^n}\cdot\binom n{m,\dots,m}\cdot\sum_{t_1+\cdots+t_d=n}\binom n{t_1,\dots,t_d}\cdot\frac1{d^n} $$
+By the multinomial theorem, we have that
+$$ \sum_{t_1+\cdots+t_d=n}\binom n{t_1,\dots,t_d}\frac1{d^n} = \parens{\sum_{i=1}^d\frac1d}^n = 1 $$
+And by Stirling's approximation
+$$ \eqalign{
+    \binom{2n}n &\sim \frac{\sqrt{4\pi n}\parens{\frac{2n}e}^{2n}}{2\pi n\parens{\frac ne}^{2n}} = \frac{2^{2n}}{\sqrt\pi\sqrt n}\cr
+    \binom n{m,\dots,m}&\sim \frac{\sqrt{2\pi n}\parens{\frac ne}^n}{\sqrt{2\pi m}^d\parens{\frac me}^{md}} = \frac{\sqrt{2\pi n}}{\sqrt{\frac{2\pi n}d}^d}\cdot d^n
+} $$
+And so
+$$ \probof{X_{2n}=0} \leq c\frac1{n^{d/2}} $$
+And so
+$$ N_0(0) = \sum_{n=1}^\infty\chi\set{X_{2n}=0} \implies \expecof{N_0(0)} = \sum_{n=1}^\infty\probof{X_{2n}=0} \leq c\sum_{n=1}^\infty\frac1{n^{d/2}} $$
+And this converges if $d/2>1$, meaning if $d>2$.
+So for $d\geq3$ then $\expecof{N_0(0)}<\infty$, meaning $0$ is transient and therefore the whole walk is transient, as required.
+
+\bye
+

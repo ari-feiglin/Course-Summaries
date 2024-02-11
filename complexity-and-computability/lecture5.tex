@@ -1,0 +1,297 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz-cd}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{conj}{Conjecture}{255,130,130}{150,0,0}{200,0,0}
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\undersumtext#1{\vtop{\hsize=2cm\relax\centering\small #1}}
+
+\def\sps{\texttt{\char32}}
+\def\sat{\mathsf{SAT}}
+\def\is{\mathsf{IS}}
+\def\threesat{\mathsf{3SAT}}
+\def\clique{\mathsf{Clique}}
+\def\vertcover{\textsf{Vertex-Cover}}
+\def\domset{\textsf{Dom-Set}}
+\def\dhp{\mathsf{DHP}}
+\def\dhc{\mathsf{DHC}}
+\def\hc{\mathsf{HC}}
+\def\tsp{\mathsf{TSP}}
+\def\threecolor{\mathsf{3Color}}
+\def\kcolor{k\mathsf{Color}}
+\def\Color{\mathsf{Color}}
+\def\subsum{\mathsf{SubsetSum}}
+
+\def\PF{\mathbf{PF}}
+\def\PC{\mathbf{PC}}
+\def\P{\mathbf{P}}
+\def\NP{\mathbf{NP}}
+\def\NPH{\mathbf{NPH}}
+\def\NPC{\mathbf{NPC}}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mN{\mathcal{N}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=5
+
+\barcolorbox{255, 220, 220}{130, 0, 0}{200, 80, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Computability and Complexity}
+
+    \medskip
+    \textit{Lecture \thesection, Thursday August 15, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{prop*}
+
+    The decision problem
+    \[ \threecolor = \set{G}[\text{There exists a three-coloring of the undirected graph $G$}] \]
+    is $\NP$-complete.
+
+\end{prop*}
+
+\begin{proof}
+
+    $\threecolor$ is obviously in $\NP$, as the verifier accepts a graph and a coloring and verifies that the coloring is a valid three coloring.
+    We will define a reduction from $\sat$ to $\threecolor$.
+    Suppose $\phi$ is a binary formula in CNF, we define the graph $G=(V,E)$ as follows:
+    \benum
+        \item We define three vertices $T,F,N$ and we define edges between all of them.
+        The significance of these vertices is that $T$ represents all the variables which are valuated as true, and $F$ represents those valuated as false.
+        \item For every variable $x_i$ we define two vertices $x_i$ and $\neg x_i$ where $x_i$ represents the variable $x_i$ being valuated as true, and $\neg x_i$ as $x_i$ being valuated as false.
+        \item We define edges $(x_i,\neg x_i)$, and $(x_i,N)$ and $(\neg x_i,N)$.
+        This ensures that each $x_i$ is colored as either the true (the color of $T$), or false (the color of $F$).
+        \btext Thus far, we can see that there is a relation between the coloring of the vertices and the valuation of variables in $\phi$.
+        In particular, we can valuate $x_i$ as true if the vertex $x_i$ has the same color as $T$, and false otherwise (if it has the same color as $F$).
+        \item In the case that there is a disjunction in $\phi$ with a single literal (one variable), we connect the literal (which is either $x_i$ or $\neg x_i$) to the vertex $F$.
+        This is as the literal must be valuated as true, and so it must be colored as $T$, and so it is connected to $F$.
+        We can also assume that no such disjunction exists, as a boolean formula in CNF can be converted to a boolean formula in CNF where every disjunction has every variable.
+        \item We define an \emph{OR Gadget} to be a subgraph of the form:
+        \[\begin{tikzcd}
+        	{\mathrm{in}_1} & \bullet \\
+        	&& {\mathrm{out}_1} & \textcolor{rgb,255:red,92;green,92;blue,214}{\bullet} \\
+        	{\mathrm{in}_2} & \bullet &&& \textcolor{rgb,255:red,92;green,92;blue,214}{\mathrm{out}_2} \\
+        	\textcolor{rgb,255:red,92;green,92;blue,214}{\mathrm{in}_3} &&& \textcolor{rgb,255:red,92;green,92;blue,214}{\bullet}
+        	\arrow[no head, from=1-1, to=1-2]
+        	\arrow[no head, from=3-1, to=3-2]
+        	\arrow[no head, from=1-2, to=3-2]
+        	\arrow[no head, from=1-2, to=2-3]
+        	\arrow[no head, from=3-2, to=2-3]
+        	\arrow[color={rgb,255:red,92;green,92;blue,214}, no head, from=4-1, to=4-4]
+        	\arrow[color={rgb,255:red,92;green,92;blue,214}, no head, from=2-3, to=2-4]
+        	\arrow[color={rgb,255:red,92;green,92;blue,214}, no head, from=2-4, to=3-5]
+        	\arrow[color={rgb,255:red,92;green,92;blue,214}, no head, from=3-5, to=4-4]
+        \end{tikzcd}\]
+        Here the black subgraph is an OR gadget with two inputs, then we take the output of this OR gadget and another input vertex and define another OR gadget (the blue subgraph).
+        This defines an OR gadget with three inputs.
+        This definition can be generalized to any number of input vertices: once we have defined an OR gadget with $k$ inputs, then it has a vertex $\mathrm{out}_{k-1}$.
+        If we have another input node $\mathrm{in}_{k+1}$, then we define the OR gadget with $k+1$ inputs as the OR gadget with inputs $\mathrm{in}_1,\dots,\mathrm{in}_k$ composed with the OR gadget between
+        $\mathrm{out}_{k-1}$ and $\mathrm{in}_{k+1}$.
+
+        For every disjunction in $\phi$, we define add the OR gadget between all the literals in the disjunction to the graph.
+        So for example if $x_1\lor\neg x_2\lor x_3$ is a disjunction in $\phi$, we define the OR gadget with inputs $x_1$, $\neg x_2$, and $x_3$ and add it to the graph.
+
+        We define edges between the outputs of all these OR gadgets of the disjunctions with the vertices $F$ and $N$ (to ensure that the output vertex is colored as $T$).
+    \eenum
+
+    \def\inv{\mathrm{in}}
+    \def\outv{\mathrm{out}}
+    The following are properties of the OR gadgets: suppose we have an OR gadget with inputs $\inv_1,\dots,\inv_k$, and a three coloring $\sigma$, then
+    \benum
+        \item If $\sigma(\inv_1)=\cdots=\sigma(\inv_k)=F$, then $\sigma(\outv_{k-1})=F$ as well.
+        This can be proven inductively.
+        It is easy to see why this is true for $k=2$, and the induction step is simple, as the input for $\outv_i$ is $\outv_{i-1}$ and $\in_{i+1}$ which are both $F$ and so by the case for $k=2$, $\outv_i$
+        is colored $F$ as well.
+        \item If there exist an $\inv_i$ which is colored as $T$, then there exists a coloring of the gadget such that $\outv_{k-1}$ is colored as $T$.
+        Again, this reduces down to proving it for the case of $k=2$.
+    \eenum
+
+    Obviously $G$ was defined in polynomial time.
+    So now we must prove that $\phi\in\sat$ if and only if $G\in\threecolor$.
+    Suppose that $\phi$ is in $\sat$, and that $\tau$ satisfies $\phi$.
+    Then we color $G$ as follows:
+    \benum
+        \item Of course, we color $\sigma(T)=T$, $\sigma(F)=F$, and $\sigma(N)=N$.
+        \item And we color $\sigma(x_i)=\tau_i$ and $\sigma(\neg x_i)=\neg\tau_i$.
+        \item Since $\tau$ satisfies $\phi$, every disjunction has a literal which satisfies it and so by the second property of OR gadgets there exists a three coloring of the OR gadget where the output
+        vertex is colored as $T$.
+    \eenum
+    So this is a valid three coloring of $G$, meaning $G\in\threecolor$ as required.
+
+    Now suppose that $G\in\threecolor$, so there exists a three-coloring of $G$, $\sigma$.
+    Let $T$ be the color of the vertex $T$, $F$ be the color of the vertex $F$, and $N$ be the color of the vertex $N$.
+    We define $\tau_i$ as the color of the vertex $x_i$,
+    \[ \tau_i = \sigma(x_i) \]
+    Since $x_i$ is connected to $N$, this color is not $N$ so this is indeed a boolean vector.
+    We claim that $\tau$ satisfies $\phi$.
+
+    Since $\sigma$ is a three-coloring of $G$, the color of the output nodes of each OR gadget must be $T$ (as they are connected to the vertices $N$ and $F$).
+    This means by the first property of OR gadgets that there exists an input node which is colored as $T$.
+    This in turn means that each disjunction has a literal which is colored as $T$, and so each disjunction is satisfied by $\tau$.
+    And so $\phi$ is satisfied by $\tau$.
+    Thus $\phi\in\sat$ and so the map $\phi\mapsto G$ is a Karp reduction from $\sat$ to $\threecolor$, as required.
+    \qed
+
+\end{proof}
+
+Let us define for every $k\in\bN$ the decision problem
+\[ \kcolor = \set{G}[\text{$G$ is an undirected graph which can be colored with $k$ colors}] \]
+for $k=2$ this is in $\P$, and for $k=3$ we showed this is in $\NP$.
+Now, for $k>3$ we can define a reduction from $\threecolor$ to $\kcolor$ by taking a graph $G$ and adding a clique of size $k-3$ and adding edges between the vertices of the rest of the graph to the vertices
+of this clique.
+Let this new graph be $G'$.
+Then $G$ is three-colorable if and only if $G'$ is $k$-colorable.
+This is since the three-coloring of $G$ defines a $k$-coloring of $G'$, where we color the vertices in $G'$ which are also in $G$ as their coloring in $G$, and the vertices in the clique are colored in
+$k-3$ other colors.
+And if $G'$ is $k$-colorable, the clique must use $k-3$ of these colors, and no other vertex (which is in $G$) can share a color with a vertex in the clique.
+Thus this $k$-coloring of $G'$ defines a three-coloring of $G$.
+So $G\mapsto G'$ is a Karp reduction from $\threecolor$ to $\kcolor$.
+
+Thus we have proven the following.
+
+\begin{prop*}
+
+    The decision problem $\kcolor$ is $\NP$-complete if and only if $k\geq3$.
+
+\end{prop*}
+
+And the decision problem
+\[ \Color = \set{(G,k)}[\text{$G$ is $k$-colorable}] \]
+We can define a Karp reduction from $\threecolor$ to $\Color$ by $f(G)=(G,3)$.
+And thus $\Color$ is $\NP$-complete.
+
+Let us define the following decision problem:
+\[ \subsum = \set{(A,b)}[\vcenter{\advance\hsize by-5cm\relax
+$A$ is a tuple (or finite sequence, or multiset) of natural numbers, and $b$ is a natural number such that there exists a subsequence of $A$ whose sum is $b$}] \]
+
+\begin{prop*}
+
+    $\subsum$ is $\NP$-complete.
+
+\end{prop*}
+
+\begin{proof}
+
+    $\subsum$ is obviously in $\NP$, as we can define a verifier $V((A,b),N)$ where $N$ is a set of indexes of $A$, and $V$ simply checks if $\sum_{n\in N}A_n=b$ (the sum of the numbers in $A$ at indexes in
+    $N$ is equal to $b$).
+    Now to show that $\subsum$ is $\NP$-complete, we define a Karp reduction from $\vertcover$ to $\subsum$.
+
+    Suppose $(G,k)$ is an input for $\vertcover$ (so $G=(V,E)$ is an undirected graph and $k$ is a natural number), we define $n=\abs V$ and $m=\abs E$.
+    Let $V=\set{v_1,\dots,v_n}$ and $E=\set{e_1,\dots,e_m}$.
+    We define a sequence $A$ of length $n+m$ where
+    \benum
+        \item For $1\leq i\leq n$, $A_i$ represents the vertex $v_i$ and we define
+        \[ A_i = 10^m + \sum_{(v_i,v_j)=e_k\in E}10^{k-1} \]
+        ie. we define a natural number where the $k$th digit (in base ten) denotes if $v_i$ is in the edge $e_k$.
+        \item For $n<i\leq m$, $A_i$ represents the edge $e_i$ and we define
+        \[ A_i = 10^{i-n-1} \]
+        So the $i$th edge defines the value $10^{i-1}$ in $A$ (since $e_i$ corresponds to $A_{i+n}$).
+    \eenum
+    Now, we define
+    \[ b = k\cdot10^m + \sum_{i=1}^m2\cdot10^{i-1} \]
+    Meaning in base ten, $b$ is $k$ followed by $m$ twos.
+
+    So we must show that $(G,k)\in\vertcover$ if and only if $(A,b)\in\subsum$.
+    If $(G,k)\in\vertcover$ then there exists a vertex cover $S$ of size $k$.
+    So we define $N$ to be the indexes of the vertices in $S$ and the indexes (plus $n$) of the edges connected to only one vertex in $S$.
+    That is
+    \[ N = \set{i}[v_i\in S]\cup\set{i+n}[e_i=(v_j,v_k)\text{ and only one of $v_j$ and $v_k$ is in $S$}] \]
+    Now
+    \[ \sum_{i\in N}A_i = \sum_{v_i\in S}A_i + \sum_{\vtop{\hsize=2cm\relax\centering\small $e_{i-n}$ is  bound on one side by $S$}} A_i = \sum_{v_i\in S}\parens{10^m + \sum_{(v_i,v_j)=e_k\in E}10^{k-1}} +
+    \sum_{\vtop{\hsize=2cm\relax\centering\small $e_{i}$ is  bound on one side by $S$}}10^{i-1} \]
+    Now,
+    \[ \sum_{v_i\in S}\sum_{(v_i,v_j)=e_k\in E}10^{k-1} = \sum_{\undersumtext{$e_k$ is bound on both sides by $S$}}2\cdot10^{k-1} + \sum_{\undersumtext{$e_k$ is bound on one side by $S$}}10^{k-1} \]
+    This is as each edge which is bound on two sides by $S$ is counted twice in the leftmost sum.
+    Since every edge is bound on at least one side by $S$, we have
+    \[ \sum_{i\in N}A_i = \sum_{v_i\in S}10^m + \sum_{k=1}^m2\cdot10^{k-1} = k10^m + \sum_{k=1}^m2\cdot10^{k-1} = b \]
+    And so $(A,b)\in\subsum$ as required.
+
+    Now suppose that $(A,b)\in\subsum$, so there exists a set of indexes of $A$, which we will denote by $N$, where $\sum_{i\in N}A_i=b$.
+    So let us define
+    \[ S = \set{v_i}[i\in N,\,i\leq n] \]
+    Now, $\abs S=k$ as the only way to obtain a value larger than $k\cdot10^m$ is by taking $k$ vertices in $N$, as for every digit less than $m$, there are only three values in $A$ which have a one in that
+    digit.
+    And if we were to take $k+1$ vertices, we'd get a value larger than $(k+1)10^m$.
+    Let
+    \[ N_1 = \set{i\in N}[i\leq n],\quad N_2=\set{i\in N}[i>n] \]
+    so $N_1$ represents the vertices in $S$, and $N_2$ represents the edges.
+    And so
+    \begin{multline*}
+        \sum_{i\in N}A_i = \sum_{i\in N_1}A_i + \sum_{i\in N_2}A_i = \sum_{i\in N_1}\parens{10^m + \sum_{(v_i,v_j)=e_k\in E}10^{k-1}} + \sum_{k\in N_2}10^{k-1}\\
+        = \abs{N_1}10^m + \sum_{i\in N_1}\sum_{(v_i,v_j)=e_k\in E}10^{k-1} + \sum_{k\in N_2}10^{k-1}
+    \end{multline*}
+    This is equal to
+    \[ \abs{N_1}10^m + \sum_{i\in N_1}\sum_{(v_i,v_j)=e_k\in E}10^{k-1} + \sum_{k\in N_2}10^{k-1} = k10^m + \sum_{i=1}^m 2\cdot10^{m-1} \]
+    so as explained before (and this gives another viewpoint) $\abs{N_1}=k$ and so
+    \[ \sum_{i\in N_1}\sum_{(v_i,v_j)=e_k\in E}10^{k-1} + \sum_{k\in N_2}10^{k-1} = \sum_{i=1}^m2\cdot10^{i-1} \]
+    And since $N_1$ is the indexes of the vertices which are in $S$, and $N_2$ is the index
+    \[ \sum_{i\in N_1}\sum_{(v_i,v_j)=e_k\in E}10^{k-1} + \sum_{k\in N_2}10^{k-1} =
+    \sum_{\undersumtext{$e_k$ is bound on two sides by $S$}}2\cdot10^{k-1} + \sum_{\undersumtext{$e_k$ is bound on one side by $S$}}10^{k-1} + \sum_{k\in N_2}10^{k-1} \]
+    By subtracting this from $b$ we get zero, but it is also equal to
+    \[ \sum_{\undersumtext{$e_k$ is bound on one side by $S$}}10^{k-1} - \sum_{k\in N_2}10^{k-1} + \sum_{\undersumtext{$e_k$ is not bound by $S$}}2\cdot10^{k-1} = 0 \]
+    But since no number of the form $2\cdot10^{k-1}$ can be formed within the difference of the two sums on the left, this means that every $e_k$ must be bound by $S$.
+    So $S$ is a vertex cover, as required.
+    \qed
+
+\end{proof}
+
+\end{document}

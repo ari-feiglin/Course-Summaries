@@ -1,0 +1,503 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{axiom}{Axiom}{255,255,200}{150,100,0}{200,150,100}			% yellow
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\aone#1#2{#2\to(#1\to#2)} \def\Aone{\textbf{A1}}
+\def\atwo#1#2#3{\bigl(#1\to(#2\to#3)\bigr)\to\bigl((#1\to#2)\to(#1\to#3)\bigr)} \def\Atwo{\textbf{A2}}
+\def\athree#1#2{(\neg#2\to\neg#1)\to\bigl((\neg#2\to#1)\to#2\bigr)} \def\Athree{\textbf{A3}}
+\def\afour#1#2#3{(\forall #2#1)\to#1\frac{#3}{#2}}  \def\Afour{\textbf{A4}}
+\def\afive#1#2#3{\bigl(\forall #3(#1\to#2)\bigr)\to\bigl(#1\to(\forall#3#2)\bigr)} \def\Afive{\textbf{A5}}
+\def\MP{\textit{MP}} \def\Gen{\textit{Gen}}
+
+\def\beqq{\mathrel{\vbox{\hbox{$=$}\kern-\baselineskip\kern.3pt\hbox{$=$}}}}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mN{\mathcal{N}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\Var{\mathrm{Var}}
+
+\newfunc{var}{{\rm var}}({})
+\newfunc{bound}{{\rm bound}}({})
+\newfunc{free}{{\rm free}}({})
+\newfunc{theory}{{\rm Th}}({})
+\newfunc{Diag}{{\rm Diag}}({})
+\newfunc{elDiag}{{\rm Diag}_{\rm el}}({})
+\newfunc{depth}{{\rm depth}}({})
+
+\def\qed{\hskip.5cm\hbox{}\hfill$\blacksquare$}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\def\true{\mathsf{true}}
+\def\false{\mathsf{false}}
+
+%\def\Aone#1#2{#1\to(#2\to#1)}
+%\def\Atwo#1#2#3{\bigl(#1\to(#2\to#3)\bigr)\to\bigl((#1\to#2)\to(#1\to#3)\bigr)}
+%\def\Athree#1#2{(\neg#2\to\neg#1)\to\bigl((\neg#2\to#1)\to#2\bigr)}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+
+\begin{document}
+
+\c@section=12
+
+\barcolorbox{220, 255, 255}{0, 130, 130}{80, 200, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Mathematical Logic}
+
+    \medskip
+    \textit{Lecture \thesection, Monday June 26, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{prop*}[tarskiVaught,Tarski-Vaught\ Test]
+
+    Suppose $\mM$ is a substructure of $\mN$.
+    Then $\mM$ is an elementary substructure if and only if for any formula $\phi(v,\vec w)$ and
+    $\vec a\in\mM^n$, if there is a $b\in\mN$ such that $\mN\vDash\phi(b,\vec a)$, then there is
+    a $c\in\mM$ such that $\mN\vDash\phi(c,\vec a)$.
+
+\end{prop*}
+
+\begin{proof}
+
+    If $\mM$ is an elementary substructure of $\mN$, then since
+    \[ \mN\vDash\exists x(\phi(x,\vec a)) \]
+    we have, by definition,
+    \[ \mM\vDash\exists x(\phi(x,\vec a)) \]
+    as required.
+
+    To show the converse, we must show that for every $\vec a\in\mM^n$,
+    \[ \mM\vDash \phi(\vec a) \iff \mN\vDash\phi(\vec a) \]
+    we will prove this by formula induction.
+    If $\phi$ is quantifier-free, then this is due to $\mM$ being a substructure of $\mN$.
+    The induction step for boolean combinations is trivial.
+    Now suppose
+    \[ \mM\vDash \exists x\phi(x,\vec a) \]
+    then there is a $b\in\mM$ such that $\mM\vDash\phi(b,\vec a)$ and since $b\in\mN$, and so
+    inductively $\mN\vDash\phi(b,\vec a)$, which means that $\mN\vDash\exists x\phi(x,\vec a)$, as
+    required.
+    And if
+    \[ \mN\vDash\exists x\phi(x,\vec a) \]
+    then there exists a $c\in\mN$ such that $\mN\vDash\phi(c,\vec a)$ which by our assumption means
+    that $\mN\vDash\phi(b,\vec a)$ for $b\in\mM$ and thus $\mM\vDash\phi(b,\vec a)$ so
+    $\mM\vDash\exists x\phi(x,\vec a)$ as required.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    An $\mL$-theory $T$ has \ppemph{built-on Skolem functions} if for every $\mL$-formula
+    $\phi(v,w_1,\dots,w_n)$ there is a function symbol $f$ such that
+    \[ T\vdash\forall\vec w\bigl((\exists v\phi(v,\vec w))\to\phi(f(\vec w),\vec w)\bigr) \]
+    Or in other words, if $\phi(\cdot,\vec w)$ can be witnessed, there is a function symbol $f$
+    so that it can be witnessed by $f(\vec w)$.
+
+\end{defn*}
+
+\begin{lemm*}
+
+    Let $T$ be an $\mL$-theory.
+    Then there exists a signature $\mL\subseteq\mL^*$ and an $\mL^*$-theory $T\subseteq T^*$ such
+    that $T^*$ has built-in Skolem functions.
+    Furthermore, if $\mM\vDash T$ then we can extend $\mM$ to an $\mL^*$-model $\mM^*$ such that
+    $\mM^*\vDash T^*$.
+    Even further, $\mL^*$ can be chosen such that
+    \[ \abs{\mL*} = \abs\mL + \aleph_0 \]
+
+\end{lemm*}
+
+\begin{proof}
+
+    Let us construct an ascending sequence of languages $\set{\mL_i}_{i=0}^\infty$, and an
+    ascending sequence of theories $\set{T_i}_{i=0}^\infty$ where $T_i$ is an $\mL_i$-theory.
+
+    We define $\mL_0=\mL$, and recursively
+    \[ \mL_{i+1} = \mL_i\cup\set{f_\phi}[\phi(v,w_1,\dots,w_n)\text{ is an }\mL_i\text{-formula for }
+    n=1,2,\dots] \]
+    where $f_\phi$ is a function symbol.
+    Then for an $\mL_i$-formula $\phi(v,\vec w)$, we define
+    \[ \Phi_\phi = \forall\vec w\bigl((\exists v\phi(v,\vec w))\to\phi(f_\phi(\vec w),\vec w)\bigr) \]
+    Then we define
+    \[ T_{i+1} = T_i\cup\set{\Phi_\phi}[\phi\text{ is an }\mL_i\text{-formula}] \]
+
+    Now we claim that if $\mM\vDash T_i$, it can be extended to an $\mL_{i+1}$-model of $T_{i+1}$.
+    Let $c\in\mM$, then if $\phi(v,w_1,\dots,w_n)$ is an $\mL_i$-formula, we define a function
+    $g\colon\mM^n\longto\mM$ such that for every $\vec a\in\mM^n$ if
+    \[ X_{\vec a} = \set{b\in\mM}[\mM\vDash\phi(b,\vec a)] \]
+    is non-empty ($\phi(\cdot,\vec a)$ has a witness), then let $g(\vec a)\in X_{\vec a}$.
+    Otherwise $g(\vec a)=c$.
+    Such a function is guaranteed by the axiom of choice.
+
+    Thus if $\mM\vDash\exists v\phi(v,\vec a)$ then $X_{\vec a}$ is non-empty and so
+    $\mM\vDash\phi(g(\vec a),\vec a)$.
+    So we interpret $f_\phi$ as $g$.
+    And thus $\mM\vDash\Phi_\phi$.
+
+    Let us define
+    \[ \mL^* = \bigcup_{i=0}^\infty \mL_i,\qquad T^* = \bigcup_{i=0}^\infty T_i \]
+    And $\mM^*$ is the extension of $\mM$ we have defined above.
+    And if we have $\Phi\in T^*$, either $\Phi\in T$ in which case $\mM^*\vDash\Phi$ as it extends
+    $\mM$, and otherwise it is equal to $\Phi_\phi$ for some $\mL^*$-formula $\phi$, which must be
+    an $\mL_i$-formula for some $i$, and we showed that $\mM\vDash\Phi_\phi$.
+    Thus $\mM^*\vDash T^*$.
+
+    Then if $\phi(v,\vec w)$ is an $\mL^*$-formula, it is a $\mL_i$-formula for some $i$ and so
+    $\Phi_\phi\in T_{i+1}\subseteq T^*$, and this states exactly the property of $\phi$ having
+    a built-in Skolem function.
+    (Note that $\phi$ may be $\Phi_\psi$ for some other $\mL^*$-formula $\psi$).
+
+    Furthermore, note that since we've added function symbols to $\mL_{i+1}$ for every formula
+    of $\mL_i$, we have that $\abs{\mL_{i+1}}=\abs{\mL_i}+\aleph_0$ (if $\mL_i$ is uncountable
+    then the number of functions added is $\abs{\mL_i}=\abs{\mL_i}+\aleph_0$, so this still holds).
+    And so every $\mL_i$ has the same cardinality for each $i>0$, which is $\abs{\mL}+\aleph_0$.
+    Thus their union, as a countable union, also has this cardinality.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    The $T^*$ defined in the proof above is called the \ppemph{skolemization} of $T$.
+
+\end{defn*}
+
+\begin{thrm*}[downwardLowenheimSkolem,Downward\ Lowenheim-Skolem\ Theorem]
+
+    Suppose $\mM$ is an $\mL$-structure and $X\subseteq\mM$.
+    Then there exists an elementary substructure $\mN$ of $\mM$ such that $X\subseteq\mN$ and
+    $\abs\mN\leq\abs X+\abs\mL+\aleph_0$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    By the above lemma, we can assume $\theoryof\mM$ has built-in Skolem functions.
+    Let $X_0=X$, then we recursively define
+    \[ X_{i+1} = X_i\cup\set{f^\mM(\vec a)}[f\text{ is an }n\text{-ary function symbol and }\vec a
+    \in X_i^n\text{ for }n=0,1,2,\dots] \]
+    Then let
+    \[ \mN = \bigcup_{i=0}^\infty X_i \]
+    Notice that $\abs{X_{i+1}}\leq\abs{X_i}+\abs\mL\cdot\varkappa_{X_i}$ where
+    \[ \varkappa_X = \abs{\bigcup_{n\in\bN}X^n} \]
+    We can split this into cases, but it is not hard to show that we get
+    $\abs\mN\leq\abs X+\abs\mL+\aleph_0$.
+
+    If $f$ is an $n$-ary function symbol of $\mL$ and $\vec a\in\mN^n$, then there exists some $i$
+    such that $\vec a\in X_i^n$, and so $f^\mM(\vec a)\in X_{i+1}\subseteq\mN$.
+    Thus $f^\mM$ can be restricted on $\mN^n$, ie. $\mN$ is a substructure of $\mM$.
+
+    If $\phi(v,\vec w)$ is an $\mL$-structure and $\mM\vDash\phi(b,\vec a)$ then since $\mM$ has
+    built-in skolem functions, there exists some function $f$ such that
+    $\mM\vDash\phi(f(\vec a),\vec a)$.
+    But since $f^\mM(\vec a)\in\mN$, thus by \ppref{tarskiVaught}, $\mN$ is an elementary
+    substructure of $\mM$.
+    \qed
+
+\end{proof}
+
+\newpage
+\subsection{Ehrenfeucht-Fra\"iss\'e Games}
+
+\begin{defn*}
+
+    If $\mM$ and $\mN$ are two $\mL$-interpretations and $A\subseteq\mM$ and $B\subseteq\mN$, then a function $f\colon A\longto B$ is a \ppemph{partial embedding} if we can extend $f$ such that
+    $f(c^\mM)=c^\mN$ for every constant symbol $c\in\mL$ and $f$ is a bijection which preserves relations and functions of $\mL$.
+
+\end{defn*}
+
+If $\mM$ and $\mN$ are two $\mL$-interpretations, we define the two-player game $G_\omega(\mM,\mN)$ like so: during each round, player I either plays an element $m_i\in\mM$ or an element $n_i\in\mN$.
+If player I plays an element from $\mM$, then player II must play an element $n_i\in\mN$, and if player I played ane element $m_i\in\mM$.
+Player II wins if the function $f(m_i)=n_i$ is a partial embedding, and player I wins otherwise.
+
+For simplicity, we assume that $\mM$ and $\mN$ are disjoint.
+
+We define a \emph{strategy} for player II to be a function $\tau$ which maps finite sequences of elements in $\mM\cup\mN$ to an element of $\mM\cup\mN$.
+And player II \emph{uses} the strategy if for each round if player I plays $c_i$, then player II plays $\tau(c_1,\dots,c_n)$ (meaning in the first round player II plays $\tau(c_1)$, then $\tau(c_1,c_2)$,
+and so on).
+
+A strategy $\tau$ is called a \ppemph{winning strategy} if for any sequence $c_1,c_2,\dots$ of moves by player I, if player II uses the strategy $\tau$, player II will win.
+Strategies and winning strategies for player I are defined similarly.
+
+\begin{exam*}
+
+    If $\mM,\mN\vDash\mathit{DLO}$, then player II has a winning strategy.
+    Suppose that for the $n$th round, a partial embedding $g\colon A\longto B$ has been created.
+    If player I plays $a\in\mM$ then player II plays $b\in\mN$ such that the cut $b$ induces in $B$ (the partition of $B$ into elements greater and less than $b$) is the image of the cut $a$ induces in $A$.
+    And if player I plays $b\in\mN$ then player II plays $a\in\mM$ such that the cut $a$ induces in $A$ is the preimage of the cut $b$ induces in $B$.
+    Such elements exist precisely because $\mM$ and $\mN$ are dense linear orders without endpoints.
+
+    This is a winning strategy since at every step, $g$ is a partial embedding (as it preserves order between $A$ and $B$, and order is the only symbol in $\mL$).
+
+\end{exam*}
+
+\begin{prop*}
+
+    If $\mM$ and $\mN$ are countable then player II has a winning if and only if $\mM$ and $\mN$ are isomorphic.
+
+\end{prop*}
+
+\begin{proof}
+
+    If the interpretations are isomorphic, then player II can simply play according to the isomorphism.
+
+    Now suppose player II has a winning strategy.
+    Let us enumerate $\mM$ and $\mN$ as $\set{m_i}_{i=0}^\infty$ and $\set{n_i}_{i=0}^\infty$ respectively.
+    Then suppose player I plays $m_0,n_0,m_1,n_1,\dots$ (if player II plays, say, $n_0$ after player I plays $m_0$ then player I skips it so the strategy is well-defined).
+    Then the resulting partial embedding's domain must be $\mM$ and its codomain must be $\mN$, and so the partial embedding is a function $\mM\to\mN$.
+    Since it is a bijection preserving functions, constants, and relations, it is an isomorphism as required.
+    \qed
+
+\end{proof}
+
+Now let $\mL$ be a signature with no function symbols, and let $\mM$ and $\mN$ be $\mL$-interpretations.
+For $n\in\bN$ we define the game $G_n(\mM,\mN)$ as a game with $n$ rounds with the same rules for each round as before, and the condition for winning is the same as well.
+(Meaning all we've changed is that there is a finite number of rounds.)
+The game $G_n(\mM,\mN)$ is called an \emph{Ehrenfeucht-Fra\"isse Game}.
+
+\begin{lemm*}
+
+    One of the players has a winning strategy in $G_n(\mM,\mN)$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Suppose player II does not have a winning strategy, then this means that there exists a move player I can make on the first round for which player II cannot force a win.
+    So player I starts with this move, and player II responds, and the game continues where for each round player I makes a move where player II cannot force a win.
+    For the last round, there still must be a move player I can make for which player II has no winning move and so player I plays this and player II does not win and therefore player I does.
+    \qed
+
+\end{proof}
+
+Let us define some things we should've before:
+
+\begin{defn*}
+
+    If $\mL$ is a signature then let us define $\mL^n$ to be the set of all $\mL$-formulas $\phi$ such that $\freeof\phi\subseteq\set{x_1,\dots,x_n}$.
+
+\end{defn*}
+
+For example, $\mL^0$ is the set of all closed formulas/sentences.
+
+\begin{defn*}
+
+    Let us define the \ppemph{quantifier-depth} of an $\mL$-formula $\phi$.
+    This is done recursively on the construction of $\phi$.
+    \benum
+        \item $\depthof\phi=0$ for prime/atomic formulas $\phi$ (formulas consisting of only a relational symbol on terms).
+        \item $\depthof{\neg\phi}=\depthof\phi$
+        \item $\depthof{\phi\land\psi}=\maxof{\depthof\phi,\depthof\psi}$
+        \item $\depthof{\forall x\phi}=\depthof\phi+1$
+    \eenum
+
+\end{defn*}
+
+Notice that $\depthof{\phi*\psi}=\maxof{\depthof\phi,\depthof\psi}$ for all logical operations $*$ by $(2)$ and $(3)$.
+And $\depthof{\exists x\phi}=\depthof\phi+1$.
+Finally notice that $\depthof\phi=0$ if and only if $\phi$ is quantifier-free.
+
+\begin{defn*}
+
+    If $\mM$ and $\mN$ are two $\mL$-interpretations, then we say $\mM\equiv_n\mN$ if for every $\mL$-sentence $\phi$ where $\depthof\phi\leq n$ we have $\mM\vDash\phi$ if and only if $\mN\vDash\phi$.
+
+\end{defn*}
+
+
+Our goal is to show that player II has a winning strategy in $G_n(\mM,\mN)$ if and only if $\mM\equiv_n\mN$.
+
+\begin{lemm*}
+
+    For each $n$ and $m$, there is a finite list of formulas $\phi_1,\dots,\phi_k\in\mL^m$ whose depth is at most $n$, such that for every $\phi\in\mL^m$ whose depth is at most $n$ is equivalent to some
+    $\phi_i$.
+
+\end{lemm*}
+
+In other words there are only finitely many unique formulas of depth $\leq n$.
+
+\begin{proof}
+
+    Let us prove this for $n=0$, ie. quantifier-free formulas.
+    Since $\mL$ contains no function symbols, the only terms in $\mL$ using variables $x_1,\dots,x_n$ are these variables as well as the constant symbols in $\mL$.
+    Since $\mL$ is finite, this means there are only finitely many terms in $\mL$ using only the variables $x_1,\dots,x_n$.
+    And so there are only finitely many atomic $\mL^n$-formulas, which we enumerate as $\sigma_1,\dots,\sigma_t$.
+    Let $\phi$ be a quantifier-free formula using only the variables $x_1,\dots,x_n$ then it has a disjunctive normal form, ie. there exists a set $S\subseteq\powsetof{1,\dots,t}$ such that
+    \[ \vdash \phi\oto\bigvee_{x\in S}\biggl(\bigwedge_{i\in X}\sigma_i\land\bigwedge_{i\notin X}\neg\sigma_i\biggr) \]
+    This gives $2^{2^t}$ formulas where every quantifier-free formula using only these variables is equivalent to one of them, as required.
+
+    Since formulas of depth $n+1$ are equivalent to boolean combinations of formulas of the form $\forall x\phi$, where $\depthof\phi\leq n$, and quantifier-free formulas, the rest of the proof follows by
+    induction.
+    \qed
+
+\end{proof}
+
+\begin{lemm*}
+
+    Let $\mL$ be a finite signature without function symbols and $\mM$ and $\mN$ be $\mL$-interpretations.
+    Then player II has a winning strategy in $G_n(\mM,\mN)$ if and only if $\mM\equiv_n\mN$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    We prove this by induction on $n$.
+    Suppose $\mM\equiv_n\mN$, and suppose player I plays $a\in\mM$ on the first round.
+    Then we claim there exists a $b\in\mN$ where
+    \[ \mM\vDash\phi(a) \iff \mN\vDash\phi(b) \]
+    for every formula where $\depthof\phi<n$.
+
+    Let $\phi_1(x),\dots,\phi_m(x)$ be the formulas of depth $<n$, and let
+    \[ X = \set{i\leq n}[\mM\vDash\phi_i(a)] \]
+    and let
+    \[ \Phi(x) = \bigwedge_{i\in X}\phi_i(x)\land\bigwedge_{i\notin X}\neg\phi_i(x) \]
+    then $\depthof{\exists x\Phi}\leq n$ and $\mM\vDash\Phi(a)$ and so $\mM\vDash\exists x\Phi$, and since $\mM\equiv_n\mN$ this means that $\mN\vDash\exists x\Phi$ and so there exists a $b\in\mN$ where
+    $\mN\vDash\Phi(b)$.
+    Notice that if $\mM\vDash\phi_i(a)$ then $i\in X$ and so $\phi_i(b)$ is part of the conjunction of $\Phi(b)$ and so $\mN\vDash\phi_i(b)$.
+    And if $\mM\vDash\neg\phi_i(a)$, then $i\notin X$ and so $\neg\phi_i(b)$ is part of the conjunction of $\Phi(b)$ so $\mN\vDash\neg\phi_i(b)$.
+    So $\mM\vDash\phi_i(a)$ if and only if $\mN\vDash\phi_i(b)$ for every $i$.
+    Since $\phi$ is equivalent to some $\phi_i$, $\mM\vDash\phi(a)$ if and only if $\mN\vDash\phi(b)$, as required.
+
+    So have player II play $b$ in the first round.
+
+    If $n=1$, then $a\varmapsto b$ is a partial embedding (since it preserves all $\mL^1$-formulas), and so the game has finished and player II has won.
+    Otherwise suppose $n>1$, then let $\mL^*=\mL\cup\set c$ where $c$ is a new constant symbol, and extend $\mM$ and $\mN$ as $\mL^*$-interpretations where they interpret $c$ as $a$ and $b$ respectively.
+    Let these extensions be $\mM^*$ and $\mN^*$.
+    Since
+    \[ \mM\vDash\phi(a) \iff \mN\vDash\phi(b) \]
+    for $\depthof\phi<n$, $\mM^*\equiv_{n-1}\mN^*$.
+    So by our inductive assumption, player II has a winning strategy in $G_{n-1}(\mM^*,\mN^*)$.
+
+    If player I's second play is $d$, then player II responds as if $d$ was player I's first play in $G_{n-1}(\mM^*,\mN^*)$ and continues using this winning strategy.
+    The resulting function $f^*\colon X\longto\mN$ is a partial $\mL^*$-embedding, and so it preserves constants and relations of $\mL$.
+    Let us extend $f^*$ to $f\colon X\cup\set a\longto\mN$ by $f(a)=b$, this is the function created in the game $G_n(\mM,\mN)$.
+    Since $f^*$ is a partial $\mL^*$-embedding, it can be extended to a bijection preserving the relations and constants of $\mL^*$, and in particular since $c^{\mM^*}=a$ and $c^{\mN^*}=b$, its extension
+    must map $a$ to $b$.
+    And thus this extension is also an extension of $f$, and so $f$ can be extended to a $\mL$-preserving bijection as required.
+
+    Now suppose $\mM\not\equiv_n\mN$.
+    Since formulas of depth $\leq n$ are boolean combinations of formulas of the form $\exists x\phi(x)$ where $\depthof\phi<n$, $\mM$ and $\mN$ must disagree on a formula of this type.
+    So we can assume $\mM\vDash\exists x\phi(x)$ and $\mN\vDash\neg\exists x\phi(x)=\forall x\neg\phi(x)$ where $\depthof\phi<n$.
+    We claim that player I has a winning strategy.
+
+    For the first round, player I plays $a\in\mM$ such that $\mM\vDash\phi(a)$.
+    If player II responds with $b\in\mN$, let us again extend $\mM$ and $\mN$ to $\mM^*$ and $\mN^*$.
+    Then $\mM^*\not\equiv_{n-1}\mN^*$ since $\mM^*\vDash\phi(c)$ and $\mN^*\vDash\neg\phi(c)$.
+    So inductively, player I has a winning strategy in $G_{n-1}(\mM^*,\mN^*)$, and the resulting function $f^*$ is not a partial embedding, and so no extension of it is not a partial embedding, as required.
+    \qed
+
+\end{proof}
+
+Since $\mM\equiv\mN$ if and only if $\mM\equiv_n\mN$ for all $n$, the following theorem follows trivially from this lemma.
+
+\begin{thrm*}
+
+    If $\mM$ adn $\mN$ are two $\mL$-interpretations, then $\mM\equiv\mN$ if and only if player II has a winning strategy in $G_n(\mM,\mN)$ for every $n$.
+
+\end{thrm*}
+
+Let us look at an example usage of Ehrenfeucht-Fra\"is\'e Games.
+Let $\mL=\set<$ and $T$ be the theory of discrete linear orders without endpoints, ie. the set of axioms for linear orders as well as the axiom
+\[ \forall x\exists y\exists z\bigl(y<x<z\land\forall w(w\leq y\lor w=x\lor w\geq z)\bigr) \]
+$z$ is the \emph{successor} of $x$ in this theory.
+Suppose $\mN\vDash T$ then we define the equivalence relation $E$ on $\mN$ where $aEb$ if and only if $b$ the $n$th successor or predecessor of $a$ for some $n$.
+Then each equivalence class of $\mN$ is itself a model of $T$ and is isomorphic to $(\bZ,<)$ (an isomorphism can be constructed by choosing some $a$ in the equivalence class and mapping it to $0$, and
+mapping its $n$th successor to $n$ and $n$th predecessor to $-n$).
+
+Notice that if $aEb$ and $\neg(aEc)$, and if $a<c$ then $b<c$ (since if $c<b$ it would have to be a successor of $a$ as well), and so the equivalence classes are linearly ordered as well.
+Thus every model of $T$ is isomorphic to $(L\times\bZ,<)$ where $L$ is some linearly ordered set and $<$ is the lexicographic ordering on $L\times\bZ$.
+And every structure of this form is a model of $T$.
+
+\newpage
+\begin{prop*}
+
+    The theory of discrete linear orders without endpoints is complete.
+
+\end{prop*}
+
+\begin{proof}
+
+    \newfunc{dist}{{\rm dist}}({})
+
+    Let $\mM$ be the model $(\bZ,<)$ and let $\bN=(L\times\bZ,<)$ where $L$ is a linear order and $<$ is the lexicographic ordering on $L\times\bZ$.
+    We claim that $\mM\equiv\bN$, and we will prove this by developing a winning strategy for player II in $G_n(\mM,\mN)$.
+
+    For $a,b\in\bZ$ let us define
+    \[ \distof{a,b} = \abs{a-b} \]
+    And for $(i,a),\,(j,b)\in L\times\bZ$, let us define
+    \[ \distof{(i,a),\,(j,b)} = \begin{cases} \abs{a-b} & i=j \\ \infty & i\neq j \end{cases} \]
+    Our goal is to try and ensure that after $m$ rounds of the game, if $a_1<a_2<\cdots<a_m$ are the elements of $\mN$ which have been played, and $b_1<b_2<\cdots<b_m$ are the elements in $\bZ$ which have
+    been played, then the mapping $a_i\varmapsto b_i$ is the partial embedding corresponding to the play of the game.
+    Furthermore, if $\distof{a_i,a_{i+1}}>3^{n-m}$ then $\distof{b_i,b_{i+1}}>3^{n-m}$, and if $\distof{a_i,a_{i+1}}\leq3^{n-m}$ then $\distof{b_i,b_{i+1}}=\distof{a_i,a_{i+1}}$, for $i=1,\dots,m-1$.
+
+    Obviously since $a_i<a_{i+1}$ and $b_i<b_{i+1}$, the function will preserve the relations of the theory and thus be a partial embedding.
+
+    We claim that player II can always make a move to preserve this condition.
+    In round $1$, player II can choose any arbitrary element and the condition will hold.
+    Now suppose we have played $m$ rounds and $a_1<\cdots<a_m$ and $b_1<\cdots<b_m$ be defined as above.
+    Now suppose player I plays $b\in L\times\bZ$, then there are several cases
+    \benum
+        \item If $b<b_1$ then if $\distof{b,b_1}=k<\infty$ then player II plays $a_1-k$.
+            If $\distof{b,b_1}=\infty$ then player II plays $a_1-3^n$, but in any case the condition holds.
+        \item If $b_i<b<b_{i+1}$ and $\distof{b_i,b_{i+1}}\leq3^{n-m}$ then $\distof{a_i,a_{i+1}}=\distof{b_i,b_{i+1}}$.
+            Play $a=a_i+\distof{b,b_i}$, then $\distof{a,a_{i+1}}=\distof{b,b_{i+1}}$ as required.
+        \item If $b_i<b<b_{i+1}$ and $\distof{b_i,b_{i+1}}>3^{n-m}$ and $\distof{b,b_i}<3^{n-m-1}$ then $\distof{a_i,a_{i+1}}>3^{n-m}$.
+            Play $a=a_i+\distof{b,b_i}$, then $\distof{a,a_{i+1}}$ and $\distof{a_i,a}$ are greater than $3^{n-m-1}$ as required.
+        \item If $b_i<b<b_{i+1}$ and $\distof{b_i,b_{i+1}}>3^{n-m}$ and $\distof{b,b_{i+1}}<3^{n-m-1}$, play $a=a_{i+1}-\distof{b,b_{i+1}}$.
+        \item If $b_i<b<b_{i+1}$ and $\distof{b_i,b_{i+1}}>3^{n-m}$, $\distof{b,b_i}>3^{n-m-1}$, and $\distof{b,b_{i+1}}<3^{n-m-1}$.
+            Then $\distof{a_i,a_{i+1}}>3^{n-m}$ and so choose an $a$ such that $a_i<a<a_{i+1}$ and the distance of $a$ between them both is greater than $3^{n-m-1}$.
+            Playing $a$ satisfies the condition.
+        \item If $b>b_m$, this is similar to the first condition.
+    \eenum
+
+    Thus player II has a winning strategy, and so $\mM\equiv\mN$, meaning all models of $T$ are elementarily equivalent so $T$ is complete.
+    \qed
+
+\end{proof}
+
+\end{document}
+

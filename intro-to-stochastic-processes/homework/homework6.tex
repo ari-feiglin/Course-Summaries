@@ -1,0 +1,114 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=1.5cm, vertical margin=1.5cm}
+\parindent=0cm
+\parskip=3pt plus 2pt minus 2pt
+
+\input pdfmsym
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+
+\footline={}
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+\setcounter{section}{6}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{\bppbox{rgb{1 .7 .7}}{rgb{1 0 0}}{rgb{.8 0 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Introduction to Stochastic Processes}
+    \smallskip
+    \centerline{\setfont{it}Assignment \the\counter{section}}
+    \centerline{\setfont{it}Ari Feiglin}
+
+\eppbox}
+
+\bigskip
+
+\bexerc
+
+    A moneky is sitting at a typewritter randomly typing (by hitting the keys in a uniform and independent manner).
+    Show that as time goes, the moneky will almost surely write the book ``Treasure Island''.
+
+\eexerc
+
+Suppose the text of the book is the string $s_1\cdots s_N$.
+Then let us define $X_i$ to be $i$th key pressed by the monkey, and let us define
+$$ A_i = \set{X_{iN+1}=s_1,\dots,X_{(i+1)N}=s_N} $$
+which is the event that starting from the $iN$th keypress, the monkey writes Treasure Island.
+Then $\set{A_i}$ are independent as they all deal with distinct $X_i$s, and $\probof{A_i}=\frac1{c^N}$ where $c$ is the number of characters on the typewriter.
+Then $\sum_{i=0}^\infty\probof{A_i}=\infty$ so by Borel-Cantelli we have that $\probof{A_i\hbox{ i.o.}}=1$ and since $A_i\hbox{ i.o.}\subseteq\bigcup_{i=0}^\infty A_i$ we have that
+$\probof{\bigcup_{i=0}^\infty A_i}=1$ meaning that the monkey will write Treasure Island with probability $1$ (since the event that the monkey writes Treasure Island contains $\bigcup_{i=0}^\infty A_i$). 
+
+\bexerc
+
+    Let $S_n$ be a general random process, meaning $S_n=\sum_{j=0}^nX_j$ where $X_j$ are all independent equal-distribution random variables.
+    Show that one of the following must have probability $1$:
+    \benum
+        \item $S_n=0$ for all $n$,
+        \item $S_n\to\infty$,
+        \item $S_n\to-\infty$,
+        \item $\liminf S_n=-\infty$ and $\limsup S_n=\infty$.
+    \eenum
+
+\eexerc
+
+Notice that for every $-\infty\leq a\leq\infty$, $\liminf S_n=\liminf\sum_{j=0}^nX_j\leq a$ is an event which occurs independent of a permutation of a finite number of indexes of $X_j$ (since permuting
+a finite number of indexes does not alter $S_n$, eventually).
+Thus by the Hewitt-Savage zero-one law, $\probof{\liminf S_n\leq a}\in\set{0,1}$.
+Let us define $\ell=\inf_a\set{\probof{\liminf S_n\leq a}=1}$, this infimum is on a nonempty set since for $a=\infty$ the probability is one.
+Then for every $a<\ell$, $\probof{\liminf S_n\leq a}=0$, and for every $a>\ell$, $\probof{\liminf S_n\leq a}=1$, thus
+$$ \probof{\liminf S_n=\ell} = \probof{\bigcap_{n=1}^\infty a-n^{-1}\leq\liminf S_n\leq a+n^{-1}} = \lim_n\probof{a-n^{-1}\leq\liminf S_n\leq a+n^{-1}} = 1 $$
+The second equality is due to continuity of measures, and the final equality is since $a+n^{-1}\leq\liminf S_n\leq a+n^{-1}$ has a probability of $1$ for each $n$.
+So there exists an $\ell$ such that $\liminf S_n\buildrel as\over=\ell$.
+With a similar proof we can show there exists an $L$ such that $\limsup S_n\buildrel as\over=L$.
+
+Now,
+$$ \ell + \liminf S_n = \liminf\sum_{j=0}^n X_j = X_0 + \liminf\sum_{j=1}^n X_j \buildrel as\over= X_0 + \ell $$
+So either we have that $X_0\buildrel as\over=0$ or $\ell\buildrel as\over=\pm\infty$.
+If $X_0\buildrel as\over=0$ then $X_n\buildrel as\over=0$ for all $n$ since they have the same distribution, and so $S_n=0$ for all $n$ has probability $1$ (since this contains the event that $X_n=0$ for all
+$n$, which has probability $1$ as the countable intersection of events with probability $1$).
+Otherwise we similarly have that $L\buildrel as\over=\pm\infty$ and so since $\ell\leq L$, one of the following must have probability $1$
+$$ \eqalign{
+    \set{\ell=L=-\infty} &= \set{S_n\to-\infty},\cr
+    \set{\ell=-\infty,\,L=\infty} &= \set{\liminf S_n=-\infty,\,\limsup S_n=\infty},\cr
+    \set{\ell=L=\infty} &= \set{S-n\to\infty}
+} $$
+as required.
+
+\bexerc
+
+    Let $X_1,X_2,\dots$ be independent random variables which all have the distribution ${\rm Exp}(1)$.
+    Compute
+    \benum
+        \item $\probof{X_n>\log n\hbox{ i.o.}}$,
+        \item $\probof{X_n>2\log n\hbox{ i.o.}}$,
+        \item $\probof{(\exists N)(\forall n>N)\,\maxof{X_{n^2+1},\dots,X_{n^2+2n}}>5}$,
+        \item $\probof{(\exists N)(\forall n>N)\,\maxof{X_{n^2+1},\dots,X_{n^2+30}}>5}$.
+    \eenum
+
+\eexerc
+
+\benum
+    \item Notice that the events $\set{X_n>\log n}$ are all independent and since $X_n$ has an exponential distribution, we compute $\probof{X_n>\log n}=e^{-\log n}=\frac1n$.
+    Since $\sum_{n=1}^\infty\probof{X_n>\log n}=\sum_{n=1}^\infty\frac1n=\infty$.
+    So by Borel-Cantelli $\probof{X_n>\log n\hbox{ i.o.}}=1$.
+    \item Similarly, $\probof{X_n>2\log n}=e^{-2\log n}=\frac1{n^2}$.
+    And so $\sum_{n=1}^\infty\probof{X_n>2\log n}=\sum_{n=1}^\infty\frac1{n^2}<\infty$ and so again by Borel-Cantelli $\probof{X+n>2\log n\hbox{ i.o.}}=0$.
+    \item The complement of this event is $(\forall N)(\exists n>N)\,X_{n^2+1},\dots,X_{n^2+2n}\leq 5$ which is just $X_{n^2+1},\dots,X_{n^2+2n}\leq5\hbox{ i.o.}$.
+    %Eventually for different $n,m$ $n^2+1,\dots,n^2+2n$ and $m^2+1,\dots,m^2+2m$ are distinct and so the events are independent (from an index $N$ onward, call it $N_0$).
+    Since $\probof{X_{n^2+1},\dots,X_{n^2+2n}\leq5} = \alpha^{2n}$ where $0<\alpha<1$ is some constant (what exactly it is can be easily computed but is not necessary).
+    Then
+    $$ \sum_{n=1}^\infty\probof{X_{n^2+1},\dots,X_{n^2+2n}\leq5} = \sum_{n=1}^\infty\alpha^n < \infty $$
+    So $\probof{X_{n^2+1},\dots,X_{n^2+2n}\leq5\hbox{ i.o.}}=0$ by Borel-Cantelli, so the original probability is $1$.
+    \item The complement of this event, similar to before, is $X_{n^2+1},\dots,X_{n^2+30}\leq5\hbox{ i.o.}$.
+    From $n=6$ onward these events are all independent, and a finite number of events does not affect i.o.-ness, so we can just ignore these first few events.
+    Since $\probof{X_{n^2+1},\dots,X_{n^2+30}\leq5}=\alpha$ for some constant $0<\alpha<1$ (this is constant for all $n$, it is equal to $\probof{{\rm Exp}(1)\leq5}^{30}$).
+    Then $\sum_{n=1}^\infty\probof{X_{n^2+1},\dots,X_{n^2+30}\leq5}=\sum_{n=1}^\infty\alpha=\infty$ so by Borel-Cantelli since the events (from an index onward) are independent,
+    $\probof{X_{n^2+1},\dots,X_{n^2+30}\leq5\hbox{ i.o.}}=1$ and so the original probability is $0$.
+\eenum
+
+\bye
+

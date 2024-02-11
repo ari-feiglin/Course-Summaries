@@ -1,0 +1,327 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=1.5cm, vertical margin=1.5cm}
+\parindent=0cm
+\parskip=3pt plus 2pt minus 2pt
+
+\input pdfmsym
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+
+\footline={}
+
+\def\printmcount{\the\counter{math counter}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{\bppbox{rgb{1 .7 .7}}{rgb{1 0 0}}{rgb{.8 0 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Introduction to Stochastic Processes}
+    \smallskip
+    \centerline{\setfont{it}Final Assignment}
+    \centerline{\setfont{it}Ari Feiglin}
+
+\eppbox}
+
+\bigskip
+
+\bexerc
+
+    Given a finite-state Markov Chain, which of the following are necessarily true?
+    \benum
+        \item If the chain has two different stationary distributions, it is reducible.
+        \item If the chain is irreducible, then all of its states have a degree greater than one.
+        \item If all the states have a degree of one, then there exists an initial distribution such that starting with it means the chain converges in distribution.
+        \item There exists a recurrent state with degree one.
+        \item There exists a state whose expected return time is infinite.
+        \item If all the states have a degree of one, then there exists an initial state such that starting on it means the chain converges in distribution.
+    \eenum
+
+\eexerc
+
+\benum
+    \item This is true: we showed that if a finite chain is irreducible it has a unique stationary distribution.
+    \item This is false: take for example $P=(1)$.
+    \item This is true: suppose $C_1,\dots,C_n$ are the irreducible components of the chain and each has a unique stationary distribution $\pi_i$.
+    Then if we let $v_i$ be any initial distribution contained in $C_i$, we have that $v_iP^n=v_iP_i^n\xvarrightarrow{n\to\infty}\pi_i$ where $P_i$ is the transition matrix of $C_i$ (equality here is up to
+    nonzero indexes), since each $C_i$ can be seen as an irreducible aperiodic (finite, homogeneus) Markov chain.
+    Thus the chain converges in distribution for any initial distribution contained in an irreducible component (and by extension any initial distribution taking values in the $C_i$s will give convergence).
+    \item This is false: take for example $P(1\to2)=1$ and $P(2\to1)=1$, then both states are recurrent and have degree two.
+    \item This is false: take for example $P=(1)$, the expected return time to its only state is $1$.
+    \item This is true: as we showed in $(3)$, for any initial distribution $v_i$ contained in an irreducible component, the chain will converge in distribution.
+    So take any recurrent state (which exist since the chain is finite-state) $a$, and take the initial distribution $\probof{X_0=a}=1$.
+\eenum
+
+\bexerc
+
+    Given the following stochastic matrix:
+    $$ P = \pmatrix{
+        1&0&0&0&0&0\cr
+        \frac12&0&\frac12&0&0&0\cr
+        0&\frac25&0&\frac35&0&0\cr
+        0&0&0&0&1&0\cr
+        0&0&0&0&\frac14&\frac34\cr
+        0&0&0&1&0&0\cr
+    } $$
+    \benum
+        \item What are the irreducible classes?
+        \item Does there exist a reccurent state with a degree greater than $1$?
+        \item Find all the stationary distributions, does there exist only one?
+        \item Given $X_0=4$, does the Markov chain converge in distribution?
+        \item Compute $f_{2\to4}$.
+    \eenum
+
+\eexerc
+
+\benum
+    \item $1$ is an absorbing state so $\set1$ is an irreducible class.
+    $2$ is connected to $1$, and so is transient.
+    $3$ is connected to $2$ which is transient, so $3$ is transient.
+    $4,5,6$ are all connected and this set is closed so is an irreducible class.
+    Thus
+    $$ T = \set{2,3},\quad C_1=\set1,\quad C_2=\set{4,5,6} $$
+    \item $1$ is an absorbing state so its degree is $1$.
+    Since $P(5\to5)>0$, $5$ has a degree of $1$ and since $4$ and $6$ are in the same irreducible class they have the same degree, so all the recurrent states have a degree of $1$.
+    \item The stationary distributions are simply eigenvectors of eigenvalue $1$ of $P^\top$ (which are also normalized).
+    But we also know that stationary distributions are those in the convex span of $\set{\pi_1,\pi_2}$ where $\pi_i$ is the stationary distribution of the irreducible class.
+    For $C_1$, $\pi_1=(1)$.
+    And for $C_2$ we have that the reduced transition matrix is
+    $$ \tilde P = \pmatrix{0&1&0\cr0&\frac14&\frac34\cr1&0&0} $$
+    and so we must find the eigenvectors of eigenvalue $1$ of $\tilde P^\top$, ie. $N(I-\tilde P^\top)$.
+    A quick computation yields $(1,4/3,1)$ as the basis for the eigenspace, and normalizing it gives $(0.3,0.4,0.3)$.
+    Thus the stationary distributions of the Markov chain are of the form
+    $$ \pi = (1-\alpha,0,0,0.3\alpha,0.4\alpha,0.3\alpha),\qquad 0\leq\alpha\leq1 $$
+    so there are infinitely many stationary distributions.
+    \item In question $1$ I explained why the chain converges in distribution for initial recurrent states, and since $4$ is recurrent it does converge in distribution.
+    \item By definition $f_{2\to4}=\probof{T_4<\infty}[X_0=2]$.
+    To go from $2$ to $4$ we must take a path of the form $2\to3\to2$ for $n$ times then $2\to3\to4$.
+    This has a probability of
+    $$ f_{2\to4} = P(2\to3)\cdot\sum_{n=0}^\infty\bigl(P(3\to2)P(2\to3)\bigr)^n\cdot P(3\to4) = \frac3{10}\sum_{n=0}^\infty\frac1{5^n} = \frac3{10}\cdot\frac54 = \frac38 $$
+\eenum
+
+\bexerc
+
+    Every day in the morning Naomi goes to work and every evening she returns home.
+    She has $3$ elephants, which she can leave by home or by her work.
+    If there is an elephant available when she needs to move between home and work she will decide with probability $\frac15$ and will walk on foot with probability $\frac45$.
+    If there are no elephants available she will simply walk on foot.
+    \benum
+        \item After many years, what is the probability Naomi will be at a place (either home or work) without elephants?
+        \item Naomi is happy to see that by her there are $3$ elephants.
+        What is the expected time until this will happen again?
+        \item This morning Naomi sees that she has exactly $1$ elephant by her, what is the expected time it will take until she has $0$ elephants by her?
+    \eenum
+
+\eexerc
+
+\benum
+    \item Let us define $X_n$ to be the number of elephants by Naomi.
+    Then $P(0\to3)=1$ as if she has no elephants, she must walk to the other place which has three.
+    $P(3\to1)=P(1\to3)=\frac15$ as these are the events that she rides an elephant if there are $3$ or $1$ available.
+    $P(3\to0)=\frac45$ as this is the event that she walks on foot if she has three elephants available.
+    $P(1\to2)=P(2\to1)=\frac45$ as these are the events she walks on foot if she has a single or two elephants available.
+    And $P(2\to2)=\frac15$ as this is the event she rides an elephant if there are two available.
+    So we have that the transition matrix is
+    $$ P = \pmatrix{0&0&0&1\cr0&0&\frac45&\frac15\cr\noalign{\kern2pt}0&\frac45&\frac15&0\cr\noalign{\kern2pt}\frac45&\frac15&0&0} $$
+    This Markov chain is also irreducible and aperiodic: it is irreducible since all the states are connected, and it is aperiodic since $P(2\to2)>0$ so $2$ has a degree of $1$ and since the chain is
+    irreducible all the other states have the same degree.
+    Thus $vP^n\xvarrightarrow{n\to\infty}\pi$ where $\pi$ is $P$'s unique stationary distribution.
+    Let us compute $\pi$, this is simply the normalized eigenvector of eigenvalue $1$ of $P^\top$.
+    A simple row reduction of $I-P^\top$ gives us $\pi=\parens{\frac4{19},\frac5{19},\frac5{19},\frac5{19}}$.
+    Thus
+    $$ \probof[v]{X_n=0}\xvarrightarrow{n\to\infty} = \pi(0) = \frac4{19} $$
+    \item We would like to compute $\expecof{T_3}[X_0=3]$.
+    Let us define $\mu_k=\expecof{T_3}[X_0=k]$.
+    So then we have that
+    $$ \mu_3 = \frac45\expecof{T_3}[X_1=0] + \frac15\expecof{T_3}[X_1=1] = 1 + \frac45\mu_0 + \frac15\mu_1 = \frac95 + \frac15\mu_1 $$
+    since $\mu_0=1$.
+    And similarly
+    $$ \mu_1 = \frac15\expecof{T_3}[X_1=3] + \frac45\expecof{T_3}[X_1=2] = 1 + \frac45\mu_2,\qquad \mu_2 = 1 + \frac15\mu_2 + \frac45\mu_1 $$
+    So then $\frac45\mu_2=1+\frac45\mu_1$, thus $\mu_1=2+\frac45\mu_1$ so $\mu_1=10$ and thus $\mu_3=3.8$.
+    \item We would like to compute $\expecof{T_0}[X_0=1]$.
+    So similar to before, let us define $\mu_k=\expecof{T_0}[X_0=k]$.
+    Then
+    $$ \mu_1 = 1 + \frac15\mu_3 + \frac45\mu_2,\quad \mu_2 = 1 + \frac15\mu_2 + \frac45\mu_1,\quad \mu_3 = \frac95 + \frac15\mu_1 $$
+    Solving this yields $\mu_1=14.75$.
+\eenum
+
+\bexerc
+
+    Karen the giraffe is walking on a ${\bb Z}^2$ plane which has a strong east-west wind.
+    She leaves her equipment at $(0,0)$ and begins a random walk on the plane.
+    She moves right with a probability of $\frac25$, left with a probability of $\frac1{10}$, and up and down with a probability of $\frac14$.
+    \benum
+        \item Does Karen have a positive probability of returning to her equipment within a finite number of steps?
+        \item Does Karen have a positive probability of never returning to her equipment?
+        \item Will Karen almost surely enter the domain $\set{(x,y)}[x>3]$?
+    \eenum
+
+\eexerc
+
+\benum
+    \item This is true, for example Karen could move up and then down which has a probability of $\frac1{16}>0$.
+    Thus $\probof{\hbox{Karen returns to her equipment}}\geq\frac1{16}>0$.
+    \item We can view Karen's walk on ${\bb Z}^2$ as being composed of two walks on ${\bb Z}$: $X^1_n$ and $X^2_n$.
+    $X^1_n$ is associated with Karen's walk projected onto the $x$ axis, and thus $\probof{X^1_n=X^1_{n-1}+1}=\frac45$ and $\probof{X^1_n=X^1_{n-1}-1}=\frac15$.
+    $X^2_n$ is associated with Karen's walk projected onto the $y$ axis, and thus $\probof{X^2_n=X^2_{n-1}+1}=\probof{X^2_n=X^2_{n-1}-1}=\frac12$.
+    At each step we choose $\set{X^1_n}$ or $\set{X^2_n}$ randomly, and take a step using that walk.
+
+    Notice that $X^1_n$ is not a fair walk on ${\bb Z}$, and so it is transient.
+    This means that $\probof[0]{T_0^{X_1}=\infty}>0$, and so surely $\probof[\vec 0]{T_{\vec 0}=\infty}>0$ for Karen's walk on ${\bb Z}^2$, as if $X^1$ never returns to $0$, so too won't Karen.
+    \item Now, recall that almost surely one of the following must occur for a random walk $X_n=I_1+\cdots+I_n$ where $\set{I_i}_i$ are all independent and have the same distribution:
+    $$\qquad (1)\ (\forall n)\,X_n=0,\qquad (2)\ \lim_{n\to\infty}X_n=\infty,\qquad (3)\ \lim_{n\to\infty}X_n=-\infty,\qquad (4)\ \limsup_{n\to\infty}X_n=\infty,\,\liminf_{n\to\infty}X_n=-\infty $$
+    This was stated in class, and proven in our homework, so I will prove it again here (using my same proof from my homework):
+    Notice that for every $-\infty\leq a\leq\infty$, $\liminf X_n=\liminf\sum_{j=0}^nI_j\leq a$ is an event which occurs independent of a permutation of a finite number of indexes of $I_j$ (since permuting
+    a finite number of indexes does not alter $X_n$, eventually).
+    Thus by the Hewitt-Savage zero-one law, $\probof{\liminf X_n\leq a}\in\set{0,1}$.
+    Let us define $\ell=\inf_a\set{\probof{\liminf X_n\leq a}=1}$, this infimum is on a nonempty set since for $a=\infty$ the probability is one.
+    Then for every $a<\ell$, $\probof{\liminf X_n\leq a}=0$, and for every $a>\ell$, $\probof{\liminf X_n\leq a}=1$, thus
+    $$ \probof{\liminf X_n=\ell} = \probof{\bigcap_{n=1}^\infty a-n^{-1}\leq\liminf X_n\leq a+n^{-1}} = \lim_n\probof{a-n^{-1}\leq\liminf X_n\leq a+n^{-1}} = 1 $$
+    The second equality is due to continuity of measures, and the final equality is since $a+n^{-1}\leq\liminf X_n\leq a+n^{-1}$ has a probability of $1$ for each $n$.
+    So there exists an $\ell$ such that $\liminf X_n\buildrel as\over=\ell$.
+    With a similar proof we can show there exists an $L$ such that $\limsup X_n\buildrel as\over=L$.
+    
+    Now,
+    $$ \ell + \liminf X_n = \liminf\sum_{j=0}^n I_j = I_0 + \liminf\sum_{j=1}^n I_j \buildrel as\over= I_0 + \ell $$
+    So either we have that $I_0\buildrel as\over=0$ or $\ell\buildrel as\over=\pm\infty$.
+    If $I_0\buildrel as\over=0$ then $I_n\buildrel as\over=0$ for all $n$ since they have the same distribution, and so $X_n=0$ for all $n$ has probability $1$ (since this contains the event that $I_n=0$
+    for all $n$, which has probability $1$ as the countable intersection of events with probability $1$).
+    Otherwise we similarly have that $L\buildrel as\over=\pm\infty$ and so since $\ell\leq L$, one of the following must have probability $1$
+    $$ \eqalign{
+        \set{\ell=L=-\infty} &= \set{X_n\to-\infty},\cr
+        \set{\ell=-\infty,\,L=\infty} &= \set{\liminf X_n=-\infty,\,\limsup X_n=\infty},\cr
+        \set{\ell=L=\infty} &= \set{X-n\to\infty}
+    } $$
+    as required.
+
+    Let us define $\set{X_n}$ to be the projection of Karen's walk onto the $x$-axis, thus $X_n=I_1+\cdots+I_n$ where $\set{I_i}_i$ are independent and
+    $\probof{I_i=1}=\frac25,\probof{I_i=-1}=\frac1{10},\probof{I_i=0}=\frac12$.
+    Then since $I_i$ is not almost surely zero, $X_n$ is not almost surely always zero.
+    Notice then that $\probof{\limsup X_n=-\infty}\leq\probof{\limsup X_n=\infty}$ since $X_n$ is biased towards the right, and since one of these events must have probability $1$ this means that
+    $\limsup X_n\buildrel as\over=\infty$.
+    And in particular this means that $X_n$ almost surely is eventually greater than $3$, meaning Karen does almost surely eventually enter the domain.
+\eenum
+
+\bexerc
+
+    Let $\set{X_n}_{n=0}^\infty$ be a sequence of independent random variables which all distribute ${\cal N}(0,1)$.
+    Compute the following probabilities:
+
+    \medskip
+    {\tabskip=0pt plus 1fil
+    \openup1\jot\halign to\dimexpr\hsize-\leftskip-\rightskip\relax{(#)\hfil\tabskip=.25cm&$#$\hfil\tabskip=1cm&(#)\hfil\tabskip=.25cm&$#$\hfil\tabskip=0pt plus 1fil\cr
+        1&\probof{X_n>0.5\sqrt{\log n}\hbox{ io}},&2&\probof{X_n>2\sqrt{\log n}\hbox{ io}},\cr
+        3&\probof{(\exists N)(\forall n>N)\,\maxof{X_{n^2+1},\dots,X_{n^2+10}}>2}&4&\probof{(\exists N)(\forall n>N)\,\maxof{X_{n^2+1},\dots,X_{n^2+n}}>2}\cr
+    }}
+
+\eexerc
+
+\benum
+    \item Let us define $A_n=\set{X_n>0.5\sqrt{\log n}}$.
+    We know that for $Z\sim{\cal N}(0,1)$,
+    $$ \frac1{\sqrt{2\pi}}\parens{\frac1t-\frac1{t^3}}e^{-t^2/2} \leq \probof{Z>t} \leq \frac1{\sqrt{2\pi}}\frac1te^{-t^2/2} \implies \probof{Z>t}\sim\frac1{\sqrt{2\pi}}\frac1te^{-t^2/2} $$
+    This means that
+    $$ \probof{A_n}\sim\frac1{\sqrt{2\pi}}\frac2{\sqrt{\log n}}e^{-\log n/8} = \frac1{\sqrt{2\pi}}\frac2{\sqrt{\log n}\cdot\root 8\of n} $$
+    this means that $\sum\probof{A_n}=\infty$, and since $\set{A_n}$ are independent by Borel-Cantelli we get that $\probof{A_n\hbox{ io}}=1$.
+
+    \item Similarly let us define $A_n=\set{X_n>2\sqrt{\log n}}$.
+    And so we get that
+    $$ \probof{A_n}\sim\frac1{\sqrt{2\pi}}\frac1{2\sqrt{\log n}}e^{-2n} = \frac1{\sqrt{2\pi}}\frac1{2\sqrt{\log n}}\cdot\frac1{n^2} $$
+    so $\sum\probof{A_n}<\infty$ and thus by Borel-Cantelli we have that $\probof{A_n\hbox {io}}=0$.
+
+    \item Notice that the complement of this event is $(\forall N)(\exists n>N)\,X_{n^3+1},\dots,X_{n^3+10}\leq2$ which is just $X_{n^3+1},\dots,X_{n^3+10}\leq2\hbox{ io}$.
+    So let $A_n=\set{X_{n^3+1},\dots,X_{n^3+10}\leq2}$.
+    Then we have that since $\set{X_n}$ are independent
+    $$ \probof{A_n} = \probof{X_{n^3+1}\leq2}\cdots\probof{X_{n^3+10}\leq2} $$
+    so let $p=\probof{{\cal N}(0,1)\leq2}$, so $\probof{A_n}=p^{10}$.
+    This means that $\sum\probof{A_n}=\infty$ and since eventually (for $n\geq3$) $\set{A_n}$ is independent and io-ness is not affected by a finite amount of events, we get that by Borel-Cantelli
+    $\probof{A_n\hbox{ io}}=1$, and since this is the complement of the event we get that the probability of the original event is zero.
+
+    \item Let us define $A_n=\set{X_{n^3+1},\dots,X_{n^3+n}\leq2}$, and so as before the complement of the event is $A_n\hbox{ io}$.
+    Let us again define $p=\probof{{\cal N}(0,1)\leq2}$ and so
+    $$ \probof{A_n} = \probof{X_{n^3+1}\leq2}\cdots\probof{X_{n^3+n}\leq2} = p^n $$
+    since $0<p<1$ as normal distributions have full range, we get that $\sum\probof{A_n}<\infty$ and thus by Borel-Cantelli $\probof{A_n\hbox{ io}}=0$.
+    This is the complement of the original event, and so that has a probability of one.
+\eenum
+
+\bexerc
+
+    Let $B(t)$ be Brownian motion which starts at $0$.
+    Which of the following are necessarily true?
+    \benum
+        \item Almost surely, there exists an open interval in which $B(t)$ is monotonic.
+        \item Almost surely, for every zero of $B$, $s$, there exists a sequence of points $s_n$ which converge to $s$ from above such that $B(s_n)=0$.
+        \item Almost surely, there exists an $x>0$ such that $B(x+2)-B(x)>2$.
+        \item $B(2)$ is independent of $B(1)$.
+        \item Almost surely, $B(t)$ is continuous yet not differentiable in $[0,10]$.
+        \item Almost surely, if $B(3)=0$ then there exists a sequence of points $s_n$ which converge to $3$ from below such that $B(s_n)=0$.
+        \item $B(t+1)-B(t)$ is also Brownian motion.
+    \eenum
+
+\eexerc
+
+\benum
+    \item Every open interval contains a closed interval, so this would mean that there exists a closed interval $[a,b]$ in which $B(t)$ is monotonic.
+    Since the rationals are dense, we can assume that $a$ and $b$ are rational.
+    In any case, this would mean that $\maxof[{[a,b]}]B(t)=B(a)$ or $\maxof[{[a,b]}]B(t)=B(b)$ depending on whether $B(t)$ is increasing or not on $[a,b]$.
+    Both of these events have a probability of zero, and thus so does their union.
+    Thus $B(t)$ is almost surely not monotonic on $[a,b]$ for any set $a<b$.
+    And so
+    \multlines{
+        \probof{\hbox{$B(t)$ is monotonic on some open interval}} = \probof{\bigcup_{a<b\in{\bb Q}}\hbox{$B(t)$ is monotonic on $[a,b]$}}\cr
+        &\leq \sum_{a<b\in{\bb Q}}\probof{\hbox{$B(t)$ is monotonic on $[a,b]$}} = 0
+    }
+    So in fact the opposite is true: almost surely there does not exist an open interval in which $B(t)$ is monotonic.
+    \item We showed that $\infof{t>0}[B(t)=0]\buildrel as\over=0$, and since $B(t+s)-B(s)$ is Brownian motion, we get that by applying this to $\set{B(t+s)-B(s)}$, $\infof{t>s}[B(t)=B(s)]=s$.
+    Thus there must almost surely exist a sequence $s_n\downarrow s$ such that $B(s_n)=B(s)$ as required.
+    \item Let us define $A_n=\set{B(2n+2)-B(2n)>10}$.
+    Then $\set{A_n}$ is independent since differences in Brownian motion are independent.
+    And we have that since $B(2n+2)-B(2n)\sim{\cal N}(0,2)$, $\probof{A_n}=\probof{{\cal N}(0,2)>10}\eqqcolon p$ where $p>0$ since normal distributions have full range.
+    Thus $\sum\probof{A_n}=\infty$ and so by Borel-Cantelli $\probof{A_n\hbox{ io}}=1$ thus there almost surely exist an $n>0$ such that $B(2n+2)-B(2n)>10$ as required.
+    \item We know that $B(2)-B(1)$ and $B(1)-B(0)=B(1)$ are independent and so $0=\Covof{B(2)-B(1),B(1)}=\Covof{B(2),B(1)}-\Varof{B(1)}$.
+    Thus $\Covof{B(2),B(1)}=\Varof{B(1)}=\Varof{{\cal N}(0,1)}=1$.
+    Thus $B(2)$ and $B(1)$ are correlated and thus cannot be independent.
+    \item We showed that for any set $t_0$, $B(t)$ is almost surely not differentiable at $t_0$.
+    So yes, almost surely $B(t)$ is not differentiable in $[0,10]$ (take for example $t_0=5$), and by definition it is also almost surely continuous.
+    \item Since $\set{B(A-t)-B(A)}_{0\leq t\leq A}$ is Brownian motion: it is almost surely continuous and $B(A-t-h)-B(A-t)\sim -{\cal N}(0,h)={\cal N}(0,h)$ and differences are just differences in $B(t)$
+    so are independent.
+    And so we have that $\infof{t>0}[B(A-t)=B(A)]=0$, thus $\supof{t<A}[B(t)=B(A)]=A$, meaning there exists a sequence $s_n\uparrow A$ such that $B(s_n)=B(A)$ (take $A=3$).
+    \item Yes, we showed that $\set{B(A+t)-B(A)}_{t\geq0}$ is Brownian motion for any $A\geq0$.
+\eenum
+
+\bexerc
+
+    Let $B(t)$ be Brownian motion starting at $0$.
+    \benum
+        \item Does $\probof{\max_{[0,1]}B(t)<2}>\frac34$?
+        \item What is $\expecof{B(3)^2B(8)}$?
+        \item Is it true that $\expecof{T_3}<\expecof{T_8}$?
+    \eenum
+
+\eexerc
+
+\benum
+    \item By the reflection principle,
+    $$ \probof{\max_{[0,1]}B(t)<2} = 1 - \probof{\max_{[0,1]}B(t)\geq2} = 1 - 2\probof{B(1)\geq2} = 2\Phi(2) - 1 $$
+    Since $B(1)\sim{\cal N}(0,1)$.
+    Since $\Phi(2)\approx0.9772$, we get that the probability is $\approx0.9544$ which is greater than $\frac34$.
+    \item Firstly, we claim that $(B(3),B(3),B(8))$ is a Gaussian vector.
+    In general if $X=(X_1,\dots,X_n)$ is a Gaussian vector, then we claim that $X'=(X_1,X_1,\dots,X_n)$ is.
+    This is as if $X=AZ+\mu$ then
+    $$ X' = \pmatrix{\vcenter{\hrule width.5cm}\ e_1A\ \vcenter{\hrule width.5cm}\cr A}\cdot Z + \pmatrix{\mu_1\cr\mu_1\cr\vdots\cr\mu_n} $$
+
+    Now, if $X\sim{\cal N}(0,\Sigma)$ then $-X\sim{\cal N}(0,\Sigma)$ as well (if $X=AZ$ then $-X=A(-Z)$ and $-Z\sim{\cal N}(0,I)$), thus $X\buildrel d\over=-X$ and therefore for every measurable function
+    $f$, $f(X)\buildrel d\over=f(-X)$.
+    So let $f(X)=X_1\cdots X_n$ and so we get that $X_1\cdots X_n\buildrel d\over=(-1)^nX_1\cdots X_n$ and in particular $\expecof{X_1\cdots X_n}=(-1)^n\expecof{X_1\cdots X_n}$ so if $n$ is odd we get that
+    $\expecof{X_1\cdots X_n}=0$.
+    And in our case, $n=3$ is odd so we have that $\expecof{B(3)^2B(8)}=0$.
+
+    \item We showed that for any $a>0$,
+    $$ f_{T_a}(t) = \frac a{\sqrt{2\pi}}t^{-3/2}e^{-a^2/2t} $$
+    and so this means that $tf_{T_a}(t)=\frac a{\sqrt{2\pi}}t^{-1/2}e^{-a^2/2t}\sim\frac a{\sqrt{2\pi}}t^{-1/2}$.
+    Thus we have that $\expecof{T_a}=\int_0^\infty tf_{T_a}(t)\,dt=\infty$, and so $\expecof{T_3}=\expecof{T_8}=\infty$.
+\eenum
+
+\bye
+

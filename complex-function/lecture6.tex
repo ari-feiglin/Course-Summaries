@@ -1,0 +1,334 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{diam}{{\rm diam}}(\vert)
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+\newfunc{cis}{{\rm cis}}({})
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{sup}{{\rm sup}}\{\vert\}
+
+\font\bigbf = cmbx12 scaled 2000
+\@undervecc@def{underbar}\@linecap\@linecap
+
+\def\mO{{\cal O}}
+\def\mU{{\cal U}}
+\let\lineseg=\overleftrightvecc
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\qed{\hskip1cm\hbox{}\hfill$\blacksquare$}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=6
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Complex Functions}
+
+    \medskip
+    \textit{Lecture \thesection, Wednesday May 17, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+Recall that for a function analytic in a rectangle, disk, or the entire complex plane:
+\benum
+    \item There exists an analytic antiderivative.
+    \item The integral over every closed smooth curve is zero.
+    \item The integral over a smooth curve is dependent only on its endpoints.
+\eenum
+
+\begin{thrm*}[cauchyIntegralFormula,Cauchy's\ Integral\ Formula]
+
+    Suppose $f$ is analytic in an open set $\mU$, and let $a\in\mU$.
+    If $C$ is a closed, positive-oriented curve contained in $\mU$ and whose interior contains $a$, then
+    \[ f(a) = \frac1{2\pi i}\int_C\frac{f(z)}{z-a}\,dz \]
+
+\end{thrm*}
+
+\begin{proof}
+
+    Since $\mU$ is open and $C$ is contained within $\mU$, then there exists an $r>0$ small enough such that
+    \[ C_r(a) = \set{\gamma(\theta)=a+re^{-i\theta}}[0\leq\theta\leq2\pi] \]
+    contained in the interior of $C$ and $\mU$.
+
+    The function $\frac f{z-a}$ is analytic in $\mU\setminus\set a$.
+    So we can take $\mO$ to be the domain equal to the interior of $C$ minus the interior of $C_r(a)$.
+    Then $\partial\mO=C\dcup C_r(a)$, then $f$ is analytic in $\mO$.
+    We can parameterize $C_r(a)$ by $\gamma$ (in the definition of $C_r(a)$).
+    Then since $\frac f{z-a}$ is analytic in $\mO$, since $C_r(a)$ is negatively-oriented, by the last theorem from the previous lecture:
+    \[ \int_C\frac f{z-a} + \int_{C_r}\frac f{z-a} = 0 \implies \int_C\frac f{z-a} = -\int_{C_r}\frac f{z-a} = \int_{-C_r}\frac f{z-a} = \int_{-C_r}\frac{f(z)-f(a)}{z-a} + \int_{-C_r}\frac{f(a)}{z-a} \]
+    $-C_r$ is parameterized by $\gamma_1(\theta)=\gamma(2\pi-\theta)=a+re^{i\theta}$, so
+    \[ \int_{-C_r}\frac{f(a)}{z-a} = f(a)\cdot\int_0^{2\pi}\frac{rie^{i\theta}}{re^{i\theta}} = 2\pi if(a) \]
+
+    Thus we have
+    \[ \int_C\frac{f(z)}{z-a} = 2\pi if(a) + \int_{-C_r}\frac{f(z)-f(a)}{z-a} \]
+    so we will show that the rightmost integral is zero.
+
+    Let $\epsilon>0$, then since $f$ is continuous, there exists a $\delta>0$ such that if $\abs{z-a}<\delta$ then $\abs{f(z)-f(a)}<\epsilon$.
+    We will choose $r>0$ such that $0<r<\delta$, then $\abs{\frac{f(z)-f(a)}{z-a}}=\frac{\abs{f(z)-f(a)}}{r}<\frac\epsilon r$, and so
+    \[ \abs{\int_{-C_r}\frac{f(z)-f(a)}{z-a}} \leq \frac\epsilon r\cdot2\pi r = 2\pi\epsilon \]
+    and since $\epsilon>0$ is arbitrary, this means that the integral is indeed zero.
+
+    So we have
+    \[ \int_C\frac{f(z)}{z-a} = 2\pi if(a) \]
+    or in other words
+    \[ \frac1{2\pi i}\int_C\frac{f(z)}{z-a} = f(a) \]
+    \qed
+
+\end{proof}
+
+We will use the notation $C_r(a)=\set{z\in\bC}[\abs{z-a}=r]$, and we will give it the parameterization of $\gamma\colon[0,2\pi]\longto\bC$ by $\gamma(t)=a+re^{i\theta}$ (this was used as $-C_r$ in the
+previous proof).
+This is a positive-oriented Jordan curve.
+
+Notice that for $k\in\bZ$:
+\[ \int_{C_r(a)}\frac{dz}{(z-a)^k} = \int_0^{2\pi}\frac{rie^{i\theta}}{r^ke^{ki\theta}} = ir^{1-k}\int_0^{2\pi} e^{i\theta(1-k)} \]
+If $k=1$ then this is equal to $2\pi i$.
+Otherwise
+\[ \int_0^{2\pi} e^{i\theta(1-k)} = \frac{i(1-k)}e^{i\theta(1-k)}\bigl|_0^{2\pi} = 0 \]
+So
+\[ \int_{C_r(a)}\frac{dz}{(z-a)^k} = \begin{cases} 2\pi i & k=1 \\ 0 & k\neq1 \end{cases} \]
+
+\begin{lemm*}
+
+    If $a\in D_r(x)$ then
+    \[ \int_{C_r(x)}\frac{dz}{z-a} = 2\pi i \]
+
+\end{lemm*}
+
+\begin{proof}
+
+    For $w=\frac{a-x}{z-x}$ we have
+    \[ \frac1{z-a} = \frac1{z-x}\cdot\frac1{1-w} \]
+    And for $z\in C_r(x)$ we have that
+    \[ \abs{w} = \frac{\abs{a-x}}{\abs{z-a}} = \frac{\abs{a-x}}r < 1 \]
+    since $a\in D_r(x)$ so $\abs{a-x}<r$.
+    Thus we have that
+    \[ \frac1{1-w} = \sum_{n=0}^\infty w^n = \sum_{n=0}^\infty\parens{\frac{a-x}{z-x}}^n \]
+    Thus for every $z\in C_r(x)$ and $a\in D_r(x)$
+    \[ \frac1{z-a} = \sum_{k=0}^\infty\frac{(a-x)^n}{(z-x)^{n+1}} \]
+
+    Thus
+    \[ \int_{C_r(x)}\frac{dz}{z-a} = \int_{C_r(x)}\frac{dz}{z-x} + \sum_{n=1}^\infty\int_{C_r(x)}\frac{(a-x)^n}{(z-x)^{n+1}} \]
+    Since we showed that
+    \[ \int_{C_r(a)}\frac{dz}{(z-a)^n} = 0 \]
+    for $n\neq1$, this means that the right sum is zero, and we also showed that
+    \[ \int_{C_r(x)}\frac{dz}{z-x} = 2\pi i \]
+    as required.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}
+
+    Suppose $f$ is analytic in $D_R(x)$ then there exist constants $c_k\in\bC$ such that
+    \[ f(z) = \sum_{k=0}^\infty c_k(z-x)^k \]
+    for every $z\in D_R(x)$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Since $C_R(x)$ is not contained in $D_R(x)$, we first focus on $r>0$ such that $0<r<R$.
+    Recall that
+    \[ f(a) = \frac1{2\pi}\int_{C_r(a)}\frac{f(z)}{z-a} \]
+    and we showed that
+    \[ \frac1{z-a} = \sum_{k=0}^\infty\frac{(a-x)^k}{(z-x)^{k+1}} \]
+    uniformly for $a\in D_r(x)$ and $z\in C_r(x)$.
+    Thus
+    \[ f(a) = \frac1{2\pi}\int_{C_r(a)}f(z)\cdot\sum_{k=0}^\infty\frac{(a-x)^k}{(z-x)^{k+1}} = \sum_{k=0}^\infty\parens{\frac1{2\pi i}\int_{C_r(x)}\frac{f(z)}{(z-x)^{k+1}}}(a-x)^k \]
+    where the final equality is due to the uniform convergence.
+    Thus if we set
+    \[ c_k(r) = \frac1{2\pi i}\int_{C_r(x)}\frac{f(z)}{(z-x)^{k+1}} \]
+    we have found the constants satisfying our condition in $D_r(x)$.
+
+    If $r_1,r_2>0$, $f$ can be written as a powerseries with $c_k(r_1)$ and $c_k(r_2)$, but since $D_{r_1}(x)\subseteq D_{r_2}(x)$ and powerseries are unique, this means $c_k(r_1)=c_k(r_2)$.
+    So $c_k(r)$ is independent of $r$, we can write them as $c_k$.
+    And for every $z\in D_R(x)$ there is a $0<r<R$ where $z\in D_r(x)$, we have that
+    \[ f(z) = \sum_{k=0}^\infty c_k(z-x)^k \]
+    as required.
+    \qed
+
+\end{proof}
+
+As we know, power series are infinitely differentiable, and we can differentiate and find that
+\[ \frac{f^{(k)}}{k!} = c_k = \frac1{2\pi i}\int_{C_r(x)}\frac{f(z)}{(x-z)^{k+1}} \]
+
+\begin{thrm*}
+
+    If $f$ is analytic on an open set $\mU$ then for every $k\in\bN_0$ and every $x\in\mU$, and every positive-oriented Jordan curve $C$ contained in $\mU$, if $x$ is in the interior of $C$:
+    \[ f^{(k)}(x) = \frac{k!}{2\pi i}\int_C\frac{f(z)}{(x-z)^{k+1}} \]
+
+\end{thrm*}
+
+\begin{coro*}
+
+    If $f\colon\bC\longto\bC$ is analytic at $\alpha\in\bC$, then so is $f^{(k)}$ for $k\in\bN_0$.
+
+\end{coro*}
+
+\begin{proof}
+
+    If $f$ is analytic at $\alpha$ then there exists a disk $D_R(\alpha)$ in which $f$ is differentiable.
+    So there exist $c_k\in\bC$ such that
+    \[ f(z) = \sum_{k=0}^\infty c_k(z-\alpha)^k \]
+    for every $z\in D_R(\alpha)$.
+    Inductively we see that
+    \[ f^{(m)}(z) = \sum_{k=0}^\infty k(k-1)\cdots(k-m+1)\cdot c_k\cdot(z-\alpha)^{k-m} \]
+    All of these powerseries have the same radius of convergence (using limsup), and thus define analytic functions in $D_R(\alpha)$.
+    \qed
+
+\end{proof}
+
+If $\mU$ is open and $f$ is analytic in it, then for every $x\in\mU$ there exists a $D_r(x)\subseteq\mU$, and so $f$ can be written as a powerseries in $D_r(x)$.
+But in general $f$ may not be a powerseries in all of $D_r(x)$.
+
+\begin{prop*}
+
+    If $f$ is analytic in a domain $D$ such that there exists a sequence $z_n\in D$ such that $z_n\longto z_0\in D$ where all $z_n$ are distinct from $z_0$, and $f(z_n)=0$, then $f$ is identically zero on
+    $D$.
+
+\end{prop*}
+
+\begin{proof}
+
+    There exists an $R>0$ such that $D_R(z_0)\subseteq D$.
+    And there exists an $N>0$ such that for every $n\geq N$, $z_n\in D_R(z_0)$.
+    Since $f$ can be written as a powerseries in $D_R(z_0)$, we use the similar theorem for powerseries to conclude that $f=0$ on $D_R(z_0)$.
+
+    Let us define
+    \[ A = \set{z\in D}[\exists\set{x_n}_{n=1}^\infty\in D,x_n\longto z, f(x_n)=0] \]
+    $A$ is non-empty by assumption, and it is open since if $z\in A$ then by above there exists a $r>0$ such that $f$ is zero in $D_r(z)$, and so $D_r(z)\subseteq A$.
+    We define $B=D\setminus A$, and if $b\in B$ then there must be an $r>0$ such that in $D_r(b)$, $f\neq0$ as otherwise you could take a sequence to $b$
+    of zeros of $f$.
+    And $D_r(b)\subseteq B$ for this same reason, so $B$ is open.
+
+    So $D=A\dcup B$, but $A$ and $B$ are open and $D$ is connected, so $A$ or $B$ must be empty.
+    Since $A$ is non-empty, $B=\varnothing$ and so $A=D$.
+    And since for every $z\in A$, $f(z)=0$, $f=0$ in $D$.
+    \qed
+
+\end{proof}
+
+Thus if $f$ and $g$ are two analytic functions in a domain $D$ which agree on a convergent sequence of distinct numbers, then $f=g$ in $D$ ($f-g$ is equal to zero in this sequence).
+So analytic functions are defined uniquely by their values on convergent sequences.
+
+\begin{prop*}
+
+    Let $f(z)$ be an entire function, then for any $a\in\bC$
+    \[ g(z) = \begin{cases} \frac{f(z)-f(a)}{z-a} & z\neq a \\ f'(a) & z=a \end{cases} \]
+    $g(z)$ is entire.
+
+\end{prop*}
+
+\begin{proof}
+
+    Since
+    \[ f(z) = \sum_{k=0}^\infty \frac{f^{(k)}(a)}{k!}\cdot(z-a)^k \]
+    for all $z\neq a$ we have
+    \[ g(z) = \sum_{k=1}^\infty \frac{f^{(k)}(a)}{k!}\cdot(z-a)^{k-1} \]
+    And for $z=a$, we have that this powerseries is equal to $\frac{f^{(1)}(a)}{1!}=f'(a)$, so the above equation holds for all $z\in\bC$.
+    Thus $g$ is a powerseries which is convergent on all of $\bC$ and is therefore entire.
+    \qed
+
+\end{proof}
+
+If $a$ is a root of $f$, the definition of $g$ simplifies to $\frac{f(z)}{z-a}$ for $z\neq a$.
+We can continue this inductively on $g$ if $\alpha_1,\dots,\alpha_n$ are roots of $f$ and define
+\[ g(z) = \frac{f(z)}{(z-\alpha_1)\cdots(z-\alpha_n)} \]
+
+\newpage
+for $z\neq\alpha_i$, and if $z=\alpha_i$ then the limit of $g(z)$ as $z$ approaches $\alpha_i$ exists (and is equal to $f'(\alpha_i)$ divided by the product of $\alpha_i-\alpha_j$ for $j\neq i$).
+This is done inductively and at every step the function is entire.
+
+\begin{thrm*}[liouvilleThrm,Liouville's\ Theorem]
+
+    Any bound entire function is constant.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let $a,b\in\bC$ and let $R\geq1+\maxof{\abs a,\abs b}$.
+    Then by \ppref{cauchyIntegralFormula}, since $a$ and $b$ are contained within the interior of $C_R(0)$
+    \[ f(b) - f(a) = \frac1{2\pi i}\parens{\int_{C_R(0)}\frac{f(z)}{z-a} - \frac{f(z)}{z-b}\,dz} = \frac1{2\pi i}\parens{\int_{C_R(0)}\frac{f(z)(b-a)}{(z-a)(z-b)}\,dz} \]
+    Since $f(z)$ is bound, suppose by $M$, and since $\abs{z-a}\geq\abs{R-\abs a}$, we have that
+    \[ \abs{f(b) - f(a)} \leq \frac{M\abs{b-a}\cdot2\pi R}{2\pi\cdot\abs{R-\abs a}\cdot\abs{R-\abs b}} = \frac{M\abs{b-a}\cdot R}{\abs{R-\abs a}\cdot\abs{R-\abs b}} \]
+    As we let $R\longto\infty$, this converges to $0$ and so $\abs{f(b)-f(a)}=0$, meaning $f(b)=f(a)$ for any $a,b\in\bC$, meaning $f$ is constant.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}[liouvilleGeneralizedThrm,Generalized\ Liouville's\ Theorem]
+
+    Suppose $f$ is an entire function such that there exist $A,B\in\bC$ and $k\in\bN_0$ where $\abs f\leq A+B\abs z^k$, then $f$ is a polynomial of degree at most $k$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    For $k=0$ this is simply \ppref{liouvilleThrm}.
+    If we assume that this is true for $k\leq n$, we will show that this is true for $k=n+1$.
+    Suppose $\abs f\leq A+B\abs z^{n+1}$ (we can assume that $A,B\geq0$, which is true in any case), then we define
+    \[ g(z) = \begin{cases} \frac{f(z)-f(0)}z & z\neq0 \\ f'(0) & z=0 \end{cases} \]
+    we have shown above that such a $g$ is entire.
+    If $z\neq0$ then
+    \[ \abs{g(z)} = \frac{\abs{f(z) - f(0)}}{\abs z} \leq \frac{\abs{f(z)} + \abs{f(0)}}{\abs z} = \frac{2A + B\abs z^{n+1}}{\abs z} = \frac{2A}{\abs z} + B\abs z^n \]
+    if $\abs z>1$ then this is less than
+    \[ \leq 2A + B\abs z^n \]
+    and if $\abs z\leq 1$ then since $g$ is analytic and therefore continuous, it is bound by some $M$, which we can assume without loss of generality is equal to $2A$ (by taking the maximum between $M$ and
+    $2A$).
+    So we have that
+    \[ \abs{g(z)} \leq 2A + B\abs z^n \]
+    and therefore $g$ is a polynomial of degree $\leq n$.
+    And since $f(z)=zg(z)+f(0)$ for every $z\in\bC$ (for $z=0$ this is trivial), and so $f$ is a polynomial of degree one more than $g$'s, which is less than or equal to $n+1$.
+    \qed
+
+\end{proof}
+
+\newpage
+\begin{thrm*}[FTA,Fundamental\ Theorem\ of\ Algebra]
+
+    Every non-constant polynomial $p(z)\in\bC[z]$ has a root in $\bC$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    If we assume that $p(z)\neq0$ for every $z\in\bC$ then $f(z)=\frac1{p(z)}$ is an entire function in $\bC$.
+    Since $p$ is non-constant, $\abs{p(z)}\xvarrightarrow{}[z\to\infty]\infty$ and so $\abs{f(z)}\xvarrightarrow{}[z\to\infty]0$, and so $f$ is bound.
+    But then by \ppref{liouvilleThrm}, $f$ is constant and therefore $p$ is as well, in contradiction.
+    \qed
+
+\end{proof}
+
+\end{document}
+

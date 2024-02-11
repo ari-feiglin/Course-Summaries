@@ -1,0 +1,255 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\usepackage{tikz-cd}
+
+\catcode`\@=11
+\input pdfmsym
+
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\slfrac#1#2{\left.{}^{#1}\mkern-4mu\middle/\mkern-3mu{}_{#2}\right.}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\newfunc{eulerg}{{\rm Euler}}({})
+\newfunc{order}o({})
+\newfunc{ker}{{\rm Ker}}({})
+\newfunc{image}{{\rm Im}}({})
+\newfunc{lattice}{{\cal L}}(\vert)
+\newfunc{powset}{{\cal P}}(\vert)
+\newfunc{units}{{\cal U}}(\vert)
+\newfunc{sign}{{\rm sgn}}({})
+\newfunc{aut}{{\rm Aut}}({})
+\newfunc{speclinear}{{\rm SL}}({})
+\newfunc{genlinear}{{\rm GL}}({})
+\newfunc{projlinear}{{\rm PGL}}({})
+\newfunc{specprojlinear}{{\rm PSL}}({})
+\newfunc{core}{{\rm Core}}(\vert)
+\newfunc{inner}{{\rm Inn}}(\vert)
+\newfunc{outer}{{\rm Out}}(\vert)
+
+\let\normalsub=\trianglelefteq
+\let\mmorph=\longvarhookrightarrow
+
+\begin{document}
+
+\c@section=10
+
+\barcolorbox{220, 220, 255}{0, 0, 130}{80, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Group Theory}
+
+    \medskip
+    \textit{Lecture \thesection, Sunday January 1, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{Group Actions, continued}
+
+Recall that we have the following general group actions:
+\blist
+    \item $G$ acts on itself via its own operation.
+    \item $G$ acts on itself via conjugation.
+    \item $G$ acts on normal subgroups via conjugation.
+    \item $G$ acts on $\latticeof G$ (the lattice of all subgroups) via conjugation.
+    \item $\autof G$ acts on $G$ via evaluation.
+    \item $G$ acts on $\slfrac GH$ via left multiplication.
+\elist
+
+One more action is the action of conjugation on $H\leq G$ (not necessarily normal) by $N_G(H)$, the normalizer of $H$.
+
+\begin{defn*}
+
+    The \ppemph{kernel} of a group action is the kernel of the homomorphism enduced by it.
+
+\end{defn*}
+
+\begin{lemm*}
+
+    The kernel of a group action is $K=\set{g\in G}[\forall x\in X: g\cdot x=x]$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Let $\phi$ be the homomorphism induced by the group action and suppose $g\in\ker\phi$ then if $x\in X$ then $g\cdot x=\phi(g)(x)={\rm id}(x)=x$, so $g\in K$.
+    And if $g\in K$ then $\phi(g)(x)=g\cdot x=x$, so $\phi(g)={\rm id}$ and therefore $g\in\ker\phi$.
+    So $K=\ker\phi$ as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{thrm*}
+
+    For every subgroup $H$ of $G$ there is a monomorphism
+    \[ \slfrac{N_G(H)}{C_G(H)}\mmorph\autof H \]
+
+\end{thrm*}
+
+Recall that $N_G(H)=\set{g\in G}[gHg^{-1}=H]$, and $C_G(H)=\set{g\in G}[\forall h\in H: gh=hg]\subseteq N_G(H)$.
+
+\begin{proof}
+
+    If $H=G$ then $N_G(H)=G$ and $C_G(H)=Z(G)$ and so $\slfrac{N_G(H)}{C_G(H)}=\slfrac{G}{Z(G)}$ which we know is isomorphic to $\innerof G$ which defines a monomorphism to $\autof G$.
+
+    Firstly, we know that $H\normalsub N_G(H)$, and so $N_G(H)$ acts on $H$ via conjugation.
+    The kernel of this is
+    \[ \set{g\in N_G(H)}[\forall h\in H: ghg^{-1}=h] \]
+    which is a subset of $C_G(H)$, and since if $C_G(H)\subseteq N_G(H)$, this is equal to $C_G(H)$.
+    So the kernel is $C_G(H)$, and we know by the first isomorphism theorem that
+    \[ \slfrac{N_G(H)}{C_G(H)} \mmorph S_H \]
+    Now suppose $\sigma=\phi(g)$ for $g\in N_G(H)$.
+    Then $\sigma(h_1h_2)=gh_1h_2g^{-1}=gh_1g^{-1}gh_2g^{-1}=\sigma(h_1)\sigma(h_2)$ so the image of the monomorphism has only homomorphism, and thus only automorphisms (by definition of $S_H$), so this is
+    an embedding into $\autof H$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\subsection{Simple Groups}
+
+\begin{defn*}
+
+    A group is \ppemph{simple} if it has no non-trivial normal subgroups.
+
+\end{defn*}
+
+Notice that an abelian group is simple if and only if it has no subgroups at all, in other words it is isomorphic to $\bZ_p$ for some prime $p$.
+
+\begin{lemm*}
+
+    If $D$ is a conjugacy class of $S_n$ contained in $A_n$, then $A_n$ is a conjugacy class of $A_n$ if $C_{S_n}(x)\not\subseteq A_n$ for every $x\in D$, and if $C_{S_n}(x)\subseteq A_n$ then $D$ is the
+    disjoint union of two conjugacy classes of the same class.
+
+\end{lemm*}
+
+\begin{proof}
+
+    We know
+    \[ \abs{[x]_{S_n}}=\bracks{S_n: C_{S_n}(x)} \qquad \abs{[x]_{A_n}}=\bracks{A_n:C_{A_n}(x)} \]
+    And $C_{A_n}(x)=A_n\cap C_{S_n}(x)$ by the second isomorphism theorem:
+    \[ \slfrac{C_{S_n}(x)}{C_{A_n}(x)} = \slfrac{C_{S_n}}{A_n\cap C_{S_n}} = \slfrac{C_{S_n}A_n}{A_n} \]
+    Which has a cardinality of either $1$ or $2$ (since the index of $A_n$ is $2$).
+    And recall that this is equal to:
+    \[ \frac{2\bracks{A_n:C_{A_n}}}{\bracks{S_n:C_{S_n}}} = \frac{2\abs{[x]_{A_n}}}{\abs{[x]_{S_n}}} \]
+    Suppose this is equal to $1$, that is $C_{S_n}\subseteq A_n$ then $2\abs{[x]_{A_n}}=\abs{[x]_{S_n}}$, so $[x]_{A_n}$ is not a conjugacy class in $S_n$.
+    And if we take an element $y$ in $[x]_{S_n}$ not in $[x]_{A_n}$, then $y\in A_n$ (since the conjugacy class in $S_n$ preserves signs) so $[y]_{A_n}$ is disjoint from $[x]_{A_n}$ since orbits are
+    disjoint, and they have the same size since otherwise $[y]_{S_n}$ would have the same size as $[y]_{A_n}=[y]_{S_n}=[x]_{S_n}$, and since this size is half that of $[x]_{S_n}$, $[x]_{S_n}$ is the
+    disjoint union of these.
+    And if it is equal to $2$, that is it is not a subset, then $\abs{[x]_{A_n}}=\abs{[x]_{S_n}}$, so $[x]_{A_n}=[x]_{S_n}$ (since it is a subset).
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+Using this lemma, it can be shown through somewhat length computations that $A_5$ is simple.
+
+\begin{lemm*}
+
+    For $5\geq n$ all the cycles of length $3$ are conjugates in $A_n$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    We know that this is true in $S_n$ since they have the same periodic structure.
+    Since $\pmat{1 & 2 & 3}$ commutes with $\pmat{4 & 5}$, we have that $C_{S_n}\pmat{1 & 2 & 3}\not\subseteq A_n$, so the conjugacy class of all cycles of length $2$ which is $[\pmat{1&2&3}]_{S_n}$, which
+    by the lemma above is equal to $[\pmat{1&2&3}]_{A_n}$, as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+Notice that in $S_4$, the conjugacy class of $\pmat{1&2&3}$ has a size of $8$ ($\frac{4\cdot3\cdot2}3=8$), which does not divide $12$, the size of $A_4$, so it cannot be a subgroup, and therefore a conjugacy
+class, in $A_n$.
+
+\begin{thrm*}
+
+    For $n\geq5$, $A_n$ is simple.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Suppose $A_n$ has a non-trivial subgroup $N$.
+    Let ${\rm id}\neq\sigma\in N$, then let $i\in[n]$ such that $\sigma(i)=j\neq i$.
+    Let $k\in[n]$ which is distinct from $i$, $j$, and $\sigma(j)$ (note that it is possible for $\sigma(j)=i$).
+    Notice that $\sigma$ does not commute with $(i,j,k)$:
+    \[ \sigma(i,j,k)(i)=\sigma(j)\neq k\qquad (i,j,k)\sigma(i)=(i,j,k)(j)=k \]
+    Let us focus on $\sigma(i,j,k)\sigma^{-1}(i,j,k)^{-1}=\sigma\bigl((i,j,k)\sigma^{-1}(i,j,k)^{-1}\bigr)^{-1}$ which is in $N$ as the composition of two elements of $N$.
+    This is equal to $\pmat{j & \sigma(j) & \sigma(k)}\pmat{i&k&j}\in A_{\set{i,j,k,\sigma(j),\sigma(k)}}$ which is normal in the symmetric group $S_5$ (up to isomorphism).
+    Since $N$ is normal in $A_n$ which is a supergroup of $A_5$ so $N\cap A_5$ is normal in $A_5$.
+    The element we were looking at before is in $A_5$ and $N$ so $A_5\cap N\neq\set e$, so it must be $A_5$ since $A_5$ is simple, so $A_5\subseteq N$.
+    So $N$ contains a cycle of length $3$, as $A_5$ does, and therefore it contains them all since they are all conjugates.
+    But $A_n$ is generated by cycles of length $3$ so $N=A_n$, which contradicts that $N$ is a \emph{non-trivial} normal subgroup of $A_n$ \lightning
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+Suppose we want to color a square with $4$ regions with $3$ colors, for example red, green, and blue.
+The following would be a valid coloring:
+
+\begin{center}
+\tikz[scale=.25]{
+    \filldraw[color=black,fill=blue] (0,0) -- (5,0) -- (5,5) -- (0,5) -- cycle;
+    \filldraw[color=black,fill=green] (5,0) -- (10,0) -- (10,5) -- (5,5) -- cycle;
+    \filldraw[color=black,fill=red] (0,5) -- (5,5) -- (5,10) -- (0,10) -- cycle;
+    \filldraw[color=black,fill=blue] (5,5) -- (10,5) -- (10,10) -- (5,10) -- cycle;
+}
+\end{center}
+
+A rotation of such a coloring is considered to be the same.
+So we'd like to count the number of distinct colorings.
+Let $\Omega$ be the set of all colorings, then $G=\bZ_4\subseteq D_4$ acts on $\Omega$ as rotations, we'd like to count the number of orbits of this action.
+
+\newfunc{fp}{\mathit{fp}}({})
+For a group action of $G$ on $\Omega$ let $\fpof\sigma=\abs{\set{x\in\Omega}[\sigma x=x]}$ for $\sigma\in G$.
+
+\begin{lemm*}[frobeniusLemma,Frobenius's\ Lemma]
+
+    Suppose $G$ is a finite group which acts on $\Omega$, then the number of orbits is:
+    \[ \abs{\slfrac\Omega G} = \sum_{\sigma\in G} \fp(\sigma) \]
+
+\end{lemm*}
+
+\begin{proof}
+
+    Firstly we know that
+    \[  \sum_{\sigma\in G}\fpof\sigma = \abs{\set{(\sigma,x)\in G\times\Omega}[\sigma x=x]} = \sum_{x\in\Omega}\abs{G_x} \]
+    And by the orbit-stabilizer theorem this is equal to:
+    \[ = \sum_{x\in\Omega}\frac{\abs G}{\abs{G\cdot x}} = \abs G\cdot\sum_{x\in\Omega}\frac1{\abs{G\cdot x}} \]
+    Now notice that since orbits partition $\Omega$:
+    \[ \sum_{x\in\Omega}\frac1{\abs{G\cdot x}} = \sum_{A\in\slfrac\Omega G}\sum_{x\in A}\frac1{\abs A} = \sum_{A\in\slfrac\Omega G}1 = \abs{\slfrac\Omega G} \]
+    as required.
+
+\end{proof}
+
+Notice that if $\sigma$ and $\sigma'$ are conjugates, $\sigma'=g\sigma g^{-1}$:
+\[ \sigma'(x)=x\iff\sigma(g^{-1}(x))=g^{-1}x \]
+so $\fpof\sigma=\fpof{\sigma'}$ and so by Frobenius's lemma:
+\[ \abs{\slfrac\Omega G}=\frac1{\abs G}\sum_{c\subseteq G}\fpof{\sigma\in c}\abs c \]
+where $c$ is a conjugacy class.
+
+Using this lemma, we can answer our above question.
+Since $\fpof{\rm id}=\abs\Omega=3^4=81$ and $\fpof\sigma=\fpof{\sigma^3}=3$ (since a coloring is fixed after a single rotation if the square is colored with the same color) and $\fpof{\sigma^2}=9$ (since
+the coloring is preserved after two rotations if the diagonals are the same color) so:
+\[ \abs{\slfrac\Omega{\bZ_4}}=\frac14\cdot96=24 \]
+
+\end{document}
+

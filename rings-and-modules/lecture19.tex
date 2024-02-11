@@ -1,0 +1,133 @@
+\documentclass[10pt]{article}
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+\usepackage{mathrsfs}
+
+\catcode`\@=11
+\input pdfmsym
+
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\implies{\,\mathrel{\longvarRightarrow}\,}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\divides{{\mid}}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\newfunc{eulerg}{{\rm Euler}}({})
+\newfunc{order}o({})
+\newfunc{ker}{{\rm Ker}}({})
+\newfunc{image}{{\rm Im}}({})
+\newfunc{lattice}{{\cal L}}(\vert)
+\newfunc{powset}{{\cal P}}(\vert)
+\newfunc{center}{{\rm Z}}({})
+\newfunc{units}{{\cal U}}(\vert)
+\newfunc{sign}{{\rm sgn}}({})
+\newfunc{aut}{{\rm Aut}}({})
+\newfunc{speclinear}{{\rm SL}}({})
+\newfunc{genlinear}{{\rm GL}}({})
+\newfunc{projlinear}{{\rm PGL}}({})
+\newfunc{specprojlinear}{{\rm PSL}}({})
+\newfunc{core}{{\rm Core}}(\vert)
+\newfunc{inner}{{\rm Inn}}(\vert)
+\newfunc{outer}{{\rm Out}}(\vert)
+\newfunc{conj}{{\rm conj}}({})
+\newfunc{ev}{{\rm ev}}({})
+\newfunc{Frac}{{\rm Frac}}({})
+\newfunc{Tor}{{\rm Tor}}(\vert)
+\newfunc{Ann}{{\rm Ann}}(\vert)
+\newfunc{deg}{{\rm deg}}({})
+
+\def\maxdivs{\mathrel{\|}}
+
+\let\ideal=\trianglelefteq
+\let\pideal=\triangleleft
+\def\normal{\mathrel\triangleleft}
+\let\mmorph=\longvarhookrightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\hbox{}\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\mN{\mathcal N}
+\def\mO{\mathcal O}
+\def\mG{\mathcal G}
+\def\sS{\mathscr S}
+
+\begin{document}
+
+\c@section=19
+
+\barcolorbox{220, 220, 255}{0, 0, 130}{80, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Introduction to Rings and Modules}
+
+    \medskip
+    \textit{Lecture \thesection, Wednesday June 21 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{prop*}
+
+    Every $\mO_d$ is a Dedekind domain.
+
+\end{prop*}
+
+\begin{proof}
+
+    Since $\mO_d\subseteq\bC$, it is obvious that it is an integral domain.
+    $\mO_d$ is integrally closed as the integral closure of $\bZ$.
+    Since $\mO_d=\bZ[\alpha]$, then we define $f\colon\bZ[x]\longto\bZ[\alpha]$ where $f(x)=\alpha$ and $f(1)=1$, so in general
+    \[ f(a_nx^n+\cdots+a_0) = a_n\alpha^n+\cdots+a_0 \]
+    this is a homomorphism, as it is a restriction of the evaluation homomorphism.
+    Since every element of $\bZ[\alpha]$ is of the form $a+b\alpha$ (for the $\alpha$s we are studying), so $a+b\alpha=f(a+bx)$.
+    Thus by the first isomorphism theorem
+    \[ \slfrac{\bZ[x]}{\ker f} \cong \mO_d \]
+    Since $\bZ$ is a PID, and therefore noetherian, by Hilbert's basis theorem so is $\bZ[x]$.
+    Since the quotient of a noetherian ring is noetherian, we have that $\mO_d$ is noetherian.
+
+    The final criterion is that $\dim\mO_d=1$.
+    We must show that there exist non-zero prime ideals, and that every such ideal is maximal.
+    Assume $P$ is a non-zero prime ideal, let $I=P\cap\bZ$.
+    Then $I$ is a prime ideal over $\bZ$, it is an ideal since it is a group (intersection of groups), and if $n\in\bZ$ and $i\in I\subseteq\bZ$ then $ni\in P$ and $\bZ$.
+    Now suppose $ab\in I$ for $a,b\in\bZ$ then $ab\in P$ so either $a$ or $b$ is in $P$ (and $\bZ$) and thus $I$.
+
+    We also claim that $I\neq(0)$.
+    Suppose $0\neq y\in P$ then let us look at the isomorphism from the previous lecture
+    \[ \phi\colon\bQ(\sqrt d)\longto\bQ(\sqrt d),\qquad a+b\sqrt d\varmapsto a-b\sqrt d \]
+    we showed that $\mO_d$ is $\phi$-invariant, and $\alpha\phi(\alpha)\in\bZ$ for every $\alpha\in\bQ(\sqrt d)$.
+    Thus since $y\neq0$, $\phi(y)\neq0$ and $y\phi(y)\in\bZ$ and in $P$ (since $y\in\mO_d$ so $\phi(y)\in\mO_d$ and $P$ is an ideal), so $0\neq y\phi(y)\in I$.
+
+    Thus $I=p\bZ$ where $p$ is prime, and since $p\bZ=I=P\cap\bZ\subseteq P$, thus $p\in P$ and so we have $p\mO_d\subseteq P$.
+    So we can look at the natural homomorphism
+    \[ \slfrac{\mO_d}{p\mO_d}\longto\slfrac{\mO_d}P,\qquad w+p\mO_d\varmapsto w+P \]
+    But note that
+    \[ \slfrac{\mO_d}{p\mO_d} = \set{[a]+[b]\gamma}[{[a],[b]\in\slfrac\bZ{p\bZ}}] \]
+    where $\mO_d=\bZ[\gamma]$, and thus the order of this quotient is $p^2$, and since the homomorphism is surjective, $\slfrac{\mO_d}P$ is a finite integral domain (since $P$ is prime), meaning it is a
+    field.
+    Thus $P$ is maximal, as required.
+    \qed
+
+\end{proof}
+
+\begin{note}
+    Material from the end of this lecture has been moved to the next lecture's file.
+\end{note}
+
+\end{document}
+

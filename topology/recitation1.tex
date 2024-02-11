@@ -1,0 +1,169 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\bS{\mathbb{S}}
+\def\mU{\mathcal{U}}
+\def\mV{\mathcal{V}}
+\def\mO{\mathcal{O}}
+
+\newfunc{metric}{\rho}({})
+\newfunc{metricA}{\sigma}({})
+\newfunc{pmetric}{d_p}({})
+\newfunc{diam}{{\rm diam}}(\vert)
+
+\let\divides=\mid
+\let\to=\varrightarrow
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\begin{document}
+
+\c@section=1
+
+\barcolorbox{255, 220, 255}{130, 0, 130}{200, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Topology Recitation}
+
+    \medskip
+    \textit{Recitation 1, Sunday March 19, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{defn*}
+
+    If $M$ is a metric space, then the \ppemph{diameter} of a set $A\subseteq M$ is:
+    \[ \diamof{A} = \sup\set{\metricof{x,y}}[x,y\in A] \]
+    and $A$ is \ppemph{bounded} if $\diamof A<\infty$.
+
+\end{defn*}
+
+\begin{prop*}
+
+    The union of two bounded sets is itself bounded.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $A$ and $B$ are bounded, let $a\in A$ and $b\in B$, then $M=\diamof A+\diamof B+\metricof{a,b}$.
+    We claim $\diamof{A\cup B}\leq M$.
+    Let $x,y\in A\cup B$.
+    If both $x$ and $y$ are in the same set then $\metricof{x,y}\leq\diamof A$ or $\diamof B$ depending on which set they're in, and necessarily $\metricof{x,y}\leq\diamof A+\diamof B\leq M$.
+    Otherwise suppose $x\in A$ and $y\in B$ then $\metricof{x,y}\leq\metricof{x,a}+\metricof{a,b}+\metricof{b,y}\leq\diamof A+\metricof{a,b}+\diamof B=M$ as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{defn*}
+
+    An \ppemph{ultrametric space} is a set $M$ equipped with an \ppemph{ultrametric}, a function $\metric\colon M\times M\longvarrightarrow\bR_{\geq0}$ where
+    \benum
+        \item $\metricof{x,y}=0$ if and only if $x=y$
+        \item $\metricof{x,y}=\metricof{y,x}$
+        \item $\metricof{x,y}\leq\maxof{\metricof{x,z}, \metricof{z,y}}$
+    \eenum
+
+    An ultrametric is trivially also a metric.
+
+\end{defn*}
+
+Let $X$ be the set of infinite sequences above $\set{0,\dots,n-1}$, ie $X=\set{0,\dots,n-1}^\bN$.
+If $w\in X$ is a sequence we understand that $w_i$ is the $i$th index of $w$.
+Then for $w,v\in X$ we define:
+\[ k(w,v) = \begin{cases} \infty & w=v \\ \min\set{i\in\bN}[w_i\neq v_i] \end{cases} \]
+and we define:
+\[ \metricof{w,v} = \begin{cases} 0 & u=v \\ \frac1{p^{k(w,v)}} & u\neq v\end{cases} \]
+for $1<p$.
+We claim that $\metric$ is an ultrametric.
+It is obvious that it is both nonnegative and symmetric, as well as that it is $0$ only when $w=v$.
+So we must prove the triangle inequality.
+Suppose $w,u,v\in X$ then if any one of them are equal, this is trivial.
+Otherwise we must show that
+\[ \metricof{w,v} \leq \maxof{\metricof{w,u}, \metricof{u,v}} \iff \frac1{p^{k(w,v)}} \leq \max\set{\frac1{p^{k(w,u)}}, \frac1{p^{k(u,v)}}} \]
+This is equivalent to
+\[ p^{-k(w,v)} \leq \maxof{p^{-k(w,u)}, p^{-k(u,v)}} \]
+and since $p>1$ this is only if
+\[ -k(w,v) \leq \maxof{-k(w,u), -k(u,v)} \iff k(w,v) \geq \minof{k(w,u), k(u,v)} \]
+Suppose for the sake of a contradiction that this is false, ie $k(w,v)<\minof{k(w,u), k(u,v)}$.
+Let $i=k(w,v)$ and so $w_i\neq v_i$, and we furthermore know that $i<k(w,u)$, so $u_i=w_i$ and $i<k(u,v)$ so $u_i=v_i$ so $w_i=v_i$ in contradiction to $w_i\neq v_i$.
+So $\metric$ is in fact a metric.
+
+\begin{defn*}
+
+    Let $p$ be prime, then we define the metric $\pmetric$ over the integers $\bZ$ by:
+    \[ \pmetricof{x,y} = \begin{cases} 0 & x=y \\ \frac1{p^{k(x,y)}} & x\neq y\end{cases} \]
+    where
+    \[ k(x,y) = \max\set{n\in\bN_{\geq0}}[p^n\divides(x-y)] \]
+    This is called the \ppemph{$p$-adic} metric.
+
+\end{defn*}
+
+We claim that $\pmetric$ is an ultrametric:
+\[ \pmetric{x,y} \leq \maxof{\pmetric{x,z}, \pmetric{z,y}} \iff k(x,y) \geq \minof{k(x,z), k(z,y)} \]
+Suppose $i=\minof{k(x,z), k(z,y)}$ then $p^i\divides (x-z), (z-y)$ and so $p^i\divides\bigl((x-z)+(z-y)\bigr)\implies p^i\divides(x-y)\implies i\leq k(x,y)$ as required.
+
+There is a connection between the two metric spaces we defined above.
+
+\begin{defn*}
+
+    A \ppemph{iosmetry} between two metric spaces $(M,\metric)$ and $(N,\metricA)$ is a function $f\colon M\longvarrightarrow N$ such that for every $x,y\in M$:
+    \[ \metricof{x,y} = \metricAof{f(x), f(y)} \]
+
+\end{defn*}
+
+Every isometry is an injection: if $f(x)=f(y)$ then $\metricof{x,y}=\metricAof{f(x),f(y)}=0$ so $x=y$.
+
+Recall that every $z\in Z$ has a unique representation in base $p$, that is there is a unique sequence $\set{a_i}_{i=0}^k\in\set{0,\dots,p-1}$ such that:
+\[ z = \pm\sum_{i=0}^k z_ip^i \]
+So if we let $C_p$ be the set of all sequences above $\set{0,\dots,p-1}$ with the metric defined above, we define an isometry:
+\[ \phi\colon\bZ\longvarrightarrow C_p \]
+By
+\[ \phi(z) = \begin{cases} \set{z_0, z_1,\dots,a_k,0,\dots} & z\geq0 \\ \set{z_0,\dots,z_k,(p-1),\dots} & z<0 \end{cases} \]
+We claim that $\phi$ is indeed an isometry.
+So we must prove that:
+\[ \pmetricof{z,w} = p^{-k(\set{z_i}, \set{w_i})} = \metricof{\set{z_i}, \set{w_i}} \]
+where $k$ is the function defined on $C_p$.
+Let $t=k(\set{z_i}, \set{w_i})$, so $t$ is the first index where $z_i\neq w_i$, that is the first index where $z_i-w_i\neq0$.
+So we must show that $p^t\divides(z-w)$ and $p^{t+1}$ does not.
+We know that $p^t$ divides $z-w$ since $z-w=(z_i-w_i)p^t+\dots$ so $p^t$ divides $z-w$, and since $z_i-w_i\neq0$ $p^{t+1}$ does not.
+So we have shown that $k(z,w)$ in $\bZ$ is equal to $k(\set{z_i},\set{w_i})=k(f(z),f(w))$ in $C_p$, and so $\pmetricof{z,w}=\metricof{f(z),f(w)}$ as required.
+
+\begin{prop*}
+
+    If $M$ is an ultrametric space, then if $y\in B_r(x)$ then $B_r(y)=B_r(x)$, that is every point in a ball is its center.
+
+\end{prop*}
+
+\begin{proof}
+
+    We will show that $B_r(y)\subseteq B_r(x)$.
+    Suppose $z\in B_r(y)$, so $\metricof{z,x}\leq\maxof{\metricof{z,y}, \metricof{x,y}}<\maxof{r,r}=r$.
+    So $z\in B_r(x)$.
+    Then by symmetry (since $x\in B_r(y)$), $B_r(x)\subseteq B_r(y)$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+Notice that $p^n$ converges to $0$ in the $p$-adics: $\pmetric{p^n, 0}=p^{-n}$ which converges to $0$ (in $\bR$), so $p^n$ converges to $0$ in the $p$-adics.
+
+\end{document}

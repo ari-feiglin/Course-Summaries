@@ -1,0 +1,159 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input ../preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\@blist[#1]{%
+    \bgroup\bgroup\par\vskip-\medskipamount%
+    \gdef\item{%
+        \par\egroup\bgroup\medskip\setbox0=\hbox{#1\quad}%
+        \advance\leftskip by \wd0\leavevmode\kern-\wd0\box0%
+    }%
+}
+\def\blist{\@ifnextchar[ \@blist {\@blist[$\bullet$]}}
+\def\elist{\par\egroup\egroup\medskip}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\def\openset{{\cal O}}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\pdf@drawing@macro{check}{0 1 0 RG 1.2 w 1 j 1 J 0 5 m 3 0 l 8 10 l S}{9.2pt}{12pt}{1pt}{1pt}
+\pdf@drawing@macro{ecks}{1 0 0 RG 0 0 m 1 j 1 J 10 10 l 0 10 m 10 0 l S}{11.2pt}{12pt}{1pt}{1pt}
+
+\begin{document}
+
+\c@section=3
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infintesimal Calculus 3}
+
+    \medskip
+    \textit{Assignment 3}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{exercise*}
+
+    For every $n\in\bN$ the set $A_n\subseteq\bR^d$ is compact.
+    Prove or disprove the following:
+    \blist
+        \item $\bigcup_{n=1}^m A_n$ is compact.
+        \item $\bigcap_{n=1}^m A_n$ is compact.
+        \item $A_m\setminus A_n$ is compact.
+        \item $\bigcup_{n\in\bN} A_n$ is compact.
+        \item $\bigcap_{n\in\bN} A_n$ is compact.
+    \elist
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    \blist
+        \item This is true since if $\set{\openset_\lambda}_{\lambda\in\Lambda}$ is an open cover of the union then:
+        \[ \bigcup_{n=1}^m A_n \subseteq \bigcup_{\lambda\in\Lambda}\openset_\lambda \implies A_n \subseteq \bigcup_{\lambda\in\Lambda} \openset_\lambda \]
+        So $\set{\openset_\lambda}$ is an open cover of every $A_n$.
+        So for every $n$ there exists a finite subcover $\set{\openset_{n_k}}_{k=1}^{k_n}$ of $A_n$.
+        And therefore
+        \[ \bigcup_{n=1}^m A_n \subseteq \bigcup_{n=1}^m\bigcup_{k=1}^{k_n} \openset_{n_k} \]
+        And so the union of these finite subcovers of $A_n$ is itself a finite subcover of the union.
+        And so the union is compact.
+        \item This is true.
+        An arbitrary intersection of compact sets in $\bR^d$ is compact: suppose $\set{A_\lambda}_{\lambda\in\Lambda}$ are compact.
+        Then each of the sets are closed, and therefore $\bigcap_{\lambda\in\Lambda}A_\lambda$ is closed.
+        And each of the sets are bounded since they are compact, and therefore the intersection is also bounded (it is a subset of the ball containing any $A_\lambda$).
+        And therefore the intersection is compact.
+        This also shows that $5$ is true.
+        \item This is false.
+        The sets $[0,2]$ and $[1,2]$ are compact since they are closed and bounded, but $[0,2]\setminus[1,2]=[0,1)$ is not closed and is therefore not compact.
+        \item This is false.
+        For every $n$ let $A_n=[-n,n]$, then $A_n$ is compact since it is closed and bounded.
+        But the union of $A_n$ gives $\bR$ which is not compact since it is not bounded.
+        \item This is true, refer to the proof of $2$.
+    \elist
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Suppose $(X,\norm\cdot)$ is a normed linear space.
+    Show that every closed ball in $X$ is path connected.
+
+\end{exercise*}
+
+\let\lineseg=\overleftrightvecc
+\begin{blankpp}
+
+    Suppose $\bar B_r(x)$ is the offending ball.
+    If $z,y\in\bar B_r(x)$ then the line segment between them, denoted $\lineseg{zy}$ is a path between the two points contained in $\bar B_r(x)$.
+    It is contained in $\bar B_r(x)$ since for every $0\leq t\leq1$:
+    \[ \norm{ty + (1-t)z - x} \leq \norm{t(y-x)} + \norm{(1-t)(z-x)} = t\norm{y-x} + (1-t)\norm{z-x} \]
+    and since $z,y$ are in the ball, this is less than or equal to $tr+(1-t)r=r$.
+    So every point on the line segment is in the ball.
+
+\end{blankpp}
+
+\newpage
+\begin{exercise*}
+
+    Suppose $A,B\subseteq\bR^n$ are connected.
+    Which of the following are also connected?
+    \blist
+        \item $A\cap B$
+        \item If $A\cap B\neq\varnothing$, $\interiorof{A\cup B}$.
+        \item $A\setminus B$
+    \elist
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    \blist
+        \item This is not necessarily connected.
+        
+        We will first show that rectangles are connected.
+        Suppose we have the rectangle $R=\prod(a_n,b_n)$, and $x,y\in R$.
+        Then the line $\lineseg{xy}$ is contained in $R$, so it is path connected so $R$ is connected.
+        Then if $x_k$ and $y_k$ are the $k$th components of $x$ and $y$ respectively, notice that for every relevant $k$:
+        \[ a_k = ta_k + (1-t)a_k < tx_k + (1-t)y_k < tb_k + (1-t)b_k = b_k \]
+        So the line segment is conntained in $R$ as required.
+
+        So if we take the rectangle: $A=(0,3)\times(0,1)$ and the union of non-disjoint rectangles $B=\bigl((0,1)\times(0,2)\bigr)\cup\bigl((0,3)\times(1,2)\bigr)\cup\bigl((2,3)\times(0,2)\bigr)$.
+        Then these are both connected and $A\cap B=\bigl((0,1)\times(0,1)\bigr)\dcup\bigl((2,3)\times(0,1)\bigr)$, which is the disjoint union of two open sets.
+        So $A\cap B$ is disconnected.
+
+        \item This is not necessarily connected.
+        
+        %We will first prove a simple lemma: if $A$ is connected and $x\in\overline A$ then $A\cup\set x$ is also connected.
+        %Suppose $\openset_1$ and $\openset_2$ are disjoint open sets such that $A\cup\set x\subseteq\openset_1\dcup\openset_2$.
+        %Then $A\subseteq\openset_1\dcup\openset_2$, and since $A$ is connected suppose $A\subseteq\openset_1$.
+        %If $x\in\openset_2$, since it is open then there is a $r>0$ such that $B_r(x)\subseteq\openset_2$.
+        %And since $x$ is a point of closure of $A$'s, $B_r(x)\cap A\neq\varnothing$ which implies $A\cap\openset_2\neq\varnothing$, but $A$ is disjoint from $\openset_2$ since it is a subset of $\openset_1$.
+        %So this is a contradiction, and therefore $x\in\openset_1$ and therefore $A\cup\set x\subseteq\openset_1$, so $A\cup\set x$ is connected.
+
+        So if we define $A=\bar B_1(0,0)$ and $B=\bar B_1(2,0)$ then by the previous question both of these sets are path connected and therefore connected.
+        But $\interiorof{A\cup B}=B_1(0,0)\cup B_2(2,0)$ which is the disjoint union of two open sets which is therefore not connected.
+
+        \item This is not necessarily connected.
+        If $A=(-2,2)$ and $B=[-1,1]$ these two sets are connected since they are path connected, but $A\setminus B=(-2,-1)\cup(1,2)$ which is the disjoint union of two open sets and is therefore not
+        connected.
+    \elist
+
+\end{blankpp}
+
+\end{document}

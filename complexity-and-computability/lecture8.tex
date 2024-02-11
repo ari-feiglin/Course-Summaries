@@ -1,0 +1,367 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz-cd}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{conj}{Conjecture}{255,130,130}{150,0,0}{200,0,0}
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\undersumtext#1{\vtop{\hsize=2cm\relax\centering\small #1}}
+
+\newfunc{oracle}{\hbox{\tencsc oracle}}({})
+
+\def\quant{\mathtt{Q}}
+
+\def\sps{\texttt{\char32}}
+\def\sat{\mathsf{SAT}}
+\def\csat{\mathsf{CSAT}}
+\def\is{\mathsf{IS}}
+\def\threesat{\mathsf{3SAT}}
+\def\clique{\mathsf{Clique}}
+\def\vertcover{\textsf{Vertex-Cover}}
+\def\domset{\textsf{Dom-Set}}
+\def\dhp{\mathsf{DHP}}
+\def\dhc{\mathsf{DHC}}
+\def\hc{\mathsf{HC}}
+\def\tsp{\mathsf{TSP}}
+\def\threecolor{\mathsf{3Color}}
+\def\kcolor{k\mathsf{Color}}
+\def\Color{\mathsf{Color}}
+\def\subsum{\mathsf{SubsetSum}}
+\def\maxclique{\mathsf{MaxClique}}
+\def\minexpr{\mathsf{MinExpression}}
+\def\sparse{\mathsf{Sparse}}
+
+\def\PH{\mathbf{PH}}
+\def\PF{\mathbf{PF}}
+\def\PC{\mathbf{PC}}
+\def\P{\mathbf{P}}
+\def\NP{\mathbf{NP}}
+\def\NPH{\mathbf{NPH}}
+\def\NPC{\mathbf{NPC}}
+\def\co{\mathsf{co}}
+\def\coNP{\mathbf{coNP}}
+\def\poly{\mathsf{poly}}
+\def\Ppoly{\slfrac\P\poly}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mN{\mathcal{N}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=8
+
+\barcolorbox{255, 220, 220}{130, 0, 0}{200, 80, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Computability and Complexity}
+
+    \medskip
+    \textit{Lecture \thesection, Thursday August 24, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{Nonuniform Computation}
+
+\begin{defn*}
+
+    We say that a decision problem $S$ is \ppemph{decided} by a sequence of boolean circuits $\set{C_n}_{n=0}^\infty$ where for every $x\in\set{0,1}^*$,
+    \[ x\in S \iff C_{\abs x}(x) = 1 \]
+    So $C_n$ is the boolean circuit which decides if an input of size $n$ is in $S$.
+
+    The \ppemph{complexity} of a boolean circuit is defined to be the number of edges in it.
+    The complexity of a boolean circuit $C$ is denoted by $\abs C$.
+
+    We say that a decision problem $S$ is \ppemph{decidable by a sequence of polynomial circuits} if there exists a sequence of boolean circuits $\set{C_n}_{n=0}^\infty$ which decides $S$, and a polynomial
+    $p$ such that for every $n$,
+    \[ \abs{C_n} \leq p(n) \]
+
+\end{defn*}
+
+\begin{defn*}
+
+    Given a function $\ell\colon\bN\longto\bN$, we define the class of decision problems $\slfrac\P\ell$.
+    A decision problem $S$ is in $\slfrac\P\ell$ if and only if there exists a polynomial-time algorithm $A$ and a sequence of commands $\set{a_n}_{n=0}^\infty$ where
+    \benum
+        \item For every $n$, $\abs{a_n}\leq\ell(n)$
+        \item For every $x$, $x$ is in $S$ if and only if $A(a_{\abs x},x)=1$.
+    \eenum
+
+    We define the class
+    \[ \Ppoly = \bigcup_{\substack{\ell\text{ is a}\\\text{polynomial}}}\slfrac\P\ell = \bigcup_{k=0}^\infty\slfrac\P{n^k} \]
+
+\end{defn*}
+
+\begin{prop*}
+
+    A decision problem $S$ is in $\Ppoly$ if and only if $S$ can be decided by a sequence of polynomial circuits.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $S$ can be decided by a sequence of polynomial circuits $\set{C_n}_{n=0}^\infty$ whose complexity is bound by a polynomial $p$.
+    We define the algorithm $A(C,x)$ which takes as input a boolean circuit $C$ and runs it with the input $x$.
+    Then since $\abs{C_n}\leq p(n)$ and for every $x$, $x\in S$ if and only if $C_{\abs x}(x)=1$ which is if and only if $A(C_{\abs x},x)=1$.
+    So
+    \[ S \in \slfrac\P p \subseteq \Ppoly \]
+
+    Now suppose that $S$ is in $\Ppoly$, so there exists a polynomial $p$ and a sequence of commands $\set{a_n}_{n=0}^\infty$ such that $\abs{a_n}\leq p(n)$ and $x\in S$ if and only if $A(a_{\abs x},x)=1$.
+    We showed in our proof that $\csat$ is $\NP$-complete, that for every polynomial algorithm there exists a polynomial circuit which computes the algorithm.
+    So there exists a boolean circuit $C_n$ which is equivalent to computing $A$ which has $n+\abs{a_n}$ input nodes, and whose size is polynomial in $n+\abs{a_n}$.
+    Let us plug in $a_n$ to the input nodes corresponding to it (the first input nodes) in $C_n$ and this gives us a boolean circuit $C'_n$ where $C'_n(x)=A(a_n,x)$.
+    And the complexity of $C_n$ is polynomial in $n$, so $\set{C_n}_{n=0}^\infty$ is a sequence of polynomial circuits which decides $S$.
+    \qed
+
+\end{proof}
+
+Notice that $\slfrac\P0$ is equal to $\P$, since for $S\in\slfrac\P0$, the size of each command $a_n$ is zero, so they are all empty.
+Thus we can define a polynomial-time algorithm $B(x)=A(\epsilon,x)$ and so $x\in S$ if and only if $A(a_{\abs x},x)=A(\epsilon,x)=B(x)=1$.
+So $B$ solves $S$, meaning $S\in\P$.
+And if $S\in\P$, it is solved by $B(x)$, so define $A(a,x)=B(x)$ and $a_n=\epsilon$.
+So
+\[ \slfrac\P0 = \P \]
+
+\begin{prop*}
+
+    $\slfrac\P1$ contains undecidable problems.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $S$ be an undecidable problem which is encoded in unary, ie. $S\subseteq\set{1}^*$ is undecidable.
+    Let us define $S'=\set{x}[1^{\abs x}\in S]$, then $S'$ is also undecidable as otherwise $S$ would be (define an algorithm where given a unary encoding $1^n$, it checks for some $x$ whose length is $n$
+    if $x\in S'$).
+    Now we will prove $S'\in\slfrac\P1$.
+    Let us define
+    \[ a_n = \begin{cases} 1 & 1^n\in S \\ 0 & \text{else} \end{cases} \]
+    And we define $A(a_{\abs x},x)=a_{\abs x}$ (ie. $A(a,x)=a$).
+    Then $A$ is polynomial-time and solves $S'$, as $A(a_{\abs x},x)=1$ if and only if $\abs x\in S$, which is if and only if $x\in S'$.
+    So $S'\in\slfrac\P1$ despite $S'$ being undecidable.
+    \qed
+
+\end{proof}
+
+So $\slfrac\P1\subseteq\Ppoly$ contains undecidable problems, and therefore
+
+\begin{prop*}
+
+    \[ \Ppoly\nsubseteq\NP \]
+
+\end{prop*}
+
+\begin{prop*}
+
+    For every decision problem $S\in\set{0,1}^*$, $S\in\slfrac\P{2^n}$.
+    In other words $\slfrac\P{2^n}=\set{0,1}^*$.
+
+\end{prop*}
+
+\begin{proof}
+
+    For every $n$, there are $2^n$ binary strings of length $n$, and let us enumerate the binary strings of length $n$ lexicographically by $\pi_n$ (ie. $\pi_n(i)$ gives the binary string $\omega$ which is
+    the $i$th smallest in the order).
+    Notice that all $\pi_n$ does is convert $i$ to binary.
+    $\pi_n$ and its inverse $\pi_n^{-1}$ can be computed in polynomial time.
+    Then let us define $a_n$ to be a string of length $2^n$ where $[a_n]_i$ is one if and only if $\pi_n(i)$ is in $S$.
+    Then let $A(a_{\abs x},x)$ look at $a_{\abs x}$ at index $\pi_{\abs x}^{-1}(x)$ (meaning at index $x$, when we view $x$ as binary) and return the value found.
+
+    Then $A(a_{\abs x},x)$ is one if and only if $\pi_{\abs x}(\pi_{\abs x}^{-1}(x))=x\in S$.
+    So $A$ decides $S$, meaning $S\in\slfrac\P{2^n}$.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    A set $S$ is called \ppemph{sparse} if there exists a polynomial $p$ such that for every $n$, the number of binary strings in $S$ of length $n$ is bound by $p(n)$.
+    In other words, for every $n$
+    \[ \abs{S\cap\set{0,1}^n} \leq p(n) \]
+    We will denote $S\cap\set{0,1}^n$ by $S^{=n}$.
+    We define
+    \[ \sparse = \set{S}[\text{$S$ is a sparse set}] \]
+
+\end{defn*}
+
+Notice that $\sparse\subseteq\Ppoly$.
+If $S\in\sparse$ then let $p$ be a polynomial bound of $S^{=n}$.
+Then for every $n$, we define $a_n$ to be the list of all binary strings of length $n$ which are in $S$.
+Since there are $\leq p(n)$ such strings, and each has a length of $n$, $\abs{a_n}\leq n\cdot p(n)$ so $a_n$'s length is bound by a polynomial.
+And we can define $A(a_{\abs x},x)$ to just look at the list $a_{\abs x}$ and check if $x$ is in it.
+This solves $S$, and so $S\in\Ppoly$.
+
+\begin{prop*}
+
+    A decision problem $S$ is in $\Ppoly$ if and only if there exists a Cook reduction from $S$ to a sparse set.
+    In other words,
+    \[ \Ppoly = \P^\sparse \]
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $S$ has a Cook reduction to some $S'\in\sparse$, let $A^{S'}$ be this Cook reduction.
+    Suppose that $S'^{=n}$'s size is bound by $p(n)$.
+    Let $t(n)$ be the polynomial time bound on the runtime of $A^{S'}$.
+    Notice then that for inputs of length $n$, the length of $A^{S'}$'s longest possible query is bound by $t(n)$.
+
+    So for every $n$, we define the command $a_n$ to be the list of all the strings in $S'$ whose length is bound by $t(n)$.
+    Notice then that
+    \[ \abs{a_n} = \sum_{i=0}^{t(n)} \abs{S'^{=i}}\cdot i \leq \sum_{i=0}^{t(n)}i\cdot p(i) \]
+    We can assume that $p$ is increasing (we can take $p=n^k$ for example), and so
+    \[ \abs{a_n} \leq t(n)\cdot p(t(n)) \]
+    so $a_n$'s length is bound by a polynomial.
+    Now we define $A(a_{\abs x},x)$ which runs $A^{S'}(x)$ but instead of querying $S'$'s oracle, it instead checks the list $a_{\abs x}$ to see if the query is in there.
+    This solves $S$ in polynomial time, since $A^{S'}$ does, and since the commands are polynomially bound, we have that $S\in\Ppoly$.
+
+    For the converse, suppose $S\in\Ppoly$ so there exists a polynomial-time algorithm $A$ and a polynomial $p$ which bounds the length of the commands $\set{a_n}_{n=0}^\infty$.
+    We can assume without loss of generality that $\abs{a_n}=p(n)$, and that $p(n)$ is increasing.
+
+    For every $n$ and for every $1\leq i\leq p(n)$, we define $a_n^i$ to be the word of length $p(n)$ where the $i$th index is $1$, and all other indexes are zero.
+    Let
+    \[ S' = \set{a_n^i}[{n\in\bN,\,a_n[i]=1}] \]
+    Notice that for every $n$, $\abs{S'^{=n}}\leq n$ since there are only $n$ choices for where to put the bit which is equal to one in a string of zeroes.
+    So $S'\in\sparse$.
+
+    Now we define $B^{S'}$:
+
+    \algorithm
+        \Function{$B^{S'}$}{$x$}
+            \For{$1\leq i\leq p(\abs x)$}
+                \lIf{$a^i_{\abs x}\in S'$} $\sigma_i\gets1$
+                \lElse $\sigma_i\gets0$
+            \EndFor
+            \State $a\gets\sigma_1\sigma_2\cdots\sigma_{p(\abs x)}$
+            \State \Return $A(a,x)$
+        \EndFunc
+    \ealgorithm
+
+    Notice that at line $6$, $a=a_{\abs x}$ as $a[i]$ is one if and only if $a_{\abs x}^i\in S$ which is if and only if $a_{\abs x}[i]$ is one, so $a=a_{\abs x}$.
+    So $B^{S'}$ is an oracle machine which solves $S$ in polynomial time, and thus a Cook reduction from $S$ to $S'$.
+    And since $S'\in\sparse$, we have that $S\in\P^\sparse$.
+
+    So we have shown inclusion in both direction, meaning $\Ppoly=\P^\sparse$.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}
+
+    If $\NP\subseteq\Ppoly$ then $\PH=\Sigma_2$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    We will show that $\Pi_2\subseteq\Sigma_2$, and this would mean $\Sigma_2=\Sigma_3$ which would mean $\PH=\Sigma_2$.
+    So let $S\in\Pi_2$, and so there exists a polynomial time verifier $V$ and a polynomial $p$ such that
+    \[ x\in S \iff \forall y\exists z\bigl(V(x,y,z)=1\bigr) \]
+    where $\abs y,\abs z\leq p(\abs x)$.
+    Let us define
+    \[ S' = \set{(x,y)}[\abs y\leq p(\abs x),\,\exists z,\abs z\leq p(\abs x)\bigl(V(x,y,z)=1\bigr)] \]
+    So
+    \[ x\in S \iff \forall y,\abs y\leq p(\abs x)\bigl((x,y)\in S'\bigr) \]
+    And $S'$ is in $\NP$ as we can define a verifier $V'\bigl((x,y),z\bigr)=V(x,y,z)$, and this is a polynomial proof system (as there exists a witness $\abs z\leq p(\abs x)$).
+    Since $\sat$ is $\NP$-complete, there exists a Karp reduction $f$ from $S'$ to $\sat$.
+    And so
+    \[ x\in S \iff \forall y\bigl(f(x,y)\in\sat\bigr) \]
+    with the usual condition that $\abs y\leq p(\abs x)$.
+    Since $\sat\in\NP\subseteq\Ppoly$, and so there exists a polynomial-time algorithm $A$, a polynomial $q$, and a sequence of commands $\set{a_n}_{n=0}^\infty$ whose lengths are bound by $q$ which satisfy
+    the condition for $\sat$ to be in $\Ppoly$.
+
+    Let $p_f$ be the time complexity for computing the Karp reduction $f$.
+    So $\abs{f(x,y)}\leq p_f(\abs x+\abs y)$.
+    Since the Karp reduction $f$ runs in $p_f(\abs x+\abs y)$ time and $\abs y\leq p(\abs x)$, we have that $f$ runs in $p_f(n+p(n))$ time.
+    So if $\phi=f(x,y)$ then $\abs\phi\leq p_f(n+p(n))$, thus let us define
+    \[ b_n = a_1a_2\cdots a_{p_f(n+p(n))} \]
+    And this means that $b_n$ will contain $a_{\abs\phi}$.
+    And notice that
+    \[ \abs{b_n} = \sum_{i=1}^{p_f(n+p(n))}q(i)i \leq p_f(n+p(n))^2 q(p_f(n+p(n))) \]
+    So the length of $b_n$ is polynomial in $n$.
+
+    Let us define $V'(x,b_{\abs x},y)$ which functions as follows:
+
+    \benum
+        \item First we compute the image of $x,y$ in the Karp reduction, ie. let $\phi=f(x,y)$.
+        \item Since $b_{\abs x}$ contains $a_{\abs\phi}$, let us run $A(a_{\abs\phi},\phi)$.
+        If this returns zero, return zero since then $\phi\notin\sat$ so $(x,y)\notin S'$.
+        \item Now, using $A$ and $a_1,\dots,a_{\abs\phi}$, we can compute a boolean vector $\tau$ which satisfies $\phi$.
+        This can be done by setting $x_1$ to true, and checking if the new boolean formula $\phi'$, whose length is less than $\phi$, is in $\sat$.
+        This can be done recursively, and so we construct $\tau$.
+
+        Since $b_{\abs x}$ isn't necessarily actually the list of commands $a_1,\dots$, we must verify that $\tau$ actyually satisfies $\phi$.
+        So return if $\phi(\tau)=1$.
+    \eenum
+
+    $V'$ runs in polynomial time, since every step runs in polynomial time.
+    And if $x\in S$ then for every $\abs y\leq p(\abs x)$, $f(x,y)\in\sat$.
+    And so for $b_{\abs x}$ defined as the concatenation of $a_1,\dots,a_{p_f(n+p(n))}$, $V'(x,b_{\abs x},y)=1$.
+    Since $b_{\abs x}$'s length is polynomial in $\abs x$, this means that if $x\in S$ then there exists a $b_{\abs x}$ such that for all $y$, $V'(x,b,y)=1$ (with the strings being polynomial in length).
+
+    If $x\notin S$ then there exists a $\abs y\leq p(\abs x)$ such that $f(x,y)\notin\sat$ and so for this $y$, $V'$ will always return zero (since the constructed $\tau$ will not satisfy $\phi$).
+    So if $x\notin S$, for every $b$ there exists a $y$ (which is this $y$, it is not dependent on $b$), such that $V'(x,b,y)=0$.
+    So
+    \[ x\in S \iff \exists b\forall y\bigl(V(x,b,y)=1\bigr) \]
+    And this means that $S\in\Sigma_2$, so $\Pi_2\subseteq\Sigma_2$ as required.
+    \qed
+
+\end{proof}
+
+Thus many researchers hypothesize that $\NP\nsubseteq\Ppoly$, as otherwise the polynomial hierarchy would collapse to $\Sigma_2$, and many researchers do not believe this is true.
+
+\end{document}
+

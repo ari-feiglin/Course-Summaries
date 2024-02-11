@@ -1,0 +1,94 @@
+\catcode`\_=11
+\catcode`\@=11
+
+\let\@xp=\expandafter
+\def\@nul{\noexpand\@nul}
+\long\def\@gobble#1{}
+
+\long\def\@afterfi#1#2\fi{\fi#1}
+
+\long\def\@@ifnextchar{%
+    \ifx\_regD\_regA %
+        \expandafter\_regB%
+    \else%
+        \expandafter\_regC%
+    \fi%
+}
+                                                        
+\long\def\@ifnextchar#1#2#3{%
+    \let\_regA=#1\relax\def\_regB{#2}\def\_regC{#3}%
+    \futurelet\_regD\@@ifnextchar%
+}
+
+{\catcode`\^^M=12
+\long\gdef\__getline#1#2^^M{\egroup #1{#2}}}
+\def\_getline#1{\bgroup\catcode`\^^M=12 \__getline{#1}}
+
+\long\def\@map#1#2{%
+    \ifx\@nul#2%
+    \else%
+        #1{#2}%
+        \@afterfi{\@map{#1}}%
+    \fi%
+}
+\long\def\map#1#2{\@map{#1}#2\@nul}
+
+\def\@def@ifequals#1#2{%
+	\def\@tpp@reg@A{#1}\def\@tpp@reg@B{#2}%
+	\ifx\@tpp@reg@A\@tpp@reg@B %
+}
+\def\@tok@ifequals#1#2{\ifx#1#2}
+\let\@ifequals=\@tok@ifequals
+
+\def\ifequals#1#2#3#4{\bgroup%
+	\@ifequals{#1}{#2}%
+		\@afterfi{\egroup #3}%
+	\else%
+		\@afterfi{\egroup #4}%
+	\fi
+}
+
+\def\default{\noexpand\default}
+\def\endifcases{\noexpand\endifcases}
+\def\@endcases#1\endifcases{\@tpp@reg@A}
+
+\def\@@@ifstrcases#1#2#3{%
+	%\ifx\endifcases#3 %
+	%	#2%
+	%\else%
+    \iftrue%
+		\@afterfi{%
+		    \ifequals{#1}{#2}{\def\@tpp@reg@A{#3}\@endcases}{%
+		    	\ifequals{#2}{\default}{%
+		    		\def\@tpp@reg@A{#3}\@endcases%
+		    	}{\@ifstrcases{#1}}%
+		    }%
+        }%
+	\fi%
+}
+\def\@@ifstrcases#1#2#{\@@@ifstrcases{#1}{#2}}
+\def\@ifstrcases@{%
+    \ifx\@tpp@reg@B\endifcases%
+        \@xp\@gobble%
+    \else%
+        \@afterfi{\@xp\@@ifstrcases\@xp{\@tpp@reg@A}}%
+    \fi%
+}
+\def\@ifstrcases#1{\def\@tpp@reg@A{#1}\futurelet\@tpp@reg@B\@ifstrcases@}
+
+\def\ifstrcases#1{\@ifstrcases{#1}}
+
+\def\createlist#1{\@xp\def\csname l@#1\endcsname{}}
+\long\def\appendlist#1#2{%
+    \@xp\@xp\@xp\def\@xp\@xp\@xp\_list_temp\@xp\@xp\@xp{\csname l@#1\endcsname\@lexe{#2}}%
+    \@xp\let\csname l@#1\endcsname=\_list_temp%
+}
+\long\def\appendlistmany#1#2{\def\@@##1{\appendlist{#1}{##1}}\map\@@{#2}}
+\long\def\appendlistmanyvalued#1#2#3{\def\@@##1{\appendlist{#1}{{##1}{#2}}}\map\@@{#3}}
+\def\executelist#1{\csname l@#1\endcsname}
+
+\bgroup\lccode`\!=`\p \lccode`\?=`\t
+\lowercase{\egroup\def\rmpt#1!?{#1}}
+\def\nopt#1{\@xp\rmpt\the\dimexpr #1\relax}
+
+\def\repeated#1#2{\ifnum#1>0 \@afterfi{#2\@xp\repeated\@xp{\the\numexpr #1-1\relax}{#2}}\fi}

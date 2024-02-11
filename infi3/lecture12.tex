@@ -1,0 +1,150 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\openset{{\cal O}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\begin{document}
+
+\c@section=12
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infinitesimal Calculus 3}
+
+    \medskip
+    \textit{Lecture \thesection, Wednsday November 23, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+We will use $\epsilon\colon X\longvarrightarrow X$ where $X$ is some linear space as a function such that:
+\[ \lim_{x\varrightarrow0}\frac{\epsilon(x)}{\norm x} = 0 \]
+Then $\lim_{x\varrightarrow0}\epsilon(x)=0$.
+So if $X=\bR^n$ then $\epsilon$ must satisfy:
+\[ \lim_{(x_1,\dots,x_n)\varrightarrow0}\frac{\epsilon(x_1,\dots,x_n)}{\sqrt{x_1^2+\cdots+x_n^2}} = 0 \]
+
+Notice then that $f$ is continuous if and only if $f(x)=f(x_0)+\frac{\epsilon(\Delta x)}{\Delta x}$ where $\Delta x=x-x_0$.
+This is direct since the limit of $\frac{\epsilon(\Delta x)}{\Delta x}$ is $f(x)=f(x_0+\delta x)-f(x_0)$ which is $0$ if and only if $f$ is continuous at $x_0$.
+
+\begin{prop*}
+
+    Suppose $f\colon\bR\longvarrightarrow\bR$ defined in some neighborhood of $x_0$, then $f$ is differentiable at $x_0$ if and only if there is some $A\in\bR$ and $\epsilon(\Delta x)$ such that
+    \[ f(x) = f(x_0) + A\Delta x + \epsilon(\Delta x) \]
+    where $\Delta x = x-x_0$.
+
+\end{prop*}
+
+\begin{proof}
+
+    If $f$ is differentiable then define $\epsilon(\Delta)=f(x)-f(x_0)-A\Delta x$:
+    \[ \lim_{\Delta x\varrightarrow0}\frac{\epsilon(\Delta)}{\Delta x} = \lim_{\Delta x\varrightarrow0}\frac{f(x_0+\Delta x)-f(x_0) - A\Delta x}{\Delta x} = f'(x_0) - A \]
+    so if $A=f'(x_0)$, then $\epsilon$ and $A$ satisfy the condition.
+
+    Suppose there exists some $A$ and $\epsilon$ where this occurs, then:
+    \[ \lim_{\Delta x\varrightarrow0}\frac{f(x_0+x)-f(x_0)}{\Delta x} = \lim_{\Delta x\varrightarrow0}\frac{A\Delta x+\epsilon(\Delta x)}{\Delta x} =
+    A + \lim_{\Delta x\varrightarrow}\frac{\epsilon(\Delta x)}{\Delta x} = A \]
+    As required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{defn*}
+
+    A function $f\colon\bR^2\longvarrightarrow\bR$ is differentiable at $(x_0,y_0)$ if it is defined in some neighborhood of it and there exist $A,B\in\bR$ and $\epsilon(\Delta x,\Delta y)$ such that
+    \[ f(x,y) = f(x_0,y_0) + A\Delta x + B\Delta y + \epsilon(\Delta x,\Delta y) \]
+
+\end{defn*}
+
+\begin{prop*}
+
+    If $f(x,y)$ is defined in some neighborhood of $(x_0,y_0)$ and differentiable at $(x_0,y_0)$ then
+    \benum
+        \item $f$ is continuous at $(x_0,y_0)$
+        \item $\partial_x f$ and $\partial_y f$ exist at $(x_0,y_0)$ and are equal to $A$ and $B$
+    \eenum
+
+\end{prop*}
+
+\begin{proof}
+
+    \benum
+        \item We know that:
+        \[ \lim_{(x,y)\varrightarrow(x_0,y_0)}f(x,y) = f(x_0,y_0) + \lim_{(\Delta x,\Delta y)\varrightarrow0}\epsilon(\Delta x,\Delta y) = f(x_0,y_0) \]
+        $\Delta x$ and $\Delta y$ approach $0$ since convergence in $\bR^n$ is pointwise.
+
+        \item We know
+        \[ \partial_x f(x_0, y_0) = \lim_{\Delta x\varrightarrow0}\frac{f(x_0+\Delta x,y_0)-f(x_0,y_0)}{\Delta x} = A + \lim_{\Delta x\varrightarrow0}\frac{B\Delta y+\epsilon(\Delta x,\Delta y)}{\Delta x} \]
+        In this case $\Delta y=0$ since $y=y_0$ so this is equal to:
+        \[ A + \lim_{\Delta x\varrightarrow0}\frac{\epsilon(\Delta x,0)}{\Delta x} = A \]
+        And similarly for $\partial_y f$.
+    \eenum
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{prop*}
+
+    Suppose $f(x,y)$ is a function which has partial derivatives in a neighborhood of $(x_0,y_0)$ and $\partial_x f$ and $\partial_y f$ are continuous at $(x_0,y_0)$.
+    Then $f$ is differentiable at $(x_0,y_0)$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Notice that
+    \[ f(x_0+\Delta x, y_0+\Delta y) - f(x_0,y_0) = \parens{f(x_0+\Delta x, y_0+\Delta y)-f(x_0,y_0+\Delta y)} + \parens{f(x_0,y_0+\Delta y) - f(x_0,y_0)} \]
+    So by the mean value theorem on the ``single value representations'' of the partial derivatives, there exists $0\leq t,s\leq1$ such that
+    \[ f(x_0+\Delta x,y_0+\Delta y) - f(x_0,y_0) = \partial f_x(x_0+t\Delta x,y_0+\Delta y)\Delta x + \partial f_y(x_0+\Delta x,y_0+s\Delta y)\Delta y \]
+    Since $\partial_x f$ and $\partial_y f$ are continuous at $(x_0,y_0)$ this is equal to:
+    \[ = \parens{\partial_x f(x_0,y_0) + \epsilon_1(t\Delta x,\Delta y)}\Delta x + \parens{\partial_y f(x_0,y_0) + \epsilon_2(\Delta x,s\Delta y)} \]
+    And so if we define $A=\partial_x f(x_0,y_0)$ and $B=\partial_y f(x_0,y_0)$ and $\epsilon(\Delta x,\Delta y)=\epsilon_1\Delta x+\epsilon_2\Delta y$ we have:
+    \[ f(x,y) - f(x_0,y_0) = A\Delta x + B\Delta x + \epsilon(\Delta x,\Delta y) \]
+    And we know that:
+    \[ \lim\frac{\epsilon(\Delta x,\Delta y)}{\sqrt{\Delta x^2+\Delta y^2}} = 0 \]
+    Since $\frac{\Delta x}{\sqrt{\Delta x^2+\Delta y^2}}$ is bounded by $1$, and similiar for $\Delta y$ and the limit of this for $\epsilon_1$ and $\epsilon_2$ is $0$ (by pointwise convergence), so this
+    is indeed $0$ as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+This is not an equivalent condition though.
+
+\begin{exam}
+
+    Let
+    \[ f(x,y) = \begin{cases} (x^2+y^2)\sinof{\frac1{\sqrt{x^2+y^2}}} & (x,y)\neq0 \\ 0 & (x,y)=0 \end{cases} \]
+    Then $f(x,0) = x^2\sinof{\frac1{x}}$ the derivative of this is $\partial_x f(x,0)=2x\sinof{\frac1x}-\cosof{\frac1x}$, which does not exist for $x=0$, but it is continuous.
+    Similarly for $\partial_y f$.
+    But since the limit of $f$ as $(x,y)$ approaches $0$ is $0$, $f$ is a valid $\epsilon$, so it is necessarily differentiable.
+
+\end{exam}
+
+\end{document}
+

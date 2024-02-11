@@ -1,0 +1,82 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=1.5cm, vertical margin=1.5cm}
+\parindent=0cm
+\parskip=3pt plus 2pt minus 2pt
+
+\input pdfmsym
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+
+\footline={}
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+\setcounter{section}{9}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{\bppbox{rgb{1 .7 .7}}{rgb{1 0 0}}{rgb{.8 0 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Introduction to Stochastic Processes}
+    \smallskip
+    \centerline{\setfont{it}Assignment \the\counter{section}}
+    \centerline{\setfont{it}Ari Feiglin}
+
+\eppbox}
+
+\bigskip
+
+\bexerc
+
+    Suppose $B(t)$ is Brownian motion and let $t_0>0$.
+    Show that almost surely, $t_0$ is not a local critical point of $B(t)$.
+
+\eexerc
+
+We know that almost surely, $\infof{t>0}[B(t)>0]=0$ and $\infof{t>0}[B(t)<0]=0$.
+By the Markov property, this means that $\infof{t>t_0}[B(t)>B(t_0)]=t_0$ and $\infof{t>t_0}[B(t)<B(t_0)]=t_0$, as we can focus on the Brownian motion $X(t)=B(t+t_0)-B(t_0)$, since
+$$ 0=\infof{t>0}[X(t)>0]=\infof{t>0}[B(t+t_0)>B(t_0)]=\infof{t>t_0}[B(t)>B(t_0)]-t_0 $$
+This means that for every $\epsilon>0$, there exists $t_1,t_2\in(t_0-\epsilon,t_0+\epsilon)$ such that $B(t_1)<B(t_0)<B(t_2)$, so $t_0$ cannot be a local maximum or minimum of $B(t)$.
+
+\bexerc
+
+    Let $B(t)$ be Brownian motion, and define ${\cal F}_\infty=\bigcap_{t\geq0}\sigma\set{B(s)}_{s\geq t}$.
+    \benum
+        \item Give an example of an event in ${\cal F}_\infty$.
+        \item Show that for every $A\in{\cal F}_\infty$, $\probof A\in\set{0,1}$.
+        \item Show that for every $A\in{\cal F}_\infty$ and every initial state $x$, $\probof[x]A=\probof[0]A$.
+    \eenum
+
+\eexerc
+
+\benum
+    \item Events in ${\cal F}_\infty$ are events which are dependent only on the tails $\set{B(s)}_{s\geq t}$.
+    For example, $\set{\limsup_{t\to\infty}B(t)=\infty}$ is dependent only on these tails, as in it is in $\sigma\set{B(s)}_{s\geq t}$ for every $t\geq0$ and so it is surely therefore in the intersection.
+
+    \item Let us define $X(t)=tB(1/t)$ for $t>0$ and $X(0)=0$, this is Brownian motion as we showed in lecture.
+    Then
+    $$ {\cal F}_0^{X,+} = \bigcap_{\epsilon>0}\sigma\set{X(t)}_{0\leq t\leq\epsilon} = \bigcap_{\epsilon>0}\sigma\set{B(1/t)}_{0<t\leq\epsilon} = \bigcap_{t>0}\sigma\set{B(s)}_{s\geq t} =
+    {\cal F}_\infty^B $$
+    By Blumenthal's zero-one law, events in ${\cal F}_0^{X,+}$ have trivial probability and therefore so do events in ${\cal F}_\infty^B$.
+
+    \item Similar to before, if we define $X(t)=tB(1/t)+B(0)$ and $X(0)=B(0)$ then ${\cal F}^{X,+}_0={\cal F}^B_\infty$.
+    So the sequence $\set{X(t)-X(0)}_{t\geq0}=\set{tB(1/t)}_{t>0}$ is independent of ${\cal F}^B_\infty$, meaning $\set{B(t)}_{0<t}$ is independent of ${\cal F}^B_\infty$.
+    Now, since $B(t)$ is almost surely continuous, this means that $\set{B(0)=x}\in\sigma\set{B(t)}_{0<t}$ so it is also indepedent of ${\cal F}^B_\infty$ as required.
+\eenum
+
+\bexerc
+
+    Show that almost surely, $B(t)$ has uncountably many zeroes.
+
+\eexerc
+
+Firstly, $B(t)$ is almost surely continuous and so $B^{-1}\set0$ is closed almost surely.
+Let $F=B^{-1}\set0$, and so we claim that almost surely, $F$ has no isolated points.
+This is since $\infof{t>0}[B(t)=0]=0$ and so by the Markov property (similar to in question 1), almost surely $\infof{t>t_0}[B(t)=B(t_0)]=t_0$ and in particular for every $t_0\in F$,
+$\infof{t>t_0}[B(t)=0]=t_0$.
+Thus for every zero $t_0$ and every $\epsilon>0$, there exists another zero in $(t_0-\epsilon,t_0+\epsilon)$ and so $t_0$ is almost surely not isolated.
+So $F$ is almost surely closed and has no isolated points, and so it must be uncountable as required.
+
+\bye
+

@@ -1,0 +1,104 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=1.5cm, vertical margin=1.5cm}
+\parindent=0cm
+\parskip=3pt plus 2pt minus 2pt
+
+\input pdfmsym
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+
+\footline={}
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+\setcounter{section}{7}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{\bppbox{rgb{1 .7 .7}}{rgb{1 0 0}}{rgb{.8 0 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Introduction to Stochastic Processes}
+    \smallskip
+    \centerline{\setfont{it}Assignment \the\counter{section}}
+    \centerline{\setfont{it}Ari Feiglin}
+
+\eppbox}
+
+\bigskip
+
+\bexerc
+
+    Suppose $(X_1,X_2,X_3)\sim{\cal N}(0,\Sigma)$ where
+    $$ \Sigma = \pmatrix{14 & -4 & -3\cr -4 & 2 & 1\cr -3 & 1 & 1} $$
+    \benum
+        \item Find a triangle matrix $U$ such that $U^\top U=\Sigma$.
+        \item Compute $\expecof{X_1^2X_2X_3}$.
+    \eenum
+
+\eexerc
+
+\benum
+    \item We will look for a lower triangle matrix, so we are trying to solve
+    $$ \pmatrix{14 & -4 & -3\cr -4 & 2 & 1\cr -3 & 1 & 1} = \pmatrix{a_1 & a_2 & a_3\cr & a_4 & a_5\cr & & a_6}\pmatrix{a_1\cr a_2 & a_4\cr a_3 & a_5 & a_6} =
+    \pmatrix{a_1^2+a_2^2+a_3^2 & a_2a_4 + a_3a_5 & a_3a_6\cr a_2a_4+a_3a_5 & a_4^2+a_5^2 & a_5a_6\cr a_3a_6 & a_5a_6 & a_6^2} $$
+    So we can assume that $a_6=1$ and then $a_5=1$ and $a_3=-3$.
+    We can then further assume $a_4=-1$ and then $a_2=-1$ and $a_1=2$.
+    So we get
+    $$ U = \pmatrix{2\cr -1 & 1\cr -3 & 1 & 1} $$
+    \item Since $\Sigma=AA^\top$ where $A$ is a transition matrix, $U^\top$ is a transition matrix for $(X_1,X_2,X_3)$ so there exist $(Z_1,Z_2,Z_3)\sim{\cal N}(0,I)$ such that
+    $$ \pmatrix{X_1\cr X_2\cr X_3} = \pmatrix{2 & -1 & -3\cr & 1 & 1\cr & & 1}\pmatrix{Z_1\cr Z_2\cr Z_3} = \pmatrix{2Z_1 - Z_2 - 3Z_3\cr Z_2+Z_3\cr Z_3} $$
+    So we get that
+    \multlines{
+        X_1^2X_2X_3 = (2Z_1-Z_2-3Z_3)^2(Z_2+Z_3)Z_3 = 4Z_1^2Z_2Z_3 - 4Z_1Z_2^2Z_3 - 12Z_1Z_2Z_3^2 + Z_2^3Z_3 - 6Z_2^2Z_3^2 + 9Z_3^2Z_2\cr
+        &+ 4Z_1^2Z_3^2 - 4Z_1Z_2Z_3^2 - 12Z_1Z_3^3 + Z_2^2Z_3^2 - 6Z_2Z_3^3 + 9Z_3^4
+    }
+    Now since $Z_1,Z_2,Z_3$ are independent, the expected value of their products is the product of their expected values.
+    And since their expected values are all zero, we focus only on the terms which have powers of $Z_i$ greater than $1$.
+    So
+    $$ \expecof{X_1^2X_2X_3} = 4\expecof{Z_1^2}\expecof{Z_3^2} + \expecof{Z_2^2}\expecof{Z_3^2} + 9\expecof{Z_3^4} $$
+    For $Z\sim{\cal N}(0,1)$, $\expecof{Z^2}=1$ as this is its variance, and $\expecof{Z^4}=3$ (this can be computed using its moment generating function, $e^{-x^2/2}$).
+    So
+    $$ \expecof{X_1^2X_2X_3} = 32 $$
+\eenum
+
+\bexerc
+
+    Suppose $B(t)$ is Brownian motion starting from $0$ and $t_1<t_2<t_3$, then compute
+    \benum
+        \item $\expecof{B(t_1)B(t_2)}$,
+        \item $\expecof{B(t_1)B(t_2)B(t_3)}$.
+    \eenum
+
+\eexerc
+
+\benum
+    \item We know that $B(t_2)-B(t_1)\sim{\cal N}(0,t_2-t_1)$ and $B(t_i)\sim{\cal N}(0,t_i)$ so
+    $$ \expecof{B(t_1)B(t_2)} = \expecof{-\frac{(B(t_2)-B(t_1))^2 - B(t_2)^2 - B(t_1)^2}2} = -\frac{(t_2-t_1) - t_2 - t_1} = t_1 $$
+    \item We will prove something more general: if $X=(X_1,\dots,X_n)$ is a Gaussian vector and $n$ is odd, then $\expecof{X_1\cdots X_n}=0$.
+    This is since the covariance matrix of $X$ is the same as that of $-X$, since $\Covof{-X_i,-X_j}=\Covof{X_i,X_j}$ by bilinearity.
+    And so the joint probability of $X$ and $-X$ are the same, which means that $\expecof{X_1\cdots X_n}=\expecof{(-X_1)\cdots(-X_n)}=-\expecof{X_1\cdots X_n}$, so $\expecof{X_1\cdots X_n}=0$ as required.
+    And since $\bigl(B(t_1),B(t_2),B(t_3)\bigr)$ is a Gaussian vector of odd length, we get the desired result.
+\eenum
+
+\bexerc
+
+    Suppose $B(t)$ is Brownian motion, then show that $\limsup\frac{\abs{B(t)}}{\sqrt t}\geq1$ almost surely.
+
+\eexerc
+
+Notice that
+\multlines{
+    \probof{\abs{B(n)}\geq\sqrt n\hbox{ i.o.}} = \probof{(\forall n)(\exists m\geq n)\, \abs{B(m)}\geq\sqrt m} = \lim_{n\to\infty}\probof{(\exists m\geq n)\,\abs{B(m)}\geq\sqrt m}\cr
+    &\geq \lim_{n\to\infty}\probof{\abs{B(n)}\geq\sqrt n} = \probof{\abs{{\cal N}(0,n)}\geq\sqrt n} > 0
+}
+Now
+$$ X(n) = \frac{\abs{B(n)}}{\sqrt n}=\frac{\abs{\sum_{k=1}^n\bigl(B(k)-B(k-1)\bigr)}}{\sqrt n} $$
+and $\set{B(k)-B(k-1)}_{k=1}^\infty$ are by definition independent, and since $\limsup X(n)$ is invariant under finite permutations of $\set{B(k)-B(k-1)}$, by Hewitt-Savage the event $\limsup X(n)\geq1$
+has trivial probability.
+But if $\abs{B(n)}\geq\sqrt n\hbox{ i.o.}$ then certainly $\limsup X(n)\geq1$ since we can form a sequence of all the indexes $m_n$ where $\abs{B(m_n)}\geq\sqrt{m_n}$ and in this case we would have
+$\lim X(m_n)\geq1$.
+And we showed that $\abs{B(n)}\geq\sqrt n\hbox{ i.o.}$ has nonzero probability, and so $\limsup X(n)\geq1$ also has nonzero probability, meaning almost surely $\limsup X(n)\geq1$, as required.
+
+\bye
+

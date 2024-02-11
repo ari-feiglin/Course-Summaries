@@ -1,0 +1,485 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz-cd}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{conj}{Conjecture}{255,130,130}{150,0,0}{200,0,0}
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\undersumtext#1{\vtop{\hsize=2cm\relax\centering\small #1}}
+
+\newfunc{oracle}{\hbox{\tencsc oracle}}({})
+
+\def\quant{\mathtt{Q}}
+
+\def\sps{\texttt{\char32}}
+\def\sat{\mathsf{SAT}}
+\def\is{\mathsf{IS}}
+\def\threesat{\mathsf{3SAT}}
+\def\clique{\mathsf{Clique}}
+\def\vertcover{\textsf{Vertex-Cover}}
+\def\domset{\textsf{Dom-Set}}
+\def\dhp{\mathsf{DHP}}
+\def\dhc{\mathsf{DHC}}
+\def\hc{\mathsf{HC}}
+\def\tsp{\mathsf{TSP}}
+\def\threecolor{\mathsf{3Color}}
+\def\kcolor{k\mathsf{Color}}
+\def\Color{\mathsf{Color}}
+\def\subsum{\mathsf{SubsetSum}}
+\def\maxclique{\mathsf{MaxClique}}
+\def\minexpr{\mathsf{MinExpression}}
+
+\def\PH{\mathbf{PH}}
+\def\PF{\mathbf{PF}}
+\def\PC{\mathbf{PC}}
+\def\P{\mathbf{P}}
+\def\NP{\mathbf{NP}}
+\def\NPH{\mathbf{NPH}}
+\def\NPC{\mathbf{NPC}}
+\def\co{\mathsf{co}}
+\def\coNP{\mathbf{coNP}}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mN{\mathcal{N}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=7
+
+\barcolorbox{255, 220, 220}{130, 0, 0}{200, 80, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Computability and Complexity}
+
+    \medskip
+    \textit{Lecture \thesection, Tuesday August 22, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{prop*}
+
+    If $\NP\neq\coNP$ then $\NP$ is not closed under Cook reductions.
+
+\end{prop*}
+
+\begin{proof}
+
+    We can always define a Cook reduction from $S$ to $S^c$ (given an oracle for $S^c$, return its negation).
+    So if $\NP$ were closed under Cook reductions, given a problem $S$ in $\NP$ we can define a reduction from $S^c\in\coNP$ to $S$, and then $S^c\in\NP$.
+    This would mean $\NP\subseteq\coNP$ and so $\NP=\coNP$, in contradiction.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    A decision problem $S$ is in $\coNP$ if and only if there exists a polynomial time algorithm $V$ such that $x\in S$ if and only if for all $y$ with $\abs y\leq p(\abs x)$, $V(x,y)=1$.
+
+\end{prop*}
+
+\begin{proof}
+
+    If $S\in\coNP$ then $S^c\in\NP$ so it has a polynomial time verifier $V'$ and a polynomial $p$ which satisfy the conditions for $\NP$.
+    Let us define $V(x,y)=1-V'(x,y)$, and so if $x\in S$ then $x\notin S$ so $V'(x,y)=0$ for all $y$, so $V(x,y)=1$.
+    And if $x\notin S$ then $x\in S^c$ so there exists a $y$ with $\abs y\leq p(\abs x)$ such that $V'(x,y)=1$ and so $V(x,y)=0$.
+
+    And if this condition holds, then let us define $V'(x,y)=1-V(x,y)$.
+    Then we claim this is a verifier for $S^c$.
+    If $x\in S^c$ then by the condition there exists a $y$ with $\abs y\leq p(\abs x)$ and $V(x,y)=0$ so $V'(x,y)=1$ as required.
+    And if $x\notin S^c$ then $x\in S$ so for every $y$ with $\abs y\leq p(\abs x)$, $V(x,y)=1$ and so $V'(x,y)=0$.
+    If $\abs y>p(\abs x)$, we can change $V'$ so that it returns zero, and this becomes a polynomial proof system for $S^c$, so $S^c\in\NP$ meaning $S\in\coNP$.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    For $k\geq0$, we say that a decision problem $S$ is in $\Sigma_k$ if there exists a polynomial $p$ and a polynomial-time algorithm $V$ such that (let $\quant_{2i}=\forall$ and $\quant_{2i+1}=\exists$)
+    \[ x\in S\iff \quant_1\abs{y_1}\leq p(\abs x)\;\quant_2\abs{y_2}\leq p(\abs x)\;\cdots\;\quant_k\abs{y_k}\leq p(\abs x)\bigl(V(x,y_1,\dots,y_k)=1\bigr) \]
+    The \ppemph{polynomial hierarchy} is defined to be
+    \[ \PH = \bigcup_{k=0}^\infty \Sigma_k \]
+
+\end{defn*}
+
+Notice then that $\Sigma_0=\P$ and $\Sigma_1=\NP$.
+
+\begin{exam*}
+
+    Let us define the decision problem
+    \[ \maxclique = \set{(G,k)}[\text{$G$ is an undirected graph whose maximum clique size is $k$}] \]
+    Let us define an algorithm $V$ which takes input $\bigl((G,k),S_1,S_2\bigr)$ and it returns one if and only if
+    \benum
+        \item $S_1$ is a clique of size $k$, and
+        \item $\abs{S_2}\leq k$ or $S_2$ is not a clique.
+    \eenum
+    $V$ is a polynomial-time algorithm, and $\abs{S_1},\abs{S_2}\leq\abs G$.
+    Notice that $(G,k)$ is in $\maxclique$ if and only if there exists such an $S_1$ (which is the maximum clique) such that for every $S_2$, $V\bigl((G,k),S_1,S_2\bigr)=1$.
+    Therefore $\maxclique\in\Sigma_2$.
+
+\end{exam*}
+
+\begin{prop*}
+
+    For every $k$, $\Sigma_k\subseteq\Sigma_{k+1}$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $S\in\Sigma_k$, and let $V$ and $p$ be the polynomial-time algorithm and polynomial which satisfy the conditions for $S$ to be in $\Sigma_k$.
+    Then let us define $V'(x,y_1,\dots,y_{k+1})=V(x,y_2,\dots,y_{k+1})$, then $V'$ and $p$ satisfy the conditions for $S$ to be in $\Sigma_{k+1}$.
+
+\end{proof}
+
+\begin{defn*}
+
+    We define
+    \[ \Pi_k = \mathsf{co}\Sigma_k = \set{S}[S^c\in\Sigma_k] \]
+
+\end{defn*}
+
+Now, let us define $\quant_{2i}=\exists$ and $\quant_{2i+1}=\forall$, then $S\in\Pi_k$ if and only if
+\[ x\in S \iff \quant_1 \abs{y_1}\leq p(\abs x)\quant_2 \abs{y_2}\leq p(\abs x)\;\cdots\;\quant_k \abs{y_k}\leq p(\abs x)\bigl(V(x,y_1,\dots,y_k)\bigr) \]
+
+\begin{exam*}
+
+    Let us define the following decision problem
+    \[ \minexpr = \set{\phi}[\vcenter{\advance\hsize by-5cm
+    $\phi$ is a minimal boolean formula.
+    In other words, for every equivalent boolean formula $\psi$, the length of $\phi$ is less than (or equal) to the length of $\psi$.}] \]
+    (The length of a boolean formula is defined recursively, but exactly how this is done doesn't really matter here.)
+
+    We claim that $\minexpr\in\Pi_2$.
+    We define a verifier $V(\phi,\psi,\tau)$ where $\psi$ is another boolean formula and $\tau$ is a boolean vector.
+    $V$ verifies that either $\abs\psi\geq\abs\phi$ (meaning $\psi$ is longer than $\phi$) or $\phi(\tau)\neq\psi(\tau)$.
+    Now, $\phi$ is minimal if and only if for every boolean formula $\psi$, either $\psi$ is longer than $\phi$ or $\psi$ and $\phi$ are not equivalent.
+    Thus
+    \[ \phi\in\minexpr \iff \forall\psi \exists\tau\bigl(V(\phi,\psi,\tau)=1\bigr) \]
+    Now, we can also require that $\abs\psi\leq\abs\phi$ as $\phi$ is minimal if and only if every smaller boolean formula is not equivalent to it.
+    And we can require that $\abs\tau\leq\abs\phi$ as we can assume that we are only valuating the variables in $\phi$.
+    So
+    \[ \phi\in\minexpr \iff \forall\abs \psi\leq\abs\phi \exists\abs\tau\leq\abs\phi\bigl(V(\phi,\psi,\tau)=1\bigr) \]
+
+\end{exam*}
+
+Notice that
+\benum
+    \item $\Pi_0=\P$
+    \item $\Pi_1=\coNP$
+    \item $\Pi_k\subseteq\Pi_{k+1}$ as if $V$ is a verifier for a problem in $\Pi_k$, we can define $V'(x,y_1,\dots,y_{k+1})=V(x,y_2,\dots,y_k)$, and so $V'$ verifies the problem in $\Pi_{k+1}$.
+    \item $\Sigma_k\subseteq\Pi_{k+1}$ as if $V$ is a verifier for a problem in $\Sigma_k$, $V'(x,y_1,\dots,y_{k+1})=V(x,y_2,\dots,y_k)$ verifies the problem in $\Pi_{k+1}$.
+    \item $\Pi_k\subseteq\Sigma_{k+1}$ as the construction for the two previous points also proves this.
+\eenum
+
+Since $\Sigma_k\subseteq\Pi_{k+1}\subseteq\Sigma_{k+1}$,
+\[ \PH = \bigcup_{k=0}^\infty \Pi_k \]
+
+\begin{lemm*}
+
+    For every $S\in\Sigma_{k+1}$, there exists a polynomial $p$ and a problem $S'\in\Pi_k$ such that
+    \[ S = \set{x}[\text{There exists a $y$ such that $\abs y\leq p(\abs x)$ and $(x,y)\in S'$}] \]
+
+\end{lemm*}
+
+\begin{proof}
+
+    Let $S\in\Sigma_{k+1}$, then there exists a polynomial $p$ and a verifier $V$ such that $x\in S$ if and only if
+    \[ \quant_1 y_1\cdots\quant y_{k+1}\bigl(V(x,y_1,\dots,y_{k+1})=1\bigr) \]
+    where $\quant_{2i}=\forall$ and $\quant_{2i+1}=\exists$ and $\abs{y_i}\leq p(\abs x)$ (we can think of restricting our domain).
+    Let us define
+    \[ S' = \set{(x,y)}[\abs y\leq p(\abs x),\,\quant_2 y_2\cdots\quant_{k+1} y_{k+1}\bigl(V(x,y,y_2,\dots,y_{k+1})=1\bigr)] \]
+    It is obvious that $S'\in\Pi_k$, as $V'((x,y_1),y_2,\dots,y_{k+1})=V(x,y_1,\dots,y_{k+1})$ is its verifier in $\Pi_k$.
+    And
+    \[ x\in S\iff \exists y_1\quant_2y_2\cdots\quant_{k+1}y_{k+1}\bigl(V(x,y_1,\dots,y_{k+1})=1\bigr) \iff \exists y_1\bigl((x,y_1)\in S'\bigr) \]
+    as required.
+    \qed
+
+\end{proof}
+
+For the sake of not repeating myself, let us define
+\[ \quant_i = \begin{cases} \forall & i\equiv0\pmod2 \\ \exists & i\equiv1\pmod2 \end{cases},\qquad
+\quant'_i = \quant_{i+1} = \begin{cases} \forall & i\equiv1\pmod2 \\ \exists & i\equiv0\pmod2 \end{cases} \]
+
+\begin{lemm*}
+
+    For every $k\geq1$, if $\Pi_k\subseteq\Sigma_k$ then $\Sigma_k=\Sigma_{k+1}$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Let $S\in\Sigma_{k+1}$, then there exists a problem $S'\in\Pi_k$ such that $x\in S$ if and only if there exists a $y$ such that $(x,y)\in S'$.
+    By the assumption, $S'\in\Sigma_k$ and so there exists a verifier $V'$ and polynomial $p'$ such that
+    \[ (x,y)\in S'\iff \quant_1y_1\cdots\quant_ky_k\bigl(V'((x,y),y_1,\dots,y_k)=1\bigr) \]
+    where $\abs{y_i}\leq p(\abs x)$.
+    Let us define $y^*=yy_1$ (the concatenation of $y$ and $y_1$).
+    Then $\abs{y^*}=\abs{y}+\abs{y_1}\leq p(\abs x)+p'(\abs x)$.
+    \[ V^*(x,y^*,y_2,\dots,y_k) = V'((x,y),y_1,\dots,y_k) \]
+    then
+    \begin{multline*}
+        x\in S\iff \exists y\bigl((x,y)\in S'\bigr) \iff \exists y\quant_1y_1\cdots\quant_ky_k\bigl(V'((x,y),y_1,\dots,y_k)=1\bigr) \\
+        \iff \exists y^*\quant_2 y_2\cdots\quant_k\bigl(V^*(x,y^*,y_2,\dots,y_k)=1\bigr)
+    \end{multline*}
+    Where $\abs{y_i}\leq p(\abs x)+p'(\abs x)$.
+    Since $\exists=\quant_1$, this means that $V^*$ is a verifier for $S$ in $\Sigma_k$.
+    Thus $\Sigma_{k+1}\subseteq\Sigma_k$, meaning $\Sigma_k=\Sigma_{k+1}$.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}
+
+    If there exists a $k$ such that $\Sigma_k=\Sigma_{k+1}$, then $\PH=\Sigma_k$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Since $\Sigma_k=\Sigma_{k+1}$, we have $\Pi_k=\Pi_{k+1}$ (by their definition since $S\in\Pi_k$ if and only if $S^c\in\Sigma_k$ if and only if $S^c\in\Sigma_{k+1}$ if and only if $S\in\Pi_{k+1}$).
+    Then we have $\Pi_{k+1}=\Pi_k\subseteq\Sigma_{k+1}$.
+    So by the previous lemma, we have $\Sigma_k=\Sigma_{k+1}=\Sigma_{k+2}$.
+    Inductively this means that $\Sigma_i=\Sigma_k$ for every $i\geq k$.
+    And so $\Sigma_i\subseteq\Sigma_k$ for every $i$ and thus
+    \[ \PH = \bigcup_{i=0}^\infty \Sigma_i = \Sigma_k \]
+    as required.
+    \qed
+
+\end{proof}
+
+\begin{coro*}
+
+    If $\P=\NP$ then $\PH=\P$.
+
+\end{coro*}
+
+This is because $\P=\Sigma_0$ and $\NP=\Sigma_1$, so this is a specific case of the previous theorem.
+
+\c@subsection=1
+\subsection{Non-deterministic Algorithms}
+
+\begin{defn*}
+
+    A non-deterministic algorithm is an algorithm such that at every step it can make multiple choices.
+    We say that a non-deterministic algorithm $A$ decides a decision problem $S$ if
+    \benum
+        \item When $x\in S$, then there exists a run of $A$ where $A(x)=1$.
+        \item When $x\in S$, then for every run of $A$, $A(x)=0$.
+    \eenum
+
+    $A$'s runtime on an input $x$ is the maximum number of steps it can take.
+    We denote this as $t_A(x)$.
+    We say that $A$ \ppemph{runs in polynomial time} or is a \ppemph{polynomial-time algorithm} if there exists a polynomial $p$ such that $t_A(x)\leq p(\abs x)$.
+
+\end{defn*}
+
+\begin{thrm*}
+
+    A decision problem $S$ is in $\NP$ if and only if there exists a non-deterministic polynomial-time algorithm $A$ which decides $S$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    If $S\in\NP$, then there exists a polynomial-time verifier $V$ and its polynomial $p$.
+    Let us define the non-determinstic algorithm
+
+    \algorithm
+        \Function{$A$}{$x$}
+            \State $y\gets\epsilon$
+            \While{$\abs y\leq p(\abs x)$}
+                \Choose
+                    \Choice $y\gets y0$
+                    \Choice $y\gets y1$
+                    \Choice \textbf{break}
+                \EndChoose
+            \EndWhile
+            \State \Return $V(x,y)$
+        \EndFunc
+    \ealgorithm
+
+    Lines two to nine are essentially ``choose $y\in\set{w\in\set{0,1}^*}[\abs w\leq p(\abs x)]$''.
+
+    Then $A$ decides $S$, as if $x\in S$ then it has a witness $y$ whose length is at most $p(\abs x)$, and so there exists some run of $A$ which will return true.
+    If $x\notin S$ then no matter what $A$ will return false, so $A$ does indeed decide $S$.
+    And $A$ runs in polynomial time, as the while loop takes at most $p(\abs x)$ time, and $V$ takes polynomial time.
+
+    Now if $S$ is decided by a non-deterministic polynomial-time algorithm $A$, suppose its runtime is bound by the polynomial $p$.
+    Let us define the verifier $V(x,y)$ where $y$ is a sequence of choices that $A$ can do, and $V$ runs $A$ where the $i$th choice is decided by $y_i$.
+    If $x\in S$ then there exists a run of $A$ which returns one, let $y$ be the sequence of choices done by $A$, then $V(x,y)=1$.
+    And since $A(x)$ runs in $p(\abs x)$ time, $\abs y\leq p(\abs x)$ as required.
+    And if $x\notin S$ then no sequence of choices for $A$ will make it return one, so $V(x,y)=0$ for all $y$.
+
+    Thus $V$ is a polynomial time verifier and $p$ is its polynomial.
+    Thus $S\in\NP$ as required.
+    \qed
+
+\end{proof}
+
+Historically the equivalent definition given via non-deterministic algorithms was the standard definition for $\NP$.
+This actually gives the reasoning for the name of $\NP$, as it actually stands for \emph{non-deterministic polynomial}.
+
+\begin{defn*}
+
+    Let $S$ be a decision problem, then we define $\P^S$ to be the set of all decision problems which can be decided by a deterministic oracle machine for $S$ (a determinitic algorithm with an oracle for
+    $S$).
+    Thus $\P^S$ is the set of all decision problems where there exists a Cook reduction from them to $S$.
+    And we similarly define $\NP^S$ to be the set of all decision problems which can be decided by a non-deterministic oracle machine for $S$.
+
+    Similarly if $C$ is a set of decision problems then we define
+    \[ \P^C = \bigcup_{S\in C}\P^S,\qquad \NP^C = \bigcup_{S\in C}\NP^S \]
+
+\end{defn*}
+
+Notice that if a decision problem requires oracles for two or more problems in $C$, it is not necessarily in $\P^C$ or $\NP^C$.
+
+\begin{exam*}
+
+    We will show that $\minexpr^c\in\NP^\NP$.
+    So we want to find a problem $S\in\NP$ and a non-deterministic polynomial-time oracle machine $A^S$ which decides $\minexpr^c$.
+    The idea is for $A^S$, given a boolean formula $\phi$, to choose some boolean formula $\psi$ which is shorter than $\phi$ and show that they are equivalent using its oracle for $S$.
+
+    So let us define the decision problem
+    \[ S = \set{(\phi,\psi)}[\text{$\phi$ and $\psi$ are equivalent boolean formulas}] \]
+    this is not necessarily in $\NP$, but it is in $\coNP$ as
+    \[ S^c = \set{(\phi,\psi)}[\text{$\phi$ and $\psi$ are non-equivalent boolean formulas}] \]
+    as we can define the verifier $V((\phi,\psi),\tau)$ which returns if $\phi(\tau)\neq\psi(\tau)$, so $S^c\in\NP$.
+
+    So if we have an oracle for $S^c$, then we can ask if $(\phi,\psi)\in S^c$ and then return the inverse.
+    Explicitly, we define
+
+    \algorithm
+        \Function{$A^{S^c}$}{$\phi$}
+            \State \textbf{choose} a boolean formula $\psi$ such that $\abs\psi<\abs\phi$
+            \State \Return $\neg\bigl((\phi,\psi)\in S^c\bigr)$
+        \EndFunc
+    \ealgorithm
+
+    Then if $\phi\in\minexpr^c$, there exists a boolean formula $\psi$ where $\abs\psi<\abs\phi$ and then $A^{S^c}(\phi)$ will return $1$ when $\psi$ is chosen.
+    If $\phi\in\minexpr$ then for every choice of $\psi$, if $\psi$ is a shorter boolean formula, $\phi$ and $\psi$ are not equivalent and so $(\phi,\psi)\in S^c$ and so $A^{S^c}(\phi)$ will always return
+    zero.
+
+    So $A^{S^c}$ is a non-deterministic polynomial-time (since the oracle takes polynomial time, and choosing $\psi$ takes polynomial time) algorithm which decides $\minexpr^c$.
+    Since $S^c\in\NP$, we have that $\minexpr\in\NP^\NP$ as required.
+
+\end{exam*}
+
+Notice that if we have an oracle for $S$, this essentially gives us an oracle of $S^c$, as we can just negate its answer.
+Thus for any decision problem $S$,
+\[ \P^S = \P^{S^c},\quad \NP^S = \NP^{S^c} \]
+and so for any set of decision problems $C$,
+\[ \P^C = \P^{\co C},\quad \NP^C = \NP^{\co C} \]
+
+\begin{prop*}
+
+    We can equivalently define the polynomial hierarchy by
+    \begin{align*}
+        \Sigma_0 &= \P \\
+        \Sigma_1 &= \NP \\
+        \Sigma_{k+1} &= \NP^{\Sigma_k}
+    \end{align*}
+
+\end{prop*}
+
+Notice that
+\[ \Sigma_1 = \NP = \NP^\P = \NP^{\Sigma_0} \]
+so the recurrence $\Sigma_{k+1}=\NP^{\Sigma_k}$ is true for all $k\geq0$.
+
+\begin{proof}
+
+    We will show inductively that $\Sigma_{k+1}=\NP^{\Sigma_k}$.
+    Suppose $S\in\Sigma_{k+1}$, then by a previous lemma there exists a $S'\in\Pi_k$ and a polynomial $p$ such that
+    \[ x\in S\iff \exists y,\abs y\leq p(\abs x)\bigl((x,y)\in S'\bigr) \]
+    and so $S\in\NP^{S'}$, as we can define a non-deterministic algorithm which guesses $y$ and checks if $(x,y)\in S'$.
+    And therefore
+    \[ S\in\NP^{S'}\subseteq\NP^{\Pi_k} = \NP^{\co\Sigma_k} = \NP^{\Sigma_k} \]
+
+    Now suppose $S\in\NP^{\Sigma_k}$, and so there exists a $S'\in\Sigma_k$ and a non-deterministic polynomial-time oracle machine $A^{S'}$ which decides $S$.
+    We can assume that $A^{S'}$ functions in two parts (by redefining it):
+    \benum
+        \item First $A^{S'}$ functions non-deterministically but without querying the oracle.
+        At every point it wants to query the oracle with the query $q_i$, instead it guesses an answer $a_i$ and continues with that answer.
+        \item At the end it queries the oracle with every $q_i$ and verifies that the correct answer is $a_i$.
+        Ie. it verifies that $q_i\in S'$ if and only if $a_i=1$.
+    \eenum
+    $A^{S'}$ returns one if and only if it wants to return one in both the first step and the second step (meaning all the answers are correct).
+
+    So $x\in S$ if and only if there exists a list of queries $\vec q$ and a list of answers $\vec a$ such that $A^{S'}$ returns one when running on $x$ and the answer to the query $\vec q_i$ is $\vec a_i$,
+    and these are correct answers (as in $\vec q_i\in S'$ if and only if $\vec a_i=1$).
+    This is if and only if
+    \[ \exists \vec q,\vec a\Bigl(*\land\bigwedge_{i=1}^n\bigl((q_i\in S'\land a_i=1)\lor(q_i\notin S'\land a_i=0)\bigr)\Bigr) \]
+    which is equivalent to
+    \begin{multline*}
+        \exists q,a\Bigl(*\land\bigwedge_{i=1}^n\Bigl(\Bigl(\quant_1 y_i^1\cdots\quant_{k-1}y_i^{k-1}\bigl(V'(q_i,y_i^1,\dots,y_i^{k-1})=1\land a_i=1\bigr)\Bigr)\lor\\
+        \Bigl(\quant'_1 z_i^1\cdots\quant'_{k-1}z_i^{k-1}\bigl(V'(q_i,z_i^1,\dots,z_i^{k-1})=0\land a_i=0\bigr)\Bigr)\Bigr)\Bigr)
+    \end{multline*}
+
+    Let us denote $**$ to be the conjunction of $V'(q_i,y_i^1,\dots,y_i^{k-1})=1\land a_i=1$ and $***$ to be the conjunction of $V'(q_i,y_i^1,\dots,y_i^{k-1})=0\land a_i=0$.
+
+    This is equivalent to
+    \[ \quant_1 y,a \vec y^1 \quant_2 \vec y^2,\vec z^1 \cdots \quant_{k-1} \vec y^{k-1},\vec z^{k-2} \quant_k \vec z^k(*\land**\land***) \]
+    So this is an alternating list of quantifiers as well as a polynomial which checks the condition within the parentheses, and so $S\in\Sigma_{k+1}$ as required.
+    \qed
+
+\end{proof}
+
+Note then that since $\minexpr\in\Pi_2$, $\minexpr^c\in\Sigma_2=\NP^\NP$.
+This is a shorter proof than what we did above.
+
+Notice then that if there is a Cook reduction $S'$ to $S\in\Sigma_k$ then $S'\in P^{\Sigma_k}\subseteq\NP^{\Sigma_k}=\Sigma_{k+1}$ and so in particular $\PH$ is closed under Cook reductions.
+
+\end{document}
+

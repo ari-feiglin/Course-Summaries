@@ -1,0 +1,334 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\Language{\mathcal{L}}
+\def\theory{\mathcal{T}}
+
+\def\qed{\hskip.5cm\hbox{}\hfill$\blacksquare$}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\def\true{\mathsf{true}}
+\def\false{\mathsf{false}}
+
+\def\Aone#1#2{#1\to(#2\to#1)}
+\def\Atwo#1#2#3{\bigl(#1\to(#2\to#3)\bigr)\to\bigl((#1\to#2)\to(#1\to#3)\bigr)}
+\def\Athree#1#2{(\neg#2\to\neg#1)\to\bigl((\neg#2\to#1)\to#2\bigr)}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+
+\begin{document}
+
+\c@section=3
+
+\barcolorbox{220, 255, 255}{0, 130, 130}{80, 200, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Mathematical Logic}
+
+    \medskip
+    \textit{Lecture \thesection, Thursday April 20, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{Soundness and Completeness}
+
+We prove some corollaries of the deduction theorem:
+
+\begin{coro*}
+
+    For any well-formed formulas $\phi$ and $\psi$ of $\Language$:
+
+    \benum
+        \item $\phi\to\psi, \phi\to\mu\vdash\phi\to\mu$
+        \item $\phi\to(\psi\to\mu), \psi\vdash\phi\to\mu$
+    \eenum
+
+\end{coro*}
+
+\begin{proof}
+
+    \benum
+        \item By the deduction theorem, this is equivalent to proving
+        \[ \phi\to\psi, \phi\to\mu, \phi \vdash \mu \]
+        Since we have $\phi$ and $\phi\to\psi$, by modus ponens we have $\psi$ and since $\psi\to\mu$, we have $\mu$ as required.
+        \item Again, this is equivalent to proving
+        \[ \phi\to(\psi\to\mu), \psi, \phi \vdash \mu \]
+        And by modus ponens we have $\psi\to\mu$ and again by modus ponens we have $\mu$ as required.\qed
+    \eenum
+
+\end{proof}
+
+\begin{lemm*}[wfProofsLemma]
+
+    For any well-formed formulas $\phi$ and $\psi$ of $\Language$, the following are theorems:
+
+    \benum
+        \item $\neg\neg\phi\to\phi$
+        \item $\phi\to\neg\neg\phi$
+        \item $\neg\phi\to(\phi\to\psi)$
+        \item $(\neg\psi\to\neg\phi)\to(\phi\to\psi)$
+        \item $(\phi\to\psi)\to(\neg\psi\to\neg\phi)$
+        \item $\phi\to\bigl(\neg\psi\to\neg(\phi\to\psi)\bigr)$
+        \item $(\phi\to\psi)\to\bigl((\neg\phi\to\psi)\to\psi)$
+    \eenum
+
+\end{lemm*}
+
+\begin{proof}
+
+    \benum
+        \item $\neg\neg\phi\to\phi$:
+        \benum
+            \item $(\neg\phi\to\neg\neg\phi)\to\bigl((\neg\phi\to\neg\phi)\to\phi$; Axiom $3$ (\textbf{A3}) for $\phi$ and $\neg\phi$.
+            \item $\neg\phi\to\neg\phi$; Lemma 2.2.3.
+            \item $(\neg\phi\to\neg\neg\phi)\to\phi$; \enumstyle1, \enumstyle2, Corollary 3.1.1 (2).
+            \item $\neg\neg\phi\to(\neg\phi\to\neg\neg\phi)$; \textbf{A1} for $\neg\phi$ and $\neg\neg\phi$.
+            \item $\neg\neg\phi\to\phi$; \enumstyle3, \enumstyle4, Corollary 3.1.1 (1).
+        \eenum
+        \item $\phi\to\neg\neg\phi$
+        \benum
+            \item $(\neg\neg\neg\phi\to\neg\phi)\to\bigl((\neg\neg\neg\phi\to\phi)\to\neg\neg\phi)$; \textbf{A3} for $\phi$ and $\neg\neg\phi$.
+            \item $\neg\neg\neg\phi\to\neg\phi$; Part (1).
+            \item $(\neg\neg\neg\phi\to\phi)\to\neg\neg\phi$; \enumstyle1, \enumstyle2, modus ponens (\textit{MP}).
+            \item $\phi\to(\neg\neg\neg\phi\to\phi)$; \textbf{A3} for $\phi$ and $\neg\neg\phi$.
+            \item $\phi\to\neg\neg\phi$; \enumstyle3, \enumstyle4, Corollary 3.1.1 (1).
+        \eenum
+        \item $\neg\phi\to(\phi\to\psi)$
+        \benum
+            \item $\neg\phi$; hypothesis (meaning we are showing $\neg\phi\vdash\phi\to\psi$).
+            \item $\phi$; hypothesis.
+            \item $\phi\to(\neg\psi\to\phi)$; \textbf{A1}.
+            \item $\neg\phi\to(\neg\psi\to\neg\phi)$; \textbf{A1}.
+            \item $\neg\phi\to\psi$; \enumstyle2, \enumstyle3, \textit{MP}.
+            \item $\neg\psi\to\neg\phi$; \enumstyle1, \enumstyle4, \textit{MP}.
+            \item $(\neg\psi\to\neg\phi)\to\bigl((\neg\psi\to\phi)\to\psi\bigr)$; \textbf{A3}.
+            \item $(\neg\psi\to\phi)\to\psi$; \enumstyle6, \enumstyle7, \textit{MP}.
+            \item $\psi$; \enumstyle5, \enumstyle8, \textit{MP}.
+            \item $\phi,\neg\phi\vdash\psi$; \enumstyle1--\enumstyle9.
+            \item $\neg\phi\vdash\phi\to\psi$; \enumstyle{10}, deduction theorem.
+            \item $\neg\phi\to(\phi\to\psi)$; \enumstyle{11}, dedcution theorem.
+        \eenum
+        \item $(\neg\psi\to\neg\phi)\to(\phi\to\psi)$
+        \benum
+            \item $\neg\psi\to\neg\phi$; hypothesis.
+            \item $\Athree\phi\psi$; \textbf{A3}.
+            \item $\Aone\phi{\neg\psi}$; \textbf{A1}.
+            \item $(\neg\psi\to\phi)\to\psi$; \enumstyle1, \enumstyle2, \textit{MP}.
+            \item $\phi\to\psi$; \enumstyle3, \enumstyle4, Corollary 3.1.1 (1).
+            \item $\neg\psi\to\neg\phi\vdash\phi\to\psi$; \enumstyle1--\enumstyle5.
+            \item $(\neg\psi\to\neg\phi)\to(\phi\to\psi)$; \enumstyle6, deduction theorem.
+        \eenum
+        \item $(\phi\to\psi)\to(\neg\psi\to\neg\phi)$
+        \benum
+            \item $\phi\to\psi$; hypothesis.
+            \item $\neg\neg\phi\to\phi$; part (1).
+            \item $\neg\neg\phi\to\psi$; \enumstyle1, \enumstyle2, Corollary 3.1.1 (1).
+            \item $\psi\to\neg\neg\psi$; part (4).
+            \item $\neg\neg\phi\to\neg\neg\psi$; \enumstyle3, \enumstyle4, Corollary 3.1.1 (1).
+            \item $(\neg\neg\phi\to\neg\neg\psi)\to(\neg\psi\to\neg\phi)$; part (4).
+            \item $\neg\psi\to\neg\phi$; \enumstyle5, \enumstyle6, \textit{MP}.
+            \item $\phi\to\psi\vdash\neg\psi\to\neg\phi$; \enumstyle1--\enumstyle7.
+            \item $(\phi\to\psi)\to(\neg\psi\to\neg\phi)$; \enumstyle8, deduction theorem.
+        \eenum
+        \item $\phi\to(\neg\psi\to\neg\bigl(\phi\to\psi)\bigr)$
+        \benum
+            \item $\phi\to\psi, \phi\vdash\psi$; this is clear by \textit{MP}.
+            \item $\phi\to\bigl((\phi\to\psi)\to\psi\bigr)$; \enumstyle1, deduction theorem (twice).
+            \item $\bigl((\phi\to\psi)\to\psi\bigr)\to\bigl(\neg\psi\to\neg(\phi\to\psi)\bigr)$; \enumstyle2, part (5).
+            \item $\phi\to(\neg\psi\to\neg\bigl(\phi\to\psi)\bigr)$; \enumstyle2, \enumstyle3, Corollary 3.1.1 (1).
+        \eenum
+        \item $(\phi\to\psi)\to\bigl((\neg\phi\to\psi)\to\psi\bigr)$
+        \benum
+            \item $\phi\to\psi$; hypothesis.
+            \item $\neg\phi\to\psi$; hypothesis.
+            \item $(\phi\to\psi)\to(\neg\psi\to\neg\phi)$; part (5).
+            \item $\neg\psi\to\neg\phi$; \enumstyle1, \enumstyle3, \textit{MP}.
+            \item $(\neg\phi\to\psi)\to(\neg\psi\to\neg\neg\phi)$; part (5).
+            \item $\neg\psi\to\neg\neg\phi$; \enumstyle2, \enumstyle5, \textit{MP}.
+            \item $\Athree{\neg\phi}\psi$; \textbf{A3}.
+            \item $(\neg\psi\to\neg\phi)\to\psi$; \enumstyle6, \enumstyle7, \textit{MP}.
+            \item $\psi$; \enumstyle4, \enumstyle8, \textit{MP}.
+            \item $\phi\to\psi, \neg\phi\to\psi \vdash\psi$; \enumstyle1--\enumstyle9.
+            \item $(\phi\to\psi)\to\bigl((\neg\phi\to\psi)\to\psi\bigr)$; \enumstyle{10}, deduction theorem (twice).\qed
+        \eenum
+    \eenum
+
+\end{proof}
+
+\begin{defn*}
+
+    We define the following connectives as shorthands:
+    \benum
+        \item $(\phi\land\psi)$ for $\neg(\phi\to\neg\psi)$.
+        \item $(\phi\lor\psi)$ for $(\neg\phi)\to\psi$.
+        \item $(\phi\oto\psi)$ for $(\phi\to\psi)\land(\psi\to\phi)$, meaning $\neg\bigl((\phi\to\psi)\to\neg(\psi\to\phi)\bigr)$.
+    \eenum
+
+\end{defn*}
+
+\begin{exercise*}
+
+    Show the following:
+    \benum
+        \item $\phi\to(\phi\lor\psi)$
+        \item $\phi\to(\psi\lor\phi)$
+        \item $(\phi\lor\psi)\to(\psi\lor\phi)$
+        \item $(\phi\land\psi)\to\phi$
+        \item $(\phi\land\psi)\to\psi$
+        \item $(\phi\to\mu)\to\Bigl((\psi\to\mu)\to\bigl(\phi\lor\psi)\to\mu\bigr)\Bigr)$
+        \item $\bigl((\phi\to\psi)\to\phi\bigr)\to\phi$
+        \item $\phi\to\bigl(\psi\to(\phi\land\psi)\bigr)$
+    \eenum
+
+\end{exercise*}
+
+Our goal now is to show that a well-formed formula of $\Language$ is a theorem if and only if it is a tautology in the sense of statement forms.
+The first part of this is simple.
+
+\begin{thrm*}[soundnessTheorem,Soundness\ Theorem]
+
+    Every theorem of $\Language$ is a tautology.
+
+\end{thrm*}
+
+\begin{proof}
+
+    It can be shown with relative ease that every axiom of $\Language$ is a tautology.
+    Given some theorem $\phi$, we must have a proof of length $n$, which we induct on.
+    For $n=1$, $\phi$ is an axiom.
+    Otherwise, either $\phi$ is an we must have that $\psi\to\phi$ and $\psi$ are well-formed formulas in the proof.
+    Thus they can both be proven in fewer than $n$ steps and by our inductive hypothesis are thus tautologies.
+    Therefore since $\psi$ is always true and $\psi\to\phi$ is always true, we can infer that $\phi$ is always true (a tautology).
+    This last step takes place entirely in the world of statement forms/boolean functions.
+    \qed
+
+\end{proof}
+
+What this means is that propositional calculus is \emph{sound}: everything that can be proven is true.
+We know continue with the other half.
+
+\begin{lemm*}
+
+    Let $\phi$ be a well-formed formula and $B_1,\dots,B_k$ the statement letters which occur in $\phi$.
+    For some assignment of truth values to these statement letters, define $B'_j$ to be $B_j$ if it is true, and $\neg B_j$ if it is false.
+    Then let $\phi'$ be $\phi$ if it is true under this assignment, and $\neg\phi$ if $\phi$ is false.
+    Then
+    \[ B'_1,\dots,B'_k\vdash \phi' \]
+
+\end{lemm*}
+
+\begin{proof}
+
+    We induct on $n$, the number of occurrences of $\neg$ or $\to$ in $\phi$ (we assume that $\phi$ is written without shorthands).
+    If $n=0$, then $\phi$ is just a single statement letter $\phi=B_1$ then this reduces to $B_1\vdash B_1$ and $\neg B_1\vdash\neg B_1$ which are both trivial.
+
+    Otherwise, we split into two cases:
+
+    For the first case, $\phi=\neg\psi$.
+    Then $\psi$ has fewer than $n$ occurrences of $\neg$ and $\to$.
+    Under the given truth value assignments, we again have two possibilities: if $\psi$ is true then $\phi$ is false.
+    Thus $\psi'$ is $\psi$ and $\phi'=\neg\phi=\neg\neg\psi$.
+    By our inductive hypothesis
+    \[ B'_1,\dots,B'_n \vdash \psi' = \psi \]
+    By \ppref[lemma]{wfProofsLemma} (2), $\psi\to\neg\neg\psi$ so
+    \[ B'_1,\dots,B'_n \vdash \neg\neg\psi = \phi' \]
+    as required.
+    And if $\psi$ is true, then $\phi$ is true and $\psi'$ is $\neg\psi$ and $\phi'$ is $\phi$, so $\psi'=\phi$.
+    And by our inductive hypothesis:
+    \[ B'_1,\dots,B'_n \vdash \psi' = \phi \]
+    as required.
+
+    For the second case, $\phi=\psi\to\mu$.
+    We have three possibilities here: if $\psi$ is false then $\phi$ takes on the value true.
+    So $\phi'=\neg\phi$ and $\phi'=\phi$, so by our inductive hypothesis:
+    \[ B'_1,\dots,B'_n \vdash \neg\psi \]
+    and by \ppref[lemma]{wfProofsLemma} (3), $\neg\psi\to(\psi\to\mu)$, so
+    \[ B'_1,\dots,B'_n \vdash \psi\to\mu = \phi \]
+    as required.
+    And if $\mu$ is true then again $\phi$ takes the value true.
+    So $\mu'=\mu$ and $\phi'=\phi$ and so by our inductive hypothesis
+    \[ B'_1,\dots,B'_n \vdash \mu \]
+    and by \textbf{A1} $\mu\to(\psi\to\mu)$, so $\mu\to\phi$ so by modus ponens
+    \[ B'_1,\dots,B'_n \vdash \phi \]
+    as required.
+    The final possibility is that $\psi$ is true and $\mu$ is false, then $\phi$ is false.
+    So $\psi'=\psi$ and $\mu'=\neg\mu$ and $\phi'=\neg\phi=\neg(\psi\to\mu)$, thus by our inductive hypothesis
+    \[ B'_1,\dots,B'_n \vdash \psi, \neg\mu \]
+    By \ppref[lemma]{wfProofsLemma} (6) $\psi\to\bigl(\neg\mu\to\neg(\psi\to\mu)\bigr)$, thus by applying modus ponens twice we have $\neg(\psi\to\mu)=\neg\phi=\psi'$ as required.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}[completenessTheorem,Completeness\ Theorem]
+
+    If a well-formed formula $\phi$ of $\Language$ is a tautology, then it is a theorem of $\Language$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let $B_1,\dots,B_n$ be the statement letters in $\phi$.
+    For any truth value assignment to these letters, we have $B'_1,\dots,B'_n\vdash\phi$ since $\phi'=\phi$ as $\phi$ is always true.
+    So when $B_n=\true$ we have $B'_1,\dots,B_n,B_n\vdash\phi$ and when $B_n=\false$ we have $B'_1,\dots,B'_{n-1},\neg B_n\vdash\phi$, so by the deduction theorem
+    \[ B'_1,\dots,B'_{n-1}\vdash (B_n\to\phi),\, (\neg B_n\to\phi) \]
+    for any truth value assignment to $B_1,\dots,B_{n-1}$.
+    Thus by \ppref[lemma]{wfProofsLemma} (7) we have $(B_n\to\phi)\to\bigl((\neg B_n\to\phi)\to\phi\bigr)$ and so applying modus ponens twice gives
+    \[ B'_1,\dots,B'_n \vdash \phi \]
+    We can continue inductively and after $n$ steps we have
+    \[ \vdash \phi \]
+    as required.
+    \qed
+
+\end{proof}
+
+\begin{coro*}
+
+    If $\psi$ is an expression involving the signs $\neg$, $\to$, $\lor$, $\land$, and $\oto$ which is a shorthand for a well-formed formula $\phi$ of $\Language$, then $\psi$ is a tautology if and only if
+    $\phi$ is a theorem of $\Language$.
+
+\end{coro*}
+
+\begin{proof}
+
+    Since $\psi$ is a tautology if and only if $\phi$ is (it remains an exercise to show that the definitions of the shorthands are logically equivalent to the connectives) by the \ppref{soundnessTheorem},
+    if $\phi$ is a theorem then it is a tautology and therefore so is $\psi$.
+    And if $\psi$ is a tautology then so is $\phi$ and therefore $\phi$ is a theorem by the \ppref{completenessTheorem}.
+    \qed
+
+\end{proof}
+
+\end{document}
+

@@ -1,0 +1,172 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\openset{{\cal O}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=18
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infinitesimal Calculus 3}
+
+    \medskip
+    \textit{Lecture \thesection, Sunday January 1, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{defn*}
+
+    A symmetric matrix $A\in\bR^{n\times n}$ is 
+    \benum
+        \item \ppemph{Positive} if $k^tAk>0$ for all $0\neq k\in\bR^n$.
+        \item \ppemph{Negative} if $k^tAk<0$.
+        \item \ppemph{Nonnegative} if $k^tAk\geq0$.
+        \item \ppemph{Nonpositive} if $k^tAk\leq0$.
+        \item \ppemph{Nonsigned} if there are vectors $k_1$ and $k_2$ such that $k_1^tAk_1>0$ and $k_2^tAk_2<0$.
+    \eenum
+
+\end{defn*}
+
+\begin{prop*}
+
+    A symmetric matrix $A$ is positive if and only if for every $1\leq k\leq n$, $M_k$ is positive where $M_k$ is defined as
+    \[ M_k = \det\begin{pmatrix} a_{11} & \cdots & a_{1k} \\ \vdots & \ddots & \vdots \\ a_{k1} & \cdots & a_{kk} \end{pmatrix} \]
+
+\end{prop*}
+
+This proof is pretty lengthy, so we will not prove it.
+
+\begin{prop*}
+
+    A symmetric matrix $A$ is negative if and only if $-A$ is positive.
+  
+\end{prop*}
+
+The proof of this is trivial.
+But this means that $A$ is negative if and only if $(-1)^k M_k>0$ for all $k$.
+
+\begin{prop*}
+
+    Suppose $f\colon\bR^n\longvarrightarrow\bR$ is defined and in $C^2$ in a neighborhood of $x^0\in\bR^n$.
+    Further suppose $x^0$ is a critical point of $f$.
+    Let $H(x)$ be the Hessian matrix of $f$, if
+    \benum
+        \item If $H(x^0)$ is positive, then $x^0$ is a local minimum.
+        \item If $H(x^0)$ is negative, then $x^0$ is a local maximum.
+        \item If $H(x^0)$ is nonsigned, then $x^0$ is not a local maximum nor minimum.
+        \item Otherwise, it is unknown.
+    \eenum
+
+\end{prop*}
+
+\begin{proof}
+
+    By Taylor's expansion we have that:
+    \[ f(x^0+k) = f(x^0) + \nabla f\bigl|_{x_0}\cdot k + k^tH(x^0+\theta k)k = f(x^0) + k^tH(x^0+\theta k)k \]
+    Since $f$ is in $C^2$, its second order derivatives are continuous, if $k^tH(x^0)k>0$ then it is positive in a neighborhood of $x^0$, and so $f(x^0+k)>f(x^0)$ in this neighborhood, and so $x^0$ is a
+    local minimum.
+    And similarly if $H$ is negative.
+    If $H(x^0)$ is nonsigned, we can take $k$ such that $k^tHk>0$ since we can scale $k$ we can assume it has any norm, that is we can find such a $k$ in any neighborhood of $x^0$.
+    So for any neighborhood of $x^0$ we can find a $k$ such that $f(x^0+k)>f(x^0)$ and similarly we can find a $k$ where $f(x^0+k)<f(x^0)$ so $x^0$ is not a minimum nor a maximum.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{defn*}
+
+    Suppose $(X,\metric)$ is a metric space and $T\colon X\longvarrightarrow X$ is a \ppemph{contraction mapping} if there exists a $0<k<1$ such that for every $x_1,x_2$:
+    \[ \metricof{T(x_1),T(x_2)}\leq k\metricof{x_1,x_2} \]
+
+\end{defn*}
+
+\begin{thrm*}
+
+    If $T$ is a contraction mapping over a complete metric space then $T$ has a unique fixed point.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let $x_0\in X$, then we define $x_{i+1}=T(x_i)$, that is $x_n=T^n(x_0)$.
+    Then notice that
+    \[ \metricof{x_i, x_{i+1}} = \metricof{T(x_{i-1}), T(x_i)} \leq k\metricof{x_{i-1}, x_i} \]
+    And so on we have that
+    \[ \metricof{x_i, x_{i+1}} \leq k^i\cdot\metricof{x_0, T(x_0)} = k^i\cdot c \]
+    Notice then that if $n<m$:
+    \[ \metricof{x_n, x_m} \leq \sum_{j=n}^{m-1} \metricof{x_j, x_{j+1}} \leq c\sum_{j=n}^\infty k^j \]
+    since $0<k<1$, the infinite series converges and thus the sum on the right converges to $0$ as the tail of a convergent series.
+    That is, for any $\epsilon>0$ there is an $N$ such that
+    \[ c\sum_{j=n}^\infty k^j < \epsilon \]
+    and threfore for any $N\leq n,m$, $\metricof{x_n,x_m}<\epsilon$, so $\set{x_n}_{n=1}^\infty$ is a Cauchy sequence, which converges to $x\in X$ since $X$ is complete.
+
+    Since $T$ is a contraction it is continuous, so:
+    \[ 0 = \lim\metricof{T(x), T(x_n)} = \lim\metricof{T(x), x_n} \]
+    And:
+    \[ \metricof{T(x), x} \leq \metricof{T(x), x_n} + \metricof{x_n, x} \]
+    which converges to $0$ so $\metricof{T(x),x}=0$ so $T(x)=x$ as required.
+
+    Now suppose $T(x_1)=x_1$ and $T(x_2)=x_2$ then
+    \[ \metricof{x_1,x_2} = \metricof{T(x_1), T(x_2)} \leq k\metricof{x_1,x_2} \]
+    which means that $k\geq1$ which is a contradiction, or $\metricof{x_1,x_2}=0$, ie $x_1=x_2$.
+    So the fixed point is unique.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{lemm*}
+
+    Suppose $S\subseteq\bR^n$ is a neighborhood of $x_0\in\bR^n$, and $f\colon S\longvarrightarrow\bR^n$.
+    Suppose $f$'s components are in $C^1$ and $\differ f{x_0}=0$ then for every $\epsilon>0$ there is a $r>0$ such that for every $x_1,x_2\in B_r(x_0)$, $\norm{f(x_1)-f(x_2)}<\epsilon\norm{x_1-x_2}$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Suppose $f(x)=(f_1(x),\dots,f_n(x))$ where $x\in S$.
+    Then for some $0\leq\theta\leq1$, $f_k(x)=f_k(x_0)+\nabla f_k(x_0+\theta h)$.
+    Since $\nabla f_k(0)$ and $f_k\in C^1$, so there exists a radius $r>0$ such that forall $x\in B_r(x_0)$:
+    \[ \norm{\nabla f_k(x)}<\frac\epsilon{\sqrt n} \]
+    And by Cauchy-Schwarz:
+    \[ \norm{f_k(x)-f_k(x_0)} = \norm{\nabla f_k\cdot(\theta(x-x_0))} \leq \norm{\nabla f_k}\norm{x-x_0} \leq \frac\epsilon{\sqrt n}\cdot\norm{x-x_0} \]
+    And so:
+    \[ \norm{f(x)-f(x_0)}^2 = \sum_{k=1}^n\norm{f_k(x)-f_k(x_0)}^2 \leq \sum_{k=1}^n\frac{\epsilon^2}n\norm{x-x_0}^2 = \epsilon^2\norm{x-x_0}^2 \]
+    so $\norm{f(x)-f(x_0)}^2\leq\epsilon\norm{x-x_0}$ as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\end{document}

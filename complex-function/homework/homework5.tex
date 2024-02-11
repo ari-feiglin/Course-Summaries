@@ -1,0 +1,303 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input ../preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{ker}{{\rm ker}}({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{atan}{{\rm tan}^{-1}}({})
+\newfunc{lag}{{\cal L}}({})
+\newfunc{sin}{{\rm sin}}({})
+\newfunc{sinh}{{\rm sinh}}({})
+\newfunc{cosh}{{\rm cosh}}({})
+\newfunc{cos}{{\rm cos}}({})
+\newfunc{arg}{{\rm arg}}({})
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+\newfunc{cis}{{\rm cis}}({})
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\iff{\,\longvarLeftRightarrow\,}
+\def\implies{\,\longvarRightarrow\,}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\mO{{\cal O}}
+\def\mU{{\cal U}}
+\def\mV{{\cal V}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\let\ds=\displaystyle
+\let\longto=\longvarrightarrow
+\let\to=\varrightarrow
+
+\def\bexerc{\begin{exercise*}}
+\def\eexerc{\end{exercise*}}
+\def\bblank{\begin{blankpp}}
+\def\eblank{\end{blankpp}}
+
+\begin{document}
+
+\c@section=2
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Complex Functions}
+
+    \medskip
+    \textit{Assignment \thesection}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\bexerc
+
+    Find the Taylor series of $f(z)=z^2$ around $z=2$.
+
+\eexerc
+
+\bblank
+
+    We know that $f'(z)=2z$ and $f''(z)=2$ and $f^{(k)}(z)=0$ for $k\geq3$.
+    Thus
+    \[ f(z) = \sum_{k=0}^\infty\frac{f^{(k)}(2)}{k!}(z-2)^k = 4 + 4(z-2) + (z-2)^2 \]
+
+\eblank
+
+\bexerc
+
+    Find the Taylor series of $f(z)=e^z$ about $a\in\bC$.
+
+\eexerc
+
+\bblank
+
+    We know that $f'(z)=e^z$ and so inductively $f^{(k)}(z)=e^z$.
+    So
+    \[ f(z) = \sum_{k=0}^\infty\frac{f^{(k)}(a)}{k!}(z-a)^k = \sum_{k=0}^\infty\frac{e^a}{k!}(z-a)^k = e^a\cdot\sum_{k=0}^\infty\frac1{k!}(z-a)^k \]
+
+\eblank
+
+\bexerc
+
+    An \emph{odd} function is a function such that $f(-z)=-f(z)$, and an \emph{even} function is a function such that $f(-z)=f(z)$.
+
+    Let $f$ be an entire odd function.
+    Prove that $f$'s Taylor polynomial has only odd powers.
+    Prove a similar result for entire even functions.
+
+\eexerc
+
+\bblank
+
+    If $f$ is an entire odd function then
+    \[ f(z) = \frac{f(z) + f(z)}2 = \frac{f(z) - f(-z)}2 \]
+    And so
+    \[ f'(z) = \frac{f'(z) + f'(-z)}2 \]
+    And this is also entire (as the derivative of an entire function is entire), and it is also even since
+    \[ f'(-z) = \frac{f'(-z) + f(z)}2 = f'(z) \]
+
+    And if $f$ is an entire even function then
+    \[ f(z) = \frac{f(z) + f(z)}2 = \frac{f(z) + f(-z)}2 \]
+    And so
+    \[ f'(z) = \frac{f'(z) - f'(-z)}2 \]
+    And this is an entire odd function.
+
+    So if $f$ is odd, inductively we see that for $k$ even $f^{(k)}$ is odd and if $k$ is odd $f^{(k)}$ is even.
+    This is true for $k=0$ and $k=1$ as we showed above.
+    And if it is true for $k$ even then $f^{(k)}$ is odd and so $f^{(k+1)}$ is even and $k+1$ is odd, and similar for $k$ odd.
+    Notice that if $g$ is an odd function then $g(0)=-g(0)$ so $g(0)=0$.
+    Thus for $k$ even, $f^{(k)}(0)=0$ and so all of the coefficients with even indexes in the Taylor series are zero (since $c_k=\frac{f^{(k)}(0)}{k!}$), as required.
+
+    And if $f$ is even then inductively we see that for $k$ even $f^{(k)}$ is even and for $k$ odd $f^{(k)}$ is odd.
+    And the odd coefficients in the Taylor series are zero, as required.
+
+\eblank
+
+\bexerc
+
+    Prove that if $f$ is an entire function and $C$ is a circle which contains $a$ then for $k\in\bN$:
+    \[ f^{(k)}(a) = \frac{k!}{2\pi i}\int_C \frac{f(w)}{(w-a)^{k+1}}\,dw \]
+
+\eexerc
+
+\bblank
+
+    We prove this inductively on $k$.
+    For $k=0$ this reduces to Cauchy's integral theorem which we proved in lecture.
+    Let $\tilde C$ be the open circle whose boundary is $C$, thus $a\in C$.
+    Now suppose it is true for $k-1$ then for small enough $h$, $a+h\in\tilde C$ as it is open and so by our induction hypothesis
+    \[ \frac{f^{(k-1)}(a+h) - f^{(k-1)}(a)}h = \frac{(k-1)!}{2\pi i}\int_C f(w)\cdot\frac1h\parens{\frac1{(w-a-h)^k} - \frac1{(w-a)^k}}\,dw \]
+    Our goal is to show that this converges to the target integral (in the statement of the exercise) as $h\longto0$.
+
+    Let $h_n\longto0$, and we can assume without loss of generality that $a+h_n\in\tilde C$ for every $n$.
+    Then let $g_n\colon C\longto\bC$ by
+    \[ g_n(w) = f(w)\cdot\frac1{h_n}\parens{\frac1{(w-a-h_n)^k} - \frac1{(w-a)^k}}\,dw \]
+    Our goal is to show that $g_n$ converges uniformly to $g$ on $C$ where
+    \[ g(w) = \frac{k\cdot f(w)}{(w-a)^{k+1}} \]
+
+    We can expand out the fraction in $g_n$:
+    \[ \frac1{h_n}\cdot\frac1{(w-a-h_n)^k} - \frac1{(w-a)^k} = \frac{(w-a)^k - (w-a-h_n)^k}{(w-a)^k(w-a-h_n)^k} \]
+    Using the binomial theorem, we can see that
+    \[ \frac1{h_n}\cdot\Bigl((w-a)^k - (w-a-h_n)^k\Bigr) = \frac1{h_n}\parens{(w-a)^k - \sum_{\ell=0}^k\binom k\ell (-1)^\ell(w-a)^{k-\ell}h_n^\ell} =
+    \sum_{\ell=1}^k\binom k\ell (-1)^{\ell-1}(w-a)^{k-\ell}h_n^{\ell-1} \]
+
+    And so
+    \[ g_n - g = f(w)\cdot\parens{\frac{\sum_{\ell=1}^k\binom k\ell (-1)^{\ell-1}(w-a)^{k-\ell}h_n^{\ell-1}}{(w-a)^k(w-a-h_n)^k} - \frac k{(w-a)^{k+1}}} = \]
+    \[ = f(w)\cdot\frac1{(w-a)^{k+1}(w-a-h_n)^k}\cdot\parens{\sum_{\ell=1}^k\binom k\ell (-1)^{\ell-1}(w-a)^{k-\ell+1}h_n^{\ell-1} - k(w-a-h_n)^k} \]
+    The subformula in the parentheses can be rewritten like so
+    \[ \sum_{\ell=0}^{k-1}\binom k{\ell+1}(-1)^\ell(w-a)^{k-\ell}h_n^\ell - k\sum_{\ell=0}^k\binom k\ell(-1)^\ell(w-a)^{k-\ell}h_n^\ell =
+    \sum_{\ell=0}^{k-1}(-1)^\ell(w-a)^{k-\ell}h_n^\ell\cdot\parens{\binom k{\ell+1}-k\binom k\ell} - (-1)^kh_n^k \]
+    Since when $\ell=0$ $\binom k1-k\binom k0=k-k=0$, we can start indexing the sum at $\ell=1$.
+    Thus we get that the modulus of this is less than
+    \[ \abs{\dots} \leq M\sum_{\ell=1}^{k-1}\abs{w-a}^{k-\ell}\abs{h_n}^\ell + \abs{h_n}^k \]
+    where $M$ is the maximum value of $\binom k{\ell+1}-k\binom k\ell$.
+    Let $N$ be the maximum value of $\abs{w-a}^{k-\ell}$ iterating over all $w\in C$ and $\ell=1,\dots,k-1$, and we can assume that $\abs{h_n}<1$ so $\abs{h_n}^\ell\leq\abs{h_n}$.
+    Thus this in turn is less than
+    \[ \leq MN(k-2)\abs{h_n} + \abs{h_n} \]
+    Let us simply denote this as $h'_n$, and it is clear that $h'_n\longto0$ since $h_n$ does.
+
+    And so
+    \[ \abs{g_n-g} \leq \abs{f(w)}\cdot\frac1{\abs{w-a}^{k+1}\abs{w-a-h_n}^k}\cdot h'_n \]
+    We can bound $\abs{f(w)}$ since $\abs f$ is continuous and $C$ is closed and bounded, and therefore compact, so $\abs f$ takes a maximum value on $C$, let it be $B$.
+    And since $a\in\tilde C$ which is open and $w\in C$ which is the boundary of $\tilde C$, $\abs{w-a}$ must take a minimum value $\alpha>0$ over all $w\in C$ (take a ball of radius $\alpha>0$ about
+    $a$ contained in $C$, which must exist as it is open).
+    And since
+    \[ \abs{w-a-h_n} \geq \abs{w-a} - \abs{h_n} \geq \alpha - \abs{h_n} \]
+    we can assume $\abs{h_n}\leq\frac\alpha2$ and so $\abs{w-a-h_n}\geq\frac\alpha2$.
+    And so we have a bound inpdenent of $w$:
+    \[ \abs{g_n-g} \leq B\cdot\frac{2^k}{\alpha^{2k+1}}\cdot h'_n \]
+    And this bound converges to $0$ as $n\longto\infty$, so $g_n\longvarrightarrows g$ as required.
+
+    This means that
+    \[ \frac{(k-1)!}{2\pi i}\int_C g_n\,dz \longto \frac{(k-1)!}{2\pi i}\int_C g\,dz \]
+    And we recall that
+    \[ \frac{(k-1)!}{2\pi i}\int_C g_n\,dz = \frac{f^{(k-1)}(a+h_n) - f^{(k-1)}(a)}{h_n},\qquad \frac{(k-1)!}{2\pi i}\int_C g\,dz = \frac{k!}{2\pi i}\int_C \frac{f(w)}{(w-a)^{k+1}}\,dz \]
+    Since this is true for every $h_n\longto0$, this means that
+    \[ f^{(k)}(a) = \lim_{h\to0} \frac{f^{(k-1)}(a+h) - f^{(k-1)}(a)}h = \frac{k!}{2\pi i}\int_C \frac{f(w)}{(w-a)^{k+1}}\,dz \]
+    as required.
+
+\eblank
+
+\bexerc
+
+    Let $f$ be an entire function bound by $M$ on the circle $\abs z=R$.
+    \benum
+        \item Show that the coefficients $c_k$ in $f$'s Taylor series about $0$ satisfy
+        \[ \abs{C_k} \leq \frac M{R^k} \]
+        \item Show that for the polynomial $p(z)=\sum_{k=0}^n c_kz^k$ bound by $1$ on the open disk $D_1(0)$, every coefficient $c_k$ is bound by $1$.
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item We know that by Cauchy's integral theorem:
+        \[ f^{(k)}(0) = \frac{k!}{2\pi i}\int_{\abs z=R}\frac{f(z)}{z^{k+1}}\,dz \]
+        since the function $\frac{f(z)}{z^{k+1}}$ is bound by $\frac M{R^{k+1}}$ on $\abs z=R$, we get that
+        \[ \abs{f^{(k)}(0)} \leq \frac{k!}{2\pi}\cdot\frac M{R^{k+1}}\cdot\int_{\abs z=R}\abs{dz} = k!\cdot\frac M{R^k} \]
+        since the length of the curve $\abs z=R$ is $2\pi R$.
+        And since
+        \[ c_k = \frac{f^{(k)}(0)}{k!} \implies \abs{c_k} \leq \frac M{R^k} \]
+        as required.
+
+        \item For every $R<1$, $p$ is bound by $1$ on the circle $\abs z=R$, and since the coefficients of the Taylor series are precisely $c_k$, we get
+        \[ \abs{c_k} \leq \frac1{R^k} \]
+        for every $R<1$.
+        And since $R<1$ is arbitrary, this means that $\abs{c_k}\leq1$ as required.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    $f$ is an entire function such that $\abs{f(z)}\leq A+B\abs z^{3/2}$ for every $z$.
+    Show that $f$ is a linear polynomial.
+
+\eexerc
+
+\bblank
+
+    Let $z_0\in\bC$ and $R>0$, set $C_R=\set{z\in\bC}[\abs{z-z_0}=R]$.
+    Then
+    \[ f''(z_0) = \frac1{\pi i}\int_{C_R}\frac{f(z)}{(z-z_0)^3}\,dz \]
+    Thus
+    \[ \abs{f''(z_0)} \leq \frac1{\pi}\max_{z\in C_R}\frac{\abs{f(z)}}{\abs{z-z_0}^3}\cdot2\pi R \leq \frac2{R^2}\cdot\max_{z\in C_R}A+B\abs{z}^{3/2} \]
+    Since $R=\abs{z-z_0}\geq\abs z-\abs{z_0}$, we have $\abs z\leq \abs{z_0}+R$ and so
+    \[ \abs{f''(z_0)} \leq \frac{2\bigl(A+B(\abs{z_0}+R)^{3/2}\bigr)}{R^2} \]
+    As $R\longto\infty$ this goes to $0$, so $f''=0$ and therefore $f(z)=a+bz$ as required.
+
+\eblank
+
+\bexerc
+
+    Let $f$ be an entire function where $\abs{f'(z)}\leq\abs z$ for every $z$.
+    Show that $f(z)=a+bz^2$ where $\abs b\leq\frac12$.
+
+\eexerc
+
+\bblank
+
+    Let $z_0\in\bC$ and let $R>0$ and $C_R=\set{z\in\bC}[\abs{z-z_0}=R]$.
+    Then
+    \[ f''(z_0) = \frac1{2\pi i}\int_{C_R}\frac{f'(x)}{(z-z_0)^2}\,dz \]
+    Thus
+    \[ \abs{f''(z_0)} \leq \frac1{2\pi}\max_{z\in C_R}\frac{\abs{f'(x)}}{\abs{z-z_0}^2}\cdot2\pi R \leq \max_{z\in C_R}\frac{\abs z}R \]
+    Since $R=\abs{z-z_0}\geq\abs z-\abs{z_0}$, we have $\abs z\leq R+\abs{z_0}$ for every $z\in C_R$ so
+    \[ \abs{f''(z_0)} \leq \frac{\abs{z_0} + R}R = 1 + \frac{\abs{z_0}}R \]
+    And as $R\longto\infty$ this approaches $1$, so $f''(z_0)$ is bounded and entire and therefore constant.
+
+    So $f''(z)=2b$ so $f'(z)=c+2bx$, and since $\abs{f'(0)}=0$ this means that $c=0$.
+    And so $f(z)=a+bx^2$.
+    Since $\abs{f'(1)}\leq1$, this means that $\abs{2b}\leq1$ so $\abs{b}\leq\frac b2$ as required.
+
+
+\eblank
+
+\bexerc
+
+    Prove that no non-constant entire function can satisfy that for all $z\in\bC$, $f(z+1)=f(z)$ and $f(z+i)=f(z)$.
+
+\eexerc
+
+\bblank
+
+    Suppose $f$ is an entire function which satisfies these conditions.
+
+    Let $m,n\in\bZ$ and $z\in\bC$, then inductively we can see that $f(z+m)=f(z)$ for positive integers $m$, and for negative integers $f(z)=f(z+m-m)=f(z+m)$.
+    And similarly $f(z+in)=f(z)$.
+    Thus $f(z+m+in)=f(z)$.
+
+    This means that $f(\bC)=f\bigl(\set{z\in\bC}[0\leq\Re z,\Im z\leq 1]\bigr)$ since for every $z\in\bC$, $z-\floor{\Re z}-i\floor{\Im z}$ is in the unit square and has the same image as $z$.
+    But the unit square is closed and bounded, so it is compact.
+    And since $f$ is continuous, it is therefore bounded on the unit square and therefore on all of $\bC$.
+    Therefore $f$ is constant.
+
+\eblank
+
+\end{document}
+

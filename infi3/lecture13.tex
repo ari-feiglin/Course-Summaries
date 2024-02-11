@@ -1,0 +1,122 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\openset{{\cal O}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\begin{document}
+
+\c@section=13
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infinitesimal Calculus 3}
+
+    \medskip
+    \textit{Lecture \thesection, Sunday December 4, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{defn*}
+
+    If $f\colon\bR^2\longvarrightarrow\bR$ is differentiable at $(x_0,y_0)$ then the \ppemph{tangent plane} to $f$ at $(x_0,y_0)$ is the set of points $(x,y,z)$ such that
+    \[ (z-z_0) = A(x-x_0) + B(y-y_0) \]
+
+\end{defn*}
+
+This is equivalent to
+\[ A(x-x_0) + B(y-y_0) - (z-z_0) = 0 \]
+And such a normal vector to this plane is $\parens{A,B,-1}$ (in general the normal to $a(x-x_0)+b(y-y_0)+c(z-z_0)=0$ is $\parens{a,b,c}$).
+And such by our previous theorem, the normal to the tangent plane is
+\[ \vec n = \parens{\partial_x f(x_0,y_0), \partial f_y(x_0,y_0), -1} \]
+
+Notice that if we define $v_1=(1,0,\partial_x f(x_0,y_0)$ and $v_2=(0,1,\partial_y f(x_0,y_0))$ which are tangent to the $x$ and $y$ partial functions of $f$ ($(x,f'(x))$ is tangent to $f(x)$), then we see
+that $v_1\cdot n=v_2\cdot n=0$ which should be intuitive.
+So the tangent plane is spanned by $\set{\bigl(1,0,\partial_x f\bigr), \bigl(0,1,\partial_y f\bigr)}$.
+
+\begin{defn*}
+
+    If $f$ is a real valued function in $\bR^n$ and $u\in\bR^n$ is a unit vector, the \ppemph{directional derivative} in the direction of $u$ is defined by:
+    \[ D_uf(\vec x) = \lim_{t\varrightarrow0}\frac{f(\vec x + tu) - f(\vec x)}t \]
+
+\end{defn*}
+
+Notice that if $u=e_k=\parens{0,\dots,1,\dots,0}$ then $D_u f=\partial_k f$ (the $k$th partial derivative).
+
+\begin{prop*}
+
+    If $f(x,y)$ is defined in a neighborhood of $(x_0,y_0)$ and differentiable there, suppose $u=(a,b)$ is a unit vector then $D_uf(x_0,y_0)$ exists and is equal to
+    \[ D_uf(x_0,y_0) = a\partial_x f(x_0,y_0) + b\partial_y f(x_0,y_0) \]
+
+\end{prop*}
+
+\begin{proof}
+
+    We know that by definition of differentiability
+    \[ f(x,y) = f(x_0,y_0) + A\Delta x + B\Delta y + \epsilon(\Delta x,\Delta y) \]
+    Where $A=\partial_x f(x_0,y_0)$ and $B=\partial_y f(x_0,y_0)$.
+    Then
+    \[ D_u f(x_0,y_0) = \lim_{t\varrightarrow0}\frac{f(x_0+ta, y_0+tb) - f(x_0,y_0)}t = \lim_{t\varrightarrow0}\frac{Ata + Btb + \epsilon(\Delta x,\Delta y)}t =
+    Aa + Bb + \lim_{t\varrightarrow0}\frac{\epsilon(\Delta x,\Delta y)}t = Aa + Bb \]
+    The last limit being equal to $0$ is true since $\Delta x^2+\Delta y^2=t^2(a^2+b^2)$ and thus it is a constant times the limit of $\frac{\epsilon(\Delta\vec x)}{\norm{\vec x}}$ which is $0$.
+    And recalling what $A$ and $B$ are equal to, this proves our proposition.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{defn*}
+
+    Suppose $f\colon\bR^n\longvarrightarrow\bR$ is defined in a neighborhood of $\vec x$ and has partial derivatives at $\vec x$.
+    Then we define the \ppemph{gradient} of $f$ at $\vec x$ to be:
+    \[ \nabla f(\vec x) = \begin{pmatrix} \partial_{e_1} f(\vec x) \\ \cdots \\ \partial_{e_n} f(\vec x) \end{pmatrix} \]
+
+\end{defn*}
+
+Thus by our above proposition, if $f$ is differentiable then
+\[ D_uf = u\cdot\nabla f \]
+Notice that if $\theta$ is the angle between $u$ and the gradient of $f$, then
+\[ D_uf = \norm u\cdot\norm{\nabla f}\cdot\cos\theta  = \norm{\nabla f}\cdot\cos\theta \]
+Thus the directional derivative is maximal when $u$ is parallel with $\nabla f$ ($\theta=0$), and minimal when $u$ is pointed in the opposite direction of $\nabla f$ ($\theta=\pi$).
+Thus the gradient of a function informs us of its maximal rate of change.
+
+\begin{defn*}
+
+    If $E\subseteq\bR^n$ and $f\colon E\longvarrightarrow\bR$, if $f$ is defined in a neighborhood of $\vec v_0\in E$ then we define the $k$th partial derivative of $f$ at $\vec v_0$ to be:
+    \[ \partial_{x_k} f(\vec v_0) = \lim_{\Delta x\varrightarrow0}\frac{f(\vec v_0 + \Delta x\cdot e_k) - f(\vec v_0)}{\Delta x} \]
+    And $f$ is differentiable at $(x_1,\dots,x_n)$ if there exist numbers $A_1,\dots,A_n$ and an $\epsilon$ function such that
+    \[ f(x_1+\Delta x_1,\dots,x_n+\Delta x_n) = f(x_1,\dots,x_n) + \sum_{k=1}^n A_k\Delta x_k + \epsilon(\Delta x_1,\dots,\Delta x_n) \]
+
+\end{defn*}
+
+Alternatively if we define $\vec x=(x_1,\dots,x_n)$ and $h=(\Delta x_1,\dots,\Delta x_n)$, then $f$ is differentiable at $\vec x$ if and only if there exists a linear transformation
+$L\colon\bR^n\longvarrightarrow\bR$, and an $\epsilon$ function such that
+\[ f(\vec x+h) = f(x) + L(h) + \epsilon(h) \]
+This is true since the linear transformation $L$ corresponds to mapping $e_k$ to $A_k$.
+
+\end{document}
+

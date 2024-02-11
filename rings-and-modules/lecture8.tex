@@ -1,0 +1,269 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\catcode`\@=11
+\input pdfmsym
+
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\implies{\,\mathrel{\longvarRightarrow}\,}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\divides{{\mid}}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\newfunc{eulerg}{{\rm Euler}}({})
+\newfunc{order}o({})
+\newfunc{ker}{{\rm Ker}}({})
+\newfunc{image}{{\rm Im}}({})
+\newfunc{lattice}{{\cal L}}(\vert)
+\newfunc{powset}{{\cal P}}(\vert)
+\newfunc{center}{{\rm Z}}({})
+\newfunc{units}{{\cal U}}(\vert)
+\newfunc{sign}{{\rm sgn}}({})
+\newfunc{aut}{{\rm Aut}}({})
+\newfunc{speclinear}{{\rm SL}}({})
+\newfunc{genlinear}{{\rm GL}}({})
+\newfunc{projlinear}{{\rm PGL}}({})
+\newfunc{specprojlinear}{{\rm PSL}}({})
+\newfunc{core}{{\rm Core}}(\vert)
+\newfunc{inner}{{\rm Inn}}(\vert)
+\newfunc{outer}{{\rm Out}}(\vert)
+\newfunc{conj}{{\rm conj}}({})
+\newfunc{ev}{{\rm ev}}({})
+
+\def\maxdivs{\mathrel{\|}}
+
+\let\ideal=\trianglelefteq
+\let\pideal=\triangleleft
+\def\normal{\mathrel\triangleleft}
+\let\mmorph=\longvarhookrightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+
+\def\qed{\hskip1cm\hbox{}\hfill$\blacksquare$}
+
+\def\mN{\mathcal N}
+\def\mG{\mathcal G}
+
+\begin{document}
+
+\c@section=7
+
+\barcolorbox{220, 220, 255}{0, 0, 130}{80, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Introduction to Rings and Modules}
+
+    \medskip
+    \textit{Lecture \thesection, Monday May 8 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{prop*}
+
+    If $R$ is an integral domain and $a,b\in R$, then $(a)=(b)$ if and only if there exists an invertible $u$ such that $a=bu$.
+
+\end{prop*}
+
+\begin{proof}
+
+    If there does exist such a $u$, then $a=bu$ so $a\in(b)$ and so $(a)\subseteq(b)$, and $b=au^{-1}$ so $(a)=(b)$.
+    If $(a)=(b)$ then $a=bu$ and $b=av$, so $a=avu$ so $a(1-vu)=0$, and since $R$ is an integral domain, either $a=0$ or $1-vu=0$.
+    If $a=0$ this is trivial, otherwise $vu=1$ and so $v$ and $u$ are invertible as required.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    If $a,b\in R$ and there exists an invertible $u$ such that $a=bu$ then $a$ and $b$ are considered \ppemph{friends}.
+
+\end{defn*}
+
+Thus in an integral domain, $(a)=(b)$ if and only if $a$ and $b$ are friends.
+
+\begin{prop*}
+
+    If $R$ is Artinian, every quotient ring of $R$'s is Artinian.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $I\ideal R$ is an ideal.
+    If there exist a descending chain of ideals in $\slfrac RI$, then it is of the form
+    \[ \slfrac{J_1}I\supset\slfrac{J_2}I\supseteq\cdots \]
+    where $J_i\ideal R$ by the correspondence theorem.
+    Thus the $J_i$s form a descending chain of ideals in $R$, and must stabilize.
+    And therefore so must their quotients.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    If $R$ is an Artinian integral domain, $R$ is a field.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $0\neq a\in R$, notice that for every $n$, $a^{n+1}=a\cdot a^{n}\in(a^n)$, so $(a^{n+1})\subseteq(a^n)$.
+    So we have a decreasing chain of ideals $(a)\supseteq(a^2)\supseteq\cdots$.
+    Since $R$ is artinian, there exists an $N$ such that $(a^N)=(a^{N+1})=\cdots$.
+    This is only if there exists an invertible element $u$ such that $a^Nu=a^{N+1}=a^Na$.
+    Thus $a^N(a-u)=0$ and so $a^N=0$ or $a=u$, since $R$ is an integral domain and $a\neq0$, $a^N\neq0$, so $a=u$.
+    And since $u$ is invertible, $a$ is invertible.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    If $R$ is a commutative Artinian ring, $\dim R=0$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $\dim R>0$, then there exist at least two prime ideals $P_0$ and $P_1$ such that $P_0\subset P_1$.
+    Since $P_0$ is a prime ideal, $\slfrac R{P_0}$ is an integral domain, and since $R$ is Artinian so is the quotient ring.
+    Therefore $\slfrac R{P_0}$ is a field, therefore $P_0$ is maximal.
+    But this is a contradiction since it is properly contained within $P_1$.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    Let $R$ be a commutative ring, and $p\neq0$ a non-invertible element.
+    Then $p$ is \ppemph{irreducible} if for every decomposition $p=ab$, $a$ or $b$ is invertible.
+
+\end{defn*}
+
+\begin{prop*}
+
+    Let $R$ be a principal ideal domain, let $p\in R$ be irreducible.
+    Thus $(p)$ is maximal and therefore prime.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $I$ is a proper ideal such that $(p)\subseteq I$.
+    Then since $R$ is a PID, $I=(a)$, so $p\in(p)\subseteq(a)$.
+    Therefore $p=ab$.
+    Since $p$ is irreducible, $a$ or $b$ is invertible.
+    Since $I$ is proper, it cannot contain invertible elements, so $b$ must be invertible.
+    Therefore $a=pb^{-1}$ and so $(p)=(a)=I$, so $(p)$ is indeed maximal.
+    \qed
+
+\end{proof}
+
+Recall that $I$ is maximal in a commutative ring $R$ if and only if $\slfrac RI$ is a field.
+And $J$ is a prime ideal in a commutative ring $R$ if and only if $\slfrac RJ$ is an integral domain.
+Since fields are integral domains, that means $I$ is a prime ideal.
+
+\begin{exam*}
+
+    This is not true if $R$ isn't a PID.
+    Take $R=\bQ+x\bR[x]\subseteq\bR[x]$, the ring of all real polynomials with rational free coefficients.
+    $x\in\bR[x]$ is irreducible since if $x=fg$, then either $\deg f$ or $\deg g$ is $0$ (since $\deg(fg)=\deg f+\deg g$), and so $f$ or $g$ is invertible.
+    But $(x)$ is not prime in $R$ since
+    \[ (\sqrt 2x)(\sqrt2x) = 2x^2 \in (x) \]
+    but $\sqrt2x\notin(x)$ so $(\sqrt2x)\nsubseteq(x)$.
+
+\end{exam*}
+
+\begin{defn*}
+
+    Let $R$ be a PID, $R$ is called a \ppemph{unique factorization domain} (UFD) if for every $0\neq a\in R$ non-invertible, there exists a factorization
+    \[ a = p_1p_2\cdots p_r \]
+    such that every $p_i$ is irreducible.
+    And if $a=q_1q_2\cdots q_s$ then $r=s$ and there exists a permutation $\sigma$ such that $p_i$ and $q_{\sigma(i)}$ are friends for every $i$.
+
+\end{defn*}
+
+\begin{defn*}
+
+    Let $R$ be a commutative ring, and $a,b\in R$, then we say $a\divides b$ ($a$ divides $b$) if there exists a $q\in R$ such that $b=qa$.
+    (If $R$ is not commutative there is the notion of left and right divisors.)
+
+\end{defn*}
+
+\begin{prop*}
+
+    Every PID is a unique factorization domain.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $0\neq a\in R$ not invertible.
+    We claim there exists a irreducible $p$ such that $p\divides a$.
+    Suppose that there doesn't, then $a$ is not irreducible ($a$ is reducable) since $a$ divides itself.
+    Therefore there exists a factorization $a=b_1c_1$ such that $b_1$ and $c_1$ are not invertible.
+    And so $b_1$ is decomposable (since $b_1\divides a$), so there exists a factorization $b_1=b_2c_2$ where $b_2$ and $c_2$ are not invertible.
+    Since $a=b_2c_2c_1$, so $b_2\divides a$ and so $b_2$ is decomposable.
+    So we can continue recursively to get $b_n$s and $c_n$s where
+    \[ b_n = b_{n+1}c_{n+1} \]
+    and $b_n$ and $c_n$ are not invertible and decomposable.
+    So
+    \[ (b_1) \subseteq (b_2) \subseteq (b_3) \subseteq \cdots \]
+
+    Since $R$ is a PID, it is Noetherian, so at some point $(b_N)=(b_{N+1})$.
+    So $b_N$ and $b_{N+1}$ are friends, so there exists a $u$ such that $b_N=b_{N+1}u=b_{N+1}c_{N+1}$, so
+    \[ b_{N+1}(u-c_{N+1}) = 0 \implies u = c_{N+1} \]
+    so $c_{N+1}$ is invertible, which is a contradiction.
+
+    We now claim that $a$ has a factorization into irreducible $p_i$s.
+    By above, we know that there exists a $p_1\in R$ irreducible such that $p_1\divides a$, so $a=p_1b_1$.
+    If $b_1$ is invertible then $p_1$ and $a$ are friends and so if $a=xy$ then $p_1=xyb_1^{-1}$ so $x$ is invertible or $yb_1^{-1}$ is invertible, and so $x$ or $y$ is invertible.
+    So if $b_1$ is invertible, $a$ is irreducible and so $a=a$ is a factorization.
+
+    Otherwise $0\neq b_1$ is not invertible and so there exists a irreducible $p_2$ such that $p_2\divides b_1$ and so $b_1=p_2b_2$.
+    If $b_2$ is invertible, then $b_1$ is irreducible so $a=p_1b_1$ is a factorization.
+    Otherwise, we continue recursively.
+    If at any point we have that $b_n$ is invertible, we have finished.
+    Otherwise we have a sequence of $p_n$ irreducible and $b_n$ invertible such that $b_n=p_{n+1}b_{n+1}$, and so $(b_n)\subseteq(b_{n+1})$.
+    So we have an ascending chain of ideals, and since $R$ is Noetherian, at some point $(b_N)=(b_{N+1})$ and so $b_N=b_{N+1}u=b_{N+1}p_{N+1}$, and so $u=p_{N+1}$ as $R$ is an integral domain.
+    But $p_{N+1}$ is irreducible and therefore not invertible, in contradiction.
+    So every $0\neq a\in R$ non-invertible has a factorization.
+
+    Now we must show that this factorization is unique.
+    Suppose that
+    \[ a = p_1p_2\cdots p_n = q_1q_2\cdots q_m \]
+    where $q_i$ and $p_i$ are irreducible.
+    Then we have that
+    \[ a=q_1\cdots q_m\in(p_1) \]
+    and since $p_1$ is irreducible, $(p_1)$ is prime so there exists an $i$ such that $q_i\in(p_1)$.
+    We can assume $i=1$ since we don't care about the order of the factorization.
+    Therefore $(q_1)\subseteq(p_1)$ and since $q_1$ is irreducible, $(q_1)$ is maximal, so $(q_1)=(p_1)$ and therefore $q_1$ and $p_1$ are friends.
+    So there exists an invertible $u_1$ such that $q_1=u_1p_1$ and so
+    \[ p_1(p_2\cdots p_n-u_1q_2\cdots q_m) = 0 \]
+    and so $p_2\cdots p_n=u_1q_2\cdots q_m$.
+    Again there must be a $q_i$ or a $u_1q_i$ in $(p_2)$ (since if $u_2$ in $(p_2)$ then $p_2$ is invertible), since $(u_1q_i)=(q_i)$ since $u_1$ is invertible, we have that $(q_i)=(p_i)$ for the same
+    reason as before.
+    We can also assume $i=2$ and so $p_2$ and $q_2$ are friends and $q_2=u_2p_2$, and we can continue inductively.
+    Thus for every $p_i$ there exists a $q_i$ which it is friends with.
+    So $n\leq m$, if $n<m$ then at the end of the induction we get that
+    \[ 1 = u_1\cdots u_n\cdot q_{n+1}\cdots q_m \]
+    and so $q_{n+1}\cdots q_m$ is invertible, so $(q_{n+1}\cdots q_m)=R$ but this is contained in $(q_m)$ so $(q_m)=R$ so $q_m$ is invertible which is a contradiction since it is irreducible.
+    So $n=m$ and the factorization is unique.
+    \qed
+
+\end{proof}
+
+\end{document}
+

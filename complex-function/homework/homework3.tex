@@ -1,0 +1,293 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input ../preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{ker}{{\rm ker}}({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{atan}{{\rm tan}^{-1}}({})
+\newfunc{lag}{{\cal L}}({})
+\newfunc{sin}{{\rm sin}}({})
+\newfunc{sinh}{{\rm sinh}}({})
+\newfunc{cosh}{{\rm cosh}}({})
+\newfunc{cos}{{\rm cos}}({})
+\newfunc{arg}{{\rm arg}}({})
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+\newfunc{cis}{{\rm cis}}({})
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\iff{\,\longvarLeftRightarrow\,}
+\def\implies{\,\longvarRightarrow\,}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\mO{{\cal O}}
+\def\mU{{\cal U}}
+\def\mV{{\cal V}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\let\ds=\displaystyle
+\let\longto=\longvarrightarrow
+\let\to=\varrightarrow
+
+\def\bexerc{\begin{exercise*}}
+\def\eexerc{\end{exercise*}}
+\def\bblank{\begin{blankpp}}
+\def\eblank{\end{blankpp}}
+
+\begin{document}
+
+\c@section=3
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Complex Functions}
+
+    \medskip
+    \textit{Assignment \thesection}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\bexerc
+
+    Compute the integral $\int_C f$ where $f(z)=x^2+iy^2$ and $C\colon z(t)=t^2+it^2$ for $0\leq t\leq1$.
+
+\eexerc
+
+\bblank
+
+    We do this by definition, the integral is equal to
+    \[ \int_0^1 f(z(t))z'(t) = \int_0^1 (t^4 + it^4)2t(1+i) = 2(1+i)^2\int_0^1 t^5 = 4i\cdot\frac{t^6}6\biggl|_0^1 = \frac{2i}3 \]
+
+\eblank
+
+\bexerc
+
+    Compute the integral $\int_C f$ where $f(z)=\frac1z$ and $C\colon z(t)=\sin t+i\cos t$ for $0\leq t\leq2\pi$.
+
+\eexerc
+
+\bblank
+
+    We again do this by definition, noting that $z(t)=\cosof{\frac\pi2-t}+i\sinof{\frac\pi2-t}=e^{i\parens{\frac\pi2-t}}$:
+    \[ \int_0^{2\pi}e^{-i\parens{\frac\pi2-t}}\cdot(-1)\cdot e^{i\parens{\frac\pi2-t}} = \int_0^{2\pi}(-1) = -2\pi i \]
+
+\eblank
+
+\bexerc
+
+    Prove that if $F'$ is identically $0$ on a domain $D$ then $F$ is constant on $D$.
+
+\eexerc
+
+\bblank
+
+    Let $a,b\in D$, then since $D$ is a connected domain there exists a smooth curve connecting them, so we can integrate $F'$ from $a$ to $b$
+    Then
+    \[ \int_a^b F' = F(b) - F(a) \]
+    But since $F'=0$, we have
+    \[ \int_a^b F' = \int_a^b 0 = 0 \]
+    So $F(a)=F(b)$ for every two points in $D$, as required.
+
+\eblank
+
+\bexerc
+
+    Show that if $f$ is a continuous real function where $\abs f\leq1$ on all of $\bC$ then
+    \[ \abs{\int_{\abs z=1} f}\leq4 \]
+
+\eexerc
+
+\bblank
+
+    Let
+    \[ I = \int_{\abs z=1} f \]
+    If $I=0$, we have finished.
+    Otherwise, let
+    \[ z_0 = \frac{\overline I}{\abs I} \]
+    Then $\abs{z_0}=1$, so $z_0=e^{i\theta}$ and $z_0I=\abs I$.
+    So we have that
+    \[ \abs{\int_{\abs z=1} f} = e^{i\theta}\int_{\abs z=1}f = \int_0^{2\pi} f\bigl(e^{it}\bigr)\cdot ie^{i(t+\theta)}\,dt \]
+    Since the left hand side is real, so must the right hand side be.
+    And since $f$ is real, the real part of the right hand side is
+    \[ = \int_0^{2\pi} -f\bigl(e^{it}\bigr)\sin(t+\theta)\,dt \]
+    And this is less than
+    \[ \leq \int_0^{2\pi}\abs{-f\bigl(e^{it}\bigr)\sin(t+\theta)}\,dt \leq \int_0^{2\pi}\abs{\sin(t+\theta)}\,dt = \int_0^{2\pi}\abs{\sin t}\,dt \]
+    since $\sin$ has a period of $2\pi$.
+    And this is equal to
+    \[ \int_0^\pi \sin t\,dt - \int_\pi^{2\pi} \sin t\,dt = -\cos t\Bigl|_0^\pi + \cos t\Bigl|_\pi^{2\pi} = 4 \]
+    So all in all we have
+    \[ \abs{\int_{\abs z=1}f} \leq 4 \]
+    as required.
+
+\eblank
+
+\bexerc
+
+    Show that $\int_C z^k=0$ for every $-1\neq k\in\bZ$ where $C=Re^{i\theta}$ for $0\leq\theta\leq2\pi$ and constant $R>0$, in two ways:
+    \benum
+        \item Representing $z^k$ as the derivative of an analytic function.
+        \item Directly.
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item Let $f(z)=\frac{z^{k+1}}{k+1}$, then $f'(z)=z^k$ (since $k+1\neq0$ this is well-defined).
+        So
+        \[ \int_C z^k = \int_C f' = f(C(2\pi)) - f(C(0)) = f(R) - f(R) = 0 \]
+
+        \item Directly we have
+        \[ \int_C z^k = \int_0^{2\pi} R^ke^{ik\theta}Rie^{i\theta} = R^{k+1}\int_0^{2\pi}e^{(k+1)i\theta} = \frac{R^{k+1}}{k+1}e^{(k+1)i\theta}\biggl|_0^{2\pi} = 0 \]
+        Since $e^0=e^{(k+1)2\pi}=1$.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Compute $\int_C z-i$ where $C\colon z(t)=t+it^2$ for $-1\leq t\leq 1$, by
+    \benum
+        \item Finding an antiderivative.
+        \item By computing the integral on the line from $-1+i$ to $1+i$ and using Cauchy's theorem.
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item We can find the antiderivative of $z-i$, which is $\frac{z^2}2-iz$.
+        The curve $C$ is from $z(-1)=-1+i$ to $z(1)=1+i$, and so
+        \[ \int_C z-i = \frac{z^2}2-iz\biggl|_{-1+i}^{1+i} = i-i(1+i) - (-i-i(-1+i)) = 1 - 1 = 0 \]
+        \item By Cauchy's theorem we know that the integral from $-1+i$ to $1+i$ is equal no matter which curve you choose since $z-i$ is analytic.
+        Then we can take the line $[-1+i,1+i]$, which is parameterized by $z(t)=-1+i+2t$ for $0\leq t\leq1$.
+        This gives
+        \[ \int_0^1 (-1+i+2t-i)2\,dt = \int_0^1 4t-2 = 2t^2-2t\bigl|_0^1 = 2-2 = 0 \]
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Compute the following integrals:
+    \benum
+        \item $\int_0^i e^z$
+        \item $\int_{\frac\pi2}^{\frac\pi2+i}\cos(2z)$
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item Since the antiderivative of $e^z$ is $e^z$, this is equal to $e^i-e^0=\cos(1)-1+i\sin(1)$.
+        \item Since
+            \[ \cos(2z) = \frac{e^{2z} + e^{-2z}}2 \]
+            So its antiderivative is
+            \[ e^{2z} - e^{-2z} \]
+            And so the integral is equal to
+            \[ e^{\pi+2i} - e^{-\pi-2i} - e^{\pi} + e^{-\pi} \]
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Suppose $f$ is analytic in a convex domain $D$ such that $\abs{f'}\leq1$.
+    Prove that $\abs{f(b) - f(a)}\leq\abs{b-a}$ for every $a,b\in D$.
+
+\eexerc
+
+\bblank
+
+    Let $C$ be a curve from $a$ to $b$, this can be the line $t\varmapsto a+t(b-a)$.
+    Then we know that since $f$ is analytic
+    \[ \abs{f(b) - f(a)} = \abs{\int_a^b f'\,dz} \leq \max\abs{f'(z)}\cdot\abs{b-a} \leq \abs{b-a} \]
+    as required.
+
+\eblank
+
+\bexerc
+
+    Let $a,b\in\set{z\in\bC}[\Re z<0]$, prove that $\abs{e^b-e^a}<\abs{b-a}$.
+    Is this true for $a,b\in\set{z\in\bC}[\Re z\leq0]$.
+
+\eexerc
+
+\bblank
+
+    We know that
+    \[ \abs{e^b-e^a} = \abs{\int_a^b e^z} \leq \max\abs{e^z}\cdot\abs{b-a} \]
+    from the proposition proven in lecture.
+    We know that $\abs{e^z}=e^{\Re z}$, and so if we take the curve as the line connecting $a$ to $b$, then $\abs{e^z}\leq\maxof{\abs{e^a}, \abs{e^b}}$, depending on whose real value is larger.
+    This is since for every $z\in[a,b]$ (the line connecting the points), $\Re z$ is between $\Re a$ and $\Re b$.
+    So
+    \[ \abs{e^b - e^a} \leq \maxof{e^{\Re a}, e^{\Re b}}\cdot\abs{b-a} \]
+    since $e^{\Re a}, e^{\Re b}<e^0=1$ and this inequality is strict, we have that
+    \[ \abs{e^b - e^a} < \abs{b-a} \]
+    as required.
+
+    We know that for $\Re z\leq0$, $\abs{e^z}\leq1$, so we get that
+    \[ \abs{e^b - e^a}\leq\abs{b-a} \]
+    from the first inequality above.
+    If there exists $a$ and $b$ where this inequality is an equality, let $\ell$ be the line connecting $a$ and $b$ so we have that
+    \[ \abs{e^b-e^a} = \abs{\int_\ell e^z\,dz} = \abs{\int_0^1 e^{\ell(t)}\ell'(t)\,dz} \leq \int_0^1\abs{e^{\ell(t)}}\cdot\abs{\ell'(t)}\,dz \leq \int_0^1\abs{\ell'(t)}\,dz = \abs{b-a} \]
+    where the last inequality is because $\abs{e^{\ell(t)}}\leq1$ since $\Re(\ell(t))\leq0$.
+    So if this equality holds, we must have that
+    \[ \int_0^1\abs{e^{\ell(t)}\cdot\ell'(t)}\,dz = \int_0^1\abs{\ell'(t)}\,dz \]
+    so $\abs{e^{\ell(t)}}\cdot\abs{\ell'(t)}=\abs{\ell'(t)}$ almost everywhere, and since these are continuous functions this is equality everywhere.
+    If $a\neq b$ then $\ell'(t)\neq0$ anywhere (it is constant as a line), and so $\abs{e^{\ell(t)}}=1$ for every $t\in[0,1]$.
+    This means that $e^{\Re(\ell(t))}=1$ so $\Re(\ell(t))=0$, and so $a$ and $b$ are both imaginary numbers.
+
+    So we need to solve for when
+    \begin{align*}
+        \abs{e^{ai} - e^{bi}} = \abs{a-b} &\iff (\cos a-\cos b)^2 + (\sin a-\sin b)^2 = (a-b)^2 \\
+                                          &\iff \cos^2a-2\cos a\cos b+\cos^2b + \sin^2a-2\sin a\sin b+\sin^2b = (a-b)^2 \\
+                                          &\iff 2\bigl(1-\cos a\cos b-\sin a\sin b\bigr) = (a-b)^2 \\
+                                          &\iff 2\bigl(1-\cos(a-b)\bigr) = (a-b)^2
+    \end{align*}
+    Let $t=a-b$, so we must find a solution to $f(t)=0$ where $f(t)=2(1-\cos t)-t^2$
+    Our goal is to show that this inequality does hold, and this means that we have equality if and only if $a=b$, and so $f(t)=0$ if and only if $t=0$.
+    For $t=0$ it is the case that $f(0)=0$ (which would have to be the case).
+    Now let us compute its derivatives:
+    \[ f'(t) = 2\sin t-2t,\qquad f''(t) = 2\cos t-2 \]
+    Notice that $f''(t)\leq0$ so $f'$ is decreasing, and it is never constant since $f''$ is only zero at points (not intervals), so $f'$ is injective.
+    Thus since $f'(0)=0$, $t=0$ is the only critical point of $f$.
+    And this is a maximum since $f'$ is decreasing and $f'(0)=0$ so $f$ is increasing for $t\leq0$ (since $f'(t)\geq0$ then) and decreasing afterward.
+
+    So $f(t)\geq0$ with equality only when $t=0$ (at the maximum).
+    So we have equality only when $a=b$.
+
+    So the inequality does hold.
+
+\eblank
+
+\end{document}

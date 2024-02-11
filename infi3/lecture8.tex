@@ -1,0 +1,220 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\@blist[#1]{%
+    \bgroup\par%\vskip-\medskipamount%
+    \def\item{%
+        \par\egroup\bgroup\medskip\setbox0=\hbox{#1\quad}%
+        \advance\leftskip by \wd0\leavevmode\kern-\wd0\box0%
+    }%
+    \bgroup%
+}
+\def\blist{\@ifnextchar[ \@blist {\@blist[$\bullet$]}}
+\def\elist{\par\egroup\egroup\medskip}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\openset{{\cal O}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\begin{document}
+
+\c@section=8
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infinitesimal Calculus 3}
+
+    \medskip
+    \textit{Lecture 8, Wednesday November 16, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{Continuous Limits}
+
+\begin{prop*}
+
+    If $(X,\metric)$ is a metric space and $p$ is a limit point of some $E\subseteq X$, then for every mapping between $E$ and $\bR$ (or a normed linear space):
+    \blist
+        \item $\displaystyle\lim_{x\varrightarrow p} f(x) + g(x) = \lim_{x\varrightarrow p} f(x) + \lim_{x\varrightarrow p}g(x)$
+        \item If $c\in\bR$ then $\displaystyle\lim_{x\varrightarrow p} cf(x) = c\lim_{x\varrightarrow p}f(x)$
+        \item If $f$ and $g$ map to $\bR$ then $\displaystyle\lim_{x\varrightarrow p}f(x)\cdot g(x) = \lim_{x\varrightarrow p}f(x)\cdot\lim_{x\varrightarrow p}g(x)$
+        \item If $f$ and $g$ map to $\bR$ and $\displaystyle\lim_{x\varrightarrow p}g(x)\neq0$ then
+        $\displaystyle\lim_{x\varrightarrow p} \frac{f(x)}{g(x)} = \frac{\lim_{x\varrightarrow p}f(x)}{\lim_{x\varrightarrow p}g(x)}$
+    \elist
+
+\end{prop*}
+
+The proof of this is trivial using that the limit $\lim_{x\varrightarrow p}f(x)$ is equal to the discrete limit $\lim f(x_n)$ if $x_n\longvarrightarrow p$.
+
+\begin{prop*}[squeezeProp,The\ Squeeze\ Theorem]
+
+    If $p$ is a limit point of $E$ and $f,g,h\colon E\longvarrightarrow\bR$ such that $f(x)\leq g(x)\leq h(x)$ and $\ds\lim_{x\varrightarrow p} f(x)=\lim_{x\varrightarrow p}h(x)=c$.
+    Then $\ds\lim_{x\varrightarrow p}g(x)=c$ as well.
+
+\end{prop*}
+
+The proof of this is again trivial using discrete limits.
+
+\begin{prop*}
+
+    If $f$ is a mapping from a metric space $E$ to a normed linear space $X$ then $\ds\lim_{x\varrightarrow p}f(x)=0$ if and only if $\ds\lim_{x\varrightarrow p}\norm{f(x)}=0$.
+
+\end{prop*}
+
+Notice that the $0$ in $\ds\lim_{x\varrightarrow p}f(x)=0$ is the $0$ of $X$, and the $0$ in the norm's limit is $0\in\bR$.
+
+\begin{proof}
+
+    Suppose the limit is $0$, then for any $x_n\longvarrightarrow p$ we have that $f(x_n)\longvarrightarrow0$ which by definition means $\norm{f(x_n)}\longvarrightarrow0$ as required.
+    If the limit of the norm is $0$ then for any $x_n\longvarrightarrow p$ we have $\norm{f(x_n)}\longvarrightarrow0$ which means $f(x_n)\longvarrightarrow0$ so the limit is $0$ as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{prop*}
+
+    If $\ds\lim_{x\varrightarrow p}f(x)=0$ and $g(x)$ is bounded then $\ds\lim_{x\varrightarrow p}g(x)\cdot f(x)=0$ as well.
+
+\end{prop*}
+
+Notice that $\ds\lim_{x\varrightarrow p}g(x)$ doesn't need to exist.
+If it did, then this proof would be immediate.
+
+\begin{proof}
+
+    Suppose $\abs{g(x)}<M$ so $\abs{g(x)f(x)}<M\abs{f(x)}$ which converges to $0$ and so by the above proposition so does $g(x)\cdot f(x)$.
+   
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{thrm*}
+
+    If $(X,\metric_1)$, $(Y,\metric_2)$, and $(Z,\metric_3)$ are metric spaces, and $f$ is a mapping between $X$ and $Y$ and $g$ is a mapping between $Y$ and $Z$.
+    If
+    \[ \lim_{x\varrightarrow p}f(x) = q \in Y \qquad \lim_{x\varrightarrow q}g(x) = r \in Z \]
+    then
+    \[ \lim_{x\varrightarrow p} g(f(x)) = r \]
+
+\end{thrm*}
+
+\begin{proof}
+
+    Suppose $x_n\longvarrightarrow p$ then $f(x_n)\longvarrightarrow \ds\lim_{x\varrightarrow p}f(x) = q$ by the definition of limits.
+    Then since $f(x_n)$ is a sequence converging to $q$, $g(f(x_n))\longvarrightarrow \ds\lim_{x\varrightarrow q}g(x) = r$.
+    And so for every $x_n\longvarrightarrow p$ we have that $g(f(x_n))\longvarrightarrow r$ so the limit of $g(f(x))$ is $r$ as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{exam}
+
+    Suppose we'd ``like'' to compute:
+    \[ \lim_{(x,y)\varrightarrow(2,1)} \bigl(x^2y^2 - 4xy\bigr)\cdot\frac{\arcsin(xy-2)}{\arctan(3xy-6)} \]
+    Let $t=xy-2$ then we have that $t^2=x^2y^2-4xy+4$ so the limit is equal to:
+    \[ = \lim_{t\varrightarrow0} \bigl(t^2 - 4\bigr)\cdot\frac{\arcsin(t)}{\arctan(3t)} \]
+    Essentially what we have done is defined a function $f(x,y)=xy-2$ and $g(x)=\bigl(t^2 - 4\bigr)\cdot\frac{\arcsin(t)}{\arctan(3t)}$ and the original limit is simply the limit of $g(f(x))$ as $(x,y)$
+    approaches $(2,1)$.
+    Now since the limit of $f(x,y)$ as $(x,y)$ approaches to $(2,1)$ is $0$.
+    So the original limit is equal to the limit of $g(x)$ as $x$ approaches $0$, which is what we wrote above.
+    Now this is the limit of a single variable function which we know how to compute.
+    The limit is the product of two limits, the polynomial and the rational trignometric function, whose limit is (after applying L'h\^opital's rule) is $-\frac43$.
+
+\end{exam}
+
+\begin{exam}
+
+    It is \emph{not} always the case that
+    \[ \lim_{(x,y)\varrightarrow(a,b)}f(x,y) = \lim_{x\varrightarrow a}\lim_{y\varrightarrow b}f(x,y) \]
+    For example take
+    \[ \lim_{(x,y)\varrightarrow(0,1)}x\cdot\sin\parens{\frac1{1-y}} \]
+    Then since $\sin$ is bounded and $x$ converges to $0$, this limit is $0$.
+    But the limit of this as $y$ approaches $1$ does not exist, that is:
+    \[ \lim_{x\varrightarrow0}\lim_{y\varrightarrow} x\cdot\sin\parens{\frac1{1-y}} \]
+    does not exist, but the original limit does.
+
+\end{exam}
+
+\begin{prop*}
+
+    Suppose a function $f\colon E\longvarrightarrow\bR^n$ is defined by $f=\parens{f_1,\dots,f_n}$.
+    If $p=\parens{p_1,\dots,p_n}$ is a limit point of $E$ then $\ds\lim_{x\varrightarrow p}f(x)$ exists if and only if for every relevant $k$, the limit $\ds\lim_{x\varrightarrow p_k}f(x_k)$ exists and is
+    equal to $q_k$.
+    Then
+    \[ \lim_{x\varrightarrow p}f(x) = q = \parens{q_1,\dots,q_n} \]
+
+\end{prop*}
+
+
+This is true since convergence in $\bR^n$ is equivalent to pointwise convergence.
+So $f(x_m)=\parens{f_1(x_m),\dots,f_n(x_m)}$ converges to $\parens{q_1,\dots,q_n}$ if and only if every $f_k(x_k)$ converges to $q_k$.
+
+\newpage
+\subsection{Continuous Functions}
+
+\begin{defn*}
+
+    If $X$ and $Y$ are metric spaces and $E\subseteq X$ is a subset then $f\colon E\longvarrightarrow Y$ is \ppemph{continuous} at $p\in E$ if for every $\epsilon>0$ there is a $\delta>0$ such that if
+    $\metricof{x,p}<\delta$ then $\sigma\parens{f(x),f(p)}<\epsilon$.
+
+    And $f$ is \ppemph{continuous} in $E$ if it is continuous for every $p\in E$.
+
+\end{defn*}
+
+This is equivalent to saying that for every $\epsilon>0$ there is a $\delta>0$ such that:
+\[ f\bigl(B_\delta^E(p)\bigr) \subseteq B_\epsilon^Y(f(p)) \]
+
+If $p$ is not an isolated point then this is equivalent to saying
+\[ \lim_{x\varrightarrow p}f(x) = f(p) \]
+if $p$ is an isolated point though, then the limit doesn't exist but $f$ \emph{is} continuous at $p$.
+This is because for any $\epsilon>0$ we can take a $\delta>0$ such that $B_\delta^E(p)=\set p$ and then for every $x$ in this ball (which is only $p$), we have that
+$\sigma\parens{f(x),f(p)}=\sigma\parens{f(p),f(p)}=0<\epsilon$.
+
+So an equivalent definition would be to say that $f$ is continuous at $p$ if and only if $p$ is either an isolated point or $\ds\lim_{x\varrightarrow p}f(x)=f(p)$.
+
+\begin{prop*}
+
+    If $X$, $Y$, and $Z$ are metric spaces and $f\colon X\supseteq E\longvarrightarrow Y$ is continuous at $x\in E$ and $g\colon f(E)\longvarrightarrow Z$ is continuous at $f(x)\in f(E)$ then
+    $g\circ f$ is continuous at $x$.
+
+\end{prop*}
+
+\begin{proof}
+
+    If $x$ is an isolated point of $E$, by above $g\circ f$ is continuous at $x$.
+    Otherwise take $E\ni x_n\longvarrightarrow x$, so $f(x_n)\longvarrightarrow f(x)$.
+    Since $g$ is continuous at $f(x)$, we know that $g(f(x_n))\longvarrightarrow g(f(x))$ (since if $f(x_n)=f(x)$ this is true trivially, and otherwise it is true since
+    $\lim_{y\varrightarrow f(x)}g(y)=f(x)$).
+    And so all in all for every $x_n\longvarrightarrow x$, $g(f(x_n))\longvarrightarrow g(f(x))$, so $g\circ f$ is continuous at $x$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+This shows that if $f$ is continuous in $E$ and $g$ is continuous in $f(E)$, $g\circ f$ is continuous in $E$.
+
+\end{document}
+

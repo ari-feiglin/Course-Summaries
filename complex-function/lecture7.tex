@@ -1,0 +1,255 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{diam}{{\rm diam}}(\vert)
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+\newfunc{cis}{{\rm cis}}({})
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{sup}{{\rm sup}}\{\vert\}
+
+\font\bigbf = cmbx12 scaled 2000
+\@undervecc@def{underbar}\@linecap\@linecap
+
+\def\mO{{\cal O}}
+\def\mU{{\cal U}}
+\let\lineseg=\overleftrightvecc
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\qed{\hskip1cm\hbox{}\hfill$\blacksquare$}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=7
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Complex Functions}
+
+    \medskip
+    \textit{Lecture \thesection, Wednesday June 7, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{prop*}
+
+    The image of a non-constant analytic function is dense in $\bC$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose that $f(\bC)$ is not dense in $\bC$, meaning that there is a $w\in\bC$ and $r>0$ such that $D_r(w)\cap f(\bC)=\varnothing$.
+    Let
+    \[ g(z) = \frac1{f(z)-w} \]
+    this is defined on all of $\bC$ as $f(z)\neq w$ so $g$ is entire.
+    Since $\abs{f(z)-w}\geq r$ we have that
+    \[ \abs g\leq\frac1r \]
+    so by Liouville, this means $g$ is constant and therefore $f$ is constant.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}
+
+    If $f$ is an entire function such that $\lim_{z\to\infty}f(z)=\infty$ then $f$ is a polynomial.
+
+\end{thrm*}
+
+$\lim_{z\to\infty}f(z)=\infty$ means that for any $M>0$ there exists an $r>0$ such that when $\abs z>r$, $\abs{f(z)}>M$.
+
+\begin{proof}
+
+    If there is a $z_0\in\bC$ where $f(z_0)=0$ then take $n$ such that $f^{(k)}(z_0)=0$ for $k\leq n$ but $f^{(n+1)}(z_0)\neq0$.
+    This exists since otherwise, by the Taylor polynomial, $f$ would be $0$ (and so its limit would not be infinity).
+    Thus
+    \[ \frac{f(z)}{(z-z_0)^n} = \frac1{(z-z_0)^n}\bigl(c_n(z-z_0)^n + c_{n+1}(z-z_0)^{n+1} + \cdots\bigr) \]
+    where $c_k$ are the Taylor coefficients, so $c_n\neq0$.
+    This does not equal to $0$ at $z_0$ (it is equal to $c_n$).
+    Since the limit of $f$ is infinity, there exists an $R>0$ such that for every $\abs z\geq R$, $\abs{f(z)}>1$, so the zeros are contained within $D_R(0)$.
+
+    $f$ is non-constant, so it has a finite number of roots.
+    This is because if it had an infinite number of roots, then the roots form a sequence in $D_R(0)$ and since $\bar D_R(0)$ is compact, there is a convergent subsequence of roots.
+    So we have a sequence of $\alpha_n$ where $\alpha_n$ are all distinct and the sequence is convergent and $f(\alpha_n)=0$, which we showed means $f\equiv0$ which is a contradiction.
+
+    So let $\alpha_1,\dots,\alpha_n$ be $f$'s roots.
+    Let the order of $\alpha_k$ be $n_k$ (meaning $n_k+1$ is the first where $f^{(n_k+1)}(\alpha_k)=0$).
+    Then we showed previously that we can define an entire function $g$ such that for $z\neq\alpha_1,\dots,\alpha_n$
+    \[ g(z) = \frac{f(z)}{(z-\alpha_1)^{n_1}\cdots(z-\alpha_n)^{n_n}} \]
+    And $g$ has no roots.
+    Let $h(z)=\frac1{g(z)}$.
+
+    We will show that there exist $A,B\geq0$ such that
+    \[ \abs{h(z)} \leq A + B\abs z^{n_1+\cdots+n_n} \]
+    so $h$ is a polynomial, but $h$ does not have any roots, so $h$ must be a constant polynomial, $h(z)=c$.
+    Thus
+    \[ f(z) = \frac1c(z-\alpha_1)^{n_1}\cdots(z-\alpha_n)^{n_n} \]
+
+    To show the existence of $A$ and $B$ notice that
+    \[ \abs{h(z)} = \abs{\frac{(z-\alpha_1)^{n_1}\cdots(z-\alpha_n)^{n_n}}{f(z)}} \]
+    For $\abs z\geq R$ (and we can assume $R\geq1$), this is less than
+    \[ < \abs{(z-\alpha_1)^{n_1}\cdots(z-\alpha_n)^{n_n}} = \abs{z^d + \sum_{k=0}^{d-1}a_kz^k} \leq \abs z^d + (d-1)C\abs z^{d-1} \]
+    for $d=n_1+\cdots+n_n$ and $C=\maxof{\abs{a_0},\dots,\abs{a_{d-1}}}$, so
+    \[ \abs{h(z)} \leq ((d-1)C+1)\abs z^d \]
+    So let $B=(d-1)C+1$, and for $\abs z<R$, $h(z)$ is bound by some $A$, so all in all we have
+    \[ \abs{h(z)} \leq A + B\abs z^d \]
+    as required.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}[mvt,Mean\ Value\ Theorem]
+
+    If $f$ is analytic in $D$ and $a\in D$, then
+    \[ f(a) = \frac1{2\pi}\int_0^{2\pi} f(a+re^{i\theta})\,d\theta \]
+    for every $r>0$ where $D_r(a)\subseteq D$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    By Cauchy we know
+    \[ f(a) = \frac1{2\pi i}\int_{C_r(a)}\frac{f(z)}{z-a}\,dz \]
+    we parameterize $C_r(a)$ by $\theta\in[0,2\pi)\varmapsto a+re^{i\theta}$ and so this becomes
+    \[ = \frac1{2\pi i}\int_0^{2\pi}\frac{f(a+re^{i\theta})}{re^{i\theta}}rie^{i\theta}\,d\theta = \frac1{2\pi}\int_0^{2\pi} f(a+re^{i\theta})\,d\theta \]
+    as required.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    Let $f$ be a complex function and $z_0\in\bC$.
+    If there exists a neighborhood $\mU$ of $z_0$ such that $\abs{f(z_0)}\geq\abs{f(z)}$ for every $z\in\mU$, then $z$ is a \ppemph{local maximum}.
+    Similarly we define \ppemph{local minimum}s.
+
+\end{defn*}
+
+\begin{thrm*}[maximalModulusPrinciple,Maximal\ Modulus\ Principle]
+
+    If $f$ is an analytic function in a domain $D$, then $f$ has no local maxima in $D$.
+
+\end{thrm*}
+
+This means that the local maxima must occur on the boundary of $D$.
+
+\begin{proof}
+
+    Let $z\in D$ and $r>0$ such that $D_r(z)\subseteq D$.
+    By the \ppref{mvt}
+    \[ f(z) = \frac1{2\pi}\int_0^{2\pi} f(z+re^{i\theta})\,d\theta \]
+    so
+    \[ \abs{f(z)} \leq \frac1{2\pi} \max\abs{f(z+re^{i\theta})}\,d\theta = \max\abs{f(z+re^{i\theta})} \]
+    The maximum exists since $C_r(z)$ is compact.
+    Suppose the maximum is induced by $w$.
+    If we assume that $z$ is a local maxima, then for $r>0$ small enough $\abs{f(z)}=\abs{f(w)}$.
+
+    Thus if $u$ is on $C_r(z)$ then $\abs{f(u)}\leq\abs{f(z)}$ but the integral from $0$ to $2\pi$ of both of these is equal which means that $\abs{f(u)}=\abs{f(z)}$ for every $u$ on $C_r(z)$.
+    So $\abs f$ is constant on every $C_r(z)$ and therefore on $D_r(z)$, which means that $f$ is constant on $D_r(z)$, which means $f$ is constant on $D$ (since the derivatives of $f$ at $z$ are all zero,
+    so the taylor expansion is constant).
+    This is a contradiction.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}[minimalModulusPrinciple,Minimal\ Modulus\ Principle]
+
+    Suppose $f$ is a non-constant analytic function in a domain $D$.
+    Then $z$ is a local minimum if and only if $f(z)=0$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    If $f(z)=0$ then it is obvious that $z$ is a local minimum.
+    If $f(z)\neq0$ then there exists an $r>0$ such that for $w\in D_r(z)\subseteq D$, $f(w)\neq0$ by continuity.
+    So $\frac1f$ is defined in $D_r(z)$, is analytic, and is non-constant, so it therefore has no local maxima.
+    This means that $z$ is not a local minimum of $f$, since if it were, it would be a local maximum of $\frac1f$.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}[openMappingTheorem,Open\ Mapping\ Theorem]
+
+    A non-constant analytic function in a domain is an open mapping (maps open sets to open sets).
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let $\alpha\in D$, we can assume $f(\alpha)=0$, by simply defining a new function $\tilde f(z)=f(z)-f(\alpha)$ which is a shift of $f$ and therefore open if and only if $f$ is open.
+    There must be a neighborhood of $\alpha$ not containing any other roots of $f$, as otherwise we could take a sequence of roots $z_n\to\alpha$ which means that $f\equiv0$ which is a contradiction.
+    So suppose for $r>0$, $\bar D_r(\alpha)$ has no other roots of $f$.
+
+    Let $\epsilon=\frac12\min_{z\in C_r(\alpha)}\abs{f(z)}$.
+    $\epsilon>0$ since $C_r(\alpha)$ is compact so its minimum exists, and is in $\bar D_r(\alpha)$.
+    We will show that $D_\epsilon(0)\subseteq f(D_r(\alpha))$.
+
+    Let $w\in D_\epsilon(0)$ and $z\in C_r(\alpha)$ then
+    \[ \abs{f(z) - w} \geq \abs{f(z)} - \abs w \geq 2\epsilon - \epsilon = \epsilon \]
+    Let us define $h(z)=f(z)-w$, which is analytic.
+    Notice that $\abs{f(\alpha)-w}=\abs w<\epsilon$.
+    We know that $\abs h$ must have a minimum in $\bar D_r(\alpha)$, and since $\abs{h(\alpha)}<\abs{h(z)}$ for $z\in C_r(\alpha)$, this minimum must be in $D_r(\alpha)$.
+    This means that $h$ has a local minimum in $D_r(\alpha)$, so there is a point where $h(z)=0$ so $f(z)=w$ for $z\in D_r(\alpha)$, meaning $w\in f(D_r(\alpha))$ as required.
+
+\end{proof}
+
+\begin{lemm*}[schwarzLemma,Schwarz\ Lemma]
+
+    Suppose $f$ is analytic on $D_1(0)$ such that $f(0)=0$ and $\abs{f(z)}\leq1$.
+    Then $\abs{f(z)}\leq\abs z$ and $\abs{f'(0)}\leq1$.
+    If there exists a non-zero $z_0$ where $\abs{f(z_0)}=\abs{z_0}$ or $\abs{f'(0)}=1$ then $f(z)=re^{i\theta}z$ ($f$ is a rotation).
+
+\end{lemm*}
+
+\begin{proof}
+
+    Let us define
+    \[ g(z) = \begin{cases} \frac{f(z)}z & z\neq 0 \\ f'(0) & z=0 \end{cases} \]
+    which is analytic.
+    Take $0<r<1$ and $z\in C_r(0)$, so
+    \[ \abs{g(z)} = \abs{\frac{f(z)}z} \leq \frac1r \]
+    By the maximal modulus principle, the local maxima of $g$ on $\bar D_r(0)$ are on $C_r(0)$, and the value of the modulus of the maximum is $\leq\frac1r$.
+    So if we take $w\in D_r(0)$ where $\abs w=\rho<r<1$, then since maxima are found on the boundary
+    \[ \abs{g(w)} \leq \max_{\abs z=r}\abs{g(z)} \leq \frac1r \]
+    since $r$ is arbitrarily between $\rho$ and $1$, this means that
+    \[ \abs{g(w)} \leq 1 \implies \abs{\frac{f(z)}z}\leq 1 \implies \abs{f(z)} \leq \abs z \]
+    And taking the limit of $\abs{g(w)}$ as $w\to0$ gives $\abs{f'(0)}$ so we also get $\abs{f'(0)}\leq 1$ as required.
+
+    If $\abs{f(z_0)}=\abs{z_0}$ for $z_0\neq0$ then $\abs{g(z_0)}=1$ which is maximal.
+    Or if $z_0=0$ and $\abs{f'(0)}=1$ then $\abs{g(z_0)}=1$ is maximal as well.
+    Since $z_0$ is an interior point, this means that $g$ must be constant (non-constant analytic functions have maxima only on their boundaries).
+    So $f(z)=az$ where $g(z)=a$, since $\abs{g(z)}=1$ this means $\abs a=1$ so $f(z)=e^{i\theta}z$.
+    \qed
+
+\end{proof}
+
+\end{document}
+

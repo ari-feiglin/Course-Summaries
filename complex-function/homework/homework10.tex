@@ -1,0 +1,346 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input ../preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{atan}{{\rm tan}^{-1}}({})
+\newfunc{sin}{{\rm sin}}({})
+\newfunc{sinh}{{\rm sinh}}({})
+\newfunc{cosh}{{\rm cosh}}({})
+\newfunc{cos}{{\rm cos}}({})
+\newfunc{arg}{{\rm arg}}({})
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+\newfunc{cis}{{\rm cis}}({})
+\newfunc{exp}{{\rm exp}}({})
+\newfunc{Log}{{\rm Log}}({})
+\newfunc{Res}{{\rm Res}}({})
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\iff{\,\longvarLeftRightarrow\,}
+\def\implies{\,\longvarRightarrow\,}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\mO{{\cal O}}
+\def\mU{{\cal U}}
+\def\mV{{\cal V}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\let\ds=\displaystyle
+\let\longto=\longvarrightarrow
+\let\to=\varrightarrow
+
+\def\bexerc{\begin{exercise*}}
+\def\eexerc{\end{exercise*}}
+\def\bblank{\begin{blankpp}}
+\def\eblank{\end{blankpp}}
+
+\begin{document}
+
+\c@section=10
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Complex Functions}
+
+    \medskip
+    \textit{Assignment \thesection}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\bexerc
+
+    Find the residues of each of the following functions at all of their singularities
+    \benum
+        \item $\frac1{z^4+z^2}$
+        \item $\cot(z)$
+        \item $\csc(z)$
+        \item $\frac{\exp(1/z^2)}{z-1}$
+        \item $\frac1{z^2+3z+2}$
+        \item $\sinof{\frac1z}$
+        \item $ze^{3/z}$
+        \item $\frac1{az^2+bz+c}$
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item This is equal to
+        \[ \frac1{z^2} - \frac1{z^2+1} = \frac1{z^2} + \frac i2\frac1{z-i} - \frac i2\frac1{z+i} \]
+        Since the singularities of all these functions ($0, i, -i$) are unique to each function, each function is analytic at the singularity of the other (ie. $\frac1{z^2}$ is analytic at $\pm i$, etc) and
+        therefore does not contribute to the residue.
+        Thus the only factor which contributes to the residue at $0$ is $\frac1{z^2}$, whose residue is $0$ (since all of these rational functions are already Laurent series).
+        And the only factor which contributes to the residue at $i$ is $\frac1{z-i}$, whose residue is $\frac i2$.
+        And similarly the residue at $-i$ is $-\frac i2$.
+        So
+        \[ \Resof{f,0} = 0,\quad \Resof{f,i} = \frac i2,\quad \Resof{f,-i} = -\frac i2 \]
+
+        \item Since $\cot(z)=\frac{\cos(z)}{\sin(z)}$, its singularities are when $\sin(z)=0$ ie. $z=\pi k$ for $k\in\bZ$.
+        Since these are not zeros of $\cos(z)$, these are simple poles and so if we let $z_k=\pi k$, we the residue of $f$ at $z_k$ is
+        \[ \lim_{z\to z_k}(z-z_k)\cot(z) = \lim_{z\to z_k}\cos(z)\cdot\frac{z-z_k}{\sin(z)} = \cos(z_k) = \cos(\pi k) = (-1)^k \]
+        so we have
+        \[ \Resof{\cot(z), \pi k} = (-1)^k \]
+
+        \item Similar to before $\csc(z)=\frac1{\sin(z)}$ has simple poles at $z_k=\pi k$ and
+        \[ \Resof{\csc(z), z_k} = \lim_{z\to z_k}(z-z_k)\csc(z_k) = 1 \]
+
+        \item Last week we showed that the Laurent series of this is
+        \[ \sum_{n=-\infty}^0 z^n\sum_{k=0}^{-n} a_k,\qquad a_{2k+1} = \frac1{k!},\quad a_{2k} = 0 \]
+        and so the coefficient of $z^{-1}$ in this series is
+        \[ a_0 + a_1 = 1 \]
+        meaning
+        \[ \Resof{f,0} = 1 \]
+        And since $\exp(1/z^2)$ is analytic at the other singularity, $1$, it is a simple pole.
+        So
+        \[ \Resof{f,1} = \lim_{z\to1}(z-1)\cdot\frac{\exp(1/z^2)}{z-1} = e \]
+
+        \item The roots of the denominator are $z=-1,-2$ and using the solution to $(8)$, we see that
+        \[ \Resof{f,-1} = \frac1{(-1+2)} = 1,\qquad \Resof{f,-2} = \frac1{(-2+1)} = -1 \]
+
+        \item Using the Taylor expansion of $\sin(z)$ we see that
+        \[ \sin(z) = \sum_{k=0}^\infty (-1)^k\cdot\frac{z^{2k+1}}{(2k+1)!} \implies \sinof{\frac1z} = \sum_{k=0}^\infty (-1)^k\cdot\frac{z^{-2k-1}}{(2k+1)!} \]
+        and so the coefficient of $z^{-1}$ is $(-1)^0\cdot\frac1{1!}=1$, so
+        \[ \Resof{f,0} = 1 \]
+
+        \item Using the Taylor expansion of $\exp(z)$ we see that
+        \[ z\expof{\frac 3z} = \sum_{k=0}^\infty z^{1-k}\frac{3^k}{k!} \]
+        and so
+        \[ \Resof{f,0} = \frac9{2!} = \frac92 \]
+
+        \item If $az^2+bz+c$ has two distinct roots $\alpha\neq\beta$ then $az^2+bz+c=a(z-\alpha)(z-\beta)$ and so
+        \[ f(z) = \frac1{a(z-\alpha)(z-\beta)} \]
+        and so the singularities, $\alpha$ and $\beta$, are simple poles and so
+        \[ \Resof{f,\alpha} = \lim_{z\to\alpha}(z-\alpha)\cdot f(z) = \lim_{z\to\alpha}\frac1{a(z-\beta)} = \frac1{a(\alpha-\beta)} \]
+        and similarly
+        \[ \Resof{f,\beta} = \frac1{a(\beta-\alpha)} \]
+        And if the polynomial only has a single root $\alpha$, then $f(z)=\frac1{a(z-\alpha)^2}$ whose residue at $\alpha$ is $0$.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Compute the following integrals
+    \benum
+        \item $\int_{\abs z=1}\cot(z)\,dz$
+        \item $\int_{\abs z=2}\frac{dz}{(z-4)(z^3-1)}$
+        \item $\int_{\abs z=1}\sinof{\frac1z}\,dz$
+        \item $\int_{\abs z=2}ze^{3/z}\,dz$
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item We know that the singularities of $\cot(z)$ are when $z=\pi k$.
+        Of which there is only $z=0$ within $\abs z<1$, and so by the residue theorem
+        \[ \int_{\abs z=1}\cot(z) = 2\pi i\Resof{\cot(z),0} = 2\pi i \]
+
+        \item The only singularities of this function when $\abs z<4$ are $\omega_3^k$ for $k=0,1,2$ ($\omega_3=\expof{i\cdot\frac{2\pi}3}$).
+        And since the denominator is equal to
+        \[ (z-4)(z-\omega_3^0)(z-\omega_3^1)(z-\omega_3^2) \]
+        we get that
+        \[ \Resof{f,1} = -9, \quad \Resof{f,\omega_3^1} = 9+6\sqrt3i,\quad \Resof{f,\omega_3^2} = 9-6\sqrt3i \]
+        and so we get that by the residue theorem
+        \[ \int_{\abs z=2}f(z)\,dz = 2\pi i(-9 + 9 + 6\sqrt3i + 9 - 6\sqrt3i) = 18\pi i \]
+
+        \item We saw before that $\Resof{f,0}=1$ and so the integral is equal to, by the residue theorem,
+        \[ \int_{\abs z=1}\sinof{\frac1z}\,dz = 2\pi i \]
+
+        \item And here $\Resof{f,0}=4.5$ and so
+        \[ \int_{\abs z=2}ze^{3/z}\,dz = 9\pi i \]
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Suppose $f$ is an entire function and $f(z)$ is real if and only if $z$ is real.
+    Show that $f$ has at most one zero.
+
+\eexerc
+
+\bblank
+
+    Let $C$ be any circle centered about the origin, and let $\gamma$ be the differentiable function which parameterizes it ($\theta\varmapsto re^{i\theta}$).
+    Then we know that
+    \[ \frac1{2\pi i}\int_C\frac{f'(z)}{f(z)} \]
+    is equal to the number of times which $f(z)$ winds around the origin while $z$ traverses $C$.
+    Now since $f\circ\gamma$ is smooth, if it winds once around $C$ it must cross over the real axis twice.
+    But $f(\gamma(\theta))$ is real only when $\gamma(\theta)$ is real, which is only when $\theta=0,\pi,2\pi$.
+    Thus $f$ only crosses the real axis three times, and therefore must winds at most once around $C$.
+    Thus
+    \[ \frac1{2\pi i}\int_C\frac{f'(z)}{f(z)} \leq 1 \]
+    And since this integral is also equal to the number of zeros of $f$, we have that the number of zeros of $f$ is at most $1$.
+
+\eblank
+
+\bexerc
+
+    Find the number of zeros of $f$ in the domain
+    \benum
+        \item $3e^z-z$ in $\abs z\leq1$
+        \item $\frac13e^z-z$ in $\abs z\leq 1$
+        \item $z^4-5z+1$ in $1\leq\abs z\leq2$
+        \item $z^6-5z^4+3z^2-1$ in $\abs z\leq1$
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item Notice that
+        \[ \abs{3e^z} = 3e^x \geq 3e^{-1} > 1 = \abs{-z} \]
+        and so by Rouch\'e's theorem, $3e^z-z$ has the same number of zeros as $3e^z$ does in the domain, which is no zeros.
+
+        \item Since
+        \[ \abs{\frac13e^z} = \frac13 e^x \leq \frac13e < 1 = \abs{-z} \]
+        by Rouch\'e's theorem, $\frac13e^z-z$ has the same number of zeros as $-z$ does in the domain, which is one.
+
+        \item For $\abs z=2$,
+        \[ \abs{-5z+1} \leq 5\abs z+1 = 11,\qquad \abs{z^4}=16 \]
+        and so $\abs{-5z+1}<\abs{z^4}$, so by Rouch\'e's theorem, in $\abs z\leq2$, $z^4-4z+1$ has the same number of zeros as $z^4$, which is one.
+
+        And for $\abs z=r$,
+        \[ \abs{-5z+1}\geq\abs{-5z}-1 = 5r-1,\qquad \abs{z^4}=r^4 \]
+        Since for $r=1$, $5r-1=4>1=r^4$, since these functions are continuous there exists an $0<r<1$ such that $5r-1<r^4$.
+        So $\abs{z^4}<\abs{-5z+1}$ and therefore by Rouch\'e's theorem, in $\abs z\leq r<1$, $z^4-4z+1$ has the same number of zeros as $-5z+1$ which is one (we can assume $r>\frac15$).
+        Thus all the zeros of $f$ in $\abs z\leq2$ are in $\abs z\leq r$, meaning they are in $\abs z<1$.
+        So there are no zeros in $1\leq\abs z\leq2$.
+
+        \item Since
+        \[ \abs{z^6-5z^4} = \abs{z^4}\cdot\abs{z^2-5} = \abs{z^2-5} \geq 5-\abs z^2 = 4 \]
+        and
+        \[ \abs{3z^2-1} \leq 3\abs z^2+1 = 4 \]
+        We have that $\abs{3z^2-1}\leq\abs{z^6-5z^4}$ on $\abs z=1$.
+        Notice that $\abs{3z^2-1}=4$ only if $z^2$ has the same direction as $-1$, meaning $z=\pm i$.
+        In this case, $z^2-5=-6$ and so $\abs{3z^2-1}<\abs{z^2-5z^4}$.
+        Thus we have that $\abs{3z^2-1}<\abs{z^6-5z^4}$ on $\abs z=1$, and so by applying Rouch\'e's theorem we get $z^6-5z^4+3z^2-1$ has the same number of zeros in $\abs z\leq1$ as $z^6-5z^4$ does.
+        Since $z^6-5z^4=z^4(z^2-5)$, and $\pm\sqrt5$ is not in $\abs z\leq1$, the function has four zeros (since $0$ has multiplicity $4$).
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Suppose $f$ is analytic on and within a regular smooth closed contour $\gamma$, without zeros in $f$.
+    Show that if $m$ is a non-negative integer then
+    \[ \frac1{2\pi i}\int_\gamma z^m\frac{f'(z)}{f(z)}\,dz = \sum_k z_k^m \]
+    where the sum is done over the zeros of $f$.
+
+\eexerc
+
+\bblank
+
+    We will show that for $g(z)$ entire,
+    \[ \frac1{2\pi i}\int_\gamma g(z)\cdot\frac{f'(z)}{f(z)}\,dz = \sum_k g(z_k) \]
+    and so if $g(z)=z^m$ (which is entire), we get the desired result.
+
+    Let us denote $F(z)=g(z)\cdot\frac{f'(z)}{f(z)}$.
+    By the residue theorem, we have that
+    \[ \frac1{2\pi i}\int_\gamma g(z)\cdot\frac{f'(z)}{f(z)} = \sum_k \Resof{F(z), z_k} \]
+    Since the singularities of $F(z)=g(z)\cdot\frac{f'(z)}{f(z)}$ are the zeros of $f(z)$ since it is analytic.
+    Suppose $\alpha$ is a zero of degree $k$, then there exists a function which is analytic in $\gamma$ and non-zero at $\alpha$, $h$, such that
+    \[ f(z) = (z-\alpha)^kh(z) \]
+    then
+    \[ f'(z) = k(z-\alpha)^{k-1}h(z) + (z-\alpha)^kh'(z) \]
+    and so
+    \[ \frac{f'(z)}{f(z)} = \frac k{z-\alpha} + \frac{h'(z)}{h(z)} \]
+    And so
+    \[ F(z) = g(z)\cdot\frac k{z-\alpha} + g(z)\cdot\frac{h'(z)}{h(z)} \]
+    Since $h(\alpha)\neq0$, $g(z)\cdot\frac{h'(z)}{h(z)}$ is analytic about $\alpha$ and therefore does not contribute to the residue of $F(z)$ at $\alpha$.
+    So
+    \[ \Resof{F,\alpha} = \Resof{g(z)\cdot\frac k{z-\alpha},\alpha} \]
+
+    Now we make the general claim that if $g$ is analytic at $\alpha$ then
+    \[ \Resof{\frac{g(z){z-\alpha}}, \alpha} = g(\alpha) \]
+    this is since $g$ has a Taylor series about $\alpha$,
+    \[ g(z) = \sum_{k=0}^\infty c_k(z-\alpha)^k \]
+    and so
+    \[ \frac{g(z)}{z-\alpha} = \sum_{k=0}^\infty c_k(z-\alpha)^{k-1} \]
+    and so $\Resof{\frac{g(z)}{z-\alpha}}=c_0$, and recall that $c_0=g(\alpha)$ as required.
+
+    Thus we have that
+    \[ \Resof{F,\alpha} = k\cdot g(\alpha) \]
+    Where $k$ is the multiplicity of $\alpha$.
+
+    Thus
+    \[ \frac1{2\pi i}\int_\gamma F(z)\,dz = \sum_\alpha \Resof{F,\alpha} = \sum_\alpha k\cdot g(\alpha) \]
+    as required (since the sum of $g(z_k)$ will sum $z_k$ as per its multiplicity).
+
+\eblank
+
+\bexerc
+
+    Show that for every $R>0$, there exists an $n$ large enough such that
+    \[ P_n(z) = \sum_{k=0}^n \frac{z^k}{k!} \]
+    has no zeros in $\abs z\leq R$.
+
+\eexerc
+
+\bblank
+
+    Since $P_n$ is the partial sum of the powerseries of $\exp(z)$, we have $P_n(z)\xvarrightarrows{}[n\to\infty]\exp(z)$.
+    Thus there exists an $n$ where $\abs{\exp(z)-P_n(z)}<e^{-R}$ for all $\abs z\leq R$.
+    Since $\abs{\exp(z)}=e^x\geq e^{-R}$ we have that
+    \[ \abs{P_n(z) - \exp(z)} < e^{-R} \leq \abs{\exp(z)} \]
+    and so $P_n(z)-\exp(z)+\exp(z)=P_n(z)$ has the same number of zeros on $\abs z\leq R$ as $\exp(z)$, which is none.
+    Meaning $P_n(z)$ has no zeros on $\abs z\leq R$.
+
+\eblank
+
+\bexerc
+
+    Prove the fundamental theorem of algebra.
+
+\eexerc
+
+\bblank
+
+    Let
+    \[ p(z) = \sum_{n=0}^N a_nz^n \]
+    For some $N\geq1$, our goal is to prove $p(z)$ has a zero.
+    Then let
+    \[ g(z) = \sum_{n=0}^{N-1} a_nz^n \]
+    Then notice that
+    \[ \abs{\frac{g(z)}{z^N}} = \abs{\sum_{n=0}^{N-1} a_nz^{n-N}} \leq \sum_{n=0}^{N-1} \abs{a_n}\abs z^{n-N} \]
+    and since for every $0\leq n<N$, $\abs z^{n-N}\xvarrightarrow{}[z\to\infty]0$, we have that $\abs{\frac{g(z)}{z^N}}\xvarrightarrow{}[z\to\infty]0$.
+    So we can take an $R>0$ arbitrarily large such that when $\abs z=R$,
+    \[ \abs{\frac{g(z)}{z^N}} < 1 \]
+    and so
+    \[ \abs{g(z)} < \abs{z^N} \]
+    on $\abs z=R$.
+    So by Rouch\'e's theorem, we have that $P_n(z)=g(z)+z^N$ has the same number of zeros in $\abs z\leq R$ as $z^N$ does.
+    Since $z^N$ has $N$ zeros ($0$ with multiplicity $N$), that means $P_n(z)$ has $N\geq1$ zeros in $\abs z\leq R$, as required.
+
+\eblank
+
+\end{document}
+

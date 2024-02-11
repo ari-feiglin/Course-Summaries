@@ -1,0 +1,173 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\openset{{\cal O}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=15
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infinitesimal Calculus 3}
+
+    \medskip
+    \textit{Lecture \thesection, Sunday December 4, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{prop*}
+
+    Suppose $f\colon\bR^n\longvarrightarrow\bR^m$ is defined in a neighborhood and differentiable at $p\in\bR^n$ let $q=f(p)$.
+    Suppose $g\colon\bR^m\longvarrightarrow\bR^k$ which is defined in a neighborhood and differentiable at $q$.
+    Then $g\circ f\colon\bR^n\longvarrightarrow\bR^k$ is differentiable at $p$ and satisfies:
+    \[ \differ{g\circ f}p = \differ gq\cdot\differ fp \]
+
+\end{prop*}
+
+Another way of thinking of this is if $J_f$ is the Jacobian of $f$ then:
+\[ J_{g\circ f}(p) = J_g\bigl(f(p)\bigr)\cdot J_f(p) \]
+
+\begin{proof}
+
+    Suppose $f(x+h)=f(x)+\differ fx(h)+\epsilon_1(h)$ and $g(x+h)=g(x)+\differ gx(h)+\epsilon_2(h)$.
+    Let $h\in\bR^n$ then
+    \[ g\circ f(p+h) - g\circ f(p) = g(f(p+h))-g(q) = g\bigl(q+\differ fp(h)+\epsilon_1\bigr)-g(q) = \differ gq\bigl(\differ fp(h)+\epsilon_p(h)\bigr) + \epsilon_q\bigl(f(p+h)-f(p)\bigr) \]
+    Now recall that by definition, differentials are linear, so this is equal to:
+    \[ = \differ gq\circ\differ fp(h) + \differ gq(\epsilon_p) + \epsilon_q\bigl(f(p+h)-f(p)\bigr) \]
+    So we will show that the right side of this is an $\epsilon$ function.
+    We know that:
+    \[ \lim_{h\varrightarrow0}\frac{\differ gq(\epsilon_p(h))}{\norm h} = \lim_{h\varrightarrow0}\differ gq\parens{\frac{\epsilon_p(h)}h} = \differ gq(0) = 0 \]
+    Since differentials are continuous as finite linear transforms.
+    And
+    \[ \lim_{h\varrightarrow0}\frac{\epsilon_q\bigl(\Delta f(p)\bigr)}{\norm h} = \lim_{h\varrightarrow0}\frac{\epsilon_q\bigl(\Delta f(p)\bigr)}{\Delta f(p)}\cdot\frac{\Delta f(p)}{\norm h} \]
+    Since $f$ is continuous at $p$, as $h$ approaches $0$, so too does $\Delta f(p)$.
+    So
+    \[ \lim_{h\varrightarrow0}\frac{\epsilon_q\bigl(\Delta f(p)\bigr)}{\Delta f(p)} = 0 \]
+    And $\frac{\Delta f(p)}{\norm h}$ is bounded, as it is equal to
+    \[ \frac{\differ fp(h)+\epsilon_1(h)}{\norm h} = \frac{\differ fp(h)}{\norm h} + \frac{\epsilon_1(h)}{\norm h} \]
+    The left is bounded since differentials are linear transforms, and the right is bounded since it converges to $0$.
+    As required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{defn*}
+
+    The \ppemph{contour line} of a function $f\colon A\longvarrightarrow B$ is the set
+    \[ \set{a\in A}[f(a)=b] \]
+    for some $b\in B$.
+    That is, it is the preimage of $\set b$.
+
+\end{defn*}
+
+For example, the contour lines of $f(x,y)=x^2+y^2$ are circles.
+If $\gamma$ is a contour line of $f$, if $u$ is tangent to the contour, $D_uf=0$.
+This is equivalent to saying that $\nabla f\big|_v$ is perpendicular to the contour line of $f(v)$ at the point $v$.
+
+\begin{defn*}
+
+    A vector $v$ is \ppemph{perpendicular} to a set $S$ at a point $p\in S$ if:
+        \[ \lim_{S\ni u\varrightarrow p}v\cdot\frac{p-u}{\norm{p-u}} = 0 \]
+
+\end{defn*}
+
+\begin{prop*}
+
+    $\nabla f\big|_v$ is perpendicular to the contour line of $f(v)$ at the point $v$.
+
+\end{prop*}
+
+\begin{proof}
+
+    We know that:
+    \[ \lim_{u\varrightarrow v}\nabla f\big|_v\cdot\frac{u-v}{\norm{u-v}} \]
+    Recall that $f(v+h)=f(v)+\nabla f\big|_v\cdot h+\epsilon(h)$, and so if $h=u-v$, then we have that $f(u)=f(v)+\nabla f\big|_v\cdot(u-v)+\epsilon(u-v)$, and since $f(u)=f(v)$ since they're on the
+    same contour, we have that $\nabla f\big|_v\cdot(u-v)=-\epsilon(u-v)$, so the limit is equal to:
+    \[ = \lim_{u\varrightarrow v}-\frac{\epsilon(u-v)}{\norm{u-v}} = 0 \]
+    by definition of an $\epsilon$ function.
+
+    \hfill$\blacksquare$.
+
+\end{proof}
+
+\begin{thrm*}[clairutSchwarzTheorem,Clairut-Schwarz\ Theorem]
+
+    Suppose $f\colon\bR^n\longvarrightarrow\bR$ and its partial derivatives is defined in a neighborhood of $(x_1,\dots,x_n)$.
+    If its second order partial derivatives $\partial_j\partial_i f$ and $\partial_j\partial_i f$ exist in a neighborhood and are continuous at $(x_1,\dots,x_n)$ then they are equal at $(x_1,\dots,x_n)$.
+
+\end{thrm*}
+
+Since this is identical to the $2$ dimensional case, we will prove it only for the $2$ dimensional case.
+Recall that an alternative notation for partial derivatives is:
+\[ f_{x_i} = \partial_{x_i}f \]
+And:
+\[ f_{x_jx_i} = \partial_{x_j}\partial_{x_i}f \]
+So this theorem states that $f_{x_ix_j}=f_{x_jx_i}$ under the specified conditions.
+
+\begin{proof}
+
+    We define the following auxillary functions:
+    \[ \omega(h,k) = \frac{f(x_0+h,y_0+h)-f(x_0+h,y_0)-f(x_0,y_0+h)+f(x_0,y_0)}{hk} \]
+    \[ \phi(x) = \frac{f(x,y_0+k)-f(x,y_0)}k \]
+    Thus
+    \[ \phi'(x) = \frac{f_x(x,y_0+k)-f_x(x,y_0)}k \]
+    And
+    \[ \omega(h,k) = \frac{\phi(x_0+h)-\phi(x_0)}h \]
+    By the mean value theorem, this means that $\omega(h,k)=\phi'(x_0+th)$ for some $0<t<1$, which is equal to
+    \[ = \frac{f_x(x_0+th, y_0+k)-f_x(x_0+th,y_0}k \]
+    And by the mean value theorem this is equal to $f_{xy}(x_0+t_1h,y_0+t_2h)$ for $0<t_1,t_2<1$ ($t_1=t$).
+    By symmetry (we can do the same thing but swapping $x$ and $y$ in $\phi$), $\omega(h,k)=f_{yx}(x_0+t_3h,y_0+t_4k)$.
+    That is:
+    \[ \omega(h,k) = f_{xy}(x_0+t_1h,y_0+t_2k) = f_{yx}(x_0+t_3h,y_0+t_4k) \]
+    Since $f_{xy}$ and $f_{yx}$ are continuous at $(x_0,y_0)$, as we take $(h,k)\varrightarrow(0,0)$ we have that:
+    \[ \lim_{(h,k)\varrightarrow0} f_{xy}(x_0+t_1h,y_0+t_2k) = f_{xy}(x_0,y_0) \]
+    But on the other hand:
+    \[ \lim_{(h,k)\varrightarrow0} f_{xy}(x_0+t_1h,y_0+t_2k) = \lim_{(h,k)\varrightarrow0}f_{yx}(x_0+t_3h,y_0+t_4k) = f_{yx}(x_0,y_0) \]
+    And therefore
+    \[ f_{xy}(x_0,y_0) = f_{yx}(x_0,y_0) \]
+    as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{defn*}
+
+    If $D\subseteq\bR^n$ is open then $C^0(D)$ is the set of all continuous real-valued functions on $D$, and $C^n(D)$ is the set of functions which are differentiable $n$ times (their partial derivatives
+    have partial derivatives etc.) and the partial derivatives are continuous.
+
+\end{defn*}
+
+\end{document}
+

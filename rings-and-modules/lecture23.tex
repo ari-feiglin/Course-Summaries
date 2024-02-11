@@ -1,0 +1,227 @@
+\documentclass[10pt]{article}
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+\usepackage{mathrsfs}
+
+\catcode`\@=11
+\input pdfmsym
+
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\implies{\,\mathrel{\longvarRightarrow}\,}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\divides{{\mid}}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\newfunc{eulerg}{{\rm Euler}}({})
+\newfunc{order}o({})
+\newfunc{ker}{{\rm Ker}}({})
+\newfunc{image}{{\rm Im}}({})
+\newfunc{lattice}{{\cal L}}(\vert)
+\newfunc{powset}{{\cal P}}(\vert)
+\newfunc{center}{{\rm Z}}({})
+\newfunc{units}{{\cal U}}(\vert)
+\newfunc{sign}{{\rm sgn}}({})
+\newfunc{aut}{{\rm Aut}}({})
+\newfunc{speclinear}{{\rm SL}}({})
+\newfunc{genlinear}{{\rm GL}}({})
+\newfunc{projlinear}{{\rm PGL}}({})
+\newfunc{specprojlinear}{{\rm PSL}}({})
+\newfunc{core}{{\rm Core}}(\vert)
+\newfunc{inner}{{\rm Inn}}(\vert)
+\newfunc{outer}{{\rm Out}}(\vert)
+\newfunc{conj}{{\rm conj}}({})
+\newfunc{ev}{{\rm ev}}({})
+\newfunc{Frac}{{\rm Frac}}({})
+\newfunc{Tor}{{\rm Tor}}(\vert)
+\newfunc{Ann}{{\rm Ann}}(\vert)
+\newfunc{deg}{{\rm deg}}({})
+
+\def\maxdivs{\mathrel{\|}}
+
+\let\ideal=\trianglelefteq
+\let\pideal=\triangleleft
+\def\normal{\mathrel\triangleleft}
+\let\mmorph=\longvarhookrightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\mN{\mathcal N}
+\def\mC{\mathcal C}
+\def\mO{\mathcal O}
+\def\mG{\mathcal G}
+\def\sS{\mathscr S}
+
+\begin{document}
+
+\c@section=23
+
+\barcolorbox{220, 220, 255}{0, 0, 130}{80, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Introduction to Rings and Modules}
+
+    \medskip
+    \textit{Lecture \thesection, Friday June 30 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{lemm*}[brauerLemma,Brauer's\ Lemma]
+
+    If $R$ is a ring (not necessarily commutative) and $(0)\neq I\ideal R$ is a minimal left ideal, suppose $I^2\neq(0)$ then there exists an idempotent element $e\in R$ such that
+    \benum
+        \item $I=Re$
+        \item $eRe$ is a division ring
+    \eenum
+
+\end{lemm*}
+
+\begin{proof}
+
+    Since $I^2=\set{\sum_{k=0}^n y_kx_k}[x_k,y_k\in I]$, there exist $x,y\in I$ such that $yx\neq0$.
+    Let us focus on $Ix=\set{ax}[a\in I]$, we claim that this is a left ideal of $R$.
+    Since if $ax,bx\in Ix$ then $ax+bx=(a+b)x\in Ix$ and if $ax\in Ix$ and $b\in R$ then $b(ax)=(ba)x\in Ix$ since $I$ is a left ideal.
+    Thus $Ix$ is closed under addition and multiplication by $R$ as required.
+    And since $y\in I$ and $yx\neq0$ we have $Ix\neq(0)$.
+
+    Thus we have that $(0)\neq Ix\subseteq Rx\subseteq I$.
+    And since $I$ is minimal we have $Ix=Rx=I$.
+    And since $x\in I$ this means $x\in Ix$ and so there exists an $e\in I$ such that $x=ex$.
+    We will show that $e$ has the desired properties.
+
+    Notice that
+    \[ e^2x = e(ex) = ex = x \]
+    and so
+    \[ (e^2-e)x = x - x = 0 \]
+    and thus $e^2-e\in\Annof[R]x=\set{r\in R}[rx=0]$ which is a left ideal of $R$.
+    And so $I\cap\Annof[R]x$ is a left ideal of $R$, but since $e\in I$ and $ex=x\neq0$, $e\notin\Annof[R]x$ and so $I\cap\Annof[R]x$ is a proper subset of $I$, and since $I$ is minimal this means that
+    $I\cap\Annof[R]x=(0)$, but $e^2-e\in I\cap\Annof[R]x$ and so $e^2=e$, meaning $e$ is idempotent as required.
+
+    Now we claim $I=Re$.
+    Obviously $Re\subseteq I$ since $e\in I$, and since $e\neq0$ (since $ex=x\neq0$) we have $Re\neq(0)$ is a non-zero ideal.
+    By $I$'s minimality this means $I=Re$.
+
+    Now we claim that $eRe$ is a division ring.
+    We showed last lecture that $e\in eRe$ is its identity, so let $0\neq eae\in eRe$ for some $a\in R$.
+    Then $eae\in eRe\subseteq Re=I$, and thus $(0)\neq Reae\subseteq I$, meaning $I=Reae$, and since $e\in I$ this means there exists a $r\in R$ such that $reae=e$.
+    And so $ere\in eRe$, and
+    \[ (ere)(eae) = ereae = e(reae) = e^2 = e \]
+    And so every element in $eRe$ has a left inverse, and we know this means that every element in $eRe$ has an inverse (if every element of $R$ has a left inverse, then every element of $R$ has an inverse:
+    let $a\in R$ then there exists a $b\in R$ such that $ba=1$, but there also exists a $c\in R$ such that $cb=1$.
+    And so $c(ba)=c$ and $(cb)a=a$ so $a=c$ and in particular $ba=ab=1$.)
+    Thus $eRe$ is a division ring.
+    \qed
+
+\end{proof}
+
+We claim that if $D$ is a division ring and $M$ is a (left/right) $D$-module, then $M$ is free (has a basis) and all two bases of $M$ have the same cardinality.
+We proved this in linear algebra for fields (commutative division rings), the proof here is the same.
+
+\begin{thrm*}[wedderburnTheorem,Wedderburn's\ Theorem]
+
+    Suppose $R$ is a simple ring, then if $R$ has a minimal left ideal then there exists an $n\in\bN$ and a division ring $D$ such that $R\cong M_n(D)$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    \newfunc{End}{{\rm End}}({})
+    Let $I$ be $R$'s minimal left ideal.
+    Then $I=RI$, and on the other hand $IR$ is a two-sided ideal of $R$.
+    This is because if $b\in IR$ then $b=\sum_{k=0}^n i_kr_k$, and if $r\in R$:
+    \[ rb = \sum_{k=0}^\infty (ri_k)r_k \in IR \]
+    since $I$ is a left ideal so $ri_k\in I$.
+    And
+    \[ br = \sum_{k=0}^\infty i_k(r_kr) \in IR \]
+    But since $I\neq(0)$, $IR\neq(0)$.
+    But $R$ is simple so $IR=R$.
+
+    Thus
+    \[ R = RR = IRIR = I(RI)R = I^2R \]
+    And so $I^2\neq(0)$, so by \ppref{brauerLemma} there exists an idempotent $e\in R$ such that $I=Re$ and $eRe$ is a division ring.
+    Let us denote $D=eRe$.
+    Since $D\subseteq Re=I$, and $I$ is closed under multiplication by its own elements (from the left and right), it is closed under multiplication by elements of $D$.
+    Thus $I$ can be given the structure of a right $D$-module by $a\cdot d=ad$.
+
+    Let $\Endof[D]I$ be the set of all endomorphisms of $I$ as a $D$-module, then we claim $R\cong\Endof[D]I$.
+    Let us define a function
+    \[ \phi\colon R\longto\Endof[D]I,\quad \phi(r) = \phi_r \]
+    where
+    \[ \phi_r\colon I\longto I,\quad \phi_r(a) = ra \]
+    $\phi_r$ is well-defined since $ra\in I$ so $\phi_r$ is indeed a function over $I$, and $\phi$ is well-defined since
+    \[ \phi_r(a+b) = r(a+b) = ra+rb = \phi_r(a) + \phi_r(b) \]
+    and
+    \[ \phi_r(ad) = r(ad) = (ra)d = \phi_r(a)d \]
+    Thus $\phi(r)\in\Endof[D]I$ as required.
+    We further claim that $\phi$ is actually an isomorphism.
+    It is a homomorphism since
+    \begin{align*}
+        \phi_{r+s}(a) = (r+s)a = ra + sa = \phi_r(a) + \phi_s(a) &\implies \phi(r+s) = \phi(r) + \phi(s) \\
+        \phi_{rs}(a) = rsa = r(sa) = \phi_r(\phi_s(a)) &\implies \phi(rs) = \phi(r)\circ\phi(s) \\
+        \phi_1(a) = 1a = a &\implies \phi(1) = \mathrm{id}\
+    \end{align*}
+
+    $\phi$ is injective since if $r\in\kerof\phi$ then $\phi_r=0$.
+    Recall $IR=R$, and so $rI=(0)$, and $rR=rIR=(0)$, but if $r\neq0$ then $r\in rR$ and so $rR\neq(0)$ meaning $r=0$, so $\kerof\phi=(0)$ as required.
+
+    Now suppose $\psi\colon I\longto I$ is a function such that $\psi\in\Endof[D]I$.
+    Recall $I=Re$ and so $1\in R=IR=ReR$ and thus
+    \[ 1 = \sum_{i=1}^m r_ies_i \]
+    for $r_i,s_i\in R$.
+    Let $a\in I$ then since $I=Re$, we have $a=be$ for $b\in R$ and thus
+    \[ \psi(a) = \psi(be) = \psi(1\cdot be) = \psi\parens{\sum_{i=1}^m r_ies_ibe} \]
+    the summands are in $Re=I$ and so
+    \[ = \sum_{i=1}^m \psi(r_ies_ibe) = \sum_{i=1}^m \psi(r_i)es_ibe = \parens{\sum_{i=1}^m \psi(r_i)es_i}be \]
+    Let the sum be equal to $r$, and so we have that
+    \[ \psi(a) = r\cdot be = ra \]
+    and so $\psi=\phi(r)$, meaning $\phi$ is surjective.
+    Thus $\phi$ is an isomorphism, $R\cong\Endof[D]I$.
+
+    Now, since $I$ is a $D$-module, it is free.
+    We claim it is also finitely-generated.
+    Let
+    \[ J = \set{\phi\in\Endof[D]I}[\phi(I)\text{ is a finitely-generated }D\text{-module}] \]
+    We claim that $J$ is a two-sided ideal of $\Endof[D]I$.
+    Let $\phi_1,\phi_2\in J$ then $\phi_1(I)$ and $\phi_2(I)$ are both finitely generated and so if we take the union of generating sets of theirs, we get a finite set which generates
+    $\phi_1(I)+\phi_2(I)=(\phi_1+\phi_2)(I)$.
+    And if $\psi\in\Endof[D]I$ and $\phi\in J$ then suppose $I=a_1D+\cdots+a_nD$, so
+    \[ (\psi\circ\phi)(I) = \psi(\phi(I)) = \psi(a_1D + \cdots + a_nD) = \psi(a_1)D+\cdots+\psi(a_n)D \]
+    and so $\psi\circ\phi(I)$ is also finitely-generated.
+    And
+    \[ (\phi\circ\psi)(I) = \phi(\psi(I)) \subseteq \phi(I) \]
+    and so $\phi\circ\psi,\psi\circ\phi\in J$.
+    Thus $J\ideal\Endof[D]I$ is a two-sided ideal as required.
+
+    Let $B$ be a basis of $I$, and let $b\in B$ then
+    \[ I \cong bD\times\gen{B\setminus\set b} \]
+    then we can define $\psi\colon I\longto bD$ which projects elements of $I$ to their component in $bD$.
+    $\psi$ is an endomorphism, and $\psi(I)=bD$ which is a cyclic $D$-module, and therefore finitely-generated so $\psi\in J$, and in particular $J\neq(0)$.
+    But since $\Endof[D]I\cong R$ which is simple, $J=\Endof[D]I$.
+    And since $\mathrm{id}\in\Endof[D]I$, this means that $\mathrm{id}(I)=I$ is finitely-generated as a $D$ module.
+
+    Let $b_1,\dots,b_n$ be a basis of $I$ as a $D$-module, then we can construct an isomorphism
+    \[ R \cong \Endof[D]I \cong M_n(D) \]
+    since endomorphisms over a finitely generated module are isomorphic to matrices (as shown in linear algebra).
+    \qed
+
+\end{proof}
+
+\end{document}
+

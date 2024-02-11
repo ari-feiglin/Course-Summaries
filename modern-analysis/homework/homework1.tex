@@ -1,0 +1,82 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+\parindent=0pt
+\parskip=3pt plus 2pt minus 2pt
+
+\input ../preamble
+
+\footline={}
+
+\setcounter{section}{1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+
+{\bppbox{rgb{.5 1 .5}}{rgb{0 .4 0}}{rgb{.1 .4 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Modern Analysis}
+    \smallskip
+    \centerline{\setfont{it}Homework \the\counter{section}}
+    \centerline{\setfont{it}Ari Feiglin}
+
+\eppbox}
+
+\bexerc
+
+    Let $E\subseteq{\bb R}$ and $a,b\in{\bb R}$.
+    Show that $m^*(aE+b)=\abs a m^*(E)$.
+
+\eexerc
+
+Note that there is a one-to-one correspondence between open covers of $aE+b$ and $E$: if $\set{I_n}$ is a cover of open intervals of $E$, $\set{aI_n+b}$ is a cover of $aE+b$, and every cover of $aE+b$ is
+of this form (since if $\set{J_n}$ is a cover of $aE+b$, $\set{\frac{J_n-b}a}$ is a cover of $E$).
+And since $\abs{aI+b}=\abs a\abs I$,
+$$ m^*(aE+b) = \infof{\sum\abs{aI_n+b}}[E\subseteq\bigcup I_n]  = \abs a\infof{\sum\abs{I_n}}[E\subseteq\bigcup I_n] = \abs a m^*(E) $$
+
+\bexerc
+
+    Prove or disprove:
+    \benum
+        \item if $A\subseteq{\bb R}$ is bound, then $m^*(A)<\infty$,
+        \item if $A\subseteq{\bb R}$ has finite measure, $A$ is bound.
+    \eenum
+
+\eexerc
+
+\benum
+    \item This is true: if $A$ is bound then $A\subseteq[a,b]$ for some $a,b\in{\bb R}$ and by monotonicity $m^*(A)\leq m^*([a,b])=b-a<\infty$.
+    \item This is false: $m^*({\bb Q})=0$ but ${\bb Q}$ is unbound.
+\eenum
+
+\bexerc
+
+    We say that a set $S$ is $G_\delta$ if it is the countable intersection of open sets.
+    Show that for every $E\subseteq{\bb R}$, there exists a $G_\delta$ set $S$ such that $m^*(E)=m^*(S)$.
+
+\eexerc
+
+For every $n$, let $\set{I_{n,k}}_k$ be an open cover of $E$ such that $\sum_k\abs{I_{n,k}}\leq m^*(E)+\frac1n$.
+Then define
+$$ S\coloneqq\bigcap_n\bigcup_k I_{n,k} $$
+which is a $G_\delta$ set since $\bigcup_k I_{n,k}$ are open as the unions of open sets.
+Furthermore, $S\subseteq\bigcup_k I_{n,k}$ for every $n$ and so by subadditivity for every $n$,
+$$ m^*(S) \leq \sum_k\abs{I_{n,k}} \leq m^*(E) + \frac1n $$
+thus $m^*(S)\subseteq m^*(E)$.
+And since $E\subseteq\bigcup_k I_{n,k}$ for every $n$, $E\subseteq S$ so $m^*(E)\leq m^*(S)$ and therefore $m^*(E)=m^*(S)$ as required.
+
+\bexerc
+
+    Suppose $f\colon{\bb R}\longto{\bb R}$ is continuous, show that $f^{-1}\set0$ is $G_\delta$.
+
+\eexerc
+
+We claim that
+$$ f^{-1}\set0 = \bigcap_{n=1}^\infty f^{-1}\parens{-\frac1n,\frac1n} $$
+since $f^{-1}\set0\subseteq f^{-1}\parens{-\frac1n,\frac1n}$ for every $n$ we have $\subseteq$.
+And if $-\frac1n<f(x)<\frac1n$ for all $n$ then $f(x)=0$ so we have $\supseteq$ and therefore equality.
+Since $f$ is continuous and $\parens{-\frac1n,\frac1n}$ is open, $f^{-1}\parens{-\frac1n,\frac1n}$ is open and therefore $f^{-1}\set0$ is $G_\delta$.
+
+\bye
+

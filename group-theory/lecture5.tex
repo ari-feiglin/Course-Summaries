@@ -1,0 +1,360 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\slfrac#1#2{\left.{}^{#1}\mkern-4mu\middle/\mkern-3mu{}_{#2}\right.}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\@blist[#1]{%
+    \bgroup\bgroup\par\vskip-\medskipamount%
+    \gdef\item{%
+        \par\egroup\bgroup\medskip\setbox0=\hbox{#1\quad}%
+        \advance\leftskip by \wd0\leavevmode\kern-\wd0\box0%
+    }%
+}
+\def\blist{\@ifnextchar[ \@blist {\@blist[$\bullet$]}}
+\def\elist{\par\egroup\egroup\medskip}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\newfunc{eulerg}{{\rm Euler}}({})
+\newfunc{order}o({})
+\newfunc{ker}{{\rm Ker}}({})
+\newfunc{image}{{\rm Im}}({})
+\newfunc{lattice}{{\cal L}}(\vert)
+\newfunc{powset}{{\cal P}}(\vert)
+
+\let\normalsub=\trianglelefteq
+
+\begin{document}
+
+\c@section=5
+
+\barcolorbox{220, 220, 255}{0, 0, 130}{80, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Group Theory}
+
+    \medskip
+    \textit{Lecture 5, Sunday November 20, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+Notice that if we focus on $(\bZ_n,+)$, then since the group is abelian, every subgroup is normal since $gH=Hg$ by abelianness.
+If we take $G=(\bZ_{60},+)$ and the subgroup $H=\cycle 6$ then:
+\[ \slfrac GH = \set{H, 1+H, 2+H, 3+H, 4+H, 5+H} \]
+And if we take $N=\cycle 2$, we have that $H<N<G$, so we can discuss $\slfrac NH=\set{H, 2+H, 4+H}\leq\slfrac GH$.
+And therefore we can go one step further and:
+\[ \slfrac{\slfrac GH}{\slfrac NH} = \set{\set{H, 2+H, 4+H}, \set{1+H, 3+H, 5+H}} \]
+
+\subsection{Homomorphisms}
+
+\begin{defn*}
+
+    Suppose $(G,\cdot)$ and $(H,\circ)$ are groups then a function $f\colon G\longvarrightarrow H$ is a \ppemph{homomorphism} if for every $a,b\in G$: $f(a\cdot b)=f(a)\circ f(b)$.
+
+\end{defn*}
+
+Notice that $f(e_G)=f(e_G\cdot e_G)=f(e_G)\circ f(e_G)$, and so if we take the inverse of $f(e_G)$ we get $f(e_G)=e_H$.
+And $f(a)\circ f(a^{-1})=f(a\cdot a^{-1})=f(e)=e$ and similarly $f(a^{-1})\circ f(a)=e$, so ${f(a)}^{-1}=f(a^{-1})$.
+
+\begin{defn*}
+
+    If $f\colon G\longvarrightarrow H$ is a homomorphism, we define the \ppemph{image} and \ppemph{kernel} of $f$ to be:
+    \[ \image f = \set{f(g)}[g\in G] \qquad \ker f = \set{g\in G}[f(g)=e] \]
+
+\end{defn*}
+
+Notice that $\image f\leq H$ and $\ker f\leq G$.
+The image is a subgroup since we have shown $e=f(e)\in\image f$, it is closed under inverses since if $f(a)\in\image f$ then ${f(a)}^{-1}=f(a^{-1})\in\image f$, and if $f(a),f(b)\in\image f$ then so is
+$f(a)f(b)=f(ab)\in\image f$.
+And the kernel is a subgroup since $e\in\ker f$, if $f(a)=e$ then $f(a^{-1})={f(a)}^{-1}=e^{-1}=e$ so $a^{-1}\in\ker f$, and if $f(a)=f(b)=e$ then $f(ab)=f(a)f(b)=e$ so $ab\in\ker f$.
+
+Moreso, the kernel of a subgroup is a normal subgroup.
+
+\begin{prop*}
+
+    If $f\colon G\longvarrightarrow H$ then $\ker f\normalsub G$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $K=\ker f$ and let $g\in G$, $k\in K$.
+    Then since $f(k)=e$:
+    \[ f(gkg^{-1}) = f(g)f(k)f(g^{-1})=f(g)f(g^{-1}) = e \]
+    And so $gkg^{-1}\in K$.
+    So for every $g$, $gKg^{-1}\subseteq K$, and so $K$ is normal.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{exam}
+
+    The \ppemph{trivial homomorphism} is a homomorphism $f\colon G\longvarrightarrow H$ such that for every $g\in G$, $f(g)=e$.
+    Then $\image f=\set e$ and $\ker f = G$.
+
+    And the \ppemph{identity homomorphism} over a group $G$ is the homomorphism $f\colon G\longvarrightarrow G$ such that $f(g)=g$.
+    Then $\image f=G$ and $\ker f = \set e$.
+
+    It is trivial to see why these functions are homomorphisms.
+
+\end{exam}
+
+\begin{lemm*}
+
+    $f$ a homomorphism is injective if and only if $\ker f=\set e$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    If $f$ is injective then since $f$ is a homomorphism, $f(e)=e$, so the only element that can map to $e$ is $e$ (notice these may be in different sets) and therefore $\ker f=\set e$.
+    Now to show the converse, suppose $f(g)=f(g')$ then $f(g)f(g')^{-1}=f(gg'^{-1})=e$, and since the kernel is trivial, $gg'^{-1}=e$ and therefore $g=g'$.
+    So $f$ is injective.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{thrm*}[firstIsoTheorem,The\ First\ Isomorphism\ Theorem]
+
+    If $f\colon G\longvarrightarrow H$ is an homomorphism then $\slfrac G{\ker f}\cong\image f$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let $K=\ker f$, then our goal is to construct an isomorphism (which recall is a bijective homomorphism) between $\slfrac GK$ to $\image f$.
+    We will denote this isomorphism as $\tilde f$.
+    Given $gK\in\slfrac GK$ then the rational thing would be to map it to $f(g)$, that is $\tilde f(gK)=f(g)$.
+    We must show $4$ things: $\tilde f$ is well defined, is a homomorphism, is injective, and is surjective.
+
+    $\tilde f$ is well defined since if $gK=g'K$ then $g'=gk$ for some $k\in K$, so $f(g')=f(g)f(k)=f(g)e=f(g)$.
+    So no matter what representative we have for $gK$, their image in $f$ is the same.
+
+    $\tilde f$ is a homomorphism since $K$ is normal so $gK\cdot g'K=gg'K$ so:
+    \[ \tilde f(gK\cdot g'K) = \tilde f(gg'K) = f(gg') = f(g)f(g') = \tilde f(gK)\tilde f(g'K) \]
+
+    To show $\tilde f$ is injective, we will show that its kernel is trivial.
+    Suppose $\tilde f(gK)=e$, then by definition $f(g)=e$, and therefore $g\in K$, which in turn means $gK=K$.
+    So $\ker\tilde f=\set{K}$ (and $K$ is the identity element of $\slfrac GK$), and therefore $\tilde f$ is injective.
+
+    $\tilde f$ is surjective since if $f(g)\in\image f$ then $\tilde f(gK)=f(g)$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+Alternatively we could show that $\tilde f$ is injective since if $\tilde f(gK)=\tilde f(g'K)$ then $f(g)=f(g')$, so $f(gg'^{-1})=e$, so $gg'^{-1}\in K$, and therefore $g\in g'K$, so $gK=g'K$.
+And therefore $\tilde f$ is injective.
+But this is less elegant and the lemma which gives a criterion for injectivity is an essential and important one.
+
+\begin{thrm*}[secondIsoTheorem,The\ Second\ Isomorphism\ Theorem]
+
+    If $H\leq G$ and $N\normalsub G$, then $HN\leq G$, $N\cap H\normalsub H$, and $\slfrac{HN}N\cong\slfrac H{H\cap N}$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    It is obvious that $HN\leq G$ since $N$ is normal so $HN=NH$, and we showed that this is necessary and sufficient to show that $HN$ is a subgroup.
+    And $N\cap H$ is a normal subgroup of $H$ since if $n\in N\cap H$ then $hN=Nh$ since $N$ is normal, and if $hn\in h(N\cap H)\subseteq hN=Nh$ so $hn=n'h$, and so $n'=hnh^{-1}$.
+    And since $n\in N\cap H$, $hnh^{-1}\in H$, so $n'\in H$ and therefore $hn=n'h$ for some $n'\in N\cap H$ and therefore $h(N\cap H)=(N\cap H)h$, and so $N\cap H$ is normal.
+
+    We will define an isomorphism:
+    \[ f\colon H\longvarrightarrow\slfrac{HN}N \]
+    By $f(h)=hN$.
+    This is the only natural choice (recall that $H\leq HN$).
+    It is simple to see why $f$ is a homomorphism.
+    Then if $h\in H$ then $hN=hnN$ for $n\in N$ so $hN\in\slfrac{HN}N$.
+    And if $hnN\in\slfrac{HN}N$ then $hnN=hN=f(h)$, so $\image f=\slfrac{HN}N$.
+    And $\ker f=N\cap H$ since $hN=N$ if and only if $h\in N$, and since $h\in H$ then $h$ must be in $N\cap H$.
+    So by the first isomorphism theorem:
+    \[ \slfrac{H}{\ker f} = \slfrac{H}{H\cap N}\cong\slfrac{NH}N = \image f \]
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{thrm*}[thirdIsoTheorem,The\ Third\ Isomorphism\ Theorem]
+
+    Suppose $K\leq H\leq G$ are groups such that $H,K\normalsub G$.
+    Then $K\normalsub H$, $\slfrac HK\normalsub\slfrac GK$, and:
+    \[ \slfrac{\slfrac GK}{\slfrac HK} \cong \slfrac GH \]
+
+\end{thrm*}
+
+\begin{proof}
+
+    It is trivial to see that $K\normalsub H$ since $K$ is normal in $G$ and cosets of $K$ relative to $H$ are cosest relative to $G$.
+    It is also trivial to see why $\slfrac HK\leq\slfrac GK$ since $hK\in\slfrac GK$ since $h\in G$ and $\slfrac HK$ is a group.
+    It is a normal subgroup since if $g\in G$ then $gK\slfrac HK=\set{gKhK}[h\in H]=\set{ghK}[h\in H]$ since $H$ is normal.
+    And since $K$ is normal $ghK=Kgh$, and so $ghK=Kghg^{-1}g$.
+    Since $H$ is normal $ghg^{-1}\in H$, so $ghK=Kh'g=Kh'gK$, and therefore $gK\slfrac HK=\slfrac HKgK$.
+    So $\slfrac HK$ is indeed normal.
+
+    We will dfefine a homomorphism:
+    \[ f\colon\slfrac GK\longvarrightarrow\slfrac GH \]
+    By $f(gK)=gH$.
+    This is well defined since if $g_1K=g_2K$ then $g_1H=g_1KH=g_2KH=g_2H$ ($H=KH$ since $K\leq H$).
+    And it is a homomorphism since $f(g_1Kg_2K)=f(g_1g_2K)=g_1g_2H=g_1Hg_2H=f(g_1)f(g_2)$ since $K$ and $H$ are normal.
+    And $\image f=\slfrac GH$ and $\ker f=\set{gK}[gH=H]=\set{gK}[g\in H]=\slfrac HK$.
+    And so:
+    \[ \slfrac{\slfrac GK}{\ker f} = \slfrac{\slfrac GK}{\slfrac HK} \cong \image f = \slfrac GH \]
+    As required.
+
+\end{proof}
+
+\let\porder=\preccurlyeq
+
+\begin{defn*}
+
+    A \ppemph{lattice} is a partially ordered set $(\Gamma,\porder)$ such that for every $\alpha,\beta\in\Gamma$ they have an \ppemph{upper bound} and \ppemph{lower bound} $\alpha\vee\beta$ and
+    $\alpha\wedge\beta$ respectively such that $\alpha,\beta\porder\gamma$ if and only if $\alpha\vee\beta\porder\gamma$, and $\gamma\porder\alpha,\beta$ if and only if $\gamma\porder\alpha\wedge\beta$.
+
+\end{defn*}
+
+Notice that the upper and lower bounds are unique, since if $x$ and $y$ are both upper bounds to $\alpha$ and $\beta$ then $\alpha,\beta\porder x,y$ so $x\porder y$ and $y\porder x$ so $x=y$.
+A similar argument can be used for lower bounds.
+
+\begin{exam}
+
+    If $X$ is a set $(\powset X,\subseteq)$ is a lattice where $A\vee B=A\cup B$ and $A\wedge B=A\cap B$.
+
+\end{exam}
+
+\begin{exam}
+
+    If $G$ is a group, let
+    \[ {\cal L}(G) = \set{H\leq G} \]
+    Then $({\cal L}, \leq)$ is a lattice where $A\vee B=\cycle{A\cup B}$ is the upper bound (since it is the smallest subgroup containing both $A$ and $B$), and $A\wedge B=A\cap B$ is a lower bound.
+
+    If we define:
+    \[ {\cal L}_N(G) = \set{N\normalsub G} \]
+    Then $({\cal L}_N(G), \leq)$ (the $\leq$ can be replaced with $\normalsub$) is a lattice where $A\vee B=AB$ and $A\wedge B=A\cap B$.
+    $AB$ is an upper bound since it is normal ($gABg^{-1}=gAg^{-1}B=AB$).
+
+\end{exam}
+
+\begin{defn*}
+
+    If $\Gamma$ and $\Pi$ are lattices, a function $\phi\colon\Gamma\longvarrightarrow\Pi$ is a \ppemph{lattice homomorphism} if for every $\alpha,\beta\in\Gamma$:
+    \[ \phi(\alpha\vee\beta)=\phi(\alpha)\vee\phi(\beta) \text{ and } \phi(\alpha\wedge\beta) = \phi(\alpha)\wedge\phi(\beta) \]
+    $\phi$ is an \ppemph{lattice isomorphism} if it is bijective.
+    Two lattices are \ppemph{isomorphic} if there exists a lattice isomorphism between them.
+
+\end{defn*}
+
+\begin{lemm*}
+
+    If $f\colon G\longvarrightarrow H$ is a homomorphism then for every $K\leq H$, $f^{-1}(K)$ is a subgroup of $G$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    We know that since $e\in K$ and $f(e)=e$, we know that $e\in f^{-1}(K)$.
+    And if $a\in f^{-1}(K)$, then $f(a)\in K$, so $f(a^{-1})=f(a)^{-1}\in K$, so $a^{-1}\in f^{-1}(K)$.
+    And if $a,b\in f^{-1}(K)$ then $f(a),f(b)\in K$ so $f(a)f(b)=f(ab)\in K$ so $ab\in f^{-1}(K)$, as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{lemm*}
+
+    If $K\normalsub G$ then every subgroup of $\slfrac GK$ is of the form $\slfrac HK$ for $K\leq H\leq G$ (and every set of that form is a subgroup).
+
+\end{lemm*}
+
+\begin{proof}
+
+    Let us focus on the function:
+    \[ \pi\colon G\longvarrightarrow\slfrac GK,\qquad g\varmapsto gK \]
+    This function is a surjective homomorphism.
+    Then if $B$ is a subgroup of $\slfrac GK$, then by above $H=\pi^{-1}(B)$ is a subgroup of $G$.
+    We now argue that $B=\slfrac HK$.
+    This is true since $\pi$ is surjective so $\pi(H)=\pi^{-1}(\pi(B))=B$, and by definition $\pi(H)=\set{hK}[h\in H]=\slfrac HK$, so $B=\slfrac HK$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{lemm*}
+
+    If $K\normalsub G$ and $K\leq H_1,H_2\leq G$ then:
+    \[ \slfrac{H_1}K\cap\slfrac{H_2}K = \slfrac{H_1\cap H_2}K \qquad \cycle{\slfrac{H_1}K, \slfrac{H_2}K}=\slfrac{\cycle{H_1,H_2}}K \]
+
+\end{lemm*}
+
+\begin{proof}
+
+    We know that if $h\in H_1\cap H_2$ then $hK$ is in both $\slfrac{H_1}K$ and $\slfrac{H_2}K$.
+    And if $A$ is in both quotient groups, then $A=h_1K=h_2K$ for $h_1\in H_1$, $h_2\in H_2$.
+    Then $h_1=h_2k\in H_2$, so $h_1\in H_1\cap H_2$ and therefore $A\in\slfrac{H_1\cap H_2}K$ as required.
+    That proves the first equality.
+
+    We know that $\slfrac{H_1}K,\slfrac{H_2}K$ are subgroups of $\slfrac{\cycle{H_1, H_2}}K$, so the cycle of these quotient groups is also a subgroup (as the smallest group to contain them both).
+    And if $h\in\cycle{H_1, H_2}$ then $hK$ is in the cycle $\cycle{\slfrac{H_1}K, \slfrac{H_2}K}$ since $h$ can be written as a product of elements in $H_1$ and $H_2$ and thus $hK$ is equal to that
+    product times $K$.
+    That is equivalent to taking every element in that product and multiplying it by $K$, which is in that cycle.
+    This proves the second equality.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{thrm*}
+
+    Let $G$ be a group and $K\normalsub G$ a normal subgroup, let:
+    \[ \latticeof{G, K} = \set{H\leq G}[K\subseteq H] \subseteq \latticeof G \]
+    Then $\latticeof{\slfrac GK}$ and $\latticeof{G,K}$ are isomorphic.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Notice that by one of the above lemmas, $\latticeof{\slfrac GK}=\set{\slfrac HK}[H\in\latticeof{G,K}]$.
+
+    We must define a lattice isomorphism $\phi\colon\latticeof{G, K}\longvarrightarrow\latticeof{\slfrac GK}$.
+    We define $\phi(H)=\slfrac HK$ (this is well defined since $\slfrac HK\subseteq\slfrac GK$).
+    $\phi$ is a lattice homomorphism since $\phi(H_1\cap H_2)=\slfrac{H_1\cap H_2}K=\slfrac{H_1}K\cap\slfrac{H_2}K=\phi(H_1)\cap\phi(H_2)$.
+    And $\phi(\cycle{H_1,H_2})=\slfrac{\cycle{H_1,H_2}}K=\cycle{\slfrac{H_1}K, \slfrac{H_2}K}$.
+    This is true since $\slfrac{\cycle{H_1,H_2}}K$ contains both $\slfrac{H_{1/2}}K$s, and it is the smallest group to do so.
+
+    And we define another lattice $\psi$ in the other direction:
+    \[ \psi\colon\latticeof{\slfrac GK}\longvarrightarrow\latticeof{G,K} \qquad \psi\parens{\slfrac HK}=H \]
+    And this is a lattice homomorphism since:
+    \[ \psi\parens{\slfrac{H_1}K\cap\slfrac{H_2}K} = \psi\parens{\slfrac{H_1\cap H_2}K} = H_1\cap H_2 \]
+    And
+    \[ \psi\parens{\cycle{\slfrac{H_1}K, \slfrac{H_2}K}} = \psi\parens{\slfrac{\cycle{H_1,H_2}}K} = \cycle{H_1,H_2} \]
+
+    Notice that $\phi$ and $\psi$ are inverses: if $H\in\latticeof{G,K}$ then:
+    \[ \psi(\phi(H)) = \psi\parens{\slfrac HK} = H \]
+    and if $\slfrac HK\leq\slfrac GK$ then:
+    \[ \phi\parens{\psi\parens{\slfrac HK}} = \phi(H) = \slfrac HK \]
+    So the lattics are isomorphisms.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+These isomorphisms preserve indexes, normalness, and subgrouping.
+
+\end{document}
+

@@ -1,0 +1,426 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{axiom}{Axiom}{255,255,200}{150,100,0}{200,150,100}			% yellow
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\aone#1#2{#2\to(#1\to#2)} \def\Aone{\textbf{A1}}
+\def\atwo#1#2#3{\bigl(#1\to(#2\to#3)\bigr)\to\bigl((#1\to#2)\to(#1\to#3)\bigr)} \def\Atwo{\textbf{A2}}
+\def\athree#1#2{(\neg#2\to\neg#1)\to\bigl((\neg#2\to#1)\to#2\bigr)} \def\Athree{\textbf{A3}}
+\def\afour#1#2#3{(\forall #2#1)\to#1\frac{#3}{#2}}  \def\Afour{\textbf{A4}}
+\def\afive#1#2#3{\bigl(\forall #3(#1\to#2)\bigr)\to\bigl(#1\to(\forall#3#2)\bigr)} \def\Afive{\textbf{A5}}
+\def\MP{\textit{MP}} \def\Gen{\textit{Gen}}
+
+\def\beqq{\mathrel{\vbox{\hbox{$=$}\kern-\baselineskip\kern.3pt\hbox{$=$}}}}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\Var{\mathrm{Var}}
+
+\newfunc{var}{{\rm var}}({})
+\newfunc{bound}{{\rm bound}}({})
+\newfunc{free}{{\rm free}}({})
+\newfunc{theory}{{\rm Th}}({})
+
+\def\qed{\hskip.5cm\hbox{}\hfill$\blacksquare$}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\def\true{\mathsf{true}}
+\def\false{\mathsf{false}}
+
+%\def\Aone#1#2{#1\to(#2\to#1)}
+%\def\Atwo#1#2#3{\bigl(#1\to(#2\to#3)\bigr)\to\bigl((#1\to#2)\to(#1\to#3)\bigr)}
+%\def\Athree#1#2{(\neg#2\to\neg#1)\to\bigl((\neg#2\to#1)\to#2\bigr)}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+
+\begin{document}
+
+\c@section=10
+
+\barcolorbox{220, 255, 255}{0, 130, 130}{80, 200, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Mathematical Logic}
+
+    \medskip
+    \textit{Lecture \thesection, Friday June 9, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+We now generalize so that our signature can be uncountable, and therefore so can $\mL$.
+We also consider only theories with equality in their signature.
+Thus we have to modify some theorems from lecture 8: extending a theory to a scapegoat theory may result in a model of cardinality $\abs\mL$.
+
+\begin{defn*}
+
+    A language $\mL$ is \ppemph{recursive} if there exists an algorithm \emph{decides} if $\phi$ is an $\mL$-formula.
+    And an $\mL$-theory $\mT$ is \ppemph{recursive} if when given an $\mL$-sentence (closed formula) $\mL$ decides whether $\phi\in\mT$.
+
+\end{defn*}
+
+\begin{prop*}
+
+    If $\mL$ is a recursive language and $\mT$ a recursive $\mL$-theory, then $\set{\phi}[T\vdash\phi]$ is recursively enumerable (there exists an algorithm which halts and accepts all $\phi$ such that
+    $T\vdash\phi$ and reject or not halt for $T\nvdash\phi$).
+
+\end{prop*}
+
+\begin{proof}
+
+    We take the sequence of all finite sequences of $\mL$-fromulas, $\sigma_1,\sigma_2,\dots$.
+    This is computable as we can iterate over all strings and check if they are formulas sicne $\mL$ is recursive.
+    At stage $i$ in the algroithm, we check if $\sigma_i$ proves $\phi$.
+    This requires checking whether the formulas are in $\mT$ or follow from previous formulae in the proof.
+    If $\sigma_i$ proves $\phi$ then halt and accept, if not then continue.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    An $\mL$-theory is \ppemph{complete} if for every $\mL$-sentence $\phi$ either $T\vdash\phi$ or $T\vdash\neg\phi$.
+
+\end{defn*}
+
+\begin{defn*}
+
+    If $\mM$ is an $\mL$-model (or structure) then we define
+    \[ \theoryof\mM = \set{\phi}[\phi\text{ is an } \mL-\text{sentence and } \mM\vDash\phi] \]
+
+\end{defn*}
+
+$\theoryof\mM$ is complete since for every sentence $\phi$, by definition either $\mM\vDash\phi$ or $\mM\vDash\neg\phi$ so either $\phi$ or $\neg\phi$ is in $\theoryof\mM$.
+Also note that $\theoryof\mM$ is consistent.
+
+\begin{prop*}[infModelProp]
+
+    Let $T$ be an $\mL$-theory with infinite models.
+    If $\varkappa$ is a cardinal such that $\varkappa\geq\abs\mL$ then there exists a model of $T$ of cardinality $\varkappa$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $\mL^*=\mL\cup\set{c_\alpha}[\alpha<\varkappa]$ where $c_\alpha$ is a new constant symbol for every ordinal $\alpha<\varkappa$.
+    Then let $T^*$ be the $\mL^*$-theory
+    \[ T^* = T\cup\set{c_\alpha\neq c_\beta}[\alpha\neq\beta<\varkappa] \]
+    Notice that if $\mM\vDash T^*$ then if $\mM\vDash T$ and $\mM$ has a cardinality of at least $\varkappa$ since $\mM$'s domain must have $\varkappa$ distinct elements which are the interpretations of
+    $c_\alpha$.
+    So all we must do is to show that $T^*$ is consistent, and thus has a model.
+    To show consistency, we will use the compactness theorem.
+    If $\Delta\subseteq T^*$ is finite then there exists a finite subset $I\subseteq\varkappa$ such that
+    \[ \Delta \subseteq T\cup\set{c_\alpha\neq c_\beta}[\alpha\neq\beta\in I] \]
+    since $T$ has infinite models, let $\mM$ be such an infinite model.
+    We can add the valuations of $c_\alpha$s as $\abs I$ distinct elements in $\mM$, and thus we have a model of $\Delta$, meaning $\Delta$ is consistent.
+
+    Thus $T^*$ is consistent by the compactness theorem, and has a model of cardinality $\abs{\mL^*}=\varkappa$.
+    This model also models $T$, as required.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    Let $\varkappa$ be an infinite cardinal and let $T$ be a theory with models of cardinality $\varkappa$.
+    Then we say that $T$ is \ppemph{$\varkappa$-categorical} if any two models of $T$ of cardinality $\varkappa$ are isomorphic.
+
+\end{defn*}
+
+Let $\mL=\set{+,0}$ be the language of groups, and let $T$ be the $\mL$-theory of torsion-free divisible abelian groups.
+Then the axioms of $T$ are the axioms of abelian groups as well as the schemas
+\begin{align*}
+    \forall x(x\neq 0\to nx\neq0) & \quad\text{(Torsion-Free)}\\
+    \forall y\exists x(nx=y) & \quad\text{(Divisible)}
+\end{align*}
+
+For $n=1,2,\dots$ and $nx$ denotes $x+x+\cdots+x$, $n$ times.
+
+\begin{prop*}
+
+    The theory of torsion-free divisible abelian groups is $\varkappa$-categorical for all $\varkappa>\aleph_0$.
+
+\end{prop*}
+
+\begin{proof}
+
+    We claim that a $G$ is a model of $T$ if and only if it induces a $\bQ$-vector space.
+    First, if $V$ is a vector space over $\bQ$ then it is a torsion-free divisible group under its additive operation (if $nx=0$ then since $\frac1n\in\bQ$ then $x=0$, and $x=\frac1ny$ satisfies
+    divisibility).
+    For the converse, suppose $G\vDash T$.
+    Notice then that if $g\in G$ and $n>0$ then there exists an $h$ such that $nh=g$ by divisibility.
+    If $nk=g$ then $n(h-k)=0$ and so by torsion-freeness, $h=k$ meaning that for every $g\in G$ and $n>0$ there exists a unique $h\in G$ such that $nh=g$.
+    We denote $h$ by $\frac gn$.
+    Thus we can view $G$ as a vector space over $\bQ$ by $\frac mng=m\parens{\frac gn}$.
+
+    Two $\bQ$-vector spaces are isomorphic if and only if they have the same dimension.
+    Therefore models of $T$ are isomorphic if they share a dimension.
+    If $G$ has a basis $B$, then every element of $G$ can be written as a linear combination of a finite number of vectors in $B$.
+    If $\abs B=\lambda$ then if $\lambda$ is infinite there are $\lambda$ finite subsets of $B$ and each subset generates $\aleph_0$ vectors (the span of the finite subset is isomorphic to $\bQ^n$) and thus
+    $\abs G=\aleph_0\cdot\lambda$.
+    If $\lambda$ is finite then there are $2^\lambda$ finite subsets of $B$, and we get $\abs G=\aleph_0\cdot2^\lambda=\aleph_0\cdot\lambda$.
+
+    Thus if $\varkappa>\alpha_0$ and $\abs G=\varkappa$ then the dimension of $G$ must be $\varkappa$.
+    Thus all models of $T$ of cardinality $\varkappa$ have the same dimension and are therefore all isomorphic.
+    \qed
+
+\end{proof}
+
+Note that this is not true if $\varkappa\leq\aleph_0$.
+For example we can take $\bQ$ and $\bQ^2$.
+
+\def\ACF{\mathrm{ACF}_p}
+Similarly, let $\ACF$ be the theory of algebraically closed fields of characteristic $p$, where $p$ is either $0$ or prime.
+
+\begin{prop*}
+
+    $\ACF$ is $\varkappa$-categorical for all uncountable cardinals $\varkappa$.
+
+\end{prop*}
+
+\begin{proof}
+
+    We know that two fields are isomorphic if and only if they have the same characteristic and transsendence degree.
+    An algebraically closed field with transcendence degree $\lambda$ has cardinality $\lambda+\aleph_0$.
+    If $\varkappa>\aleph_0$ that means $\lambda=\varkappa$, and so any algebraically closed field of cardinality $\varkappa$ has transcendence degree $\varkappa$.
+    Thus any two algebraically closed fields of characteristic $p$ and uncountable cardinality $\varkappa$ are isomorphic.
+    \qed
+
+\end{proof}
+
+\begin{exam*}
+
+    Let $\mL=\set E$ where $E$ is a binary relation.
+    Let $T$ be the theory of an equivalence relation with two classes which are both infinite.
+    Thus $T$ is $\aleph_0$-categorical as if we have two models $\mM_1$ and $\mM_2$ of cardinality $\aleph_0$, then we can create an isomorphism between them by mapping elements from one class in $\mM_1$ to
+    one class in $\mM_2$ and from the other class in $\mM_1$ to the other in $\mM_2$.
+    Such a bijection exists because all the classes are infinite, and since the models are countable, all the classes are countably infinite and thus have the same cardinality.
+    This bijection is obviously an isomorphism.
+
+    But if $\varkappa$ is uncountable we can define an equivalence relation with one countable class and one class of cardinality $\varkappa$, and we can define another equivalence relation with two classes
+    of cardinality $\varkappa$.
+    These two models are not isomorphic.
+    So $T$ is not $\varkappa$-categorical for uncountable cardinalities $\varkappa$.
+
+\end{exam*}
+
+\begin{thrm*}[vaughtTest,Vaught's\ Test]
+
+    Let $T$ be a satisfiable theory with no finite models, and is also $\varkappa$-categorical for some infinite cardinality $\varkappa\geq\abs\mL$.
+    Then $T$ is complete.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Suppose that $T$ is not complete, meaning there exists a sentence $\phi$ such that $T\nvdash\phi$ and $T\nvdash\neg\phi$.
+    This means that $T_0=T\cup\set{\phi}$ and $T_1=T\cup\set{\neg\phi}$ are consistent, and thus satisfiable.
+    Since $T$ has no finite models, the models of $T_0$ and $T_1$ cannot be finite either, and so both theories must have infinite models.
+    Thus by \ppref[proposition]{infModelProp}, we can find models $\mM_0$ and $\mM_1$ for each theory respectively of cardinality $\varkappa$.
+    But since $\mM_0\vDash\phi$ and $\mM_1\vDash\neg\phi$, these models cannot be isomorphic (since isomorphic models satisfy the same sentences), which contradicts the $\varkappa$-categoricalness of $T$, as
+    both of these models also model $T$.
+    \qed
+
+\end{proof}
+
+\begin{exam*}
+
+    Let $T$ be the $\set{=,+,0}$-theory of groups where every element has order $2$.
+    It can be shown that $T$ is $\varkappa$-categorical for every infinite cardinality $\varkappa$.
+    But $T$ is not complete since the sentence
+    \[ \exists x,y,z(x\neq y\land y\neq z\land z\neq x) \]
+    is false in the two element group, but true in every other non-trivial group.
+    Thus $T$ cannot prove this sentence, or its negation.
+
+\end{exam*}
+
+Vaught's Test shows that $\ACF$ is complete, as finite fields cannot be algebraically closed: if $F$ is a finite field then let
+\[ f(x) = 1 + \prod_{a\in F}(x-a) \]
+$f$ has no roots in $F$ since for any $a\in F$, $f(a)=a$ (yet $f$ is not a constant polynomial).
+
+\begin{defn*}
+
+    An $\mL$-theory $\mT$ is \ppemph{decidable} if there exists an algorithm which \emph{decides} whether an $\mL$-sentence $\phi$ can be proven by $\mT$.
+
+\end{defn*}
+
+\begin{lemm*}
+
+    Let $T$ be a recursive, complete, satisfiable theory in a recursive language $\mL$.
+    Then $T$ is decidable.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Our algorithm searches through all possible proofs (since $\mL$ and $T$ are recursive) until it finds a proof of $\phi$ or $\neg\phi$.
+    Since $T$ is complete, one must exist, and thus the algorithm always halts.
+    Since $T$ is satisfiable, only one of these proofs can exist, and thus this algorithm will always decide if $\phi$ can be proven by $T$.
+    \qed
+
+\end{proof}
+
+\begin{coro*}
+
+    For $p=0$ or $p$ prime, $\ACF$ is decidable.
+    In particular, $\theoryof\bC$ is decidable.
+
+\end{coro*}
+
+Since we know $\ACF$ is complete and satisfiable, all we must show is that it is recursive.
+This is simple as we can write down the axioms, and thus the axioms (and hence the theory) is recursive.
+
+\begin{note}
+
+    There is some disagreement on the meaning of a theory, some take it as any set of formulas (``axioms'') and some take it as the deductive closure of such a set of formulas (all formulas which can
+    be deduced from a set of formulas).
+    In any case the definition is immaterial since we almost always only care about the deductive closure of a theory.
+
+    We use the definition that a theory is a set of axioms, and we denote its deductive closure as $T^\vdash$.
+
+\end{note}
+
+\begin{lemm*}
+
+    Then the following are equivalent:
+    \benum
+        \item $T$ is consistent/satisfiable and complete.
+        \item There exists a model of $T$, and for every model $\mM$ of $T$, $T^\vdash=\theoryof\mM$.
+        \item There exists a model $\mM$ such that $T^\vdash=\theoryof\mM$.
+    \eenum
+
+\end{lemm*}
+
+\begin{proof}
+
+    Since $T$ is satisfiable, there exists a model of $T$.
+    Let $\mM$ be a model of $T$.
+    Then if $T\vdash\phi$, we know $\mM\vDash\phi$ so $T^\vdash\subseteq\theoryof\mM$.
+    And if $\mM\vDash\phi$ then since $T$ is complete if $T\nvdash\phi$ then $T\vdash\neg\phi$ and so $\mM\vDash\neg\phi$, which is a contradiction.
+
+    Obviously since $T$ is satisfiable, $2$ implies $3$ (since there exists a model of $T$).
+
+    Now suppose $T^\vdash=\theoryof\mM$, then since $T\subseteq T^\vdash$, we have that $\mM\vDash T$ so $T$ is satisfiable.
+    And if $\phi$ is a sentence, if $T\nvdash\phi$ then $\phi\notin\theoryof\mM$, meaning $\neg\phi\in\theoryof\mM$ (since it is complete), so $T\vdash\neg\phi$.
+    Thus $T$ is complete and satisfiable.
+    \qed
+
+\end{proof}
+
+\begin{coro*}
+
+    Let $\phi$ be a sentence in the language of rings.
+    The following are equivalent:
+    \benum
+        \item $\phi$ is true in $\bC$.
+        \item $\phi$ is true in every algebraically closed field of characteristic zero.
+        \item $\phi$ is true in some algebraically closed field of characteristic zero.
+        \item There are arbitrarily large primes $p$ such that $\phi$ is true in some algebraically closed field of characteristic $p$.
+        \item There is an $m$ such that for all $p>m$, $\phi$ is true in all algebraically closed fields of characteristic $p$.
+    \eenum
+
+\end{coro*}
+
+\def\ACFz{\mathrm{ACF}_0}
+\begin{proof}
+
+    Since $\mathrm{ACF}_0$ is complete and satisfiable, if $\mM$ is a model of $\mathrm{ACF}_0$, then $\mathrm{ACF}_0^\vdash=\theoryof\mM$.
+    Thus $\phi$ is true in $\bC$ if and only if it is true in some model of $\mathrm{ACF}_0$ if and only if it is true in the theory itself if and only if it is true in every model of the theory
+    (every algebraically closed field of characteristic $0$).
+    $5$ also obviously implies $4$.
+
+    We will show $2$ implies $5$.
+    Suppose $\ACFz\vdash\phi$, since we only need a finite subset of $\ACFz$ (say $\Delta$) such that $\Delta\vdash\phi$, and by the compactness theorem, $\Delta$ is satisfiable.
+    Since $\Delta$ is finite and there must be infinite axioms determining the zero-characteristic of the field, there exists some $p$ prime large enough such that $\ACF\vdash\phi$.
+    Thus $\ACF\vdash\phi$ for all primes $p$ larger than some $m$ (eg. $m=p$ above).
+
+    To show $4$ implies $2$, suppose that $\ACFz\nvdash\phi$.
+    Because $\ACFz$ is complete, this means $\ACFz\vdash\neg\phi$, and so by above for sufficiently large primes, $\ACF\vdash\neg\phi$ since $2\implies5$.
+    But this contradicts $4$.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}
+
+    Every injective polynomial map from $\bC^n$ to $\bC^n$ is surjective.
+
+\end{thrm*}
+
+\begin{proof}
+
+    \def\falg{\bF_p^{\mathrm{alg}}}
+    We will show that for every injective polynomial map
+    \[ f\colon(\falg)^n\longto(\falg)^n \]
+    where $\falg$ is the algebraic closure of the field with $p$ elements, is surjective.
+
+    Let $\vec a$ be the coefficients of $f$ and let $\vec b\in(\falg)^n$ be outside of the image of $f$.
+    Let $k$ be the subfield of $\falg$ generated by the coefficients of $\vec a$ and $\vec b$.
+    Then $f\bigl|_{k^n}$ is an injective map from $k^n$ into itself (the image of a polynomial over a subfield is contained within that field), but not surjective as $\vec b\in k^n$.
+    Since
+    \[ \falg = \bigcup_{n=1}^\infty\bF_{p^n} \]
+    $\falg$ is locally finite, and therefore $k$ is finite.
+    But every injection from a finite set to a finite set is surjective, and therefore $f$ must be surjective, in contradiction.
+
+    Let $f$ be a multivariate polynomial, then it can be written as $f=(f_1,\dots,f_n)$, and we can bound the degree of these polynomials by $d$ ($f_i$ are called coordinate functions).
+    There is a sentence $\Phi_{n,d}$ such that for every field $\bF$, $\bF\vDash\Phi_{n,d}$ if and only if every injective polynomial map from $\bF^n\injection\bF^n$ with coordinate functions of degree
+    $\leq d$ is surjective.
+    We can write $\Phi_{n,d}$ like so: we take $a^m_{i_1,\dots,i_n}$ for $0\leq i_k\leq d$ as the coefficients of $f_m$ and we say that $f_m$ is injective by stating that for all inputs
+    $x_1,\dots,x_n$ and $y_1,\dots,y_n$ if $f_m(x_1,\dots,x_n)=f_m(y_1,\dots,y_n)$ for all $m$ then $x_i=y_i$ for all $i$.
+    We then say that $f$ is surjective by saying that for every $u_1,\dots,u_n$ there exist $x_1,\dots,x_n$ such that $f_m(x_1,\dots,x_n)=u_m$.
+    All in all we can write $\Phi_{n,d}$ as
+    \begin{multline*}
+        \forall a^m_{i_1,\dots,i_n}\Bigl(\forall x_1,\dots,x_n,y_1,\dots,y_n\Bigl(\bigwedge_{m=1}^n \sum a^m_{i_1,\dots,i_n}x_1^{i_1}\cdots x_n^{i_n}=
+        \sum a^m_{i_1,\dots,i_n}y_1^{i_1}\cdots y_n^{i_n}\Bigr)\to\bigl(x_1=y_1\land\cdots\land x_n=y_n\bigr)\Bigr)\\
+        \to\Bigl(\forall u_1,\dots,u_n\exists x_1,\dots,x_n\Bigl(\bigwedge_{m=1}^n \sum a^m_{i_1,\dots,i_n}x_1^{i_1}\cdots x_n^{i_n}=u_m\Bigr)\Bigr)\biggr)
+    \end{multline*}
+
+    Since we have shown that $\falg\vDash\Phi_{n,d}$ for all primes $p$, by the above corollary we must have $\bC\vDash\Phi_{n,d}$ for every $n,d$ as required.
+    \qed
+
+\end{proof}
+
+\end{document}
+

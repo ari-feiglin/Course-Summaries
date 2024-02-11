@@ -1,0 +1,89 @@
+Now we move onto the next section and arguably most important section of this course.
+Up until now our vector spaces have been given little interesting structure, we haven't been able to give them much in the ways of geometry.
+If you recall from high school, a very useful concept within $\bR^2$ and $\bR^3$ is the concept of vectors having \emph{magnitude}, and being \emph{perpendicular}.
+Recall that one tool we used to define (or compute) both of these concepts is the \emph{dot product}.
+In this section we will be generalizing this to general vector spaces.
+
+Unfortunately, in order to discuss this generalization we must restrict our discussion only to vector spaces over the real or complex field.
+\textbf{So for the purpose of this section, all vector spaces are implicitly real or complex}.
+
+Recall that if $\vec v=(a_1,a_2,a_3)$ and $\vec u=(b_1,b_2,b_3)$ are real vectors, then we defined their inner product to be
+\[ \vec v\cdot\vec u = a_1b_1 + a_2b_2 + a_3b_3 \]
+This has the following properties (which you can verify yourself, or wait until we do):
+\benum
+    \item $(\alpha\vec v+\beta\vec u)\cdot\vec w=\alpha(\vec v\cdot\vec w)+\beta(\vec v\cdot\vec w)$
+    \item $\vec v\cdot\vec u=\vec u\cdot\vec v$
+    \item $\vec v\cdot\vec v$ is the square of the magnitude of $\vec v$, and is therefore non-negative and zero only when $\vec v=0$.
+\eenum
+
+It's not hard to see that from these properties we see that
+\[ \vec v\cdot(\alpha\vec u+\beta\vec w)=\alpha(\vec v\cdot\vec u) + \beta(\vec v\cdot\vec w) \]
+and
+\[ 0\cdot\vec v=0 \]
+
+But notice that such a function cannot exist in complex vector spaces, as we'd get that for every vector $\vec v$,
+\[ (i\vec v)\cdot(i\vec v) = i^2(\vec v\cdot\vec v) = -\vec v\cdot\vec v \]
+By the third property, $(i\vec v)\cdot(i\vec v)\geq0$ and so $\vec v\cdot\vec v\leq0$ which would mean that $\vec v\cdot\vec v=0$, meaning $\vec v=0$.
+But not every vector is the zero vector.
+
+So we need to come up with a different list of properties that our generalization should have if we are to generalize the dot product to complex vector spaces.
+But at the same time, the above properties should hold for real vector spaces.
+
+\begin{note}
+
+    Since we are attempting to generalize dot products to general vector spaces, we cannot assume that we'll be able to define the generalization using an explicit formula like the dot product's.
+    This is the importance of coming up with a list of properties that we want our generalization to have and then defining our generalization to be any object which satisfies these properties.
+    This is similar to how we generalized our notions of $\bR^2$ and $\bR^3$ to general vector spaces.
+
+\end{note}
+
+\begin{defn*}
+
+    A \ppemph{inner product space} is a vector space $V$ over the field $\bF$ (which is either $\bR$ or $\bC$) equipped with an \ppemph{inner product function} (for short, just an inner product), which is a
+    function
+    \[ \iprod{\,\cdot\,,\,\cdot\,}\colon V\times V\longto\bF \]
+    which satisfies the following axioms: for every $\alpha$ and $\beta$ in $\bF$, and vectors $v,u,w\in V$:
+    \benum
+        \item $\iprod{\alpha v+\beta u,w} = \alpha\iprod{v,w} + \beta\iprod{u,w}$ (this means that inner products are linear in their first argument.)
+        \item $\iprod{v,u}=\overline{\iprod{u,v}}$ (recall that $\abs z$ is the \emph{complex conjugate} of the complex number $z$.
+        This axiom is called \emph{conjugate symmetry}.)
+        \item If $v\neq0$ then $\iprod{v,v}>0$ (this implies that even when $\bF=\bC$, $\iprod{v,v}$ is real.
+        This axiom is called \emph{positive-definiteness}).
+    \eenum
+
+\end{defn*}
+
+The inner product is precisely our generalization of the dot product.
+We will show soon that the dot product is a specific case of the inner product, and we will also show how all inner products (over finite spaces) relate to the dot product.
+
+Notice that if we have an inner product of the form $\iprod{v,\alpha u+\beta w}$, in order to apply linearity in the first argument we apply conjugate symmetry to move the sum to the first argument:
+\[ \iprod{v,\alpha u+\beta w} = \overline{\iprod{\alpha u+\beta w,v}} = \overline{\alpha\iprod{u,v} + \beta\iprod{w,v}} =
+\overline\alpha\cdot\overline{\iprod{u,v}} + \overline\beta\cdot\overline{\iprod{w,v}} = \overline\alpha\iprod{v,u} + \overline\beta\iprod{v,w} \]
+this property is called \emph{antilinearity} in the second argument.
+Together in tandem with linearity in the first component, we say that inner products are \emph{sesquilinear}.
+
+Since inner products are linear in their first argument, and $T0=0$ for all linear transforms $T$, we have
+\[ \iprod{0,v} = 0 \]
+for every vector $v$.
+We can show this directly:
+\[ \iprod{0,v} = \iprod{0+0,v} = \iprod{0,v} + \iprod{0,v} \]
+And subtracting $\iprod{0,v}$ from both sides gives us
+\[ \iprod{0,v} = 0 \]
+as required.
+Thus
+\[ \iprod{v,0} = \overline{\iprod{0,v}} = \overline0 = 0 \]
+And so we see that $\iprod{0,0}=0$, and so $\iprod{v,v}=0$ if and only if $v=0$ (by positive-definiteness).
+
+Let us summarize these results in the following proposition:
+
+\begin{prop*}
+
+    Inner products must satisfy these additional properties:
+    \benum
+        \item $\iprod{v,\alpha u+\beta w}=\overline\alpha\iprod{v,u}+\overline\beta\iprod{v,w}$
+        \item $\iprod{v,0}=\iprod{0,v}=0$ for all vectors $v$
+        \item $\iprod{v,v}=0$ if and only if $v=0$
+    \eenum
+
+\end{prop*}
+

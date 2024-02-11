@@ -1,0 +1,225 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input ../preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{ker}{{\rm ker}}({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{atan}{{\rm tan}^{-1}}({})
+\newfunc{lag}{{\cal L}}({})
+\newfunc{sin}{{\rm sin}}({})
+\newfunc{sinh}{{\rm sinh}}({})
+\newfunc{cosh}{{\rm cosh}}({})
+\newfunc{cos}{{\rm cos}}({})
+\newfunc{arg}{{\rm arg}}({})
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+\newfunc{cis}{{\rm cis}}({})
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\iff{\,\longvarLeftRightarrow\,}
+\def\implies{\,\longvarRightarrow\,}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\mO{{\cal O}}
+\def\mU{{\cal U}}
+\def\mV{{\cal V}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\let\ds=\displaystyle
+\let\longto=\longvarrightarrow
+\let\to=\varrightarrow
+
+\def\bexerc{\begin{exercise*}}
+\def\eexerc{\end{exercise*}}
+\def\bblank{\begin{blankpp}}
+\def\eblank{\end{blankpp}}
+
+\begin{document}
+
+\c@section=6
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Complex Functions}
+
+    \medskip
+    \textit{Assignment \thesection}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\bexerc
+
+    Find the Taylor expansion of $f(z)=\frac1z$ about $z=1+i$.
+
+\eexerc
+
+\bblank
+
+    Since $f(z)=z^{-1}$, we have that $f^{(k)}(z)=(-1)^k\cdot k!\cdot z^{-k-1}$.
+    This is true by induction: for $k=0$ this is $f^{(0)}(z)=(-1)^0\cdot 0!\cdot z^{-1}=z^{-1}=f(z)$, and
+    \[ f^{(k+1)}(z) = (-1)^k k!\cdot(-k-1)z^{-k-2} = (-1)^{k+1}(k+1)!\cdot z^{-(k+1)-1} \]
+
+    Since the components of the Taylor series are $\frac{f^{(k)}(z_0)}{k!}$, we have that the components are $(-1)^k\cdot(1+i)^{-k-1}$.
+    Since $1+i=\sqrt2 e^{\frac\pi4i}$, we have
+    \[ f(z) = \sum_{k=0}^\infty (-1)^k2^{-\frac{k+1}2}\cdot e^{-\frac\pi4(k+1)i}\cdot(z-1-i)^k \]
+
+\eblank
+
+\bexerc
+
+    Find the Taylor expansion of $f(z)=\frac1{1-z-2z^2}$ about $0$.
+
+\eexerc
+
+\bblank
+
+    Since $1-z-2z^2=(1+z)(1-2z)$, by partial fraction decomposition
+    \[ \frac1{1-z-2z^2} = \frac A{1+z} + \frac B{1-2z} \]
+    and so
+    \[ A + B = 1,\quad B - 2A = 0 \]
+    thus $B=2A$ and so $A=\frac13$ and $B=\frac23$.
+
+    Furthermore, we know for $\abs w<1$,
+    \[ \sum_{k=0}^\infty w^k = \frac1{1-w} \]
+    and thus
+    \[ \frac1{1+z} = \sum_{k=0}^\infty (-1)^k z^k,\qquad \frac1{1-2z} = \sum_{k=0}^\infty 2^kz^k \]
+    So we have that
+    \[ \frac1{1-z-2z^2} = \frac13\cdot\frac1{1+z} + \frac23\cdot\frac1{1-2z} = \sum_{k=0}^\infty \frac13\Bigl((-1)^k + 2^{k+1}\Bigr)z^k \]
+
+\eblank
+
+\bexerc
+
+    Show that if $f$ is analytic in the closed disk $\abs z\leq1$, then there exists an $n\in\bN$ such that
+    \[ f\parens{\frac1n}\neq\frac1{n+1} \]
+
+\eexerc
+
+\bblank
+
+    Suppose the contrary, that
+    \[ f\parens{\frac1n} = \frac1{n+1} \]
+    then define
+    \[ g(z) = \frac{z}{z+1} \]
+    which is analytic in $D_1(0)$.
+    Notice that for $z_n=\frac1n$,
+    \[ g(z_n) = \frac{\frac1n}{\frac1n+1} = \frac1{n+1} = f(z_n) \]
+    And since $z_n\to0$, by the uniqueness theorem this means that $f(z)=g(z)$ on $D_1(0)$.
+
+    But then
+    \[ \lim_{z\to-1} f(z) = \lim_{z\to-1} \frac{z}{z+1} \]
+    is undefined, which contradicts $f$ being analytic and thus continuous on the \emph{closed} disk $\abs z\leq1$.
+
+\eblank
+
+\bexerc
+
+    Show that if an analytic function $f$ agrees with $\tan x$ for $0\leq x\leq1$, then there is no solution to $f(z)=i$.
+    Can $f$ be entire?
+
+\eexerc
+
+\bblank
+
+    Let us define $z_n=\frac1n$, then since $f(z_n)=\tan(z_n)$ this means that by the uniqueness theorem, $f(z)=\tan(z)$ whenever they are defined.
+    Since $\tan(z)$ is defined whenever $\cos(z)\neq0$, which is only when $z=\frac\pi2+\pi k$, all singularities are isolated.
+    Thus if $f(z)=i$ then we can take $z_n\to z$ and $\tan(z_n)=f(z_n)$ and since $\tan$ is continuous, $\tan(z)=f(z)=i$.
+
+    But thus would mean $\sin(z)=i\cos(z)$, or $-i\sin(z)=\cos(z)$.
+    Thus
+    \[ -\frac{e^{iz} - e^{-iz}}2 = \frac{e^{iz} + e^{-iz}}2 \implies e^{iz} = 0 \]
+    which is impossible.
+
+    And if $f$ were entire then let $z_n\to\frac\pi2$.
+    $f(z_n)=\tan(z_n)$, and so $f(z_n)$ would not converge, which contradicts $f$ being entire.
+
+\eblank
+
+\bexerc
+
+    Suppose $f$ is an entire function where $\abs{f(z)}\geq\abs z^N$ when $z$ is large enough.
+    Show that $f$ must be a polynomial of degree at least $N$.
+
+\eexerc
+
+\bblank
+
+    Let us notice that
+    \[ \lim_{z\to\infty} f(z) = \infty \]
+    Since eventually $\abs{f(z)}\geq\abs{z}^N$ and the limit of $\abs{z}^N$ is infinity.
+    Thus we showed in lecture that $f$ is a polynomial.
+    Suppose
+    \[ f(z) = \sum_{k=0}^M a_kz^k \]
+    Thus we have
+    \[ \abs{\frac{f(z)}{z^N}} \leq \sum_{k=0}^M \abs{a_k}z^{k-N} \]
+    Now suppose $M<N$, then for each $k$, $k-N<0$ and so $\abs{z^{k-N}}\xvarrightarrow{}[z\to\infty]0$, meaning
+    \[ \lim_{z\to\infty}\abs{\frac{f(z)}{z^N}} = 0 \]
+    but
+    \[ \abs{\frac{f(z)}{z^N}} \geq 1 \]
+    for sufficiently large $z$, so the limit either would not exist or would be greater than $1$ (inclusive), in contradiction.
+    Thus $M\geq N$, ie. $f$ is a polynomial whose degree is at least $N$.
+
+\eblank
+
+\bexerc
+
+    Suppose $P_n(z)=a_0+a_1z+\cdots+a_nz^n$ is bounded by $1$ in the disk $\abs z\leq1$.
+    Show that $\abs{P(z)}\leq\abs z^n$ when $1<\abs z$.
+
+\eexerc
+
+\bblank
+
+    By question 5 from the previous homework, since $P_n$ is bounded by $1$ on $D_1(0)$, we have $\abs{a_k}\leq1$ for each $k$.
+    Let us define
+    \[ Q(z) = \frac{P_n(z)}{z^n} \]
+    for $\abs z>1$.
+    $Q(z)$ is obviously analytic on its domain.
+    Now let us focus on $Q(z)$ in the ring $1<\abs z<R$.
+    Since $Q(z)$ is analytic, it takes its maxima on the boundary of this ring, ie. when $\abs z=1$ or $\abs z=R$.
+    When $\abs z=1$ we have
+    \[ \abs{Q(z)} \leq \abs{P_n(z)} \leq 1 \]
+    since $P_n$ is bounded by $1$ on the closed disk $\abs z\leq1$ (including $\abs z=1$).
+    And when $\abs z=R$ then
+    \[ \abs{Q(z)} = \frac{\abs{P_n(z)}}{\abs R^n} \]
+    But notice that
+    \[ \abs{P_n(z)} \leq \sum_{k=0}^n \abs{a_k}\abs z^k \leq \sum_{k=0}^n R^k = \frac{R^{n+1} - 1}{R - 1} \]
+    and thus
+    \[ \abs{Q(z)} \leq \frac{R^{n+1} - 1}{R^{n+1} - R^n} \leq \frac{R^{n+1}}{R^{n+1} - R^n} = \frac R{R-1} \]
+
+    Thus we have that for $1<\abs z<R$,
+    \[ \abs{P_n(z)} \leq \abs z^n\cdot\frac R{R-1} \]
+    Now let $\abs z>1$, then for every $R>\abs z$ we have the above equality, so let us take $R\to\infty$ and we have that
+    \[ \abs{P_n(z)} \leq \abs z^n \]
+    as required.
+
+\eblank
+
+\end{document}
+

@@ -1,0 +1,150 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+\parindent=0pt
+\parskip=3pt plus 2pt minus 2pt
+
+\input ../preamble
+
+\footline={}
+
+\setcounter{section}{4}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+
+{\bppbox{rgb{.5 1 .5}}{rgb{0 .4 0}}{rgb{.1 .4 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Algebraic Topology}
+    \smallskip
+    \centerline{\setfont{it}Homework \the\counter{section}}
+    \centerline{\setfont{it}Ari Feiglin}
+
+\eppbox}
+
+\bexerc
+
+    Let $X,Y$ be topological spaces, $a\in X,b\in Y$.
+    Show that $\pi_1(X\times Y,(a,b))\cong\pi_1(X,a)\times\pi_1(Y,b)$.
+
+\eexerc
+
+Define $f\colon\pi_1(X\times Y,(a,b))\longto\pi_1(X,a)\times\pi_1(Y,b)$ by $f[\phi]=([p_1\circ\phi],[p_2\circ\phi])$.
+This is well-defined as the composition of continuous functions.
+It is a homomorphism since $p_i\circ(\phi*\psi)=(p_i\circ\phi)*(p_i\circ\psi)$ which is immediate, and so
+$$ f([\phi\psi]) = \bigl([p_1\circ(\phi*\psi)],[p_2\circ(\phi*\psi)]\bigr) = \bigl([p_1\circ\phi],[p_2\circ\phi]\bigr)\bigl([p_1\circ\psi],[p_2\circ\psi]\bigr) = f[\phi]f[\psi] $$
+It is injective since if $f[\phi]=f[\psi]$ then let $H$ be a homotopy $p_1\circ\phi\hdi p_1\circ\psi$, and $K$ be a homotopy $p_2\circ\phi\hdi p_2\circ\psi$.
+Then define $J\colon I\times I\longto X\times Y$ by $J(t,s)=(H(t,s),K(t,s))$ so that
+\multlines{
+    J(t,0) = (H(t,0),K(t,0)) = (p_1\circ\phi(t),p_2\circ\phi(t)) = \phi(t),\quad J(t,1) = \psi(t),\cr
+    &J(0,s) = (H(0,s),K(0,s)) = (p_1\circ\phi(0),p_2\circ\phi(0)) = \phi(0),\quad J(1,s) = \phi(1)
+}
+
+So $\phi\hdi\psi$, meaning $[\phi]=[\psi]$.
+It is surjective since if $(\phi_1,\phi_2)$ are curves in $\Gamma_{aa}\times\Gamma_{bb}$ then $\phi=(\phi_1,\phi_2)$ maps to $([\phi_1],[\phi_2])$.
+So $f$ is a bijective homomorphism, an isomorphism.
+
+\bexerc
+
+    Show that $S^1\times\set a\subseteq S^1\times S^1$ is a retract, but not a deformation retract.
+
+\eexerc
+
+Define $r\colon S^1\times S^1\longto S^1\times\set a$ by $r(p,q)=(p,a)$ which is continuous and holds $S^1\times\set a$ constant, so is a retraction.
+But
+$$ \pi_1(S^1\times\set a)\cong\pi_1(S^1)\times\pi_1(\set a)\cong\pi_1(S^1)\cong{\bb Z} $$
+while
+$$ \pi_1(S^1\times S^1)\cong\pi_1(S^1)\times\pi_1(S^1)\cong{\bb Z}^2 $$
+so these two fundamental groups are not isomorphic.
+But the fundamental groups of a space and a deformation retract are.
+
+\bexerc
+
+    Show that $S^1\times\partial D^2\subseteq S^1\times D^2$ is not a retract.
+
+\eexerc
+
+We know $\partial D^2\cong S^1$ and so $\pi_1(S^1\times\partial D^2)\cong\pi_1(S^1)\times\pi_1(S^1)\cong{\bb Z}^2$ and $\pi_1(S^1\times D^2)\cong\pi_1(S^1)\times\pi_1(D^2)\cong{\bb Z}$.
+So there is no embedding $\pi_1(S^1\times\partial D^2)\varuphookrightarrow\pi_1(S^1\times D^2)$, so it cannot be a retract.
+
+\bexerc
+
+    Let $h\colon{\bb Z}\longto{\bb Z}$ be the homomorphism $n\mapsto2n$.
+    Show that there does not exist a homomorphism $g\colon{\bb Z}\longto{\bb Z}$ such that $g\circ h={\rm id}_{\bb Z}$.
+
+\eexerc
+
+Every homomorphism from ${\bb Z}$ is defined by its image on $1$, so that $g(n)=an$ for some $a\in{\bb Z}$.
+Then $g\circ h(n)=2an$ and this equals $n$ if and only if $2a=1$ but this cannot happen for any $a\in{\bb Z}$.
+
+\bexerc
+
+    Let $M$ be a M\"obius strip, and $\partial M$ its boundary: $\rho(I\times\set0\cup I\times\set1)$.
+    \benum
+        \item prove that $\partial M$ is a circle
+        \item what is the induced homomorphism of the inclusion map $\iota\colon\partial M\longto M$?
+        \item prove that $\partial M$ is not a retract of $M$.
+    \eenum
+
+\eexerc
+
+\benum
+    \item Define $I_i=I\times\set i$, then we utilize the following commutative diagram:
+
+    \medskip
+    \centerline{\def\diagrowheight{1cm}\def\diagcolwidth{1cm}\def\diagcolbuf{.5cm}\drawdiagram{
+        $I_0\cup I_1$&$\partial M$\cr
+        $I$\cr
+        $S^1$\cr
+    }{%
+        \diagarrow{from={1,1}, to={1,2}, text=$\rho$, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,1}, text=$f$, x distance=-.25cm}
+        \diagarrow{from={2,1}, to={3,1}, text=$q$, x distance=-.25cm}
+        \diagarrow{from={1,2}, to={3,1}, text=$F$, x distance=.4cm, slide=.6}
+    }}
+
+    We define $f\colon I_0\dcup I_1\longto I$ such that $q\circ f$ strongly preserves $\sim$, then this defines an injective $F\colon\partial M\longto S^1$.
+    Which we then claim is our homeomorphism.
+    First, define
+    $$ f(t,0) = \frac12t,\qquad f(t,1) = \frac12+\frac12t $$
+    This is continuous on each $I_i$ which form a finite closed cover of the domain, and thus $f$ is continuous.
+    The only two similar elements in the domain are $(0,0)$ and $(1,1)$, in $q\circ f$, $(0,0)$ maps to $[0]$ and $(1,1)$ maps to $[1]$, which are equal.
+    So $q\circ f$ preserves $\sim$.
+    Notice that if $fa=fb$ occurs only when $a=(1,0)$ and $b=(0,1)$ or vice versa, and so $a\sim b$.
+    And if $q\circ fa=q\circ fb$ then $[fa]=[fb]$, so $fa=fb$, or $fa=0$ and $fb=1$, or vice versa.
+    For the first case we already showed $a\sim b$, if $fa=0$ and $fb=1$ then $a=(0,0)$ and $b=(1,1)$ so $a\sim b$.
+    So $q\circ fa=q\circ fb$ implies $a\sim b$, meaning $q\circ f$ strongly preserves $\sim$ and therefore $F$ is injective.
+
+    $q$ and $f$ are surjective, so $q\circ f$ is surjective.
+    We claim that $q\circ f$ is a quotient map, and so this means that $F$ is a homeomorphism.
+    All that remains is to show that $q\circ f$ is closed.
+    Notice that $q$ is closed: if ${\cal F}\subseteq I$ is closed then $q^{-1}\circ q{\cal F}$ is of one of the following forms: ${\cal F},{\cal F}\cup\set0,{\cal F}\cup\set1,{\cal F}\cup\set{0,1}$.
+    All of these are closed, so $q^{-1}\circ q{\cal F}$ is closed, and thus $q{\cal F}$ is closed since $q$ is a quotient map.
+    $f$ is also closed, since a closed subset of $I_0\dcup I_1$ is of the form ${\cal F}_0\dcup{\cal F}_1$ and its image is $\frac12{\cal F}_0\cup\parens{|frac12+\frac12{\cal F}_1}$ which is closed.
+    So $q\circ f$ is closed, as required.
+
+    \item Since $\partial M$ is homeomorphic to the circle, $\pi_1(\partial M,a)\cong{\bb Z}$.
+    Now, we showed previously that $\rho\parens{I\times\set{\frac12}}\cong S^1\subseteq M$ is a deformation retract, meaning $\pi_1(M,a)\cong\pi_1(S^1,a)\cong{\bb Z}$.
+
+    In general suppose $A\subseteq X$ is a deformation retract with $r$ being the retraction, and $B\subseteq X$.
+    Then $r_*$ is an isomorphism as it is a homotopy equivalence.
+    Now from the previous homework, $A=\rho\parens{I\times\set{\frac12}}$ is a deformation retract with $r[t,s]=[t,1/2]$.
+    This is then an isomorphism over ${\bb Z}$, so we can view it as the identity (since the precise isomorphism is unimportant).
+    Now, $(r\circ\iota)_*=\iota_*$ then, meaning $\iota_*$ is equal to the induced homomorphism of the restriction of $r$ to $\partial M$.
+
+    Since $\partial M\simeq S^1$ by the above isomorphism $F[t,0]=\frac12t$ and $F[t,1]=\frac12+\frac12t$, the generator of $\pi_1(M)\cong{\bb Z}$ is $F^{-1}\circ\phi$ where $\phi$ is a generator of
+    $\pi_1(S^1)$ which is just $\phi(t)=[t]$ (the curves are taken as their homotopy class).
+    Then the generator of $\pi_1(\partial M)$ is
+    $$ \psi(t) = \cases{[2t,0] & $t\leq\frac12$\cr[2t-1,1] & $t\geq\frac12$} $$
+    By definition $r_*[\psi]=[r\circ\psi]$ and
+    $$ r\circ\psi(t) = \cases{[2t,1/2] & $t\leq\frac12$\cr [2t-1,1/2] & $t\geq\frac12$} $$
+    which is equal to $\phi*\phi$, meaning that viewed as a ${\bb Z}$-homomorphism, $r_*(1)=2$.
+    And thus $\iota_*\colon n\mapsto2n$.
+
+    \item Recall that if $r$ is a retraction then $r_*\circ\iota_*={\rm id}$, but we showed that $\iota_*\colon n\mapsto2n$ and we also showed that then there is no homomorphism which satisfies this.
+
+\eenum
+
+\bye
+

@@ -1,0 +1,302 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{diam}{{\rm diam}}(\vert)
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+\newfunc{cis}{{\rm cis}}({})
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{sup}{{\rm sup}}\{\vert\}
+
+\font\bigbf = cmbx12 scaled 2000
+\@undervecc@def{underbar}\@linecap\@linecap
+
+\def\openset{{\cal O}}
+\let\lineseg=\overleftrightvecc
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\qed{\hskip1cm\hbox{}\hfill$\blacksquare$}
+
+%\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=4
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Complex Functions}
+
+    \medskip
+    \textit{Lecture \thesection, Wednesday April 19, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{Power Series}
+
+\begin{defn*}
+
+    A sequence of functions $\set{f_n}_{n=1}^\infty$ \ppemph{converges uniformly} to $f$ in a set $X$ if for every $\epsilon>0$ there is an $N\in\bN$ such that for every $n\geq N$, $\abs{f-f_n}<\epsilon$.
+    Equivalently, $\sup_{z\in X}\abs{f(z)-f_n(z)}$ converges to $0$.
+
+    A power series is uniformly convergent if its partial sums converge uniformly to it.
+
+\end{defn*}
+
+\begin{prop*}
+
+    A power series converges uniformly if and only if for every $\epsilon>0$ there is an $N$ such that for every $N\leq n<m$ such that
+    \[ \abs{\sum_{k=n}^m c_kz^k} < \epsilon \]
+
+\end{prop*}
+
+\begin{thrm*}
+
+    If $\sum c_kz^k$ is a power series and $R$ is its radius of convergence and $D$ is its domain of convergence, then if $\abs z<R$ the power series converges and if $\abs z>R$ the power series diverges.
+    Specifically if $R<\infty$ then
+    \[ D_R(0) \subseteq D \subseteq \bar D_R(0) \]
+    Furthermore, for every $0<r<R$, the convergence of the power series in $D_r(0)$ is uniform.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Recall the definition of $R$:
+    \[ R = \supof{\abs w}[\sum c_kw^k\text{ converges}] \]
+    Thus if $\abs z>R$, the power series does not converge for $z$.
+    If $\abs z<R$ then there is a $w\in D$ such that $\abs z<\abs w$.
+    Since $w\in D$, we must have that $c_kw^k\to0$ and so $\abs{c_kw^k}\leq M$.
+    Let $\rho=\frac{\abs z}{\abs w}<1$ then
+    \[ \sum_{k=0}^\infty \abs{c_kz^k} = \sum_{k=0}^\infty \abs{c_k\rho^k w^k} \leq M\sum_{k=0}^\infty \rho^k \]
+    which converges since $0\leq\rho<1$ and so the series converges absolutely for $z$ as required.
+
+    Let $r<\rho<R$, from above we know that $\sum_{k=0}^\infty c_k\rho^k$ converges so $c_k\rho^k$ converges to $0$.
+    Thus it is bound by some $M$: $\abs{c_k\rho^k}<M$.
+    Let $z\in D_r(0)$ then
+    \[ \abs{c_kz^k} = \abs{c_k\rho^k}\cdot\abs{\frac z\rho}^k < M\cdot\abs{\frac z\rho}^k < M\cdot\abs{\frac r\rho}^k \]
+    And $\abs{\frac z\rho}<1$ so:
+    \[ \sum_{k=0}^\infty M\cdot\abs{\frac r\rho}^k = M\cdot\frac1{1-\abs{\frac r\rho}} < \infty \]
+    Thus by the Weirestrauss $M$ test, this convergence is uniform.
+    And it is also absolute, as we can see in our proof.
+    \qed
+
+\end{proof}
+
+Since the power series is the uniform convergence of continuous functions, the power series itself is continuous in $D_r(0)$ for $r<R$.
+
+\begin{note}
+
+    The border of the domain of convergence is problematic.
+    The inclusion chain may be proper or $D$ may be equal to one of the disks.
+
+\end{note}
+
+\begin{thrm*}
+
+    If $f(z)=\sum_{k=0}^\infty c_kz^k$ then for every $\abs z<R$:
+    \[ f'(z) = \sum_{k=0}^\infty kc_kz^{k-1} \]
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let $\abs z<r<R$ then since the partial sums converge uniformly to $f(z)$ in $D_r(0)$ and the partial sums are analytic, their derivatives exist and converge to $f'(z)$.
+    \qed
+
+\end{proof}
+
+Notice then:
+
+\benum
+    \item A power series with radius of convergence $0<R$ is differentiable an infinite number of times in $D_R(0)$, and thus it is also analytic.
+    \item A power series $f(z)=\sum_{k=0}^\infty c_k(z-z_0)^k$ with radius of convergence $0<R$ satisfies:
+    \[ c_k = \frac{f^{(k)}(z_0)}{k!} \]
+    this stems from plugging in $z_0$ to $f^{(k)}$ which we obtain by the above theorem.
+\eenum
+
+\begin{lemm*}
+
+    Let $\set{z_k}_{k=1}^\infty$ be a sequence of complex points such that $0\neq z_k\longto0$, if the power series $f(z)=\sum_{k=0}^\infty c_kz^k$ with positive radius of convergence is equal to zero for
+    every $z_k$, then for every $k$, $c_k=0$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    We will show this inductively.
+    Notice that
+    \[ c_0 = f(0) = \lim_{k\to\infty}f(z_k) = 0 \]
+    since $f$ is continuous in $D_R(0)$.
+
+    Now suppose it is true for $n-1$, then:
+    \[ f(z) = \sum_{k=n}^\infty c_kz^k = \sum_{k=0}^\infty c_{k+n}z^{k+n} \]
+    then we have that
+    \[ c_n = \lim_{z\to0}\frac{f(z)}{z^n} = \lim_{k\to\infty}\frac{f(z_k)}{z_k^n} = 0 \]
+    as required.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}
+
+    If you have two power series $f(z)=\sum_{k=0}^\infty a_kz^k$ and $g(z)=\sum_{k=0}^\infty b_kz^k$ with positive radii of convergence such that there is a sequence $z_n\longto0$ where $f(z_n)=g(z_n)$
+    then $a_k=b_k$ for all $k$.
+
+\end{thrm*}
+
+This proof is quite trivial using the above lemma, look at the power series $f-g$, since $f(z_n)-g(z_n)=0$ by the lemma $a_k-b_k=0$ for all $k$.
+
+\subsection{Complex Integrals}
+
+\begin{defn*}
+
+    Let $f\colon[a,b]\longto\bC$ where $a<b\in\bR$ be a complex function $f=u+iv$, then we define
+    \[ \int_a^b f\,dt = \int_a^b u\,dt + i\int_a^b v\,dt \]
+    when the right hand side is defined ($u$ and $v$ are integrable; notice that $u$ and $v$ are real functions here).
+    It is also common to leave out the $dt$.
+
+\end{defn*}
+
+Notice then that:
+\benum
+    \item The integral is a linear functional:
+    \[ \int_a^b f+g = \int_a^b f+\int_a^b g \text{ and } \int_a^b \alpha f = \alpha\int_a^b f \]
+    these come directly from the same properties for real integrals and the definition of the complex integral.
+    \item If $f'=u'+iv'$ exists and is continuous (this does not require $f$ be complex analytic since $f$ is not a function whose domain is complex) then
+    \[ \int_a^b f'\,dt = f(b) - f(a) \]
+    this comes from the fundamental theorem of (real) calculus.
+\eenum
+
+\begin{prop*}
+
+    If $f\colon[a,b]\longto\bC$ is integrable then
+    \[ \abs{\int_a^b f\,dt} \leq \int_a^b\abs f\,dt \]
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose
+    \[ \int_a^b f\,dt = re^{i\theta} \]
+    then we have that
+    \[ \abs{\int_a^b f\,dt} = r = \int_a^b e^{-i\theta}f\,dt = \int_a^b \Reof{e^{-i\theta}f}\,dt + i\int_a^b \Imof{e^{-i\theta}f}\,dt \]
+    since $r$ is real, the imaginary part of this integral must be $0$ so we have that
+    \[ = \int_a^b\Reof{e^{-i\theta}f}\,dt \leq \int_a^b \abs{e^{-i\theta}f}\,dt \]
+    since $\Reof z\leq\abs z$, and since $\abs{e^{-i\theta}}=1$ we have that
+    \[ = \int_a^b \abs f\,dt \]
+    as required.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    The \ppemph{length} of a differentiable function $f\colon[a,b]\longto\bC$ is
+    \[ L = \int_a^b\abs{f'(t)}\,dt \]
+
+\end{defn*}
+
+\begin{defn*}
+
+    A \ppemph{complex curve} is a continuous function $z\colon[a,b]\longto\bC$.
+    A complex curve $z(t)=x(t)+iy(t)$ ($x,y\colon[a,b]\longto\bR$) is \ppemph{piecewise differentiable} if for every point $t\in[a,b]$ the derivative $z'(t)=x'(t)+iy'(t)$ exists except possibly at a finite
+    number of points where only one of the one-sided derivatives of $z$ exists.
+    If furthermore $z'(t)\neq0$ except for possibly at a finite number of points, then the curve is \ppemph{smoothe}.
+
+    Sometimes we call the \emph{image} of a complex curve a curve.
+
+\end{defn*}
+
+Another way to think of piecewise differentiability is that there is a finite partition of $[a,b]$, $a=x_0<\dots<x_n=b$, where $x$ and $y$ are differentiable over $(x_i,x_{i+1})$ for every relevant $i$, and
+for every $i$, $x$ and $y$ have a one-sided derivative at $x_i$ (and the one sided derivatives are on the same side).
+
+\begin{defn*}
+
+    Given a smoothe complex curve $z\colon[a,b]\longto\bC$, we denote $C=z([a,b])$.
+    For a complex function $f$ which is continuous and defined over $C$ we define
+    \[ \int_C f(z)\,dz = \int_a^b f\bigl(z(t)\bigr)z'(t)\,dt \]
+
+\end{defn*}
+
+\begin{prop*}
+
+    If $z\colon[a,b]\longto\bC$ and $w\colon[c,d]\longto\bC$ are two smoothe curves such that there is a differentiable bijection
+    \[ \lambda\colon[c,d]\longto[a,b] \]
+    such that
+    \benum
+        \item $\lambda$ is (almost everywhere) continuously differentiable.
+        \item $\lambda(c)=a$ and $\lambda(d)=b$.
+        \item $w(t)=z\bigl(\lambda(t)\bigr)$
+    \eenum
+    then
+    \[ \int_z f\,dz = \int_w f\,dw \]
+
+\end{prop*}
+
+\begin{proof}
+
+    Notice that $w'(t)=\lambda'(t)\cdot z'\bigl(\lambda(t)\bigr)$ and so
+    \[ \int_w f\,dw = \int_c^d f\cdot\lambda'(t)\cdot z'\bigl(\lambda(t)\bigr)\,dt \]
+    then by substituting $u=\lambda(t)$ then we get that $du=\lambda'(t)\,dt$ (this is just change of variables) so
+    \[ = \int_a^b f\cdot z'(u)\,du = \int_z f(z)\,dz \]
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    Let $z\colon[a,b]\longto\bC$ be a smoothe curve with $C=z([a,b])$, we define $-C=w([a,b])$ where $w(t)=z(b+a-t)$ then
+    \[ \int_{-C} f(w)\,dw = -\int_C f(z)\,dz \]
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $\lambda\colon[c,d]\longto[a,b]$ where $\lambda(t)=a+b-t$ then $\lambda'(t)=-1$ and $w=z\circ\lambda$ so $\lambda$ satisfies the conditions for the proposition above and we get our desired result.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    Suppose $C$ is a curve with length $L$ and $f$ is a continuous function bounded by $M$, then
+    \[ \abs{\int_C f}\leq M\cdot L \]
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $z\colon[a,b]\longto\bC$ is the curve whose image is $C$.
+    Then
+    \[ \abs{\int_C f} = \abs{\int_a^b f\bigl(z(t)\bigr)\cdot z'(t)\,dt} \leq \int_a^b \abs{f\bigl(z(t)\bigr)}\cdot \abs{z'(t)}\,dt \leq M\cdot\int_a^b\abs{z'(t)}\,dt = M\cdot L \]
+    as required.\qed
+
+\end{proof}
+
+\end{document}
+

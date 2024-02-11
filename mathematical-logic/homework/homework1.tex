@@ -1,0 +1,581 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input ../preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\oto=\varleftrightarrow
+\let\longto=\longvarrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\Language{\mathcal{L}}
+\def\theory{\mathcal{T}}
+
+\def\qed{\hskip.5cm\hbox{}\hfill$\blacksquare$}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\bB{\mathbb{B}}
+\def\true{\mathsf{true}}
+\def\false{\mathsf{false}}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=1
+
+\barcolorbox{220, 255, 255}{0, 130, 130}{80, 200, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Mathematical Logic}
+
+    \medskip
+    \textit{Assignment \thesection}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{exercise*}
+
+    Construct truth tables for the following statement forms:
+    \benum
+        \item $\Bigl(\bigl(A\to(B\to C)\bigr)\to\bigl((A\to B)\to(A\to C)\bigr)\Bigr)$
+        \item $\Bigl(\big((A\to B)\land A\bigr)\land\bigl(A\lor(\neg C)\bigr)\oto B\Bigr)$
+    \eenum
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    \benum
+        \item From our discussion on the formal theory of propositional calculus, we know that in order for our discussion to have any meaning, this must be a tautology.
+        So let us investigate when this statement form can be false.
+        We know that $\phi\to\psi$ is false only when $\phi$ is true and $\psi$ is false by our (truth table) definition of implication.
+        So in order for the statement form to be false, we must have that $A\to(B\to C)$ is true and $(A\to B)\to(A\to C)$ is false and again by applying this rule we have that $A\to(B\to C)$ and $A\to B$
+        are true, but $A\to C$ is false and so $A$ is true and $C$ is false.
+        Since $A\to(B\to C)$ is true and $A$ is true, $B\to C$ must be true (since otherwise $A\to(B\to C)$ would be false).
+        And since $A\to B$ is true and so is $A$ then $B$ must be true, and since we showed above that $B\to C$ is true, we must have that $C$ is true which is a contradiction.
+
+        Thus this is indeed a tautology, and the truth table of a tautology is always true.
+        Let $\phi$ be the statement form we are investigating, then its truth table is:
+        \[ \begin{array}{c|c|c|c}
+            A & B & C & \phi \\
+            \hline
+            T & T & T & T \\
+            T & T & F & T \\
+            T & F & T & T \\
+            T & F & F & T \\
+            F & T & T & T \\
+            F & T & F & T \\
+            F & F & T & T \\
+            F & F & F & T
+        \end{array} \]
+
+        \item Let us investigate when this statement form is true.
+        We know that $\phi\land\psi$ is true only when both $\phi$ and $\psi$ are true, so this allows us to split our investigation into two smaller ones.
+        \blist
+            \item $(A\to B)\land A$ must be true, so $A$ and $A\to B$ must be true, then this means that $B$ must be true as well.
+            And if $A$ and $B$ are true then so is $(A\to B)\land A$, so this statement form is true if and only if $A$ and $B$ are true (ie. it is equivalent to $A\land B$).
+
+            \item $\bigl(A\lor(\neg C)\bigr)\oto B$ must be true as well, so $A\lor\neg C$ and $B$ must have the same truth values.
+            We know from above that $A$ and $B$ must both be true, so this means that $A\lor\neg C$ and $B$ are both true, so it is sufficient for $A$ and $B$ to be true.
+        \elist
+
+        So we showed that in order for the statement form to be true, $A$ and $B$ must be true, and this is also sufficient.
+        Thus the statement form is true only when both $A$ and $B$ are.
+        Let us denote the statement form with $\phi$ then we get
+
+        \vfill\break
+        \[ \begin{array}{c|c|c|c}
+            A & B & C & \phi \\
+            \hline
+            T & T & T & T \\
+            T & T & F & T \\
+            T & F & T & F \\
+            T & F & F & F \\
+            F & T & T & F \\
+            F & T & F & F \\
+            F & F & T & F \\
+            F & F & F & F
+        \end{array} \]
+
+    \eenum
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Write the following sentences as statement forms, representing atomic sentences with letters:
+    \benum
+        \item A necessary condition for a sequence $s$ to converge is that $s$ is bounded.
+        \item A necessary and sufficient condition for Mike to be happy is that he has wine, women, and a song.
+        \item Maria goes to the movies only if a comedy is playing.
+    \eenum
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    \benum
+        \item Let $A$ be the statement ``$s$ converges'' and $B$ be ``$s$ is bounded'', then the statement form is equivalent to
+        \[ A\to B . \]
+        If we want to be even more particular, let $X$ be the statement ``$s$ is a sequence'' and then the statement form is equivalent to
+        \[ X\to(A\to B) . \]
+
+        This is because the statement form $\phi\to\psi$ corresponds to the sentence ``if $\phi$ then $\psi$'' or ``a necessary condition for $\phi$ is $\psi$''.
+
+        \item Let $A$ be the statement ``Mike is happy'' and $B$ be the statement ``Mike has wine'', $C$ be ``Mike has women'', and $D$ be ``Mike has a song''.
+        Then since Mike is happy if and only if (sufficient and necessary) when $B$, $C$, and $D$ are fulfilled, this statement form is equivalent to
+        \[ A\oto\bigl(B\land C\land D\bigr) . \]
+
+        \item The construct ``X only if Y'' usually means that if $X$ happens then $Y$ happens (this is ambiguous though: take for an instance a person saying ``I will give you this only if you give me
+        sufficient money'', this is understood to mean that giving the person sufficient money is \textit{equivalent} to getting whatever it is you are talking about.)
+
+        So let $A$ mean ``Maria goes to the movies'' and $B$ mean ``a comedy is playing'', then the statement form is equivalent to
+        \[ A\to B . \]
+    \eenum
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Prove that the system of bundles $\neg,\to$ is complete.
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    We have shown already that the system of bundles $\neg,\lor$ is complete as every statement form has a conjunctive normal form and from De Morgan's laws we can deduce that every statement form can be
+    written using just negation and disjunction.
+    This is because if conjunctive normal form of a statement form $\phi$ is
+    \[ \phi = \bigvee_{i=1}^m\bigwedge_{j=1}^n\epsilon_j^i A_j \]
+    then this is equivalent to by De Morgan's laws and since negation is an involution:
+    \[ \phi = \bigvee_{i=1}^m\neg\neg\parens{\bigwedge_{j=1}^n\epsilon_j^i A_j} = \bigvee_{i=1}^m\neg\parens{\bigvee_{j=1}^n\neg\epsilon_j^i A_j} \]
+    which is a composition of only negation (recall $\epsilon_j^i$ is either negation or nothing) and conjunction, and so the system of bundles $\neg,\lor$ is complete.
+
+    So it is sufficient (and necessary) to show that $\lor$ can be written as a composition of $\neg$ and $\to$.
+    Recall that
+    \[ A\to B \eiff \neg A\lor B \]
+    thus
+    \[ A\lor B \eiff (\neg A)\to B \]
+    as required.
+    Thus we have shown that $\lor$ can be written as a composition of $\neg$ and $\to$ and for the reasons explained above, this means the system of bundles $\neg,\to$ is complete.
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    \begin{defn}
+        A boolean function $f\colon\bB^n\longto\bB$ is \ppemph{increasing} if for every $\vec x=(x_1,\dots,x_n), \vec y=(y_1,\dots,y_n)\in\bB^n$, if $x_i\leq y_i$ for every $i$ then
+        $f(\vec x)\leq f(\vec y)$.
+    \end{defn}
+    Prove that any composition of $\lor$ and $\land$ forms an increasing boolean function.
+    And show that the converse is true as well: any increasing boolean function can be written as a composition of $\lor$s and $\land$s.
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    We introduce some notation: if $\vec x=(x_1,\dots,x_n)$ and $\vec y=(y_1,\dots,y_n)$ where for every $i$, $x_i\leq y_i$ then we say $\vec x\leq\vec y$.
+    So a boolean function is increasing if and only if $\vec x\leq\vec y$ implies $f(\vec x)\leq f(\vec y)$.
+
+    We will show inductively that any composition of conjunctions and disjunctions is an increasing boolean function.
+    The base case when $n=1$ is trivial as it is of the form $A\land B$ or $A\lor B$ which are obviously increasing by their proof table definition.
+    Now suppose that the length of the statement form is $n$ and this is true for any length less than $n$.
+    Then the statement form is of the form
+    \[ \phi\land\psi \text{ or } \phi\lor\psi \]
+    where $\phi$ and $\psi$ are compositions of conjunctions and disjunctions of length less than $n$.
+    So if $\vec x\leq\vec y$ then $\phi(\vec x)\leq\phi(\vec y)$ and $\psi(\vec x)\leq\psi(\vec y)$.
+    And so $\phi(\vec x)\land\psi(\vec x)\leq\phi(\vec y)\land\psi(\vec y)$ since conjunctions are increasing, and for the same reason this is true for $\phi\lor\psi$.
+    Thus $\phi\land\psi$ and $\phi\lor\psi$ are increasing, as required.
+
+    Now suppose $\phi$ is an increasing boolean function, if it is not constant let
+    \[ S = \set{\vec v\in\bB^n}[\phi(\vec v)=\true,\,\forall \vec u\leq\vec v\colon \phi(\vec u)=\false] \]
+    Then we claim
+    \[ \phi = \bigvee_{\vec v\in S}\bigwedge_{\substack{i=1 \\ \vec v_i=\true}}^n x_i = A \]
+    If $\phi(\vec v)$ is true, then there must be some $\vec u\in S$ where $\vec u\leq\vec v$ as otherwise $\vec v\in S$ which means we could take $\vec u=\vec v$.
+    And since $\vec u_i=\true$ implies $\vec v_i=\true$ since $\vec u\leq\vec v$, this means that
+    \[ \parens{\bigwedge_{\vec u_i=\true} x_i}(\vec v) = \true \]
+    since for every $x_i$ where $\vec u_i=\true$, $\vec v_i=\true$.
+    And since $\vec u\in S$ this means $A(\vec v)=\true$.
+
+    Now suppose $A(\vec v)=\true$ then there is some $\vec u\in S$ where
+    \[ \parens{\bigwedge_{\vec u_i=\true} x_i}(\vec v) = \bigwedge_{\vec u_i=\true} \vec v_i = \true \]
+    Thus if $\vec u_i=\true$ then $\vec v_i=\true$, so $\vec u\leq\vec v$ and since $\vec u\in S$ this means $\phi(\vec u)=\true$ so $\phi(\vec v)=\true$ by the increasing nature of $\phi$.
+
+    Thus $\phi$ is true if and only if $A$ is, so $\phi=A$ as required.
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Let $\phi\to\psi$ be a tautology, show that there is a statement form $\theta$ which uses variables common to both $\phi$ and $\psi$ such that $\phi\to\theta$ and $\theta\to\psi$ are also tautologies.
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    Let us think of what it means for $\phi$ and $\psi$ to have common variables.
+    We can think of $\phi$ and $\psi$ as functions $\phi,\psi\colon\bB^{n_\phi+n_\psi-k}\longto\bB$ where for every $\vec x_1\in\bB^k$ and $\vec x_2\in\bB^{n_\phi-k}$ and any two
+    $\vec a,\vec b\in\bB^{n_\psi-k}$
+    \[ \phi(\vec x_1, \vec x_2, \vec a) = \phi(\vec x_1, \vec x_2, \vec b) \]
+    that is, the last $n_\psi-k$ inputs to $\phi$ do not affect it.
+    And similarly for every $\vec x_1\in\bB^k$ and $\vec x_2\in\bB^{n_\psi-k}$ and any two $\vec a,\vec b\in\bB^{n_\phi-k}$
+    \[ \psi(\vec x_1, \vec a, \vec x_2) = \psi(\vec x_1, \vec b, \vec x_2) \]
+    that is, the middle $n_\phi-k$ inputs to $\psi$ do not affect it.
+    The first $k$ inputs to $\phi$ and $\psi$ are their ``common variables''.
+
+    Then the conjunctive normal form of $\phi$ is:
+    \[ \phi = \bigvee_{\phi(v)}\bigwedge_{i=1}^{n_\phi} \epsilon_i^v x_i \]
+    where $\epsilon_i^v$ is nothing if $v_i=\true$, and $\epsilon_i^v=\neg$ if $v_i=\false$, and the condition $\phi(v)$ meaning $\phi(v)=\true$.
+    And so we define
+    \[ \theta = \bigvee_{\phi(v)}\bigwedge_{i=1}^k \epsilon_i^v x_i \]
+
+    Now we must show that $\phi\to\theta$.
+    If $\phi$ is false then this is true vacuously, and if $\phi$ is true then for every $\phi(v)=\true$, $\bigwedge_{i=1}^N \epsilon_i^v x_i$ is true, and therefore so must
+    $\bigwedge_{i=1}^k \epsilon_i^v x_i$ as $k\leq N$ and therefore $\theta$ must be true as well.
+    So $\phi\to\theta$ is indeed true.
+
+    Now we must show that $\theta\to\psi$.
+    Suppose that this is not the case, then there exists an input $\vec x\in\bB^N$ where $\theta(\vec x)$ is true ($\theta$ only cares about the first $k$ elements in this vector) and $\psi(\vec x)$ is not.
+    Since $\theta(\vec x)$ is true there exists an $1\leq i\leq m_\phi$ such that for every $1\leq j\leq k$, $\epsilon_j^i x_j$ is true.
+    Since $\psi(\vec x)$ is false, so must $\phi(\vec x)$ and so there must be an $k<j\leq n_\phi$ where $\epsilon_j^i x_j$ is false.
+    Let $\vec y$ be equal to $\vec x$ except for all indexes $k<j\leq n_\phi$ where $\epsilon_j^i x_j$ is false where we set $\vec y_j=\neg\vec x_j$.
+    Then it follows that $\phi(\vec y)=\true$ and so $\psi(\vec y)=\true$.
+    But since $\vec y$ is equal to $\vec x$ except for some of the middle $n_\phi-k$ indexes, we should have that $\psi(\vec y)=\psi(\vec x)=\false$ which is a contradiction.
+
+    So we have shown that $\phi\to\theta$ and $\theta\to\psi$ as required.
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Prove that
+    \benum
+        \item $A\lor B$ can be expressed in terms of $\to$ alone.
+        \item $A\land B$ cannot be expressed in terms of $\to$ alone.
+        \item $A\oto B$ cannot be expressed in terms of $\to$ alone.
+    \eenum
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    \benum
+        \item A way to start is by assuming that $A\lor B\eiff \psi\to B$.
+        Then all we require is that if $B$ is false and $A$ is true, $\psi$ must be false and if $B$ is false and $A$ is false then $\psi$ must be true.
+        Thus $\psi=A\to B$ satisfies this, so:
+        \[ A\lor B\eiff(A\to B)\to B \]
+
+        And we can see that this is true, if $B$ is true then the statement form is true.
+        If $B$ is false and $A$ is true then $A\to B$ is false so the statement form is true.
+        And if $B$ and $A$ are false then $A\to B$ is true and $B$ is false, so the statement form is false.
+
+        \item Suppose that we can express conjunction in terms of implication.
+        Then there exists statement forms using just implication $\phi$ and $\psi$ where
+        \[ A\land B \eiff \phi(A,B)\to\psi(A,B) \]
+        and this is the shortest statement form which is equivalent to conjunction.
+
+        Since implication is only false in situations where we have $\true\to\false$, this means
+        \[ \left\{\begin{aligned} \phi(\false,\true)=\phi(\true,\false)=\phi(\false,\false) &= \true \\ \psi(\false,\true)=\psi(\true,\false)=\psi(\false,\false) &= \false \end{aligned}\right. \]
+        since the conjunction of all these inputs is false.
+        And so $\phi(\true,\true)=\false$ since otherwise $\phi$ is a tautology and then $\phi\to\psi\eiff\psi$ which means $\psi$ is equivalent to $A\land B$ and is thus a shorter representation.
+
+        But no composition of implications can have $\phi(\true,\true)=\false$.
+        We can show this inductively on the length of the statement form.
+        If the length is $0$ then $\phi(A,B)$ is either always $A$ or $B$, so if both inputs are true then so must $\phi$.
+        And inductively if this is true for all statement forms formed by implication for length less than $\phi$'s then since $\phi=\phi_1\to\phi_2$ inductively
+        $\phi_1(\true,\true)=\phi_2(\true,\true)=\true$ and so $\phi(\true,\true)=\true$ as required.
+
+        So $\phi(\true, \true)$ being $\false$ is a contradiction, as required.
+
+        \item Similar to our above solution, suppose
+        \[ A\oto B \eiff \phi(A,B)\to\psi(A,B) \]
+        is the shortest statement form using implications.
+
+        Then we must have that
+        \[ \left\{\begin{aligned}\phi(\true, \false) = \phi(\false, \true) &= \true \\ \psi(\true, \false) = \psi(\false, \true) &= \false \end{aligned}\right. \]
+        Furthermore $\phi(\true,\true)=\true$ since we showed than any composition of implications satisfies this and so $\phi(\false,\false)=\false$ as otherwise $\phi$ is a tautology and so
+        $\phi\to\psi\eiff\psi$ which is a shorter statement form equivalent to equivalence.
+        And $\psi(\true,\true)=\true$ as well, and if $\psi(\false,\false)=\true$ then $\psi$ is equivalent to equivalence, which is a contradiction.
+        So $\psi(\false,\false)=\false$, so $\psi$ is equivalent to conjunction, which is a contradiction since we just showed that no composition of implications can be equivalent to conjunction.
+    \eenum
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    In a certain country there are three types of people: workers (who always tell the truth), businessmen (who always lie), and students (who sometimes lie and sometimes tell the truth).
+    At a fork in the road, one branch leads to the capital.
+    A worker, businessman, and student are standing by the side of the fork but are not identifiable in any way.
+    How can you determine which fork leads to the capital by asking two yes or no questions?
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    An important thing to note is that if you ask a businessman or worker ``would your answer to `X' be `true'?'' where $X$ is some boolean question, then they will give you the correct answer to $X$.
+    This is because if you as the worker then they will tell you `true' if and only if their answer to $X$ is true.
+    And if you ask the businessman they will tell you `true' if their answer to $X$ is `false' and `false' if their answer to $X$ is `true', so the businessman answers this question with the negation of his
+    answer to $X$, which itself is the negation of the correct answer.
+    So the businessman answers with the correct answer to $X$ as well.
+
+    So once we have determined a person which is not the student, we know how to phrase a question to get an appropriate answer.
+    So now we have to figure out how to find a person which is not the student.
+    The idea for this is simple, we go up to a random person and ask them to give us some other person who is not the student.
+    No matter how we phrase this question, if we approach the student we will get some non-student as required.
+    In order to get a boolean answer we must reduce this question down to a boolean question, which we can do by pointing at one of the other people and asking if they are the student.
+    But the businessman would give us the incorrect answer, so instead we use the above trick and phrase the question as: ``would your answer to `are they the student' be `true'?'' (they being the singular
+    pronoun for whomever you are pointing at).
+    Thus if you ask a businessman or worker you will get the correct answer to this question and you will know that they are not the student.
+
+    Then you go to the person identified as not being the student and you must now try and figure out which branch leads to the capital.
+    Similarly, we can ask ``would your answer to `does the left branch lead to the capital' be `true'?''.
+    Then since we know that whomever we went to is not the student, ie. they are the businessman or the worker, they will give us the correct answer to this question.
+
+    To summarize:
+    \benum
+        \item Go to one of the three people, point at one of the other two people, and ask ``would you answer to ``are they the student'' be `true'?''
+        \item If they answer ``true'', go to the other person.
+        Otherwise go to that person.
+        \item Ask that person ``would your answer to `does the left branch lead to the capital' be `true'?''
+        \item If they answer ``true'', take the left branch.
+        Otherwise take the right branch.
+    \eenum
+
+    Steps $1$ and $2$ ensure that the next person you meet is not a student since if the person you ask is a student then no matter who you go to they are not a student, and if the person is a businessman
+    or worker they answer your question with the correct answer to ``are they the student?''
+    And $3$ and $4$ ensure that you take the correct branch since you now know you aren't talking to a student so the person's answer to your question would be the correct answer to ``does the left branch
+    lead to the capital?''
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Prove for the formal theory of propositional calculus:
+    \benum
+        \item $\vdash\bigl((\neg\phi\to\phi)\to\phi\bigr)$
+        \item $(\phi\to\psi),\,(\psi\to\mu)\vdash(\phi\to\mu)$
+        \item $\bigl(\phi\to(\psi\to\mu)\bigr)\vdash\bigl(\psi\to(\phi\to\mu)\bigr)$
+        \item $\vdash(\neg\psi\to\neg\phi)\to(\phi\to\psi)$
+    \eenum
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    \benum
+        \item By letting $\psi=\phi$ in A3, we have
+        \[ (\neg\phi\to\neg\phi)\to\bigl((\neg\phi\to\phi)\to\phi) \]
+        and we also know that $\neg\phi\to\neg\phi$ is a theorem so by modus ponens:
+        \[ (\neg\phi\to\phi)\to\phi \]
+        as required.
+
+        \item By letting $\psi=(\psi\to\mu)$ A1 we have:
+        \[ (\psi\to\mu)\to\bigl(\phi\to(\psi\to\mu)\bigr) \]
+        and since we have $\psi\to\mu$, by modus ponens:
+        \[ \phi\to(\psi\to\mu) \]
+        By A2:
+        \[ \bigl(\phi\to(\psi\to\mu)\bigr)\to\bigl((\phi\to\psi)\to(\phi\to\mu)\bigr) \]
+        so by modus ponens:
+        \[ (\phi\to\psi)\to(\phi\to\mu) \]
+        and since we have $\phi\to\psi$ we have by modus ponens:
+        \[ \phi\to\mu \]
+        as required.
+
+        \item By A2 we have
+        \[ \bigl(\phi\to(\psi\to\mu)\bigr)\to\bigl((\phi\to\psi)\to(\phi\to\mu)\bigr) \]
+        and since we have $\phi\to(\psi\to\mu)$ by modus ponens:
+        \[ (\phi\to\psi)\to(\phi\to\mu) \]
+        And by letting $\phi=\psi$ and $\psi=(\phi\to\psi)\to(\phi\to\mu)$ in A1 we have:
+        \[ \bigl((\phi\to\psi)\to(\phi\to\mu)\bigr)\to\Bigl(\psi\to\bigl((\phi\to\psi)\to(\phi\to\mu)\bigr)\Bigr) \]
+        so by modus ponens:
+        \[ \psi\to\bigl((\phi\to\psi)\to(\phi\to\mu)\bigr) \]
+        And by A2:
+        \[  \psi\to\bigl((\phi\to\psi)\to(\phi\to\mu)\bigr)\to\Bigl(\bigl(\psi\to(\phi\to\psi)\bigr)\to\bigl(\psi\to(\phi\to\mu)\bigr)\Bigr) \]
+        so by modus ponens:
+        \[ \bigl(\psi\to(\phi\to\psi)\bigr)\to\bigl(\psi\to(\phi\to\mu)\bigr) \]
+        And by A1 we have $\psi\to(\phi\to\psi)$ so by modus ponens:
+        \[ \psi\to(\phi\to\mu) \]
+        as required.
+
+        Alternatively, we can use the deductive theorem like so:
+        we know
+        \[ \phi\to(\psi\to\mu) \vdash \phi\to(\psi\to\mu) \]
+        so
+        \[ \phi\to(\psi\to\mu), \phi \vdash \psi\to\mu \]
+        and so
+        \[ \phi\to(\psi\to\mu), \phi, \psi \vdash \mu \]
+        And by the deductive theorem this means
+        \[ \phi\to(\psi\to\mu), \psi \vdash \phi\to\mu \]
+        and again by the deductive theorem
+        \[ \phi\to(\psi\to\mu) \vdash \psi\to(\phi\to\mu) \]
+        as required.
+    \eenum
+\end{blankpp}
+
+\vfill\break
+\begin{blankpp}
+    \benum
+        \global\enumcount=3
+        \item First let us prove a lemma:
+        \begin{lemm}
+
+            $\bigl((\phi\to\psi)\to\mu\bigr)\vdash(\psi\to\mu)$
+
+        \end{lemm}
+
+        \begin{proof}
+
+            By A1:
+            \[ \bigl((\phi\to\psi)\to\mu\bigr)\to\Bigl(\psi\to\bigl((\phi\to\psi)\to\mu\bigr)\Bigr) \]
+            and since we have $(\phi\to\psi)\to\mu$ by modus ponens:
+            \[ \psi\to\bigl((\phi\to\psi)\to\mu\bigr) \]
+            And by A2:
+            \[ \Bigl(\psi\to\bigl((\phi\to\psi)\to\mu\bigr)\Bigr)\to\Bigl(\bigl(\psi\to(\phi\to\psi)\bigr)\to(\psi\to\mu)\Bigr) \]
+            So by modus ponens:
+            \[ \bigl(\psi\to(\phi\to\psi)\bigr)\to(\psi\to\mu) \]
+            by A1 $\psi\to(\phi\to\psi)$ so by modus ponens:
+            \[ \psi\to\mu \]
+            as required.
+            \qed
+
+        \end{proof}
+
+        Now to the question at hand.
+        By A3 we have
+        \[ (\neg\psi\to\neg\phi)\to\bigl((\neg\psi\to\phi)\to\psi\bigr) \]
+        And since we have $\neg\psi\to\neg\phi$ by modus ponens:
+        \[ (\neg\psi\to\phi)\to\psi \]
+        and by our above lemma and the deduction theorem
+        \[ \bigl((\neg\psi\to\phi)\to\psi\bigr)\to(\phi\to\psi) \]
+        so by modus ponens
+        \[ \phi\to\psi \]
+        as required.
+    \eenum
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Show that the following well-formed formulas are theorems of propositional calculus:
+    \benum
+        \item $\phi\to(\phi\lor\psi)$
+        \item $(\phi\lor\psi)\to(\psi\lor\phi)$
+        \item $(\phi\land\psi)\to\phi$
+        \item $(\phi\to\mu)\to\Bigl(\bigl(\psi\to\mu)\to\bigl((\phi\lor\psi)\to\mu\bigr)\Bigr)$
+    \eenum
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    \benum
+        \item This is equivalent to showing
+        \[ \phi\to(\neg\phi\to\psi) \]
+        So we will hypothesize $\phi$ and $\neg\phi$ and attempt to prove $\psi$.
+
+        But first we will show that $\phi\vdash\psi\to\phi$ for every well-formed formula $\psi$.
+        This is obvious because $\phi,\psi\vdash\phi$ trivially, and so by the deduction theorem $\phi\vdash\psi\to\phi$.
+
+        Thus we have that
+        \[ \phi,\neg\phi\vdash\neg\psi\to\neg\phi, \neg\psi\to\phi \]
+        And by A3 we have
+        \[ (\neg\psi\to\neg\phi)\to\bigl((\neg\psi\to\phi)\to\psi\bigr) \]
+        So by modus ponens we have
+        \[ (\neg\psi\to\phi)\to\psi \]
+        and again by modus ponens we have
+        \[ \psi \]
+        So all in all we have
+        \[ \phi,\neg\phi\vdash\psi \]
+        And applying the deduction theorem twice we get
+        \[ \phi\to(\neg\phi\to\psi) = \phi\to(\phi\lor\psi) \]
+
+        \item We will hypothesize $\phi\lor\psi=\neg\phi\to\psi$.
+        By A3:
+        \[ (\neg\phi\to\psi)\to\bigl((\neg\phi\to\neg\psi)\to\phi\bigr) \]
+        so by modus ponens
+        \[ (\neg\phi\to\neg\psi)\to\phi \]
+        and so by our previous lemma
+        \[ \neg\psi\to\phi = \psi\lor\phi \]
+        Thus we have that
+        \[ \phi\lor\psi\vdash\psi\lor\phi \]
+        and by the deduction theorem then
+        \[ (\phi\lor\psi)\to(\psi\lor\phi) \]
+
+        \item Let us hypothesize $\neg\phi$, we know then that by A1:
+        \[ \neg\phi\to(\psi\to\neg\phi) \]
+        so by modus ponens:
+        \[ \psi\to\neg\phi \]
+        and since we showed that
+        \[ (\psi\to\neg\phi)\to(\neg\neg\phi\to\neg\psi) \]
+        by modus ponens:
+        \[ \neg\neg\phi\to\neg\psi \]
+        By the previous question:
+        \[ \neg\phi, \phi\to\neg\neg\phi, \neg\neg\phi\to\neg\psi \vdash \phi\to\neg\psi \]
+        so by the deduction theorem and modus ponens:
+        \[ \neg\phi, \neg\neg\phi\to\neg\psi \vdash \phi\to\neg\psi \]
+        since $\phi\to\neg\neg\phi$ is a theorem.
+        Then again we have that 
+        \[ \neg\phi \vdash \phi\to\neg\psi \]
+        since we showed that $\neg\neg\phi\to\neg\psi$ is a theorem under the hypothesis $\neg\phi$.
+        Thus by the deduction theorem
+        \[ \neg\phi\to(\phi\to\neg\psi) \]
+        And so by the previous question this means that
+        \[ \neg(\phi\to\neg\psi) \to \phi = (\phi\land\psi) \to \phi \]
+        as required.
+
+        \item We will show that
+        \[ \phi\to\mu, \psi\to\mu, \neg\phi\to\psi \vdash \mu \]
+        We know that by the previous question
+        \[ \phi\to\mu, \psi\to\mu, \neg\phi\to\psi \vdash \neg\phi\to\mu \]
+        And we showed in lecture
+        \[ (\neg\phi\to\mu) \to \bigl((\neg\neg\phi\to\mu)\to\mu\bigr) \]
+        and so by modus ponens
+        \[ (\neg\neg\phi\to\mu)\to\mu \]
+        Now we will show that $(\phi\to\mu)\to(\neg\neg\phi\to\mu)$ which by the deduction theorem it is sufficient to show $\phi\to\mu, \neg\neg\phi\to\mu\vdash\mu$.
+        Since we showed that $\neg\neg\phi\vdash\phi$ we have $\phi$ and since we hypothesized $\phi\to\mu$ we have $\mu$ as required.
+        So we have that
+        \[ (\phi\to\mu)\to(\neg\neg\phi\to\mu) \]
+        So by modus ponens
+        \[ \neg\neg\phi\to\mu \]
+        and again by modus ponens
+        \[ \mu \]
+        Thus we have shown that
+        \[ \phi\to\mu, \psi\to\mu, \neg\phi\to\psi \vdash \mu \]
+        And by the deductive theorem
+        \[ (\phi\to\mu)\to\Bigl((\psi\to\mu)\to\bigl((\neg\phi\to\psi)\to\mu\bigr)\Bigr) \]
+        as required.
+
+    \eenum
+
+\end{blankpp}
+
+\end{document}
+

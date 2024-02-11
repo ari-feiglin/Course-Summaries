@@ -1,0 +1,243 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input ../preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\@blist[#1]{%
+    \bgroup\bgroup\par\vskip-\medskipamount%
+    \gdef\item{%
+        \par\egroup\bgroup\medskip\setbox0=\hbox{#1\quad}%
+        \advance\leftskip by \wd0\leavevmode\kern-\wd0\box0%
+    }%
+}
+\def\blist{\@ifnextchar[ \@blist {\@blist[$\bullet$]}}
+\def\elist{\par\egroup\egroup\medskip}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\pdf@drawing@macro{check}{0 1 0 RG 1.2 w 1 j 1 J 0 5 m 3 0 l 8 10 l S}{9.2pt}{12pt}{1pt}{1pt}
+\pdf@drawing@macro{ecks}{1 0 0 RG 0 0 m 1 j 1 J 10 10 l 0 10 m 10 0 l S}{11.2pt}{12pt}{1pt}{1pt}
+
+\begin{document}
+
+\c@section=1
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infintesimal Calculus 3}
+
+    \medskip
+    \textit{Assignment 1}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{exercise*}
+
+    Suppose $X$ and $Y$ are normed vector spaces with $\norm\cdot_X$ and $\norm\cdot_Y$ as their respective norms.
+    Determine which of the following defines a valid norm over the product space $X\times Y$:
+    \blist
+        \item $\norm{(x, y)} = \norm{x}_X + \norm{y}_Y$
+        \item $\norm{(x, y)} = \norm{x}_X\cdot\norm{y}_Y$
+        \item $\norm{(x, y)} = \maxof{\norm{x}_X, \norm{y}_Y}$
+    \elist
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    \blist
+        \item This is a norm.
+        We will show that it has all the necessary properties of a norm:
+        It is positive, as the norm of $X$ and $Y$ are both positive.
+        Since $\norm x_X, \norm y_Y\geq 0$, $\norm{(x,y)}=0$ if and only if $\norm x_X=\norm y_Y=0$, which is if and only if $x,y=0$ as required.
+        It is absolutely homogeneus since 
+        \[ \norm{\alpha(x,y)}=\norm{(\alpha x, \alpha y)}=\norm{\alpha x}_X + \norm{\alpha y}_Y = \abs\alpha\big(\norm x_X + \norm y_Y\big) \]
+        And it satisfies the triangle inequality since:
+        \[ \norm{(x,y) + (z,w)} = \norm{x+z}_X + \norm{y+w}_Y \leq \norm x_X + \norm z_X + \norm y_Y + \norm w_Y = \norm{(x,y)} + \norm{(x,w)} \]
+
+        \item This is not a norm.
+        Let's take $X=Y=\bR$.
+        Notice that $\norm{(1,0}=\norm{1}_X\cdot\norm{0}_Y=0$ even though $(1,0)\neq(0,0)$.
+        In general this is not a norm over any non-trivial normed linear space.
+
+        \item This is a norm.
+        Notice that since the norm of $X$ and $Y$ are non-negative, so is this norm.
+        And $\norm{(x,y)}=0$ if and only if $\norm x_X=\norm y_Y=0$ since it is the maximum, which is if and only if $x=y=0$.
+        It satisfies absolute homogeneusness since:
+        \[ \norm{\alpha(x,y)} = \maxof{\norm{\alpha x}_X, \norm{\alpha y}_Y} = \abs\alpha\maxof{\norm x_X, \norm y_Y} = \abs\alpha\norm{(x,y)} \]
+        It satisfies the triangle inequality since:
+        \[ \norm{(x,y) + (x',y')} = \norm{(x+x', y+y')} = \maxof{\norm{x+x'}_X, \norm{y+y'}_Y} \]
+        Suppose the maximum is $\norm{x+x'}_X$, then we know that
+        \[ \norm{x+x'}_X \leq \norm x_X + \norm{X'}_X \leq \maxof{\norm x_X, \norm y_Y} + \maxof{\norm{x'}_X, \norm{y'}_Y} = \norm{(x,y)} + \norm{(x', y')} \]
+        As required.
+    \elist
+
+\end{blankpp}
+
+\newpage
+\begin{exercise*}
+
+    Suppose $1\neq a\in\bN$, we define a function $d_a\colon\bZ\times\bZ\longvarrightarrow\bR$ by:
+    \[ d_a(x,y) = \begin{cases} 0 & x = y \\ \frac1{a^{k(x,y)}} & \text{else} \end{cases} \]
+    Where for $x,y\in\bZ$, $k(x,y)$ is defined as:
+    \[ k(x,y) = \maxof{n\in\bN_{\geq0}}[a^n\divides (x-y)] \]
+    Prove that $d_a$ is a metric function over $\bZ$.
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    The first few requirements for metric functions are trivial: positivity, symmetry, and zero-ness.
+    Positivity is true since for $a\in\bN$, $a^x>0$.
+    This also gives us zero-ness since $a^x>0$, so $d_a(x,y)=0$ if and only if $x=y$.
+    The symmetry of $d_a$ is due to the symmetry of $k$: in general $\alpha\divides(x-y)$ if and only if $\alpha\divides(y-x)$, so the set $k(x,y)$ acts over is the same
+    set $k(y,x)$ acts over, and therefore $k(x,y)=k(y,x)$.
+
+    The next step is to prove that $d_a$ satisfies the triangle inequality.
+    Let $x,y,z\in\bZ$, then if any of them equal another the triangle inequality is trivial (this is true in general for a function which satisfies the other properties).
+    Therefore, let's assume $x\neq y\neq z$.
+    We must prove that:
+        \[ d_a(x,y) \leq d_a(x,z) + d_a(z,y) \]
+    Using the definition of $d_a$ we must show that:
+        \[ \frac1{a^{k(x,y)}} \leq \frac1{a^{k(x,z)}} + \frac1{a^{k(z,y)}} \]
+    This is equivalent to showing
+        \[ a^{-k(x,y)} \leq a^{-k(x,z)} + a^{-k(z,y)} \]
+    If we let $k=\minof{k(x,z), k(z,y)}$, then:
+        \[ a^{-k(x,z)} + a^{-k(z,y)} \geq a^{-k} \]
+    So we will show that $a^{-k(x,y)}\leq a^{-k}$, which is equivalent to $-k(x,y)\leq -k\iff k(x,y)\geq k$ since $a>1$, and this will suffice.
+    Notice then that since $k\leq k(x,z), k(z,y)$, $a^k\divides (x-z), (z-y)$, and therefore $a^k$ divides $(x-z)+(z-y)=x-y$.
+    Since $k(x,y)$ is the largest integer which does so, this means that $k\leq k(x,y)$, as required.
+
+    So $d_a$ satisfies all the requirements for a metric, and therefore it is.
+    
+\end{blankpp}
+
+\begin{exercise*}
+
+    For $A\subseteq X$ a metric space $A'$ is the set of limit points of $A$.
+    We further inductively define $A^{(n)} = \big(A^{(n-1)}\big)'$.
+
+    %For an $a\in\bR^n$ let $\phi(a)$ be a set of points whose limit is $a$ including $a$ itself, and let:
+    %    \[ A = \bigcup_{x\in\phi(0)}\phi(x) \]
+    %for every $n\in\bN$ find $A^{(n)}$.
+
+    Find a proper subset $B$ of $\bR$ such that $B^{(n)}\neq\varnothing$ for every $n\in\bN$.
+    %As a challenge, find a set $B$ such that $B^{(\infty)}\neq\varnothing$ (where $B^{(\infty)}$ is the intersection of all
+    %derived sets of $B$), but $\parens{B^{(\infty)}}'=\varnothing$).
+
+\end{exercise*}
+
+I didn't solve the question with $\phi(x)$ since the definition wasn't understandable and no one I asked understood it either.
+
+\begin{blankpp}
+
+    Let $B=\bQ$ then $B'=\bR$ since every $x\in\bR$ has a limit of rationals (which don't equal $x$) whose limit is $x$.
+    And since $\bR'=\bR$, $\bQ^{(n)}=\bR\neq\varnothing$.
+    (Another example would be $[a,b]$, since every derived set is equal to it).
+
+    %We define the set $A_n$ as follows:
+    %    \[ A_n = \bigcup_{k=1}^n \set{\frac1{2^{m_1}} + \cdots + \frac1{2^{m_k}}}[n<m_1,\dots,m_k\in\bN] \]
+    %Notice that $\inf A_n=0$ since the limit of these series is $0$, and $\sup A_n = \frac n{2^n}\leq\frac12$.
+    %And we define:
+    %    \[ B_n = A_n + n \]
+    %And so $\inf B_n = n$ and $\sup B_n\leq n+\frac12$, so every $B_n$ is separated by an interval of length $\frac12$.
+    %And we define:
+    %    \[ B = \bigsqcup_{n\in\bN} B_n \]
+    %Now we make the following 
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Determine which of the following sets are closed and which are open:
+    \blist
+        \item $A=\set{(x,y)\in\bR^2}[y=0, x\in(0,1)]$
+        \item $B=\set{(x,y)\in\bR^2}[x^2\leq y]$
+        \item $C=\set{(x,y)\in\bR^2}[x>0, y<0, x+y>-1]$
+    \elist
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    \blist
+        \item This set is neither open nor closed.
+            It is not open since for every $x\in A$ (and $A$ is non-empty!), for every $r>0$ there is a point in $B_r(x)$ which is not in $A$.
+            This is because the point $\parens{x,\frac r2}\in B_r(x)$, and since $\frac r2\neq0$, the point is not in $A$.
+            It is not closed since the point $(0,0)$ is in the boundary of $A$, since for every $r>0$, $\parens{\minof{\frac r2, \frac12}, 0}\in B_r(x)\cap A$, and
+            itself is in $A^c$, so every open ball around it contains points in both $A$ and $A^c$.
+            But $(0,0)$ itself is not in $A$, so $A$ does not contain its boundary and is therefore not closed.
+        \item This set is closed, but not open.
+            Intuitively, it is closed since its boundary is the parabola $y=x^2$ which is contained in $B$.
+            But we will prove this more rigorously by showing that $B'\subseteq B$.
+            Suppose $(x,y)$ is a limit point of $B'$, then for every $\epsilon>0$, $B_r(x,y)\cap B\setminus\set{(x,y)}\neq\varnothing$.
+            So we can construct a sequence of points $(x_n, y_n)$ which converge to $(x,y)$ (as in their distance approaches $)$,
+            for example by taking $(x_n, y_n)$ to be contained in $B_{\slfrac1n}(x,y)\cap B$).
+            Then:
+            \[ \norm{(x-x_n, y-y_n)}_2 \longvarrightarrow 0 \implies (x-x_n)^2 + (y-y_n)^2\longvarrightarrow0 \implies x_n\longvarrightarrow x\quad y_n\longvarrightarrow y \]
+            And so $y-x^2=\lim y_n - x_n^2$, and since $(x_n, y_n)\in B$, $y_n-x_n^2\geq0$, so $y-x^2\geq0$.
+
+            Notice that this set has a boundary: $(0,0)$ is one point in this boundary: for every $r>0$, $\parens{0,-\frac r2}$ is in the ball $B_r(0,0)$ but it is not in $B$.
+            And $B$ is closed so $(0,0)$ is in its boundary.
+            And since the boundary exists and is contained in $B$, $B$ cannot be open (since open sets don't contain their boundaries).
+
+        \item This set is open, but not closed.
+            Notice that
+            \[ C = \set{x>0}\cap\set{y<0}\cap\set{x+y>-1} \]
+            It is obvious that $\set{x>0}$ and $\set{y<0}$ are open: if $x>0$ then take $r=\frac x2$ and then for every $(x',y')\in B_r(x)$, $x'>x-r=\frac x2>0$, so this ball
+            is contained in $\set{x>0}$ so it is open.
+            A nearly identical proof can be constructed for showing that $\set{y<0}$ is open.
+            Suppose $x+y>-1$, then we can take $r$ to be half the distance from $(x,y)$ to the line $y=-x-1$.
+            Then $B_r(x,y)$ is contained in $\set{x+y>-1}$ since the distance between $(x,y)$ and the line is the length of the shortest path to the line, and since the
+            distance between $(x,y)$ and each point in the ball is less than this distance, none of the points can cross the line.
+            So $C$ is the intersection of a finite number of open sets, and therefore $C$ is open.
+
+            And since this set has a boundary (for example $(0,0)$ is in the boundary, since it is not contained in the set but for every $r>0$, $\parens{\frac r2,0}$).
+            And since the set is open, it doesn't contain this boundary, so it cannot be closed.
+    \elist
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Suppose $a_1,\dots,a_n$ and $b$ are real numbers.
+    Show that the following set is closed:
+        \[ P = \set{(x_1,\dots,x_n)\in\bR^n}[\sum_{k=1}^n a_kx_k=b] \]
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    We will show that $P$ contains all of its limit points.
+    Let $\shortvecc x=(x_1,\dots,x_n)\in P'$, then for every $r>0$ there is a point in $B_r(\shortvecc x)\cap P$ which is not $\shortvecc x$.
+    Then take $\shortvecc x_k = (x_1^k,\dots,x_n^k)$ to be this point for $r=\frac1k$.
+    Then $\norm{\shortvecc x-\shortvecc x_k}_2$ converges to $0$ (since it is less than $\frac1k$) so:
+    \[ \sum_{i=1}^n \bigl(x_i - x_i^k\bigr)^2 \longvarrightarrow 0 \]
+    Since squares are positive, it must be that for every $1\leq i\leq n$ $x_i^k\varrightarrow x_i$.
+    By limit arithmetic:
+    \[ \sum_{i=1}^n a_ix_i = \lim_{k\varrightarrow\infty}\sum_{i=1}^n a_ix_i^k \]
+    And since $\shortvecc x_k\in P$, the right sum must be equal to $b$ so:
+    \[ \sum_{i=1}^n a_ix_i = \lim_{k\varrightarrow\infty} b = b \]
+    So $\shortvecc x$ is in $P$, as required.
+
+    Notice that this proof is valid no matter what $p$-norm is chosen for $\bR^n$, it is not necessary for $p$ to be $2$.
+
+\end{blankpp}
+
+\end{document}
+

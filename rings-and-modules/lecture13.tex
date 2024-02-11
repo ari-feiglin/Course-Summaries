@@ -1,0 +1,302 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+\usepackage{mathrsfs}
+
+\catcode`\@=11
+\input pdfmsym
+
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\implies{\,\mathrel{\longvarRightarrow}\,}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\divides{{\mid}}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\newfunc{eulerg}{{\rm Euler}}({})
+\newfunc{order}o({})
+\newfunc{ker}{{\rm Ker}}({})
+\newfunc{image}{{\rm Im}}({})
+\newfunc{lattice}{{\cal L}}(\vert)
+\newfunc{powset}{{\cal P}}(\vert)
+\newfunc{center}{{\rm Z}}({})
+\newfunc{units}{{\cal U}}(\vert)
+\newfunc{sign}{{\rm sgn}}({})
+\newfunc{aut}{{\rm Aut}}({})
+\newfunc{speclinear}{{\rm SL}}({})
+\newfunc{genlinear}{{\rm GL}}({})
+\newfunc{projlinear}{{\rm PGL}}({})
+\newfunc{specprojlinear}{{\rm PSL}}({})
+\newfunc{core}{{\rm Core}}(\vert)
+\newfunc{inner}{{\rm Inn}}(\vert)
+\newfunc{outer}{{\rm Out}}(\vert)
+\newfunc{conj}{{\rm conj}}({})
+\newfunc{ev}{{\rm ev}}({})
+\newfunc{Frac}{{\rm Frac}}({})
+\newfunc{Tor}{{\rm Tor}}(\vert)
+\newfunc{Ann}{{\rm Ann}}(\vert)
+
+\def\maxdivs{\mathrel{\|}}
+
+\let\ideal=\trianglelefteq
+\let\pideal=\triangleleft
+\def\normal{\mathrel\triangleleft}
+\let\mmorph=\longvarhookrightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+
+\def\qed{\hskip1cm\hbox{}\hfill$\blacksquare$}
+
+\def\mN{\mathcal N}
+\def\mG{\mathcal G}
+\def\sS{\mathscr S}
+
+\begin{document}
+
+\c@section=13
+
+\barcolorbox{220, 220, 255}{0, 0, 130}{80, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Introduction to Rings and Modules}
+
+    \medskip
+    \textit{Lecture \thesection, Wednesday June 7 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{defn*}
+
+    An $R$-module $M$ is \ppemph{finitely generated} if there exists a finite set $\mathscr S\subseteq M$ such that $\gen S=M$.
+    Equivalently, $M$ is finitely generated if and only if there exists $m_1,\dots,m_n\in M$ such that every element $m\in M$ can be written as a linear combination of $m_i$s.
+
+\end{defn*}
+
+\begin{defn*}
+
+    If $M$ and $N$ are both $R$-modules, a \ppemph{module homomorphism} form $M$ to $N$ is a function
+    \[ f\colon M\longto N \]
+    such that $f(m_1+m_2)=f(m_1)+f(m_2)$ for every $m_1,m_2\in M$ and $f(rm)=rf(m)$ for all $r\in R$ and $m\in M$.
+    If $f$ is injective, surjective, or bijective then $f$ is also called a monomorphism, epimorphism, or isomorphism respectively.
+
+    And the \ppemph{kernel} of a module homomorphism is
+    \[ \kerof f = f^{-1}(0_N) = \set{m\in M}[f(m)=0_N] \]
+
+\end{defn*}
+
+Note that since module homomorphisms are group homomorphisms, a module homomorphism is injective if and only if its kernel is trivial.
+
+Note that if $R$ is a field, module homomorphisms are exactly linear transformations.
+And if $R=\bZ$ then the condition that $f(rm)=rf(m)$ is redundant as $f(rm)=f(m+\cdots+m)=f(m)+\cdots+f(m)=rf(m)$, so if $M$ and $N$ are $\bZ$-modules (abelian groups) then module homomorphism are simply
+abelian group homomorphisms.
+
+\begin{prop*}
+
+    If $f\colon M\longto N$ is a homomorphism of $R$-modules then
+    \benum
+        \item $M'\subseteq M$ is a submodule then $f(M')\subseteq N$ is also a submodule.
+        \item If $N'\subseteq N$ is a submodule then so is $f^{-1}(N')$.
+    \eenum
+
+\end{prop*}
+
+\begin{proof}
+
+    \benum
+        \item Let $f(m_1),f(m_2)\in f(M')$ then $f(m_1)+f(m_2)=f(m_1+m_2)$ and since $M'$ is a submodule, $m_1+m_2\in M'$ so $f(m_1)+f(m_2)\in f(M')$ as required.
+        And if $f(m)\in f(M')$ and $r\in R$ then $rf(m)=f(rm)\in f(M')$ since $rm\in M'$ since it is a submodule.
+
+        \item If $m_1,m_2\in f^{-1}(N')$ then $f(m_1), f(m_2)\in N'$ so $f(m_1+m_2)=f(m_1)+f(m_2)\in N'$ so $m_1+m_2\in f^{-1}(N')$ as required.
+        And if $m\in f^{-1}(N')$ and $r\in R$ then $f(rm)=rf(m)\in N'$ since $f(m)\in N'$ which is a submodule, so $rm\in f^{-1}(N')$ as required.
+        \qed
+    \eenum
+
+\end{proof}
+
+Note that since $\set{0_N}\subseteq N$ is a submodule, $\kerof f=f^{-1}\set{0_N}$ is a submodule of $M$.
+
+If $M$ is an $R$-module and $N\subseteq M$ is a submodule, in particular it is a (normal, as the group is abelian) subgroup.
+Then we can discuss the quotient group $\slfrac MN$, which already has addition defined by
+\[ (m_1+N) + (m_2+N) = (m_1+m_2) + N \]
+and we define scalar multiplication by
+\[ r(m+N) = rm + N \]
+This is well defined since if $m_1+N=m_2+N$ then $m_1-m_2\in N$, and so $r(m_1-m_2)\in N$ (since it is a submodule), so $rm_1-rm_2\in N$ so $rm_1+N=rm_2+N$ as required.
+
+\begin{defn*}
+
+    If $M$ is an $R$-module and $N$ is a submodule of $M$, then $\slfrac MN$ obtains a module structure where
+    \[ (m_1+N) + (m_2+N) = (m_1+m-2) + N \]
+    and
+    \[ r(m+N) = rm + N \]
+
+\end{defn*}
+
+\begin{thrm*}[firstIsoThrm,First\ Isomorphism\ Theorem\ for\ Modules]
+
+    If $f\colon M\longto N$ is a homomorphism of $R$-modules, then
+    \[ \slfrac M{\kerof f} \cong \imageof f \]
+
+\end{thrm*}
+
+Recall that $\imageof f=f(M)$ is a submodule of $N$.
+
+\begin{proof}
+
+    Define a module isomorphism by
+    \[ \phi(m+\kerof f) = f(m) \]
+    this is well-defined since this can be viewed as a group homomorphism and we know this is well-defined for groups.
+    Or we can show it directly: if $m+\kerof f=n+\kerof f$ then $m-n\in\kerof f$ so $f(m-n)=f(m)-f(n)=0$ so $f(m)=f(n)$.
+
+    Again, since this is a group homomorphism we know that $\phi((m+\kerof f)+(n+\kerof f))=\phi(m+\kerof f)+\phi(n+\kerof f)$ (this is also trivial to show).
+    And it satisfies the condition for scalar multiplication as
+    \[ \phi(r(m+\kerof f)) = \phi(rm+\kerof f) = f(rm) = rf(m) = r\phi(m+\kerof f) \]
+    as required.
+
+    Again, since this is a group homomorphism which we know is an isomorphism, it is an isomorphism as a module homomorphism.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    If $M$ is an $R$-module and $N$ is a submodule where both $N$ and $\slfrac MN$ are finitely generated, then so is $M$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $n_1,\dots,n_k$ be a set of generators for $N$, and let $m_1+N,\dots,m_s+N$ be a set of generators for $\slfrac MN$.
+    Then let $m\in M$, so there exist $r_1,\dots,r_s\in R$ where
+    \[ m+N = \sum_{i=1}^s r_i(m_i + N) = \sum_{i=1}^s r_im_i + N \]
+    This means that
+    \[ m - \sum_{i=1}^s r_im_i \in N \]
+    and so there exist $s_1,\dots,s_k\in R$ such that
+    \[ m - \sum_{i=1}^s r_im_i = \sum_{i=1}^k s_in_i \implies m = \sum_{i=1}^s r_im_i + \sum_{i=1}^k s_in_i \]
+    so $\set{n_1,\dots,n_k,m_1,\dots,m_s}$ generates $M$.
+    \qed
+
+\end{proof}
+
+Recall the following definitions
+
+\begin{defn*}
+
+    If $R$ is a ring, then $R$ is (left/right/two-sided) \ppemph{Noetherian} if every ascending chain of (left/right/two-sided) ideals stabilizes, and $R$ is (left/right/twosided) \ppemph{Artinian} if every
+    descending chain of (left/right/twosided) ideals stabilizes.
+
+\end{defn*}
+
+\begin{thrm*}[hopkinsLevitzkiThrm,Hopkins-Levitzki\ Theorem]
+
+    Every (left/right/two-sided) Artinian ring is (left/right/two-sided) Noetherian.
+
+\end{thrm*}
+
+We prove this for the case that $R$ is commutative.
+
+\begin{proof}
+
+    Recall that $R$ is Noetherian if and only if every ideal is finitely generated.
+    Suppose that $R$ is not Noetherian, so there exists an ideal which is not finitely generated.
+    Let
+    \[ \sS = \set{I\ideal R}[I\text{ is not finitely generated}] \]
+    There exists an $I\in\sS$ which is minimal.
+    Otherwise we could create an infinite chain of ideals $I_1\supset I_2\supset\dots$, which contradicts $R$ being Artinian.
+    Thus $I$ is not finitely generated but every ideal $J\subset I$ is.
+
+    Note that for $r\in R$, if $J$ is an ideal of $R$ then so is $rJ$.
+    We know $0_R=r0_R\in rJ$.
+    And $ra+rb=r(a+b)\in rJ$, so $rI$ is closed under addition.
+    And $-ra=r(-a)\in rJ$ so $rJ$ is closed under inverses.
+    And if $s\in R$ and $ra\in rJ$ then $s(ra)=r(sa)\in rJ$ so $rI$ is closed under multiplication by $R$.
+
+    We claim that if $r\in R$ then $rI=\set{ra}[a\in I]$ $rI=I$ or $rI=(0)$.
+    This is true since $rI\subseteq I$, so if $rI\neq I$, then $rI$ is finitely generated.
+    Since $I$ and $rI$ are ideals of $R$ and therefore $R$-modules, we can look at the module homomorphism
+    \[ f\colon I\longto rI,\quad f(a)=ra \]
+    This is obviously a homomorphism: $f(a+b)=r(a+b)=ra+rb=f(a)+f(b)$ and $f(sa)=r(sa)=s(ra)=sf(a)$.
+    This is also obviously surjective.
+    If $\ker f=I$ then $rI=(0)$ (since $rI=f(I)$) and we are finished.
+    Otherwise, $\ker f\subset I$ and by the minimality of $I$ this means that $\ker f$ is finite generated (since $\ker f$ is an $R$-module, it is an ideal of $R$).
+    Since
+    \[ rI = f(I) \cong \slfrac I{\ker f} \]
+    and since $rI$ is finitely generated, this means that so is $\slfrac I{\ker f}$.
+    So $\slfrac I{\ker f}$ and $\ker f$ are both finitely generated and therefore so is $I$, in contradiction.
+
+    We take a break from this proof to define more objects and prove results.
+
+\end{proof}
+
+\begin{defn*}
+
+    Suppose $R$ is a ring, and $M$ an $R$-module.
+    The \ppemph{annihilator} of $M$ is defined as
+    \[ \Annof[R]M = \set{r\in R}[\forall m\in M\colon rm=0_M] \]
+
+\end{defn*}
+
+\begin{prop*}
+
+    $\Annof[R]M$ is a two-sided ideal of $R$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Firstly it is obvious that $0_R\in\Annof[R]M$, if $r,s\in\Annof[R]M$ then let $m\in M$ we get
+    \[ (r+s)m = rm + sm = 0_M \]
+    so $r+s\in\Annof[R]M$ and if $r\in\Annof[R]M$ then
+    \[ (-r)m = (-1_R)rm = 0_M \]
+    so $-r\in\Annof[R]M$ so $\Annof[R]M$ is a subgroup of $R$.
+    And if $r\in\Annof[R]M$ and $s\in R$ then for any $m\in M$ it is obvious that $(sr)m=s(rm)=0_M$ so $sr\in\Annof[R]M$ and $(rs)m=r(sm)=0_M$ since $sm\in M$ so $rs\in\Annof[R]M$ meaning $\Annof[R]M$ is
+    closed under multiplication by $R$ on both sides, and is therefore a two-sided ideal.
+    \qed
+
+\end{proof}
+
+So if $M$ is an $R$-module, there is a natural extension of it to a $\slfrac R{\Annof[R]M}$-module by
+\[ (r+\Annof[R]M)\cdot m = rm \]
+This is well-defined since if $r+\Annof[R]M=s+\Annof[R]M$ then $r-s\in\Annof[R]M$ so $(r-s)m=0_M$ meaning $rm=sm$.
+
+Let us return to our proof of \ppref{hopkinsLevitzkiThrm}:
+
+\begin{blankpp}
+
+    So we have a commutative Artinian ring $R$, and an ideal $I\ideal R$ which is not finitely generated, but any ideal $J\subset I$ is.
+    We showed that for any $r\in R$, $rI$ is either $I$ or $(0)$.
+
+    We now claim that $\Annof[R]I\ideal R$ is a prime ideal.
+    We showed above that it is an ideal.
+    Suppose that $rs\in\Annof[R]I$ and suppose $r\notin\Annof[R]I$ then $rI\neq(0)$ since $\Annof[R]I=\set{r\in R}[rI=(0)]$.
+    So $rI=I$.
+    And so we get that
+    \[ sI = s(rI) = (sr)I = (rs)I = (0) \]
+    since $rs\in\Annof[R]I$ and so $s\in\Annof[R]I$ meaning $\Annof[R]I$ is prime.
+
+    We showed that quotients of Artinian rings are Artinian, and since $\Annof[R]I$ is prime we get that $\slfrac R{\Annof[R]I}$ is an Artinian integral domain.
+    We showed that this means that $F=\slfrac R{\Annof[R]I}$ is a field, and since $I$ is an $R$-module, it is also a $F=\slfrac R{\Annof[R]I}$, ie. a linear space over $F$.
+    Since $I$ is not finitely generated in $R$, it is not finitely generated in $F$.
+    This is because $(r+\Annof[R]I)i=ri$, so any generating set in $F$ induces a generating set of the same cardinality in $R$.
+    Thus $I$'s dimension is infinite.
+
+    Let $B$ be a basis of $I$, and let $b\in B$.
+    Then $B\setminus\set b$ is a basis for a subspace $V\subset I$.
+    $V$ must be an ideal in $R$ since for every $r\in R$, $rv=(r+\Annof[R]I)v\in V$ 
+    Since $V\subset I$ by $I$'s minimality, $V$ must be finitely generated and so has finite dimension.
+    But $B\setminus\set b$ is infinite and is a basis for $V$ so $V$ has infinite dimension, in contradiction.
+    \qed
+
+\end{blankpp}
+
+\end{document}
+

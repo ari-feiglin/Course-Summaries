@@ -1,0 +1,222 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\@blist[#1]{%
+    \bgroup\bgroup\par\vskip-\medskipamount%
+    \gdef\item{%
+        \par\egroup\bgroup\medskip\setbox0=\hbox{#1\quad}%
+        \advance\leftskip by \wd0\leavevmode\kern-\wd0\box0%
+    }%
+}
+\def\blist{\@ifnextchar[ \@blist {\@blist[$\bullet$]}}
+\def\elist{\par\egroup\egroup\medskip}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\openset{{\cal O}}
+\let\lineseg=\overleftrightvecc
+
+\begin{document}
+
+\c@section=6
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infinitesimal Calculus 3}
+
+    \medskip
+    \textit{Lecture 6, Wednsday November 9, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{Sequences and Limits in Metric Spaces}
+
+\begin{defn*}
+
+    If $(X,\metric)$ is a metric space, a sequence $\set{x_n}_{n=1}^\infty$ in $X$ \ppemph{converges} to $x\in X$ if
+    \[ \lim_{n\to\infty}\metricof{x_n, x} = 0 \]
+    We denote this by $\lim\limits_{n\to\infty}x_n=x$ or $x_n\varrightarrow x$.
+
+\end{defn*}
+
+\begin{prop*}
+
+    \blist
+        \item Limits, if they exist, are unique.
+        \item Constant sequences $\set{x}_{n=1}^\infty$ converge to $x$.
+        \item If $x_n\varrightarrow x$ and $y_n\varrightarrow y$ then $\metricof{x_n, y_n}\varrightarrow\metricof{x,y}$
+    \elist
+
+\end{prop*}
+
+\begin{proof}
+
+    \blist
+        \item Suppose $x_n\varrightarrow x,y$ so by the triangle inequality for every $n\in\bN$:
+            \[ \metricof{x,y} \leq \metricof{x,x_n} + \metricof{x_n,y} \]
+            Taking the limit of the right side gives $0$ by definition, so $\metricof{x,y}=0$ and therefore $x=y$.
+        \item This is trivial since $\metricof{x,x}=0$.
+        \item Since:
+            \[ \metricof{x,y} \leq \metricof{x, x_n} + \metricof{x_n, y_n} + \metricof{y_n, y} \]
+            The limit of the right side is $\lim\metricof{x_n,y_n}$, so $\metricof{x,y}\leq\lim\metricof{x_n,y_n}$.
+            And:
+            \[ \metricof{x_n,y_n} \leq \metricof{x_n,x} + \metricof{x,y} + \metricof{y,y_n} \]
+            The limit of the right side is $\metricof{x,y}$ so
+            \[ \lim\metricof{x_n,y_n} \leq \metricof{x,y} \leq \lim\metricof{x_n,y_n} \]
+            And therefore $\metricof{x_n,y_n}\varrightarrow\metricof{x,y}$.
+    \elist
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{prop*}
+
+    Suppose $X$ is a normed linear space and $x_n\varrightarrow x$ and $y_n\varrightarrow y$ and let $c\in\bR$.
+    \blist
+        \item $x_n+y_n\varrightarrow x+y$
+        \item $cx_n\varrightarrow cx$
+        \item $\norm{x_n}\varrightarrow\norm x$
+        \item If $X=\bR^n$ and if $x^{(m)}=\parens{x_1^{(m)},\dots,x_n^{(m)}}$ and $x=\parens{x_1,\dots,x_n}$ then $x^{(m)}\varrightarrow x$ if and only if $x_k^{(m)}\varrightarrow x_k$ for every relevant
+            $k$.
+        \item If $X=\bR^n$ and $x^{(m)}\varrightarrow x$ and $y^{(m)}\varrightarrow y$ then $x^{(m)}\cdot y^{(m)}\varrightarrow x\cdot y$ (dot product).
+    \elist
+
+\end{prop*}
+
+\begin{proof}
+
+    \blist
+        \item We know $\norm{x_n+y_n-x-y} \leq \norm{x_n-x} + \norm{y_n-y} \varrightarrow 0$ so $x_n+y_n\varrightarrow x+y$ as required.
+        \item We know $\norm{cx_n - cx} = \abs c\norm{x_n-x} \varrightarrow 0$ so $cx_n\varrightarrow cx$ as required.
+        \item Since $\abs{\norm{x_n}-\norm{x}}\leq\norm{x_n-x}\varrightarrow0$, it must be that $\abs{\norm{x_n}-\norm x}\varrightarrow0$ so $\norm{x_n}\varrightarrow\norm x$ as required.
+        \item Notice that
+                \[ \norm{x^{(m)}-x}^2 = \sum_{k=1}^n \big(x^{(m)}_k - x_k\big)^2 \varrightarrow 0 \]
+            So the left converges to $0$ if and only if every $\big(x^{(m)}_k-x_k\big)^2$ converges to $0$ since squares are non-negative.
+            And this in turn is equivalent to $x^{(m)}_k\varrightarrow x_k$.
+            It is easy to see how this is actually true for any $p$-norm, not just for $p=2$.
+        \item By above we know that $x^{(m)}_k\varrightarrow x_k$ and $y^{(m)}_k\varrightarrow y_k$, and since:
+                \[ x^{(m)}\cdot y^{(m)} = \sum_{k=1}^n x^{(m)}_k\cdot y^{(m)}_k \]
+            And by limit arithmetic, we know this converges to
+                \[ \sum_{k=1}^n x_k\cdot y_k = x\cdot y \]
+            As required.
+    \elist
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{defn*}
+
+    Suppose $(X,\metric)$ is a metric space and $\set{x_n}_{n=1}^\infty$ is a sequence in it.
+    If $\set{n_k}$ is a strictly increasing sequence ($n_k<n_{k+1}$), then $\set{x_{n_k}}_{k=1}^\infty$ is a \ppemph{subsequence} of $\set{x_n}_{n=1}^\infty$.
+    If $x_{n_k}$ converges to $x$, then $x$ is a \ppemph{partial limit} of $\set{x_n}_{n=1}^\infty$.
+
+\end{defn*}
+
+\begin{prop*}
+
+    If $x_n\varrightarrow x$ then every subsequence of $\set{x_n}$ converges to $x$.
+
+\end{prop*}
+
+This is trivial.
+
+\begin{thrm*}
+
+    If $S\subseteq X$ is compact, then every sequence $\set{x_n}_{n=1}^\infty$ in $S$ has a convergent subsequence.
+
+\end{thrm*}
+
+\begin{proof}
+
+    If there is an element $x$ which is in the sequence an infinite amount of times, we can construct a subsequence of all of its instances, and this subsequence converges to $x$.
+    Otherwise there are an infinite number of different elements in $\set{x_n}$.
+    Let $x\in S$, then if for every $\epsilon>0$ there is an element $x\neq x_n\in B_\epsilon(x)$, we can taken a sequence $\epsilon_n\varrightarrow0$ such and the associated $x_{n_k}$s converge to $x$,
+    and thus we have a convergent subsequence.
+    Otherwise, there must be some $\epsilon_x$ such that there is no $x\neq x_n\in B_{\epsilon_x}(x)$.
+    So we can take an open cover of $S$ by $\set{B_{\epsilon_x}(x)}_{x\in S}$, and since every one of these balls contains at most one element in $x_n$, every finite subcover contains only a finite
+    number of $x_n$s, so it can't cover $S$.
+    This contradicts the compactness of $S$.
+    And therefore $\set{x_n}$ must have a convergent subsequence.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{thrm*}[bolzWeirTheorem,Bolzano-Weierstrauss\ Theorem]
+
+    Suppose $\set{x_m}$ is bounded in $\bR^n$ then there exists a convergent subsequence of it.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Since $x_m\in B_M(0)$ for some $M>0$, so $x_m\in\bar B_M(0)$.
+    And since this ball is closed and bounded (by $B_{M+1}(0)$) for example, then by Heine-Borel, it is compact.
+    So $x_m$ is contained inside a compact space and therefore by the above theorem it has a convergent subsequence (moreso, its limit is in $\bar B_M(0)$).
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{exam}
+
+    Let $e_n=\set{0,\dots,1,\dots}$ be the sequence in $\ell^2$ which is $0$ except for at its $n$th position.
+    Then $\set{e_n}$ is bounded since it is contained in the closed unit ball.
+    But no subsequence of it is convergent: let $x\in\ell^2$ then:
+    \[ \norm{x-e_{n_k}}^2 \geq (x_{n_k}-1)^2 \]
+    And since $x\in\ell^2$, this converges to $1$, so $e_{n_k}$ is not convergent to $x$.
+
+\end{exam}
+
+\begin{defn*}
+
+    Suppose $(X,\metric)$ is a metric space.
+    Then a sequence $\set{x_n}_{n=1}^\infty$ in $X$ is a \ppemph{cauchy sequence} if for every $\epsilon>0$ there is some $N\in\bN$ such that for every $n,m\geq N$:
+        \[ \metricof{x_n, x_m} < \epsilon \]
+
+\end{defn*}
+
+\begin{prop*}
+
+    Every convergent sequence is also Cauchy.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $x_n\varrightarrow x$, then let $\epsilon>0$ then there exists an $N$ such that for every $n\geq N$:
+        \[ \metricof{x_n, x} < \frac\epsilon2 \]
+    And so if $n,m\geq N$:
+        \[ \metricof{x_n, x_m} \leq \metricof{x_n, x} + \metricof{x, x_m} < \epsilon \]
+    And so $\set{x_n}$ is a cauchy sequence, as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+The reverse of this proposition is not true.
+Take $x\in\bR\setminus\bQ$ and take a sequence $q_n$ of rationals which converge to $\bQ$.
+Then $q_n$ is cauchy in $\bQ$ (since it is cauchy in $\bR$), but it is not convergent in $\bQ$.
+
+\end{document}
+

@@ -1,0 +1,420 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz-cd}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{conj}{Conjecture}{255,130,130}{150,0,0}{200,0,0}
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\undersumtext#1{\vtop{\hsize=2cm\relax\centering\small #1}}
+
+\newfunc{oracle}{\hbox{\tencsc oracle}}({})
+\newfunc{dspace}{\mathsf{DSPACE}}({})
+\newfunc{dtime}{\mathsf{DTIME}}({})
+\newfunc{nspace}{\mathsf{NSPACE}}({})
+\newfunc{nspaceoff}{\mathsf{NSPACE}_{\mathsf{offline}}}({})
+\newfunc{totreach}{\textsf{Total-Reach}}({})
+\newfunc{indeg}{\textsf{in-deg}}({})
+\newfunc{outdeg}{\textsf{out-deg}}({})
+
+\def\quant{\mathtt{Q}}
+
+\def\sps{\texttt{\char32}}
+\def\sat{\mathsf{SAT}}
+\def\csat{\mathsf{CSAT}}
+\def\is{\mathsf{IS}}
+\def\threesat{\mathsf{3SAT}}
+\def\clique{\mathsf{Clique}}
+\def\vertcover{\textsf{Vertex-Cover}}
+\def\domset{\textsf{Dom-Set}}
+\def\dhp{\mathsf{DHP}}
+\def\dhc{\mathsf{DHC}}
+\def\hc{\mathsf{HC}}
+\def\tsp{\mathsf{TSP}}
+\def\threecolor{\mathsf{3Color}}
+\def\twocolor{\mathsf{2Color}}
+\def\kcolor{k\mathsf{Color}}
+\def\Color{\mathsf{Color}}
+\def\subsum{\mathsf{SubsetSum}}
+\def\maxclique{\mathsf{MaxClique}}
+\def\minexpr{\mathsf{MinExpression}}
+\def\sparse{\mathsf{Sparse}}
+\def\stconn{\textsf{st-conn}}
+
+\def\PH{\mathbf{PH}}
+\def\PF{\mathbf{PF}}
+\def\PC{\mathbf{PC}}
+\def\P{\mathbf{P}}
+\def\NP{\mathbf{NP}}
+\def\NPH{\mathbf{NPH}}
+\def\NPC{\mathbf{NPC}}
+\def\co{\mathsf{co}}
+\def\coNP{\mathbf{coNP}}
+\def\poly{\mathsf{poly}}
+\def\Ppoly{\slfrac\P\poly}
+\def\L{\mathbf{L}}
+\def\NL{\mathbf{NL}}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mN{\mathcal{N}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=4
+
+\barcolorbox{255, 220, 220}{130, 0, 0}{200, 80, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Computability and Complexity}
+
+    \medskip
+    \textit{Assignment \thesection}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{exercise*}
+
+    Prove, disprove, or show an equivalence between an open question: $\Ppoly$ is closed under Karp reductions.
+
+\end{exercise*}
+
+We will first prove the following lemma
+
+\begin{lemm}
+
+    Let $\mathcal C$ be a class of decision problems, then $\P^{\mathcal C}$ is closed under Karp reductions.
+
+\end{lemm}
+
+\begin{proof}
+
+    Let $S$ be a decision problem in $\P^{\mathcal C}$ and let $f$ be a Karp reduction from another decision problem $S'$ to $S$.
+    Since $S$ is in $\P^{\mathcal C}$, there exists a decision problem $S_0\in\mathcal C$ and a polynomial-time oracle machine $A^{S_0}$ which solves $S$.
+    Now, we claim that $S'\in\P^{S_0}$ as we can define the polynomial-time oracle machine $B^{S_0}(x)$ which simply runs $A^{S_0}(f(x))$ (using its access to an oracle for $S_0$).
+    Computing $f(x)$ takes polynomial time, and running $A^{S_0}$ on $f(x)$ takes polynomial time: it takes polynomial time in $\abs{f(x)}$, but since $f(x)$ takes polynomial time, $\abs{f(x)}$ is polynomial
+    in $\abs x$, so $A^{S_0}(f(x))$ takes polynomial time in $\abs x$.
+
+    $B^{S_0}$ obviously decides $S'$, as $x\in S'$ if and only if $f(x)\in S'$, which is if and only if $B^{S_0}(x)=A^{S_0}(f(x))=1$.
+
+    So $B^{S_0}$ is a polynomial-time oracle machine which decides $S'$, and therefore $S'\in\P^{S_0}\subseteq\P^{\mathcal C}$ as required.
+    \qed
+
+\end{proof}
+
+Now, since
+\[ \Ppoly = \P^\sparse \]
+by the above lemma, $\Ppoly$ is closed under Karp reductions, as required.
+
+\def\NPlog{\slfrac\NP{\mathsf{log}}}
+\begin{exercise*}
+
+    Prove that $\co(\NP\cap\sparse)\subseteq\NPlog$, where $\NPlog$ is defined analogously to $\Ppoly$ but the algorithms used are non-deterministic.
+
+\end{exercise*}
+
+Let $S\in\co(\NP\cap\sparse)$, which means that $S^c\in\NP\cap\sparse$.
+Since $S^c\in\NP$ there exists a non-deterministic algorithm $A$ which decides $S^c$ in polynomial time, suppose its runtime is bound by the polynomial $p(n)$.
+And since $S^c\in\sparse$, there exists a polynomial $q(n)$ such that for every $n$, $\abs{S^c\cap\set{0,1}^n}\leq q(n)$.
+
+Our goal is to define a non-deterministic polynomial-time algorithm $B(a,x)$ and a sequence of advice $\set{a_n}_{n=0}^\infty$ such that the lengths of $a_n$ are logarithmic in $n$ and for every $x$,
+\[ x\in S \iff B(a_{\abs x},x) = 1 \]
+Let us define $a_n$ to be the number of elements in $S^c$ of length $n$, ie
+\[ a_n = \abs{S^c\cap\set{0,1}} \]
+This means that $a_n\leq q(n)$, and so we require at most $\log(q(n))$ bits for $a_n$.
+Since $q(n)$ is a polynomial, this means that $\log(q(n))$ is logarithmic in $n$, (ie. $\abs{a_n}\leq\log(q(n))\in O(\log(n))$).
+So $\set{a_n}_{n=0}^\infty$ is logarithmic advice.
+Now let us define $B$:
+
+\algorithm
+    \Function{$B$}{$a,x$}
+        \State $n\gets\abs x$
+        \lIf{$\abs a>\log(q(n))$} \Return $0$ \lComment $a$ is not a valid piece of advice.
+        \For{$i=1$ \textbf{to} $a$}
+            \State \textbf{choose} $x_i\in\set{0,1}^n$
+            \lIf{$x_i=x_j$ for some $j<i$} \Return $0$
+            \lIf{$x_i=x$} \Return $0$
+            \lIf{$A(x_i)=0$} \Return $0$
+        \EndFor
+        \State\Return $1$
+    \EndFunc
+\ealgorithm
+
+$B$ is polynomial-time, as each step takes polynomial time: choosing $x_i$ takes $n$ time, checking if $x_i=x_j$ over all $j<i$ takes $n^2$ time, checking if $x_i=x$ takes $n$ time, and running
+$A(a,x_i)$ takes polynomial time.
+And these steps are repeated $a$ times, and $a$ refers to a number $\leq q(n)$.
+So all in all this takes $O\Bigl(q(n)\bigl(p(n)+n^2\bigr)\Bigr)$ time, which is polynomial.
+
+Now, if $x\in S$ then there are choices $B$ can make such that $x_1,\dots,x_{a_n}$ are all the values in $S^c\cap\set{0,1}^n$, and since there are exactly $a_n$ such values they will all be
+distinct.
+And furthermore if $B$ makes these choices, it will also verify that $x_i\neq x_j$ and $x_i\neq x$ (since $x\notin S^c$).
+And since $x_i\in S^c$, there exists a run of $A(x_i)$ which returns one.
+So there exist choices such that $B(a_n,x)=1$, as required.
+
+Now, if $B(a_{\abs x},x)=1$ then the $x_1,\dots,x_{a_n}$ must all be distinct from one another and from $x$, and $A(x_i)=1$ so $x_i\in S^c\cap\set{0,1}^n$.
+Since there are only $a_n$ values in $S^c\cap\set{0,1}^n$ meaning $S^c\cap\set{0,1}^n=\set{x_1,\dots,x_{a_{\abs x}}}$ and since $x\neq x_i$ this means that $x\notin S^c\cap\set{0,1}^n$ and so
+$x\notin S^c$ (since $\abs x=n$), meaning $x\in S$.
+
+So we have shown that
+\[ x\in S \iff B(a_{\abs x},x) = 1 \]
+So $B$ decides $S$.
+And since $a_n$ is logarithmic in $n$, and $B$ is a polynomial-time advised non-deterministic algorithm which decides $S$, this means that
+\[ S\in\NPlog \]
+so we have shown that for every $S\in\co(\NP\cap\sparse)$, $S\in\NPlog$, meaning $\co(\NP\cap\sparse)\subseteq\NPlog$ as required.
+
+\def\sortstconn{\textsf{Sorted-st-conn}}
+\begin{exercise*}
+
+    Given a directed graph $G=(V,E)$, and suppose $V=(v_1,\dots,v_n)$.
+    Then we say that $G$ is \emph{sorted} if for every edge $(v_i,v_j)\in E$, $i<j$.
+    Let us define the decision problem
+    \[ \sortstconn = \set{G}[\text{$G=(V,E)$ where $V=(v_1,\dots,v_n)$ is sorted, and there exists a path from $v_1$ to $v_n$.}] \]
+    Prove that $\sortstconn$ is $\NL$-complete
+
+\end{exercise*}
+
+\begin{note}
+
+    The original question defined $\sortstconn$ weirdly, and I didn't immediately understand what the definition meant.
+    But in any case by solving the question as phrased above, I will also solve the original question.
+
+    Let us call the decision problem as defined in the original question $\sortstconn'$.
+    The definition I gave of $\sortstconn$ can obviously be reduced to $\sortstconn'$, as $G\in\sortstconn$ if and only if $(G,1,\dots,\abs V)\in\sortstconn'$.
+    And $\sortstconn'$ also in $\NL$, since we can verify that $G$ is sorted (details are given below), and we can check that $v_i$ and $v_j$ are connected in logarithmic
+    So if $\sortstconn$ is $\NL$-complete, so is $\sortstconn'$ as required.
+
+\end{note}
+
+Let us first show that $\sortstconn$ is in $\NL$.
+So given a graph $G=(V,E)$ what we do is we simply iterate over every edge in $E$ and verify that the first node comes before the second node in $V$.
+We can do this by storing a pointer to the current edge, and then iterating over the vertices in $V$.
+If while iterating over $V$ we reach the first vertex in the edge, we go to the next edge.
+And if we reach the second vertex, we return zero.
+If we make it through every edge, then we return one.
+So we will return one if for every edge, the first vertex comes before the second in $V$, meaning we return one if and only if $G$ is sorted.
+This means that verifying that $G$ is sorted can be done deterministically in logarithmic space.
+
+Next we must verify that there exists a path from $v_1$ to $v_n$, and since we know that $\stconn\in\NL$ this can be done non-deterministically in logarithmic space.
+So we must verify that $G$ is both sorted and that there exists a path from $v_1$ to $v_n$, and since these both can be done in logarithmic space using a non-deterministic algorithm, $\sortstconn\in\NL$
+as required.
+
+Now we will show that $\sortstconn$ is $\NL$-complete.
+We will do this by defining a log-space reduction from $\stconn$ to $\sortstconn$.
+Suppose we have an input $(G,s,t)$ for $\stconn$, suppose $G=(V,E)$ and let $n=\abs V$.
+Then let us define $G'=(V',E')$ as follows:
+\benum
+    \item For every vertex $v\in V$, add $\abs V$ copies of $v$, denoted $v^1,\dots,v^n$.
+    \item For every vertex $v\in V$, add edges $(v^i,v^{i+1})$ for every $1\leq i<n$.
+    \item For every edge $(u,v)\in V$, add edges $(u^i,v^{i+1})$ for every $1\leq i<n$.
+\eenum
+Suppose $V=\set{v_1,\dots,v_n}$ where $v_1=s$ and $v_n=t$.
+Then we order $V'$ as
+\[ V' = (v^1_1,\dots,v^1_n,v^2_1,\dots,v^2_n,\dots,v^n_1,\dots,v^n_n) \]
+Then $G'=(V',E')$ is sorted as for every edge in $E'$, it is either of the form $(v^i,u^{i+1})$ and $v^i$ comes before $u^{i+1}$ in $V'$, since the $i$th layer of $V$ comes before the $i+1$th layer in $V'$.
+
+$G'$ can be computed in logarithmic space, as in order to construct it we iterate over $V$ $n$ times, and on the $i$th iteration we create the $i$th layer (ie. $v^i_1,\dots,v^i_n$).
+We must start the iteration at $s$ and end it at $t$, but this can be done with a constant number of pointers as well.
+This creates $V'$, and it only requires a constant number of pointers, so this step requires $O(\log(\abs G))$ space.
+To create $E$, we iterate over $V$ and for every $v\in V$ we add the edges $(v^i,v^{i+1})$ for $1\leq i<n$, this requires a pointer of $\log(n)$ bits to point to the current vertex, as well as a counter of
+$\log(n)$ bits for $i$.
+Then we iterate over the edges in $E$ and for every edge $(u,v)$, we add the edges $(u^i,v^{i+1})$ for $1\leq i<n$, this requires a pointer of $\log(\abs G)$ bits to point to the current edge, as well as a
+counter of $\log(n)$ bits for $i$.
+So all in all we need a logarithmic number of bits with respect to the input, $\abs G$.
+
+Now we claim that $(G,s,t)\in\stconn$ if and only if $G'\in\sortstconn$.
+If $(G,s,t)\in\stconn$, then there exists a path from $s$ to $t$.
+We can assume that this path is simple (by removing cycles), so it has a length bound by $\abs V=n$.
+So there exists a path of the form
+\[ s = u_1 \to v_2 \to \cdots \to u_m = t,\quad m\leq n \]
+Then for every $i$, since $(u_i,u_{i+1})$ is an edge in $G$, $(u_i^i,u_{i+1}^{i+1})$ is an edge in $G'$.
+So
+\[ u^1_1 \to u_2^2 \to \cdots \to u_m^m \]
+is a path from $u_1^1$ to $u_m^m$ in $G'$.
+Recall that $u_1=s$ so $u_1^1=s^1=v_1^1$ and $u_m=t$ so $u_m^m=t^m=v_n^m$.
+Now, we can continue this path
+\[ u_1^1 \to u_2^2 \to \cdots \to u_m^m \to u_m^{m+1} \to \cdots \to u_m^n \]
+since $(u_m^i,u_m^{i+1})$ is an edge in $G'$.
+Since $u_m=t=v_n$ we get that $u_m^n=v_n^n$ and so this forms a path from $v_1^1=u_1^1$ to $v_n^n=u_m^n$, which are the first and last vertices in $V'$ respectively.
+Thus $G'\in\sortstconn$ as required.
+
+Now suppose $G'\in\sortstconn$, so there exists a path from $v_1^1$ to $v_n^n$.
+The path will be of the form
+\[ v_{i_1}^{\ell_1} \to \cdots \to v_{i_1}^{\ell_1} \to v_{i_2}^{\ell_1+1} \to \cdots \to v_{i_2}^{\ell_2} \to \cdots \to v_{i_m}^{\ell_{m-1}+1} \to \cdots \to v_{i_m}^{\ell_m} \]
+Where $i_1=1$, $\ell_1=1$, $i_m=n$, and $\ell_m=n$.
+This means that for every $1\leq j<m$, $(v_{i_j}^{\ell_j},v_{i_{j+1}}^{\ell_j+1})$ is an edge in $G'$, so $(v_{i_j},v_{i_{j+1}})$ is an edge in $G$.
+This means that the following is a path in $G$:
+\[ v_{i_1} \to v_{i_2} \to \cdots \to v_{i_m} \]
+And since $v_{i_1}=v_1=s$ and $v_{i_m}=v_n=t$, this means that $s$ and $t$ are connected in $G$.
+So $(G,s,t)\in\stconn$.
+
+Therefore $(G,s,t)\in\stconn$ if and only if $G'\in\sortstconn$
+So $(G,s,t)\mapsto G'$ is a log-space reduction from $\stconn$ to $\sortstconn$, and since $\stconn$ is $\NL$-complete and $\sortstconn\in\NL$, this means that $\sortstconn$ is $\NL$-complete, as required.
+
+\begin{exercise*}
+
+    For the following statements either prove, disprove, or show that they are equivalent to an open question.
+    \benum
+        \item $\NL$ is closed under Kleene closures.
+        \item $\L$ is closed under Kleene closures.
+    \eenum
+
+\end{exercise*}
+
+\benum
+    \item This is true.
+    Suppose $A\in\NL$, then we will prove that $A^*$ is in $\NL$ as well.
+    Suppose $N(x)$ is a non-deterministic log-space algorithm which solves $A$.
+    Then let us define
+
+    \algorithm
+        \Function{$N^*$}{$x$}
+            \State $\ell\gets1$
+            \While{$\ell\leq\abs x$}
+                \State \textbf{choose} $h\in[\ell,\abs x]$
+                \lIf{$N\bigl(x[\ell:h]\bigr)=0$} \Return $0$ \lComment $x[\ell:h]$ includes $x[\ell]$ and $x[h]$.
+                \State $\ell\gets h+1$
+            \EndWhile
+            \State\Return $1$
+        \EndFunc
+    \ealgorithm
+
+    This algorithm is log-space as we can simply store pointers for $\ell$ and $h$ and pass them to $N$, and we can alter $N$'s code so that indexing $x$ beyond $[\ell:h]$ gives an empty character.
+    The pointers for $\ell$ and $h$ are bound by $\abs x$ and thus require $\log\abs x$ space.
+    So all in $N^*$ requires only $O(\log\abs x)$ space, as required.
+
+    If $x\in A^*$ then suppose $x=x_1\cdots x_t$ then if at the $i$th iteration of the while loop we choose $h=\abs{x_1\cdots x_i}$, then at first $x[\ell:h]=x_1$ and then $x[\ell:h]=x_2$ and so on.
+    And so for every iteration of the while loop there is a run of $N\bigl(x[\ell:h]\bigr)$ which accepts.
+    And so there are choices $N^*$ can make (choosing $h=\abs{x_1\cdots x_i}$ on every iteration, and the choices necessary for $N$ to accept) which will have $N^*$ accept $x$.
+
+    Now suppose that there exists a run such that $N^*(x)=1$ then let $h_i$ be the $i$th choice for $h$, and suppose the while loop iterates $t$ times.
+    Let $h_0=0$.
+    Then this means that on the first iteration the input to $N$ is $x[h_0+1:h_1]$ and then on the second iteration the input is $x[h_1+1:h_2]$ and so on.
+    So we have that for every $0\leq i<t$, $N\bigl(x[h_i+1:h_{i+1}]\bigr)=1$.
+    Thus for every $0\leq i<t$, $x[h_i+1:h_{i+1}]\in A$.
+    Notice that the final $\ell$ is equal to $h_t+1$ and since $h_t\leq\abs x$ and $\ell>\abs x$, we have that $h_t=\abs x$.
+    This means that
+    \[ x = x[h_0:h_1]\,\#\,x[h_1+1:h_2]\,\#\cdots\#\,x[h_{t-1}+1:h_t] \]
+    And since $x[h_i+1,h_{i+1}]\in A$, we have that $x\in A^*$.
+
+    So $N^*$ accepts $x$ if and only if $x\in A^*$.
+    Since $N^*$ is a log-space non-deterministic algorithm, we have that $A^*$ is in $\NL$, as required.
+
+    \item We claim that $\L$ is closed under Kleene closures if and only if $\L=\NL$.
+    If $\L=\NL$, by above $\NL$ is closed under Kleene closures and therefore so is $\L$.
+    Now, suppose $\L$ is closed under Kleene closures, then we will show that there exists a decision problem $A\in\L$ such that there exists a log-space reduction from $\stconn$ to $S^*$.
+    Since $\L$ is closed under Kleene closures, this means that $S^*\in\L$ and since $\stconn$ is $\NL$-complete, this would mean that $S^*$ is also $\NL$-complete and in $\L$, which would mean $\L=\NL$.
+
+    So suppose that $\L$ is closed under Kleene closures.
+    Let us define
+    \[ A = \set{v\omega(v,u)}[\text{$\omega$ is a binary string}] \]
+    (We assume that you can differentiate between strings of the form $v$, $(w,u)$, and $\omega$.
+    This can be accomplished in many different ways, for example by utilizing another character which acts as a delimiter.)
+    We will call strings of the form $v$ ``vertices'', and $(v,u)$ ``edges''.
+    $A$ is obviously in $\L$, since all we need to do is compare the first vertex in the string with the first vertex in the edge at the end of $x$ (we must also verify that the string begins with a vertex
+    and ends with an edge).
+    So we only need two pointers, and each pointer requires $\log(n)$ bits so all in all this algorithm requires $O(\log(n))$ space.
+    And so this algorithm decides $\L$ in logarithmic time, meaning $A\in\L$.
+
+    Now we will show a log-space reduction from $\stconn$ to $A^*$.
+    Let $(G,s,t)\in\stconn$.
+    We can assume that $s$ has an out-degree of one and an in-degree of zero, and similarly $t$ has an in-degree of one and an out-degree of zero.
+    We can do this by adding two new vertices, $s'$ and $t'$ as well as the edges $(s',s)$ and $(t,t')$ to get a new graph $G'$.
+    Then $(G,s,t)\in\stconn$ if and only if $(G',s',t')\in\stconn$, this is a log-space reduction (to the decision problem of $\stconn$ where $\indeg(s)=\outdeg(t)=0$ and $\outdeg(s)=\indeg(t)=1$).
+
+    So assuming these conditions on the degrees of $s$ and $t$, let us define the log-space reduction from $\stconn$ to $A^*$.
+    Suppose $E=\set{e_1,\dots,e_m}$ where $e_i=(v'_i,v_i)$, and suppose that $e_1=(s,v_1)$ and $e_m=(v'_m,t)$, then we map $(G,s,t)$ to
+    \[ (se_1v_1\,e_2v_2\,\dots\,e_mt)^{\abs V-1}(se_1v_1\,\dots\,e_m) \]
+    Let us denote this string by $\omega^G$.
+    Constructing $\omega^G$ can be done by simply iterating over $E$, and so can be done in logarithmic time.
+    If $(G,s,t)\in\stconn$ then suppose a simple path from $s$ to $t$ is
+    \[ s \to v_{i_1} \to v_{i_2} \to \cdots \to v_{i_{k-1}} \to v_{i_k} = t \]
+    Since all the edges of $G$ are of the form $(v'_i,v_i)$, $v_{i_{j-1}}=v'_{i_j}$.
+    Since the length of the path is bound by $\abs V$, we have that
+    \begin{align*}
+        \omega^G &= s\omega_1(v'_{i_1},v_{i_1})v_{i_1}\omega_2(v_{i_1},v_{i_2})v_{i_2}\cdots v_{i_{k-1}}\omega_k(v_{i_{k-1}},v_{i_k}) \\
+                 &= s\,\omega_1\,e_{i_1}v_{i_1}\,\omega_2\,\cdots v_{i_{k-1}}\,\omega_k\,e_{i_k}
+    \end{align*}
+    This is because we can take the first instance of $e_{i_1}$ in $\omega^G$, and so we get $s\omega_1 e_{i_1}$.
+    Then since $e_{i_1}$ is followed $v_{i_1}$, we can take the next instance of $e_{i_2}$ and we get $v_{i_1}\omega_2 e_{i_2}$, and so on.
+    For the transition from $v_{i_{k-1}}$ to $t$, instead of taking the next instance $e_{i_k}$ (which must exist since $k\leq\abs V$ and between so far between $v_{i_j}$ and $e_{i_{j+1}}$ we have at most
+    skipped to the next layer, of which there are $\abs V$), we take the final instance of $e_{i_k}$ which is the last object in $\omega^G$ (since $e_{i_k}$ is the only edge connected to $t$, so it must be
+    equal to $e_m$).
+
+    Since $e_{i_j}=(v_{i_{j-1}},v_{i_j})$, $v_{i_{j-1}}\omega_j e_{i_j}$ is in $A$, and so $\omega^G\in A^*$.
+
+    Now, suppose that $\omega^G\in A^*$, so there exist $\omega_1,\dots,\omega_k\in A$ such that $\omega^G=\sigma_1\cdots\sigma_k$.
+    Since $\sigma_k\in A$, it must be of the form $v\omega(v,u)$ and since it is followed by $\sigma_{k+1}$, we have that $\sigma_k\sigma_{k+1}$ is of the form $v\omega(v,u)v'\omega'(v',u')$.
+    But in $\omega^G$, edges are followed by their second vertex, so $u=v'$.
+    So in general we get that
+    \[ \sigma_k = v_{i_{j-1}}\omega_j e_{i_j} \]
+    Where $e_{i_j}=(v_{i_{j-1}},v_{i_j})$.
+    This means that
+    \[ \omega^G = v_{i_0}\,\omega_1\,e_{i_1}v_{i_1}\,\omega_2\,e_{i_2}\cdots v_{i_{k-1}}\,\omega_k\,e_{i_k} \]
+    Since $\omega^G$ begins with $s$, this means $v_{i_0}=s$, and since $\omega^G$ ends with $e_m=(v'_m,t)$ but $e_{i_k}=(v_{i_{k-1}},v_{i_k})$, so $v_{i_k}=t$.
+    So we have that
+    \[ (v_{i_{j-1}},v_{i_j}) \in E \]
+    And therefore
+    \[ v_{i_0} \to v_{i_1} \to \cdots \to v_{i_{k-1}} \to v_{i_k} \]
+    is a path in $G$.
+    But since $v_{i_0}=s$ and $v_{i_k}=t$, this means there exists a path in $G$ from $s$ to $t$.
+    Thus $(G,s,t)\in\stconn$.
+
+    So we have shown that $(G,s,t)\in\stconn$ if and only if $\omega^G\in A^*$, so $(G,s,t)\mapsto\omega^G$ is a log-space reduction from $\stconn$ to $A^*$.
+    Therefore $A^*$ is $\NL$-complete, and since it is in $\L$ since $\L$ is closed under Kleeene closures, $\L=\NL$ as required.
+
+\eenum
+
+\end{document}
+

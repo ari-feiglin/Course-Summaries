@@ -1,0 +1,137 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input ../preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{ker}{{\rm ker}}({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{atan}{{\rm tan}^{-1}}({})
+\newfunc{lag}{{\cal L}}({})
+\newfunc{sin}{{\rm sin}}({})
+\newfunc{sinh}{{\rm sinh}}({})
+\newfunc{cosh}{{\rm cosh}}({})
+\newfunc{cos}{{\rm cos}}({})
+\newfunc{arg}{{\rm arg}}({})
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+\newfunc{cis}{{\rm cis}}({})
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\iff{\,\longvarLeftRightarrow\,}
+\def\implies{\,\longvarRightarrow\,}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\mO{{\cal O}}
+\def\mU{{\cal U}}
+\def\mV{{\cal V}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\let\ds=\displaystyle
+\let\longto=\longvarrightarrow
+\let\to=\varrightarrow
+
+\def\bexerc{\begin{exercise*}}
+\def\eexerc{\end{exercise*}}
+\def\bblank{\begin{blankpp}}
+\def\eblank{\end{blankpp}}
+
+\begin{document}
+
+\c@section=7
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Complex Functions}
+
+    \medskip
+    \textit{Assignment \thesection}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\bexerc
+
+    Show directly that on a compact domain $D$, the maximal and minimal modulus of $e^z$ are attained on the boundary.
+
+\eexerc
+
+\bblank
+
+    Firstly, $\abs{e^z}$ does attain a maximum value since it is continuous and $D$ is compact.
+    We know that $\abs{e^z}=e^{\Re z}$, thus the maximum of $e^z$ is when $\Re z$ is maximal, and the minimum is when $\Re z$ is minimal.
+    But if $\Re z$ is maximal, then for every $\epsilon>0$, $\Reof{z+\epsilon}=\Re z+\epsilon>\Re z$ and since $\Re z$ is maximal, $z+\epsilon$ is not in $D$, thus
+    $D_\epsilon(z)\cap D,D_\epsilon(z)\neq\varnothing$ meaning $z$ is on the boundary of $D$.
+    Similar for when $z$ induces a minimum ($z-\epsilon$).
+
+\eblank
+
+\bexerc
+
+    Find the minimum and maximum modulus of $z^2-z$ on the closed disk $\abs z\leq1$.
+
+\eexerc
+
+\bblank
+
+    Since $z^2-z$ is a polynomial and thus entire, it attains maximum and minimum on the boundary of the disk, ie. when $\abs z=1$, or for the minimum when $\abs{z^2-z}=0$.
+    So
+    \[ \abs{z^2-z} = \abs z\abs{z-1} = \abs{z-1} \]
+    This is the distance from the point $(1,0)$ on the circle of radius $1$ about $0$, and thus the maximum distance is attained at $(-1,0)$, for $\abs{(-1)^2+1}=\abs2=2$.
+    And the minimum is attained whenever $\abs{z^2-z}=0$, which can be attained on the boundary at $z=1$ or on the interior at $z=0$.
+
+\eblank
+
+\bexerc
+
+    Suppose $\set{f_i}_{i=1}^n$ are analytic on a compact domain $D$.
+    Show that the maximum of $f(z)=\sum_{i=1}^n\abs{f_i(z)}$ is obtained on the boundary of $D$.
+
+\eexerc
+
+\bblank
+
+    Firstly, such a maximum is obtained in $D$ since the function is continuous and $D$ is compact.
+    Now, suppose it is obtained at $z_0\in D$.
+    Then suppose that for each $1\leq j\leq n$,
+    \[ f_j(z_0) = \abs{f_j(z_0)}\cdot e^{i\theta_j} \implies \abs{f_j(z_0)} = f_j(z_0)\cdot e^{-i\theta_j} \]
+    let $\omega_j=e^{-i\theta_j}$, thus we have
+    \[ \abs{f_j(z_0)} = f_j(z_0)\cdot\omega_j \]
+    And so let us define
+    \[ g(z) = \sum_{i=1}^n f_i(z)\cdot\omega_i \]
+
+    Notice that
+    \[ \abs{g(z)} = \abs{\sum_{i=1}^n f_i(z)\cdot\omega_i} \leq \sum_{i=1}^n \abs{f_i(z)}\cdot\abs{\omega_i} = \sum_{i=1}^n \abs{f_i(z)} = f(z) \leq f(z_0) \]
+    So $\abs g$ is bounded by $f(z_0)$.
+    But at the same time,
+    \[ g(z_0) = \sum_{i=1}^n f_i(z_0)\cdot\omega_i = \sum_{i=1}^n \abs{f_i(z_0)} = f(z_0) \]
+    and thus $\abs{g(z_0)}=f(z_0)$, so $z_0$ induces a maximum of $g$.
+    And since $g$ is analytic on $D$ as well, as the linear combination of analytic functions, this means that $z_0$ is on the boundary of $D$.
+
+\eblank
+
+\end{document}
+

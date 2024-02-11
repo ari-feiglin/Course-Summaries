@@ -1,0 +1,180 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\openset{{\cal O}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\begin{document}
+
+\c@section=10
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infinitesimal Calculus 3}
+
+    \medskip
+    \textit{Lecture 10, Wednsday November 23, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{thrm*}
+
+    If $(X,\metric)$ and $(Y,\sigma)$ are two metric spaces and $f$ is a mapping from $X$ to $Y$, then $f$ is continuous if and only if for every open set $\openset\subseteq Y$, $f^{-1}(\openset)\subseteq X$
+    is also open.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Suppose $f$ is continuous, let $\openset\subseteq Y$ be open.
+    Suppose $x\in f^{-1}(\openset)$ then $f(x)\in\openset$ and since this is open there exists an $\epsilon>0$ such that $B_\epsilon^Y\bigl(f(x)\bigr)\subseteq\openset$.
+    By the $\epsilon-\delta$ criterion/definition for continuity, there exists a $\delta>0$ such that $f\bigl(B_\delta^X(x)\bigr)\subseteq B_\epsilon^Y\bigl(f(x)\bigr)\subseteq\openset$.
+    And therefore $B_\delta^X(x)\subseteq f^{-1}(\openset)$, and so for every $x\in f^{-1}(\openset)$ there is a ball around $x$ contained in $f^{-1}(\openset)$, and so by definition $f^{-1}(\openset)$ is
+    open.
+
+    To prove the converse suppose that the preimage of every openset in $Y$ under $f$ is open in $X$.
+    Let $x\in X$ and $\epsilon>0$, then $f^{-1}\bigl(B_\epsilon(f(x))\bigr)$ is open, and since $x\in f^{-1}\bigl(B_\epsilon(f(x))\bigr)$, there must be a $\delta>0$ such that
+    $B_\delta(x)\subseteq f^{-1}\bigl(B_\epsilon(f(x))\bigr)$, and so we have that
+    \[ f\bigl(B_\delta(x)\bigr) \subseteq B_\epsilon\bigl(f(x)\bigr) \]
+    and since this is true for every $\epsilon>0$, $f$ is continuous at $x$ for every $x\in X$ so $f$ is continuous as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+This theorem gives us an equivalent definition of continuity which allows us to extend this notion of continuity to more general topological spaces.
+
+Also notice that this is equivalent to saying that a mapping between $X$ and $Y$ is continuous if and only if for every $K\subseteq Y$ which is closed, $f^{-1}(K)$ is closed.
+This is since $f^{-1}(K)$ is closed if and only if $f^{-1}(K)^c=f^{-1}(K^c)$ is open.
+Since the complement of a closed set is an open set (and vice versa), this is equivalent to saying that for every $\openset\subseteq Y$ which is open, $f^{-1}(\openset)$ is open, which we showed above is
+equivalent to continuity.
+This proves the following corollary:
+
+\begin{coro*}
+
+    If $(X,\metric)$ and $(Y,\sigma)$ are two metric spaces and $f$ is a mapping from $X$ to $Y$, then $f$ is continuous if and only if for every closed set $K\subseteq Y$, $f^{-1}(K)\subseteq X$
+    is also closed.
+
+\end{coro*}
+
+It is not true that the image of an open set under a continuous function is open, as demonstrated by the following example:
+
+\begin{exam}
+
+    If we take $f\colon\bR\longvarrightarrow\bR$ where $f(x)=x^2$ then we know that $f$ is continuous.
+    But if we take the image of $f$ under the open set $\bR$, then we get $f(\bR)=[0,\infty)$ which is not open.
+
+\end{exam}
+
+\begin{exam}
+
+    If we take the real valued function $f\colon[0,\infty)\longvarrightarrow\bR$ where $f((x)=\sqrt x$, then $f^{-1}(\bR)=[0,\infty)$.
+    But $f$ is continuous and $\bR$ is open, so shouldn't $f^{-1}(\bR)$ be open as well?
+    In fact $f^{-1}(\bR)=[0,\infty)$ \emph{is} open since openness is relative to the metric space we're dealing with.
+    In this case the domain of $f$ is $[0,\infty)$, and $[0,\infty)$ \emph{is} open in $[0,\infty)$ ($X$ is open in $X$).
+
+\end{exam}
+
+\begin{defn*}
+
+    Suppose $(X,\metric)$ is a metric space.
+    Suppose $S\subseteq E\subseteq X$ then $S$ is \ppemph{open} relative to $E$ if it is open in the metric space $\bigl(E,\metric\vert_{E\times E}\bigr)$.
+
+\end{defn*}
+
+\begin{prop*}
+
+    If $(X,\metric)$ is a metric space and $E\subseteq X$.
+    $S\subseteq E$ is open relative to $E$ if and only if there exists an open set $\openset\subseteq X$ such that $S=E\cap\openset$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $S$ is open relative to $E$, then for every $x\in S$ let $r_x>0$ such that $B_{r_x}^E(x)\subseteq S$.
+    Then we have that $S$ is the union of all the $B_{r_x}^E(x)$s.
+    Let:
+    \[ \openset = \bigcup_{x\in S} B_{r_x}^X(x) \]
+    This is open as the union of open sets, and we have that:
+    \[ E\cap\openset = \bigcup_{x\in S} B_{r_x}^X(x)\cap E = \bigcup_{x\in S}B_{r_X}^E(x) = S \]
+    As required.
+
+    To prove the converse suppose $\openset\subseteq X$ is open and $S=\openset\cap E$.
+    Let $x\in S$ then $x\in\openset$ so there exists an $r>0$ such that $B_r(x)\subseteq\openset$.
+    And therefore $B_r^E(x)=B_r(x)\cap E\subseteq\openset\cap E=S$, so for every $x\in S$ there exists an $r>0$ such that $B_r^E(x)\subseteq S$, so $S$ is open as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{prop*}
+
+    If $(X,\metric)$ is a metric space and $E\subseteq X$.
+    $S\subseteq E$ is open relative to $E$ if and only if there exists a closed set $K\subseteq X$ such that $S=E\cap K$.
+
+\end{prop*}
+
+\begin{proof}
+
+    $S$ is open in $E$ if and only if $E\setminus S$ is open in $E$ which is equivalent to $E\setminus S=E\cap\openset$ for some open set $\openset$ and so
+    $S=E\setminus\bigl(E\cap\openset)\bigr)=E\cap\openset^c$ and so $S=E\cap K$ for some closed $K$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{prop*}
+
+    If $E\subseteq X$ is open then $S\subseteq E$ is open in $E$ if and only if $S$ is open in $X$.
+
+\end{prop*}
+
+\begin{proof}
+
+    If $S$ is open in $E$ then $S=E\cap\openset$ where $\openset$ is open in $X$ and since $E$ is as well, $S$ is open.
+    If $S$ is open in $X$ then it is trivial that $S$ is open in $E$ (this is true in general).
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{prop*}
+
+    Suppose $(X,\metric)$ and $(Y,\sigma)$ are metric spaces and $E\subseteq X$.
+    Then $f\colon E\longvarrightarrow Y$ is continuous in $E$ if and only if for every $\openset\subseteq Y$ open, there exists an open set ${\cal U}\subseteq X$ such that $f^{-1}(\openset)=E\cap{\cal U}$.
+
+\end{prop*}
+
+\begin{proof}
+
+    This proof is trivial.
+    $f$ is continuous if and only if for every $\openset\subseteq Y$ open, $f^{-1}(Y)$ is open in $E$, which is equivalent to $f^{-1}(\openset)=E\cap{\cal U}$ for some open set ${\cal U}\subseteq X$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\end{document}
+

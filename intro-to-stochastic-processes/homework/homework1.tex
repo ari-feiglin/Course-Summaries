@@ -1,0 +1,140 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=1.5cm, vertical margin=1.5cm}
+\parindent=0cm
+\parskip=3pt plus 2pt minus 2pt
+
+\input pdfmsym
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+
+\footline={}
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+\setcounter{section}{1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{\bppbox{rgb{1 .7 .7}}{rgb{1 0 0}}{rgb{.8 0 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Introduction to Stochastic Processes}
+    \smallskip
+    \centerline{\setfont{it}Assignment 1}
+    \centerline{\setfont{it}Ari Feiglin}
+
+\eppbox}
+
+\bigskip
+
+\bexerc
+
+    Compute the transition matrices of the following two diagrams (shown in the homework's pdf).
+
+\eexerc
+
+The left one has a transition matrix
+$$ \pmatrix{0 & \frac34 & \frac14\cr 0 & 0 & 1\cr \frac23 & \frac13 & 0} $$
+The right one has a transition matrix
+$$ \pmatrix{\frac12 & \frac12 & 0\cr \frac14 & 0 & \frac34\cr 0 & 1 & 0} $$
+
+\bexerc
+
+    Suppose $\set{X_n}_{n\geq0}$ is a homogeneus Markov chain whose transition matrix is $P$.
+    \benum
+        \item Show that $\set{X_{3n}}_{n\geq0}$ is also a Markov chain.
+        What is its transition matrix?
+        \item Suppose $\set{Y_n}_{n\geq0}$ is another homogeneus Markov chain whose transition matrix is $Q$.
+        Is $PQ$ the transition matrix of some Markov chain?
+    \eenum
+
+\eexerc
+
+\benum
+    \item We will show that if $\set{a_n}_{n\geq0}$ is strictly increasing then $X_{a_n}$ is a Markov chain.
+    Let $n>0$ and let $C=\set{0,\dots,a_{n-1}}\setminus\set{a_{n-1},\dots,a_0}$ then
+
+    \medskip
+    \moveright\leftskip\vbox{\tabskip=0pt
+    \openup1\jot\halign to\dimexpr\hsize-\leftskip-\rightskip\relax{$\displaystyle#$\hfil\tabskip=0pt plus 1fil&$\displaystyle#$\hfil\tabskip=0pt\cr
+        \omit\span\omit$\displaystyle\probof{X_{a_n}=s_{a_n}}[X_{a_{n-1}}=s_{a_{n-1}},\dots,X_{a_0}=s_{a_0}]$\cr
+        &= \sum_{(s_i)_{i\in C}}\probof{X_{a_n}=s_{a_n}}[X_{a_{n-1}}=s_{a_{n-1}},\dots,X_0=s_0]\cdot\probof{(\forall i\in C)X_i=s_i}[(\forall i<n)X_{a_i}=a_i]\cr
+        &= \probof{X_{a_n}=s_{a_n}}[X_{a_{n-1}}=s_{a_{n-1}}]\cdot\sum_{(s_i)_{i\in C}}\probof{(\forall i\in C)X_i=s_i}[(\forall i<n)X_{a_i}=a_i]\cr
+        &= \probof{X_{a_n}=s_{a_n}}[X_{a_{n-1}}=s_{a_{n-1}}]\cr
+    }}
+    \medskip
+
+    The second transition is due to the result $\probof{X_n=s_n}[X_m=s_m,\dots,X_0=s_0]=\probof{X_n=s_n}[X_m=s_m]$ for all $m<n$, which was discussed in lecture.
+    This shows that $\set{X_{a_n}}_{n\geq0}$ is indeed a Markov chain.
+    Since $3n$ is strictly increasing, this means $\set{X_{3n}}_{n\geq0}$ is indeed a Markov chain.
+
+    \item Suppose $P$ is a matrix with nonnegative entries such that for every $i$, $\sum_j P_{ij}=1$, or equivalently $P{\bf1}={\bf1}$ where ${\bf1}=(1,\dots,1)^\top$
+    (this is as $(P{\bf1})_i=\sum_jP_{ij}{\bf1}_j=\sum_jP_{ij}$).
+    Then $P$ is the transition matrix of some (homogeneus) Markov chain.
+    This is as we could define functions (random variables) $X_n$ and a probability function such that $\probof{X_n=j}[X_{n-1}=i]=P_{ij}$.
+
+    So we must prove that $PQ{\bf1}={\bf1}$, which is true since $PQ{\bf 1}=P(Q{\bf1})=P{\bf1}={\bf1}$.
+    And we must also prove that $PQ$'s entries are all nonnegative, but this is trivial as they are all sums of products of entries in $P$ and $Q$ which are nonnegative.
+\eenum
+
+\bexerc
+
+    A day in London is either rainy or sunny.
+    The probability that any day is rainy provided it was sunny the previous two days is $0.3$, otherwise the likelihood of rain is $0.6$.
+    We denote $R$ the state of rain and $S$ of sun, and we define $W_n\in\set{R,S}$ to be the weather on the $n$th day.
+    Let us define $X_n=(W_{n-1},W_n)$.
+    \benum
+        \item Is $\set{W_n}$ a Markov chain?
+        \item Prove that $\set{X_n}$ is a Markov chain and compute its transition matrix.
+        \item What is the probability that on the fourth day it is rainy provided it was sunny on the first and second days?
+    \eenum
+
+\eexerc
+
+\benum
+    \item It is not, for if it were then we'd have
+    $$ \probof{W_n=R}[W_{n-1}=S]=\probof{W_n=R}[W_{n-1}=S,W_{n-2}=S]=\probof{W_n=R}[W_{n-1}=S,W_{n-2}=R], $$
+    but $\probof{W_n=R}[W_{n-1}=S,W_{n-2}=S]=0.3$ and $\probof{W_n=R}[W_{n-1}=S,W_{n-2}=R]=0.6$.
+
+    \item Let us say that a sequence of random variables $\set{X_n}_{n\geq0}$ is a {\it $k$-dependent Markov chain} if for every $n\geq0$,
+    $$ \probof{X_{n+k}=s_{n+k}}[X_{n+k-1}=s_{n+k-1},\dots,X_0=s_0] = \probof{X_{n+k}=s_{n+k}}[X_{n+k-1}=s_{n+k-1},\dots,X_n=s_n] $$
+    (ie. $X_n$ is dependent only on the previous $k$ measurements.)
+    Then let us define $Y_n=(X_{n-k+1},\dots,X_n)$ for $n\geq k-1$.
+    We claim that $\set{Y_n}_{n\geq k-1}$ is a Markov chain.
+
+    Notice that if $Y_n=(s_{n-k+1},\dots,s_n)$ then $Y_{n+1}=(s_{n-k+2},\dots,s_n,s_{n+1})$, so we need only deal with events where the first $k-1$ indexes of $Y_{n+1}$ agree with the last $k-1$ of $Y_n$.
+    And so let us denote $\vec s_i=(s_{i-k+1},\dots,s_i)$ and
+    $$ \eqalign{
+        \probof{Y_n=\vec s_n}[Y_{n-1}=\vec s_{n-1},\dots,Y_{k-1}=\vec s_{k-1}] &= \probof{X_{n-k+1}=s_{n-k+1},\dots,X_n=s_n}[X_{n-1}=s_{n-1},\dots,X_0=s_0]\cr
+                                                                               &= \probof{X_n=s_n}[X_{n-1}=s_{n-1},\dots,X_0=s_0]\cr
+                                                                               &= \probof{X_n=s_n}[X_{n-1}=s_{n-1},\dots,X_{n-k}=s_{n-k}]
+    } $$
+    And
+    $$ \eqalign{
+        \probof{Y_n=\vec s_n}[Y_{n-1}=\vec s_{n-1}] &= \probof{X_{n-k+1}=s_{n-k+1},\dots,X_n=s_n}[X_{n-k}=s_{n-k},\dots,X_{n-1}=s_{n-1}]\cr
+                                                    &= \probof{X_n=s_n}[X_{n-1}=s_{n-1},\dots,X_{n-k}=s_{n-k}]\cr
+    } $$
+    Thus we have that $\probof{Y_n=\vec s_n}[Y_{n-1}=\vec s_{n-1},\dots,Y_{k-1}=\vec s_{k-1}]=\probof{Y_n=\vec s_n}[Y_{n-1}=\vec s_{n-1}]$, meaning $\set{Y_n}_{n\geq k-1}$ is indeed a Markov chain.
+    (We take the states of $Y_n$ to be $S^k$, as $\probof{Y_n\in S^k}=\probof{X_n\in S,\dots,X_{n-k+1}\in S}=1$.)
+
+    Now, $W_n$ is a $2$-dependent Markov chain as $W_n$ is dependent only on $W_{n-1}$ and $W_{n-2}$, and thus $X_n=(W_{n-1},W_{n})$ is a Markov chain as we just showed.
+    And as already computed,
+    $$ \probof{X_n=(s_2,s_1)}[X_{n-1}=(s_3,s_2)] = \probof{W_n=s_1}[W_{n-1}=s_2,W_{n-2}=s_3] $$
+    So if we order the states of $X_n$ by $\set{(R,R),\,(S,R),\,(R,S),\,(S,S)}$ we get
+    $$ P = \pmatrix{0.6 & 0 & 0.4 & 0\cr 0.6 & 0 & 0.4 & 0\cr 0 & 0.6 & 0 & 0.4\cr 0 & 0.3 & 0 & 0.7} $$
+
+    \item Here we'd like to compute $\probof{W_4=R}[X_2=(S,S)]$, and this is just equal to $\probof{X_4=(R,R)}[X_2=(S,S)]+\probof{X_4=(S,R)}[X_2=(S,S)]$.
+    In order to compute $X_4$'s distribution given that $X_2=(S,S)$ what we do is compute $(0,0,0,1)P^2$ (as $X_2\sim(0,0,0,1)$ and $P^2$ gives the two-step transition matrix of $\set{X_n}$).
+    Computing $P^2$ gives
+    $$ \pmatrix{
+        0.36 & 0.24 & 0.24 & 0.16\cr
+        0.36 & 0.24 & 0.24 & 0.16\cr
+        0.36 & 0.12 & 0.24 & 0.28\cr
+        0.18 & 0.21 & 0.12 & 0.49
+    } $$
+    Then $(0,0,0,1)P^2$ is simply the fourth line of $P^2$ which is $(0.18,0.21,0.12,0.49)$ and so
+    $$ \probof{X_4=(R,R)}[X_2=(S,S)]+\probof{X_4=(S,R)}[X_2=(S,S)]=0.18+0.21=0.39 $$
+\eenum
+
+\bye
+

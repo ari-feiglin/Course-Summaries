@@ -1,0 +1,202 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{det}{{\rm det}}({})
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{diam}{{\rm diam}}(\vert)
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+\newfunc{cis}{{\rm cis}}({})
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{sup}{{\rm sup}}\{\vert\}
+\newfunc{Res}{{\rm Res}}({})
+\newfunc{wind}n({})
+\newfunc{pv}{{\rm pv}}({})
+\newfunc{lspan}{{\rm span}}({})
+\newfunc{atan}{{\rm atan}}({})
+
+\font\bigbf = cmbx12 scaled 2000
+\@undervecc@def{underbar}\@linecap\@linecap
+
+\def\pmat#1{\begin{pmatrix}#1\end{pmatrix}}
+
+\def\mO{{\cal O}}
+\def\mU{{\cal U}}
+\let\lineseg=\overleftrightvecc
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=4
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Differential and Analytic Geometry}
+
+    \medskip
+    \textit{Lecture \thesection, Monday July 17, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+Recall that if $\gamma$ is a natural parameterization, then if $\gamma'=T$ and so $\norm T=1$, thus
+\[ T(s) = \pmat{\cos(\alpha(s)) \\ \sin(\alpha(s))} \]
+And we showed that the curvature of $\gamma$ is given by
+\[ k_\gamma(s) = \alpha'(s) \]
+But what if $\gamma$ isn't the natural parameterization?
+
+Let $\beta$ be any regular smooth curve, and $\gamma$ its natural parameterization.
+Then recall that $\gamma=\beta\circ s_\beta^{-1}$ and so $\beta=\gamma\circ s_\beta$.
+Thus
+\[ \beta'(t) = s_\beta'(t)\cdot\gamma'(s_\beta(t)) \]
+(This is a bit confusing, since $s_\beta$ is a scalar, and $\gamma$ is a vector).
+We know that there exists an $\alpha$ such that
+\[ \alpha = \atanof{\frac{\gamma'_2}{\gamma'_2}} \]
+And since
+\[ \frac{\gamma'_2(s)}{\gamma'_1(s)} = \frac{\beta'_2(t)}{\beta'_1(t)} \]
+And thus
+\[ \alpha(s) = \atanof{\frac{\beta'_2(t)}{\beta'_1(t)}} \]
+Recall that the derivative of $\atanof x=\frac1{1+x^2}$, and since
+\[ \frac d{ds}\atanof{\frac{\beta'_2(t)}{\beta'_1(t)}} = \frac d{dt}\atanof{\frac{\beta'_2(t)}{\beta'_1(t)}}\cdot\frac{dt}{ds} \]
+We have that
+\[ k(s) = \alpha'(s) = \frac1{1+\parens{\frac{\beta'_2(t)}{\beta'_1(t)}}^2}\cdot\frac{\beta''_2(s)\beta'_1(s)-\beta'_2(s)\beta''_1(s)}{\beta'_1(s)^2}\cdot\frac{dt}{ds} =
+\frac{\beta''_2(s)\beta'_1(s)-\beta'_2(s)\beta''_1(s)}{\beta'_1(t)^2+\beta'_2(t)^2}\cdot\frac{dt}{ds} \]
+
+By definition,
+\[ s(t) = \int_0^t \norm{\beta'(u)}\,du \implies s'(t) = \norm{\beta'(t)} \]
+So
+\[ \frac{dt}{ds} = \frac1{\norm{\beta'(t)}} = \frac1{\sqrt{\beta'_1(s)^2+\beta_2'(s)^2}} \]
+And so all in all we have that
+\[ k(s) = \frac{\beta''_2(s)\beta'_1(s)-\beta'_2(s)\beta''_1(s)}{\bigl(\beta'_1(t)^2+\beta'_2(t)^2\bigr)^{1.5}} \]
+So we have proven the following proposition:
+
+\begin{prop*}
+
+    If $\beta$ is a regular smooth curve, then its curvature is given by
+    \[ k(s) = \frac{\beta''_2(s)\beta'_1(s)-\beta'_2(s)\beta''_1(s)}{\bigl(\beta'_1(t)^2+\beta'_2(t)^2\bigr)^{1.5}} \]
+
+\end{prop*}
+
+\begin{exam*}
+
+    So if $\beta(t)=(t,f(t))$ then
+    \[ k_\beta(t) = \frac{f''(t)}{(1+f'(t))^{1.5}} \]
+
+    Thus if we have a function $f\colon\bR\to\bR$, then we can discuss its curvature as the parameterization of its graph.
+
+\end{exam*}
+
+Suppose we have a regular smooth curve $\alpha$ which is a natural parameterization.
+Our goal is to find the circle tangent to $\alpha$ at the point $s_0$.
+\benum
+    \item First, we can write $\alpha$ as a second order Taylor series
+    \[ \alpha(s_0+h) = \alpha(s_0) + h\alpha'(s_0) + \frac{h^2}2\alpha''(s_0) + \epsilon(h) \]
+    where $\epsilon(h)\in o(h^2)$ (meaning $\frac{\norm{\epsilon(h)}}{h^2}\xvarrightarrow{}[h\to0]0$).
+
+    \item Now, we know that $T=\alpha'$ and $\alpha''=T'=k(s)N$ and thus
+    \[ \alpha(s_0+h) - \alpha(s_0) = hT(s_0) + k(s_0)\frac{h^2}2N(s_0) + \epsilon(h) \]
+    Let us define
+    \[ \Delta(h) = \alpha(s_0+h) - \alpha(s_0),\quad x(h) = \iprod{\Delta(h), T(s_0)},\quad y(h) = \iprod{\Delta(h), N(s_0)} \]
+    Thus $\Delta(h)=x(h)T(s_0) + y(h)N(s_0)$, and so
+    \[ x(h) = \iprod{hT(s_0) + k(s_0)\frac{h^2}2N(s_0) + \epsilon(h), T(s_0)} = h + \iprod{\epsilon(h), T(s_0)} \]
+    Since $\norm T=1$ and $T$ and $N$ are orthogonal.
+    Now since by Cauchy-Schwarz, $\abs{\iprod{u,v}}\leq\norm u\norm v$, we have that $\iprod{\epsilon(h), T(s_0)}=\epsilon_1(h)\in o(h^2)$.
+    Similarly
+    \[ y(h) = k(s_0)\cdot\frac{h^2}2 + \epsilon_2(h) \]
+    where $\epsilon_1(h)\in o(h^2)$.
+
+    \item Now, let us define the axis system $(T(s_0),N(s_0))$ centered at $\alpha(s_0)$, then since in this axis system $\alpha(s_0)=0$, we will denote $\alpha(s_0+h)$ by $\alpha(h)$, and $T(s_0)$ and
+    $N(s_0)$ by $T$ and $N$, and $k(s_0)$ by $k$.
+    Thus
+    \[ \alpha(h) = x(h)T + y(h)N = hT + k\cdot\frac{h^2}2N + \bigl(\epsilon_1(h)T + \epsilon_2(h)N\bigr) \]
+    So given an $h$, we will define a circle through $(0,0)$, $\parens{\pm h,k\cdot\frac{h^2}2}$.
+    Such a circle would have the form $(x-a)^2+(y-b)^2=R^2$.
+    Let us assume $a=0$ (the reason for assuming this is by symmetry).
+    Thus we must have
+    \[ b^2 = R^2,\quad h^2 + \parens{k\cdot\frac{h^2}2-b}^2 = R^2 \]
+    So
+    \[ h^2 + k^2\cdot\frac{h^4}4 - bkh^2+ b^2 = R^2 \implies k^2\cdot\frac{h^4}4 = bkh^2 - h^2 \implies k^2\cdot\frac{h^2}2 = bk - 1 \]
+    So as $h\to0$ we get that
+    \[ bk = 1 \implies b=\frac1k \implies R=\abs b=\abs{\frac1k} \]
+    And the center of the circle is $\parens{0,\frac1k}$.
+
+    \item Now, we know that $(x,y)$ in this axis system corresponds to $xT(s_0)+yN(s_0)+\alpha(s_0)$ in $\bR^2$, and so the circle we got is the set
+    \[ \set{\alpha(s_0)+xT(s_0)+yT(s_0)}[x^2+\parens{y-\frac1{k(s_0)}}^2=\frac1{k(s_0)^2}] \]
+    We can also see this because the center of the circle is at $\frac1k$ in the new axis system, which is the point
+    \[ c(s_0) = \alpha(s_0) + \frac1{k(s_0)}N \]
+    And the radius of the circle is still $\frac1{k(s_0)}$ (since the new axis system is simply an isometry).
+\eenum
+
+Newton was originally the person who came up with this formula (for the center of the circle and its radius).
+The way he approached it was by taking the points $\alpha(s_0)$ and $\alpha(s_0+h)$ and looking at the intersection of the normal lines at these points, $o(h)$.
+Then we will show that $o(h)\varrightarrow c(s_0)$.
+Let $\ell_1(t)$ and $\ell_2(t)$ be the normal lines at $\alpha(s_0)$ and $\alpha(s_0-h)$ respectively.
+We know that
+\[ \ell_1(t) = \alpha(s_0) + tN(s_0),\qquad \ell_2(t) = \alpha(s_0+h) + tN(s_0+h) \]
+And since we know that
+\[ \alpha(s_0+h) = \alpha(s_0) + h\alpha'(s_0) + o(h) = \alpha(s_0) + hT(s_0) + o(h) \]
+And
+\[ N(s_0+h) = N(s_0) + hN'(h) + o(h) \]
+And since $N'=-k(s_0)T$, we have
+\[ N(s_0+h) = N(s_0) - hkT(h) + o(h) \]
+Then $\ell_1(t)=\ell_2(p)$ if and only if
+\[ \alpha(s_0) + tN(s_0) = \alpha(s_0) + hT(s_0) + o(h) + p(N(s_0) - hkT(s_0) + o(h)) \iff (t-p)N(s_0) = h(1-pk(s_0))T(s_0) + o(h) \]
+Meaning that
+\[ (p-t)N(s_0) + h(1-pk(s_0))T(s_0) \in o(h) \]
+Thus
+\[ \frac{p-t}h N(s_0) + (1-pk(s_0))T(s_0) \xvarrightarrow{}[h\to0] 0 \]
+Since $N$ and $T$ are orthonormal, this means that $p-t=0$ and $1-pk(s_0)=0$.
+So $t=p=\frac1{k(s_0)}$.
+And so the center point is
+\[ c(s_0) = \alpha(s_0) + \frac1{k(s_0)}N(s_0) \]
+as we showed before.
+
+\vskip.5cm
+Suppose $\alpha$ is a natural parameterization, and $\phi\colon v\varmapsto Ax+c$ is an isometry (and so $A$ is orthonormal).
+Then let $\beta=\phi\circ\alpha$, so
+\[ \beta(s) = A\alpha(s) + c \]
+Then $\beta'(s)=A\alpha'(s)$, and since $A$ is orthonormal, $\norm{\beta'}=\norm{\alpha'}=1$ since $\alpha$ is natural.
+Thus $\beta$ is also a natural parameterization.
+And so
+\[ k_\beta(s) = \iprod{\beta''(s),R_{\frac\pi2}\beta'(s)} = \iprod{A\alpha''(s),R_{\frac\pi2}A\alpha'(s)} \] 
+Now, rotations and $A$ commute up to sign.
+If $\detof A=1$ then they commute, and if $\detof A=-1$ then $R_\theta A=-AR_\theta$.
+So this is equal to $\detof A\iprod{A\alpha''(s), AR_{\frac\pi2}\alpha'(s)}$, since $A$ is orthogonal this is equal to
+\[ = \detof A\iprod{\alpha''(s), R_{\frac\pi2}\alpha'(s)} = \pm k_\alpha(s) \]
+So curvature is preserved under isometries, up to the sign of the determinant of the orthogonal matrix.
+
+\end{document}
+

@@ -1,0 +1,220 @@
+\documentclass[10pt, twocolumn]{article}
+
+\usepackage[margin=.5cm]{geometry}
+\usepackage{mathtools, amssymb, amsfonts}
+\input pdfmsym
+\pdfmsymsetscalefactor{10}
+
+\input ../infi3/preamble
+
+\DeclareFontFamily{U}{wncy}{}
+\DeclareFontShape{U}{wncy}{m}{n}{<->wncyr10}{}
+\DeclareSymbolFont{mcy}{U}{wncy}{m}{n}
+\DeclareMathSymbol{\Sha}{\mathord}{mcy}{"58}
+
+\let\bold=\textbf
+
+\def\bmat#1{\begin{bmatrix}#1\end{bmatrix}}
+\newfunc{fourier}{\mathcal{F}}({})
+\newfunc{ifourier}{\mathcal{F}^{-1}}({})
+
+\begin{document}
+
+\small
+
+The \bold{brightness} and \bold{contrast} of an image whose greyscale value is given by $f(i,j)$ is the expected value and contrast of $f$.
+$$
+\belowdisplayskip=3pt plus 1.5pt minus 4.5pt
+\abovedisplayskip=3pt plus 1.5pt minus 4.5pt
+B = \frac1{NM}\sum_{i=1}^N\sum_{j=1}^M f(i,j), \quad C = \frac1{NM}\sum_{i=1}^N\sum_{j=1}^M \bigl(f(i,j)-B\bigr)^2 $$
+\belowdisplayskip=3pt plus 1.5pt minus 4.5pt
+\abovedisplayskip=3pt plus 1.5pt minus 4.5pt
+Taking $K$ \bold{replicas} of the same image ($f$) with noise $\epsilon_i$ and taking their means creates a new image
+$f + \frac1K\sum_{i=1}^k\epsilon_i$, assuming $\epsilon_i$ are IID the variance of the noise here is $\frac1K\sigma_\epsilon^2$, ie. the noise is reduced by a factor of $K$.
+
+The \bold{histogram} of an image $f$ is the probability function $p_f$ where $p_f(n)$ is the relative number of pixels of greyscale value $n$
+To improve the \bold{contrast} of an image, use \bold{histogram equalization}.
+Histogram equalization flattens the histogram as much as possible, increasing contrast.
+
+In general to perform a \bold{histogram transformation} from one histogram $p_f$ to another $p_g$ compute the cumulative probability densities $F_f$ and $F_g$, create a conversion
+vector $v$ where $v[i]=j$ where $F_f(i)=F_g(j)$ (in discrete spaces, this must be approximated, ie. choose $j$ which fits this best) note here that $i$ iterates over all the possible
+greyscale values, ie $0\dots255$.
+Then convert $f(x,y)$ to $v\bigl[f(x,y)\bigr]$.
+\bold{Histogram Equalization} is a histogram transformation to a flat histogram.
+
+For a \bold{binary image} $B$, its \bold{area} is $A=\sum_{i=1}^N\sum_{j=1}^M B[i,j]$.
+The \bold{center of mass} of $B$ is given by the coordinates
+$$ x = \frac{\sum_{i=1}^N\sum_{j=1}^M iB[i,j]}A,\quad y = \frac{\sum_{i=1}^N\sum_{j=1}^M jB[i,j]}A $$
+
+\bold{Edge detection in a binary image}: The edge of an object $S$ in a binary image is the set of pixels in $S$ $4$-neighboring a pixel not in $S$.
+To find these pixels, begin scanning left-right, top-bottom, the binary image to find the first pixel $s\in S$.
+Once $s$ is found, repeat until we reach $s$ again: if the current cell is in $S$, add it to the boundary and turn left and continue, otherwise it is not in $S$ so turn right and
+continue without updating the boundary.
+Note that ``left'' and ``right'' mean relative to the current orientation of how you entered the current cell, eg at the beginning when you find $s$, you are going left to right
+relative to the image so turning left orients you upward relative to the image.
+
+\bold{Connected component labeling}: A connected component in a binary image is a set of pixels such that every pixel is reachable from every other pixel via its neighbors.
+To find and enumerate/tag these connected components: scan the image left-right, top-bottom, and once you find a pixel with value $1$: if its left neighbor or top neighbor are tagged
+if they have the same tag or only one is tagged, copy that tag to the current pixel.
+Otherwise if they have different tags, copy one of the tags and in an equivalence table label the tags of the neighbors as equivalent.
+Otherwise both neighbors are not tagged, so create a new tag with the minimum possible value.
+After scanning the entire image, for each equivalence class find the minimum tag and for every pixel in the image whose tag is in that equivalence class, change the tag to this
+minimum value.
+
+To find the \bold{distance} between pixels in a binary image (logical value $1$) to the background (logical value $0$), can be done iteratively:
+$$ f^0[i,j] = f[i,j],\quad f^m[i,j] = f[i,j] + \min\{f^{m-1}[u,v]\} $$
+where $[u,v]$ is a $4$-neighbor of $[i,j]$.
+The iteration ends once $f^{m}=f^{m+1}$, this gives $\rho([i,j],\bar S)$ -- the distance between $[i,j]$ to the background $\bar S$.
+The \bold{skeleton} of an image is the set of pixels $[i,j]$ whose distance from the background is locally maximal, ie $\rho([i,j],\bar S)\geq\rho([u,v],\bar S)$.
+
+\bold{Segmentation} of an image $I$ is the division of the image into similar regions.
+In other words, given a \bold{homogeneous predicate} $P$ our goal is to find a partition of $I$ into regions $I=\bigsqcup_{i=1}^n R_i$ such that $P(R_i)=\mathsf{true}$ for every $i$, but
+$P\bigl(P_i\sqcup P_j\bigr)=\mathsf{false}$ for every $i\neq j$.
+Example predicates are: $\max R - \min R < \epsilon$, $\operatorname{Var} R<\epsilon$, etc.
+
+\bold{Split and merge segmentation}: choose a region $R$, if $P(R)=\mathsf{false}$ then divide $R$ into $4$ equal subregions.
+Once all the regions are homogeneous, begin merging: if a region $R$ and a neighbor $R'$ satisfy $P(R\sqcup R')=\mathsf{true}$, merge $R$ and $R'$.
+Continue this process of merging until exhaustion.
+
+\vfill\break
+Recall that the \bold{gradient} of a function $f(x,y)$ is defined as the vector function $\nabla f(x,y)=\parens{\frac{\partial f}{\partial x}, \frac{\partial f}{\partial y}}(x,y)$, where
+$\frac{\partial f}{\partial x}(x,y)$ is the \bold{partial derivative} of $f$ relative to $x$ at the point $(x,y)$:
+$$ \frac{\partial f}{\partial x}(x,y) = \lim_{h\varrightarrow0}\frac{f(x+h,y) - f(x,y)}h $$
+and the partial derivative of $f$ relative to $y$ is defined similarly.
+The \bold{directional derivative} of $f$ relative to a \textit{unit vector} $\vec u$ is defined as
+$$ D_u f(x,y) = \lim_{h\varrightarrow0}\frac{f\bigl((x,y)+h\vec u\bigr)-f(x,y)}h $$
+this is equal to $D_u f(x,y) = \vec u\cdot\nabla f(x,y)=\norm{\nabla f(x,y)}\cdot\cos\theta$ (dot product) where $\theta$ is the angle between $\vec u$ and the gradient, and so $f$ has the
+highest rate of change in the direction of its gradient ($\theta=0$).
+
+\bold{Edge detection} of an image can be done by finding where the rate of change of an image is maximal.
+Since the magnitude of the gradient gives the maximal rate of change of the image at a point, it can be used to detect edges.
+There are various ways of approximating the gradient of an image, the most basic is $\partial_x f[i,j]\approx f[i,j+1]-f[i,j]$ and similar for $y$, these give convolution kernels of
+$G_x=\bmat{-1 & 1}, G_y=\bmat{1\\-1}$, these can be extended to have larger sizes.
+\bold{Roberts Operator} gives two other kernels:
+$$ G_x = \bmat{1 & 0 \\ 0 & -1},\quad G_y = \bmat{0 & -1 \\ 1 & 0} $$
+\bold{Sobel's Operator}:
+$$ G_x = \bmat{-1 & 0 & 1 \\ -2 & 0 & 2 \\ -1 & 0 & 1},\quad G_y = \bmat{1 & 2 & 1\\ 0 & 0 & 0 \\ -1 & -2 & -1} $$ 
+\bold{Prewitt's Operator}: like Sobel's but replace $2$s with $1$s.
+
+\bold{Canny Edge Detection}: Canny edge detection utilizes gradient kernel approximations (eg above), and creates a new binary image (the edges image) which indicates if a pixel is an edge or not.
+The algorithm takes three inputs: the image and a lower and higher threshold ($t_\ell$ and $t_h$).
+\benum
+    \item The image is smoothed using a Gaussian filter to get rid of noise.
+    \item Then the gradient of the image is calculated using approximations (eg Sobel's operator), and from this we create two new images: $\norm{\nabla f[x,y]}$ and $\bigl(\tan\theta\bigr)[x,y]$ by
+computing $\sqrt{G_x^2+G_y^2}$ and $\frac{G_y}{G_x}$ respectively where $G_x$ and $G_y$ are approximations of the $x$ and $y$ partial derivatives respectively.
+    \item For every $[x,y]$ if $\norm{\nabla f[x,y]}<t_\ell$ it is considered not to be an edge, so set $E[x,y]=0$ ($E$ is the edges image) and if $\norm{\nabla f[x,y]}>t_h$ set $E[x,y]=1$.
+            Otherwise if any of its neighbors are edges, set $E[x,y]=1$ (this requires two passes, one left-top to right-bottom and another in reverse).
+    \item Next for every $E[x,y]=1$ if $\norm{\nabla f[x,y]}$ is not a local maximum in the direction of $\nabla f[x,y]$ then set $E[x,y]=0$ (non max suppression).
+            This is done by using the $\tan\theta$ image, we can figure out the major direction of the gradient (if $-0.414<\tan\theta<0.414$ then the gradient is flat, etc).
+            Once we have the major direction ($0$ degrees, $45$ degrees, $90$ degrees, $135$ degrees), we then check that $\norm{\nabla f[x,y]}$ is larger than its neighbors in this direction.
+\eenum
+
+Another method of edge detection is by using the \bold{Laplacian Operator} which approximates the second derivative.
+$$ \nabla^2 = \bmat{0 & 1 & 0 \\ 1 & -4 & 1 \\ 0 & 1 & 0} $$
+Recall that $\nabla f$ is maximal/minimal if $\nabla^2 f=0$.
+Here after convolving with the Laplacian, an edge will be indicated by a jump from a large positive number to a large negative number (perhaps with zero/s between).
+It is wise to smooth the image with a Gaussian filter before edge detection.
+
+\vfill\break
+The purpose of the \bold{Hough Transform} is for \bold{curve fitting}: to detect and fit curves (circles, lines, etc) to the image.
+The idea is once we have the edges of an image, we map each edge pixel from the image space to the parameter space, where we have parameters for the curve we are detecting.
+If the edge point $[x,y]$ is on the curve parameterized by $[\alpha_1,\dots,\alpha_n]$ we increment $P[\alpha_1,\dots,\alpha_n]$ in the parameter space.
+Then we find local maximums in $P$ (after smoothing with a mean kernel) which are above some predefined threshold (which may be a function of the parameters) which define a curve in the image space.
+This can be inefficient, for example with circles, so we wish to reduce how we parameterize the curves.
+For circles, we can for example only iterate over circles whose center is at an angle from the point equal to the angle of its gradient.
+
+\medskip
+If $f$ is a periodic function of period $T$ then it can be written as a sum of sinusoidal functions:
+$$ f(x) = \frac{A_0}2 + \sum_{n=1}^\infty A_n\cdot\cos\bigl(n\cdot2\pi\cdot f_0x\bigr) + \sum_{n=1}^\infty B_n\cdot\sin\bigl(n\cdot 2\pi f_0x\bigr) $$
+$$ A_n = \frac2T\int_0^T f(x)\cdot\cos\bigl(n\cdot2\pi f_0x\bigr)\,dx,\quad B_n = \frac2T\int_0^T f(x)\cdot\sin\bigl(n\cdot2\pi f_0x\bigr)\,dx $$
+and $f_0$ is $f$'s \bold{frequency}: $f_0=\frac1T$.
+This is the \bold{Fourier Series} of $f$.
+
+For functions which are not necessarily periodic, we define the \bold{Fourier Transform} of $f$ by:
+$$ \fourierof f(u) = \int_{-\infty}^\infty f(x)\cdot e^{-i2\pi ux}\,dx, \quad \fourierof f\colon\bR\longvarrightarrow\bC $$
+In multiple dimensions this can be generalized to:
+$$ \fourierof f(\vec u) = \int_{\bR^n} f(\vec x)\cdot e^{-i2\pi \vec u\cdot\vec x}\, d\vec x,\quad
+\begin{array}{l}f\colon\bR^n\longvarrightarrow\bR \\ \fourierof f\colon\bR^n\longvarrightarrow\bC \end{array}$$
+The inverse of the transform is:
+$$ \ifourierof{F}(x) = \int_{-\infty}^\infty F(u)\cdot e^{i2\pi ux}\,du $$
+for multiple dimensions, the inverse is similar (dot product instead of real product, integrate over $\bR^n$).
+
+The Fourier Transform is a linear transformation: $\fourierof{f+g}=\fourierof{f}+\fourierof{g}$ and $\fourierof{\alpha f}=\alpha\fourierof{f}$.
+Furthermore:
+$$\fourierof{f(\alpha x,\beta y)}=\frac1{\abs{\alpha\beta}}\cdot\fourierof{f}\parens{\frac u\alpha,\frac v\beta} $$
+And the Fourier Transform of a rotated image is equal to the rotation of the Fourier transform of the original image.
+
+The \bold{Dirac Delta Function} is a ``function'' (or measure) $\delta$ such that for every function $\int_{-\infty}^\infty f(x)\cdot\delta(x)\,dx = f(0)$.
+\hfill\break And so $\int_{-\infty}^\infty f(x)\cdot\delta(x-x_0)\,dx = f(x_0)$.
+Furthermore $\delta(\alpha x)=\frac1{\alpha x}\delta(x)$.
+So the Fourier Transform of $\delta$ is $1$.
+
+We define continuous convolution of two functions by:
+$$ \bigl(f\ast g\bigr)(x) = \int_\Omega f(\tau)\cdot g(x-\tau)\,d\tau $$
+Where $\Omega$ is equal to the domain of $f$ and $g$ ($\bR^k$ for some $k$).
+Convolutions are commutative and associative.
+
+The \bold{Convolution Theorem} states that the image of a convolution is a product and the image of a product is a convolution, ie:
+$$ f\ast g\xvarleftrightarrow{\;\fourier\;}\fourierof f\cdot\fourierof g,\quad f\cdot g\xvarleftrightarrow{\;\fourier\;}\fourierof f\ast\fourierof g $$
+
+If we want to \bold{sample} a function $f$ with frequency $\tau$ (every $\tau$ units) we define the \bold{sampled function} $f_s(x)=f(x)\cdot\Sha\parens{\frac x\tau}$.
+Where
+$$ \Sha(x) = \sum_{n=-\infty}^\infty \delta(x-n) \longvarRightarrow \Sha\parens{\frac x\tau} = \tau\sum_{n=-\infty}^\infty\delta(x-\tau n) $$
+And so we get that
+$$ \fourierof{f_s(x)} = \sum_{n=-\infty}^\infty \fourierof{f}\parens{u-\frac n\tau} $$
+Notice how we sampled $f$ with a frequency of $\tau$ but the Fourier Transform of $f_s$ is the sum of differences with frequency of $\frac1\tau$.
+So if $\tau$ is too large, then the sum in the Fourier transform of $f_s$ will overlap, this is called \bold{undersampling}.
+
+The \bold{Discrete Fourier Transform} is analogous to its continuous cousin, but its purpose is for transforming finite (or periodic) sequences.
+Given a sequence $x[0],\dots,x[N-1]$ its Fourier Transform, $X$ is defined as follows:
+$$ X[k] = \sum_{n=0}^{N-1} x[n]\cdot e^{-i\frac{2\pi}N\cdot kn},\qquad k=0,\dots,N-1 $$
+in some conventions this is multiplied by $\frac1N$.
+
+The \bold{Inverse Discrete Fourier Transform} is given by (if the sequence is $X[0],\dots,X[N-1]$):
+$$ x[n] = \frac1N\sum_{k=0}^{N-1}X[k]\cdot e^{i\frac{2\pi}N\cdot kn},\qquad n=0,\dots,N-1 $$
+if the Discrete Fourier Transform is multiplied by $\frac1N$, this is not.
+The meaning of this is that if $X[k]=A_ke^{i\theta_k}$ then $x[n]$ is the sum of sinusoidal waves whose amplitudes are $A_k$, phases $\theta_k$ and frequencies are $\frac{2\pi}Nk$.
+
+The sequence $x[0],\dots,x[N-1]$ corresponds to sampling a signal $f$ at $N$ points in intervals of $\Delta x$ ($f$ is sampled at $0,\Delta x,\dots,(N-1)\Delta x$) and its resulting transform $X$ is equal to
+the sampling of the continuous transform of $f$ at points $0,\Delta u,\dots,(N-1)\Delta u$ where $\Delta u=\frac1{N\Delta x}$.
+This can be seen since:
+$$ \fourierof{f_s}(u) = \sum_{n=0}^{N-1}\int f(x)e^{-2\pi i\cdot ux}\delta(x-n\Delta x) = \sum_{n=0}^{N-1} f(n\Delta x)\cdot e^{-2\pi i\cdot un\Delta x} $$
+And so $\fourierof{f_s}\parens{k\Delta u}=\sum f(n\Delta x)\cdot e^{-2\pi i\cdot nk\Delta x\Delta u}$ so when $\Delta x\cdot\Delta u=\frac1N$ this is equal to $X[k]$ (recall $x[n]=f(n\Delta x)$).
+
+Similarly for a $2$ dimensional matrix $x[0\dots N-1\,,\,0\dots M-1]$ its Fourier Transform is a matrix $X[0\dots N-1\,,\,0\dots M-1]$:
+$$ X[u,v] = \sum_{j=0}^{M-1}\sum_{t=0}^{N-1}x[t,j]\cdot e^{-i2\pi\parens{\frac{ut}N+\frac{vj}M}} $$
+Some conventions multiply this by $\frac1{NM}$.
+Notice that if we find the Discrete Fourier Transform of every row of $x$ and then take the Discrete Fourier Transform of each column, we get $X$ (the reverse order also gives $X$).
+The inverse $2$ dimensional DFT is given by:
+$$ x[t,j] = \frac1{NM}\sum_{v=0}^{M-1}\sum_{u=0}^{N-1} X[u,v]\cdot e^{i2\pi\parens{\frac{ut}N+\frac{vj}M}} $$
+Remove the $\frac1{NM}$ if the DFT is already multiplied by it.
+The meaning of this is that $x$ (the sampled image) can be written as the sum of two dimensional sinusoidal waves (of the form $e^{i(x+y)}$) whose amplitude and phase are given by $X[u,v]$, and frequencies
+are as written in the sum above.
+
+DFT can be computed by the \bold{Fast Fourier Transform} (FFT) algorithm in $O(n\log n)$ time.
+The first component in a DFT is called the \bold{DC component} and is equal to the sum of the values of the sequence (mean if multiplied by $\frac1N$ or $\frac1{NM}$).
+Further notice that $X[u,v]=X[u+N,v+M]=X[u+N,v]=X[u,v+M]$ (DFT is cyclic).
+Another important function is \bold{FFTshift} which swaps the order of a DFT so that the DC is in the center.
+We may also want to apply a logarithmic transformation to reduce the dynamic range of the values.
+
+Frequency filters are filters applied in the frequency domain.
+Due to the Convolution Theorem, multiplication in the frequency domain is equivalent to convolving in the image domain, so these filters are applied via elementwise multiplication.
+A \bold{Low Pass Filter} (LPF) is a filter $H(u,v)$ which filters \textit{out} high frequencies and preserves lower frequencies.
+A LPF will have that higher indexes of $H$ are smaller (closer to $0$) and lower indexes are larger.
+A \bold{High Pass Filter} (HPF) is a filter $H(u,v)$ which filters out low frequencies and preserves higher frequencies.
+If $H$ is a HPF then its higher indexes of $H$ are larger and lower indexes are smaller.
+A \bold{Band Pass Filter} (BPF) is a filter which filters (in) only frequencies within a region.
+
+Since higher frequencies correlate with areas of higher rates of change, HPFs will create edge images.
+Similarly, LPFs will create blurred/smoothed images.
+
+A \bold{High Frequency Emphasis} filter (HFE) is a filter of the form ${k_0+k_1H}$ where $H$ is a HPF, its purpose is to emphasize higher frequencies (edges) and preserve lower frequencies
+(so $k_1=1$ usually).
+HFEs are usually used in conjunction with \bold{Histogram Equalization}.
+
+\bold{Salt and pepper noise} $\varRightarrow$ median filter.
+\bold{Uniform noise} $\varRightarrow$ mean filter.
+\bold{Gaussian noise} $\varRightarrow$ gaussian filter.
+\bold{Periodic noise} $\varRightarrow$ Fourier analysis.
+\end{document}
+

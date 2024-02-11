@@ -1,0 +1,243 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\@blist[#1]{%
+    \bgroup\bgroup\par\vskip-\medskipamount%
+    \gdef\item{%
+        \par\egroup\bgroup\medskip\setbox0=\hbox{#1\quad}%
+        \advance\leftskip by \wd0\leavevmode\kern-\wd0\box0%
+    }%
+}
+\def\blist{\@ifnextchar[ \@blist {\@blist[$\bullet$]}}
+\def\elist{\par\egroup\egroup\medskip}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\openset{{\cal O}}
+
+\begin{document}
+
+\c@section=4
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infinitesimal Calculus 3}
+
+    \medskip
+    \textit{Lecture 4, Wednsday November 2, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\c@subsection=1
+
+\begin{prop*}
+
+    If $S$ is compact, $S$ is closed.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose for the sake of a contradiction that $S$ is not closed.
+    Then there is a limit point $x$ which is not in $S$.
+    We will take a descending sequence of closed sets $F_n = \bar B_{\frac1{2^n}}(x)$, then let $\openset_n=F_n^c$ which are open.
+    Notice then that the intersection of $F_n$ is $\set x$, since if $y$ is in the intersection $\metricof{x,y}\leq\frac1{2^n}$ for all $n$, so $\metricof{x,y}=0$, so $y=x$.
+    And therefore the union of $\openset_n$ is $X\setminus\set{x}$, and since $x$ isn't in $S$, $\set{\openset_n}_{n=1}^\infty$ is an open cover of $S$.
+    Since $S$ is compact, there is a finite subcover $\set{\openset_{m_n}}_{n=1}^N$ which covers $S$.
+    Now if we assume $m_n<m_{n+1}$, then since $\openset_n$ is an increasing sequence:
+    \[ S\subseteq\openset_{m_N} \]
+    But then that means that $F_{m_n}$ and $S$ are disjoint, so there exists a ball around $x$ which doesn't contain points of $S$.
+    So $x$ can't be a limit point, in contradiction. \lightning
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{defn*}
+
+    If $X$ is a metric space, $S\subseteq X$ is \ppemph{bounded} if there is an $x$ in $X$ and an $r>0$ such that $S\subseteq B_r(x)$.
+
+\end{defn*}
+
+Notice then that $S$ is bounded if and only if for \emph{every} $x\in X$ there is an $r>0$ such that $S\subseteq B_r(x)$.
+If $S$ is bounded, then suppose $S\subseteq B_r(x)$, then let $y\in X$, if we let $r'=r+\metricof{x,y}$ $S\subseteq B_{r'}(y)$.
+
+\begin{prop*}
+
+    If $S$ is compact, then $S$ is bounded.
+
+\end{prop*}
+
+\begin{proof}
+
+    Notice that for any $x\in X$, $\set{B_n(x)}_{n\in\bN}$'s union is $X$ since for any $y\in X$, there must be some $n\in\bN$ such that $\metricof{x,y}<n$.
+    Since $S$ is compact, there is a subcovering $\set{B_{m_n}}_{n=1}^N$ which covers $S$.
+    But then since these balls form an increasing subsequence:
+    \[ S\subseteq B_{m_N}(x) \]
+    and thus by definition $S$ is bounded.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{exam}
+
+    Notice that not every bounded set is compact.
+    Over a set $X$ we can define the following \ppemph{discrete metric}:
+    \[ \metricof{x,y} = \begin{cases} 1 & x\neq y \\ 0 & x=y \end{cases} \]
+    This is obviously a metric (and quite an interesting one as well).
+    It has the interesting characteristic that every subset of $X$ is open and thus it must also be closed (since its complement is open).
+    This is because for $\epsilon\leq1$, $B_\epsilon(x)=\set x$.
+
+    So if we take $X=\bN$ then we can create a covering $\set{\set{x}}_{x\in\bN}$ (since every set is open), but for any finite subcovering, the union contains
+    only a finite number of points and thus cannot cover $X$.
+    So $X$ is not compact.
+    But $X$ is bounded (this is true for every discrete metric space) since for every $x,y\in X$, then $\metricof{x,y}\leq1$, so $X\subseteq B_2(x)$.
+
+\end{exam}
+
+\begin{prop*}
+
+    If $X$ is a metric space and $T\subseteq S\subseteq X$ where $S$ is compact and $T$ is closed, then $T$ is also compact.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $\set{\openset_\lambda}_{\lambda\in\Lambda}$ is an open covering of $T$.
+    Then we can add $T^c$ to the cover which is open since $T$ is closed, and that creates an open cover of $X$ and therefore also of $S$.
+    So there exists a finite subcovering of this which covers $S$:
+    \[ T\subseteq S\subseteq\bigcup_{k=1}^n\openset_k\cup T^c \]
+    Then since $T$ and $T^c$ are disjoint, we must have that
+    \[ T\subseteq\bigcup_{k=1}^n\openset_k \]
+    so $\set{\openset_k})_{k=1}^n$ is a finite subcovering of $T$, so $T$ is compact.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{defn*}
+
+    A \ppemph{closed rectangle} in $\bR^n$ is a set of the form:
+    \[ [a_1,b_1]\times\cdots\times[a_n,b_n] \]
+    Where $a_k<b_k$.
+    And the $k$th \ppemph{vertex} of such a rectangle is $[a_k, b_k]$.
+
+\end{defn*}
+
+\newfunc{diam}{\rm diam}(\vert)
+
+\begin{defn*}
+
+    If $X$ is a metric space and $S\subseteq X$, the \ppemph{diameter} of $S$ is:
+    \[ \diam S=\sup_{x,y\in S}\metricof{x,y} \]
+    A \ppemph{contracting sequence} of sets $\set{E_n}_{n=1}^\infty$ in $X$ is a descending sequence of sets whose diameter approaches $0$, that is:
+    \[ E_{n+1}\subseteq E_n \text{ and } \lim_{n\to\infty} \diamof{E_n} = 0 \]
+
+\end{defn*}
+
+\begin{thrm*}[cantorLemma,Cantor's\ Lemma]
+
+    If $\set{T_k}_{k\in\bN}$ is a contracting sequence of rectangles in $\bR^n$ then there exists an $x\in\bR^n$ such that:
+    \[ \bigcap_{k\in\bN} T_k = \set x \]
+
+\end{thrm*}
+
+\begin{proof}
+
+    For every $m$ we can take the $k$th vertex of $T_k$: $[a_k^{(m)}, b_k^{(m)}]$.
+    And since $T_k$ is decreasing:
+    \[ [a_k^{(1)}, b_k^{(1)}] \supseteq \cdots \supseteq [a_k^{(m)}, b_k^{(m)}] \supseteq \cdots \]
+    Then by Cantor's Lemma in $\bR$, the intersection of these intervals is non-empty, so there exists an $x_k$ in the intersection.
+    Then $\parens{x_1,\dots,x_n}$ is in the intersection of $T_k$.
+    This must be the only point in the intersection since if there is another $y$ in the intersection, since $x,y\in T_k$ for every $k$,
+    $\diam T_k\geq\metricof{x,y}$, and then the limit of the diameters wouldn't be $0$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+This theorem can be generalized to any complete metric space (which we will learn about later).
+In fact this trait is actually equivalent to completeness.
+
+\begin{thrm*}
+
+    A rectangle $T=[a_1,b_1]\times\cdots\times[a_n,b_n]$ in $\bR^n$ is compact.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let $\set{\openset_\lambda}_{\lambda\in\Lambda}$ be an open covering of $T$.
+    Suppose for the sake of a contradiction that $T$ has no finite open subcovering.
+    For every vertex, we note that $[a_k,b_k]=[a_k,c_k]\times[c_k,b_k]$ where $c_k=\frac12\big(a_k+b_k\big)$.
+    Then we now have $2^n$ smaller rectangles.
+    And one of these smaller rectangles must also not have a finite open subcovering (if they all did, we could take the union of these finite open subcoverings which would
+    also be a finite open subcovering of $T$ which is a contradiction).
+    Let $T_1$ be this subrectangle which doesn't have a finite open subcovering.
+    We can find a subrectangle $T_2$ of $T_1$ which also doesn't have a finite open subcovering, and thus we can recursively define a sequence $\set{T_n}_{n\in\bN}$.
+    And since the diameter of $T_{n+1}$ is half that of $T_n$, $\diam T_n\longvarrightarrow0$.
+    Since $T_n$ is closed, by Cantor's lemma:
+    \[ \bigcap_{n\in\bN} T_n = \set x \]
+    for some $x\in\bR^n$.
+    Then there must be some $\lambda\in\Lambda$ such that $x\in\openset_\lambda$, and so there must be an $r>0$ such that $x\in B_r(x)\subseteq\openset_\lambda$.
+    Since $\diam T_n\longvarrightarrow0$, at some point $\diam T_n<r$, so therefore
+    \[ T_n\subseteq B_r(x) \subseteq \openset_\lambda \]
+    So $T_n$ \emph{does} have a finite open subcovering, in contradiction. \lightning
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{thrm*}[heineBorelTheorem,Heine-Borel\ Theorem]
+
+    $T\subseteq\bR^n$ is compact if and only if $T$ is closed and bounded.
+
+\end{thrm*}
+
+\begin{proof}
+
+    We have already shown that compactness implies closedness and boundedness, so all that remains is to prove the converse.
+    Since $T$ is bound, it must be contained inside of a rectangle $U$ (we can take $x\in T$, and then vertices around $x_k$ whose lengths are the diameter of $T$).
+    By above, $U$ is compact.
+    And since $T\subseteq U$ and $T$ is closed, $T$ is compact.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+This result does not hold in general metric spaces.
+
+\begin{exam}
+
+    Recall the definition of $\ell^2$:
+    \[ \ell^2=\set{\set{a_n}_{n\in\bN}}[\sum_{n=1}^\infty a_n^2<\infty] \]
+    Let $e_k$ be the sequence whose $k$th element is $1$ and the rest are $0$.
+    Let $T=\set{e_1,\dots,e_n,\dots}$.
+    $T$ is bounded since $\metricof{e_n,e_m}=\sqrt2$ and it is closed since if $x$ is a limit point of $T$, then it must be equal to some $e_k$, because the distance between
+    each $e_k$ is constant.
+    But $T$ is not compact since if we focus on the cover $\set{B_1(e_k)}_{k=1}^\infty$, each ball contains only one $e_k$ and thus there can't be a finite subcover since $T$
+    is infinite.
+
+\end{exam}
+
+\end{document}
+

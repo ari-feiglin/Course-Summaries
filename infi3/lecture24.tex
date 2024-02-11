@@ -1,0 +1,115 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{diam}{{\rm diam}}(\vert)
+
+\font\bigbf = cmbx12 scaled 2000
+\@undervecc@def{underbar}\@linecap\@linecap
+
+\def\openset{{\cal O}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=24
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infinitesimal Calculus 3}
+
+    \medskip
+    \textit{Lecture \thesection, Wednsday January 25, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{defn*}
+
+    Alternative notation for the integral of a multivariable function $f(x_1,\dots,x_n)$ over $D\subseteq\bR^n$ is
+    \[ \int\cdots\int_D f(x_1,\dots,x_n)\,dx_1\dots dx_n \]
+
+\end{defn*}
+
+Notice that if $D=[a,b]\times[c,d]$ and $f$ is integrable over $D$ then we can choose partions $a=x_0<\dots<x_n=b$ and $c=y_0<\dots<x_m=d$ we have that
+\[ s(f,P) = \sum_{i=1}^n\sum_{j=1}^m f(a_{ij})(x_i-x_{i-1})(y_{j-1}-y_j) = \sum_{i=1}^n\parens{\sum_{j=1}^m f(a_{ij})(y_{j-1}-y_j)}(x_i-x_{i-1}) \]
+we can take partitions which refine $[c,d]$ and get (let $a_{ij}=(a_i,a_j)$):
+\[ \sum_{i=1}^n\parens{\int_c^d f(a_i, y)dy}(x_i-x_{i-1}) \]
+which is a Riemann sum of $A(x)$ over $[a,b]$ where $A$ is the integral of $f(x,y)$ relative to $y$:
+\[ A(x) = \int_c^d f(x, y)\,dy \]
+and so $s(f,P) = s(A,P_{a,b})$, and so $\int_D f = \int_a^b A\,dx$, ie
+\[ \int_D f = \int_a^b\parens{\int_c^d f(x,y)\,dy}\,dx \]
+Using an identical proof, we can swap the order of integration.
+We summarize this in the following theorem:
+
+\begin{thrm*}
+
+    Suppose $f$ is integrable in $D=[a,b]\times[c,d]$ and for every $x\in[a,b]$ the following is defined
+    \[ I(x) = \int_c^d f(x,y)\,dy \]
+    then
+    \[ \iint_D f(x,y)\,dxdy = \int_a^b I(x)\,dx = \int_a^b\parens{\int_c^d f(x,y)\,dy}\,dx \]
+    Similarly if
+    \[ I(y) = \int_a^b f(x,y)\,dx \]
+    is defined then the integral is equal to
+    \[ \iint_D f(x,y)\,dxdy = \int_c^d I(x) = \int_c^d\parens{\int_a^b f(x,y)\,dx}\,dy \]
+
+\end{thrm*}
+
+We can generalize this to $\bR^3$, if the domain is a prism $[a,b]\times[c,d]\times[e,g]$ then
+\[ \iiint_D f = \int_a^b\int_c^d\int_e^g f \]
+And in general we can extend this to $n$ dimensions.
+
+\begin{defn*}
+
+    A domain $D\bR^2$ is a \ppemph{normal domain} relative to $x$ if there exists functions $\phi_1,\phi_2$ such that
+    \[ D = \set{(x,y)\in\bR^2}[x\in[a,b],\, \phi_1(x)\leq y\leq\phi_2(x)] \]
+    Similar for normal domains relative to $y$.
+
+\end{defn*}
+
+\begin{prop*}
+
+    Suppose $D$ is a normal domain relative to $x$: $D=\set{(x,y)}[a\leq x\leq b,\, \phi_1(x)\leq y\leq\phi_2(x)]$ and $\phi_i$ are continuous in $[a,b]$ and so is $f$.
+    Then
+    \[ \iint_D f(x,y) = \int_a^b\int_{\phi_1(x)}^{\phi_2(x)}f(x,y)\,dydx \]
+
+\end{prop*}
+
+\begin{proof}
+
+    Since $\phi_i$ are continuous, they have extrema: $c\leq\phi_1,\phi_2\leq d$ and so if we define a function $g$ on $R=[a,b]\times[c,d]$ by
+    \[ g(x) = \begin{cases} f(x) & x\in D \\ 0 & x\notin D \end{cases} \]
+    then
+    \[ \int_D f = \int_R g = \int_a^b \int_c^d g(x,y)\,dxdy \]
+    and since $g(x,y)=0$ if $y$ is outside $[\phi_1(x),\phi_2(x)]$ this is equal to
+    \[ \int_a^b\int_{\phi_1(x)}^{\phi_2(x)}f(x,y)\,dxdy \]
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\end{document}

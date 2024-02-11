@@ -1,0 +1,130 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+\parindent=0pt
+\parskip=3pt plus 2pt minus 2pt
+
+\input ../preamble
+
+\footline={}
+
+\setcounter{section}{3}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+
+{\bppbox{rgb{.5 1 .5}}{rgb{0 .4 0}}{rgb{.1 .4 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Algebraic Topology}
+    \smallskip
+    \centerline{\setfont{it}Homework \the\counter{section}}
+    \centerline{\setfont{it}Ari Feiglin}
+
+\eppbox}
+
+\bexerc
+
+    Let $a,b\in X$.
+    Show that $\pi_1(X,a)$ is abelian if and only if for every two paths $\gamma,\delta$ from $a$ to $b$, $F_\gamma=F_\delta$.
+
+\eexerc
+
+We can generalize this slightly to ease up on notation: let ${\cal G}$ be a groupoid, then for $A\in{\cal G}$, $\Morof{A,A}$ is abelian if and only if for every $\gamma,\delta\in\Morof{A,B}$,
+$F_\gamma=F_\delta\colon\Morof{A,A}\longto\Morof{B,B}$.
+Notice that $F_\gamma=F_\delta$ if and only if for every $a\in\Morof{A,A}$, $F_\gamma(a)=\gamma^{-1}a\gamma=\delta^{-1}a\delta=F_\delta(a)$, which is if and only if $\delta\gamma^{-1}a\gamma\delta^{-1}=a$.
+Now notice that $\delta\gamma^{-1},\gamma\delta^{-1}\in\Morof{A,A}$, so if $\Morof{A,A}$ is abelian, this holds since $(\delta\gamma^{-1})^{-1}=\gamma\delta^{-1}$.
+
+And if this holds, then let $b\in\Morof{A,A}$ and define $\delta=b\gamma$, so $F_\gamma=F_\delta$ and thus $\delta\gamma^{-1}a\gamma\delta^{-1}=bab^{-1}=a$, ie. $ba=ab$.
+So for every $a,b\in\Morof{A,A}$, $a$ and $b$ commute, meaning $\Morof{A,A}$.
+
+\bexerc
+
+    Let $f,g\colon X\longto Y$ such that $f\sim g$ and let $a\in X$.
+    Let $f_*\colon\pi_1(X,a)\longto\pi_1(X,f(a))$ and $g_*\colon\pi_1(X,a)\longto\pi_1(X,g(a))$ be the induced homomorphisms.
+    \benum
+        \item Show that $f_*$ is trivial if and only if $g_*$ is.
+        \item Conclude that if $f\colon X\longto Y$ is null-homotopic then $f_*$ is trivial.
+    \eenum
+
+\eexerc
+
+\benum
+    \item Since $f$ and $g$ are homotopic, $g_*=F_\gamma\circ f_*$.
+    So if $f_*$ is trivial then $g_*[\phi]=F_\gamma\circ f_*[\phi]=F_\gamma(1)=1$, so $g_*$ is trivial.
+    The converse holds by symmetry.
+    \item Suppose $f\sim K_p$ then since $(K_p)_*[\phi]=[K_p\circ\phi]=[K_p]=1$, $(K_p)_*$ is trivial and so $f_*$ is trivial as well.
+\eenum
+
+\bexerc
+
+    Suppose $X$ is path connected, show that the following are equivalent:
+    \benum
+        \item $X$ is simply connected,
+        \item for every $a\in X$, $\pi_1(X,a)$ is trivial,
+        \item for every two $a,b\in X$, every two paths from $a$ to $b$ are homotopic relative to $\partial I$,
+        \item there exist two $a,b\in X$, every two paths from $a$ to $b$ are homotopic relative to $\partial I$,
+    \eenum
+
+\eexerc
+
+$(1)\implies(2)$: let $[\phi]\in\pi_1(X,a)$ then $\phi$ can be viewed as a map $S^1\longto X$ since it has the same endpoints (formally $\phi$ respects the equivalence relation and so $\phi=\phi'\circ\rho$
+for some $\phi'$).
+Thus $\phi$ is null-homotopic relative to any point by simple connectivity, so $\phi\hdi K_a$ (since the endpoints of $I$ are mapped to the same point), so $[\phi]=[K_a]=1$, meaning $\pi_1(X,a)$ is trivial.
+$(2)\implies(3)$: let $\gamma,\delta\in\Gamma_{ab}$ then $\gamma\overline\delta\in\Gamma_{aa}$ so $[\gamma\overline\delta]=1$ by $(2)$, so $[\gamma]=[\delta]$ ie. $\gamma\hdi\delta$.
+$(3)\implies(4)$: trivial.
+$(4)\implies(1)$: let $\gamma\in\Gamma_{cc}$, then let $\delta_1\in\Gamma_{ac}$ and $\delta_2\in\Gamma_{cb}$.
+Then $\delta_1\delta_2,\delta_1\gamma\delta_2\in\Gamma_{ab}$ so $[\delta_1\delta_2]=[\delta_1\gamma\delta_2]$, meaning $[\gamma]=1$, ie. $\pi_1(X,c)$ is trivial for every $c\in X$.
+
+\bexerc
+
+    Let $f\colon X\longto Y$.
+    \benum
+        \item Show that $f$ defines a function $\tilde f$ from the path connected components of $X$ to the path connected components of $Y$.
+        \item Show that if $f$ is a homotopy equivalence then $\tilde f$ is bijective.
+    \eenum
+
+\eexerc
+
+\benum
+    \item For $a\in X$, define $\gen a$ to be $a$'s path connected component.
+    Then define $f\gen a\coloneqq\gen{fa}$.
+    This is well defined: if $\gen a=\gen b$ then $f(\gen a)=f(\gen b)$, and since $a\in\gen a$, $f(\gen a)\subseteq\gen{fa}$ (since the image of a path connected space is path connected).
+    And so $fb\in f(\gen b)\subseteq\gen{fa}$, meaning $fb\in\gen{fa},\gen{fb}$ but since path connected components are disjoint, $\gen{fa}=\gen{fb}$.
+    \item Suppose $g\colon Y\longto X$ is $f$'s homotopy inverse: $g\circ f\sim{\rm id}_X$ and $f\circ g\sim{\rm id}_Y$.
+    Then by above $\tilde g$ is well-defined, and so if $\tilde f\gen a=\tilde f\gen b$ then $\gen{fa}=\gen{fb}$, so $\tilde g\gen{fa}=\gen{gfa}=\gen{gfb}=\tilde g\gen{fb}$.
+    Thus $gfa$ and $gfb$ are connected.
+
+    In general notice that if $h\sim{\rm id}$ then $a$ and $ha$ are path connected for every $a\in X$: if $H$ is a homotopy from $h$ to ${\rm id}$, define $\gamma(t)\coloneqq H(a,t)$.
+    Then $\gamma(0)=H(a,0)=ha$ and $\gamma(1)=H(a,1)=a$.
+
+    So $a$ and $gfa$ are connected, and $b$ and $gfb$ are connected, meaning $a$ and $b$ are connected so $\gen a=\gen b$.
+    Thus $\tilde f$ is injective.
+
+    And for $y\in Y$, $\tilde f\gen{gy}=\gen{fgy}=\gen y$ since $fgy$ and $y$ are connected (by the same proof above: $fg\sim{\rm id}_Y$).
+\eenum
+
+\bexerc
+
+    Let $M$ be a M\"obius strip, meaning it is the quotient space of $I\times I$ under $(0,t)\sim(1,1-t)$ for $t\in I$.
+    If $\rho\colon I\times I\longto M$ is its quotient map, define $S\coloneqq\rho(I\times\set{1/2})$.
+    \benum
+        \item Show that $S$ is a circle,
+        \item Show that $S$ is a deformation retract.
+    \eenum
+
+\eexerc
+
+\benum
+    \item Let us define $f\colon I\longto S$ by $f(t)=\rho(t,1/2)$.
+    Now $f(t)=f(s)$ if and only if $\rho(t,1/2)=\rho(s,1/2)$, which is if and only if $(t,1/2)\sim(s,1/2)$ which is if and only if $t=s$ or $t=0$ and $s=1$ or vice versa.
+    Thus $f$ defines a homeomorphism from $S^1$ to $S$.
+    \item Define $r[t,s]=[t,1/2]$.
+    $r$ is continuous if and only if $r\circ\rho\colon(t,s)\mapsto\rho(t,1/2)$ is continuous, which it is.
+    So $r$ is a retraction.
+    Now define the homotopy $H\colon M\times I\longto M$ by $H([t,s],x)\coloneqq\bracks{t,\frac12+x\parens{s-\frac12}}$.
+    Notice that $H([t,s],0)=\bracks{t,1/2}=r[t,s]$ and $H([t,s],1)=\bracks{t,s}$, so $H$ is a homotopy from $\iota\circ r$ to ${\rm id}_M$ as required.
+\eenum
+
+\bye
+

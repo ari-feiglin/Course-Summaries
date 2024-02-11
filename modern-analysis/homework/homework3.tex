@@ -1,0 +1,74 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+\parindent=0pt
+\parskip=3pt plus 2pt minus 2pt
+
+\input ../preamble
+
+\footline={}
+
+\setcounter{section}{3}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+
+{\bppbox{rgb{.5 1 .5}}{rgb{0 .4 0}}{rgb{.1 .4 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Modern Analysis}
+    \smallskip
+    \centerline{\setfont{it}Homework \the\counter{section}}
+    \centerline{\setfont{it}Ari Feiglin}
+
+\eppbox}
+
+\bexerc
+
+    Let $E_1,E_2$ be two measurable sets and $\mu$ a positive measure.
+    Show that if $\mu(E_1\symdiff E_2)=0$ then $\mu(E_1)=\mu(E_2)$.
+
+\eexerc
+
+We know $E_1\symdiff E_2=(E_1\cup E_2)\setminus(E_1\cap E_2)$.
+If $\mu(E_1\cap E_2)<\infty$ then this means $0=\mu(E_1\cup E_2)-\mu(E_1\cap E_2)$ and so $\mu(E_1\cap E_2)=\mu(E_1\cup E_2)$.
+And if $\mu(E_1\cap E_2)=\infty$ then since $E_1\cap E_2\subseteq E_1\cup E_2$, $\mu(E_1\cup E_2)=\infty$ and so we obtain the equality as well.
+Finally we have $E_1\cap E_2\subseteq E_1,E_2\subseteq E_1\cup E_2$ so
+$$ \mu(E_1\cap E_2)\leq\mu(E_1),\mu(E_2)\leq\mu(E_1\cup E_2) \implies \mu(E_1)=\mu(E_2)=\mu(E_1\cap E_2)=\mu(E_1\cup E_2) $$
+
+\bexerc
+
+    Let $(X,\Sigma)$ be a measurable space and $\mu_1,\mu_2,\dots$ a sequence of positive measures on $X$, such that for every $A\in\Sigma$, $\mu_n(A)$ is increasing.
+    Prove or disprove that $\mu\colon\Sigma\longto\overline{\bb R}$ defined by $\mu(A)\coloneqq\lim_{n\to\infty}\mu_n(A)$ is a measure.
+
+\eexerc
+
+We will prove this.
+Firstly note that $\mu$ is well-defined since $\mu_n(A)$ is increasing and therefore has a limit.
+And,
+$$ \mu(\varnothing) = \lim_{n\to\infty}\mu_n(\varnothing) = \lim_{n\to\infty}0 = 0 $$
+And $\mu$ is also finitely additive:
+$$ \mu(A\dcup B) = \lim_{n\to\infty}\mu_n(A\dcup B) = \lim_{n\to\infty}\mu_n(A)+\mu_n(B) = \lim_{n\to\infty}\mu_n(A) + \lim_{n\to\infty}\mu_n(B) = \mu(A) + \mu(B) $$
+Now it is sufficient to show that if $\set{A_k}_k$ is increasing then $\mu\parens{\bigcup_kA_k}=\lim_k\mu(A_k)$.
+Notice three things: first that since $\mu_n(A)$ is increasing, $\mu(A)=\sup_n\mu_n(A)$; second that since $\mu(A_k)$ is increasing (since $\mu(A_k)=\lim_n\mu_n(A_k)\leq\lim_n\mu_n(A_{k+1})$),
+$\lim_k\mu(A_k)=\sup_k\mu(A_k)$; and third that $\mu_n(A_k)$ is increasing so $\mu_n\parens{\bigcup_kA_k}=\lim_k\mu_n(A_k)=\sup_k\mu_n(A_k)$.
+Thus
+$$ \lim_k\mu(A_k) = \sup_k\sup_n\mu_n(A_k) = \sup_{n,k}\mu_n(A_k) = \sup_n\sup_k\mu_n(A_k) = \sup_n\mu_n\parens{\bigcup_kA_k} = \mu\parens{\bigcup_kA_k} $$
+as required.
+
+\bexerc
+
+    Let $X$ be a metric space with its Borel $\sigma$-algebra, and let $\mu$ be a measure on $X$.
+    $\mu$'s {\emphcolor support} is the smallest closed set $F$ such that $\mu(F^c)=0$.
+
+    Let $F\subseteq[0,1]$, prove there exists a measure on $[0,1]$ such that $F$ is its support.
+
+\eexerc
+
+Define $\mu$ to be the counting measure relative to $F$: $\mu(A)\coloneqq\abs{A\cap F}$ (where $\abs{S}$ is the number of elements in $S$, or $\infty$ if $S$ is infinite).
+Then $\mu$ is a measure (the counting measure defined by $S\mapsto\abs S$ is trivially a measure, and this is just the counting measure taken relative to $F$, so it is still a measure).
+Now if $\mu(F_0^c)=0$ then $\abs{F_0^c\cap F}=0$ so $F_0^c\cap F=\varnothing$ meaning $F_0^c\subseteq F^c$ and so $F\subseteq F_0$.
+Thus $F$ is the smallest set (not just closed) such that $\mu(F^c)=0$.
+
+\bye
+

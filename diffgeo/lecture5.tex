@@ -1,0 +1,190 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{det}{{\rm det}}({})
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{diam}{{\rm diam}}(\vert)
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+\newfunc{cis}{{\rm cis}}({})
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{sup}{{\rm sup}}\{\vert\}
+\newfunc{Res}{{\rm Res}}({})
+\newfunc{wind}n({})
+\newfunc{pv}{{\rm pv}}({})
+\newfunc{lspan}{{\rm span}}({})
+\newfunc{atan}{{\rm atan}}({})
+
+\font\bigbf = cmbx12 scaled 2000
+\@undervecc@def{underbar}\@linecap\@linecap
+
+\def\pmat#1{\begin{pmatrix}#1\end{pmatrix}}
+
+\def\mO{{\cal O}}
+\def\mU{{\cal U}}
+\let\lineseg=\overleftrightvecc
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=5
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Differential and Analytic Geometry}
+
+    \medskip
+    \textit{Lecture \thesection, Monday July 17, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+Let $\gamma\colon[0,L]\longto\bR^2$ be a natural parameterization, then $T=\gamma'$ and $k(s)=\iprod{T',N}$.
+Suppose $T(0)$ has an angle of $\theta_0$ then let us define
+\[ \theta(s) = \int_0^s k(p)\,dp + \theta_0 \]
+And we define the curve
+\[ \beta(s) = \gamma(0) + \pmat{\int_0^s\cos(\theta(s))\,dp\\\int_0^s\sin(\theta(s))\,dp} \]
+Now, notice that
+\[ \beta'(s) = \pmat{\cos(\theta(s))\\\sin(\theta(s))} \]
+And since $\norm{\beta'}=1$, $\beta$ is a natural parameterization.
+And further
+\[ \beta''(s) = \theta'(s)\cdot\pmat{-\sin(\theta(s))\\\cos(\theta(s))} = \theta'(s)\cdot R_{\frac\pi2}\beta'(s) \]
+Which means that
+\[ k_\beta(s) = \iprod{\beta''(s), N_\beta(s)} = \iprod{\theta'(s)\cdot R_{\frac\pi2}\beta'(s), R_{\frac\pi2}\beta'(s)} = \theta'(s)\iprod{\beta'(s),\beta'(s)}=\theta'(s)=k(s) \]
+(The third equality is since $R_{\frac\pi2}$ is orthogonal.)
+So the curvature of $\beta$ is equal to that of $\gamma$.
+
+Now,
+\[ T_\beta(0) = \beta'(0) = \pmat{\cos(\theta(0))\\\sin(\theta(0))} = \pmat{\cos(\theta_0)\\\sin(\theta_0)} = T(0) \]
+And $\beta(0)=\gamma(0)$.
+
+So by the fundamental theorem of curves, since $k_\beta=k_\gamma$, $\beta(0)=\gamma(0)$, and $T_\beta(0)=T_\gamma(0)$, we have that $\beta=\gamma$.
+This means that
+\[ T_\gamma(s) = T_\beta(s) = \beta'(s) = \pmat{\cos(\theta(s))\\\sin(\theta(s))} \]
+So $\theta$ is the angle function of $\gamma$ (ie. it gives the angle of $\gamma$).
+So we have proven the following proposition:
+
+\begin{prop*}
+
+    If $\gamma\colon[0,L]\longto\bR^2$ is a regular smooth curve, then its angle is given by
+    \[ \theta_\gamma(s) = \int_0^s k_\gamma(p)\,dp + \theta_0 \]
+    where $\theta_0$ is the angle of $T_\gamma(0)$.
+
+\end{prop*}
+
+\begin{defn*}
+
+    If $\gamma\colon[0,L]\longto\bR^2$ is a natural parameterization, then we define
+    \[ K_\gamma = \int_0^L k_\gamma(s)\,ds \]
+    to be the \ppemph{total curvature} of $\gamma$.
+
+\end{defn*}
+
+So by the above definitions,
+\[ K_\gamma = \theta_\gamma(L) - \theta_\gamma(0) \]
+So $K_\gamma$ can also be thought of the total difference in the angle of $\gamma$.
+
+\begin{exam*}
+
+    If $\gamma$ is a circle, then intuitively $K_\gamma=2\pi$ since the total difference in the angle of the curve is $2\pi$.
+    And since the natural parameterization is given by a curve from $[0,2\pi R]$ whose curvature is $\frac1R$ and thus
+    \[ K_\gamma = \int_0^{2\pi R}\frac1R = 2\pi \]
+    as expected.
+
+\end{exam*}
+
+\begin{defn*}
+
+    A smooth curve $\gamma\colon[a,b]\longto\bR^n$ is \ppemph{$n$-closed} if $\gamma^{(k)}(a)=\gamma^{(k)}(b)$ for every $0\leq k\leq n$.
+    If $\gamma$ is $n$-closed for every $n$, then $\gamma$ is called \ppemph{closed}.
+
+\end{defn*}
+
+\begin{prop*}
+
+    If $\gamma$ is a $1$-closed regular smooth curve then $K_\gamma=2\pi n$ for some $n\in\bZ$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Since $\gamma$ is $1$-closed, $\gamma'(0)=\gamma'(L)$.
+    But recall that
+    \[ \gamma'(s) = \pmat{\cos(\theta(s))\\\sin(\theta(s))} \]
+    So we have that
+    \[ \pmat{\cos(\theta(0))\\\sin(\theta(0))} = \pmat{\cos(\theta(L))\\\sin(\theta(L))} \]
+    Which is if and only if $\theta(L)=\theta(0)+2\pi n$ for some $n\in\bZ$, and so $K_\gamma=2\pi n$ as required.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    If $\gamma$ is a $1$-closed regular smooth curve, then $\frac1{2\pi}K_\gamma$ is called $\gamma$'s \ppemph{winding number} (about $0$).
+
+\end{defn*}
+
+\begin{thrm*}[hopfTheorem,Hopf's\ Theorem]
+
+    If $\gamma\colon[0,L]\longto\bR^2$ is a closed natural parameterization, then $\gamma$ is injective (other than at the points $0$ and $L$).
+
+\end{thrm*}
+
+We will not be proving this theorem.
+
+This means that if $\gamma$ is closed, then $K_\gamma=\pm2\pi$.
+This is because the winding number is $\pm1$, as otherwise $\gamma$ would have to intersect with itself.
+The sign of $K_\gamma$ correlates with its orientation.
+We will prove this formally:
+
+\begin{proof}
+
+    Suppose $\gamma(0)=0$, and $T(0)=\pmat{1\\0}$, and $0\leq\gamma_1(s)$ for every $s\neq0,T$ (we can get to this via an isometry).
+    Let $B=\set{(x,y)}[0\leq x\leq y\leq T]$ and we define a function $g\colon B\longto[-1,1]$ by
+    \[ g(s,t) = \begin{cases} \frac{\gamma(t)-\gamma(s)}{\norm{\gamma(t)-\gamma(s)}} & s\neq t\text{ and } s\neq0,t\neq T \\ \gamma'(s) & s=t \\ -\gamma'(0) & s=0\text{ and }t=T \end{cases} \]
+    $g$ is therefore continuous.
+    Let us define $\alpha_0(t)$ to be the line which connects $(0,0)$ to $(T,T)$, ie. $\alpha_0(t)=t(T,T)$.
+    Thus $\alpha_0$ is contained within $B$.
+    Then
+    \[ g(\alpha_0(s)) = \gamma'(s) = \pmat{\cos(\theta_0(s)) \\ \sin(\theta_0(s))} \]
+    Where $\theta_0$ is $g\circ\alpha_0$'s angle function.
+    Thus
+    \[ K = \theta_0(T) - \theta_0(0) \]
+
+\end{proof}
+
+\end{document}
+

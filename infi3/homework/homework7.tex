@@ -1,0 +1,218 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input ../preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{ker}{{\rm ker}}({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{atan}{{\rm tan}^{-1}}({})
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\openset{{\cal O}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=7
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infintesimal Calculus 3}
+
+    \medskip
+    \textit{Assignment \thesection}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{exercise*}
+
+    \benum
+        \item Let $b\in\bR^m$ and $A\in\bR^{m\times n}$ and we define $g\colon\bR^n\longvarrightarrow\bR^m$ by $g(x)=Ax+b$.
+        Let $a\in\kerof f$, show that $\kerof g=a+\set{R_1^T(A),\dots,R_m^T(A)}^\bot$.
+        \item Suppose $E\subseteq\bR^n$  and $f\colon E\longvarrightarrow\bR^m$ is continuously differentiable in $E$.
+        Let $a\in\kerof f$ and $V$ be the affine space tangent to $\kerof f$ at $a$.
+        Prove that $V=a+\set{\nabla f_1(a),\dots,\nabla f_m(a)}^\bot$.
+    \eenum
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    \benum
+        \item First we will show that $\kerof A=\set{R_1^T(A),\dots,R_m^T(A)}^\bot$.
+        We know that $v\in\kerof A$ if and only if $Av=0$, that is if and only if for every $1\leq i\leq m: R_i(A)v=0$.
+        Since $u^Tv=u\cdot v$, this is equivalent to $R_i^T(A)\cdot v=0$ for all $1\leq i\leq m$, which is equivalent to $v\in\set{R_1^T(A),\dots,R_m^T(A)}$, as required.
+
+        We now claim that $\kerof{g}=\kerof{A}+a$.
+        Suppose $v\in\kerof{g}$ then $g(v)=Av+a=0$, so $Av=-a$.
+        Notice then that $A(v-a)=Av-Aa$, since $v,a\in\kerof g$, $Av=Aa=-a$ so $A(v-a)=0$ and so $v-a\in\kerof A$ so $v\in\kerof A+a$.
+        And if $v\in\kerof A+a$ then $A(v-a)=0$ so $Av-Aa=Av+a=0$ so $v\in\kerof g$.
+        So $\kerof g=\kerof A+a$ as required.
+
+        And since we showed that $\kerof A=\set{R_1^T(A),\dots,R_m^T(A)}^\bot$ we have that
+        \[ \kerof g = \set{R_1^T(A),\dots,R_m^T(A)}^\bot + a \]
+        as required.
+
+        \item Let $g(x)=\differ fa(x-a)=J_f(a)\cdot(x-a)$ so $V=\kerof{g}$.
+        Notice that $g(x)$ is of the form $J_f(a)\cdot x+v$, so by the above subquestion $\kerof g=v+\set{R_1^T(J_f(a)),\dots,R_m^T(J_f(a))}^\bot$ for any $v\in\kerof g$.
+        Since $g(a)=J_f(a)\cdot0=0$, $a\in\kerof g$ and since $R_i^T(J_f(a))=\nabla f_i(a)$, we have that
+        \[ \kerof g = \set{\nabla f_1(a),\dots,\nabla f_m(a)}^\bot + a \]
+
+    \eenum
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    At the point $a=(1,1,1)$ what is the direction where the function
+        \[ f(x,y,z) = x\cdot\atan(yz) \]
+    increases the most (as a unit vector)?
+    Also compute the directional derivative of $f$ at $a$ in this point.
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    The largest rate of change is in the direction of $\nabla f(a)$ which is
+        \[ \nabla f(a) = \begin{pmatrix} \atan(yz) \\ \frac{xz}{1+z^2y^2} \\ \frac{xy}{1+z^2y^2} \end{pmatrix}(a) = \begin{pmatrix} \frac\pi4 \\ \frac12 \\ \frac12 \end{pmatrix} \]
+    normalizing gives us the vector
+        \[ u \approx \begin{pmatrix} 0.74317 \\ 0.47312 \\ 0.47312 \end{pmatrix} \]
+    which is the vector we were looking for.
+
+    We know that $D_uf(a)=u\cdot\nabla f(a)$ which in this case since $u$ is the normalized vector of $\nabla f(a)$ is simply equal to $\norm{\nabla f(a)}=\sqrt{\frac{\pi^2}{16}+\frac12}$.
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    We define a surface in $\bR^3$ by $z=x^2+y^2$.
+    Find a point on the surface such that the tangent plane at this point is perpendicular to $(1, 1, -2)^T$.
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    If we define $f(x,y,z)=x^2+y^2-z$ then the surface is defined by $\kerof f$.
+    Let $v$ be a point on this surface then $v\in\kerof f$, and we know that the tangent to the plane at $v$ is given by $v+\set{\nabla f(v)}^\top$.
+    And so the space of vectors perpendicular to this plane is $\spaof{\nabla f(v)}$.
+    So we need a $v$ such that $(1,1,-2)\in\spaof{\nabla f(v)}$.
+    We know that
+        \[ \nabla f = \begin{pmatrix} 2x\\2y\\-1 \end{pmatrix} \]
+    So we need to find $x$, $y$, and $\alpha$ such that $(1,1,-2)=(2\alpha x,2\alpha y,-\alpha)$.
+    So we have that $\alpha=2$ and $x=y=\frac14$, and so $z=x^2+y^2=\frac18$, thus the point is
+        \[ \begin{pmatrix} \frac14 \\[1ex] \frac14 \\[1ex] \frac18 \end{pmatrix} \]
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Find the directional derivative of $f$ at $a$ in the direction $h$:
+    \benum
+        \item $f(x,y)=x\sin(x+y)$, $a=\parens{\frac\pi4,\frac\pi4}$, $h=(-1,0)$.
+        \item $f(x,y,z)=xy^2z^3$, $a=(3,2,1)$, $h=(4,3,0)$.
+    \eenum
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    We first notice that all these functions are differentiable as the composition of standard functions.
+    Thus $D_hf(a)=h\cdot\nabla f(a)$ for $h$ unit vector.
+    \benum
+        \item We have
+            \[ \nabla f = \begin{pmatrix} \sin(x+y) + x\cos(x+y) \\ x\cos(x+y) \end{pmatrix} \]
+            Thus
+            \[ D_h(a) = \begin{pmatrix}-1\\0\end{pmatrix}\cdot\begin{pmatrix} 1 \\ 0\end{pmatrix} = -1 \]
+        \item We have
+            \[ \nabla f = \begin{pmatrix} y^2z^3 \\ 2xyz^3 \\ 3xy^2z^2 \end{pmatrix} \]
+            We must normalize $h$ to get $\frac15 h$ and we have
+            \[ D_h(a) = \frac15\begin{pmatrix} 4\\3\\0 \end{pmatrix}\cdot\begin{pmatrix} 4\\12\\36 \end{pmatrix} = 10.4 \]
+    \eenum
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Find $\differ ga(h)$ where $g=\phi\circ f$ where $f(x,y)=(x^2+xy+1,y^2+2)$ and $\phi(x,y)=(x+y,2x,y^2)$.
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    We know that $\differ ga=\differ\phi{f(a)}\circ\differ fa$, and the representation of the differentials is their Jacobian:
+        \[ J_f = \begin{pmatrix} 2x+y & x \\ 0 & 2y \end{pmatrix} \qquad J_\phi = \begin{pmatrix} 1 & 1 \\ 2 & 0 \\ 0 & 2y \end{pmatrix} \]
+    And since $f(a)=(3,3)$:
+        \[ \differ ga = J_g(a) = J_\phi(f(a))\cdot J_f(a) = \begin{pmatrix} 1 & 1 \\ 2 & 0 \\ 0 & 6 \end{pmatrix}\cdot\begin{pmatrix} 3 & 1 \\ 0 & 2 \end{pmatrix} =
+                \begin{pmatrix} 3 & 3 \\ 6 & 2 \\ 0 & 12 \end{pmatrix} \]
+    
+    And so:
+        \[ \differ ga(h) = J_g(a)\cdot h = \begin{pmatrix} 10.5 \\ 19 \\ 6 \end{pmatrix} \]
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Suppose $f\colon\bR^n\longvarrightarrow\bR$ is a function such that there is a constant $M>0$ such that for every $x,y\in\bR^n$:
+        \[ \abs{f(x)-f(y)} \leq M\norm{x-y} \]
+    Such a function is called \ppemph{Lipschitz}.
+    Prove or disprove:
+    \benum
+        \item $f$ is continuous on $\bR^n$.
+        \item $f$ is differentiable on all of $\bR^n$.
+        \item If $f\colon\bR^n\longvarrightarrow\bR$ is continuously differentiable on the closed unit ball around $0$ then it is Lipschitz-continuous.
+    \eenum
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    \benum
+        \item This is true, suppose $x\in\bR^n$ and $x_n\longvarrightarrow x$ then
+        \[ \abs{f(x_n)-f(x)} \leq M\norm{x_n-x} \longvarrightarrow 0 \]
+        So $f(x_n)\longvarrightarrow f(x)$ and therefore $f$ is continuous at $x$ for all $x\in\bR^n$ as required.
+        \item This is false, take $f(x)=\abs x$ in $\bR$.
+        This function is Lipschitz-continuous:
+        \[ \abs{f(x)-f(y)} = \abs{\abs{x} - \abs{y}} \leq \abs{x-y} \]
+        but it is not differentiable at $x=0$.
+        \item We know that since $f\in C^1$, for every $x$ and $y$ in the closed unit ball:
+        \[ f(y) - f(x) = \nabla f(x+t(y-x))\cdot(y-x) \]
+        where $0\leq t\leq 1$ by $f$'s $0$th order Taylor series expansion.
+        Let us define
+        \[ g(x) = \norm{\nabla f(x)} \]
+        for every $x$ in the closed unit ball.
+        Since $f\in C^1$, $\nabla f$ is continuous in the closed unit ball, and therefore so is $g$ as its norm (if a function is continuous, so is its norm).
+        And since the closed unit ball is compact, $g$ must be bounded, so $g(x)\leq M$, that is $\norm{\nabla f}\leq M$ for some $N$.
+        So then by the Cauchy-Schwarz inequality:
+        \[ \abs{f(y) - f(x)} = \abs{\nabla f\bigl(x+t(y-x)\bigr)\cdot(y-x)} \leq \norm{\nabla f\bigl(x+t(y-x)bigr)}\cdot\norm{y-x} \leq M\norm{y-x} \]
+        since $x+t(y-x)$ is in the closed unit ball.
+        So $f$ is Lipschitz continuous as required.
+    \eenum
+
+\end{blankpp}
+
+\end{document}
+

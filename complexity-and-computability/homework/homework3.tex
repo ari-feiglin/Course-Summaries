@@ -1,0 +1,392 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz-cd}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{conj}{Conjecture}{255,130,130}{150,0,0}{200,0,0}
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\undersumtext#1{\vtop{\hsize=2cm\relax\centering\small #1}}
+
+\newfunc{oracle}{\hbox{\tencsc oracle}}({})
+
+\def\quant{\mathtt{Q}}
+
+\def\sps{\texttt{\char32}}
+\def\sat{\mathsf{SAT}}
+\def\csat{\mathsf{CSAT}}
+\def\is{\mathsf{IS}}
+\def\threesat{\mathsf{3SAT}}
+\def\clique{\mathsf{Clique}}
+\def\vertcover{\textsf{Vertex-Cover}}
+\def\domset{\textsf{Dom-Set}}
+\def\dhp{\mathsf{DHP}}
+\def\dhc{\mathsf{DHC}}
+\def\hc{\mathsf{HC}}
+\def\tsp{\mathsf{TSP}}
+\def\threecolor{\mathsf{3Color}}
+\def\kcolor{k\mathsf{Color}}
+\def\Color{\mathsf{Color}}
+\def\subsum{\mathsf{SubsetSum}}
+\def\maxIS{\mathsf{MaxIS}}
+\def\maxclique{\mathsf{MaxClique}}
+\def\minexpr{\mathsf{MinExpression}}
+\def\sparse{\mathsf{Sparse}}
+
+\def\PH{\mathbf{PH}}
+\def\PF{\mathbf{PF}}
+\def\PC{\mathbf{PC}}
+\def\P{\mathbf{P}}
+\def\NP{\mathbf{NP}}
+\def\NPH{\mathbf{NPH}}
+\def\NPC{\mathbf{NPC}}
+\def\co{\mathsf{co}}
+\def\coNP{\mathbf{coNP}}
+\def\poly{\mathsf{poly}}
+\def\Ppoly{\slfrac\P\poly}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mN{\mathcal{N}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=3
+
+\barcolorbox{255, 220, 220}{130, 0, 0}{200, 80, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Computability and Complexity}
+
+    \medskip
+    \textit{Assignment \thesection}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\def\acoNP{\mathbf{Almost\vcenter{\hrule width3pt height1pt}coNP}}
+\begin{exercise*}
+
+    We define the class of \ppemph{almost $\coNP$} problems as follows: a decision problem $S$ is in $\acoNP$ if and only if there exists a polynomial-time algorithm $V$ and a polynomial $p$ such that
+    for every $x$, $x\in S$ if and only if for every $y$ whose length is at most $p(\abs x)$ other than one satisfies $V(x,y)=1$.
+
+    Show that $\NP=\acoNP$ if and only if $\NP=\coNP$.
+
+\end{exercise*}
+
+Firstly we will show that $\coNP\subseteq\acoNP$.
+Suppose $S\in\coNP$, then there exists a polynomial-time algorithm $V$ and a polynomial $p$ such that for every $x$,
+\[ x\in S \iff \forall y\bigl(V(x,y)=1\bigr) \]
+where $\abs y\leq p(\abs x)$.
+For the sake of conciseness, I will leave out explicitly stating that the binary strings being discussed have a length bound by $p(\abs x)$.
+We can assume that for every $x$, $V(x,\epsilon)=1$.
+Otherwise, we could define $V_0(x,y)$, where $V_0(x,\epsilon)=1$ and $V_0(x,0)$ is equal to zero if $V(x,0)=0$ and otherwise is equal to $V(x,\epsilon)$.
+For every other $y$, $V_0(x,y)=V(x,y)$.
+Then if $x\in S$, for every $y$, $V_0(x,y)=1$ (for $y=0$, $V(x,0)=1$ and $V(x,\epsilon)=1$).
+And if $x\notin S$, then there exists a $y$ such that $V(x,y)=0$, if this $y=\epsilon$ then $V_0(x,0)=0$ and otherwise $V_0(x,y)=0$.
+So if $x\notin S$ then there exists a $y$ where $V_0(x,y)=0$, so
+\[ x\in S \iff \forall y\bigl(V_0(x,y)=1\bigr) \]
+and $V_0(x,\epsilon)=1$ as required.
+
+So, now assuming that $V(x,\epsilon)=1$, let us define the algorithm $V'(x,y)$, where if $y=\epsilon$, then return zero.
+Otherwise return $V(x,y)$.
+Then if $x\in S$, for every $y\neq\epsilon$, $V'(x,y)=V(x,y)=1$.
+And if $x\notin S$, there exists a $y$ such that $V(x,y)=0$ and since $y$ couldn't be $\epsilon$, this means there are two $y$s where $V'(x,y)=0$ (for this $y$ and for $y=\epsilon$).
+Thus $x\in S$ if and only if for every $y$ other than one (which is $y=\epsilon$), $V'(x,y)=1$.
+So by definition, $S\in\acoNP$.
+
+Thus $\coNP\subseteq\acoNP$.
+So if $\NP=\acoNP$, then $\coNP\subseteq\NP$, and so $\NP=\coNP$.
+
+For the other direction, notice that if $S\in\acoNP$ then there exists a polynomial-time algorithm $V$ and a polynomial $p$ which satisfy the conditions of the definitions of $\acoNP$.
+Let us define another algorithm $V'(x,y_1,y_2)$ which does the following:
+\benum
+    \item If $y_1=y_2$ then return one.
+    \item Otherwise if $V(x,y_1)=0$ and $V(x,y_2)=1$, return one.
+    \item Else return zero.
+\eenum
+We claim that
+\[ x\in S\iff\exists y_1\forall y_2\bigl(V'(x,y_1,y_2)=1\bigr) \]
+(with the conditions that the strings's lengths be bound by $p(\abs x)$.)
+Thus this would mean $S\in\Sigma_2$, and so $\acoNP\subseteq\Sigma_2$.
+
+So, if $x\in S$ then there exists a binary string $y_1$ such that for every other binary string $y_2$, $V(x,y_2)=1$.
+Thus for every $y_2$, either $y_1=y_2$ and so $V'(x,y_1,y_2)=1$, or $y_1\neq y_2$ and so $V(x,y_1)=0$ and $V(x,y_2)=1$ and so $V(x,y_1,y_2)=1$.
+Thus we have shown
+\[ x\in S\implies\exists y_1\forall y_2\bigl(V'(x,y_1,y_2)=1\bigr) \]
+
+Now, suppose the converse: that there exists a $y_1$ such that for every $y_2$, $V'(x,y_1,y_2)$.
+This means that for every $y_2$, either $y_1=y_2$ or $V(x,y_1)=0$ and $V(x,y_2)=1$.
+Thus $V(x,y_1)=0$ and for every other binary string $y_2$, $V(x,y_2)=1$.
+And by the definition of $V$, this means that $x\in S$.
+So we have shown the equivalence, and thus $S\in\Sigma_2$.
+
+So we have shown that $\acoNP\subseteq\Sigma_2$.
+Now, if $\NP=\coNP$, then the polynomial hierarchy collapses to $\NP=\Sigma_1$, and in particular $\NP=\Sigma_1=\Sigma_2$, so $\acoNP\subseteq\NP$.
+Since $\coNP\subseteq\acoNP$, we have
+\[ \NP=\coNP\subseteq\acoNP\subseteq\NP \implies \acoNP=\NP \]
+
+Thus we have shown that $\NP=\coNP$ if and only if $\acoNP=\NP$.
+
+\begin{exercise*}
+
+    For the following statements, either prove, disprove, or show that they are equivalent to an open question:
+    \benum
+        \item $\maxclique$ is $(\NP\cup\coNP)$-hard.
+        \item $\maxclique$ is $(\NP\cup\coNP)$-complete.
+    \eenum
+
+\end{exercise*}
+
+\benum
+    \item In order to show that $\maxclique$ is $(\NP\cup\coNP)$-hard, we must show that it is both $\NP$ and $\coNP$-hard.
+    Let us first show that it is $\coNP$-hard.
+
+    We know that
+    \[ \overline\clique = \set{(G,k)}[\text{$G$ is a graph where every clique's size is at most $k$}] \]
+    is $\coNP$-complete.
+    This is because $\clique$ is $\NP$-complete, and its complement is equal to
+    \[ \overline\clique\cup\set{\omega}[\text{The binary string $\omega$ does not represent a graph and a natural number}] \]
+    So this is $\coNP$-complete.
+    But the set of binary strings which do not represent a graph and a natural number is in $\P$, and thus $\overline\clique$ is $\coNP$-complete as well.
+    We can generalize this in the following lemma:
+
+    \begin{lemm}
+        Let $\mathcal C$ be a class of decision problems, and let $S_\P\in\P$.
+        Then if a decision problem of the form $S\cup S_\P$ is $\mathcal C$-hard then $S$ is also $\mathcal C$-hard.
+    \end{lemm}
+
+    \begin{proof}
+        If $S\cup S_\P$ is $\mathcal C$-hard, let $S'\in\mathcal C$, then there exists a Karp reduction from $S'$ to $S\cup S_\P$, let this be $f$.
+        Let us choose $a\in S$, and so let us define
+        \[ f'(x) = \begin{cases} a & f(x)\in S_\P \\ f(x) & f(x)\notin S_\P \end{cases} \]
+        This can be computed in polynomial time, since computing $f(x)$ and checking if it is in $S_\P$ both take polynomial time.
+        And if $x\in S'$, then $f(x)\in S\cup S_\P$, so if $f(x)\in S_\P$, $f'(x)=a\in S$.
+        Otherwise $f(x)\in S$, so $f'(x)=f(x)\in S$.
+        And if $x\notin S'$, then $f(x)\notin S\cup S_\P$, so $f'(x)=f(x)\notin S$.
+        Thus $x\in S'$ if and only if $f'(x)\in S$, so $f'$ is a Karp reduction from $S'$ to $S$.
+
+        Thus $S$ is $\mathcal C$-hard, as required.
+        \qed
+    \end{proof}
+
+    Now, we can define a Karp reduction from $\overline\clique$ to $\maxclique$: given an input $(G,k)$ for $\overline\clique$, we define a graph $G'$ which takes $G$ and adds a clique of $k$ new vertices.
+    These new vertices are not connected to the graph $G$.
+    Let this new graph be $G'$, and we claim that $(G,k)\mapsto(G',k)$ is a Karp reduction from $\overline\clique$ to $\maxclique$.
+
+    If $(G,k)\in\overline\clique$, then every clique in $G$ is of size $\leq k$, and so the clique of size $k$ which we added in $G'$ becomes the maximum clique, so $(G',k)\in\maxclique$.
+    And if $(G',k)\in\maxclique$, then the maximum clique size in $G'$ is $k$, and since $G$ is a subgraph of $G'$ this means that every clique in $G'$ is at most $k$ vertices, meaning
+    $(G,k)\in\overline\clique$.
+    Thus $(G,k)\in\overline\clique$ if and only if $(G',k)\in\maxclique$, as required.
+
+    Since $\overline\clique$ is $\coNP$-hard, this means that $\maxclique$ is also $\coNP$-hard.
+
+    Now, all that remains is to show that $\maxclique$ is $\NP$-hard.
+    We will do this by first defining the decision problem
+    \[ \maxIS = \set{(G,k)}[\text{$G$ is an undirected graph whose maximal independent set is of size $k$}] \]
+    Notice how $S$ is an independent set in the graph $G=(V,E)$, if and only if $S$ is a clique in the graph $G'=(V,E^c)$.
+    This is because if $S$ is an independent set in $G$, then for every $u,v\in S$, $\set{u,v}\notin E$ so $\set{u,v}\in E^c$, meaning $S$ is a clique in $G'$.
+    And similar for the converse.
+    Thus $(G,k)\mapsto(G',k)$ is a Karp reduction from $\maxIS$ to $\maxclique$ (it is also a Karp reduction from $\maxclique$ to $\maxIS$), so it is sufficient to show that $\maxIS$ is $\NP$-hard.
+
+    Now, it turns out that in recitation $2$, we constructed a Karp reduction from $\sat$ to $\maxIS$, but we posed it as a Karp reduction from $\sat$ to $\is$.
+    I will define the Karp reduction again here, and show that it is indeed a Karp reduction from $\sat$ to $\maxIS$.
+
+    Let $\phi$ be a boolean formula in CNF, then we define the graph $G$ as follows:
+    \benum
+        \item For every disjunction $D_i$, for every variable $x_j$ which occurs in $D_i$, we add the vertex $u_{ij}$.
+        \item If $u_{ij_1}$ and $u_{ij_2}$ are vertices in the graph $G$, then they refer to different variables which both occur in the same disjunction, so we add an edge $\set{u_{ij_1},u_{ij_2}}$.
+        \item If $u_{i_1j}$ and $u_{i_2j}$ are vertices in the graph $G$, then they refer to the same variable which occurs in different disjunctions.
+        We add an edge $\set{u_{i_1j},u_{i_2j}}$ if and only if the sign of the occurrences differ (eg. if $x_j$ occurs in $D_{i_1}$ and $\neg x_j$ occurs in $D_{i_2}$).
+    \eenum
+    Suppose $\phi$ has $m$ disjunctions, then we claim that $\phi\mapsto(G,m)$ is a Karp reduction from $\sat$ to $\maxIS$.
+
+    If $\phi\in\sat$, then there exists a boolean vector $\tau$ which satisfies $\phi$.
+    Every disjunction $D_i$ must be satisfied by some variable $x_j$ (meaning there exists a variable which occurs in $D_i$ whose sign is the same as how it occurs in $\tau$; if $\tau_j$ is true, then $x_j$
+    occurs in $D_i$, and if $\tau_j$ is false, then $\neg x_j$ occurs in $D_i$).
+    So choose a variable $x_j$ which satisfies $D_i$ and place $u_{ij}$ into the set $S$.
+
+    We now claim that $S$ is the maximum independent set, and it is of size $m$.
+    Firstly, it is an independent set since if $u_{i_1j_1}$ and $u_{i_2j_2}$ are in $S$, suppose there exists an edge between them.
+    By the definition of $G'$, either $i_1=i_2$ or $j_1=j_2$, but since for every $D_i$ we are choosing a single variable $x_i$ to place into $S$, $i_1\neq i_2$.
+    So $j=j_1=j_2$, but $u_{i_1j}$ refers to the variable $x_j$ in the disjunction $D_{i_1}$ and $u_{i_2j}$ refers to the same variable $x_j$ in a different disjunction $D_{i_2}$.
+    By definition, the edge only exists if $x_j$ has differing signs in $D_{i_1}$ and $D_{i_2}$, and so they cannot both be satisfied by $x_j$, in contradiction.
+    So $S$ is indeed an independent set.
+
+    Since we place a vertex from each disjunction into $S$, $\abs S=m$.
+    Now, we claim that every independent set in $G'$ must have a size which is at most $m$.
+    Otherwise, suppose $S'$ is an independent set where $\abs{S'}>m$, then $S'$ would have two vertices from the same disjunction (by the pigeonhole principle), but vertices from the same disjunction have
+    an edge between them, contradicting $S'$ being an independent set.
+    So $S$ is a maximum independent set, meaning the size of the maximum independent set in $G$ is $m$, so $(G,m)\in\maxIS$.
+
+    Now, if $(G,m)\in\maxIS$, then $G$ has an independent set $S$ of size $m$.
+    As stated before, $S$ cannot have two vertices from the disjunction, so $S$ contains exactly one vertex from each disjunction.
+    We define the boolean vector $\tau$ as follows: for each $u_{ij}\in S$, set $\tau_j$ to be the sign of $x_j$ in $D_i$: if $x_j$ occurs in $D_i$, then set $\tau_j$ to true, and if $\neg x_j$ occurs in
+    $D_i$ then set $\tau_j$ to false.
+    For every other index of $\tau$, set it arbitrarily.
+
+    We must prove that this construction of $\tau$ well-defined, as if $u_{i_1j}$ and $u_{i_2j}$ are both in $S$, they both set $\tau_j$.
+    But, since $S$ is independent, there is no edge between $u_{i_1j}$ and $u_{i_2j}$, so $x_j$ occurs with the same sign in both $D_{i_1}$ and $D_{i_2}$, so $\tau_j$ is set to the same value.
+    So $\tau$ is well-defined.
+
+    $\tau$ satisfies $\phi$, since for every $D_i$ there exists some $u_{ij}\in S$, as stated before.
+    Then $\tau_j$ is set such that $x_j$ satisfies $D_i$, and so $D_i$ is satisfied by $\tau$.
+    So every disjunction is satisfied by $\tau$, and therefore $\phi$ is satisfied by $\tau$, meaning $\phi\in\sat$.
+
+    Thus $\phi\in\sat$ if and only if $(G,m)\in\maxIS$.
+    Therefore $\phi\mapsto(G,m)$ is a Karp reduction from $\sat$ to $\maxIS$, meaning $\maxIS$ is $\NP$-hard.
+    Since we showed a Karp reduction from $\maxIS$ to $\maxclique$, this means $\maxclique$ is $\NP$-hard.
+    And since we already showed $\maxclique$ is $\coNP$-hard, this means $\maxclique$ is $(\NP\cup\coNP)$-hard, as required.
+
+    \item $\maxclique$ is $(\NP\cup\coNP)$-complete if and only if it is in $\NP$ or $\coNP$.
+    Now, suppose $\maxclique\in\NP$ and let $S\in\coNP$, since $\maxclique$ is $(\NP\cup\coNP)$-hard, there exists a Karp reduction from $S$ to $\maxclique$.
+    Since $\NP$ is closed under Karp reductions, this means that $S\in\NP$, meaning $\coNP\subseteq\NP$, which means that $\NP=\coNP$.
+    Similarly, if $\maxclique\in\coNP$, let $S\in\NP$ then there exists a Karp reduction from $S$ to $\maxclique$ and since $\coNP$ is closed under Karp reductions, $S\in\coNP$.
+    Therefore $\NP\subseteq\coNP$ and so $\NP=\coNP$.
+
+    So we have shown that if $\maxclique$ is $(\NP\cup\coNP)$-complete, then $\NP=\coNP$.
+    We will now show the converse.
+    Since $\NP=\coNP$, this means that the polynomial hierarchy collapses to $\NP$, ie. $\PH=\NP=\coNP$ and in particular $\Sigma_2=\NP$.
+    Since $\maxclique\in\Sigma_2$ this means $\maxclique\in\NP=\NP\cup\coNP$, so $\maxclique$ is $(\NP\cup\coNP)$-complete.
+
+    Therefore $\maxclique$ is $(\NP\cup\coNP)$-complete if and only if $\NP=\coNP$.
+\eenum
+
+\newpage
+\begin{exercise*}
+
+    Show that for every $k\geq1$, there exists a $\Sigma_k$-complete problem.
+
+\end{exercise*}
+
+We will show this inductively.
+For $k=1$, this means we must show there exists an $\NP$-complete problem, which we know exist (eg. $\sat$).
+Now suppose there exists a $\Sigma_k$-complete problem, $S_k$.
+We define $S_{k+1}$ as follows:
+\[ S_{k+1} = \set{(M^{S_k},\,\omega,1^t)}[\vcenter{\advance\hsize by-5cm
+$M^{S_k}$ is a non-deterministic oracle machine which uses an oracle for $S_k$, and $\omega$ is a binary input which is accepted $M^{S_k}$ within $t$ steps.}] \]
+By ``$\omega$ is accepted by $M^{S_k}$ within $t$ steps'' we mean that there exists a run of $M^{S_k}$ on $\omega$ in which $\omega$ is accepted within $t$ steps.
+We will now show that $S_{k+1}$ is $\Sigma_{k+1}$-complete.
+
+Firstly, $S_{k+1}$ is in $\NP^{S_k}$, as we can define a non-deterministic oracle machine $V^{S_k}$ which accepts $S_{k+1}$.
+Given an input $(M^{S_k},\omega,1^t)$, $V^{S_k}$ runs $M^{S_k}$ non-deterministically on $\omega$ for at most $t$ steps.
+$V^{S_k}$ will utilize its own oracle of $S_k$ to answer $M^{S_k}$'s queries.
+If $M^{S_k}$ accepts $\omega$ within $t$ steps, then $V^{S_k}$ will accept its input, and otherwise it will reject.
+
+$V^{S_k}$ is polynomial, as it runs in $t=\abs{1^t}$ time.
+Furthermore it decides $S_{k+1}$, as it will only accept $(M^{S_k},\omega,1^t)$ if there exists a run of $M^{S_k}$ on $\omega$ whose length is at most $t$ in which $M^{S_k}$ accepts $\omega$.
+This is precisely the definition of $S_{k+1}$.
+Since $V^{S_k}$ is a non-deterministic oracle machine of $S_k$, this means that $S_{k+1}\in\NP^{S_k}\subseteq\NP^{\Sigma_k}=\Sigma_{k+1}$ as required.
+
+Now, we claim that $\Sigma_{k+1}=\NP^{S_k}$.
+Obviously $\NP^{S_k}$ is contained within $\Sigma_{k+1}$, so we must show the other direction.
+
+Let $S\in\Sigma_{k+1}=\NP^{\Sigma_k}$, then there exists an $S'\in\Sigma_k$ and a non-deterministic polynomial-time oracle machine $A^{S'}$ which decides $S$.
+Since $S_k$ is $\Sigma_k$-complete, there exists a Karp reduction from $S'$ to $S_k$, let it be $f$, meaning $x\in S'$ if and only if $f(x)\in S_k$.
+Then we can define $A^{S_k}(x)$ which runs $A^{S'}(x)$ but when $A^{S'}$ performs a query of the form $q\mathrel{\mathop\in\limits^{\scriptscriptstyle?}}S'$, $A^{S_k}$ will instead perform the equivalent
+query $f(q)\mathrel{\mathop\in\limits^{\scriptscriptstyle?}}S_k$ using its oracle.
+Since $f$ can be computed in polynomial time, $A^{S_k}$ still takes polynomial time.
+$A^{S_k}$ decides $S$ as well, as its run is equivalent to that of $A^{S'}$'s, and so $S\in\NP^{S_k}$.
+
+Therefore $\Sigma_{k+1}\subseteq\NP^{S_k}$ and so $\Sigma_{k+1}=\NP^{S_k}$ as required.
+
+Now, we will finally show that $S_{k+1}$ is $\Sigma_{k+1}$-complete.
+Let $S\in\Sigma_{k+1}$, as we showed above this means $S\in\NP^{S_k}$ so there exists a polynomial-time non-deterministic oracle machine $A^{S_k}$ which decides $S$.
+Let $A^{S_k}$'s runtime be bound by the polynomial $p$, and so we define the Karp reduction $f$ from $S$ to $S_{k+1}$ by
+\[ f(x) = \bigl(A^{S_k},\,x,\,1^{p(\abs x)}\bigr) \]
+Now $x\in S$ if and only if there exists a run of $A^{S_k}(x)$ which accepts $x$.
+Since the runtime of $A^{S_k}(x)$ is bound by $p(\abs x)$, $x\in S$ if and only if $A^{S_k}(x)$ accepts $x$ within $p(\abs x)$ time, which is if and only if $f(x)\in S_{k+1}$.
+Thus $x\in S$ if and only if $f(x)\in S_{k+1}$, so $f$ is indeed a Karp reduction from $S$ to $S_{k+1}$.
+
+Therefore $S_{k+1}$ is both in $\Sigma_{k+1}$ and $\Sigma_{k+1}$-hard, meaning it is $\Sigma_{k+1}$-complete.
+Therefore by induction we have shown that for every $k\geq1$, there exists a $\Sigma_k$-complete problem, as required.
+
+\newpage
+\begin{exercise*}
+
+    We will define an alternative polynomial hierarchy as follows:
+    \begin{align*}
+        \Sigma'_0 &= \P \\
+        \Sigma'_1 &= \NP\cap\coNP \\
+        \forall k\geq1\colon \Sigma'_{k+1} &= \NP^{\Sigma'_k} \\
+        \PH' &= \bigcup_{k=0}^\infty \Sigma'_k
+    \end{align*}
+    Prove, disprove, or show that this is equivalent to an open question:
+    \[ \PH = \PH' \]
+
+\end{exercise*}
+
+We will prove that $\PH=\PH'$.
+Firstly, since $\mathcal C\subseteq\NP^{\mathcal C}$, $\Sigma'_k$ is increasing.
+
+We will show inductively that for every $k\geq0$,
+\[ \Sigma_k \subseteq \Sigma'_{k+1} \subseteq \Sigma_{k+1} \]
+For $k=0$, this becomes
+\[ \P \subseteq \NP\cap\coNP \subseteq \NP \]
+which is true.
+Now suppose this is true for $k$, we will show it for $k+1$.
+This is true since
+\[ \Sigma_{k+1} = \NP^{\Sigma_k} \subseteq \NP^{\Sigma'_{k+1}} = \Sigma'_{k+2} \subseteq \NP^{\Sigma_{k+1}} = \Sigma_{k+2} \]
+as required.
+
+Since $\Sigma'_k$ is increasing, we can start the union for $\PH'$ at any index.
+Therefore
+\[ \PH' = \bigcup_{k=0}^\infty \Sigma'_k = \bigcup_{k=1}^\infty \Sigma'_k \supseteq \bigcup_{k=1}^\infty \Sigma_{k-1} = \bigcup_{k=0}^\infty \Sigma_k = \PH \]
+meaning $\PH'\supseteq\PH$.
+And on the other hand
+\[ \PH' \subseteq \bigcup_{k=0}^\infty \Sigma_k = \PH \]
+so $\PH'\subseteq\PH$, meaning $\PH'=\PH$, as required.
+
+\end{document}
+

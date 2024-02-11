@@ -1,0 +1,185 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input ../preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{ker}{{\rm ker}}({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{atan}{{\rm tan}^{-1}}({})
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\openset{{\cal O}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\def\bexerc{\begin{exercise*}}
+\def\eexerc{\end{exercise*}}
+\def\bblank{\begin{blankpp}}
+\def\eblank{\end{blankpp}}
+
+\begin{document}
+
+\c@section=8
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infintesimal Calculus 3}
+
+    \medskip
+    \textit{Assignment \thesection}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\bexerc
+
+    Find the crtitical points of the following functions and determine their types:
+    \benum
+        \item $f(x,y) = (x-1)^2 - 2y^2$
+        \item $f(x,y) = x^4 + y^4 - 2x^2 + 4xy - 2y^2$
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item The gradient here is
+        \[ \nabla f = \begin{pmatrix} 2(x-1) \\ -4y \end{pmatrix} \]
+        which is equal to $0$ only at $(1,0)$, so this is the only critical point.
+        If we hold $y$ constant at $0$, then $x=1$ is a minimum, ie $x=1$ is the minimum of $f(x,0)=(x-1)^2$ as it is a positive parabola.
+        But if we hold $x$ constant at $1$ then $y=0$ is the maximum of $f(1,y)=-2y^2$ so $(1,0)$ is an inflection point (neither a maximum nor a minimum).
+
+        \item The gradient here is
+                \[ \nabla f = \pmat{4x^3 - 4x + 4y \\ 4y^3 + 4x - 4y} \]
+        which, if when $0$, means that $4x^3+4y^3=0$ and so $y=-x$ and therefore $4x^3-8x=0$ and so $x=0$ or $x=\pm\sqrt2$.
+        So the crtitical points are
+        \[ \pmat{0\\0} \quad \pmat{\sqrt2\\-\sqrt2} \quad \pmat{-\sqrt2\\\sqrt2} \]
+        We will now compute the hessian:
+        \[ H_f(x,y) = \pmat{12x^2-4 & 4 \\ 4 & 12y^2-4} \]
+        So for $\pm\sqrt2(1,-1)$, the hessian is the same:
+        \[ \pmat{20 & 4 \\ 4 & 20} \]
+        And therefore they are minima.
+        For $(0,0)$, $x=0$ is a maximum of $f(x,0)=x^4-2x^2$ but $x=0$ is a minimum of $f(x,x)=2x^4$, and so $(0,0)$ is an inflection point.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    We define the following function:
+    \[ f(x,y) = (y-3x^2)(y-x^2) \]
+    \benum
+        \item Show that $(0,0)$ is a critical point.
+        \item Show that for every $a,b\in\bR$, $f(at,bt)$ has a local minimum at $(0,0)$.
+        \item Show that $(0,0)$ is not a minimum of $f$.
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item The gradient is
+        \[ \nabla f = \pmat{-6x(y-x^2)-2x(y-3x^2) \\ y-x^2+y-3x^2} = \pmat{12x^3-8xy \\ -4x^2+2y} \]
+        And since $\nabla f(0,0)=0$, $(0,0)$ is indeed a critical point.
+
+        \item We know that $d_t\bigl(f(at,bt)\bigr)=d_{x,y}f(at,bt)\cdot\pmat{a\\b}=\nabla f(at,bt)\cdot\pmat{a\\b}$ by the chain rule.
+        This is equal to $12a^4t^3-12a^2bt^2+2b^2t$.
+        This is equal to $0$ at $t=0$ (as it should since $(0,0)$ is a critical point of $f$'s), so $t=0$ is a critical point.
+        And its second derivative relative to $t$ at $t=0$ is $2b^2$ which is positive if $b\neq0$, so if $b\neq0$ then $t=0$ is a minimum, as required.
+        If $b=0$ then
+        \[ f(at,0) = (-3a^2t^2)(-a^2t^2) = a^4t^4 \]
+        which obviously has a minimum at $t=0$ as required.
+
+       \item Take $y=2x^2$ then
+       \[ f(x,2x^2) = -x^2\cdot x^2 = -x^4 \]
+       and so $x=0$ is a maximum here, so $(0,0)$ cannot be a minimum.
+    \eenum
+
+\eblank
+
+\bexerc
+
+\eexerc
+
+\bexerc
+
+\eexerc
+
+\bexerc
+
+    Does the following equation define $z$ as a function of $x$ and $y$ around $(-1,0,0)$?
+    Does it define a $y$ as a function of $x$ and $z$?
+    $x$ as a function of $y$ and $z$?
+
+\eexerc
+
+\bblank
+
+    \blist
+        \item It does not.
+        Since $z^4$ and $\cos(z)$ are even, if $z$ is a solution to this equation then so is $-z$, and so there can be no function which maps from values of $x$ and $y$ to values of $z$ unless it is
+        the constant zero function.
+        But $z=0$ is a solution if and only if $x^2+y^5=1$, but this does not define an open set.
+
+        \item It does, and we can find the function explicitly:
+        \[ y = \root 5\of{\bigl(z^4+1\bigr)^2 - \cos(z) - x^2 + 1} \]
+        Since this is defined on all of $\bR^2$, it is defined over every neighborhood of $(-1,0,0)$.
+
+        \item Using the implicit function theorem, since
+        \[ \pdv fx(-1,0,0) = \frac{x}{\sqrt{x^2+y^5+\cos(z)-1}}(-1,0,0) = -1 \]
+        and therefore the differential of $x$ is invertible, so by the implicit function theorem, $x$ can be written as a function of $y$ and $z$ in some environment of the point, as required.
+
+    \elist
+
+\eblank
+
+\bexerc
+
+    Prove that there exists a ball $B\subseteq\bR^4$ whose center is at $(2,1,-1,-2)$ and functions $f,g\colon B\longvarrightarrow\bR$ continuously differentiable such that
+    \[ f(2,1,-1,-2) = 4 \quad g(2,1,-1,2) = 3 \]
+    and for every $(x,y,z,a)\in B$:
+    \[ f^2+g^2+a^2 = 29 \quad \frac{f^2}{x^2} + \frac{g^2}{y^2} + \frac{a^2}{z^2} = 17 \]
+
+\eexerc
+
+\bblank
+
+    We can use the implicit function theorem to prove this.
+    We first define the function $h\colon\bR^{4\times2}\longvarrightarrow\bR^2$ by
+    \[ h(x,y,z,a,f,g) = \parens{f^2+g^2+a^2 - 29,\mkern8mu \frac{f^2}{x^2} + \frac{g^2}{y^2} + \frac{a^2}{z^2} - 17} \]
+    Notice then that
+    \[ J_{h,{f\atop g}}(x,y,z,a,f,g) = \pmat{2f & 2g \\ \frac{2f}{x^2} & \frac{2g}{y^2}} \]
+    so at $(2,1,-1,2,4,3)$:
+    \[ J_{h,\smash{\pmat{f\\g}}} = \pmat{8 & 6 \\ \frac12 & 6} \]
+    which is invertible as it has a non-zero determinant.
+    Thus by the implicit function theorem, in a neighborhood of $(2,1,-1,2)$ (which contains a ball centered at this point $B$, so we'll just take the ball $B$) such that $f$ and $g$ are indeed continuously
+    differentiable functions of $x,y,z,a$ where $h\bigl(x,y,z,a,f(x,y,z,a),g(x,y,z,a)\bigr)=0$ (which exactly defines the equations given in the question) and $f(2,1,-1,2)=4$ and $g(2,1,-1,2)=3$ (which are
+    the initial conditions given in the question), as required.
+
+\eblank
+
+\end{document}

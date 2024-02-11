@@ -1,0 +1,204 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input ../preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\def\openset{{\cal O}}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\pdf@drawing@macro{check}{0 1 0 RG 1.2 w 1 j 1 J 0 5 m 3 0 l 8 10 l S}{9.2pt}{12pt}{1pt}{1pt}
+\pdf@drawing@macro{ecks}{1 0 0 RG 0 0 m 1 j 1 J 10 10 l 0 10 m 10 0 l S}{11.2pt}{12pt}{1pt}{1pt}
+
+\let\lineseg=\overleftrightvecc
+
+\begin{document}
+
+\c@section=4
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infintesimal Calculus 3}
+
+    \medskip
+    \textit{Assignment 4}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{exercise*}
+
+    Determine if the following limits exist, and if they do, compute them:
+    \benum
+        \item $\ds\lim_{(x,y)\varrightarrow(0,0)}\frac{-\abs{x-y}}{e^{x^2-2xy-y^2}}$
+        \item $\ds\lim_{(x,y)\varrightarrow(0,0)}\frac{x\cdot\sin\bigl(x^4+y^4\bigr)}{x^4+y^4}$
+        \item $\ds\lim_{(x,y)\varrightarrow(0,0)}\frac{y^2}{x^4+y^2}$
+    \eenum
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    \benum
+        \item If we define $f(x,y)=\abs{x-y}$ and $g(t)=\frac{-t}{e^t}$, then this limit is equal
+            to:
+            \[ \lim_{(x,y)\varrightarrow(0,0)} g(f(x,y)) \]
+            Since the limit of $f(x,y)$ as $(x,y)\longvarrightarrow(0,0)$ is $0$, this is equal to:
+            \[ \lim_{t\varrightarrow0}g(t) = \lim_{t\varrightarrow}-\frac{t}{e^t} = 0 \]
+            So the limit exists and is equal to $0$.
+        \item We know that the limit of $x$ as $(x,y)$ approaches $(0,0)$ is $0$, and we will prove
+            that $\frac{\sin\bigl(x^4+y^4\bigr)}{x^4+y^4}$ converges.
+            If we let $t=x^4+y^4$, since $t$ approaches $0$ this limit is equal to:
+            \[ \lim_{t\varrightarrow0}\frac{\sin t}t = 1 \]
+            Since this converges, taking the limit of the product of this and $x$ converges to
+            $0$ (since the limit of a product is the product of limits if the limits exist).
+        \item This limit does not exist.
+            If we focus on the points $(x,0)$ as $x$ approaches $0$, the limit under this family
+            of points is
+            \[ \lim_{x\varrightarrow0}\frac{0^2}{x^4+0^2} = 0 \]
+            And if we focus on $(0,y)$ as $y$ approaches $0$ the limit is:
+            \[ \lim_{y\varrightarrow0}\frac{y^2}{y^2} = 1 \]
+            These two limits are not equal and therefore the limit does not exist.
+        \item This limit does not exist.
+            If we focus on the points $(x,0)$ as $x$ approaches $0$, the limit is:
+            \[ \lim_{x\varrightarrow0}\frac{x^2\cdot0^2}{x^2\cdot0^2+x^2} = 0 \]
+            And if we focus on the points $(x,x)$ as $x$ approaches $0$ we have:
+            \[ \lim_{x\varrightarrow0}\frac{x^4}{x^4} = 1 \]
+            These two partial limits are not equal and therefore the limit does not exist.
+    \eenum
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Does there exist a $\zeta$ such that the following function is continuous?
+    \[ f(x,y) = \begin{cases} x\cdot\log\bigl(x^2 + 3y^2\bigr) & (x,y)\neq(0,0) \\
+                    \zeta & (x,y)=(0,0) \end{cases} \]
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    To find such a $\zeta$ we must first show that $\lim\limits_{(x,y)\varrightarrow(0,0)}f(x,y)$
+    exists and to find this limit.
+    Notice that:
+        \[ \abs{x\cdot\log\bigl(x^2+3y^2\bigr)} \leq
+        \sqrt{x^2+3y^2}\cdot\abs{\log\bigl(x^2+3y^2\bigr)} \]
+    And so if we let $t=\sqrt{x^2+3y^2}$, then:
+        \[ \lim_{(x,y)\varrightarrow(0,0)}\abs{f(x,y)} \leq
+        \lim_{t\varrightarrow0}\abs{t\log t} = 0 \]
+    And so the limit is $0$, therefore $\zeta=0$ is the only solution.
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Is the set
+        \[ A = \set{(x,y)}[x\in\bQ\lor y\in\bQ] \]
+    connected? Is it path connected?
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    Notice that the set is equal to:
+        \[ A = \bQ\times\bR \cup \bR\times\bQ \]
+    We can think of this as:
+        \[ A = \biggl(\bigcup_{q\in\bQ}\set q\times\bR\biggr) \cup
+        \biggl(\bigcup_{q\in\bQ}\bR\times\set q\biggr) \]
+    This is essentially a grid of intersecting (perpendicular as well) lines, which is intuitively
+    path connected.
+
+    Suppose we have points $u,v\in A$.
+    Suppose $u=(p,x)$ and $v=(q,y)$ where $p,q\in\bQ$ and $x,y\in\bR$.
+    Without loss of generality suppose $x<y$ then there exists a $r\in\bQ$ such that $x<r<y$.
+    So if we define $u'=(p,r)$ and $v'=(q,r)$, then since $r$ is rational the line segment 
+    $\lineseg{u'v'}$ is contained in $A$.
+    So the polygonal chain:
+        \[ \lineseg{uu'}\cup\lineseg{u'v'}\cup\lineseg{v'v} \]
+    is a path contained in $A$ which connects $u$ and $v$.
+    An identical proof can be constructed if $u=(x,p)$ and $v=(y,q)$.
+
+    Similarly if $u=(p,x)$ and $v=(y,q)$ then if we define $u'=(p,q)\in A$ then the polygonal chain:
+        \[ \lineseg{uu'}\cup\lineseg{u'v} \]
+    connects $u$ and $v$ and is contained in $A$.
+
+    So $A$ is path connected and therefore also connected.
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Prove or disprove: if $A\subseteq\bR^2$ is countable then $\bR^2\setminus A$ is path connected.
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    This is true.
+    Suppose for the sake of a contradiction that it is not.
+    Then there exists two points $(x_1,y_1),(x_2,y_2)\in\bR^2\setminus A$ where there is no path
+    between them in $\bR^2\setminus A$.
+    Let $\ell$ be the line perpendicular to $\lineseg{x_1x_2}$ (suppose we only take one side
+    of it, where the sides are divided by $\lineseg{x_1x_2}$).
+    Then for every $a\in\ell$ there is a unqiue circle centered at $a$ which intersects $x_1$ and
+    $x_2$ since $\ell$ is perpendicular to $\lineseg{x_1x_2}$ so $\triangle x_1ax_2$ is an
+    isosceles triangle (so take the radius to be the distance between $a$ and $x_1$).
+    And these circles are disjoint other than at $x_1$ and $x_2$.
+    We will show this last point for $x_1=(0,1)$ and $x_2=(0,-1)$ and $\ell=\bR_{>0}\times\set 0$
+    The circle around $(a,0)$ is given by
+        \[ (x-a)^2 + y^2 = a^2 + 1 \equiv x^2 + y^2 - 2ax = 1 \]
+    And so for two different values, they intersect only when:
+        \[ \begin{cases} x^2 + y^2 - 2ax = 1 \\ x^2 + y^2 - 2bx = 1 \end{cases} \]
+    And so $2x(a-b)=0$, so $x=0$ and therefore the point is $x_1$ or $x_2$.
+    And since all circles are just scales and shifts of another circle, this holds for all circles.
+
+    So if we define $\gamma_a$ to be the arc on the circle around $a$ between $x_1$ and $x_2$, this
+    is a path between $x_1$ and $x_2$ in $\bR^2$.
+    Since we assumed $\bR^2\setminus A$ is not path connected, for every $a\in\ell$ there is a point
+    in $\gamma_a\cap A$.
+    So we can define a function $f\colon A\longvarrightarrow\ell$ where $f(x)=a$ such that
+    $x\in\gamma_a$.
+    As explained above, this must be injective since the circles are disjoint other than for $x_1$
+    and $x_2$ which are not in $A$.
+    And so it must also be surjective since for every $a\in\ell$ there is a point $x\in A$ such
+    that $x\in\gamma_a$ and this point cannot be sent to any other point other than $a$, so
+    $f(x)=a$.
+    So $f$ is a bijection.
+
+    But $A$ is countable and $\ell$ is a line in $\bR^2$ so it is uncountable, so there cannot be a
+    bijection between them, in contradiction.
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Suppose $A\subseteq\bR^2$, prove or disprove: $\overline{\interior A}=\interiorof{\overline A}$.
+
+\end{exercise*}
+
+\begin{proof}
+
+    Let $A=B_1(0)$.
+        \[ \overline{\interior A} = \overline{A} = \bar B_1(0) \qquad
+           \interiorof{\overline A} = \interiorof{\bar B_1(0)} = B_1(0) \]
+    And these are not equal.
+
+\end{proof}
+
+\end{document}
+

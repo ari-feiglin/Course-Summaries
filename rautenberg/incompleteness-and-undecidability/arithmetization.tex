@@ -1,0 +1,115 @@
+The goal of this section is to utilize G\"odel numbers to encode formulas and related concepts in the natural numbers, and then prove related properties (recursiveness, primitive recursiveness, etc) about
+them.
+In this section, we will set ${\cal L}={\cal L}_{\it ar}$ with the symbols $0,{\tt S},+,\cdot$.
+For symbols in the alphabet of ${\cal L}$ we define their {\it symbol code}
+$$ \vcenter{\vbox{\ialign{\strut\kern.25cm\hfil$#$\hfil\kern.25cm\vrule&&\kern.5cm\hfil$#$\hfil\cr
+    {\sf s}&\eq&\neg&\land&\forall&(&)&0&{\tt S}&+&\cdot&\v_0&\v_1\cr\noalign{\hrule}
+    \#{\sf s}&1&3&5&7&9&11&13&15&17&19&21&23\cr
+}}}\cdots $$
+Let ${\cal S}_{\cal L}$ denote the set of strings over the language ${\cal L}$.
+For a string $\xi=\s_0\cdots\s_n\in{\cal S}_{\cal L}$ we encode it by its {\it G\"odel number}, $\dot\xi\coloneqq\gen{\#\s_0,\dots,\#\s_1}=p_0^{1+\#\s_0}\cdots p_n^{1+\#\s_n}$.
+The empty string gets G\"odel number $1$.
+
+Obviously $(\xi\eta)^\cdot=\dot\xi*\dot\eta$ for strings $\xi,\eta$.
+And so $\dot{\cal S}_{\cal L}=\set{\dot\xi}[\xi\in{\cal S}_{\cal L}]$ is a pr subset of ${\it GN}$ since $n\in\dot{\cal S}_{\cal L}\iff n\in{\it GN}\land(\forall k<\ell n)2\ndivides\bparens{n}_k$ since
+symbol codes are odd.
+
+Notice that while $\#\s$ is the symbol code of the {\it symbol} $\s$, $\dot\s=2^{1+\#\s}$ is the G\"odel number of the atomic {\it string} $\s$.
+So for example, the symbol $0$ has a symbol code of $13$, but the prime term $0$ has a G\"odel number of $\dot0=2^{1+\#0}=2^{14}$.
+Thus we must distinguish between the set of prime terms $\v_0,\v_1,\dots$ cannot simply be identified with $\Var$.
+
+Let $W\subseteq{\cal S}_{\cal L}$, then we denote $\dot W\coloneqq\set{\dot\xi}[\xi\in W]$.
+If $P\subseteq{\cal S}_{\cal L}^n$ is a many-placed word-predicate then define $\dot P=\set{(\dot\xi_1,\dots,\dot\xi_n)}[(\xi_1,\dots,\xi_n)\in P]$.
+We say that $P$ is pr (resp. recursive) if $\dot P$ is pr (resp. recursive).
+So for example, if we say that $X\subseteq{\cal L}$ is a recursive axiom system, we mean that $\dot X$ is recursive.
+
+We need not restrict ourselves to ${\cal L}={\cal L}_{\it ar}$ for these definitions, we can define this for any language with countably many basic symbols.
+
+Our goal now is the arithmetize the formal proof method, $\vdash$ which we use to denote the Hilbert (not Gentzen) calculus of first-order logic.
+Recall that it includes the axiom system $\Lambda$ consisting of axioms $\Lambda1-\Lambda10$ and the rule of inference ${\it MP}$.
+Similar as for strings, for a non-empty finite sequence $\Phi=(\phi_0,\dots,\phi_n)$ of ${\cal L}$-formulas, define its {\it G\"odel number} $\dot\Phi=\gen{\dot\phi_0,\dots,\dot\phi_n}$.
+This includes the particular case where $\Phi$ is a proof.
+Notice that $\dot\Phi\neq\dot\xi$ for every $\xi\in{\cal S}_{\cal L}$ since $\bparens{\dot\Phi}_0=\dot\phi_0$ which is divisible by $2$, but $\bparens{\dot\xi}_0=\#\s_0$ is not.
+
+Let $X\subseteq{\cal L}$ form an axiom system for an ${\cal L}$-theory $T$.
+A proof $\Phi$ from $X$ is also called a {\it proof in $T$}.
+Here and onward, $X$ is tacitly assumed to be an essential part of $T$, interchangeable with it.
+Let us now define some pr functions: $\tilde\neg,\tilde\land,\tilde{\to}$ by
+$$ \tilde\neg a\coloneqq\dot\neg*a,\qquad a\tilde\land b\coloneqq\dot(*a*\dot\land*b*\dot),\qquad a\tilde{\to}b\coloneqq\tilde\neg(a\tilde\land\tilde\neg b) $$
+(for $\tilde{\to}$ the parentheses are argument parentheses, not numbers).
+
+We define the predicate $\proof_T$ to mean ``$\Phi$ is a proof in $T$'', $\bew_T$ to mean ``$\Phi$ is a proof of $\phi$ in $T$'', and $\bwb_T$ to mean ``there exists a proof of $\phi$ in $T$''.
+Definitions of these predicates are as follows:
+\benum
+    \item $\proof_T(b)\iff b\in\GN\land b\neq1\land(\forall k<\ell b)\bigl(\bparens b_k\in\dot X\cup\dot\Lambda\lor(\exists i,j<k)\parens b_i=\bparens b_j\tto\bparens b_k\bigr)$
+    Which is just a direct translation of the definition of a proof from $X$.
+    \item $\bew_T(b,a)\iff\proof_T(b)\land a=\bparens b_{\it last}$.
+    \item $\bwb_Ta\iff\exists b\,\bew_T(b,a)$.
+\eenum
+From these definitions we can obtain immediately
+\benum
+    \item $\vdash_T\alpha$ if and only if $\bwb_T\dot\alpha$,
+    \item $\bew_T(c,a)\land\bew_T(d,a\tto b)$ implies $\bew_T(c*d*\gen b,b)$,
+    \item $\bwb_Ta\land\bwb_T(a\tto b)$ implies $\bwb_Tb$,
+    \item $\bwb_T\dot\alpha\land\bwb_T(\alpha\to\beta)^\cdot$ implies $\bwb_T\dot\beta$.
+\eenum
+$(1)$ is clear since $\vdash_T\alpha$ if and only if there exists a proof of $\alpha$ in $T$, $\Phi$.
+Then $\exists n\,\bew_T(n,\dot\alpha)$ for $n=\dot\Phi$.
+$(2)$ just tells us we can concatenate proofs for $\alpha$ and $\alpha\to\beta$ to obtain a proof for $\beta$.
+$(3)$ results from $(2)$ by particularization, and $(3)$ implies $(4)$ since $(\alpha\to\beta)^\cdot=\dot\alpha\tto\dot\beta$.
+
+All of the notions we defined up to $\bew_T$ are pr ($\bwb_T$ is not).
+We will now spend time proving this.
+Let us define
+$$ \displaylines{
+    a\teq b\coloneqq a*\dot{\eq}*b,\quad \tforall(i,a)\coloneqq\dot\forall*i*a,\quad \texists(i,a)\coloneqq\dot\exists*i*a,\quad \tS a\coloneqq\dot{\tt S}*a,\cr
+    a\tplus b\coloneqq\dot(*a*\dot+*b*\dot),\quad a\tcdot b\coloneqq\dot(*a*\dot\cdot*b*\dot)
+} $$
+All these functions are obviously pr.
+
+For strings $\xi,\eta$ let $\xi\leq\eta$ mean $\dot\xi\leq\dot\eta$ (similar for $<$).
+This holds in particular if $\xi$ is a substring of $\eta$, since $a,b\leq a*b$ for G\"odel numbers.
+
+\blemm
+
+    The set of terms ${\cal T}$ is primitive recursive.
+
+\elemm
+
+The set ${\cal V}$ of the prime terms $\v_i$ is pr since $n\in\dot{\cal V}\iff(\exists k\leq n)n=2^{21+2k}$.
+And so the set of all prime terms ${\cal T}_{\it prim}={\cal V}\cup\set0$ is pr as well.
+The recursive definition of ${\cal T}$ gives that $t\in{\cal T}$ if and only if
+$$ t\in{\cal T}_{\it prim}\lor(\exists t_1,t_2<t)\bigl(t_1,t_2\in{\cal T}\land(t={\tt S}t_1\lor t=(t_1+t_2)\lor t=(t_1\cdot t_2))\bigr) $$
+And so
+$$ n\in\dot{\cal T}\iff n\in{\cal T}_{\it prim}\lor(\exists i,k<n)\bigl(i,k\in\dot{\cal T}\land Q(n,i,k)\bigr) $$
+where $Q(n,i,k)$ is the pr predicate $(n=\tilde Si\lor n=i\tplus k\lor n=i\tcdot k)$.
+We now convert this definition of $\dot{\cal T}$ to a recursive definition of $\chi_{\dot{\cal T}}$ using $\boldsymbol{Oq}$.
+Define
+$$ P(a,n) \iff n\in{\cal T}_{\it prim}\lor(\exists i,k<n)\bigl(\bparens a_i=\bparens a_k=1\land Q(n,i,k)\bigr) $$
+We claim then that $f\coloneqq\chi_{\dot{\cal T}}$ satisfies $\boldsymbol{Oq}$: $fn=\chi_P(\bar fn,n)$, where $\bar fn=\gen{f0,\dots,f(n-1)}$, and so $f$ is then pr.
+Indeed, $fi=fk=1$ if and only if $i,k\in\dot{\cal T}$ by definition, so
+$$ \eqalign{
+    n\in\dot{\cal T}&\iff n\in{\cal T}_{\it prim}\lor(\exists i,k<n)\bigl(fi=fk=1\land Q(n,i,k)\bigr)\cr
+    &\iff P(\bar fn,n)\qquad \hbox{(since $\bparens{\bar fn}_i=fi$ and $\bparens{\bar fn}_k=fk$)}
+} $$
+Which means that $fn=1\iff\chi_P(\bar fn,n)=1$ and so $fn=\chi_P(\bar fn,n)$ since they are both indicator functions.
+\qed
+
+In a similar manner we prove that ${\cal L}$ is pr.
+Here
+$$ n\in\dot{\cal L}_{\it prim} \iff (\exists i,k<n)\bigl(i,k\in\dot{\cal T}\land n=i\teq k\bigr) $$
+which is obviously pr.
+Then $\phi\in{\cal L}$ is defined by
+$$ \phi\in{\cal L}_{\it prim}\lor(\exists\alpha,\beta,x<\phi)\bigl(\alpha,\beta\in{\cal L}\land x\in{\cal V}\land\bigl(\phi=\neg\alpha\lor\phi=(\alpha\land\beta)\lor\phi=\forall x\alpha\bigr)\bigr) $$
+Define $Q(n,i,k,x)$ to mean $(n=\tneg i\lor n=i\tand k\lor n=\tforall(x,i))$ which is pr.
+Then define
+$$ P(a,n) \iff n\in\dot{\cal L}_{\it prim}\lor(\exists i,k,x<n)\bigl(\bparens a_i=\bparens a_k=1\land x\in\dot{\cal V}\land Q(n,i,k,x)\bigr) $$
+Then $f\coloneqq\chi_{\dot{\cal L}}$ satisfies $fn=\chi_P(\bar fn,n)$, as before.
+So we have shown
+
+\blemm
+
+    The set ${\cal L}={\cal L}_{\it ar}$ of all formulas is primitive recursive.
+
+\elemm
+

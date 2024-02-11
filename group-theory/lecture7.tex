@@ -1,0 +1,182 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\slfrac#1#2{\left.{}^{#1}\mkern-4mu\middle/\mkern-3mu{}_{#2}\right.}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\newfunc{eulerg}{{\rm Euler}}({})
+\newfunc{order}o({})
+\newfunc{ker}{{\rm Ker}}({})
+\newfunc{image}{{\rm Im}}({})
+\newfunc{lattice}{{\cal L}}(\vert)
+\newfunc{powset}{{\cal P}}(\vert)
+\newfunc{units}{{\cal U}}(\vert)
+\newfunc{sign}{{\rm sgn}}({})
+\newfunc{aut}{{\rm Aut}}({})
+
+\let\normalsub=\trianglelefteq
+
+\begin{document}
+
+\c@section=7
+
+\barcolorbox{220, 220, 255}{0, 0, 130}{80, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Group Theory}
+
+    \medskip
+    \textit{Lecture \thesection, Sunday November 27, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{Free Groups}
+
+\begin{defn*}
+
+    A \ppemph{graph} is an ordered pair $G=(V,E)$ where $V$ is the set of \ppemph{vertices} and $E$ is the set of \ppemph{edges}.
+    If $G$ is \ppemph{ordered} then $E\subseteq V\times V$, and if $G$ is \ppemph{unordered} then $E\subseteq\powsetof V$ where the size of each set in $E$ has at most $2$ elements (or exactly $2$ if the
+    graph doesn't contain self-loops).
+
+\end{defn*}
+
+\begin{defn*}
+
+    An \ppemph{isomorphism} between two graphs $G=(V,E)$ and $G'=(V',E')$ is a bijective function $\phi\colon V\longvarrightarrow V'$ such that $\set{u,v}\in E$ if and only if $\set{\phi(u),\phi(v)}\in E'$.
+    An \ppemph{automorphism} over a graph $G$ is an isomorphism between it and itself.
+    The set of automorphisms over $G$ is denoted $\autof G$.
+
+\end{defn*}
+
+Notice that if $\sigma,\tau$ are isomorphisms between $G_1$ and $G_2$ and $G_2$ and $G_3$ then $\tau\circ\sigma$ is an isomorphism between $G_1$ and $G_3$, since $\set{u,v}\in E_1$ if and only if
+$\set{\sigma(u),\sigma(v)}\in E_2$ which is equivalent to $\set{\tau\circ\sigma(u),\tau\circ\sigma(v)}\in E_3$.
+And if $\sigma$ is a graph isomorphism, so is $\sigma^{-1}$ since if $\set{u,v}\in E_2$ then let $u'$ and $v'$ be their preimages and so $\set{\sigma(u'),\sigma(v')}\in E_1$ and therefore
+$\set{u',v'}=\set{\sigma^{-1}(u'),\sigma^{-1}(v')}\in E_1$ as required.
+This means that $\autof G$ is a group under composition.
+
+Notice that by definition, an automorphism simply permutes the vertices, so $\autof G\leq S_V$.
+
+\begin{exam}
+
+    We define a graph $C^G_n=(\bZ_n,E)$ where $E=\set{\set{k,k+1}}[k\in\bZ_n]$.
+    Then we define the \ppemph{dihedral group} to be $D_n=\autof{C^G_n}\subseteq S_n$ (really it is a subgroup of the permutations over $\bZ_n$).
+
+    Notice that $C_n^G$ represents a regular polygon with $n$ vertices, and $D_n$ is the set of all symmetries of a regular polygon with $n$ vertices (it represents all the actions you can do on the polygon
+    without ripping or deforming it, like rotating, flipping, etc).
+    As it turns out, all these operations can be done via a combination of rotating and flipping.
+
+    Notice then that if $\sigma\in D_n$ then $\sigma(1)=\sigma(0)+1$ or $\sigma(0)-1$, so let $k=\sigma(0)$.
+    If $\sigma(1)=k+1$ then $\sigma(2)=k+2$ (since it can't be $k$ since that is $\sigma(1)$), and so on: $\sigma(i)=k+i$.
+    And if $\sigma(1)=k-1$ then $\sigma(i)=k-i$.
+    So we have $n$ choices for $\sigma(0)$, and then $2$ choices for $\sigma(1)$ which together determine the rest of $\sigma$.
+    Thus there are $2n$ choices for $\sigma$, so $\abs{D_n}=2n$.
+
+    Notice that if we define $\sigma$ to be a rotation by one, that is $\sigma(k)=k+1$ and $\tau$ to be the flip around $0$, that is $\tau(1)=-1=n-1$ and in general $\tau(k)=-k$, every element in $D_n$ can
+    be written as either $\sigma^i$ or $\sigma^i\tau$.
+    So 
+        \[ D_n=\set{\sigma^i,\sigma^i\tau} . \]
+    The proof of this follows the inuition above, suppose $\pi\in D_n$, then let $k=\pi(0)$, then $\pi(1)=i\pm1$.
+    If $\pi(1)=k+1$ then as explained above $\pi(i)=k+i$, so $\pi=\sigma^k$ (since $\sigma^k(i)=k+i$).
+    And if $\pi(1)=k-1$ then as explained above $\pi(i)=k-i$, and $\sigma^k\tau(i)=\sigma^k(-i)=k-i$.
+
+    Notice that $\tau^2=I$, $\sigma\tau\sigma=I$ and $\tau\sigma^i\tau=\sigma^{-i}$ (intuitively, flipping twice results in the same graph; flipping then rotating then flipping and rotating is as if you
+    rotated, then rotated in the opoosite direction, doing nothing; and flipping then rotating then flipping back is as if you rotated in the opposite direction), so $\tau\sigma^i=\sigma^{-i}\tau$.
+
+\end{exam}
+
+\begin{defn*}
+
+    We define the \ppemph{free group} over an alphabet $\Sigma=\set{x_1,\dots,x_n}$ is the Kleene closure of $\Sigma'=\set{x_1,\dots,x_n,x^{-1}_1,\dots,x_n^{-1}}$.
+    This is denoted $\bF_n$.
+    It is a group over the operation of word concatenation.
+    We use the notation $\cycle{x_1,\dots,x_k}[w_1,\dots,w_t]$ where $w_1,\dots,w_n\in\bF_k$ as the group $\slfrac{\bF_k}R$ where $R$ is the smallest normal subgroup of $\bF_k$ which contains all of the
+    $w_j$.
+    That is $R=\cycle{\set{gw_jg^{-1}}[g\in\bF_k]}$.
+
+\end{defn*}
+
+Notice that $\bF_k$ isn't abelian for any $k>1$ and for $k=1$, $\bF_1=\cycle{x}\cong\bZ$.
+
+We can define the dihedral group by:
+\[ D_n = \cycle{\sigma,\tau}[\sigma^n, \tau^2, \sigma\tau\sigma\tau] \]
+Similarly:
+\[ \bZ_n = \slfrac\bZ{n\bZ} = \cycle{x}[x^n] \]
+Since $n\bZ=\cycle{n}=\cycle{1^n}$.
+And
+\[ \bZ_n\times\bZ_m=\cycle{x,y}[x^n=1,y^n=1,xy=yx] \]
+This is simply an abuse of notation for $\cycle{x,y}[x^n,y^n,xyx^{-1}y^{-1}]$.
+
+Look at the following group:
+\[ G = \cycle{x,y}[x^5=y^2=1,yxy^{-1}=x^3] \]
+Then $x=y^2xy^{-2}=y(yxy^{-1})y^{-1}=yx^3y^{-1}=(yxy^{-1})^3=x^9$, so $x=x^9$, so $x^8=1$ and $x^5=1$ and since $8$ and $5$ are coprime, $x=1$.
+So $G=\cycle{y}[y^2=1]$.
+
+It actually turns out that there does not exist an algorithm which determines whether or not given a representation of a finite group, the group is trivial.
+
+\begin{defn*}
+
+    The \ppemph{Quaternion Group} of size $2n$ is the group:
+    \[ Q_{2n} = \cycle{x,y}[x^n=y^2, yx=yx^{-1}, y^4=1] = \set{x^iy^j}[0\leq i\leq n-1, 0\leq j\leq 3] \]
+
+\end{defn*}
+
+\begin{lemm*}
+
+    Every group of prime order is cyclic.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Let $e\neq a\in G$ then $o(a)\divides p$, so $o(a)=p$ and therefore $G=\cycle a$.
+
+\end{proof}
+
+\begin{thrm*}
+
+    The following are all the groups of order $<16$, up to isomorphism:
+    \[ \begin{array}{c|c|c|c|c|c|c|c}
+        1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+        \set e & \bZ_2 & \bZ_3 & \bZ_4, \bZ_2\times\bZ_2 & \bZ_5 & \bZ_6, S_3 & \bZ_7 & \bZ_8, \bZ_2\times\bZ_4, \bZ_2\times\bZ_2\times\bZ_2, D_4, Q_4 \\
+        \hline 9 & 10 & 11 & 12 & 13 & 14 & 15 \\
+        \bZ_9 & \bZ_3\times\bZ_3 & \bZ_{10}, D_5 &
+        \bZ_{12}, \bZ_2\times\bZ_6, A_4, D_6, Q_6 & \bZ_{13} & \bZ_{14}, D_7 & \bZ_{15}
+       \end{array}
+    \]
+
+\end{thrm*}
+
+We will not be proving this.
+
+\subsection{Chains}
+
+\begin{defn*}
+
+    A \ppemph{chain} of groups $(A_1,\dots,A_n)$ are homomorphisms $(f_1,\dots,f_{n-1})$ where $f_i\colon A_i\longvarrightarrow A_{i+1}$ such that $f_{i+1}\circ f_i=I$ ($\image f_i\subseteq\ker f_{i+1}$).
+    And a chain is \ppemph{exact} if $\image f_i=\ker f_{i+1}$).
+
+\end{defn*}
+
+Notice that $A\xvarrightarrow{f}B\longvarrightarrow\set e$ is exact if and only if $f$ is an epimorphism (surjective) and $\set e\longvarrightarrow A\xvarrightarrow{f}B$ is exact if and only if $f$ is a
+monomorphism (injective).
+And so $\set e\longvarrightarrow A\xvarrightarrow{f}B\longvarrightarrow\set e$ is exact if and only if $f$ is an isomorphism.
+And $\set e\longvarrightarrow A\xvarrightarrow{f}B\xvarrightarrow{g}C\longvarrightarrow\set e$ is exact if and only if $f$ is an monomorphism and $g$ is an epimorphism and $\image f=\ker g$.
+Since $C\cong\slfrac{B}{\ker g}$ and $\image f\cong A$, so $\ker g\cong A$.
+\end{document}
+

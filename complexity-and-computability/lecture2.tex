@@ -1,0 +1,243 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{conj}{Conjecture}{255,130,130}{150,0,0}{200,0,0}
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\PF{\mathbf{PF}}
+\def\PC{\mathbf{PC}}
+\def\P{\mathbf{P}}
+\def\NP{\mathbf{NP}}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mN{\mathcal{N}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=2
+
+\barcolorbox{255, 220, 220}{130, 0, 0}{200, 80, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Computability and Complexity}
+
+    \medskip
+    \textit{Lecture \thesection, Thursday August 3, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+For every search problem $R$, there exists a related decision problem
+\[ S_R = \set{x}[\exists y\colon (x,y)\in R] \]
+$S_R$ essentially asks ``does this input have a solution?''
+
+\begin{note}
+
+    Recall that in our definition of $\PC$ we similarly related a search problem with a decision problem.
+    For a search problem $R$ we instead had the decision problem
+    \[ \set{(x,y)}[(x,y)\in R] \]
+    (This is equal to $R$, but we are viewing this as a decision problem, not a search problem.
+    Meaning that we don't view $(x,y)$ as $x$ being the input and $y$ being the output, rather $(x,y)$ is an element of the decision.)
+
+    This decision problem is more closely related to $R$, but it doesn't really simplify anything; after all the set is literally equal to $R$.
+
+\end{note}
+
+\begin{prop*}
+
+    $\P=\NP$ if and only if $\PC\subseteq\PF$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $\PC\subseteq\PF$, then let $S\in\NP$.
+    So there exists a verifier $V$ which runs in polynomial time and a polynomial $p$ such that $x\in S$ if and only if there exists a $y$ where $\abs y\leq p(\abs x)$ and $V(x,y)=1$.
+    Then let us define the search problem $R$
+    \[ R = \set{(x,y)}[\abs y\leq p(\abs x),\,V(x,y) = 1] \]
+    then $R\in\PC$ since $V$ solves $R$ and runs in polynomial time.
+    Thus $R\in\PF$, and so there exists an algorithm $A$ such that for every $x$, $A(x)\in R(x)$, meaning $V(x,A(x))=1$ and $\abs{A(x)}\leq p(\abs x)$ (if such an $A(x)$ exists).
+    And so let us define an algorithm $B$ where $B(x)=1$ if and only if $A(x)\neq\perp$.
+
+    Then $B$ runs in polynomial time, and $B(x)=1$ if and only if there exists an $A(x)$ such that $V(x,A(x))=1$ and $\abs{A(x)}\leq p(\abs x)$ which is if and only if $x\in S$.
+    So $B$ solves $S$ in polynomial time, and so $S\in\P$.
+
+    Now suppose $\P=\NP$ and let $R\in\PC$.
+    Then there exists an algorithm $A$ which runs in polynomial time, and a polynomial $p$, such that $A(x,y)=1$ if and only if $(x,y)\in R$.
+    Let us define the \emph{decision} problem
+    \[ S'_R = \set{(x,u)}[\exists w\colon (x,uw)\in R] \]
+    which asks if there exists a solution to $x$ which starts with $u$.
+    Then $S'_R$ is in $\NP$ as $(x,u)\in S'_R$ if and only if there exists a $w$ where $\abs u+\abs w\leq p(\abs x)$ and $A(x,uw)=1$.
+    Thus $V((x,u),w)=A(x,uw)$ is a polynomial proof system for $S'_R$.
+    And so $S'_R\in\P$, so there exists a polynomial time algorithm $D$ where $D(x,u)=1$ if and only if there exists a $w$ where $(x,uw)\in R$.
+
+    Then let us define an algorithm $B$ where we first run $D(x,\epsilon)$, and if it returns zero then return $\perp$ (as there does not exist a solution).
+    Otherwise, let us run $D(x,1)$ and if it returns zero then the solution must start with zero, and so we run $D(x,11)$ and so on.
+
+    \algorithm
+        \Function{$C$}{$x,u$}
+            \If{$A(x,u)=1$}
+                \State\textbf{return} $u$
+            \ElseIf{$D(x,u1)=1$}
+                \State\textbf{return} $C(x,u1)$
+            \Else
+                \State\textbf{return} $C(x,u0)$
+            \EndIf
+        \EndFunc
+        \State
+        \Function{$B$}{$x$}
+            \lIf{$D(x,\epsilon)=0$} \textbf{return} $\perp$
+            \lElse \textbf{return} $C(x,\epsilon)$
+        \EndFunc
+    \ealgorithm
+
+    So our algorithm checks that $D(x,\epsilon)\neq0$, then it runs and returns $C(x,\epsilon)$.
+    There are at most $p(\abs x)$ steps, so this runs in polynomial time.
+    \qed
+    
+\end{proof}
+
+Notice that in the proof above, we used a solution to one problem to solve another.
+This is called an \emph{reduction}:
+
+\begin{defn*}
+
+    If $A$ and $B$ are both problems, then a \ppemph{reduction} from $A$ to $B$ means that $A$ is no harder than $B$ to solve (as in there exists a solution to $A$ using $B$).
+    This is denoted $A\leq B$.
+
+\end{defn*}
+
+So if $A\leq B$, and you do not know how to solve $A$, then you do not know how to solve $B$.
+
+\begin{defn*}
+
+    A \ppemph{Cook reduction} from a problem $A$ to $B$ is a polynomial time algorithm which solves $A$ using an oracle for $B$.
+    An \ppemph{oracle} for $B$ takes input and returns a solution for $B$ within one step.
+
+\end{defn*}
+
+So for example, in the above proof we used a Cook reduction from $R$ to $S'_R$.
+
+\begin{defn*}
+
+    If $R$ is a search problem, then a \ppemph{self-reduction} is a Cook reduction from $R$ to $S_R$.
+
+\end{defn*}
+
+\def\Rsat{R_{\text{SAT}}}
+\def\sat{\mathsf{SAT}}
+\begin{exam*}
+
+    Recall that
+    \[ \Rsat = \set{(\phi,\tau)}[\text{$\phi$ is a boolean formula in CNF, and $\phi(\tau)$ is true}] \]
+    We can create a self-reduction of $\Rsat$, which is a reduction from $\Rsat$ to $S_{\Rsat}=\sat$.
+
+    Suppose we have an oracle $A$ for $\sat$.
+    And suppose $\phi$ is a formula over the set of variables $\set{x_1,\dots,x_n}$.
+    What we do is first set $x_1$ to true, and then for each disjunction, it is of the form $\bigvee_{i=1}^n\epsilon_ix_i$.
+    If $\epsilon_1$ is empty, then we can get rid of this disjunction, as it is true.
+    Otherwise we remove $x_1$ from the disjunction.
+    This forms a new formula in CNF $\phi_1$, and we can check if $\phi_1$ has a solution using our oracle for $\sat$.
+    If it does, then we can recurse over $\phi_1$ where the beginning of our solution has $x_1=1$.
+
+    Otherwise we form $\phi'_1$ where we do a similar process but when $x_1=0$.
+
+    More explicitly,
+    \benum
+        \item Ask the oracle if $\phi\in\sat$.
+        \item If not, return $\perp$.
+        \item Otherwise, set $\tau$ to $\epsilon$.
+        \item For $i=1$ to $n$:
+        \benum
+            \item Define $\tau'$ to be $\tau1$.
+            \item Define $\phi'$ by valuating the first $i$ variables as their elements in $\tau$.
+            \item Ask the oracle if $\phi'\in\sat$.
+            \item If yes, set $\tau$ to be $\tau'$.
+            \item Otherwise, set $\tau$ to be $\tau0$.
+        \eenum
+    \eenum
+
+\end{exam*}
+
+\begin{note}
+
+    If $R$ is a search problem which is self-reducing (as in it has a self reduction), then $R$ and $S_R$ are equivalent up to a polynomial.
+
+    If we can solve $R$, then we can solve $S_R$ by simply checking if the algorithm which solves $R$ does not return $\perp$.
+    And since there is a self-reduction, if we can solve $S_R$ then we can solve $R$ using a polynomial time algorithm (as Cook reductions are polynomial time).
+
+\end{note}
+
+\begin{defn*}
+
+    Let $S_1$ and $S_2$ be two decision problems.
+    A \ppemph{Karp reduction} from $S_1$ to $S_2$ is a function $f$ which can be computed in polynomial time which satisfies
+    \[ x\in S_1 \iff f(x)\in S_2 \]
+    This is denoted $S_1\leq_p^m S_2$ ($p$ for polynomial, $m$ for many-to-one, as $f$ need not be injective).
+
+\end{defn*}
+
+\begin{prop*}
+
+    If $S_2\in\P$ and there is a Karp reduction from $S_1$ to $S_2$, then $S_1\in\P$.
+
+\end{prop*}
+
+The proof is not too complicated: define an algorithm $A(x)$ which computes $f(x)$ and then determines if $f(x)\in S_2$.
+Since computing $f(x)$ and determining if $f(x)\in S_2$ both take polynomial time (since $f$ is a Karp reduction, and $S_2\in\P$), $A$ is a polynomial time algorithm and therefore $S_2\in\P$.
+
+\end{document}
+

@@ -1,0 +1,360 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{diam}{{\rm diam}}(\vert)
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+\newfunc{cis}{{\rm cis}}({})
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{sup}{{\rm sup}}\{\vert\}
+
+\font\bigbf = cmbx12 scaled 2000
+\@undervecc@def{underbar}\@linecap\@linecap
+
+\def\openset{{\cal O}}
+\def\mU{{\cal U}}
+\let\lineseg=\overleftrightvecc
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\qed{\hskip1cm\hbox{}\hfill$\blacksquare$}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=5
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Complex Functions}
+
+    \medskip
+    \textit{Lecture \thesection, Wednesday April 26, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{prop*}
+
+    Let $\set{f_n}$ be a sequence of complex functions which are continuous on a curve $C$ and converge uniformly to $f$.
+    Then
+    \[ \int_C f(z)\,dz = \lim_{n\to\infty}\int_C f_n(z)\,dz \]
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $\epsilon>0$ then there exists an $N$ such that for every $n\geq N$, $\abs{f_n(z)-f(z)}<\epsilon$ on the curve.
+    Then we know that
+    \[ \abs{\int_C f_n-f\,dz} < \epsilon\ell \]
+    where $\ell$ is the length of $C$.
+    Thus
+    \[ \int_C f_n \longto \int_C f \]
+    as required.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    Let $F$ be a continuously differentiable complex function.
+    Let $C$ be the smooth curve given by $z\colon[a,b]\longto\bC$ then
+    \[ \int_C F'(z)\,dz = F(z(b)) - F(z(a)) \]
+
+\end{prop*}
+
+\begin{proof}
+
+    Let us define $\gamma\colon[a,b]\longto\bC$ by $\gamma(t)=F(z(t))$ then
+    \[ \gamma'(t) = \lim_{h\to0}\frac{F\bigl(z(t+h)\bigr) - F\bigl(z(t)\bigr)}h \]
+    Since the curve is differentiable except for at a finite number of points, and is smooth:
+    \[ 0\neq z'(t) = \lim_{\bR\ni h\to0}\frac{z(t+h) - z(t)}h \]
+    And so there exists a $\delta>0$ such that for every $\abs h<\delta$, $z(t+h)-z(t)\neq0$.
+    So then we can divide by $z(t+h)-z(t)$ in:
+    \[ \gamma'(t) = \lim_{h\to0}\frac{F(z(t+h)) - F(z(t))}{z(t+h)-z(t)}\cdot\frac{z(t+h) - z(h)}h = \lim_{s\to z(t)}\frac{F(s) - F(z(t))}{s-z(t)}\cdot\lim_{h\to0}\frac{z(t+h) - z(t)}h \]
+    Where the final equality is due to $z$ being continuous.
+    Since $F$ is differentiable, this is equal to
+    \[ = F'(z(t))\cdot z'(t) \]
+
+    So we have that
+    \[ \int_C F'(z)\,dz = \int_a^b F'\bigl(z(t)\bigr)z'(t)\,dt = \int_a^b \gamma'(t)\,dt \]
+    Since $\gamma$ has real domain, this is equal to:
+    \[ = \gamma(b) - \gamma(a) = F(z(a)) - F(z(b)) \]
+    As required.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    A curve $C$ given by $z\colon[a,b]\longto\bC$ is \ppemph{closed} if $z(a)=z(b)$.
+    A closed curve which is also injective is called a \ppemph{Jordan curve}.
+
+\end{defn*}
+
+The following theorem is stated without proof:
+
+\begin{thrm*}[jordanTheorem,Jordan's\ Theorem]
+
+    If $C$ is a Jordan curve then $\bC\setminus C$ has exactly two connected components.
+    One is bound and is called the interior of $C$ and the other is unbound and is the exterior.
+
+\end{thrm*}
+
+\begin{defn*}
+
+    A \ppemph{complex closed rectangle} is a set of the form $R=\set{z\in\bC}[{(\Re z,\Im z)\in[a,b]\times[c,d]}]$
+    We say that a complex function is closed in a closed rectangle $R$ if there exists a neighborhood of $R$, $R\subseteq\mU$ such that $f$ is analytic in $\mU$.
+
+\end{defn*}
+
+When we study the parameterization of a boundary as a smooth curve, we consider its \emph{positive direction} to be counterclockwise.
+
+\begin{thrm*}[cauchyRectTheorem,Cauchy's\ Theorem\ For\ Rectangles]
+
+    Suppose $f$ is analytic in a rectangle $R$.
+    Let $\Gamma$ be the positive boundary of $R$.
+    Then
+    \[ \int_\Gamma f(z)\,dz = 0 \]
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let $I=\int_\Gamma f(z)\,dz$.
+    We then define $\Gamma_1,\dots,\Gamma_4$ be the positive smooth curves obtained by splitting $R$ into four equal subrectangles (and halving the domains).
+    Then we have
+    \[ \int_\Gamma f(z)\,dz = \sum_{i=1}^4 \int_{\Gamma_i} f(z)\,dz \]
+    As the ``internal'' components of the integrals (the values of $f(z)$ taken on $\Gamma_i$ not on $\Gamma$) cancel out as the directions differ on different $\Gamma_i$s.
+    So you can create an orientation-reversing bijection between the curves on these vertices, and you get the negative curve.
+    There exists some $k$ such that
+    \[ \abs{\int_{\Gamma_k} f(z)\,dz} \geq \frac{\abs I}4 \]
+    Let this rectangle be $R^{(1)}$ and its boundary $\Gamma^{(1)}$.
+    Recurively we get
+    \[ \arraycolsep=2pt \begin{array}{ccccccc}
+        R & \supset & R^{(1)} & \supset & R^{(2)} & \supset & \cdots \\
+        \Gamma, & & \Gamma^{(1)}, & & \Gamma^{(2)}, & & \dots 
+    \end{array} \]
+
+    Where
+    \[ \diam R^{(k)} = \frac{\diam R^{(k-1)}}2 = \frac{\diam R}{2^k} \]
+    And
+    \[ \abs{\int_{\Gamma^{(k)}} f(z)\,dz} \geq \frac{\abs I}{4^k} \]
+    By Cantor's lemma, since $R^{(k)}$ is a contracting sequence of closed sets
+    \[ \bigcap_{k=0}^\infty R^{(k)} = \set{z_0} \]
+    Since $f$ is analytic:
+    \[ \lim_{z\to z_0} \frac{f(z) - f(z_0)}{z-z_0} = f'(z_0) \implies f(z) = f(z_0) + f'(z_0)(z-z_0) + \alpha(z-z_0)(z-z_0) \]
+    Where $\frac{\epsilon(h)}h\xvarrightarrow{}[h\to0]0$.
+    So
+    \[ \int_{\Gamma^{(k)}}f(z)\,dz = \int_{\Gamma^{(k)}} f(z_0)\,dz + \int_{\Gamma^{(k)}} f'(z_0)(z-z_0)\,dz + \int_{\Gamma^{(k)}} \alpha(z-z_0)(z-z_0)\,dz \]
+    The first two integrals are equal to zero.
+    The first is zero since the integral $\int_{\Gamma^{(k)}}\,dz=0$ since opposite sides of the rectangle have opposite directions and therefore cancel out.
+    And the first integral is a scalar multiple of this.
+    The second integral is equal to a scalar multiple of
+    \[ \int_a^b z(t)\cdot z'(t)\,dt = \int_{z(a)}^{z(b)} z(t)\,dz = 0 \]
+    since $z(a)=z(b)$.
+
+    Thus
+    \[ \int_{\Gamma^{(k)}}f(z)\,dz = \int_{\Gamma^{(k)}}\alpha(z-z_0)(z-z_0)\,dz \]
+
+    Suppose the longer edge of $R$ has length $S$ then
+    \[ \int_{\Gamma^{(k)}} \abs{dz} \leq \frac{4S}{2^k} \]
+    as the left side is equal to the perimeter of $\Gamma^{(k)}$.
+    Since for every $z\in\Gamma^{(k)}$
+    \[ \abs{z-z_0}\leq\diam\Gamma^{(k)}\leq\frac{\diam R}{2^n}\leq\frac{\sqrt 2S}{2^n} \]
+    Let $\epsilon>0$, by the continuity of $\alpha$ at $0$, there exists an $N$ such that whenever
+    \[ \abs{z-z_0} \leq \frac{\sqrt 2S}{2^N} \implies \abs{\alpha(z-z_0)}<\epsilon \]
+    Thus for every $n\geq N$:
+    \[ \frac{\abs I}{4^n} \leq \abs{\int_{\Gamma^{(n)}} f(z)\,dz} = \abs{\int_{\Gamma^{(n)}}\alpha(z-z_0)(z-z_0)} \leq \sup_{z\in\Gamma^{(n)}}\abs{\alpha(z-z_0)}\abs{z-z_0}\cdot\ell_n \]
+    where $\ell_n$ is the perimiter of $\Gamma^{(n)}$.
+    And this is less than
+    \[ \leq \epsilon\cdot\frac{\sqrt2S}{2^n}\cdot\frac{4S}{2^n} = \epsilon\cdot\frac{4\sqrt2S^2}{4^n} \]
+    So
+    \[ \abs I \leq \epsilon\cdot(4\sqrt2S^2) \]
+    And since $\epsilon>0$ is arbitrary, this means $I=0$ as required.
+    \qed
+
+\end{proof}
+
+Notice then that if we have two straight-edged paths from $z$ to $w$, then integrating a function over either of these two paths will result in the same result.
+This is because if we reverse the direction of one of the curves we have a closed path, and so the integral will be $0$.
+But this integral is also equal to the difference of the integral of the function over the curves, so they must be equal.
+
+\begin{thrm*}
+
+    Let $f$ be an analytic function in the rectangle $R=R\bigl([a,b]\times[c,d]\bigr)$.
+    Then there exists a function $F$ in $R$ such that $F$ is analytic in $R$ and $F'(z)=f(z)$ for every $z\in R$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    We can assume that $R=R\bigl([0,b]\times[0,d]\bigr)$ by shifting $f$.
+    For every $z\in R$ we define:
+    \[ F(z) = \int_0^z f(w)\,dw \]
+    where $w$ is the curve which is the concatenation of the curves $[0,\Re z]$ and $[\Re z,z]$ ($[a,b]$ is the line from $a$ to $b$).
+    If we let $\Gamma_1=[0,\Re z+\Re h]\dcup[\Re z+\Re h,z+h]$ and $\Gamma_1=[0,\Re z]\dcup[\Re z,z]\dcup[z,z+\Re h]\dcup[z+\Re h,z+h]$,
+    then by definition
+    \[ F(z+h) = \int_{\Gamma_1} f(w)\,dw \]
+    But by \ppref{cauchyRectTheorem} (specifically the note following it), this is equal to
+    \[ F(z+h) = \int_{\Gamma_2} f(w)\,dw \]
+    And so
+    \[ F(z+h) - F(z) = \int_z^{z+h} f(w)\,dw \]
+    where the curve is $[z,z+\Re h]\dcup[z+\Re h,z+h]$.
+    So
+    \[ \frac{F(z+h) - F(z)}h = \frac1h\int_z^{z+h}f(w)\,dw \]
+    And we know that
+    \[ \frac1h\int_z^{z+h}dz = \frac1h(z+h-z) = 1 \]
+    as the antiderivative of $1$ is $z$.
+    Thus
+    \[ \frac{F(z+h) - F(z)}h - f(z) = \frac1h\int_z^{z+h} f(w) - f(z)\,dw \]
+
+    Since $f$ is continuous at $z$, for every $\epsilon>0$ there exists a $\delta>0$ such that when $\abs{z-w}<\delta$, $\abs{f(z)-f(w)}<\epsilon$.
+    So if we let $\abs h<\delta$ then for every point $w$ on the curve from $z$ to $z+h$, $\abs{f(w)-f(z)}<\epsilon$.
+    And so we have that
+    \[ \abs{\frac{F(z+h) - F(z)}h - f(z)} = \abs{\frac1h\int_z^{z+h} f(w) - f(z)\,dw} \leq \frac1{\abs h}\epsilon\bigl(\abs{\Re h}+\abs{\Im h}\bigr) \leq \frac{2\abs h}{\abs h}\epsilon = 2\epsilon \]
+    So
+    \[ F'(z) = \lim_{h\to0}\frac{F(z+h) - F(z)}h = f(z) \]
+    as required.
+
+    $F$ is obviously analytic since its derivative is $f$.
+    \qed
+
+\end{proof}
+
+By reducing our restrictions on $f$ we can generalize to the following theorem, using the same proof:
+
+\begin{thrm*}
+
+    If $f$ is a continuous function on a rectangle $R$ such that for every rectangular path $\Gamma$
+    \[ \int_\Gamma f(z)\,dz = 0 \]
+    then $f$ has an antiderivative on the rectangle.
+
+\end{thrm*}
+
+\begin{coro*}
+
+    If $f$ is analytic on all of $\bC$ then $f$ has an antiderivative on all of $\bC$.
+
+\end{coro*}
+
+\begin{proof}
+
+    Let $F_n$ be $f$'s antiderivative on $R_n=R\bigl([-n,n]^2\bigr)$, and we further require $F_{n+1}=F_n$ on $R_n$.
+    We define $F\colon\bC\longto\bC$ by $F(z)=F_n(z)$ if $z\in R_n$ (this is well defined since $F_{n+1}=F_n$ on $R_n$).
+    It is obvious that $F$ is continuous and $F'(z)=f(z)$ by looking at a neighborhood of $z$ enclosed in a $R_n$.
+    \qed
+
+\end{proof}
+
+We can use the same proof as before to show that analytic functions on disks $D_r(a)$ have antiderivatives on these disks.
+
+\begin{prop*}
+
+    Let $\set{\mU_n}_{n\in\bN}$ be a countable collection of open sets such that for every $k\in\bN$, $\mU_{k+1}\cap\bigcup_{n=1}^k\mU_n$ is connected.
+    Let $f$ be an analytic function on $\mU=\bigcup_{n\in\bN}\mU_n$.
+    If for every $n\in\bN$, $f$ has an antiderivative on $\mU_n$ then $f$ has an antiderivative on $\mU$.
+
+\end{prop*}
+
+The proof here is not important.
+
+Notice that since if $f'=0$ then $u_x=u_y=v_x=v_y=0$ and since these are real functions, $u$ and $v$ are constant, so $f=u+iv$ is constant.
+Thus if $F'=G'$ then $(F-G)'=0$ so $F-G$ is constant.
+Thus if $F$ is an antiderivative of $f$ then all antiderivatives of $f$ are of the form $F+\alpha$ (and all functions of this form are antiderivatives of $f$).
+
+\begin{lemm*}
+
+    Let $f$ be an analytic function with an antiderivative $F$ on a set $W$ (meaning there exists an open set containing $W$ where this is true), then for any closed smooth curve $C$ in $W$:
+    \[ \int_C f(z)\,dz = 0 \]
+
+\end{lemm*}
+
+\begin{proof}
+
+    Suppose $C$ is given by $\gamma\colon[a,b]\longto\bC$.
+    Then
+    \[ \int_C f(z)\,dz = \int_C F'(z)\,dz = F(\gamma(b)) - F(\gamma(a)) = 0 \]
+    as $\gamma(a)=\gamma(b)$.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}[cauchyIntegralTheorem,Cauchy's\ Integral\ Theorem]
+
+    Let $f$ be an analytic function on the set $S$ where $S$ is a disk, rectangle, or all of $\bC$.
+    Let $C$ be a closed smooth curve contained in $S$ then
+    \[ \int_C f(z)\,dz = 0 \]
+
+\end{thrm*}
+
+Since in all of these cases, $f$ has an antiderivative, this result follows from the previous lemma.
+
+This result is also true for open simply connected sets $S$.
+
+\begin{thrm*}
+
+    Suppose $S$ is a rectangle, disk, or all of $\bC$ and $f$ is analytic in $S$.
+    Then for any $z_0,z_1\in S$ and every smooth curve $C$ from $z_0$ to $z_1$ contained in $S$
+    \[ \int_C f(z)\,dz \]
+    gives the same value.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Suppose $\gamma_1\colon[a_1,b_1]\longto\bC$ and $\gamma_2\colon[a_2,b_2]\longto\bC$ are two smooth curves such that $\gamma_i(a_i)=z_0$ and $\gamma_i(b_i)=z_1$ for $i=1,2$.
+    We can assume that $a_2=b_1$, then we define
+    \[ \gamma\colon[a_1,b_2]\longto\bC,\qquad \gamma(t) = \begin{cases} \gamma_1(t) & t\in[a_1,b_1] \\ \gamma_2(a_2+b_2-t) & t\in[a_2,b_2] \end{cases} \]
+    This is also a smooth closed curve and so
+    \[ \int_\gamma f(z)\,dz = 0 \]
+
+    But at the same time
+    \[ 0 = \int_\gamma f(z)\,dz = \int_{a_1}^{b_2} f(\gamma(t))\gamma'(t)\,dt = \int_{a_1}^{b_1} f(\gamma_1(t))\gamma_1'(t)\,dt - \int_{a_2}^{b_2} f(\gamma_2(a_2+b_2-t))\gamma_2'(a_2+b_2-t)\,dt = \]
+    \[ = \int_{a_1}^{b_1} f(\gamma_1(t))\gamma_1'(t)\,dt - \int_{a_2}^{b_2} f(\gamma_2(t))\gamma_2'(t)\,dt = \int_{\gamma_1} f(z)\,dz - \int_{\gamma_2} f(z)\,dz \]
+    And so we have
+    \[ \int_{\gamma_1} f(z)\,dz = \int_{\gamma_2} f(z)\,dz \]
+    as required
+    \qed
+
+\end{proof}
+
+We say that a curve obtained from the boundary of a domain $D$ is positive-oriented relative to $D$ if as we proceed along the curve, $D$ is to the left.
+
+\begin{thrm*}
+
+    Suppose $C$ is a closed simple smooth curve which is positive-oriented, and let $C_1,\dots,C_k$ be closed simple smooth curves contained inside the domain whose boundary is $C$ and are negative-oriented,
+    and the interior of $C_i$ does not intersect the interior of $C_j$ for $i\neq j$.
+    Let $D$ be the domain contained in $C$ and $D_i$ the domain contained in $C_i$.
+
+    Then if $f$ is an analytic function in $\overline D\setminus\set{D_1\dcup\cdots\dcup D_k}$, then
+    \[ \int_C f(z)\,dz + \sum_{i=1}^k \int_{C_i}f(z)\,dz = 0 \]
+
+\end{thrm*}
+
+\end{document}
+

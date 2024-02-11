@@ -1,0 +1,346 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{conj}{Conjecture}{255,130,130}{150,0,0}{200,0,0}
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\aone#1#2{#2\to(#1\to#2)} \def\Aone{\textbf{A1}}
+\def\atwo#1#2#3{\bigl(#1\to(#2\to#3)\bigr)\to\bigl((#1\to#2)\to(#1\to#3)\bigr)} \def\Atwo{\textbf{A2}}
+\def\athree#1#2{(\neg#2\to\neg#1)\to\bigl((\neg#2\to#1)\to#2\bigr)} \def\Athree{\textbf{A3}}
+\def\afour#1#2#3{(\forall #2#1)\to#1\frac{#3}{#2}}  \def\Afour{\textbf{A4}}
+\def\afive#1#2#3{\bigl(\forall #3(#1\to#2)\bigr)\to\bigl(#1\to(\forall#3#2)\bigr)} \def\Afive{\textbf{A5}}
+\def\MP{\textit{MP}} \def\Gen{\textit{Gen}}
+
+\def\beqq{\mathrel{\vbox{\hbox{$=$}\kern-\baselineskip\kern.3pt\hbox{$=$}}}}
+
+\def\PF{\mathbf{PF}}
+\def\PC{\mathbf{PC}}
+\def\P{\mathbf{P}}
+\def\NP{\mathbf{NP}}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mN{\mathcal{N}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\Var{\mathrm{Var}}
+
+\newfunc{var}{{\rm var}}({})
+\newfunc{bound}{{\rm bound}}({})
+\newfunc{free}{{\rm free}}({})
+\newfunc{theory}{{\rm Th}}({})
+\newfunc{Diag}{{\rm Diag}}({})
+\newfunc{elDiag}{{\rm Diag}_{\rm el}}({})
+\newfunc{depth}{{\rm depth}}({})
+
+\def\qed{\hskip.5cm\hbox{}\hfill$\blacksquare$}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\def\true{\mathsf{true}}
+\def\false{\mathsf{false}}
+
+%\def\Aone#1#2{#1\to(#2\to#1)}
+%\def\Atwo#1#2#3{\bigl(#1\to(#2\to#3)\bigr)\to\bigl((#1\to#2)\to(#1\to#3)\bigr)}
+%\def\Athree#1#2{(\neg#2\to\neg#1)\to\bigl((\neg#2\to#1)\to#2\bigr)}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=1
+
+\barcolorbox{255, 220, 220}{130, 0, 0}{200, 80, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Computability and Complexity}
+
+    \medskip
+    \textit{Lecture \thesection, Tuesday August 1, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+There are two main problems which we will focus on in this course: search problems, and decision problems.
+Search problems are problems where our goal is to find a solution or an answer to a question.
+Decision problems are problems where our goal is to verify if a given solution or answer to a question is valid (more generally if we should accept or reject a given input).
+
+Examples of search problems are:
+\benum
+    \item Given a graph $G$ and two vertices $s$ and $t$, find a path from $s$ to $t$ in $G$.
+    \item Given a graph $G$, find a three-coloring of the vertices (ie. a function $\sigma\colon V\longto\set{1,2,3}$ such that if $(v,u)\in E$ then $\sigma(v)\neq\sigma(u)$).
+    \item Given a boolean formula in conjunctive normal form (of the form $\bigwedge_{i=1}^n\bigvee_{j=1}^m\epsilon_{ij}x_j$ where $\epsilon_{ij}$ is either $\neg$ or nothing), find valuations for the
+    variables $x_1,\dots,x_m$ which satisfies the boolean formula.
+\eenum
+Search problems need not give solutions, if they do not exist.
+
+\begin{defn*}
+
+    A \ppemph{search problem} is specified by a relation $R$, where $(x,y)\in R$ if and only if $y$ is a valid solution to $x$.
+
+\end{defn*}
+
+\begin{defn*}
+
+    If $R$ is a relation, and $x$ is an element of its domain, then we define
+    \[ R(x) = \set{y}[(x,y)\in R] \]
+
+\end{defn*}
+
+So in the above examples,
+\benum
+    \item For the finding paths problem, we have the relation
+    \[ R_{st\text{-conn}} = \set{\bigl((G,s,t),P\bigr)}[\text{$G$ is a graph, $s$ and $t$ are vertices, and $P$ is a path from $s$ to $t$ in $G$}] \]
+    (conn is short for connectivity.)
+    \item For the three coloring problem, we have the relation
+    \[ R_{3\text{col}} = \set{(G,\sigma)}[\text{$G$ is a graph, and $\sigma$ is a three-coloring of $G$}] \]
+    (col is short for coloring.)
+    \item For finding valuations for a CNF, we have the relation
+    \[ R_{\mathit{CNF}\text{-sat}} = \set{(\phi,\vec x)}[\text{$\phi$ is a boolean formula in CNF, and $\vec x$ is a boolean vector which satisfies $\phi$}] \] 
+    (CNF is short for conjunctive normal form, and sat is short for satisfiability.)
+\eenum
+
+\begin{defn*}
+
+    A \ppemph{decision problem} is specified by a set $S$ where $x\in S$ if and only if $x$ is a valid answer to the problem.
+
+\end{defn*}
+
+For example, we can ask the question ``is the graph $G$ three-colorable?''
+This is specified by the set
+\[ S_{3\text{col}} = \set{G}[\text{$G$ is three-colorable}] \]
+
+\begin{defn*}
+
+    An \ppemph{algorithm} is a finite set of rules which defines a process in a computational model.
+    Given an algorithm $A$, and an input $x$, we define $A(x)$ to be result of running $A$ on the input $x$.
+
+    We say that an algorithm $A$ solves a search problem $R$ if for every $x$,
+    \benum
+        \item If $R(x)\neq\varnothing$, then $A(x)\in R(x)$.
+        \item And if $R(x)=\varnothing$, then $A(x)=\perp$ (the symbol for there being no solution).
+    \eenum
+    And we say that $A$ solves a deciscion problem $S$ if
+    \benum
+        \item If $x\in S$ then $A(x)=1$.
+        \item And if $x\notin S$ then $A(x)=0$.
+    \eenum
+
+\end{defn*}
+
+An algorithm may be the definition of a regular automaton, a pushdown automaton, a context-free grammar, a turing machine, etc.
+But we can assume that an algorithm is a single-tape turing machine.
+
+\begin{defn*}
+
+    Let $M$ be a turing machine.
+    We denote $t_M(x)$ by the number of transitions $M$ performs on the input $x$.
+
+    The \ppemph{time complexity} of $M$ is defined to be the function
+    \[ T_M\colon\bN\longto\bN,\quad T_M(n) = \maxof{t_M(x)}[\abs x=n] \]
+    (recall that inputs to turing machines are finite strings.)
+
+\end{defn*}
+
+\begin{defn*}
+
+    We say that a turing machine $M$ \ppemph{runs in polynomial time} if there exists a polynomial $p$ such that for every $n$, $T_M(n)\leq p(n)$.
+    In other words, the time complexity of $M$ is bound by some polynomial.
+
+    And a search or deciscion problem is \ppemph{solvable in polynomial time} if there exists a single-tape turing machine which solves it and runs in polynomial time.
+
+\end{defn*}
+
+We consider efficient solutions to be solutions which run in polynomial time.
+Note that a solution which runs in $n^{100}$ time is still considered efficient for the sake of this course, but in practicality it is of course not.
+
+\begin{note}
+
+    A turing machine runs in polynomial time if and only if $T_M(n)\in O(n^d)$ for some $d\in\bN$.
+    This is true since $T_M(n)\in O(n^d)$ if and only if there exists a $c>0$ such that for every $n\geq n_0$, $T_M(n)\leq cn^d$.
+    If we let $A=\maxof{T_M(n)}[n<n_0]$, and then $T_M(n)\leq cn^d+A$, which means $M$ runs in polynomial time.
+
+    And if $M$ runs in polynomial time, then $T_M(n)\leq\sum_{k=0}^d a_kx^k$, and so $T_M(n)\in O(n^d)$.
+
+\end{note}
+
+\begin{note}
+
+    Notice that the requirement of the turing machine to be single-tape may be significant.
+    For example, given the deciscion problem $\mathsf{Palindrome}=\set{x}[x^R=x]$, with a doube-taped turing machine we can solve it in $\Theta(n)$ time.
+    We do this by copying $x$ onto the second tape, then comparing the characters at each head and moving them left and right respectively until they reach the end of the string.
+
+    With a single-taped turing machine we need to move from the beginning to the end of the string over and over, and this takes $\Theta(n^2)$ time.
+
+\end{note}
+
+\begin{conj*}[cobhamEdmondsThesis,Cobham-Edmonds\ Thesis]
+
+    Any problem which can be solved in $T(n)$ time on a ``feasible'' computational model can be solved in $p(T(n))$ time for some polynomial $p$ with a single-taped turing machine.
+
+\end{conj*}
+
+``Feasible'' here is not well-defined, but intuitively it means that the computational model doesn't do an extraordinary amount of computations at each step.
+
+\newpage
+So by the \ppref{cobhamEdmondsThesis}, for a problem to be solvable in polynomial time, it is sufficient to provide a solution to it with any (feasible) computational model.
+
+\begin{defn*}
+
+    We say that $R$ is \ppemph{polynomially bound} if there exists a polynomial $p$ such that for every $(x,y)\in R$ then $\abs y\leq p(\abs x)$.
+
+    We define $\PF$ to be the class of all polynomially bound relations $R$ such that $R$ can be solved in polynomial time,
+    \[ \PF = \set{R}[\text{$R$ is polynomially bound and $R$ can be solved in polynomial time}] \]
+    $\PF$ is short for polynomial-find.
+
+\end{defn*}
+
+Note that $R_{st\text{-con}}$ is not necessarily in $\PF$, as it is not polynomially bound.
+Since if there exists a cycle in $G$, then we can find arbitrarily large paths in $G$.
+If we require that solutions be simple paths, then the length of the path is less than $\abs E$ and thus is polynomially bound.
+And we know we there exist polynomial time algorithms to solve $R_{st\text{-con}}$, so it is in $\PF$.
+
+The question of whether $R_{3\text{col}}\in\PF$ is open.
+It is obviously polynomially bound (since solutions have a size of $n^3$), but we do not know if there exists a solution which runs in polynomial time or not.
+
+\begin{defn*}
+
+    We define $\PC$ to be the class of all polynomially bound search problems $R$ such that there exists an algorithm $A$ which runs in polynomial time and verifies solutions to $R$.
+    \[ \PC = \set{R}[\vrule width\z@ height15\p@\substack{\hbox{$R$ is polynomially bound, and there exists an algorithm $A$ which runs in polynomial time}\\
+    \hbox{such that for every $(x,y)$, $A(x,y)=1$ if and only if $(x,y)\in R$}}] \]
+    $\PC$ is short for polynomial-check.
+
+\end{defn*}
+
+Intuitively, we may think that a problem which we can easily find a solution for (in $\PC$) would also be easy to verify a solution for.
+But this is not the case, because to verify solutions we must deal with \emph{all} possible solutions, and to find a solution we need only find one.
+
+\begin{prop*}
+
+    $\PF\nsubseteq\PC$
+
+\end{prop*}
+
+\begin{proof}
+
+    Let us define
+    \begin{multline*}
+        R = \set{\bigl((M,\omega),!\bigr)}[\text{$M$ is a turing machine which halts on the input $\omega$}]\\
+        \cup\set{\bigl((M,\omega),?\bigr)}[\text{$M$ is a turing machine, and $\omega$ is any input}]
+    \end{multline*}
+
+    $R\in\PF$ since we can simply define the algorithm $A$ which returns $?$ on every input.
+
+    Now, $R\notin\PC$ since if $R\in\PC$ then suppose $A$ is an algorithm where $A((M,\omega),\sigma)=1$ if and only if $((M,\omega),\sigma)\in R$.
+    Then we can define the algorithm $B$ whose input is $(M,\omega)$ and returns $A((M,\omega),!)$.
+    But then $B$ decides if $M$ halts on $\omega$, which contradicts the halting problem being undecidable.
+    \qed
+
+\end{proof}
+
+Now, is $\PC\subseteq\PF$, ie. if we can easily verify a problem, can we solve it?
+This is an open question.
+
+\begin{defn*}
+
+    $\PC$ and $\PF$ relate to search problems.
+    For decision problems, we define the class $\P$ to be the class of all search problems $S$ which can be solved in polynomial time,
+    \[ \P = \set{S}[\text{$S$ can be solved in polynomial time}] \]
+    $\P$ is the equivalent of $\PF$ for deciscion problems.
+
+\end{defn*}
+
+But it is not immediately clear how to define the equivalent of $\PC$ for deciscion problems.
+After all, how do you verify a solution to a deciscion problem?
+
+\begin{defn*}
+
+    A \ppemph{verifier} for a decision problem $S$ is an algorithm $V$ such that
+    \benum
+        \item $V$ is entire: for every $x\in S$, there exists a $y$ such that $V(x,y)=1$.
+        \item $V$ is reliable: for every $x\notin S$ and for every $y$, $V(x,y)=0$.
+    \eenum
+
+    We say that $S$ has a \ppemph{polynomial proof system} if it has a verifier $V$ which runs in polynomial time and there exists a polynomial $p$ such that if $x\in S$ then there exists a $y$ such that
+    $\abs y\leq p(\abs x)$ and $V(x,y)=1$.
+
+\end{defn*}
+
+Note that if $V$ is a verifier, then $V(x,y)=0$ does not mean $x\notin S$, it just means that $x$ may not be in $S$.
+If we run $V(x,y)$ for every $y$ and we get zero, only then do we know that $x\notin S$.
+Conversely, if $V(x,y)=1$ then $x\in S$.
+
+\begin{defn*}
+
+    We define $\NP$ to be the class of all decision problems which have a polynomial proof system,
+    \[ \NP = \set{S}[\text{$S$ has a polynomial proof system}] \]
+    $\NP$ is the parallel to $\PC$ for decision problems.
+
+\end{defn*}
+
+Note that $S_{3\text{col}}\in\NP$ since we can take the verifier $V$ which accepts $(G,\sigma)$ if and only if $\sigma$ is a three-coloring of $G$ (which is verifiable in linear time).
+Since $\sigma$ has a size on the order of $n^3$, $S_{3\text{col}}$ has a polynomial proof system.
+
+\begin{prop*}
+
+    $\P\subseteq\NP$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $S\in\P$, suppose $A$ solves $S$.
+    Then we define the algorithm $V$ where $V(x,y)=1$ if and only if $A(x)$.
+    So if $x\in S$ then $A(x)=1$ and so $V(x,y)=1$ for every $y$.
+    And if $x\notin S$, then $A(x)=0$ so for every $y$, $V(x,y)=0$.
+    Thus $V$ is a polynomial proof system for $S$, meaning $S\in\NP$ as required.
+    \qed
+
+\end{proof}
+
+Now comes the biggie question, does
+
+\centerline{\scalebox{1.5}{$\P = \NP ?$}}
+This is a major open question in computer science.
+
+\end{document}
+

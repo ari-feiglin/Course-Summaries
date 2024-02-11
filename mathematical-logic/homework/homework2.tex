@@ -1,0 +1,416 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input ../preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\newcount\lproofline
+\def\blproof{%
+    \lproofline=0\relax%
+    \vtop\bgroup\ialign\bgroup\global\advance\lproofline by 1\relax\the\lproofline.\quad$##$\hfil\tabskip=10pt&##\hfil\crcr
+}
+\def\elproof{\crcr\omit\leaders\hrule\hfill\cr\egroup\egroup}
+
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\oto=\varleftrightarrow
+\let\longto=\longvarrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\mL{{\cal L}}
+
+\def\qed{\hskip.5cm\hbox{}\hfill$\blacksquare$}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\bB{\mathbb{B}}
+\def\true{\mathsf{true}}
+\def\false{\mathsf{false}}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\def\bexerc{\begin{exercise*}}
+\def\eexerc{\end{exercise*}}
+\def\bblank{\begin{blankpp}}
+\def\eblank{\end{blankpp}}
+
+\begin{document}
+
+\c@section=2
+
+\barcolorbox{220, 255, 255}{0, 130, 130}{80, 200, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Mathematical Logic}
+
+    \medskip
+    \textit{Assignment \thesection}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\bexerc
+
+    Prove the independence of Axiom $3$ in propositional calculus by constructing truth tables for $\neg$ and $\to$.
+
+\eexerc
+
+\bblank
+
+    The idea is to treat $\neg$ as if it did nothing, and since \textbf{A3} is the only axiom relying on negation, this should show its independence.
+    The truth tables are as follows:
+
+    \centerline{%
+        \vtop{\halign{\strut\hfil\;$#$\;\hfil\vrule&\hfil\;$#$\;\hfil\cr
+            A & \neg A \cr\noalign{\hrule}
+            0 & 0 \cr
+            1 & 1 \cr
+        }}%
+        \qquad
+        \vtop{\halign{\strut\hfil\;$#$\;\hfil&&\vrule\hfil\;$#$\;\hfil\cr
+            A & B & A\to B\cr\noalign{\hrule}
+            0 & 0 & 1 \cr
+            0 & 1 & 1 \cr
+            1 & 0 & 0 \cr
+            1 & 1 & 1 \cr
+        }}%
+    }
+
+    Since \textbf{A1} and \textbf{A2} rely only on implication, and we have not changed the  truth table of implication, \textbf{A1} and \textbf{A2} still hold true in this model.
+    And so does modus ponens since it is also only reliant on implication (if $\phi=1$ and $\phi\to\psi$ is true, then $\psi=1$ as well since if $\psi=0$ then $\phi\to\psi$ is false as it is $1\to0=0$).
+
+    But \textbf{A3} does not hold.
+    For instance let $\psi=0$ and $\phi=1$, then \textbf{A3} says
+    \[ (\neg\psi\to\neg\phi)\to\bigl((\neg\psi\to\phi)\to\psi\bigr) \]
+    and plugging in the values for $\psi$ and $\phi$, and recalling that $\neg x=x$ we get
+    \[ (0\to1)\to\bigl((0\to1)\to0\bigr) \]
+    since $0\to1$ is $1$ and $1\to0=0$
+    \[ 1\to(1\to0) = 1\to0 = 0 \]
+    thus \textbf{A3} is false in this model.
+
+\eblank
+
+\bexerc
+
+    Of the axioms for linear spaces (listed in the original PDF), which is dependent of the other axioms?
+
+\eexerc
+
+\bblank
+
+    The axiom of commutativity of addition is dependent, since for any $x,y\in V$ we have
+    \[ x + y + x + y = (x+y) + (x+y) = (1 + 1)(x + y) \]
+    by distributivity.
+    But again by distributivity this is equal to
+    \[ (1 + 1)x + (1 + 1)y = x + x + y + y \]
+    so
+    \[ x + y + x + y = x + x + y + y \]
+    and since additive inverses exist, adding $-x$ to the left and $-y$ to the right sides results in
+    \[ y + x = x + y \]
+    as required.
+
+\eblank
+
+\def\Aone#1{\textbf{A1}: $#1$}
+\def\Atwo#1#2{\textbf{A2}: $#1$, $#2$}
+\def\Athree#1#2{\textbf{A3}: $#1$, $#2$}
+\def\Afour#1#2#3{\textbf{A4}: $#1$, $#2$, $#3$}
+
+\def\aone#1{(#1\lor#1)\to#1}
+\def\atwo#1#2{#1\to(#1\lor#2)}
+\def\athree#1#2{(#1\lor#2)\to(#2\lor#1)}
+\def\afour#1#2#3{(#2\to#3)\to\bigl((#1\lor#2)\to(#1\lor#3)\bigr)}
+
+\bexerc
+
+    The formal language $\mL_1$ has connectives $\lor$ and $\neg$, and $\phi\to\psi$ is used as an abbreviation for $\neg\phi\lor\psi$.
+    It has the following axioms
+
+    \benum
+        \gdef\enumstyle#1{$\mathbf{(A\the#1)}$}
+        \gdef\enumindent{1cm}
+        \item $\aone\phi$
+        \item $\atwo\phi\psi$
+        \item $\athree\phi\psi$
+        \item $\afour\phi\psi\mu$
+    \eenum
+
+    The only rule of inference is modus ponens.
+
+    Show the following are theorems of this theory.
+
+    \benum
+        \item $\phi\to\psi\vdash (\mu\lor\phi)\to(\mu\lor\psi)$
+        \item $\vdash (\phi\to\psi)\to\bigl((\mu\to\phi)\to(\mu\to\psi)\bigr)$
+        \item $\mu\to\phi,\phi\to\psi\vdash \mu\to\psi$
+        \item $\vdash \phi\to\phi$
+        \item $\vdash \phi\lor\neg\phi$
+        \item $\phi\to\neg\neg\phi$
+    \eenum
+
+\eexerc
+
+A quick note: I use phrases like ``\textbf{A4}: $\mu$, $\phi$, $\psi$'' to mean axiom four where I've replaced $\phi$ in \textbf{A4} with $\mu$, $\psi$ with $\phi$, and $\mu$ with $\psi$.
+
+\bblank
+
+    \benum
+        \item%
+        \blproof
+            \afour\mu\phi\psi & \Afour\mu\phi\psi\cr
+            \phi\to\psi & Hypothesis\cr
+            (\mu\lor\phi)\to(\mu\lor\psi) & \textit{MP}: $1$ and $2$\cr
+        \elproof
+
+        \item%
+        \blproof
+            \afour{\neg\mu}\phi\psi & \Afour{\neg\mu}\phi\psi\cr
+            (\phi\to\psi)\to\bigl((\mu\to\phi)\to(\mu\to\psi)\bigr) & Abbreviation for $\to$\cr
+        \elproof
+
+        \item%
+        \blproof
+            (\phi\to\psi)\to\bigl((\mu\to\phi)\to(\mu\to\psi)\bigr) & $(2)$\cr
+            \phi\to\psi & Hypothesis\cr
+            (\mu\to\phi)\to(\mu\to\psi) & \textit{MP}: $1$ and $2$\cr
+            \mu\to\phi & Hypothesis\cr
+            \mu\to\psi & \textit{MP}: $3$ and $4$\cr
+        \elproof
+
+        \item%
+        \blproof
+            \bigl((\phi\lor\phi)\to\phi\bigr)\to\Bigl(\bigl(\phi\to(\phi\lor\phi)\bigr)\to(\phi\to\phi)\Bigr) & $(2)$: $\phi\lor\phi$, $\phi$, $\phi$\cr
+            \aone\phi & \Aone\phi\cr
+            \bigl(\phi\to(\phi\lor\phi)\bigr)\to(\phi\to\phi) & \textit{MP}: $1$ and $2$\cr
+            \phi\to(\phi\lor\phi) & \Atwo\phi\phi\cr
+            \phi\to\phi & \textit{MP}: $3$ and $4$\cr
+        \elproof
+
+        \item%
+        \blproof
+            \phi\to\phi & $(4)$\cr
+            \neg\phi\lor\phi & Abbreviation for $\to$\cr
+            \athree{\neg\phi}\phi & \Athree{\neg\phi}\phi\cr
+            \phi\lor\neg\phi & \textit{MP}: $2$ and $3$\cr
+        \elproof
+
+        \item%
+        \blproof
+            \neg\phi\lor\neg\neg\phi & $(5)$: $\neg\phi$\cr
+            \phi\to\neg\neg\phi & Abbreviation for $\to$\cr
+        \elproof
+    \eenum
+
+\eblank
+
+\def\Aone#1{\textbf{A1}: $#1$}
+\def\Atwo#1#2{\textbf{A2}: $#1$, $#2$}
+\def\Athree#1#2#3{\textbf{A3}: $#1$, $#2$, $#3$}
+
+\def\aone#1{#1\to(#1\land#1)}
+\def\atwo#1#2{(#1\land#2)\to#1}
+\def\athree#1#2#3{(#1\to#2)\to\bigl(\neg(#2\land#3)\to\neg(#3\land#1)\bigr)}
+
+\bexerc
+
+    Let $\mL_2$ be the language with connectives $\neg$ and $\land$.
+    We use $\phi\to\psi$ as an abbreviation for $\neg(\phi\land\neg\psi)$.
+    The axioms are as follows
+
+    \benum
+        \gdef\enumstyle#1{$\mathbf{(A\the#1)}$}
+        \gdef\enumindent{1cm}
+        \item $\aone\phi$
+        \item $\atwo\phi\psi$
+        \item $\athree\phi\psi\mu$
+    \eenum
+
+    The only rule of inference is modus ponens.
+
+    Prove the following:
+
+    \benum
+        \item $\phi\to\psi,\psi\to\mu\vdash \neg(\neg\mu\land\phi)$
+        \item $\vdash \neg(\neg\phi\land\phi)$
+        \item $\vdash \neg\neg\phi\to\phi$
+        \item $\vdash \neg(\phi\land\psi)\to(\psi\to\neg\phi)$
+        \item $\vdash \phi\to\neg\neg\phi$
+        \item $\vdash (\phi\to\psi)\to(\neg\psi\to\neg\phi)$
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item%
+        \blproof
+            \athree\phi\psi{\neg\mu} & \Athree\phi\psi{\neg\mu}\cr
+            \phi\to\psi & Hypothesis\cr
+            \neg(\psi\land\neg\mu)\to\neg(\neg\mu\land\phi) & \textit{MP}: $1$ and $2$\cr
+            \psi\to\mu & Hypothesis\cr
+            \neg(\psi\land\neg\mu) & Abbreviation for $\to$\cr
+            \neg(\neg\mu\land\phi) & \textit{MP}: $3$ and $5$\cr
+        \elproof
+
+        \item%
+        \blproof
+            \aone\phi & \Aone\phi\cr
+            \atwo\phi\phi & \Atwo\phi\phi\cr
+            \neg(\neg\phi\land\phi) & $(1)$: $\phi$, $\phi\land\phi$, $\phi$ with hypotheses given in $1$ and $2$\cr
+        \elproof
+
+        \item%
+        \blproof
+            \neg(\neg\neg\phi\land\neg\phi) & $(2)$: $\neg\phi$\cr
+            \neg\neg\phi\to\phi & Abbreviation for $\to$\cr
+        \elproof
+
+        \item%
+        \blproof
+            \athree{\neg\neg\phi}\phi\psi & \Athree{\neg\neg\phi}\phi\psi\cr
+            \neg\neg\phi\to\phi & $(2)$\cr
+            \neg(\phi\land\psi)\to\neg(\psi\land\neg\neg\phi) & \textit{MP}: $1$ and $2$\cr
+            \neg(\phi\land\psi)\to(\psi\to\neg\phi) & Abbreviation for $\to$\cr
+        \elproof
+
+        \item%
+        \blproof
+            \neg(\neg\phi\land\phi)\to(\phi\to\neg\neg\phi) & $(4)$: $\neg\phi$, $\phi$\cr
+            \neg(\neg\phi\land\phi) & $(2)$\cr
+            \phi\to\neg\neg\phi & \textit{MP}: $1$ and $2$\cr
+        \elproof
+
+        \item%
+        \blproof
+            \neg(\phi\land\neg\psi)\to(\neg\psi\to\neg\phi) & $(4)$: $\phi$, $\neg\psi$\cr
+            (\phi\to\psi)\to(\neg\psi\to\neg\phi) & Abbreviation for $\to$\cr
+        \elproof
+    \eenum
+
+\eblank
+
+\bexerc
+
+    For each of the following sentences, translate it into a well-formed formula of a first order language.
+    \benum
+        \item Not all birds can fly.
+        \item If anyone can solve the problem, Mike can.
+        \item Nobody in the statistics class is smarter than everyone in the logic class.
+        \item Everyone loves somebody and no one loves everybody, or somebody loves everybody and somebody loves nobody.
+        \item Everyone who knows Julia loves her.
+        \item There is no barber who shaves precisely those men who do not shave themselves.
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item The logical negation of this is ``all birds can fly'', which is easy enough to translate.
+        Let $B(x)$ be a predicate meaning ``$x$ is a bird'', and $F(x)$ meaning ``$x$ can fly''.
+        ``All birds can fly'' can thus be translated into $\forall x\bigl(B(x)\to F(x)\bigr)$, and so ``Not all birds can fly'' is simply:
+        \[ \neg\forall x\bigl(B(x)\to F(x)\bigr) \]
+
+        \item Let $S(x)$ mean ``$x$ can solve the problem'' and $m$ be the constant Mike.
+        This sentence can be reconstructed as ``if there is anyone who can solve the problem, then Mike can solve the problem'' which can be translated as
+        \[ \bigl(\exists x\, S(x)\bigr)\to S(m) \]
+
+        \item This can be reconstructed as ``there does not exist someone who is in the statistics class and is smarter than everyone in the logic class''.
+        Let $S(x)$ mean ``$x$ is in the statistics class'', $L(x)$ mean ``$x$ is in the logic class'', and $B(x,y)$ mean ``$x$ is smarter than $y$''.
+        This sentence can then be translated to
+        \[ \neg\exists x\bigl(S(x)\land\forall y(L(y)\to B(x,y))\bigr) \]
+        as this is the negation of ``there exists an $x$ who is in the statistics class and for everyone, if they are in the logic class, $x$ is smarter than them.''
+
+        \item Let $L(x,y)$ mean ``$x$ loves $y$''.
+        Then ``everyone loves somebody'' can be translated to $\forall x\exists y(L(x,y))$; ``nobody loves everybody'' can be translated to $\neg\exists x\forall y(L(x,y))$;
+        ``somebody loves everybody'' as $\exists x\forall y(L(x,y))$; and ``somebody loves nobody'' as $\exists x\forall y(\neg L(x,y))$.
+        Putting this together we get
+        \[ \Bigl(\bigl(\forall x\exists y(L(x,y))\bigr)\land\bigl(\forall x\exists y(\neg L(x,y))\bigr)\Bigr)\lor
+           \Bigl(\bigl(\exists x\forall y(L(x,y))\bigr)\land\bigl(\exists x\forall y(\neg L(x,y))\bigr)\Bigr) \]
+
+        \item Let $K(x)$ mean ``$x$ knows Julia'' and $L(x)$ mean ``$x$ loves Julia''.
+        We can reconstruct the sentence as ``for everyone, if they know Julia, they love Julia'', which can be translated as
+        \[ \forall x\bigl(K(x)\to L(x)\bigr) \]
+
+        \item Let $B(x)$ mean ``$x$ is a barber'', $M(x)$ mean ``$x$ is a man'', and $S(x,y)$ mean ``$x$ shaves $y$''.
+        Then this can be translated as
+        \[ \neg\exists x\Bigl(B(x)\land \forall y\bigl(S(x,y)\oto M(y)\land\neg S(y,y)\bigr)\Bigr) \]
+        Which is ``there does not exist an $x$ which is a barber and for every $y$, $x$ shaves $y$ if and only if $y$ is a man and $y$ doesn't shave himself''.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Translate the following into plain English.
+    \benum
+        \item $\neg(\exists y)\bigl(I(y)\land(\forall x)(I(x)\to L(x,y))\bigr)$ where $I(x)$ means \textit{$x$ is an integer} and $L(x,y)$ means $x\leq y$.
+        \item In the following formulas, $A_1(x)$ means \textit{$x$ is a person} and $A_2(x,y)$ means \textit{$x$ hates $y$}.
+        \benum
+            \item $(\exists x)\bigl(A_1(x)\land(\forall y)(A_1(y)\to A_2(x,y))\bigr)$
+            \item $(\forall x)\bigl(A_1(x)\to(\forall y)(A_1(y)\to A_2(x,y))\bigr)$
+            \item $(\exists x)\Bigl(A_1(x)\land(\forall y)\bigl(A_1(y)\to(A_2(x,y)\oto A_2(y,y))\bigr)\Bigr)$
+        \eenum
+        \item $(\forall x)\Bigl(H(x)\to(\exists y)(\exists z)\Bigl(\neg A(y,z)\land(\forall u)\bigl(P(u,x)\oto(A(u,y)\lor A(u,z))\bigr)\Bigr)\Bigr)$ where $H(x)$ means \textit{$x$ is a person},
+        $A(u,v)$ means $u=v$, and $P(u,x)$ means \textit{$u$ is a parent of $x$}.
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item Translating this literally into English gives ``there does not exist a $y$ such that $y$ is an integer and for every $x$, if $x$ is an integer then $x\leq y$''.
+        Simplifying this, ``there does not exist an integer $y$ such that for every integer $x$, $x\leq y$''.
+        This just says ``there does not exist a maximum integer''.
+
+        \item
+        \par\vskip-\dimexpr\parskip + \baselineskip\relax
+        \benum
+            \item Translating literally gives ``there exists an $x$ such that $x$ is a person and for every $y$, if $y$ is a person, $x$ hates $y$''.
+            Simplifying this, ``there exists a person $x$ such that for every person $y$, $x$ hates $y$''.
+            Meaning, ``there exists a person who hates everyone'' (or ``some person hates every person'').
+
+            \item Literally, this means ``for every $x$, if $x$ is a person then for every $y$, if $y$ is a person then $x$ hates $y$''.
+            Simplifying, ``for every person $x$, for every person $y$, $x$ hates $y$''.
+            Meaning, ``every person hates every person''.
+
+            \item Literally, this means ``there exists an $x$ such that $x$ is a person and for every $y$, if $y$ is a person, $x$ hates $y$ if and only if $y$ hates $y$''.
+            Meaning, ``there exists a person $x$ such that for every person $y$, $x$ hates $y$ if and only if $y$ hates $y$''.
+            Meaning, ``there exists a person who hates precisely all people who hate themselves''.
+        \eenum
+
+        \item Literally, ``for every $x$, if $x$ is a person, then there exists a $y$ and there exists a $z$ such that $y\neq z$ and for all $u$, $u$ is a parent of $x$ if and only if $u=y$ or $u=z$''.
+        Simplifying, ``for every person $x$, there exist $y\neq z$ such that for every $u$, $u$ is a parent of $x$ if and only if $u=x$ or $u=z$''.
+        This means that ``for every person $x$, there exist $y\neq z$ such that $y$ and $z$ are and are the only parents of $x$''.
+        This just means that ``every person has exactly two parents''.
+    \eenum
+
+\eblank
+
+\end{document}

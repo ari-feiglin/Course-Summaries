@@ -1,0 +1,211 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\catcode`\@=11
+\input pdfmsym
+
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\implies{\,\mathrel{\longvarRightarrow}\,}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\newfunc{eulerg}{{\rm Euler}}({})
+\newfunc{order}o({})
+\newfunc{ker}{{\rm Ker}}({})
+\newfunc{image}{{\rm Im}}({})
+\newfunc{lattice}{{\cal L}}(\vert)
+\newfunc{powset}{{\cal P}}(\vert)
+\newfunc{center}{{\rm Z}}({})
+\newfunc{units}{{\cal U}}(\vert)
+\newfunc{sign}{{\rm sgn}}({})
+\newfunc{aut}{{\rm Aut}}({})
+\newfunc{speclinear}{{\rm SL}}({})
+\newfunc{genlinear}{{\rm GL}}({})
+\newfunc{projlinear}{{\rm PGL}}({})
+\newfunc{specprojlinear}{{\rm PSL}}({})
+\newfunc{core}{{\rm Core}}(\vert)
+\newfunc{inner}{{\rm Inn}}(\vert)
+\newfunc{outer}{{\rm Out}}(\vert)
+\newfunc{conj}{{\rm conj}}({})
+\newfunc{ev}{{\rm ev}}({})
+
+\def\maxdivs{\mathrel{\|}}
+
+\let\ideal=\trianglelefteq
+\let\pideal=\triangleleft
+\def\normal{\mathrel\triangleleft}
+\let\mmorph=\longvarhookrightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+
+\def\qed{\hskip1cm\hbox{}\hfill$\blacksquare$}
+
+\def\mN{\mathcal N}
+\def\mG{\mathcal G}
+
+\begin{document}
+
+\c@section=7
+
+\barcolorbox{220, 220, 255}{0, 0, 130}{80, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Introduction to Rings and Modules}
+
+    \medskip
+    \textit{Lecture \thesection, Monday May 8 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{defn*}
+
+    An integral domain $R$ is called a \ppemph{euclidean domain} if there exists a function
+    \[ N\colon R\longto\bN_{\geq0} \]
+    such that $N(0_R)=0$ and for every $a,b\in R$ where $b\neq0$, there exist $q,r\in R$ such that $a=bq+r$ and $r=0$ and $N(r)<N(b)$.
+
+\end{defn*}
+
+\begin{exam*}
+
+    \benum
+        \item $R=\bZ$ is a euclidean domain with norm $N(a)=\abs a$ (by the euclidean algorithm).
+        \item If $F$ is a field and $N(a)=0$ then for every $a\in F$ and $0\neq b\in F$ we have $a=b(b^{-1}a)+0$.
+        \item If $R=F[x]$ where $F$ is a field, let $N(p)$ be the degree of the polynomial $p$ (the maximum index of $x^k$ whose coefficient is non-zero).
+        But we need to show that $R$ is an integral domain, but we showed that if $R$ is an integral domain, so is $R[x]$ (since the leading coefficient of the product of two polynomials is $a_nb_m$, and if
+        this is zero, then $a_nb_m=0$ so $a_n=0$ or $b_m=0$ in contradiction).
+        \item $R=\bZ[i]=\set{a+bi}[a+b\in\bZ]$, this is a subring of $\bC$ since it is obviously an additive subgroup, and
+        \[ (a+bi)(c+di) = ac - bd + i(ad + bc) \in \bZ[i] \]
+        and $1=1+0i\in\bZ[i]$, so $\bZ[i]\leq\bC$ as required.
+        $\bZ[i]$ is an integral domain since $\bC$ is a field (and therefore an integral domain).
+
+        The norm here is $N(z)=\abs{z}^2$, which is natural as it is equal to $a^2+b^2$.
+        Obviously $N(0)=0$.
+        Notice that the norm is multiplicative: $N(zw)=\abs{zw}^2=\abs z^2\abs w^2=N(z)N(w)$.
+
+        Let $z,w\in\bZ[i]$ where $w\neq0$, we can take $\alpha=\frac zw\in\bC$.
+        Thus there exists $n,m\in\bZ$ such that $\abs{\Re\alpha-n}\leq\frac12$ and $\abs{\Im\alpha-m}\leq\frac12$.
+        Let $q=n+mi$ and $r=z-wq$, we claim $r=0$ or $N(r)<N(w)$.
+        We know that
+        \[ \gamma - q = \Re\gamma - n + i\bigl(\Im\gamma - m\bigr) \implies \abs{\gamma-q}^2 = \abs{\Re\gamma-n}^2 + \abs{\Im\gamma - m}^2 \leq \frac12 \]
+        And since
+        \[ N(r) = N(z-wq) = \abs{z-wq}^2 = \abs{w}^2\cdot\abs{\gamma-q}^2 \leq \frac12\abs w^2 = \frac12\abs w^2 = \frac12 N(w) \]
+        So if $r\neq0$ then $N(r)\neq0$ so $N(w)\neq0$ and therefore $N(r)\leq\frac12N(w)<N(w)$ as required.
+    \eenum
+
+\end{exam*}
+
+\begin{prop*}
+
+    Every euclidean domain is a prime ideal domain (PID).
+
+\end{prop*}
+
+Since we showed that $\dim\bZ[x]\geq2$ as $(x)$ and $(2,x)$ are prime ideals in $\bZ[x]$, $\bZ[x]$ is not a principal ideal domain and therefore not euclidean.
+
+\begin{proof}
+
+    Let $I\pideal R$ be an ideal of $R$, if $I$ is trivial then $I$ is principal.
+    Otherwise $I\neq(0_R)$, let
+    \[ n = \minof{N(a)}[a\in I, a\neq0] \]
+    there exists a $0\neq d\in I$ such that $N(d)=n$, and we claim $(d)=I$.
+    $(d)\subseteq I$ since $d\in I$.
+    And if $a\in I$ there exists $q,r\in R$ such that $a=dq+r$ and $r=0$ or $N(r)<N(d)$ since $d\neq0$.
+    Then $dq\in I$ and $a\in I$ so $a-dq=r\in I$, and so $N(d)\geq N(r)$ since $N(d)$ is a minimum and therefore $r=0$.
+    Therefore $a=dq$ so $a\in(d)$ as required.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    A ring $R$ is left/right \ppemph{Noetherian} if every ascending chain of left/right ideals stabilizes, that is for every ascending chain of left/right ideals
+    \[ I_1 \subseteq I_2 \subseteq \cdots \]
+    there exists an $N$ such that $I_N=I_{N+1}=\cdots$.
+    If a ring is both left and right Noetherian, it is also just called Noetherian.
+
+\end{defn*}
+
+\begin{exam*}
+
+    \benum
+        \item Finite rings are Noetherian.
+        \item $\bZ$ is a PID and $(n)\subseteq(m)$ if and only if $m\divides n$, and so $\bZ$ is also Noetherian.
+    \eenum
+
+\end{exam*}
+
+\begin{prop*}
+
+    Every PID is Noetherian.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $I_1\subseteq I_2\subseteq I_3\subseteq\cdots$ be an ascending chain of real ideals (if $I_i=I$ it is trivial that this stabilizies).
+    Let
+    \[ I = \bigcup_{i=1}^\infty I_i \]
+    and we have already shown that this is an ideal in our proof of the existence of maximal ideals.
+    Since $R$ is a principal integral domain, $I=(a)$ for some $a\in R$, thus $a\in\bigcup_{i=1}^\infty I_i$ so there exists an $i$ such that $a\in I_i$.
+    So $(a)\subseteq I_i\subseteq I=(a)$ and so $I_i=(a)$ and for every $j\geq i$, $(a)=I_i\subseteq I_j\subseteq I=(a)$ so $I_j=(a)$ and therefore the chain stabilizes to $I$, as required.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    A ring $R$ is left/right Noetherian if and only if every left/right ideal is finitely generated.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let us show this for the left case.
+    Let us denote $Rx_1+\cdots+Rx_n$ by $R(x_1,\dots,x_n)$.
+    If every left ideal is finitely generated, let $I_1\subseteq I_2\subseteq I_3\subseteq\cdots$ be an ascending chain of ideals, then
+    \[ I = \bigcup_{i=1}^\infty I_i \]
+    is an ideal, and so $I=R(x_1,\dots,x_n)$ and therefore for every $1\leq k\leq n$, $x_k\in I_{i_k}$ for some $i_k$.
+    Let $N=\maxof{i_k}[1\leq k\leq n]$, then every $x_k$ is in $I_N$ and so $(x_1,\dots,x_n)\subseteq I_N\subseteq I=R(x_1,\dots,x_n)$ so $I_N=R(x_1,\dots,x_n)$.
+    And for every $M\geq N$, $R(x_1,\dots,x_n)=I_N\subseteq I_M\subseteq I=R(x_1,\dots,x_n)$ so $I_M=R(x_1,\dots,x_n)=I$ for every $M\geq N$, so $R$ is left Noetherian.
+
+    Now suppose $R$ is left Noetherian.
+    Suppose that $I$ is a left ideal which is not finitely generated.
+    We construct a non-stabilizing chain recursively like so: let $a_1\in I$ and define $I_1=R(a_1)$.
+    Then $I_1\subset I$ strictly as $I$ is not finitely generated, so there exists $a_2\in I\setminus I_1$, and let $I_2=R(a_1,a_2)$.
+    And inductively there exists an $a_{n+1}\in I\setminus I_n$, and let $I_{n+1}=R(a_1,\dots,a_n,a_{n+1})$.
+    So $I_n\subset I_{n+1}$ strictly, so this chain cannot stabilize in contradiction.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    Let $R$ be a ring.
+    If every descending chain of left/right ideals stabilizes, $R$ is called left/right \ppemph{Artinian}.
+    If $R$ is both left and right Artinian, it is also just caleld Artinian.
+
+\end{defn*}
+
+\begin{exam*}
+
+    $\bZ$ is not Artinian since
+    \[ 2\bZ \supset 4\bZ \supset 8\bZ \supset 16\bZ \supset \cdots \]
+    is a non-stabilizing descending chain of ideals.
+
+\end{exam*}
+
+\end{document}
+

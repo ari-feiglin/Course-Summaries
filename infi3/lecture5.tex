@@ -1,0 +1,237 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input preamble
+
+\setscalefactor{10}
+\initpps
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\openset{{\cal O}}
+\let\lineseg=\overleftrightvecc
+
+\begin{document}
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infinitesimal Calculus 3}
+
+    \medskip
+    \textit{Lecture 5, Sunday November 6, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\c@section=4
+\subsection{Connected Spaces}
+
+\begin{defn*}
+
+    If $X$ is a metric space, $E\subseteq X$ is \ppemph{disconnected} if there exists two disjoint open sets $\openset_1$
+    and $\openset_2$ such that $E\subseteq \openset_1\dcup\openset_2$ and $E\cap\openset_1, E\cap\openset_2\neq\varnothing$.
+    A \ppemph{connected} space is a space which is not disconnected.
+
+\end{defn*}
+
+This is equivalent to saying that if $E\subseteq\openset_1\dcup\openset_2$ then $S\subseteq\openset_1$ or $S\subseteq\openset_2$.
+
+\begin{prop*}
+
+    A metric space is connected if and only if the only clopen sets is the entire space and the empty set.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $X$ is disconnected, then there exists open sets $\openset_1$ and $\openset_2$ such that $X=\openset_1\dcup\openset_2$.
+    Therefore the complement of $\openset_1$ is $\openset_2$ and so it is also closed.
+    And since $\openset_1$ and $\openset_2$ are disjoint and have non-empty intersection with $X$, they are neither $X$ nor the
+    empty set.
+    Therefore if $X$ is disconnected there exists clopen sets other than $X$ and $\varnothing$.
+
+    Suppose $\openset_1$ is a clopen set in $X$ not equal to $X$ or $\varnothing$, then $\openset_2=\openset_1^c$ is open and
+    disjoint from $\openset_1$.
+    Since $\openset_1\neq X,\varnothing$, $\openset_2\neq X,\varnothing$ since $X=\openset_1\dcup\openset_2$, $X$ is disconnected.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+So $\bR$ for example is connected.
+And $\bR\setminus\set0$ is disconnected since $(-\infty,0)$ and $(0,\infty)$ are open, disjoint, and cover $\bR\setminus\set0$.
+
+\begin{defn*}
+
+    A \ppemph{line segment} between two vectors $P$ and $Q$ in a linear space $X$ is
+    \[ \lineseg{PQ} = \set{P + t(Q - P)}[t\in{[0,1]}] \]
+
+\end{defn*}
+
+Notice that $\lineseg{PQ}=\lineseg{QP}$, and both $P$ and $Q$ are in this segment.
+If the line segment in focus is understood, $x_t$ is understood to be the point $P + t(Q-P)$.
+
+\begin{prop*}
+
+    A line segment in a normed linear space $X$ is connected.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $P,Q\in X$, suppose for the sake of a contradiction that $A$ and $B$ are open such that
+    $\lineseg{PQ}\subseteq A\dcup B$ as well as having non-empty intersections with the segment.
+    We know $x_1=Q$ and suppose $x_1\in B$, we define:
+    \[ K = \set{t\in[0,1]}[x_t\in A] \qquad u =\sup K \]
+    $K$ is non-empty since $A$ has non-empty intersection with $\lineseg{PQ}$ and $K$ is bound by $1$, so it has a supremum.
+    We will show that $x_u\notin A$.
+    If $u=1$ then $x_u=Q\in B$ which is disjoint from $A$, so $x_u\notin A$.
+    If $u<1$ and $x_u\in A$, since $A$ is open there is an $\epsilon>0$ such that $B_{\epsilon}(x_u)\subseteq A$.
+    Notice then that $x_{t'}=x_{t+\frac\epsilon{2\norm{Q-P}}}$ must be in $A$ since
+    $\norm{x_t-x_{t'}} = \frac\epsilon2<\epsilon$.
+    But $t'>t$ and $t'\in K$ which is a contradiction to $t$'s supremumness.
+
+    And $x_u\notin B$ since if it were, since $B$ is open so there is a ball $B_\epsilon(x_u)\subseteq B$.
+    And so similar to before there must be a $\delta>0$ such that for every $u-\delta<t<u+\delta$, $x_t\in B$.
+    So $u-\delta$ is an upper bound to $K$, which is a contradiction.
+
+    So $x_u\notin A\dcup B$, but it must be in $\lineseg{PQ}$ since $u\in[0,1]$ which is a contradiction.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{thrm*}
+
+    If $\set{S_\lambda}_{\lambda\in\Lambda}$ are connected sets such that their intersection is non-empty, then
+    \[ S = \bigcup_{\lambda\in\Lambda} S_\lambda \]
+    is also connected.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Suppose $B$ and $C$ are open and disjoint such that $S\subseteq B\dcup C$.
+    Let $\lambda\in\Lambda$ and so $S_\lambda B\dcup C$, so $S_\lambda\subseteq B$ or $S_\lambda\subseteq C$.
+    Without loss of generality suppose it is a subset of $B$.
+    Then take $\gamma\neq\lambda\in\Lambda$ then $S_\gamma\subseteq B$ or $S_\gamma\subseteq C$.
+    Since there exists an $x\in S_\lambda\cap S_\gamma$ and $x\notin C$, $S_\lambda\subseteq B$.
+    So for every $\lambda\in\Lambda$, $S_\lambda\subseteq B$, and therefore $S\subseteq B$, so $S$ is connected.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{defn*}
+
+    If $X$ is a normed linear space and $P_1,\dots,P_n\in X$, the \ppemph{polygon chain} is
+    \[ \lineseg{P_1P_2\cdots P_n} = \lineseg{P_1P_2}\cup\lineseg{P_2P_3}\cup\cdots\cup\lineseg{P_{n-1}P_n} \]
+
+\end{defn*}
+
+\begin{prop*}
+
+    Polygonal chains are connected.
+
+\end{prop*}
+
+\begin{proof}
+
+    We will prove so through induction on the number of vectors in the chain.
+    For $n=2$ this is simply a line segment, which we know is connected.
+    We know that $\lineseg{P_1\cdots P_{n+1}} = \lineseg{P_1\cdots P_n}\cup\lineseg{P_nP_{n+1}}$.
+    By our inductive hypothesis, these are both connected and have a non empty intersection (since $P_n$ is in it), so by the above
+    theorem, their union is connected as well.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{defn*}
+
+    A \ppemph{path} between two vectors $P$ $Q$ in a normed linear space $X$ is a continuous function
+    $f\colon[0,1]\longvarrightarrow X$ such that $f(0)=P$ and $f(1)=Q$.
+
+\end{defn*}
+
+Notice then that a line segment represents a path (let $f(t)=x_t$).
+And similarly so does a polygonal chain.
+
+\begin{defn*}
+
+    A subset $S$ of a normed linear space $X$ is \ppemph{connected pathwise} if for every $x,y\in S$ there is a path $\gamma_{xy}$
+    between $x$ and $y$ whose image is contained in $S$.
+
+\end{defn*}
+
+When talking about paths it is often useful to focus on their image, so we when discussing paths we may use the function in place of
+its image.
+
+\begin{prop*}
+
+    Every path is connected.
+
+\end{prop*}
+
+A similar proof to showing line segments are connected can be used.
+
+\begin{prop*}
+
+    If a set is connected pathwise, then it is connected.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $S$ is connected pathwise, then let $x\in S$.
+    We know that
+    \[ S = \bigcup_{y\in S}\gamma_{xy} \]
+    Since $y\in\gamma_{xy}$ and $\gamma_{xy}\subseteq S$.
+    And since paths are connected and the intersection of $\set{\gamma_{xy}}[y\in S]$ contains $x$ and is therefore non-empty, by the above
+    theorem, $S$ is also connected.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{thrm*}
+
+    An open set is connected if and only if it is connected pathwise.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Suppose $\openset$ is open, we know if it is connected pathwise then it is connected, so all that remains is to prove the converse.
+    Take some $x\in S$ and define:
+        \[ A = \set{y\in S}[\text{there exists a path between $x$ and $y$ contained entirely in $S$}] \]
+    Let $B=S\setminus A$.
+    We will show that $A$ and $B$ are open.
+    We know that $S=A\dcup B$ and $A\cap B=\varnothing$, so if we succeed in showing that they both are open, since $S$ is connected, one must be empty.
+    And since $x\in A$, it must be that $B=\varnothing$ so $S=A$ and therefore $S$ is open.
+
+    First we will show that $A$ is open.
+    If $y\in A$ then since $\gamma_{xy}\subseteq S$, $y\in S$ which is open, so there exists an $r>0$ such that $B_r(y)\subseteq S$.
+    If $z\in B_r(y)$ then taking $\gamma_{xy}\cup\lineseg{yz}$ gives a path between $x$ and $y$ contained in $S$ (we define the path of the union to squish $\gamma_{xy}$ and then be $\lineseg{yz}$).
+    So $z\in A$, and therefore $B_r(y)\subseteq A$, so $A$ is open.
+
+    Let $y\in B$, since $y\in S$ then there exists an $r>0$ such that $B_r(y)\subseteq S$.
+    If there is a $z\in B_r(y)\cap A$ then there is a path $\gamma_{zx}$ contained in $S$, and since $z\in B_r(y)$, $\lineseg{yz}$ is also contained in $S$, so the path $\lineseg{yz}\cup\gamma_{zx}$
+    is a path between $y$ and $x$ contained in $S$, so $y\in A$ in contradiction.
+    So $B_r(y)\subseteq B$, so $B$ is open.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\end{document}
+

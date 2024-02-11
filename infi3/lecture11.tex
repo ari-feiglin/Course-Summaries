@@ -1,0 +1,219 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\openset{{\cal O}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\begin{document}
+
+\c@section=11
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infinitesimal Calculus 3}
+
+    \medskip
+    \textit{Lecture \thesection, Wednsday November 23, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{Funky Functions}
+
+\begin{prop*}
+
+    If $f\colon X\longvarrightarrow Y$ is continuous and $E\subseteq X$ is compact, $f(E)$ is also compact.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $\set{\openset_\lambda}_{\lambda\in\Lambda}$ is an open cover of $f(E)$, that is:
+    \[ f(E) \subseteq \bigcup_{\lambda\in\Lambda}\openset_\lambda \implies E \subseteq \bigcup_{\lambda\in\Lambda} f^{-1}(\openset_\lambda) \]
+    Since $f$ is continuous, $f^{-1}(\openset_\lambda)$ is open so $\set{f^{-1}(\openset_\lambda)}_{\lambda\in\Lambda}$ is an open cover of $E$, which is compact so there is an open subcover of $E$, let
+    it be $\set{f^{-1}(\openset_k)}_{k=1}^n$, so:
+    \[ E \subseteq \bigcup_{k=1}^n f^{-1}(\openset_k) \implies f(E) \subseteq \bigcup_{k=1}^n\openset_k \]
+    And so $\set{\openset_k}_{k=1}^n$ is an open subcovering of $f(E)$, and therefore $f(E)$ is compact.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{prop*}
+
+    If $E\subseteq X$ is compact and $f\colon E\longvarrightarrow Y$ is continuous, $f$ takes a minimum and maximum in $E$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Since $f(E)$ itself is compact, it is bounded.
+    And so there exists $s=\sup f(E)$, which means that there exists $x_n\in E$ such that $f(x_n)\longvarrightarrow s$.
+    And since $E$ is compact there exists a subsequence $x_{n_k}$ which converges to some value $x\in E$, and so $f\bigl(x_{n_k}\bigr)\longvarrightarrow s$, but at the same time since $f$ is continuous
+    so $f\bigl(x_{n_k}\bigr)\longvarrightarrow f(x)$, and so $f(x)=s$.
+    So $f$ takes a maximum in $E$.
+    A similar proof can be used to show it takes a minimum.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{exam}
+
+    The continuous preimage of a compact set is not necessarily compact.
+    Take for example $f\colon\bR\longvarrightarrow\bR$ where $f(x)=c$.
+    Then even though $\set c$ is compact, $f^{-1}(\set c)=\bR$ is not compact.
+
+\end{exam}
+
+\begin{prop*}
+
+    If $E\subseteq X$ is compact and $f\colon E\longvarrightarrow Y$ is continuous and injective, then $f^{-1}\colon f(E)\longvarrightarrow E$ is continuous.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $g=f^{-1}$ on $f(E)$.
+    We will show that for every $K\subseteq E$ closed, $g^{-1}(K)$ is also closed.
+    Since $E$ is compact and $K$ is closed in $E$, $K$ is compact in $X$.
+    And $g^{-1}=f$, so $g^{-1}(K)=f(K)$ which is compact since $f$ is continuous, and so it is closed.
+    So the preimage under $g$ of any closed set is also closed, therefore $g$ is continuous.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{defn*}
+
+    A mapping $f$ between two metric spaces $X$ and $Y$ is \ppemph{uniformly continuous} if for every $\epsilon>0$ there is a $\delta>0$ such that for every $x,y\in X$ if $\metricof{x,y}<\delta$ then
+    $\sigma\parens{f(x),f(y)}<\epsilon$.
+
+\end{defn*}
+
+%%% TODO: FIX
+
+\begin{thrm*}
+
+    If $E\subseteq X$ is compact and $f\colon E\longvarrightarrow X$ is continuous, then it is uniformly continuous.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let $\epsilon>0$ then for every $x\in E$ let $\delta_x>0$ satisfy continuity for $\epsilon$, that is $f\bigl(B_{\delta_x}(x)\bigr)\subseteq B_\epsilon\bigl(f(x)\bigr)$.
+    And so:
+    \[ E \subseteq \bigcup_{x\in E}B_{\frac12\delta_x}(x) \]
+    This is an open cover so there is an open subcover $\set{B_{\frac12\delta_k}(x_k)}_{k=1}^n$.
+    We can take $\delta=\frac12\min\limits_{1\leq k\leq n}\delta_k>0$.
+    Let $y,z\in E$ such that $\metricof{x,y}<\delta$, then there exists some $x_1$ and $x_2$ in the open subcover such that $y\in B_1(x_1)$ and $z\in B_2(x_2)$ so
+    \[ \metricof{z,x_1}\leq\metricof{z,y}+\metricof{y,x_1}<\frac{\delta_1}2+\delta\leq\delta_1 \]
+    So $z\in B_1(x_1)$ and therefore $\sigma\parens{f(z),f(x_1)}<\epsilon$ and so $\sigma\parens{f(y),f(z)}<2\epsilon$.
+    And so $f$ is uniformly continuous.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{prop*}
+
+    Suppose $f\colon X\longvarrightarrow Y$ is continuous and $E\subseteq X$ is connected, then $f(E)$ is connected in $Y$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $f(E)\subseteq\openset_1\dcup\openset_2$, so $E\subseteq f^{-1}(\openset_1)\dcup\ f^{-1}(\openset_2)$, which are open since $f$ is continuous.
+    Since $E$ is connected, $E\subseteq f^{-1}(\openset_1)$ or $f^{-1}(\openset_2)$ and therefore $f(E)\subseteq\openset_1$ or $\openset_2$.
+    So $f(E)$ is connected as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+Note that if $E$ is connected in $\bR$ and $a<b\in E$ than $(a,b)\subseteq E$.
+Suppose $c\in(a,b)\setminus E$ then $E\subseteq\bR_{<c}\dcup\bR_{>c}$ which are both open and have non-empty intersections with $E$ (namely $a$ and $b$), in contradiction to $E$'s connectedness.
+This helps prove our next corollary.
+
+\begin{coro*}
+
+    Suppose $X$ is a metric space and $f\colon X\longvarrightarrow\bR$ is continuous.
+    Suppose $E\subseteq X$ is connected, then if $a,b\in X$ for $f(a)<f(b)$ then for every $f(a)<y<f(b)$, there is an $x\in E$ such that $f(x)=y$.
+
+\end{coro*}
+
+\begin{proof}
+
+    Since $f$ is continuous and $E$ is connected, $f(E)$ is connected in $\bR$.
+    Since it contains $f(a)$ and $f(b)$, it must contain everything between them (since it is a connected set in $\bR$), ie $\bigl(f(a), f(b)\bigr)\subseteq f(E)$, as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+Thus concludes the topological portion of our course.
+
+\newpage
+\subsection{Partial Derivatives}
+
+\begin{defn*}
+
+    If $f$ is a real valued function defined at $(x_0,y_0)$ then the \ppemph{partial derivative} of $f$ relative to $x$ is defined as:
+    \[ \pdv fx(x_0,y_0) = \lim_{\Delta x\varrightarrow0}\frac{f(x_0+\Delta x, y_0) - f(x_0, y_0)}{\Delta x} \]
+    And the partial derivative relative to $y$ is:
+    \[ \pdv fy(x_0,y_0) = \lim_{\Delta y\varrightarrow0}\frac{f(x_0,y_0+\Delta y)-f(x_0,y_0)}{\Delta y} \]
+
+    Other notations include:
+    \[ \pdv fx(x_0,y_0) = f_x(x_0,y_0) = \partial_x f(x_0,y_0) \]
+
+\end{defn*}
+
+\begin{lemm*}
+
+    If we define $g(x)=f(x,y_0)$ then $\partial_x f(x_0,y_0)=g'(x_0)$.
+
+\end{lemm*}
+
+This lemma is trivial, but helps us understand how to compute partial derivatives.
+We simply keep the other variable constant and diffeentiate.
+
+\begin{proof}
+
+    The proof is trivial:
+    \[ g'(x_0) = \lim_{h\varrightarrow0}\frac{g(x_0+h) - g(x_0)}h = \lim_{h\varrightarrow0}\frac{f(x_0+h,y_0)-f(x_0,y_0)}h = \partial_x f(x_0, y_0) \]
+
+\end{proof}
+
+\begin{exam}
+
+    \[ f(x,y) = \sinof{x^2y + y^3} \]
+    We will compute $\partial_x f(1,2)$:
+    \[ \partial_x f(1,2) = \bigl(\sinof{2x^2+8}\bigr)'(1) = \bigl(4x\cdot\cosof{2x^2 + 8}\bigr)(1) = 4\cosof{10} \]
+
+\end{exam}
+
+\end{document}
+

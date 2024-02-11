@@ -1,0 +1,700 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input ../preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\newcount\lproofline
+\def\blproof{%
+    \lproofline=0\relax%
+    \vtop\bgroup\ialign\bgroup\global\advance\lproofline by 1\relax\the\lproofline.\quad$##$\hfil\tabskip=10pt&##\hfil\crcr
+}
+\def\elproof{\crcr\omit\leaders\hrule\hfill\cr\egroup\egroup}
+
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\oto=\varleftrightarrow
+\let\longto=\longvarrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+\let\models=\vDash
+\let\notmodels=\nvDash
+
+\def\Var{{\rm Var}}
+\def\mL{{\cal L}}
+\def\mM{{\cal M}}
+\def\mN{{\cal N}}
+\def\mA{{\cal A}}
+\def\mT{{\cal T}}
+\def\mF{{\cal F}}
+\def\mK{{\cal K}}
+\def\mG{{\cal G}}
+
+\def\qed{\hskip.5cm\hbox{}\hfill$\blacksquare$}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\bB{\mathbb{B}}
+\def\true{\mathsf{true}}
+\def\false{\mathsf{false}}
+
+\newfunc{elDiag}{{\rm Diag}_{\rm el}}({})
+\newfunc{GL}{{\rm GL}}({})
+\newfunc{SL}{{\rm SL}}({})
+\newfunc{sign}{{\rm sgn}}({})
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\def\bexerc{\begin{exercise*}}
+\def\eexerc{\end{exercise*}}
+\def\bblank{\begin{blankpp}}
+\def\eblank{\end{blankpp}}
+
+\begin{document}
+
+\c@section=5
+
+\barcolorbox{220, 255, 255}{0, 130, 130}{80, 200, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Mathematical Logic}
+
+    \medskip
+    \textit{Assignment \thesection}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\bexerc
+
+    Suppose $\mM_0\subseteq\mM_1\subseteq\mM_2$ are $\mL$-structures such that $\mM_0\prec\mM_2$ and $\mM_1\prec\mM_2$.
+    Show that $\mM_0\prec\mM_1$.
+
+\eexerc
+
+\bblank
+
+    Suppose $\phi(\vec x)$ is an $\mL$-formula, then for any $\vec a\in\mM_0^n$,
+    \[ \mM_0\vDash\phi(\vec a) \iff \mM_2\vDash\phi(\vec a) \]
+    since $\mM_0\prec\mM_2$, and since $\vec a\in\mM_0^n\subseteq\mM_1^n$ and $\mM_1\prec\mM_2$,
+    \[ \mM_2\vDash\phi(\vec a) \iff \mM_1\vDash\phi(\vec a) \]
+    And thus all in all we have that
+    \[ \mM_0\vDash\phi(\vec a) \iff \mM_1\vDash\phi(\vec a) \]
+    for all $\vec a\in\mM_0^n$, meaning $\mM_0\prec\mM_1$ as required.
+
+\eblank
+
+\bexerc
+
+    Suppose $\mM_0\subseteq\mM_1\subseteq\mM_2$ are $\mL$-structures such that $\mM_0\prec\mM_1$ and $\mM_1\prec\mM_2$.
+    Is it true that $\mM_0\prec\mM_2$?
+
+\eexerc
+
+\bblank
+
+    This is the case.
+    Suppose $\phi(\vec x)$ is an $\mL$-formula, then for any $\vec a\in\mM_0^n$,
+    \[ \mM_0\vDash\phi(\vec a) \iff \mM_1\vDash\phi(\vec a) \]
+    since $\mM_0\prec\mM_1$, and since $\vec a\in\mM_0^n\subseteq\mM_1^n$ and $\mM_1\prec\mM_2$,
+    \[ \mM_1\vDash\phi(\vec a) \iff \mM_2\vDash\phi(\vec a) \]
+    And thus all in all we have that
+    \[ \mM_0\vDash\phi(\vec a) \iff \mM_2\vDash\phi(\vec a) \]
+    for all $\vec a\in\mM_0^n$, meaning $\mM_0\prec\mM_2$ as required.
+
+\eblank
+
+\bexerc
+
+    Is the smaller model elementary in the larger model?
+    \benum
+        \item $\bZ$ in $\bQ$ as ordered sets.
+        \item $\bQ\oplus\set0$ and $\bQ\oplus\bQ$ as Abelian groups.
+        \item $\bN\setminus\set0$ and $\bN$ as ordered sets.
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item Notice that while $\bQ\vDash\mathit{DLO}$, $\bZ\nvDash\mathit{DLO}$.
+        And since if $\mM_0\prec\mM_1$, $\mM_0\equiv\mM_1$, $\bZ$ cannot be an elementary substructure of $\bQ$ since they are not elementarily equivalent.
+
+        %\item We claim that this is the case.
+        %Let us use shorthands $\bQ=\bQ\oplus\set0$ and $\bQ^2=\bQ\oplus\bQ$ for readability.
+        %We will prove by formula induction that for any formula $\phi(\vec v,\vec w)$ where $\vec v\in\Var^m$ and $\vec w\in\Var^n$ and $\vec a\in\bQ^n$ and $\vec b\in\bQ^{2m}$, if
+        %$\bQ^2\vDash\phi(\vec b,\vec a)$ then there exists a $\vec c\in\bQ^m$ such that $\bQ^2\vDash\phi(\vec c,\vec a)$.
+        %This is a stronger condition than the condition needed in the Tarski-Vaught test (although it is actually equivalent), and so by proving this we will have proven that $\bQ\prec\bQ^2$.
+
+        %First, let us assume that the signature is $\mL=\set{+}$ since $0$ is definable in the theory of Abelian groups without including it in the signature.
+        %Now, if $t(x_1,\dots,x_n)$ is an $\mL$-term then it is equivalent to something of the form
+        %\[ t(x_1,\dots,x_n) \equiv k_1x_2 + \cdots + k_nx_n \]
+        %for $k_i\in\bN$, where $k_ix_i = x_i+\cdots+x_i$ ($k_i$ times), meaning that for any Abelian group $\mA$, $t^\mA(x_1^\mA,\dots,x_n^\mA)=k_1x_1^\mA+\cdots+k_nx_n^\mA$.
+
+        %This can be proven with some ease using term induction: if $t$ is a prime term, then $t=x$ for some variable and so this is true trivially (there is a slight nuance which is valid because in Abelian
+        %groups, $0\cdot x=0$ so if we write this as $t(x,x_1,\dots,x_n)=1\cdot x+0\cdot x_1+\cdots+0\cdot x_n$).
+        %And for compound terms $t(x_1,\dots,x_n)=t_1(x_1,\dots,x_n) + t_2(x_1,\dots,x_n)$ and by term induction there exist $a_i$ and $b_i$ natural such that
+        %\[ t_1(x_1,\dots,x_n) + t_n(x_1,\dots,x_n) = \sum_{k=1}^n a_kx_k + \sum_{k=1}^n b_kx_k = \sum_{k=1}^n (a_k+b_k)x_k \]
+        %where the final equality is due to $\mA$ being an Abelian group.
+
+        %Now let us get into proving the actual lemma.
+        %Firstly, we can assume that $b\in(\bQ^2\setminus\bQ)^m$ since if it has any coefficients in $\bQ$ then we can simply permute the order of the variables in $\phi$ (eg.
+        %$\psi(x_2,x_1)\equiv\phi(x_1,x_2)$) to get that the first coefficients are in $\bQ^2\setminus\bQ$, and the last are still in $\bQ$.
+
+        %Let us now continue by formula induction:
+        %suppose $\phi$ is a prime/atomic formula, that it is it is of the form $\phi(\vec v,\vec w)\colon\,t_1(\vec v,\vec w)=t_2(\vec v,\vec w)$.
+        %Since there are no relational symbols in the signature.
+        %By above, we know $t_i(\vec v,\vec w)$ is of the form
+        %\[ t_i(v_1,\dots v_m, w_1,\dots,w_n) = \sum_{k=1}^n \alpha_k^i v_k + \sum_{k=1}^m \beta_k^i w_k \]
+        %for some $\alpha_k^i,\beta_k^i\in\bN$.
+        %Thus $\phi(\vec v,\vec w)$ is equivalent to
+        %\[ \sum_{k=1}^n \alpha_k^1 v_k + \sum_{k=1}^m \beta_k^1 w_k = \sum_{k=1}^n \alpha_k^2 v_k + \sum_{k=1}^m \beta_k^2w_k \iff
+        %\sum_{k=1}^n (\alpha_k^1-\alpha_k^2)v_k = \sum_{k=1}^m (\beta_k^2-\beta_k^1)w_k \]
+        %So $\bQ^2\vDash\phi(\vec b,\vec a)$ if and only if
+        %\[ \sum_{k=1}^n (\alpha_k^1-\alpha_k^2)b_k = \sum_{k=1}^m (\beta_k^2-\beta_k^1)a_k \]
+
+        %Now we are assuming that there exists a $\vec b\in\bQ^{2m}$ such that $\bQ^2\vDash\phi(\vec b,\vec a)$.
+        %Then let us denote $b_k=(x_k,y_k)$ then we have that
+        %\[ \sum_{k=1}^n (\alpha_k^1-\alpha_k^2)b_k = \parens{\sum_{k=1}^n (\alpha_k^1-\alpha_k^2)x_k,\: \sum_{k=1}^n (\alpha_k^1-\alpha_k^2)y_k} \]
+        %Then since $\sum (\beta_k^2-\beta_k^1)a_k\in\bQ$, we must have that $\sum_{k=1}^n(\alpha_k^1-\alpha_k^2)y_k=0$ so let us simply define
+        %\[ c_k = (x_k, 0) \]
+        %Then we have that
+        %\[ \sum_{k=1}^n (\alpha_k^1-\alpha_k^2)c_k = \sum_{k=1}^n (\alpha_k^1-\alpha_k^2)b_k = \sum_{k=1}^m (\beta_k^2-\beta_k^1)a_k \]
+        %and so
+        %\[ \bQ^2\vDash\phi(\vec c,\vec a) \]
+        %where $\vec c\in\bQ^n$.
+
+        %Now continuing inductively, if $\phi(\vec v,\vec w)=\psi(\vec v,\vec w)\lor\theta(\vec v,\vec w)$ then if $\bQ^2\vDash\phi(\vec b,\vec a)$, either $\bQ^2\vDash\psi(\vec b,\vec a)$ or
+        %$\bQ^2\vDash\theta(\vec b,\vec a)$.
+        %Let us assume without loss of generality that this is true for $\psi$, then by induction there exists a $\vec c\in\bQ^m$ such that $\bQ^2\vDash\psi(\vec c,\vec a)$ and therefore
+        %$\bQ^2\vDash\phi(\vec c,\vec a)$.
+
+        %And if $\phi(\vec v,\vec w)=\neg\psi(\vec v,\vec w)$, then there exists a $\vec b\in\bQ^{2m}$ such that $\bQ^2\vDash\phi(\vec b,\vec a)$ if and only if $\bQ^2\nvDash\psi(\vec b,\vec a)$.
+        %Now since our inductive hypothesis is that if there exists a $\vec b\in
+
+        \item We say that a theory $T$ is model complete if for every $\mM,\mN\vDash T$, if $\iota$ is an embedding $\mM\injection\mN$, then it is an elementary embedding.
+        We now claim that if $T$ has a quantifier elimination, then it is model complete.
+
+        Suppose $\mM$ and $\mN$ are two models of $T$ and $\iota\colon\mM\injection\mN$ is an embedding, we will show that $\iota$ is an elementary embedding.
+        Since $T$ has quantifier elimination, it is sufficient to prove this for quantifier-free formulas $\phi$.
+        Let us begin with prime formulas, $\phi(\vec x)=R(t_1(\vec x),\dots,t_n(\vec x))$ where $t_i$ are terms.
+        Recall that since $\iota$ is an embedding, if $t$ is a term $t^\mN(\iota(\vec a))=\iota\bigl(t^\mM(\vec a)\bigr)$ and $R^\mN(\iota(\vec a))$ if and only if $R^\mM(\vec a)$, we have that
+        \[ \mN\vDash\phi(\iota(\vec a)) \iff R^\mN(\vec t^\mN(\iota(\vec a))) \iff R^\mN(\iota(t^\mM(\vec a))) \iff R^\mM(t^\mM(\vec a)) \iff \mM\vDash\phi(\vec a) \]
+        as required.
+
+        Thus we have the same results for literals.
+        Since quantifier-free formulas are equivalent to
+        \[ \phi(\vec x) \equiv \bigwedge_{i=1}^n\bigvee_{j=1}^m L_{i,j}(\vec x) \]
+        we have that for any vector $\vec a$ of values in $\mM$,
+        \[ \mM\vDash\phi(\vec a) \iff \bigwedge_{i=1}^n\bigvee_{j=1}^m \mM\vDash L_{i,j}(\vec a) \iff \bigwedge_{i=1}^n\bigvee_{j=1}^m \mN\vDash L_{i,j}(\iota(\vec a)) \iff
+        \mN\vDash\bigwedge_{i=1}^n\bigvee_{j=1}^m L_{i,j}(\iota(\vec a)) \iff \mN\vDash\phi(\iota(\vec a)) \]
+
+        So $\mM\vDash\phi(\vec a)$ if and only if $\mN\vDash\phi(\iota(\vec a))$ for all quantifier-free $\phi$ (this result is true in general, as we did not rely on $T$ having quantifier elimination).
+        And since $T$ has quantifier elimination, all formulas are equivalent to a quantifier-free formula and thus this holds for any formula $\phi$.
+        And therefore $\iota$ is an elementary embedding.
+
+        Now, it is clear that both $\bQ\oplus\set0$ and $\bQ\oplus\bQ$ are models of the theory of torsion-free divisible abelian groups.
+        We will show that $T$, the theory of divisible abelian groups where $nx=0$ if and only if $x=0$, has quantifier elimination.
+
+        First, let us assume that the signature of $T$ is $\mL=\set{+}$ since $0$ is definable in the theory of Abelian groups without including it in the signature.
+        Now, if $t(x_1,\dots,x_n)$ is an $\mL$-term then it is equivalent to something of the form
+        \[ t(x_1,\dots,x_n) \equiv k_1x_2 + \cdots + k_nx_n \]
+        for $k_i\in\bN$, where $k_ix_i = x_i+\cdots+x_i$ ($k_i$ times), meaning that for any Abelian group $\mA$, $t^\mA(x_1^\mA,\dots,x_n^\mA)=k_1x_1^\mA+\cdots+k_nx_n^\mA$.
+
+        This can be proven with some ease using term induction: if $t$ is a prime term, then $t=x$ for some variable and so this is true trivially (there is a slight nuance which is valid because in Abelian
+        groups, $0\cdot x=0$ so if we write this as $t(x,x_1,\dots,x_n)=1\cdot x+0\cdot x_1+\cdots+0\cdot x_n$).
+        And for compound terms $t(x_1,\dots,x_n)=t_1(x_1,\dots,x_n) + t_2(x_1,\dots,x_n)$ and by term induction there exist $a_i$ and $b_i$ natural such that
+        \[ t_1(x_1,\dots,x_n) + t_n(x_1,\dots,x_n) = \sum_{k=1}^n a_kx_k + \sum_{k=1}^n b_kx_k = \sum_{k=1}^n (a_k+b_k)x_k \]
+        where the final equality is due to $\mA$ being an Abelian group.
+
+        So we will now show inductively that every $\mL$-formula has a quantifier-free equivalent, we will do this inductively.
+        The inductive step is obvious for formulas of the form $\phi\land\psi$ and $\neg\phi$, so we only need to worry about the case
+        \[ \phi(x,x_1,\dots,x_k) = \exists x\bigvee_{i=1}^n\bigwedge_{j=1}^m L_{i,j}(x_1,\dots,x_k) \equiv \bigvee_{i=1}^n\exists x\bigwedge_{j=1}^m L_{i,j} \]
+        where $L_{i,j}$ is a literal.
+        If we can replace the existence quantifier on the conjunction of literals with a quantifier-free formula, we have finished.
+        So we only need to worry about the case
+        \[ \phi(x,x_1,\dots,x_n) = \exists x\bigwedge_{i=1}^n L_i(x,x_1,\dots,x_n) \]
+        By above, each literal is of one of the forms:
+        \[ \alpha x = \sum_{j=1}^m \alpha_j x_j, \quad \alpha x \neq \sum_{j=1}^m \alpha_j x_j \]
+        where $\alpha\in\bN$ and $\alpha_t\in\bZ$.
+        If $\alpha=0$ then we can ignore it, as our goal is to find an equivalent formula without the use of $x$ and the left hand side is simply $0$.
+
+        Let us assume that $1,\dots,k$ is the indexes of the literals which are equalities.
+        We split into two cases:
+        \benum
+            \item If $k=0$, then every literal is an inequality, then this gives us a finite amount of values which $x$ cannot be, but since divisible abelian groups are infinite, there exists a value which
+            witnesses all of these literals.
+
+            \item If $k>0$ then there are literals which are equalities, then we can do the following: suppose $L_i$ is of the form
+            \[ \alpha_i x = \sum_{j=1}^n \alpha_{i,j}x_j \]
+            Then for $i>k$, if $L_i$ is of the form
+            \[ \alpha_i x \neq \sum_{j=1}^n \alpha_{i,j}x_j \]
+            we replace it with $L'_i$:
+            \[ \alpha_i\sum_{j=1}^n \alpha_{1,j}x_j \neq \alpha_1\sum_{j=1}^n \alpha_{i,j}x_j \]
+            Note that $L_1\land L'_i$ is true if and only if $\alpha_1 x=\sum_{j=1}^n\alpha_{1,j}x_j$ and so
+            \[ L_i \iff \alpha_i x \neq \sum_{j=1}^n \alpha_{i,j}x_j \iff \alpha_i\alpha_1 x \neq \alpha_1\sum_{j=1}^n\alpha_{i,j}x_j \iff L'_i \]
+
+            This is true because in $T$, $x=y$ if and only if $nx=ny$, since $nx=ny$ if and only if $n(x-y)=0$ if and only if $x-y=0$ (since $x-y$ is either zero or has infinite order).
+            So $L_1\land L'_i$ is equivalent to $L_1\land L'_i$.
+
+            For $i\neq j\leq k$ let us define $L_{i,j}$ be the formula that $L_i$ and $L_j$ define the same $x$:
+            \[ \alpha_j\sum_{t=1}^n \alpha_{i,t}x_t = \alpha_i\sum_{t=1}^n \alpha_{j,t}x_t \]
+            Now we replace $L_1\land\cdots\land L_k$ with the formula
+            \[ \bigwedge_{i\neq j\leq k}L_{i,j} \]
+
+            And so
+            \[ \bigwedge_{i\neq j\leq k}L_{i,j}\land\bigwedge_{i>k}L'_i \]
+            This is equivalent with $\phi$, since if $\phi$ is true for some $x$ then by the steps above we showed that the above formula is also true.
+            And if the above formula is true, then since all the $L_i$ for $i\leq k$ define the same $x$ (which is defined by dividing the left hand side of $L_{i,j}$ by $\alpha_j$).
+            And this $x$ also satisfies $L'_i$.
+        \eenum
+
+        Thus we have shown that $T$ has quantifier elimination, and is thus model complete.
+        Since $\bQ\oplus\set0$ and $\bQ\oplus\bQ$ model $T$, the inclusion embedding is elementary as required by model completeness.
+
+        \item Let $\phi(v)=\exists x(x<v)$ then $\bN\vDash\phi(1)$ since $0$ witnesses $\phi$.
+        But $\bN\setminus\set0$ has no witness to $\phi$ since $1$ is a minimum in $\bN\setminus\set0$.
+
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Show that the finiteness of the signature $\mL$ is necessary for the equivalence of elementary equivalence and the existence of a winning strategy of player II in Ehrenfeucht-Fra\"is\'e games.
+
+\eexerc
+
+\bblank
+
+    Let $\mL=\set{n\in}[n\in\bN]$ be a signature of unary relations.
+    Then let $T$ be the theory that every conjunction of literals is witnessed:
+    \[ T = \set{\exists x(n_1\in x\land\cdots\land n_k\in x\land m_1\notin x\land\cdots\land m_t\notin x)}[n_i\neq m_j] \]
+    Then we claim that $T$ has quantifier elimination.
+    As above, it is sufficient to show that
+    \[ \exists x\bigwedge_{i=1}^n L_i(x,x_1,\dots,x_n) \]
+    has a quantifier-free equivalent.
+    This is obvious by the definition of $T$: $L_i$ is of the form $x_i\in n_i$ or $x_i\notin m_i$.
+    If $x_i\neq x$ then we can ignore it.
+    And if no $n_i$ is equal to an $m_i$ then by the axioms of $T$, it is realized, and so we can remove all of the literals including $x$ from the formula and this formula is equivalent.
+    Otherwise it is logically false and can be replace by $\bot$.
+
+    Now let $\mM=\powsetof[\omega]\bN$ (the set of all finite subsets of $\bN$) and $\mN=\powsetof\bN$ ($n\in x$ is taken literally in both models).
+    Then $\mM$ and $\mN$ both model $T$ since for any conjunction of literals:
+    \[ n_1\in x\land\cdots\land n_k\in x\land m_1\notin x\land\cdots\land m_t\in x,\qquad n_i\neq m_j \]
+    then $\set{n_1,\dots,n_k}$ witnesses the conjunction.
+
+    So by the lemma we proved in the previous question, $T$ is model complete.
+    So since $\mM$ is a substructure of $\mN$, it is an elementary substructure meaning $\mM$ and $\mN$ are logically equivalent.
+
+    But $\bN\in\mN$ and $\bN\notin\mM$, so if player I plays $\bN$ in the first round, player II cannot respond.
+    This is because $\bN$ satisfies all relations, but there is no set in $\mM$ which satisfies every relation (since every set in $\mM$ is finite, and there are infinite relations).
+    So if player II responds with any $x\in\mM$, there is an $n\in\bN$ such that $n\notin x$ so $\bN\varmapsto x$ cannot be part of a partial embedding from $\mN$ to $\mM$.
+
+    So while $\mM\equiv\mN$, player I has a winning strategy in every game, and in particular player II has no winning strategy.
+
+\eblank
+
+\bexerc
+
+    Who wins in Ehrenfeucht-Fra\"iss\'e games for the ordered sets, and what is the winning strategy?
+    \benum
+        \item $\bZ$ and $\bR$
+        \item $\bR$ and $\bQ$
+        \item $\bN$ and $\bN\oplus\bZ$
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item Since $\bR$ is a dense linear order without endpoints, and $\bZ$ is not, they are not equivalent.
+        Thus player I has a winning strategy.
+
+        Player I plays $0\in\bR$ in the first round, and suppose player II responds with $a$.
+        Then player I plays with $1\in\bR$, and player II responds with $b>a$.
+        Then if player I plays only points in $(0,1)$ for the next rounds, player I must respond with integers in $(a,b)$.
+        So if player I plays by the strategy of picking arbitrary points in $(0,1)$, since there are only $b-a-1$ integers in $(a,b)$, within $b-a$ rounds, player I will have won.
+
+        \item Since both of these model the complete theory of dense linear orders without endpoints, they are equivalent and thus player II has a winning strategy.
+
+        The idea is that after two rounds, the points $x<y$ will have been chosen in $\bR$ and $a<b$ in $\bQ$.
+        Then if player I chooses $z<x$, player II must respond with some $c<a$ (which exists; there are no endpoints).
+        If player I plays $x<z<y$ then player II must respond with some $a<c<b$ (which exists; the order is dense).
+        And if player I plays $y<z$ then player II must respond with some $b<c$.
+        This ensures this remains the graph of a partial embedding.
+
+        In general, if the points chosen are $x_1<\cdots<x_n\in\bR$ and $a_1<\cdots<a_n\in\bQ$ and player I plays $x\in\bR$ where $x_i<x<x_{i+1}$ then player II can respond with an $a_i<a<a_{i+1}$,
+        or if $x<x_1$ then player II responds with $a<a_1$ and if $x>x_n$ then $a>a_n$.
+        And if player I plays $a\in\bQ$, the reverse strategy takes effect.
+        This ensures that the graph is a partial embedding, since all the relations are stable.
+
+        \item Since $\bZ\oplus\bN$ is a discrete linear order without endpoints and $\bN$ is not, they are not equivalent.
+        So player I has a winning strategy.
+
+        First, player I plays $0\in\bN$, then player II responds with $(a,b)\in\bZ\oplus\bN$.
+        Then player I plays $(a-1,b)\in\bZ\oplus\bN$.
+        Since $(a-1,b)<(a,b)$, and $(a,b)$ is the image of $0$, whatever player II plays now must be less than zero (as its image must be less than the image of zero), but there is no number in $\bN$ less
+        than zero.
+        So no matter what player II plays, it will lose.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Prove that
+    \benum
+        \item The intersection of an arbitrarily family of filters over $I$ is also a filter over $I$.
+        \item The union of any chain of proper filters over $I$ is also a proper filter over $I$.
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item Let $\set{\mF_j}_{i\in J}$ be a family of filters over $I$, then we must show that $\bigcap_{j\in J}\mF_j$ is also a filter over $I$.
+        Since for every $j\in J$, $I\in\mF_j$ since $\mF_j$ is a filter, $I\in\bigcap_{j\in J}\mF_j$.
+        And if $A,B\in\bigcap_{j\in J}\mF_j$ then for every $j\in J$, $A,B\in\mF_j$ so $A\cap B\in\mF_j$ since they are filters, so $A\cap B\in\bigcap_{j\in J}\mF_j$.
+        And finally if $A\in\bigcap_{j\in J}\mF_j$ and $A\subseteq B$, then for every $j\in J$, $A\in\mF_j$ and so $B\in\mF_j$ again since they are filters, and so $B\in\bigcap_{j\in J}\mF_j$.
+
+        Thus $\bigcap_{j\in J}\mF_j$ contains $I$, is closed under intersections, and is upward-closed, therefore it is a filter.
+
+        \item Suppose $C$ is a chain of proper filters, and let $\mF=\bigcup_{F\in C}F$.
+        We first show $\mF$ is a filter: obviously $I\in\mF$ since it is in $I\in F$ for $F\in C$.
+        And if $A,B\in\mF$ then $A\in F_1$ and $B\in F_2$ for some $F_1,F_2\in C$.
+        Since $C$ is a chain, either $F_1\subseteq F_2$ or $F_2\subseteq F_1$, let us assume without loss of generality the former.
+        So $A,B\in F_2$ and thus $A\cap B\in F_2$ meaning $A\cap B\in\mF$.
+        Finally if $A\in\mF$ and $A\subseteq B$ then $A\in F$ for some $F\in C$, and since $F$ is a filter $B\in F$ so $B\in\mF$.
+        Therefore $\mF$ is a filter.
+
+        A filter is proper if and only if it does not include the empty set, and $\varnothing\in\mF$ if and only if there exists a $F\in C$ such that $\varnothing\in F$.
+        But then $F$ is improper, in contradiction.
+        So $\varnothing\notin\mF$, meaning $\mF$ is proper.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Show that there exists an ultraproduct of finite sets which is infinite.
+
+\eexerc
+
+\bblank
+
+    Let us define the sentence
+    \[ \exists_n\colon\quad \exists x_1\cdots\exists x_n\parens{\bigwedge_{1\leq i<j\leq n}x_i\neq x_j} \]
+    the sentence that there exists at least $n$ distinct elements.
+    We want an ultraproduct $\mA=\prod_D\mA_i$ such that for every $n\in\bN$,
+    \[ \mA\vDash\exists_n \iff \set{i\in I}[\mA_i\vDash\exists_n]\in D \]
+
+    So let us begin by defining $\mA_n=[1,n]$, the set of all integers between $1$ and $n$.
+    And $I=\bN$, so
+    \[ \set{i\in I}[\mA_i\vDash\exists_n] = [n,\infty) \]
+    Let us define $E=\set{[n,\infty)}[n\in\bN]$, then $E$ has the finite intersection property since if $a_1<\cdots<a_n$ then
+    \[ \bigcap_{k=1}^n [a_1,\infty) = [a_n,\infty) \neq \varnothing \]
+    so it can be extended to an ultrafilter $D$.
+    So then by defining $\mA=\prod_D\mA_i$, since
+    \[ \set{i\in I}[\mA_i\vDash\exists_n] = [n,\infty) \in E\subseteq D \implies \mA\vDash\exists_n \]
+    for every $n\in\bN$, meaning that for every $n$, $\mA$ has at least $n$ elements.
+    Or in other words, $\mA$ is infinite, and it is the ultraproduct of finite sets $\mA_i$.
+
+\eblank
+
+\bexerc
+
+    Prove that if $\mK$ is an arbitrary class of models, it is a basic elementary class if and only if both $\mK$ and $\mK^c$ are closed under ultraproducts and elementary equivalence.
+
+\eexerc
+
+\bblank
+
+    This is equivalent to saying that $\mK$ is a basic elementary class if and only if both $\mK$ and $\mK^c$ are elementary classes.
+
+    If $\mK$ is a basic elementary class then it is the class of all models of a theory $T=\set\phi$.
+    Then $\mK^c$ is the class of all models of the theory $T'=\set{\neg\phi}$ (since $\mM\notin\mK$ if and only if $\mM\nvDash\phi$ if and only if $\mM\vDash\neg\phi$).
+    Then both $\mK$ and $\mK^c$ are elementary classes, as required.
+
+    Before proving the converse, let us prove a lemma:
+    if $T_1$ and $T_2$ are two theories such that $T_1\cup T_2$ is inconsistent then there exists a sentence $\phi$ such that $T_1\vdash\phi$ and $T_2\vdash\neg\phi$.
+    Since $T_1\cup T_2$ is inconsistent, by the compactness theorem there exist $\phi_1,\dots,\phi_n\in T_1$ and $\psi_1,\dots,\psi_m\in T_2$ such that $\phi_1,\dots,\phi_n,\psi_1,\dots,\psi_m$ is
+    inconsistent.
+    Meaning there exists a sentence $\theta$ which is both proven and disproven by $\phi_1,\dots,\phi_n,\psi_1,\dots,\psi_m$.
+    Let us define $\phi=\bigwedge_{i=1}^n\phi_i$ and $\psi=\bigwedge_{i=1}^m\psi_i$.
+    By the deduction theorem we have that
+    \[ \phi,\psi\vdash \theta,\neg\theta \implies \phi\vdash\psi\to\neg\theta,\quad \psi\vdash\phi\to\theta \]
+
+    Now let us define
+    \[ \mu = \phi\land(\psi\to\neg\theta) \]
+    then $\phi\vdash\mu$ since $\phi\vdash\phi$ and $\phi\vdash\psi\to\neg\theta$, so $T_1\vdash\mu$.
+    On the other hand
+    \[ \neg\mu = \neg\phi\lor(\psi\land\theta) = \phi\to(\psi\land\theta) \]
+    And so $\psi\vdash\phi$ since $\psi\vdash\phi\to\theta$, and so $T_2\vdash\neg\mu$.
+    So we have proven the lemma.
+
+    Now suppose both $\mK$ and $\mK^c$ are both elementary classes.
+    Then suppose $T_1$ is the theory which axiomizes $\mK$ and $T_2$ axiomizes $\mK^c$.
+    Then $T_1\cup T_2$ is inconsistent since any model of it must be in both $\mK$ and $\mK^c$.
+    So there exists a sentence $\phi$ such that $T_1\vdash\phi$ and $T_2\vdash\neg\phi$.
+    Now we claim that $T'_1=\set{\phi}$ axiomizes $\mK$ and $T'_2=\set{\neg\phi}$ axiomizes $\mK^c$.
+
+    Note that if $\mM\in\mK$ then $\mM\vDash T_1$ so $\mM\vDash\phi$ and similar for $\mK^c$ and $\neg\phi$.
+    Suppose $\mM\vDash\phi$, then $\mM\nvDash\neg\phi$ meaning $\mM\notin\mK^c$, so $\mM\in\mK$.
+    So $\mM\in\mK$ if and only if $\mM\vDash\phi$.
+    Thus $\mK$ is axiomized by $T'_1=\set\phi$, meaning it is a basic elementary class.
+
+\eblank
+
+\bexerc
+
+    If $D$ is a principal ultrafilter (a filter of the form $\set{X}[x\in X]$), then
+    \[ \prod_D\mA \cong \mA \]
+
+\eexerc
+
+\bblank
+
+    Suppose $D$ is generated by the element $x\in I$.
+    Let $f\in\prod_I\mA$, then let $g=(f(x))_{i\in I}$ (ie. $g(i)$ is the constant function equal to $f(x)$).
+    Then
+    \[ f(x) = g(x) \implies x\in\set{i\in I}[f(i) = g(i)] \implies \set{i\in I}[f(i)=g(i)] \in D \implies f_D = g_D \]
+
+    So if $d\colon\mA\injection\prod_D\mA$ is the natural embedding, then what we showed above proves that $d$ is also surjective: for any $f\in\prod_I\mA$, $f\equiv_D((f(x))_{i\in I}=d(f(x))$.
+    So $d$ is a surjective embedding, meaning it is an isomorphism.
+
+\eblank
+
+\bexerc
+
+    Show that none of the following theorems are finitely axiomizable:
+    \benum
+        \item Infinite models with only equality
+        \item Fields of characteristic zero
+        \item Divisible abelian groups
+        \item Torsion-free abelian groups
+    \eenum
+
+\eexerc
+
+\bblank
+
+    Since finite axiomization is equivalent to axiomization with a single axiom (by taking the conjunction of all the axioms), this boils down to showing that the class of models of each of the theories is
+    not a basic elementary class.
+    Since the class is an elementary class (all of these theories are first order axiomizable), this means we must show that the complement of each of the theories is not an elementary class.
+    Since the complement of an elementary class is closed under equivalence (since if $\mM\notin\mK$ and $\mN\equiv\mN$, if $\mN\in\mK$ since $\mK$ is closed under equivalence, $\mM\in\mK$ in contradiction).
+    So we must show that the complement of these classes are not closed under ultraproducts.
+
+    \def\bn{\boldsymbol{n}}
+    \benum
+        \item We showed in a previous question that there exists an ultraproduct of finite sets (sets not in the class of infinite models) which is infinite.
+        Thus the complement of this class of models is not closed under ultraproducts, as required.
+
+        \item Let $\bn$ be the sentence $1+\cdots+1=0$ ($n$ times).
+        Then let us look at the the ultraproduct of fields without characteristic zero
+        \[ \bF = \prod_D\bF_p \]
+        Where $D$ is an ultrafilter over $\bP$, the set of prime numbers.
+        Then
+        \[ \bF\vDash\neg\bn \iff \set{p\in\bP}[\bF_p\vDash\neg\bn] = \bP\setminus\set n \]
+        Then for any ultrafilter $D$, $\bF\vDash\neg\bn$ if $n\notin\bP$, since $\bP\setminus\set n=\bP\in D$.
+        Since if $\bF\vDash\bn$ then $\bF\vDash\boldsymbol{2n}$, if $1+\cdots+1=0$ then multiplying it by two will still be zero.
+        So if $\bF\vDash\boldsymbol{p}$ for $p\in\bP$, then $\bF\vDash\boldsymbol{2p}$ and $2p\notin\bP$ meaning that $\bF\nvDash\boldsymbol{2p}$ in contradiction.
+        So $\bF\vDash\neg\bn$ for all $n\in\bN$, meaning that for all $n\in\bN$, $1+\cdots+1\neq0$, so $\bF$ is of characteristic zero.
+
+        Obviously $\bF$ is a field since $\bF_p\vDash T$ (where $T$ is the theory of fields) for every $p$ and so $\bF\vDash T$.
+        Thus the complement of the class of fileds of characteristic zero is not closed under ultraproducts, so the theory of fields of characteristic zero is not finitely axiomizable.
+
+        \item Let us define $G_p=\slfrac\bZ{p\bZ}$ for $p$ prime.
+        Then let us define
+        \[ \phi_n=\forall g\exists x(nx=g),\qquad \Phi_n = \bigwedge_{0<k<n}\phi_k \]
+        then $G_p\vDash\Phi_n$ for every $n<p$ since $n$ is then invertible in $G_p$.
+        But $G_p$ is not divisible since $G_p\nvDash\phi_p$ since $px=0$ for any $x\in G_p$.
+
+        Let us define
+        \[ \mG = \prod_D G_p \]
+        for some ultrafilter $D$ over $\bP$.
+        Then $\mG$ is an abelian group since every $G_p$ is.
+        Now, $G_p\vDash\Phi_n$ if and only if $p>n$ so
+        \[ \set{p\in P}[G_p\vDash\Phi_n] = (n,\infty)\cap\bP \]
+        So let $E=\set{(n,\infty)\cap\bP}[n\in\bN]$, which has the finite intersection property since for $a_1<\cdots<a_n$,
+        \[ \bigcap_{i=1}^n (a_i,\infty)\cap\bP = (a_n,\infty)\cap\bP \neq\varnothing \]
+        So we can extend $E$ to an ultrafilter $D$, and then
+        \[ \set{p\in P}[G_p\vDash\Phi_n] = (n,\infty)\cap\bP \in E\subseteq D \implies \mG\vDash\Phi_n \]
+        meaning that $\mG\vDash\phi_n$ for every $n\in\bN$, and therefore $\mG$ is a divisible abelian group.
+
+        So the complement of the class of divisible groups is not closed under ultraproducts, and so the theory of divisible groups is not finitely axiomizable.
+
+        \item Let us use the same groups as before since they are not torsion free (they are finite so they are in fact torsion groups), and define
+        \[ \phi_n = \forall x(nx\neq0),\qquad \Phi_n = \bigwedge_{0<k<n}\phi_k \]
+        And so $G_p\vDash\Phi_n$ for $n<p$.
+        Thus using the same $\mG$ as before
+        \[ \set{p\in\bP}[G_p\vDash\Phi_p] = (n,\infty)\cap\bP \in E\subseteq D \]
+        so
+        \[ \mG\vDash\Phi_n \]
+        for every $n\in\bN$.
+        Meaning that $\mG$ is a torsion-free abelian group, and so the complement of the class of torsion-free abelian groups is not closed under ultraproducts, and therefore the theory of torsion-free
+        abelian groups is not finitely axiomizable.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Show that the following classes are not closed under ultraproducts
+    \benum
+        \item The class of torsion groups
+        \item The class of simple groups.
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item The counterexample from the previous question is exactly an example of an ultraproduct of torsion groups which is torsion-free.
+
+        \item Let $G_p=\slfrac\bZ{p\bZ}$, as these are simple groups (they have no non-trivial subgroups).
+        Then let $D$ be the ultraproduct generated by $[n,\infty)\cap\bP$ (since this has the finite intersection property).
+        Then
+        \[ \mA = \prod_DG_p \]
+        is an infinite abelian group.
+        It is infinite since $G_p\vDash\exists_n$ for $n<p$ and so
+        \[ \set{p\in\bP}[G_p\vDash\exists_n] = [n,\infty)\cap\bP \in D \implies \mA\vDash\exists_n \]
+        so $\mA$ has at least $n$ elements for every $n\in\bN$, so $\mA$ is infinite.
+        And it is an abelian group because every $G_p$ is an abelian group.
+
+        But, there are no infinite simple abelian groups: if $a\in\mA$ has that $\gen a=\mA$ then $\gen{2a}\neq\mA$ since $a$ has infinite order so $2a\neq0$ and $a\notin\gen{2a}$, meaning $\gen{2a}$ is a
+        proper (normal) subgroup of $\mA$.
+        So $\mA$ is an ultraproduct of simple groups which is not itself simple.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Show that
+    \[ \prod_D\GLof[n]\bF\cong\GLof[n]{\prod_D\bF} \]
+    For any ultrafilter $D$ and field $\bF$.
+
+\eexerc
+
+\bblank
+
+    Let us define a function
+    \[ \phi\colon\prod_D\GLof[n]\bF \longto \GLof[n]{\prod_D\bF} \]
+    where
+    \[ \phi\bigl(\gen{M_i}[i\in I]_D\bigr) = M, \quad [M]_{ab} = \gen{[M_i]_{ab}}[i\in I]_D \]
+    So we must show that $\phi$ is well-defined: suppose $(M_i)_{i\in I}\equiv_D(N_i)_{i\in I}$ then we must show that $M=N$.
+    For $1\leq a,b\leq n$, notice that
+    \[ [M]_{ab} = [N]_{ab} \iff ([M_i]_{ab})_{i\in I} \equiv_D ([N_i]_{ab})_{i\in I} \iff \set{i\in I}[{[M_i]_{ab}=[N_i]_{ab}}] \in D \]
+    And $M=N$ if and only if this is true for all such $a,b$, which is if and only if (since $X,Y\in D$ if and only if $X\cap Y\in D$)
+    \[ M = N \iff \bigcap_{1\leq a,b\leq n}\set{i\in I}[{[M_i]_{ab}=[N_i]_{ab}}] \in D \]
+    Notice that this intersection is equal to the set $\set{i\in I}[M_i=N_i]$, so
+    \[ M = N \iff \set{i\in I}[M_i=N_i] \in D \iff (M_i)_{i\in I}\equiv_D(N_i)_{i\in I} \]
+    Thus we have shown that $\phi$ is both a univalent and injective relation.
+    To finish showing that $\phi$ is well-defined, it remains to be shown that $\GLof[N]{\prod_D\bF}$ is indeed a valid codomain.
+
+    Suppose $(M_i)_{i\in I}\in\prod_D\GLof[n]\bF$, then we must show that $\phi((M_i)_{i\in I})=M$ is invertible.
+    Since $\prod_D\bF$ is an ultrapower of fields, it too is a field, so it is sufficient to show that the image has non-zero determinant.
+    Recall that
+    \[ \det(M) = \sum_{\sigma\in S_n}\sign(\sigma)\sum_{t=1}^n [M]_{t\sigma(t)} = \sum_{\sigma\in S_n}\sign(\sigma)\cdot\sum_{t=1}^n\gen{[M_i]_{t\sigma(t)}}[i\in I] 
+    = \gen{\sum_{\sigma\in S_n}\sign(\sigma)\cdot\sum_{t=1}^n[M_i]_{t\sigma(t)}}[i\in I] \]
+    And this of course is equal to $\gen{\det(M_i)}[i\in I]$.
+    Now,
+    \[ \det(M) = 0 \iff \set{i\in I}[\det(M_i)=0] \in D \]
+    but each $M_i\in\GLof[n]\bF$ is invertible, and so the set is $\varnothing$, and so it is not in $D$.
+    Therefore $\det(M)\neq0$ meaning $\phi$ is indeed well-defined.
+
+    Thus far we have shown that $\phi$ is a well-defined injection, all that remains is to show that it is surjective and preserves matrix products.
+    Suppose $M\in\GLof[n]{\prod_D\bF}$, let $[M]_{ab}=\gen{m_{ab}^i}[i\in I]\in\prod_D\bF$.
+    Then
+    \[ 0\neq\det(M)=\sum_{\sigma\in S_n}\signof\sigma\sum_{t=1}^n [M]_{t\sigma(t)} = \gen{\sum_{\sigma\in S_n}\signof\sigma\sum_{t=1}^nm_{t\sigma(t)}^i}[i\in I] \]
+    Let
+    \[ D_i = \sum_{\sigma\in S_n}\signof\sigma\sum_{t=1}^nm_{t\sigma(t)}^i \in \bF \]
+    And so we can rewrite $\det(M)$ as
+    \[ \det(M) = \gen{D_i}[i\in I] \]
+    and since $\det(M)$ this means that
+    \[ \set{i\in I}[D_i=0]\notin D \implies \set{i\in I}[D_i\neq0] \in D \]
+    since $D$ is an ultrafilter.
+
+    For $D_i\neq0$, let us define $M_i$ by $[M_i]_{ab}=m_{ab}^i$ in which case $\det(M_i)=D_i\neq0$, and if $D_i=0$ the let us define $M_i=\mathrm{id}$ and so $\det(M_i)=1\neq0$.
+    So $\gen{M_i}[i\in I]\in\prod_D\GLof[n]\bF$, and if
+    \[ \phi(\gen{M_i}[i\in I]) = M',\quad [M']_{ab} = \gen{[M_i]_{ab}}[i\in I] \]
+    Now $M=M'$ if and only if for every $1\leq a,b\leq n$:
+    \[M_{ab}=[M']_{ab} \iff \gen{[M_i]_{ab}}[i\in I] = \gen{m_{ab}^i}[i\in I] \iff \set{i\in I}[{[M_i]_{ab}=m_{ab}^i}] \in D \]
+    And since
+    \[ \set{i\in I}[D_i\neq0] \subseteq \set{i\in I}[{[M_i]_{ab}=m_{ab}^i}] \in D \]
+    we have that the set is indeed in $D$ for every $a,b$ so $M=M'$ as required.
+    Thus $\phi$ is a bijection.
+
+    Now, let us show that $\phi$ preserves matrix multiplication.
+    Suppose $M=\gen{M_i}[i\in I],\,N=\gen{N_i}[i\in I]\in\prod_D\GLof[n]\bF$ then $MN=\gen{M_iN_i}[i\in I]$.
+    Then
+    \[ [\phi(MN)]_{ab} = \gen{[M_iN_i]_{ab}}[i\in I] = \gen{\sum_{t=1}^n[M_i]_{at}[N_i]_{tb}}[i\in I] = \sum_{t=1}^n\gen{[M_i]_{at}}[i\in I]\gen{[N_i]_{tb}}[i\in I] = \sum_{t=1}^n \phi(M)_{at}\phi(N)_{tb} \]
+    Which is equal to $[\phi(M)\phi(N)]_{ab}$, and so
+    \[ \phi(MN) = \phi(M)\phi(N) \]
+    as required.
+
+\eblank
+
+\bexerc
+
+    Show that $\mG$, the class of all groups embeddable in $\SLof[n]\bF$ for some $n\in\bN$ and $\bF$ field is closed under elementary equivalence.
+
+\eexerc
+
+\bblank
+
+    First, let us show that
+    \[ \prod_D\SLof[n]\bF \cong \SLof[n]{\prod_D\bF} \]
+    Note that the isomorphism $\phi$ from the previous question can be reduced (it's not really a reduction since the domain is not strictly speaking a substructure of the original domain) on
+    $\prod_D\SLof[n]\bF$ since we showed that for $M=\gen{M_i}[i\in I]$,
+    \[ \det(\phi(M)) = \gen{\det(M_i)}[i\in I] \]
+    So if $M_i\in\SLof[n]\bF$ then $\det(M_i)$ so $\det(\phi(1))=\gen1[i\in I]=1$.
+    And this is still surjective since if $N\in\SLof[n]{\prod_D\bF}$ then we know there exists $M=\gen{M_i}[i\in I]$ where $M_i\in\GLof[n]\bF$ (but not necessarily in the special linear group) such that
+    \[ \phi(M) = N \implies \gen{\det(M_i)}[i\in I] = \det(N) = \gen1[i\in I] \]
+    This means that $\set{i\in I}[\det(M_i)=1]\in D$ and so for all other $i$ we can replace $M_i$ with $\mathrm{id}$.
+    Suppose this replacement gives $M'=\set{M'_i}[i\in I]$ where $M'_i\in\SLof[n]\bF$, and so
+    \[ \phi(M')_{ab} = \gen{[M'_i]_{ab}}[i\in I] \]
+    And for $\det(M_i)=1$, $M'_i=M_i$ and so $[M'_i]_{ab}=[M_i]_{ab}$ and so
+    \[ \set{i\in I}[{[M'_i]_{ab} = [M_i]_{ab}}] \supseteq \set{i\in I}[\det(M_i)=1] \in D \]
+    and so we have that $\phi(M')_{ab}=\phi(M)_{ab}$ and therefore $\phi(M')=\phi(M)=N$, and therefore $\phi$ is still surjective and thus an isomorphism.
+
+    Now let us get onto proving what is actually asked.
+    Suppose $G\in\mG$ and $G\equiv H$, then by the Keisler-Shelah Isomorphism theorem, there exists an ultrafilter $D$ such that $\prod_D G\cong\prod_D H$.
+    Suppose $G$ can be embedded in $\SLof[n]\bF$ then $\prod_DG$ can be embedded in $\prod_D\SLof[n]\bF\cong\SLof[n]{\prod_D\bF}$.
+    This means that $\prod_D G\in\mG$, and since this is isomorphic to $\prod_DH$, $\prod_DH\in\mG$ as well (it can be embedded into the same special linear group).
+    Now, $H$ can be embedded into $\prod_DH$, and so it too can be embedded into the same special linear group $\prod_DH$ can, meaning $H\in\mG$.
+    Therefore $\mG$ is closed under elementary equivalence.
+
+\eblank
+
+\end{document}
+

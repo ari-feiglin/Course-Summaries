@@ -1,0 +1,244 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\Language{\mathcal{L}}
+\def\theory{\mathcal{T}}
+
+\def\qed{\hskip.5cm\hbox{}\hfill$\blacksquare$}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\def\true{\mathsf{true}}
+\def\false{\mathsf{false}}
+
+\def\Aone#1#2{#1\to(#2\to#1)}
+\def\Atwo#1#2#3{\bigl(#1\to(#2\to#3)\bigr)\to\bigl((#1\to#2)\to(#1\to#3)\bigr)}
+\def\Athree#1#2{(\neg#2\to\neg#1)\to\bigl((\neg#2\to#1)\to#2\bigr)}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+\newskip\alcentering    \alcentering=0pt plus 1000pt minus 1000pt
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+
+\begin{document}
+
+\c@section=4
+
+\barcolorbox{220, 255, 255}{0, 130, 130}{80, 200, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Mathematical Logic}
+
+    \medskip
+    \textit{Lecture \thesection, Monday April 24, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{coro*}
+
+    Our system $\Language$ is consistent: there is no well-formed formula $\phi$ such that $\phi$ and $\neg\phi$ are both theorems.
+
+\end{coro*}
+
+\begin{proof}
+
+    By the soundness theorem, if both $\phi$ and $\neg\phi$ are theorems, they are both tautologies.
+    This is a contradicition since they have opposite truth values.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    A well-formed formula $\phi$ is \ppemph{independent} of a set of other well-formed formulas $\Gamma$ if $\phi$ is not provable from (just) $\Gamma$.
+
+\end{defn*}
+
+\begin{prop*}
+
+    Axioms \textbf{A1}, \textbf{A2}, and \textbf{A3} are all independent of one another.
+
+\end{prop*}
+
+\begin{proof}
+
+    \benum
+        \item First we show \textbf{A1} is independent of \textbf{A2} and \textbf{A3}.
+        We construct the following ``truth tables'':
+
+        \centerline{%
+        \vtop{\halign{\strut\hfil\,$#$\,\hfil\vrule&\hfil\,$#$\,\hfil\cr
+            A & \neg A \cr\noalign{\hrule}
+            0 & 1 \cr
+            1 & 1 \cr
+            2 & 0 \cr
+        }}
+        \qquad
+        \vtop{\halign{\strut\hfil\,$#$\,\hfil\vrule&\hfil\,$#$\,\hfil\vrule&\hfil\,$#$\,\hfil\cr
+            A & B & A\to B \cr\noalign{\hrule}
+            0 & 0 & 0 \cr
+            1 & 0 & 2 \cr
+            2 & 0 & 0 \cr
+            0 & 1 & 2 \cr
+            1 & 1 & 2 \cr
+            2 & 1 & 0 \cr
+            0 & 2 & 2 \cr
+            1 & 2 & 0 \cr
+            2 & 2 & 0 \cr
+        }}}
+        This gives us a method of evaluating well-formed formulas $\phi$.
+        If $\phi$ is always $0$ then it is called \emph{select}.
+        We will show that modus ponens of two select formulas is itself select, and \textbf{A2} and \textbf{A3} are also select.
+        Then these truth tables model the logical system without \textbf{A1}.
+        We will then show that \textbf{A1} is not select (ie. it cannot be proven by \textbf{A2} and \textbf{A3}).
+
+        The proof that \textbf{A2} and \textbf{A3} are select is left as an exercise.
+        If $\phi$ and $\phi\to\psi$ is select then $\phi$ and $\phi\to\psi$ are always $0$.
+        The only row where this is possible is when $\psi=0$ (otherwise $\phi\to\psi$ is $2$).
+        Thus $\psi$ is also select and therefore modus ponens infers select values from select inputs, as required.
+
+        If $\phi=2$ and $\psi=1$ then $\psi\to(\phi\to\psi)=1\to(2\to1)=1\to0=2$ so \textbf{A1} is not select, as required.
+
+        \vfill\break
+        \item For \textbf{A2} we take:
+
+        \centerline{%
+        \vtop{\halign{\strut\hfil\,$#$\,\hfil\vrule&\hfil\,$#$\,\hfil\cr
+            A & \neg A \cr\noalign{\hrule}
+            0 & 1 \cr
+            1 & 0 \cr
+            2 & 1 \cr
+        }}
+        \qquad
+        \vtop{\halign{\strut\hfil\,$#$\,\hfil\vrule&\hfil\,$#$\,\hfil\vrule&\hfil\,$#$\,\hfil\cr
+            A & B & A\to B \cr\noalign{\hrule}
+            0 & 0 & 0 \cr
+            1 & 0 & 0 \cr
+            2 & 0 & 0 \cr
+            0 & 1 & 2 \cr
+            1 & 1 & 2 \cr
+            2 & 1 & 0 \cr
+            0 & 2 & 1 \cr
+            1 & 2 & 0 \cr
+            2 & 2 & 0 \cr
+        }}}
+
+        \item We say that $\phi$ is ``super'' if $h(\phi)$ is a tautology where $h(\phi)$ is the same as $\phi$ except we remove all negations.
+        Thus obviously \textbf{A1} and \textbf{A2} are super as they don't involve negation, but it can be shown that \textbf{A3} is not.
+        Modus ponens holds since if $\phi$ and $\phi\to\psi$ are super then $h(\phi)$ and $h(\phi\to\psi)=h(\phi)\to h(\psi)$ are tautologies then by modus ponens, $h(\psi)$ is a tautology and $\psi$ is
+        ``super'' as required.
+        \qed
+    \eenum
+\end{proof}
+
+First we have Kleen\'e's ($1952$):
+\benum
+    \item $\Aone\phi\psi$
+    \item $\Atwo\phi\psi\mu$
+    \item $(\phi\land\psi)\to\phi$
+    \item $(\phi\land\psi)\to\phi$
+    \item $\phi\to\bigl(\psi\to(\phi\land\psi)\bigr)$
+    \item $\phi\to(\phi\lor\psi)$
+    \item $\psi\to(\phi\lor\psi)$
+    \item $(\phi\to\mu)\to\Bigl((\psi\to\mu)\to\bigl((\phi\lor\psi)\to\mu\bigr)$
+    \item $(\phi\to\psi)\to\bigl((\phi\to\neg\psi)\to\neg\phi\bigr)$
+    \item $\neg\neg\phi\to\phi$
+\eenum
+
+Or Mezedith's ($1953$) which is just a single axiom:
+\[ \biggl(\Bigl(\bigl((\phi\to\psi)\to(\neg\mu\to\neg\vartheta)\bigr)\to\mu\Bigr)\to\eta\biggr)\to\bigl((\eta\to\phi)\to(\zeta\to\phi)\bigr) \]
+
+\subsection{First Order Theories}
+
+\begin{defn*}
+
+    A \ppemph{first order language} is a language consisting of the following characters:
+    \benum
+        \item Connectives: $\neg$, $\to$, $\lor$, and $\land$.
+        \item Punctuation: $($ and $)$.
+        \item The quantifier $\forall$ (for all, the universal quantifier).
+        \item Individual variables: $x_1,x_2,\dots$.
+        \item Individual constants: $a_1,a_2,\dots$.
+        \item Predicate letters: $A_k^n$ for $k,n\in\bN$.
+        \item Function letters: $f_k^n$ for $k,n\in\bN$.
+        \item An equality symbol: $=$.
+    \eenum
+    The set of individual constants, predicate letters, and function letters can be empty and an equality symbol is not necessary.
+
+    We know define what a \ppemph{term} is:
+    \benum
+        \item Any variable or constant is a term.
+        \item If $f_k^n$ is a function letter and $t_1,\dots,t_n$ are terms then $f_k^n(t_1,\dots,t_n)$ is a term.
+    \eenum
+    And only strings which are recursively defined by the above two rules (using a finite number of steps) are terms.
+        
+    Now we define \ppemph{atomic formulas}: if $A_k^n$ is a predicate letter then
+    \benum
+        \item If $t_1,\dots,t_n$ are terms then $A_k^n(t_1,\dots,t_n)$ is an atomic formula.
+        \item If there is an equality symbol, then $t_1=t_2$ for any terms $t_1$ and $t_2$ is an atomic formula.
+    \eenum
+
+    The well-formed formulas of the first order theory are defined by:
+    \benum
+        \item Any atomic formula is well-formed.
+        \item If $\phi$ and $\psi$ are any well-formed formulas then so are $\neg\phi$ and $\phi\circ\psi$ for any connective $\circ$.
+        \item If $y$ is a variable letter and $\phi$ is a well-formed formula then $\forall y\phi$ is also a well-formed formula.
+    \eenum
+
+\end{defn*}
+
+\begin{defn*}
+
+    Given a well-formed formula $\forall y\phi$ then $\phi$ is called a \ppemph{scope} of the quantifier $\forall y$.
+    An occurrence of a variable $x$ in a well-formed formula is \ppemph{bound} if the occurrence is in a substring $\forall x$, or if it is in the scope of some $\forall x$.
+    And $x$ is a \ppemph{bound variable} in the well-formed formula if all of its occurrences are bound.
+
+    And an occurrence is \ppemph{free} if it is not bound, and a variable is a \ppemph{free variable} if it is not bound (equivalently, at least one of its occurrences is free).
+
+\end{defn*}
+
+\begin{exam*}
+
+    For example given
+    \[ \forall x_3\Bigl(\bigl(\forall x_1 A_1(x_1,x_2)\bigr)\to A_2(x_3, a_1)\Bigr) \]
+    All of the occurrences of $x_1$ are bound, the only occurrence of $x_2$ is free, and all occurrences of $x_3$ are bound.
+    So $x_1$ and $x_3$ are bound, and $x_2$ is free.
+    Now look at a similar formula:
+    \[ \Bigl(\forall x_3\bigl(\forall x_1 A_1(x_1,x_2)\bigr)\Bigr)\to A_2(x_3, a_1) \]
+    The second occurrence of $x_3$ is free, so $x_1$ is bound and $x_2$ and $x_3$ are free.
+
+\end{exam*}
+
+\end{document}
+

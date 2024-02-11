@@ -1,0 +1,318 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\@blist[#1]{%
+    \bgroup\bgroup\par\vskip-\medskipamount%
+    \gdef\item{%
+        \par\egroup\bgroup\medskip\setbox0=\hbox{#1\quad}%
+        \advance\leftskip by \wd0\leavevmode\kern-\wd0\box0%
+    }%
+}
+\def\blist{\@ifnextchar[ \@blist {\@blist[$\bullet$]}}
+\def\elist{\par\egroup\egroup\medskip}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\pdf@drawing@macro{check}{0 1 0 RG 1.2 w 1 j 1 J 0 5 m 3 0 l 8 10 l S}{9.6pt}{12pt}{1pt}{1pt}
+\pdf@drawing@macro{ecks}{1 0 0 RG 0 0 m 1 j 1 J 10 10 l 0 10 m 10 0 l S}{11.6pt}{12pt}{1pt}{1pt}
+\begin{document}
+
+\c@section=1
+
+\barcolorbox{220, 220, 255}{0, 0, 130}{80, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Group Theory}
+
+    \medskip
+    \textit{Lecture 1, Sunday October 23, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{Introduction to Algebraic Structures}
+
+\begin{defn*}
+
+    A \ppemph{Magma} is a set $S$ with a \emph{binary operation}:
+        \[ \circ\colon S\times S\longvarrightarrow S \]
+
+\end{defn*}
+
+Notice then that a Magma has no requirements on its binary operation, thus for a magma of size $n$ there are $n^{n^2}$ possible magmas.
+Despite this, some of these Magmas are equivalent in some sense, as a renaming of the elements of one magma produces the other.
+For example of a magma: $M=\set{0, 1}$:
+
+\[ \begin{array}{c|cc} \circ & 0 & 1 \\\hline 0 & 1 & 1 \\ 1 & 1 & 1 \end{array} \cong
+   \begin{array}{c|cc} \circ & 0 & 1 \\\hline 0 & 0 & 0 \\ 1 & 0 & 0 \end{array} \]
+
+We say a magma is \emph{associative} if for every $x,y,z\in S$ it follows that:
+\[ x\circ(y\circ z) = (x\circ y)\circ z \]
+
+\begin{exam}
+
+    Given a set $X$, the set $X^{X}$ is an associative magma under function composition.
+
+\end{exam}
+
+\begin{defn*}
+
+    A \ppemph{Semigroup} is an associative magma.
+
+\end{defn*}
+
+So the set $X^X$ is a semigroup.
+The set $M_n(\bF)$, the set of matrices of size $n\times n$, is also a semigroup under both addition and multiplication.
+
+\begin{defn*}
+
+    Let $(S,\circ)$ be a semigroup.
+    An element $e\in S$ is a \ppemph{left-identity} if for every $a\in S$: $e\circ a=a$.
+    Similarly, $e$ is a \ppemph{right-identity} if for every $a\in S$: $a\circ e=a$.
+    $e$ is an \ppemph{identity} if it is both a left and right identity.
+
+\end{defn*}
+
+\begin{prop*}
+
+    If $S$ is a semigroup with $e$ a left-identity and $e'$ a right-identity.
+    Then $e=e'$.
+
+\end{prop*}
+
+\begin{proof}
+    This is trivial.
+    By definition of the left-identity: $e\circ e'=e'$, but by the definition of the right-identity, $e\circ e'=e$.
+    So $e=e'$.
+
+    \hfill$\blacksquare$
+\end{proof}
+
+\begin{exam}
+
+    Let:
+        \[ S\coloneqq\set{\begin{pmatrix} a & b \\ 0 & 0 \end{pmatrix}}[a,b\in\bR] \]
+    equipped with the operation of multiplication.
+    Note that if we alter the definition of $S$ slightly:
+        \[ S^*\coloneqq\set{\pmat{a & b\\c & d}}[a,b,c\in\bR] \]
+    this is not a magma, as multiplication is not well-defined over this set:
+        \[ \pmat{1 & 1 \\ 1 & 0}\cdot\pmat{1 & 1 \\ 1 & 0} = \pmat{* & * \\ * & 1} \notin S^* \]
+    But $S$ is a semigroup.
+    Notice that:
+        \[ \pmat{a & b \\ 0 & 0}\cdot\pmat{a' & b' \\ 0 & 0} = \pmat{aa' & ab' \\ 0 & 0} \]
+    So in order for a matrix to be a left-identity, we must have that $aa'=a'$, so $a=1$.
+    But there are no requirements for $b$ and so any matrix of the form
+        \[ \pmat{1 & b \\ 0 & 0} \]
+    is a left-identity.
+    But for a matrix to be a right-identity, we must have that $aa'=a$ and $ab'=b$.
+    But for any $a$ and $b$ we can find a $b'$ where this doesn't hold.
+    So $S$ has an infinite number of left identities, but no right identities.
+
+\end{exam}
+
+Notice that if a semigroup has multiple left (or right) identities, it cannot have any right (or left) identities.
+Suppose $e\neq e'$ are left identities and $t$ is a right identity.
+Then by our proposition above $e=t$ and $e'=t$, so $e=e'$, which is a contradiction. \lightning
+
+\medskip
+\begin{center}
+\begin{tabular}{c|ccc} \lower1ex\hbox{\footnotesize Left}\kern-1ex\raise1ex\hbox{\footnotesize Right} &  None & One & Many \\
+        \hline
+        None & \check & \check & \check \\
+        One & \check & \check & \ecks \\
+        Many & \check & \ecks & \ecks
+\end{tabular}
+\end{center}
+\medskip
+
+\begin{defn*}
+
+    A semigroup $S$ is a \ppemph{Monoid} if it has an identity element.
+
+\end{defn*}
+
+\begin{prop*}
+
+    If $S$ is a monoid, its identity element is unique.
+
+\end{prop*}
+
+\begin{proof}
+
+    This too is trivial, as if $e$ and $e'$ are both identities, $e\circ e'=e=e'$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{exam}
+
+    $(\bN,\cdot)$ is a monoid whose identity is $1$.
+
+    $(\bZ,-)$ is not even a semigroup as subtraction is not associative.
+
+\end{exam}
+
+\begin{defn*}
+
+    If $M$ is a monoid with identity element $1$.
+    If $a,b\in M$ such that $a\circ b=1$, then $a$ is \ppemph{right-invertible} and $b$ is \ppemph{left-invertible}.
+    And we call $a$ $b$'s \ppemph{left inverse} and $b$ is $a$'s \ppemph{right inverse}.
+
+    An element $a\in M$ is \ppemph{invertible} if there is a $b\in M$ such that $a\circ b=b\circ a=1$.
+    $b$ is called $a$'s inverse and is denoted $a^{-1}$.
+
+\end{defn*}
+
+Note that the inverse of $a^{-1}$ is $a$, this comes directly from the definition.
+
+\begin{prop*}
+
+    An element $a$ of a monoid is invertible if and only if it is right and left invertible.
+
+\end{prop*}
+
+\begin{proof}
+
+    By definition if $a$ is right and left invertible.
+    For the converse suppose $a\circ b=c\circ a=1$.
+    Then $c\circ(a\circ b)=c$, but $c\circ(a\circ b)=(c\circ a)\circ b=b$, so $c=b$ and therefore:
+        \[ a\circ b = b\circ a = 1 \]
+    So $a$ is invertible.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{defn*}[group,Group]
+
+    If every element in a monoid $M$ is invertible, then $G$ is called a \ppemph{Group}.
+    This means that:
+
+        %\begin{itemize}
+        \blist
+            \item $G$'s binary operation $\circ$ is associative.
+            \item $G$ has an identity element $e$ such that for every $a\in G$: $a\circ e=e\circ a=a$.
+            \item For every $a\in G$, there exists an $a^{-1}\in G$ such that $a\circ a^{-1}=a^{-1}\circ a=e$.
+        \elist
+
+\end{defn*}
+
+\begin{defn*}
+
+    A monoid is \ppemph{left reducible} if for every $a,x,y\in M$, if $a\circ x=a\circ y$ then $x=y$.
+
+\end{defn*}
+
+Note then that a group is left (and right) reducible.
+
+\begin{prop*}
+
+    If $M$ is a monoid where every element is left-invertible (or every element is right-invertible) then $M$ is a group.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $a\in M$, then there is a $b\in M$ such that $b\circ a=1$.
+    But $b$ itself is left invertible so there is an element $c$ such that $c\circ b=1$.
+    So:
+        \[ c = c\circ b\circ a = a \]
+    So $ab=ba=1$, and thus $a$ is invertible.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{thrm*}
+
+    A finite monoid $M$ which is left reducible is a group.
+
+\end{thrm*}
+
+\begin{proof}
+
+    We will show that every element is right invertible.
+    We will define a function for every $a\in M$:
+        \[ \ell_a\colon M\longvarrightarrow M,\qquad x\varmapsto ax \]
+    Then $\ell_a$ is injective since $M$ is left reducible, if $\ell_a(x)=\ell_a(y)$ then $ax=ay$ so $x=y$.
+    Because $M$ is finite, $\ell_a$ is surjective, and thus there must be an element $x$ such that $\ell_a(x)=1$, so $ax=1$.
+    
+    So for every $a\in M$ there is an element $x\in M$ such that $ax=1$, so every $a$ is right invertible.
+    Therefore $M$ is a group.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\subsection{$\bZ$ and an Introduction to Number Theory}
+
+We will now focus a bit on the integers, which are the focal point of a field of math called \emph{number theory}.
+
+\blist
+    \item $(\bZ,+)$ is a group as it has an identity ($1$) and inverses ($-a$).
+    \item $(\bZ,\cdot)$ is a monoid but not a group since $0$ doesn't have an inverse.
+\elist
+
+\begin{defn*}
+
+    $\alpha$ is the \ppemph{greatest common divisor} of $a$ and $b$ if it is the maximum number which divides them both.
+    We denote this as $\gcd(a,b)$.
+    This maximum exists for every $a$ and $b$ unless $a$ and $b$ are both $0$, since zero is divisible by every number.
+
+    $a,b\in\bZ$ are \ppemph{coprime} if their greatest common divisor is $1$.
+
+\end{defn*}
+
+\begin{defn*}
+
+    $\pm1,0\neq p\in\bZ$ is \ppemph{prime} if for every $a,b\in\bZ$, if $p\divides ab$ then $p\divides a$ or $p\divides b$.
+    And a number $\pm1,0\neq a\in\bZ$ is \ppemph{non-compound} if $a=bc$ implies $b=\pm 1$ or $c=\pm 1$.
+
+\end{defn*}
+
+Every prime is non-compound since if $p=ab$ then $p\divides ab$ so $p\divides a$ or $p\divides b$.
+Suppose that $p\divides a$, and since $a\divides p$ (since $p=ab$) then $p\divides a\divides p$ so $a=\pm p$.
+Therefore $b=\pm1$.
+
+\begin{thrm*}
+
+    For every $a,b\in\bZ$ then there exists $\alpha,\beta=\bZ$ such that:
+        \[ \alpha a + \beta b = \gcd(a,b) \]
+
+\end{thrm*}
+
+\begin{prop*}
+
+    Every non-compound number is prime.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $p$ be non-compound.
+    Suppose $p\divides ab$, if $p\divides a$ then we have finished.
+    Otherwise $\gcd(p,a)=1$ since the greatest common divisor must divide $p$ so it must be $1$ or $p$, and since $p$ doesn't divide $a$ it must be $1$.
+    So there must be $\alpha,\beta$ such that $\alpha p + \beta a = 1$, so $b=\alpha pb + \beta ab$.
+    We know $p$ divides $\alpha pb$ and $\beta ab$, so $p\divides b$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\end{document}
+

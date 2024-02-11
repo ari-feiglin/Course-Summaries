@@ -1,0 +1,301 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\catcode`\@=11
+\input pdfmsym
+
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\implies{\,\mathrel{\longvarRightarrow}\,}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\divides{{\mid}}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\newfunc{eulerg}{{\rm Euler}}({})
+\newfunc{order}o({})
+\newfunc{ker}{{\rm Ker}}({})
+\newfunc{image}{{\rm Im}}({})
+\newfunc{lattice}{{\cal L}}(\vert)
+\newfunc{powset}{{\cal P}}(\vert)
+\newfunc{center}{{\rm Z}}({})
+\newfunc{units}{{\cal U}}(\vert)
+\newfunc{sign}{{\rm sgn}}({})
+\newfunc{aut}{{\rm Aut}}({})
+\newfunc{speclinear}{{\rm SL}}({})
+\newfunc{genlinear}{{\rm GL}}({})
+\newfunc{projlinear}{{\rm PGL}}({})
+\newfunc{specprojlinear}{{\rm PSL}}({})
+\newfunc{core}{{\rm Core}}(\vert)
+\newfunc{inner}{{\rm Inn}}(\vert)
+\newfunc{outer}{{\rm Out}}(\vert)
+\newfunc{conj}{{\rm conj}}({})
+\newfunc{ev}{{\rm ev}}({})
+
+\def\maxdivs{\mathrel{\|}}
+
+\let\ideal=\trianglelefteq
+\let\pideal=\triangleleft
+\def\normal{\mathrel\triangleleft}
+\let\mmorph=\longvarhookrightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+
+\def\qed{\hskip1cm\hbox{}\hfill$\blacksquare$}
+
+\def\mN{\mathcal N}
+\def\mG{\mathcal G}
+
+\begin{document}
+
+\c@section=10
+
+\barcolorbox{220, 220, 255}{0, 0, 130}{80, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Introduction to Rings and Modules}
+
+    \medskip
+    \textit{Lecture \thesection, Wednesday May 17 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{defn*}
+
+    If $R$ is a commutative ring and $S\subseteq R$, $S$ is called a \ppemph{multiplicative set} if $0\notin S$, $1\in S$, and $S$ is closed under multiplication.
+
+\end{defn*}
+
+Note that a multiplicative set $S$ cannot contain zero divisors, since then their product, zero, would be in $S$.
+
+\begin{exam*}
+
+    \benum
+        \item $S=\set1$ is always multiplicative, if $R$ is not trivial.
+        \item If $R$ is an integral domain, $S=R\setminus\set0$ is a multiplicative set.
+        \item If $P\ideal R$ is prime, $R\setminus P$ is also multiplicative.
+        And if $\set{P_\lambda}_{\lambda\in\Lambda}$ is a set of prime ideals, $R\setminus\bigcup_\Lambda P_\lambda$ is a multiplicative set.
+    \eenum
+
+\end{exam*}
+
+Given a commutative ring $R$ and a multiplicative set $S$, we define an equivalence relation on $R\times S$ by $(r_1,s_1)\sim(r_2,s_2)$ if there exists a $t\in S$ such that $t(r_1s_2-r_2s_1)=0$.
+If $R$ is an integral domain, this is equivalent to $r_1s_2=r_2s_1$.
+
+This is obviously reflexive and symmetric, we will show that it is also transitive.
+Suppose $(r_1,s_1)\sim(r_2,s_2)$ and $(r_2,s_2)\sim(r_3,s_3)$.
+Suppose $t_1(r_1s_2-r_2s_2)=0$ and $t_2(r_2s_3-r_3s_2)=0$.
+Notice then that since the ring is commutative
+\[ 0 = (s_3t_2)t_1(r_1s_2-r_2s_2) + (s_2t_1)t_2(r_2s_3-r_3s_2) = t_1t_2(r_2s_2s_3 - r_2s_2s_3 + r_2s_2s_3 - r_3s_2s_2) = t_1t_2s_2(r_2s_3 - r_3s_2) \]
+and since $S$ is closed under multiplication, $t_1t_2s_2\in S$, and so we have that $(r_2,s_2)\sim(r_3,s_3)$ as required.
+
+\begin{defn*}
+
+    If $R$ is a commutative ring and $S\subseteq R$ is a multiplicative set, we define $S^{-1}R$ to be the partition of $R$ by the equivalence relation defined above.
+    We endow it with a ring structure by defining:
+    \[ \bigl[(r_1,s_1)\bigr] + \bigl[(r_2,s_2)\bigr] = \bigl[(r_1s_2+r_2s_1, s_1s_2)\bigr] \]
+    (this should be reminiscient of fraction addition), and
+    \[ \bigl[(r_1,s_1)\bigr] \cdot \bigl[(r_2,s_2)\bigr] = \bigl[(r_1r_2, s_1s_2)\bigr] \]
+
+    We denote $\bigl[(r,s)\bigr]$, the equivalence class of $(r,s)$, by $\frac rs$ (there are many ways to write the same fraction).
+    And $S^{-1}R$ is called the \ppemph{localization} of $R$ by $S$.
+
+\end{defn*}
+
+These operations are well-defined, and this is indeed a (commutative) ring.
+Its additive identity is $\frac01=\bigl[(0,1)\bigr]$ since $\frac01+\frac ab=\frac{0b+a1}{1b}=\frac ab$, and its multiplicative identity is $\frac11=\bigl[(1,1)\bigr]$ since
+$\frac11\cdot\frac ab=\frac ab$.
+
+Notice that $\frac ss=\frac11$, since $s-s=0$ so taking $t=1$ satisfies the relation.
+And $\frac0s=\frac00$ since $0\cdot0-0\cdot s=0$.
+
+\begin{prop*}
+
+    Let $R$ be an integral domain, and $S=R\setminus\set0$.
+    Then $S^{-1}R$ is a field.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $\frac01\neq\frac rs\in S^{-1}R$, this is equivalent to $0\cdot s\neq 1\cdot r$, so $0\neq r$.
+    Then $r\in S$, and so $\frac sr$ exists and
+    \[ \frac rs\cdot\frac sr = \frac{rs}{rs} = \frac11 \]
+    so it is the inverse of $\frac rs$.
+    \qed
+
+\end{proof}
+
+\begin{exam*}
+
+    \benum
+        \item If $R=\bZ$ and $S=\bZ\setminus\set0$ then $S^{-1}R=\bQ$.
+        \item And if $R=\bZ$ and $S=\set{2^n}[n\geq0]$ then $S^{-1}R=\set{x\in\bQ}[x=\frac a{2^n}, a\in\bZ, n\geq0]$.
+    \eenum
+
+\end{exam*}
+
+\begin{prop*}
+
+    Let $R$ be an integral domain, and $p\in R$ is prime.
+    Then $p$ is irreducible.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $p=ab$, then $ab\in(p)$ which is prime, and so $a\in(p)$ or $b\in(p)$.
+    Without loss of generality, suppose $a\in(p)$, so $a=px$.
+    Then $p=pxb$ and so $p(1-xb)=0$, and since $R$ is an integral domain, $1=xb$ and so $b$ is invertible.
+    Thus $p$ is irreducible.
+    \qed
+
+\end{proof}
+
+\begin{exam*}
+
+    Even if $R$ is an integral domain, irreducible numbers aren't necessarily prime.
+    Take $R=\bZ[\sqrt{-5}]$, and $2\in R$.
+    Again we introduce the norm $N(a+b\sqrt{-5})=a^2+5b^2$ which is multiplicative.
+    Then $2$ is irreducible since if $2=xy$ then $4=N(x)N(y)$, but $N(x)\neq2$ since this has no solutions, so $N(x)=1$ or $N(x)=4$.
+    If $N(x)=1$ then $x$ is invertible, and if $N(x)=4$ then $N(y)=1$ so $y$ is irreducible.
+
+    But let $\alpha=(1+\sqrt{-5})$ and $\beta=(1-\sqrt{-5})$ then $\alpha\beta=6=2\cdot3$.
+    So $2\divides\alpha\beta$, but $N(\alpha)=6$ and $N(\beta)=6$ and since $N(2)=4$, which does not divide $6$, $2$ does not divide $\alpha$ or $\beta$.
+    So $2$ is irreducible, but not prime.
+
+\end{exam*}
+
+\begin{prop*}
+
+    Let $R$ be a UFD, then an element is prime if and only if it is irreducible.
+
+\end{prop*}
+
+\begin{proof}
+
+    If $p$ is prime, it is irreducible.
+    If $p$ is irreducible, suppose $p\divides ab$, then $ab=px$.
+    By factorizing $x$, we can factorize $ab=px$ as
+    \[ ab = px = p(q_1\cdots q_n) \]
+    Since $p$ is irreducible,
+    And $a$ and $b$ can be factorized as
+    \[ a = q'_1\cdots q'_r,\qquad b = q''_1\cdots q''_s \]
+    then
+    \[ ab = q'_1\cdots q'_r\cdot q''_1\cdots q''_s \]
+    And since factorization is unique, $p$ is friends with some $q'_i$ or $q''_i$.
+    Without loss of generality $q'_i=pu$ where $u$ is invertible.
+    But then
+    \[ a = q'_1\cdots up\cdots q'_n = p(q'_1\cdots u\cdots q'_n \]
+    and so $p\divides a$, so $p$ is prime.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    If $R$ is a ring, we denote the set of all invertible elements in $R$ by $R^\times$.
+
+\end{defn*}
+
+\begin{prop*}
+
+    If $R$ is an integral domain, then
+    \benum
+        \item $R[x]$ is also an integral domain.
+        \item $R[x]^\times=R^\times$.
+    \eenum
+
+\end{prop*}
+
+\begin{proof}
+
+    \benum
+        \item Suppose $P,Q\in R[x]$ and
+            \[ P = \sum_{k=0}^n a_nx^n,\qquad Q = \sum_{k=0}^m b_mx^m \]
+            where $a_n,b_m\neq0$.
+            Then
+            \[ PQ = \sum_{k=0}^{n+m}x^k\sum_{i=0}^k a_ib_{k-i} = a_nb_mx^{n+m} + \cdots \]
+            Therefore $\deg(PQ)=\deg P+\deg Q$.
+            So if $PQ=0$ then $0=\deg0=\deg(PQ)=\deg P+\deg Q$.
+            Thus $\deg P=\deg Q=0$ and so $P$ and $Q$ are constants, but $PQ=0$ and $R$ is an integral domain, so $p=0$ or $Q=0$.
+
+        \item It is obvious that $R^\times\subseteq R[x]^\times$.
+            Now suppose that $P\in R[x]^\times$, then $PP^{-1}=1$ is constant, so $0=\deg(PP^{-1})=\deg P+\deg P^{-1}$ and so $\deg P=\deg P^{-1}=0$, meaning $P,P^{-1}\in R$.
+            So $P\in R^\times$.
+            \qed
+    \eenum
+
+\end{proof}
+
+\begin{lemm*}
+
+    If $\phi\colon R\longto S$ is a ring homomorphism, this defines a ring homomorphism $\psi\colon R[x]\longto S[x]$ by
+    \[ \psi\parens{\sum_{k=0}^n a_kx^k} = \sum_{k=0}^n \phi(a_k)x^k \]
+    The kernel of $\phi$ is given by $(\ker\phi)[x]$.
+    And whose image is $\phi(R)[x]$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    This is additive:
+    \[ \psi\parens{\sum_{k=0}^n a_kx^k + \sum_{k=0}^n b_kx^k} = \sum_{k=0}^n \phi(a_k+b_k)x^k = \sum_{k=0}^n \phi(a_k)x^k + \sum_{k=0}^n \phi(b_k)x^k \]
+    as required.
+    And it is multiplicative:
+    \[ \psi\parens{\sum_{k=0}^n a_kx^k \cdot \sum_{k=0}^m b_kx^k} = \sum_{k=0}^{n+m} x^k\sum_{i=0}^k \phi(a_ib_{k-i}) = \sum_{k=0}^n \phi(a_k)x^k\cdot\sum_{k=0}^m\phi(b_k)x^k \]
+    as required.
+
+    And $\sum_0^n a_kx^k\in\ker\psi$ if and only if for every $k$, $\phi(a_k)=0$.
+    This is if and only if $a_k\in\ker\phi$ for every $k$, meaning the polynomial is in $(\ker\phi)[x]$.
+    And it is simple to see that $\psi(R[x])=\phi(R)[x]$.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    Let $R$ be a ring and $I\subseteq R$ be a left/right/bidirectional ideal.
+    Then let $I[x]=\set{a_nx^n+\cdots+x_0}[a_i\in I]$ is a left/right/bidirectional ideal of $R[x]$.
+    And if $I$ is a bidirectional ideal then
+    \[ \slfrac{R[x]}{I[x]} \cong \slfrac RI[x] \]
+
+\end{prop*}
+
+\begin{proof}
+
+    We will prove this for right ideals.
+    It is obvious that $I$ is closed under addition and additive inverses, and contains $0$ (these are a direct result of $I$ being so).
+    Then if $P\in I[x]$ and $Q\in R[x]$, suppose
+    \[ P = \sum_{k=0}^n a_kx^k,\qquad Q = \sum_{k=0}^m b_kx^k \]
+    then
+    \[ PQ = \sum_{k=0}^{n+m} x^k\sum_{i=0}^k a_ib_{k-i} \]
+    since $I$ is a right ideal, for every $i$ and $k$, $a_ib_{k-i}\in I$, and so the sum $\sum_{i=0}^k a_ib_{k-i}\in I$.
+    Therefore $PQ\in I[x]$, and so $I[x]$ is a right ideal as required.
+
+    Note that if $I$ is a bidrectional ideal, it is both a left and right ideal, and so $I[x]$ is both a left and right ideal, so $I[x]$ is a bidrectional ideal.
+    We take the cannonical homomorphism
+    \[ \phi\colon R\longto\slfrac RI, r\varmapsto r+I \]
+    The kernel of $\phi$ is $I$, and it is surjective.
+    By the lemma above, this defines a homomorphism
+    \[ \psi\colon R[x]\longto\parens{\slfrac RI}[x] \]
+    whose kernel is $(\ker\phi)[x]=I[x]$, and image is $\phi(R)[x]=\parens{\slfrac RI}[x]$ as required.
+    By the first isomorphism theorem, we have
+    \[ \slfrac{R[x]}{I[x]} \cong \parens{\slfrac RI}[x] \]
+    as required.
+    \qed
+
+\end{proof}
+
+\end{document}
+

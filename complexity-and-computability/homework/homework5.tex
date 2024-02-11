@@ -1,0 +1,395 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz-cd}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{conj}{Conjecture}{255,130,130}{150,0,0}{200,0,0}
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\undersumtext#1{\vtop{\hsize=2cm\relax\centering\small #1}}
+
+\newfunc{oracle}{\hbox{\tencsc oracle}}({})
+\newfunc{dspace}{\mathsf{DSPACE}}({})
+\newfunc{dtime}{\mathsf{DTIME}}({})
+\newfunc{nspace}{\mathsf{NSPACE}}({})
+\newfunc{nspaceoff}{\mathsf{NSPACE}_{\mathsf{offline}}}({})
+\newfunc{totreach}{\textsf{Total-Reach}}({})
+\newfunc{indeg}{\textsf{in-deg}}({})
+\newfunc{outdeg}{\textsf{out-deg}}({})
+\newfunc{prob}{\mathbb P}(|)
+\newfunc{expec}{\mathbb E}[|]
+
+\def\quant{\mathtt{Q}}
+
+\def\sps{\texttt{\char32}}
+\def\sat{\mathsf{SAT}}
+\def\csat{\mathsf{CSAT}}
+\def\is{\mathsf{IS}}
+\def\threesat{\mathsf{3SAT}}
+\def\clique{\mathsf{Clique}}
+\def\vertcover{\textsf{Vertex-Cover}}
+\def\domset{\textsf{Dom-Set}}
+\def\dhp{\mathsf{DHP}}
+\def\dhc{\mathsf{DHC}}
+\def\hc{\mathsf{HC}}
+\def\tsp{\mathsf{TSP}}
+\def\threecolor{\mathsf{3Color}}
+\def\twocolor{\mathsf{2Color}}
+\def\kcolor{k\mathsf{Color}}
+\def\Color{\mathsf{Color}}
+\def\subsum{\mathsf{SubsetSum}}
+\def\maxclique{\mathsf{MaxClique}}
+\def\minexpr{\mathsf{MinExpression}}
+\def\sparse{\mathsf{Sparse}}
+\def\stconn{\textsf{st-conn}}
+
+\def\PH{\mathbf{PH}}
+\def\PF{\mathbf{PF}}
+\def\PC{\mathbf{PC}}
+\def\P{\mathbf{P}}
+\def\NP{\mathbf{NP}}
+\def\NPH{\mathbf{NPH}}
+\def\NPC{\mathbf{NPC}}
+\def\co{\mathsf{co}}
+\def\coNP{\mathbf{coNP}}
+\def\poly{\mathsf{poly}}
+\def\Ppoly{\slfrac\P\poly}
+\def\L{\mathbf{L}}
+\def\NL{\mathbf{NL}}
+\def\BPP{\mathbf{BPP}}
+\def\RP{\mathbf{RP}}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mN{\mathcal{N}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=5
+
+\barcolorbox{255, 220, 220}{130, 0, 0}{200, 80, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Computability and Complexity}
+
+    \medskip
+    \textit{Assignment \thesection}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\def\NPSPACE{\mathbf{NPSPACE}}
+\def\PSPACE{\mathbf{PSPACE}}
+\begin{exercise*}
+
+    We define the following complexity classes
+    \[ \PSPACE = \bigcup_{c>0}\dspaceof{n^c},\qquad \NPSPACE = \bigcup_{c>0}\nspaceof{n^c} \]
+    Prove, disprove, or show the equivalence between the following statement and an open problem:
+    \[ \P^\PSPACE = \NP^\NPSPACE \]
+
+\end{exercise*}
+
+We will prove this.
+Recall that by Savitch's theorem:
+\[ \nspaceof{O(n^c)} \subseteq \dspaceof{O(n^{2c})} \]
+Which means that $\NPSPACE \subseteq \PSPACE$.
+Since the inclusion in the other direction is trivial ($\dspaceof{n^c}\subseteq\nspaceof{n^c}$), we have that
+\[ \PSPACE = \NPSPACE \]
+We now claim
+\[ \PSPACE = \P^\PSPACE = \NP^\NPSPACE \]
+Obviously we have the sequence of inclusions
+\[ \PSPACE \subseteq \P^\PSPACE \subseteq \NP^\NPSPACE \]
+so we will show that $\NP^\NPSPACE\subseteq\PSPACE$.
+Since $\PSPACE=\NPSPACE$, this is equivalent to $\NP^\PSPACE\subseteq\NPSPACE$.
+Suppose $S\in\NP^\PSPACE$, so there exists a problem $S'\in\PSPACE$ and a non-deterministic oracle machine $N^{S'}$ which solves $S$ in polynomial time.
+Since $S'\in\PSPACE$, there exists a deterministic algorithm $M'$ which solves $S'$ in polynomial space.
+We define the non-deterministic algorithm $M$ to run $N^{S'}$ but instead of asking queries of the form $q\mathrel{\mathop\in\limits^{\scriptscriptstyle?}}S'$, it runs $M'(q)$ and checks if the return value
+is $1$.
+$M'$ solves $S'$, so such a query is equivalent, and so $M$ accepts $x$ if and only if $N^{S'}$ does (meaning $M$ can return one on $x$ if and only if $N^{S'}$ can), so $M$ solves $S'$ non-deterministically.
+Since $M'$ solves $S'$ in polynomial space, the space required by each query is polynomial (in the length of the query).
+
+Notice that the space required by running $M'(q)$ for a query $q\mathrel{\mathop\in\limits^{\scriptscriptstyle?}}S'$ is polynomial in $\abs q$ since $M'$ is a deterministic polynomial-space machine.
+Since $N^{S'}(x)$ is polynomial-time (and thus polynomial-space), it can only use polynomial space to store its queries, and so $q$ must have a length bound polynomially by $\abs x$, meaning the space
+required by $M'(q)$ is polynomial in $\abs x$.
+We can reuse the space used by a query since once the query is finished, the space it utilized for its work is not needed, and so we can ensure that $M$ runs in polynomial space.
+Essentially $M$ runs equivalently to $N^{S'}$, except it needs an extra polynomial amount of space to simulate $M'$ on queries, and this means $M$ runs in polynomial space.
+
+Thus $M$ is a non-deterministic polynomial-space machine which solves $S$, so $S\in\NPSPACE=\PSPACE$.
+This means that $\NP^\NPSPACE\subseteq\PSPACE\subseteq\P^\PSPACE$, so we have shown
+\[ \PSPACE = \P^\PSPACE = \NP^\NPSPACE \]
+
+\newpage
+\def\twocomp{\mathsf{2Components}}
+\begin{exercise*}
+
+    A \ppemph{connected component} of an undirected graph $G=(V,E)$ is a set of vertices $S\subseteq V$ such that for every two vertices $v,u$ in $S$, there exists a path from $v$ to $u$ and for every
+    two vertices $v\in S$ and $u\notin S$, there is no path from $v$ to $u$.
+    Show that the following problem is in $\NL$
+    \[ \twocomp = \set{G}[\vcenter{\advance\hsize by-5cm
+    $G$ is an undirected graph whose set of vertices can be partitioned into exactly two connected components}] \]
+
+\end{exercise*}
+
+The idea for the non-deterministic log-space algorithm is as follows: find two vertices which are not connected, and verify that all other vertices are connected to one of them.
+I will write this in pseudocode, but there are some nuances that require explanation afterward
+
+\algorithm
+    \Function{$M$}{$G=(V,E)$}
+        \State $v\in V$\lComment This need not be non-deterministic
+        \State $u\gets\varnothing$
+        \For{$w\in V$}
+            \lIf{$v$ and $w$ are disconnected} $u\gets w$
+        \EndFor
+        \lIf{$u=\varnothing$} \Return $0$
+        \For{$w\in V$}
+            \lIf{$v$ and $w$ are connected} \textbf{continue}
+            \lIf{$u$ and $w$ are connected} \textbf{continue}
+            \State\Return $0$
+        \EndFor
+        \State\Return $1$
+    \EndFunc
+\ealgorithm
+
+Now, how do we check if two vertices are connected or disconnected?
+
+\benum
+    \item To check if two vertices $v$ and $w$ are connected, we know that the problem $\stconn\in\NL$, and so we can simply employ the algorithm used by $\stconn$ to check if $v$ and $w$ are connected.
+    In other words, we are checking if $(G,v,w)\in\stconn$, and since $\stconn\in\NL$ this can be done non-deterministically.
+    Notice that since this algorithm is non-deterministic, we cannot get false positives; ie. if $v$ and $w$ are disconnected, this will always return $0$.
+    If $v$ and $w$ are connected, this can still return $0$ (but there has to be a sequence of decisions that can be made to return $1$).
+
+    \item To check if two vertices $v$ and $w$ are disconnected, this is essentially asking if $(G,v,w)\in\stconn^c$.
+    Now, recall that $\NL=\co\NL$ so $\stconn^c\in\NL$, meaning we can employ a non-deterministic log-space algorithm to check if $v$ and $w$ are disconnected.
+    This again, as a non-deterministic algorithm, cannot return false positives.
+\eenum
+
+\begin{note}
+
+    $\stconn$ is defined for directed graphs, but the same algorithm which shows that $\stconn\in\NL$ shows that its variant for undirected graphs is in $\NL$ as well.
+    The algorithm just randomly attempts to build a path from $s$ to $t$ by non-deterministically choosing the next vertex in the path at most $\abs V$ times.
+    It starts at the vertex $s$, and verifies that the current vertex is connected to the next.
+    If at any point it reaches $t$, it returns one.
+    If after choosing $\abs V$ vertices it hasn't reached $t$, it returns zero.
+
+\end{note}
+
+So this explains how lines $5$, $9$, and $10$ function.
+This algorithm requires space to store three vertices: $v$, $u$, and $w$, as well as the space to check if vertices are connected or disconnected.
+As explained above, checking if two vertices are connected or disconnected requires log-space, and we can reuse the space required by these queries.
+So all in all this algorithm has logarithmic space complexity.
+
+Now we claim that $M$ solves $\twocomp$.
+If $G\in\twocomp$, there exist precisely two connected components.
+The algorithm starts by choosing some $v\in V$, and it is an element of one of these connected components.
+Since there exists another connected component, there exists some $w$ for which $v$ and $u$ are disconnected.
+So now as $M$ iterates over $V$, once it gets to $w$, since checking if two vertices are disconnected is non-deterministic, there exists some sequence of decisions it can make when it checks that
+$w$ and $v$ are disconnected in order to get that they are.
+So it sets $u$ to $w$, and from here on out $u$ is no longer empty/null, so line $7$ does not return zero.
+And since checking if two vertices are disconnected cannot return a false positive, at the end of that first for loop, $u$ is some vertex which is disconnected from $v$.
+
+Now, as $M$ once again iterates over $w\in V$ for the second for loop, since $G$ has precisely two connected components, $w$ is connected to either $v$ or $u$.
+Since checking if vertices are connected is done non-deterministically, there exists some sequence of choices that can be made for each $w\in V$ when checking in order for $M$ to affirm that $w$ is connected
+to $v$ or it is connected to $u$.
+So for every $w\in V$ there is a sequence of choices which can be made in order for either line $9$ or $10$ to continue to the next iteration of the for loop, meaning the algorithm will return $1$.
+
+So if $G\in\twocomp$, there exists a sequence of choices which $M$ can make for it to return $1$.
+In other words, if $G\in\twocomp$ then $M$ accepts $G$.
+
+Now if $G\notin\twocomp$, there are two reasons for this:
+\benum
+    \item $G$ has only one connected component, meaning all vertices in $G$ are connected to one another.
+    In this case, since line $5$ cannot have false positives and every $w\in V$ is connected to $v$, $u$ is never altered.
+    So at line $7$, $u=\varnothing$ and so $M$ returns zero.
+
+    \item If $G$ has more than two connected components.
+    In this case $M$ can make choices so that $u=\varnothing$ so at line $7$ it returns zero, but it can also make choices and find a $u$ which is disconnected from $v$.
+    But since there exists more than two connected components, there exists a $w$ which is disconnected from both $v$ and $u$.
+    So once the second for loop iterates over $w$, both line $9$ and $10$ will fail (it won't enter the if block) since checking if vertices are disconnected cannot give false positives, and so $M$ will
+    return zero.
+    So if $G$ has more than two connected components, no matter what choices $M$ makes it will return zero.
+\eenum
+
+So if $G\notin\twocomp$, no matter what choices $M$ makes, $M(G)$ will return zero as required.
+So $G\in\twocomp$ if and only if $M$ accepts $G$.
+Therefore $M$ is a non-deterministic log-space algorithm which solves $\twocomp$, meaning $\twocomp\in\NL$ as required.
+
+\begin{exercise*}
+
+    For each of the following statements, either prove it, disprove it, or show it implies an answer to an open question.
+    \benum
+        \item $\BPP_{1/2}=\BPP$
+        \item For every polynomial $p\geq6$, $\BPP_{1/2+1/p}=\BPP$
+        \item For every polynomial $p\geq2$, $\BPP_{1/2+2^{-p}}=\BPP$
+    \eenum
+
+\end{exercise*}
+
+\benum
+    \item This is false.
+    Let us define the algorithm $N(x)$ which randomly decides between a value of $0$ or $1$, and returns that value.
+    For any decision problem $S$, and for every string $x$, the probability that $N(x)$ returns the correct answer is $\frac12$.
+    Therefore $S\in\BPP_{1/2}$ meaning $\BPP_{1/2}=\powsetof{\set{0,1}^*}$.
+
+    In particular, $\BPP_{1/2}$ contains undecidable decision problems.
+    But we know $\BPP\subseteq\Sigma_2$ which contains only decidable decision problems, and so $\BPP\neq\BPP_{1/2}$.
+
+    \item This is true.
+    Since $\frac23\geq\frac12+\frac1{p(n)}$, we have that
+    \[ \BPP = \BPP_{2/3} \subseteq \BPP_{1/2+1/p} \]
+    Now we will show inclusion in the other direction.
+    Suppose $S\in\BPP_{1/2+1/p}$ so there exists a probabilistic algorithm $M$ which returns the correct answer with a probability of no less than $\frac12+\frac1{p(n)}$.
+    Let $k(n)$ denote some function for now, and we will amplify $M$ like we did in lecture:
+
+    \algorithm
+        \Function{$M'$}{$x$}
+            \State $c_0,c_1\gets0$
+            \Repeat{$k(\abs x)$}
+                \lIf{$M(x)=1$} $c_1\gets c_1+1$
+                \lElse $c_0\gets c_0+1$
+            \EndRepeat
+            \State\Return $1$ \textbf{if} $c_1>c_0$, \textbf{else} $0$
+        \EndFunc
+    \ealgorithm
+
+    So now we will find a suitable function $k(n)$ which will ensure that $M'$ runs in polynomial time and gives the correct answer with a probability of no less than $\frac23$.
+    Let $\omega_i$ indicate that $M(x)$ gave the wrong answer on the $i$th iteration.
+    Then $M'(x)$ will return the wrong answer only if $\sum_{i=1}^k\omega_i>\frac12k$ (we can assume $k$ is odd), as this would mean that the wrong counter $c_i$ is larger than the other counter.
+    Eg. if $x\in S$ then $M(x)$ will return $0$ if and only if $c_0>c_1$, meaning $M(x)$ gave the wrong answer (and so incremented $c_0$ instead of $c_1$) more times than it gave the correct answer
+    (which increments $c_1$), which is if and only if it gave the wrong answer more than half the time.
+
+    Now, we know that since $\omega_i$ is an indicator variable
+    \[ \expecof{\omega_i} = \probof{\omega_i=1} = \probof{M(x)\text{ is wrong}} \leq \frac12 - \frac1{p(n)} \]
+    This means that
+    \[ \mu = \expecof{\frac1k\sum{i=1}^k\omega_i} = \frac1k\sum_{i=1}^k\expecof{\omega_i} \leq \frac1k\cdot k\cdot\parens{\frac12-\frac1{p(n)}} = \frac12-\frac1{p(n)} \]
+    Now, we have that
+    \[ \probof{\text{$M'(x)$ is wrong}} = \probof{\frac1k\sum_{i=1}^k\omega_i>\frac12} = \probof{\frac1k\sum_{i=1}^k\omega_i>\mu+\frac1{p(n)}} \]
+    By Chernoff's inequality this is bound by
+    \[ \leq e^{-\frac{2k}{p^2}} \]
+    Now we want $M'(x)$ to be wrong with a probability of $\leq\frac13$, so we can require $e^{-\frac{2k}{p^2}}=3^{-1}$, so we can set
+    \[ k(n) = \frac{\ln3}2p(n)^2 \]
+    and we get the desired probability.
+
+    Since $k(n)$ is a polynomial, $M'(x)$ runs $M(x)$ a polynomial number of times, and since $M(x)$ is polynomial-time, this means that $M'(x)$ is also polynomial-time.
+    Therefore $M'$ is a polynomial-time probabilistic algorithm which gives solves $S$, giving the correct answer with a probability of $\geq\frac23$, meaning $S\in\BPP$.
+    So we have that $\BPP_{1/2+1/p}\subseteq\BPP$ and therefore $\BPP_{1/2+1/p}=\BPP$ as required.
+
+    \item We will show that this implies $\NP\subseteq\BPP$ (and so $\NP=\RP$).
+    Firstly, $\BPP$ is closed under Karp reductions.
+    This is quite simple: suppose $S\in\BPP$ and that there exists a Karp reduction $f$ from some decision problem $S'$ to $S$.
+    Since $S\in\BPP$, there exists a probabilistic polynomial-time algorithm $M$ for which for every $x$, $M(x)$ is correct with a probability of $\geq\frac23$.
+    We define the probabilistic machine $M'$ such that for every $x$, $M'(x)=M(f(x))$.
+    Since computing $f$ takes polynomial time, and $M$ is polynomial-time, so $M'(x)$ takes polynomial time in $\abs{f(x)}$ which is bound by a polynomial of $\abs x$, meaning $M'$ takes polynomial time.
+    And since $x\in S'$ if and only if $f(x)\in S$, we have
+    \[ \probof{M'(x)\text{ is correct}} = \probof{M(x)\text{ is correct}} \geq \frac23 \]
+    and so $S'\in\BPP$.
+
+    So we will show that $\sat\in\BPP$, which means that since $\BPP$ is closed under Karp reductions and $\sat$ is $\NP$-complete, $\NP\subseteq\BPP$.
+    Suppose the number of variables in a formula $\phi$ is $n$.
+    Let us define the algorithm
+
+    \algorithm
+        \Function{$M$}{$\phi$}
+            \State\textbf{choose} a boolean vector of length $n$
+            \lIf{$\tau$ satisfies $\phi$} \Return $1$
+            \cr\noalign{\kern5pt}
+            \State\textbf{choose} $x\in\set{0,1}$
+            \lIf{$x=0$} \Return $0$
+            \Repeat{$n$}
+                \State\textbf{choose} $x\in\set{0,1}$
+                \lIf{$x=1$} \Return $1$
+            \EndRepeat
+            \State\Return $0$
+        \EndFunc
+    \ealgorithm
+
+    We will show that $M(\phi)$ has a probability of being correct of $\geq\frac12+\frac1{2^{p(n)}}$.
+    If $\phi\in\sat$, then worst case there is only one boolean vector of length $n$ which satisfies $\phi$.
+    The probability of choosing that boolean vector is $\frac1{2^n}$ since there are $2^n$ boolean vectors of length $n$.
+    If this boolean vector is not chosen, then the only other way for $M(x)=1$ is for $M(x)$ to return $1$ on line $8$.
+    These are disjoint events so
+    \[ \probof{M(\phi)=1} = \probof{\text{$\tau$ satisfies $\phi$, or $M(x)$ returns $1$ on line $8$}} = \probof{\phi(\tau)=1} + \probof{M(x)\text{ returns }1\text{ on line }8}  \]
+    Now, the probability that $M(x)$ returns $1$ on line $8$ is dependent only on $\phi(\tau)$ being false and $x$ being $1$ on line $5$.
+    Using dependent probability
+    \[ \probof{\text{returns $1$ on line $8$}} = \probof{\text{returns $1$ on line $8$}}[\text{$x=1$ on line $5$}\land\phi(\tau)=0]\cdot\probof{\text{$x=1$ on line $5$}\land\phi(\tau)=0} \]
+    Now we know that if we reach line $6$, ie. if $x=1$ on line $5$ and $\phi(\tau)=0$, then the probability we don't return $1$ is going to be the probability that at each iteration, $x=0$.
+    This has a probability of $\frac1{2^n}$, and so
+    \[ \probof{\text{returns $1$ on line $8$}}[\text{$x=1$ on line $5$}\land\phi(\tau)=0] = 1-\frac1{2^n} \]
+    Now, using conditional probability again
+    \[ \probof{\text{$x=1$ on line $5$}\land\phi(\tau)=0} = \probof{\text{$x=1$ on line $5$}}[\phi(\tau)=0]\cdot\probof{\phi(\tau)=0} = \frac12\probof{\phi(\tau)=0} \]
+    since $x$ is chosen uniformly from $\set{0,1}$.
+    If we set $\alpha=\probof{\phi(\tau)=1}$ then we get that $\alpha\geq\frac1{2^n}$ as explained earlier, and
+    \[ \probof{M(\phi)=1} = \alpha + \parens{1-\frac1{2^n}}\cdot\frac12(1-\alpha) = \alpha\parens{\frac12+\frac1{2^{n+1}}} + \frac12 - \frac1{2^{n+1}} \]
+    Since $\alpha\geq\frac1{2^n}$, this is greater than
+    \[ \geq \frac1{2^{n+1}} + \frac1{2^{2n+1}} + \frac12 - \frac1{2^{n+1}} = \frac12 + \frac1{2^{2n+1}} \]
+
+    Now if $\phi\notin\sat$, then $\tau$ will not satisfy $\phi$ so the probability $M(\phi)=0$ is the probability $x=0$ on line $5$ or the probability that at every iteration on line $8$, $x=0$.
+    These events are disjoint and so
+    \[ \probof{M(\phi)=0} = \probof{\text{$x=0$ on line $5$}} + \probof{\text{on every iteration, $x=0$ on line $8$}} \]
+    Now we know that on line $5$, the probability $x=0$ is $\frac12$.
+    Using conditional probability,
+    \[ \qquad\probof{\text{on every iteration, $x=0$ on line $8$}} = \probof{\text{on every iteration, $x=0$ on line $8$}}[\text{$x=1$ on line $5$}]\cdot\probof{\text{$x=1$ on line $5$}} \]
+    So if we get to line $6$ (ie. $x=1$ on line $5$), then the probability that on every iteration $x=0$ on line $8$ is $\frac1{2^n}$.
+    Thus we get that this is equal to
+    \[ = \frac1{2^n}\cdot\frac12 \]
+    And so
+    \[ \probof{M(\phi)=0} = \frac12 + \frac1{2^{n+1}} \geq \frac12 + \frac1{2^{2n+1}} \]
+
+    So we have shown that for every fomula $\phi$,
+    \[ \probof{M(\phi)\text{ is correct}} \geq \frac12 + \frac1{2^{2n+1}} \]
+    And so this means that $M$ shows that $\sat\in\BPP_{1/2+2^{-(2n+1)}}=\BPP$.
+    And as we said above, since $\BPP$ is closed under Karp reductions and $\sat$ is $\NP$-complete, this implies $\NP\subseteq\BPP$.
+\eenum
+
+\end{document}
+

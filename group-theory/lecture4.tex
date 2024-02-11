@@ -1,0 +1,280 @@
+\$documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\@blist[#1]{%
+    \bgroup\bgroup\par\vskip-\medskipamount%
+    \gdef\item{%
+        \par\egroup\bgroup\medskip\setbox0=\hbox{#1\quad}%
+        \advance\leftskip by \wd0\leavevmode\kern-\wd0\box0%
+    }%
+}
+\def\blist{\@ifnextchar[ \@blist {\@blist[$\bullet$]}}
+\def\elist{\par\egroup\egroup\medskip}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\newfunc{eulerg}{{\rm Euler}}({})
+\newfunc{order}o({})
+\let\normalsub=\trianglelefteq
+
+\begin{document}
+
+\c@section=4
+
+\barcolorbox{220, 220, 255}{0, 0, 130}{80, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Group Theory}
+
+    \medskip
+    \textit{Lecture 4, Sunday November 13, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{defn*}
+
+    If $G$ is a group and $H\leq G$ is a subgroup of $G$, we define the following:
+    \blist
+        \item A \ppemph{right coset} of $H$ is a set $Ha=\set{ha}[h\in H]$ where $a\in G$.
+        \item A \ppemph{left coset} of $H$ is a set $aH=\set{ah}[h\in H]$ where $a\in G$.
+    \elist
+
+\end{defn*}
+
+Notice that if $G$ is an abelian group, then the left and right cosets of a subgroup $H$ are the same.
+Also notice that if $h\in H$ then $hH=H=Hh$, since $h^{-1}\in H$ so if $h'\in H$ then $h\bigl(h^{-1}h'\bigr)=h'\in hH$.
+
+The principle property of cosets is that they form a partition of the group $G$.
+This is an important property which we will prove.
+
+\begin{prop*}
+
+    If $H$ is a subgroup of $G$, then $\set{gH}[g\in G]$ and $\set{Hg}[g\in G]$ form partitions of $G$.
+
+\end{prop*}
+
+\begin{proof}
+
+    We will show this for the left cosets of $H$.
+    So we must show that if $gH\cap g'H\neq\varnothing$ then $gH=g'H$.
+    Suppose $x\in gH\cap g'H$, so $x=gh=g'h'$ and therefore $g'=ghh'^{-1}$ and similarly $g=g'h'h^{-1}$.
+    And so if $y\in g'H$ then $y=g'h''=ghh'^{-1}h''\in gH$ since $H$ is subgroup, so $g'H\subseteq gH$.
+    And similarly $gH\subseteq g'H$, so $gH=g'H$ as required.
+
+    And we will show that $\bigcup gH=G$.
+    This is trivial since if $g\in G$ then since $e\in H$, $g\in gH$ so $g$ is in the union.
+    And every coset is a subset of $G$, so the union is equal to $G$.
+
+    Therefore the union of $\set{gH}[g\in G]$ is $G$ and the elements in the set are disjoint, therefore it is a partition as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{lemm*}
+
+    If $H$ is a subgroup of $G$ and $g\in G$ then $\abs{gH}=\abs{Hg}=\abs H$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    We define a function $f\colon H\longvarrightarrow gH$ by $h\varmapsto gh$.
+    This is trivially surjective by definition, and it is injective since if $f(h)=f(h')$ then $gh=gh'$, so $h=h'$.
+    And so $f$ is a bijection and therefore $\abs H=\abs{gH}$.
+    A similar proof is valid for right cosets.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{defn*}
+
+    If $H$ is a subgroup of the group $G$, we define its \ppemph{index} to be the size of the partition its cosets form:
+    \[ \bracks{G:H} = \abs{\set{gH}[g\in G]} = \abs{\set{Hg}[g\in G]} \]
+    And the set of left cosets is denoted $G/H$, so $\bracks{G:H}=\abs{G/H}$.
+
+\end{defn*}
+
+Since the set of cosets of $H$ forms a partition of $G$, and the cardinality of every $gH$ is equal to the cardinality of $H$, we have that
+\[ \abs G = \abs H \cdot \abs{\set{gH}[g\in G]} = \abs H\cdot \bracks{G:H} \]
+
+\begin{thrm*}[lagrnageTheorem,Lagrange's\ Theorem]
+
+    If $G$ is a finite group and $H$ is a subgroup of $G$'s, then $\abs{H}\divides\abs{G}$.
+
+\end{thrm*}
+
+Therefore if $g\in G$, then the order of $g$ divides the order of $G$ (which is the cardinality of $G$), since $\orderof g=\abs{\cycle g}$ and $\cycle g$ is a subgroup of $G$.
+
+\begin{thrm*}[fermatTheorem,Fermat's\ Little\ Theorem]
+
+    Suppose $p$ is prime, then if $a$ is coprime with $p$ then $a^{p-1}\equiv 1\pmod p$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Notice that the order of $\eulergof p$ is $p-1$ since it is equal to $\set{1,\dots,p-1}$.
+    Since $a$ is coprime with $p$, its equivalence class is in $\eulergof p$, and the order of it divides $p-1$.
+    That is $\orderof a\divides p-1$, and therefore $a^{p-1}\equiv 1\pmod p$ (since if $\orderof a\divides n$ then $a^n=e$).
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{defn*}
+
+    \ppemph{Euler's Totient Function} is a function $\phi\colon\bN\longvarrightarrow\bN$ defined by:
+    \[ \phi(n) = \abs{\eulergof n} \]
+
+\end{defn*}
+
+Notice that we know $a\in\eulergof b$ if and only if they are coprime, so we can rewrite the definition of the Euler Totient function as:
+\[ \phi(n) = \abs{\set{1\leq m<n}[\gcd(n,m)=1]} \]
+
+\begin{thrm*}[eulersTheorem,Euler's\ Totient\ Theorem]
+
+    If $a$ is disjoint from $n$ then:
+    \[ a^{\phi(n)} \equiv 1 \pmod n \]
+
+\end{thrm*}
+
+\begin{proof}
+
+    By the definition of the Euler Totient function, the order of $\eulergof n$ is $\phi(n)$.
+    Then since $a$ is coprime from $n$ it is in $\eulergof n$, and $\orderof a\divides\phi(n)$, $a^{\phi(n)}\equiv 1\pmod n$ as required.
+    The reason for this is identical to the reason given in our proof of \ppref{fermatTheorem}.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+Notice that $\phi(p)=p-1$ for $p$ prime, so by Euler's Totient theorem, if $a$ is coprime from $p$ then $a^{p-1}=a^{\phi(p)}\equiv 1\pmod p$.
+So Euler's Totient function is a generalization of Fermat's Little theorem.
+
+In general if $G$ is a finite group and $a\in G$ then $a^{\abs G}=e$ since $\orderof a\divides\abs G$.
+
+\begin{prop*}
+
+    If $H$ and $K$ are subgroups of $G$, then $H\cup K$ is a subgroup of $G$ if and only if $H\subseteq K$ or $K\subseteq H$.
+
+\end{prop*}
+
+\begin{proof}
+
+    If one is the subset of the other, it is trivial.
+    To prove the converse, suppose for the sake of a contradiction that neither is a subset of the other.
+    Then there is $h\in H\setminus K$ and $k\in K\setminus H$.
+    Then $h,k\in H\cup K$ but if $hk\in H\cup K$ then suppose without loss of generality that $hk\in H$ which means $k=h^{-1}h'$ for some $h'\in H$.
+    And so $k\in H$ in contradiction.
+    So one must be the subset of the other.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{defn*}
+
+    If $G$ is a group and $A,B\subseteq G$ are subsets, we define:
+    \blist
+        \item $A\cdot B=\set{ab}[a\in A, b\in B]$
+        \item $A^{-1}=\set{a^{-1}}[a\in A]$
+    \elist
+
+\end{defn*}
+
+\begin{prop*}
+
+    If $H$ and $K$ are subgroups of $G$ then $H\cdot K$ is a subgroup if and only if $H\cdot K=K\cdot H$.
+
+\end{prop*}
+
+\begin{proof}
+
+    We know that $A$ non empty is a subgroup if and only if it is closed under the operation and inverses, which is equivalent to saying $A\cdot A\subseteq A$ and $A^{-1}\subseteq A$.
+    Also notice this is equivalent to $A\cdot A=A$ and $A^{-1}=A$.
+
+    So if $HK=KH$ then:
+    \[ (HK)(HK) = HKHK = HHKK \subseteq HK \]
+    And
+    \[ (HK)^{-1} = K^{-1}H^{-1} \subseteq KH = HK \]
+    So $HK$ is a subgroup.
+
+    If $HK$ is a subgroup, then since $HK=H^{-1}K^{-1}=(KH)^{-1}=KH$, that is $HK=KH$ as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{prop*}
+
+    If $H$ is a subgroup of $G$ then the following are equivalent:
+    \blist
+        \item For every $a\in G$ then $aH=Ha$ ($aHa^{-1}=H$).
+        \item Every right coset is a left coset.
+        \item For every $a\in G$, $Ha\subseteq aH$.
+        \item For every $a\in G$, $aH\subseteq Ha$ ($aHa^{-1}\subseteq H$).
+        \item For every $a,b\in G$, $aH\cdot aH=abH$.
+        \item For every $a,b\in G$ there exists a $c\in G$ such that $aH\cdot bH=cH$.
+    \elist
+
+\end{prop*}
+
+\begin{proof}
+
+    \blist
+        \item $1$ implies $2$ trivially, and $2$ implies $1$ since $aH$ is also a right coset $Hb$ and therefore $Hb$ has a non trivial intersection with $Ha$ so they are equal, so $aH=Hb=Ha$.
+        \item $1$ implies $3$ trivially.
+        \item $3$ implies $4$ since if $a\in G$ then $Ha^{-1}\subseteq a^{-1}H$ so $aH\subseteq Ha$, and similarly $4$ implies $3$.
+        \item And $3$ implies $4$ and together they imply $1$, and $1$ implies $3$ and $4$ trivially.
+        So $1$, $2$, $3$, and $4$ are all equivalent.
+        \item $5$ implies $6$ trivially, and since $ab\in aH\cdot bH=cH$, $abH$ and $cH$ have nontrivial intersection, $cH=abH$, so $6$ implies $5$.
+        \item $1$ implies $5$ since $aHbH=abHH=abH$ (since $Hb=bH$).
+        \item If we know $5$ then if we choose $a=e$ then for every $b\in G$ we know $H\cdot bH=bH$ so $b\in Hb\subseteq HbH=bH$, so $Hb\subseteq bH$ for every $b\in G$, so $5$ implies $3$.
+        So everything is equivalent.
+    \elist
+
+\end{proof}
+
+\begin{defn*}
+
+    If any of the above properties hold for a subset $H$ of $G$, then $H$ is considered a \ppemph{normal} subset of $G$ and this is denoted $H\normalsub G$.
+
+\end{defn*}
+
+To prove that a subgroup is normal, it is usually the easiest to prove the fourth property, $aHa^{-1}\subseteq H$.
+
+\begin{prop*}
+
+    If $H\normalsub G$ then $G/H$ forms a group under the operation $aH\cdot bH=abH$.
+
+\end{prop*}
+
+\begin{proof}
+
+    We know that this operation is well defined and $H$ is closed under it since $H$ is normal, and $H$ is the identity element since $H\cdot aH=aH\cdot H=aH$.
+    And the inverse of $aH$ is $a^{-1}H$ since $aH\cdot a^{-1}H=a^{-1}H\cdot aH=eH=H$.
+    And it is associative since $(aH\cdot bH)\cdot cH=abH\cdot cH=abcH=aH\cdot(bH\cdot cH)$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\end{document}
+

@@ -1,0 +1,304 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\qed{\hskip1cm\penalty-100\hbox{}\hfill$\blacksquare$}
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\bS{\mathbb{S}}
+\def\mU{\mathcal{U}}
+\def\mV{\mathcal{V}}
+\def\mO{\mathcal{O}}
+\def\mF{\mathcal{F}}
+
+\def\to{\varrightarrow}
+\def\longto{\longvarrightarrow}
+
+\newfunc{metric}{\rho}({})
+\newfunc{metricA}{\sigma}({})
+\newfunc{powset}{{\cal P}}(|)
+
+\let\divides=\mid
+\let\to=\varrightarrow
+\def\implies{\,\longvarRightarrow\,}
+
+\def\mathresize#1#2{\mathpalette\@mathresize{{#1}{#2}}}
+\def\@mathresize#1#2{\@@mathresize#1#2}
+\def\@@mathresize#1#2#3{\hbox to #2{\hss$#1#3$\hss}}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\pdf@drawing@macro{check}{0 1 0 RG 1.2 w 1 j 1 J 0 5 m 3 0 l 8 10 l S}{9.2pt}{12pt}{1pt}{1pt}
+\pdf@drawing@macro{ecks}{1 0 0 RG 0 0 m 1 j 1 J 10 10 l 0 10 m 10 0 l S}{11.2pt}{12pt}{1pt}{1pt}
+
+\begin{document}
+
+\c@section=3
+
+\barcolorbox{255, 220, 255}{130, 0, 130}{200, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Topology}
+
+    \medskip
+    \textit{Lecture \thesection, Sunday April 16, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{Homeomorphisms and closed sets}
+
+\begin{defn*}
+
+    Let $X$ be a topological space, then $\mF\subseteq X$ is called \ppemph{closed} if its complement is open.
+
+\end{defn*}
+
+It is immediate from the definition of open sets that
+\benum
+    \item $\varnothing$ and $X$ are closed.
+    \item If $\set{\mF_\lambda}_{\lambda\in\Lambda}$ is an arbitrary set of closed sets then $\bigcap_{\lambda\in\Lambda}\mF_\lambda$ is also closed.
+    \item If $\set{\mF_k}_{k=1}^n$ is a finite set of closed sets, then $\bigcup_{k=1}^n \mF_k$ is also closed.
+\eenum
+
+\begin{prop*}
+
+    A function between topological spaces $f\colon X\longto Y$ is continuous if for every $\mF\subseteq Y$ closed, $f^{-1}(\mF)\subseteq X$ is also closed.
+
+\end{prop*}
+
+This is trivial: if $f$ is continuous, let $F\subseteq Y$ be closed then $F^c$ is open and so $f^{-1}(\mF^c)=f^{-1}(\mF)^c\subseteq X$ is open and so $f^{-1}(\mF)$ is closed.
+And for the converse, let $\mU\subseteq Y$ be open then $\mU^c$ is closed so $f^{-1}(\mU^c)=f^{-1}(\mU)^c$ is closed and therefore $f^{-1}(\mU)$ is open.
+
+\begin{defn*}
+
+    Let $X$ and $Y$ be topological spaces, a mapping $f\colon X\longto Y$ is an \ppemph{open mapping} if for every $\mU\subseteq X$ open, $f(\mU)$ is open.
+    And $f$ is a \ppemph{closed mapping} if for every $\mF\subseteq X$ closed, $f(\mF)$ is closed.
+
+\end{defn*}
+
+\begin{prop*}
+
+    Let $X$ be a topological space, and $A\subseteq X$ then $\mF\subseteq A$ is closed relative to $A$ (closed in $\tau_A$) if and only if there is a $Q\subseteq X$ closed such that $\mF=Q\cap A$.
+
+\end{prop*}
+
+This is again trivial: if $\mF$ is closed relative to $A$ then $A\setminus\mF$ is open in $\tau_A$ so $A\setminus\mF = A\cap\mU$ for some $\mU\subseteq X$ open.
+Then $\mF=A\cap\mU^c$ so $Q=\mU^c$ satisfies this.
+And if $\mF=Q\cap A$ for $Q$ closed in $X$ then $A\setminus\mF=A\setminus Q=A\cap Q^c$ and $Q^c$ is open so $A\setminus\mF$ is open relative to $A$ so $\mF$ is closed relative to $A$.
+
+\begin{exam*}
+
+    If $X$ is a toplogical space and $A\subseteq X$, then $\tau_A$ is not necessarily a subset of $\tau_X$.
+    That is, there can be a set open relative to $A$ which is not open relative to $X$.
+
+    For example, take $X=\bR^2$ and $A=(0,1)\times\set0$.
+    Then $A$ is open relative to itself but not relative to $X$ (in general if $A\subseteq X$ is not open then obviously $\tau_A\not\subseteq\tau_X$ since $A\in\tau_A$ is not in $\tau_X$).
+
+    Similarly we can gave $S\subseteq A$ which is closed in $A$ but not in $X$.
+    For example take a non-closed set $A\subseteq X$ then $A$ is closed in $A$ but not in $X$.
+
+\end{exam*}
+
+So we see that if $A\notin\tau_X$, then $\tau_A\not\subseteq\tau_X$.
+But what if $A$ is open in $X$?
+
+\begin{prop*}
+
+    If $A$ is open in $X$ then and $\mU$ is open in $A$ then $\mU$ is open in $X$.
+    That is, if $A\in\tau_X$ then $\tau_A\subseteq\tau_X$.
+
+    Similarly, if $A$ is closed in $X$ and $\mF$ is closed in $A$ then $\mF$ is closed in $X$.
+
+\end{prop*}
+
+This is yet again trivial: if $\mU=A\cap\mU'$ is open in $\tau_A$, since the finite intersection of open sets is open, $A\cap\mU'$ is open in $X$, ie. $A\cap\mU'\in\tau_X$.
+And if $A$ is closed then if $\mF=A\cap\mF'$ is closed in $A$, then $\mF$ is closed in $X$ as the intersection of closed sets.
+
+This condition is actually equivalent, since as we said earlier, if $A$ is not open in $X$ then $\tau_A\not\subseteq\tau_X$.
+And for closed sets if $A$ is not closed, then $A$ is closed in $A$ but not in $X$.
+And this is an equality if and only if $A=X$ of course, since otherwise $X\notin\tau_A$.
+
+\begin{thrm*}
+
+    If $X$ and $Y$ are toplogical spaces and $f\colon X\longto Y$ is a mapping then the following are equivalent:
+    \benum
+        \item $f$ is bijective, continuous, and $f^{-1}$ is continuous.
+        \item $f$ is bijective, continuous, and an open mapping.
+        \item $f$ is bijective, continuous, and a closed mapping.
+        \item $f$ is bijective, and for every $S\subseteq X$, $S$ is open in $X$ if and only if $f(S)$ is open in $Y$.
+        \item $f$ is bijective, and for every $S\subseteq Y$, $S$ is open in $Y$ if and only if $f^{-1}(S)$ is open in $X$.
+    \eenum
+
+\end{thrm*}
+
+\begin{proof}
+
+    We show the first implication: suppose $\mU\subseteq X$ is open then $f(\mU)=\bigl(f^{-1}\bigr)^{-1}(\mU)$ and since $\mU$ is open and $f^{-1}$ is continuous, $f(\mU)$ is open.
+    Now for the second, suppose $f$ is an open mapping, and let $\mF\subseteq X$ is closed then $f(\mF)=f\parens{{\mF^c}^c}=f(\mF^c)^c$ is closed since $f(\mF^c)$ is open (the last equivalence is due to the
+    bijectivity of $f$).
+    This also shows that the third implies the second.
+    To show the third implication, we can assume $f$ is an open mapping then this is a direct consequence of the continuity and open-mapping nature of $f$.
+    The fourth property obviously implies the fifth.
+    To show the fifth implies the first, notice that this obviously implies continuity of $f$ and $f^{-1}$.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    A mapping which satisfies any of the above equivalent conditions is called a \ppemph{homeomorphism}.
+    If there exists a homeomorphism between two toplogical spaces $X$ and $Y$ then $X$ and $Y$ are considered \ppemph{homeomorphic}, which is denoted $X\cong Y$.
+
+\end{defn*}
+
+It is obvious that if $f$ is a homeomorphism then so is $f^{-1}$.
+And the composition of homeomorphisms is also a homeomorphism.
+Thus the homeomorphic relation is symmetric and transitive, it is also obviously reflexive since it is trivial to see that ${\rm id}_X$ is a homeomorphism on $X$.
+So the homeomorphic relation is essentially an equivalence relation (barring the issue of constructing a set of all the toplogical spaces).
+
+\begin{exam*}
+
+    We can show that $[a,b]\cong[c,d]$ by defining $f(x)=\alpha x+\beta$ where $f(a)=c$ and $f(b)=d$ (this has a solution), and it can be shown that this is continuous and so is its inverse.
+    We use the same function to show $(a,b)\cong(c,d)$.
+    Similarly $(-\infty,a)\cong(-\infty,b)\cong(b,\infty)$, the (correct) bounds can also be closed.
+
+    And we can use $\tan$ as a homeomorphism between $\parens{-\frac\pi2,\frac\pi2}$ and $\bR$ and thus $\bR$ is homeomorphic with every open interval.
+    We can also restrict $\tan^{-1}$ from $[0,\infty)$ to $\left[0,\frac\pi2\right)$ to show that $[a,\infty)\cong[a,b)$.
+    And we can take $-x$ to show $(0,1]\cong[-1,0)$ so all half-open intervals are homeomorphic, independent of which side is open.
+
+    So we can classify the intervals in homeomorphism classes: closed intervals, open intervals (including open intervals including infinite bounds), and half open intervals (including infinite bound
+    intervals with closed finite bounds like $[a,\infty)$).
+
+    And we know this is the strictest possible classification, as injective continuous functions between intervals must be monotonic.
+    So $(a,b)$ cannot be homeomorphic to $(a,b]$ as nothing can map to $b$, and neither can be homeomorphic to $[a,b]$ since nothing can map to $a$.
+
+\end{exam*}
+
+\begin{defn*}
+
+    Let $X$ be a toplogical space, and $A\subseteq X$ then the \ppemph{closure} of $A$ is defined as
+    \[ \overline A = \bigcap_{\substack{\mF\text{ is closed}\\ A\subseteq\mF}}\mF \]
+    And the \ppemph{interior} of $A$ is defined as
+    \[ \mathring A = \bigcup_{\substack{\mU\text{ is open}\\ \mU\subseteq A}}\mU \]
+
+\end{defn*}
+
+The closure of a set has the following properties:
+\benum
+    \item $\overline A$ is closed
+    \item $A\subseteq\overline A$
+    \item For any set $\mF$ which satisfies the above two properties, $\overline A\subseteq\mF$ (as $\mF$ is in the intersection then).
+    In other words, the closure of a set is the minimal closed set which contains the set (the closure is minimal).
+    \item If two sets $B$ and $C$ satisfy the above three properties, then $B=C=\overline A$ as $B\subseteq C$ and $C\subseteq B$ by the third property (and also for $\overline A$) (the closure is unique).
+\eenum
+
+The interior of a set has the following properties:
+\benum
+    \item $\mathring A$ is open
+    \item $\mathring A\subseteq A$
+    \item For any set $\mU$ which satisfies the above two properties, $\mU\subseteq\mathring A$ (the interior is maximal).
+    \item If two sets $B$ and $C$ satisfy the above three properties, then $B=C=\mathring A$ (the interior is unique).
+\eenum
+
+And finally it is easy to see
+\[ \bigl(\mathring A\bigr)^c = \overline{A^c},\qquad \bigl(\overline A\bigr)^c = \mathring{\bigl(A^c\bigr)} \]
+
+\begin{prop*}
+
+    Let $X$ be a toplogical space and $A\subseteq X$ then $p\in X$ is in $\overline A$ if and only if for every neighborhood $\mU$ of $p$, $A\cap\mU\neq\varnothing$.
+
+\end{prop*}
+
+\begin{proof}
+
+    If $p\in\overline A$ then let $p\in\mU$ be a neighborhood of $p$, then $p\in\mU\cap\overline A$ so the intersection is non-empty.
+    If $p\in\overline A$ then suppose there is a neighborhood $\mU$ of $p$ which is disjoint from $A$.
+    Thus $A\subseteq\mU^c$ and $\mU^c$ is closed so $\overline A\subseteq\mU^c$, and since $p\in\overline A$ then $p\in\mU^c$ so $p\notin\mU$ in contradiction.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    If $X$ is a toplogical space and $A\subseteq X$.
+    We say that $A$ is \ppemph{dense} in $X$ if $\overline A=X$.
+
+\end{defn*}
+
+Thus $A$ is dense if and only if for every $x\in X$ and every neighborhood $\mU$ of $x$, $\mU\cap A\neq\varnothing$.
+Thus $A$ is dense if and only if it intersects with every non-empty open set (as every non-empty open set is a neighborhood of its elements).
+
+\begin{prop*}
+
+    Suppose $A\subseteq B\subseteq X$ where $X$ is a topological space, then $\overline A^B=\overline A^X\cap B$ where $\overline A^X$ is the closure of $A$ with respect to $X$.
+
+\end{prop*}
+
+\begin{proof}
+
+    We know that
+    \[ \overline A^X\cap B = \bigcap_{\mathresize{1cm}{A\subseteq\mF\text{ closed}}}\mF\cap B = \bigcap_{\mathresize{1cm}{A\subseteq\mF\text{ closed in $B$}}}\mF = \overline A^B \]
+    since the sets which are closed relative to $B$ are exactly $\mF\cap B$ where $\mF$ is closed in $X$.
+    \qed
+
+\end{proof}
+
+Thus $A$ is dense in $B$ if and only if $\overline A^X\supseteq B$.
+
+\begin{thrm*}
+
+    Let $X$ be a toplogical space and $\set{\mU_\lambda}_{\lambda\in\Lambda}$ be an open cover of $X$.
+    Let $Y$ be another toplogical space and $f\colon X\longto Y$.
+    Then if for every $\lambda\in\Lambda$, $f\bigr|_{\mU_\lambda}\colon\mU_\lambda\longto Y$ is continuous, then $f$ is continuous.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let $f_\lambda=f\bigr|_{\mU_\lambda}$.
+    Notice that for any $S\subseteq Y$:
+    \[ x\in f^{-1}(S) \iff x\in\bigcup_{\lambda\in\Lambda} f_\lambda^{-1}(S) \]
+    since if $x\in f^{-1}(S)$ then $x\in\mU_\lambda$ for some $\mU_\lambda$ and since $f(x)\in S$, $f_\lambda(x)\in S$ so $x\in f^{-1}_\lambda(S)$.
+    And if $x$ is in the union then $x\in f_\lambda^{-1}(S)$ so $f_\lambda(x)\in S$ and so $f(x)\in S$.
+    Thus for any $S\subseteq Y$:
+    \[ f^{-1}(S) = \bigcup_{\lambda\in\Lambda} f_\lambda^{-1}(S) \]
+
+    And so if $S=\mU$ is open, then $f_\lambda^{-1}(\mU)$ is open in $\mU_\lambda$ and since $\mU_\lambda$ is open, $f_\lambda^{-1}(\mU)$ is open in $X$.
+    So $f^{-1}(\mU)$ is the union of open sets ($f_\lambda^{-1}(\mU)$) and is therefore itself open.
+    Thus $f$ is continuous.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}
+
+    Let $X$ be a toplogical space and $\set{\mF_k}_{k=1}^n$ be a finite closed cover of $X$.
+    Let $Y$ be another topological space and $f\colon X\longto Y$.
+    Then if for every $1\leq k\leq n$ $f\bigr|_{\mF_k}=f_k\colon\mF_k\longto Y$ is continuous, then $f$ is continuous.
+
+\end{thrm*}
+
+\begin{proof}
+
+    By above we have
+    \[ f^{-1}(\mF) = \bigcup_{k=1}^n f_k^{-1}(\mF) \]
+    for every closed set $\mF\subseteq Y$.
+    Since $f_k^{-1}(\mF)$ is closed in $\mF_k$ since $f_k$ is continuous, and since $\mF_k$ is closed in $X$, $f_k^{-1}(\mF)$ is closed in $X$ for every $k$.
+    Thus $f^{-1}(\mF)$ is a finite union of closed sets and is therefore also closed.
+    So $f$ is continuous.
+    \qed
+
+\end{proof}
+
+\end{document}
+

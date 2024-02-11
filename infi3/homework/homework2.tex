@@ -1,0 +1,345 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input ../preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\@blist[#1]{%
+    \bgroup\bgroup\par\vskip-\medskipamount%
+    \gdef\item{%
+        \par\egroup\bgroup\medskip\setbox0=\hbox{#1\quad}%
+        \advance\leftskip by \wd0\leavevmode\kern-\wd0\box0%
+    }%
+}
+\def\blist{\@ifnextchar[ \@blist {\@blist[$\bullet$]}}
+\def\elist{\par\egroup\egroup\medskip}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\def\openset{{\cal O}}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\pdf@drawing@macro{check}{0 1 0 RG 1.2 w 1 j 1 J 0 5 m 3 0 l 8 10 l S}{9.2pt}{12pt}{1pt}{1pt}
+\pdf@drawing@macro{ecks}{1 0 0 RG 0 0 m 1 j 1 J 10 10 l 0 10 m 10 0 l S}{11.2pt}{12pt}{1pt}{1pt}
+
+\begin{document}
+
+\c@section=2
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infintesimal Calculus 3}
+
+    \medskip
+    \textit{Assignment 2}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{exercise*}
+
+    Suppose $(X,\metric)$ is a metric space, show that for any $x_1,\dots,x_n\in X$: $X\setminus\set{x_1,\dots,x_n}$ is open in $X$.
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    We will first show that for any $x\in X$, $\set{x}$ is closed.
+    Suppose that $y\in\set{x}'$ then for any $\epsilon>0$, $x$ must be in $B_\epsilon(y)$ since it is the only point in the set.
+    By the definition of a limit point, $y$ cannot equal to $x$ then.
+    But that means $\metricof{x,y}<\epsilon$ for every $\epsilon>0$, and therefore $\metricof{x,y}=0$, so $x=y$.
+    Which contradicts the definition of a limit point, so $\set x'=\varnothing\subseteq\set x$, so $\set x$ is closed.
+
+    Therefore $\set{x_1,\dots,x_n}$ is also closed as the finite union of closed sets $\set{x_1},\dots,\set{x_n}$.
+    And so $\set{x_1,\dots,x_n}^c$ is open and since $X$ is open in $X$, $X\setminus\set{x_1,\dots,x_n}=X\cap\set{x_1,\dots,x_n}^c$
+    is open as the intersection of two open sets.
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Suppose $A,B\subseteq\bR^n$ are open under the standard euclidean metric, and $x\in\bR^n$, $\alpha\in\bR$.
+    Show that the following two sets are also open:
+    \blist
+        \item $x+A = \set{x+a}[a\in A]$
+        \item $A+\alpha B = \set{a+\alpha b}[a\in A, b\in B]$
+    \elist
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    \blist
+        \item Suppose $y\in x+A$, then there exists an $a\in A$ such that $y=x+a$.
+            Since $A$ is open, there is an $r>0$ such that $B_r(a)\subseteq A$.
+            Notice then that if $z\in B_r(y)$, $\norm{z-y}<r\implies\norm{z-x-a}<r$, so $z-x\in B_r(a)\subseteq A$.
+            So $B_r(y)-x\subseteq A$, so $B_r(y)\subseteq x+A$ and therefore $x+A$ is open.
+        \item Notice that:
+            \[ A + \alpha B = \bigcup_{b\in B} \alpha b + A \]
+            And as we showed above, for every $b\in B$, $\alpha b + A$ is open.
+            So $A + \alpha B$ is the union of open sets, and is therefore itself open.
+    \elist
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Suppose $x,y\in\bR^2$ are linearly independent and $(a,b), (c,d)\subseteq\bR$ are two open intervals.
+    Show that the set $(a,b)x + (c,d)y = \set{tx + sy}[t\in(a,b), s\in(c,d)]$ is open.
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    Notice that the linear transformation $T\colon\bR^2\longvarrightarrow\bR^2$ which is characterized by $e_1\varmapsto x$ and
+    $e_2\varmapsto y$ (where $e_1=(1,0)$ and $e_2=(0,1)$) is bijective since $x$ and $y$ are linearly independent.
+    And since
+    \[ T\big((a,b)e_1 + (c,d)e_2\big) = (a,b)x + (c,d)y \]
+    if we can prove that for $e_1$ and $e_2$ the set is open, then by the following exercise, it must hold for any $x$ and $y$
+    linearly independent since $T$ is bijective.
+
+    Suppose $v\in (a,b)e_1 + (c,d)e_2$ so $v=(v_1, v_2)$ where $v_1\in(a,b)$ and $v_2\in(c,d)$.
+    Since $(a,b)$ and $(c,d)$ are open, there must be an $r>0$ such that $B_r^\bR(v_1)\subseteq(a,b)$ and
+    $B_r^\bR(v_2)\subseteq(c,d)$ (these are balls in $\bR$).
+    So if we take $u\in B_r^{\bR^2}(v)$:
+    \[ \norm{v-u}<r \implies (v_1-u_1)^2 + (v_2-u_2)^2 < r^2 \]
+    so $(v_1-u_1)^2<r^2$ and therefore $\abs{v_1-u_1}<r$ and so $u_1\in B_r^\bR(v_1)\subseteq(a,b)$.
+    And similarly $u_1\in(c,d)$, so by definition $u\in (a,b)e_1 + (c,d)e_2$, and therefore $B_r^{\bR^2}(v)$ is contained in the
+    set, so it is open.
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    If $T$ is an invertible linear operator over $\bR^n$ then $T$ maps open sets to open sets.
+
+\end{exercise*}
+
+This is equivalent with replacing $T$ with an invertible matrix $A\in\bR^{n\times n}$.
+
+\begin{blankpp}
+
+    Firstly we will show that $T$ is bounded in the sense that there is a constant $M>0$ such that for every $v\in V$:
+    \[ \norm{Tv} \leq M\norm{v} \]
+    Suppose $\set{e_1,\dots,e_n}$ is the standard basis for $\bR^n$, let:
+    \[ N = \maxof[1\leq i,j\leq n]{\abs{\iprod{Te_i, Te_j}}} \]
+    Let $v\in\bR^n$ and suppose $v=\sum_{i=1}^n a_ie_i$, then
+    \[ \norm{Tv} = \norm{\sum_{i=1}^n a_i Te_i} \leq \sum_{i=1}^n\abs{a_i}\norm{Te_i} \leq N\cdot\sum_{i=1}^n\abs{a_i} \]
+    And notice that if we define $\shortvecc x=\parens{\abs{a_1},\dots,\abs{a_n}}$ and $\shortvecc y=\parens{1,\dots,1}$, then
+    $\norm{\shortvecc x}=\norm v$ and $\norm{\shortvecc y}=\sqrt n$, so by the Cauchy-Schwarz inequality:
+    \[ \abs{\iprod{x,y}} = \sum_{i=1}^n \abs{a_i} \leq \norm{\shortvecc x}\cdot\norm{\shortvecc y} = \sqrt n\norm v \]
+    So we have that:
+    \[ \norm{Tv}_W \leq N\sqrt n\cdot\norm v \]
+    So $M=N\sqrt n$ satisfies our requirement.
+
+    Now we will show that if $\openset\subseteq W$ is open, then $T^{-1}(\openset)$ is as well.
+    Suppose $x\in T^{-1}(\openset)$, then $Tx\in\openset$ so there is an $r'>0$ such that $B_{r'}(Tx)\subseteq\openset$.
+    If we let $r=\frac{r'}M$, then if $y\in B_r(x)$ then $\norm{Tx-Ty}=\norm{T(x-y)}<M\norm{x-y}<Mr=r'$.
+    So $Ty\in B_{r'}(Tx)$, and so $Ty$ is in $\openset$, and therefore $y\in T^{-1}(\openset)$.
+    Therefore $B_r(x)\subseteq T^{-1}(\openset)$, and so $T^{-1}(\openset)$ is open as required.
+
+    Notice that these two above claims don't rely on anything about $T$, not even $T$'s invertibility.
+    But $T^{-1}$ is a linear transformation, so if $\openset$ is open then $\parens{T^{-1}}^{-1}(\openset)=T(\openset)$ is open.
+    So $T(\openset)$ is open for every open set $\openset$ as required.
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Suppose $X$ is a metric space and $K\subseteq X$ is compact.
+    $\set{F_\lambda}_{\lambda\in\Lambda}$ is a collection of closed sets whose union is $K$, and every finite intersection of theirs
+    is non-empty.
+    Then show that:
+    \[ \bigcap_{\lambda\in\Lambda} F_\lambda \neq \varnothing \]
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    The idea is to think of $K$ itself as a metric space.
+    Then $F_\lambda$ is closed in $K$, and so $K\setminus F_\lambda$ is open in $K$.
+    We will prove this: suppose $k\in K\setminus F_\lambda$.
+    So $k\in F_\lambda^c$ and therefore there is an $r>0$ such that $B_r^X(x)\subseteq F_\lambda^c$.
+    And since $B_r^K(x) = B_r^X(x)\cap K$ (as a direct result of the definition), we have that
+    $B_r^K(x)\subseteq K\setminus F_\lambda$, so $K\setminus F_\lambda$ is open in $K$.
+
+    So if we assume that the intersection of $F_\lambda$ is empty, then:
+    \[ K\setminus\bigcap_{\lambda\in\Lambda} F_\lambda = \bigcup_{\lambda\in\Lambda} K\setminus F_\lambda = K \]
+    So $\set{K\setminus F_\lambda}_{\lambda\in\Lambda}$ is an open cover of $K$.
+    Since $K$ is compact, there must be a finite subcover of this:
+    \[ \bigcup_{k=1}^n K\setminus F_k = K \]
+    But we know that
+    \[ \bigcup_{k=1}^n K\setminus F_k = K\setminus\bigcap_{k=1}^n F_k = K \]
+    And so (since $F_\lambda$ is a subset of $K$), it must be that:
+    \[ \bigcap_{k=1}^n F_k = \varnothing \]
+    which contradicts what we're told about every finite intersection of $F_\lambda$s being non-empty.
+    So the intersection of $F_\lambda$ is non-empty.
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Suppose $(X,\metric)$ is a metric space and $A,B\subseteq X$.
+    Prove or disprove:
+    \blist
+        \item $\overline{A\cap B}\subseteq\overline A\cap\overline B$
+        \item $\overline{A\cap B}\supseteq\overline A\cap\overline B$
+        \item $\interiorof{A\cup B}\subseteq\interior A\cup\interior B$
+        \item $\interiorof{A\cup B}\supseteq\interior A\cup\interior B$
+    \elist
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    \blist
+        \item This is true.
+            It is quite trivial to see that if $A\subseteq B$ then $\overline A\subseteq\overline B$.
+            Since $\overline B$ is the smallest closed set containing $B$, $\overline B$ is a closed set containing $A$ and thus
+            is larger than $\overline A$ (as in, it contains it).
+            Since $A\cap B\subseteq A, B$, $\overline{A\cap B}\subseteq\overline A, \overline B$ so
+            $\overline{A\cap B}\subseteq\overline A\cap\overline B$.
+        \item This is false.
+            Take $A=(0,1)$ and $B=(1,2)$.
+            Then $A\cap B=\varnothing$ so $\overline{A\cap B}=\varnothing$ (since the empty set is closed).
+            But $\overline A=[0,1]$ and $\overline B=[1,2]$, so $\overline A\cap\overline B=\set1$.
+        \item This is false.
+            Let $A=(-1,1)\setminus\set0$ and $B=\set0$.
+            Then since $\set0$ is closed (as we showed earlier), so $(-1,1)$ and $\set0^c$ are open, $A$ is open as the intersection
+            of two open sets, so $\interior A=A$.
+            And $\interior B=\varnothing$ since $0$ can't be in the interior since for every $r>0$, there exists a non-zero element
+            in $(-r,r)$.
+            So while $\interior A\cup\interior B=A=(-1,1)\setminus\set0$, $A\cup B=(-1,1)$ which is open so
+            $\interiorof{A\cup B}=(-1,1)$.
+        \item This is true.
+            Again, we will show that if $A\subseteq B$ then $\interior A\subseteq\interior B$.
+            Suppose $x\in\interior A$ then there is an $r>0$ such that $B_r(x)\subseteq A\subseteq B$, so $x\in\interior B$.
+            So since $A\cup B\supseteq A,B$, $\interiorof{A\cup B}\supseteq\interior A\cup\interior B$ as required.
+    \elist
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Let $A = \set{(0,x_2,\dots,x_n)\in\bR^n}$, prove:
+    \blist
+        \item $A$ is closed.
+        \item $\interior A = \varnothing$
+    \elist
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    \blist
+        \item We will show that $A^c$ is open.
+            Suppose $\vec x = (x_1,\dots,x_n)\in A^c$, so $x_1\neq0$.
+            Let $r=\abs{x_1}$, then for any $\vec y = (y_1,\dots,y_n)\in B_r(x_1,\dots,x_n)$, we have that:
+            \[ \norm{(x_1-y_1,\dots,x_n-y_n)}_2^2 = (x_1-y_1)^2 + \cdots + (x_n-y_n)^2 < r^2 = x_1^2 \]
+            If we suppose for the sake of a contradiction that $(y_1,\dots,y_n)\in A$, then $y_1=0$, so:
+            \[ \norm{\vec x - \vec y} = x_1^2 + (x_2-y_2)^2 + \cdots + (x_n-y_n)^2 < x_1^2 \]
+            which is a contradiction since that implies that
+            \[ (x_1-y_2)^2 + \cdots (x_n - y_n)^2 < 0 \]
+            which is impossible since squares are non-negative.
+            Notice that this is only for $n\geq2$, if $n=1$, then $A=\set0$ which have already proved is closed.
+            So $\vec y\in A^c$ so $B_r(\vec x)\subseteq A^c$ and therefore $A^c$ is closed.
+        \item Suppose $\vec x = (0,x_2,\dots,x_n)\in A$ and $r>0$.
+                Then $\vec y = \parens{\frac r2, x_2,\dots,x_n}\in B_r(\vec x)$ since:
+                \[ \norm{\vec x - \vec y} = \frac r2 < r \]
+                but $\vec y\notin A$, so for any $\vec x\in A$ and $r>0$, $B_r(\vec x)\nsubseteq A$, and therefore
+                $\vec x\notin\interior A$, so $\interior A=\varnothing$.
+    \elist
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    \begin{defn}
+        A subset $A$ of a linear space $X$ is \ppemph{convex} if for every $a,b\in A$ and $\lambda\in[0,1]$,
+        $\lambda a + (1-\lambda)b\in A$.
+        And $A$ is \ppemph{symmetric} around $A$ if for any $a\in A$, $-a\in A$
+    \end{defn}
+
+    Show that if $\varnothing\neq A\subseteq\bR^n$ is open, convex, bounded, and symmetric around $0$ then the function:
+        \[ \norm{v}_A = \inf\set{k>0}[\frac vk\in A] \]
+    is a norm over $\bR^n$ and $A=B_1(0)$ relative to $\norm\cdot_A$.
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    For $v\in\bR^n$, let $S_v = \set{k>0}[\frac vk\in A]$.
+
+    The first step is to show that $\norm\cdot_A$ is well-defined.
+    To do so we will first show that $0\in A$, this is true since if $a\in A$ then $-a\in A$, and by convexity for $\lambda=\frac12$
+    we have that:
+        \[ \frac12\cdot a - \frac12\cdot a = 0 \in A \]
+    Then we know that there is some $r>0$ such that $B_r(x)\subseteq A$ since $A$ is open.
+    Then if $0\neq v\in A$, we know that:
+        \[ \norm{\frac r{2\norm v}\cdot v} = \frac r2 \]
+    So for $k=\frac{2\norm v}r$, $\frac vk\in B_r(0)\subseteq A$, and therefore $S_v$ is non-empty and bound from below by $0$,
+    and therefore its infimum (and by extension $\norm v_A$) exists.
+    And for $v=0$, then $S_v=\bR_{<0}$ since $\frac 0k=0$, so the infimum exists and is $0$.
+
+    Since $S_v>0$, $\norm v_A = \inf S_v\geq0$, and $\norm v_A=0$ if and only if we can construct a sequence of $k_n\in S_v$ such
+    that $k_n\varrightarrow0$.
+    But we know that $\frac v{k_n}\in A$, and $\norm{\frac v{k_n}}_2=\frac1{k_n}\norm v_2$ is bounded.
+    Since $\frac1{k_n}\varrightarrow\infty$, this must mean that $\norm v_2=0$, and since this is a norm, $v=0$.
+    And if $v=0$, for any $k>0$ we know that $\frac vk\in A$, so $\inf S_v=0$.
+    And therefore $\norm v_A\geq0$ and $\norm v_A=0$ if and only if $v=0$.
+
+    Now we will show that $\norm{\alpha v}_A=\abs\alpha\cdot\norm v_A$.
+    This is trivial if $\alpha=0$ since then $\alpha v=0$.
+    If $\alpha>0$ then notice that $S_{\alpha v}=\alpha S_v$ since $\frac{\alpha v}k\in A$, then $k'=\frac k\alpha$ satisfies
+    $\frac v{k'}=\frac{\alpha v}k\in A$ so $k'\in S_v$, so if $k\in S_{\alpha v}$ then $k=\alpha k'$ for some $k'\in S_v$.
+    And if $k\in S_v$ then $\frac{\alpha v}{\alpha k}=\frac vk\in A$, so $\alpha k\in S_{\alpha v}$.
+    So $S_{\alpha v}=\alpha S_v$ as required, and therefore
+        \[ \norm{\alpha v}_A = \inf S_{\alpha v} = \inf\alpha S_v = \alpha\inf S_v = \alpha\norm v_A \]
+    And $S_{-v}=S_v$ since $\frac{-v}k\in A$ if and only if $\frac vk\in A$.
+    So $\norm{-v}_A = \norm v_A$, and therefore if $\alpha<v$ then $\norm{\alpha v}_A=\norm{-\alpha v}_A=-\alpha\norm v_A$ as
+    required.
+
+    Now we will prove the triangle inequality: suppose $a,b\in\bR^n$.
+    We will show that $S_{a+b}\supseteq S_a + S_b$.
+    Suppose $k_1\in S_a$ and $k_2\in S_b$, then we will show that $k_1+k_2\in S_{a+b}$.
+    This is because:
+        \[ \frac{a+b}{k_1+k_2} = \frac{k_1}{k_1+k_2}\cdot\frac{a}{k_1} + \frac{k_2}{k_1+k_2}\cdot\frac{b}{k_2} \]
+    And since:
+        \[ \frac a{k_1}, \frac b{k_2}\in A, \quad \frac{k_1}{k_1+k_2}\in[0,1], \quad 1-\frac{k_1}{k_1+k-2} = \frac{k-2}{k_1+k_2} \]
+    by $A$'s convexity, $\frac{a+b}{k_1+k_2}\in A$, and so $k_1+k_2\in S_{a+b}$.
+    So for any $k\in S_a+S_b$, $k\in S_{a+b}$ so $S_{a+b}\supseteq S_a + S_b$.
+    And therefore
+        \[ \norm{a+b}_A = \inf S_{a+b} \leq \inf S_a + \inf S_b = \norm a_A + \norm b_A \]
+    As required.
+
+    Now all that's left is to show that $A=B_1(0)$.
+    Let $v\in A$, if $v=0$ then $v\in B_1(0)$, otherwise we know that $A$ is open, so there is some $r>0$ such that
+    $B_r(v)\subseteq A$ (relative to $\norm\cdot_2$), and we know that if
+        \[ u=v\parens{1 + \frac{r}{2\norm v_2}v} \]
+    Then:
+        \[ \norm{v-u}_2 = \norm{\frac r{2\norm v_2}v}_2 = \frac r2 \]
+    So $u\in B_r(v)\subseteq A$, and therefore $\dfrac{1}{1+\frac r{2\norm v_2}}\geq\norm v_A$, and since this is strictly less
+    than $1$, $\norm v_A<1$ for any $v\in A$, and therefore $A\subseteq B_1(0)$.
+
+    Suppose $v\in B_1(0)$, then $\inf S_V<1$ so there must be some $k\in S_v$ such that $0<k<1$.
+    So $\frac vk\in A$, so $v=k\cdot a$ for some $a\in A$.
+    And since $A$ is convex and $k\in[0,1]$:
+        \[ k\cdot a + (1-k)0 = ka = v \in A \]
+    (recall that $0\in A$.)
+    So $B_1(0)\subseteq A$, and therefore $A=B_1(0)$ as required.
+
+\end{blankpp}
+
+\end{document}

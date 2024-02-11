@@ -1,0 +1,447 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input prettyprint
+\input preamble
+\input pdfmsym
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{det}{{\rm det}}({})
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{diam}{{\rm diam}}(\vert)
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+\newfunc{cis}{{\rm cis}}({})
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{sup}{{\rm sup}}\{\vert\}
+\newfunc{Res}{{\rm Res}}({})
+\newfunc{wind}n({})
+\newfunc{pv}{{\rm pv}}({})
+\newfunc{lspan}{{\rm span}}\{|\}
+\newfunc{spec}{{\rm spec}}({})
+
+\font\bigbf = cmbx12 scaled 2000
+\@undervecc@def{underbar}\@linecap\@linecap
+
+\def\pmat#1{\begin{pmatrix}#1\end{pmatrix}}
+
+\def\mO{{\cal O}}
+\def\mU{{\cal U}}
+\let\lineseg=\overleftrightvecc
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\def\bexerc{\begin{exercise*}}
+\def\eexerc{\end{exercise*}}
+\def\bblank{\begin{blankpp}}
+\def\eblank{\end{blankpp}}
+
+\begin{document}
+
+\c@section=1
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Differential and Analytic Geometry}
+
+    \medskip
+    \textit{Assignment \thesection}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\bexerc
+
+    \benum
+        \item Suppose $a\geq b$, and we are given the formula for an ellipse $\frac{x^2}{a^2}+\frac{y^2}{b^2}=1$.
+        Let $c=\sqrt{a^2-b^2}$, and define $F_{1,2}=(\pm c,0)$ to be the foci of the ellipse.
+        Prove that $A=(x,y)$ satisfies the ellipse equation if and only if $\abs{AF_1}+\abs{AF_2}=2a$.
+
+        \item Show that the ellipse from the previous subquestion can be obtained by squashing a canonical circle.
+        What is the radius of this circle, and how much was it squashed?
+
+        \item Focus on the line $x=\frac{a^2}c$, and show that the ratio between the distance between a point $A$ on the ellipse and the right focus, and the distance between $A$ and the line is a constant
+        which is less than one.
+        What is its relationship with the constant found in the previous subquestion?
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item Since
+        \[ \abs{AF_1} + \abs{AF_2} = \sqrt{(x-c)^2+y^2} + \sqrt{(x+c)^2+y^2} \]
+        our goal is to show that
+        \[ \frac{x^2}{a^2} + \frac{y^2}{a^2-c^2} = 1 \]
+        and
+        \[ \sqrt{(x-c)^2+y^2} + \sqrt{(x+c)^2+y^2} = 2a \]
+        are equivalent.
+
+        Suppose the first equality holds, then
+        \[ y^2 = \frac1{a^2}(a^2-c^2)(a^2-x^2) = \frac1{a^2}(a^4-a^2x^2-c^2a^2+c^2x^2) = \parens{\frac{c^2}{a^2}-1}x^2 + a^2 - c^2 \]
+        And so
+        \[ (x+c)^2+y^2 = x^2+2xc+c^2 + \parens{\frac{c^2}{a^2}-1}x^2 + a^2 - c^2 = \frac{c^2}{a^2}x^2+2xc + a^2 = \parens{\frac ca x+a}^2 \]
+        And similarly
+        \[ (x-c)^2+y^2 = \frac{c^2}{a^2}x^2-2xc + a^2 = \parens{\frac ca x-a}^2 \]
+        Since the first equality holds, we must have that $\frac{x^2}{a^2}\leq1$, so $-a\leq x\leq a$, and so
+        \[ 0\leq-c+a\leq \frac ca x+a,\quad \frac ca x-a\leq c-a\leq 0 \]
+        And therefore
+        \[ \sqrt{(x+c)^2+y^2} + \sqrt{(x-c)^2+y^2} = \frac ca x+a + a-\frac ca x = 2a \]
+        as required.
+        So the first equation implies the second.
+
+        Suppose the second equation holds, then if we fix $x\in(-a,a)$ then $\sqrt{(x-c)^2+y^2}+\sqrt{(x+c)^2+y^2}$ increases strictly as $\abs y$ increases.
+        So if it is equal to $2a$, it can only be equal at two distinct $y$ values at most.
+        And since we showed that the $y$ values obtained from the first equation, $y^2=\frac1{a^2}(a^2-c^2)(a^2-x^2)$, satisfy the second equation, and there are two such $y$ values, these must be the only
+        $y$ values which satisfy the second equation.
+        Therefore if the second equation holds, then so too does the first.
+
+        \item The circle is
+        \[ x^2 + y^2 = a^2 \]
+        and if we map $(x,y)\varmapsto\parens{x,\frac bay}$ then we see that
+        \[ x^2 + y^2 = a^2 \iff \frac{x^2}{a^2} + \frac{\parens{\frac bay}^2}{b^2} = \frac{x^2}{a^2} + \frac{y^2}{a^2} = \frac{a^2}{a^2} = 1 \]
+        Meaning that this is a bijection between the points on the circle and the points on the ellipse.
+        So the ellipse is obtained by scaling the circle of radius $a$ on the $y$ axis by $\frac ba$ (or squashing it by a factor of $\frac ab$).
+
+        \item The maximum $x$ value a point on the ellipse can be is $a$, and $a\leq\frac{a^2}c$ (since $\frac ac\geq1$), so the line $x=\frac{a^2}c$ will always be to the right of the ellipse.
+        And so if $A=(x,y)$ is on the ellipse, then its distance from the line is $\frac{a^2}c-x$.
+        And we showed that the distance between $A$ and the right focus is $a-\frac cax$.
+        So we need to find the constant
+        \[ \frac{a-\frac cax}{\frac{a^2}c-x} = \frac{c(a^2-cx)}{a(a^2-cx)} = \frac ca \]
+        And of course since $c<a$ (when $b\neq0$), this constant is less than one.
+        Now, since $c=\sqrt{a^2-b^2}$, $\frac ca=\sqrt{1-\parens{\frac ba}^2}$, and so the relation between the ration from the previous question and this new ratio is that if $x$ is the previous ratio,
+        then $\sqrt{1-x^2}$ is the new ratio.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    \benum
+        \item Given the equation $\frac{x^2}{a^2}-\frac{y^2}{b^2}=1$, let $c=\sqrt{a^2+b^2}$, and $F_{1,2}=(\pm c,0)$.
+        Prove that a point $A=(x,y)$ satisfies the equation if and only if $\abs{\abs{AF_1}-\abs{AF_2}}=2a$.
+
+        \item Focus on the line $x=\frac{a^2}c$.
+        Show that the ratio between the distance of a point $A$ on the hyperbola and the right focus, and $A$ and the line, is a constant larger than one.
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item If the hyperbolic equation is true, then we have
+        \[ y^2 = b^2\parens{\frac{x^2}{a^2}-1} = (c^2-a^2)\parens{\frac{x^2}{a^2}-1} = x^2\parens{\frac{c^2}{a^2}-1} - c^2 + a^2 \]
+        And so
+        \[ (x+c)^2 + y^2 = x^2 + 2xc + c^2 + x^2\parens{\frac{c^2}{a^2}-1} - c^2 + a^2 = \frac{c^2}{a^2}x^2+2xc+a^2 = \parens{\frac cax+a}^2 \]
+        and similarly
+        \[ (x-c)^2 + y^2 = \parens{\frac cax-a}^2 \]
+        Now, for the equation to hold, we must have
+        \[ \frac{x^2}{a^2}\geq1 \implies x^2\geq a^2 \implies x\geq a\lor x\leq-a \]
+        So if $x\geq a$, then $\frac cax-a\geq c-a\geq0$ and $\frac cax+a\geq c+a\geq0$ and therefore
+        \[ \sqrt{(x+c)^2+y^2} - \sqrt{(x-c)^2+y^2} = \frac cax+a - \frac cax + a = 2a \]
+        And if $x\leq-a$ then $\frac cax-a,\frac cax+a\leq0$ and so
+        \[ \sqrt{(x+c)^2+y^2} - \sqrt{(x-c)^2+y^2} = -a - \frac cax - a + \frac cax = -2a \]
+        And so in both cases the absolute value is $2a$, as required.
+
+        We will show that when $x$ is held constant ($x\leq-a$ or $x\geq a$), then there are at most two solutions to $\abs{\abs{AF_1}-\abs{AF_2}}=2a$, and since the hyperbolic equation gives two, if the
+        distance equation holds, so too must the hyperbolic.
+        Now, if $x\geq a$, then $(x-c)^2>(x+c)^2$ and so $\sqrt{(x-c)^2+y^2}-\sqrt{(x+c)^2+y^2}>0$.
+        This is a strictly decreasing function in terms of $\abs y$, since the derivative of $\sqrt{\alpha+u}$ is $(\alpha+u)^{-1/2}$, so if $\beta<\alpha$ then
+        \[ \bigl(\sqrt{\alpha+u} - \sqrt{\beta+u}\bigr)' = (\alpha+u)^{-1/2} - (\beta+u)^{-1/2} < 0 \]
+        since $\beta<\alpha$.
+        And so the function is decreasing in terms of $u$.
+        Taking $u=y^2$ and $\alpha$ and $\beta$ as $(x-c)^2$ and $(x+c)^2$ respectively, this means that the distance function is decreasing in terms of $y^2$, ie. in terms of $\abs y$.
+        Thus it can only equal $2a$ for at most one $\abs y$ value, meaning for two $y$ values at most.
+        Similar for when $x\leq-a$, but now $(x-c)^2<(x+c)^2$.
+
+        \item Let $A=(x,y)$ be on the hyperbola.
+        We showed that its distance from $A$ to $(c,0)$ is $\abs{\frac cax-a}$.
+        So the ratio is equal to
+        \[ \frac{\abs{\frac cax-a}}{\abs{x-\frac{a^2}c}} = \frac{c\abs{cx-a^2}}{a\abs{cx-a^2}} = \frac ca \]
+        And since $a<c$, this constant is larger than one as required.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Let $x^2=4py$ be a parabola, and let $F=(0,p)$ be the focus.
+    Prove that every point on the parabola is equidistant from $F$ and $y=-p$.
+
+\eexerc
+
+\bblank
+
+    Let $A=(x,y)$ be on the parabola, then its distance from $F$ is
+    \[ \sqrt{x^2+(y-p)^2} = \sqrt{4py+y^2-2py+p^2} = \sqrt{y^2+2py+p^2} = \sqrt{(y+p)^2} = \abs{y+p} \]
+    And the distance from $A=(x,y)$ to $y=-p$ is also $\abs{y+p}$, as required.
+
+\eblank
+
+\bexerc
+
+    Characterize the following curves
+    \benum
+        \item $x^2+8xy+y^2+4x+6y+2=0$
+        \item $12x^2+12xy+12y^2+6x+6y+1=0$
+        \item $x^2-3xy-3y^2-4x+6y+4=0$
+        \item $-x^2+4xy+2y^2+4y+2=0$
+        \item $9x^2-4xy+9y^2+2x-2y+1=0$
+        \item $x^2-xy+y^2+2x-2y+1=0$
+        \item $x^2+xy+y^2-x-y-1=0$
+        \item $2x^2+4xy+2y^2-x-2y-1=0$
+        \item $2x^2+4xy+2y^2-x-y-1=0$
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item In order to reduce this to a form we can deal with more easily, we define the matrix $A=\pmat{a&b/2\\b/2&c}$, so
+            \[ A = \pmat{1 & 4 \\ 4 & 1} \]
+            Now we will attempt to unitarily diagonalize $A$, which we can since $A$ is symmetric.
+            Let us first find the eigenvalues of $A$:
+            \[ p_A(x) = (x-1)^2-16 = x^2-2x-15 \]
+            So the eigenvalues of $A$ are the roots of this polynomial, $5,-3$.
+            Now for the eigenvalue $5$, the eigenspace is
+            \[ N(5I-A) = N\pmat{4 & -4 \\ -4 & 4} = \lspanof{\pmat{1\\1}} \]
+            And for $-3$, the eigenspace is
+            \[ N(A+3I) = N\pmat{4 & 4 \\ 4 & 4} = \lspanof{\pmat{1\\-1}} \]
+            This forms an orthogonal basis, and we can reduce it to an orthonormal basis by dividing the vectors by their norm.
+            So the matrix
+            \[ P = \frac1{\sqrt2}\pmat{1 & 1 \\ 1 & -1} \]
+            diagonalizes $A$.
+            Recalling the process we did in the proof during the lecture, we get new values for $d$ and $e$:
+            \[ (d',e') = (d,e)P = \frac1{\sqrt2}(4,6)\pmat{1 & 1 \\ 1 & -1} = \frac1{\sqrt2}(10,-2) \]
+            And so we have the new equation (which we obtain by transforming the vector space with respect to $P^T=P^{-1}$),
+            \[ \lambda_1t^2 + \lambda_2s^2 + d't + e's + f = 5t^2 - 3t^2 + 5\sqrt2t - \sqrt2s + 2 = 5\parens{t+\frac1{\sqrt2}}^2 - 3\parens{s+\frac1{3\sqrt2}}^2 - \frac13 = 0 \]
+            Which defines an \emph{hyperbola}.
+
+        \item We will sort of just go through the steps without explicitly explaining each one, since the steps were explained in $(1)$.
+            We have
+            \[ A = \pmat{12 & 6 \\ 6 & 12} \implies p_A(x) = (x-12)^2 - 36 = x^2 - 24x + 108 \implies \specof A = \set{18, 6} \]
+            \[ V_{18} = N(18I-A) = N\pmat{6 & -6 \\ -6 & 6} = \lspanof{\pmat{1\\1}} \]
+            \[ V_6 = N(A-6I) = N\pmat{6 & 6 \\ 6 & 6} = \lspanof{\pmat{1\\-1}} \]
+            And so our orthonormal basis is $\set{\frac1{\sqrt2}\pmat{1\\1}, \frac1{\sqrt2}\pmat{1\\-1}}$, and so
+            \[ P = \frac1{\sqrt2}\pmat{1 & 1 \\ 1 & -1} \implies (d', e') = \frac1{\sqrt2}(6,6)\pmat{1 & 1 \\ 1 & -1} = \frac1{\sqrt2}(12, 0) \]
+            Thus we get the equation
+            \[ 18t^2 + 6s^2 + 6\sqrt2t + 1 = 0 \iff 18\parens{t+\frac{\sqrt2}6}^2 + 6s^2 = 0 \]
+            Which defines \emph{two lines}.
+
+        \item Again,
+            \[ A = \pmat{1 & -1.5 \\ -1.5 & -3} \implies p_A(x) = (x-1)(x+3) - 2.25 \implies \specof A = \set{1.5, -3.5} \]
+            \[ V_{1.5} = N(1.5I-A) = N\pmat{0.5 & 1.5 \\ 1.5 & 4.5} = \lspanof{\pmat{3\\-1}} \]
+            \[ V_{-3.5} = N(A+3.5I) = N\pmat{4.5 & -1.5 \\ -1.5 & 0.5} = \lspanof{\pmat{1\\3}} \]
+            And thus we define
+            \[ P = \frac1{\sqrt{10}}\pmat{3 & 1 \\ -1 & 3} \implies (d',e') = \frac1{\sqrt{10}}(-4,6)\pmat{3 & 1 \\ -1 & 3} = \frac1{\sqrt{10}}(-18,14) \]
+            Thus we get
+            \[ 1.5t^2 - 3.5s^2 - \frac{18}{\sqrt{10}}t + \frac{14}{\sqrt{10}}s + 4 = 0 \iff 1.5\parens{t-\frac6{\sqrt{10}}}^2 - 3.5\parens{s-\frac2{\sqrt{10}}}^2 = 0 \]
+            Which defines \emph{two lines}.
+
+        \item
+            \[ A = \pmat{-1 & 2 \\ 2 & 2} \implies p_A(x) = (x+1)(x-2)-4 \implies \specof A = \set{3,-2} \]
+            \[ V_3 = N\pmat{4 & -2 \\ -2 & 1} = \lspanof{\pmat{1\\-2}},\qquad V_{-2} = N\pmat{1 & 2 \\ 2 & 4} = \lspanof{\pmat{-2\\1}} \]
+            And thus
+            \[ P = \frac1{\sqrt5}\pmat{1 & -2 \\ -2 & 1} \implies (d',e') = \frac1{\sqrt5}(0,4)\pmat{1 & -2 \\ -2 & 1} = \frac1{\sqrt5}(-8, 4) \]
+            And so we get
+            \[ 3t^2 - 2s^2 - \frac8{\sqrt5}t + \frac4{\sqrt5}s + 2 = 0 \iff 3\parens{t-\frac4{3\sqrt5}}^2 - 2\parens{s-\frac1{\sqrt5}}^2 + \frac43 = 0 \]
+            Which defines a \emph{hyperbola}.
+
+        \item
+            \[ A = \pmat{9 & -2 \\ -2 & 9} \implies p_A(x) = (x-9)^2 - 4 \implies \specof A = \set{11,7} \]
+            \[ V_{11} = N\pmat{2 & 2 \\ 2 & 2} = \lspanof{\pmat{1\\-1}},\qquad V_7 = N\pmat{2 & -2 \\ -2 & 2} = \lspanof{\pmat{1\\1}} \]
+            And thus
+            \[ P = \frac1{\sqrt2}\pmat{1 & 1 \\ -1 & 1} \implies (d',e') = \frac1{\sqrt2}(2,-2)\pmat{1 & 1 \\ -1 & 1} = \frac1{\sqrt2}(4,0) \]
+            And so we get
+            \[ 11t^2 + 7s^2 + 2\sqrt2t + 1 = 0 \iff 11\parens{t+\frac{\sqrt2}{11}}^2 + 7s^2 + \frac9{11} = 0 \]
+            Which defines \emph{the empty set}.
+
+        \item
+            \[ A = \pmat{1&-1/2 \\ -1/2&1} \implies p_A(x) = (x-1)^2-\frac14 \implies \specof A = \set{1.5,0.5} \]
+            \[ V_{1.5} = N\pmat{1/2 & 1/2 \\ 1/2 & 1/2} = \lspanof{\pmat{1\\-1}},\qquad V_{0.5} = N\pmat{1/2 & -1/2 \\ -1/2 & 1/2} = \lspanof{\pmat{1\\1}} \]
+            And thus
+            \[ P = \frac1{\sqrt2}\pmat{1&1\\-1&1} \implies (d',e') = \frac1{\sqrt2}(2,-2)\pmat{1&1\\-1&1} = \frac1{\sqrt2}(4,0) \]
+            And so we get
+            \[ 1.5t^2 + 0.5s^2 + \frac4{\sqrt2}t + 1 = 0 \iff 1.5\parens{t+\frac{2\sqrt2}3}^2 + \frac12s^2 - \frac13 = 0 \]
+            Which defines an \emph{ellipse}.
+
+        \item
+            \[ A = \pmat{1&1/2\\1/2&1} \implies p_A(x) = (x-1)^2 - \frac14 \implies \specof A = \set{1.5,0.5} \]
+            Similarly
+            \[ V_{1.5} = \lspanof{\pmat{1\\1}},\qquad V_{0.5} = \lspanof{\pmat{1\\-1}} \]
+            And thus
+            \[ P = \frac1{\sqrt2}\pmat{1&1\\1&-1} \implies (d',e') = \frac1{\sqrt2}(-2,0) \]
+            And so we get
+            \[ 1.5t^2 + 0.5s^2 - \sqrt2t - 1 = 0 \iff 1.5\parens{t-\frac{\sqrt2}3}^2 + 0.5s^2 - \frac43 = 0 \]
+            Which defines an \emph{ellipse}.
+
+        \item
+            \[ A = \pmat{2 & 2 \\ 2 & 2} \implies \specof A = \set{4,0} \]
+            \[ V_4 = \lspanof{\pmat{1\\1}},\qquad V_0 = \lspanof{\pmat{1\\-1}} \]
+            Thus
+            \[ P = \frac1{\sqrt2}\pmat{1&1\\1&-1} \implies (d',e') = \frac1{\sqrt2}(1,-3) \]
+            And so we get
+            \[ 4t^2 + \frac1{\sqrt2}t - \frac3{\sqrt2}s - 1 = 0 \iff 4\parens{t+\frac{\sqrt2}{16}}^2 - \frac3{\sqrt2}s - \frac{33}{32} = 0 \]
+            Which defines a \emph{parabola}.
+
+        \item The matrix $A$ here is the same as the previous subquestion, since all the values are the same (save $e$).
+            So we have the same eigenvalues and $P$ as well, and so
+            \[ (d',e') = \frac1{\sqrt2}(-1,-1)\pmat{1&1\\1&-1} = \frac1{\sqrt2}(-2,0) \]
+            So we get
+            \[ 4t^2 - \sqrt2t - 1 = 0 \]
+            This has two solutions, and thus defines \emph{two parallel lines}.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Determine what surfaces are defined by the following equations
+    \benum
+        \item $x^2+y^2+z^2+2xz+2y-3=0$
+        \item $\frac25x^2-x+\frac35y^2+y+5z^2+z=0$
+        \item $x^2+y^2+6z^2-2x-4y+6=0$
+        \item $2x^2-3y^2-6y-6z-z^2=0$
+        \item $5x^2+5z^2+12xy-9z+\frac{101}{20}=0$
+        \item $32x^2+16xy+2y^2+2z^2-17x+2=0$
+        \item $168x^2+192xz+24z^2+144y^2+168y+49=0$
+        \item $4x^2+4xz-3y^2+z^2+15x-12y-3=0$
+        \item $25x^2+60yz-25z^2+60x+36=0$
+        \item $16x^2+8xy+y^2+z^2-256z=0$
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item We must first transform this into a form without coefficients like $xy$ etc.
+            To do so we define the matrix
+            \[ A = \pmat{a & b/2 & d/2 \\ b/2 & c & f/2 \\ d/2 & f/d & e} = \pmat{1&0&1\\0&1&0\\1&0&1} \]
+            now we will unitarily diagonalize $A$, but first we must find its eigenvalues, and an orthonormal basis of eigenvectors.
+
+            \moveright\leftskip\vbox{\advance\hsize by-\leftskip\begin{multline*}
+                p_A(x) = \detof{xI-A} = \det\pmat{x-1&0&-1\\0&x-1&0\\-1&0&x-1} = (x-1)\det\pmat{x-1&-1\\-1&x-1} =\\
+                (x-1)(x^2-2x+1-1) = x(x-1)(x-2)
+            \end{multline*}}
+            Now we find the eigenspaces,
+            \[ V_0 = N(A) = N\pmat{1&0&1\\0&1&0} = \lspanof{\pmat{1\\0\\-1}},\quad V_1 = N(I-A) = N\pmat{0&0&-1\\0&0&0\\-1&0&0} = \lspanof{\pmat{0\\1\\0}} \]
+            \[ V_2 = N(2I-A) = N\pmat{1&0&-1\\0&1&0\\-1&0&1} = \lspanof{\pmat{1\\0\\1}} \]
+            Thus the unitary diagonalizer of $A$ is
+            \[ P = \frac1{\sqrt2}\pmat{1&0&1\\0&\sqrt2&0\\-1&0&1} \]
+            And now we transform the coefficients $g$, $h$, and $i$ to get
+            \[ (g',h',i') = (g,h,i)P = \frac1{\sqrt2}(0,2,0)\pmat{1&0&1\\0&\sqrt2&0\\-1&0&1} = (0,2,0) \]
+            Thus the new transformed equation is
+            \[ s^2 + 2r^2 + 2s - 3 = 0 \]
+            Completing the square gives
+            \[ (s+1)^2 + 2r^2 = 4 \]
+            Which defines an \emph{elliptical cylinder}.
+
+        \item Here we can simply complete a few squares,
+            \[ \frac25\parens{x-\frac54}^2 + \frac35\parens{y+\frac56}^2 + 5\parens{z+\frac1{10}}^2 - c = 0 \]
+            where $c>0$, and this defines an \emph{ellipsoid}.
+
+        \item Again, we can simply complete the squares
+            \[ (x-1)^2 + (y-2)^2 + 6z^2 + 1 = 0 \]
+            which defines the \emph{empty set}.
+
+        \item Once again, we complete the squares
+            \[ 2x^2 - 3(y+1)^2 - (z+3)^2 + 12 = 0 \]
+            Which defines a \emph{hyperboloid}.
+
+        \item Here we define
+            \[ A = \pmat{5 & 6 & 0 \\ 6 & 0 & 0 \\ 0 & 0 & 5} \implies p_A(x) = (x-5)(x-9)(x+4) \]
+            And so the eigenspaces are
+            \[ V_5 = N\pmat{0 & 6 & 0 \\ 6 & -5 & 0 \\ 0 & 0 & 0} = \lspanof{\pmat{0\\0\\1}},\quad V_9 = N\pmat{4 & -6 & 0 \\ -6 & 9 & 0 \\ 0 & 0 & 4} = \lspanof{\pmat{3\\2\\0}} \]
+            \[ V_{-4} = N\pmat{9&6&0\\6&4&0\\0&0&9} = \lspanof{\pmat{2\\-3\\0}} \]
+            Thus the unitary diagonalizer of $A$ is
+            \[ P = \frac1{\sqrt{13}}\pmat{0&3&2\\0&2&-3\\\sqrt{13}&0&0} \implies (g',h',i') = \frac1{\sqrt{13}}(0,0,-9)\pmat{0&3&2\\0&2&-3\\\sqrt{13}&0&0}=(-9,0,0) \]
+            And so we get the equation
+            \[ 5t^2 + 9s^2 - 4r^2 - 9t + \frac{101}{20} = 5\parens{t-\frac9{10}}^2 + 9s^2 - 4r^2 +\frac{101}{20}-\frac{81}{100} = 0 \]
+            which defines a \emph{hyperboloid}.
+
+        \item The method for solving the rest of the questions is the same,
+            \[ A = \pmat{32&8&0\\8&2&0\\0&0&2} \implies \specof A = \set{0,2,34} \]
+            And the eigenspaces are
+            \[ V_0 = \lspanof{\pmat{1\\-4\\0}},\quad V_2 = \lspanof{\pmat{0\\0\\1}},\quad V_{34} = \lspanof{\pmat{4\\1\\0}} \]
+            And so the unitary diagonalizer is
+            \[ P = \frac1{\sqrt{17}}\pmat{1&0&4\\-4&0&1\\0&\sqrt{17}&0} \implies (g',h',i') = \frac1{\sqrt{17}}(-17,0,0)\pmat{1&0&4\\-4&0&1\\0&\sqrt{17}&0} = (-\sqrt{17},0,-4\sqrt{17}) \]
+            Thus the transformed equation is
+            \[ 2s^2 + 34r^2 - \sqrt{17}t - 4\sqrt{17}r + 2 = 2s^2 + 34\parens{r-\frac1{\sqrt{17}}}^2 - \sqrt{17}t = 0 \]
+            Which defines an \emph{elliptical cone}.
+
+        \item
+            \[ A = \pmat{168&0&96\\0&144&0\\96&0&24} \implies \specof A = \set{144,216,-24} \]
+            And the eigenspaces are
+            \[ V_{144} = \lspanof{\pmat{0\\1\\0}},\quad V_{216} = \lspanof{\pmat{2\\0\\1}},\quad V_{-24} = \lspanof{\pmat{1\\0\\2}} \]
+            Thus the unitary diagonalizer is
+            \[ P = \frac1{\sqrt5}\pmat{0&2&1\\\sqrt5&0&0\\0&1&-2} \implies (g',h',i') = \frac1{\sqrt5}(0,168,0)\pmat{0&2&1\\\sqrt5&0&0\\0&1&-2} = (0,168,0) \]
+            Thus the transformed equation is
+            \[ 144t^2+216s^2-24r^2+168s+49 = 144t^2+216\parens{s+\frac7{18}}^2-24r^2+\frac{49}3 = 0 \]
+            Which defines a \emph{hyperboloid}.
+
+        \item 
+            \[ A = \pmat{4&0&2\\0&-3&0\\2&0&1} \implies \specof A = \set{0,-3,5} \]
+            And so the eigenspaces are
+            \[ V_0 = \lspanof{\pmat{1\\0\\-2}},\quad V_{-3} = \lspanof{\pmat{0\\1\\0}},\quad V_5 = \lspanof{\pmat{2\\0\\1}} \]
+            And so the unitary diagonalizer is
+            \[ P = \frac1{\sqrt5}\pmat{1&0&2\\0&\sqrt5&0\\-2&0&1} \implies (g',h',i') = \frac1{\sqrt5}(15,-12,0)\pmat{1&0&2\\0&\sqrt5&0\\-2&0&1} = \frac1{\sqrt5}(15,-12\sqrt5,30) \]
+            And so we get the equation
+            \[ -3s^2 + 5r^2 + 3\sqrt5t - 12s + 6\sqrt5r - 3 = -(s+2)^2 + 5\parens{r+\frac3{5\sqrt5}}^2 + 3\sqrt5t + \frac{16}{25} = 0 \]
+            This defines a \emph{hyperbolic paraboloid}.
+
+        \item 
+            \[ A = \pmat{25&0&0\\0&0&30\\0&30&-25} \implies \specof A = \set{25,20,-45} \]
+            And so the eigenspaces are
+            \[ V_{25} = \lspanof{\pmat{1\\0\\0}},\quad V_{20} = \lspanof{\pmat{0\\3\\-2}},\quad V_{-45} = \lspanof{\pmat{0\\2\\-3}} \]
+            And so the unitary diagonalizer is
+            \[ P = \frac1{\sqrt{13}}\pmat{\sqrt{13}&0&0\\0&3&2\\0&-2&-3} \implies (g',h',i') = \frac1{\sqrt{13}}(60,0,0)\pmat{\sqrt{13}&0&0\\0&3&2\\0&-2&-3} = (60,0,0) \]
+            And so we get the transformed equation
+            \[ 25t^2 + 20s^2 - 45r^2 + 60t + 36 = 25(t+1.2)^2 + 20s^2 - 45r^2 = 0 \]
+            This defines a \emph{elliptical paraboloid}.
+
+        \item 
+            \[ A = \pmat{16&4&0\\4&1&0\\0&0&1} \implies \specof A = \set{0,1,17} \]
+            And so the eigenspaces are
+            \[ V_0 = \lspanof{\pmat{1\\-4\\0}},\quad V_1 = \lspanof{\pmat{0\\0\\1}},\quad V_{17} = \lspanof{\pmat{4\\1\\0}} \]
+            And so the unitary diagonalizer is
+            \[ P = \frac1{\sqrt{13}}\pmat{1&0&4\\-4&0&1\\0&\sqrt{13}&0} \implies (g',h',i') = \frac1{\sqrt{13}}(0,0,-256)\frac1{\sqrt{13}}\pmat{1&0&4\\-4&0&1\\0&\sqrt{13}&0} = (0,0,-256) \]
+            And so we get the transformed equation
+            \[ s^2 + 17r^2 - 256r = s^2 + 17\parens{r-\frac{128}{17}}^2 + \frac{128^2}{17} = 0 \]
+            This defines the \emph{empty set}.
+    \eenum
+
+\eblank
+
+\end{document}
+

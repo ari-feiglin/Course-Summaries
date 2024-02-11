@@ -1,0 +1,178 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=1.5cm, vertical margin=1.5cm}
+\parindent=0cm
+\parskip=3pt plus 2pt minus 2pt
+
+\input pdfmsym
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+
+\footline={}
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+\setcounter{section}{1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{\bppbox{rgb{1 .7 .7}}{rgb{1 0 0}}{rgb{.8 0 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Introduction to Stochastic Processes}
+    \smallskip
+    \centerline{\setfont{it}Assignment 2}
+    \centerline{\setfont{it}Ari Feiglin}
+
+\eppbox}
+
+\bigskip
+
+\bexerc
+
+    We are given the following two stochastic matrices
+    $$
+    P_1 =
+    \pmatrix{
+        1       & 0         & 0         & 0         & 0         & 0\cr
+        \frac12 & 0         & \frac12   & 0         & 0         & 0\cr
+        0       & 0         & 0         & \frac23   & \frac13   & 0\cr
+        0       & 0         & \frac23   & \frac13   & 0         & 0\cr
+        0       & 0         & 0         & 0         & \frac12   & \frac12\cr
+        0       & 0         & 0         & 0         & 0         & 1\cr
+    },\qquad
+    P_2 =
+    \pmatrix{
+        \frac15 & \frac35   & \frac15   & 0         & 0         & 0\cr
+        0       & 1         & 0         & 0         & 0         & 0\cr
+        0       & 0         & 0         & \frac12   & \frac12   & 0\cr
+        0       & \frac23   & 0         & \frac13   & 0         & 0\cr
+        0       & 0         & 0         & 0         & 0         & 1\cr
+        0       & 0         & 0         & 0         &\frac34    &\frac14\cr
+    } $$
+    \benum
+        \item Find the recurrent states, and the irreducible classes of each matrix.
+        \item For $P_1$, how does $N_4(4)$ distribute?
+        \item For $P_2$, compute $f_{1\to4}$ and $f_{6\to5}$.
+    \eenum
+
+\eexerc
+
+\benum
+    \item In $P_1$ the recurrent states are $1,5,6$.
+    $1$ is obviously recurrent since if you get to it, you will always return immediately to it (it is absorbing).
+    If you get to $5$, you either go to $5$ again or go to $6$ and then $5$, so you will always return to $5$ eventually.
+    And since $5\to6$, $6$ is also recurrent.
+    $2\to1$ but $2$ is not reachable from $1$, and so $2$ is transient.
+    And $5$ is reachable from $3$ but $3$ is not reachable from $5$, so $3$ is transient and since $4\to3$, $4$ is also transient.
+    The irreducible classes are $\set1$ and $\set{5,6}$ as they are obviously both closed and connected.
+
+    In $P_2$ the recurrent states are $2,5,6$.
+    $2$ is recurrent since it is absorbing, and $5$ and $6$ are for the same reason as before.
+    Since $2$ is reachable from $4$ but not vice versa, $4$ is transient.
+    And since $1\to3\to4$, $1$ and $3$ are also transient.
+    The irreducible classes are $\set2$ and $\set{5,6}$.
+
+    \item To compute this we must compute $f_4$, which is the probability of returning to $4$.
+    The probability of not returning to $4$ is if we go $4\to3\to5$ which has a probability of $\probof{X_1=3}[X_0=4]\cdot\probof{X_2=5}[X_1=3]=\frac23\cdot\frac13=\frac29$.
+    Thus $f_4=\frac79$ and so
+    $$ N_4(4)\sim\Geoof{1-f_4}-1 = \Geoof{\frac29} - 1 $$
+
+    \item To go from $1$ to $4$, we can visit $1$ an arbitrary amount of times and then go to $3$ and then $4$, so the probability is
+    \multlines{
+        \sum_{n=0}^\infty\probof{X_{n+2}=4,X_{n+1}=3,X_n=\cdots=X_1=1}[X_0=1] = P(3\to4)\cdot P(1\to3)\cdot\sum_{n=0}^\infty P(1\to1)^n\cr
+        &= \frac1{10}\cdot\sum_{n=0}^\infty\frac15= \frac1{10}\cdot\frac54 = \frac18
+    }
+    Thus $f_{1\to4}=\frac18$.
+    And $f_{6\to5}=1$ since $6$ and $5$ are recurrent and we showed in lecture that this measn $f_{6\to5}=1$.
+
+\eenum
+
+\bexerc
+
+    Yaron collects pokemon.
+    He wants to collect all $N$ pokemon in a series.
+    In every package there is a pokemon which is uniformly distributed and independent of other packages.
+    Let us denote by $X_n$ the number of different pokemon Yaron has after purchasing $n$ packages.
+    \benum
+        \item Show that $X_n$ is a Markov chain over the state space $\set{0,1,\dots,N}$ and compute the probability transitions.
+        \item Assuming $X_0=0$, let $R_k=T_k-T_{k-1}$.
+        Find the distribution of $R_k$ and explain why $R_k$ are all independent.
+        \item Find a formula for the expected time until Yaron will collect all $N$ distinct pokemon and show that it is approximately $N\log N$.
+    \eenum
+
+\eexerc
+
+\benum
+    \item If $X_{n-1}=a_{n-1},\dots,X_0=a_0$ then the probability that $X_n=a_{n-1}$ is $\frac{a_{n-1}}N$ since this is the probability of choosing one of the pokemon already collected.
+    And the probability that $X_n=a_{n-1}+1$ is $\frac{N-a_{n-1}}N$, as this is the probability of choosing a new pokemon.
+    This is independent of $X_0,\dots,X_{n-2}$ and so $X_n$ is indeed a Markov chain.
+    And the transition probabilities are
+    $$ \probof{X_n=i}[X_{n-1}=j] = \cases{\frac jN & $i=j$\cr \frac{N-j}N & $i=j+1$\cr 0 & else} $$
+
+    \item $R_k$ is the number of packages opened between finding the $k-1$th and $k$th distinct pokemon.
+    Let us denote $T_{k-1}=t$ then $X_t=k-1$ and so
+    \multlines{
+        \probof{R_k=a} = \probof{T_k=a+t} = \probof{X_{a+t}=k,X_{a+t-1}=k-1,\dots,X_t=k-1}\cr
+        &= \probof{X_{a+t}=k}[X_{a+t-1}=k-1]\cdot\probof{X_{a+t-1}=k-1}[X_{a+t-2}=k-1]\cdots\probof{X_{t+1}=k-1}[X_t=k-1]
+    }
+    By the previous subquestion this is equal to
+    $$ \frac{N-k+1}N\cdot\parens{\frac{k-1}N}^{a-1} $$
+    and thus $R_k\sim\Geoof{1-\frac{k-1}N}$.
+    $R_k$ are all independent since the time it takes to find the $k$th pokemon after finding the $k-1$th has no bearing on how long it takes to find the $j$th after finding the $j-1$th.
+
+    \item This is asking for the expected value of $T_N$.
+    By definition $T_N=R_N+\cdots+R_1$ and so by linearity of the expected value, and the expected value of a geometric distribution we get
+    $$ \expecof{T_N} = \sum_{k=1}^N\expecof{R_N} = \sum_{k=1}^N\frac N{N-k+1} = N\cdot\sum_{k=1}^N\frac1k $$
+    Now, it is known that $\sum_{k=1}^N\frac1k\sim\log N$ and thus $\expecof{T_N}\sim N\log N$ as required.
+\eenum
+
+\bexerc
+
+    Let $X_n$ be a Markov chain over the state space ${\bb Z}$ where
+    $$ \probof{X_{n+1}=j}[X_n=i] = \frac12\delta(\abs{i-j}=1) $$
+    ($\delta\phi=1$ if and only if $\phi$ is true/is satisfied in the structure.)
+    This describes a random walk on ${\bb Z}$ where at each step the subject walks either left or right by one unit.
+    \benum
+        \item Show that there exists a constant $c>0$ such that $\probof[0]{X_{2n}=0}\geq\frac c{\sqrt n}$.
+        \item Show that $\expecof{N_0(0)}=\sum_{n=1}^\infty\probof[0]{X_{2n}=0}=\infty$.
+        \item Show that in this chain, all states are recurrent.
+    \eenum
+
+\eexerc
+
+\benum
+    \item Notice that at every step, $X_n$ changes by $\pm1$.
+    So let us define the indicator
+    $$ I_n = X_n-X_{n-1} = \cases{1 & $X_n=X_{n-1}+1$\cr -1 & $X_n=X_{n-1}-1$} $$
+    These indicators are all independent of one another as the movement of each step are all independent.
+    By definition, since $X_0=0$, $X_n=\sum_{k=1}^n I_k$.
+    Now, notice that $\frac{I_n+1}2\sim\Berof{\frac12}$ and thus $\frac{X_n+n}2=\sum_{k=1}^n\frac{I_k+1}2\sim\Binof{n,\frac12}$.
+    $$ \probof[0]{X_{2n}=0} = \probof[0]{\frac{X_{2n}+2n}2=n} = {2n\choose n}\cdot\frac1{2^{2n}} $$
+    Now, using Stirling's approximation, recall that $n!\sim\sqrt{2\pi n}\parens{\frac ne}^n$ ($f(n)\sim g(n)$ means the limit of their quotient is $1$).
+    This asymptotically,
+    $$ \probof[0]{X_{2n}=0} \sim \frac{\sqrt{2\pi n}\parens{\frac{2n}e}^{2n}}{2\pi n\parens{\frac ne}^{2n}}\cdot\frac1{2^{2n}} = \frac1{\sqrt\pi}\cdot\frac1{\sqrt n} $$
+    And so this means that $\probof[0]{X_{2n}=0}\in\Omega\parens{\frac1{\sqrt n}}$.
+    Thus eventually $\probof[0]{X_{2n}=0}$ will be greater than $\frac c{\sqrt n}$ for some $c$.
+    Then by looking at the range of $n$s (which is finite) for which $\probof[0]{X_{2n}=0}<\frac c{\sqrt n}$, we can reduce the $c$ until it holds for all $n$ (since the probability is never zero, we can
+    indeed reduce $c$ to such a point).
+
+    \item Let us define new indicators
+    $$ I_n = \cases{1 & $X_{2n}=0$\cr 0 & else} $$
+    Notice that for odd $n$, $I_n=0$ (there are a few ways to show this, $\probof[0]{X_n=0}=\probof[0]{\frac{X_n+n}2=\frac n2}=0$ since $\frac{X_n+n}2$ is binomial which takes on only integers.
+    Alternatively if $r$ is the number of steps $+1$ and $\ell$ is the number of steps $-1$, then we must have $r+\ell=n$ and $r-\ell=0$ so $r+\ell\equiv_2n\equiv_21$ and $r-\ell\equiv_20$ but
+    $r-\ell\equiv_2r+\ell$ in contradiction.)
+    By definition since $I_n$ denote a return to $0$,
+    $$ N_0(0) = \sum_{n=1}^\infty I_{2n} $$
+    and so by the $\sigma$-linearity of the expected value:
+    $$ \expecof{N_0(0)} = \sum_{n=1}^\infty\expecof[0]{I_{2n}} = \sum_{n=1}^\infty\probof[0]{X_{2n}=0} $$
+    as $\expecof[0]{I_{2n}}=\probof[0]{I_{2n}=1}=\probof[0]{X_{2n}=0}$.
+
+    \item Since every state is reachable from every other state, if one state is recurrent they all are.
+    This is also obvious due to symmetry.
+    Now since $N_0(0)\sim\Geoof{1-f_0}-1$, if $f_0$ were less than one it would have a finite expected value (as a finite geometric distribution), contradicting the previous subquestion.
+    And so $f_0=1$ and thus $0$ is recurrent.
+    And as said previously, since every $n$ is reachable from $0$, every $n$ must be recurrent as required.
+\eenum
+
+\bye
+

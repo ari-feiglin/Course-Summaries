@@ -1,0 +1,231 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\@blist[#1]{%
+    \bgroup\bgroup\par\vskip-\medskipamount%
+    \gdef\item{%
+        \par\egroup\bgroup\medskip\setbox0=\hbox{#1\quad}%
+        \advance\leftskip by \wd0\leavevmode\kern-\wd0\box0%
+    }%
+}
+\def\blist{\@ifnextchar[ \@blist {\@blist[$\bullet$]}}
+\def\elist{\par\egroup\egroup\medskip}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+
+\font\bigbf = cmbx12 scaled 2000
+
+\pdf@drawing@macro{check}{0 1 0 RG 1.2 w 1 j 1 J 0 5 m 3 0 l 8 10 l S}{9.2pt}{12pt}{1pt}{1pt}
+\pdf@drawing@macro{ecks}{1 0 0 RG 0 0 m 1 j 1 J 10 10 l 0 10 m 10 0 l S}{11.2pt}{12pt}{1pt}{1pt}
+\def\openset{{\cal O}}
+
+\begin{document}
+
+\c@section=3
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infinitesimal Calculus 3}
+
+    \medskip
+    \textit{Lecture 3, Sunday October 30, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\c@subsection=1
+
+\begin{prop*}
+
+    Any arbitrary union of open sets is itself open, and a finite intersection of open sets is open as well.
+    Similarly, any intersection of closed sets is closed, and a finite union of closed sets is closed as well.
+
+\end{prop*}
+
+\begin{proof}
+
+    This is trivial.
+    Suppose $\set{\openset_i}_{i\in I}$ is a set of open sets, then if:
+    \[ x\in\bigcup_{i\in I}\openset_i \]
+    there must be some $i\in I$ such that $x\in\openset_i$.
+    Since $\openset_i$ is open, there is a $r>0$ such that $B_r(x)\subseteq\openset_i$, and therefore $B_r(x)\subseteq\bigcup\openset_i$, so the union is open.
+
+    Now suppose $\set{\openset_n}_{n=1}^N$ is a finite set of open sets.
+    Then if
+    \[ x\in\bigcap_{n=1}^N \openset_n \]
+    $x$ must be in $\openset_n$ for every $n=1\dots N$.
+    Then for every $n=1\dots N$, there must be a $r_n>0$ such that $B_{r_n}(x)\subseteq\openset_n$.
+    If we let $r=\minof{r_1,\dots,r_N}>0$, $B_r(x)\subseteq B_{r_n}(x)\subseteq\openset_n$ for every $n$, so:
+    \[ B_r(x)\subseteq\bigcap_{n=1}^N\openset_n \]
+    as required.
+
+    Now suppose $\set{F_i}_{i\in I}$ is a set of closed sets, then:
+    \[ \parens{\bigcap_{i\in I} F_i}^c = \bigcup_{i\in I} F_i^c \]
+    which is a union of open sets since $F_i^c$ is open, which we just proved is open.
+    So the complement of the intersection is open, and therefore the intersection is closed.
+
+    Similarly for a finite set of closed sets:
+    \[ \parens{\bigcup_{n=1}^N F_n}^c = \bigcap_{n=1}^N F_n^c \]
+    which is open, and therefore the union is closed.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+Notice that an arbitrary intersection of open sets, and thus an arbitrary intersection of closed sets, is not necessarily open (or closed).
+Take for instance $\openset_n=\parens{-\frac1n,\frac1n}$, then:
+\[ \bigcap_{n\in\bN}\openset_n = \set0 \]
+And $\set0$ is not open.
+
+\begin{defn*}
+
+    For a subset $S$ of a metric space $X$, we denote its \ppemph{interior}, the set of all interior points of $S$ as $S^\circ$ or $\interior S$.
+    Similarly, the \ppemph{exterior}, the set of all exterior points is $\exterior S$ (or ${S^c}^\circ$), and the \ppemph{boundary} of $S$ is denoted $\boundary S$.
+
+\end{defn*}
+
+Notice that $\interior S\subseteq S$.
+Furthermore, $S\cup\boundary S=\interior S\dcup \boundary S$.
+These sets are obviously disjoint by definition, and if $x\in S$, $x$ is either in the interior of $S$ or the boundary of $S$.
+
+\begin{lemm*}
+
+    Every limit point of $S$ is in $\interior S\dcup\boundary S = S\cup\boundary S$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Suppose $x$ is a limit point of $S$ and $x\notin\interior S$.
+    Since $x$ is a limit point, for every $r>0$ there is a $x\neq y\in S$ such that $y\in B_r(x)$, so $B_r(x)$ is not a subset of $S^c$.
+    And since $x$ is not an interior point of $S$, for every $r>0$, $B_r(x)$ is not a subset of $S$.
+    So for every $r>0$, $B_r(x)\cap S$ and $B_r(x)\cap S^c$ are not empty and therefore $x$ is a boundary point of $S$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{thrm*}
+
+    Suppose $S\subseteq X$ for $X$ metric space.
+    Then the following are equivalent:
+    \blist
+        \item $S$ is closed.
+        \item $S$ contains all of its boundary points.
+        \item $S$ contains all of its limit points.
+    \elist
+
+\end{thrm*}
+
+\begin{proof}
+
+    We will prove the first relation.
+    Suppose $x\in\boundary S$, then if $x\notin S$, $x\in S^c$, and since $\boundaryof{S^c}=\boundary S$, $x\in\boundaryof{S^c}\cap S^c$.
+    But $S^c$ is open and thus doesn't contain its boundary points, in contradiction, so $x\in S$.
+    Therefore $\boundary S\subseteq S$.
+
+    Now suppose $\boundary S\subseteq S$.
+    Then since every limit point is in $\boundary S\cup S=S$, every limit point is in $S$.
+
+    Now suppose $S$ contains all of its limit points.
+    Suppose $x\in S^c$, then $x$ is not a limit point of $S$, so there must be a $r>0$ such that $B_r(x)$ contains no points in $S$ other than $x$.
+    Since $x$ is not in $S^c$, $B_r(x)\subseteq S^c$.
+    So $S^c$ is open and therefore $S$ is closed.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{defn*}
+
+    For $S\subseteq X$ a metric space, $S'$ is the set of all limit points of $S$, and is also called the \ppemph{limit set} of $S$.
+
+\end{defn*}
+
+\begin{lemm*}
+
+    Let $S\subseteq X$ a metric space and $x\in S^c$.
+    Then $x$ is a boundary point of $S$ if and only if $x$ is a limit point of $S$.
+
+\end{lemm*}
+
+This proof is trivial, if $x$ is a boundary point of $S$, for every $r>0$ there must be a $y\in B_r(x)\cap S$, and since $x\notin S$, $y\neq x$, so $x$ is a limit point.
+And if $x$ is a limit point, then since $x$ is in $B_r(x)\cap S^c$, it is not open, and since there must be a $y\in B_r(x)\cap S$ since it's a limit point, $x$ is a boundary
+point of $S$.
+
+Notice then that
+\[ S' \subseteq S\cup \boundary S = \interior S\dcup\boundary S \]
+Since if $x\in S'$ and $x\notin S$, then we just showed $x\in\boundary S$.
+
+\begin{defn*}
+
+    If $S$ is a subset of a metric space $X$, then the closure of $S$, denoted $\overline S$, is the smallest possible closed set containing $S$:
+    \[ \overline S = \bigcap_{\substack{F \text{ closed} \\ S\subseteq F}} F \]
+
+\end{defn*}
+
+\begin{prop*}
+
+    If $S$ is a subset of a metric space $X$, then $\overline S = \interior S\dcup\boundary S = \interior S\dcup\boundaryof{S^c}$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Since $X = \interior S\dcup\boundary S\dcup\interiorof{S^c}$, $\interiorof{S^c}$ is open so its complement, $\interior S\dcup\boundary S$ is closed.
+    This contains $S$ so $\overline S\subseteq\interior S\dcup\boundary S$.
+    And if $F$ is a closed set which contains $S$, it must contain $S$'s interior (since it is a subset of $S$) and its boundary, so the sets are equal.
+
+    \hfill$\blacksquare$.
+
+\end{proof}
+
+\begin{thrm*}
+
+    If $S\subseteq X$ a metric space, the following are equal:
+    \blist
+        \item $\overline S$
+        \item $S\cup S'$
+        \item $S\cup\boundary S$
+    \elist
+
+\end{thrm*}
+
+\begin{proof}
+
+    The first equality was proven above.
+    We know that $S'\subseteq S\cup\boundary S$, so $S\cup S'\subseteq S\cup\boundary S$.
+    Suppose $x\in\boundary S$ and $x\notin S$.
+    Then we know that $x$ is a limit point, so $S\cup\boundary S\subseteq S\cup S'$.
+    Therefore $S\cup S'=S\cup\boundary S$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{defn*}
+
+    A set $S\subseteq X$ is \ppemph{compact} if for every set of open sets $\set{\openset_i}_{i\in I}$ such that
+    \[ S\subseteq\bigcup_{i\in I}\openset_i \]
+    there is a finite subcovering, that is a finite indexing set $I'\subseteq I$ such that:
+    \[ S\subseteq\bigcup_{i\in I'}\openset_i \]
+
+\end{defn*}
+
+\end{document}
+

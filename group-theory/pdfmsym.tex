@@ -1,0 +1,603 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%              pdfMsym               %
+%      PDF Math Symbols Package      %
+%        Slurp December, 2022        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\edef\strudelccode{\the\catcode`\@}
+\catcode`\@=11
+
+\def\pdfMsym{{\scten pdf}{\rm M}{\scten sym}}
+\def\pdfMsymversion{1.0.3}
+
+\ifx\@gobble\undefined
+    \long\def\@gobble#1{}
+\fi
+
+\def\m@strip{\expandafter\@gobble\string}
+
+\ifx\@ifnextchar\undefined
+    \def\@@ifnextchar{%
+        \ifx\@reg@D\@reg@A %
+            \expandafter\@reg@B%
+        \else%
+            \expandafter\@reg@C%
+        \fi%
+    }
+
+    \def\@ifnextchar#1#2#3{%
+        \let\@reg@A=#1\relax\def\@reg@B{#2}\def\@reg@C{#3}%
+        \futurelet\@reg@D\@@ifnextchar%
+    }
+\fi
+
+\ifx\@firstoftwo\undefined
+    \long\def\@firstoftwo#1#2{#1}
+    \long\def\@secondoftwo#1#2{#2}
+\fi
+
+\long\def\pdfmsym@afterfi#1#2\fi{\fi#1}
+
+\def\pdfmsym@repeated#1#2{%
+    \ifnum#1>0 %
+        \pdfmsym@afterfi{#2\expandafter\pdfmsym@repeated\expandafter{\the\numexpr #1-1\relax}{#2}}%
+    \fi%
+}
+
+\begingroup\lccode`\?=`\p \lccode`\!=`\t %
+\lowercase{\endgroup
+\def\@ignorept#1.#2?!{\ifnum#2=0 #1\else \ifnum#1=0 \expandafter\@remzero\fi#1.#2\fi}}
+\def\@remzero#10{#1}
+\def\@nopt#1{\expandafter\@ignorept\the\dimexpr #1\relax}
+
+\def\pdf@literal#1{\special{pdf:literal #1}}
+
+\unless\ifx\saveboxresource\undefined
+    \let\pdfxform=\saveboxresource
+    \let\pdfrefxform=\useboxresource
+    \let\pdflastxform=\lastsavedboxresourceindex
+\fi
+
+\def\@normtrans/{0.996264 0 0 0.996264 0 0 cm}
+\def\pdfmsymsettransforms{%
+    \edef\@pdfmsym@ytrans/{0.996264 0 0 \@nopt{0.996264pt * \@font@scale} 0 0 cm}%
+    \edef\@pdfmsym@trans/{\@nopt{0.996264pt * \@font@scale} 0 0 \@nopt{0.996264pt * \@font@scale} 0 0 cm}%
+}
+
+\def\pdfmsymsetscalefactor#1{%
+    \edef\@font@scale{#1 / 10}%
+    \pdfmsymsettransforms%
+    \math@sym@defs%
+}
+
+\def\@@linehead@type#1#2#3#4[#5][#6]{\hbox to \dimexpr #4pt * #5 * \@font@scale\relax{%
+    \pdf@literal{%
+        q \@pdfmsym@trans/
+        0 #6 0 0 #6 0 0 cm
+        0 1 0 0 1 0 #2 cm
+        1 j 1 J #1 w
+        #3 Q%
+    }\hss}%
+}
+\def\@linehead@type#1#2#3#4{%
+    \@ifnextchar[ {\@@linehead@type{#3}{#4}{#1}{#2}}%
+                  {\@@linehead@type{#3}{#4}{#1}{#2}[1][1]}%
+}
+
+\def\@rarrow {\@linehead@type{0 0 m 2 0 l 1 0 0 1.2 0 1.5 c 2 0 m 1 0 0 -1.2 0 -1.5 c S}{2}}
+\def\@larrow {\@linehead@type{2 0 m 0 0 l 1 0 2 1.2 2 1.5 c 0 0 m 1 0 2 -1.2 2 -1.5 c S}{2}}
+\def\@rharp  {\@linehead@type{0 0 m 2 0 l 1 0 0 1 0 1.5 c S}{2}}
+\def\@lharp  {\@linehead@type{2 0 m 0 0 l 1 0 2 1 2 1.5 c S}{2}}
+\def\@rdharp {\@linehead@type{0 0 m 2 0 l 1 0 0 -1 0 -1.5 c S}{2}}
+\def\@ldharp {\@linehead@type{2 0 m 0 0 l 1 0 2 -1 2 -1.5 c S}{2}}
+\def\@linecap{\@linehead@type{0 0 m 1 0 l S}{1}}
+\def\@mapcap {\@linehead@type{0 1.5 m 0 -1.5 l 0 0 m 1 0 l S}{1}}
+\def\@rsarrow{\@linehead@type{0 0 m 2 0 l 0 1 l 2 0 m 0 -1 l S}{2}}
+\def\@lsarrow{\@linehead@type{2 0 m 0 0 l 2 1 l 0 0 m 2 -1 l S}{2}}
+\def\@backhook{\@linehead@type{1 2 m .5 2 0 1.5 0 1 c 0 .5 .5 0 1 0 c S}{1}}
+\def\@fronthook{\@linehead@type{0 2 m .5 2 1 1.5 1 1 c 1 .5 .5 0 0 0 c S}{1}}
+\def\@doublerarrow{\@linehead@type{0 0 m 2 0 l 1 0 0 1.2 0 1.5 c 2 0 m 1 0 0 -1.2 0 -1.5 c 2 0 m 4 0 l 3 0 2 1.2 2 1.5 c 4 0 m 3 0 2 -1.2 2 -1.5 c S}{4}}
+\def\@doublelarrow{\@linehead@type{4 0 m 2 0 l 3 0 4 1.2 4 1.5 c 2 0 m 3 0 4 -1.2 4 -1.5 c 2 0 m 0 0 l 1 0 2 1.2 2 1.5 c 0 0 m 1 0 2 -1.2 2 -1.5 c S}{4}}
+\def\@circlecap{\@linehead@type{0 0 m 0 .5 .5 1 1 1 c 1.5 1 2 .5 2 0 c 2 -.5 1.5 -1 1 -1 c .5 -1 0 -.5 0 0 c S}{2}}
+
+\def\@Rarrow    {\@linehead@type{0 -1 m 1 -1 l 0 1 m 1 1 l 3 0 m 1.5 0 0 2 0 2.5 c 3 0 m 1.5 0 0 -2 0 -2.5 c S}{3}}
+\def\@Larrow    {\@linehead@type{3 -1 m 2 -1 l 3 1 m 2 1 l 0 0 m 1.5 0 3 2 3 2.5 c 0 0 m 1.5 0 3 -2 3 -2.5 c S}{3}}
+\def\@Linecap   {\@linehead@type{0 -1 m 1 -1 l 0 1 m 1 1 l S}{1}}
+\def\@Rightcirclecap{\@linehead@type{0 1 m .5 1 1 .5 1 0 c 1 -.5 .5 -1 0 -1 c S}{1}}
+\def\@Leftcirclecap{\@linehead@type{1 1 m .5 1 0 .5 0 0 c 0 -.5 .5 -1 1 -1 c S}{1}}
+\def\@Rightsquarecap{\@linehead@type{0 1 m 1 1 l 1 -1 l 0 -1 l S}{1}}
+\def\@Leftsquarecap{\@linehead@type{1 1 m 0 1 l 0 -1 l 1 -1 l S}{1}}
+\def\@Rightribboncap{\@linehead@type{0 1 m 2 1 l 0 0 l 2 -1 l 0 -1 l S}{2}}
+\def\@Leftribboncap{\@linehead@type{1.5 1 m 0 1 l 1.5 0 l 0 -1 l 1.5 -1 l S}{1.5}}
+\def\@Circlescap{\@linehead@type{0 -1 m 0 -.5 .5 0 1 0 c 1.5 0 2 -.5 2 -1 c 2 -1.5 1.5 -2 1 -2 c .5 -2 0 -1.5 0 -1 c
+    0 1 m 0 1.5 .5 2 1 2 c 1.5 2 2 1.5 2 1 c 2 .5 1.5 0 1 0 c .5 0 0 .5 0 1 c S}{2}}
+
+\def\vecc@w{.4} \def\vecc@hw{.2}  \def\vecc@skew{2.5}
+\def\vecc@displaystyle@s{1}       \def\vecc@displaystyle@sf{1}
+\def\vecc@textstyle@s{1}          \def\vecc@textstyle@sf{1}
+\def\vecc@scriptstyle@s{.8}       \def\vecc@scriptstyle@sf{8 / 10}
+\def\vecc@scriptscriptstyle@s{.6} \def\vecc@scriptscriptstyle@sf{6 / 10}
+\def\vecc@skip{.4}
+
+%\def\@@@vecc@type#1#2#3#4#5{%
+%    \mathord{\mathop{\kern\z@#1}\limits^{%
+%    \mkern\vecc@skew mu%
+%    #2{\vecc@w}{\vecc@hw}[#4][#5]%
+%    \cleaders\hrule height \dimexpr \vecc@w pt * #4 * \@font@scale\relax\hfill%
+%    #3{\vecc@w}{\vecc@hw}[#4][#5]%
+%    \mkern\vecc@skew mu}%
+%}}
+
+\def\@@@vecc@type#1#2#3#4#5#6{%
+    \vbox{\offinterlineskip%
+        \ialign{##\cr
+            $\m@th\mkern\vecc@skew mu%
+            #2{\vecc@w}{\vecc@hw}[#4][#5]%
+            \cleaders\hrule height \dimexpr \vecc@w pt * #4 * \@font@scale\relax\hfill%
+            #3{\vecc@w}{\vecc@hw}[#4][#5]%
+            \mkern\vecc@skew mu$\cr\noalign{\kern\dimexpr\vecc@skip ex * #4\relax}%%
+            $\m@th#6#1$\cr%
+       }%
+    }%
+}
+
+\def\@@vecc@type#1#2{\@@@vecc@type#2{\csname vecc@\m@strip#1@sf\endcsname}{\csname vecc@\m@strip#1@s\endcsname}{#1}}
+\def\@vecc@type#1#2#3{\mathpalette\@@vecc@type{{#1}{#2}{#3}}}
+
+\def\@@@undervecc@type#1#2#3#4#5#6{%
+    \vtop{\offinterlineskip%
+        \ialign{##\cr
+            $\m@th#6#1$\cr\noalign{\kern\dimexpr\vecc@skip ex * #4\relax}%
+            $\m@th\mkern\vecc@skew mu%
+            #2{\vecc@w}{\vecc@hw}[#4][#5]%
+            \cleaders\hrule height \dimexpr \vecc@w pt * #4 * \@font@scale\relax\hfill%
+            #3{\vecc@w}{\vecc@hw}[#4][#5]%
+            \mkern\vecc@skew mu$\cr%
+       }%
+    }%
+}
+
+\def\@@undervecc@type#1#2{\@@@undervecc@type#2{\csname vecc@\m@strip#1@sf\endcsname}{\csname vecc@\m@strip#1@s\endcsname}{#1}}
+\def\@undervecc@type#1#2#3{\mathpalette\@@undervecc@type{{#1}{#2}{#3}}}
+
+\def\@vecc@def#1#2#3{%
+    \expandafter\def\csname #1\endcsname##1{\@vecc@type{##1}{#2}{#3}}%
+    \expandafter\def\csname short#1\endcsname##1{{\def\vecc@skew{0}\csname #1\endcsname{##1}}}%
+}
+
+\def\@undervecc@def#1#2#3{%
+    \expandafter\def\csname #1\endcsname##1{\@undervecc@type{##1}{#2}{#3}}%
+    \expandafter\def\csname short#1\endcsname##1{{\def\vecc@skew{0}\csname #1\endcsname{##1}}}%
+}
+
+\def\@overunder@def#1#2#3{\@vecc@def{over#1}{#2}{#3}\@undervecc@def{under#1}{#2}{#3}}
+
+\@vecc@def{vecc}\@linecap\@rarrow
+\@vecc@def{lvecc}\@larrow\@linecap
+\@vecc@def{straightvecc}\@linecap\@rsarrow
+\@vecc@def{straightlvecc}\@lsarrow\@linecap
+\@undervecc@def{undervecc}\@linecap\@rarrow
+\@undervecc@def{underlvecc}\@larrow\@linecap
+\@undervecc@def{understraightvecc}\@linecap\@rsarrow
+\@undervecc@def{understraightlvecc}\@lsarrow\@linecap
+
+\@overunder@def{rightharp}\@linecap\@rharp
+\@overunder@def{leftharp}\@lharp\@linecap
+\@overunder@def{leftrightvecc}\@larrow\@rarrow
+\@overunder@def{leftrightharp}\@lharp\@rdharp
+\@overunder@def{rightleftharp}\@ldharp\@rharp
+
+\unless\ifx\pdfxform\undefined 
+    \def\@@constvec#1#2#3{{%
+        \setbox1=\hbox{$#1#3$}%
+        \setbox0=\hbox{$#1\smash{#3}\vrule height1.3ex width0pt depth\dimexpr\dp1+1pt\relax$}%
+        \pdfxform0%
+        #2{\smash{\pdfrefxform\pdflastxform}\vphantom{x}}%
+    }}
+    \def\@constvec#1#2{\@@constvec#1#2}
+    \def\constvec#1#2{\mathpalette\@constvec{{#1}{#2}}}
+\fi
+
+\def\arrow@skip{\mkern1mu}
+\def\xarrow@buffer{1}
+\def\@@@xarrow@type#1#2#3#4#5#6#7{\mathrel{\arrow@skip%
+    \vcenter{\hbox{$#7%
+        #1{\vecc@w}{\vecc@hw}[#5][#6]%
+        \vrule width\dimexpr \xarrow@buffer pt * \@font@scale\relax height \dimexpr \vecc@w pt * #5 * \@font@scale\relax depth0pt%
+        \smash{\mathord{\mathop{\kern\z@\leaders\hrule height \dimexpr \vecc@w pt * #5 * \@font@scale\relax\hfill}\limits^{#3}_{#4}}}%
+        \vrule width\dimexpr \xarrow@buffer pt * \@font@scale\relax height \dimexpr \vecc@w pt * #5 * \@font@scale\relax depth0pt%
+        #2{\vecc@w}{\vecc@hw}[#5][#6]%
+    $}}%
+    \vphantom{\mathop{-}^{#3}_{#4}}% Fix vertical spacing
+    \arrow@skip%
+}}
+
+\def\@@xarrow@type#1#2{\@@@xarrow@type#2{\csname vecc@\m@strip#1@sf\endcsname}{\csname vecc@\m@strip#1@s\endcsname}{#1}}
+\def\@xarrow@type#1#2#3#4{\mathpalette\@@xarrow@type{{#1}{#2}{#3}{#4}}}
+
+\def\@@@arrow@type#1#2#3#4#5#6{\mathrel{\arrow@skip%
+    \vcenter{\hbox{$#6%
+        #1{\vecc@w}{\vecc@hw}[#4][#5]%
+        \vrule width \dimexpr #3 * #4\relax height \dimexpr \vecc@w pt * #4 * \@font@scale\relax depth 0pt%
+        #2{\vecc@w}{\vecc@hw}[#4][#5]%
+    $}}\arrow@skip%
+}}
+
+\def\@@arrow@type#1#2{\@@@arrow@type#2{\csname vecc@\m@strip#1@sf\endcsname}{\csname vecc@\m@strip#1@s\endcsname}{#1}}
+
+\def\@arrow@type#1#2#3{\mathpalette\@@arrow@type{{#1}{#2}{#3}}}
+
+\def\@arrow@def#1#2#3{%
+    \expandafter\def\csname #1\endcsname{\@arrow@type{#2}{#3}{1ex}}%
+    \expandafter\def\csname long#1\endcsname{\@arrow@type{#2}{#3}{3ex}}%
+    \expandafter\def\csname @x#1\endcsname##1[##2]{\@xarrow@type{#2}{#3}{##1}{##2}}%
+    \expandafter\def\csname x#1\endcsname##1{%
+        \@ifnextchar[ {\csname @x#1\endcsname{##1}}%
+                      {\csname @x#1\endcsname{##1}[]}%
+    }%
+}
+
+\@arrow@def{varrightarrow}\@linecap\@rarrow
+\@arrow@def{varleftarrow}\@larrow\@linecap
+\@arrow@def{varrightharp}\@linecap\@rharp
+\@arrow@def{varleftharp}\@lharp\@linecap
+\@arrow@def{varleftrightarrow}\@larrow\@rarrow
+\@arrow@def{varleftrightharp}\@lharp\@rdharp
+\@arrow@def{varrightleftharp}\@ldharp\@rharp
+\@arrow@def{varmapsto}\@mapcap\@rarrow
+\@arrow@def{varhookrightarrow}\@backhook\@rarrow
+\@arrow@def{varhookleftarrow}\@larrow\@fronthook
+\@arrow@def{vardoublerightarrow}\@linecap\@doublerarrow
+\@arrow@def{vardoubleleftarrow}\@doublelarrow\@linecap
+\@arrow@def{varcirclerightarrow}\@circlecap\@rarrow
+\@arrow@def{varcircleleftarrow}\@larrow\@circlecap
+
+\def\@subscriptconvdef#1#2{\expandafter\let\csname \m@strip#1@subconv\endcsname=#2}
+\def\@subscriptconv#1{\csname \m@strip#1@subconv\endcsname}
+\@subscriptconvdef\displaystyle\scriptstyle
+\@subscriptconvdef\textstyle\scriptstyle
+\@subscriptconvdef\scriptstyle\scriptscriptstyle
+\@subscriptconvdef\scriptscriptstyle\scriptscriptstyle
+
+\def\@@Arrow@rule#1#2#3{%
+    \lower\dimexpr #2 * #3 * \@font@scale\relax\vbox{%
+        \hrule width #1 height \dimexpr \vecc@w pt * #3 * \@font@scale\relax depth 0pt%
+        \kern\dimexpr #2 * #3 * \@font@scale * 2 - \vecc@w pt * #3 * \@font@scale\relax%
+        \hrule width #1 height \dimexpr \vecc@w pt * #3 * \@font@scale\relax depth 0pt%
+    }%
+}
+
+% #1 width #2 bar height difference #3 mathstyle scale (fraction)
+\def\@Arrow@rule#1#2#3{%
+    \@@Arrow@rule{\dimexpr #1 * #3\relax}{#2}{#3}%
+}
+
+% #1 left cap
+% #2 right cap
+% #3 bar displacement
+% #4 top material
+% #5 bottom material
+% #6 mathstyle scale (fraction)
+% #7 mathstyle scale (decimal)
+% #8 mathstyle
+\def\@@@xArrow@type#1#2#3#4#5#6#7#8{\mathrel{\arrow@skip%
+    {\setbox0=\hbox{$#8-$}\raise.5\dimexpr\ht0-\dp0-(\vecc@w pt * #6 * \@font@scale)\relax\hbox{$#8%
+        \setbox0=\hbox{$\@subscriptconv#8#5$}%
+        #1{\vecc@w}{\vecc@hw}[#6][#7]%
+        \@Arrow@rule{\xarrow@buffer pt}{#3 pt}{#6}%
+        \lower\dimexpr (#3 pt + \vecc@skip ex) * #6 * \@font@scale+\ht0\relax
+        \vbox{\offinterlineskip%
+            \ialign{\hfil##\hfil\cr
+                $\@subscriptconv#8#4$\cr\noalign{\kern\dimexpr\vecc@skip ex * #6\relax}%
+                \leaders\hrule height \dimexpr \vecc@w pt * #6 * \@font@scale\relax\hfill\cr%
+                \noalign{\kern\dimexpr #3 pt * #6 * \@font@scale * 2 - \vecc@w pt * #6 * \@font@scale\relax}%
+                \leaders\hrule height \dimexpr \vecc@w pt * #6 * \@font@scale\relax\hfill\cr\noalign{\kern\dimexpr\vecc@skip ex * #6\relax}%
+                $\@subscriptconv#8#5$\cr%
+            }%
+        }%
+        \@Arrow@rule{\xarrow@buffer pt}{#3 pt}{#6}%
+        #2{\vecc@w}{\vecc@hw}[#6][#7]%
+    $}}%
+    \arrow@skip%
+}}
+
+\def\@@xArrow@type#1#2{\@@@xArrow@type#2{\csname vecc@\m@strip#1@sf\endcsname}{\csname vecc@\m@strip#1@s\endcsname}{#1}}
+\def\@xArrow@type#1#2#3#4#5{\mathpalette\@@xArrow@type{{#1}{#2}{#3}{#4}{#5}}}
+
+\def\@@@Arrow@type#1#2#3#4#5#6#7{\mathrel{\arrow@skip%
+    \vcenter{\hbox{$#7%
+        #1{\vecc@w}{\vecc@hw}[#5][#6]%
+        \@Arrow@rule{#3}{#4pt}{#5}%
+        #2{\vecc@w}{\vecc@hw}[#5][#6]%
+    $}}\arrow@skip%
+}}
+
+\def\@@Arrow@type#1#2{\@@@Arrow@type#2{\csname vecc@\m@strip#1@sf\endcsname}{\csname vecc@\m@strip#1@s\endcsname}{#1}}
+\def\@Arrow@type#1#2#3#4{\mathpalette\@@Arrow@type{{#1}{#2}{#3}{#4}}}
+
+\def\@Arrow@def#1#2#3#4{%
+    \expandafter\def\csname #1\endcsname{\@Arrow@type{#2}{#3}{1ex}{#4}}%
+    \expandafter\def\csname long#1\endcsname{\@Arrow@type{#2}{#3}{2ex}{#4}}%
+    \expandafter\def\csname @x#1\endcsname##1[##2]{\@xArrow@type{#2}{#3}{#4}{##1}{##2}}%
+    \expandafter\def\csname x#1\endcsname##1{%
+        \@ifnextchar[ {\csname @x#1\endcsname{##1}}%
+                      {\csname @x#1\endcsname{##1}[]}%
+    }%
+}
+
+\@Arrow@def{varRightarrow}\@Linecap\@Rarrow{1}
+\@Arrow@def{varLeftarrow}\@Larrow\@Linecap{1}
+\@Arrow@def{varCirclerightarrow}\@Leftcirclecap\@Rarrow{1}
+\@Arrow@def{varCircleleftarrow}\@Larrow\@Rightcirclecap{1}
+\@Arrow@def{varSquarerightarrow}\@Leftsquarecap\@Rarrow{1}
+\@Arrow@def{varSquareleftarrow}\@Larrow\@Rightsquarecap{1}
+\@Arrow@def{varRibbonrightarrow}\@Leftribboncap\@Rarrow{1}
+\@Arrow@def{varRibbonleftarrow}\@Larrow\@Rightribboncap{1}
+\@Arrow@def{roundedarrow}\@Leftcirclecap\@Rightcirclecap{1}
+\@Arrow@def{squaredarrow}\@Leftsquarecap\@Rightsquarecap{1}
+\@Arrow@def{rightPP}\@Circlescap\@Rightcirclecap{1}
+\@Arrow@def{leftPP}\@Leftcirclecap\@Circlescap{1}
+
+\def\accent@skew{.4}
+\def\accent@raise{.25}
+\def\@@@wide@accent#1#2#3{{%
+    \setbox0=\hbox{$#3#1$}%
+    \vbox{\offinterlineskip%
+        \ialign{##\cr
+            \hbox to \wd0{\hskip\dimexpr \accent@skew ex * \@font@scale\relax%
+                \pdf@literal{%
+                    q \@pdfmsym@ytrans/
+                    \@nopt{\wd0 - \accent@skew ex * \@font@scale} 0 0 1 0 -.5 cm
+                    #2
+                Q}%
+                \hss%
+            }\cr\noalign{\kern\accent@raise ex\relax}%
+            \box0\cr%
+        }%
+    }%
+}}
+
+
+\def\@@wide@accent#1#2{\@@@wide@accent#2#1}
+\def\@wide@accent#1#2{\mathpalette\@@wide@accent{{#2}{#1}}}
+
+\def\varwidecheck{\@wide@accent{0 1.3 m .5 -.4 l 1 1.3 l 1 1.6 l .5 .3 l 0 1.6 l f}}
+\def\varwidehat{\@wide@accent{0 0 m .5 .9 l 1 0 l 1 .3 l .5 1.6 l 0 .3 l f}}
+\def\varwidetilde{\@wide@accent{0 0 m .25 1.5 .45 1.1 .5 1 c .55 .9 .75 0 1 1.5 c 1 1.75 l .75 .5 .55 1.4 .5 1.5 c .45 1.6 .25 2 0 .25 c f}}
+
+\def\@skewedlim@op@done#1#2#3#4#5{#1^{\mkern-#2mu#4}_{\mkern-#3mu#5}}
+\def\@skewedlim@op@supsub#1#2#3#4_#5{\@skewedlim@op@done{#1}{#2}{#3}{#4}{#5}}
+\def\@skewedlim@op@subsup#1#2#3#4^#5{\@skewedlim@op@done{#1}{#2}{#3}{#5}{#4}}
+\def\@skewedlim@op@sub#1#2#3#4#5{%
+    \@ifnextchar^ {\@skewedlim@op@subsup{#1}{#2}{#3}{#5}}%
+                  {\@skewedlim@op@done{#1}{#2}{#3}{}{#5}}%
+}
+\def\@skewedlim@op@sup#1#2#3#4#5{%
+    \@ifnextchar_ {\@skewedlim@op@supsub{#1}{#2}{#3}{#5}}%
+                  {\@skewedlim@op@done{#1}{#2}{#3}{#5}{}}%
+}
+\def\@skewedlim@op@nsup#1#2#3{%
+    \@ifnextchar_ {\@skewedlim@op@sub{#1}{#2}{#3}}%
+                  {\@skewedlim@op@done{#1}{#2}{#3}{}{}}%
+}
+\def\@@skewedlim@op#1#2#3{%
+    \@ifnextchar^ {\@skewedlim@op@sup{#1}{#2}{#3}}%
+                  {\@skewedlim@op@nsup{#1}{#2}{#3}}%
+}
+
+\def\@skewedlim@op@limits{%
+    \ifx\@skewedlim@char\nolimits%
+        \pdfmsym@afterfi{\@@skewedlim@op{\@skewedlim@atom\nolimits}{\@skewedlim@nolim@supskew}{\@skewedlim@nolim@subskew}}%
+    \else%
+        \pdfmsym@afterfi{\ifx\@skewedlim@char\limits%
+            \pdfmsym@afterfi{\@@skewedlim@op{\@skewedlim@atom\limits}{\@skewedlim@lim@supskew}{\@skewedlim@lim@subskew}}%
+        \else%
+            \pdfmsym@afterfi{\@@skewedlim@op{\@skewedlim@atom\@skewedlim@preflim}{\@skewedlim@preflim@supskew}{\@skewedlim@preflim@subskew}\@skewedlim@char}%
+        \fi}%
+    \fi%
+}
+
+\def\@skewedlim@op#1#2#3#4#5#6#7#8{%
+    \def\@skewedlim@atom{#1}%
+    \def\@skewedlim@nolim@supskew{#2}\def\@skewedlim@nolim@subskew{#3}%
+    \def\@skewedlim@lim@supskew{#4}\def\@skewedlim@lim@subskew{#5}%
+    \def\@skewedlim@preflim@supskew{#6}\def\@skewedlim@preflim@subskew{#7}%
+    \def\@skewedlim@preflim{#8}%
+    \afterassignment\@skewedlim@op@limits%
+    \let\@skewedlim@char=%
+}
+
+\def\exsym@displaystyle@s{1}                \def\exsym@displaystyle@sf{1}
+\def\exsym@textstyle@s{.7}                  \def\exsym@textstyle@sf{7 / 10}
+\def\exsym@scriptstyle@s{.7}                \def\exsym@scriptstyle@sf{7 / 10}
+\def\exsym@scriptscriptstyle@s{.6}          \def\exsym@scriptscriptstyle@sf{6 / 10}
+% #1 main symbol
+% #2 left cap
+% #3 right cap
+% #4 height difference
+% #5 width skew
+% #6 mathstyle scale (fraction)
+% #7 mathstyle scale (decimal)
+% #8 mathstyle
+\def\@@putexsym#1#2#3#4#5#6#7#8{{%
+    \setbox0=\hbox{$\m@th#8#1$}%
+    \setbox1=\hbox{$\m@th#2{\vecc@w}{\vecc@hw}[#6][#7]$}%
+    \kern\dimexpr\wd1 - #5 pt * #6 * \@font@scale\relax\rlap{$#8#1$}\kern-\dimexpr\wd1 - #5pt * #6 * \@font@scale\relax%
+    \raise.5\dimexpr\ht0-\dp0\relax
+    \vbox{\hbox{$#8#2{\vecc@w}{\vecc@hw}[#6][#7]\@@Arrow@rule{\dimexpr\wd0- #5 pt * #6 * \@font@scale * 2\relax}{#4 pt}{#6}#3{\vecc@w}{\vecc@hw}[#6][#7]$}}%
+}}
+
+\def\@putexsym#1#2{\@@putexsym#2{\csname exsym@\m@strip#1@sf\endcsname}{\csname exsym@\m@strip#1@s\endcsname}{#1}}
+\def\putexsym#1#2#3#4#5{\mathpalette\@putexsym{{#1}{#2}{#3}{#4}{#5}}}
+
+\def\@BigRightcirclecap{\@linehead@type{0 2.5 m 1 2.5 2 1.25 2 0 c 2 -1.25 1 -2.5 0 -2.5 c S}{2}}
+\def\@BigLeftcirclecap{\@linehead@type {2 2.5 m 1 2.5 0 1.25 0 0 c 0 -1.25 1 -2.5 2 -2.5 c S}{2}}
+\def\@BigRightsquarecap{\@linehead@type {0 2.5 m 1 2.5 l 1 -2.5 l 0 -2.5 l S}{1}}
+\def\@BigLeftsquarecap{\@linehead@type{1 2.5 m 0 2.5 l 0 -2.5 l 1 -2.5 l S}{1}}
+\def\@BigCirclescap{\@linehead@type{0 -2 m 0 -1 1 0 2 0 c 3 0 4 -1 4 -2 c 4 -3 3 -4 2 -4 c 1 -4 0 -3 0 -2 c
+    0 2 m 0 3 1 4 2 4 c 3 4 4 3 4 2 c 4 1 3 0 2 0 c 1 0 0 1 0 2 c S}{4}}
+
+\def\iNint@kern@{\mkern-10mu\mathchoice{\mkern-5mu}{}{}{}}
+\def\iNint#1{\pdfmsym@repeated{\numexpr #1-1\relax}{\int\iNint@kern@}\int}
+\def\@oiNint#1{\putexsym{\iNint{#1}}\@BigLeftcirclecap\@BigRightcirclecap{2.5}{4}}
+\def\@biNint#1{\putexsym{\iNint{#1}}\@BigLeftsquarecap\@BigRightsquarecap{2.5}{4}}
+
+\def\oiNint#1{\@skewedlim@op{\mathop{\@oiNint{#1}}}{-4}{6}{-10}{10}{-4}{6}\nolimits}
+\def\biNint#1{\@skewedlim@op{\mathop{\@biNint{#1}}}{-6}{6}{-10}{10}{-6}{6}\nolimits}
+
+\def\@@putsym#1#2#3{{\setbox0=\hbox{$#1#2$}\rlap{\hbox to \wd0{\hss$#1#3$\hss}}}}
+\def\@putsym#1#2{\@@putsym#1#2}
+\def\putsym#1#2{\mathpalette\@putsym{{#1}{#2}}\mathopen{}#1}
+
+\def\aint{\mathop{}\mathclose{}\putsym\int-}
+\def\dwedge{\mathbin{\putsym\wedge\cdot}}
+\def\bigdwedge{\mathop{\putsym\bigwedge\cdot}}
+\def\circwedge{\mathbin{\putsym\wedge\smallcircle}}
+\def\bigcircwedge{\mathop{\putsym\bigwedge\smallcircle}}
+\def\dcup{\mathbin{\putsym\cup\cdot}}
+\def\bigdcup{\mathop{\putsym\bigcup\cdot}}
+
+\long\def\@pdf@drawing@macro@def#1#2#3#4#5#6{%
+    \hbox to \dimexpr#3 * \@font@scale\relax{\hskip\dimexpr#6 * \@font@scale\relax%
+    \vrule width0pt height0pt depth\dimexpr#5 * \@font@scale\relax%
+    \vbox to \dimexpr#4 * \@font@scale\relax{\vss\pdf@literal{q \@pdfmsym@trans/ #2 Q}}\hss}%
+}
+
+\unless\ifx\pdfxform\undefined 
+    \long\def\pdf@drawing@macro@def#1#2#3#4#5#6{{%
+        \setbox0=\@pdf@drawing@macro@def{#1}{#2}{#3}{#4}{#5}{#6}%
+        \pdfxform0%
+        \expandafter\xdef\csname @#1@xformno\endcsname{\the\pdflastxform}%
+    }}
+
+    \long\def\pdf@drawing@macro#1#2#3#4#5#6{%
+        \pdf@drawing@macro@def{#1}{#2}{#3}{#4}{#5}{#6}%
+        \expandafter\edef\csname #1\endcsname{\noexpand\leavevmode\noexpand\pdfrefxform\csname @#1@xformno\endcsname}%
+    }
+
+    \def\math@drawing@get#1#2{\expandafter\pdfrefxform\csname @#1@\m@strip#2@xformno\endcsname}
+\else
+    \long\def\pdf@drawing@macro#1#2#3#4#5#6{%
+        \expandafter\def\csname #1\endcsname{\@pdf@drawing@macro@def{#1}{#2}{#3}{#4}{#5}{#6}}%
+    }
+    \let\pdf@drawing@macro@def=\pdf@drawing@macro
+
+    \def\math@drawing@get#1#2{\csname #1@\m@strip#2\endcsname}
+\fi
+
+\long\def\pdf@drawing@math@macro#1#2#3#4#5#6#7#8#9{%
+    \pdf@drawing@macro@def{#1@displaystyle}{#2}{#3}{#4}{#5}{#6}%
+    \pdf@drawing@macro@def{#1@textstyle}
+        {\@secondoftwo#7 0 0 \@secondoftwo#7 0 0 cm #2}
+        {#3 * \@firstoftwo#7}
+        {#4 * \@firstoftwo#7}
+        {#5 * \@firstoftwo#7}
+        {#6 * \@firstoftwo#7}%
+    \pdf@drawing@macro@def{#1@scriptstyle}
+        {\@secondoftwo#8 0 0 \@secondoftwo#8 0 0 cm #2}
+        {#3 * \@firstoftwo#8}
+        {#4 * \@firstoftwo#8}
+        {#5 * \@firstoftwo#8}
+        {#6 * \@firstoftwo#8}%
+    \pdf@drawing@macro@def{#1@scriptscriptstyle}
+        {\@secondoftwo#9 0 0 \@secondoftwo#9 0 0 cm #2}
+        {#3 * \@firstoftwo#9}
+        {#4 * \@firstoftwo#9}
+        {#5 * \@firstoftwo#9}
+        {#6 * \@firstoftwo#9}%
+    \expandafter\def\csname @#1@\endcsname##1##2{\math@drawing@get{#1}{##1}}%
+    \expandafter\def\csname #1\endcsname{\expandafter\mathpalette\csname @#1@\endcsname{}}%
+    \expandafter\def\csname @center@#1@\endcsname##1##2{\vcenter{\hbox{\math@drawing@get{#1}{##1}}}}%
+    \expandafter\def\csname center@#1\endcsname{\expandafter\mathpalette\csname @center@#1@\endcsname{}}%
+}
+
+\def\math@sym@defs{%
+    \pdf@drawing@macro{lightning}
+        {.86603 -.5 .5 .86603 0 0 cm
+        1 J 1 j .6 w
+        -3 10 m -3 4.133975 l 0 5.866025 l 0 0 l -1.125 1.5 l 0 0 l 1.125 1.5 l S}
+        {4.2pt}{10.5pt}{.5pt}{.9pt}
+%
+    \pdf@drawing@math@macro{@ndivs}
+        {0.4 w 1 j
+        0 3 m 5 7 l s
+        1.3 w
+        2.5 1 0 .1 re
+        2.5 5 0 .1 re
+        2.5 9 0 .1 re B}
+        {5.4pt}{10pt}{0pt}{.2pt}
+        {{1}{1}}{{7 / 10}{.7}}{{11 / 20}{.55}}
+    \def\ndivs{\mathrel{\@ndivs}}
+%
+    \pdf@drawing@math@macro{@divs}
+        {1.3 w 1 j
+        2.5 1 0 .1 re
+        2.5 5 0 .1 re
+        2.5 9 0 .1 re B}
+        {5.4pt}{10pt}{0pt}{.2pt}
+        {{1}{1}}{{7 / 10}{.7}}{{11 / 20}{.55}}
+    \def\divs{\mathrel{\@divs}}
+
+    \pdf@drawing@math@macro{@bigforall}
+        {.8 w 1 J 1 j
+        0 9.5 m 6 -4 l 12 9.5 l
+        2.8 4 m 9.2 4 l S}
+        {14pt}{10.8pt}{4.8pt}{1pt}
+        {{7 / 10}{.7}}{{5 / 10}{.5}}{{35 / 100}{.35}}
+    \def\bigforall{\mathop{\@bigforall}}
+
+    \pdf@drawing@math@macro{@bigexists}
+        {.8 w 1 J 1 j
+        0 9.5 m 8 9.5 l 8 -4.5 l 0 -4.5 l
+        1 2.5 m 7.9 2.5 l S}
+        {10pt}{10.8pt}{4.8pt}{1pt}
+        {{7 / 10}{.7}}{{5 / 10}{.5}}{{35 / 100}{.35}}
+    \def\bigexists{\mathop{\@bigexists}}
+
+    \pdf@drawing@math@macro{@smallcircle}
+        {.3 w 0 .5 m 0 .75 .25 1 .5 1 c .75 1 1 .75 1 .5 c 1 .25 .75 0 .5 0 c .25 0 0 .25 0 .5 c S}
+        {1.6pt}{1.6pt}{.3pt}{.3pt}
+        {{1}{1}}{{7 / 10}{.7}}{{6 / 10}{.6}}
+    \let\smallcircle=\center@@smallcircle
+}
+
+% Thanks to Plante for this macro (it is a generalized version of the one found in TeX Pearls 2006 by
+% Bogusław Jackowski and Piotr Strzelczyk.
+% https://www.gust.org.pl/projects/pearls/2006p/boguslaw-jackowski/bachotex2006-boguslaw-jackowski-pearl1.pdf
+\unless\ifx\pdfxform\undefined
+    \def\@@slice#1{%
+        \pdfxform\csname #1\endcsname%
+        \global\setbox\csname #1\endcsname=\hbox{\pdfrefxform\pdflastxform}%
+    }
+
+    \def\@inner@newbox{\alloc@ 4\box \chardef \insc@unt} % Non-outer \newbox
+
+    \def\@slice#1#2#3#4{{%
+        \setbox0=\hbox{#1}%
+        \expandafter\@inner@newbox\csname #2@L\endcsname%
+        \expandafter\@inner@newbox\csname #2@C\endcsname%
+        \expandafter\@inner@newbox\csname #2@R\endcsname%
+        \global\setbox\csname #2@L\endcsname=\hbox{\copy0 \kern\dimexpr #3\wd0 - \wd0\relax}%
+        \global\setbox\csname #2@C\endcsname=\hbox{\kern-#3\wd0 \copy0 \kern\dimexpr #4\wd0 - \wd0\relax}%
+        \global\setbox\csname #2@R\endcsname=\hbox{\kern-#4\wd0 \copy0}%
+        \@@slice{#2@L}\@@slice{#2@C}\@@slice{#2@R}%
+    }}
+
+    \def\@show@slices#1{%
+        \hbox{\copy\csname #1@L\endcsname\vrule width .1pt
+        \copy\csname #1@C\endcsname\vrule width .1pt
+        \copy\csname #1@R\endcsname}
+    }
+
+    \def\@wide@operator#1#2#3#4{%
+        \@slice{$\displaystyle#2$}{#1}{#3}{#4}%
+        \expandafter\def\csname #1\endcsname{%
+            \mathop{\copy\csname #1@L\endcsname \xleaders\copy\csname #1@C\endcsname\hfill \copy\csname #1@R\endcsname}\limits%
+        }%
+    }
+
+    \@wide@operator{suum}\sum{.52}{.6}
+    \@wide@operator{prood}\prod{.48}{.52}
+\fi
+
+\catcode`\@=\strudelccode

@@ -1,0 +1,103 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\openset{{\cal O}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=18
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infinitesimal Calculus 3}
+
+    \medskip
+    \textit{Lecture \thesection, Sunday January 8, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+Recall the theorem from the previous lecture (to be typeset):
+\begin{thrm}
+
+    If $f$ maps from $\bR^n$ to $\bR^n$ and is in $C^1$ in some neighborhood of $x_0\in\bR^n$ then if $\differ f{x_0}$ is invertible (as a linear transformation) then $f$ maps a neighborhood of $x_0$ to
+    a neighborhood of $f(x_0)$ bijectively.
+
+\end{thrm}
+
+Note that if we have a function $F(x,y(x))$ then $\frac\partial{\partial x}\bigl(F(x,y(x))\bigr)=\pdv Fx\cdot\frac{dx}{dx}+\pdv Fy\cdot\frac{dy}{dx}=F_x+F_y\cdot\frac{dy}{dx}$.
+So if we require $F(x,y(x))=0$ then we get
+\[ \frac{dy}{dx} = -\frac{F_x}{F_y} \]
+
+\begin{prop*}
+
+    If $F(x,y)=0$ and $F\in C^1$.
+    Suppose $F(x_0,y_0)=0$ and $F_y(x_0,y_0)\neq0$ then $y$ can be written as a $C^1$ function of $x$ in a neighborhood of $x_0$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let us focus on the following system:
+    \[ \left\{\begin{aligned} x&=x \\ F(x,y)&=0 \end{aligned}\right. \]
+    We define $G(x,y)=\bigl(x,F(x,y)\bigr)$ then
+    \[ J_G = \begin{pmatrix} 1 & F_x \\ 0 & F_y \end{pmatrix} \]
+    and since $\det J_G=F_y$ which is not equal to $0$ at $(x_0,y_0)$ we have that $J_G(x_0,y_0)$ is invertible and therefore $G$ maps a neighborhood $S$ of $(x_0,y_0)$ to a neighborhood $T$ of
+    $(x_0,F(x_0,y_0))$ and has an inverse from $T$ to $S$.
+    We know that $G^{-1}(x,z)=(x,h(x,z))$ where $y=h(x,z)$ and $h\in C^1$ since $G$ is.
+    And since $F(x,y)=0$ we have that $z=0$ in the set that we are focusing on.
+    And so $y=h(x,0)$ which defines a $C^1$ single value function of $x$ that is equal to $y$ as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{thrm*}
+
+    Suppose $(F_1,\dots,F_s)=F\colon\bR^k\times\bR^s\longvarrightarrow\bR^s$ is in $C^1$ around $(x^0,y^0)=(x_1,\dots,x_k,y_1,\dots,y_s)$.
+    Suppose $F(x^0,y^0)=0$ and further suppose that
+    \[ \det J_F = \frac{\partial(F_1,\dots,F_S)}{\partial{y_1,\dots,y_s}}\neq 0 \]
+        Then there exists a neighborhood $I\subseteq\bR^k$ of $x^0$ and a unique function $\phi\in C_1$ such that $\phi(x_0)=y_0$ and $F(x,\phi(x))=0$ for every $x\in I$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    We focus on the system
+        \[ \left\{\begin{aligned} x_1&=x_1\\&\vdots\\x_k&=x_k\\F_1(x,y)&=0\\&\vdots\\F_s(x,y)&=0\end{aligned}\right. \]
+    Which can be represented as
+        \[ \begin{pmatrix} I & 0 \\ * & J_F \end{pmatrix} \]
+    which has determinant $J_f\neq0$.
+
+\end{proof}
+
+\end{document}
+

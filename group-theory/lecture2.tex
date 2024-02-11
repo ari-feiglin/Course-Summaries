@@ -1,0 +1,291 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\@blist[#1]{%
+    \bgroup\bgroup\par\vskip-\medskipamount%
+    \gdef\item{%
+        \par\egroup\bgroup\medskip\setbox0=\hbox{#1\quad}%
+        \advance\leftskip by \wd0\leavevmode\kern-\wd0\box0%
+    }%
+}
+\def\blist{\@ifnextchar[ \@blist {\@blist[$\bullet$]}}
+\def\elist{\par\egroup\egroup\medskip}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\pdf@drawing@macro{check}{0 1 0 RG 1.2 w 1 j 1 J 0 5 m 3 0 l 8 10 l S}{9.6pt}{12pt}{1pt}{1pt}
+\pdf@drawing@macro{ecks}{1 0 0 RG 0 0 m 1 j 1 J 10 10 l 0 10 m 10 0 l S}{11.6pt}{12pt}{1pt}{1pt}
+\begin{document}
+
+\c@section=2
+
+\barcolorbox{220, 220, 255}{0, 0, 130}{80, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Group Theory}
+
+    \medskip
+    \textit{Lecture 2, Sunday October 30, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{$\bZ$ and Introductory Number Theory}
+
+\begin{prop*}
+
+    For $a,b\in\bZ$ where $b\neq0$ there exist unique $r,q\in\bZ$ such that $0\leq r<b$ and:
+    \[ a = q\cdot b + r \]
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $S=\set{n\in\bZ}[b\cdot n\leq a]$.
+    Since $S\leq\abs a$, we can take $q=\max S$.
+    And we define $r=a-q\cdot b$.
+    Then we know by their respective definitions that $a=q\cdot b + r$.
+    we also know that $q\in S$ so $q\cdot b\leq a$, so $r\geq0$.
+    Assume for the sake of a contradiction that $r\geq b$, but then $a-q\cdot b\geq b$ so $b(q+1)\leq a$, so $q+1\in S$, which is a contradiction to $q$'s maximumness
+    \lightning.
+
+    In order to show uniqueness, suppose $a=q'b+r'=qb+r$ where $r\geq r'$.
+    Then $b(q'-q)=r-r'$, so $b\divides(r-r')$.
+    Since $0\leq r,r'<b$, it must be that $0\leq r-r'<b$, so if they are not equal then since $b$ divides their difference, we must have that $r-r'\geq b$, in contradiction.
+    So $r=r'$ and therefore $q=q'$ since $b\neq 0$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+We will continue by proving the theorem introduced last lecture:
+
+\begin{thrm*}
+
+    For every $a,b\in\bZ$, $\gcd(a,b)$ is the minimum positive linear combination of $a$ and $b$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    We define 
+    \begin{align*}
+        D &= \set{d\in\bZ}[d\divides a,b] \\
+        I &= \set{\alpha a+\beta b}[\alpha,\beta\in\bZ] \\
+        I^+ &= \set{m\in I}[m>0]
+    \end{align*}
+
+    By definition, we know that $d=\gcd(a,b)=\max D$.
+    Let $m=\min I^+$.
+    We know $m$ exists because $I^+\subseteq\bN$.
+    We will show that $\gcd(a,b)=m$.
+    Since $d\divides a,b$, we know that $d$ divides every linear combination of $a$ and $b$, so $d\divides m$.
+    We know that there exist $q,r\in\bZ$ such that:
+    \[ a = q\cdot m + r\qquad 0\leq r<m \]
+    Since $m\in I^+$ so $m=\alpha a + \beta b$, and therefore:
+    \[ r = a - q\cdot(\alpha a + \beta b) \]
+    So $r$ is a linear combination of $a$ and $b$, so therefore $r\in I$.
+    Suppose $r\neq0$ then $r>0$ so $r\in I^+$ and $r<m$ which is a contradiction since $m$ is the minimum.
+    So $r=0$.
+    Therefore $a\divides m$, and similarly $b\divides m$.
+    Therefore $m\in D$, so $m\leq d$.
+    Since $m>0$, $d\divides m$ and $m\leq d$, it must be that $m=d$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+Notice then that $x\divides a,b$ if and only if $x\divides\gcd(a,b)$.
+This is because if $x$ divides $a$ and $b$, then $x$ divides every linear combination of $a$ and $b$ including $\gcd(a,b)$.
+Since $\gcd(a,b)\divides a,b$, if $x\divides\gcd(a,b)$ then $x$ must divide $a$ and $b$.
+
+Also recall that last lecture, assuming the result of the theorem above, we showed that a number is prime if and only if it is non-compound.
+This is true in $\bZ$ but not always.
+
+\newpage
+\begin{thrm*}[fundArithTheorem,The\ Fundamental\ Theorem\ of\ Arithmetic]
+
+    Every natural number $n$ can be expressed as a unique product of primes, up to order.
+
+\end{thrm*}
+
+This theorem is also called the ``prime factorization theorem.''
+
+\begin{proof}
+
+    We will prove existence inductively.
+    For $n=1$ this is trivial as it is equal to the empty product.
+    Inductively, if $n$ is prime then it is non-compound so it can only be written as $n$ (which is a product of primes since it is prime).
+    Otherwise, there are $p,q$ such that $m=p\cdot q$, and since $p$ and $q$ have a prime factorization, so does $m$.
+
+    Now we must prove uniqueness.
+    Suppose that for primes $p_i$ and $q_j$:
+    \[ p_1\cdot p_2\cdots p_t = q_1\cdot q_2\cdots q_n \]
+    Since $p_1$ divides the left and thus the right side, it must divide some $q_j$.
+    Since $q_j$ is prime and therefore non-compound, $q_j=\pm p_1$, so $q_j=p_1$.
+    Then we can continue inductively on the length of the product.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+As a side note, notice that there must be infinite primes.
+Suppose there are finite, let $\set{p_1,\dots,p_n}$ enumerate them.
+If we take then $k=p_1\cdots p_n+1$, for every $i$, $p_i\mathrel{\nmid}k$ since it divides $k-1$ but it can't divide $1$.
+So $k$ must be a prime since it can't be factorized by other primes.
+But then $k=p_i$ for some $i$, but $p_i$ doesn't divide it, in contradiction, so there must be infinite primes.
+
+\subsection{Return to Group Theory}
+
+\begin{defn*}
+
+    Suppose $G$ is a group, then $H\subseteq G$ is a \ppemph{subgroup} of $G$'s if it is itself a group under the same operation as $G$.
+    This is denoted $H\leq G$.
+
+\end{defn*}
+
+Notice then that $H$ is a subgroup of $G$'s if and only if $H$ is non-empty and closed under $G$'s operation (if $a,b\in H$ then $a\circ b\in H$) and under inversion
+(if $a\in H$, $a^{-1}\in H$).
+The direction from $H$ being a subgroup to the requirements is trivial.
+If $H$ satisfies the requirements, then it gets associativity ``for free'' and $e\in H$ since there is a $a\in H$ and therefore $a^{-1}\in H$ so $a\circ a^{-1}=e\in H$.
+
+\begin{exam}
+
+    Let $n\in\bN_{\geq1}$, and we define an equivalence relation on $\bZ$ as follows:
+    \[ a\equiv b\pmod n \iff n\divides (a-b) \]
+    This is obviously symmetric and reflexive, and it is transitive since if $n\divides(a-b), (b-c)$, then $n\divides(a-b+b-c)=(a-c)$.
+    Notice then that if $x\in\bZ$, there is some $k\in\set{0,\dots,n-1}$ such that $x\equiv k\pmod n$ since $x=q\cdot n+k$ for some $0\leq k<n$, so $n\divides(x-k)$, so
+    $x\equiv k\pmod n$ as requires.
+    And for $k<j$ for $k,j\in\set{0,\dots,n-1}$ then $j-k=\set{1,\dots,n-1}$ so $n$ doesn't divide $j-k$, so they are not equivalent.
+
+    We define $\bZ_n$ as the partition of $\bZ$ under this equivalence relation, $\bZ_n=\set{[0],\dots,[n-1]}$, where $[x]$ is the equivalence class of $x$.
+    We can define an operation on this set by: $[a]+[b]=[a+b]$.
+    This may seem trivial at first, but this is not necessarily well-defined.
+    Suppose $a'\in[a]$ and $b'\in[b]$ then we must show that $[a+b]=[a'+b']$, we will do so by showing $a+b\in[a'+b']$.
+    This is true since $(a'+b')-(a+b) = (a'-a) + (b'-b)$ and since both of these are divisible by $n$, so is $(a'+b')-(a+b)$, so $[a+b]=[a'+b']$ as required, so the operation
+    is well-defined.
+
+    $\bZ_n$ under this operation actually forms an abelian group:
+    \blist
+        \item The associativity of this operation comes as a direct consequence of the associativity of integer addition:
+            \[ ([a]+[b])+[c]=[a+b]+[c]=[a+b+c]=[a]+([b]+[c]) \]
+        \item $[0]$ is the identity element since $[a]+[0]=[a+0]=[a]$ and $[0]+[a]=[0+a]=[a]$.
+        \item The inverse of $[a]$ is $[-a]$ since $[a]+[-a]=[a+(-a)]=[0]=[(-a)+a]=[-a]+[a]$.
+        \item The commutativity of this operation is a direct result of the commutativity of integer addition: 
+            \[ [a]+[b]=[a+b]=[b+a]=[b]+[a] \]
+    \elist
+
+\end{exam}
+
+\newpage
+Notice then that $\bZ_n$ is a group of size $n$, and therefore for every integer number (larger than $0$), there exists a group of that size.
+This is not the case for other algebraic structures, for example finite fields must have a size of the form $p^n$ for $p$ prime.
+\begin{exam}
+
+    For $\bZ_4$ one subgroup is $\set{[0], [2]}$, since $[2]+[2]=[4]=[0]$.
+    In fact other than the trivial group and $\bZ_4$ itself, this is the only subgroup.
+
+\end{exam}
+
+\begin{defn*}
+
+    Two groups, $(G,\circ)$ and $(H,\cdot)$ are \ppemph{isomorphic} if there exists a function:
+        \[ \phi\colon G\longvarrightarrow H \]
+    Such that for every $g_1,g_2\in G$:
+        \[ \phi(g_1\circ g_2) = \phi(g_1)\cdot\phi(g_2) \]
+    This is denoted $G\cong H$.
+    $\phi$ is called a \ppemph{isomorphism}.
+
+\end{defn*}
+
+\begin{exam}
+
+    Let us again look at the set $\bZ_n$, but this time we will define a new operation:
+        \[ [a]\cdot[b] = [a\cdot b] \]
+    This is well defined since if $a'\in[a]$, $b'\in[b]$ then notice that:
+        \[ ab - a'b' = b'(a-a') + a(b-b') \]
+    Since $a-a'$ and $b-b'$ are divisible by $n$, so is $ab-a'b'$ so $[ab]=[a'b']$, as required.
+
+    This is obviously associative since multiplication is (for the same reason it is commutative).
+    And $[1]$ is the identity element since $[1]\cdot[a]=[a]=[a]\cdot[1]$.
+    Therefore $(\bZ_n,\cdot)$ is a monoid, but it is not a group.
+    This is because $[0]$ has no inverse, since $[0]\cdot[a]=[0]\neq[1]$.
+    Even if we ignore $[0]$, in some cases other elements will still not have an inverse, take for instance $[2]\in\bZ_6$ since $6$ does not divide $2n-1$ for any
+    $0\leq n\leq 5$.
+    The same is true for $3$ and $4$ in fact.
+
+\end{exam}
+
+\newfunc{units}{\mathcal{U}}(\vert)
+\begin{prop*}
+
+    Suppose $M$ is a monoid.
+    We define:
+        \[ \unitsof M = \set{a\in M}[a \text{ is invertible}] \]
+    Then $\unitsof M$ is a group.
+
+\end{prop*}
+
+\begin{proof}
+
+    Associativity comes from the associativity of a monoid, since the identity of a monoid is invertible, it is in $\unitsof M$.
+    Since the inverse of an inverse is the original element, if $a\in\unitsof M$, so is $a^{-1}$, and therefore $\unitsof M$ is closed under inverses.
+    And since $(a\circ b)^{-1}=b^{-1}\circ a^{-1}$, if $a,b\in\unitsof M$, so is $a\circ b$, so $\unitsof M$ is closed under multiplication.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+Notice then that if $G$ is a group, $\unitsof{G}\leq G$.
+
+\begin{exam}
+
+    $\unitsof{(\bZ_6,\cdot)} = \set{1,5}$ and it is congruent to $(\bZ_2,+)$.
+
+\end{exam}
+
+\newfunc{eulerg}{{\rm Euler}}({})
+\begin{defn*}
+
+    We define the \ppemph{Euler Group} of $n$ to be:
+        \[ \eulergof n = \unitsof{(\bZ_n,\cdot)} \]
+
+\end{defn*}
+
+Firstly notice that if $a\equiv b\pmod n$ then $\gcd(n,a)=\gcd(n,b)$, since $b-a=qn$ so every linear combination of $a$ and $n$ is a linear combination of $b$ and $n$ and
+vice versa.
+
+\begin{prop*}
+
+    $[a]$ is invertible in $(\bZ_n,\cdot)$ if and only if $\gcd(a,n)=1$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $[b]$ is the inverse of $[a]$, then $[ab]=[1]$, that is $ab\equiv 1\pmod n$, so $ab-1=qn$, and so $1=ba-qn$, so $1$ is a linear combination of $a$ and $n$, and
+    it must be the minimum positive linear combination, so $\gcd(a,n)=1$.
+
+    For the converse, suppose $\gcd(a,n)=1$, then there exists a $b$ and $\beta$ such that $ba+\beta n=1$, so $n\divides (ba-1)$ and by definition $ba\equiv 1\pmod n$.
+    Therefore $[b][a]=[1]$, and since the monoid is associative, $[b]$ is $[a]$'s inverse.
+
+\end{proof}
+
+Thus $\eulerof n=\set{a\in\bZ_n}[\gcd(a,n)=1]$.
+
+\end{document}
+

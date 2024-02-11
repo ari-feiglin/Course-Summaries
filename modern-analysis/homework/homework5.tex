@@ -1,0 +1,66 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+\parindent=0pt
+\parskip=3pt plus 2pt minus 2pt
+
+\input ../preamble
+
+\footline={}
+
+\setcounter{section}{5}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+
+{\bppbox{rgb{.5 1 .5}}{rgb{0 .4 0}}{rgb{.1 .4 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Modern Analysis}
+    \smallskip
+    \centerline{\setfont{it}Homework \the\counter{section}}
+    \centerline{\setfont{it}Ari Feiglin}
+
+\eppbox}
+
+\bexerc
+
+    Let $f,f_n$ be nonnegative measurable functions on $X$ such that $f_n\to f$ and $f_n\leq f$.
+    Prove that
+    $$ \lim\int f_n = \int f $$
+
+\eexerc
+
+Define $g_n=\maxof{f_1,\dots,f_n}$, then for every $n$, $f_n\leq g_n\leq f$ so $g_n$ is monotonically increasing to $f$, meaning $\lim\int f_n\leq\lim\int g_n=\int f$.
+By Fatou,
+$$ \int f = \int\liminf f_n \leq \liminf\int f_n = \lim\int f_n $$
+So we have both directions of the inequality, meaning $\lim\int f_n=\int f$ as required.
+
+\bexerc
+
+    Let $f$ be a measurable nonnegative function, then define $F(x)=\int_{-\infty}^xf\,dx$.
+    Show that $F$ is continuous.
+
+\eexerc
+
+Let $a\in{\bb R}$ and take $x_n\nearrow a$, then $F(x_n)=\int_{-\infty}^{x_n}f\,d\mu=\int_{\bb R}f\chi_{(-\infty,x_n)}$.
+Since $f\cdot\chi_{(-\infty,x_n)}$ is increasing to $f\cdot\chi_{(-\infty,a)}$ we get that $F(x_n)\longto\int_{-\infty}^af=F(a)$ by the monotone convergence theorem.
+Note that the monotone convergence theorem works for $f_n$ decreasing if $f_1$ is integrable: define $g_n=f_1-f_n$ which is nonnegative and increasing and $g_n\nearrow f_1-f$ so
+$$ \lim\int g_n = \int f_1-f \implies \lim\int f_1-f_n = \int f_1-\int f \implies \lim\int f_n = \int f $$
+So for $x_n\searrow a$, $f\cdot\chi_{(-\infty,x_n)}$ is decreasing to $f\cdot\chi_{(-\infty,a)}$, and since these are all bound by $f$ which is integrable they are integrable, so the monotone convergence
+theore gives us again that $F(x_n)\longto\int_{-\infty}^af=F(a)$ again.
+
+\bexerc
+
+    Let $(\Omega,\Sigma,\mu)$ be a measure space such that $\mu(X)=1$.
+    Then suppose $A,B,C\in\Sigma$ are measurable such that $\mu(A)+\mu(B)+\mu(C)\geq2.5$.
+    Is it possible for $A\cap B\cap C=\varnothing$?
+
+\eexerc
+
+Suppose so, then $A^c\cup B^c\cup C^c=X$ so $\mu(A^c\cup B^c\cup C^c)=1$, but by subadditivity
+$$ \mu(A^c\cup B^c\cup C^c) \leq \mu(A^c) + \mu(B^c) + \mu(C^c) = 3 - \mu(A) - \mu(B) - \mu(C) \leq 3 - 2.5 = 0.5 $$
+So we have that $1\leq0.5$ in contradiction.
+
+\bye
+

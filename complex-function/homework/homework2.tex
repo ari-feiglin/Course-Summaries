@@ -1,0 +1,356 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input ../preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{ker}{{\rm ker}}({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{atan}{{\rm tan}^{-1}}({})
+\newfunc{lag}{{\cal L}}({})
+\newfunc{sin}{{\rm sin}}({})
+\newfunc{sinh}{{\rm sinh}}({})
+\newfunc{cosh}{{\rm cosh}}({})
+\newfunc{cos}{{\rm cos}}({})
+\newfunc{arg}{{\rm arg}}({})
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+\newfunc{cis}{{\rm cis}}({})
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\iff{\,\longvarLeftRightarrow\,}
+\def\implies{\,\longvarRightarrow\,}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\mO{{\cal O}}
+\def\mU{{\cal U}}
+\def\mV{{\cal V}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\let\ds=\displaystyle
+\let\longto=\longvarrightarrow
+\let\to=\varrightarrow
+
+\def\bexerc{\begin{exercise*}}
+\def\eexerc{\end{exercise*}}
+\def\bblank{\begin{blankpp}}
+\def\eblank{\end{blankpp}}
+
+\begin{document}
+
+\c@section=2
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Complex Functions}
+
+    \medskip
+    \textit{Assignment \thesection}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\bexerc
+
+    \benum
+        \item Suppose $f\colon\bC\longto\bC$ is a complex function such that for every real $z$, $f$ is differentiable at $z$ and $f(z)\in\bR$.
+        Prove that for every $z\in\bR$, $f'(z)\in\bR$.
+        \item Suppose $f\colon\bC\longto\bC$ is a complex function such that for every imaginary $z$, $f$ is differentiable at $z$ and $f(z)\in\bR$.
+        Prove that for every imaginary $z$, $f'(z)\in i\bR$.
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item Since $f'(z)$ exists for $z\in\bR$, it is equal to (since we can take any path to $0$):
+        \[ f'(z) = \lim_{\substack{h\to0\\h\in\bR}}\frac{f(z+h) - f(z)}h \]
+        Since $z+h\in\bR$, $f(z+h)-f(z)\in\bR$ and so $\frac{f(z+h) - f(z)}h\in\bR$ and so $f'(z)$ is the limit of a real sequence, and therefore $f'(z)\in\bR$ as required.
+
+        \item Since $f'(z)$ exists for $z\in i\bR$, it is equal to:
+        \[ f'(z) = \lim_{\substack{h\to0\\h\in\bR}}\frac{f(z+ih) - f(z)}{ih} = -i\cdot\lim_{\substack{h\to0\\h\in\bR}}\frac{f(z+ih) - f(z)}h \]
+        Since $ih\to0$.
+        Since $z+ih\in i\bR$, $f(z+ih)-f(z)\in\bR$ so $\frac{f(z+ih) - f(z)}h\in\bR$, so the limit is real and therefore $f'(z)\in i\bR$ (since the limit is multiplied by $-i$) as required.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Suppose $f$ and $g$ are two complex functions which are differentiable at $z\in\bC$, then
+    \benum
+        \item $f+g$ is differentiable at $z$ and $(f+g)'(z)=f'(z)+g'(z)$.
+        \item $f\cdot g$ is differentiable at $z$ and $(fg)'(z)=f'(z)g(z)+f(z)g'(z)$.
+        \item $\frac fg$ is differentiable at $z$ and $g\neq0$ in a neighborhood of $z$, then $\parens{\frac fg}'(z)=\frac{f'(z)g(z)-f(z)g'(z)}{g(z)^2}$.
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item Notice that
+        \[ (f+g)'(z) = \lim_{h\to0}\frac{f(z+h)+g(z+h) - (f(z)+g(z))}h = \lim_{h\to0}\frac{f(z+h)-f(z)}h + \lim_{h\to0}\frac{g(z+h)-g(z)}h = f'(z) + g'(z) \]
+        since the two limits on the right exist.
+        So the limit defining $(f+g)'(z)$ exists and is equal to $f'(z)+g'(z)$ as required.
+
+        \item Notice that
+        \[ (fg)'(z) = \lim_{h\to0}\frac{f(z+h)g(z+h) - f(z)g(z)}h = \lim_{h\to0}\frac{f(z+h)\bigl(g(z+h)-g(z)\bigr) + g(z)\bigl(f(z+h)-f(z)\bigr)}h \]
+        \[ = g(z)\cdot\lim_{h\to0}\frac{f(z+h)-f(z)}h + \lim_{h\to0}f(z+h)\cdot\frac{g(z+h) - g(z)}h = f'(z)g(z) + f(z)g'(z) \]
+        where the right limit equals $f(z)g'(z)$ as the product of two convergent limits.
+        So the limit defining $(fg)'(z)$ exists and is equal to the desired result, as required.
+
+        \item Notice that
+        \[ \parens{g^{-1}}'(z) = \lim_{h\to0}\frac{\frac1{g(z+h)}-\frac1{g(z)}}h = \lim_{h\to0}\frac1{g(z)\cdot g(z+h)}\cdot\frac{g(z)-g(z+h)}h = \]
+        \[ = \frac1{g(z)}\cdot\lim_{h\to0}\frac1{g(z+h)}\cdot\lim_{h\to0}\frac{g(z)-g(z+h)}h = -\frac{g'(z)}{g(z)^2} \]
+        We can take this limit since $g\neq0$ in a neighborhood of $z$, so for any sequence $h_n\to0$, eventually $g(z+h_n)\neq0$.
+        Thus by above:
+        \[ \parens{\frac fg}'(z) = \parens{f\cdot\frac1g}'(z) = \frac{f'(z)}{g(z)} - \frac{f(z)g'(z)}{g(z)^2} = \frac{f'(z)g(z) - f(z)g'(z)}{g(z)^2} \]
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Show that $f(z)=x^2+iy^2$ is differentiable at $z$ if and only if $x=y$, and thus show why $f$ is not analytic.
+
+\eexerc
+
+\bblank
+
+    So we have $u=x^2$ and $v=y^2$ so $u_x=2x, u_y=0, v_x=0, v_y=2y$.
+    In order to satisfy the Cauchy-Riemann equations we must have $u_x=v_y$ and $u_y=-v_x$, so $2x=2y$ and $0=0$.
+    So it is necessary and sufficient for $x=y$ in order to satisfy the Cauchy-Riemann equations.
+    Since $f$ is differentiable when $u$ and $v$ are and satisfy the Cauchy-Riemann equations, and since $u$ and $v$ are differentiable everywhere, $f$ is differentiable if and only if $x=y$.
+
+    Notice that in order for $f$ to be analytic at $z\in\bC$, it must be differentiable in a domain $D$ of $z$'s.
+    So $z=x+ix$, but since $D$ is open, there must be an element $w\in D$ which is not on the line $x=y$ and so $f$ is not differentiable at $w$ and hence not in $D$.
+    So $f$ is nowhere analytic.
+
+\eblank
+
+\bexerc
+
+    Prove the chain rule for complex derivatives.
+
+\eexerc
+
+\bblank
+
+    Note that a function $f$ is differentiable at $z_0$ if and only if there exists a function $\epsilon\colon\bC\longvarrightarrow\bC$ and a value $f'(z_0)$ such that:
+    \[ f(z) = f(z_0) + (z-z_0)f'(z_0) + \epsilon(z-z_0) \]
+    where $\frac{\epsilon(h)}h\xvarrightarrow{}[h\varrightarrow0]0$.
+    This is trivial and is very reminiscent of infinitesimal calculus $3$.
+
+    And so we have $\epsilon_1$ and $\epsilon_2$ where:
+    \[ f(z) = f(z_0) + (z-z_0)f'(z_0) + \epsilon_1(z-z_0),\qquad g(z) = g\bigl(f(z_0)\bigr) + \bigl(z-f(z_0)\bigr)g'\bigl(f(z_0)\bigr) + \epsilon_2\bigl(z-f(z_0)\bigr) \]
+    And we need to find an $\epsilon_3$ such that
+    \[ g\circ f(z) = g\circ f(z_0) + (z-z_0)\biggl(f'(z_0)\cdot g'\bigl(f(z_0)\bigr)\biggr) + \epsilon_3(z-z_0) \] 
+    So then:
+    \begin{align*}
+        g\circ f(z) &= g\bigl(f(z_0)\bigr) + \bigl(f(z)-f(z_0)\bigr)g'\bigl(f(z_0)\bigr) + \epsilon_2\bigl(f(z)-f(z_0)\bigr) \\
+                    &= g\circ f(z_0) + (z-z_0)\biggl(f'(z_0)\cdot g'\bigl(f(z_0)\bigr)\biggr) + \epsilon_1(z-z_0)g'\bigl(f(z_0)\bigr) + \epsilon_2\bigl((z-z_0)f'(z_0) + \epsilon_1(z-z_0)\bigr)
+    \end{align*}
+    So we define
+    \[ \epsilon_3(h) = \epsilon_1(h)\cdot g'\bigl(f(z_0)\bigr) + \epsilon_2\bigl(hf'(z_0) + \epsilon_1(h)\bigr) \]
+    And we claim that $\frac{\epsilon_3(h)}h$ converges to $0$ as $h$ approaches $0$.
+    This is simple for the $\epsilon_1\dots$ part, let us look at the $\epsilon_2$ part:
+    \[ \frac{\epsilon_2\bigl(hf'(z_0) + \epsilon_1(h)\bigr)}h = \frac{\epsilon_2\biggl(h\parens{f'(z_0)+\frac{\epsilon_1(h)}h}\biggr)}{h\parens{f'(z_0)+\frac{\epsilon_1(h)}h}}
+       \parens{f'(z_0)+\frac{\epsilon_1(h)}h} \]
+    Which converges to $0$ (the left converges to $0$ by the characteristic of $\epsilon_2$ and the right converges to $f'(z_0)$), as required.
+
+\eblank
+
+\bexerc
+
+    Show that a non-constant analytic function cannot map a domain onto a line or curve.
+
+\eexerc
+
+\bblank
+
+    Suppose $f$ is a non-constant analytic function.
+    Then there exists $z\in\bC$ such that $f'(z)\neq0$ and so if we view $f$ as a function $f\colon\bR^2\longto\bC^2$, by the Cauchy-Riemann equations $\abs{J_f(z)}=u_x(z)^2+u_y(z)^2=v_x(z)^2+v_y(z)^2$
+    which must be non-zero, otherwise $f'(z)=0$.
+    So by the inverse function theorem, there is a neighborhood $\mU$ of $z$ and $\mV$ of $f(z)$ such that $f\colon\mU\longto\mV$ is bijective.
+    So the curve contains an open set, but that it means its interior is non-empty which is a contradiction since (injective) curves are hollow.
+
+\eblank
+
+\bexerc
+
+    Prove that there are no analytic functions $f=u+iv$ where $u(x,y)=x^2+y^2$.
+
+\eexerc
+
+\bblank
+
+    Suppose there does exist such an analytic function.
+    By the Cauchy-Riemann equations, $v_x=-u_y$ and $v_y=u_x$ so $v_x=-2y$ and $v_y=2x$ and so $v_{xy}=-2$ and $v_{yx}=2$.
+    But these second order derivatives are constant, and therefore by Clairut's theorem, $v_{xy}=v_{yx}$ in contradiction.
+
+\eblank
+
+\bexerc
+
+    Show that if $f=u+iv$ is differentiable at $z\in\bC$ then $u$ and $v$ are differentiable at $(x,y)=z$ and satisfy the Cauchy-Riemann equations.
+
+\eexerc
+
+\bblank
+
+    Notice that since $f$ is differentiable, for its differentiation we can take any path of $h\to0$ and get the same result.
+    Specifically, we will take a look at what happens when $h\in\bR$ and $h\in i\bR$.
+    So for $h\in\bR$:
+    \[ f'(z) = \lim_{\bR\ni h\to0}\frac{f(z+h)-f(z)}h = \lim_{h\to0}\frac{u(x+h,y) + iv(x+h,y) - u(x,y) - iv(x,y)}h = \lim_{h\to0}\frac{u(x+h,y)-u(x,y)}h + i\lim_{h\to0}\frac{v(x+h,y)-v(x,y)}h = 
+    u_x(x,y) + iv_x(x,y) \]
+    And similarly for $ih\in i\bR$:
+    \[ f'(z) = \lim_{h\to0}\frac{f(z+ih)-f(z)}{ih} = -i\lim_{h\to0}\frac{u(x,y+h) + iv(x,y+h) - u(x,y) - iv(x,y)}h = -i\bigl(u_y(x,y) + iv_y(x,y)\bigr) = v_y(x,y) - iu_y(x,y) \]
+    And so we get that $u_x+iv_x=v_y-iu_y$ so $u_x(x,y)=v_y(x,y)$ and $v_x(x,y)=-u_y(x,y)$ as required.
+
+    Notice that since $f$ is differentiable at $z$ there exists $\alpha$ and $\beta$ such that
+    \[ f(z+h) = f(z) + hf'(z) + \alpha(h) + i\beta(h) \]
+    where $\frac{\alpha(h)}h,\frac{\beta(h)}h\longto0$ as $h\to0$.
+    We want to show that there exists an $\epsilon$ such that
+    \[ u(z) = u(z+h) + u_x(z)h_1 + u_y(z)h_2 + \epsilon(h) \]
+    where $\frac{\epsilon(h)}{\sqrt{h_1^2+h_2^2}}\longto0$ as $h_1,h_2\to0$.
+    Notice that by differentiability of $f$ and the Cauchy-Riemann equations, we can take the real part of the equation above and get:
+    \[ u(x+h_1, y+h_2) = \Re\biggl(u(x) + (h_1+ih_2)\bigl(u_x(x,y) - iu_y(x,y)\bigr) + \alpha(h)\biggr) = u(x) + u_x(x,y)h_1 + u_y(x,y)h_2 + \alpha(h_1,h_2) \]
+    So all we need to show is that $\frac{\alpha(h_1,h_2)}{\sqrt{h_1^2+h_2^2}}=\frac{\alpha(h)}{\abs h}\longto0$.
+    This is true since $\abs{\frac{\alpha(h)}{\abs h}} = \frac{\abs{\alpha(h)}}{\abs h}$, which must converge to $0$ since $\frac{\alpha(h)}{h}$ does and convergence in $\bC$ is convergence in modulus, which
+    for that same reason implies $\frac{\alpha(h)}h$ converges to $0$.
+
+    The proof is very similar for $v$.
+
+\eblank
+
+\bexerc
+
+    \benum
+        \item Show that $e^z=e^x\cosof y+ie^x\sinof y$ is analytic over all of $\bC$ (entire).
+        \item Prove that $e^{z_1+z_2}=e^{z_1}e^{z_2}$.
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item Notice that $u(x,y)=e^x\cosof y$ and $v(x,y)=e^x\sinof y$ which are both differentiable as the product of elementary functions.
+        And
+        \[ u_x(x,y) = e^x\cosof y,\quad u_y(x,y) = -e^x\sinof y,\quad v_x(x,y)=e^x\sinof u,\quad v_y(x,y)=e^x\cosof y \]
+        So we have that
+        \[ u_x = v_y,\quad u_y = -v_x \]
+        So $f$ satisfies the Cauchy-Riemann equations for every $z\in\bC$ and $u$ and $v$ are differentiable for every $z\in\bC$, so $f$ is differentiable over all of $\bC$ and is therefore entire.
+        Furthermore, notice that
+        \[ f'(z) = u_x(z)+iv_x(z) = u(z) + iv(z) = f(z) \]
+
+        \item Suppose $z_1=x_1+iy_1$ and $z_2=x_2+iy_2$ so $z_1+z_2=(x_1+x_2)+i(y_1+y_2)$ so:
+        \[ e^{z_1+z_2} = e^{x_1+x_2}\bigl(\cosof{y_1+y_2} + i\sinof{y_1+y_2}\bigr) = e^{x_1}e^{x_2}\bigl(\cosof{y_1}+i\sinof{y_1}\bigr)\bigl(\cosof{y_2}+i\sinof{y_2}\bigr) = e^{z_1}\cdot e^{z_2} \]
+        as required.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Find all the solutions to:
+    \benum
+        \item $e^z=1$
+        \item $e^z=i$
+        \item $e^z=-3$
+        \item $e^z=1+i$
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \begin{lemm}
+
+        $e^z=e^y$ if and only if $z=y+2\pi ik$ for some $k\in\bZ$.
+
+    \end{lemm}
+
+    \begin{proof}
+
+        If $z=a+bi$ and $y=c+di$ then $e^z=e^a\bigl(\cosof b+i\sinof b\bigr)$ and $e^y=e^c\bigl(\cosof d+i\sinof d\bigr)$, and so in polar coordinates, $e^z=e^a\angle b$ and $e^y=e^c\angle d$, so $e^z=e^y$
+        if and only if $e^a=e^c$ and $b=d$ as angles, so $a=c$ by the injectivity of exponentials and $b=d+2\pi k$ for some $k\in\bZ$.
+        Thus $z=a+bi=c+i(d+2\pi k)=y+2\pi ik$ as required.\hfill$\blacksquare$
+
+    \end{proof}
+
+    To solve this problem, we transform $w$ into polar form $\abs w\angle\theta$, and from that we know $w=\abs w\cdot e^{i\theta}$ by definition of the complex exponential, and so this is equal to
+    $e^{\log\abs w+i\theta}$.
+    So the set of solutions to $e^z=w$ is $\set{\log\abs w+i\theta+i2\pi k}[k\in\bZ]$.
+
+    \benum
+        \item Since $1=e^0$ by our lemma above, $e^z=1$ if and only if $z=2\pi ik$ for any $k\in\bZ$, ie $\set{2\pi ik}[k\in\bZ]$ is the set of solutions.
+        \item Since $i=e^{\frac\pi2i}$ by our lemma above, $e^z=i$ if and only if $z\in\set{\frac\pi2i+2\pi ik}[k\in\bZ]$.
+        \item Since $-3=3e^{\pi i}=e^{\log3+i\pi}$, the solutions are $\set{\log3 + i\pi(2k+1)}[k\in\bZ]$.
+        \item Since $1+i=\sqrt2e^{i\frac\pi4}$ so the solutions are $\set{\frac12\log2+i\pi\parens{\frac14+2k}}[k\in\bZ]$.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Find the derivative of $\cosof z$ for $z\in\bC$.
+
+\eexerc
+
+\bblank
+
+    Recall the definition of the complex cosine function:
+    \[ \cosof z = \frac{e^{iz} + e^{-iz}}2 \]
+    Thus by linearity of the derivative and the chain rule (the derivative of $f(\alpha x)$ is $\alpha\cdot f'(\alpha x)$) we get that the complex cosine function is also entire (since the exponential is)
+    and since $\bigl(e^z\bigr)'=e^z$:
+    \[ \cos'(z) = \frac{ie^{iz} - ie^{-iz}}2 = \frac{-e^{iz} + e^{-iz}}{2i} = -\sinof z \]
+    So for every $z\in\bC$, $\cos'(z)=-\sinof z$ as we'd expect.
+
+\eblank
+
+\bexerc
+
+    Show that
+    \[ \sinof{x+iy} = \sinof x\coshof y+i\cosof x\sinhof y \]
+    where
+    \[ \coshof y = \frac{e^y+e^{-y}}2,\quad \sinhof y=\frac{e^y-e^{-y}}2 \]
+
+\eexerc
+
+\bblank
+
+    We know that
+    \[ \sinof{x+iy} = -\frac i2\parens{e^{-y+ix} - e^{y-ix}} = -\frac i2\parens{e^{-y}\cisof x - e^y\cisof{-x}} = -\frac i2\parens{\cosof x\bigl(e^{-y} - e^y\bigr) + i\sinof x\bigl(e^{-y} + e^y\bigr)} \]
+    \[ = \sinof x\cdot\frac{e^y + e^{-y}}2 + i\cosof x\cdot\frac{e^y - e^{-y}}2 = \sinof x\cdot\coshof y + i\cosof x\cdot\sinhof y \]
+    as required
+
+\eblank
+
+\end{document}
+

@@ -1,0 +1,217 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\openset{{\cal O}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\begin{document}
+
+\c@section=14
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infinitesimal Calculus 3}
+
+    \medskip
+    \textit{Lecture \thesection, Sunday December 4, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{prop*}
+
+    Suppose $f\colon\bR^n\longvarrightarrow\bR$ and is defined in a neighborhood of $x$ and differentiable at $x$.
+    Specifically, $f(x+h)=f(x)+L(h)+\epsilon(h)$ where $L$ is a linear transform and $\epsilon$ is an $\epsilon$ function.
+    $L$ can be represented as a matrix $\parens{A_1,\dots,A_n}$.
+    Then
+    \benum
+        \item $f$ is continuous at $x$.
+        \item For every $1\leq k\leq n$, $\partial_{x_k}f$ exists and is equal to $A_k$.
+        \item For every unit vector $u\in\bR^n$, the directional derivative $D_uf(x)$ exists and is equal to $\nabla f(x)\cdot u$.
+    \eenum
+
+\end{prop*}
+
+\begin{proof}
+
+    \benum
+        \item Notice that
+        \[ \lim_{h\varrightarrow0}f(x+h) = f(x) + \lim_{h\varrightarrow0}L(h) + \lim_{h\varrightarrow0}\epsilon(h) \]
+        And since $L$ is a linear transformation on $\bR^n$ so it is continuous (this can be shown directly since $h_i$ converge to $0$ so the sum of $A_iv_i$ converges to $0$).
+        And $\epsilon(h)$ converges to $0$, as explained previously, since $\epsilon(h)=\norm h\cdot\frac\epsilon{\norm h}$ which is the product of two limits which converge to $0$.
+        Thus $\lim_{h\varrightarrow0}f(x+h)=f(x)$ and it is therefore continuous.
+
+        \item We will show this throught the definition of partial derivatives:
+        \[ \partial_{x_k}f(x) = \lim_{\Delta x_k\varrightarrow0}\frac{f(x_1,\dots,x_k+\Delta x_k,\dots,x_n)-f(x_1,\dots,x_n)}{\Delta x_k} \]
+        If we define $h=\Delta x_k\cdot e_k$ then this is equal to
+        \[ \lim_{\Delta x_k\varrightarrow0}\frac{f(x+h)-f(x)}{\norm h} = \lim_{h\varrightarrow0}\frac{L(h)+\epsilon(h)}{\norm h} = \lim_{h\varrightarrow}\frac{L(h)}{\norm h} \]
+        Notice that $L(h)=A_k\cdot\Delta x_k=A_k\cdot\norm h$, so this is equal to the limit of $A_k$, which is equal to $A_k$.
+        So $\partial_{x_k}f(x)=A_k$ as required.
+
+        \item Notice then that by above, $L$ is represented by the gradient of $f$, $\nabla f$, so $L(v)=\nabla f\cdot v$.
+        By definition we know that
+        \begin{gather*}
+        \quad D_uf(x) = \lim_{t\varrightarrow0}\frac{f(x+tu)-f(x)}t = \lim_{t\varrightarrow0}\frac{L(tu)+\epsilon(t)}t = \lim_{t\varrightarrow}\frac{t\cdot\nabla f(x)\cdot u}t +
+        \lim_{t\varrightarrow0}\frac{\epsilon(tu)}t = \nabla f(x)\cdot u + \lim_{t\varrightarrow0}\frac{\epsilon(tu)}{\pm\norm{tu}} = \\
+        = \nabla f(x)\cdot u
+        \end{gather*}
+        Notice the $\pm$ before the $\norm{tu}$ in the last transition.
+        This is because $\norm{tu}=\abs t\cdot\norm u$.
+        But nonetheless, since the limit equals $0$, multiplying it by $\pm1$ doesn't change it.
+        So $D_uf(x)=\nabla f(x)\cdot u$ as required.
+    \eenum
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+So by this above proposition, $f$ is differentiable at $x$ if and only if
+\[ f(x+h) = f(x) + \nabla f(x)\cdot h + \epsilon(h) \]
+
+\begin{prop*}
+
+    If $f\colon\bR^n\longvarrightarrow\bR$ is defined and has partial derivatives in a neighborhood of $x\in\bR^n$ and the partial derivatives are continuous at $x$, then $f$ is differentiable at $x$.
+
+\end{prop*}
+
+The proof of this is identical to our earlier proof where $n=2$.
+
+\begin{defn*}
+
+    Suppose $f\colon\bR^n\longvarrightarrow\bR$ is defined in a neighborhood of $x\in\bR^n$ and is differentiable there.
+    Then $f(x+h)=f(x)+L(h)+\epsilon(h)$.
+    We call the linear transform $L$ $f$'s \ppemph{differential} at $x$ and is denoted $df\bigl|_x$.
+
+\end{defn*}
+
+By our previous proposition, the differential of $f$ and the gradient of $f$ are related by the following equality:
+\[ \differ fx(h) = \nabla f(x)\cdot h \]
+
+\begin{prop*}
+
+    Suppose $f,g\colon\bR^n\longvarrightarrow\bR$ are defined in some neighborhood of $x\in\bR^n$ and differentiable at $x$.
+    Then for any $\alpha,\beta\in\bR$:
+    \benum
+        \item $\differ{\alpha f+\beta g}x=\alpha\differ fx+\beta\differ gx$.
+        \item $\differ{f\cdot g}x = f(x)\cdot\differ gx+\differ fx\cdot g(x)$.
+        \item If $g(x)\neq0$ then $\differ{\frac fg}x=\frac{g(x)\differ fx-\differ gx f(x)}{g^2(x)}$.
+    \eenum
+
+\end{prop*}
+
+\begin{proof}
+
+    \benum
+        \item Since:
+        \begin{gather*}
+            \alpha f(x+h)+\beta g(x+h) = \alpha\bigl(f(x)+\differ fx(h)+\epsilon_1(h)\bigr) + \beta\bigl(g(x)+\differ gx(h)+\epsilon_2(h)\bigr)\\
+            = \alpha f(x)+\beta g(x) +
+            \bigl(\alpha\differ fx(h)+\beta\differ gx(h(\bigr) + \alpha\epsilon_1(h)+\beta\epsilon_2(h)
+        \end{gather*}
+        Since this is of the form $\alpha f(x+h)+\beta g(x+h)+L(h)+\epsilon(h)$, we have that the differential is linear as required.
+
+        \item We will do some algebraic manipulation:
+        \begin{align*}
+            (fg)(x+h)-(fg)(x) &= \bigl(f(x+h)g(x+h)-f(x+h)g(x)\bigr) + \bigl(f(x+h)g(x)-f(x)g(x)\bigr)\\
+            &= f(x+h)\bigl(g(x+h)-g(x)\bigr) + g(x)\bigl(f(x+h)-f(x)\bigr) \\
+            &= \bigl(f(x)+\differ fx(h)+\epsilon_1(h)\bigr)\bigl(\differ gx(h)+\epsilon_2(h)\bigr) + g(x)\bigl(\differ fx(h) + \epsilon_3(h)\bigr) \\
+                &= f(x)\differ gx(h) + \differ fx(h)\cdot g(x) + \bigl(\differ fx(h)\cdot\differ gx(h) + f\epsilon_2 + \differ fx\epsilon_2 + \epsilon_1\differ gx+\epsilon_1\epsilon_2 + g\epsilon_3\bigr)
+        \end{align*}
+        The rightmost side is an $\epsilon$ function since either every summand is the product of something (either a constant like $f(x)$ or an $\epsilon$ function) and another $\epsilon$ function, or it
+        is $\differ fx\cdot\differ gx$.
+        For the first option it is obvious why these are all $\epsilon$ functions, and for the latter, since linear transforms in $\bR^n$ are bounded:
+        \[ \differ fx(h)\cdot\frac{\differ gx(h)}{\norm h} \leq M\cdot\differ fx(h) \]
+        which converges to $0$ so it is an $\epsilon$ function.
+
+        \item This proof is computational and similar to the one above.
+    \eenum
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+Notice that by the relation between the differential and gradient:
+\[ \nabla(fg) = f\nabla g+g\nabla f \]
+
+\begin{defn*}
+
+    Suppose $f\colon\bR^n\longvarrightarrow\bR^k$ is a function where $f(x)=\bigl(f_1(x),\dots,f_k(x)\bigr)$ where $f_j\colon\bR^n\longvarrightarrow\bR$.
+    Then $f$ is \ppemph{differentiable} if $f(x+h)=f(x)+L(h)+\epsilon(h)$ where $L$ is a linear transform $\bR^n\longvarrightarrow\bR^k$.
+    The linear transform $L$ is $f$'s \ppemph{differential} at $h$.
+
+\end{defn*}
+
+\begin{prop*}
+
+    Suppose $f=(f_1,\dots,f_k)$ is defined around some neighborhood of $x\in\bR^n$.
+    Then $f$ is differential at $x$ if and only if $f_j$ is differential at $x$ for every $1\leq j\leq k$.
+    And in this case
+    \[ \differ fx = \bigl(\differ{f_1}x,\dots,\differ{f_k}x\bigr)^T \]
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $f$ is differentiable at $x$, recall the definition of $\chi_i\colon\parens{x_1,\dots,x_n}\varmapsto x_i$.
+    So there exists a linear transform $L\colon\bR^n\longvarrightarrow\bR^k$ and an $\epsilon$ function such that
+    \[ f(x+h) = f(x) + L(h) + \epsilon(h) \]
+    And so $f_j(x+h)=\chi\bigl(f(x+h)\bigr)$ so:
+    \[ f_j(x+h) = f_j(x) + \chi_j(L(h)) + \chi_j(\epsilon(h)) \]
+    Since both $\chi_j$ and $L$ are linear transforms, so is their composition.
+    Since convergence in $\bR^n$ is pointwise, if $\frac{|epsilon(h)}{\norm h}$ converges to $0$ so does $\chi_j\parens{\frac{\epsilon(h)}{\norm h}=\frac{\chi_j(\epsilon(h))}{\norm h}}$.
+    Therefore $\chi_j\circ\epsilon$ is an $\epsilon$ function, so $f_j$ is differentiable.
+
+    To show the converse, suppose $f_j(x+h)=f_j(x)+L_j(h)+\epsilon_j(h)$ then $f(x+h)=f(x)+\bigl(L_1(h),\dots,L_k(h)\bigr)^T+\bigl(\epsilon_1(h),\dots,\epsilon_k(h)\bigr)^T$.
+    Now, the vector $L=\bigl(L_1,\dots,L_k\bigr)^T$ represents a linear transform, since it is a vector of one dimensional linear transforms, which can be represented as a matrix.
+    And the vector of $\epsilon$ functions is itself an epsilon function since if $\frac{\epsilon_j(h)}{\norm h}$ converges to $0$ for each $j$, then since convergence is pointwise,
+    $\frac{\epsilon(h)}{\norm h}$ converges to $0$ as well for $\epsilon=\bigl(\epsilon_1,\dots,\epsilon_k\bigr)$.
+    So $f(x+h)=f(x)+L(h)+\epsilon(h)$ as required.
+    And notice that we showed $L=\bigl(L_1,\dots,L_k\bigr)^T$, that is
+    \[ \differ fx = \biggl(\differ{f_1}x,\dots,\differ{f_k}x\biggr) \]
+    as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+Notice that the matrix described can be written as:
+\[ \begin{pmatrix} \nabla f_1 \\ \vdots \\ \nabla f_k \end{pmatrix} \]
+Since the representation of the differential is the gradient.
+By definition this is equal to
+\[ \begin{pmatrix} \frac{\partial f_1}{\partial x_1} & \cdots & \frac{\partial f_1}{\partial x_n} \\ \vdots & \ddots & \vdots \\
+\frac{\partial f_k}{\partial x_1} & \cdots & \frac{\partial f_k}{\partial x_n} \end{pmatrix} \]
+
+
+\begin{defn*}
+
+    If $f\colon\bR^n\longvarrightarrow\bR^k$ is differentiable, then we define the above matrix to be the \ppemph{Jacobian matrix}, denoted $\dfrac{\partial(f_1,\dots,f_k)}{\partial(x_1,\dots,x_n)}$.
+
+\end{defn*}
+
+\end{document}
+

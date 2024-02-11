@@ -1,0 +1,334 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\usepackage{tikz-cd}
+
+\input mathex
+\input prettyprint
+\input preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\slfrac#1#2{\left.{}^{#1}\mkern-4mu\middle/\mkern-3mu{}_{#2}\right.}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\newfunc{eulerg}{{\rm Euler}}({})
+\newfunc{order}o({})
+\newfunc{ker}{{\rm Ker}}({})
+\newfunc{image}{{\rm Im}}({})
+\newfunc{lattice}{{\cal L}}(\vert)
+\newfunc{powset}{{\cal P}}(\vert)
+\newfunc{units}{{\cal U}}(\vert)
+\newfunc{sign}{{\rm sgn}}({})
+\newfunc{aut}{{\rm Aut}}({})
+\newfunc{speclinear}{{\rm SL}}({})
+\newfunc{genlinear}{{\rm GL}}({})
+\newfunc{projlinear}{{\rm PGL}}({})
+\newfunc{specprojlinear}{{\rm PSL}}({})
+
+\let\normalsub=\trianglelefteq
+
+%\def\@backhook{\@linehead@type{1 2 m .5 2 0 1.5 0 1 c 0 .5 .5 0 1 0 c S}{1}}
+\def\@backhook{\@linehead@type{.5 1 m .25 1 0 .75 0 .5 c 0 .25 .25 0 .5 0 c S}{0.5}}
+\def\@doublerarrow{\@linehead@type{0 0 m 2 0 l 1 0 0 1 0 1.5 c 2 0 m 1 0 0 -1 0 -1.5 c 2 0 m 4 0 l 3 0 2 1 2 1.5 c 4 0 m 3 0 2 -1 2 -1.5 c S}{4}}
+\@arrow@def{varhookrightarrow}\@backhook\@rarrow
+\@arrow@def{vardoublerightarrow}\@linecap\@doublerarrow
+
+\let\mmorph=\longvarhookrightarrow
+
+\begin{document}
+
+\c@section=8
+
+\barcolorbox{220, 220, 255}{0, 0, 130}{80, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Group Theory}
+
+    \medskip
+    \textit{Lecture \thesection, Sunday November 27, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+Recall that in our discrete course, we proved the Cantor-Schroder-Bernstein theorem: if there exists injections $f\colon A\longvarrightarrow B$ and $g\colon B\longvarrightarrow C$ then there exists
+a bijection between $A$ and $B$.
+Does this result have a parallel in groups?
+That is, if there exists $f\colon A\mmorph B$ and $g\colon B\mmorph A$, are $A$ and $B$ isomorphic?
+The answer is no.
+Take for instance $\bF_2$ and $\bF_3$.
+$\bF_2\mmorph\bF_3$ trivially and $\bF_3\mmorph\bF_2$, but $\bF_2$ and $\bF_3$ are not isomorphic (prove this!).
+
+Returning to chains, recall that the following are exact chains if and only if (we use $1$ for the trivial group):
+\benum
+    \item $A\xvarrightarrow fB\longvarrightarrow 1$; $\image f=\ker g=B$ which is if and only if $f$ is surjective (epimorphism).
+    \item $1\longvarrightarrow A\xvarrightarrow fB$; $f$ is injective (monomorphism).
+    \item $1\longvarrightarrow A\xvarrightarrow fB\longvarrightarrow 1$; $f$ is an isomorphism.
+    \item $1\longvarrightarrow A\mmorph B\longvardoublerightarrow C\longvarrightarrow 1$; $C\cong\slfrac BK$ and $K\cong A$, that is $C{\hbox{``$=$''}}\slfrac BA$.
+\eenum
+
+\begin{defn*}
+
+    A diagram \ppemph{commutes} if every possible path gives you the same output.
+    That is if you have two paths $G\varrightarrow\phi_1,\dots,\phi_n\varrightarrow H$ and $G\varrightarrow\psi_1,\dots,\psi_m\varrightarrow H$ then
+    \[ \phi_n\circ\cdots\circ\phi_1=\psi_m\circ\cdots\circ\psi_1 \]
+    (since composition is from right to left.)
+
+\end{defn*}
+
+So for example the following commutes
+\[\begin{tikzcd}
+	G & G \\
+	G & G
+	\arrow["f", from=1-1, to=1-2]
+	\arrow["g", from=1-2, to=2-2]
+	\arrow["h"', from=1-1, to=2-1]
+	\arrow["k"', from=2-1, to=2-2]
+\end{tikzcd}\]
+if and only if $g\circ f=k\circ h$.
+
+\begin{exam}
+
+    We define the \ppemph{projective linear group} to be $\projlinearof[n]\bF=\slfrac{\genlinearof[n]\bF}{\set{\alpha I}}$.
+    We further define the \ppemph{projective special linear group} to be $\specprojlinearof[n]\bF=\slfrac{\speclinearof[n]\bF}{\set{\alpha I}}$.
+    And one last definition, $\mu_n(\bF)=\set{a\in\bF}[a^n=1]$.
+    Let us look at
+    \tikzcdset{color=\pp@curr@ord@color}
+    \[ \begin{tikzcd}
+        & 1 & 1 & 1 \\
+        1 & \mu_n(\bF) & \bF^\times & \bF^\times & 1 \\
+        1 & \speclinearof[n]\bF & \genlinearof[n]\bF & \bF^\times & 1 \\
+        1 & \specprojlinearof[n]\bF & \projlinearof[n]\bF & \slfrac{\bF^\times}{(\bF^\times)^n} & 1 \\
+        & 1 & 1 & 1
+        \arrow[\pp@curr@ord@color, hook, from=2-2, to=2-3]
+        \arrow[\pp@curr@ord@color, "\cdot n", from=2-3, to=2-4]
+        \arrow[\pp@curr@ord@color, hook, from=3-2, to=3-3]
+        \arrow[\pp@curr@ord@color, "\det", from=3-3, to=3-4]
+        \arrow[\pp@curr@ord@color, hook, from=4-2, to=4-3]
+        \arrow[\pp@curr@ord@color, "\det", from=4-3, to=4-4]
+        \arrow[\pp@curr@ord@color, hook', from=2-2, to=3-2]
+        \arrow[\pp@curr@ord@color, hook', from=2-3, to=3-3]
+        \arrow[\pp@curr@ord@color, hook', from=2-4, to=3-4]
+        \arrow[\pp@curr@ord@color, two heads, from=3-2, to=4-2]
+        \arrow[\pp@curr@ord@color, two heads, from=3-3, to=4-3]
+        \arrow[\pp@curr@ord@color, two heads, from=3-4, to=4-4]
+        \arrow[\pp@curr@ord@color, from=1-2, to=2-2]
+        \arrow[\pp@curr@ord@color, from=1-3, to=2-3]
+        \arrow[\pp@curr@ord@color, from=1-4, to=2-4]
+        \arrow[\pp@curr@ord@color, from=4-2, to=5-2]
+        \arrow[\pp@curr@ord@color, from=4-3, to=5-3]
+        \arrow[\pp@curr@ord@color, from=4-4, to=5-4]
+        \arrow[\pp@curr@ord@color, from=2-1, to=2-2]
+        \arrow[\pp@curr@ord@color, from=3-1, to=3-2]
+        \arrow[\pp@curr@ord@color, from=4-1, to=4-2]
+        \arrow[\pp@curr@ord@color, from=2-4, to=2-5]
+        \arrow[\pp@curr@ord@color, from=3-4, to=3-5]
+        \arrow[\pp@curr@ord@color, from=4-4, to=4-5]
+    \end{tikzcd} \]
+    This diagram commutes.
+
+\end{exam}
+
+\newpage
+\subsection{Group actions}
+
+\begin{defn*}
+
+    Suppose $X$ is any set, a \ppemph{group action} of a group $G$ on $X$ is a function $\Phi\colon G\times X\longvarrightarrow X$.
+    Which satisfies:
+    \benum
+        \item $\Phi\bigl(g,\Phi(h,x)\bigr)=\Phi(gh,x)$.
+        \item $\Phi(1,x)=x$.
+    \eenum
+
+\end{defn*}
+
+\begin{thrm*}
+
+    An equivalent definition of a group action on $X$ by $G$ is a homomorphism $\phi\colon G\longvarrightarrow S_X$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Suppose we have a homomorphism $\phi\colon G\longvarrightarrow S_X$.
+    We define $\Phi$ by
+    \[ \Phi(g,x) = \bigl(\phi(g)\bigr)(x) \]
+    We claim this is a group action:
+    \[ \Phi\bigl(g,\Phi(h,x)\bigr)=\Phi\bigl(g,(\phi(h)(x))\bigr)=\phi(g)\bigl(\phi(h)(x)\bigr)=\bigl(\phi(g)\circ\phi(h)\bigr)(x) = \phi(gh)(x) = \Phi(gh,x) \]
+    which proves the first axiom, and
+    \[ \Phi(1,x) = \phi(1)(x) = {\rm id}(x) = x \]
+    which proves $\Phi$ is indeed a group action.
+
+    Now suppose $\Phi$ is a group action, we must find a homomorphism $\phi$.
+    Given $g\in G$ we define $\sigma=\phi(g)$ by $\sigma(x)=\Phi(g,x)$.
+    This is just a longer way of saying $\phi$ is defined by:
+    \[ \bigl(\phi(g)\bigr)(x) = \Phi(g,x) \]
+    It is not immediately clear why $\phi$ is well defined (as a function), but we will first show that it has the homomorphism property.
+    \[ \phi(gh)(x)=\Phi(gh,x)=\Phi\bigl(g,\Phi(h,x)\bigr)=\Phi\bigl(g,\phi(h)(x)\bigr) = \phi(g)\bigl(\phi(h)(x)\bigr) = \phi(g)\circ\phi(h)(x) \]
+    And therefore $\phi(gh)=\phi(g)\circ\phi(h)$ as required.
+
+    Now we will show that $\phi(g)$ is indeed a permutation.
+    Notice that since $\phi$ has the homomorphism property:
+    \[ \phi(g)\circ\phi(g^{-1})=\phi(gg^{-1}) = \phi(1) \]
+    And $\phi(1)={\rm id}$, so $\phi(g)$ has an inverse, namely $\phi(g^{-1})$ so it is a bijection as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+Notice that this theorem gives us a simple proof that if $G$ acts on $X$ and $H\leq G$, then $H$ acts on $X$ (in the same way).
+This is because we can take the same homomorphism from $G$ to $S_X$ an restrict it to $H$.
+
+We use a compact notation for group actions: instead of writing $\Phi(g,x)$ we instead write $gx$.
+This means that it must satisfy
+\benum
+    \item $g\bigl(hx\bigr)=\bigl(gh\bigr)x$. (Note that on the right side $gh$ is not a group action rather it is the \emph{group's} action, its operation).
+    \item $ex=x$.
+\eenum
+
+\begin{exam}
+
+    \benum
+        \item $S_n$ acts on $\set{1,\dots,n}$ by $\Phi(\sigma, k)=\sigma(k)$ or with the compact notation: $\sigma k=\sigma(k)$.
+        This is a group action since $\sigma\cdot(\tau\cdot x)=\sigma(\tau(x))=(\sigma\tau)(x)=(\sigma\tau)x$.
+        \item If $G$ is a graph, $\autof G$ acts on $V$.
+        \item $\genlinear[n]\bF$ acts on $\bF^n$ by $\Phi(A,v)=Av$ (matrix multiplication).
+    \eenum
+
+\end{exam}
+
+\begin{defn*}
+
+    A group action of $G$ on $X$ is \ppemph{faithful} if the homomorphism $\phi\colon G\longvarrightarrow S_X$ is injective.
+
+\end{defn*}
+
+\begin{prop*}
+
+    A group action is faithful if and only if for every $e\neq g\in G$, there is a $x\in X$ such that $gx\neq x$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose a group action is faithful, then if $gx=x$ for every $x$, $\phi(g)(x)=x$ for every $x$, so $\phi(g)={\rm id}$ and therefore $g=e$.
+    To show the converse, suppose $\phi(g)={\rm id}$ then $gx=\phi(g)(x)=x$ for every $x\in X$, so $g=e$ and therefore $\phi$ is injective. 
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{thrm*}[cayleyTheorem,Cayley's\ Theorem]
+
+    If $G$ is a group $G\mmorph S_G$.
+    Specifically $G$ is isomorphic to a subgroup of $S_G$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    We will show this by showing that there is a faithful group action of $G$ on $G$.
+    We define this group action by $\Phi(g,h)=gh$.
+    We claim this is a group action:
+    \benum
+        \item $\Phi(g,\Phi(h,k))=g(hk)=(gh)k=\Phi(gh,k)$.
+        \item $\Phi(e,g)=eg=g$.
+    \eenum
+    And we know claim it is faithful: if $gh=h$ then $g=e$, so if $\Phi(g,h)=h$ then $g=e$.
+    (Notice that this is a stronger claim than the group action being faithful, for any $g\neq e$ than $gh\neq h$ for \emph{any} $h\in G$, such an action is called \emph{free}).
+
+    Since the action is faithful, its induced homomorphism is injective.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+Note that the monomorphism $G\mmorph S_G$ is given by $\bigl(\phi(g)\bigr)(h)=gh$.
+Thus if $G\subseteq\set{1,\dots,n}$ then if $\phi(k)=\sigma_k$, $\sigma_k(j)=k\circ j$.
+So if $G=\bZ_n$ then $\sigma_k(j)=k+j$, etc.
+
+\begin{exam}
+
+    We will define a monomorphism $\eulergof 9\mmorph S_9$ by:
+    \begin{align*}
+        1 &\varmapsto {\rm id} \\
+        2 &\varmapsto \pmat{1 & 2 & 4 & 8 & 7 & 5} \\
+        4 &\varmapsto \pmat{1 & 4 & 7}\pmat{2 & 8 & 5} \\
+        5 &\varmapsto \pmat{1 & 5 & 7 & 8 & 4 & 2} \\
+        6 &\varmapsto \pmat{1 & 5 & 7 & 8 & 4 & 2} \\
+        7 &\varmapsto \pmat{1 & 7 & 4}\pmat{2 & 5 & 8} \\
+        8 &\varmapsto \pmat{1 & 8}\pmat{2 & 7}\pmat{4 & 5}
+    \end{align*}
+
+\end{exam}
+
+\begin{defn*}
+
+    Suppose $G$ acts on $X$, then the \ppemph{orbit} of $x_0\in X$ is:
+    \[ G\cdot x_0=\set{gx_0}[g\in G] \]
+    The \ppemph{stabilizer} of $x_0$ is:
+    \[ G_{x_0} = \set{g\in G}[g\cdot x_0=x_0] \leq G \]
+    This is a subgroup since if $gx_0$ and $hx_0=x_0$ then $gh(x_0)=g(x_0)=x_0$ so $gh\in G_{x_0}$, and if $g\in G_{x_0}$ then $(g^{-1}g)x_0=ex_0=x_0$, but $(gg^{-1})x_0=g^{-1}(gx_0)=g^{-1}x_0=x_0$.
+
+\end{defn*}
+
+\begin{prop*}
+
+    The set of orbits partition $X$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $y\in G\cdot x$ then $y=gx$ so if $g'y\in Gy$ then $g'y=g'gx\in Gx$, so $Gy\subseteq Gx$, and by symmetry $Gx=Gy$.
+    And since $x\in Gx$, the orbits partition $X$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{prop*}
+
+    The stabilizer of an element $x\in X$ is a subgroup of $G$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Firstly, by definition $e\in G_x$.
+    If $g,h\in G_x$ then $(gh)\cdot x=g\cdot(h\cdot x)=g\cdot x=x$ and so $gh\in G_x$.
+    And finally if $g\in G_x$, then $g^{-1}\cdot x=g^{-1}\cdot(g\cdot x)=(g^{-1}g)\cdot x=x$ so $g^{-1}\in G_x$ and so $G_x$ is a subgroup of $G$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{prop*}
+
+    $\abs{G\cdot x_0}=\bigl[G:G_{x_0}\bigr]$
+
+\end{prop*}
+
+\begin{proof}
+
+    We will map $g\cdot G_{x_0}$ to $g\cdot x_0$.
+    This is well defined: if $g\cdot G_{x_0}=g'\cdot G_{x_0}$ then $g^{-1}g'\in G_{x_0}$ so $g^{-1}g'x_0=x_0$ so $g'x_0=gx_0$.
+    This is surjective since every point in the orbit is of the form $g\cdot x_0$ and the image of $g\cdot G_{x_0}$ is $gx_0$.
+    This is injective since if $g\cdot x_0=g'\cdot x_0$ then $g^{-1}g'\in G_{x_0}$ so $g'\in g\cdot G_{x_0}$ and therefore since cosets partition $G$, $g'\cdot G_{x_0}=g\cdot G_{x_0}$ as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\end{document}
+

@@ -1,0 +1,299 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz-cd}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{conj}{Conjecture}{255,130,130}{150,0,0}{200,0,0}
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\undersumtext#1{\vtop{\hsize=2cm\relax\centering\small #1}}
+
+\newfunc{oracle}{\hbox{\tencsc oracle}}({})
+
+\def\sps{\texttt{\char32}}
+\def\sat{\mathsf{SAT}}
+\def\is{\mathsf{IS}}
+\def\threesat{\mathsf{3SAT}}
+\def\clique{\mathsf{Clique}}
+\def\vertcover{\textsf{Vertex-Cover}}
+\def\domset{\textsf{Dom-Set}}
+\def\dhp{\mathsf{DHP}}
+\def\dhc{\mathsf{DHC}}
+\def\hc{\mathsf{HC}}
+\def\tsp{\mathsf{TSP}}
+\def\threecolor{\mathsf{3Color}}
+\def\kcolor{k\mathsf{Color}}
+\def\Color{\mathsf{Color}}
+\def\subsum{\mathsf{SubsetSum}}
+
+\def\PF{\mathbf{PF}}
+\def\PC{\mathbf{PC}}
+\def\P{\mathbf{P}}
+\def\NP{\mathbf{NP}}
+\def\NPH{\mathbf{NPH}}
+\def\NPC{\mathbf{NPC}}
+\def\coNP{\mathbf{coNP}}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mN{\mathcal{N}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=6
+
+\barcolorbox{255, 220, 220}{130, 0, 0}{200, 80, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Computability and Complexity}
+
+    \medskip
+    \textit{Lecture \thesection, Thursday August 17, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+What is the significance of $\NP$-complete problems?
+Well, $\P=\NP$ if and only if there exists an $\NP$-complete problem which is also in $\P$.
+Obviously if $\P=\NP$ then every $\NP$ problem, and in particular every $\NP$-complete problem is in $\P$.
+And if there exists an $\NP$-complete problem in $\P$, then every problem in $\NP$ can be reduced to this problem in polynomial time and therefore is in $\P$.
+
+But if $\P\neq\NP$, then does there exist an $\NP$ problem which is not $\NP$-complete but is also not in $\P$?
+It turns out that there is.
+
+\begin{thrm*}[ladnerTheorem,Ladner's\ Theorem]
+
+    If $\P\neq\NP$, then there exists a probem in $\NP$ which is neither $\NP$-complete nor in $\P$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    The idea is to take an $\NP$-complete problem and remove an infinite number of results, while retaining an infinite number of results.
+    So we define a function of the form
+    \[ S = \set{x}[x\in\sat,\, f(\abs x)\text{ is even}] \]
+    Our goal is to define a function $f\colon\bN\longto\bN$ which has the following properties:
+    \benum
+        \item $f$ can be computed in polynomial time.
+        \item If $S\in\P$ then $f$ is even except for a finite number of inputs.
+        This would be a contradiction, as then $S$ would be equal to $\sat$ minus a finite number of results.
+        But then $S$ would remain $\NP$-complete (we could define a reduction from $\sat$ to $S$), and thus $S$ is in $\P$ and $\NP$-complete, so $\P=\NP$ in contradiction.
+        \item If $S$ is $\NP$-complete, then $f$ is odd except for a finite number of inputs.
+        This would imply $S$ is finite, and thus in $\P$, meaning $\P=\NP$ in contradiction.
+    \eenum
+
+    So all that remains is to find such a function $f$.
+    Let us define the sequence of Turing machines which decide search problems in polynomial time
+    \[ M_1^D,M_2^D,\dots,M_n^D,\dots \]
+    and let us define the sequence of Turing machines which compute some Karp reduction in polynomial time
+    \[ M_1^K,M_2^K,\dots,M_n^K,\dots \]
+    Let $M_\sat$ be a Turing machine which decides $\sat$ ($\sat$ is decidable in exponential time).
+
+    Let us define the Turing machine $M_f$ which accepts as input a number in unary, and we define $f(n)=M_f(1^n)$ ($1^n$ means $n$ represented in unary).
+    We define it like so:
+
+    \algorithm
+        \Function{$M_f$}{$1^n$}
+            \lIf{$n=1$} \Return $1$
+            \State $k\gets M_f(1^{n-1})$
+            \If{$k$ is even}
+                \State $i\gets\frac k2$
+                \For{$z\in\set{0,1}^*$ where $\abs z\leq\log(n)$}
+                    \Comment The idea now is to see if $M_i^D(z)$ returns the correct answer to the question $z\in S$.\cr
+                    This is if and only if $M_\sat(n)$ returns one, and $M_f(1^{\abs z})$ returns one (meaning $f(\abs z)$ is odd).
+                    \EndComment
+                    \lIf{$M_i^D(z)=1$ \textbf{and} ($M_\sat(z)=0$ \textbf{or} $M_f(z)=0$)} \Return $k+1$
+                    \lElseIf{$M_i^D(z)=0$ \textbf{and} $M_\sat(z)=1$ \textbf{and} $M_f(z)=1$} \Return $k+1$
+                \EndFor
+                \State \Return $k$
+                \Comment So we return $k+1$ if $M_i^D$ gives the wrong answer, and $k$ if it gives the correct answer.\EndComment
+            \ElseIf{$k$ is odd}
+                \State $i\gets\frac{k+1}2$
+                \For{$z\in\set{0,1}^*$ where $\abs z\leq\log(n)$}
+                    \Comment Now we check if $M_i^K$ fails to be a reduction from $\sat$ to $S$.
+                    \EndComment
+                    \lIf{$M_f(z)\neq M_\sat(M_i^K(z))$} \Return $k+1$
+                \EndFor
+                \State \Return $k$
+            \EndIf
+        \EndFunc
+    \ealgorithm
+
+    We must show that $M_f$ runs in polynomial time.
+    Note that at each step, we iterate over inputs $z$ whose length is at most $\log(n)$, and then it runs some Turing machines whose time is exponential in $\abs z$.
+    There are at most $n$ such inputs, and since $\abs z$ is logarithmic in $n$, being exponential in $\abs z$ is polynomial in $n$.
+    Thus $M_f$ runs in polynomial time, as required.
+
+    Notice that $f(n)\leq f(n+1)\leq f(n)+1$, as if $M_f(1^{n-1})$ returns $k$, then $M_f(1^n)$ returns either $k$ or $k+1$.
+    In other words $f(n+1)\in\set{f(n),f(n)+1}$.
+
+    If $S\in\P$ then there exists a Turing machine $M_i^D$ which decides $S$.
+    Let $k=2i$, then if $M_f(1^{n^*})=k$ then for $n=n^*+1$, we get $M_f(1^{n-1})=k$ and so $M_i^D$ still decides $S$ and so $M_f(1^n)$ will return $k$.
+    Inductively we see that for every $n^*\geq n$, $f(n)=k$.
+    Now suppose that $M_f(1^n)$ is never $k$, then there is some other stable point.
+    If this stable point is even, then $f$ is even for all but a finite number of inputs, as required.
+    Otherwise we have a stable odd point, and this means we have a Turing machine $M_i^K$ which forms a reduction from $\sat$ to $S$, which would mean $S$ is $\NP$-complete and so $\P=\NP$ in contradiction.
+
+    And if $S$ is $\NP$-complete, then there exists a Turing machine $M_i^K$ which computes a Karp reduction from $\sat$ to $S$.
+    Let $k=2i-1$, then similar to above there exists an $n^*$ such that for every $n\geq n^*$, $f(n)=k$ and so $f$ is odd except for a finite number of times.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    The class of $\NP$ is closed under Karp reductions.
+    In other words, if $S\in\NP$ and there exists a Karp reduction from $S'$ to $S$, then $S'\in\NP$.
+
+\end{prop*}
+
+In other words, $\NP$ is downward-closed.
+
+\begin{proof}
+
+    Let $S\in\NP$, and so it has a polynomial proof system $V$, and let its polynomial be $p$.
+    Let $f$ be the Karp reduction from $S'$ to $S$.
+    We will define a verifier $V'(x,y)=V(f(x),y)$.
+    Since $f$ can be computed in polynomial time, and $V$ runs in polynomial time, $V'$ also runs in polynomial time.
+
+    And since $f$ can be computed in polynomial time, there exists a polynomial $q$ such that $\abs{f(x)}\leq q(\abs x)$ (since it only has polynomial time to add data).
+    So if $x\in S'$ then $f(x)\in S$, and so there exists a $y$ such that $\abs y\leq p(\abs{f(x)})$ and $V(f(x),y)=1$.
+    So $V'(x,y)=1$ where $\abs y\leq p(\abs{f(x)})\leq p(q(\abs x))$ which is a polynomial (we can assume that the polynomials are increasing, as we can assume that they are of the form $x^n$).
+    And if $x\notin S'$ then $f(x)\notin S$ and so for every $y$, $V'(x,y)=V(f(x),y)=0$ as required.
+    \qed
+
+\end{proof}
+
+It is also obvious that $\P$ is closed under Karp reductions.
+If $S\in\P$ and $f$ is a Karp reduction from $S'$ to $S$, then if $M$ solves $S$ in polynomial time, then we simply return $M(f(x))$ and this solves $S'$.
+
+\begin{defn*}
+
+    We define the class $\coNP$ to be
+    \[ \coNP = \set{S}[S^c\in\NP] \]
+
+\end{defn*}
+
+Note that since $\P$ is closed under complements, $\P\subseteq\NP\cap\coNP$.
+And if $\P=\NP$ then $\NP$ is closed under complements and so $\NP=\coNP$.
+So it is an open problem if $\NP\neq\coNP$.
+
+\begin{prop*}
+
+    If $\coNP$ contains an $\NP$-hard problem, then $\NP=\coNP$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Notice that $\coNP\subseteq\NP$ if and only if $\NP\subseteq\coNP$.
+    Since if $\coNP\subseteq\NP$ then if $S\in\NP$, $S^c\in\coNP\subseteq\NP$ and so $S\in\coNP$ as required.
+    Similar for the converse.
+
+    Suppose $S$ is $\NP$-hard and in $\coNP$.
+    And since $S^c$ is in $\NP$, there exists a Karp reduction $f$ from $S^c$ to $S$, since $S$ is $\NP$-hard.
+    Let $S'$ be in $\coNP$, then $(S')^c\in\NP$ and so there exists a Karp reduction $g$ from $(S')^c$ to $S$, and this is also a Karp reduction from $S'$ to $S^c$.
+    So for every $S'\in\coNP$, there exists a Karp reduction from $S'$ to $S^c\in\NP$, and since $\NP$ is downward-closed, $S'\in\NP$.
+    Thus $\coNP\subseteq\NP$, and so $\coNP=\NP$.
+    \qed
+
+\end{proof}
+
+But $\NP$-hard problems require that there exists a Karp reduction from every $\NP$ problem to them.
+Karp reductions are quite restrictive, what if we loosened this constraint to require Cook reductions instead?
+
+\begin{prop*}
+
+    If $\NP\cap\coNP$ contains a problem for which there exists a Cook reduction from every $\NP$ problem to it, then $\NP=\coNP$.
+
+\end{prop*}
+
+\begin{proof}
+
+    We will show $\coNP\subseteq\NP$.
+    Let $S$ be such a problem in $\NP\cap\coNP$.
+    Let $S'\in\coNP$, and so there exists a Cook reduction from $(S')^c$ to $S$.
+    We can take this Cook reduction and invert its output, and this defines a Cook reduction from $S'$ to $S$.
+
+    So for every $S'\in\coNP$, there exists a polynomial-time algorithm $A$ with an oracle for $S$ which decides $S'$.
+    Notice that $A$ queries the oracle a polynomial number of times.
+    And since $S\in\NP\cap\coNP$ there exist verifiers $V_S$ and $V_{S^c}$ with polynomials $p_S$ and $p_{S^c}$, which form polynomial proof systems for $S$ and S$^c$ respectively.
+    Let us define a verifier $V'$ which accepts as a witness a sequence of results of queries and witnesses for the oracle.
+
+    And so the input for $V'$ is of the form $\bigl(x,\bigl((\sigma_1,w_1),(\sigma_2,w_2),\dots,(\sigma_t,w_t)\bigr)\bigr)$ where $\sigma_i$ is the result of a query for the oracle, and $w_i$ is a witness.
+    Then $V'$ runs $A(x)$, and whenever $A$ queries the oracle with a query of the form $q_i\in S$, $V'$ will check,
+    \benum
+        \item If $\sigma_i=1$ then $V'$ checks that $V_S(q_i,w_i)=1$.
+        If so, $V'$ continues.
+        If not, $V'$ returns zero.
+        \item If $\sigma_i=0$ then $V'$ checks that $V_{S^c}(q_i,w_i)=0$.
+        If so, $V'$ continues.
+        If not, $V'$ returns zero.
+    \eenum
+
+    $V'$ runs a polynomial time algorithm, and at each step it may run another polynomial time algorithm ($V_S$ or $V_{S^c}$), which all in all takes polynomial time.
+
+    If $x\in S'$ then let $y$ be a sequence of answers to the oracle calls in $A$, along with the polynomial-length witnesses for $V_S$ or $V_{S^c}$.
+    Since $A$ makes a polynomial number of oracle queries, $y$ has a polynomial number of values, and each value is polynomial in $x$ (the algorithm only has time to construct queries which are polynomial in
+    $x$, and these have witnesses which are polynomial in their length, which is polynomial in the length of $x$).
+
+    Now, if $x\notin S'$ then for any sequence $y$ if $V'$ does not accept all the witnesses, then it returns zero.
+    Otherwise, every oracle call gives a valid result (ie. $\sigma_i=1$ means $q_i\in S$, and $\sigma_i=0$ means $q_i\notin S$), and so $V'$ acts exactly like $A$, and so $V'$ would return zero.
+
+    Thus $V'$ is a polynomial proof system for $S'$, as required.
+    \qed
+
+\end{proof}
+
+\end{document}

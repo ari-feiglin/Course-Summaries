@@ -1,0 +1,313 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\usepackage{tikz-cd}
+
+\catcode`\@=11
+\input pdfmsym
+
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\slfrac#1#2{\left.{}^{#1}\mkern-4mu\middle/\mkern-3mu{}_{#2}\right.}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\newfunc{eulerg}{{\rm Euler}}({})
+\newfunc{order}o({})
+\newfunc{ker}{{\rm Ker}}({})
+\newfunc{image}{{\rm Im}}({})
+\newfunc{lattice}{{\cal L}}(\vert)
+\newfunc{powset}{{\cal P}}(\vert)
+\newfunc{units}{{\cal U}}(\vert)
+\newfunc{sign}{{\rm sgn}}({})
+\newfunc{aut}{{\rm Aut}}({})
+\newfunc{speclinear}{{\rm SL}}({})
+\newfunc{genlinear}{{\rm GL}}({})
+\newfunc{projlinear}{{\rm PGL}}({})
+\newfunc{specprojlinear}{{\rm PSL}}({})
+\newfunc{core}{{\rm Core}}(\vert)
+\newfunc{inner}{{\rm Inn}}(\vert)
+\newfunc{outer}{{\rm Out}}(\vert)
+
+\let\normalsub=\trianglelefteq
+\let\mmorph=\longvarhookrightarrow
+
+\begin{document}
+
+\c@section=9
+
+\barcolorbox{220, 220, 255}{0, 0, 130}{80, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Group Theory}
+
+    \medskip
+    \textit{Lecture \thesection, Sunday December 18, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+If $C$ is a cube, which is a graph, recall that $\autof C$ is the set of automorphisms of the cube.
+We can think of the cube as either a set of $8$ vertices, or $6$ faces, or $12$ edges.
+Notice that if we determine the placement of two vertices in a automorphism, that determines the rest of them.
+So we have $8$ places to place the first vertex, and this vertex has three neighbors so we have $3$ places to put the next vertex, so all in all we have $24$ automorphisms.
+If we think in terms of faces, we have $6$ places to put the first face, and we can rotate it (or rather the other faces) $4$ times, which gives $24$ automorphisms.
+And lastly if we think in terms of edges, we can flip an edge, giving $24$ automorphisms.
+And as it turns out $\autof C\cong S_4$.
+
+\subsection{More Group Actions}
+
+Notice that by a previous proposition:
+\[ \bigl[G:G_x\bigr] = \abs{G\cdot x} \]
+Which means that
+\[ \abs G = \abs{G\cdot x}\cdot\abs{G_x} \]
+and therefore the orders of both the orbit and stabilizer of $x$ divide the order of $G$.
+
+Notice that we can define the following group actions of $G$ on itself:
+\blist
+    \item $g\cdot x=gx$, we used this in our proof of Cayley's theorem.
+    \item $g\cdot x=xg^{-1}$.
+    \item $g\cdot x=gxg^{-1}$. This specific group action has some interesting properties, so we will show that it is indeed a group action:
+    $e\cdot x=exe^{-1}=x$ and $g\cdot(h\cdot x)=g\cdot(hxh^{-1})=ghxh^{-1}g^{-1}=ghx(gh)^{-1}=(gh)\cdot x$.
+\elist
+
+Notice that under the third group action, the orbit of an element $x\in G$ is $G\cdot x=\set{gxg^{-1}}[g\in G]=[x]$ the equivalence class of all conjugates of $x$.
+And its stabilizer we denote $C_G(x)=G_x=\set{g\in G}[gxg^{-1}=x]=\set{g\in G}[gx=xg]$ is the set of all elements $g\in G$ which commute with $x$.
+Thus
+\[ \abs{[x]} = \bigl[G:C_G(x)\bigr] \]
+
+\begin{defn*}
+
+    We define for every $x\in G$ the \ppemph{center} of $x$, $C_G(x)$, to be the stabilizer of $x$ under the conjugate group action of $G$.
+
+\end{defn*}
+
+Now for example take $\pmat{1&2&3}\in S_4$, its conjugacy class is the set of all $3$-cycles $\pmat{i&j&k}$ of which there are $\frac{4\cdot3\cdot2}3$ (we have $4$ choices for $i$, $3$ for $j$, $2$ for $k$,
+and we can rotate our choices and get the same cycle three times), which is $8$.
+And so $\bigl[G:C_G(x)\bigr]=8$ and so $\abs{C_G(x)}=\frac{\abs G}8=\frac{4!}8=3$ and since $\cycle{\pmat{1&2&3}}=3$ this means that $C_G(x)=\pmat{1&2&3}$.
+
+If $G$ acts on $X$ and $x,y\in X$ are in the same orbit, which means that there is a $g_0$ such that $y=g_0\cdot x$.
+Notice then that
+\begin{multline*}
+G_y = \set{g\in G}[g\cdot y=y]  = \set{g\in G}[g\cdot(g_0\cdot x)=g_0\cdot x] = \set{g\in G}[gg_0\cdot x=g_0\cdot x] \\
+= \set{g\in G}[g_0^{-1}gg^{-1}\cdot x=x] = \set{g\in G}[g_0^{-1}gg_0\in G_x] = \set{g\in G}[g\in g_0G_xg_0^{-1}]
+\end{multline*}
+And thus
+\[ G_y = g_0G_xg_0^{-1} \]
+
+Recall that if $H\leq G$ then $gHg^{-1}\leq G$, so we can define an action of $G$ on its set of subgroups via conjugation, that is
+\[ g\cdot H=gHg^{-1} \]
+In this case the orbit of $H$ is the set of all conjugate subgroups of $H$, there's not much more we can discuss here.
+We will define $N_G(H)$ to be the stabilizer of $H$:
+\[ N_G(H) = \set{g\in G}[gHg^{-1}=H] = \set{g\in G}[gH=Hg] \]
+
+\begin{defn*}
+
+    For $H\leq G$ we define the \ppemph{normalizer} of $H$, $N_G(H)$ to be its stabilizer under the conjugate group action over the set of subgroups of $G$.
+
+\end{defn*}
+
+\begin{prop*}
+
+    $N_G(H)$ is the largest subgroup of $G$ where $H$ is normal in $N_G(H)$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Since $N_G(H)$ is a stabilizer, it is a subgroup, and it is trivial to see that $H\leq N_G(H)$ since $hH=Hh$ for every $h\in H$.
+    And if $H\normalsub K$ then if $k\in K$, it must be that $kH=Hk$ by the definition of normalcy and therefore $k\in N_G(H)$ so $K\leq N_G(H)$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+This means that $H$ is normal in $G$ if and only if $N_G(H)=G$.
+Also notice that if $G$ is abelian both conjugate group actions (over $G$ and the set of subgroups of $G$) are trivial.
+
+And by definition, the number of subgroups of $G$ which are conjugate to $H$ is equal to the index of $N_G(H)$.
+And since $\bigl[G:H\bigr]=\bigl[G:N_G(H)\bigr]\cdot\bigl[N_G(H):H\bigr]$, the order of the conjugacy class of $H$ divides $\bigl[G:H\bigr]$.
+
+\begin{defn*}
+
+    For $H\leq G$ we define its \ppemph{center} to be:
+    \[ C_G(H) = \set{g\in G}[\forall h\in H: gh=hg] = \bigcap_{h\in H}C_G(h) \]
+
+\end{defn*}
+
+Note that as the intersection of subgroups, $C_G(H)$ itself is a subgroup.
+
+\begin{defn*}
+
+    We define the \ppemph{center} of a group $G$ to be
+    \[ Z(G) = C_G(G) = \set{g\in G}[\forall a\in G: ag=ga] \]
+
+\end{defn*}
+
+Notice that $Z(G)\normalsub G$ since for every $a\in G$ and for every $g\in Z(G)$ we have that $aga^{-1}=aa^{-1}g=g\in Z(G)$.
+And $Z(G)$ is abelian since if $a\in Z(G)$ and $b\in Z(G)$, since $b\in G$ we have that $ab=ba$.
+And for every $a\in G$ since $a$ commutes with every element in $Z(G)$, $\cycle{Z(G), a}$ is abelian.
+
+\begin{prop*}
+
+    If $\slfrac G{Z(G)}$ is cyclic then $G$ is abelian (and in particular $\slfrac G{Z(G)}\cong\set e$).
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $\slfrac G{Z(G)}=\cycle{aZ(G)}$.
+    And since the quotient group partitions $G$, we have that:
+    \[ G = \bigdcup a^iZ(G) = \cycle{Z(G), a} \]
+    which we know is abelian, and therefore $G$ is abelian.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+Suppose $H\leq G$ (not necessarily normal), we define a group action of $G$ on $\slfrac GH$ by:
+\[ g\cdot(aH)=gaH \]
+This is indeed a group action since $e\cdot(aH)=eaH=aH$ and $g\cdot(h\cdot aH)=ghaH=(gh)\cdot(aH)$.
+
+Let $k=[G:H]$, then by this group action we have a homomorphism $\phi\colon G\longvarrightarrow S_{\slfrac GH}\cong S_k$.
+Let us take a moment to consider the stabilizer of cosets: the stabilizer of $H$ is $H$ itself, and the stabilizer of $aH$ is
+\[ G_{aH} = \set{g\in G}[g\cdot aH=aH] = \set{g\in G}[a^{-1}gaH=H] = \set{g\in G}[a^{-1}ga\in H] = aHa^{-1} \]
+And the orbit of $H$ is $\slfrac GH$ since $a\cdot H=aH$.
+In this case we get that $\abs{G\cdot H}=\abs{\slfrac GH}=\bigl[G:G_H\bigr]=\bigl[G:H\bigr]$ which we know.
+We know that
+\[ \ker\phi = \set{g\in G}[\forall x\in X: g\cdot x=x] = \bigcap_{x\in X}G_x \]
+So in this case
+\[ \ker\phi = \bigcap_{a\in G} G_{aH} = \bigcap_{a\in G}aHa^{-1} \]
+
+\begin{defn*}
+
+    If $H\leq G$ we define the \ppemph{core} of $H$ to be the kernel of the homomorphism induced by the group action of $G$ on $\slfrac GH$ as defined above.
+    That is
+    \[ \coreof H = \bigcap_{a\in G}aHa^{-1} \]
+
+\end{defn*}
+
+\begin{prop*}
+
+    $\coreof H$ is the largest normal group in $G$ contained in $H$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Since the core of a group is defined as the kernel of a homomorphism, it is necessarily normal.
+    Suppose $K\normalsub G$ and $K\subseteq H$ then for every $a\in G$ we must have that $K=aKa^{-1}\subseteq aHa^{-1}$ and thus $K\subseteq\coreof H$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+What this means is that if $H$ is normal, $\coreof H=H$.
+
+By the first isomorphism theorem, since $\phi\colon G\longvarrightarrow S_{[G:H]}$ we have that:
+\[ \slfrac G{\coreof H}=\slfrac G{\ker\phi}\cong\image\phi\leq S_{[G:H]} \]
+And thus there is a monomorphism
+\[ \slfrac G{\coreof H}\mmorph S_{[G:H]} \]
+We summarize this result in the following theorem:
+
+\begin{thrm*}
+
+    If $H$ is a subgroup of $G$ then there is a monomorphism
+    \[ \slfrac G{\coreof H}\mmorph S_{[G:H]} \]
+
+\end{thrm*}
+
+This is useful since the core of a subgroup may be significantly smaller than the subgroup itself, and so $\slfrac G{\coreof H}$ is larger than $\slfrac GH$, and so $S_{[G:H]}$ is smaller than
+$S_{[G:\coreof H]}$.
+
+\begin{prop*}
+
+    If $G$ has a subgroup with a finite index, it has a normal subgroup with a finite index.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $H$ has a finite index, then since $\slfrac{G}{\coreof H}$ is isomorphic to a subgroup of $S_{[G:H]}$, its order must divide $[G:H]!$ and therefore must be finite.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\newpage
+If we define for every $g\in G$ the homomorphism:
+\[ \gamma_g\colon G\longvarrightarrow G,\quad \gamma_g(x)=gxg^{-1} \]
+This is a homomorphism since $\gamma_g(xy)=gxyg^{-1}=gxg^{-1}gyg^{-1}=\gamma_g(x)\gamma_g(y)$.
+And notice that
+\[ \bigl(\gamma_g\circ\gamma_h\bigr)(x)=\gamma_g\bigl(\gamma_h(x)\bigr)=ghxh^{-1}g^{-1}=(gh)x(gh)^{-1}=\gamma_{gh}(x) \]
+And so $\gamma_g\circ\gamma_h=\gamma_{gh}$ which means $\gamma_g^{-1}=\gamma_{g^{-1}}$ so $\gamma_g$ is a bijection and thus an automorphism.
+
+\begin{defn*}
+
+    We define the \ppemph{inner automorphism group} of the group $G$ to be:
+    \[ \innerof G=\set{\gamma_g}[g\in G] \leq \autof G \]
+
+\end{defn*}
+
+This is a group since $\gamma_e={\rm id}$ and as we showed above it is closed under inversions and compositions.
+We can define the canonical epimorphism
+\[ \Gamma\colon G\longvarrightarrow\innerof G \]
+by $\Gamma(g)=\gamma_g$.
+This is obviously surjective and it is a homomorphism since $\Gamma(gh)=\gamma_{gh}=\gamma_g\gamma_h=\Gamma(g)\Gamma(h)$.
+Its kernel is
+\[ \ker\Gamma = \set{g\in G}[\gamma_g=\Gamma(g)={\rm id}] = \set{g\in G}[\forall x: gxg^{-1}=x] = Z(G) \]
+And thus by the first isomorphism theorem:
+\[ \slfrac{G}{\ker\Gamma} = \slfrac{G}{Z(G)} \cong \innerof G \]
+
+Now suppose $\sigma\in\autof G$, then notice
+\[ \sigma\gamma_g\sigma^{-1}(x) = \sigma\bigl(g\sigma^{-1}(x)g^{-1}\bigr) = \sigma(g)x\sigma(g)^{-1} = \gamma_{\sigma(g)} \]
+Thus for every $\sigma\in\autof G$, $\sigma\innerof G\sigma^{-1}\subseteq\innerof G$ and so $\innerof G\normalsub\autof G$.
+
+\begin{defn*}
+
+    The \ppemph{outer group of automorphisms} of $G$ is defined to be
+    \[ \outerof G=\slfrac{\autof G}{\innerof G} \]
+    (note that the outer group does not contain automorphisms rather equivalence classes of automorphisms).
+
+\end{defn*}
+
+A brief overview of the groups we have defined:
+
+\[ \begin{tikzcd}
+    & 1 \\
+    & Z(G) \\
+    & G \\
+    1 & \innerof G & \autof G & \outerof G & 1 \\
+    & 1
+    \arrow[from=1-2, to=2-2]
+    \arrow[from=2-2, to=3-2]
+    \arrow[from=3-2, to=4-2]
+    \arrow[from=4-2, to=5-2]
+    \arrow[from=4-1, to=4-2]
+    \arrow[from=4-2, to=4-3]
+    \arrow[from=4-3, to=4-4]
+    \arrow[from=4-4, to=4-5]
+\end{tikzcd} \]
+
+The following are interesting relations which are left as a proof to the reader
+\benum
+    \item $\autof{\bZ_n}\cong\eulergof n$
+    \item $\autof{\bZ_p^n}\cong\genlinearof{\bZ_p}$ (this is interesting since we don't require the automorphisms to preserve linear structure)
+    \item $\autof{\bZ_2\times\bZ_4}\cong D_4$ (annoying)
+    \item $\autof{S_n}\cong S_n$
+    \item $\outerof{S_n}\cong\set e$ if $n\neq6$ and $\bZ_2$ if $n=6$.
+\eenum
+
+\end{document}
+

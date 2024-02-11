@@ -1,0 +1,65 @@
+\input utils
+
+\def\_rgb_encode#1{#1 rg #1 RG}
+\def\_cmyk_encode#1{#1 k #1 K}
+
+\chardef\_colorstack=0
+\def\_pdfcolor_restore{\pdfcolorstack\_colorstack pop\relax}
+%\def\_bg_color_set#1#2{\pdfcolorstack\_colorstack push{#2 \csname _#1_bg_code\endcsname}\aftergroup\_pdfcolor_restore}
+%\def\_fg_color_set#1#2{\pdfcolorstack\_colorstack push{#2 \csname _#1_fg_code\endcsname}\aftergroup\_pdfcolor_restore}
+%\def\_color_set#1#2{\_fg_color_set{#1}{#2}\_color_bg_set{#1}{#2}}
+%\def\_color_coded#1[#2]#3{#1{#2}{#3}}
+%\def\_color_defined#1#2{\@xp\@xp\@xp#1\csname c@#2\endcsname}
+%\def\bgcolor{\@ifnextchar[ {\_color_coded\_bg_color_set}{\_color_defined\_bg_color_set}}
+%\def\fgcolor{\@ifnextchar[ {\_color_coded\_fg_color_set}{\_color_defined\_fg_color_set}}
+%\def\texcolor{\@ifnextchar[ {\_color_coded\_color_set}{\_color_defined\_color_set}}
+
+\def\_color_set#1#2{\pdfcolorstack\_colorstack push{\csname _#1_encode\endcsname{#2}}\aftergroup\_pdfcolor_restore}
+\def\_color_coded[#1]#2{\_color_set{#1}{#2}}
+\def\_color_defined#1{\expanded{\unexpanded{\_color_set}\csname c@#1\endcsname}}
+\def\texcolor{\@ifnextchar[ {\_color_coded}{\_color_defined}}
+
+\def\definetexcolor#1#2#3{\@xp\def\csname c@#1\endcsname{{#2}{#3}}}
+
+\def\_localcolor_coded[#1]#2{\bgroup\_color_coded[#1]{#2}\let\_regU}
+\def\_localcolor_defined#1{\bgroup\_color_defined{#1}\let\_regU}
+\def\localcolor{\@ifnextchar[ \_localcolor_coded\_localcolor_defined}
+
+\newbox\_colorbox
+\def\_endhighlightbox{\quitvmode\hbox to\wd\_colorbox{\@xp\localcolor\_regA{\vrule height\ht\_colorbox width\wd\_colorbox depth\dp\_colorbox}\hss\box\_colorbox}\egroup}
+\def\_highlightbox#1#2{\bgroup\def\_regA{#1{#2}}\setbox\_colorbox=\hbox\bgroup\aftergroup\_endhighlightbox\let\_regU}
+\def\highlightbox#1#{\_highlightbox{#1}}
+
+\def\_buffer_width{2pt}
+\def\_buffer_height{2pt}
+\def\_bufferboxend{\hbox{\kern\_buffer_width\lower\dimexpr\_buffer_height + \dp\_colorbox\relax\vbox{\kern\_buffer_height\box\_colorbox\kern\_buffer_height}\kern\_buffer_width}}
+\def\_bufferbox{\setbox\_colorbox=\hbox\bgroup\aftergroup\_bufferboxend\let\_regU}
+
+\def\_frame_width{.3pt}
+\def\_frameboxend{\hbox{\vrule width\_frame_width\lower\dimexpr \_frame_width + \dp\_colorbox\relax\vbox{\hrule height\_frame_width\box\_colorbox\hrule height\_frame_width}\vrule width\_frame_width\relax}}
+\def\_framebox{\setbox\_colorbox=\hbox\bgroup\aftergroup\_frameboxend\let\_regU}
+
+\def\_coloredbox#1#2{\highlightbox#1{#2}\bgroup\_bufferbox\bgroup\aftergroup\egroup\let\_regU}
+\def\texcoloredbox#1#{\_coloredbox{#1}}
+
+\def\_framecoloredbox#1#2{\quitvmode\_framebox\bgroup\_coloredbox{#1}{#2}\bgroup\aftergroup\egroup\let\_regU}
+\def\framecoloredbox#1#{\_framecoloredbox{#1}}
+
+\def\framebox{\_framebox\bgroup\_bufferbox\bgroup\aftergroup\egroup\let\_regU}
+
+\def\_pagecolor#1#2{\localcolor#1{#2}{\pdfliteral page{0 0 \nopt{\pdfpagewidth} \nopt{\pdfpageheight} re f}}}
+\def\texpagecolor#1#{\_pagecolor{#1}}
+
+\long\def\fakebold#1{\pdfliteral{2 Tr .4 w}#1\pdfliteral{0 Tr}}
+\def\flip#1{{\setbox0=\hbox{#1}\kern\wd0\pdfsave\pdfliteral{-1 0 0 1 0 0 cm}\rlap{#1}\pdfrestore}}
+
+\definetexcolor{red}{rgb}{1 0 0}
+\definetexcolor{blue}{rgb}{0 0 1}
+\definetexcolor{green}{rgb}{0 1 0}
+\definetexcolor{yellow}{rgb}{1 1 0}
+\definetexcolor{orange}{rgb}{1 .4 0}
+\definetexcolor{purple}{rgb}{1 0 1}
+\definetexcolor{white}{rgb}{1 1 1}
+\definetexcolor{black}{rgb}{0 0 0}
+\definetexcolor{darkgreen}{rgb}{0 .7 0}
+\definetexcolor{grey}{rgb}{.5 .5 .5}

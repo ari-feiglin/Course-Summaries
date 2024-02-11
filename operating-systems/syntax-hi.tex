@@ -1,0 +1,193 @@
+\input tex-colors
+
+\createlist{catcodes}
+\createlist{colors}
+\createlist{swapped}
+\createlist{initcolors}
+\appendlistmanyvalued{catcodes}{0}{abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ}
+\appendlistmanyvalued{colors}{1 0 0}{{def}{if}{for}{int}{float}{double}{short}{char}{long}{while}{main}{printf}{return}{exit}}
+%\appendlistmanyvalued{colors}{.2 0 0}{*+-<>=}
+
+\appendlist{swapped}{{ }{\ }}
+\bgroup\catcode`\^^I=11\relax\lowercase{\egroup\appendlist{swapped}{{^^I}{\hiindent}}}
+\bgroup\catcode`\^^M=11\relax\lowercase{\egroup\appendlist{swapped}{{^^M}{\egroup\_output_box\setbox\_outputbox=\hbox\bgroup}}}
+\bgroup\lccode`\?=`\\ \lowercase{\egroup\appendlist{catcodes}{{?}{-1}}}
+\bgroup\lccode`\?=`\\ \lowercase{\egroup\appendlist{initcolors}{{?}{.5 0 0}}}
+\bgroup\lccode`\?=`\% \lowercase{\egroup\appendlist{colors}{{?}{.7 .8 .7}}}
+\bgroup\lccode`\?=`\# \lowercase{\egroup\appendlist{colors}{{?}{0 .3 0}}}
+\bgroup\lccode`\?=`\& \lowercase{\egroup\appendlist{colors}{{?}{0 .3 0}}}
+
+\newif\ifstrequals
+\def\_ifstrequals#1#2{%
+    \edef\_regA{\detokenize{#1}}\edef\_regB{\detokenize{#2}}%
+    \ifx\_regA\_regB \strequalstrue\else\strequalsfalse\fi%
+}
+
+\long\def\_get_second_conditionally#1#2#3#4{%
+    \_ifstrequals{#2}{#3}%
+    \ifstrequals%
+        \def#1{#4}%
+    \fi%
+}
+
+\def\_get_catcode#1{%
+    \def\_catcode{1}%
+    \long\def\@lexe##1{\_get_second_conditionally\_catcode{#1}##1}%
+    \executelist{catcodes}%
+}
+
+\def\_get_initcolor#1{%
+    \let\_initcolor=\@nul
+    \long\def\@lexe##1{\_get_second_conditionally\_initcolor{#1}##1}%
+    \executelist{initcolors}%
+}
+
+\newtoks\_currtoken
+\newif\ifpotentialescape
+
+\def\_catcode_normal{0}
+\def\_catcode_potential_escape{-1}
+\def\_potential_escape_token{endhi}
+
+\def\_get_next_tok#1#2{%
+    %\ifx\@nul#2%
+    %    \_print%
+    %\else%
+    %    \_get_catcode{#2}%
+    %    \ifx\_catcode\_catcode_normal%
+    %        \_currtoken\@xp{\the\_currtoken#2}%
+    %    \else%
+    %        \_print%
+    %        \_currtoken={#2}%
+    %        \_print%
+    %        \_currtoken={}%
+    %    \fi%
+    %    \@afterfi{\_get_next_tok{}}%
+    %\fi%
+    \global\let\_next=\_get_next_tok%
+    \_get_catcode{#2}%
+    \ifstrcases{\_catcode}%
+        \_catcode_normal{\_currtoken\@xp{\the\_currtoken#2}}%
+        \_catcode_potential_escape{%
+            \ifpotentialescape%
+                \_print{\_potential_escape_char}%
+                \_print{\the\_currtoken}%
+                \_print{#2}%
+                \_currtoken={}%
+                \potentialescapefalse%
+            \else%
+                \_print{\the\_currtoken}%
+                \_currtoken={}%
+                \def\_potential_escape_char{#2}%
+                \potentialescapetrue%
+            \fi%
+        }%
+        \default{%
+            \ifpotentialescape%
+                \expanded{\unexpanded{\_ifstrequals}{\the\_currtoken}{\_potential_escape_token}}%
+                \ifstrequals%
+                   \gdef\_next{\@xp\endhi\@gobble}%
+                \else%
+                   \potentialescapefalse%
+                   \_print{\_potential_escape_char}%
+                   \_print{\the\_currtoken}%
+                   \_print{#2}%
+                   \_currtoken={}%
+                \fi%
+            \else%
+                \_print{\the\_currtoken}%
+                \_print{#2}%
+                \_currtoken={}%
+            \fi%
+        }%
+    \endifcases%
+    \_next{}%
+}
+
+\def\@color#1#2{\pdfliteral{#1 rg #1 RG}#2\pdfliteral{0 0 0 rg 0 0 0 RG}}
+
+\newif\ifcolorinit
+\def\_print_token#1{%
+    \def\_tok_swap{#1}%
+    \long\def\@lexe##1{\_get_second_conditionally\_tok_swap{#1}##1}%
+    \executelist{swapped}%
+    \_get_initcolor{#1}%
+    \unless\ifx\_initcolor\@nul%
+        \@color{\_initcolor}{\_tok_swap}%
+        \let\_nextcolor=\_initcolor%
+        \texcolorinittrue%
+    \else%
+        \ifcolorinit%
+            \@color{\_nextcolor}{\_tok_swap}%
+            \texcolorinitfalse%
+        \else%
+            \let\_tok_color=\@nul%
+            \long\def\@lexe##1{\_get_second_conditionally\_tok_color{#1}##1}%
+            \executelist{colors}%
+            \ifx\_tok_color\@nul \_tok_swap\else\@color{\_tok_color}{\_tok_swap}\fi%
+        \fi%
+    \fi%
+}
+
+\def\_print#1{%
+    \@xp\_print_token\@xp{#1}%
+}
+
+\newbox\_hibox
+\long\def\_beginhi#1{\bgroup%
+    \tt%
+    \frenchspacing%
+    \def\do##1{\catcode`##1=11}\dospecials%
+    \catcode`\^^M=11%
+    \catcode`\^^I=11%
+    #1%
+    \setbox\_hibox=\vbox\bgroup%
+        \kern\_output_indent%
+        \setbox\_outputbox=\hbox\bgroup%
+            \@xp\_get_next_tok\@xp{\@xp}%
+}
+
+\def\beginhi{\_getline\_beginhi}
+
+\def\syntaxbg{.95 .95 1}
+\def\endhi{%
+    \egroup\egroup%\kern\_output_indent\egroup%
+    \par%
+    \hbox to\dimexpr\wd\_hibox + \_output_indent\relax{%
+        \@color{\syntaxbg}{\vrule height\ht\_hibox width\dimexpr\wd\_hibox+\_output_indent\relax depth\dp\_hibox}%
+        \kern-\wd\_hibox\box\_hibox%
+    }%
+    \par%
+    \egroup%
+}
+
+\newbox\_outputbox
+\newcount\_outputline
+\def\_output_indent{5pt}
+\def\_output_box{%
+    \advance\_outputline by 1%
+    \hbox to\dimexpr\hsize - \leftskip - \rightskip - \_output_indent\relax{\_output_line_number{\the\_outputline}\strut\box\_outputbox\hfil}%
+    \kern\_output_indent%
+}
+
+\font\eighttt=cmtt8
+\def\@numhskip{1ex}
+\def\_output_line_number#1{\hbox to15pt{\eighttt\hfil#1}\hskip\@numhskip}
+
+
+\font\threett=cmtt8 at 5pt
+{\setbox0=\hbox{\tt\ \ \ \ }\xdef\hiindent@width{\the\wd0}}
+\def\hiindent{\quitvmode\hbox to\hiindent@width{\hss$\vcenter{\hbox{\threett>}}$\hss}}
+\def\hiindent{\ \ \ \ }
+
+%\beginhi
+%int main(int argc, char** argv) {
+%	\int x = 0;
+%	for (int i = 0; i < argc; i++) {
+%		printf("You gave %s", argv[i]);
+%		++x;
+%	}
+%	return 0;
+%}
+%\endhi
+

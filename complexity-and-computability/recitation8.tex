@@ -1,0 +1,169 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz-cd}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{conj}{Conjecture}{255,130,130}{150,0,0}{200,0,0}
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\undersumtext#1{\vtop{\hsize=2cm\relax\centering\small #1}}
+
+\newfunc{oracle}{\hbox{\tencsc oracle}}({})
+
+\def\quant{\mathtt{Q}}
+
+\def\sps{\texttt{\char32}}
+\def\sat{\mathsf{SAT}}
+\def\csat{\mathsf{CSAT}}
+\def\is{\mathsf{IS}}
+\def\threesat{\mathsf{3SAT}}
+\def\clique{\mathsf{Clique}}
+\def\vertcover{\textsf{Vertex-Cover}}
+\def\domset{\textsf{Dom-Set}}
+\def\dhp{\mathsf{DHP}}
+\def\dhc{\mathsf{DHC}}
+\def\hc{\mathsf{HC}}
+\def\tsp{\mathsf{TSP}}
+\def\threecolor{\mathsf{3Color}}
+\def\kcolor{k\mathsf{Color}}
+\def\Color{\mathsf{Color}}
+\def\subsum{\mathsf{SubsetSum}}
+\def\maxclique{\mathsf{MaxClique}}
+\def\minexpr{\mathsf{MinExpression}}
+\def\sparse{\mathsf{Sparse}}
+
+\def\PH{\mathbf{PH}}
+\def\PF{\mathbf{PF}}
+\def\PC{\mathbf{PC}}
+\def\P{\mathbf{P}}
+\def\NP{\mathbf{NP}}
+\def\NPH{\mathbf{NPH}}
+\def\NPC{\mathbf{NPC}}
+\def\co{\mathsf{co}}
+\def\coNP{\mathbf{coNP}}
+\def\poly{\mathsf{poly}}
+\def\Ppoly{\slfrac\P\poly}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mN{\mathcal{N}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=9
+
+\barcolorbox{255, 220, 220}{130, 0, 0}{200, 80, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Computability and Complexity}
+
+    \medskip
+    \textit{Recitation \thesection, Tuesday August 29, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\def\Plog{\slfrac\P{\mathsf{log}}}
+
+\begin{exercise*}
+
+    Let us define
+    \[ \Plog = \bigcup_{c=1}^\infty\slfrac\P{c\log} \]
+    Then if $\NP\subseteq\Plog$, $\PH=\P$.
+
+\end{exercise*}
+
+We will show that if $\NP\subseteq\Plog$, $\P=\NP$ and this means that $\PH=\P$.
+Since $\NP\subseteq\Plog$, $\threesat\in\Plog$ and $\threesat$ is $\NP$-complete.
+We will show that $\threesat$ is in $\P$, which will show that $\NP=\P$.
+
+So there exists a sequence of commands $\set{a_n}_{n=0}^\infty$ whose lengths are bound by $c\log(n)$ and a polynomial-time algorithm $A(a_n,x)$ such that $\phi\in\threesat$ if and only if
+$A(a_{\abs\phi},\phi)=1$.
+We can assume without loss of generality that for every $n$, $\abs{a_n}=c\log(n)$.
+Notice that for every $n$, there are $2^{c\log(n)}=n^c$ possible commands for $a_n$ which is polynomial.
+So let us define a polynomial algorithm $B$ which decides $\threesat$:
+
+\benum
+    \item Iterate over every string $a\in\set{0,1}^{c\log(n)}$.
+    \item If $A(a,\phi)=0$, then $\phi$ is either not satisfiable or $a$ is an invalid command, so continue to the next $a$.
+    \item Otherwise, we can perform a self-reduction on $\phi$ \emph{without changing its length}.
+    This is important since if we were to change its length, then $a$ would no longer be a valid command.
+    We perform the self-reduction recursively as follows: first we set $x_1$ to be true and simplify $\phi$, but this would change the length of $\phi$.
+    If within a disjunction, we lose a variable ($x_1$), then we can simply replace it with another variable in that disjunction to get an equivalent boolean formula of the same length.
+    If we lose an entire disjunction, we can simply copy a different disjunction.
+    For example
+    \[ (x_1\lor x_2\lor x_3)\land(\neg x_1\lor\neg x_2\lor x_3) \]
+    Setting $x_1$ to true will simplify to $(\neg x_2\lor x_3)$, so we've lost a disjunction and a variable, so we replace $x_1$ in the second disjunction with $\neg x_2$ and copy it:
+    \[ (\neg x_2\lor\neg x_2\lor x_3)\land(\neg x_2\lor\neg x_2\lor x_3) \]
+
+    We now check if this new boolean formula $\phi'$ is satisfiable, if $A(a,\phi')=1$.
+    Otherwise we set $x_1$ to false.
+    In both cases we now recurse.
+    \item At the end, we get a boolean vector $\tau$.
+    We verify that $\tau$ satisfies $\phi$, and return one if it does, and otherwise continue to the next $a$.
+    \item If we have finished the loop without returning one, return zero.
+\eenum
+
+Each iteration of the loop takes polynomial time, since $A$ takes polynomial time and we perform $A$ $m$ times, where $m$ is the number of variables.
+The loop repeats $\abs{\set{0,1}^{c\log(n)}}=n^c$ times, so all in all $B$ is polynomial.
+
+If $\phi\notin\threesat$ no boolean vector, and in particular the boolean vector generated by $B$, will satisfy $\phi$.
+So $B$ will return zero.
+And if $\phi\in\threesat$, once $B$ gets to $a_{\abs\phi}$ it will give correct results for $A(a_{\abs\phi},\phi)$ and so it will generate a boolean vector $\tau$ which satisfies $\phi$.
+
+Thus $\threesat$, which is $\NP$-complete, is in $\P$.
+Therefore $\P=\NP$ and so $\PH=\P$.
+
+\end{document}
+

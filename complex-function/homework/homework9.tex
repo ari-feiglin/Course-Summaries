@@ -1,0 +1,351 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input ../preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{atan}{{\rm tan}^{-1}}({})
+\newfunc{sin}{{\rm sin}}({})
+\newfunc{sinh}{{\rm sinh}}({})
+\newfunc{cosh}{{\rm cosh}}({})
+\newfunc{cos}{{\rm cos}}({})
+\newfunc{arg}{{\rm arg}}({})
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+\newfunc{cis}{{\rm cis}}({})
+\newfunc{exp}{{\rm exp}}({})
+\newfunc{Log}{{\rm Log}}({})
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\iff{\,\longvarLeftRightarrow\,}
+\def\implies{\,\longvarRightarrow\,}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\mO{{\cal O}}
+\def\mU{{\cal U}}
+\def\mV{{\cal V}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\let\ds=\displaystyle
+\let\longto=\longvarrightarrow
+\let\to=\varrightarrow
+
+\def\bexerc{\begin{exercise*}}
+\def\eexerc{\end{exercise*}}
+\def\bblank{\begin{blankpp}}
+\def\eblank{\end{blankpp}}
+
+\begin{document}
+
+\c@section=9
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Complex Functions}
+
+    \medskip
+    \textit{Assignment \thesection}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\bexerc
+
+    Suppose $f$ is analytic in a punctured disk about $z_0$ which is an isolated singularity.
+    Further suppose that $f(z)\to\infty$ as $z\to z_0$.
+    Show that $z_0$ is a pole.
+
+\eexerc
+
+\bblank
+
+    Let $g(z)=\frac1{f(z)}$, then $g(z)\to0$ as $z\to z_0$.
+    Thus $g(z)$ is analytic in some disk about $z_0$ (since zeros of $f(z)$ are isolated since it is not consantly zero, so it is well-defined on some disk about $z_0$).
+    So suppose
+    \[ g(z) = \sum_{k=0}^\infty a_k(z-z_0)^k \]
+    Then since $g(z_0)=0=a_0$, we have that $g(z)=(z-z_0)^k\cdot h(z)$ for some $k\geq1$ and $h(z)$ analytic where $h(z_0)\neq0$ (we take $h(z)$ to be the taylor series where $b_k=a_{k+n}$ where $z^n$
+    $a_n$ is the first non-zero coefficient).
+    Since $h(z)$ is analytic and $h(z_0)\neq0$, it is non-zero in some disk about $z_0$, so in this disk $f(z)=\frac1{(z-z_0)^k}\frac1{h(z)}$ and so
+    \[ \lim_{z\to z_0}(z-z_0)^kf(z) = \lim_{z\to z_0}\frac1{h(z)} = \frac1{h(z_0)} \neq 0 \]
+    and
+    \[ \lim_{z\to z_0}(z-z_0)^{k+1}f(z) = \lim_{z\to z_0}\frac z{h(z)} = 0 \]
+    so $z_0$ is a pole of $f$.
+
+\eblank
+
+\bexerc
+
+    Suppose $f$ is analytic when $z\neq0$ and
+    \[ \abs{f(z)} \leq \sqrt{\abs z} + \frac1{\sqrt{\abs z}} \]
+    show that $f$ is constant.
+
+\eexerc
+
+\bblank
+
+    Notice that
+    \[ \abs{z\cdot f(z)} \leq \abs z^{1.5} + \sqrt{\abs z} \xvarrightarrow{}[z\to0] 0 \]
+    and so
+    \[ \lim_{z\to0} z\cdot f(z) = 0 \]
+    so by Riemman's criterion for removable singularities, $z=0$ is a removable singularity of $f$'s.
+    Thus we can analytically extend $f$ to all of $\bC$, ie. let us just assume $f$ is entire.
+
+    Let $g(z)=z\cdot f(z^2)$ then we have
+    \[ \abs{g(z)} \leq \abs z^2 + 1 \]
+    and so by the general Liouville theorem since $g$ is entire, $g(z)=az^2+bz+c$.
+    Since $g(0)=0$, $c=0$ and so
+    \[ f(z^2) = az + b \]
+    But then since $f(1^2)=f((-1)^2)$, $a+b=-a+b$ so $a=0$.
+    Thus $f(z^2)=b$ and so $f(z)=b$ (since $z^2$ is surjective).
+
+\eblank
+
+\bexerc
+
+    Let $f(z)=e^{1/z}$.
+    Show that $\Imof f$ takes on every value on the ring $0<\abs z<1$, other than one.
+    What is the value which it doesn't take on?
+
+\eexerc
+
+\bblank
+
+    Suppose that $w\in\bC$, then if $w\neq0$ we claim there is a solution to $f(z)=w$.
+    Suppose $w=re^{i\theta}$, so this is if and only if
+    \[ e^{1/z} = w \iff \frac1z\in\Logof w \iff \frac1z = \log(r) + i(\theta + 2\pi k) \]
+    for some $k\in\bZ$.
+    So now we must show there exists a $k\in\bZ$ such that
+    \[ \frac1{\abs{\log(r)+i(\theta+2\pi k)}} < 1 \]
+    note that
+    \[ \abs{\log(r) + i(\theta+2\pi k)}^2 = \log(r)^2 + (\theta + 2\pi k)^2 \]
+    Since the right hand side diverges to infinity as $k\to\infty$, if we take a large enough $k$ this will be greater than $1$ and thus $z=\frac1{\log(r)+i(\theta+2\pi k)} < 1$ will have $\abs z<1$ as
+    required.
+    Thus $f(z)$ takes on every complex value other than zero, and therefore in particular $\Imof{f(z)}$ takes on every value.
+
+\eblank
+
+\bexerc
+
+    Suppose $f$ and $g$ both have poles at $z_0$ of degree $n$ and $m$ respectively.
+    What is the degree of the pole $z_0$ for
+    \benum
+        \item $f+g$
+        \item $f\cdot g$
+        \item $\frac fg$
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item Suppose
+        \[ f(z) = \sum_{k=-n}^\infty a_kz^k,\qquad g(z) = \sum_{k=-m}^\infty b_kz^k \]
+        then let $N=\maxof{n,m}$ so we have
+        \[ f(z) + g(z) = \sum_{k=-N}^\infty (a_k+b_k)z^k \]
+        then we have that the degree of $z_0$ is $\leq N$ (we may not have equality, if $a_{-N}=-b_{-N}$.
+        In general suppose $f=-g$ then the point would be removable; not even a pole).
+
+        \item Notice that
+        \[ \lim_{z\to\infty} (z-z_0)^{n+m}f(z)\cdot g(z) = \lim_{z\to z_0}(z-z_0)^nf(z) \cdot \lim_{z\to z_0}(z-z_0)^mg(z) \neq 0 \]
+        since both of the limits are non-zero, but
+        \[ \lim_{z\to\infty} (z-z_0)^{n+m+1}f(z)\cdot g(z) = \lim_{z\to z_0}(z-z_0)^{n+1}f(z) \cdot \lim_{z\to z_0}(z-z_0)^mg(z) = 0 \]
+        since the left limit is zero and the right is convergent.
+        So $z_0$ is a pole of degree $n+m$.
+
+        \item We have that
+        \[ f(z) = \frac{A(z)}{(z-z_0)^n},\qquad g(z) = \frac{B(z)}{(z-z_0)^m} \]
+        for analytic functions $A$ and $B$ such that $A(z_0),B(z_0)\neq0$.
+        Then
+        \[ \frac{f(z)}{g(z)} = (z-z_0)^{m-n}\cdot\frac{A(z)}{B(z)} \]
+        since $B(z_0)\neq0$, $\frac AB$ is analytic in a disk around $z_0$, and since $A(z_0)\neq0$ we get that by definition if $m<n$ then the singularity is a pole of degree $m-n$.
+        And if $m\geq n$ then the singularity is removable (the quotient is equal to an analytic function defined at $z_0$).
+    \eenum
+
+\eblank
+
+\bblank
+
+    Classify the singularities of
+    \benum
+        \item $f(z)=\frac1{z^4+z^2}$
+        \item $f(z)=\cot z$
+        \item $f(z)=\csc z$
+        \item $f(z)=\expof{\frac{1/z^2}{z-1}}$
+    \eenum
+
+\eblank
+
+\bblank
+
+    \benum
+        \item The singularities of the function are the ``problematic'' points, here $z^4+z^2=z^2(z^2+1)$ so the problematic points are $z=0,\pm i$.
+        Let $g(z)=z^4+z^2$, then $f(z)=\frac1{g(z)}$ and since $g(z)$ is analytic about the singularities (not at them), the singularities are poles.
+        Since $g''(z)=12z^2+2$, we have that $g''(0)\neq0$ but $g'''(z)=24z$ and so $g'''(0)=0$.
+        And $g^{(4)}=24$ and so $g^{(4)}(\pm i)\neq0$ but $g^{(5)}=0$.
+        So $0$ is a second order pole, and $\pm i$ are fourth order poles.
+
+        \item Since $\cot(z)=\frac{\cos(z)}{\sin(z)}$, the singularities are when $\sin(z)=0$ (since $\cos(z)$ is entire).
+        This is when $z=2\pi k$ for $k\in\bZ$.
+        At these points $\cos(z)\neq0$ (since $\sin(z)^2+\cos(z)^2=1$, so they cannot both be zero), and so these singularities are poles (the function is of the form $\frac AB$ where $A(z_0)\neq0$ and
+        $B(z_0)=0$ where $A$ and $B$ are analytic at $z_0$).
+
+        Since $\sin'(z)=\cos(z)$, $\sin'(z_0)\neq0$ and so these are first degree poles.
+
+        \item Since $f(z)=\frac1{\sin(z)}$, the singularities are when $\sin(z)=0$, so when $z=2\pi k$.
+        For the same exact reason as above (except now $A=1$ which is also entire and non-zero, in particular at these singularities), these are first degree poles.
+
+        \item The poles here are at $z=0$ and $z=1$.
+        But for any $k\in\bN$, and $z_0=0,1$,
+        \[ (z-z_0)^k\cdot\expof{\frac1{z^2(z-1)}}\xvarrightarrow{}[z\to z_0]\infty \]
+        since exponential growth is much faster than polynomial growth.
+
+        So these are both essential singularities.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Find the Laurent expansions of
+    \benum
+        \item $f(z)=\frac1{z^4+z^2}$ about $z=0$
+        \item $f(z)=\frac{\expof{1/z^2}}{z-1}$ about $z=0$
+        \item $f(z)=\frac1{z^2-4}$ about $z=2$
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item Notice that
+        \[ f(z) = \frac1{z^2} - \frac1{z^2+1} \]
+        and since
+        \[ \frac1{1+z} = \sum_{n=0}^\infty (-1)^nz^n \implies \frac1{1+z^2} = \sum_{n=0}^\infty (-1)^n z^{2n} \]
+        and so
+        \[ f(z) = \sum_{n=-1}^\infty (-1)^{n+1} z^{2n} \]
+
+        \item Let $g(z)=f(1/z)$ then
+        \[ g(z) = \frac{\expof{z^2}}{\frac1z-1} = \frac{z\cdot\expof{z^2}}{1-z} \]
+        Recall the Taylor expansion of $\exp(z)$:
+        \[ \exp(z) = \sum_{n=0}^\infty\frac1{n!}\cdot z^n \implies z\exp(z^2) = \sum_{n=0}^\infty \frac1{n!}\cdot z^{2n+1} \]
+        and
+        \[ \frac1{1-z} = \sum_{n=0}^\infty z^n \]
+        So let $a_n=\frac1{k!}$ when $n=2k+1$ and $a_n=0$ when $n$ is even.
+        Then
+        \[ z\exp(z^2) = \sum_{n=0}^\infty a_n z^n \]
+        and so multiplying this by the Taylor series of $\frac1{1-z}$ gives
+        \[ g(z) = \sum_{n=0}^\infty z^n\sum_{k=0}^na_k \]
+        And so, since $f(z)=g(1/z)$,
+        \[ f(z) = \sum_{n=-\infty}^0 z^n\sum_{k=0}^{-n} a_k \]
+
+        \item Let $g(z)=f(z+2)$, then a Laurent expansion of $f(z)$ about $z=2$ is equivalent to an expansion of $g(z)$ about $z=0$.
+        Since
+        \[ g(z) = \frac1{(z-2)(z+2)} \implies f(z) = \frac1{z(z+4)} \]
+        doing partial fraction decomposition gives
+        \[ g(z) = \frac13\cdot\frac1z - \frac13\cdot\frac1{z+4} \]
+
+        Now, in general
+        \[ \frac1{z+c} = -\frac1c\cdot\frac1{\parens{-\frac zc}-1} = -\frac1c\sum_{n=0}^\infty (-1)^n\parens{\frac1c}^n\cdot z^n \]
+        and so in particular
+        \[ \frac1{z+4} = -\frac14\sum_{n=0}^\infty (-1)^n\frac1{4^n}\cdot z^n \]
+
+        And so
+        \[ g(z) = \frac13\cdot\frac1z + \frac13\cdot\sum_{n=0}^\infty (-1)^n\frac1{4^{n+1}}z^n \]
+        and thus
+        \[ f(z) = g(z-2) = \frac13\cdot(z-2)^{-1} + \frac13\cdot\sum_{n=0}^\infty (-1)^n\frac1{4^{n+1}}(z-2)^n \]
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Show that if $f$ is analytic on the complex plane where $z\neq0$ and $f$ is odd, then all of the even coefficients in $f$'s Laurent expansion about $0$ are zero.
+
+\eexerc
+
+\bblank
+
+    Suppose
+    \[ f(z) = \sum_{n=-\infty}^\infty a_nz^n \]
+    is $f$'s Laurent expansion about $z=0$.
+    Then $f(z)+f(-z)=0$ so
+    \[ 0 = \sum_{n=-\infty}^\infty a_nz^n + \sum_{n=-\infty}^\infty (-1)^na_nz^n = \sum_{n=-\infty}^\infty (a_n+(-1)^na_n)z^n \]
+    and since Laurent expansions are unique, this means that $a_n+(-1)^na_n=0$ for all $n\in\bZ$.
+    For odd $n$s this is already zero, and for even $n$ this is equal to $2a_n=0$ so $a_n=0$ for all even $n$.
+
+\eblank
+
+\bexerc
+
+    Show that if $f$ is analytic in a punctured domain $D$ of $z_0$, and $z_n\to z_0$ are poles of $f$ ($f$ is also of course not analytic at $z_n$), then $f(D)$ is dense in $\bC$.
+
+\eexerc
+
+\bblank
+
+    Suppose not, then there exists a $w\in\bC$ and a $\delta>0$ such that for every $z\in D$, $\abs{w-f(z)}>\delta$.
+    Then let us define
+    \[ g(z) = \frac1{f(z)-w} \]
+    Which is defined for all $z\in D$ where $z\neq z_n$ for $n\geq0$.
+    Since $f$ is analytic, so is $g$ and $\abs{g(z)}<\frac1\delta$ for $z_n\neq z\in D$.
+    Furthermore, since $z_n$ are all poles of $f$, and so $\lim_{z\to z_n}\frac1{f(z)-w}=0$ since the limit of $f(z)$ is $\infty$.
+    And so $g$ can be analytically continued to $z_n$ for all $n>0$ (these are the zeros of $g$).
+
+    Now, since $\abs{g(z)}<\frac1\delta$ for all $z\in D$, we have that
+    \[ \lim_{z\to z_0}\abs{zg(z)} \leq \lim_{z\to z_0}\abs z\cdot\frac1\delta = 0 \]
+    and so
+    \[ \lim_{z\to z_0}z\cdot g(z) = 0 \]
+    and therefore by Riemman's critierion, $z_0$ is a removable singularity of $g$.
+    Thus we can extend $g$ analytically to $D\cup\set{z_0}$, but $z_n\to z_0$ is a convergent sequence of zeroes of $g(z)$ in this domain.
+    Therefore $g$ is identically equal to zero in $D$.
+    But this is a contradiction, as $\frac1{f(z)-w}\neq0$ whenever $f(z)$ is defined (which it is).
+
+\eblank
+
+\bexerc
+
+    Show that the image of an entire non-constant function is dense in $\bC$.
+
+\eexerc
+
+\bblank
+
+    Similarly to before, suppose not.
+    Then there exists a $w\in\bC$ and a $\delta>0$ such that for every $z\in\bC$, $\abs{f(z)-w}>\delta$.
+    And so let us define
+    \[ g(z) = \frac1{f(z)-w} \]
+    which is entire since $f(z)$ is, and $f(z)\neq w$.
+    And
+    \[ \abs{g(z)} = \frac1{\abs{f(z)-w}} < \frac1\delta \]
+    so $g$ is a bounded entire function and therefore by Liouville's theorem, it is constant.
+    So suppose $g(z)=c$, and therefore
+    \[ f(z) = \frac1c + w \]
+    but then $f(z)$ is constant, in contradiction.
+
+\eblank
+
+\end{document}
+

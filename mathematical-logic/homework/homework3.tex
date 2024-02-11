@@ -1,0 +1,441 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input ../preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\newcount\lproofline
+\def\blproof{%
+    \lproofline=0\relax%
+    \vtop\bgroup\ialign\bgroup\global\advance\lproofline by 1\relax\the\lproofline.\quad$##$\hfil\tabskip=10pt&##\hfil\crcr
+}
+\def\elproof{\crcr\omit\leaders\hrule\hfill\cr\egroup\egroup}
+
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\oto=\varleftrightarrow
+\let\longto=\longvarrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+\let\models=\vDash
+\let\notmodels=\nvDash
+
+\def\Var{{\rm Var}}
+\def\mL{{\cal L}}
+\def\mM{{\cal M}}
+\def\mA{{\cal A}}
+\def\mT{{\cal T}}
+
+\def\qed{\hskip.5cm\hbox{}\hfill$\blacksquare$}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\bB{\mathbb{B}}
+\def\true{\mathsf{true}}
+\def\false{\mathsf{false}}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\def\bexerc{\begin{exercise*}}
+\def\eexerc{\end{exercise*}}
+\def\bblank{\begin{blankpp}}
+\def\eblank{\end{blankpp}}
+
+\begin{document}
+
+\c@section=3
+
+\barcolorbox{220, 255, 255}{0, 130, 130}{80, 200, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Mathematical Logic}
+
+    \medskip
+    \textit{Assignment \thesection}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+I adopted my notation from Wolfgang Rautenberg's \emph{A Concise Introduction to Mathematical Logic}.
+This largely agrees with the notation we used in lecture, but he does also introduce notation we have not used.
+\blist
+    \item If $\mA$ is a structure, then $\mathsf{s}^\mA$ is the interpretation of the symbol $\mathsf{s}$ under the structure $\mA$.
+    If $\mM$ is a model whose structure is $\mA$, $\mathsf{s}^\mM$ may be used as well.
+    \item If $\sigma\colon\Var\longto\mT$ is a global substitution, and $\mM$ is a model, then $\mM^\sigma$ is model where $x^{\mM^\sigma}=(x^\sigma)^\mM$.
+    This trivially extends to terms.
+    In the case of a simple substitution this may be written as $\mM^a_x$ ($\sigma(x)=a$ and $\sigma(y)=y$ for $y\neq x$).
+\elist
+
+\bexerc
+
+    Show that the following formulas are logically valid:
+    \benum
+        \item $(\forall x\phi)\to(\exists x\phi)$
+        \item $\bigl(\forall x(\phi\to\psi)\bigr)\to\bigl((\forall x\phi)\to(\forall x\psi)\bigr)$
+        \item $\bigl(\forall x(\phi\land\psi)\bigr)\oto\bigl((\forall x\phi)\land(\forall x\psi)\bigr)$
+        \item $(\exists x\forall y\phi)\to(\forall y\exists x\phi)$
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item Suppose $\mM=(\mA,w)$ is a model ($\mA$ is a structure, and $w\colon A\longto\Var$ is a valuation function), we must show that
+        \[ \mM \models (\forall x\phi)\to(\exists x\phi) \]
+        meaning that if $\mM\models\forall x\phi$ then $\mM\models\exists x\phi$.
+        Since $A$ is non-empty (structures are non-empty), let $a\in A$ then since $\mM\models\forall x\phi$ then by definition $\mM^a_x\models \phi$.
+        Thus there exists an $a$ such that $\mM^a_x\models\phi$ so $\mM\models\exists x\phi$ as required.
+
+        \item We must show that if $\mM\models\forall x(\phi\to\psi)$ then $\mM\models(\forall x\phi)\to(\forall x\psi)$.
+        To show this, we must further suppose $\mM\models\forall x\phi$ and then show $\mM\models\forall x\psi$.
+        Let $a\in A$, then we have that $\mM^a_x\models \phi\to\psi$ and $\mM^a_x\models\phi$.
+        Since $\mM^a_x\models\phi\to\psi$, by definition this means that when $\mM^a_x\models\phi$, $\mM^a_x\models\psi$.
+        Since $\mM^a_x\models\phi$ then we have $\mM^a_x\models\psi$.
+        Since this $a\in A$ was arbitrary this means $\mM\models\forall x\psi$ as required.
+
+        \item We must show that $\mM\models\forall x(\phi\land\psi)$ if and only if $\mM\models(\forall x\phi)\land(\forall x\psi)$.
+        We know that $\mM\models\forall x(\phi\land\psi)$ if and only if for every $a\in A$, $\mM^a_x\models\phi\land\psi$ if and only if $\mM^a_x\models\phi$ and $\mM^a_x\models\psi$.
+        This means that for every $a\in A$, $\mM^a_x\models\phi$ and every $b\in B$, $\mM^b_x\models\psi$ (as the above $a$ is arbitrary), and since $a$ and $b$ are arbitrary this means
+        $\mM\models(\forall x\phi)\land(\forall x\psi)$.
+
+        To show the other direction, suppose $\mM\models(\forall x\phi)\land(\forall x\psi)$, then for every $a,b\in A$, $\mM_x^a\models\phi$ and $\mM^b_x\models\psi$ so if we take $a=b$ we get $\mM^a_x$
+        models both $\phi$ and $\psi$,
+        so $\mM\models\forall x(\phi\land\psi)$ as required.
+
+        \item Suppose $\mM\models\exists x\forall y\phi$ then there exists an $a\in A$ such that $\mM^a_x\models\forall y\phi$, meaning there further exists a $b\in A$ such that $\mM^{ab}_{xy}\models\phi$.
+        So there exists an $a\in A$ such that for every $b\in B$, $\mM^{ab}_{xy}\models\phi$.
+
+        To show $\mM\models\forall y\exists x\phi$, let $b'\in A$, we must show there exists an $a'\in A$ such that $\mM^{b'a'}_{yx}\models\phi$.
+        Let $a'=a$ then we know $\mM^{ab'}_{xy}\models\phi$.
+        If $x\neq y$ then we know that $\mM^{ab'}_{xy}=\mM^{b'a}_{yx}$ since the valuation simply maps $x$ to $a$ and $y$ to $b'$ in both cases, so we have the desired result.
+
+        If $x=y$ then this formula is still logically valid, since $\exists x\forall x\phi\equiv\forall x\phi$ and $\forall x\exists x\phi\equiv\exists x\phi$ (since $x$ is not free in $\forall x\phi$ and
+        $\exists x\phi$), and so this formula is equivalent to
+        \[ (\forall x\phi)\to(\exists x\phi) \]
+        which we showed above is logically valid.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Produce counterexamples to show that the following formulas are not logically valid
+    \benum
+        \item $\Bigl(\bigl(\forall x,y,z\bigl(A(x,y)\land A(y,z)\to A(x,z)\bigr)\bigr)\land\bigl(\forall x\neg A(x,x)\bigr)\Bigr)\to\bigl(\exists x\forall y\neg A(x,y)\bigr)$
+        \item $\bigl(\forall x\exists y A(x,y)\bigr)\to\bigl(\exists y A(y,y)\bigr)$
+        \item $\bigl(\exists x\exists y A(x,y)\bigr)\to\bigl(\exists yA(y,y)\bigr)$
+        \item $\bigl(\bigl(\exists x A_1(x)\bigr)\oto\bigl(\exists xA_2(x)\bigr)\bigr)\to\bigl(\forall x(A_1(x)\oto A_2(x))\bigr)$
+        \item $\bigl(\exists x(A_1(x)\to A_2(x))\bigr)\to\bigl((\exists xA_1(x))\to(\exists xA_2(x))\bigr)$
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item In words this says that if $A$ is a transitive, anti-reflexive relation then there exists a maximal element.
+        This is false since if we take the domain to be $\bZ$ and $A$ to be the strictly less than relation ($A(x,y)\eiff x<y$) then this does not model the formula.
+        We know that $A(x,y)\land A(y,z)\to A(x,z)$ ($<$ is transitive), and $\neg A(x,x)$ (since $x$ is not less than itself), but there does not exists an $x$ such that $\neg A(x,y)$ ($x\geq y$).
+        This is because $\bZ$ is unbounded so for every $x$, $x+1>x$ and so $\neg(x\geq x+1)$.
+
+        \item We take the same model as above, $\bZ$ and $A=<$.
+        We know that for every $x$ there exists a $y$ such that $A(x,y)$ (for example $y=x+1$ then $A(x,y)\equiv x<y=x+1$ is true), but there does not exist a $y$ such that $A(y,y)\equiv y<y$.
+
+        \item We again take the same model as above, $\bZ$ and $A=<$.
+        Then we can take $x=0$ and $y=1$ then $A(x,y)=0<1$ is true but there does not exist a $y$ such that $A(y,y)\equiv y<y$.
+
+        \item Let the domain of our model be $\bZ$ and $A_1(x)$ be the predicate that $x\geq0$ and $A_2(x)$ be the predicate that $x<0$.
+        Then $\exists x A_1(x)$ and $\exists x A_2(x)$ are both true ($A_1(1)$ and $A_2(-1)$ are true, so we can take $x=1$ and $x=-1$), so $(\exists xA_1(x))\oto(\exists xA_2(x))$ is true in this model.
+        But it is not true that $\forall x(A_1(x)\oto A_2(x))$, in fact $A_1(x)\oto A_2(x)$ is not true for any $x$ (since $x\geq0$ or $x<0$, but never both).
+
+        \item Let the domain be $\bZ$ and $A_1(x)$ be the predicate that $x=0$ and $A_2(x)$ be the predicate that $x\neq x$.
+        Then it is true that $\exists x(A_1(x)\to A_2(x))$, take for example $x=1$ then since $A_1(x)$ is false this subformula is true.
+        It is also true that $\exists xA_1(x)$, take $x=0$.
+        But it is not true that $\exists xA_2(x)$, so this formula is false.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Introduce appropriate notation in order to write the following sentences as first order formulas, and determine if they are logically valid.
+    \benum
+        \item All men are animals. Some animals are carnivorous. Therefore, some men are carnivorous.
+        \item Any barber in Jonesville shaves exactly those men in Jonesville who do not shave themselves. Therefore there is no barber in Jonesville.
+        \item No student in the statistics class is smarter than every student in the logic class. Hence, some student in the logic class is smarter than every student in the statistics.
+        \item For every set $x$, there exists a set $y$ such that the cardinality of $y$ is greater than the cardinality of $x$.
+        \item If $x$ is included in $y$, the cardinality of $x$ is not greater than the cardinality of $y$.
+        \item Every set is included in $V$, therefore $V$ is not a set.
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item Let $M(x)$ be the predicate that $x$ is a man, $A(x)$ be that $x$ is an animal, and $C(x)$ be that $x$ is carnivorous.
+        Then this becomes
+        \[ \bigl(\forall x(M(x)\to A(x))\bigr)\land\bigl(\exists x(A(x)\land C(x))\bigr)\to\bigl(\exists x(M(x)\land C(x))\bigr) \]
+        this is not logically valid.
+        For instance, suppose our domain is $\set{\mathsf{lion}, \mathsf{vegan}}$, then $\mathsf{vegan}$ is a man, an animal, but not a carnivore.
+        And $\mathsf{lion}$ is a carnivorous animal.
+        So every man is an animal, and there exists a carnivorous animal, but no carnivorous man.
+
+        \item Assuming that the fact someone is a \emph{man} in Jonesville is inconsequential (perhaps everyone in Jonesville is a man?).
+        Let $J(x)$ mean that $x$ is in Jonesville, $B(x)$ mean that $x$ is a barber, and $S(x,y)$ mean that $x$ shaves $y$.
+        Then this becomes
+        \[ \forall x\Bigl(\!B(x)\land J(x)\to\forall y\bigl(S(x,y)\oto(J(y)\land\neg S(y,y))\bigr)\!\Bigr)\to\bigl(\neg\exists x(B(x)\land J(x))\bigr) \]
+        This is logically valid.
+        Suppose $x$ were a barber in Jonesville, then $x$ would shave a person in Jonesville $y$ if and only if $y$ did not shave himself.
+        But if $x=y$ this means $S(x,x)\oto\neg S(x,x)$ which is false.
+
+        If there are women in Jonesville, then this is not logically valid.
+        Then let the domain be $\set{\mathrm{Adam}, \mathrm{Eve}}$, where Eve is a barber and Adam is not.
+        Suppose Eve shaves only Adam.
+        Then Eve shaves precisely all the men who do not shave themselves, and there exists a barber in Jonesville.
+        In order to properly write the sentence without assuming inconsequentiality of manhood, then we introduce another predicate $M(x)$ meaning that $x$ is a man.
+        The sentence then becomes
+        \[ \forall x\Bigl(\!B(x)\land J(x)\to\forall y\bigl(S(x,y)\oto(M(y)\land J(y)\land\neg S(y,y))\bigr)\!\Bigr)\to\bigl(\neg\exists x(B(x)\land J(x))\bigr) \]
+        Which, as explained above, is not logically valid.
+
+        \item Let $S(x)$ mean $x$ is a student in the statistics class, $L(x)$ mean $x$ is a student in the logic class, and $B(x,y)$ mean that $x$ is smarter than $y$.
+        Then this sentence becomes
+        \[ \Bigl(\!\neg\exists x\bigl(S(x)\land\forall y(L(y)\to B(x,y))\bigr)\!\Bigr) \to \Bigl(\!\exists x\bigl(L(x)\land\forall y(S(y)\to B(x,y))\bigr)\!\Bigr) \]
+        This is not logically valid.
+        Let the domain be $\set{\mathrm{Alice}, \mathrm{Bob}}$ and suppose that Alice is in the statistics class and Bob is in the logic class, but both are of equal intelligence.
+        Then there does not exist a person in the statistics class smarter than everyone in the logic class, and there does not exist a person in the logic class smarter than everyone in the statistics
+        class.
+        In this case $B=\varnothing$, since in the real world, it is very rare to be able to compare intelligence.
+
+        If we assume that $B$ is a total order, then this is logically valid (assuming classes are finite).
+        Since $B$ is a total order and the statistics class is finite, let $x$ be the statistician with the maximum intelligence.
+        Then since $\neg\bigl(\forall y(L(y)\to B(x,y))\bigr)$, there exists a $y$ such that $L(y)$ and $\neg B(x,y)$, meaning there exists a logician $y$ such that $x$ is not smarter than $y$.
+        Since $B$ is a total order, this means $y$ is smarter than $x$.
+        And since $x$ is the smartest statistician, this means $y$ is smarter than every statistician.
+
+        \item We use $\abs x<\abs y$ to mean the cardinality of $x$ is less than that of $y$'s.
+        Then we have
+        \[ \forall x\exists y(\abs x<\abs y) \]
+        this is logically valid (in the theory of ZF).
+
+        This is because the powerset of $x$ has cardinality larger than that of $x$, so we can take $y=2^x$.
+
+        \item We can use
+        \[ \forall x\forall y\bigl(\bigl(\forall z(z\in x\to z\in y)\bigr)\to\neg(\abs x>\abs y)\bigr) \]
+        or
+        \[ \forall x\forall y\bigl(x\subseteq y\to\neg(\abs x>\abs y)\bigr) \]
+        which are equivalent since $\subseteq$ is a relation definable by the subformula in the first formula above.
+
+        This is logically valid (in ZF), since if $\abs x>\abs y$ then there exists an injection $y\injection x$, and since $x\subseteq y$, the inclusion mapping provides an injection $x\injection y$.
+        By Cantor-Bernstein, this means that $\abs x=\abs y$, but this contradicts $\abs x>\abs y$, so $\neg(\abs x>\abs y)$ as required.
+
+        \item If we use the predicate $V(x)$ to mean that $x$ is a set, then in NBG we could phrase this as
+        \[ \forall V\bigl(\forall x(V(x)\to x\subseteq V)\to\neg V(V)\bigr) \]
+        where $x\subseteq y$ is defined to mean $\forall z(z\in x\to z\in y)$.
+        This is logically valid since if $V$ is a set then so is its power set $2^V$, and this means that $2^V\subseteq V$.
+        But since $V\in 2^V$, this would mean $V\in V$ which is a contradiction to the axiom of regularity.
+    \eenum
+
+\eblank
+
+\bexerc
+
+    Prove that
+    \[ \forall x_1\forall x_2\forall y_1\forall y_2\bigl((x_1,y_1) = (x_2,y_2) \to \bigl(x_1=x_2\land y_1=y_2\bigr)\bigr) \]
+
+\eexerc
+
+\bblank
+
+    Recall that by the definition of an ordered pair:
+    \[ (x_1,y_1) = (x_2,y_2) \iff \set{\set{x_1}, \set{x_1,y_1}} = \set{\set{x_2}, \set{x_2, y_2}} \]
+
+    We start by claiming that if $\set{a,b}=\set{c,d}$ then $a=c$ and $b=d$ or $a=d$ and $b=c$.
+    This is true since $a,b\in\set{c,d}$ so if $a=c$ then if $b\neq d$ then $b=a=c$ but $d\in\set{a,b}$ so $d=a$, but this means $d=b$ in contradiction.
+    And if $a=d$, this holds by symmetry.
+
+    So we start off with two cases:
+    \blist
+        \item $\set{x_1}=\set{x_2}$ and $\set{x_1,y_1}=\set{x_2,y_2}$.
+        The first equality means $x_1=x_2$ since the sets both contain one element and are equal, so they contain the same elements.
+        The second equality means either $x_1=x_2$ and $y_1=y_2$ (as required), or $x_1=y_2$ and $y_1=x_2$, since $x_1=x_2$ this means $x_1=x_2=y_1=y_2$, which still satisfies the condition.
+
+        \item $\set{x_1}=\set{x_2,y_2}$ and $\set{x_1,y_1}=\set{x_2}$.
+        The first equality means that $x_2$ and $y_2$ are in $\set{x_1}$, so $x_2=y_2=x_1$.
+        The second equality similarly means $x_2=y_1=x_1$, and so we have $x_1=x_2=y_1=y_2$, which satisfies the condition.
+    \elist
+
+\eblank
+
+\bexerc
+
+    Prove the following lemma:
+    For any chain $x_1\ni x_2\ni x_3\ni\cdots$, there exists an $n\in\bN$ such that $x_n=\varnothing$.
+
+\eexerc
+
+\bblank
+
+    Suppose that for every $n$, $x_n\neq\varnothing$, so for every $n$ there exists an $x_{n+1}\in x_n$.
+    We can then define a set $y=\set{x_1,x_2,\dots}$ using the axiom of replacement.
+    We can define the following first order formula:
+    \[ \phi(\alpha, z, u) = (x_\alpha = z) \]
+    then we claim that by the axiom of replacement, $y$ is the set obtained with the ``function'' $\phi$ over the set $u=\omega$.
+    $\phi$ satisfies the condition that $\forall\alpha\exists!z\phi(\alpha,z,\omega)$ since there is obviously only one $z$ such that $x_\alpha=z$
+    And this means that $\phi[\omega]=y$ exists (since $y$ is literally the image of mapping finite ordinals to $x_\alpha$).
+
+    But $y$ does not satisfy the axiom of regularity since for every every $x\in y$, there exists an $x'\in x$ such that $x'\in y$ (namely, if $x=x_n$ then $x'=x_{n+1}$), which means that $x'\in x\cap y$,
+    so for every $x\in y$, $x\cap y\neq\varnothing$, in contradiction.
+
+\eblank
+
+\bexerc
+
+    Suppose $P$ is a property such that if $P(y)$ holds for all $y\in x$ then $P(x)$ holds.
+    Show that $P(x)$ holds for all sets $x$.
+
+\eexerc
+
+\bblank
+
+    Suppose that $P(x)$ does not hold, then let $x_1=x$.
+    There must exist an $x_2\in x_1$ such that $P(x_1)$ does not hold, as otherwise $P(y)$ holds for all $y\in x_1$, meaning $P(x)$ holds.
+    Inductively, for every $n$ there exists an $x_{n+1}\in x_n$ such that $P(x_{n+1})$ does not hold.
+    But we showed above that this chain must terminate in the empty set, which is contradictory (since this chain must be infinite, or since $P(\varnothing)$ holds vaccuously).
+
+    So $P(x)$ holds for all sets $x$.
+
+\eblank
+
+\bexerc
+
+    Show that the existence of an ordinal $\omega$ is guaranteed by the axioms of ZF.
+
+\eexerc
+
+\bblank
+
+    The definition of $\omega$ is the smallest ordinal such that if $x\in\omega$ then $x+1=x\cup\set x\in\omega$.
+    By the axiom of infinity, there exists a set $I$ such that $\varnothing\in I$ and if $x\in I$ then $x\cup\set x\in I$.
+    Since we know that intuitively, $\omega$ is the set of all finite ordinals, and by definition $I$ must contain all finite ordinals (since it contains $\varnothing$ and is closed under successors),
+    $\omega$ must be a subset of $I$.
+    So we need to come up with a first order formula to extract the finite ordinals from $I$ and then using the axiom of separation, we should have $\omega$.
+
+    Firstly, intuitively, a finite ordinal is an ordinal which is not greater than any non-trivial limit ordinals.
+    Meaning that $\alpha$ is a finite ordinal if and only if $\forall\beta\in\alpha$, there exists a $\gamma\in\alpha$ such that $\beta$ is the successor $\gamma$.
+    Or in first order terms
+    \[ \phi(\alpha) = (\alpha=\varnothing)\lor\Bigl(\!\alpha\in\mathrm{Ord}\land\forall\beta\in\alpha\bigl(\beta=\varnothing\lor\exists\gamma\in\alpha(\beta=\gamma\cup\set\gamma)\bigr)\!\Bigr) \]
+    where $\alpha\in\mathrm{Ord}$ is a shorthand for saying $\alpha$ is an ordinal (which is definable in ZF).
+    So then we claim
+    \[ \omega = \set{\alpha\in I}[\phi(\alpha)] \]
+    is the smallest ordinal closed under successors.
+
+    Notice that if $\alpha\in\omega$ then $\alpha+1=\alpha\cup\set\alpha$ is also in $\omega$ since if $\beta\in\alpha+1$ then either $\beta\in\alpha$ (and so it satisfies the condition), or $\beta=\alpha$,
+    in which case let $\gamma$ be the maximum in $\alpha$, then we claim $\alpha=\gamma+1$.
+    This is because otherwise $\gamma+1<\alpha$ and so $\gamma+1\in\alpha$, meaning $\gamma$ is not the maximum in $\alpha$, in contradiction.
+    So $\omega$ is closed under successors.
+
+    We must show that $\omega$ is in fact an ordinal.
+    Since $\omega$ is a set of ordinals, it is well-ordered by $\in$.
+    Now suppose $\alpha\in\omega$, then we must show $\alpha\subseteq\omega$.
+    Let $\beta\in\alpha$, then if $\beta=\varnothing$, this is trivial since $\varnothing\in\omega$.
+    Then for every $\gamma<\beta$, since $\gamma<\alpha$, $\gamma$ is a successor ordinal, so $\beta\in\omega$.
+    Therefore $\alpha\subseteq\omega$ as required.
+
+    Now suppose $\omega'\neq\omega$ is another ordinal which is closed under successors, then we know $\omega<\omega'$ or $\omega'<\omega$.
+    If the latter, then $\omega'\in\omega$, meaning that by definition there exists a $\beta\in\omega'$ such that $\beta+1=\omega'$.
+    But then since $\omega'$ is closed under successors, this would mean $\beta+1=\omega'\in\omega'$, which is a contradiction.
+    So $\omega<\omega'$, meaning $\omega$ is the smallest ordinal closed under successors, as required.
+
+    Thus we have constructed $\omega$, the smallest ordinal closed under successors, and by doing so have shown its existence.
+
+\eblank
+
+\bexerc
+
+    Show that the set of countable ordinals is uncountable.
+
+\eexerc
+
+\bblank
+
+    Let $\Omega$ be the set of all countable ordinals.
+    If we assume that $\Omega$ is countable, then $A=\bigcup\Omega$ is a countable union of countable sets, and is therefore countable.
+    $A$ is also an ordinal since it is a set of ordinals (and therefore well-ordered by $\in$), and if $\alpha\in A$ then there exists a $\beta\in\Omega$ such that $\alpha\in\beta$, and so
+    $\alpha\subseteq\beta$, and since $\beta\in\Omega$, $\beta\subseteq A$ which means $\alpha\subseteq A$.
+    So is indeed an ordinal, and it is countable so $A\in\Omega$.
+
+    But then $A+1\in\Omega$ since $A+1=A\cup\set A$ which is countable ($a+1=a$ for infinite cardinals $a$), so $A+1\subseteq A$, which means that $A\in A$ which is a contradiction.
+
+\eblank
+
+\bexerc
+
+    \benum
+        \item Show that for any infinite cardinal number $a$, $\aleph_0\leq a$.
+        \item Show that $\aleph_0+\aleph_0=\aleph_0$.
+        \item Show that $\aleph_0\cdot\aleph_0=\aleph_0$.
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item We haven't defined what an infinite cardinal (or ordinal) is, so I will use the same definition I used in a previous exercise.
+        An ordinal $\alpha$ is finite if for every $\beta<\alpha$, $\beta$ is a successor ordinal or empty.
+        An infinite ordinal is a non-finite ordinal (there exists an ordinal $\beta<\alpha$ which is a non-trivial limit ordinal).
+
+        It is sufficient to show that for every infinite ordinal $\alpha$, $\alpha\geq\omega$.
+        This is because if $a$ is an infinite cardinal, it is an infinite ordinal, and so $a\geq\omega$ and since $\aleph_0=\omega$ (since $\omega$ is an initial ordinal), this is sufficient.
+
+        Suppose $\alpha$ is an ordinal such that $\alpha<\omega$.
+        Then by definition, for every $\beta<\alpha$, $\beta$ is a successor ordinal or empty, and therefore $\alpha$ is finite (this is due to the definition of $\omega$ in a previous exercise).
+        So if $\alpha<\omega$, $\alpha$ is finite, and therefore if $\alpha$ is infinite $\alpha\geq\omega$ as required.
+
+        \item We will show that $2\bN$ (the even numbers, or $2\omega$ the even cardinals) and $2\bN+1$ have cardinality $\aleph_0$.
+        This is because we can define a bijection $\bN$ to $2\bN$ by mapping $n\varmapsto2n$.
+        This is trivially surjective and injective, and therefore a bijection.
+        And $n\varmapsto2n+1$ is similarly a bijection from $\bN$ to $2\bN+1$.
+        So $2\bN$ and $2\bN+1$ have cardinality $\aleph_0$.
+
+        And since $2\bN\dcup(2\bN+1)=\bN$, we have $\abs{2\bN}+\abs{2\bN+1}=\abs\bN$, meaning $\aleph_0+\aleph_0=\aleph_0$ as required.
+
+        \item We know that $\aleph_0\leq\aleph_0\cdot\aleph_0$ since we can create an injection from $\bN\injection\bN\times\bN$ by mapping $n$ to $(n,1)$.
+        And we can create an injection from $\bN\cdot\bN\injection\bN$ by mapping $(n,m)$ to $2^n3^m$.
+        This is an injection by the prime factorization theorem.
+        Thus we have injection $\bN\injection\bN\times\bN\injection\bN$, so by Cantor-Bernstein there exists a bijection $\bN\varleftrightarrow\bN\times\bN$.
+        Therefore
+        \[ \aleph_0 = \abs\bN = \abs\bN\times\abs\bN = \aleph_0\cdot\aleph_0 \]
+        as required.
+    \eenum
+
+\eblank
+
+\end{document}
+

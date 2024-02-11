@@ -1,0 +1,336 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz-cd}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{conj}{Conjecture}{255,130,130}{150,0,0}{200,0,0}
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\sps{\texttt{\char32}}
+\def\sat{\textsf{SAT}}
+\def\PF{\mathbf{PF}}
+\def\PC{\mathbf{PC}}
+\def\P{\mathbf{P}}
+\def\NP{\mathbf{NP}}
+\def\NPH{\mathbf{NPH}}
+\def\NPC{\mathbf{NPC}}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mN{\mathcal{N}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=3
+
+\barcolorbox{255, 220, 220}{130, 0, 0}{200, 80, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Computability and Complexity}
+
+    \medskip
+    \textit{Lecture \thesection, Tuesday August 8, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{defn*}
+
+    A decision problem $S$ is called \ppemph{$\NP$-hard} if for every $S'\in\NP$, there exists a Karp reduction from $S'$ to $S$.
+    The set of all $\NP$-hard problems is denoted $\NPH$.
+    An $\NP$-hard decision problem isn't necessarily in $\NP$, but if it is, it is called \ppemph{$\NP$-complete}.
+    The set of all $\NP$-complete problems is denoted $\NPC$.
+
+\end{defn*}
+
+So an $\NP$-hard problem is a problem which is at least as hard as every $\NP$ hard (hence why it is called $\NP$-\emph{hard}).
+
+Suppose that if $S_1$ is $\NP$-hard, and $g$ is a Karp reduction from $S_1$ to $S_2$.
+Then for every $S\in\NP$, there exists a Karp reduction $f$ from $S$ to $S_1$.
+Then $g\circ f$ is a Karp reduction from $S$ to $S_2$, since
+\[ x\in S \iff f(x)\in S_1 \iff g(f(x))\in S_2 \]
+And so $S_2$ is also $\NP$-hard.
+Thus we can think of the set of $\NPH$ as being \emph{upward closed}, meaning if $S$ is $\NP$-hard, and $S'$ is harder than $S$ then $S'$ is also $\NP$-hard.
+
+\begin{prop*}
+
+    There exists an $\NP$-complete problem.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $U$ be a universal Turing machine, ie. a Turing machine where given an input $(M,\omega)$ of a Turing machine $M$ and an input $\omega$, it runs $M$ on $\omega$.
+    We can assume that for each transition of $M$, $U$ takes linear (or worst case, polynomial, but this will not affect our proof) time, with respect to the length of $(M,\omega)$.
+
+    Let us define the decision problem
+    \[ S_U = \set{(M,\omega,t)}[\vrule width\z@ height20pt
+    \vcenter{\advance\hsize by-5cm\relax $M$ is a Turing machine, $\omega$ is some binary input string, and $t$ is a number in unary such that there exists some $y$ whose length
+    is at most $t$, such that $M$ accepts $(\omega,y)$ within $t$ steps}] \]
+    We will show that $S_U$ is $\NP$-complete.
+
+    Firstly, $S_U$ is in $\NP$.
+    We can define a verifier $V((M,\omega,t),y)$ which simply runs $U(M,(\omega,y))$ (ie. we run $M$ on the input $(\omega,y)$) for $t$ transitions.
+    If $M$ accepts $(\omega,y)$ within $t$ transitions, $V$ should accept, and otherwise reject.
+    This is polynomial time, as the time for $U$ to run each transition $M(\omega,y)$ is polynomial with respect to the length of $(M,\omega,y)$, and since we run this $t$ times, and $\abs y\leq t$ (which
+    is in unary), we see that the runtime of $V$ is polynomial with respect to $(M,\omega,t)$.
+    Thus $V$ is a polynomial proof system for $S_U$, and so $S_U\in\NP$.
+
+    The purpose of having $t$ in unary is since otherwise $V$ would run in polynomial time with respect to the length of $(M,\omega,t,y)$, but if $t$ is binary then $\abs y\leq t$ means that
+    $\abs y\leq 2^{\abs t}$, and so $V$ would not run in polynomial time with respect to $(M,\omega,t)$.
+
+    Now we must show that $S_U$ is $\NP$-hard.
+    Suppose $S$ is in $\NP$, and so it has a polynomial proof system $V(x,y)$ and its polynomial $p$.
+    Since $V$ runs in polynomial time, its time complexity is bound by a polynomial $q$.
+    Let us define
+    \[ t(n) = q(n+p(n)) \]
+    So $t$ is a polynomial bound for $V$'s runtime with respect to $n$, the length of $x$.
+    That is $V(x,y)$ runs in $t(\abs x)$ time.
+
+    All that remains is for us define a Karp reduction $f$ from $S$ to $S_U$.
+    If $x\in S$ then there exists a $y$ such that $\abs y\leq p(\abs x)$ and $V(x,y)=1$.
+    And if $x\notin S$, then no matter what $y$ we have $V(x,y)=0$.
+    So let us define
+    \[ f(x) = (V,x,t(\abs x)) \]
+    If $x\in S$, then there exists a $y$ such that $\abs y\leq t(\abs x)$ and $V(x,y)$ accepts within $t(\abs x)$ steps, so $f(x)\in S_U$.
+    Otherwise, there does not exist a $y$ such that $V(x,y)=1$, and so $f(x)\notin S_U$.
+    So we have that
+    \[ x\in S\iff f(x)\in S_U \]
+    Computing $t(\abs x)$ takes polynomial time, and so $f$ takes polynomial time, and therefore $f$ is a Karp reduction, as required.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    A \ppemph{boolean circuit} is a directed acyclic graph where each vertex is one of the following types:
+    \benum
+        \item Input: has no incoming edges, and at least one outgoing edge.
+        \item Output: has no outgoing edges, and at exactly one incoming edge.
+        \item Gate: one or two incoming edges, and at least one outgoing edge.
+    \eenum
+    Each gate also contains a boolean or unary operation (depending on the number of incoming edges).
+
+    If $C$ is a boolean circuit with $n$ input edges and $m$ output edges, we say that the output of $C$ on $\tau\in\set{0,1}^n$ is the value obtained by computing the logical operations in the gates on
+    the values in $\tau$, which becomes a boolean vector in $\set{0,1}^m$.
+
+    If a boolean circuit has one output edge, we say that a boolean vector $\tau$ of length $n$ satisfies it, if by inputting $\tau$ into the circuit, the output is $1$.
+
+\end{defn*}
+
+\begin{lemm*}
+
+    Every boolean function $f\colon\set{0,1}^n\longto\set{0,1}^m$ has a boolean circuit which computes it.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Suppose that $m=1$, then this is simply a boolean function $f\colon\set{0,1}^n\longto\set{0,1}$, and we know this can be written as a composition of ands, ors, and nots.
+    Composing these together creates a boolean circuit which computs $f$.
+    And if $m>1$, then $f=(f_1,\dots,f_m)$ and so we can create boolean circuits for $f_1,\dots,f_m$ and simply place them together to share input nodes.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}[cookLevin,The\ Cook-Levin\ Theorem]
+
+    The decision problem
+    \[ \sat = \set{\phi}[\text{$\phi$ is a satisfiable boolean formula in CNF}] \]
+    is $\NP$-complete.
+
+\end{thrm*}
+
+\begin{proof}
+
+    \def\csat{\mathsf{CSAT}}
+    Let us define the following decision problem
+    \[ \csat = \set{C}[\vcenter{\advance\hsize by-5cm $C$ is a boolean circuit with one output gate, and there exists an boolean vector as an input which satisfies the circit}] \]
+    $\csat$ is in $\NP$, as we can create a verifier $V(C,\tau)$ which simply valuates $\tau$ in $C$ and checks if it is $1$.
+    This obviously is a verifier for $\csat$, and it runs in polynomial time since all it must do is compute a boolean operation for each node in $C$.
+    And if $C\in\csat$ then the input which satisfies it must have a length less than $\abs C$, as its length is the number of input nodes in $C$, so $p(x)=x$ satisfies the condition for $V$ to be a
+    polynomial proof system.
+    Thus $\csat\in\NP$ as required.
+
+    Let $S\in\NP$, then suppose $V$ and $p$ form a polynomial proof system for $S$.
+    Suppose $V$'s runtime is bound by the polynomial $q$.
+    Let us define, as before,
+    \[ t(n) = q(n+p(n)) \]
+    And so $V(x,y)$'s runtime is bound by $q(\abs x)$.
+    We must define a Karp reduction from $S$ to $\csat$.
+
+    If $x\in S$, let $n=\abs x$, and so we can define $A$, a $t(n)\times t(n)$ matrix where each row corresponds to the state of $V(x,y)$ (as a Turing machine). 
+    So the first row corresponds to the the initial state:
+    \[ \begin{matrix} (x_1,q_0) & (x_2,\sps) & \cdots & (x_n,\sps) & (y_1,\sps) & \cdots & (y_m,\sps) & (\sps,\sps) & \cdots \end{matrix} \]
+    (ie. the current state is $q_0$, and the pointer is pointing at $x_1$.
+    The content of the tape is $x_1\cdots x_2y_1\cdots y_m$, ie. $xy$.)
+    Since the runtime of $V(x,y)$ is $t(n)$, the number of cells used is bound by $t(n)$ as well, hence why the matrix is $t(n)\times t(n)$.
+
+    Notice that the contents of a cell in $A$ is dependent only on the three cells above it, that is if we know the contents of the three cells above it, then we know the content of that cell.
+    This is since the value in that cell changes from its value in the row above only if the pointer is on it on the row above, and it writes to the cell, or if the pointer is on a neighbor of the cell
+    and the pointer moves to the cell.
+    So for example if the three cells are $(a,\sps),\,(b,\sps),\,(c,q_n)$, we can determine based on this state what $V$ will write to $c$, where the pointer will move, and what the next state will be.
+    Suppose it writes $d$, moves to the left, and goes to the state $q_{n+1}$, then  we know that the states in the next row will be $(a,\sps),\,(b,q_{n+1}),\,(d,\sps)$.
+
+    So if we denote the length of a cell in $A$ by $N$, there exists a function $\set{0,1}^{3N}\to\set{0,1}$ where given three neighboring cells in $A$, it computes the middle cell in the next row.
+    Since each cell in $A$ contains a character $x_i$, and a state $q_i$ (or a blank), and given an encoding of $V$, we can keep $N$ constant (take the maximum length of the encoding of some state, and add
+    one for the character $x_i$).
+
+    So if for each cell in $A$ we create a boolean circuit which corresponds to that function $\set{0,1}^{3N}\to\set{0,1}$, there are $t(n)^2$ such circuits.
+    We compose these together and we get a boolean circuit which creates a circuit which computes $V(x,y)$, and let us evaluate the input nodes corresponding to $x$, and this gives us a boolean circuit
+    $C_x$ whose input nodes correspond to $y$.
+    And so $C_x(y)$ computes $V(x,y)$.
+
+    Computing $C_x$ takes $O(t(n)^2)$ time to define and compose each of the smaller circuits together, and then simplifying the circuit by evaluating it on the values of $x$ is negligible compared to this.
+    And so $C_x$ takes polynomial time to compute with respect to $x$.
+    And so the function $x\mapsto C_x$ is a polynomial time mapping, and it is a Karp reduction since if $x\in S$ then there exists a $y$ such that $V(x,y)=C_x(y)=1$, so $C_x\in\csat$.
+    And if $x\notin S$, then no $y$ satisfies $V(x,y)$ and thus $C_x(y)=0$, and so $C_x\notin\csat$.
+
+    Our next step is to define a Karp reduction from $\csat$ to $\sat$.
+    Since $\NPH$ is upward-closed, this means that $\sat$ is in $\NPH$, and since $\sat$ is in $\NP$, this means that $\sat$ is $\NP$-complete.
+    %Suppose $C$ is a boolean circuit with one output, then our goal is to convert it to a boolean circuit similar to
+    %\[\begin{tikzcd}
+    %	\bullet & \bullet & \bullet \\
+    %	\neg & \circ & \neg \\
+    %	\lor & & \lor \\
+    %	& \land \\
+    %	& \bullet
+    %	\arrow[from=1-1, to=2-1]
+    %	\arrow[from=1-2, to=2-2]
+    %	\arrow[from=1-3, to=2-3]
+    %	\arrow[from=2-1, to=3-1]
+    %	\arrow[from=2-2, to=3-1]
+    %	\arrow[from=2-3, to=3-1]
+    %	\arrow[from=2-2, to=3-3]
+    %	\arrow[from=2-3, to=3-3]
+    %	\arrow[from=3-1, to=4-2]
+    %	\arrow[from=3-3, to=4-2]
+    %	\arrow[from=4-2, to=5-2]
+    %\end{tikzcd}\]
+    %ie. first the input nodes go through a gate which either is negation or nothing, then they are or'd together, and then everything is and'd together.
+    %Converting this to CNF is much simpler.
+
+    %So suppose we have a boolean circuit $C$, we will define a new circuit $C'$.
+    %We do this by making all the gates input nodes, and suppose in $C$, $a_1$ and $a_2$ ($a_1$ or $a_2$ may be input nodes or gates) go into a gate $g$ which performs some operation.
+    %In $C'$ we have the input nodes (as the gates are made into input nodes) $a_1$ and $a_2$ go into a gate with the same operation as $g$, let's call it $g'$.
+    %Then from this gate and from the input node $b$, we make an outgoing edge into a gate which asserts equality.
+
+    %So for example, let's say in $C$ we have the following structure
+    %\[\begin{tikzcd}
+    %	{x} \\
+    %	& {g_1} \\
+    %	{g_2}
+    %	\arrow[from=1-1, to=3-1]
+    %	\arrow[from=2-2, to=3-1]
+    %\end{tikzcd}\]
+    %Meaning the input $x$ and the gate $g_1$ go through the gate $g_2$.
+    %Then in $C'$ we transform this into
+    %\[\begin{tikzcd}
+    %	{x_1} & {g_1} & {g_2} \\
+    %	{g_2'} \\
+    %	& {=}
+    %	\arrow[from=1-1, to=2-1]
+    %	\arrow[from=1-2, to=2-1]
+    %	\arrow[from=2-1, to=3-2]
+    %	\arrow[from=1-3, to=3-2]
+    %\end{tikzcd}\]
+
+    Let the input nodes of $C$ be $x_1,\dots,x_n$ and the gates be $g_1,\dots,g_m$.
+    Suppose $g$ is a gate which accepts inputs from $a_1$ and $a_2$, then we want the CNF of the formula $g\equiv a_1*a_2$ where $*$ is $g$'s operation.
+    This can be constructed naively (it is the conversion of a three variable formula to CNF, which takes constant time).
+    If $g=g_i$, let us denote this by $\phi_i$.
+
+    Now, we have one more formula which we need, as we have not considered the output node.
+    If $a$ is the node which goes into the output edge, we define $\phi_{m+1}$ to be $a$ (since it is a gate or input, so it is a variable). 
+    Then we define
+    \[ \phi = \phi_1\land\cdots\land\phi_{m+1} \]
+    Since each $\phi_i$ is in CNF, so is $\phi$.
+    This takes polynomial time, as we must compute $m+1$ formulas in CNF, but each one takes constant time.
+
+    Now, if $C\in\csat$ then there exists $x_1,\dots,x_n$ which satisfies $C$.
+    If we run $x_1,\dots,x_n$ we get values in the gates $g_1,\dots,g_n$, and these values for $x_1,\dots,x_n,g_1,\dots,g_m$ satisfies $\phi$, since $\phi_i$ is satisfied for $i\leq m$ as the values for
+    $g_i$ are obtained by running $C$ on $x_1,\dots,x_n$, and $\phi_{m+1}$ is satisfied since the final gate (which connects to the output node), must be true (as $C$ is satisfied), and so $\phi_{m+1}$ is
+    satisfied as well.
+    So all $\phi_i$ are satisfied, and therefore $\phi$ is, and so $\phi\in\sat$.
+
+    And if $C\notin\csat$, then for any valuations of $x_1,\dots,x_n,g_1,\dots,g_m$, $C(x_1,\dots,x_n)$ will not be satisfied.
+    Let us assume that $\phi$ is satisfied.
+    Then each $\phi_i$ is satisfied for $i\leq m$, so the values of $g_i$ are the same as what they'd be when running $C$ on $x_1,\dots,x_n$, but since $C(x_1,\dots,x_n)$ is not satisfied, the final gate
+    (which connects to the output) cannot be satisfied and so $\phi_{m+1}$ is unsatisfied, in contradiction.
+
+    So the mapping from $C$ to $\phi$ is a Karp reduction, and so $\csat\leq\sat$, meaning $\sat$ is $\NP$-complete, as required.
+    \qed
+
+\end{proof}
+
+\def\is{\mathsf{IS}}
+\def\dubis{\mathsf{doubleIS}}
+\def\almostIS{\mathsf{almostIS}}
+\begin{coro*}
+
+    The decision problems
+    \begin{gather*}
+        \is = \set{(G,k)}[\text{$G$ is a graph with an independent set of size $\geq k$}] \\
+        \dubis = \set{(G,k)}[\text{$G$ has two distinct independent sets whose size is at least $k$}] \\
+        \almostIS = \set{(G,k)}[\text{$G$ has an almost independent set whose size is at least $k$}]
+    \end{gather*}
+    is $\NP$-complete.
+
+\end{coro*}
+
+Last recitation we defined a Karp reduction from $\sat$ to $\is$, and so $\is$ is $\NP$-complete.
+And we also defined Karp reductions from $\is$ to $\dubis$ and $\almostIS$, so they too are $\NP$-complete.
+
+\end{document}
+

@@ -1,0 +1,213 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\beqq{\mathrel{\vbox{\hbox{$=$}\kern-\baselineskip\kern.3pt\hbox{$=$}}}}
+
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mD{\mathcal{D}}
+
+\def\Var{\mathrm{Var}}
+
+\newfunc{var}{{\rm var}}({})
+\newfunc{bound}{{\rm bound}}({})
+
+\def\qed{\hskip.5cm\hbox{}\hfill$\blacksquare$}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\def\true{\mathsf{true}}
+\def\false{\mathsf{false}}
+
+\def\Aone#1#2{#1\to(#2\to#1)}
+\def\Atwo#1#2#3{\bigl(#1\to(#2\to#3)\bigr)\to\bigl((#1\to#2)\to(#1\to#3)\bigr)}
+\def\Athree#1#2{(\neg#2\to\neg#1)\to\bigl((\neg#2\to#1)\to#2\bigr)}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+
+\begin{document}
+
+\c@section=5
+
+\barcolorbox{220, 255, 255}{0, 130, 130}{80, 200, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Mathematical Logic}
+
+    \medskip
+    \textit{Lecture \thesection, Monday May 8, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+When we have a well-formed formula $\phi$ and we write $\phi(x_1,\dots,x_n)$ this means that $x_1,\dots,x_n$ occur in $\phi$ as free occurrences.
+
+\begin{defn*}
+
+    Given a term $t$, it is \ppemph{collision-free} for the variable $x$ in a formula $\phi$, if no free occurrences of $x$ in $\phi$ lies within the scope of any quantifier $\forall y$ where $y$ is a
+    variable of $t$.
+
+\end{defn*}
+
+What this means is that if we were to substitute $x$ with $t$, we may have changed the meaning of the formula as we have swapped an independent occurrence of $x$ in $\phi$ to some term dependent on $y$.
+So for example if $t=f(x,y)$ and we have $\phi=\exists y P(x,y)$, then $t$ is not free for $x$ since the occurrence of $x$ in $\phi$ is free, and within the domain of a quantifier on $y\in\var t$.
+But $t$ is collision-free for $y$ since every occurrence of $y$ is bound.
+Equivalently if the substitution of a free occurrence of a variable $x$ with $t$ results in a new bounded occurrence of some variable $y$, then $t$ is not free of $x$.
+
+Note then that a variable-free term (a constant, or a function of constants) is collision-free of every variable in any formula.
+If a variable $x$ is bound in $\phi$ (all of its occurrences are bound), then $t$ is free of $x$ in $\phi$.
+And so term $t$ is collision-free for any variable in $\phi$ if none of the variables of $t$ are bound in $\phi$.
+If $\phi$ contains no free occurrences of variables in $t$, then $t$ is collision-free with every variable.
+
+\begin{defn*}
+
+    Let $\mL$ be a first order language, an \ppemph{interpretation} of $\mL$, $\mM$, consists of
+    \blist
+        \item A non-empty set $\mD$ the \ppemph{domain of interpretation}, 
+        \item For every predicate letter $A_j^n$ of $\mL$, an $n$-ary relation $(A_j^n)^{\mM}\subseteq\mD^n$,
+        \item For every function letter $f_j^n$ of $\mL$, an $n$-ary function $(f_j^n)^{\mM}\colon\mD^n\longto\mD$,
+        \item For every constant letter $c_j$, some constant $(c_j)^{\mM}\in\mD$.
+    \elist
+
+\end{defn*}
+
+\begin{defn*}
+
+    A formula $\phi$ which has no free variables is a \ppemph{sentence} or \ppemph{closed formula}.
+
+\end{defn*}
+
+\begin{defn*}
+    
+    Given an interpretation $\mM$ and a valuation function $w\colon\Var\longto\mD$ (or a sequence $s$ in $\mD^\bN$ since $\Var$ is countable), we now define what the valuation of a term $t$ is, $t^w$,
+    recursively:
+    \blist
+        \item If $t$ is a variable $t=x$ then $t^w=x^w=w(x)$.
+        \item If $t$ is a constant $t=c$ then $t^w=c^{\mM}$.
+        \item Otherwise $t=f(t_1,\dots,t_n)$ for terms $t_i$ so $t^w=f^{\mM}(t_1^w,\dots,t_n^w)$.
+    \elist
+
+    Given an atomic formula $\phi$, we say that $\mM$ \ppemph{satisfies} $\phi$ if:
+    \blist
+        \item If $\phi=A(t_1,\dots,t_n)$ for terms $t_i$, then $\mM$ satisfies $\phi$ if $A^\mM(t_1^w,\dots,t_n^w)$.
+        \item If $\phi=t\beqq s$ for terms $t$ and $s$, then $\mM$ satisfies $\phi$ if $t^\mM=s^\mM$.
+    \elist
+
+    And given a general formula $\phi$
+    \blist
+        \item If $\phi=\neg\alpha$ then $\mM$ satisfies $\phi$ if it does not satisfy $\alpha$.
+        \item If $\phi=\alpha\land\beta$ then $\mM$ satisfies $\phi$ if $\mM$ satisfies both $\alpha$ and $\beta$.
+        \item If $\phi=\forall x\alpha$ for variable $x$, $\mM$ satisfies $\phi$ if for every $a\in\mD$ when we define $\mM^a_x$ to have the valuation function $w'$ where
+        \[ w'(v) = \begin{cases} w(v) & v\neq x \\ a & v=x \end{cases} \]
+        $\mM^a_x$ satisfies $\alpha$.
+        That is $\mM$ satisfies $\forall x\alpha$, if when we swap the value of $w(x)$ with any value in $\mD$, $\alpha$ is satisfied.
+    \elist
+
+    $w$ satisfies a formula $\phi$ is denoted by $(\mM,w)\vDash\phi$.
+    And $\mM$ satisfies a formula $\phi$ (alternatively $\phi$ is true for $\mM$) if for every valuation function $w$, $(\mM,w)\vDash\phi$, this is denote $\mM\vDash\phi$.
+    A formula $\phi$ is false for $\mM$ if there is no valuation $w$ which satisfies $\phi$.
+
+    An interpretation $\mM$ \ppemph{models} a set $\Gamma$ of formulas if every formula of $\Gamma$ is true for $\mM$.
+
+\end{defn*}
+
+\begin{defn*}
+
+    We now define what a \ppemph{first order theory} is.
+    Like any formal theory it has
+    \benum
+        \item Axioms: these are split into \ppemph{logical} and \ppemph{proper} axioms.
+        Logical axioms include all the axioms of predicate calculus, as well as
+        \[ \bigl(\forall x\phi(x)\bigr)\to\phi(t) \]
+        Meaning that $\phi$ is a formula which contains $x$ as a free variable, and it is true for every $x$, then it is true if we replace $x$ with any term $t$.
+        And the last logical axiom is
+        \[ \bigl(\forall x(\phi\to\psi)\bigr)\to\bigl(\phi\to\forall x\psi\bigr) \]
+        if $\phi$ contains no free occurrences of $x$.
+
+        The second class of proper axioms are specific to each first order theory.
+
+        \item Rules of inference:
+        \benum
+            \item Modus ponens: if $\phi$ and $\phi\to\psi$ then $\psi$.
+            \item Generalization: if $\phi$ then $\forall x\phi$ for any variable $x$.
+        \eenum
+    \eenum
+
+    An interpretation models a first order theory if it satisfies all the axioms (logical and proper), and the rules of inference.
+
+\end{defn*}
+
+\begin{exam*}
+
+    We define a \ppemph{partial order theory}, which just has one predicate letter $A(x,y)$ which will be written as $x<y$.
+    The proper axioms are:
+    \benum
+        \item $(\forall x)\neg(x<x)$
+        \item $(\forall x,y,z)(x<y\land y<z\to x<z)$
+    \eenum
+
+    Any model of this theory is called a \ppemph{partial order structure}.
+
+\end{exam*}
+
+\begin{exam*}
+
+    The \ppemph{group theory} has a binary predicate symbol $=$, a binary operation symbol $\cdot$, and a constant $e$.
+    We take the predicate symbol $=$ instead of using the first order symbol $\beqq$, so we need extra axioms regarding $=$ as well as the normal axioms of group theory
+    \benum
+        \item $(\forall x,y,z)\bigl((xy)z=x(yz)\bigr)$
+        \item $(\forall x)(ex=xe=x)$
+        \item $(\forall x)(\exists y)(xy=yx=e)$
+        \item $(\forall x)(x=x)$
+        \item $(\forall x)(\forall y)(x=y\to y=x)$
+        \item $(\forall x,y,z)(x=y\land y=z\to x=z)$
+        \item $(\forall x,y,z)\bigl(x=y\to(xz=yz\land zx=zy)\bigr)$
+    \eenum
+
+\end{exam*}
+
+\begin{defn*}
+
+    If $\phi$ is a formula in a first order language, $\phi$ is \ppemph{logically valid} if $\phi$ is true for any interpretation.
+    $\phi$ is \ppemph{satisfiable} if there exists an interpretation where $\phi$ is true.
+    And $\phi$ is \ppemph{contradictory} if it is false under any interpretation.
+
+    A set of formulas $\Gamma$ is \ppemph{satisfiable} if it has a model.
+
+\end{defn*}
+
+\end{document}
+

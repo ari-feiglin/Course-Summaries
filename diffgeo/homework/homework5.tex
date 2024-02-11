@@ -1,0 +1,254 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usetikzlibrary{decorations.markings}
+\usepackage[margin=1.5cm]{geometry}
+
+\input prettyprint
+\input preamble
+\input pdfmsym
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{det}{{\rm det}}({})
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{diam}{{\rm diam}}(\vert)
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+\newfunc{cis}{{\rm cis}}({})
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{sup}{{\rm sup}}\{\vert\}
+\newfunc{Res}{{\rm Res}}({})
+\newfunc{wind}n({})
+\newfunc{pv}{{\rm pv}}({})
+\newfunc{lspan}{{\rm span}}\{|\}
+\newfunc{spec}{{\rm spec}}({})
+\newfunc{trace}{{\rm trace}}({})
+\newfunc{sff}{{\rm I\mkern-2muI}}({})
+
+\font\bigbf = cmbx12 scaled 2000
+\@undervecc@def{underbar}\@linecap\@linecap
+
+\def\pmat#1{\begin{pmatrix}#1\end{pmatrix}}
+
+\def\bS{\mathbb{S}}
+\def\mO{{\cal O}}
+\def\mU{{\cal U}}
+\let\lineseg=\overleftrightvecc
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\def\bexerc{\begin{exercise*}}
+\def\eexerc{\end{exercise*}}
+\def\bblank{\begin{blankpp}}
+\def\eblank{\end{blankpp}}
+
+\begin{document}
+
+\c@section=5
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Differential and Analytic Geometry}
+
+    \medskip
+    \textit{Assignment \thesection}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\bexerc
+
+    The unit sphere is parameterized by
+    \[ x(\theta,\phi) = (\sin\phi\cos\theta,\sin\phi\sin\theta,\cos\phi) \]
+    We are given a latitude line, $\gamma$ given by $\phi=\phi_0$.
+    Find a parallel unit vector field over $\gamma$.
+
+\eexerc
+
+Let us compute the tangent space to $x$,
+\[ x_1 = (-\sin\phi\sin\theta,\sin\phi\cos\theta,0),\qquad x_2 = (\cos\phi\cos\theta,\cos\phi\sin\theta,-\sin\phi) \]
+We can form an orthonormal basis out of this,
+\[ E_1 = (-\sin\theta,\cos\theta,0),\qquad E_2 = (\cos\phi\cos\theta,\cos\phi\sin\theta,-\sin\phi) \]
+Now, since $\gamma(t)=x(t,\phi_0)$, we have that
+\[ E_1(t) = (-\sin(t),\cos(t),0),\qquad E_2(t) = (\cos(t)\cos(\phi_0),\sin(t)\cos(\phi_0),-\sin(\phi_0)) \]
+Differentiating gives
+\[ E'_1(t) = (-\cos(t),-\sin(t),0)=-\cos(\phi_0)E_2(t) - \sin(\phi_0)x(t,\phi_0),\quad E_2'(t) = \cos(\phi_0)\cdot(-\sin(t),\cos(t),0) = \cos(\phi_0)E_1(t) \]
+And since $V(t)\in T_{\gamma(t)}\bS^2$, and it is a unit
+\[ V(t) = \cos(\alpha(t))E_2(t,\phi_0) + \sin(\alpha(t))E_2(t,\phi_0) \]
+This means
+\[ V'(t) = (\cos(\phi_0)-\dot\alpha)\sin(\alpha)E_1 + (-\cos(\phi_0)+\dot\alpha)\cos(\alpha)E_2 - \sin(\phi_0)\cos(\alpha)n \]
+(Since $x=n$ is the unit normal to $\bS^2$).
+Thus we have that in order for $V(t)$ to be parallel, $V'(t)\perp T_{\gamma(t)}\bS^2$ and so
+\[ \dot\alpha = \cos(\phi_0) \]
+Thus
+\[ \alpha(t) = \cos(\phi_0)t + \alpha_0 \]
+And so the total change of angle is
+\[ \Delta\alpha = \alpha(2\pi) - \alpha(0) = \cos(\phi_0)\cdot2\pi \]
+Which is what we got in recitation as well.
+
+\bexerc
+
+    We are given the cylinder $M$ parameterized by
+    \[ x(u,v) = (\cos u,\sin u,v) \]
+    \benum
+        \item For every $p\in M$, find the exponential $\exp_p\colon T_pM\longto M$ explicitly.
+        \item For every curve $\gamma\colon I\to M$ and points $a,b\in I$, find the parallel transport $P_\gamma^{ab}\colon T_{\gamma(a)}M\to T_{\gamma(b)}M$
+    \eenum
+
+\eexerc
+
+\benum
+    \item We know that by definition $\exp_p(v)$ is equal to travelling a unit on the geodesic at $p$ in the direction $v$.
+    Since we are on a cylinder, the only geodesics are helixes ($t\mapsto (a(\cos(t)-1),a\sin t,ct)+p$) and vertical lines ($t\mapsto (0,0,ct)+p$).
+    And let us recall the definition of the exponential map, for $v\in T_pM$ let $\gamma_v$ be the geodesic where $\gamma_v(0)=p$ and $\gamma'_v(0)=v$ then $\exp_p(v)=\gamma_v(1)$.
+    If $v=0$ then $\exp_p(0)=p$.
+
+    So the two geodesics on cylinders have derivatives of the form $(-a\sin(t),a\cos(t),c)$ and $(0,0,c)$.
+    So if $v=(0,0,c)$ then $\gamma_v(t)=(0,0,ct)+p$ and so $\exp_p(v)=(0,0,c)+p=v+p$.
+    And if $v=(-a\sin(1),a\cos(1),c)$ then $\gamma_v(t)=(a(\cos(t)-1),a\sin t,ct)+p$ and so $\exp_p(v)=(a(\cos(1)-1),a\sin(1),c)+p$, this is equal to $R_{3\pi/2}v+(-a,0,0)+p$.
+    And if $v=0$ then $\exp_p(v)=p$.
+
+    \item Let $v\in T_{\gamma(a)}M$ then $P^{ab}_\gamma(v)=W(b)$ where $W(t)$ is the parallel transport on $\gamma$ and $W(a)=v$.
+    Then we know that
+    \[ W(t) = \cos\parens{\theta_0+\int_a^t\kappa_g}\gamma'(t) + \sin\parens{\theta_0+\int_a^t\kappa_g}n\times\gamma'(t) \]
+    Now, since $\gamma$ is smooth, let us focus on the surface whose boundary is given by $\gamma$ (from $a$ to $b$) and the geodesic from $\gamma(a)$ to $\gamma(b)$.
+    Since the cylinder is isometric with the plane, both have a Gaussian curvature of zero.
+    This means that (since the geodesic curvature of the geodesic is zero),
+    \[ \int_a^t\kappa_g = \iint K\,ds = 0 \]
+    And so
+    \[ W(t) = \cos\parens{\theta_0}\gamma'(t) + \sin\parens{\theta_0}n\times\gamma'(t) \]
+    So
+    \[ P^{ab}_\gamma(v) = \cos(\theta_0)\gamma'(b) + \sin(\theta_0)n\times\gamma'(b) \]
+    
+\eenum
+
+\bexerc
+
+    Prove, without using Gauss-Bonnet, that given a geodesic triangle on the unit sphere whose interior angles are $\alpha$, $\beta$, and $\gamma$, we have
+    \[ \alpha + \beta + \gamma = \pi + T \]
+    where $T$ is the area of the triangle.
+
+\eexerc
+
+Let $S_x$ be the area between two geodesics at an angle $x$ on the sphere.
+Since $S_x$ covers $\frac x\pi$ of the total surface area of the sphere, we have that, since the area of the sphere is $4\pi$,
+\[ S_x = 4\pi\cdot\frac x\pi = 4x \]
+Now, notice that $S_\alpha+S_\beta+S_\gamma$ covers the entire sphere, but each $S_x$ ($x=\alpha,\beta,\gamma$) counts $T$ twice (since the geodesics which define the triangle define a congruent
+triangle on the opposite side of the sphere).
+So this sum counts $T$ six times, while it should only be counted twice (since the geodesics define two congruent triangles), meaning $T$ is counted four more times than required.
+Thus (since the surface area of the sphere is $4\pi$),
+\[ S_\alpha + S_\beta + S_\gamma = 4\pi + 4T \]
+And so
+\[ 4(\alpha + \beta + \gamma) = 4(\pi + T) \implies \alpha + \beta + \gamma = \pi + T \]
+as required.
+
+\bexerc
+
+    Let $M$ be a compact orientable surface with a positive genus.
+    Show that the surface has ellipitic, hyperbolic, and parabolic points (points where the Gaussian curvature is positive, zero, and negative).
+
+\eexerc
+
+Let $O\in\bR^3$ be a point within $M$, since $M$ is compact there exist radii $R>0$ such that $M$ is contained within the ball $B_R(O)$.
+Let $r$ be the infimum of all such radii, and then $M$ must intersect with $B_r(O)$ at at least one point $p$, as otherwise we could reduce the radius $r$.
+In fact, they must be tangent at $p$ as otherwise we could increase $r$ and get a ball not containing $M$.
+So if we look at a normal section at $p$, we must have that its normal curvature with $M$ is greater than its normal curvature with $B_r(O)$ (since it must curve away from $p$ quicker, as it is contained
+within $B_r(O)$).
+Since the Gaussian curvature is equal to the product of the maximum and minimum of these values, we conclude that the Gaussian curvature of $M$ at $p$ is greater than that with $B_r(O)$ at $p$.
+Since the Gaussian curvature of $B_r(O)$ is $\frac1r>0$, we have that the Gaussian curvature of $M$ at $p$ is positive, and so we have an elliptic point.
+
+Since $M$ has a positive genus, it must have a hole somewhere.
+Let $O\in\bR^3$ contained within this hole, and let $r$ be the supremum of all the radii $R$ such that $B_r(O)$ does not intersect $M$.
+Then again, $B_r(O)$ must be tangent to $M$ at some point $p$.
+If we look at the normal curvatures, not all can curve inward or all outward for every choice of $O$, and so there must be some point $p$ where it has normal curvature both inward and outward.
+And so its Gaussian curvature is negative.
+
+And since Gaussian curvature is continuous, there must be a point with zero Gaussian curvature.
+
+\bexerc
+
+    Let us look at the rotation of the curve $\alpha(\psi)=(\cosh\phi,0,\psi)$.
+    Find the total Gaussian curvature of the surface.
+
+\eexerc
+
+We have computed that the Gaussian curvature of this surface is $K(t,\phi)=-\frac1{\cosh(t)^4}$.
+And the metric has a determinant of $\cosh(t)^4$, meaning that the total curvature is
+\[ \iint_M K\,ds = -\int_{-\infty}^\infty\int_0^{2\pi}\frac1{\cosh(t)^2}\,d\phi dt = -2\pi\int_{-\infty}^\infty\frac1{\cosh(t)}^2\,dt = -2\pi\tanh(t)\bigl|^\infty_{-\infty} = -4\pi \]
+
+\bexerc
+
+    Find the total Gaussian curvature of the rotation of $\alpha(\phi)=(\phi,0,\phi^2)$ where $\phi\geq0$.
+
+\eexerc
+
+This forms a parabaloid, which we can parameterize by $x(u,v)=(u,v,u^2+v^2)$ (Gaussian curvature is intrinsic and does not depend on parameterization).
+This is the graph of $f(u,v)=u^2+v^2$, and we have shown that the Gaussian curvature of a graph is given by
+\[ K = \frac{f_{uu}f_{vv}-f_{uv}^2}{(1+f_u^2+f_v^2)^2} \]
+Here that is equal to
+\[ \frac4{(1+4u^2+4v^2)^2} \]
+And so the total Gaussian curvature is
+\[ \iint_M K\,ds = 4\int_{-\infty}^\infty\int_{-\infty}^\infty(1+4u^2+4v^2)^{-2}\,dudv = \pi\int_{-\infty}^\infty(1+4v^2)^{-3/2}\,dv = \pi \]
+
+\bexerc
+
+    Suppose $M_1$ and $M_2$ are two disjoint compact orientable surfaces, show that
+    \[ \chi(M_1\dcup M_2) = \chi(M_1) + \chi(M_2) \]
+
+\eexerc
+
+We can show this in two ways.
+Firstly, since $M_1\dcup M_2$ is compact and orientable, by Gauss-Bonnet:
+\[ \iint_{M_1\dcup M_2}K\,ds = 2\pi\chi(M_1\dcup M_2) \]
+But at the same time
+\[ \iint_{M_1\dcup M_2}K\,ds = \iint_{M_1}K\,ds + \iint_{M_2}K\,ds = 2\pi\chi(M_1) + 2\pi\chi(M_2) \]
+And so
+\[ \chi(M_1\dcup M_2) = \chi(M_1) + \chi(M_2) \]
+
+Alternatively, any triangularization of $M_1$ and $M_2$ defines a triangularization of $M_1\dcup M_2$.
+So if $V^i$, $F^i$, and $E^i$ are the number of vertices, faces, and edges of the triangularization of $M_i$ then $V^1+V^2$, $F^1+F^2$, and $E^1+E^2$ are the number of vertices, faces, and edges
+of a triangularization of $M_1\dcup M_2$.
+And so
+\[ \chi(M_1\dcup M_2) = V^1+V^2 - (E^1+E^2) + (F^1+F^2) = V^i - E^i + F^i = \chi(M_1) + \chi(M_2) \]
+
+\bexerc
+
+    Given the surface $M$ defined by
+    \[ (x^2+y^2+2z^2-1)((x-10)^2+y^2+2z^2-1) = 0 \]
+    compute its total curvature.
+
+\eexerc
+
+This surface is the union of $x^2+y^2+2z^2-1=0$ and $(x-10)^2+y^2+2z^2-1=0$.
+These are two disjoint ellipsoids, let them be $M_1$ and $M_2$.
+Since ellipsoids are compact and orientable surfaces of genus zero, we have
+\[ \iint_M K\,ds = \iint_{M_1\dcup M_2}K\,ds = \iint_{M_1}K\,ds + \iint_{M_2}K\,ds = 4\pi + 4\pi = 8\pi \]
+
+\end{document}
+

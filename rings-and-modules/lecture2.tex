@@ -1,0 +1,246 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\usepackage{tikz-cd}
+
+\catcode`\@=11
+\input pdfmsym
+
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\implies{\,\mathrel{\longvarRightarrow}\,}
+
+\def\slfrac#1#2{\left.{}^{#1}\mkern-4mu\middle/\mkern-3mu{}_{#2}\right.}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\newfunc{eulerg}{{\rm Euler}}({})
+\newfunc{order}o({})
+\newfunc{ker}{{\rm Ker}}({})
+\newfunc{image}{{\rm Im}}({})
+\newfunc{lattice}{{\cal L}}(\vert)
+\newfunc{powset}{{\cal P}}(\vert)
+\newfunc{center}{{\rm Z}}({})
+\newfunc{units}{{\cal U}}(\vert)
+\newfunc{sign}{{\rm sgn}}({})
+\newfunc{aut}{{\rm Aut}}({})
+\newfunc{speclinear}{{\rm SL}}({})
+\newfunc{genlinear}{{\rm GL}}({})
+\newfunc{projlinear}{{\rm PGL}}({})
+\newfunc{specprojlinear}{{\rm PSL}}({})
+\newfunc{core}{{\rm Core}}(\vert)
+\newfunc{inner}{{\rm Inn}}(\vert)
+\newfunc{outer}{{\rm Out}}(\vert)
+\newfunc{conj}{{\rm conj}}({})
+\newfunc{fp}{{\rm FP}}({})
+
+\def\maxdivs{\mathrel{\|}}
+
+\let\normalsub=\trianglelefteq
+\def\normal{\mathrel\triangleleft}
+\let\mmorph=\longvarhookrightarrow
+
+\begin{document}
+
+\c@section=2
+
+\barcolorbox{220, 220, 255}{0, 0, 130}{80, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Introduction to Rings and Modules}
+
+    \medskip
+    \textit{Lecture \thesection, Monday March 20 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{Subrings}
+
+\begin{defn*}
+
+    Let $R$ be a ring, and $\varnothing\neq S\subseteq R$.
+    Then $S$ is a \ppemph{subring} of $R$ if it satisfies the following:
+    \benum
+        \item $(S,+)$ is a subgroup of $(R,+)$ (equivalently it is closed under subtraction, if $a,b\in S$ then $a-b\in S$).
+        \item $S$ is closed under multiplication: if $a,b\in S$ then $a\cdot b\in S$.
+        \item $1_R\in S$.
+    \eenum
+
+    Equivalent to the last two conditions is that $(S,\cdot)$ is a submonoid of $(R,\cdot)$.
+
+    If we remove the third condition, then $S$ is a \ppemph{subrng} (if $(S,+)$ is a subgroup of $(R,+)$ and $S$ is closed under multiplication, then $S$ is a subrng).
+
+\end{defn*}
+
+Note that $\varnothing S\subseteq R$ is a subrng of $R$ if and only if $S$ is a rng.
+
+\begin{exam*}
+
+    Let $R=M_2(\bZ)$ be our ring and
+    \[ S = \set{\pmat{a & a \\ 0 & 0}}[a\in\bZ] \]
+    be a subset of $R$.
+    Then $S$ is not a subring of $R$'s since the identity is not in $S$, but $S$ \emph{is} a ring under the same operations as $R$:
+    \benum
+        \item It is closed under addition and inverses, so $(S,+)$ is a group (it is a subgroup of $(R,+)$).
+        \item It is closed under multiplication, and $\pmat{1 & 1 \\ 0 & 0}$ is its identity, so $(S,\cdot)$ is a monoid.
+    \eenum
+    And so $S$ is indeed a ring, but not a subring (and therefore $S$ is a subrng).
+
+    So it is not sufficient to show that $\varnothing\neq S\subseteq R$ is a ring, we must show it is a ring where the identity is $1_R$.
+    This is true since then $(S,+)$ is a group and since $S\subseteq R$ it is a subgroup of $(R,+)$.
+    And it is necessarily closed under multiplication since it is a ring, and $1_R\in S$ by assumption
+
+\end{exam*}
+
+\begin{exam*}
+
+    Let $R=\bZ$, then every subring of $R$ must, by definition, contain $1$.
+    But since $(S,+)$ is a group, $\bZ=\gen{1}\subseteq S\implies S=\bZ$.
+    So $\bZ$ has no non-trivial subrings.
+
+\end{exam*}
+
+\begin{exam*}
+
+    Let $\bF$ be a field and $R=\bF[x]$.
+    Then let $a\in\bF$ and $S=\set{P\in R}[P(a)=0_{\bF}]$.
+    $S$ is closed under subtraction since if $P(a)=Q(a)=0$ then $\bigl(P-Q\bigr)(a)=P(a)-Q(a)=0$.
+    And it is closed under multiplication since $\bigl(PQ\bigr)(a)=P(a)Q(a)=0$ since $\bF$ is a field.
+    But $1\notin S$ so $S$ is a subrng but not a subring.
+
+\end{exam*}
+
+\begin{exam*}
+
+    If $\set{R_\lambda}_{\lambda\in\Lambda}$ are rings, then their \ppemph{product ring}: $R=\prod_{\lambda\in\Lambda}R_\lambda$ is also a ring.
+    The operations are
+    \[ \bigl(f+g\bigr)(\lambda)=f(\lambda)+g(\lambda)\in R_\lambda,\qquad \bigl(f\cdot g\bigr)(\lambda)=f(\lambda)\cdot g(\lambda)\in R_\lambda \]
+    The additive identity is $0(\lambda)=0_{R_\lambda}$ and the multiplicative identity is $1(\lambda)=1_{R_\lambda}$.
+    The proof that this is indeed a ring is trivial.
+
+    And if $S_\lambda$ is a subring of $R_\lambda$ then $S=\prod_{\lambda\in\Lambda}S_\lambda$ is a subring of $R$ (again, this is trivial).
+
+\end{exam*}
+
+\begin{exam*}
+
+    If $R$ is a ring and $y\in R$ then the \ppemph{center} of $y$ is
+    \[ C_R(y) = \set{a\in R}[ay = ya] \]
+    the center of $y$ is a subring of $R$:
+    \benum
+        \item If $a,b\in C_R(y)$ we must show that $(a+b)y=y(a+b)$, and we know $(a+b)y=ay+by=ya+yb=y(a+b)$ as required.
+        And if $a\in C_R(y)$ then $(-a)y=-(ay)$ since $(-a)y+ay=(-a+a)y=0y=0$, and so $(-a)y=-(ay)=-(ya)=y(-a)$ (the last equality is similarly trivial).
+        So $C_R(y)$ is a group under addition.
+        \item If $a,b\in C_R(y)$ then $(ab)y=a(by)=a(yb)=(ay)b=(ya)b=y(ab)$ so $ab\in C_R(y)$.
+        \item And $1\in C_R(y)$ trivially.
+    \eenum
+
+\end{exam*}
+
+\begin{prop*}
+
+    If $\set{S_\lambda}_{\lambda\in\Lambda}$ are subrings of $R$, then $S=\bigcap_{\lambda\in\Lambda}S_\lambda$ is also a subring of $R$.
+
+\end{prop*}
+
+\begin{proof}
+
+    We know that $1_R\in S$ because it is in every $S_\lambda$.
+    Suppose $a,b\in S$ then $a,b\in S_\lambda$ for every $\lambda\in\Lambda$ so $a-b\in S_\lambda$ for every $\lambda\in\Lambda$ and so $a-b\in S$, so $(S,+)$ is a subgroup of $(R,+)$.
+    And if $a,b\in S$ then $a,b\in S_\lambda$ and so $ab\in S_\lambda$ for every $\lambda\in\Lambda$ and so $ab\in S$.
+    So $S$ is indeed a subring of $R$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{defn*}
+
+    Suppose $R$ is a ring, then we define its \ppemph{center} to be:
+    \[ \centerof{R} = \set{a\in R}[\forall b\in R: ab=ba] \]
+
+\end{defn*}
+
+It is trivial to see that:
+\[ \centerof R = \bigcap_{a\in R}C_R(a) \]
+and so $\centerof R$ is a subring of $R$'s.
+
+\subsection{Ring Homomorphisms}
+
+\begin{defn*}
+
+    Suppose $R$ and $S$ are two rings, then a function $f\colon R\longvarrightarrow S$ is a \ppemph{ring homomorphism} if it satisfies:
+    \benum
+        \item For every $a,b\in R$, $f(a+_Rb)=f(a)+_Sf(b)$ ($f$ is a group homomorphism between $(R,+_R)$ and $(S,+_S)$).
+        \item For every $a,b\in R$, $f(a\cdot_R b)=f(a)\cdot_Sf(b)$.
+        \item $f(1_R)=1_S$.
+    \eenum
+
+    If $R$ and $S$ are rngs, and $f\colon R\longvarrightarrow S$ satisfies the first two properties above, it is a \ppemph{rng homomorphism}.
+
+\end{defn*}
+
+\begin{exam*}
+
+    If $S\subseteq R$ is a subring of $R$'s, then $f\colon S\longvarrightarrow R$ defined by $f(s)=s$ is called the \ppemph{inclusion monomorphism}.
+
+\end{exam*}
+
+\begin{exam*}
+
+    If $R$ is a ring, then if $f\colon\bZ\longvarrightarrow R$ is a ring homomorphism, $f(1)=1_R$ and this defines the image of every $n\in\bZ$: $f(n)=1_R+\cdots+1_R=[n]_R$.
+    This homomorphism is also well-defined, the first axiom is trivial.
+    And the second axioms follows from $f(n\cdot m)=[nm]_R=[n]_R[m]_R=f(n)\cdot f(m)$.
+    And by definition $f(1)=1_R$.
+
+    So there exists exactly one ring homomorphism from $\bZ$ to $R$ for every ring $R$.
+
+\end{exam*}
+
+\begin{exam*}
+
+    \newfunc{ev}{{\rm ev}}({})
+    Let $R$ be a ring, and $b\in R$.
+    We define the \ppemph{evaluation} of $b$ is $\ev_b\colon R[x]\longvarrightarrow R$ defined by $\evof[b]P=P(b)$.
+    This obviously satisfies the first axiom.
+    Now suppose
+    \[ P = \sum_{i=0}^n a_ix^i,\qquad Q = \sum_{i=0}^n c_ix^i \]
+    then
+    \[ PQ = \sum_{k=0}^{2n}\sum_{i+j=k} a_ic_jx^k \]
+    And so we have that:
+    \[ \evof[b]{PQ} = \sum_{k=0}^{2n}\biggl(\sum_{i+j=k} a_ic_j\biggr)b^k \]
+    If $b\in\centerof R$ then
+    \[ = \sum_{k=0}^{2n}a_ib^ic_jb^j = \biggl(\sum_{i=0}^n a_ib^i\biggr)\cdot\biggl(\sum_{j=0}^n c_jb^j\biggr) = P(b)\cdot Q(b) = \evof[b]P\cdot\evof[b]Q \]
+    And the third axiom is trivial since $1_{R[x]}(b)=1_R$.
+
+    So if $b\in\centerof R$ then $\ev_b$ is a ring homomorphism.
+
+\end{exam*}
+
+\begin{exam*}
+
+    Suppose $f\colon R\longvarrightarrow S$ is a ring homomorphism, then we define $F\colon M_n(R)\longvarrightarrow M_n(S)$ by $F\bigl((a_{ij})\bigr)=\bigl(f(a_{ij})\bigr)$, ie we take the image of each
+    element in the matrix.
+    Obviously
+    \[ F\bigl((a_{ij}) + (b_{ij})\bigr) = \bigl(f(a_{ij} + b_{ij})\bigr) = \bigl(f(a_{ij}) + f(b_{ij})\bigr) = \bigl(f(a_{ij})\bigr) + \bigl(f(b_{ij})\bigr) = F\bigl((a_{ij})\bigr) + F\bigl((b_{ij})\bigr) \]
+    And:
+    \[ F\bigl((a_{ij}) \cdot (b_{ij})\bigr) = F\parens{\biggl(\sum_{k=1}^n a_{ik}b_{kj}\biggr)} = \parens{f\parens{\sum_{k=1}^n a_{ik}b_{kj}}} = \parens{\sum_{k=1}^n f(a_{ik})f(b_{kj})} = 
+    \bigl(f(a_{ij})\bigr) \cdot \bigl(f(b_{ij})\bigr) = F\bigl(a_{ij}\bigr)\cdot F\bigl((b_{ij})\bigr) \]
+    And $F(I_R)=I_S$ is obvious.
+
+\end{exam*}
+
+\end{document}
+

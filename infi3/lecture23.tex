@@ -1,0 +1,222 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{diam}{{\rm diam}}(\vert)
+
+\font\bigbf = cmbx12 scaled 2000
+\@undervecc@def{underbar}\@linecap\@linecap
+
+\def\openset{{\cal O}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=23
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infinitesimal Calculus 3}
+
+    \medskip
+    \textit{Lecture \thesection, Sunday January 22, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+By the previous theorem, $f$ is integrable if and only if for every $\epsilon>0$ there is a
+partition such that $\bar s(f,P) - \underbar s(f,P) < \epsilon$, and this is simply 
+\[ \sum_{j=1}^n(M_j-m_j)\abs{D_j} < \epsilon \]
+where $P=\set{D_j}_{j=1}^n$.
+
+\begin{thrm*}
+
+    Let $D\subseteq\bR^n$ compact and content and $f\colon D\longvarrightarrow\bR$ continuous, then
+    $f$ is integrable over $D$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    By Weirstrauss, $f$ is bounded, which is a necessary condition for integrability.
+    Let $\epsilon>0$, since $D$ is compact, $f$ is uniformly continuous over it, so there exist a
+    $\delta>0$ such that for every $\norm{x-y}<\delta$ in $D$,
+    $\abs{f(x)-f(y)}<\frac{\epsilon}{2\abs D}$.
+    Now we take a partition $P=\set{D_j}_{j=1}^k$ where $\lambda(P)<\delta$.
+    So for every $x,y\in D$ in the same $D_j$, $\norm{x-y}<\delta$ so
+    $\abs{f(x)-f(y)}<\frac\epsilon{2\abs D}$ and so
+    $\abs{M_j-m_j}\leq\frac\epsilon{2\abs D}<\frac\epsilon{\abs D}$, so
+    \[ \bar s(f,P) - \underbar s(f,P) = \sum_{j=1}^k(M_j-m_j)\abs{D_j} <
+    \sum_{j=1}^k\frac\epsilon{\abs{D}}\abs{D_j} = \epsilon \]
+    so $f$ is integrable as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+Note that we showed that if $f$ is continuous in $D$ contented compact then
+\[ \lim_{\lambda(P)\varrightarrow0}\bar s(f,P)-\underbar s(f,P) = 0 \]
+since it is less than every $\epsilon>0$, and since
+\[ \underbar s(f,P) \leq \int_D f \leq \bar s(f,P) \implies
+0\leq\bar s(f,P) - \int_D f \leq \bar s(f,P) - \underbar s(f,P) \longvarrightarrow 0 \]
+and so
+\[ \int_D f = \lim_{\lambda(P)\varrightarrow0}\bar s(f,P) =
+\lim_{\lambda(P)\varrightarrow0}\underbar s(f,P) \]
+
+\begin{defn*}
+
+    Suppose $P=\set{D_j}_{j=1}^k$ is a partition of $D$ and $f\colon D\longvarrightarrow\bR$ is
+    bounded.
+    Then a \ppemph{Riemann sum} of $f$ over $P$ is a sum of the form
+    \[ \sum_{j=1}^k f(x_j)\abs{D_j} \]
+    where $x_j\in D_j$.
+
+\end{defn*}
+
+Notice then that by definition $\bar s(f,P)$ is the supremum of all Riemann sums over $P$ and
+$\underbar s(f,P)$ is the infimum, and so if $s$ is a Riemman sum:
+\[ \underbar s(f,P) \leq s\leq \bar s(f,P) \]
+
+\begin{defn*}
+
+    A function is \ppemph{Riemann Integrable} in $D$ if when $\lambda(P)\longvarrightarrow0$ all
+    the Riemann sums over $P$ converge to the same limit $L$.
+    Then we say
+    \[ \int_D f = L \]
+
+\end{defn*}
+
+We say that for our previous definition of integrability, $f$ is \emph{Darboux Integrable}.
+But we will prove that it doesn't matter, both definitions are equivalent.
+
+\begin{thrm*}
+
+    Let $D\in\bR^n$ compact and $f\colon D\longvarrightarrow\bR$ bounded, then
+    $f$ is Riemann integrable if and only if it is Darboux integrable.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Since for every Riemman sum over $P$ we have
+    \[ \underbar s(f,P) \leq s(P) \leq \bar s(f,P) \]
+    and if $f$ is Darboux integrable then the limits on both sides are the same, say $L$.
+    So the limit of $s(P)$ as $\lambda(P)\longvarrightarrow0$ is equal to $L$ by the squeeze
+    theorem.
+
+    Now suppose $f$ is Riemann integrable, then for every Riemman sum over the partition $P$, we
+    have that $\lim\limits_{\lambda(P)\varrightarrow0}s(P)=L$.
+    And since the upper and lower Darboux sums are the supremum and infimum of the Riemman sums,
+    this means that they too must converge to $L$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{prop*}
+
+    Suppose $D\subseteq\bR^n$ is a compact domain and $f,g\colon D\longvarrightarrow\bR$ integrable and $c\in\bR$ constant, then
+    \benum
+        \item $f+cg$ is integrable over $D$ and satisfies
+            \[ \int_D f+cg = \int_D f + c\int_D g \]
+        \item If $f\leq g$ in $D$ then
+            \[ \int_D f \leq \int_D g \]
+        \item If $\set{D_i}_{i=1}^k$ is a partition of $D$ then $f$ is integrable over each $D_i$ and
+            \[ \int_D = \sum_{i=1}^k\int_{D_i}f \]
+        \item
+            \[ \int_D 1 = \abs D \]
+        \item If $m\leq f\leq M$ in $D$ then
+            \[ m\abs D\leq\int_D f\leq M\abs D \]
+        \item If $f$ is continuous in $D$ then there is an $x_0\in D$ such that
+             \[ \int_D f = f(x_0)\abs D \]
+        \item $\abs f$ is integrable and
+             \[ \abs{\int_D f} \leq \int_D\abs f \]
+    \eenum
+
+\end{prop*}
+
+\begin{proof}
+
+    \benum
+        \item For any partition $P$:
+            \[ s(f+cg,P) = \sum_{i=1}^k\bigl(f(x_i)+cg(x_i)\bigr)\abs{D_i} = \sum_{i=1}^k f(x_i)\abs{D_i} + c\sum_{i=1}^k g(x_i)\abs{D_i} =
+            s(f,P) + c\cdot s(g,P) \]
+            and thus taking limits as $\lambda(P)$ approaches $0$ yields
+            \[ \int_D f+cg = \int_D f + c\int_D g \]
+        \item Since $\abs{D_i}\geq0$ we have that
+            \[ s(f,P) = \sum_{i=1}^k f(x_i)\abs{D_i} \leq \sum_{i=1}^k g(x_i)\abs{D_i} = s(g,P) \]
+            so taking the limit gives the inequality.
+        \item Take $P_j$ to be a partition of $D_j$ then $P=\bigcup P_j$ is a partition of $D$ then it is simple to show that
+            \[ \bar s(f,P) = \sum_{j=1}^k \bar s(f,P_j) \qquad \underbar s(f,P) = \sum_{j=1}^k \underbar s(f,P_j) \]
+            And so
+            \[ \bar s(f,P) - \underbar s(f,P) = \sum_{j=1}^k\bar s(f,P_j) - \underbar s(f,P_j) \]
+            since the right side is a sum of non-negatives it follows that for every $j$
+            \[ 0 \leq \bar s(f,P_j) - \underbar s(f,P_j) \leq \bar s(f,P) - \underbar s(f,P) \]
+            thus taking the limit of the right side (since for every $\lambda(P)$ we can create a partition of $P_j$s as needed) gives that the
+            difference between the upper and lower sums converges to $0$ and therefore $f$ is integrable over $D_j$.
+            And so
+            \[ \int_D = \lim_{\lambda(P)\varrightarrow0}\bar s(f,P) = \lim\sum_{j=1}^k\bar s(f,P_j) = \sum_{j=1}^k\int_{D_j} f \]
+        \item This is simple: for every partition $P$:
+            \[ s(1,P) = \sum_{i=1}^k \abs{D_j} = \abs D \]
+            and so the integral is also $\abs D$.
+        \item By above we know that $\int m = m\abs D$ and $\int M = M\abs D$ and since $m\leq f\leq M$:
+            \[ m\abs D = \int_D m \leq \int_D f \leq \int_D M = M\abs D \]
+        \item Since $D$ is compact, $f$ has a maximum and minimum so $m\abs D\leq\int f\leq M\abs D$, so
+            \[ m\leq\frac1{\abs D}\int_D f\leq M \]
+            And since $f$ is continuous, for every value between $m$ and $M$, there is an element $x_0\in D$ such that $f(x_0)$ is equal to it.
+            And specifically there is an $x_0\in D$ such that
+            \[ f(x_0) = \frac1{\abs D}\int_D f \]
+            as required.
+        \item For any partition $P$ of $D$, we know that $M_j(\abs f)-m_j(\abs f)\leq M_j(f)-m_j(f)$.
+            And so
+            \[ 0\leq\bar s(\abs f, P) - \underbar s(\abs f, P) \leq \bar s(f,P) - \underbar s(f,P) \]
+            and since $f$ is integrable, this means that so is $\abs f$.
+            And since both $f$ and $-f$ are both less than or equal to $\abs f$, their integrals, which are $\int f$ and $-\int f$ are less than
+            $\int\abs f$, so
+            \[ \abs{\int_D f} = \pm\int_D f \leq \int_D\abs f \]
+    \eenum
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{prop*}
+
+        Suppose $D$ is a domain which can be separated into $D=\bigcup_{i=1}^k D_i$.
+        If $f$ is integrable over each $D_i$ then it is integrable over $D$ and
+        \[ \int_Df = \sum_{i=1}^k\int_{D_i}f \]
+
+\end{prop*}
+
+The proof of this is similar to the proof of the converse we showed above.
+Since
+\[ \bar s(f,P) - \underbar s(f,P) = \sum_{i=1}^k \bar s(f,P_j) - \underbar s(f,P_j) \]
+choose $P_j$s such that the right difference is less than $\frac\epsilon k$ and then we get that $\bar s(f,P)-\underbar s(f,P)<\epsilon$ as required.
+Then by above
+\[ \int_Df = \sum_{i=1}^k\int_{D_i}f \]
+
+\end{document}

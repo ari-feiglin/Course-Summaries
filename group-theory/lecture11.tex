@@ -1,0 +1,307 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\usepackage{tikz-cd}
+
+\catcode`\@=11
+\input pdfmsym
+
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\slfrac#1#2{\left.{}^{#1}\mkern-4mu\middle/\mkern-3mu{}_{#2}\right.}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\newfunc{eulerg}{{\rm Euler}}({})
+\newfunc{order}o({})
+\newfunc{ker}{{\rm Ker}}({})
+\newfunc{image}{{\rm Im}}({})
+\newfunc{lattice}{{\cal L}}(\vert)
+\newfunc{powset}{{\cal P}}(\vert)
+\newfunc{units}{{\cal U}}(\vert)
+\newfunc{sign}{{\rm sgn}}({})
+\newfunc{aut}{{\rm Aut}}({})
+\newfunc{speclinear}{{\rm SL}}({})
+\newfunc{genlinear}{{\rm GL}}({})
+\newfunc{projlinear}{{\rm PGL}}({})
+\newfunc{specprojlinear}{{\rm PSL}}({})
+\newfunc{core}{{\rm Core}}(\vert)
+\newfunc{inner}{{\rm Inn}}(\vert)
+\newfunc{outer}{{\rm Out}}(\vert)
+\newfunc{conj}{{\rm conj}}({})
+\newfunc{fp}{{\rm FP}}({})
+
+\def\maxdivs{\mathrel{\|}}
+
+\let\normalsub=\trianglelefteq
+\let\mmorph=\longvarhookrightarrow
+
+\begin{document}
+
+\c@section=11
+
+\barcolorbox{220, 220, 255}{0, 0, 130}{80, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Group Theory}
+
+    \medskip
+    \textit{Lecture \thesection, Sunday January 8, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{$p$-groups}
+
+Notice that if we focus on the conjugate group action and we take $I$ to be a set of representatives of each orbit, then
+\[ G = \bigdcup_{x\in I}\conjof x \]
+since the orbits partition the set being acted on ($G$ in this case).
+Notice that $x\in G$ has an orbit of length $1$ if and only if for every $g\in G$ we have $gxg^{-1}=x$ that is $gx=xg$ for all $g\in G$, which is equivalent to $x\in Z(G)$.
+If we define $I'$ to be the set of representatives of orbits of length larger than $1$, we can write the above union as
+\[ G = \bigdcup_{x\in Z(G)}G\cdot x\dcup\bigdcup_{x\in I'}\conjof x = Z(G)\dcup\bigdcup_{x\in I'}\conjof x \]
+Using the orbit-stabilizer theorem this means:
+\[ \abs G = \abs{Z(G)} + \sum_{x\in I'}\bracks{G : C_G(x)} \]
+We summarize this result in the following lemma:
+
+\begin{lemm*}
+
+    If we define $I'$ to be a set of representatives of orbits of size larger than $1$ then:
+    \[ \abs G = \abs{Z(G)} + \sum_{x\in I'}\bracks{G : C_G(x)} \]
+
+\end{lemm*}
+
+\begin{thrm*}[cauchyTheorem,Cauchy's\ Theorem]
+
+    If $G$ is a group whose order is divisible by a prime $p$, $G$ has an element of order $p$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    If $G$ is abelian then suppose $e\neq g\in G$ let $m=o(g)$.
+    If $p$ divides $m$ then $g^{\frac mp}$ has order $p$ as required.
+    Else take $\slfrac G{\cycle g}$ which has order $\frac{\abs G}m$ which must be divisible by $p$ since $m$ is not.
+    Then inductively there must be $h\cycle g\in\slfrac G{\cycle g}$ with order $p$, so $h^p\in\cycle g$ and therefore the order of $h$ is divisible by $p$ and by above there must be such an element.
+
+    If $G$ is not abelian, if $Z(G)$'s order is divisble by $p$ we are finished (since it is abelian).
+    Otherwise there is an $x\notin Z(G)$ such that $p\ndivs\bracks{G:C_G(x)}$ (since otherwise since the order of $G$ is the sum of the order of $Z(G)$, which is not divisible by $p$, and the indexes
+    of $C_G(x)$s, which if they are all divisible by $p$ then $G$ cannot be since $Z(G)$ isn't).
+    So $p$ must divide the order of $C_G(x)$, and since $C_G(x)<G$ inductively it has an element of order $p$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{defn*}
+
+    A $p$-group for a prime $p$ is a group where every element's order is a power of $p$.
+
+\end{defn*}
+
+Notice that if $G$ is finite, it is a $p$-group if and only if its order is a power of $p$.
+If it is a $p$ group suppose it is divisible by some other prime $q$, then by Cauchy's theorem it has an element of order $q$ which is a contradiction.
+And by Lagrange if its order is $p$ then every element must have an order of a power of $p$.
+
+\begin{defn*}
+
+    Suppose $\set{G_\lambda}_{\lambda\in\Lambda}$ are sets, then we define the \ppemph{direct product} and \ppemph{direct sum} of these sets:
+    \[ \prod_{\lambda\in\Lambda} G_\lambda = \set{f\colon\Lambda\longvarrightarrow\Lambda}[\forall\lambda\in\Lambda: f(\lambda)\in G_\lambda] \]
+    \[ \sum_{\lambda\in\Lambda} G_\lambda = \set{f\in\prod_{\lambda\in\Lambda} G_\lambda}[f(\lambda)=e_{G_\lambda} \text{ except for a finite number of cases}] \]
+
+\end{defn*}
+
+Notice that the direct sum and product are non-trivial by the axiom of choice.
+This is not required if these sets are groups (choose $f(\lambda)=e_{G_\lambda}$).
+Notice that if these sets are groups then the sum and products are groups themselves under the operation $(f\cdot g)(\lambda)=f(\lambda)\cdot g(\lambda)$.
+
+\begin{prop*}
+
+    If $P$ is a $p$-group acting on $X$ then
+    \[ \fpof X\equiv \abs X\pmod p \]
+
+\end{prop*}
+
+\begin{proof}
+
+    Every cycle must divide the order of $P$ and therefore every other cycle (which is not a fixed cycle) is a non-trivial power of $p$ and is therefore equivalent to $0$ modulo $p$.
+    And since the order of $X$ is the sum of the order of its cycles, this means it is equivalent to the sum of the order of its fixed cycles modulo $p$, which is equal to $\fpof X$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{prop*}
+
+    The center of a finite $p$-group is non-trivial.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $P$ act on itself through conjugation then since the set of fixed points are $Z(P)$ then
+    \[ \abs{Z(P)}\equiv\abs P\equiv 0\pmod p \]
+    So $\abs{Z(P)}\neq1$ and is therefore not trivial.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{prop*}
+
+    Every group of order $p^2$ is abelian.
+
+\end{prop*}
+
+\begin{proof}
+
+    Such a group is a $p$-group.
+    If $P$ is not abelian, then $\set e\neq Z(P)\subset P$, and therefore $\abs{Z(P)}=p$, and therefore $\abs{\slfrac{P}{Z(P)}}=p$ and therefore is cyclic and therefore $P$ is abelian in contradiction.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{thrm*}
+
+    Suppose $P$ is a finite $p$-group and $H<P$ then $H$ is a proper subset of its normalizer.
+
+\end{thrm*}
+
+\begin{proof}
+
+    We have $H$ act on the set of left cosets of $H$ via $h\cdot(gH)=(hg)H$.
+    We suppose $H$ is a non-trivial subgroup (the case where $H$ is trivial is trivial), and thus its order is a non-trivial power of $p$.
+    We know that $H$ is necessarily a $p$-group and therefore
+    \[ \fpof H\equiv \abs H\pmod p \implies \fpof H\equiv 0 \pmod p \]
+    Since $H$ is a fixed point in this action, $\fpof f\geq1$ so there must be some other fixed point $gH$ for $g\notin H$.
+    So for all $h\in H$ $hgH=gH$ and therefore $g^{-1}Hg\leq H$ as $g^{-1}hg=g^{-1}gh'=h'\in H$ and therefore $g$ is in the normalizer of $H$ but not $H$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\subsection{Sylow's Theorems}
+
+\begin{defn*}
+
+    We use the notation $a^n\maxdivs b$ to mean $a^n$ is the maximal power of $a$ which divides $b$. 
+    That is $a^n\divs b$ but $a^{n+1}\ndivs b$.
+
+\end{defn*}
+
+\begin{defn*}
+
+    Suppose $G$ is a group whose group is divisible by a prime $p$, $P\leq G$ is a $p$-Sylow subgroup of $G$ if it is a $p$-group whose index is coprime to $p$.
+
+\end{defn*}
+
+\begin{thrm*}
+
+    If $G$ is a finite group of order divisible by $p$ then it has a $p$-Sylow group of order $p^t\maxdivs\abs G$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Suppose $p^t\maxdivs\abs G$.
+    Then by Cauchy's theorem there must be an element $g$ of $G$ of order $p$, then $p^{t-1}\maxdivs\abs{\slfrac G{\cycle g}}$, by induction there is a $p$-Sylow subgroup of the form $\slfrac P{\cycle g}$
+    of order $p^{t-1}$.
+    Then $P$ must be a $p$-Sylow subgroup of $G$ (since it has order $p^t$).
+
+    If $G$ is not abelian and $p\divs\abs{Z(G)}$ then there is an element $g\in G$ of order $p$, and the proof continues as above.
+    Otherwise there is $x\notin Z(G)$ (since the order of $G$ is equal to the sum of $Z(G)$ and the centers) such that $p\ndivs\bracks{G:C_G(x)}$ and therefore $p^t\maxdivs C_G(x)$ which is an abelian
+    subgroup of $G$ and therefore contains a $p$-Sylow group of order $p^t\maxdivs\abs G$ by the previous paragraph.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+If $A,B\leq G$ and $B\subseteq N_G(A)$, then $AB=BA$ since for all $b\in B$, $b\in N_G(A)$ so $bAb^{-1}=A$ and therefore $bA=Ab$ for all $b\in B$ so $AB=BA$.
+And further, $A\normalsub AB$ since $abAb^{-1}a^{-1}=aAa^{-1}=A$.
+And by the isomorphism theorems
+\[ \slfrac{AB}A\cong\slfrac B{A\cap B} \implies \abs{AB}=\frac{\abs A\cdot\abs B}{\abs{A\cap B}} \]
+Such a $B$ is said to \emph{normalize} $A$ (if $B\subseteq N_G(A)$, that is $bAb^{-1}=A$ for every $b\in B$).
+
+\begin{lemm*}
+
+    Suppose $P$ is a $p$-Sylow subgroup of $G$ and $Q$ is some $p$-subgroup of $G$.
+    If $Q$ normalizes $P$ then $Q\subseteq P$, that is $Q\subseteq N_G(P)$ means $Q\subseteq P$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    The order of $\abs{PQ}$ must be a power of $p$ since this is true for $\abs P$, $\abs Q$, and $\abs{P\cap Q}$, and so $PQ$ is a $p$-group.
+    Since $P$ is a $p$-Sylow group it is a maximal $p$-group, and so $Q\subseteq PQ=P$ as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{thrm*}[sylowSecondTheorem,Sylow's\ Second\ Theorem]
+
+    All $p$-Sylow subgroups are conjugates.
+
+\end{thrm*}
+
+\begin{thrm*}[sylowThirdTheorem,Sylow's\ Third\ Theorem]
+
+    The number of $p$-Sylow subgroups is equivalent to $1$ modulo $p$.
+
+\end{thrm*}
+
+We will prove both theorems simultaneously.
+
+\begin{proof}
+
+    Let $\Omega$ be the set of all $p$-Sylow subgroups of $G$, by the first Sylow Theorem, $\Omega$ is nonempty (we assume $p$ divides the order of $G$).
+    $G$ acts on $\Omega$ through conjugation.
+    Let $P\in\Omega$, and $P$ also acts on $\Omega$ through conjugation and the set of all fixed points are the set of $p$-Sylow groups $Q$ such that $P$ normalizes $Q$ ($pQp^{-1}=Q$).
+    And so $Q\subseteq P$ and by symmetry $P\subseteq Q$ and so $P=Q$.
+    And so the set of all fixed points includes only $P$ (since $P$ is trivially a fixed point), and since for $p$-groups $\fpof X\equiv\abs X\pmod p$ we have that
+    \[ \abs\Omega\equiv 1\pmod p \]
+    which proves the third Sylow Theorem.
+
+    Suppose for the sake of contradiction that $G$'s action on $\Omega$ is not transitive (there is more than one orbit).
+    Let $\Omega_0$ be one orbit in $\Omega$, then there is a $Q\notin\Omega_0$ which acts on $\Omega_0$ by conjugation which it inherits from $G$ (therefore it is well-defined).
+    But since $Q\notin\Omega_0$ then the action cannot have any fixed points because as explained above the only fixed point would be $Q$ itself which is not in $\Omega_0$.
+    So there are $0$ fixed points and therefore:
+    \[ \abs{\Omega_0}\equiv 0\pmod p \]
+    But there is a $P\in\Omega_0$ which acts on $\Omega_0$ via conjugation and has a single fixed point itself so
+    \[ \abs{\Omega_0}\equiv 1\pmod p \]
+    in contradiction.
+
+    So the conjugation of $G$ on $\Omega$ must have a single orbit and therefore all $p$-Sylow subgroups are conjugates.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{thrm*}
+
+    Every $p$-subgroup is contained within a $p$-Sylow subgroup.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let $Q$ be some $p$-subgroup of $G$ then it acts on $\Omega$, and we know $\fpof\Omega\equiv\abs\Omega\equiv1\pmod p$, and therefore $\fpof\Omega\neq\varnothing$.
+    And if $P\in\fpof\Omega$ then $Q$ normalizes $P$ and is therefore contained in it.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\end{document}
+

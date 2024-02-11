@@ -1,0 +1,318 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+\newfunc{spa}{{\rm span}}(\vert)
+\newfunc{diam}{{\rm diam}}(\vert)
+\newfunc{proj}\pi({})
+\newfunc{iproj}{\pi^{-1}}({})
+\newfunc{cis}{{\rm cis}}({})
+\newfunc{Re}{{\rm Re}}({})
+\newfunc{Im}{{\rm Im}}({})
+\newfunc{sup}{{\rm sup}}\{\vert\}
+\newfunc{res}{{\rm Res}}({})
+
+\font\bigbf = cmbx12 scaled 2000
+\@undervecc@def{underbar}\@linecap\@linecap
+
+\def\mO{{\cal O}}
+\def\mU{{\cal U}}
+\let\lineseg=\overleftrightvecc
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\qed{\hskip1cm\hbox{}\hfill$\blacksquare$}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=9
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Complex Functions}
+
+    \medskip
+    \textit{Lecture \thesection, Wednesday June 21, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{defn*}
+
+    Let $z_0\in\bC$ and $r>0$, then we call the set $D_r(z_0)\setminus\set{z_0}$ a pointed disk about (or around) $z_0$.
+
+\end{defn*}
+
+\begin{defn*}
+
+    Suppose $f$ is a function defined in a pointed disk about $z_0$.
+    $z_0$ is an \ppemph{isolated singular point} of $f$, if there exists a pointed disk about $z_0$ in which $f$ is analytic, but $f$ is not analytic (or even not defined) at $z_0$.
+
+    There are three types of isolated singular points:
+    \benum
+        \item If there exists $g(z)$ analytic in a neighborhood of $z_0$ where $f=g$ in this nighborhood without $z_0$, then $z_0$ is a \ppemph{removable singularity}.
+        Ie. if we can set $f(z_0)=w_0$ so that $z_0$ is no longer singular, it is removable.
+        \item If there exists analytic functions at $z_0$, $A$ and $B$, such that $A(z_0)\neq0$ and $B(z_0)=0$ where $f=\frac AB$ in a pointed neighborhood of $z_0$, then $z_0$ is a \ppemph{pole} of $f$.
+        If $z_0$ is a zero of degree $k$ of $B$, then $z_0$ is a \ppemph{pole of degree $k$} of $f$.
+        \item If $z_0$ is not removable or a pole, then $z_0$ is an \ppemph{essential singularity}.
+    \eenum
+
+\end{defn*}
+
+\begin{thrm*}[riemannCriterion,Riemann's\ Criterion\ For\ Removable\ Singularities]
+
+    Let $z_0$ be an isolated singularity of $f$, where $\lim_{z\to z_0}(z-z_0)f(z)=0$, then $z_0$ is removable.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let
+    \[ h(z) = \begin{cases} (z-z_0)^2f(z) & z\neq z_0 \\ 0 & z=z_0 \end{cases} \]
+    Then $h$ is analytic on $D\setminus\set{z_0}$ and for $z=z_0$ then
+    \[ h'(z_0) = \lim_{z\to z_0}(z-z_0)f(z) = 0 \]
+    and so $h$ is analytic on $z=z_0$ as well, so by the theorem from last lecture (take any line through $D$, then $h$ is analytic on the line and on $D\setminus L$, so $h$ is analytic).
+    Note that $h(z_0)=0$ and $h'(z_0)=0$ and so $h$'s taylor series is of the form
+    \[ h(z) = c_2(z-z_0)^2 + c_3(z-z_0)^3 + \cdots \]
+    Since for $z\neq z_0$,
+    \[ f(z) = \frac{h(z)}{(z-z_0)^2} = c_2 + c_3(z-z_0) + \cdots \]
+    which is analytic on $D$, and thus an analytic extension of $f$ to $D$, and so $z_0$ is removable.
+    \qed
+
+\end{proof}
+
+\begin{coro*}
+
+    If $f$ is bounded in a pointed neighborhood of an isolated singularity $z_0$ then $z_0$ is removable.
+
+\end{coro*}
+
+\begin{proof}
+
+    Note that
+    \[ \abs{(z-z_0)f(z)} \leq M\abs{z-z_0} \]
+    which goes to $0$ as $z\to z_0$, and thus we have that $\lim_{z\to z_0}(z-z_0)f(z)=0$ and thus the singularity is removable by the above theorem.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}
+
+    If $f$ is analytic on a pointed neighborhood of $z_0$ such that there exists a $k\in\bN$ where
+    \[ \lim_{z\to z_0})(z-z_0)^k f(z) \neq 0\quad\text{and}\quad\lim_{z\to z_0}(z-z_0)^{k+1}f(z) = 0 \]
+    then $z_0$ is a pole.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let us define, similar to as before,
+    \[ h(z) = \begin{cases}(z-z_0)^{k+2}f(z) & z\neq z_0 \\ 0 & z=z_0 \end{cases} \]
+    then $h$ is analytic on $D\setminus\set{z_0}$ and for $z=z_0$ we have
+    \[ h'(z_0) = \lim_{z\to z_0}(z-z_0)^{k+1}f(z) = 0 \]
+    and so $h$ is analytic on $D$.
+    Since $h(z_0)=0$ and $h'(z_0)=0$, its taylor series starts at $(z-z_0)^2$ and so if we define
+    \[ A(z) = \frac{h(z)}{(z-z_0)^2} = c_2+c_3(z-z_0) + \cdots \]
+    $A(z)$ is analytic.
+    But $A(z)=(z-z_0)^kf(z)$ as well, and so $A(z_0)=\lim(z-z_0)^kf(z)\neq0$ and so
+    \[ f(z) = \frac{A(z)}{(z-z_0)^k} \]
+    and so $z_0$ is a pole singularity.
+    \qed
+
+\end{proof}
+
+This is a generalization of Riemanns criterion.
+
+\subsection{Laurent Series}
+
+\begin{defn*}
+
+    Suppose $\set{\mu_k}_{k=-\infty}^\infty\in\bC$ and $L\in\bC$ then we say
+    \[ \sum_{k=-\infty}^\infty\mu_k = L \]
+    if and only if the series
+    \[ \sum_{k=0}^\infty\mu_k,\quad\sum_{k=1}^\infty\mu_{-k} \]
+    converge and their sum is $L$.
+
+\end{defn*}
+
+\newpage
+\begin{thrm*}
+
+    The function
+    \[ f(z) = \sum_{k=-\infty}^\infty a_kz^k \]
+    is convergent and analytic in the ring $D(R_1,R_2)=\set{z}[R_1<\abs z<R_2]$ where
+    \[ R_2 = \frac1{\limsup\abs{a_k}^{\frac1k}},\quad R_1=\limsup\abs{a_{-k}}^{\frac1k} \]
+    if $R_1<R_2$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let us define
+    \[ f_1(z) = \sum_{k=1}^\infty a_{-k}z^{-k} \]
+    and
+    \[ f_2(z) = \sum_{k=0}^\infty a_kz^k \]
+    Then if $f_1(z)$ and $f_2(z)$ converge, we have $f(z)=f_1(z)+f_2(z)$ (this is if and only if, too).
+    Since $f_2$ is a (positive) powerseries, it has a radius of convergence which is precisely $R_2$, so $f_2$ converges (and is analytic) in $D_{R_2}(0)$.
+
+    Let us define for $z\neq0$
+    \[ g(z)=f\bigl(\frac1z\bigr) = \sum_{k=1}^\infty a_{-k}z^k \]
+    which has a radius of convergence of $\frac1{R_1}$, and so $g(z)$ converges when $z<\frac1{R_1}$.
+    And for $z<\frac1{R_1}$, $g$ is analytic.
+    And since $f_1(z)$ converges if and only if $g\bigl(\frac1z\bigr)$ does, we have $f_1(z)$ converges when $R_1<\abs z$.
+    And since $g(z)$ is analytic in $D_{R_1}(z)\setminus\set0$, $f_1$ is analytic in $\set{z}[\abs z>R_1]$.
+
+    So when $R_1<z<R_2$, $f_1(z)$ and $f_2(z)$ are analytic and convergent and thus so is $f$.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    A series of the form
+    \[ \sum_{k=-\infty}^\infty a_k(z-z_0)^k \]
+    is  called a \ppemph{Laurent series} about $z_0$.
+
+\end{defn*}
+
+What we have shown is that a Laurent series about $z_0$ is convergent and analytic in
+\[ D(z_0, R_1, R_2) = \set{\abs z}[R_1<\abs{z-z_0}<R_2] \]
+We get the general case for $z_0\neq0$ by shifting the function $f(z)$ to $f(z+z_0)$, and applying the above theorem.
+
+\begin{thrm*}
+
+    If $f$ is analytic in the ring $D(R_1,R_2)$ then $f$ has a Laurent series in the same ring.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let $R_1<r_1<r_2<R_2$, and $r_1<\abs z<r_2$, for every $w\in D$ (the ring) define
+    \[ g(w) = \begin{cases} \frac{f(w)-f(z)}{w-z} & w\neq z \\ f'(z) & w=z \end{cases} \]
+    is analytic in $D$, and so by Cauchy
+    \[ \int_{\partial D}g = 0 \]
+    And by Cauchy we know
+    \[ 2\pi i = \int_{C_{r_2}}\frac1{w-z}\,dw \]
+    and so since $w\varmapsto\frac1{w-z}$ is analytic in $D_{r_1}(w)$, we have
+    \[ 2\pi if(z) = f(z)\int_{C_{r_2}}\frac1{w-z}\,dw + f(z)\int_{-C_{r_1}}\frac1{w-z}\,dw = \int_{\partial D}\frac{f(z)}{w-z}\,dw \]
+    And we know
+    \[ 0 = \int_{\partial D} g = \int_{\partial D}\frac{f(w)-f(z)}{w-z}\,dw \]
+    and so we have
+    \[ \int_{\partial D}\frac{f(z)}{w-z}\,dw = \int_{\partial D}\frac{f(w)}{w-z}\,dw \]
+    and thus
+    \[ 2\pi if(z) = \int_{\partial D}\frac{f(w)}{w-z}\,dw = \int_{C_{r_2}}\frac{f(w)}{w-z}\,dw + \int_{-C_{r_1}}\frac{f(w)}{w-z}\,dw \]
+
+    Note that for $w\in C_{r_2}(0)$, $\abs z<\abs w$ and so
+    \[ \frac1{w-z} = \sum_{k=0}^\infty\frac{z^k}{w^{k+1}} \]
+    and for $w\in C_{r_1}(0)$, $\abs z>\abs w$ and so
+    \[ \frac1{w-z} = -\sum_{k=0}^\infty\frac{w^k}{z^{k+1}} \]
+
+    And so
+    \[ 2\pi if(z) = \int_{C_2}\sum_{k=0}^\infty\frac{f(w)z^k}{w^{k+1}} + \int_{-C_1}\sum_{k=0}^\infty\frac{f(w)w^k}{z^{k+1}} \]
+    since the series converge uniformly, we have that
+    \[ = \sum_{k=0}^\infty z^k\int_{C_2}\frac{f(w)}{w^{k+1}} + \sum_{k=0}^\infty z^{-k-1}\int_{-C_1}f(w)w^k = \sum_{k=0}^\infty z^k\int_{C_2}\frac{f(w)}{w^{k+1}} +
+    \sum_{k=-1}^{-\infty}z^k\int_{-C_1}\frac{f(w)}{w^{k+1}} \]
+    Since $\frac{f(w)}{w^{k+1}}$ is analytic on $D$, we can swap $C_{r_1}$ and $C_{r_2}$ with $C_r$ for $R_1<r<R_2$, and so we have
+    \[ f(z) = \frac1{2\pi i}\sum_{k=-\infty}^\infty z^k\int_{C_r}\frac{f(w)}{w^{k+1}}\,dw \]
+    \qed
+
+
+\end{proof}
+
+\begin{prop*}
+
+    If $f$ is analytic in $D(R_1,R_2)$ and
+    \[ f(z) = \sum_{k=-\infty}^\infty a_kz^k \]
+    then
+    \[ a_k = \frac1{2\pi i}\int_{C_r}\frac{f(w)}{w^{k+1}} \]
+
+\end{prop*}
+
+\begin{proof}
+
+    Note
+    \[ \int_{C_r}\frac{f(z)}{z^{k+1}} = \int_{C_r}\sum_{n=-\infty}^\infty a_nz^{n-k-1} = \sum_{n=-\infty}^\infty a_n\int_{C_r}z^{n-k-1} \]
+    the integral
+    \[ \int_{C_r}z^n = \begin{cases} 2\pi i & n=-1 \\ 0 & n\neq-1 \end{cases} \]
+    and thus
+    \[ \int_{C_r}\frac{f(z)}{z^{k+1}} = 2\pi i a_k \]
+    as required.
+    \qed
+
+\end{proof}
+
+So if $z_0$ is an isolated singularity, we can take $R_1=0$ and so there exists a Laurent series such that
+\[ f(z) = \sum_{k=-\infty}^\infty a_k(z-z_0)^k \]
+Furthermore, if $a_k=0$ for every $k<0$ then this defines an Taylor series, and thus $f$ is equal to an analytic function defined on $z_0$, so $z_0$ is removable (this is equivalent).
+
+And if there exists a $k\geq1$ such that $a_{-k}\neq0$ but $a_t=0$ for $t<-k$ then $(z-z_0)^k f(z)=a_{-k}\neq0$ and $(z-z_0)^{k+1}=0$ and so $z_0$ is a pole of degree $k$ (this is equivalent).
+
+Otherwise if there exist infinite $a_k\neq0$ for $k<0$ then $z_0$ is essential.
+
+\begin{defn*}
+
+    For a Lauren series
+    \[ f(z) = \sum_{k=-\infty}^\infty a_k(z-z_0)^k \]
+    then $\sum_{k=0}^\infty a_k(z-z_0)^k$ is the \ppemph{analytic part} of $f$ about $z_0$, and $\sum_{k=-1}^{-\infty}a_k(z-z_0)^k$ is the \ppemph{essential part} of $f$ about $z_0$.
+
+\end{defn*}
+
+\begin{defn*}
+
+    If $f(z)=\sum_{k=-\infty}^\infty c_k(z-z_0)^k$ in a pointed neighborhood of $z_0$ then $c_{-1}$ is \ppemph{$f$'s residue at $z_0$}.
+    This is denoted
+    \[ c_{-1} = \resof{f,z_0} \]
+
+\end{defn*}
+
+\begin{prop*}
+
+    If $f$ has a simple pole (pole of degree $1$) at $z_0$ then
+    \benum
+        \item $c_{-1}=\lim_{z\to z_0}(z-z_0)f(z)$
+        \item If $f(z)=\frac{A(z)}{B(z)}$ for $A$ and $B$ analytic about $z_0$ and $A(z_0)\neq0$ and $z_0$ is a first order root of $B$, then
+        \[ c_{-1} = \frac{A(z_0)}{B'(z_0)} \]
+    \eenum
+
+\end{prop*}
+
+\begin{proof}
+
+    Since $z_0$ is a simple pole, if $c_{-k}=0$ for every $k>1$.
+    Thus
+    \[ f(z) = c_{-1}(z-z_0)^{-1} + c_0 + c_1(z-z_0) + \cdots \]
+    Thus
+    \[ (z-z_0)f(z) = c_{-1} + c_0(z-z_0) + \cdots \]
+    and so the limit is $c_{-1}$.
+
+    And since
+    \[ c_{-1} = \lim_{z\to z_0}(z-z_0)\frac{A(z)}{B(z)} = \lim_{z\to z_0}A(z)\cdot\frac{z-z_0}{B(z)} = A(z_0)\cdot\frac1{B'(z_0)} \]
+    since the limits exist (the functions are analytic) and $B'(z_0)\neq0$.
+    \qed
+
+\end{proof}
+
+\end{document}
+

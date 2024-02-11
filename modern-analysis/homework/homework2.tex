@@ -1,0 +1,140 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+\parindent=0pt
+\parskip=3pt plus 2pt minus 2pt
+
+\input ../preamble
+
+\footline={}
+
+\setcounter{section}{2}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+
+{\bppbox{rgb{.5 1 .5}}{rgb{0 .4 0}}{rgb{.1 .4 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Modern Analysis}
+    \smallskip
+    \centerline{\setfont{it}Homework \the\counter{section}}
+    \centerline{\setfont{it}Ari Feiglin}
+
+\eppbox}
+
+\bexerc
+
+    Determine if the following collections are alegbras or $\sigma$-algebras:
+    \benum
+        \item $X=\set{1,2,3,4},\ S=\set{\varnothing,\set1,\set2,\set{1,2},\set{1,2,3,4}}$
+        \item $X=[0,1],\ S=\set\varnothing\cup\set{A}[{[0,1/2]}\subseteq A]$
+        \item $X=[0,1],\ S=\set{A}[\set{0,1}\subseteq A\hbox{ or }\set{0,1}\cap A=\varnothing]$
+        \item $X=\set{0,1}^{\bb N}$ and $A\in S$ if and only if every $(x_n)\in A$ satisfies that $\set{(y_n)}[y_1=x_1]\subseteq A$.
+    \eenum
+
+\eexerc
+
+\benum
+    \item This is not an algebra since $\set1^c=\set{2,3,4}$ is not in $S$.
+    \item This is not an algebra since $[0,1/2]\in S$ but $[0,1/2]^c\notin S$.
+    \item This is a $\sigma$-algebra: $\varnothing\in S$ since it has an empty intersection with $\set{0,1}$, $A\cap\set{0,1}=\varnothing$ if and only if $\set{0,1}\subseteq A^c$ so $S$ is closed under
+    complements.
+    Finally if $\set{A_n}_{n=1}^\infty\subseteq S$, if there exists any $n$ such that $\set{0,1}\subseteq A_n$ then $\set{0,1}\subseteq\bigcup_nA_n$ so $\bigcup_nA_n\in S$.
+    Otherwise $A_n\cap\set{0,1}=\varnothing$ for every $n$, so $\parens{\bigcup_nA_n}\cap\set{0,1}=\bigcup_n(A_n\cap\set{0,1})=\varnothing$, so $\bigcup_nA_n\in S$ as well.
+    \item This is a $\sigma$-algebra since $\varnothing\in S$ vaccuously.
+    If $A\in S$, then let $(x_n)\in A^c$, if $y_1=x_1$ then if $(y_n)\in A$, since $y_1=x_1$ we'd have $(x_n)\in A$ in contradiction, so $(y_n)\in A^c$, meaning $A^c\in S$.
+    Now suppose $\set{A_n}_{n=1}^\infty\subseteq S$, let $(x_k)_k\in\bigcup A_n$, then $(x_k)_k\in A_n$ for some $n$, and if $y_1=x_1$ then $(y_k)_k\in A_n\subseteq\bigcup_nA_n$, meaning
+    $\set{(y_k)_k}[y_1=x_1]\subseteq\bigcup_nA_n$, so $\bigcup_nA_n\in S$ as required.
+\eenum
+
+\bexerc
+
+    Let $\set{f_n}_{n\in{\bb N}}$ be a sequence of continuous functions on $[0,1]$.
+    Prove that
+    $$ A = \set{x\in[0,1]}[f_n(x)\to0] $$
+    is a Borel set.
+
+\eexerc
+
+By definition $f_n(x)\to0$ if and only if for every $\epsilon>0$ there exists an $n_0\in{\bb N}$ such that for every $n\geq n_0$, $\abs{f_n(x)}<\epsilon$, meaning $x\in f_n^{-1}(-\epsilon,\epsilon)$.
+Since the rationals are dense, we can take only rational $\epsilon$s.
+Therefore
+$$ A = \bigcap_{\epsilon\in{\bb Q}_+}\bigcup_{n_0\in{\bb N}}\bigcap_{n=n_0}^\infty f_n^{-1}(-\epsilon,\epsilon) $$
+Since $f_n$ is continuous, $f_n^{-1}(-\epsilon,\epsilon)$ is an open set for every $\epsilon>0$ and $n$.
+So this is a composition of intersections and unions of open sets and is therefore a Borel set.
+
+\bexerc
+
+    Let $m$ be the Lebesgue measure and $\set{A_n}_{n\in{\bb N}}$ be a sequence of measurable sets in $[0,1]$.
+    Define $F=\set{x}[\forall n\in{\bb N}\exists k>n\colon x\in A_k]$.
+    Prove
+    \benum
+        \item $F=\bigcap_{n=1}^\infty\bigcup_{k=n}^\infty A_k$,
+        \item if $m(A_n)\geq\delta>0$ for all $n$ then $m(F)\geq\delta$,
+        \item if $\sum_{n=1}^\infty m(A_n)<\infty$ then $m(F)=0$,
+        \item there exists a sequence $\set{A_n}$ such that $\sum_{n=1}^\infty m(A_n)=\infty$ and $m(F)=0$.
+    \eenum
+
+\eexerc
+
+\benum
+    \item $x\in F$ if and only if for every $n$ there exists a $k>n$ such that $x\in A_k$.
+    This is obviously contained in $\bigcap_n\bigcup_{k\geq n}A_k$, and if $x\in\bigcap_n\bigcup_{k\geq n}A_k$ then for every $n$ there exists a $k\geq n$ such that $x\in A_k$.
+    So for any $n$, there exists a $k\geq n+1>n$ such that $x\in A_k$, so $x\in F$.
+    \item By continuity from above, since $\set{\bigcup_{k\geq n}A_k}_n$ is a decreasing sequence,
+    $$ m(F) = \lim_{n\to\infty}m\parens{\bigcup_{k\geq n}A_k} \geq \lim_{n\to\infty}m(A_n) \geq \lim_{n\to\infty}\delta = \delta $$
+    \item Again by continuity from above,
+    $$ m(F) = \lim_{n\to\infty}m\parens{\bigcup_{k\geq n}A_k} \leq \lim_{n\to\infty}\sum_{k\geq n}m(A_k) $$
+    since $\sum_{k=1}^\infty m(A_k)$ converges, its tail must converge to zero, meaning $\lim_{n\to\infty}\sum_{k\geq n}m(A_k)=0$, so $m(F)=0$.
+    \item Define $A_n=(0,1/n)$, then $m(A_n)=\frac1n$ so its sum diverges.
+    But $F=\varnothing$ since if $x\in F$, then eventually $\frac1n<x$ so for every $k\geq n$, $x\notin A_k$.
+    So $m(F)=0$ as required.
+\eenum
+
+\def\C{{\cal C}}
+\bexerc
+
+    Let $\C$ be the Cantor set, prove it
+    \benum
+        \item is compact,
+        \item does not contain any interval of positive measure,
+        \item is not the countable union of closed intervals.
+    \eenum
+
+\eexerc
+
+\benum
+    \item Recall the definition of the Cantor set, defining $C_0\coloneqq[0,1]$ and $C_{n+1}\coloneqq\frac13C_n\bigcup\parens{\frac23+\frac13C_n}$,
+    $$ \C \coloneqq \bigcap_{n=1}^\infty C_n $$
+    Since all $C_n$ are closed (by induction: $C_0$ is closed, then $C_{n+1}$ is the union of two closed sets which is also closed), $\C$ is the countable intersection of closed sets, and is therefore also
+    closed.
+    Therefore $\C$ is closed and bound, meaning it is compact.
+    \item By induction, $m(C_n)=\parens{\frac23}^n$, since
+    $$ m(C_{n+1}) = \frac13m(C_n) + \frac13m(2+C_n) = \frac23m(C_n) = \parens{\frac23}^{n+1} $$
+    And so by continuity from above,
+    $$ m(\C) = \lim_{n\to\infty}m\parens{\bigcap_{k=1}^n C_k} \leq \lim_{n\to\infty}m(C_n) = \lim_{n\to\infty}\parens{\frac23}^n = 0 $$
+    so $\C$ has zero measure, and therefore cannot contain any set of positive measure.
+    \item Since $\C$ contains no set of positive measure, it cannot contain any interval and in particular cannot be the union of intervals.
+\eenum
+
+\def\E{{\cal E}}
+\bexerc
+
+    Let $X$ be a set and $\E\subseteq\powsetof X$.
+    Show that for every $F\in\sigma(\E)$, there exists a countable subset $\E'\subseteq\E$ such that $F\in\sigma(\E')$.
+
+\eexerc
+
+This is equivalent to showing that
+$$ \sigma(\E) = \bigcup_{\E'\subseteq\E\hbox{\setscale{7pt} countable}}\sigma(\E') $$
+Since $\sigma(\E')\subseteq\sigma(\E)$ for every $\E'\subseteq\E$, $\supseteq$ is trivial.
+Now we claim that the right hand side (denote it \def\U{{\cal U}} $\U$) is a $\sigma$-algebra: it obviously contains $\varnothing$ and if $A\in\U$ then $A\in\sigma(\E')$ for some countable $\E'\subseteq\E$
+and so $A^c\in\sigma(\E')\subseteq\U$.
+And if $\set{A_n}_n\in\U$, then for every $n$ there exists a countable $\E_n\subseteq\E$ such that $A_n\in\sigma(\E_n)$.
+Then define $\E'\coloneqq\bigcup_n\E_n$ which is the countable union of countable sets, so $\E'$ is countable.
+And for every $n$, $A_n\in\sigma(\E_n)\subseteq\sigma(\E')$, so $\bigcup_nA_n\in\sigma(\E')\subseteq\U$.
+Thus $\U$ is a $\sigma$-algebra containing $\E$, since for every $A\in\E$, $A\in\sigma(\set A)$, thus $\sigma(\E)\subseteq\U$ and so $\sigma(\E)=\U$ as required.
+
+\bye
+

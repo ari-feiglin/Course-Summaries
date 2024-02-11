@@ -1,0 +1,318 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{conj}{Conjecture}{255,130,130}{150,0,0}{200,0,0}
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\newfunc{oracle}{\hbox{\tencsc oracle}}({})
+
+\def\PF{\mathbf{PF}}
+\def\PC{\mathbf{PC}}
+\def\P{\mathbf{P}}
+\def\NP{\mathbf{NP}}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mN{\mathcal{N}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\def\bexerc{\begin{exercise*}}
+\def\eexerc{\end{exercise*}}
+\def\bblank{\begin{blankpp}}
+\def\eblank{\end{blankpp}}
+
+\begin{document}
+
+\c@section=1
+
+\barcolorbox{255, 220, 220}{130, 0, 0}{200, 80, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Computability and Complexity}
+
+    \medskip
+    \textit{Assignment 1}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\bexerc
+
+    Prove or disprove the following: for every search problem $R$, if $S_R\in\P$ then $R\in\PF$.
+
+\eexerc
+
+\bblank
+
+    This is false, let us define the following search problem:
+    \begin{multline*}
+        R = \set{\bigl((M,\omega),1\bigr)}[\text{$M$ is a Turing machine which accepts the input $\omega$}]\\
+        \cup\set{\bigl((M,\omega),0\bigr)}[\text{$M$ is a Turing machine which does not accept the input $\omega$}]
+    \end{multline*}
+    Now, there exists a reduction from $A_{\rm TM}$ ($A_{\rm TM}=\set{(M,\omega)}[\text{$M$ is a Turing machine which accepts $\omega$}]$) to $R$: if $A$ solves $R$ then given an input $(M,\omega)$ we return
+    $A(M,\omega)$.
+    This returns $1$ if $M$ accepts $\omega$ and $0$ otherwise, so it would decide $A_{\rm TM}$.
+    Thus $R$ is not decidable, as that would contradict the undecidability of $A_{\rm TM}$.
+    And so in particular $R\notin\PF$.
+
+    But
+    \[ S_R = \set{(M,\omega)}[\text{$M$ is a Turing machine}] \]
+    which is in $\P$, as all we need to do is determine if given an input $(M,\omega)$, that $M$ is a Turing machine.
+    So $S_R\in\P$ but $R\notin\PF$.
+
+\eblank
+
+\bexerc
+
+    We define the class $\NP'$ as follows: given a decision problem $S$, we say that $S\in\NP'$ if there exists a polynomial-time algorithm $V$ such that for every $x$:
+    \benum
+        \item If $x\in S$ then there exists a polynomial $p$ and an input $y$ whose length is at most $p(\abs x)$ such that $V(x,y)=1$.
+        \item If $x\notin S$ then for every $y$, $V(x,y)=0$.
+    \eenum
+    Prove, disprove, or show an equivalence to an open problem that $\NP=\NP'$.
+
+\eexerc
+
+\bblank
+
+    Notice that the requirement that if $x\in S$ then there exists a polynomial $p$ and $y$ such that $\abs y\leq p(\abs x)$ and $V(x,y)=1$ can be simplified to there simply existing a $y$ such that
+    $V(x,y)=1$.
+    That is, $S\in\NP'$ if and only if there exists a polynomial-time algorithm $V$ such that
+    \benum
+        \item If $x\in S$ then there exists a $y$ such that $V(x,y)=1$.
+        \item If $x\notin S$ then for every $y$, $V(x,y)=0$.
+    \eenum
+    Ie. $S\in\NP'$ if and only if $S$ has a polynomial-time verifier.
+    Obviously if $S\in\NP'$ then this is true, and if this is true then for every $x\in S$ we can simply define the polynomial $p=\abs y$ (where $y$ is the witness for $x$), then this satisfies the condition
+    for $S\in\NP'$.
+    This is because the polynomial is dependent on $x$, and not the other way around (ie. for $\NP$ there exists a polynomial which must satisfy a condition for every $x\in S$, and for $\NP'$ for every
+    $x\in S$ there must exist a polynomial which satisfies some coniditon).
+
+    Now, notice that $A_{\rm TM}\in\NP'$ as we can define the polynomial-time verifier $V$ where $V\bigl((M,\omega),P\bigr)=1$ if and only if $P$ is a valid path of $\omega$ through $M$'s states from the
+    start state to its accept state.
+    The verifier works by first verifying the validity of its input (that $M$ is a Turing machine, and $P$ is a path of states starting from $M$'s starting state), and then
+    simulate $M$ running on $\omega$ and check that each step is precisely the next state in $P$.
+    Both of these steps take polynomial time (checking that $M$ is a Turing machine and $P$ is a path of states takes polynomial time, and then the second step just requires iterating over $P$, which takes
+    linear time).
+    And $V$ is a verifier for $A_{\rm TM}$ since $(M,\omega)\in A_{\rm TM}$ if and only if there exists some path of states on the input $\omega$ which starts at the start state and ends at the accept state,
+    ie if and only if there exists a path $P$ such that $V\bigl((M,\omega),P\bigr)=1$.
+
+    But $A_{\rm TM}\notin\NP$ as if $V(x,y)$ is a polynomial proof system for $V$ then we would be able to decide $A_{\rm TM}$:
+    Suppose that $A_{\rm TM}\in\NP$ then there exists $V(x,y)$, a polynomial-time verifier for $A_{\rm TM}$, and $p$ a polynomial such that if $x\in A_{\rm TM}$ then there exists a $y$ where
+    $\abs y\leq p(\abs x)$ and $V(x,y)=1$.
+    Then we can define the following algorithm:
+
+    \algorithm
+        \Function{$A_{\rm TM}$-decider}{$M,\omega$}
+            \For{$y\in\set{0,1}^*$ \textbf{and} $\abs y\leq p\bigl(\abs{(M,\omega)}\bigr)$}
+                \lIf{$V\bigl((M,\omega),y\bigr)=1$} \Return $1$
+            \EndFor
+            \State\Return $0$
+        \EndFunc
+    \ealgorithm
+
+    Then \textcsc{$A_{\rm TM}$-decider} decides $A_{\rm TM}$, as if it accepts $(M,\omega)$ then for some $y$, $V\bigl((M,\omega),y)=1$ and since $V$ is a verifier for $A_{\rm TM}$,
+    $(M,\omega)\in A_{\rm TM}$.
+    And if it doesn't accept $(M,\omega)$ then for every $y$ whose length is less than $p\bigl(\abs{(M,\omega)}\bigr)$, $V\bigl((M,\omega),y\bigr)=0$.
+    Since $V(x,y)$ is a polynomial proof system for $A_{\rm TM}$ whose polynomial bound on $x$ is $p$, this means that $(M,\omega)\notin A_{\rm TM}$.
+    Thus \textcsc{$A_{\rm TM}$-decider} indeed decides $A_{\rm TM}$, which contradicts it being undecidable.
+
+    Thus $A_{\rm TM}\notin\NP$ but $A_{\rm TM}\in\NP'$, so they are not equal.
+
+\eblank
+
+\def\TSP{\text{TSP}}
+\bexerc
+
+    We define the following decision problem
+    \[ \TSP = \set{(X,d,D)}[\vcenter{\advance\hsize by-5cm $X$ is a set of targets and $d\colon X\times X\to\bN$ is a distance (weight) function, and $D$ is a natural number such that there exists a cyclic
+    path which visits each target whose total length is at most $D$.}] \]
+    We further define the search problem $R_\TSP$ where given $(X,d)$ (as defined in $\TSP$), returns a shortest possible cyclic path which visits every target in $X$ (this is called the
+    \ppemph{travelling salesman problem}).
+
+    Define a Cook reduction from $R_\TSP$ to $\TSP$.
+
+\eexerc
+
+\bblank
+
+    Let us observe that in a minimal hamiltonian path (ie. a solution to $R_\TSP$), an edge cannot be reused.
+    That is, if we traverse from $x$ to $y$ then we cannot traverse later on from $x$ to $y$ again (we can traverse from $y$ to $x$, though).
+    After all, if we did then we'd have a cycle of the form $x\to y\to\cdots\to x\to y\to\cdots\to x$, let us denote the first path $y\to x$ by $P_1$ and then second by $P_2$ so this cycle has the form
+    $x\to y\to P_1\to x\to y\to P_2\to x$, but we can then create a new cycle $x\to y\to P_1\to x\to P_2^r\to y\to x$, this reduces the weight of the cycle by $d(x,y)$, and so it is shorter.
+
+    Thus, we have a maximum bound on the length of a minimal hamiltonian path,
+    \[ M = \sum_{x\neq y\in X}d(x,y) \]
+    Now, we can perform a binary search between $0$ and $M$ to determine the length of the minimal hamiltonian path: we take a lower bound $\ell=0$ and an upper bound $h=M$ and check if
+    $\parens{X,d,\frac{h+\ell}2}\in\TSP$ using an oracle for $\TSP$.
+    If so, we set $\ell=\frac{h+\ell}2$ and recurse, otherwise we set $h=\frac{h+\ell}2-1$ and recurse.
+    We do this until $h\leq\ell$ and then we'd know that $\ell$ is the the length of the minimal hamiltonian path.
+
+    Suppose that $L$ is the length that we computed for the minimal hamiltonian path.
+    Now, suppose we have an edge $(u,v)$, we can set $d(u,v)=L+1$.
+    If there still exists a hamiltonian cycle of length $L$, then there exists a hamiltonian cycle which does not use $(u,v)$, so it is redundant and we can ignore it.
+    If we continue this until we have iterated over every edge, we will get the minimal hamiltonian cycle.
+    This is because the remaining edges (the edges whose distance was not set to $L+1$) must contain a hamiltonian cycle, as we only removed redundant edges, and there cannot be a remaining redundant edge
+    as we removed all of them.
+
+    All that remains is to convert the remaining edges into the hamiltonian path.
+    Since the set of remaining edges constitutes a hamiltonian path, all we must do is start at some node $v$, and follow the remaining edges (and remove them as we go) appending them to the path,
+    until we've visited every node and returned to $v$.
+
+    So the steps of the algorithm are as follows:
+    \benum
+        \item Compute $L$, the length of the minimum hamiltonian path via a binary search from $0$ to $M$ (the sum of all the distances).
+        \item Iterate over the edges $(u,v)$ and check if there still exists a hamiltonian cycle of length $L$ even if we set $d(u,v)=L+1$.
+            If so, then $(u,v)$ is redundant and we can we can ignore it.
+        \item The remaining edges define a minimal hamiltonian path, and we convert this to a path by following the remaining edges.
+    \eenum
+
+    Suppose $\oracle_\TSP$ is an oracle for $\TSP$, then the following is an algorithm for computing the minimum hamiltonian path:
+
+    \def\TSPOPT{\text{TSP-OPT}}
+    \algorithm
+        \Function{$\TSPOPT$}{$X,d$}
+            \State $M\gets\sum\limits_{x\neq y\in X}d(x,y)$
+            \State $L$ $\gets$ \textbf{binary-search}$\bigl(0,M,i\varmapsto\oracle_\TSP(X,d,i)\bigr)$ \cr
+            &\kern1cm$\mathchar"012E$ \it\textbf{binary-search}$(\ell,h,f)$ returns the minimum $\ell\leq i\leq h$ such that $f(i)=1$.\span
+%
+            \cr\noalign{\kern10pt}
+%
+            \For{$(u,v)\in X$}
+                \State $d\gets d(u,v)$
+                \State $d(u,v)\gets L+1$
+                \lIf{$\neg\oracle_\TSP(X,d,L)$} $d(u,v)\gets d$
+            \EndFor
+%
+            \cr\noalign{\kern10pt}
+%
+            \State $u\gets\mathit{start}\in X$
+            \State $P\gets\varnothing$
+            \While{$u\neq\mathit{start}$ \textbf{and} \textbf{visited}$(X)\neq1$}
+                \State $v\in\set{v\in N(u)}[d(u,v)<L+1]$ \cr
+                &\kern1cm$\mathchar"012E$ \it Find $u$'s neighbor $v$ such that $(u,v)$ is not redundant.
+                \State $P\gets(P\to v)$ \cr
+                &\kern1cm$\mathchar"012E$ \it Append $v$ to the path $P$
+                \State $d(u,v)\gets L+1$
+                \State $\textbf{visited}(u)\gets 1$
+                \State $u\gets v$
+            \EndWhile
+%
+            \cr\noalign{\kern10pt}
+%
+            \State\Return $P$
+        \EndFunc
+    \ealgorithm
+
+    Lines $2$ and $3$ correspond to the first part of the algorithm, $4$ to $8$ correspond to the second part, and $9$ to $17$ correspond to the final part (converting the remaining edges to the hamiltonian
+    path).
+    Part $1$ takes $\log(M)$ time, and since $M$'s length is less than the length of $d$ (or at least less than $\abs X\cdot\abs d$), this is polynomial with respect to the input.
+    Part $2$ takes $\abs X^2$ time.
+    And part $3$ takes $\abs X^2$ time (since we can bound the length of the minimum hamiltonian path by $\abs X^2$).
+    Thus this algorithm takes polynomial time, and is therefore a valid Cook reduction, as required.
+
+\eblank
+
+\bexerc
+
+    Prove or disprove the following:
+    \benum
+        \item For every decision problem $S\in\P$, there exists a decision problem $S'$ such that there exists no Cook reduction from $S$ to $S'$.
+        \item For every decision problem $S\in\P$, there exists a decision problem $S'$ such that there exists no Karp reduction from $S$ to $S'$.
+    \eenum
+
+\eexerc
+
+\bblank
+
+    \benum
+        \item This is false, suppose $S'$ is a decision problem and $\oracle_{S'}$ is an oracle for $S'$.
+        And since $S\in\P$, there exists a polynomial-time algorithm $A$ which solves $S$.
+        Then we can define the following Cook reduction:
+        \algorithm
+            \Function{$S,S'$-reduct}{x}
+                \State $\oracle_{S'}(x)$
+                \State\Return $A(x)$
+            \EndFunc
+        \ealgorithm
+
+        (Line $2$ is really only to ``use'' $\oracle_{S'}$).
+        This is a reduction from $S$ to $S'$ (it obviously solves $S$, as $A$ does).
+        And so for every decision problem $S'$, there exists a reduction from $S$ to it.
+
+        \item If $S\neq\varnothing$, let $S'=\varnothing$, then for every function $f$, if $x\in S$ then $f(x)\notin S'$ so there cannot exists a Karp reduction from $S$ to $S'$.
+        Similarly if $S\neq\set{0,1}^*$, let $S'=\set{0,1}^*$, then for every function $f$, there exists an $x\notin S$ but $f(x)\in S'$, so there also cannot exists a Karp reduction here.
+        This works in particular for when $S=\varnothing$.
+        So for every decision problem $S$ there exists a $S'$ such that there is no Karp reduction from $S$ to $S'$, and so this is true.
+
+        But if we require that $S'$ be non-trivial ($S'\neq\varnothing,\set{0,1}^*$) then this is false.
+        Let $y_1\in S'$ and $y_2\notin S'$, and let $A$ solve $S$, then we can define the following function
+        \algorithm
+            \Function{$f$}{$x$}
+                \lIf{$A(x)=1$} \Return $y_1$
+                \lElse \Return $y_2$
+            \EndFunc
+        \ealgorithm
+        So if $x\in S$ then $A(x)=1$ and so $f(x)=y_1\in S'$.
+        And if $x\notin S$ then $A(x)=0$ and so $f(x)=y_2\notin S'$.
+        And since $f$ runs in polynomial time, as $A$ does, $f$ is a Karp reduction from $S$ to $S'$.
+
+        So if we take the statement as-is, then it is true.
+        But if we require that $S'$ be non-trivial (empty or $\set{0,1}^*$) then it is false.
+    \eenum
+
+\eblank
+
+\end{document}
+

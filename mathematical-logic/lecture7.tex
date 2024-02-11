@@ -1,0 +1,260 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{axiom}{Axiom}{255,255,200}{150,100,0}{200,150,100}			% yellow
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\beqq{\mathrel{\vbox{\hbox{$=$}\kern-\baselineskip\kern.3pt\hbox{$=$}}}}
+
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+
+\def\Var{\mathrm{Var}}
+
+\newfunc{var}{{\rm var}}({})
+\newfunc{bound}{{\rm bound}}({})
+
+\def\qed{\hskip.5cm\hbox{}\hfill$\blacksquare$}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\def\true{\mathsf{true}}
+\def\false{\mathsf{false}}
+
+\def\Aone#1#2{#1\to(#2\to#1)}
+\def\Atwo#1#2#3{\bigl(#1\to(#2\to#3)\bigr)\to\bigl((#1\to#2)\to(#1\to#3)\bigr)}
+\def\Athree#1#2{(\neg#2\to\neg#1)\to\bigl((\neg#2\to#1)\to#2\bigr)}
+
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+
+\begin{document}
+
+\c@section=7
+
+\barcolorbox{220, 255, 255}{0, 130, 130}{80, 200, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Mathematical Logic}
+
+    \medskip
+    \textit{Lecture \thesection, Monday May 22, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{Transfinite Induction}
+
+\begin{lemm*}[transInduct,Transfinite\ Induction]
+
+    Let $P(\alpha)$ be some property of ordinals.
+    Suppose that $P$ has the property that if $P(\gamma)$ is true for every $\gamma<\beta$, then $P(\beta)$ is true.
+    Then $P$ is true for all ordinals.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Suppose that $P(\alpha)$ is false for some ordinal $\alpha$.
+    Let
+    \[ X = \set{\gamma\leq\alpha}[P(\gamma)\text{ is false}] \]
+    then since $X$ is a set of ordinals, it is well-ordered and since it is non-empty, it has a minimum element $\beta$.
+    So $P(\beta)$ is false, but for every $\gamma<\beta$, $\gamma\notin X$ and so $P(\gamma)$ is true.
+    But then $P(\beta)$ is true, in contradiction.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    Two chains $(X,\leq)$ and $(Y,\leq)$ are called \ppemph{isomorphic} if there exists a bijection $f\colon X\longto Y$ such that if $x\leq y$ then $f(x)\leq f(y)$.
+
+\end{defn*}
+
+Since chains are total orders, if $f(x)\leq f(y)$ then since $x\leq y$ or $y<x$, and if $y<x$ then $f(y)<f(x)$ which is a contradiction, two chains are isomorphic if $x\leq y$ if and only if $f(x)\leq f(y)$.
+
+\begin{lemm*}
+
+    If $\alpha$ and $\beta$ are ordinals, and are also isomorphic as chains, then $\alpha=\beta$.
+    Furthermore, the identity map is the only isomorphism from $\alpha$ to itself.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Let $P(\alpha)$ be the property that $\alpha$ is the unique ordinal isomorphic to itself, and that the unique isomorphism from $\alpha$ to itself is the identity isomorphism.
+    (The $\alpha$ here is a general ordinal, not one referenced in the lemma statement.)
+    Suppose $P(\gamma)$ is true for every $\gamma<\alpha$.
+    Suppose $f$ is an isomorphism from $\alpha$ to some ordinal $\beta$.
+    For every $\gamma<\alpha$, the restriction of $f$ to $\gamma$ is an isomorphism from $\gamma$ to $f(\gamma)$, and so by $P(\gamma)$, $f(\gamma)=\gamma$ and $f\bigl|_\gamma$ is the identity.
+    This means that for every $\gamma\in\alpha$, $f(\gamma)=\gamma$ and so $f$ is the identity and so $\alpha=\beta$.
+
+    Thus by transfinite induction, this holds for every ordinal.
+    \qed
+
+\end{proof}
+
+\subsection{The Axiom of Choice}
+
+\begin{defn*}
+
+    A function $f$ defined from an ordinal $\alpha$ is called an \ppemph{$\alpha$-sequence}.
+    A \ppemph{sequence} of a set $X$ is an $\alpha$-sequence whose codomain is $X$.
+    And an \ppemph{enumeration} of a set $X$ is an injective sequence of $X$.
+
+\end{defn*}
+
+\begin{defn*}
+
+    The sum of two ordinals $\alpha+\beta$ is the ordinal $\gamma\geq\alpha$ such that the chain $\gamma\setminus\beta$ is isomorphic to the chain $\beta$.
+
+\end{defn*}
+
+By the lemma from the previous section, if the sum of two ordinals exists, then it is unique (as there exists an isomorphism between any two ordinals satisfying the property of the sum).
+
+\begin{exam*}
+
+    \benum
+        \item The ordinal $\omega+1$ is the set of all finite ordinals and the set $\omega$, or in other words $\omega\cup\set\omega$.
+        Recall that any set of ordinals is well-ordered by $\in$, and so for a set of ordinals to be an ordinal, we must only validate that if $\alpha\in X$ then $\alpha\subseteq X$.
+        This is obviously true for $\omega+1$, and $\omega+1\setminus\omega=\set\omega$ which is trivially order-isomorphic (isomorphic) to $1=\set\varnothing$.
+
+        \item $\omega+2=\omega+1\cup\set{\omega+1}=\omega\cup\set\omega\cup\set{\omega\cup\set\omega}$.
+        $\omega+2\setminus\omega=\set{\omega,\set\omega}$ which is order-isomorphic to $2=\set{\varnothing,\set\varnothing}$.
+
+        \item $\omega+\omega=\set{1,2,\dots; \omega,\omega+1,\dots}$
+    \eenum
+
+\end{exam*}
+
+Intuitively, $\alpha+\beta$ is the set of all ordinals in $\alpha$ followed by $\alpha+\gamma$ for $\gamma\in\beta$ ($\gamma<\beta$).
+
+Let $f$ be an $\alpha$-sequence and $g$ be a $\beta$-sequence.
+We define the \emph{concatenation} of $f$ and $g$ to be a $(\alpha+\beta)$-sequence $fg$ defined by
+\begin{align*}
+    fg(\xi) = f(\xi) &, \quad\xi<\alpha \\ 
+    fg(\alpha+\zeta) = g(\zeta) &, \quad\zeta<\beta
+\end{align*}
+
+We now define the \emph{axiom of choice}, which is independent of ZF (very hard to prove), and together with ZF forms a theory called ZFC.
+
+\begin{axiom*}[ac,Axiom\ of\ Choice]
+
+    If $X$ is a set such that $\varnothing\notin X$ then there exists a function $f\colon X\longto\bigcup X$ such that for every $A\in X$, $f(A)\in A$.
+    This means that for every $A\in X$, we can ``choose'' an element $f(A)$ from $A$.
+
+\end{axiom*}
+
+An equivalent formulation of this is that given a family of non-empty sets $\set{X_\lambda}_{\lambda\in\Lambda}$, there exists a function $f\colon\Lambda\longto\bigcup_{\lambda\in\Lambda}X_\lambda$ such
+that $f(\lambda)\in X_\lambda$ for every $\lambda\in\Lambda$, or in other words, $\prod_{\lambda\in\Lambda} X_\lambda$ (the set of precisely all these functions) is non-empty.
+
+Other less-obvious equivalent formulations are for example:
+\benum
+    \item \textbf{Well-Ordering Theorem}: Every set can be well ordered.
+    \item \textbf{Zorn's Lemma}: Let $X$ be a non-empty family of sets such that every chain in $X$ has an upper bound in $X$, then $X$ has a maximal element.
+\eenum
+
+We will not be proving all of the equivalences.
+
+\begin{prop*}
+
+    Zorn's Lemma implies the Well-Ordering Theorem.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $M$ be an arbitrary set.
+    Let $\fM$ be the set of all $(A,\leq_A)$ where $A\subseteq M$ and $\leq_A$ is a well-ordering of $A$.
+    We define an order relation on $\fM$ by $(A,\leq_A)\leq_{\fM}(B,\leq_B)$ if there exists a $b\in B$ such that $A=\set{a\in B}[a<_B b]$ and $\leq_A$ and $\leq_B$ coincide on $A$ (this means that $A$ is an
+    \emph{initial segment} of $B$'s).
+
+    We will now prove that $\fM$ has a maximal element.
+    Let $\fC$ be a chain in $\fM$, then $\bigcup\fC$ is in $\fM$ and is an upper bound.
+    To be precise, let $B=\parens{\bigcup_{(C,\leq_C)\in\fC}C, \leq_B}$ where if $m,n\in B$ then $m,n\in C$ for some $C\in\fC$ (since $m\in C_1$ and $n\in C_2$ then since $\fC$ is a chain, one must be
+    contained within the other), then $m\leq_B n$ if and only if $m\leq_C n$.
+    For this same reason $B$ is totally ordered.
+    This is well-defined because $\fC$ is a chain and the orders of the elements in this chain must agree (by the definition of $\leq_\fM$).
+    This is also a well-ordering since if $S\subseteq B$ then let $x\in S$, if $x$ is not a minimal element then $x\in C$ for some $C\in\fC$, so let $S'=\set{a\in C}[a<_C x]\subseteq C$.
+    Then $S'$ has a minimal element and every element not in $S'$ is greater than it ($B$ is totally ordered).
+
+    And it is trivial to see that $B$ is an upper bound of $\fC$'s.
+    Thus by Zorn's Lemma, $\fM$ has a maximal element, $(A,\leq_A)$.
+
+    We claim that $A=M$, otherwise for $x\in M\setminus A$, let us set $x>a$ for all $a\in A$.
+    This gives a well-ordered set $A\cup\set x$, and $A$ is an initial segment of this, which contradicts $A$ being maximal in $\fM$.
+    So $(M,\leq_M)$ is a well-ordering (and maximal in $\fM$), as required.
+    \qed
+
+\end{proof}
+
+\subsection{Cardinal Numbers}
+
+\begin{defn*}
+
+    The \ppemph{cardinality} of a set $X$ is the smallest ordinal $\alpha$ (since ordinals are well-ordered) such that $X$ is enumerated by an $\alpha$-sequence.
+    The cardinality of $X$ is denoted $\abs X$.
+    An ordinal is called a \ppemph{cardinal} if $\alpha=\abs\alpha$.
+
+\end{defn*}
+
+Another equivalent definition is to define the relations between cardinalities.
+$\abs A=\abs B$ if and only if there exists a bijection between $A$ and $B$.
+
+By the Cantor-Bernstein theorem, if there exists injections $A\injection B$ and $B\injection A$ then $\abs A=\abs B$.
+The definition of cardinal arithmetic is done as usual.
+
+\begin{thrm*}
+
+    If $\alpha$ and $\beta$ are cardinal numbers such that $1\leq\beta\leq\alpha$ and $\alpha$ is infinite, then
+    \benum
+        \item $\alpha+\beta=\alpha$
+        \item $\alpha\cdot\beta=\alpha$
+    \eenum
+
+\end{thrm*}
+
+\begin{proof}
+
+    It is clear that $\alpha\leq\alpha+\beta\leq\alpha+\alpha$ and $\alpha\leq\alpha\cdot\beta\leq\alpha\cdot\alpha$ so we will prove this for the case $\alpha=\beta$, then the result follows from
+    Cantor-Bernstein.
+    Let $\abs A=\alpha$
+
+\end{proof}
+
+\end{document}
+

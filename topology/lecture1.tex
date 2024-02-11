@@ -1,0 +1,383 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\bS{\mathbb{S}}
+\def\mU{\mathcal{U}}
+\def\mV{\mathcal{V}}
+\def\mO{\mathcal{O}}
+
+\newfunc{metric}{\rho}({})
+\newfunc{metricA}{\sigma}({})
+
+\let\divides=\mid
+\let\to=\varrightarrow
+\def\implies{\,\longvarRightarrow\,}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\pdf@drawing@macro{check}{0 1 0 RG 1.2 w 1 j 1 J 0 5 m 3 0 l 8 10 l S}{9.2pt}{12pt}{1pt}{1pt}
+\pdf@drawing@macro{ecks}{1 0 0 RG 0 0 m 1 j 1 J 10 10 l 0 10 m 10 0 l S}{11.2pt}{12pt}{1pt}{1pt}
+
+\begin{document}
+
+\c@section=1
+
+\barcolorbox{255, 220, 255}{130, 0, 130}{200, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Topology}
+
+    \medskip
+    \textit{Lecture 1, Sunday March 19, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{Metric Spaces}
+
+We begin by studying \emph{metric spaces} (again).
+These were also covered in Infinitesimal Calculus $3$, whose summaries can be found on my github as well.
+
+\begin{defn*}
+
+    A \ppemph{metric space} is a pair $(M, \metric)$ where $\metric$ is a function:
+    \[ \metric\colon M\times M\longvarrightarrow\bR_{\geq0} \]
+    which satisfies the following three properties:
+    \benum
+        \item For every $x\in M$, $\metricof{x,x}=0$.
+        \item For every $x,y\in M$, $\metricof{x,y}=\metricof{y,x}$ (symmetry).
+        \item For every $x,y,z\in M$, $\metricof{x,y}\leq\metricof{x,z}+\metricof{z,y}$ (the triangle inequality).
+    \eenum
+    $\metric$ is called a \ppemph{metric function} on $M$.
+    As an abuse of notation, if the metric is understood, we commonly refer to $M$ as the metric space.
+
+\end{defn*}
+
+\begin{exam*}
+
+    If $M$ is a set, we define the \ppemph{discrete metric} on $M$ as:
+    \[ \metricof{x,y} = \begin{cases} 1 & x\neq y \\ 0 & x=y \end{cases} \]
+    This obviously satisfies the first and second axioms of a metric, and the triangle inequality is simple to show.
+
+\end{exam*}
+
+\begin{exam*}
+
+    If $M$ is a normed linear space, then we can define
+    \[ \metricof{x,y} = \norm{x-y} \]
+    Showing this is indeed a metric is trivial, the first two conditions are obvious and the third follows from the norm's own triangle inequality.
+
+    In the case that $M=\bR^n$ and the norm is the euclidean norm, this is called the \ppemph{euclidean metric}.
+
+    In the case that $M=\bR^n$ and the norm is the maximum norm, ie $\norm{\bigl(x_1,\dots,x_n\bigr)}=\max_{1\leq i\leq n}\abs{x_i}$, the induced metric is called the \ppemph{maximum metric}.
+    We will show (for the fun of it), that the maximum norm is indeed a norm.
+    It is obvious that the maximum norm is non-negative, and is equal to $0$ only if the maximum $\abs{x_i}$ is $0$, and since it's the maximum this means every $\abs{x_i}=0$ so $x_i=0$ for every $i$,
+    and therefore the vector is the zero vector.
+    Scalar multiplication multiplies each component by that scalar, and so multiplies the maximum norm by the absolute value of the scalar.
+    To show the triangle inequality:
+    \[ \norm{x+y}_{\max} = \max_{1\leq i\leq n}\abs{x_i+y_i} \leq \max_{1\leq i\leq n}\bigl(\abs{x_i} + \abs{y_i}\bigr) \leq \max_{1\leq i\leq n}\abs{x_i} + \max_{1\leq i\leq n}\abs{y_i} =
+    \norm x_{\max} + \norm y_{\max} \]
+    as required.
+
+\end{exam*}
+
+\begin{defn*}
+
+    If $(M,\metric)$ is a metric space, and $A\subseteq M$ then we \ppemph{inherited metric} of $A$ to be the restriction of $\metric$ to $A\times A$.
+    This makes $\Bigl(A,\metric\bigl|_{A\times A}\Bigr)$ a metric space.
+    As another abuse of notation we commonly write this as just $(A,\metric)$.
+
+\end{defn*}
+
+\begin{defn*}
+
+    A sequence $\set{x_n}_{n=1}^\infty\subseteq M$ in a metric space $(M,\metric)$ \ppemph{converges} to a point $x\in M$ if
+    \[ \lim_{n\to\infty}\metricof{x_n,x} = 0 \]
+    or in other words, for every $\epsilon>0$ there is an $N\in\bN$ such that for every $n\geq N$, $\metricof{x_n,x}<\epsilon$.
+    This is denoted as one of the following:
+    \[ \lim_{n\to\infty}x_n = x,\quad \lim x_n = x,\quad x_n\xvarrightarrow{}[n\to\infty] x,\quad x_n\longvarrightarrow x \]
+
+\end{defn*}
+
+\begin{prop*}
+
+    A sequence $\set{x_n}_{n=1}^\infty$ in a metric space $(M,\metric)$ converges to at most one point in $M$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose it converges to both $x$ and $y$ in $M$.
+    Then by the triangle inequality, for every $n$:
+    \[ \metricof{x,y} \leq \metricof{x,x_n} + \metricof{y,x_n} \]
+    and by taking the limit of the right-hand side (these are real numbers after all), we get that:
+    \[ 0\leq\metricof{x,y}\leq0 \implies \metricof{x,y}=0 \implies x=y \]
+    So the sequence converges to only one value.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{defn*}
+
+    A \ppemph{Cauchy Sequence} in a metric space $(M,\metric)$ is a sequence $\set{x_n}_{n=1}^\infty\in M$ such that for every $\epsilon>0$ there is an $N$ such that for every $n,m\geq N$:
+    \[ \metricof{x_n, x_m} < \epsilon \]
+
+\end{defn*}
+
+\begin{prop*}
+
+    Every convergent sequence is Cauchy.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $x_n\longvarrightarrow x$ in $M$.
+    Then for every $\epsilon>0$ there is an $N$ such that for every $n\geq N$, $\metricof{x,x_n}<\frac\epsilon2$.
+    So for every $n,m\geq N$:
+    \[ \metricof{x_n, x_m} \leq \metricof{x_n,x} + \metricof{x_m,x} < \epsilon \]
+    so the sequence is Cauchy, as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{exam*}
+
+    Not every Cauchy sequence is convergent.
+    For example take the sequence $x_n=\frac1n$ in $(0,1]\subset\bR$.
+    Since $x_n$ is convergent in $\bR$, it is Cauchy in $\bR$, and since $(0,1]$ is a submetric space of $\bR$'s, $x_n$ is Cauchy in $(0,1]$ as well.
+    But we know it converges to $0$ in $\bR$, and so if it were to converge in $(0,1]$ it would have to converge to $0$ by uniqueness of the limit.
+    But since $0\notin(0,1]$, the sequence is Cauchy but does not converge.
+
+\end{exam*}
+
+\begin{defn*}
+
+    A metric space where every Cauchy sequence is convergent is called \ppemph{complete}.
+
+\end{defn*}
+
+\begin{defn*}
+
+    Suppose $M$ is a metric space, $x\in M$, and $r>0$ is a positive real number.
+    Then the \ppemph{open ball} of radius $r$ centered around $x$ is defined to be:
+    \[ B_r(x) = \set{a\in M}[\metricof{x,a}<r] \]
+    an alternative notation for this is $B(x,r)$.
+
+\end{defn*}
+
+\begin{defn*}
+
+    Suppose $M$ is a metric space.
+    A set $\mU\subseteq M$ is called an \ppemph{open set} ($\mU$ is open) if for every $x\in\mU$ there exists an $r>0$ such that $B_r(x)\subseteq\mU$.
+
+\end{defn*}
+
+\begin{prop*}
+
+    An open ball is indeed open.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let our open ball be $B_r(x)$.
+    Let $a\in B_r(x)$ then define $\epsilon=r-\metricof{x,a}$.
+    Since $a\in B_r(x)$, $\metricof{x,a}<r$ and so $\epsilon>0$, so we now can claim $B_\epsilon(a)\subseteq B_r(x)$.
+    Suppose $b\in B_\epsilon(a)$ then
+    \[ \metricof{b,x}\leq\metricof{b,a}+\metricof{a,x}<\epsilon+\metricof{x,a}=r-\metricof{x,a}+\metricof{x,a} = r \]
+    So $b\in B_r(x)$ as required.
+
+    So for every $a\in B_r(x)$, there is a $B_\epsilon(a)\subseteq B_r(x)$, so $B_r(x)$ is open as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+Furthermore, notice that $\varnothing$ is also open (vaccuously) and so is $M$, the metric space itself (trivially).
+We generalize this in the following theorem:
+
+\begin{thrm*}
+
+    If $(M,\metric)$ is a metric space then:
+    \benum
+        \item $\varnothing$ and $M$ are both open.
+        \item If $\Lambda$ is an arbitrary indexing set (an arbitrary set, it may be infinite of any cardinality) and $\set{\mU_\lambda}_{\lambda\in\Lambda}$ is a set of open sets, then
+        $\bigcup_{\lambda\in\Lambda}\mU_\lambda$ is also open.
+        \item If $\set{\mU_k}_{k=1}^n$ is a finite set of open sets, then so is $\bigcap_{k=1}^n\mU_k$
+    \eenum
+
+\end{thrm*}
+
+\begin{proof}
+
+    \benum
+        \item As stated above, $\varnothing$ being open is vaccuously true since it has no points.
+        And since for every $x\in M$, $B_r(x)\subseteq M$ for every $r>0$, $M$ is also open.
+        \item Let $x\in\bigcup_{\lambda\in\Lambda}\mU_\lambda$, then there exists a $\lambda\in\Lambda$ such that $x\in\mU_\lambda$.
+        Since $\mU_\lambda$ is open, there exists an $r>0$ such that $B_r(x)\subseteq\mU\subseteq\bigcup_{\lambda\in\Lambda}\mU_\lambda$, and since this is true for every $x$ in the union, the union is
+        open as required.
+        \item Let $x\in\bigcap_{k=1}^n\mU_k$, then for every $1\leq k\leq n$ there exists a $r_k>0$ such that $B_{r_k}(x)\subseteq\mU_k$.
+        Let $r=\min_{1\leq k\leq n}r_k$, then since $r_k>0$ and the minimum is taken over a finite set, $r>0$.
+        Furthermore, for every $k$, $r<r_k$, so $B_r(x)\subseteq B_{r_k}(x)\subseteq\mU_k$.
+        And since this is true for every $\mU_k$ in the intersection, $B_r(x)\subseteq\bigcap_{k=1}^n\mU_k$.
+        And so the intersection is open as well.
+    \eenum
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+Notice that the set of open sets defined by a metric (this is actually an important mathematical object, which we will focus on later on in the course) is not unique to the metric.
+If we take a metric $\metric$ and then multiply it by some positive to get $\alpha\metric$, this is still a metric (trivial), and the open sets defined by $\metric$ are the same as those defined by
+$\alpha\metric$ since a set is an open ball if and only if it is an open ball in the other (ie. the set of open balls defined by each metric are equal).
+
+Another example of two metrics which admit the same topologies are the maximum and euclidean metrics in $\bR^n$.
+The intuition for this (in fact, a sketch of the proof) is that the open balls relative to the maximum metric are in fact open hypercubes of width $2r$ centered around the point.
+So we can embed a ball of radius $r$ (an actual ball, ie a ball relative to the euclidean metric) within this hypercube, and therefore if a set is open relative to the maximum metric, it is open relative
+to the euclidean metric as well.
+And balls relative to the euclidean metric are in fact hyperballs, and we can embed hypercubes of radius $\frac r{\sqrt2}$ within these hyperballs.
+So by similar logic as before, an open set relative to the euclidean metric is open relative to the maximum metric, as required.
+All it comes down to is proving that
+\[ B(x,r,\metric_{\rm euc}) \subseteq B(x,r,\metric_{\rm max})\qquad\text{and}\qquad B\parens{x,\frac r{\sqrt 2},\metric_{\rm max}}\subseteq B(x,r,\metric_{\rm euc}) \]
+
+We define some more metric spaces:
+\[ \bS^n = \set{x\in\bR^{n+1}}[\metricof{x,0}=1] \]
+relative to the euclidean metric of $\bR^{n+1}$.
+
+Notice that the convergence of a sequence is dependent only on the set of open sets defined by a metric, and so investigating not the metric itself but the open sets it defines is a worthwhile pursuit.
+
+\begin{defn*}
+
+    Suppose $(M,\metric)$ is a metric space, a \ppemph{neighborhood} of $x\in M$ is an open set $\mU\subseteq M$ such that $x\in\mU$.
+
+\end{defn*}
+
+\begin{prop*}
+
+    A sequence $\set{x_n}_{n=1}^\infty$ in a metric space $M$ converges to $x\in M$ if and only if for every neighborhood $\mU$ of $x$ there exists an $N$ such that for every $n\geq N$, $x_n\in\mU$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $x_n$ converges to $x$ and let $\mU$ be a neighborhood of $x$.
+    Then by the definition of an open set, there exists an $\epsilon>0$ such that $B_\epsilon(x)\subseteq\mU$.
+    And since by the definition of convergence there exists an $N$ such that for every $n\geq N$, $x_n\in B_\epsilon(x)\subseteq\mU$ as required.
+
+    The converse is similarly trivial.
+    Let $\epsilon>0$ then since $B_\epsilon(x)$ is a neighborhood of $x$, there exists an $N$ such that for every $n\geq N$, $x_n\in B_\epsilon(x)$, or in other words for every $n\geq N$,
+    $\metricof{x_n,x}<\epsilon$ so $x_n$ converges to $x$.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+We can give an even weaker equivalence:
+
+\begin{prop*}
+
+    $x_n$ converges to $x$ in a metric space $M$ if and only if for every neighborhood of $x$ $\mU\subseteq M$ there are only a finite number of $x_n\notin\mU$.
+
+\end{prop*}
+
+\begin{proof}
+
+    If $x_n$ converges to $x$ then for there exists an $N$ such that if $n\geq N$, $x_n\in\mU$.
+    Then if $x_n\notin\mU$, $n<N$ so there are only a finite number of $x_n$ which aren't in $\mU$, as required.
+
+    And if there are a finite number of elements not in $\mU$, let $N$ be the maximum index not in $\mU$ plus one (which exists since the set is finite), then for every $n\geq N$, $x_n\in\mU$, so $x_n$
+    converges to $x$ as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+Thus convergence is not dependent on the metric (only the open sets defined by the metric) or the ordering of the naturals.
+This gives us the following result:
+
+\begin{prop*}
+
+    Suppose $x_n$ converges to $x$ in a metric space $M$, and let $\sigma\in S_\bN$ ($\sigma$ is a bijection over the naturals), then $y_n=x_{\sigma(n)}$ also converges to $x$.
+
+\end{prop*}
+
+The proof of this is trivial given the previous proposition.
+
+\begin{defn*}
+
+    If $(M,\metric)$ and $(N,\metricA)$ are two metric spaces, a function $f\colon M\longvarrightarrow N$ is \ppemph{continuous at $x$} if for every $\epsilon>0$ there exists a $\delta>0$ such that if
+    $\metricof{x,y}<\delta$ then $\metricAof{f(x),f(y)}<\epsilon$.
+
+\end{defn*}
+
+Equivalently, for every $\epsilon>0$ there exists a $\delta>0$ such that:
+\[ f\bigl(B_\delta(x)\bigr) \subseteq B_\epsilon\bigl(f(x)\bigr) \]
+Note that this is still dependent on the choice of metric; it is not immediately clear whether a different choice of metric with the same open sets admits the same continuous functions.
+
+\begin{prop*}
+
+    Suppose $M$ and $N$ are metric spaces, then $f\colon M\longvarrightarrow N$ is continuous at $x$ if and only if for every neighborhood of $f(x)$ $\mU\subseteq N$ there exists a neighborhood
+    $\mV\subseteq M$ of $x$ such that $f(\mV)\subseteq\mU$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $f$ is continuous at $x$, then let $\mU$ be a neighborhood of $f(x)$, then there exist an open ball $B_\epsilon^{\metricA}\bigl(f(x)\bigr)\subseteq\mU$ since $\mU$ is open.
+    Then by the definition of continuity, there exists a $\delta>0$ such that $f\bigl(B_\delta^{\metric}(x)\bigr)\subseteq B_\epsilon^{\metricA}\bigl(f(x)\bigr)\subseteq\mU$, so $\mV=B_\delta^{\metric}(x)$
+    is one such neighborhood of $x$ which satisfies the property.
+
+    The proof of the converse is similar.
+    Suppose $\epsilon>0$ then there exists a neighborhood $\mV$ of $x$ such that $f(\mV)\subseteq B_\epsilon\bigl(f(x)\bigr)$.
+    Since $\mV$ is open there exists a $\delta>0$ such that $B_\delta(x)\subseteq\mV$ and so
+    \[ f\bigl(B_\delta^{\metric}(x)\bigr)\subseteq f(\mV)\subseteq B_\epsilon^{\metricA}\bigl(f(x)\bigr) \]
+    so $f$ is continuous at $x$ as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{prop*}
+
+    Suppose $M$ and $N$ are metric spaces, then $f\colon M\longvarrightarrow N$ is continuous at $x\in M$ if and only if for every sequence $\set{x_n}_{n=1}^\infty$ in $M$, if $x_n\xvarrightarrow{\,M\,}x$
+    then $f(x_n)\xvarrightarrow{\,N\,}f(x)$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $f$ is continuous at $x$ and $x_n$ converges to $x$.
+    Then let $\mU$ be a neighborhood of $f(x)$ in $N$.
+    Since $f$ is continuous at $x$ there exists a neighborhood $\mV$ of $x$ such that $f(\mV)\subseteq\mU$, and since $x_n$ converges to $x$ there are only a finite numberof $x_n$s not in $\mV$ and so there 
+    are only a finite number of $f(x_n)\notin f(\mV)$, and so there are only a finite number of $f(x_n)\notin\mU$.
+    So for every neighborhood of $x$, there are only a finite number of $f(x_n)$ which aren't in the neighborhood, so $f(x_n)\xvarrightarrow{\,N\,}f(x)$ as required.
+
+    Now suppose the converse, suppose for the sake of a contradiction that $f$ is not continuous at $x$.
+    So there exists an $\epsilon>0$ such that for every $\delta>0$, there exists a $y\in B_\delta(x)$ such that $f(y)\notin B_\epsilon\bigl(f(x)\bigr)$.
+    Specifically for every $n\in\bN$, there is an $x_n\in B_{\frac1n}(x)$ such that $f(x_n)\notin B_\epsilon\bigl(f(x)\bigr)$, ie $\metricAof{f(x_n),f(x)}\geq\epsilon$.
+    So the sequence $x_n$ converges to $x$ since $\metricof{x_n,x}<\frac1n$ which converges to $0$, but $f(x_n)$ does not converges to $f(x)$, which contradicts the assumption of the proposition.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+Note that while one direction of the proof is independent of the metric (continuity implies sequence convergence), the other is not.
+And so when we eventually get rid of metric spaces, the above proposition will not be true in general.
+
+\end{document}
+

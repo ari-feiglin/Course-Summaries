@@ -1,0 +1,127 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\openset{{\cal O}}
+\let\lineseg=\overleftrightvecc
+\let\ds=\displaystyle
+
+\def\pdv#1#2{\frac{\partial #1}{\partial #2}}
+
+\def\differ#1#2{\left.d#1\strut\right|_{#2}}
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=16
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infinitesimal Calculus 3}
+
+    \medskip
+    \textit{Lecture \thesection, Wednsday December 14, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+We would like to generalize the Taylor-Maclaurin Theorem to functions of multiple variables.
+Suppose we have a function $f\colon\bR^2\longvarrightarrow\bR$ which is differentiable $n+1$ times (as in it has $n+1$th order partial derivatives).
+Then if $h,k$ are constants we can define
+\[ g(t) = f(x_0+th, y_0+tk) \]
+where $0\leq t\leq1$.
+Then by the chain rule:
+\[ g'(t) = f_x(x_0+th,y_0+tk)h + f_y(x_0+th,y_0+tk)k \]
+And so differentiating again we have (by Clairut-Schwarz):
+\[ g''(t) = f_{xx}(x_0+th,y_0+tk)h^2 + 2f_{xy}(x_0+th,y_0+tk)hk + f_{yy}(x_0+th,y_0+tk)k^2 \]
+And so if $t=0$ we have that
+\[ g''(0) = f_{xx}(x_0,y_0)h^2 + 2f_{xy}(x_0,y_0)hk + f_{yy}(x_0,y_0)k^2 \]
+And differentiating again gives:
+\[ g'''(0) = f_{xxx}(x_0,y_0)h^3 + 3f_{xxy}(x_0,y_0)h^2k + 3f_{xyy}(x_0,y_0)hk^2 + f_{yyy}(x_0,y_0)k^3 \]
+So we can see that:
+\[ g^{(m)}(t) = \sum_{\ell=0}^m \binom m\ell\cdot \frac{\partial^\ell f}{\partial x^\ell\partial y^{m-\ell}}(x_0+th,y_0+tk)\cdot h^\ell\cdot k^{m-\ell} \]
+And since $g$ is differentiable $n+1$ times, we can use a taylor series:
+\[ g(t) = \sum_{m=0}^n\frac{g^{(m)}(0)}{m!}t^m + \frac{g^{(n+1)}(c)}{(n+1)!}t^{n+1} \]
+So if $t=1$ then
+\[ g(1) = \sum_{m=0}^n\frac{g^{(m)}(0)}{m!} + \frac{g^{(n+1)}(\theta)}{(n+1)!} \]
+where $0<\theta<1$.
+So then we have that
+\begin{multline*}
+f(x_0+h,y_0+k) = g(1) = \sum_{m=0}^n\frac1{m!}\sum_{\ell=0}^m \binom m\ell\cdot \frac{\partial^\ell f}{\partial x^\ell\partial y^{m-\ell}}(x_0+h,y_0+k)\cdot h^\ell\cdot k^{m-\ell} \\
++ \sum_{\ell=0}^{n+1} \binom{n+1}\ell\cdot \frac{\partial^\ell f}{\partial x^\ell\partial y^{n+1-\ell}}(x_0+\theta h,y_0+\theta k)\cdot h^\ell\cdot k^{n+1-\ell} 
+\end{multline*}
+If we use the following notation:
+\[ \parens{h\frac\partial{\partial x}+k\frac\partial{\partial y}}f = h\frac{\partial f}{\partial x} + k\frac{\partial f}{\partial y} \]
+And we define the exponent of this as if we actually multiplied it out (but composing derivatives):
+\[ \parens{h\frac\partial{\partial x}+k\frac\partial{\partial y}}^mf = \sum_{\ell=0}^m\binom m\ell\cdot\frac{\partial^mf}{\partial x^\ell\partial y^{m-\ell}}\cdot h^\ell k^{m-\ell} \]
+And so we have that
+
+\medskip
+\barcolorbox{255, 255, 150}{100, 100, 0}{250, 250, 100}{
+\[ f(x,y) = f(x_0+h,y_0+k) = \sum_{m=0}^n\frac1{m!}\Biggl(\parens{h\frac\partial{\partial x}+k\frac\partial{\partial y}}^mf\Biggl)(x_0,y_0) +
+\frac1{(n+1)!}\Biggl(\parens{h\frac\partial{\partial x}+k\frac\partial{\partial y}}^{n+1}f\Biggl)(x_0+\theta h,y_0+\theta k) \]
+}
+
+\smallskip
+So for $n=2$ we have that:
+
+\newpage
+\barcolorbox{255, 255, 150}{100, 100, 0}{250, 250, 100}{
+\[ f(x,y) = f(x_0,y_0) + \parens{h\frac{\partial f}{\partial x}+k\frac{\partial f}{\partial y}}(x_0,y_0)+
+\frac12\parens{h^2\frac{\partial^2f}{\partial x^2}+2hk\frac{\partial^2 f}{\partial xy}+k^2\frac{\partial^2 f}{\partial x^2}} +
+\frac16\Biggl(\parens{h\frac\partial{\partial x}+k\frac\partial{\partial y}}^3f\Biggl)(x_0+\theta h,y_0+\theta k) \]
+}
+
+\begin{exam}
+
+    Suppose we have the function
+    \[ f(x,y) = x^2\log y \]
+    We would like to compute its taylor sequence about $(2,1)$, notice that $f(2,1)=0$.
+    So:
+    \begin{multline*}
+    f(x,y) = f(2,1) + \bigl(hf_x(2,1)+kf_y(2,1)\bigl) + \frac12\bigl(h^2f_{xx}+2hkf_{xy}+k^2f_{yy}\bigl)(2,1)\\+ \frac16\bigl(h^3f_{xxx}+3h^2kf_{xxy}+3hk^2f_{xyy}+k^3f_{yyy}\bigl)(2+\theta h,1+\theta k)
+    \end{multline*}
+    Now, we know that:
+    \begin{align*}
+        f_x = 2x\log y\Big|_{(2,1)} &= 0        & f_y=x^2y^{-1}\Big|_{(2,1)}&=4 \\
+        f_{xx} = 2\log y\Big|_{(2,1)}&= 0       & f_{yy}=-x^2y^{-1}\Big|_{(2,1)}&=-4 \\
+        f_{xy} = \frac{2x}y\Big|_{(2,1)}&=4
+    \end{align*}
+    So we have that:
+    \[ f(2+h,1+k) = -4k + \frac12\bigl(8hk-4k^2\bigl) + R_2 \]
+    Where $R_2$ is the error, and is equal to:
+    \[ R_2 = \frac16\Bigl(0h^3+3\frac2yh^2k+3\frac{-2x}y^2hk^2+\frac{2x^2}{y^3}k^3\Bigl)(x,y) \]
+    If we attempt to compute $f(2.2,0.8)$ we have $h=0.2$ and $k=-0.2$ and we get that
+    \[ f(2.2,0.8) = -1.04 + R_2(x,y) \]
+    Where $2\leq x\leq2.2$ and $0.8\leq y\leq1$.
+    So in this case:
+    \[ \abs{R_2} \leq \frac16\Bigl(0+\frac2{0.8}(0.2)^3+3\cdot\frac{2\cdot2.2}{0.8^2}0.2^3+\frac{2\cdot2.2^2}{0.8^3}0.2^3\Bigl)\leq0.0558 \]
+    So $f(2.2,0.8)\approx-1.04$ is a good approximation.
+
+\end{exam}
+
+Notice that in the Taylor expansion, if we can't sufficiently bound $R_n$ then it is pretty much useless.
+The Taylor expansion is only useful for functions whose error can be bounded sufficiently.
+
+\end{document}
+

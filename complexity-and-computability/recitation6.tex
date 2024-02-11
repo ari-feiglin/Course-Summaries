@@ -1,0 +1,176 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz-cd}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{conj}{Conjecture}{255,130,130}{150,0,0}{200,0,0}
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\undersumtext#1{\vtop{\hsize=2cm\relax\centering\small #1}}
+
+\def\sps{\texttt{\char32}}
+\def\sat{\mathsf{SAT}}
+\def\is{\mathsf{IS}}
+\def\threesat{\mathsf{3SAT}}
+\def\clique{\mathsf{Clique}}
+\def\vertcover{\textsf{Vertex-Cover}}
+\def\domset{\textsf{Dom-Set}}
+\def\dhp{\mathsf{DHP}}
+\def\dhc{\mathsf{DHC}}
+\def\hc{\mathsf{HC}}
+\def\tsp{\mathsf{TSP}}
+\def\threecolor{\mathsf{3Color}}
+\def\kcolor{k\mathsf{Color}}
+\def\Color{\mathsf{Color}}
+\def\subsum{\mathsf{SubsetSum}}
+
+\def\PF{\mathbf{PF}}
+\def\PC{\mathbf{PC}}
+\def\P{\mathbf{P}}
+\def\NP{\mathbf{NP}}
+\def\NPH{\mathbf{NPH}}
+\def\NPC{\mathbf{NPC}}
+\def\coNP{\mathbf{coNP}}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mN{\mathcal{N}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=6
+
+\barcolorbox{255, 220, 220}{130, 0, 0}{200, 80, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Computability and Complexity}
+
+    \medskip
+    \textit{Recitation \thesection, Thursday August 17, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{exercise*}
+
+    Suppose $\P\neq\NP$, then prove or disprove the following
+    \benum
+        \item The class $\NPC$ is closed under Karp reductions.
+        \item The class $\NPC$ is closed under unions.
+    \eenum
+
+\end{exercise*}
+
+\benum
+    \item This is false.
+    Let $S\in\NPC$ and $S'\in\P$, then there exists a Karp reduction from $S'$ to $S$ (since $S'\in\NP$, and this is the definition of $\NP$-hardness).
+    And so $S'\notin\NPC$ (as if it were, then $\P$ would be equal to $\NP$).
+    \item This is true.
+    Let $S$ be $\NP$-complete, then let $S_1=\set{1w}[w\in S]\dcup\set{0w}[w\in\set{0,1}^*]$.
+    This is $\NP$-complete as we can define a reduction from $S$ to $S_1$ by $w\mapsto1w$.
+    And similarly let $S_2=\set{0w}[w\in S]\dcup\set{1w}[w\in\set{0,1}^*]$ is $\NP$-complete.
+    But
+    \[ S_1\cup S_2 = \set{0,1}^* \]
+    which is not $\NP$-complete (you cannot define a Karp reduction from any other problem to $\set{0,1}^*$).
+\eenum
+
+\begin{exercise*}
+
+    For every search problem $R$ which is not in $\PF$, such that $S_R\in\P$, there is no self reduction.
+
+\end{exercise*}
+
+Suppose $S_R$ can be solved using a polynomial-time algorithm $A$.
+Suppose for the sake of a contradiction that there is a self reduction, which is a Cook reduction from $R$ to $S_R$.
+But then we could replace all the oracle calls with calls to $A$, and this is a polynomial-time algorithm which solves $R$.
+Thus $R\in\PF$ in contradiction.
+
+\vskip.5cm
+
+In the first homework, we showed that there exists a search problem $R$ (which is polynomially bound) such that $S_R\in\P$ and $R\notin\PF$.
+But does there exist a search problem $R\in\PC$ such that $S_R\in\P$ and $R\notin\PF$?
+Well, let us define
+\[ R = \set{(n,k)}[\text{$k$ is a non-trivial divisor of $n$}] \]
+it is a very important conjecture that $R\notin\PF$.
+In fact this conjecture is the basis for a lot of encryption algorithms.
+But $R\in\PC$ since given $(n,k)$ we just verify that $k\neq1,n$ and that $k$ divides $n$.
+And $S_R=\bN$ which is in $\P$.
+
+\begin{exercise*}
+
+    Assuming that $P\neq\NP\cap\coNP$, show that there exists a search problem $R\in\PC$ which has no self-reduction.
+
+\end{exercise*}
+
+Let $S$ be in $\NP\cap\coNP$ but not $\P$.
+As before, let us denote $V_S$, $V_{S^c}$, $p_S$, and $p_{S^c}$ be the polynomial proof systems and their polynomials for $S$ and $S^c$.
+Let us define
+\[ R_S = \set{(x,y)}[\abs y\leq p_S(\abs x),\, V_S(x,y)=1],\qquad R_{S^c} = \set{(x,y)}[\abs y\leq p_{S^c}(\abs x),\, V_{S^c}(x,y)=1] \]
+It is trivial to see that $R_S$ and $R_{S^c}$ are in $\PC$.
+Since $\PC$ is closed under unions (simply run both algorithms), $R=R_S\cup R_{S^c}\in\PC$.
+We will show that $R$ has no self-reduction.
+Note that
+\[ S_R = \set{x}[\exists y\colon (x,y)\in R_S]\cup\set{x}[\exists y\colon (x,y)\in R_{S^c}] = S\cup S^c = \set{0,1}^* \in \P \]
+The second-to-last equality is due to $S$ and $S^c$ being in $\NP$, so $S_{R_S}=S$ and $S_{R_{S^c}}=S^c$.
+
+Now suppose that $R\in\PF$, then there exists a polynomial-time algorithm $A$ which solves $R$.
+We can define a new algorithm $D$ where $D(x)=V_S(x,A(x))$.
+So if $x\in S$ then there exists a witness $y$ such that $(x,y)\in R_S$ and so $A(x)$ cannot be $\perp$.
+And $x\notin S^c$ so there is not witness for $x$ for $R_{S^c}$, thus $A(x)$ must be a witness for $R_S$, and so $D(x)=1$.
+
+And if $x\notin S$ then $V_S(x,A(x))=0$.
+Thus $D$ decides $S$ in polynomial time, in contradiction.
+So $R\notin\PF$, as required:
+
+\end{document}

@@ -1,0 +1,317 @@
+\documentclass[10pt]{article}
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+\usepackage{mathrsfs}
+
+\catcode`\@=11
+\input pdfmsym
+
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\implies{\,\mathrel{\longvarRightarrow}\,}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\divides{{\mid}}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\newfunc{eulerg}{{\rm Euler}}({})
+\newfunc{order}o({})
+\newfunc{ker}{{\rm Ker}}({})
+\newfunc{image}{{\rm Im}}({})
+\newfunc{lattice}{{\cal L}}(\vert)
+\newfunc{powset}{{\cal P}}(\vert)
+\newfunc{center}{{\rm Z}}({})
+\newfunc{units}{{\cal U}}(\vert)
+\newfunc{sign}{{\rm sgn}}({})
+\newfunc{aut}{{\rm Aut}}({})
+\newfunc{speclinear}{{\rm SL}}({})
+\newfunc{genlinear}{{\rm GL}}({})
+\newfunc{projlinear}{{\rm PGL}}({})
+\newfunc{specprojlinear}{{\rm PSL}}({})
+\newfunc{core}{{\rm Core}}(\vert)
+\newfunc{inner}{{\rm Inn}}(\vert)
+\newfunc{outer}{{\rm Out}}(\vert)
+\newfunc{conj}{{\rm conj}}({})
+\newfunc{ev}{{\rm ev}}({})
+\newfunc{Frac}{{\rm Frac}}({})
+\newfunc{Tor}{{\rm Tor}}(\vert)
+\newfunc{Ann}{{\rm Ann}}(\vert)
+\newfunc{deg}{{\rm deg}}({})
+
+\def\maxdivs{\mathrel{\|}}
+
+\let\ideal=\trianglelefteq
+\let\pideal=\triangleleft
+\def\normal{\mathrel\triangleleft}
+\let\mmorph=\longvarhookrightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\mN{\mathcal N}
+\def\mO{\mathcal O}
+\def\mG{\mathcal G}
+\def\sS{\mathscr S}
+
+\begin{document}
+
+\c@section=21
+
+\barcolorbox{220, 220, 255}{0, 0, 130}{80, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Introduction to Rings and Modules}
+
+    \medskip
+    \textit{Lecture \thesection, Monday June 26 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{defn*}
+
+    Suppose $R$ is an integral domain, then a \ppemph{absolute value} on $R$ is a function
+    \[ \abs{\,\cdot\,}\colon R\longto\bR_{\geq0} \]
+    which satisfies
+    \benum
+        \item $\abs a=0$ if and only if $a=0$.
+        \item $\abs{a\cdot b}=\abs a\cdot\abs b$ for every $a,b\in R$.
+        \item $\abs{a+b}\leq\abs a+\abs b$ for every $a,b\in R$.
+    \eenum
+
+\end{defn*}
+
+This is a generalization of the concept of an absolute value in $\bR$, or the modulus of $\bC$.
+Of course both of these are valuations on these fields.
+
+Another example would be
+\[ \abs a = \begin{cases} 0 & a=0 \\ 1 & a\neq 0 \end{cases} \]
+
+We will focus now on absolute values over fields.
+We can construct an absolute value over the field $\bQ$, as follows: let $p$ be prime, then of course $\abs 0_p=0$.
+Then suppose $0\neq a\in\bQ$, $a=\frac mn$.
+Then $m=p^bm'$ and $n=p^an'$ where $m'$ and $n'$ are coprime with $p$, so
+\[ a = p^{b-c}\frac mn \]
+and so we define
+\[ \abs a_p = p^{c-b} \]
+Or in other words, if
+\[ a = p^d\frac mn \]
+where $p$ is coprime with $m$ and $n$ and $d\in\bZ$, then $\abs a_p=p^{-d}$.
+
+This is well-defined since if $a=\frac mn=\frac xy$ then suppose $m=p^dm'$ and $n=p^{d'}n'$ and $x=p^ex'$ and $y=p^{e'}y'$ then
+\[ p^{d-d'}\frac{m'}{n'} = p^{e-e'}\frac{x'}{y'} \]
+and so
+\[ p^{d-d'}m'y' = p^{e-e'}x'n' \]
+and since $m'$, $n'$, $x'$, and $y'$ are all coprime with $p$, we must have $d-d'=e-e'$ which means the absolute value is well-defined.
+
+\begin{defn*}
+
+    The absolute value defined above is called the \ppemph{$p$-adic absolute value}.
+
+\end{defn*}
+
+\begin{prop*}
+
+    The $p$-adic absolute value is indeed an absolute value.
+
+\end{prop*}
+
+\begin{proof}
+
+    Obviously $\abs a=0_p$ if and only if $a=0$, and the absolute value is non-negative.
+    Now suppose
+    \[ a=p^d\frac{m_1}{n_1},\quad b=p^e\frac{m_2}{n_2} \]
+    and so
+    \[ ab = p^{d+e}\frac{m_1m_2}{n_1n_2} \]
+    and since $m_1m_2$ and $n_1n_2$ are still coprime with $p$, we have
+    \[ \abs{ab}_p = p^{-d-e} = p^{-d}p^{-e} = \abs a_p\abs b_p \]
+    as required.
+
+    Finally, for the triangle inequality, suppose without loss of generality that $d\leq e$.
+    So
+    \[ a+b = p^d\parens{\frac{m_1}{n_1} + p^{e-d}\frac{m_2}{n_2}} = p^d\frac{m_1n_2 + p^{e-d}m_2n_1}{n_1n_2} = p^d\frac{m_3}{n_1n_2} \]
+    Now suppose $m_3=p^fm_4$, then we have
+    \[ a+b = p^{d+f}\frac{m_4}{n_1n_2} \]
+    which means that
+    \[ \abs{a+b}_p = p^{-d-f} \leq p^{-d} = \maxof{p^{-d}, p^{-e}} = \maxof{\abs a_p, \abs b_p} \leq \abs a_p + \abs b_p \]
+    as required.
+    \qed
+
+\end{proof}
+
+We actually have proven a stronger property of the $p$-adic absolute value, that
+\[ \abs{a+b}_p \leq \maxof{\abs a_p, \abs b_p} \]
+Such a property is called the \emph{strong triangle inequality}.
+
+\begin{prop*}
+
+    Suppose $R$ is an integral domain with an absolute value, then $\abs{1_R}=1$.
+
+\end{prop*}
+
+Let $0\neq a\in R$ then $\abs a\neq0$ and $\abs a=\abs{a\cdot1_R}=\abs a\abs{1_R}$ and since $\bR$ is a field, we have $\abs{1_R}=1$ as required.
+
+\begin{prop*}
+
+    Suppose $b\in R$ is invertible, then $\abs{b^{-1}}=\abs b^{-1}$.
+
+\end{prop*}
+
+Since $\abs b\cdot\abs{b^{-1}} = \abs{bb^{-1}}=\abs1=1$, since $\bR$ is a field we have $\abs{b^{-1}}=\abs b^{-1}$.
+
+\begin{prop*}
+
+    $\abs{-a}=\abs a$
+
+\end{prop*}
+
+Since $1=\abs{-1}\cdot\abs{-1}$, we have that $\abs{-1}$ is a unit in $\bR_{\geq0}$, meaning $\abs{-1}=1$.
+
+Notice that if $n\in\bZ$ such that $p\nmid n$, then $n$ is coprime with $p$ and thus $\abs n_p=p^{-0}=1$.
+And on the flipside, $\abs{p^n} = p^{-n}$.
+
+So let $\epsilon>0$ and $d$ be the smallest integer such that $p^{-d}<\epsilon$, thus $p^{-d}$ is the largest exponent of $p$ less than $\epsilon$,
+\[ \abs{a-b}_p < \epsilon \]
+if and only if $a-b=p^c\frac mn$ where $p^{-c}<\epsilon$ and so $p^{-c}<p^{-d}$, meaning
+\[ \abs{a-p}_p < \epsilon \iff \abs{a-b}_p < p^{-d} \]
+
+\begin{note*}
+
+    If $R$ is an integral domain with an absolute value, then we can define a metric on it by
+    \[ d(a,b) = \abs{a-b} \]
+    Obviously $d(a,b)\geq0$ and is zero only when $a=b$, and it is symmetric.
+    And finally
+    \[ d(a,b) + d(b,c) = \abs{a-b} + \abs{b-c} \geq \abs{(a-b)+(b-c)} = \abs{a-c} = d(a,c) \]
+
+    Thus an absolute value defines a metricizable topology on $R$, generated by the basis of balls $B_\epsilon(a)$.
+
+\end{note*}
+
+\begin{defn*}
+
+    Two absolute values on the ring $R$ are \ppemph{equivalent} if they define the same topology on $R$.
+
+\end{defn*}
+
+\begin{prop*}
+
+    Two absolute values on $R$, $\abs{\,\cdot\,}_1$ and $\abs{\,\cdot\,}_2$, are equivalent if and only if there exists an $n\in\bZ$ such that for every $a\in R$, $\abs a_1=\abs a_2^n$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let us show that if the equality holds, they are equivalent.
+    This is because
+    \[ \abs{a-b}_1 < \epsilon \iff \abs{a-b}_2^n < \epsilon \iff \abs{a-b}_2 < \epsilon^{1/n} \]
+    and thus
+    \[ B_\epsilon^1(a) = B_{\epsilon^{1/n}}^2(a) \]
+
+    Now suppose the two absolute values are equivalent.
+    Now suppose that $a\in R$, then for any $\epsilon>0$ there exists a $\delta>0$ such that $\abs{a-b}_1<\epsilon$ if and only if $\abs{a-b}_2<\delta$.
+
+\end{proof}
+
+\begin{defn*}
+
+    Let $R$ be a ring, then for $n\in\bN$, let $n_R=1_R+\cdots+1_R$ ($n$ times).
+    If $n\in\bZ$ and $n<0$ then $n_R=(-n)_R$.
+
+\end{defn*}
+
+Note that the unique ring homomorphism $\phi\colon\bZ\longto R$ is given by $\phi(n)=n_R$.
+
+\begin{defn*}
+
+    If $R$ is an integral domain with an absolute value $\abs{\,\cdot\,}$, the absolute value is \ppemph{non-Archimedean} if
+    \[ \set{\abs{n_R}}[n\in\bN] \subseteq \bR_{\geq0} \]
+    is bounded from above.
+
+    The absolute value is \ppemph{Archimedean} if it is not non-Archimedean.
+
+\end{defn*}
+
+\begin{prop*}
+
+    An absolute value on a ring $R$ is non-Archimedean if and only if it satisfies the strong triangle inequality.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose the strong triangle inequality is satisfied, then inductively, we show that $\abs{n_R}\leq1$.
+    For $n=1$ this is trivial, and otherwise
+    \[ \abs{(n+1)_R} = \abs{n_R + 1_R} \leq \maxof{\abs{n_R}, \abs{1_R}} \leq \maxof{1,1} = 1 \]
+    So the absolute value is non-Archimedean.
+
+    Now suppose the absolute value is non-Archimedean, suppose $M>0$ is a bound for $\set{\abs{n_R}}$.
+    Let $a,b\in R$ and suppose $\abs b\leq\abs a$.
+    Then let $k\in\bN$, so
+    \[ \abs{(a+b)^k} = \abs{\sum_{i=0}^k\binom ni_R a^ib^{k-i}} \leq \sum_{i=0}^k M\abs a^i\abs b^{k-i} \leq (k+1)M\abs a^k \]
+    Thus by taking the $k$-th root from both sides, we get
+    \[ \abs{a+b} \leq (k+1)^{1/k}\cdot M^{1/k}\cdot\abs a \]
+    and then we can let $k\to\infty$, and $(k+1)^{1/k},\,M^{1/k}\to1$ and so
+    \[ \abs{a+b} \leq \abs a = \maxof{\abs a,\abs b} \]
+    Thus $\abs{\,\cdot\,}$ satisfies the strong triangle ienquality, as required.
+    \qed
+
+\end{proof}
+
+Note then that the $p$-adic metric is non-Archimedean (this is not hard to prove directly).
+
+\begin{thrm*}[ostrowskiTheorem,Ostrowski's\ Theorem]
+
+    Every non-trivial absolute value on $\bQ$ is equivalent either to a $p$-adic absolute value $\abs{\,\cdot\,}_p$ or the normal absolute value, denoted $\abs{\,\cdot\,}_\infty$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Suppose $\abs{\,\cdot\,}$ is a non-trivial absolute value on $\bQ$.
+    If the absolute value is non-Archimedean, then it must satisfy the strong triangle inequality, and thus
+    \[ \abs{n} \leq \maxof{\abs1,\dots,\abs1} = \abs 1 \]
+    for every $0\neq z\in\bZ$.
+    Let
+    \[ I = \set{n\in\bZ}[\abs n<1] \]
+    then $I\ideal\bZ$ is a prime ideal.
+    $I\neq\bZ$ since $\abs1=1$, and $0\in I$.
+    $I$ is an ideal since if $a\in\bZ$ and $n\in I$ then $\abs{an}=\abs a\abs n\leq\abs n<1$ so $an\in I$.
+    And if $a,b\in I$ then $\abs{a+b}\leq\maxof{\abs a,\abs b}<1$ since the absolute value satisfies the strong triangle inequality.
+    Now suppose $nm\in I$ then $\abs{nm}=\abs n\abs m<1$.
+    Since $\abs n,\abs m\leq 1$, if neither of them are in $I$ then $\abs n,\abs m=1$ and so $\abs{nm}=1$ in contradiction.
+
+    We will show that $I\neq(0)$.
+    If $I=(0)$ then for every $\frac ab\in\bQ$, we have that $\abs{\frac ab}=\abs{ab^{-1}}=\abs a\abs b^{-1}=1$, which is $1$ if $a\neq0$ and $0$ if $a=0$, meaning the absolute value is trivial, in
+    contradiction.
+
+    Thus $I=p\bZ$ for some prime $p$.
+    We claim that the absolute value is equivalent to the $p$-adic absolute value.
+    So we have that for every prime $q\neq p$, $q\notin I$ and thus $\abs q=1$.
+    So suppose $n\in\bN$, and so $n=p^d\cdot p_1^{n_1}\cdots p_k^{n_k}$ and so
+    \[ \abs n = \abs p^d\cdot\abs{p_1}^{n_1}\cdots\abs{p_k}^{n_k} = \abs p^d \]
+    And in general if $\frac mn\in\bQ$, where $m=p^dm'$ and $n=p^{d'}n'$ then we have $\abs m=\abs p^d$ and $\abs n=\abs p^{d'}$ and so
+    \[ \abs{\frac mn} = \abs p^{d-d'} \]
+    Now we know that
+    \[ \abs{\frac mn}_p = p^{d'-d} \]
+    Let $\abs p=p^{-s}$ (or in other words $s=-\log_p\abs p$)
+    \[ \abs{\frac mn} = \parens{p^{-s}}^{d-d'} = \parens{p^{d'-d}}^s = \abs{\frac mn}_p^s \]
+    meaning the absolute value is equal to the the $p$-adic absolute value, raised to the $s$th power, which we showed means they are equivalent.
+
+\end{proof}
+
+\end{document}
+

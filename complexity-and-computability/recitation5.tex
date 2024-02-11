@@ -1,0 +1,211 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz-cd}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{conj}{Conjecture}{255,130,130}{150,0,0}{200,0,0}
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\newfunc{oracle}{\mathsf{oracle}}({})
+
+\def\undersumtext#1{\vtop{\hsize=2cm\relax\centering\small #1}}
+
+\def\sps{\texttt{\char32}}
+\def\sat{\mathsf{SAT}}
+\def\is{\mathsf{IS}}
+\def\threesat{\mathsf{3SAT}}
+\def\clique{\mathsf{Clique}}
+\def\vertcover{\textsf{Vertex-Cover}}
+\def\domset{\textsf{Dom-Set}}
+\def\dhp{\mathsf{DHP}}
+\def\dhc{\mathsf{DHC}}
+\def\hc{\mathsf{HC}}
+\def\tsp{\mathsf{TSP}}
+\def\threecolor{\mathsf{3Color}}
+\def\kcolor{k\mathsf{Color}}
+\def\Color{\mathsf{Color}}
+\def\subsum{\mathsf{SubsetSum}}
+
+\def\PF{\mathbf{PF}}
+\def\PC{\mathbf{PC}}
+\def\P{\mathbf{P}}
+\def\NP{\mathbf{NP}}
+\def\NPH{\mathbf{NPH}}
+\def\NPC{\mathbf{NPC}}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mN{\mathcal{N}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=5
+
+\barcolorbox{255, 220, 220}{130, 0, 0}{200, 80, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Computability and Complexity}
+
+    \medskip
+    \textit{Lecture \thesection, Thursday August 15, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\def\partition{\mathsf{Partition}}
+\begin{exercise*}
+
+    We define the following decision problem
+    \[ \partition = \set{A}[\vcenter{\advance\hsize by-5cm\relax
+    $A$ is a set of natural numbers which can be partitioned into two subsets which have the same sum}] \]
+    show that $\partition$ is $\NP$-complete.
+
+\end{exercise*}
+
+\begin{note}
+
+    Recall that a partition is a set of disjoint subsets of $A$ whose union is $A$.
+    So the statement ``$A$ can be partitioned into two subsets which have the same sum'' means that there exist $A_1,A_2\subseteq A$ where $A_1\dcup A_2=A$ and $\sum A_1=\sum A_2$.
+
+\end{note}
+
+Showing that $\partition$ is in $\NP$ is simple.
+We will define a reduction from $\subsum$ to $\partition$.
+So given an input $(A,b)$ for $\subsum$, let $S=\sum A$, and we define a set $B$ which is an input for $\partition$ by
+\[ B = A\cup\set{2S-b,S+b} \]
+Notice that $\sum B=\sum A+3S=4S$.
+
+Now, if $(A,b)\in\subsum$ then there exists a subset (let us view $A$ as a multiset) $A'\subseteq A$ where $\sum A'=b$.
+Then if we define $B_1=A'\cup\set{2S-b}$ and $B_2=B\setminus B=A\setminus A'\cup\set{S+b}$, we have
+\[ \sum B_1 = \sum A' + 2S -b = 2S,\qquad \sum B_2 = \sum A\setminus A' + S+b = S-b + S+b = 2S \]
+and so $B_1,B_2$ forms a partition of $B$ and both sets have the same sum.
+Thus $B\in\partition$.
+
+And if $B\in\partition$, then suppose $B=B_1\dcup B_2$ and $\sum B_1=\sum B_2$.
+Now, $2S-b$ and $S+b$ cannot both be in the same $B_i$, as then $\sum B_i\geq3S$ and $B_j\subseteq A$ and so $\sum B_j\leq S$ and thus the sums are not the same, in contradiction.
+Suppose $2S-b\in B_1$ and $S+b\in B_2$, then let $A_1=B_1\setminus\set{2S-b}$ and $A_2=B_2\setminus\set{S+b}$, and so
+\[ \sum B_1+\sum B_2 = \sum B = 4S \]
+and so $\sum B_1=\sum B_2=2S$.
+This means that
+\[ \sum A_1 = \sum B_1 - (2S-b) = b \]
+and so $(A,b)\in\subsum$ as $A_1$ is a subset whose sum is $b$.
+
+\def\binpack{\mathsf{BinPacking}}
+\begin{exercise*}
+
+    We define the following decision problem
+    \[ \binpack = \set{(X,\omega,k)}[\vcenter{\advance\hsize by-5cm
+    $X$ is a set of items, and $\omega\colon X\longto[0,1]$ is a weight function on $X$.
+    $k$ is a natural number, where we can pack all the elements in $X$ into $k$ boxes where the weight of each box is at most $1$}] \]
+    Show $\binpack$ is $\NP$-complete.
+
+\end{exercise*}
+
+The verifier for $\binpack$ is the list of elements in $X$ in each box, so $\binpack$ is in $\NP$.
+We will define a reduction from $\partition$ to $\binpack$.
+Suppose $A$ is an input for $\partition$ ie a set of natural numbers.
+Let us define $(X,\omega,k)$ where
+\benum
+    \item $X=\set{x_a}[a\in A]$
+    \item Let us denote $S=\sum A$, and $\omega(x_a)=\frac{2a}{S}$.
+    \item We define $k=2$.
+\eenum
+
+If $A\in\partition$, then there exists $A=A_1\dcup A_2$ where $\sum A_1=\sum A_2=\frac S2$.
+Let us define
+\[ X_1 = \set{x_a}[a\in A_1],\quad X_2 = \set{x_a}[a\in A_2] \]
+then
+\[ \omega(X_1) = \sum_{a\in A_1}\omega(x_a) = \frac{2\sum A_1}{S} = 1 \]
+and similarly $\omega(X_2)=1$, and so packing the elements of $X$ into $X_1$ and $X_2$ satisfies the constraints, so $(X,\omega,k)\in\binpack$.
+
+Now, if $(X,\omega,k)\in\binpack$ there exists a partition of $X$ into $X_1$ and $X_2$ where $\omega(X_1),\omega(X_2)\leq1$.
+Let
+\[ A_1 = \set{a\in A}[x_a\in X_1],\quad A_2 = \set{a\in A}[x_a\in X_2] \]
+this is a partition of $A$.
+And
+\[ \omega(X_1) = \sum_{a\in A_1}\frac{2a}S = \frac2S\sum A_1,\qquad \omega(X_2) = \frac2S\sum A_2 \]
+And so
+\[ \omega(X_1) + \omega(X_2) = \frac2S\parens{\sum A_1+\sum A_2} = 2 \]
+and since $\omega(X_1),\omega(X_2)\leq1$, which means $\omega(X_1)=\omega(X_2)=1$, and thus
+\[ \sum A_1 = \sum A_2 = \frac S2 \]
+so $A\in\partition$ as required.
+
+\def\partintois{\mathsf{PartitionIntoIS}}
+\begin{exercise*}
+
+    We define the following decision problem
+    \[ \partintois = \set{(G,k)}[\text{$G$ is an undirected graph which can be partitioned into $k$ independent sets}] \]
+    show that $\partintois$ is $\NP$-complete.
+
+\end{exercise*}
+
+This is sort of a trick, since
+\[ \partintois = \Color \]
+as $G$ has $k$ independent sets if and only if it can be $k$-colored (the colors define the independent sets, and vice versa).
+
+\begin{exercise*}
+
+    Show that for every search problem $R\in\PC$, if $S_R$ is $\NP$-complete, then $R$ has a self-reduction.
+
+\end{exercise*}
+
+We showed that for every search problem $R$, there exists a Cook reduction from $R$ to $S'_R$:
+\[ S'_R = \set{(x,u)}[\exists w\colon (x,uw)\in R] \]
+(proof in lecture 2)
+Since $R\in\PC$, $S'_R$ is in $\NP$ as let $A$ be the polynomial-time verifier for $R$, then we define $V((x,u),w)=A(x,uw)$ is a polynomial verifier for $S'_R$.
+Thus $S'_R\in\NP$.
+And since $S_R$ is $\NP$-complete, there exists a reduction from $S'_R$ to $S_R$, and so there exists a Cook reduction from $R$ to $S_R$.
+
+\end{document}
+

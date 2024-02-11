@@ -1,0 +1,390 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz-cd}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{conj}{Conjecture}{255,130,130}{150,0,0}{200,0,0}
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\undersumtext#1{\vtop{\hsize=2cm\relax\centering\small #1}}
+
+\newfunc{oracle}{\hbox{\tencsc oracle}}({})
+\newfunc{dspace}{\mathsf{DSPACE}}({})
+\newfunc{dtime}{\mathsf{DTIME}}({})
+\newfunc{nspace}{\mathsf{NSPACE}}({})
+
+\def\quant{\mathtt{Q}}
+
+\def\sps{\texttt{\char32}}
+\def\sat{\mathsf{SAT}}
+\def\csat{\mathsf{CSAT}}
+\def\is{\mathsf{IS}}
+\def\threesat{\mathsf{3SAT}}
+\def\clique{\mathsf{Clique}}
+\def\vertcover{\textsf{Vertex-Cover}}
+\def\domset{\textsf{Dom-Set}}
+\def\dhp{\mathsf{DHP}}
+\def\dhc{\mathsf{DHC}}
+\def\hc{\mathsf{HC}}
+\def\tsp{\mathsf{TSP}}
+\def\threecolor{\mathsf{3Color}}
+\def\kcolor{k\mathsf{Color}}
+\def\Color{\mathsf{Color}}
+\def\subsum{\mathsf{SubsetSum}}
+\def\maxclique{\mathsf{MaxClique}}
+\def\minexpr{\mathsf{MinExpression}}
+\def\sparse{\mathsf{Sparse}}
+\def\stconn{\textsf{st-conn}}
+
+\def\PH{\mathbf{PH}}
+\def\PF{\mathbf{PF}}
+\def\PC{\mathbf{PC}}
+\def\P{\mathbf{P}}
+\def\NP{\mathbf{NP}}
+\def\NPH{\mathbf{NPH}}
+\def\NPC{\mathbf{NPC}}
+\def\co{\mathsf{co}}
+\def\coNP{\mathbf{coNP}}
+\def\poly{\mathsf{poly}}
+\def\Ppoly{\slfrac\P\poly}
+\def\L{\mathbf{L}}
+\def\NL{\mathbf{NL}}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mN{\mathcal{N}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=9
+
+\barcolorbox{255, 220, 220}{130, 0, 0}{200, 80, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Computability and Complexity}
+
+    \medskip
+    \textit{Lecture \thesection, Tuesday August 29, 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{Spatial Complexity}
+
+\begin{defn*}
+
+    We define a Turing machine with three tapes,
+    \benum
+        \item The input tape, which is read-only.
+        We can move forward and backward on this tape.
+        \item The output tape, which is write-only.
+        For comfort, we assume we only move forward on this tape.
+        But this is equivalent to also being able to move backward.
+        \item And the working tape, which is read-write.
+        We can move bidirectionally on this tape.
+    \eenum
+
+    Given a space function $S\colon\bN\longto\bN$, we define the class $\dspaceof{S(n)}$ to be the set of all decision problems $A$ which can be decided by a Turing machine $M$ (with three tapes as above)
+    such that for every $x$, $M(x)$ utilizes at most $S(\abs x)$ cells on its work tape.
+
+    Similarly for a time function $t\colon\bN\longto\bN$ we define the class $\dtimeof{t(n)}$ to be the set of all decision problems $A$ which can be decided by a Turing machine $M$ whose runtime is bound
+    by $t(n)$.
+
+\end{defn*}
+
+Notice that
+\[ \P = \bigcup_{p(n)\text{ polynomial}}\dtimeof{p(n)} \]
+
+And furthermore, $\dtimeof{t(n)}\subseteq\dspaceof{t(n)}$ since if our runtime is bound by $t(n)$, we can only perform at most $t(n)$ writes and therefore can only utilize at most $t(n)$ cells in the working
+tape.
+
+\begin{prop*}
+
+    For every spatial function $S$,
+    \[ \dspaceof{S(n)} \subseteq \dtimeof{n\cdot 2^{O(S(n))}} \]
+
+\end{prop*}
+
+Notice then if $S(n)\geq\log(n)$, then
+\[ \dspaceof{S(n)} \subseteq \dtimeof{2^{O(S(n))}} \]
+as then $n\leq 2^{S(n)}$ so
+\[ n\cdot2^{c\cdot S(n)} \leq 2^{(c+1)S(n)} \]
+This means that $n\cdot2^{O(S(n))}=2^{O(S(n))}$.
+
+\begin{proof}
+
+    Recall the definition of the \emph{configuration} of a Turing machine after $t$ steps.
+    It is a tuple (or a string) which contains the content of the tapes, the placement of the heads, and the current state.
+    In the case of our input-output-work Turing machine, our configuration needs only
+    \benum
+        \item The placement of the heads on the input and work tapes.
+        We don't need the placement of the head on the output tape, as we cannot read from it.
+        \item The contents of the work tape.
+        We don't need the content of the input tape, as it is constant.
+        And we don't need the content of the output tape, as we cannot read from it.
+        \item The internal state of the Turing machine.
+    \eenum
+    If at any point we get the same configuration twice as different times, then since the next steps are determined entirely by the configuration, we would enter a never-ending loop.
+    So each configuration must be different.
+
+    Now let us consider the number of possible configurations.
+    There are $n$ possible placements on the input tape, and $S(n)$ possible placements on the work tape.
+    There are $2^{S(n)}$ possible strings which can be the content of the work tape, and the number of internal states is some constant $c$.
+    Thus the total number of possible configurations is
+    \[ n\cdot S(n)\cdot2^{S(n)}\cdot c \]
+    and this is in $n\cdot2^{O(S(n))}$ (a better bound would be $O(n\cdot2^{S(n)})$), and since every configuration is unique, there can therefore be at most $n\cdot2^{O(S(n))}$ steps, meaning the decision
+    problem is in $\dtimeof{n\cdot2^{O(S(n))}}$ as required.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    Let us define the class of decision problems
+    \[ \L = \bigcup_{c=1}^\infty \dspaceof{c\cdot\log(n)} \]
+    the class of decision problems which use logarithmic space.
+
+\end{defn*}
+
+Since
+\[ \dspaceof{c\log(n)} \subseteq \dtimeof{2^{O(\log(n))}} = \dtimeof{n^{O(1)}} = \P \]
+we have that
+\[ \L \subseteq \P \]
+Whether or not this is a proper inclusion is an open problem.
+It is hypothesized that it is proper, but this has not been proven.
+
+\begin{thrm*}[spaceHierarchy,The\ Space\ Hierarchy\ Theorem]
+
+    For every two space functions $S_1,S_2\colon\bN\longto\bN$ such that $S_1(n)\geq\log(n)$ and $S_2(n)\in\omega(S_1(n))$ (meaning $S_1(n)\in o(S_2(n))$).
+    Then
+    \[ \dspaceof{O\bigl(S_1(n)\bigr)} \subsetneq \dspaceof{O\bigl(S_2(n)\bigr)} \]
+    In other words, if $S_2(n)$ is asymptotically larger than $S_1(n)$, there exist decision problems which can be solved with $S_2(n)$ space, but not with $S_1(n)$ space.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Since $S_1(n)\in o(S_2(n))$, obviously there is inclusion.
+    We will show that there exists a problem solvable in $O(S_2(n))$ space but not in $O(S_1(n))$ space.
+    We define
+    \[ A = \set{(M,\omega)}[\vcenter{\advance\hsize by-5cm
+    $M$ is an input-output-work Turing machine which accepts $\omega$ within $2^{S_2(n)}$ steps and also uses at most $S_2(n)$ cells in its work tape.}] \]
+    (Importantly, $n=\abs{(M,\omega)}$.)
+
+    Firstly, we must show that $A\in\dspaceof{O(S_2(n))}$.
+    We define a Turing machine $B$ which accepts $(M,\omega)$ and runs $M$ on its work tape for at most $2^{S_2(n)}$ steps.
+    If $M$ accepts $\omega$ within $2^{S_2(n)}$ steps, it returns one, and otherwise zero.
+    It must allocate room on its work tape for $M$'s work, which utilizes at most $S_2(n)$ cells, and for counting the number of steps it has used it must utilize another $\log(2^{S_2(n)})=S_2(n)$ cells
+    (it stores it in binary, which is why it is logarithmic).
+    So all in all, $B$ decides $A$ and utilizes at most $2S_2(n)$ cells on its work tape, meaning $A\in\dspaceof{O(S_2(n))}$ as required.
+
+    Now suppose, for the sake of a contradiction, that $A\in\dspaceof{O(S_1(n))}$, so there exists Turing machine $M_A$ which decides $A$ and has spatial complexity bound in $O(S_1(n))$.
+    So suppose $M_A$ has spatial complexity bound by $cS_1(n)$ for $c>0$.
+    Since $S_1(n)\geq\log(n)$,
+    \[ \dspace{O(S_1(n))} \subseteq \dtimeof{2^{O(S_1)}} \]
+    and so there exists a $c$ such that $A$ has time complexity bound by $2^{c'S_1(n)}$ for $c'>0$.
+    Let us define $C=\maxof{c,c'}$.
+    Since $S_2(n)\in\omega(S_1(n))$, there exists an $n_0$ such that for every $n\geq n_0$,
+    \[ S_2(n) \geq C\cdot S_1(n) \]
+    So for every input of size $n\geq n_0$, $M_A$ utilizes at most $S_2(n)$ space and runs in at most $2^{S_2(n)}$ time.
+
+    Suppose we enumerate all the Turing machines $\set{M_i}_{i=1}^\infty$.
+    We define a Turing machine $D$ which gets as input a Turing machine $M_i$ and returns the inverse of $M_A(M_i,M_i)$.
+    Further let us assume that the length of $D$ is at least $n_0$, we can do this by adding redundant code.
+    $D$ is a Turing machine, and so suppose $M_k=D$, then what does $D(D)$ return?
+    \benum
+        \item If $D(D)$ returns one, $M_A(D,D)=0$ so $D\notin A$.
+        This means that $D$ doesn't accept $D$ within $2^{S_2(n)}$ steps and utilizing $S_2(n)$ space.
+        But since $\abs D\geq n_0$, $M_A(D,D)$ utilizes at most $S_2(n)$ space and runs in at most $2^{S_2(n)}$ time.
+        But all $D(D)$ does is run $M_A(D,D)$ so it also utilizes $S_2(n)$ space and runs in $2^{S_2(n)}$ time, which means that $D$ rejects $D$, which contradicts $D(D)=1$.
+
+        \item If $D(D)=0$ then $M_A(D,D)=1$, which means that $(D,D)\in A$, but this means $D$ accepts $D$ and so $D(D)=1$ in contradiction.
+    \eenum
+    So $D$ cannot exist, but it is well-defined from $M_A$, which means $M_A$ cannot exist so $A\notin\dspaceof{O(S_1(n))}$.
+    Therefore we have shown
+    \[ \dspaceof{O\bigl(S_1(n)\bigr)} \subsetneq \dspaceof{O\bigl(S_2(n)\bigr)} \qed \]
+
+\end{proof}
+
+\begin{note}
+
+    This is a diagonal argument, similar to Cantor's diagonal argument proving $\aleph_0<\mathfrak c$ and the diagonal argument showing that $A_{\rm TM}$ is undecidable.
+
+\end{note}
+
+\begin{defn*}
+
+    Given a space function $S\colon\bN\longto\bN$, we define the class $\nspaceof{S(n)}$ to be the set of all decision problems $A$ such that there exists a non-deterministic Turing machine $M$ where for
+    every $x$, the maximum number of cells $M$ uses while running on $M$ (meaning the maximum is taken over all the possible paths taken by $M$ while running $x$) is bound by $S(\abs x)$.
+
+    Similarly we define
+    \[ \NL = \bigcup_{c=1}^\infty \nspaceof{c\log(n)} \]
+
+\end{defn*}
+
+\begin{defn*}
+
+    A \ppemph{log-space reduction} from one decision problem $A_1$ to another $A_2$ is a function $f$ which can be computed in logarithmic space such that
+    \[ x\in A_1\iff f(x)\in A_2 \]
+
+\end{defn*}
+
+\begin{defn*}
+
+    We say that a decision problem $A$ is \ppemph{$\NL$-hard} if for every $A'\in\NL$ there exists a log-space reduction from $A'$ to $A$.
+    If an $\NL$-hard decision problem is also in $\NL$, it is called $\NL$-complete.
+
+\end{defn*}
+
+\begin{prop*}
+
+    $\L$ is closed under log-space reductions.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $A\in\L$ and suppose there exists a log-space reduction from $A'$ to $A$, $f$.
+    So there exists a Turing machine $M_A$ which decides $A$ in logarithmic space, and $f$ can also be computed in logarithmic space.
+    The issue is, $\abs{f(x)}$ is polynomial in $\abs x$ and so if we were to want to run $M_A(f(x))$ we would need to compute $f(x)$ which takes up polynomial space.
+
+    So instead, we will define a Turing machine $M(x)$ which simulates $M_A(f(x))$ without storing the entire value of $f(x)$.
+    We do this by having $M$ store the position of $M_A$'s pointer to its input tape (there are $\log\abs{f(x)}$ possibilities, if we store the value in binary, which is logarithmic in $\abs x$), and at
+    every step of $M_A$, we compute $f(x)$.
+    But instead of saving the result, since the result is written sequentially (we can only move forward on the output tape), we compute the first character in $f(x)$, erase it, then compute the next, and
+    so on until we reach the character pointed to by $M_A$'s pointer.
+
+    The space needed is:
+    \benum
+        \item Computing $f(x)$ takes $O(\log\abs x)$ space.
+        \item Storing $M_A$'s pointer takes $\log\abs{f(x)}\in O(\log\abs x)$ space.
+        \item Computing $M_A(f(x))$ takes $O(\log\abs{f(x)})\subseteq O(\log\abs x)$ space.
+        \item Plus we need a single cell for the current character of $f(x)$.
+    \eenum
+    So all in all everything need $O(\log\abs x)$ space, so $M$ requires $O(\log\abs x)$ space.
+    Therefore $A'$ can be decided by the logarithmic-space Turing machine $M$, meaning $A'\in\L$ as required.
+    \qed
+
+\end{proof}
+
+This means that if there exists an $\NL$-complete problem in $\L$, $\NL=\L$.
+This is since if $A$ is $\NL$-complete and in $\L$, then for every $A'\in\NL$ there exists a log-space reduction from $A'$ to $A$ which means that $A'\in\L$ since $\L$ is closed under log-space reductions.
+Thus $\NL\subseteq\L$, and $\L\subseteq\NL$ trivially.
+
+So similar to how we study $\NP$-complete problems to understand the relation between $\P$ and $\NP$, we can study $\NL$-complete problems to understand the relation between $\L$ and $\NL$.
+
+\begin{prop*}
+
+    There exists an $\NL$-complete problem.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let us define
+    \[ \stconn = \set{(G,s,t)}[\text{$G$ is a directed graph, $s$ and $t$ are nodes in $G$ which are connected}] \]
+    We will define a non-deterministic algorithm which decides $\stconn$.
+
+    \algorithm
+        \Function{$M$}{$G=(V,E),\,s,\,t$}
+            \State $\mathit{current}\gets s$
+            \Repeat{$\abs V$}
+                \State \textbf{choose} $\textit{next}$ to be a neighbor of $\mathit{current}$.
+                \lIf{$\mathit{next}=t$} \Return $1$
+                \State $\mathit{current}\gets\mathit{next}$
+            \EndRepeat
+            \State\Return $0$
+        \EndFunc
+    \ealgorithm
+
+    This uses constant space, and it decides $\stconn$.
+    Thus $\stconn\in\NL$ as required.
+
+    Now we must show that $\stconn$ is $\NL$-complete.
+    Let $A\in\NL$, suppose it is decided by a non-deterministic log-space Turing machine $M_A$.
+    Given an input $x$, we define the graph $(G,s,t)$ where
+    \benum
+        \item The vertices in $G$ are all the possible configurations of $M_A$ when running $x$.
+        \item We define an edge from a configuration $c_1$ to $c_2$ if and only if it is possible to go from $c_1$ to $c_2$ in a single move.
+        \item We define $s$ to be the initial configuration.
+        \item We define a new vertex $t$ and add an edge from every configuration which is accepted by $M_A$ to $t$.
+    \eenum
+    Obviously $x\in A$ if and only if $(G,s,t)\in\stconn$, so if we can show that computing $f(x)=(G,s,t)$ can be done in log-space, then this forms a log-space reduction.
+
+    At every point, we need only to store the current configuration and the next configuration.
+    To store a single configuration we need to store:
+    \benum
+        \item The placement of the pointer on the input tape, there are $n$ positions so this takes $\log(n)$ space.
+        \item The placement of the pointer of the working tape, and since $M_A$ is log-space, this takes $O(\log(n))$ space.
+        \item The content of the working tape, and since $M_A$ is log-space, its length is bound by $O(\log(n))$ space.
+        \item The internal state, which takes constant space.
+    \eenum
+    So the space needed is $O(\log(n))$ so $f$ is log-space, and therefore a log-space reduction.
+    Therefore $\stconn$ is $\NL$-complete, as required.
+    \qed
+
+\end{proof}
+
+\newpage
+But notice that $\stconn$ is in $\P$ (recall from our algorithms course), and every log-space reduction is also a Karp reduction (since something which takes logarithmic space takes polynomial time), and
+so this means
+
+\begin{prop*}
+
+    \[ \NL \subseteq \P \]
+
+\end{prop*}
+
+\end{document}
+

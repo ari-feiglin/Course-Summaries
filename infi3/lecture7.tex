@@ -1,0 +1,221 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\@blist[#1]{%
+    \bgroup\bgroup\par%\vskip-\medskipamount%
+    \gdef\item{%
+        \par\egroup\bgroup\medskip\setbox0=\hbox{#1\quad}%
+        \advance\leftskip by \wd0\leavevmode\kern-\wd0\box0%
+    }%
+}
+\def\blist{\@ifnextchar[ \@blist {\@blist[$\bullet$]}}
+\def\elist{\par\egroup\egroup\medskip}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\newfunc{metricc}\sigma({})
+
+\font\bigbf = cmbx12 scaled 2000
+
+\def\openset{{\cal O}}
+\let\lineseg=\overleftrightvecc
+
+\begin{document}
+
+\c@section=7
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infinitesimal Calculus 3}
+
+    \medskip
+    \textit{Lecture 7, Sunday November 13, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\subsection{Complete Metric Spaces}
+
+\begin{defn*}
+
+    A metric space $(X,\metric)$ is \ppemph{complete} if every cauchy sequence in $X$ is convergent.
+
+\end{defn*}
+
+For example, $\bR$ is complete but $\bQ$ is not.
+
+\begin{prop*}
+
+    If $\set{x_n}_{n=1}^\infty$ is a cauchy sequence, it is bounded.
+    And if $\set{x_n}_{n=1}^\infty$ has a convergent subsequence, it itself is convergent.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $\epsilon>0$ then there exists a $N$ such that for every $n,m\geq N$: $\metricof{x_n,x_m}<\epsilon$.
+    Let $x=X_N$, and we define
+    \[ M = \maxof[1\leq n< N]{\metricof{x_n,x}, \epsilon} \]
+    then for every $n\in\bN$ we have that $\metricof{x_n,x}\leq M$ since if $n<N$ then by definition $\metricof{x_n,x}\leq M$ since $M$ is the maximum distance.
+    And if $n\geq N$ then $\metricof{x_n,x}<\epsilon\leq M$.
+    So $\set{x_n}_{n=1}^\infty$ is bounded.
+
+    Suppose $x_{n_k}$ is a convergent subsequence which converges to $x\in X$.
+    Then let $\epsilon>0$, and so there exists an $N$ which satsifes the definition of cauchy sequences for $\epsilon$.
+    Let $n\geq N$, and there must be a $k$ such that $n_k\geq N$ and $\metricof{x_{n_k},x}<\epsilon$ (since it converges to $x$).
+    So for every $n\geq N$ by the definition of a cauchy sequence:
+    \[ \metricof{x_n, x} \leq \metricof{x_n, x_{n_k}} + \metricof{x_{n_k}, x} < 2\epsilon \]
+    And so for every $\epsilon>0$ there is an $N$ such that for every $n\geq N$: $\metricof{x_n,x} < 2\epsilon$, so $x_n$ converges to $x$ as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{prop*}
+
+    $\bR^n$ is complete.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $\set{x_n}_{n=1}^\infty$ is a cauchy sequence in $\bR^n$.
+    Then it is bound, and by Weierstrauss it has a convergent subsequence.
+    So by above since it is a cauchy sequence with a convergent subsequence, it itself is convergent.
+    So $\bR^n$ is complete.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{prop*}
+
+    If $(X,\metric)$ is a compact metric space, it is complete.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $\set{x_n}_{n=1}^\infty$ is a cauchy sequence in $X$, then since $X$ is a compact space $x_n$ has a convergent subsequence.
+    And since it is cauchy, $x_n$ is therefore convergent.
+    So $X$ is complete.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{prop*}
+
+    If $(X,\metric)$ is a complete metric space and $S\subseteq X$, then $S$ is closed if and only if $(S,\metric)$ is complete (we restrict $\metric$ to $S\times S$).
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $S$ is closed and $\set{x_n}_{n=1}^\infty$ is a cauchy sequence in $S$, then it is cauchy in $X$ and therefore converges to some $x\in X$.
+    Therefore since $x_n\longvarrightarrow x$ and $x_n\in S$, $x\in\overline S$.
+    Because $S$ is closed, $\overline S=S$ and therefore $x\in S$.
+    So $x_n$ converges to a value in $S$, that is it is convergent in $S$.
+    So every cauchy sequence in $S$ is convergent, and therefore $S$ is complete.
+
+    Suppose $S$ is complete and $x\in S'$ then there exists a sequence $x_n\in S$ such that $x_n\longvarrightarrow x$.
+    Since $\set{x_n}$ is convergent in $X$, it is cauchy in $S$, and therefore converges to a value in $S$.
+    Therefore $x\in S$, that is $S'\subseteq S$, so $S$ is closed.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\subsection{Continuous Mappings Between Metric Spaces}
+
+\begin{defn*}
+
+    If $(X,\metric)$ and $(Y,\metricc)$ are metric spaces, a \ppemph{mapping} (or a function) $f$ between them is a function:
+    \[ f\colon X\longvarrightarrow Y \]
+    And a \ppemph{restriction} of $f$ onto $E\subseteq X$ is a mapping $f\vert_E$ between $(E,\metric)$ and $(Y,\metricc)$ such that for every $x\in E: f\vert_E(x)=f(x)$.
+
+\end{defn*}
+
+\begin{defn*}
+
+    If $f$ is a mapping between $X$ and $Y$ and $p$ is a limit point of $X$, we say
+    \[ \lim_{x\varrightarrow p}f(x) = q \]
+    if for every sequence $p\neq x_n\longvarrightarrow p$ in $X$, $f(x_n)\longvarrightarrow q$.
+
+\end{defn*}
+
+\begin{thrm*}
+
+    Suppose $f$ is a mapping between metric space, then the following are equivalent:
+    \blist
+        \item $\lim_{x\varrightarrow p}f(x)=q$
+        \item For every $\epsilon>0$ there is a $\delta>0$ such that for every $p\neq x\in B_\delta(p)$, $f(x)\in B_\epsilon(q)$.
+        \item For every $K\subseteq X$ where $p$ is a limit point of $K$: $\lim_{x\varrightarrow p}f\vert_K(x)=q$ in $K$.
+    \elist
+
+\end{thrm*}
+
+\begin{proof}
+
+    Suppose $\lim f(x)=q$ and assume for the sake of a contradiction that there is an $\epsilon>0$ such that for every $\delta>0$ there is a $p\neq x\in B_\delta(p)$ such that $f(x)\notin B_\epsilon(q)$.
+    Take $\delta_n=\frac1n$ and $x_n$ to be the $x_n$ which satisfies the above for $\delta_n$.
+    Then $p\neq x_n\longvarrightarrow p$, but $\metricof{x_n, q}\geq\epsilon$, so $x_n$ doesn't converge to $q$ in contradiction.
+
+    To prove the converse, suppose $p\neq x_n\longvarrightarrow p$.
+    Then let $\epsilon>0$, so there exists a $\delta>0$ which satisfies the $\epsilon-\delta$ criterion, and since $x_n\longvarrightarrow p$, there exists an $N$ such that for every $n\geq N$ we have that
+    $x_n\in B_\delta(p)$, so $f(x_n)\in B_\epsilon(q)$.
+    So for every $\epsilon>0$ there is an $N$ such that for every $n\geq N$ we have $\metricof{f(x_n), q}<\epsilon$ so $f(x_n)$ converges to $q$.
+
+    We will now show that $1$ is equivalent to $3$.
+    If we assume $1$ then $3$ is trivial.
+    Now assume $3$, suppose $p\neq x_n\varrightarrow p$, then $p$ is a limit point of $K=\set{x_n}[n\in\bN]$, and so:
+    \[ \lim_{x\varrightarrow p}f\vert_K(x) = q \]
+    and since $\set{x_n}$ is a sequence in $K$ which converges to $p$ in $X$ and isn't equal to $p$:
+    \[ p = \lim_{x\varrightarrow p}f\vert_K(x) = \lim f\vert_K(x_n) = \lim f(x_n) \]
+    as required.
+
+    \hfill$\blacksquare$
+
+\end{proof}
+
+\begin{exam}
+
+    We define the function $f\colon\bR^2\setminus\set{(0,0)}\longvarrightarrow\bR$ by:
+    \[ f(x,y) = \frac{xy}{x^2 + y^2} \]
+    and we'd like to compute the limit
+    \[ \lim_{(x,y)\varrightarrow(0,0)}f(x,y) \]
+    If we take $K_k=\set{(x,xk)}[x\in\bR]$ then $(0,0)$ is a limit point of every $K_k$.
+    But the limit in $K$ is equal to:
+    \[ \lim_{(x,xk)\varrightarrow(0,0)} f(x) = \lim_{x\varrightarrow0}\frac{kx^2}{x^2(1+k^2)} = \lim_{x\to0}\frac{k}{1+k^2} = \frac{k}{1+k^2} \]
+    which is different for every $k$, and therefore the limit doesn't exist.
+
+\end{exam}
+
+\begin{exam}
+
+    \[ \lim_{(x,y)\varrightarrow(0,0)}\frac{x^2y}{x^4+y^2} \]
+    What happens on $y=kx$? We get:
+    \[ \lim_{x\varrightarrow0}\frac{kx^3}{x^2(x^2+k^2)} = \lim_{x\varrightarrow0}\frac{kx}{x^2+k^2} = 0 \]
+    So if the limit exists, it is $0$.
+    But if we take $y=kx^2$ then the limit:
+    \[ \lim_{x\varrightarrow0}f(x,kx^2) = \lim_{x\varrightarrow0}\frac{kx^4}{x^4(1+k^2)} = \frac{k}{1+k^2} \]
+    which is not equal to $0$ if $k\neq0$, and therefore the limit doesn't exist.
+
+\end{exam}
+
+\end{document}
+

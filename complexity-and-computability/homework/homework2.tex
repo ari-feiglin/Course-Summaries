@@ -1,0 +1,413 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz-cd}
+\usepackage[margin=1.5cm]{geometry}
+
+\font\tensy=cmsy10
+\newfam\scrfam
+\textfont\scrfam=\tensy
+\def\mathscr#1{{\fam=\scrfam#1}}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+\newmathpp{conj}{Conjecture}{255,130,130}{150,0,0}{200,0,0}
+
+\@Arrow@def{varLeftRightarrow}\@Larrow\@Rarrow{1}
+\def\implies{\,\longvarRightarrow\,}
+\def\iff{\,\longvarLeftRightarrow\,}
+\let\eiff=\varLeftRightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+\let\oto=\varleftrightarrow
+\let\injection=\longvaruphookrightarrow
+
+\let\nor=\downarrow
+\let\nand=\uparrow
+
+\def\undersumtext#1{\vtop{\hsize=2cm\relax\centering\small #1}}
+
+\newfunc{oracle}{\hbox{\tencsc oracle}}({})
+
+\def\sps{\texttt{\char32}}
+\def\sat{\mathsf{SAT}}
+\def\is{\mathsf{IS}}
+\def\threesat{\mathsf{3SAT}}
+\def\clique{\mathsf{Clique}}
+\def\vertcover{\textsf{Vertex-Cover}}
+\def\domset{\textsf{Dom-Set}}
+\def\dhp{\mathsf{DHP}}
+\def\dhc{\mathsf{DHC}}
+\def\hc{\mathsf{HC}}
+\def\hp{\mathsf{HP}}
+\def\tsp{\mathsf{TSP}}
+\def\threecolor{\mathsf{3Color}}
+\def\kcolor{k\mathsf{Color}}
+\def\Color{\mathsf{Color}}
+\def\subsum{\mathsf{SubsetSum}}
+
+\def\PF{\mathbf{PF}}
+\def\PC{\mathbf{PC}}
+\def\P{\mathbf{P}}
+\def\NP{\mathbf{NP}}
+\def\NPH{\mathbf{NPH}}
+\def\NPC{\mathbf{NPC}}
+\def\coNP{\mathbf{coNP}}
+
+\def\bB{\mathbb{B}}
+\def\mA{\mathcal{A}}
+\def\mL{\mathcal{L}}
+\def\mT{\mathcal{T}}
+\def\mM{\mathcal{M}}
+\def\mN{\mathcal{N}}
+\def\mD{\mathcal{D}}
+\def\fM{\mathfrak{M}}
+\def\fC{\mathfrak{C}}
+\def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}}
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\mB{\mathbb{B}}
+\let\divides=\mid
+
+\font\bigbf = cmbx12 scaled 2000
+
+\parskip=5pt plus 1pt minus 3pt
+\pp@headerskip=\z@
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=2
+
+\barcolorbox{255, 220, 220}{130, 0, 0}{200, 80, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Computability and Complexity}
+
+    \medskip
+    \textit{Assignment \thesection}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{exercise*}
+
+    Given an undirected graph $G=(V,E)$, we say that two points $u,v\in V$ are \ppemph{nearbors} if they are neighbors or have a common neighbor.
+    We say that $S\subseteq V$ is a \ppemph{nearbor dominating set} if for every $v\in V$, either $v\in S$ or $v$ has a nearbor in $S$.
+    Prove that the following decision problem is $\NP$-complete:
+    \[ \domset' = \set{(G,k)}[\text{$G$ is an undirected graph which has a nearbor dominating set whose size is at most $k$}] \]
+
+\end{exercise*}
+
+$\domset'$ is obviously in $\NP$, as we can define a verifier $V\bigl((G,k),S\bigr)$ which verifies that $G$ is an undirected graph, $k$ is a natural number, and $S$ is a nearbor dominating set of size
+$\leq k$.
+Verifying that $S$ is a nearbor dominating set takes polynomial time in $\abs G$, as we must iterate over every vertex in $G$, and every vertex in $S$ (which is a subset of the vertices in $G$), and check
+if they have a shared neighbor.
+So this is a polynomial-time verifier for $\domset'$, and there exists a polynomial $p$ such that for every input $(G,k)\in\domset'$, there exists a witness $S$ whose length is at most $p(\abs{(G,k)})$
+(this is as $\abs S\leq\abs G$).
+So $\domset'\in\NP$, as required.
+
+We will define a Karp reduction from $\domset$ to $\domset'$, and since $\domset$ is $\NP$-complete this proves that $\domset'$ is as well.
+Given an undirected graph $G=(V,E)$, let us define $G'=(V',E')$ where $V'=\set{v_1,v_2}[v\in V]$ consists of two copies of $V$, and
+\[ E' = \set{\set{v_1,u_1}}[\set{v,u}\in E]\cup\set{\set{v_1,v_2}}[v\in V] \]
+So we now claim that $(G,k)\mapsto(G',k)$ is a Karp reduction from $\domset$ to $\domset'$.
+
+If $S$ is a dominating set in $G$, then it is a nearbor dominating set in $G'$.
+This is because for every $v_i\in V'$,
+\benum
+    \item If $v_i=v_1\in V$, then since $S$ is a dominating set in $G$, either $v_1\in S$ or $v_1$ has some neighbor in $S$.
+    In particular, $v_1$ is in $S$ or has a nearbor in $S$.
+    \item If $v_i=v_2\in V$, then $v_1\in V$ and so is in $S$, or has a neighbor in $S$.
+    This means that $v_2$ has a nearbor in $V$ (since if $v_1$ has a neighbor in $S$, this neighbor is a nearbor with $v_2$, as they both neighbor $v_1$).
+\eenum
+So for every $v\in V'$, either $v\in S$ or $v$ has a nearbor in $S$.
+This means that $S$ is a nearbor dominating set, as required.
+
+In particular, this means that if $G$ has a dominating set of size $\leq k$, then $G'$ had a nearbor dominating set of $\leq k$.
+Thus if $(G,k)\in\domset$ then $(G',k)\in\domset'$.
+
+Now, if $S'$ is a nearbor dominating set of $G'$, let us define $S$ as follows.
+For $v_i\in S'$:
+\benum
+    \item If $v_i=v_1$, then put $v$ into $S$.
+    \item If $v_i=v_2$, then put $v$ into $S$.
+\eenum
+In other words, if we define $f\colon V'\to V$ by $f(v_i)=v$, then $S=f(S')$.
+We claim that $S$ is a dominating set of $G$.
+Let $v\in V$, then $v_2$ is either in $S'$ or $v_2$ has a nearbor in $S'$.
+\benum
+    \item If $v_2\in S'$, then by definition $v\in S$.
+    \item If $v_2$ has a nearbor in $S'$, then since $v_2$'s only neighbor is $v_1$, either $v_1\in S'$ or $v_1$ has some neighbor in $S'$.
+    The first case means $v\in S$.
+    The second case means there is some $u_1\in S'$ where $\set{v_1,u_1}\in E'$, as $v_1$'s only neighbors are its neighbors in $G$ and $v_2$.
+    This would mean $v$ and $u$ are neighbors in $G$.
+    And by definition, $u\in S$, so $v$ has a neighbor in $S$.
+\eenum
+Thus for every $v\in V$, either $v\in S$ or $v$ has a neighbor in $S$.
+This means that $S$ is a dominating set in $G$.
+And since $S=f(S')$, $\abs S\leq\abs{S'}$, so if $S'$ is a nearbor dominating set whose size is $\leq k$, $S$ is a dominating set whose size is $\leq k$.
+
+This means that if $(G',k)\in\domset'$, then $(G,k)\in\domset$.
+And since we showed the other direction above, this means that $(G,k)\mapsto(G',k)$ is indeed a Karp reduction from $\domset$ to $\domset'$, which means $\domset'$ is $\NP$-complete, as required.
+
+\begin{exercise*}
+
+    Prove that the decision problem of determining the existence of a Hamiltonian path in an undirected graph is $\NP$-complete.
+
+\end{exercise*}
+
+Let us define this decision problem:
+\[ \hp = \set{G}[\text{$G$ is an undirected graph with a Hamiltonian path}] \]
+$\hp$ is in $\NP$, as we can define a verifier $V(G,P)$ which verifies that $G$ is an undirected graph, and $P$ is a Hamiltonian path.
+These both take polynomial time, as all we must check that each vertex is visited by $P$, and only once.
+We can do this by iterating over $P$ and marking the number of times we've visited each vertex, and then afterward verifying that each vertex has been visited exactly once.
+This takes $O(\abs G+\abs P)$ time, which is polynomial in the size of $(G,P)$, so $V$ runs in polynomial time.
+And since for a Hamiltonian path, $\abs P\leq\abs G$, $V$ is a polynomial proof system.
+Thus $\hp\in\NP$ as required.
+
+We will now define a reduction from $\dhp$ (the decision problem of Hamiltonian paths in directed graphs) to $\hp$.
+Suppose $G=(V,E)$ is a directed graph, then let us define the undirected graph $G'=(V',E')$ by
+\[ V' = \set{v_{\rm in},v_{\rm mid},v_{\rm out}}[v\in V] \]
+and
+\[ E' = \set{\set{v_{\rm in}, v_{\rm mid}},\; \set{v_{\rm mid}, v_{\rm out}}}[v\in V]\cup\set{\set{v_{\rm out}, u_{\rm in}}}[(v,u)\in E] \]
+Now we claim that the map $G\mapsto G'$ is a Karp reduction.
+Obviously constructing $G'$ can be constructed in polynomial time from $G$.
+
+Suppose that $G$ has a Hamiltonian path, suppose the path is
+\[ P\colon v_0 \to v_1 \to \cdots \to v_{n-1} \to v_n \]
+then we claim that
+\[ P'\colon\underbrace{v_{0,\rm in}\to v_{0,\rm mid} \to v_{0,\rm out}}_{v_0} \to \underbrace{v_{1,\rm in} \to v_{1,\rm mid} \to v_{1,\rm out}}_{v_1} \to \cdots \to
+\underbrace{v_{n,\rm in} \to v_{n,\rm mid} \to v_{n,\rm out}}_{v_n} \]
+is a Hamiltonian path in $G'$.
+Firstly, every edge here is a valid edge in $G'$ since
+\benum
+    \item For edges of the form $\set{v_{i,\rm in},v_{i,\rm mid}}$ and $\set{v_{i,\rm mid},v_{i,\rm out}}$, these are edges by the definition $G'$.
+    \item For edges of the form $\set{v_{i,\rm out},v_{i+1,\rm in}}$, these are edges in $G'$ since $(v_i,v_{i+1})$ is an edge in $G$, since it is an edge in $P$.
+\eenum
+This path visits every vertex in $G'$, since the path $P$ visits every vertex in $G$.
+So for every $v\in G$, eventually $P$ visits $v$, and so $P'$ eventually visits $v_{\rm in}$, $v_{\rm mid}$, and $v_{\rm out}$.
+This covers all the vertices in $G'$, so $P'$ does indeed visit every vertex in $G'$.
+And $P'$ does not visit the same vertex twice, as this would imply that $P$ does, contradicting $P$ being a Hamiltonian path.
+So $P'$ is a Hamiltonian path in $G'$.
+
+So if $G\in\dhp$, then $G'\in\hp$.
+This proves the first direction of showing that $G\mapsto G'$ is a Karp reduction.
+We must now show that if $G'\in\hp$ then $G\in\dhp$.
+
+Now, suppose $P'$ is a Hamiltonian path in $G'$.
+In $P'$ we cannot visit vertices in the order $v_{0,\rm in}\to v_{1,\rm out}\to v_{2,\rm in}$ as then we cannot visit both $v_{1,\rm mid}$ and $v_{2,\rm mid}$.
+This is because if we first visit $v_{1,\rm mid}$, this must be through the edge $v_{1,\rm in}\to v_{1,\rm mid}$ which means that we have visited all of $v_{1,\rm mid}$'s neighbors and thus cannot visit
+$v_{2,\rm mid}$.
+Similar for if we first were to visit $v_{2,\rm mid}$.
+
+By symmetry we cannot visit vertices in the order $v_{0,\rm out}\to v_{1,\rm in}\to v_{2,\rm out}$ (the proof is very similar as before).
+Thus $P'$ must be of one of the following forms:
+
+\benum
+    \item If $P'$ starts with $v_{0,\rm in}\to v_{0,\rm mid}$, then
+    \[ P'\colon v_{0,\rm in}\to v_{0,\rm mid}\to v_{0,\rm out}\to v_{1,\rm in}\to v_{1,\rm mid}\to v_{1,\rm out}\to\cdots\to v_{n,\rm in}\to v_{n,\rm mid}\to v_{n,\rm out} \]
+    as we cannot go from an out vertex to an in vertex to an out vertex, as we showed above.
+    So this is the only valid form.
+
+    \item If $P'$ starts with $v_{0,\rm in}\to v_{1,\rm out}$ then since we cannot go from in to out to in, $P'$ must be of the form
+    \[ P'\colon v_{0,\rm in}\to v_{1,\rm out}\to v_{1,\rm mid}\to v_{1,\rm in}\to\cdots\to v_{n,\rm out}\to v_{n,\rm mid}\to v_{n,\rm in}\to v_{0,\rm out}\to v_{0,\rm mid} \]
+    as $v_{0,\rm mid}$ must be the final vertex, as once we visit it, it must be through $v_{0,\rm out}$, and so we cannot continue afterward.
+    But then if we move $v_{0,\rm in}$ to the end, this remains a valid Hamiltonian path, of the form
+    \[ v_{1,\rm out}\to v_{1,\rm mid}\to v_{1,\rm in}\to\cdots\to v_{n,\rm out}\to v_{n,\rm mid}\to v_{n,\rm in}\to v_{0,\rm out}\to v_{0,\rm mid}\to v_{0,\rm in} \]
+    Reversing it (and changing the indexes), gives another Hamiltonian path of the form
+    \[ v_{0,\rm in}\to v_{0,\rm mid}\to v_{0,\rm out}\to v_{1,\rm in}\to v_{1,\rm mid}\to v_{1,\rm out}\to\cdots\to v_{n,\rm in}\to v_{n,\rm mid}\to v_{n,\rm out} \]
+
+    \item If $P'$ starts with $v_{0,\rm mid}\to v_{0,\rm out}$ then $P'$ must be of the form 
+    \[ P'\colon v_{0,\rm mid}\to v_{0,\rm out}\to v_{1,\rm in}\to v_{1,\rm mid}\to v_{1,\rm out}\to\cdots\to v_{n,\rm in}\to v_{n,\rm mid}\to v_{n,\rm out}\to v_{0,\rm in} \]
+    since $v_{0,\rm in}$ must be the final vertex, since it must be reached from some out vertex, and we cannot go out-in-out, and since we've already visited $v_{0,\rm mid}$, we cannot go anywhere after
+    visiting $v_{0,\rm in}$.
+    But we can also move $v_{0,\rm in}$ to the beginning and we get another Hamiltonian path of the form
+    \[ v_{0,\rm in}\to v_{0,\rm mid}\to v_{0,\rm out}\to v_{1,\rm in}\to v_{1,\rm mid}\to v_{1,\rm out}\to\cdots\to v_{n,\rm in}\to v_{n,\rm mid}\to v_{n,\rm out} \]
+
+    \item Similarly if $P'$ starts with $v_{0,\rm mid}\to v_{0,\rm in}$, then by symmetry we can get a Hamiltonian path of the form (since there is no real difference between out and in vertices)
+    \[ v_{0,\rm out}\to v_{0,\rm mid}\to v_{0,\rm in}\to\cdots\to v_{n,\rm out}\to v_{n,\rm mid}\to v_{n,\rm in} \]
+    and reversing this Hamiltonian path (and changing the indexes) gives another Hamiltonian path of the form
+    \[ v_{0,\rm in}\to v_{0,\rm mid}\to v_{0,\rm out}\to v_{1,\rm in}\to v_{1,\rm mid}\to v_{1,\rm out}\to\cdots\to v_{n,\rm in}\to v_{n,\rm mid}\to v_{n,\rm out} \]
+
+    \item In the case where $P'$ starts with $v_{0,\rm out}$, by symmetry with the cases where it starts with $v_{0,\rm in}$, we can get a Hamiltonian path of the form
+    \[ v_{0,\rm out}\to v_{0,\rm mid}\to v_{0,\rm in}\to\cdots\to v_{n,\rm out}\to v_{n,\rm mid}\to v_{n,\rm in} \]
+    and reversing and changing the indexes gives a Hamiltonian path of the form
+    \[ v_{0,\rm in}\to v_{0,\rm mid}\to v_{0,\rm out}\to v_{1,\rm in}\to v_{1,\rm mid}\to v_{1,\rm out}\to\cdots\to v_{n,\rm in}\to v_{n,\rm mid}\to v_{n,\rm out} \]
+\eenum
+
+So in every case, we get a Hamiltonian path of the form
+\[ P'\colon v_{0,\rm in}\to v_{0,\rm mid}\to v_{0,\rm out}\to v_{1,\rm in}\to v_{1,\rm mid}\to v_{1,\rm out}\to\cdots\to v_{n,\rm in}\to v_{n,\rm mid}\to v_{n,\rm out} \]
+But this Hamiltonian path can only exist in $G'$ if the path
+\[ P\colon v_0\to v_1\to\cdots\to v_n \]
+exists in $G$, and is Hamiltonian.
+Obviously if $P'$ exists in $G'$, $P$ must exist in $G$.
+And if $P'$ is Hamiltonian, then so too must $P$ be.
+This is since it must visit every $v_i$, as $P'$ visits every $v_{i,\rm xx}$, and it must visit each once, as $P'$ visits each triplet of $v_{i,\rm in}\to v_{i,\rm mid}\to v_{i,\rm out}$ only once.
+
+So if $G'$ has a Hamiltonian path, so too must $G$.
+Meaning if $G'\in\hp$, then $G\in\dhp$.
+Thus $G\in\dhp$ if and only if $G'\in\hp$, so $G\mapsto G'$ is a Karp reduction from $\dhp$ to $\hp$.
+Since $\dhp$ is $\NP$-complete, so too must $\hp$ be.
+
+\def\hsubsum{\textsf{100SubsetSum}}
+\begin{exercise*}
+
+    \benum
+        \item Assuming that $\P\neq\NP$, is the following problem $\NP$-complete?
+        \[ \hsubsum = \set{A}[\text{$A$ is a set of natural numbers containing a subset whose sum is $100$}] \]
+        \item How would your answer change if $A\in\hsubsum$ can be a set of integers, not just natural numbers?
+    \eenum
+
+\end{exercise*}
+
+\benum
+    \item Notice that if $A\in\hsubsum$, and if $S\subseteq A$ has a sum of one hundred then $\abs S\leq100$.
+    This is because the minimum number in $A$ is at least one, and so $\sum S\geq\abs S$.
+    If we allow $A$ to contain zeroes, then it still must have a subset of non-zero natural numbers whose sum is $100$, as if $\sum S=100$, let $S'=S\setminus\set0$, then $\sum S'=100$ as well.
+    So in any case, in order to determine if $A\in\hsubsum$ it is sufficient to iterate over all of its subsets whose size is $\leq100$.
+
+    The number of subsets of size $\leq100$ is
+    \[ \sum_{k=1}^{100}\binom{\abs A}k \]
+    And if $k$ is a constant, then
+    \[ \binom{n}{k} = \frac{n!}{k!(n-k)!} = \frac{n\cdots(n-k+1)}{k!} \in O(n^k) \]
+    And so there is $O(n^{100})$ subsets of $A$ whose size is $\leq100$.
+    And for each subset, it takes $O(100)=O(1)$ time to check if its sum is one hundred, so we can check if $A\in\hsubsum$ in $O(n^{100})$ time.
+    Thus $\hsubsum\in\P$, and since $\P\neq\NP$, $\NPC$ and $\P$ are disjoint so $\hsubsum$ is \emph{not} $\NP$-complete.
+
+    \item Let us define a Karp reduction from $\subsum$ to $\hsubsum$.
+    $\hsubsum$ is obviously in $\NP$, as we can define a verifier $V(A,S)$ where $V$ verifies that $S\subseteq A$ and $\sum S=100$.
+    This can be done in polynomial time, and since $S\subseteq A$, $A$ would have a witness whose size is $\leq\abs A$.
+    Thus $V$ is indeed a polynomial proof system for $\hsubsum$, meaning $\hsubsum\in\NP$.
+
+    Suppose $(A,k)$ is an input for $\subsum$, then we define
+    \[ A' = \set{200a}[a\in A]\cup\set{100-200k} \]
+    This can be constructed in polynomial time from $(A,k)$.
+
+    Now, if $(A,k)\in\subsum$, then there exists a subset $B\subseteq A$ such that $\sum B=k$.
+    Then $B'=\set{200b}[b\in B]$ is a subset of $A'$ and $\sum B'=200k$ and so $B''=B'\cup\set{100-200k}$ is also a subset of $A'$ and
+    \[ \sum B'' = \sum B' + 100 - 200k = 100 \]
+    and so $A'\in\hsubsum$.
+
+    And if $A'\in\hsubsum$, then suppose $B''\subseteq A'$ has a sum of $100$.
+    Now, suppose that $100-200k\notin B''$.
+    But then every element of $B''$ is of the form $200b$ for some $b\in A$, and so $\sum B''$ must be a multiple of $200$, contradicting it being equal to $100$.
+    So $100-200k\in B''$.
+    Let $B'=B''\setminus\set{100-200b}$, and so $B'$ is of the form $B'=\set{200b}[b\in B]=200\cdot B$ for some subset $B\subseteq A$.
+    And so
+    \[ \sum B'' = \sum B' + 100-200k = 200\sum B + 100-200k \]
+    And since $\sum B''=100$, we have
+    \[ 200\sum B - 200k = 0 \implies \sum B = k \]
+    thus $(A,k)\in\subsum$.
+
+    So $(A,k)\in\subsum$ if and only if $A'\in\hsubsum$, meaning $(A,k)\mapsto A'$ is a Karp reduction from $\subsum$ to $\hsubsum$.
+    Since $\subsum$ is $\NP$-complete, so is $\hsubsum$.
+\eenum
+
+\def\happyedges{\mathsf{HappyEdges}}
+\begin{exercise*}
+
+    Given an undirected graph $G=(V,E)$, and a vertex coloring $\sigma_V\colon V\longto\bN$ and an edge coloring $\sigma_E\colon E\longto\bN$, we say that an edge $\set{u,v}\in E$ is \ppemph{happy} if
+    \[ \sigma_V(v) = \sigma_V(u) = \sigma_E(\set{u,v}) \]
+    Prove that the following problem is $\NP$-complete:
+    \[ \happyedges = \set{(G,\sigma_E,k)}[\vcenter{\advance\hsize by-5cm
+    $G$ is an undirected graph and $\sigma_E$ is an edge coloring, such that there exists a vertex coloring $\sigma_V$ such that there exist at least $k$ happy edges.}] \]
+
+\end{exercise*}
+
+Firstly, $\happyedges$ is in $\NP$, as we can define a verifier $V\bigl((G,\sigma_E,k),\sigma_V\bigr)$ which verifies that $G$ is an undirected graph, $\sigma_E$ is an edge coloring, and $\sigma_V$
+is a vertex coloring such that there are at least $k$ happy edges.
+This can be accomplished by iterating over every edge and checking if it is happy or not, and if so incrementing some counter.
+We can also require that $\sigma_V$'s values are the same as $\sigma_E$'s as otherwise, an edge connected to that vertex cannot be happy (meaning $(G,\sigma_E,k)\in\happyedges$ if and only if there exists
+a vertex coloring using the same colors as $\sigma_E$ which has at least $k$ happy edges).
+Then
+\[ \abs{\sigma_V} \leq \abs{\sigma_E}\cdot\abs V \]
+as the length of $\sigma_V$ is less than the maximum value in $\sigma_E$'s length times $\abs V$ (ie. $\sigma_V$'s length is less than the length of the coloring where every vertex colored is colored with
+the maximum value), and the maximum value in $\sigma_E$ has a length less than that of $\sigma_E$ itself.
+And so the length of this witness is less than a polynomial of the length of $(G,\sigma_E,k)$ (the polynomial being $\abs{(G,\sigma_E,k)}^2$).
+
+This means that $V$ is a polynomial-time verifier, and every input in $\happyedges$ has a witness whose length is less than some polynomial of the length of the input.
+And so $V$ is a polynomial proof system for $\happyedges$, so $\happyedges\in\NP$.
+
+Now, to show that $\happyedges$ is $\NP$-complete, we will construct a Karp reduction from $\sat$ to $\happyedges$.
+Suppose we are given a boolean formula in CNF $\phi$.
+We define a graph $G$ as follows:
+\benum
+    \item For every variable $x_i$ in $\phi$, we define a vertex $x_i$ in $G$.
+    So if the variables in $\phi$ are $x_1,\dots,x_n$, then $G$ has vertices $x_1,\dots,x_n$.
+    \item For every disjunction in $\phi$, we define another vertex $D_i$.
+    So if $\phi$ is of the form $\phi=\bigwedge_{i=1}^m D_i$, then $G$ has vertices $D_1,\dots,D_m$.
+    \item For every variable $x_i$, we define an edge $\set{x_i,D_j}$ between $x_i$ and every disjunction $D_j$ in which $x_i$ appears.
+\eenum
+
+\def\T{\mathsf{T}} \def\F{\mathsf{F}}
+Now let us define
+\[ \T_i = 2i,\quad \F_i = 2i+1 \]
+this just means that $\T_i$ and $\F_i$ are all distinct.
+Now, we define a coloring of the edges in $G$ as follows: for every edge $\set{x_i,D_j}$, if $x_i$ appears in $D_j$ as-is then set $\sigma_E(\set{x_i,D_j})=\T_i$.
+Otherwise $\neg x_i$ appears in $D_j$, and so set $\sigma_E(\set{x_i,D_j})=\F_i$.
+
+And finally set $k$ to $m$, the number of disjunctions in $\phi$.
+Constructing $G$, $\sigma_E$, and $k$ all take polynomial time.
+
+We claim that $\phi\mapsto(G,\sigma_E,k)$ is a Karp reduction from $\sat$ to $\happyedges$.
+If $\phi$ is in $\sat$, then there exists a boolean vector $\tau$ which satisfies $\phi$.
+Now, for every disjunction $D_j$ in $\phi$, $D_j$ must be satisfied by some $x_i$ which occurs in $D_j$ (meaning $\tau_i$ is true and $x_i$ appears in $D_j$, or $\tau_i$ is false and $\neg x_i$ appears in
+$D_j$).
+So set $\sigma_V(x_i)=\sigma_V(D_j)=\tau_i$ (by $\tau_i$ what I mean is that if $\tau_i$ is true, then set these to $\T_i$, and otherwise to $\F_i$).
+Notice that this means that $\sigma_V(x_i)=\sigma_V(D_j)=\sigma_E(\set{x_i,D_j})$, as if $x_i$ occurs in $D_j$ then since $x_i$ satisfies $D_j$, $\tau_i$ is true, and $\sigma_E(\set{x_i,D_j})=\T_i$.
+And if $\neg x_i$ occurs in $D_j$, then this means $\sigma_E(\set{x_i,D_j})=\F_i$ and since $x_i$ satisfies $D_j$, this means $\tau_i$ is false.
+The rest of the vertices are variables, and we can also color them by $\sigma_V(x_i)=\tau_i$ (this means that if $\tau_i$ is true, then we color it as $\T_i$, and if $\tau_i$ is false then it is colored as
+$\F_i$).
+
+This is a valid coloring as for every disjunction $D_j$, we are choosing a single variable which satisfies it.
+So each disjunction is only being set once.
+And each variable is being set to the same value, $\tau_i$ (ie. $\T_i$ if $\tau_i$ is true, and $\F_i$ if $\tau_i$ is false).
+So this coloring is well-defined.
+
+Suppose we chose $x_i$ to be the variable which is satisfying $D_j$.
+Then as we said above, $\sigma_V(x_i)=\sigma_V(D_j)=\sigma_E(\set{x_i,D_j})$, so $\set{x_i,D_j}$ is happy.
+So every disjunction has a happy edge connected to it, and since there are $k=m$ disjunctions and none of them are connected, this means there are at least $k$ happy edges.
+Thus if $\phi\in\sat$, then $(G,\sigma_E,k)\in\happyedges$.
+
+Now we must show the converse; suppose $(G,\sigma_E,k)\in\happyedges$.
+Notice that every disjunction can be connected to at most one happy edge.
+Suppose that $\set{x_i,D_j}$ is a happy edge, then for every other edge connected to $D_j$, it is of the form $\set{x_{i'},D_j}$ and $\sigma_E(\set{x_i,D_j})\neq\sigma_E(\set{x_{i'},D_j})$ since the
+$\F_i$ and $\T_i$ are all distinct.
+And since $\sigma_V(D_j)=\sigma_E(\set{x_i,D_j})$, $\sigma_V(D_j)\neq\sigma_E(\set{x_{i'},D_j})$ so $\set{x_{i'},D_j}$ cannot be happy.
+
+So every disjunction can be connected to at most one happy edge, and there are $m$ happy edges.
+Since $m$ is the number of disjunctions, this means that each disjunction is connected to exactly one happy edge.
+So let us define a boolean vector $\tau$ as follows:
+\benum
+    \item For every disjunction $D_j$, it is connected to a happy edge $\set{D_j,x_i}$.
+    Set $\tau_i=\sigma_E(\set{D_j,x_i})$ (by this I mean that if the edges's color is equal to $\T_i$ set $\tau_i$ to true, and if the edge's color is $\F_i$, set $\tau_i$ to false).
+    \item For the rest of the variables, set $\tau_i$ arbitrarily.
+\eenum
+
+Let $D_j$ be a disjunction, and let its happy edge be $\set{x_i,D_j}$.
+Then if $\sigma_E(\set{x_i,D_j})=\T_i$ then by its definition $x_i$ occurs in $D_j$ and since we've then set $\tau_i$ to be true, this means that $D_j$ is satisfied (since it is a disjunction containing
+$x_i$).
+And if $\sigma_E(\set{x_i,D_j})=\F_i$ then by its definition $\neg x_i$ occurs in $D_j$, and since we've then set $\tau_i$ to be false, $D_j$ is satisfied (since it is a disjunction containing $\neg x_i$).
+So every disjunction is satisfied and so $\phi$ is satisfied.
+
+This means that if $(G,\sigma_E,k)\in\happyedges$, then $\phi\in\sat$.
+So $\phi\in\sat$ if and only if $(G,\sigma_E,k)\in\happyedges$, so $\phi\mapsto(G,\sigma_E,k)$ is indeed a Karp reduction from $\sat$ to $\happyedges$.
+Since $\sat$ is $\NP$-complete, so is $\happyedges$, as required.
+
+\end{document}
+

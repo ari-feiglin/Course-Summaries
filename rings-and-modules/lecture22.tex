@@ -1,0 +1,280 @@
+\documentclass[10pt]{article}
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+\usepackage{mathrsfs}
+
+\catcode`\@=11
+\input pdfmsym
+
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\implies{\,\mathrel{\longvarRightarrow}\,}
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\divides{{\mid}}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\newfunc{eulerg}{{\rm Euler}}({})
+\newfunc{order}o({})
+\newfunc{ker}{{\rm Ker}}({})
+\newfunc{image}{{\rm Im}}({})
+\newfunc{lattice}{{\cal L}}(\vert)
+\newfunc{powset}{{\cal P}}(\vert)
+\newfunc{center}{{\rm Z}}({})
+\newfunc{units}{{\cal U}}(\vert)
+\newfunc{sign}{{\rm sgn}}({})
+\newfunc{aut}{{\rm Aut}}({})
+\newfunc{speclinear}{{\rm SL}}({})
+\newfunc{genlinear}{{\rm GL}}({})
+\newfunc{projlinear}{{\rm PGL}}({})
+\newfunc{specprojlinear}{{\rm PSL}}({})
+\newfunc{core}{{\rm Core}}(\vert)
+\newfunc{inner}{{\rm Inn}}(\vert)
+\newfunc{outer}{{\rm Out}}(\vert)
+\newfunc{conj}{{\rm conj}}({})
+\newfunc{ev}{{\rm ev}}({})
+\newfunc{Frac}{{\rm Frac}}({})
+\newfunc{Tor}{{\rm Tor}}(\vert)
+\newfunc{Ann}{{\rm Ann}}(\vert)
+\newfunc{deg}{{\rm deg}}({})
+
+\def\maxdivs{\mathrel{\|}}
+
+\let\ideal=\trianglelefteq
+\let\pideal=\triangleleft
+\def\normal{\mathrel\triangleleft}
+\let\mmorph=\longvarhookrightarrow
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
+
+\def\qed{%
+    \ifmmode%
+        \eqno\blacksquare%
+    \else%
+        \hskip1cm\allowbreak\hbox{}\nobreak\hfill$\blacksquare$%
+    \fi%
+}
+
+\def\mN{\mathcal N}
+\def\mC{\mathcal C}
+\def\mO{\mathcal O}
+\def\mG{\mathcal G}
+\def\sS{\mathscr S}
+
+\begin{document}
+
+\c@section=22
+
+\barcolorbox{220, 220, 255}{0, 0, 130}{80, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Introduction to Rings and Modules}
+
+    \medskip
+    \textit{Lecture \thesection, Wednesday June 28 2023}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+Recall the definition of Cauchy sequences, our definition for metric spaces or normed vector spaces also holds fields with an absolute value (as they are normed vector spaces), and it still holds for
+integral domains with absolute values as they are metric spaces.
+Also recall that the sum and product of two Cauchy sequences is also a Cauchy sequence, and thus given a ring $R$ with an absolute value, we can define the ring of all Cauchy sequences over $R$.
+The additive identity of this new ring would be the sequence $\set{0}_{n\in\bN}$ and the multiplicative identity would be $\set1_{n\in\bN}$.
+Let us denote this new ring by $\mC_R$.
+
+Suppose $R$ has an absolute value, then let us define $I\subseteq\mC_R$ as the set of all sequences which converge to zero (recall if a sequence is convergent it is Cauchy).
+Now, if $\set{a_n}_\bN\in I$ then let $\set{b_n}_\bN\in\mC_R$, since Cauchy sequences are bounded, suppose $\abs{b_n}<M$ then $\abs{a_nb_n}=\abs{a_n}\abs{b_n}<M\abs{a_n}$.
+Thus for any $\epsilon>0$, there exists an $N$ where for every $n>N$, $\abs{a_n}<\frac\epsilon M$ and so $\abs{a_nb_n}<\epsilon$ and so $\set{a_nb_n}_\bN\in I$.
+And similarly the sum of two sequences in $I$ also converge to zero, so too must their sum (in general the sum of two convergent sequences converges to the sum of their limits since
+$\abs{a_n+b_n-a-b}\leq\abs{a_n-a}+\abs{b_n-b}$ by the triangle inequality), and so $I$ is an ideal.
+But we claim even more than this.
+
+\begin{prop*}
+
+    If $F$ is a field, then $I$ (as defined above) is a maximal ideal of $\mC_F$.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose that there exists an ideal such that $I\subset J$, then there exists some $\set{a_n}\in J\setminus I$ and so $I\subset(\set{a_n})+I\subseteq J$.
+    Since we're claiming $I$ is maximal, we must have that $(\set{a_n})+I$ is $\mC_F$.
+    So we will show that for every Cauchy sequence which does not converge to zero $\set{a_n}\in\mC_R$, $I+(\set{a_n})=\mC_F$.
+
+    Since $a_n$ does not converge to zero, for large enough $n$s, $a_n\neq0$, so let us define the sequence $b_n=\frac1{a_n}$ when $a_n\neq0$, and zero otherwise.
+    And since $a_n$ does not converge to zero, there exists an $m>0$ such that eventually $\abs{a_n}>m$ and so
+    \[ \abs{b_n-b_m} = \frac{\abs{a_n-a_m}}{\abs{a_n}\abs{a_m}} < \frac1{m^2}\cdot\abs{a_n-a_m} \]
+    for large enough $n$ and $m$s.
+    So $b_n$ is Cauchy.
+    Notice that $\set{a_n}\cdot\set{b_n}$ is eventually $1_F$, meaning that $1_{\mC_F}-\set{a_n}\cdot\set{b_n}\in I$, or in other words $1_{\mC_F}\in I+\mC_F\set{a_n}$ as required.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    Thus $\slfrac{\mC_F}I$ is a field, called the \ppemph{completion} of $F$ relative to $\abs{\,\cdot\,}_F$.
+    It is denoted $\overline F$.
+
+\end{defn*}
+
+We can embed $F$ in $\overline F$ by mapping $a\in F$ to $\set{a,a,\dots}+I$.
+
+In the case that $F=\bQ$, if the absolute value is $\abs{\,\cdot\,}_\infty$, then the completion of $\bQ$ relative to this absolute value is the definition of the reals, $\bR$ (we must first change our
+definitions of absolute values to restrict their values to being rational).
+If the absolute value is $\abs{\,\cdot\,}_p$ then the completion is called $\bQ_p$, the field of $p$-adic numbers.
+
+Notice that if $\set{a_n}$ is a Cauchy sequence (in $F$ with an absolute value of, say $\abs{\,\cdot\,}^*$), then $\abs{a_n}$ is a real Cauchy sequence since $\abs{\abs a^*-\abs b^*}\leq\abs{a-b}^*$ by the 
+triangle inequality.
+Thus since $\bR$ is complete, we can define an absolute value on the completion of $R$ by
+\[ \abs{\set{a_n}}^* = \lim\abs{a_n}^* \]
+This is well-defined since if $\set{a_n}-\set{b_n}$ converges to zero, then $\abs{a_n-b_n}^*$ converges to zero and so
+\[ \abs{a_n}^* \leq \abs{a_n-b_n}^* + \abs{b_n}^* \]
+meaning the limit of $\abs{a_n}^*$ is less than that of $\abs{b_n}^*$ and by symmetry the other direction is true as well, so the limits are the same.
+This is an absolute value since it obviously is non-negative, multiplicative, and satisfies the triangle inequality.
+And the limit of $\abs{a_n}^*$ is zero if and only if $a_n$ converges to zero, meaning $a_n\in I$ (the ideal of all zero-convergent sequences) so $\set{a_n}+I=0_{\mC_F}$.
+
+It is well-known that the completion of a metric space is complete.
+Thus $\overline F$ is complete.
+
+If $F$ is non-archimedean then so is its completion (ie. if the original absolute value satisfies the strong triangle inequality so does the new one on Cauchy sequences).
+
+\begin{prop*}
+
+    If $\set{a_k}_{k=0}^\infty$ is a sequence in $\bQ_p$ then the series
+    \[ \sum_{k=0}^\infty a_k \]
+    converges in $\bQ_p$ if and only if $a_k$ converges to zero in $\bQ_p$.
+
+\end{prop*}
+
+\begin{proof}
+
+    It is simple to see that if the series converges so too does the sequence.
+    Now suppose $a_k\to0$ in $\bQ_p$, then for all $\epsilon>0$ there exists an $N$ such that for every $n>N$, $\abs{a_n}_p<\epsilon$.
+    Now since the $p$-adic absolute value, and therefore its extension to $\bQ_p$, is non-archimedean, we have that for every $n>m>N$:
+    \[ \abs{(a_1+\cdots+a_n) - (a_1+\cdots+a_m)} = \abs{a_{m+1}+\cdots+a_n} \leq \maxof{\abs{a_{m+1}},\dots,\abs{a_n}} < \epsilon \]
+    thus the partial sums form a Cauchy sequence in $\bQ_p$, which is complete and so the partial sums converge as required.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    If $F$ is a field with a non-archimedean absolute value, let $\mO=\set{a\in F}[\abs a\leq1]$, then $\mO$ is a subring of $F$.
+
+\end{prop*}
+
+\begin{proof}
+
+    If $a,b\in\mO$ then $\abs{ab}=\abs a\abs b\leq1$ so $ab\in\mO$ and $\abs{a-b}\leq\maxof{\abs a,\abs{-b}}\leq1$ since $F$ is non-archimedean, so $a-b\in\mO$ meaning $\mO$ is closed under multiplication
+    and is an abelian group under addition.
+    And since $\abs1=1$, $\mO$ is a subring.
+    \qed
+
+\end{proof}
+
+And if we define
+\[ I = \set{a\in\mO}[\abs a<1] \]
+then $I$ is an ideal of $\mO$.
+
+\begin{defn*}
+
+    Let $R$ be a commutative ring, then $R$ is a \ppemph{localized ring} if it has only one maximal ideal (if it has a maximum ideal).
+
+\end{defn*}
+
+\begin{prop*}
+
+    Let $R$ be a commutative ring and $I\ideal R$.
+    Then $R$ is localized and $I$ its maximal ideal if and only if for every $a\in R\setminus I$ is invertible.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $R$ is localized and there exists an $a\in R\setminus I$ which was not invertible, then $(a)$ is a proper ideal of $R$ and therefore contained within a maximal ideal $M$.
+    But since $R$ is local, $M=I$ and so $a\in(a)\subseteq M=I$ which is a contradiction.
+    Now suppose that every $a\in R\setminus I$ is invertible.
+    Then let $J\pideal R$ be a proper ideal and let $a\in J$ then $a$ is not invertible and so $a\notin R\setminus I$ and so $a\in I$ as required.
+    \qed
+
+\end{proof}
+
+Thus $\slfrac\bZ{p^n\bZ}$ is localized as $I=([p])$ (where $[x]$ is the equivalence class of $x$, $[x]=x+p^n\bZ$) satisfies the condition of the above proposition.
+This is since if $[a]\notin I$ then $p\ndivs a$ and so $\gcd(a,p^n)=1$ meaning $a$ is invertible.
+
+Now suppose $F$ is a non-archimdean field, and $\mO$ and $I$ be defined as above.
+Let $a\in\mO\setminus I$ then $\abs a=1$, and since $a\in F$ that means $a\neq0$ so it is invertible in $F$.
+And since $\abs{a^{-1}}=\abs a^{-1}=1^{-1}=1$, we have that $a^{-1}\in\mO$ as required.
+
+If $F=\bQ_p$ then $\mO$ is denoted $\bZ_p$ and is called the \emph{$p$-adic integers}.
+$\bZ_p$ has a simple structure as its only ideals are
+\[ (p) \supset (p^2) \supset (p^3) \supset \cdots \supset (0) \]
+It turns out that
+\[ \slfrac{\bZ_p}{p\bZ_p} \cong \slfrac\bZ{p\bZ} \]
+thus $\slfrac{\bZ_p}{p\bZ_p}$ is a field and so its ring of polynomials is a PID and therefore a UFD (and therefore a gcd domain as well).
+
+\begin{lemm*}
+
+    Let $P\in\bZ_p[x]$ and $\overline P=\slfrac{\bZ_p}{p\bZ_p}[x]\cong\slfrac\bZ{p\bZ}[x]$ is its reduction, then if
+    \[ \overline P = \overline Q\cdot\overline R \]
+    is a factorization into coprime polynomials, then there exists a factorization $P=QR$ where $Q$ and $R$ are polynomials in $\bZ_p[x]$ whose reductions are $\overline Q$ and $\overline R$ respectively.
+
+\end{lemm*}
+
+We will not prove this.
+
+This is not true over $\bZ$, for example $x^2+1\in\bZ[x]$ is irreducible, but modulo five: $x^2+[1]=(x-[2])(x-[3])$.
+
+\begin{defn*}
+
+    If $R$ is a ring (not necessarily commutative), it is called \ppemph{simple} if it has no two-sided ideals other than $(0)$ and $R$.
+
+\end{defn*}
+
+Fields are therefore simple, and recall that ideals of $M_n(R)$ are of the form $M_n(I)$ where $I\ideal R$, so if $F$ is a field then $M_n(F)$ is simple as well (in general $M_n(R)$ is simple for simple
+rings $R$).
+
+\begin{defn*}
+
+    If $R$ is a ring, an element $e\in R$ is \ppemph{idempotent} if $e^2=e$.
+
+\end{defn*}
+
+Obviously $0$ and $1$ are idempotent in every ring.
+
+\begin{prop*}
+
+    If $R$ is a domain (no zero-divisors), then the only idempotent elements in it are $0$ and $1$.
+
+\end{prop*}
+
+This is trivial: suppose $a^2=a$ then $a(a-1)=0$ and so $a=0$ or $a-1=0$ meaning $a=1$.
+
+\begin{prop*}
+
+    If $e\in R$ is idempotent then $eRe=\set{eae}[a\in R]$ is a ring.
+
+\end{prop*}
+
+\begin{proof}
+
+    $eRe$ is a subrng of $R$ since
+    \[ eae - ebe = e(a-b)e \in eRe \]
+    and
+    \[ (eae)(ebe) = eaebe \in eRe \]
+    and $e\in eRe$ is the unit since $e=e1e$ so $e\in eRe$ and
+    \[ e(eae) = e^2ae = eae,\quad (eae)e = eae^2 = eae \]
+    \qed
+
+\end{proof}
+
+\end{document}
+

@@ -1,0 +1,188 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{tikz}
+\usepackage[margin=1.5cm]{geometry}
+
+\input mathex
+\input prettyprint
+\input ../preamble
+
+\setscalefactor{10}
+\initpps
+
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\let\divides=\mid
+\newfunc{metric}\rho({})
+\def\openset{{\cal O}}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\pdf@drawing@macro{check}{0 1 0 RG 1.2 w 1 j 1 J 0 5 m 3 0 l 8 10 l S}{9.2pt}{12pt}{1pt}{1pt}
+\pdf@drawing@macro{ecks}{1 0 0 RG 0 0 m 1 j 1 J 10 10 l 0 10 m 10 0 l S}{11.2pt}{12pt}{1pt}{1pt}
+
+\let\lineseg=\overleftrightvecc
+
+\def\@ppmathcount{\thesection.\thepp@mathcount}
+
+\begin{document}
+
+\c@section=5
+
+\barcolorbox{220, 255, 220}{0, 130, 0}{80, 200, 80}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Infintesimal Calculus 3}
+
+    \medskip
+    \textit{Assignment \thesection}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{exercise*}
+
+    Suppose $(X,\metric)$ is a metric space and $a\in X$.
+    \benum
+        \item Prove that $f_a\colon X\longvarrightarrow\bR$ defined by $f(x)=\metricof{x,a}$ is continuous.
+        \item Conclude that closed balls are closed.
+    \eenum
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    \benum
+        \item Suppose $x\in X$, then for any $x_n\longvarrightarrow x$ by definition $\metricof{x_n,x}\longvarrightarrow0$.
+        Thus
+        \[ \abs{f_a(x_n) - f_a(x)} = \abs{\metricof{x_n,a}-\metricof{x,a}} \leq \metricof{x,x_n} \longvarrightarrow 0 \]
+        And therefore $f_a(x_n)\longvarrightarrow f_a(x)$.
+        So $f$ is continuous.
+        \item First we will prove the following lemma:
+        \begin{lemm}
+            If $f\colon X\longvarrightarrow\bR$ is continuous then for every $a\in\bR$, $\set{x\in X}[f(x)\leq a]$ is closed.
+        \end{lemm}
+
+        \begin{proof}
+            Let $A=\set{x\in X}[f(x)\leq a]$.
+            Suppose $x\in\overline A$ then there exists a sequence $x_n\in A$ such that $x_n\longvarrightarrow x$.
+            Since $x_n\in A$, $f(x_n)\leq a$, and since $f$ is continuous $f(x_n)\longvarrightarrow f(x)$.
+            Since limits preserve inequalities, this means $f(x)\leq a$ and therefore $x\in A$.
+            So $A$ contains all of its points of closure, and is therefore closed.
+
+            \hfill$\blacksquare$
+        \end{proof}
+        Let $a\in X$, so since $f_a$ is continuous and $\bar B_r(a)=\set{x\in X}[f_a(x)\leq r]$, by the above lemma the closed ball is closed, as required.
+    \eenum
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    We define a function $f\colon\bR^2\longvarrightarrow\bR$ as follows:
+    \[ f(x,y) = \begin{cases} 8 & xy = 0 \\ \sqrt2 & xy\neq0 \end{cases} \]
+    find the set of points where $f$ is continuous.
+    Is it open or closed?
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    We claim that the set $S=\bR^*\times\bR^*$ is the set of all points where $f$ is continuous.
+    Suppose $(x,y)\in S$ then $x,y\neq0$.
+    So if we take $(x_n,y_n)\longvarrightarrow(x,y)$, at some point onward $x_n,y_n\neq0$ so $x_ny_n\neq0$ and so at some point onward $f(x_n,y_n)=\sqrt2$.
+    So the limit of $f(x_n,y_n)$ is $\sqrt2$ which is equal to $f(x,y)$.
+    And if $(x,y)\notin S$, then we can define the sequence $\vec v_n=\parens{x+\frac1n,y+\frac1n}$ which converges to $(x,y)$.
+    Since at some point onward $x+\frac1n$ and $y+\frac1n$ are both non-zero (otherwise $\frac1n=\frac1m$ for $n\neq m$), $f(\vec v_n)=\sqrt2$ and so the limit of $f(\vec v_n)$ is $\sqrt2$ which doesn't
+    equal $f(x,y)=8$.
+    So $f$ is not continuous at $(x,y)$ for every $(x,y)\notin S$ as required.
+
+    We claim that $S$ is open.
+    This is because if $(x,y)\in S$ by choosing $r=\min{\abs x,\abs y}$ then $B_r(x,y)\subseteq S$.
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Are the following functions uniformly continuous?
+    \benum
+        \item $f(x)=\sinof{x^2}$ in $\bR$.
+        \item $f(x,y)=\sin^{-1}\parens{\frac xy}$ in $D=\set{(x,y)}[\abs x\leq\abs y, y\neq0]$.
+    \eenum
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    \benum
+        \item Notice that the peaks get closer and closer together as $x$ grows, and the distance gets arbitrarily small.
+                So for $\epsilon=1$ for instance, if we take any $\delta>0$ at some point the distance between two peaks is less than $\delta$.
+                So if we take $x$ to be the $x$ value of a peak, there exists a valley within a distance of $\delta$, and thus the distance between the images of these two points is $2$, which is greater
+                than $\epsilon=1$.
+                So $f(x)$ is not uniformly continuous.
+
+                To get numbers, let $x_n=\frac\pi2+2\pi n$, the $x$ values of the peaks.
+                Then we need to find an $h$ such that $(x_n+h)^2=x_n^2+\pi$, and solving for a positive $h$ gives $h=-x_n+\sqrt{x_n^2+\pi^2}$.
+                So the distance between $x_n$ and $x_n+h$ (which is a valley) is $h=-x_n+\sqrt{x_n^2+\pi^2}$.
+                The limit of $h$ as $n$ goes to infinity is $0$ since we can rewrite $h$ as
+                \[ \frac{\pi^2}{x_n+\sqrt{x_n^2+\pi^2}} \]
+                So for every $\delta>0$ there is some $h<\delta$ as required.
+        \item Notice that if $x=y$ the $f(x,y)=\frac\pi2$ while $f(x,2y)=\frac\pi6$.
+                So if we choose a sequence $(a_n,a_n)$ and $(b_n,2b_n)$ such that $\abs{a_n-b_n}$ and $\abs{a_n-2b_n}$ converge to $0$ then we will have shown that the function is not uniformly continuous.
+                Let $a_n=b_n=\frac1n$.
+                Then notice that $f\bigl(\frac1n,\frac1n\bigr)=\frac\pi2$ and $f\bigl(\frac1n,\frac2n\bigr)=\frac\pi6$ but $\abs{\frac2n-\frac1n}=\frac1n$ converges to $0$, so
+                $\norm{\bigl(\frac1n,\frac1n\bigr)-\bigl(\frac1n,\frac2n\bigr)}$ converges to $0$ while the difference in their image is a non-zero constant and consequently doesn't converge to $0$.
+                Therefore the function is not uniformly continuous.
+    \eenum
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Suppose $f(x,y)$ is defined on $D$ and is continuous in the $x$ variable and lipschitz continuous in its second variable $y$.
+    Is $f$ continuous?
+
+\end{exercise*}
+
+\begin{blankpp}
+
+        Suppose $(x,y)\in D$, then we will show for any $D\ni(x_n,y_n)\longvarrightarrow(x,y)$, $f(x_n,y_n)\longvarrightarrow f(x,y)$.
+        We know that:
+        \[ \abs{f(x_n,y_n) - f(x,y)} \leq \abs{f(x_n,y_n) - f(x_n,y)} + \abs{f(x_n,y) - f(x,y)} \]
+        Since $f$ is continuous in $x$, $\abs{f(x_n,y)-f(x,y)}\longvarrightarrow0$, and since $f$ is Lipschitz in $y$ then $\abs{f(x_n,y_n)-f(x_n,y)}\leq K\cdot\abs{y_n-y}\longvarrightarrow0$.
+        So $\abs{f(x_n,y_n) - f(x,y)}$ converges to $0$.
+        Therefore $f$ is indeed continuous in $D$.
+
+\end{blankpp}
+
+\begin{exercise*}
+
+    Compute the following limit:
+        \[ \lim_{(x,y,z,w)\varrightarrow(0,0,0,0)}\frac{\abs{xzyw}^{\frac n3}}{\abs x^n+\abs y^n+\abs z^n+\abs w^n} \]
+    For any $n>0$.
+
+\end{exercise*}
+
+\begin{blankpp}
+
+    Firstly, let
+        \[ f(x,y,z,w) = \frac{\abs{xzyw}^{\frac n3}}{\abs x^n+\abs y^n+\abs z^n+\abs w^n} \]
+    Then let us define:
+        \[ a = \maxof{\abs x,\abs y,\abs z,\abs w}\qquad b = \minof{\abs x,\abs y,\abs z,\abs w} \]
+    Then notice that $a$ and $b$ are both equal to one of the values, $\abs{xzyw}\leq a^3\cdot b$ and $\abs x^n+\abs y^n+\abs z^n+\abs w^n\geq 3b^n+a^n$.
+    So all in all:
+        \[ 0\leq f(x,y,z,w) \leq \frac{a^n\cdot b^{\frac n3}}{a^n+3b^n} = b^{\frac n3}\cdot\frac1{1+3\bigl(\frac ab\bigr)^n} \]
+    We can divide by $a^n$ since it is not equal to $0$, since if it were, $x=y=z=w=0$ which is not the case since limits don't include the point they converge to.
+    Notice that since $1+3\parens{\frac ab}^n\geq 1$, $\frac1{1+3\bigl(\frac ab\bigr)^n}$ is bounded (between $0$ and $1$).
+    And since $(x,y,z,w)$ converges to $0$, since convergence in $\bR^n$ is pointwise, $b$ converges to $0$ as well, since it is less than $\abs x$ etcetra.
+    And therefore so does $b^{\frac n3}$.
+    So the limit of the right hand side is $0$, and so by the squeeze theorem, the limit of $f(x,y,z,w)$ is $0$ as well.
+    That is:
+        \[ \lim_{(x,y,z,w)\varrightarrow(0,0,0,0)}\frac{\abs{xzyw}^{\frac n3}}{\abs x^n+\abs y^n+\abs z^n+\abs w^n} = 0 \]
+
+\end{blankpp}
+
+\end{document}
+

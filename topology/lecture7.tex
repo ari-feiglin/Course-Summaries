@@ -1,0 +1,280 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[margin=1.5cm]{geometry}
+
+\input pdfmsym
+\input prettyprint
+\input preamble
+
+\pdfmsymsetscalefactor{10}
+\initpps
+
+\def\qed{\hskip1cm\penalty-100\hbox{}\hfill$\blacksquare$}
+\def\pmat#1{\begin{pmatrix} #1 \end{pmatrix}}
+
+\def\bS{\mathbb{S}}
+\def\mU{\mathcal{U}}
+\def\mV{\mathcal{V}}
+\def\mO{\mathcal{O}}
+\def\mF{\mathcal{F}}
+
+\def\to{\varrightarrow}
+\def\longto{\longvarrightarrow}
+
+\newfunc{metric}{\rho}({})
+\newfunc{metricA}{\sigma}({})
+\newfunc{powset}{{\cal P}}(|)
+
+\let\divides=\mid
+\let\to=\varrightarrow
+\def\implies{\,\longvarRightarrow\,}
+
+\def\mathresize#1#2{\mathpalette\@mathresize{{#1}{#2}}}
+\def\@mathresize#1#2{\@@mathresize#1#2}
+\def\@@mathresize#1#2#3{\hbox to #2{\hss$#1#3$\hss}}
+
+\font\bigbf = cmbx12 scaled 2000
+
+\begin{document}
+
+\c@section=7
+
+\barcolorbox{255, 220, 255}{130, 0, 130}{200, 80, 200}{
+    \leftskip=0pt plus 1fill \rightskip=\leftskip
+    {\bigbf Topology}
+
+    \medskip
+    \textit{Lecture \thesection, Sunday April 14, 2022}
+
+    \textit{Ari Feiglin}
+}
+
+\bigskip
+
+\begin{defn*}
+
+    Given a family of sets $\mF=\set{A_\lambda}_{\lambda\in\Lambda}$, $\mF$ has the \ppemph{finite intersection property} if every finite intersection of sets in $\mF$ is non-empty.
+
+\end{defn*}
+
+\begin{prop*}
+
+    A space $X$ is compact if and only if every family of closed sets $\set{\mF_\lambda}_{\lambda\in\Lambda}$ with the finite intersection property has non-empty intersection.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $X$ is compact and $\set{\mF_\lambda}_{\lambda\in\Lambda}$ has the finite intersection property but an empty intersection.
+    Then
+    \[ X = \parens{\bigcap_{\lambda\in\Lambda}\mF_\lambda}^c = \bigcup_{\lambda\in\Lambda}\mF_\lambda^c \]
+    so this forms an open cover, and so there is a finite subcover
+    \[ X = \bigcup_{n=1}^N\mF_n^c \]
+    and so the intersections of these $\mF_n$s is empty, in contradiction.
+
+    If this condition is true, let
+    \[ X = \bigcup_{\lambda\in\Lambda}\mU_\lambda \]
+    is an open cover.
+    Then suppose there is no finite subcover, which means for every finite subset:
+    \[ X \neq \bigcup_{n=1}^N\mU_n \implies \bigcap_{n=1}^N\mU_n^c \neq \varnothing \]
+    and so this family has the finite intersectiion property, and so its intersection is non-empty
+    \[ \bigcap_{\lambda\in\Lambda}\mU_\lambda^c\neq\varnothing \implies \bigcup_{\lambda\in\Lambda}\mU_\lambda \neq X \]
+    in contradiction.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    Let $X$ be a compact space, and $Y$ is another topological space.
+    If $f\colon X\longto Y$ is continuous and surjective, then $Y$ is compact.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let
+    \[ Y = \bigcup_{\lambda\in\Lambda}\mU_\lambda \]
+    be an open cover of $Y$.
+    Then we have that
+    \[ X = f^{-1}(Y) = \bigcup_{\lambda\in\Lambda} f^{-1}(\mU_\lambda) \]
+    and since $f$ is continuous, this is an open cover of $X$, and so there exists a finite subcover:
+    \[ X = \bigcup_{n=1}^N f^{-1}(\mU_n) \]
+    and since $f$ is surjective we have
+    \[ Y = f(X) = f\parens{\bigcup_{n=1}^N f^{-1}(\mU_n)} = \bigcup_{n=1}^N f\bigl(f^{-1}(\mU_n)\bigr) \subseteq \bigcup_{n=1}^N \mU_n \]
+    (the last inclusion is actually an equality) and so there is a finite subcover, so $Y$ is compact.
+    \qed
+
+\end{proof}
+
+Thus if $X$ is a compact space and $Y$ is a topological space, $f\colon X\longto Y$ is continuous, $f(X)$ is compact.
+This is because the restriction of $f$ on its codomain is still continuous.
+
+\begin{prop*}
+
+    If $X$ is a compact topological space, and $S\subseteq X$ is closed, $S$ is also compact.
+
+\end{prop*}
+
+\begin{proof}
+
+    We show that every family of closed sets with the finite intersection property in $S$ has non-empty intersection.
+    Let $\set{Q_\lambda}_{\lambda\in\Lambda}$ be a family of closed sets in $S$, and since $S$ is closed in $X$, $Q_\lambda$ is closed in $X$.
+    Thus if this family has the finite intersection property, since $X$ is compact, the intersection over all of the sets is also non-empty, and so $S$ is compact.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    Suppose $X$ is a topological space and $A\subseteq X$.
+    A \ppemph{open cover} of $A$ is a family $\set{\mU_\lambda}_{\lambda\in\Lambda}$ of open sets in $X$ such that
+    \[ A \subseteq\bigcup_{\lambda\in\Lambda}\mU_\lambda \]
+
+\end{defn*}
+
+Notice that every open cover of $A$ (not relative to $X$) induces an open cover of $A$ relative to $X$, and vice versa.
+This is because open sets in $A$ are of the form $A\cap\mU$ for $\mU$ open in $X$.
+
+Thus all the statements we have formulated about compact spaces are true for compact subspaces with this ``new'' definition of open covers for subspaces.
+
+\begin{defn*}
+
+    A topological space $X$ satisfies the \ppemph{first separation axiom} (denoted $T_1$) if for every two points $a\neq b\in X$ there exists a neighborhood $\mU$ of $a$ such that $b\notin\mU$ and a
+    neighborhood $\mV$ of $b$ such that $a\notin\mV$.
+
+    A topological space $X$ satisfies the \ppemph{second separation axiom} (denoted $T_2$) if for every $a\neq b\in X$ there exists a neighborhood $\mU$ of $a$ and a neighborhood $\mV$ of $b$ such that
+    $\mU\cap\mV=\varnothing$.
+    A $T_2$ space is also called a \ppemph{Hausdorff space}.
+
+\end{defn*}
+
+It is trivial to see that if $X$ is a $T_2$ space, it is also a $T_1$ space.
+
+\begin{exam*}
+
+    All metric spaces are Hausdorff spaces: let $a\neq b\in X$, and take $r=\frac12\metricof{a,b}$.
+    Then $B_r(a)\cap B_r(b)=\varnothing$, and these are neighborhoods of $a$ and $b$.
+
+\end{exam*}
+
+\begin{prop*}
+
+    $X$ is a $T_1$ space if and onlt if for every $a\in X$, $\set a$ is closed.
+
+\end{prop*}
+
+\begin{proof}
+
+    If $X$ is $T_1$ then for every $a\neq b\in X$, let $\mU_b$ be a neighborhood of $b$ such that $a\neq\mU_b$.
+    Then
+    \[ \set a^c = \bigcup_{a\neq b\in X}\mU_b \]
+    since $a\notin\mU_b$ for every $b$, and $b\in\mU_b$ for every $a\neq b$.
+    So $\set a^c$ is open as the union of open sets, and so $\set a$ is closed.
+
+    Let $a\neq b\in X$, then $\mU=\set b^c$ is a neighborhood of $a$ which doesn't contain $b$, and $\mV=\set a^c$ is a neighborhood of $b$ which doesn't contain $a$, so $X$ is $T_1$.
+    \qed
+
+\end{proof}
+
+Thus in a Hausdorff space, every singleton is closed.
+
+\begin{exam*}
+
+    In the \ppemph{cofinite} topology:
+    \[ \tau = \set\varnothing\cup\set{A\subseteq X}[X\setminus A\text{ is finite}] \]
+    (This is quite simple to verify as a topology).
+    Since every finite set $F$ is closed (since $X\setminus(X\setminus F)=F$ so $X\setminus F$ is closed), and in fact all closed sets are finite, the cofinite topology is $T_1$
+    (since singletons are finite).
+
+    But if $X$ is infinite, the cofinite topology is not Hausdorff.
+    Let $\mU$ and $\mV$ be open sets, then if $\mU\cap\mV=\varnothing$ then $\mU^c\cup\mV^c=X$, but the closed sets are finite so $\mU^c\cup\mV^c$ must be finite, and since $X$ is infinite, this is a
+    contradiction.
+    So every two open sets have non-empty intersection, and so $X$ cannot be Hausdorff (for any $a\neq b$, every neighborhood of $a$ and every neighborhood of $b$ must have non-empty intersection).
+
+    So for infinite $X$, the cofinite topology is $T_1$ but not $T_2$.
+    When $X$ is finite, the cofinite topology is simply the discrete topology and therefore is Hausdorff (take the singletons as neighborhoods).
+
+\end{exam*}
+
+It is obvious that both $T_1$ and $T_2$ are inherited by subspaces: if $X$ satisfies one of these axioms, so does every $A\subseteq X$.
+
+\begin{prop*}
+
+    Let $X$ be a Hausdorff space, and $A,B\subseteq X$ be two disjoint compact subspaces.
+    Then there exist $\mU,\mV\subseteq X$ disjoint open sets such that $A\subseteq\mU$ and $B\subseteq\mV$.
+
+\end{prop*}
+
+\begin{proof}
+
+    If $B$ is a singleton $\set p$, and $x\in A$ then since $X$ is Hausdorff, there exist disjoint open sets $x\in\mU_x$ and $p\in\mV_x$.
+    Then
+    \[ A \subseteq \bigcup_{x\in A}\mU_x \]
+    is an open cover, and since $A$ is compact there exists a finite subcover
+    \[ A \subseteq \bigcup_{n=1}^N \mU_{x_n} = \mU \]
+    and so
+    \[ \mV = \bigcap_{n=1}^N \mV_{x_n} \]
+    is an open set containing $p$, and is disjoint from $\mU$ since if $a\in\mU\cap\mV$ then $a\in\mU_{x_n}$ for some $n$, and $a\in\mV_{x_n}$ for every $n$.
+    But $\mU_{x_n}$ and $\mV_{x_n}$ are disjoint.
+
+    Now in general, if $x\in A$ then $x\notin B$ so there exists $\mU_x,\mV_x$ open in $X$ such that $x\in\mU_x$ and $B\subseteq\mV_x$ and these are disjoint
+    (take the union of all $\mV_x$ found before where $p\in B$).
+    The family $\set{\mU_x}_{x\in A}$ is an open cover of $A$ and so there is a finite open subcover $\set{\mU_{x_n}}_{n=1}^N$.
+    And taking
+    \[ \mU = \bigcup_{n=1}^N \mU_{x_n},\qquad \mV = \bigcap_{n=1}^N \mV_{x_n} \]
+    which are disjoint, since if $x\in\mU\cap\mV$ then $x\in\mU_{x_n}\cap\mV_{x_n}$ for some $n$, which is impossible.
+    \qed
+
+\end{proof}
+
+\begin{thrm*}
+
+    If $X$ is a Hausdorff space, and $A\subseteq X$ is compact, then $A$ is closed.
+
+\end{thrm*}
+
+\begin{proof}
+
+    If $A=X$ this is trivial.
+    Otherwise, let $p\notin A$, then there exists $\mU_p,\mV_p\subseteq X$ open and disjoint such that $A\subseteq\mU_p$ and $p\in\mV_p$.
+    We can do this for every $p\in A^c$, and since $\mV_p\cap A=\varnothing$, we have that
+    \[ A^c = \bigcup_{p\in A^c}\mV_p \]
+    so $A^c$ is open and therefore $A$ is closed.
+    \qed
+
+\end{proof}
+
+\begin{prop*}
+
+    If $X$ is a compact space, and $Y$ is Hausdorff.
+    If $f\colon X\longto Y$ is continuous, it is also a closed mapping.
+
+\end{prop*}
+
+\begin{proof}
+
+    Suppose $S\subseteq X$ is closed, and therefore $S\subseteq X$ is compact.
+    Then $f(S)$ is compact (the continuous image of a compact space is compact), and therefore $f(S)$ is closed since $Y$ is Hausdorff.
+    \qed
+
+\end{proof}
+
+Thus if $f$ is also a bijection, then $f$ is a homeomorphism.
+Thus if there exists a continuous bijection between a compact and Hausdorff space, the bijection is also a homeomorphism.
+
+\begin{defn*}
+
+    A continuous mapping between topological spaces $f\colon X\longto Y$ is called an \ppemph{embedding} if the induced mapping $f\colon X\longto f(X)$ is a homeomorphism.
+
+\end{defn*}
+
+Thus if $f$ is an embedding, it is a continuous injection.
+The converse is not true ($f^{-1}$ from $f(X)$ to $X$ must also be continuous).
+
+Thus if $f\colon X\longto Y$ is continuous and injective, and $X$ is compact and $Y$ is Hausdorff, $f\colon X\longto f(X)$ is a bijection and thus a homeomorphism.
+So $f$ is an embedding.
+
+\end{document}
+
