@@ -374,6 +374,7 @@ Notice that if $K/F$ is a field extension and $\alpha\in K$ algebraic.
 Let $h$ be its minimal polynomial and $\sigma\in\Galof{K/F}$, then
 $$ h(\sigma(\alpha)) = \sigma(h(\alpha)) = \sigma(0) = 0 $$
 This is since $\sigma\parens{\sum_ia_i\alpha^i}=\sum_i\sigma(a_i)\sigma(\alpha)^i=\sum_ia_i\sigma(\alpha)^i=h(\sigma(\alpha))$.
+So permutations in Galois groups map roots to roots of polynomials.
 
 So for example, let $G=\Galof{{\bb Q}[\sqrt3]/{\bb Q}}$ and $\lambda^2-3=(\lambda-\sqrt3)(\lambda+\sqrt3)$ and so $\sigma$ must map $\sqrt3$ to $\pm\sqrt3$.
 And since all automorphisms of ${\bb Q}[\sqrt3]$ over ${\bb Q}$ are defined by $\sqrt3$'s image,
@@ -524,6 +525,114 @@ But $g$ is the minimal polynomial so $h=g$, meaning the minimal polynomial of ev
 
 $(5)\implies(4)$: let $G=\Galof{K/F}$ and $F'=K^G$, then it satisfies the condition for $(3)$, which implies $(1)$ which implies $(5)$, so we get $\abs{\Galof{K/F'}}=[K:F']$.
 Again since $\Galof{K/F'}=\alpha\beta\alpha(F)=\Galof{K/F}$, we get $[K:F]=[K:F']$ and $F\subseteq F'$ so $F=F'$.
+\qed
+
+Notice that if $F\subseteq L\subseteq K$ are fields such that $K/F$ is a Galois extension, then $K/L$ is also a Galois extension, since if the minimal polynomial of $a\in K$ over $F$ splits, then since the
+minimal polynomial of $a$ in $L$ divides it, it must also split.
+Thus
+$$ K^{\Galof{K/L}} = L $$
+So if we look at our previous diagram
+
+\penalty-100\medskip
+{\tabskip=0pt plus1fil
+\offinterlineskip\halign to\hsize{$#$\hfil\tabskip=.25cm&\hfil$#$\hfil\tabskip=.25cm&$#$\hfil\tabskip=0pt plus1fil\cr
+& \xvarmapsto{\mathtowd{3cm}{\alpha=\Galof{K,\bullet}}}\cr
+\set{\hbox{Subgroups of $\Galof{K/F}$}} & &\set{\hbox{Fields between $F\subseteq K$}}\cr
+& \xvarmapsfrom{\mathtowd{3cm}{\beta=K^{\textstyle\bullet}}}\cr
+}}
+\medskip
+
+We have that $\beta\alpha=1$, meaning we know that for every $F\subseteq L\subseteq K$ there exists a subgroup of $\Galof{K/F}$ such that $K^G=L$.
+But for which subgroups $H\leq G$ is there a field $F\subseteq L\subseteq K$ such that $\Galof{K/L}=G$?
+
+\blemm[title=Artin's Lemma, name=artinlemma]
+
+    Let $H\leq\Autof K$ be a finite subgroup, then $[K:K^H]\leq\abs H$
+
+\elemm
+
+\Proof let $H=\set{\sigma_1=1,\sigma_2,\dots,\sigma_n}$, $n<m$, and $x_1,\dots,x_m\in K$.
+We need to show that $x_1,\dots,x_m$ are linearly dependent in $K$ over $K^H$.
+So we'd like to find $a_1,\dots,a_m\in K^H$ such that $\sum_ia_ix_i=0$.
+Applying $\sigma_i\in H$, since $a_j\in K^H$ we have that by definition $\sigma_ia_j=a_j$ so
+$$ \sigma_i\parens{\sum_ja_jx_j} = \sum_ja_j\sigma_i(x_j) = 0 $$
+Let $X$ be an $n\times m$ matrix defined by $X=(\sigma_i(x_j))_{ij}$ and $\vec a=(a_1,\dots,a_m)^\top$.
+Then we need to solve for $\vec a$ in
+$$ X\vec a = 0 $$
+But $X$ is an $M_{n\times m}(K)$ matrix, so it must have a nontrivial nullspace, meaning there exists a solution $\vec a\neq0$ in $K$.
+Recall that our goal is to find such a $\vec a$ in $K^H$.
+
+Let us choose one non-trivial solution $\vec a$ such that its number of zeroes is minimal (meaning $\#\set{1\leq i\leq m}[a_i=0]$ is minimal).
+We can reorder the solutions to assume that $a_1\neq0$, and since $a_1^{-1}\vec a$ is also a solution, we can assume $a_1=1$.
+Now we claim that $a_i\in K^H$ for all $1\leq i\leq m$, and so once we prove this we have finished.
+Suppose that $a_2\notin K^H$, then there exists a $\sigma_k\in H$ such that $\sigma_k(a_2)\neq a_2$.
+Then we know that $\sum_ja_j\sigma_i(x_j)=0$ for all $i$, so compose this with $\sigma_k$ to get
+$$ \sum_j\sigma_k(a_j)\sigma_k(\sigma_i(x_j)) = 0 $$
+since $\sigma_k\sigma_i\in H$, this is just a permutation of the indexing of $i$, so we still have
+$$ \sum_j\sigma_k(a_j)\sigma_k(x_j) = 0 $$
+meaning $(1,\sigma_k(a_2),\dots,\sigma_k(a_m))$ is another solution to the system of equations, and since the set of solutions form a vector space, this means that
+$(0,a_2-\sigma_k(a_2),\dots,a_m-\sigma_k(a_m))$ is a solution.
+This is a non-trivial solution, but it has fewer zeroes than $\vec a$ since now the first coefficient is zero (and all zero coefficients in $\vec a$ remain zero here), in contradiction.
+\qed
+
+Since $K^H$ is Galois by the above theorem, we have $[K:K^H]=\abs{\Galof{K/K^H}}$.
+Now, $H\subseteq\Galof{K/K^H}$ by the definition of a Galois correspondence, and so we have $\abs H\leq\abs{\Galof{K/K^H}}=[K:K^H]\leq\abs H$.
+Thus $H=\Galof{K/K^H}$.
+
+And so we have shown that $H\mapsto K^J$ and $L\mapsto\Galof{K/L}$ are inverse functions:
+
+\bthrm[title=The Fundamental Theorem of Galois Theory, name=ftgalois]
+
+    Let $K/F$ be a finite-dimensional field extension.
+    Then the maps $H\mapsto K^J$ and $L\mapsto\Galof{K/L}$ are inverse functions which invert order between fields in between $F$ and $K$ and subgroups of $\Galof{K/F}$.
+
+\ethrm
+
+\bcoro
+
+    For every finite-dimensional Galois field extension, there is a finite number of in-between fields.
+
+\ecoro
+
+\Proof since the number of in-between fields is equal to the number of subgroups of $\Galof{K/F}$, we need simply to show that $\Galof{K/F}$ is finite.
+This is since $\abs{\Galof{K/F}}=[K:F]$ since $K/F$ is Galois, and by assumption this is finite.
+\qed
+
+\bcoro
+
+    Let $G=\Galof{K/F}$, then $H$ is normal in $G$ if and only if $\sigma(K^H)=K^H$ for every $\sigma\in G$.
+
+\ecoro
+
+\Proof if $H$ is normal in $G$, then let us consider the map $\sigma\mapsto\sigma\bigl|_{K^H}$ from $\Galof{K/F}$ to $\Galof{K^H/F}$.
+The kernel of this is the set of all permutations which hold $K^H$ constant, $\Galof{K/K^H}$ which is just $H$.
+So $H$ is therefore normal.
+Now notice that
+\multlines{
+    K^{\sigma H\sigma^{-1}} = \set{x\in K}[\forall h\in H\colon \sigma h\sigma^{-1}(x)=x] = \set{\sigma(y)}[\forall h\in H\colon \sigma h(y)=\sigma(y)]\cr
+    &= \sigma\set{y\in K}[\forall h\in H\colon h(y)=y] = \sigma(K^H)
+}
+so if $\sigma(K^H)=K^H$ then $K^{\sigma H\sigma^{-1}}=K^H$, meaning $H=\sigma H\sigma^{-1}$ (the $H\mapsto K^H$ map is injective; it has an inverse).
+\qed
+
+Notice that we defined a homomorphism $\Galof{K/F}\longto\Galof{K^H/F}$ whose kernel is $\Galof{K/K^H}$, thus
+$$ \Galof{K^H/F} \cong \slfrac{\Galof{K/F}}{\Galof{K/K^H}} $$
+
+\bprop
+
+    If $K/F$ is Galois and $G=\Galof{K/F}$, then $H\leq G$ is normal if and only if $K^H/F$ is a normal extension.
+
+\eprop
+
+\Proof let $L=K^H$, $a\in L$, and $h$ be its minimum polynomial over $F$.
+Thus it splits in $K$, meaning $h(\lambda)=\prod(\lambda-a_i)$ for $a_i\in K$.
+We showed previously that $\sigma\in G$ permutes the roots of $h$.
+If $H$ is normal, then $\sigma(K^H)=K^H$ meaning $\sigma(a)\in L$.
+So if there is an $a_i$ not in $L$, then we can define a permutation $a\mapsto a_i$, but then $\sigma(a)\notin L$ in contradiction.
+So all $a_i$ are in $L$, meaning $h$ splits in $L$, so $L/F$ is normal.
+
+And if $L/F$ is normal, then $a_i\in L$ so $\sigma(a)=a_i$ for some $i$, since again $G$ permutes the roots, and so $\sigma(a)\in L$.
+Thus $\sigma(L)=L$, meaning $H$ is normal.
 \qed
 
 \bye
