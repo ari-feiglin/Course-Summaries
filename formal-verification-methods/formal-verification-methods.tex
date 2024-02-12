@@ -630,5 +630,94 @@ So let us first define what a {\it generalized B\"uchi automaton} is to make thi
 Now if ${\cal A}_1$ and ${\cal A}_2$ are two B\"uchi automaton, we can define their intersection to be a generalized B\"uchi automaton whose components are defined as above and
 $F=\set{F_1\times S_2,S_1\times F_1}$, so an accepted run must pass through both $F_1$ and $F_2$ an infinite number of times.
 
+We now demonstrate how to convert a generalized B\"uchi automaton into a normal one.
+Suppose ${\cal A}=(\Sigma,S,\Delta,I,L,F)$ is a generalized B\"uchi automaton with $F=\set{f_1,\dots,f_m}$, then define $S'=\bigdcup_{i=1}^mS_i$ where $S_i=S\times\set i$ so that all $S_i$ are disjoint.
+$S'=\bigdcup_{i=1}^mS_i$ where $S_i=S\times\set i$ so that all $S_i$ are disjoint.
+We define $\Delta'\subseteq S'\times S'$ as follows:
+\benum
+   \item for $(r,s)\in\Delta$, add $\bigl((r,i),(s,i)\bigr)$ to $\Delta'$ for all $1\leq i\leq m$ for which $r\notin f_i$.
+   \item if $r\in f_i$ then add $\bigl((r,i),(s,i+1)\bigr)$ to $\Delta'$ where addition is cyclic: $m+1=1$.
+\eenum
+Define $I'=I\times\set1$, and $L'(s,i)=L(s)$.
+Then choose $1\leq i\leq m$ arbitrarily and set $F'=f_i\times\set i$.
+
+To get to a set in $f_i$, one must first progress through a sequence of sets in $f_1,\dots,f_{i-1}$ since the only way to go between levels ($S_i$s) in $S$ is to reach an accepting state in $f_i$.
+Then once one reaches $f_i$, one must go to the next level $S_{i+1}$, so to get to $f_i$ again one must progress through $f_{i+1},\dots,f_m$ and back to $f_1,\dots,f_i$.
+So to visit $f_i$ an infinite number of times, a run must visit all $f_j$ an infinite number of times.
+
+So a complete construction of ${\cal A}_1\cap{\cal A}_2$ is as $(\Sigma,S_1\times S_2\times\set{1,2},\Delta,I,L,F)$ where
+\benum
+    \item for $(r_1,s_1)\in\Delta_1$ and $(r_2,s_2)\in\Delta_2$ if $r_1\notin F_1$ and $r_2\notin F_2$ then $\bigl((r_1,r_2,i),(s_1,s_2,i)\bigr)\in\Delta$ for $i=1,2$,
+    \item if $r_1\in F_1$ and $r_2\notin F_2$ then $\bigl((r_1,r_2,1),(s_1,s_2,2)\bigr),\bigl((r_1,r_2,2),(s_1,s_2,2)\bigr)\in\Delta$
+    \item if $r_1\notin F_1$ and $r_2\in F_2$ then $\bigl((r_1,r_2,1),(s_1,s_2,1)\bigr),\bigl((r_1,r_2,2),(s_1,s_2,1)\bigr)\in\Delta$
+    \item if $r_1\in F_1$ and $r_2\in F_2$ then $\bigl((r_1,r_2,1),(s_1,s_2,2)\bigr),\bigl((r_1,r_2,2),(s_1,s_2,1)\bigr)\in\Delta$
+\eenum
+and $L(r,s,i)=L_1(r)\land L_2(s)$ where we remove states if this is equivalent to $\false$.
+And $I=I_1\times I_2\times\set 1$, $F=F_1\times S_2\times\set1$.
+
+So for example, if we have
+
+\kern.75cm
+\centerline{
+\drawdiagram{
+    \circleit{$\bf q_0$}&&$\bf q_1$\cr
+}{
+    \diagarrow{from={1,1}, to={1,3}, y off=.25cm, slide=0, text={$A\land\neg B$}, x distance=-1cm}
+    \diagarrow{from={1,3}, to={1,1}, y off=-.25cm, slide=0, text={$\neg A$}, x distance=.5cm}
+    \diagarrow{from={1,1}, to={1,1}, curve=-1cm, origin orient={right, top}, dest orient={left, top}}
+    \diagarrow{from={1,3}, to={1,3}, curve=1cm, dest orient={right, top}, origin orient={left, top}}
+}\kern5cm
+\drawdiagram{
+    \circleit{$\bf q_2$}&&$q_3$\cr
+}{
+    \diagarrow{from={1,1}, to={1,3}, y off=.25cm, slide=0, text={$\neg A\land B$}, x distance=-1cm}
+    \diagarrow{from={1,3}, to={1,1}, y off=-.25cm, slide=0, text={$A\lor\neg B$}, x distance=1cm}
+}
+}
+
+Notice that $(q_0,q_2)$ can be removed as the conjunction of their labels is $\false$.
+The intersection then is
+
+\kern.5cm
+\centerline{
+\drawdiagram{
+    $\underline{q_0,q_3,1}$&&$\bf q_1,q_2,1$&&$q_1,q_3,1$\cr
+    \cr
+    $q_0,q_3,2$&&$q_1,q_2,2$&&$q_1,q_3,2$\cr
+}{
+    \diagarrow{from={1,3}, to={1,1}, text=$A\land\neg B$, slide=1, y distance=.4cm}
+    \diagarrow{from={1,3}, to={1,5}, y off=.15cm, text=$\neg A\land B$, slide=0, y distance=.4cm}
+    \diagarrow{from={1,5}, to={1,3}, y off=-.15cm, text=$\neg A\land\neg B$, slide=0, y distance=.4cm}
+    \diagarrow{from={1,1}, to={3,3}, x off=-.2cm}
+    \diagarrow{from={3,3}, to={1,1}, x off=.2cm, text=$\neg A\land B$, slide=0, y distance=-.4cm}
+    \diagarrow{from={3,1}, to={3,3}, text=$A\land\neg B$, slide=0, y distance=-.4cm}
+    \diagarrow{from={3,5}, to={3,3}, text=$\neg A\land\neg B$, slide=0, y distance=-.4cm}
+}
+}
+\bigskip
+
+A more complicated construction is the proof that the complement of a B\"uchi automaton is also a B\"uchi automaton.
+
+Recall that to check if ${\cal B}$ is a specification for ${\cal A}$, we need that $\Lof{\cal A}\cap\Lof{\cal B}^c$ is empty.
+How do we check if an automaton's language is empty, meaning it has no accepting runs?
+Suppose ${\cal A}=(\Sigma,S,\Delta,I,L,F)$ is a B\"uchi automaton and $\rho$ is an accepting run of ${\cal A}$.
+Then $\rho$ contains infinitely many states in $F$, and since $S$ is finite there must exist a suffix $\rho'$ where every state in it occurs infinitely often.
+This means the states of $\rho'$ comprise of a strongly connected component in the graph $(S,\Delta)$: all states are reachable from all the other states in $\rho'$.
+Conversely, a strongly connected component reachable from an initial state and which contains an accepting state generates an accepting run: take $\rho$ to first consist of a path from an initial state to
+the strongly connected component at vertex $v$, then suppose $a\in F$ is also in the strongly connected component, so $v$ and $a$ are connected, so have the rest of $\rho$ comprise of the path $v$ to $a$
+composed with the path from $a$ to $v$.
+
+So $\Lof{\cal A}$ being nonempty is equivalent to it having a strongly connected component reachable from an initial state containing an accepting state.
+So to find if $\phi$ is a specification of ${\cal A}$, we can utilize the following algorithm:
+\benum
+    \item construct $\overline{\cal B}$ representing the negation of the specification $\phi$,
+    \item construct the intersection ${\cal C}={\cal A}\cap\overline{\cal B}$,
+    \item use Tarjan's algorithm to find strongly connected components of ${\cal C}$ reachable from initial states,
+    \item if none of the components contain an accepting state, then $\phi$ is a specification.\
+    \item otherwise let $S$ be a reachable strongly connected component.
+        Construct a path $\sigma_1$ from an initial state to some state accepting state $q$ in the component, and construct a cycle $\sigma_2$ from $q$ back to itself.
+        This exists since $S$ is strongly connected, and so $\sigma_1\sigma_2^\omega$ is a counterexample (it satisfies ${\cal A}$ but not ${\cal B}$/$\phi$).
+\eenum
+
 \bye
 
