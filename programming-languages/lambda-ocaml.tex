@@ -1,0 +1,68 @@
+We define a language $\lambda$-OCaml similar to untyped $\lambda$-calculus as follows:
+
+\bdefn
+
+    Terms in $\lambda$-OCaml are defined recursively as follows:
+    \benum
+        \item all variables are terms,
+        \item if $\tt x$ is a variable and $\tt t$ a term, then \lcalc{fun x\to t} is a term,
+        \item if $\tt t_1$ is a term, then \lcalc{t\scr1 t\scr2} is a term.
+    \eenum
+
+\edefn
+
+This is obviously equivalent to untyped $\lambda$-calculus where instead of \lcalc{\lambda x.t} we write \lcalc{fun x\to t}.
+We also define types:
+
+\bdefn
+
+    Suppose we have an infinite set of type variables, then a type is defined recursively as follows:
+    \benum
+        \item all type variables are types,
+        \item if $\T$ and $\S$ are types, so is \lcalc{\T\to\S}.
+    \eenum
+
+\edefn
+
+Similar to typed $\lambda$-calculus we define the {\it type relation} $\Gamma\vdash\lcalc{t:\T}$ where {\tt t} is a term, $\T$ is a type, and $\Gamma$ is a variable type set of which contains elements of the
+form \lcalc{x:\S} for variables {\tt x} and types \S, such that every variable is given a single type.
+It is a Gentzen calculus defined using the rules:
+$$ \gentzen{\lcalc{x:\T}\in\Gamma}{\Gamma\vdash\lcalc{x:\T}}\eqno{(\hbox{\tensc O-Var})} $$
+$$ \gentzen{\Gamma\vdash\lcalc{t\scr{12}:\T\scr1\to\T\scr2}&\Gamma\vdash\lcalc{t\scr1:\T\scr1}}{\Gamma\vdash\lcalc{t\scr{12}t\scr1:\T\scr2}} \eqno{(\hbox{\tensc O-App})} $$
+$$ \gentzen{\Gamma\vdash\lcalc{x:\T}&\Gamma\vdash\lcalc{t:\S}}{\Gamma\vdash\lcalc{(fun x\to t):\T\to\S}} \eqno{(\hbox{\tensc O-Abs})} $$
+Notice that this is similar to simply typed $\lambda$-calculus except for {\tensc O-Abs}, where instead of viewing what type has {\tt t} has under the assumption that {\tt x} has type \T, we give them both
+a type under the plain assumptions in $\Gamma$.
+
+\bdefn
+
+    The problem of {\emphcolor type inference} is the problem of finding mapping between terms and types.
+    Its input is a term $t$, and its output is a variable type set $\Gamma$ and a map $m$ between subterms of $t$ (including $t$) such that $\Gamma\vdash t'\colon m(t')$ for all subterms $t'$.
+
+\edefn
+
+We will solve this problem in three steps: $(1)$ creating a system of equations between types, $(2)$ solving the system, and $(3)$ converting the solution to the appropriate $\Gamma$ and $m$.
+
+\bdefn
+
+    A term $t$ is called {\emphcolor normalized} if for every two subterms \lcalc{t\scr1 = fun x\to t\scr{11}} and \lcalc{t\scr2 = fun y\to t\scr{22}}, {\tt x} and {\tt y} are distinct variables.
+
+\edefn
+
+By $\alpha$-equivalence, every term has an equivalent normalized term.
+
+\bdefn
+
+    Let $t$ be a term, let us define the set of equations $A_t$ as follows: for every subterm $t'$ correspond a unique type variable $\alpha$, then
+    \benum
+        \item if $\alpha$ and $\beta$ correspond to different occurrences of the same subterm, then $\alpha=\beta\in A_t$,
+        \item suppose $t_1t_2$ is a subterm such that $\alpha$ is the variable of $t_1$, $\beta$ of $t_2$, and $\gamma$ of $t_1t_2$, then $\alpha=\beta\to\gamma\in A_t$,
+        \item for every subterm \lcalc{fun x\to t'}, if $\alpha$ is the variable of $x$, $\beta$ of $t'$, and $\gamma$ of \lcalc{fun x\to t'}, then $\gamma=\alpha\to\beta\in A_t$.
+    \eenum
+
+\edefn
+
+For example, let {\tt t} be \lcalc{(fun x\to x)y}, then let us map the subterms to type variables as follows:
+$$ y\mapsto\alpha_y,\quad x\mapsto\alpha_x^1,\quad x\mapsto\alpha_x^2,\quad \lcalc{fun x\to x}\mapsto\alpha_f,\quad t\mapsto\alpha_t $$
+Then
+$$ A_t = \set{\alpha_x^1=\alpha_x^2,\;\alpha_f=\alpha^1_x\to\alpha^2_x,\;\alpha_f=\alpha_y\to\alpha_t} $$
+
