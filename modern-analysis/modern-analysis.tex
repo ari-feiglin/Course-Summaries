@@ -783,5 +783,137 @@ $$ \limsup_n\int_Xf_n \leq \int_Xf \leq \liminf_n\int_Xf_n $$
 so $\int_Xf=\lim_n\int_Xf_n$ as required.
 \qed
 
+\bthrm[title=Bounded Convergence Theorem, name=boundconv]
+
+    Let $E\subseteq X$ be measurable such that $\mu(E)<\infty$, and let us define measurable functions $f_n\colon E\longto{\bb R}$ which converge to a function $f$ and there exists an $M>0$ such that
+    $\abs{f_n(x)}\leq M$ for every $x\in E$.
+    Then
+    $$ \int_Ef\,d\mu = \lim_{n\to\infty}\int_Xf_n\,d\mu $$
+
+\ethrm
+
+\Proof define $g(x)=M\chi_E$ then $\abs{f_n\chi_E}\leq g$ and $g(x)$ is integrable, so the result follows from the dominated convergence theorem.
+\qed
+
+\bthrm[title=Equivalence of Riemann and Lebesgue Integrals, name=rlequiv]
+
+    Let $f\colon[a,b]\longto{\bb R}$ be bound.
+    Then $f$ is Riemann-integrable if and only if $f$ is continuous almost everywhere.
+    In such a case, $f$ is Lebesgue integrable and the two integrals agree.
+
+\ethrm
+
+\Proof we will utilize Darboux's theorem: for every sequence of partitions $P_n\to0$ of $[a,b]$,
+$$ \displaylines{
+    \overline S(f,P_n)\longto\overline{\int}(f) = \inf_P(\overline S(P))\cr
+    \underline S(f,P_n)\longto\underline{\int}(f) = \sup_P(\underline S(P))
+} $$
+Let $P_n$ be a partition of $[a,b]$ into $2^n$ intervals $I_{n,k}$ of equal length, then every upper/lower Riemann sum is just the integral of a simple function,
+$$ \eqalign{
+    \overline S(f,P_n) &= \int_{[a,b]}\phi_n\cr
+    \underline S(f,P_n) &= \int_{[a,b]}\psi_n
+} $$
+where $\phi_n$ is the supremum of $f$ on each of the intervals $I_{n,k}$ and $\psi_n$ is the infimum (meaning $\phi_n(x_0)=\sup_{x\in I_{n,k}}f(x)$ for $x_0\in I_{n,k}$).
+So $\psi_n\leq\phi_n$, $\phi_{n+1}\leq\phi_n$, and $\psi_n\leq\psi_{n+1}$.
+So by the convergence theorems, their integrals converge to the integral of their limits.
+Now, the limits are
+$$ \displaylines{
+    \lim_{n\to\infty}\phi_n(x_0) = \lim_{n\to\infty}\sup_{x\in I_{n,k}}f(x) = \maxof{f(x_0),\limsup_{x\to x_0}f(x)}\cr
+    \lim_{n\to\infty}\psi_n(x_0) = \lim_{n\to\infty}\inf_{x\in I_{n,k}}f(x) = \minof{f(x_0),\limsup_{x\to x_0}f(x)}
+} $$
+we denote the limit of $\phi_n$ by $f^U$ and of $\psi_n$ by $f^L$.
+Since all these functions are bound, by the bounded convergence theorem
+$$ \eqalign{
+    \overline{\int}_a^b f&=\lim_{n\to\infty}\phi_n=\int_a^bf^U\cr
+    \underline{\int}_a^b f&=\lim_{n\to\infty}\psi_n=\int_a^bf^L
+} $$
+Thus we get that $f$ is Riemann integrable if and only if the upper and lower integrals are equal, which is if and only if $\int_a^bf^U-f^L=0$.
+Since $f^U\geq f^L$, this means that $f$ is Riemann integrable if and only if $f^U=f^L$ almost everywhere.
+This means that for almost every $x_0$, $\maxof{f(x_0),\limsup_{x\to x_0} f(x)}=\minof{f(x_0),\liminf_{x\to x_0} f(x)}$ which happens if and only if $\limsup f(x)=\liminf f(x)=f(x_0)$ since if $f(x_0)$ is
+the maximum then $\liminf f(x)=f(x_0)$ and so $\limsup f(x)\geq f(x_0)$ so there is equality.
+This is equivalent to saying that $f$ is continuous at $x_0$.
+Thus we have that $f$ is Riemann integrable if and only if $f$ is continuous almost everywhere.
+
+Now if $f$ is Riemann integrable on $[a,b]$ then $f(x)=f^U(x)=\lim_{n\to\infty}\phi_n(x)$ almost everywhere and denoting the Riemann integral by $R\int$, using the monotone convergence theorem
+$$ \int f = \lim_{n\to\infty}\int\phi_n = \lim_{n\to\infty}R\int\phi_n = \lim_{n\to\infty}\overline S(f,P_n) = R\int f $$
+since the Riemann and Lebesgue integrals of $\phi_n$ coincide as they are both integrals of simple functions of the form $\sum a_i\chi_{I_i}$ where $I_i$ is an interval; both integrals give
+$\sum a_i\abs{I_i}$.
+\qed
+
+\subsection{Product Spaces and Fubini-Tonelli's Theorem}
+
+\bdefn
+
+    Suppose $(X,\Sigma_1,\mu),(Y,\Sigma_2,\nu)$ are two measure spaces.
+    We define {\emphcolor product space} $(X\times Y,\Sigma,\mu\times\nu)$ as follows: for a {\it measurable rectangle} $A\times B\subseteq X\times Y$ where $A\in\Sigma_1$ and $B\in\Sigma_2$ define
+    $$ \abs{A\times B} = \mu(A)\nu(B) $$
+    Define the outer measure similar to in ${\bb R}$:
+    $$ w^*(E) \coloneqq \infof{\sum_{n=1}^\infty\abs{R_n}}[\hbox{$R_n$ are measurable rectangles such that $E\subseteq\bigcup_{n=1}^\infty R_n$}] $$
+    We say that a set $E\subseteq X\times Y$ is {\emphcolor $w$-measurable} if for every $A\subseteq X\times Y$, $w^*(A)=w^*(A\cap E)+w^*(A\cap E^c)$.
+    The set of all $w$-measurable sets forms a $\sigma$-algebra $\Sigma$ (using a similar proof for ${\bb R}$) and so taking $w=\mu\times\nu$ to be the restriction of $w^*$ to $\Sigma$, we get the
+    product space $(X,\Sigma,w)$.
+
+\edefn
+
+\bdefn
+
+    A measure space $(X,\Sigma,\mu)$ is {\emphcolor $\sigma$-finite} if there exists a countable subset $\set{X_n}_{n=1}^\infty\subseteq\Sigma$ such that $\mu(X_n)<\infty$ and $X=\bigcup_{n=1}^\infty X_n$.
+    And it is {\emphcolor complete} if for every $\mu(E)=0$ if $F\subseteq E$ then $F\in\Sigma$ as well.
+
+\edefn
+
+We will always assume that for product measures, both spaces are $\sigma$-finite (the product space itself is then $\sigma$-finite and complete as well).
+The following are a few traits of product measures which are provable in a manner similar to ${\bb R}$:
+\benum
+    \item If $w^*(E)=0$ then $E$ is $w$-measurable.
+    \item The countable union of measurable rectangles ($R_\sigma$ sets) and the countable intersection of $R_\sigma$ sets ($R_{\sigma\delta}$ sets) are all measurable.
+    \item For every measurable set $E$ with finite measure, there exists $G\in R_{\sigma\delta}$ and $w(F)=0$ such that $E=G\setminus F$.
+\eenum
+
+\bthrm[title=Fubini's Theorem, name=fubini]
+
+    Suppose $f\colon X\times Y\longto\overline{\bb R}$ is $w$-integrable.
+    Then
+    \benum
+        \item the function $f_x\colon Y\longto\overline{\bb R}$ defined by $f_x(y)=f(x,y)$ is $\nu$-integrable for $\mu$-almost every $x$,
+        \item the function $f_y(x)=f(x,y)$ is $\mu$-integrable for $\nu$-almost every $y$,
+        \item the function $x\mapsto\int_Yf_x\,d\nu$ is $\mu$-integrable,
+        \item the function $y\mapsto\int_Xf_y\,d\mu$ is $\nu$-integrable,
+        \item
+            $$ \int_Y\bracks{\int_Xf_y\,d\mu}\,d\nu = \int_{X\times Y}f\,dw = \int_X\bracks{\int_Yf_x\,d\nu}\,d\mu $$
+    \eenum
+
+\ethrm
+
+\bthrm[title=Tonelli's Theorem, name=tonelli]
+
+    Let $f\colon X\times Y\longto[0,\infty]$ be non-negative and $w$-measurable.
+    Then
+    \benum
+        \item $f_x$ is $\nu$-measurable for $\mu$-almost every $x$,
+        \item $f_y$ is $\mu$-measurable for $\nu$-almost every $y$,
+        \item the function $x\mapsto\int_Yf_x\,d\nu$ is $\mu$-measurable,
+        \item the function $y\mapsto\int_Xf_y\,d\mu$ is $\nu$-measurable,
+        \item
+            $$ \int_Y\bracks{\int_Xf_y\,d\mu}\,d\nu = \int_{X\times Y}f\,dw = \int_X\bracks{\int_Yf_x\,d\nu}\,d\mu $$
+    \eenum
+
+\ethrm
+
+Combining these together, we get the following:
+
+\bthrm[title=Fubini-Tonelli, name=fubinitonelli]
+
+    Let $f\colon X\times Y\longto\overline{\bb R}$ be measurable, then
+    $$ \int_Y\bracks{\int_X\abs{f_y}\,d\mu}\,d\nu = \int_{X\times Y}\abs f\,dw = \int_X\bracks{\int_Y\abs{f_x}\,d\nu}\,d\mu $$
+    and if any of these are finite,
+    $$ \int_Y\bracks{\int_Xf_y\,d\mu}\,d\nu = \int_{X\times Y}f\,dw = \int_X\bracks{\int_Yf_x\,d\nu}\,d\mu $$
+
+\ethrm
+
+\Proof the equality of the absolute values is due to Tonelli's theorem, since $\abs f$ is nonnegative and $\abs f_x=\abs{f_x}$.
+If the terms are finite, then $f$ is integrable (since $f$ is integrable if and only if $\abs f$ is )and so the second set of equalities follows from Fubini's theorem.
+\qed
+
 \bye
 
