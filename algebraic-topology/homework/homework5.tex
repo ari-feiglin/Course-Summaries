@@ -1,0 +1,205 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+\parindent=0pt
+\parskip=3pt plus 2pt minus 2pt
+
+\input ../preamble
+
+\footline={}
+
+\setcounter{section}{4}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+
+{\bppbox{rgb{.5 1 .5}}{rgb{0 .4 0}}{rgb{.1 .4 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Algebraic Topology}
+    \smallskip
+    \centerline{\setfont{it}Homework \the\counter{section}}
+    \centerline{\setfont{it}Ari Feiglin}
+
+\eppbox}
+
+\bexerc
+
+    Let $X$ be a topological space, $\U,\V\subseteq X$ open such that $X=\U\cup\V$, $\U,\V$ are simply connected, $\U\cap\V$ is nonnempty and path connected.
+    Prove that $X$ is simply connected.
+
+\eexerc
+
+Let $f\in\pi_1(X,a)$ for some $a\in\U\cap\V$.
+Then $f^{-1}\U,f^{-1}\V$ forms an open cover of $I$, which is compact and thus has a Lebesgue number.
+So we can partition $I$ into closed intervals $I_i$ whose length is at most the Lebesgue number so that $f(I_i)\subseteq\U$ or $\V$.
+Define $f_i$ to be the curve obtained by restricting $f$ to $I_i$, so up to homotopy $f=f_1\cdots f_n$.
+Thus $f_i$ is a curve from $f_i(0)$ to $f_i(1)$ in $\U$ or $\V$.
+Since $\U\cap\V$ is path connected, let $\gamma_i$ be a path from $f_i(1)=f_{i+1}(0)$ to $a$, then
+$$ [f] = [\overline\gamma_0f_1\gamma_1\overline\gamma_1 f_2\gamma_2\overline\gamma_2\cdots\overline\gamma_{n-1}f_n\gamma_n] =
+[\overline\gamma_0f_1\gamma_1][\overline\gamma_1f_2\gamma_2]\cdots[\overline\gamma_{n-1}f_n\gamma_n] $$
+where $\gamma_0,\gamma_n$ are just the constant loops on $a$.
+Now, $\overline\gamma_{i-1}f_i\gamma_i$ is a loop on $a$ contained within $\U$ or $\V$, which are simply connected meaning these are loop-homotopic to $K_a$.
+Thus $[f]=1$ as required.
+
+\bexerc
+
+    \benum
+        \item Show that for $n\geq2$, $S^n$ is simply-connected.
+        \item How does your proof fail for $n=1$?
+    \eenum
+
+\eexerc
+
+\benum
+    \item Define $\U=\set{(x_1,\dots,x_{n+1})\in S^n}[x_{n+1}>-\epsilon]$ and $\V=\set{(x_1,\dots,x_{n+1})\in S^n}[x_{n+1}<\epsilon]$.
+    These are both hemispheres of $S^n$, which are homeomorphic to $D^{n+1}$ and thus simply connected.
+    And $\U\cap\V$ is the band of points $\set{(x_1,\dots,x_{n+1})\in S^n}[-\epsilon<x_{n+1}<\epsilon]$ which is path-connected and non-empty.
+    So by the first exercise, $S^1=\U\cup\V$ is simply-connected.
+    \item For $n=1$, $\U\cap\V$ is two segments on the side of $S^1$ and is not path connected.
+\eenum
+
+\bexerc
+
+    Let $G,H$ be two nontrivial groups.
+    Show that $G*H$ is infinite.
+
+\eexerc
+
+Let $g\in G,h\in H$.
+Then we define $f\colon{\bb N}\longto G*H$ recursively:
+$$ f(n) = \cases{(g,f(n-1)) & $n$ even\cr (h,f(n-1)) & $n$ odd} $$
+so that $f(0)=g$, $f(1)=hg$, $f(2)=ghg$, etc.
+Then $f(n)\neq f(m)$ for $n\neq m$ since $f(n)$ is irreducible, so $f$ is an injection from ${\bb N}$ to $G*H$ meaning the free product is infinite.
+
+\bexerc
+
+    Show that the center of the free product of two groups is trivial.
+
+\eexerc
+
+Let $g_1h_1\cdots g_nh_n\in G*H$, then this doesn't commute with $g_1$ since $g_1g_1h_1\cdots g_nh_n$ ends with an element of $H$ while $g_1h_1\cdots g_nh_ng_1$ ends with an element of $G$.
+And for the case $h_1g_1\cdots h_ng_n$ similar.
+For the case $g_1h_1\cdots g_nh_ng_{n_1}\in G*H$, this doesn't commute with $h\in H$.
+Similar for words which begin and end with $G*H$.
+So no nontrivial words commute with every other word.
+
+\bexerc
+
+    Let $A,B$ be abelian groups, show that $A\times B$ satisfies the same property as the free product in the category of Abelian groups.
+
+\eexerc
+
+We need to show that there exists a unique $L\colon A\times B\longto K$ to make the following diagram commute (where $\rho_A\colon a\varmapsto(a,0)$ and $\rho_B\colon b\varmapsto(0,b)$.
+All other objects and morphisms are given):
+
+\medskip
+\centerline{\def\diagcolwidth{1cm}\def\diagrowheight{.75cm}\drawdiagram{
+    $A$&\cr
+    &$A\times B$&$K$\cr
+    $B$&&\cr
+}{
+    \diagarrow{to={2,3}, from={1,1}, curve=.6cm, text=$\phi$, y distance=.5cm, origin orient={right,ycenter}}
+    \diagarrow{to={2,3}, from={3,1}, curve=-.6cm, text=$\psi$, y distance=-.6cm, origin orient={right,ycenter}}
+    \diagarrow{to={2,3}, from={2,2}, text=$\exists!L$, y distance=.25cm}
+    \diagarrow{to={2,2}, from={1,1}, text=$\rho_A$, y distance=.25cm}
+    \diagarrow{to={2,2}, from={3,1}, text=$\rho_B$, y distance=-.25cm}
+}}
+
+To satisfy this, we must have that $L\circ\rho_A=L\phi$ and $L\circ\rho_B=\psi$ so that $L(a,0)=\phi(a)$ and $L(0,b)=\psi(b)$.
+So we must define $L(a,b)=\phi(a)+\psi(b)$ and this is well-defined and a unique Abelian group homomorphism.
+
+\bexerc
+
+    Show that $\Abof{G*H}\cong\Abof G\times\Abof H$.
+
+\eexerc
+
+Let $K$ be a group such that there exists a morphism $G*H\longto K$, then we will show that $\Abof G\times\Abof H$ has the Abelianization property: there exists a unique morphism $L$ which makes the
+appropriate diagram commute.
+But first we need to find the cannonical morphism $G*H\longto\Abof G\times\Abof H$.
+
+Because $G\longto\Abof G\longto\Abof G\times\Abof H$ and $H\longto\Abof H\longto\Abof G\times\Abof H$ are both morphisms from $G$ and $H$ to $\Abof G\times\Abof H$, by the universal property of the free
+product $G*H$, there exists a unique morphism which makes the following commute:
+
+\let\ss=\scriptstyle
+\medskip
+\centerline{\def\diagcolwidth{1cm}\def\diagrowheight{1cm}\drawdiagram{
+    $G*H$&&$\Abof G\times\Abof H$\cr
+    $G$&&$\Abof G$\cr
+    $H$&&$\Abof H$\cr
+}{
+    \diagarrow{from={1,1}, to={1,3}, text=$\ss\exists!$, y distance=.15cm}
+    \diagarrow{from={2,1}, to={1,1}}
+    \diagarrow{from={3,1}, to={1,1}, curve=.5cm, x off=-.15cm}
+    \diagarrow{from={2,1}, to={2,3}}
+    \diagarrow{from={3,1}, to={3,3}}
+    \diagarrow{from={2,3}, to={1,3}}
+    \diagarrow{from={3,3}, to={1,3}, curve=-.7cm, x off=.2cm}
+}}
+
+Now let us suppose there is an Abelian group $K$ group and a morphism $G*H\longto K$.
+We want to prove there exists a unique morphism $\Abof G\times\Abof H\longto K$ which makes the following diagram commute:
+
+\medskip
+\centerline{\def\diagcolwidth{1cm}\def\diagrowheight{1cm}\drawdiagram{
+    &$K$\cr
+    $G*H$&&$\Abof G\times\Abof H$\cr
+    $G$&&$\Abof G$\cr
+    $H$&&$\Abof H$\cr
+}{
+    \diagarrow{from={2,1}, to={1,2}}
+    \diagarrow{from={2,1}, to={2,3}, text=$\ss\exists!$, y distance=.15cm}
+    \diagarrow{from={3,1}, to={2,1}}
+    \diagarrow{from={4,1}, to={2,1}, curve=.5cm, x off=-.15cm}
+    \diagarrow{from={3,1}, to={3,3}}
+    \diagarrow{from={4,1}, to={4,3}}
+    \diagarrow{from={3,3}, to={2,3}}
+    \diagarrow{from={4,3}, to={2,3}, curve=-.7cm, x off=.2cm}
+}}
+
+Composing $G\longto G*H\longto K$ and $H\longto G*H\longto K$, by the Abelianization property there exist unique morphisms which make the following commute
+
+\medskip
+\centerline{\def\diagcolwidth{1cm}\def\diagrowheight{1cm}\drawdiagram{
+    &$K$\cr
+    $G*H$&&$\Abof G\times\Abof H$\cr
+    $G$&&$\Abof G$\cr
+    $H$&&$\Abof H$\cr
+}{
+    \diagarrow{from={2,1}, to={1,2}}
+    \diagarrow{from={2,1}, to={2,3}, text=$\ss\exists!$, y distance=.15cm}
+    \diagarrow{from={3,1}, to={2,1}}
+    \diagarrow{from={4,1}, to={2,1}, curve=.5cm, x off=-.15cm}
+    \diagarrow{from={3,1}, to={3,3}}
+    \diagarrow{from={4,1}, to={4,3}}
+    \diagarrow{from={3,3}, to={1,2}, curve=1cm, text=$\ss\exists!$, x distance=-.4cm, y distance=-.15cm}
+    \diagarrow{from={4,3}, to={1,2}, curve=1cm, x off=-.1cm, x distance=-.6cm, text=$\ss\exists!$}
+    \diagarrow{from={3,3}, to={2,3}}
+    \diagarrow{from={4,3}, to={2,3}, curve=-.7cm, x off=.2cm}
+}}
+
+Now, as we showed above $A\times B$ has the free group universal property for Abelian groups, and thus there exists a unique morphism $\Abof G\times\Abof H\longto K$ which makes the diagram commute
+
+\medskip
+\centerline{\def\diagcolwidth{1cm}\def\diagrowheight{1cm}\drawdiagram{
+    &$K$\cr
+    $G*H$&&$\Abof G\times\Abof H$\cr
+    $G$&&$\Abof G$\cr
+    $H$&&$\Abof H$\cr
+}{
+    \diagarrow{from={2,1}, to={1,2}}
+    \diagarrow{from={2,1}, to={2,3}, text=$\ss\exists!$, y distance=.15cm}
+    \diagarrow{from={3,1}, to={2,1}}
+    \diagarrow{from={4,1}, to={2,1}, curve=.5cm, x off=-.15cm}
+    \diagarrow{from={3,1}, to={3,3}}
+    \diagarrow{from={4,1}, to={4,3}}
+    \diagarrow{from={3,3}, to={1,2}, curve=1cm, text=$\ss\exists!$, x distance=-.4cm, y distance=-.15cm}
+    \diagarrow{from={4,3}, to={1,2}, curve=1cm, x off=-.1cm, x distance=-.6cm, text=$\ss\exists!$}
+    \diagarrow{from={3,3}, to={2,3}}
+    \diagarrow{from={4,3}, to={2,3}, curve=-.7cm, x off=.2cm}
+    \diagarrow{from={2,3}, to={1,2}, x off=.1cm, text=$\ss\exists!$, x distance=-.05cm}
+}}
+
+\bye
+
