@@ -719,5 +719,83 @@ So to find if $\phi$ is a specification of ${\cal A}$, we can utilize the follow
         This exists since $S$ is strongly connected, and so $\sigma_1\sigma_2^\omega$ is a counterexample (it satisfies ${\cal A}$ but not ${\cal B}$/$\phi$).
 \eenum
 
+\subsection{Translating LTL Formulas into Automata}
+
+We will now provide an algorithm for translating propositional LTL formulas into equivalent automata.
+Suppose $\phi$ is an LTL formula, then it is equivalent to a {\it negation normal form} where negation is applied only on propositional variables.
+This is due to the following equivalences:
+$$ \neg\bigcirc\mu \equiv \bigcirc\neg\mu,\quad\neg(\mu\lor\eta)\equiv\neg\mu\land\neg\eta,\quad\neg(\mu\land\eta)\equiv\neg\mu\lor\neg\eta,\quad\neg\neg\mu\equiv\mu,\quad
+\neg(\mu\U\eta)\equiv\neg\mu\V\neg\eta,\quad\neg(\mu\V\eta)\equiv\neg\mu\U\neg\eta $$
+We also use the equivalences $\diamond\mu\equiv\true\U\mu$ and $\square\mu\equiv\false\V\mu$.
+
+The idea is to decompose the formula into a boolean structure, then split the formula into what has to be true in this state and what has to be true in the next state onward.
+For example, $\phi\U\psi$ is equivalent to $\psi\lor(\phi\land\bigcirc(\phi\U\psi))$, so either $\psi$ holds now, or $\phi$ holds now and $\phi\U\psi$ holds from the next state.
+Similarly $\phi\V\psi$ is equivalent to $(\phi\land\psi)\lor(\psi\land\bigcirc(\phi\V\psi))$, so either both $\phi$ and $\psi$ hold now, or $\psi$ holds now and $\phi\V\psi$ holds from the next state.
+So let us define the functions $\now_1,\next,\now_2$ to encode this information, defined as in the table below:
+
+\centerline{
+    \vbox{\everycr={\noalign{\hrule}}\halign{\vrule\strut\kern.25cm$#$\hfil\kern.25cm\vrule&&\kern.25cm\hfil$#$\hfil\kern.25cm\vrule\cr
+    \eta&\now_1(\eta)&\next(\eta)&\now_2(\eta)\cr
+    \phi\U\psi&\set\phi&\set{\phi\U\psi}&\set\psi\cr
+    \phi\V\psi&\set\psi&\set{\phi\V\psi}&\set{\phi,\psi}\cr
+    \phi\lor\psi&\set\phi&\varnothing&\set\psi\cr
+    \phi\land\psi&\set{\phi,\psi}&\varnothing&-\cr
+    \bigcirc\phi&\varnothing&\set\phi&-\cr
+}}}
+
+The meaning being that for $\eta$ to hold, either everything in $\now_1(\eta)$ holds in this state and $\next(\eta)$ holds in the next state, or $\now_2(\eta)$ holds in this state.
+When the set is $\varnothing$ then it holds vaccuously, and if the set is $-$ then it does not hold.
+
+Our algorithm will utilize {\it graph nodes} to represent LTL formulas.
+Each graph node will have the following fields:
+\benum
+    \item {\it Name}: a unique identifier for the node,
+    \item {\it Incoming}: a list of identifiers (names) for nodes whith edges outgoing into the graph node,
+    \item {\it Now, Old, Next}: each of these represent LTL formulas.
+        {\it Now} represents the LTL formula which must be satisfied by the current state, {\it Old} represents the LTL formula which must've been satisfied by the previous state, and {\it Next} represents
+        the formula satisfied by the next state.
+\eenum
+
+\def\now{{\it Now}}\def\old{{\it old}}\def\next{{\it next}}
+When translating an LTL formula in negation normal form $\phi$, the algorithm begins with a single graph node ${\sf init}$ with fields $\now=\set\phi$, $\next=\old=\varnothing$.
+When recursing on the current node $s$, the algorithm checks if there are any formulas in the $\now$ field.
+If not, then the processing on the current node is complete and now the node must be added to a set of nodes {\it Node\_Set}.
+If there already exists a node $r$ in {\it Node\_Set} with the same $\next$ and $\old$ fields (since $\now$ is empty), then there is no need to add $s$ to the set.
+Instead add the incoming edges of $s$ to the incoming edges of $r$.
+
+Otherwise, add $s$ to {\it Node\_set} and create a {\it successor node} $s'$ defined so that $s'$'s $\now$ field is $s$'s $\next$ field.
+$s'$'s $\old$ and $\next$ are set to be empty.
+Now recurse on $s'$.
+
+If $s$'s $\now$ field is non-empty, select a formula $\eta$.
+$\eta$ is either a proposition, a boolean constant, or the negation of a proposition, or of the form $\neg\mu,\mu\lor\psi$, $\mu\land\psi$, $\bigcirc\mu$, $\mu\U\psi$, or $\mu\V\psi$.
+So we split into cases:
+\benum
+    \item $\eta$ is a proposition, boolean constant, or negation of a proposition.
+        If $\eta$ is $\false$ or $\neg\eta$ is in $\old$ then discard $s$: it contains a contradiction.
+        Otherwise have $s$ {\it evolve} into $s'$ which is obtained by moving $\eta$ from $\now$ to $\old$.
+    \item If $\eta=\mu\U\psi$ then {\it split} $s$ into two new nodes $s_1$ and $s_2$.
+        For $s_1$, $\mu$ is added to $\now$ and $\mu\U\psi$ to $\next$.
+        For $s_2$, $\psi$ is added to $\now$.
+        $s_1$ and $s_2$ get the incoming nodes of $s$.
+        This is due to the fact that $\mu\U\psi$ is equivalent to $\psi\lor(\mu\land\bigcirc(\mu\U\psi))$, so for $\mu\U\psi$ we can either go to $\psi$ ($s_2$) or $\mu$ with the next state $\mu\U\psi$
+        ($s_1$).
+    \item If $\eta=\mu\V\psi$ then {\it split} $s$ into $s_1$ and $s_2$ where $\now(s_1)=\set{\psi,\mu}$, $\now(s_2)=\set\psi$, and $\next(s_2)=\set{\mu\V\psi}$.
+    \item If $\eta=\mu\lor\psi$ then split to $s_1$, $s_2$ where $\now(s_1)=\set\mu$, $\now(s_2)=\set\psi$.
+    \item If $\eta=\mu\land\psi$ then evolve to $s'$ where $\now(s')=\set{\mu,\psi}$.
+    \item If $\eta=\bigcirc\mu$ then evolve to $s'$ where $\next(s')=\set\mu$.
+\eenum
+
+The algorithm then recurses on $s'$.
+Once finished recursing, the algorithm has constructed a set of graph nodes {\it Node\_Set}, which it will use to construct a generalized B\"uchi automaton $B=(\Sigma,S,\Delta,I,L,F)$ defined by
+\benum
+    \item $\Sigma$ is the alphabet which consists of all Boolean combinations of propositional variables found in $\phi$.
+    \item $S$ is the set of states consisting of nodes in {\it Node\_Set}.
+    \item $(s,s')\in\Delta$ if and only if $s$ is in ${\it incoming}(s)$.
+    \item $s\in I$ if and only if ${\sf init}\in{\it incoming}(s)$.
+    \item $L(s)$ is the conjunction of the literals (negated and non-negated propositions) in $\old(s)$.
+    \item For every subformula of $\phi$ of the form $\mu\U\psi$ form a set $f\in F$ which contains all the states $s$ such tha $\psi\in\old(s)$ or $\mu\U\psi\notin\old(s)$.
+\eenum
+
 \bye
 
