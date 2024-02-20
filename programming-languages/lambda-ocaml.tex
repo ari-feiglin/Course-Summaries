@@ -54,9 +54,9 @@ By $\alpha$-equivalence, every term has an equivalent normalized term.
 
     Let $t$ be a term, let us define the set of equations $A_t$ as follows: for every subterm $t'$ correspond a unique type variable $\alpha$, then
     \benum
-        \item if $\alpha$ and $\beta$ correspond to different occurrences of the same subterm, then $\alpha=\beta\in A_t$,
-        \item suppose $t_1t_2$ is a subterm such that $\alpha$ is the variable of $t_1$, $\beta$ of $t_2$, and $\gamma$ of $t_1t_2$, then $\alpha=\beta\to\gamma\in A_t$,
-        \item for every subterm \lcalc{fun x\to t'}, if $\alpha$ is the variable of $x$, $\beta$ of $t'$, and $\gamma$ of \lcalc{fun x\to t'}, then $\gamma=\alpha\to\beta\in A_t$.
+        \item if $\alpha$ and $\beta$ correspond to different occurrences of the same subterm, then $\alpha\eq\beta\in A_t$,
+        \item suppose $t_1t_2$ is a subterm such that $\alpha$ is the variable of $t_1$, $\beta$ of $t_2$, and $\gamma$ of $t_1t_2$, then $\alpha\eq\beta\to\gamma\in A_t$,
+        \item for every subterm \lcalc{fun x\to t'}, if $\alpha$ is the variable of $x$, $\beta$ of $t'$, and $\gamma$ of \lcalc{fun x\to t'}, then $\gamma\eq\alpha\to\beta\in A_t$.
     \eenum
 
 \edefn
@@ -64,5 +64,68 @@ By $\alpha$-equivalence, every term has an equivalent normalized term.
 For example, let {\tt t} be \lcalc{(fun x\to x)y}, then let us map the subterms to type variables as follows:
 $$ y\mapsto\alpha_y,\quad x\mapsto\alpha_x^1,\quad x\mapsto\alpha_x^2,\quad \lcalc{fun x\to x}\mapsto\alpha_f,\quad t\mapsto\alpha_t $$
 Then
-$$ A_t = \set{\alpha_x^1=\alpha_x^2,\;\alpha_f=\alpha^1_x\to\alpha^2_x,\;\alpha_f=\alpha_y\to\alpha_t} $$
+$$ A_t = \set{\alpha_x^1\eq\alpha_x^2,\;\alpha_f\eq\alpha^1_x\to\alpha^2_x,\;\alpha_f\eq\alpha_y\to\alpha_t} $$
+
+Now that we have finished step $(1)$, we skip step $(2)$ and progress to step $(3)$.
+We will return to step $(2)$ later.
+
+\bdefn
+
+    A {\emphcolor substitution} is a function $\sigma$ which maps between type variables such that $\sigma(\T_1\to\T_2)=\sigma(\T_1)\to\sigma(\T_2)$.
+    $\sigma$ {\emphcolor preserves} an equality $\T_1\eq\T_2$ if $\sigma(\T_1)=\sigma(\T_2)$, and it preserves a set of equations if it preserves every equality in the set.
+
+\edefn
+
+So in the example above, one such substitution which preserves $A_t$ is $\sigma(\alpha_x^1)=\sigma(\alpha_x^2)=\sigma(\alpha_y)=\sigma(\alpha_t)=\alpha$, and $\sigma(\alpha_f)=\alpha\to\alpha$.o
+
+\bdefn
+
+    Let $t$ be a term and $\beta$ a function which maps subterms $t'$ to their type variables.
+    Suppose $A_t$ is the resulting set of equations, and $\sigma$ a substitution which preserves it.
+    Then we define
+    $$ \Gamma^\beta_\sigma = \set{x\colon\sigma(\beta(x))}[x\in\var t] $$
+
+\edefn
+
+So using the above example where $\beta$ is the map
+$$ \beta\colon\qquad y\mapsto\alpha_y,\quad x\mapsto\alpha_x^1,\quad x\mapsto\alpha_x^2,\quad \lcalc{fun x\to x}\mapsto\alpha_f,\quad t\mapsto\alpha_t $$
+Then using the above substitution $\sigma$, we have that
+$$ \Gamma^\beta_\sigma = \set{x\colon\alpha,\ y\colon\alpha} $$
+
+\bthrm
+
+    Let $t$ be a term, $\beta$ a correspondence between subterms and type variables, and $\sigma$ a substitution which preserves $A_t$.
+    Then for every subterm $t'$ of $t$,
+    $$ \Gamma^\beta_\sigma\vdash t'\colon\sigma(\beta(t')) $$
+    Thus if we define $m\coloneqq\sigma\circ\beta$ and $\Gamma\coloneqq\Gamma^\beta_\sigma$, we have a solution to the problem of type inference for $t$.
+    And if there is no $\sigma$ which preserves $A_t$ then there is no solution to the problem of type inference for $t$.
+
+\ethrm
+
+\Proof by induction on $t'$.
+\benum
+    \item If $t'$ is a variable then $t'\colon\sigma(\beta(t'))$ is in $\Gamma^\beta_\sigma$ and thus this follows from {\tensc O-Var}.
+    \item If $t'$ is of the form $\fun x\to t''$, then let $\alpha_1,\alpha_2,\alpha_3$ be the types of $x,t'',t'$ respectively.
+    Then $\alpha_3\eq\alpha_1\to\alpha_2$ is an equation in $A_t$ so $\sigma(\alpha_3)=\alpha(\alpha_1)\to\sigma(\alpha_2)$.
+    In other words, $\sigma(\beta(t'))=\sigma(\beta(x))\to\sigma(\beta(t''))$.
+    Now, by induction we have that
+    $$ \Gamma^\beta_\sigma\vdash x\colon\sigma(\beta(x)),\quad \Gamma^\beta_\sigma\vdash t''\colon\sigma(\beta(t'')) $$
+    So applying {\tensc O-Abs} yields
+    $$ \Gamma^\beta_\sigma\vdash t'\colon\sigma(\beta(x))\to\sigma(\beta(t'')) = \sigma(\beta(t')) $$
+    as required.
+    \item if $t'=t_1t_2$ then this follows similarly to the above case.
+\eenum
+
+If $m$ solves the problem of type inference, then define $\sigma=m\circ\beta^{-1}$ and we claim that this is a substitution which preserves $A_t$.
+We split into cases by the type of equations in $A_t$:
+\benum
+    \item Equations arising from different occurrences of the same subterm and so $m$ will map this term to the same type, independent of the occurrence.
+    \item Equations arising from $t'=\fun x\to t''$, then this follows from {\tensc O-Abs}.
+    \item Equations arising from $t_1t_2$ follows from {\tensc O-App}.
+    \qed
+\eenum
+
+So to solve step $(2)$ all we must do is find a suitable substitution.
+This is called the problem of {\it unification}: given a set of equations of terms (since $\beta$ is a correspondence, we can view the equation of type variables as equations of terms) finding a
+substitution which preserves it.
 

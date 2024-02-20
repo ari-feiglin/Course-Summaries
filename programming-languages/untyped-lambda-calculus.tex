@@ -93,6 +93,7 @@ This means that we can view $\lambda y.x\,y$ as $\lambda w.x\,w$ and so the subs
     A term of the form $\lambda x.t$ is called a {\emphcolor abstraction}.
     We define the {\emphcolor $\beta$ reduction} on terms which maps redexes to terms by $(\lambda x.t)t'\xvarrightarrow{\,\beta\,}t[x\mapsto t']$ where $t[x\mapsto t']$ is the term
     obtained by substituting $t'$ at all the free occurrences of $x$.
+    A {\emphcolor value} is an abstraction or variable.
 
 \edefn
 
@@ -135,6 +136,18 @@ There are $4$ ways:
             \to&\lambda z.z
         }
 
+        The rules for normal order reduction are as follows:
+        $$ \syntaxtree{
+            {\lcalc{(\lambda x.t)s \to\ t[x\mapsto s]}}{{\vphantom t}\noc}
+        },\quad
+        \syntaxtree{
+            {\lcalc{ts \to\ t's}}[if {\tt t} is not a value]{{\lcalc{t\to t'}}\noc}
+        },\quad
+        \syntaxtree{
+            {\lcalc{\lambda x.t\to\lambda x.t'}}[if {\tt t} is not a value]{{\lcalc{t\to t'}}\noc}
+        }
+        $$
+
     \item {\it Call-by-name}, which is similar to normal order but it performs no reductions inside abstractions.
         Using the same example:
 
@@ -144,6 +157,14 @@ There are $4$ ways:
             \to&\lambda z.\id z
         }
 
+        The rules for call-by-name reduction are as follows:
+        $$ \syntaxtree{
+            {\lcalc{(\lambda x.t)s \to\ t[x\mapsto s]}}{{\vphantom t}\noc}
+        },\qquad
+        \syntaxtree{
+            {\lcalc{ts \to\ t's}}[if {\tt t} is not a value]{{\lcalc{t\to t'}}\noc}
+        } $$
+
     \item {\it Call-by-value}, which is the most commonly used in programming languages, like call-by-name, but a redex is reduced only when its right-hand side has already been
         reduced to a {\it value} (a term which cannot be reduced further, in this lambda calculus these are only abstractions).
 
@@ -152,6 +173,19 @@ There are $4$ ways:
             \to&\underline{\id(\lambda z.\id z)}\cr
             \to&\lambda z.\id z
         }
+
+        The rules for call-by-value reduction are
+        $$ \syntaxtree{
+            {\lcalc{(\lambda x.t)v \to\ t[x\mapsto v]}}[if {\tt v} is a value]{{\vphantom t}\noc}
+        },\qquad
+        \syntaxtree{
+            {\lcalc{(\lambda x.t)s \to\ (\lambda x.t)s'}}[if {\tt s} is not a value]{{\lcalc{s\to s'}}\noc}
+        },$$
+        $$
+        \syntaxtree{
+            {\lcalc{ts \to\ t's}}[if {\tt t} is not a value]{{\lcalc{t\to t'}}\noc}
+        }
+        $$
 \eenum
 
 In this course we use call-by-value, since it is the most commonly used evaluation strategy.
