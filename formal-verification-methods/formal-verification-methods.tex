@@ -735,7 +735,7 @@ So let us define the functions $\now_1,\next,\now_2$ to encode this information,
 
 \centerline{
     \vbox{\everycr={\noalign{\hrule}}\halign{\vrule\strut\kern.25cm$#$\hfil\kern.25cm\vrule&&\kern.25cm\hfil$#$\hfil\kern.25cm\vrule\cr
-    \eta&\now_1(\eta)&\next(\eta)&\now_2(\eta)\cr
+    \eta&\now_1(\eta)&\next_1(\eta)&\now_2(\eta)\cr
     \phi\U\psi&\set\phi&\set{\phi\U\psi}&\set\psi\cr
     \phi\V\psi&\set\psi&\set{\phi\V\psi}&\set{\phi,\psi}\cr
     \phi\lor\psi&\set\phi&\varnothing&\set\psi\cr
@@ -743,7 +743,7 @@ So let us define the functions $\now_1,\next,\now_2$ to encode this information,
     \bigcirc\phi&\varnothing&\set\phi&-\cr
 }}}
 
-The meaning being that for $\eta$ to hold, either everything in $\now_1(\eta)$ holds in this state and $\next(\eta)$ holds in the next state, or $\now_2(\eta)$ holds in this state.
+The meaning being that for $\eta$ to hold, either everything in $\now_1(\eta)$ holds in this state and $\next_1(\eta)$ holds in the next state, or $\now_2(\eta)$ holds in this state.
 When the set is $\varnothing$ then it holds vaccuously, and if the set is $-$ then it does not hold.
 
 Our algorithm will utilize {\it graph nodes} to represent LTL formulas.
@@ -756,7 +756,6 @@ Each graph node will have the following fields:
         the formula satisfied by the next state.
 \eenum
 
-\def\now{{\it Now}}\def\old{{\it old}}\def\next{{\it next}}
 When translating an LTL formula in negation normal form $\phi$, the algorithm begins with a single graph node ${\sf init}$ with fields $\now=\set\phi$, $\next=\old=\varnothing$.
 When recursing on the current node $s$, the algorithm checks if there are any formulas in the $\now$ field.
 If not, then the processing on the current node is complete and now the node must be added to a set of nodes {\it Node\_Set}.
@@ -791,11 +790,39 @@ Once finished recursing, the algorithm has constructed a set of graph nodes {\it
 \benum
     \item $\Sigma$ is the alphabet which consists of all Boolean combinations of propositional variables found in $\phi$.
     \item $S$ is the set of states consisting of nodes in {\it Node\_Set}.
-    \item $(s,s')\in\Delta$ if and only if $s$ is in ${\it incoming}(s)$.
-    \item $s\in I$ if and only if ${\sf init}\in{\it incoming}(s)$.
+    \item $(s,s')\in\Delta$ if and only if $s$ is in $\incom(s)$.
+    \item $s\in I$ if and only if ${\sf init}\in\incom(s)$.
     \item $L(s)$ is the conjunction of the literals (negated and non-negated propositions) in $\old(s)$.
     \item For every subformula of $\phi$ of the form $\mu\U\psi$ form a set $f\in F$ which contains all the states $s$ such tha $\psi\in\old(s)$ or $\mu\U\psi\notin\old(s)$.
 \eenum
+
+\algorithm
+    \Function{expand}{$s$, ${\it Node\_Set}$}
+        \If{$\now(s)=\varnothing$}
+            \If{$\exists r\in{\it Node\_Set}$ such that $\old(r)=\old(s)$ and $\next(r)=\next(s)$}
+                \State $\incom(r)\gets\incom(r)\cup\incom(s)$
+                \State\Return ${\it Node\_Set}$
+            \Else
+                \State ${\it Node\_Set}\gets{\it Node\_Set}\cup\set s$
+                \State $\now(s'),\next(s')\gets\varnothing$
+                \State $\old(s')\gets\now(s)$
+                \State $\incom(s')\gets\set s$
+                \State \Return {\tencsc expand}$(s,{\it Node\_Set})$
+            \EndIf
+        \EndIf
+        \State \textbf{choose} $\eta\in\now(s)$
+        \State $\now(s)\gets\now(s)\setminus\set\eta$
+        \lIf{$\eta=\false$ \textbf{or} $\neg\eta\in\old(s)$} \Return ${\it Node\_Set}$
+        \State $\old(s_1),\old(s_2)\gets\old(s)\cup\set\eta$
+        \State $\now(s_1)\gets\now_1(\eta)\cup\now(s)$
+        \State $\now(s_2)\gets\now_2(\eta)\cup\now(s)$
+        \State $\next(s_1)\gets\next_1(\eta)\cup\next(s)$
+        \State $\next(s_2)\gets\next(s)$
+        \State \Return {\tencsc epxand}$(s_2,\hbox{\tencsc expand}(s_1,{\it Node\_Set}))$
+    \EndFunc
+\ealgorithm
+
+On line $19$, in the case that $\now_2(\eta)$ is $-$ then skip the line (and return {\tencsc expand}$(s_1,{\it Node\_Set})$).
 
 \bye
 
