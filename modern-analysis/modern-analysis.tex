@@ -915,5 +915,158 @@ Combining these together, we get the following:
 If the terms are finite, then $f$ is integrable (since $f$ is integrable if and only if $\abs f$ is )and so the second set of equalities follows from Fubini's theorem.
 \qed
 
+\bdefn
+
+    Let $f\colon X\longto\overline{\bb R}$ be a function, then its {\emphcolor support} is ${\rm supp}(f)\coloneqq\set{x\in X}[f(x)\neq0]$.
+    Define $C_0({\bb R})$ to be the set of continuous real functions with compact support.
+
+\edefn
+
+\bthrm
+
+    Let $f\colon{\bb R}\longto\overline{\bb R}$ be Lebesgue integrable.
+    Then for every $\epsilon>0$ there exists a $g\in C_0({\bb R})$ such that $\int_{\bb R}\abs{f-g}\,dx<\epsilon$.
+
+\ethrm
+
+\Proof in steps.
+\benum
+    \item If $f=\chi_{(a,b)}$ then add to the edges of $f$ linear segments which go from $(a-\epsilon,0)$ to $(a,1)$ and $(b,1)$ to $(b+\epsilon,0)$ to form $g$.
+        Then $g-f$ are just two triangles of height $1$ and width $\epsilon$ which has an integral of $\epsilon$.
+    \item If $f=\chi_{\cal U}$ for $\cal U$ open then ${\cal U}=\bigdcup_{n=1}^\infty(a_n,b_n)$ a countable disjoint union of open intervals.
+        Then $\chi_{\cal U}=\sum_{n=1}^\infty\chi(a_n,b_n)$, and using $(1)$ we can approximate each $\chi(a_n,b_n)$ by a continuous $g_n$ whose difference in integral is $\frac\epsilon{2^n}$.
+        Then the total difference is bound by $\sum_{n=1}^\infty\frac\epsilon{2^n}=\epsilon$.
+    \item If $f=\chi_E$ for $E$ measurable and bound, then there exists an open $E\subseteq\cal U$ such that $m({\cal U}\setminus E)<\frac\epsilon2$.
+        So using $(2)$ approximate $\chi_E$ by $g$ for $\frac\epsilon2$.
+        Then
+        $$ \int\abs{g-f} \leq \int\abs{g-\chi_{\cal U}} + \int\abs{\chi_{\cal U}-\chi_E} < \frac\epsilon2 + \frac\epsilon2 = \epsilon $$
+    \item If $f$ is a simple function with compact support, then $f$ is the finite linear combination of functions in $(3)$ (since compact implies bound), and it follows.
+    \item If $f$ is integrable with compact support, then $f$ can be approximated by a simple function $\phi$ with the same support such that $\int\abs{f-\phi}<\frac\epsilon2$.
+        We will approximate $\phi$ by $g$ up to $\frac\epsilon2$, so
+        $$ \int\abs{f-g} \leq \int\abs{f-\phi} + \int\abs{\phi-g} < \frac\epsilon2 + \frac\epsilon2 = \epsilon $$
+    \item If $f$ is a general integrable function, then define $f_n=f\cdot\chi_{[-n,n]}$.
+        Then $\abs{f_n-f}\leq\abs{f_n}+\abs f$ which is integrable so by the dominated convergence theorem $\int\abs{f_n-f}\longto0$.
+        So take an $n$ where $\int\abs{f_n-f}<\frac\epsilon2$ and approximate $f_n$ by $g$ up to $\frac\epsilon2$, so
+        $$ \int\abs{f-g} \leq \int\abs{f-f_n} + \int\abs{f_n-g} < \epsilon \qed $$
+\eenum
+
+\bthrm
+
+    Let $f\colon{\bb R}\longto\overline{\bb R}$ be Lebesgue integrable.
+    Then
+    $$ \lim_{n\to\infty}\int_{\bb R}f(x)\sin(nx) = 0 $$
+
+\ethrm
+
+\Proof first let us assume that $f$ is continuously differentiable and supported in the closed interval $[a,b]$.
+We use integration by parts (since Lebesgue and Riemann integration are the same for continuous functions).
+Notice that by assumption $f(a)=f(b)=0$ (or we can extend the bounds outside the support) so this just becomes
+$$ \lim_{n\to\infty}\abs{\int_{\bb R}f(x)\sin(nx)} = \lim_{n\to\infty}\abs{\int_{\bb R}f'(x)\frac{\cos(nx)}n} $$
+Now $\abs{f'}$ is bound by $\norm{f'}_\infty=\sup_{x\in[a,b]}\abs{f'}$ which exists since $f'$ is continuous, and so
+$$ \leq \norm{f'}_\infty\cdot\int_a^b1\lim_{n\to\infty}\frac1n = \norm{f'}_\infty(b-a)\cdot0 = 0 $$
+We then approximate $f$ by continuously differentiable $g$ up to $\frac\epsilon2$.
+Then we can take an $n$ such that we have $\abs{\int_{\bb R}g(x)\sin(nx)}<\frac\epsilon2$ so
+$$ \abs{\int_{\bb R}f(x)\sin(nx)} \leq \abs{\int_{\bb R}g(x)\sin(nx)} + \abs{\int_{\bb R}(f-g)\sin(nx)} \leq \frac\epsilon2 + \abs{\int_{\bb R}f-g} < \epsilon $$
+so the limit is zero, as required.
+\qed
+
+\subsection{$L^p$-spaces}
+
+\bdefn
+
+    Let $(X,\mu)$ be a measure space, define the equivalence relation $\sim$ on functions $f\colon X\longto\overline{\bb R}$ by $f\sim g$ if $f=g$ almost everywhere.
+    Then $L^1(X,\mu)$ is the quotient space of functions $X\longto\overline{\bb R}$ with respect to this relation.
+
+    Define for $p>0$
+    $$ L^p(X,\mu) = \set{f\colon X\longto\overline{\bb R}}[\abs f^p\in L^1(X,\mu)]/{\sim} $$
+    again the space is quotiented by $\sim$.
+
+    Define the $L^p$-norm (we have not yet proven that it is a norm, and it isn't for all $p$):
+    $$ \norm f_p \coloneqq \parens{\int_X\abs f^p}^{1/p} $$
+
+\edefn
+
+$L^p(X,\mu)$ is a vector space: since if $f,g\in L^p(X,\mu)$ then
+$$ \int_X\abs{f+g}^p\,d\mu \leq \int_X\bigl(2\max{\abs f,\abs g}\bigr)^p \leq 2^p\int_X\bigl(\abs f^p+\abs g^p) < \infty $$
+and obviously $\alpha f\in L^p(X,\mu)$.
+
+Notice that the $L^1$-norm is indeed a norm: $\norm f_1=0$ if and only if $\int \abs f=0$ which is if and only if $f=0$ almost everywhere (so $f\sim0$).
+Obviously $\norm{\alpha f}_1=\abs\alpha\norm f_1$, and
+$$ \norm{f+g} = \int\abs{f+g} \leq \int\abs f + \int\abs g = \norm f + \norm g $$
+So it satisfies the triangle inequality.
+
+Notice that we showed before that $C_0({\bb R})$ is dense in $L^p({\bb R})$.
+We know from calculus that $C[a,b]$ (the space of continuous functions on $[a,b]$) is complete relative to the norm $\norm f_\infty\coloneqq\max_{x\in[a,b]}\abs{f(x)}$.
+Recall the definition of completeness:
+
+\bdefn
+
+    A normed space $(X,\norm\bullet)$ is {\emphcolor complete} if every Cauchy sequence relative to the norm $\norm\bullet$ converges relative to the norm $\norm\bullet$.
+
+\edefn
+
+We will show later that $L^p(X,\mu)$ are complete for $p\geq1$.
+
+\bdefn
+
+    Let $(X,\mu)$ be a measure space, and $f\colon X\longto\overline{\bb R}$ measurable, then define
+    $$ \norm f_\infty \coloneqq \infof{M\in{\bb R}}[\abs{f(x)}\leq M\hbox{ almost everywhere}] $$
+    and define the $L^\infty$ space:
+    $$ L^\infty(X,\mu) = \set{f\colon X\longto\overline{\bb R}\hbox{ measurable}}[\norm f_\infty<\infty] $$
+
+\edefn
+
+\blemm
+
+    For every $a,b\geq0$ and $0<\lambda<1$ we have $a^\lambda b^{1-\lambda}\leq\lambda a+(1-\lambda b)$ with equality if and only if $a=b$.
+
+\elemm
+
+\Proof this is equivalent to
+$$ \parens{\frac ab}^\lambda \leq \lambda\frac ab + (1-\lambda) $$
+Define $t=\frac ab$, so we must prove $\phi(t)=\lambda t-t^\lambda+(1-\lambda)\geq0$ for every $t\geq0$.
+Differentiating gives $\phi'(t)=\lambda-\lambda t^{\lambda-1}=\lambda(1-t^{\lambda-1})$.
+This is zero when $t=1$, $\phi'<0$ when $t<1$, and $\phi'>0$ when $t>1$.
+So the minimum is obtained when $t=1$, ie. $a=b$.
+But $\phi(1)=0$ so $\phi'\geq0$ with equality when $a=b$.
+\qed
+
+\bthrm[title=H\"older's Inequality, name=holder]
+
+    Let $1\leq p\leq\infty$ such that $\frac1p+\frac1q=1$ and $f\in L^p(X,\mu),g\in L^q(X,\mu)$ then $fg\in L^1(X,\mu)$ and
+    $$ \norm{fg}_1 \leq \norm f_p\norm g_q $$
+
+\ethrm
+
+\Proof define $\lambda=\frac1p$ so $1-\lambda=\frac1q$, $a=\abs{f(x)}^p$ and $b=\abs{g(x)}^q$.
+So we have that
+$$ \abs{fg} \leq \frac1p\abs{f(x)}^p + \frac1q\abs{g(x)}^q $$
+for every $x\in X$.
+First let us assume $\norm f_p=1=\norm g_q$, so we have that
+$$ \norm{fg}_1 = \int\abs{f(x)g(x)} \leq \frac1p\int\abs f + \frac1q\int\abs g = \frac1p\norm f_p^p + \frac1q\norm f_q^q = \frac1p + \frac1q = 1 = \norm f_p\norm g_q $$
+Now otherwise, define $f'=\frac f{\norm f_p}$ and $g'=\frac g{\norm g_q}$ so we have shown that
+$$ 1 \geq \norm{f'g'}_1 = \frac1{\norm f_p\cdot\norm g_q}\norm{fg}_1 \implies \norm{fg}_1 \leq \norm f_p\norm g_q \qed $$
+
+\bthrm[title=Minkoswki's Inequality, name=minkowski]
+
+    Let $f,g\in L^p(X,\mu)$ then
+    $$ \norm{f+g}_p \leq \norm f_p + \norm g_q $$
+
+\ethrm
+
+\Proof let $\frac1p+\frac1q=1$, meaning $q=\frac p{p-1}$ then
+\multlines{
+    \norm{f+g}_p^p = \int\abs{f+g}^p = \int\abs{f+g}^{p-1}\abs{f+g} \leq \int\abs{f+g}^{p-1}\abs f + \int\abs{f+g}^{p-1}\abs g\cr
+    &= \norm{\abs{f+g}^{p-1}\abs f}_1 + \norm{\abs{f+g}^{p-1}\abs g}_1
+}
+Notice that $p+q=pq$ and so $\parens{\abs{f+g}^{p-1}}^q=\abs{f+g}^{pq-q}=\abs{f+g}^p$, meaning $\abs{f+g}^{p-1}\in L^q(X,\mu)$, so by H\"older:
+$$ \leq \norm{\abs{f+g}^{p-1}}_q\norm f_p + \norm{\abs{f+g}^{p-1}}_q\norm g_p $$
+Now
+$$ \norm{\abs{f+g}^{p-1}}_q = \parens{\int_X\abs{f+g}^p}^{1/q} = \norm{f+g}_p^{p/q} $$
+So we have shown that
+$$ \norm{f+g}_p^{p-p/q} \leq \norm f_p + \norm g_p $$
+but $p-p/q=1$ so we have $\norm{f+g}_p\leq\norm f_p+\norm g_p$ as required.
+\qed
+
 \bye
 
