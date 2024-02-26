@@ -824,5 +824,166 @@ Once finished recursing, the algorithm has constructed a set of graph nodes {\it
 
 On line $19$, in the case that $\now_2(\eta)$ is $-$ then skip the line (and return {\tencsc expand}$(s_1,{\it Node\_Set})$).
 
+\vfill\break
+
+\section{Fairness}
+
+\subsection{Dekker's Algorithm}
+
+Let us look at a program called {\it Dekker's algorithm} for mutual exclusion:
+
+\def\wte{{\sf wants\_to\_enter}}
+\medskip
+\hbox to \hsize{
+    \hfil\vbox{\hsize=.4\hsize
+    \algorithm
+        \InnerText{\textbf{routine} $P_1$}
+            \While{{\sf true}}
+                \Comment non-critical section \EndComment
+                \State $\wte_1\gets\true$
+                \While{$\wte_2$}
+                    \If{${\sf turn}=2$}
+                        \State $\wte_1\gets\false$
+                        \State \textbf{wait} until ${\sf turn}=1$
+                    \EndIf
+                \EndWhile
+                \Comment critical section \EndComment
+                \State ${\sf turn}\gets2$
+                \State $\wte_1\gets\false$
+            \EndWhile
+        \InnerText{\textbf{end routine}}
+    \ealgorithm
+    }
+    \hfil\vbox{\hsize=.4\hsize
+    \algorithm
+        \InnerText{\textbf{routine} $P_2$}
+            \While{{\sf true}}
+                \Comment non-critical section \EndComment
+                \State $\wte_2\gets\true$
+                \While{$\wte_1$}
+                    \If{${\sf turn}=1$}
+                        \State $\wte_2\gets\false$
+                        \State \textbf{wait} until ${\sf turn}=2$
+                    \EndIf
+                \EndWhile
+                \Comment critical section \EndComment
+                \State ${\sf turn}\gets1$
+                \State $\wte_2\gets\false$
+            \EndWhile
+        \InnerText{\textbf{end routine}}
+    \ealgorithm
+    }
+    \hfil
+}
+\medskip
+
+Here we initialize $\wte_1$ and $\wte_2$ to $\false$, and ${\sf turn}$ to $1$.
+Recall that in our model, a transition is picked at random and executed.
+So the following is a valid execution:
+\benum
+    \item Have both programs progress to line $2$ (inclusive).
+        Now $\wte_1=\wte_2=\true$, and ${\sf turn}=1$.
+    \item Now have $P_1$ execute indefinitely, so that it forever executes the while loop on lines $3-8$.
+\eenum
+In such an execution, neither process will progress.
+What we want is for $P_2$ to eventually execute and progress to line line $5$ and set $\wte_2$ to $\false$, thus letting $P_1$ progress and eventually let $P_2$ progress.
+
+The issue is in our interleaving model, a transition is chosen at random and so here the scheduling was {\it unfair} to $P_2$: it never executed a transition of $P_2$.
+
+\subsection{Fairness Conditions}
+
+We define some notions of fairness:
+
+\benum
+    \item {\it Weak transition fairness}: if in an execution from some state $s$ and onward a transition is enabled, then it must be executed some time after $s$.
+    \item {\it Weak process fairness}: if in an execution from some state $s$ and onward there is at least one transition of process $P_i$ enabled, then some transition of $P_i$ must be eventually executed
+        after $s$.
+    \item {\it Strong transition fairness}: if a transition is enabled infinitely many times, it is executed infinitely many times.
+    \item {\it Strong process fairness}: if some transition of $P_i$ is enabled infinitely many times (not necessarily always the same transition) then a transition of $P_i$ (again, not necessarily the same
+        one each time) is executed infinitely many times.
+\eenum
+
+Let us define the proposition $\exec_\alpha$ to mean that the transition $\alpha$ is executed and $\en_\alpha$ to mean it is enabled.
+Then define
+$$ \exec_{P_i} \coloneqq \bigvee_{\alpha\in P_i}\exec_\alpha,\qquad \en_{P_i} \coloneqq \bigvee_{\alpha\in P_i}\en_\alpha $$
+so $\exec_{P_i}$ means that some transition of $P_i$ is executed, and $\en_{P_i}$ means that some transition of $P_i$ is enabled.
+So we can use LTL formulas to define fairness:
+
+\benum
+    \item {\it Weak transition fairness}: $\bigwedge_{\alpha\in T}\bigl(\diamond\square\en_\alpha\to\square\diamond\exec_\alpha\bigr)$.
+    \item {\it Weak process fairnes}: $\bigwedge_{P_i}\bigl(\diamond\square\en_{P_i}\to\square\diamond\exec_{P_i}\bigr)$.
+    \item {\it Strong transition fairness}: $\bigwedge_{\alpha\in T}\bigl(\square\diamond\en_\alpha\to\square\diamond\exec_\alpha\bigr)$.
+    \item {\it Strong process fairness}: $\bigwedge_{P_i}\bigl(\square\diamond\en_{P_i}\to\square\diamond\exec_{P_i}\bigr)$.
+
+\eenum
+
+For example, consider the following two processes, where $x$ is a global variable shared between both processes and $y$ is a variable local to $P_2$ initialized to zero.
+
+\medskip
+\hbox to \hsize{
+    \hfil\vtop{\hsize=.4\hsize
+    \algorithm
+        \InnerText{\textbf{routine} $P_1$}
+            \State $x\gets1$
+        \InnerText{\textbf{end routine}}
+    \ealgorithm
+    }
+    \hfil\vtop{\hsize=.4\hsize
+    \algorithm
+        \InnerText{\textbf{routine} $P_2$}
+            \While{$y=0$}
+                \Choose
+                    \Comment {\sf nop} means ``no operation''\EndComment
+                    \Choice {\sf nop}
+                    \Choice {\bf if} ($x=1$) $y\gets1$
+                \EndChoose
+            \EndWhile
+        \InnerText{\textbf{end routine}}
+    \ealgorithm
+    }
+    \hfil
+}
+\medskip
+
+The transitions then are
+
+\def\pc{{\it pc}}
+\medskip
+\centerline{\vbox{\halign{\hfil$#$\tabskip=.1cm&$\hfil\longto$#\hfil\tabskip=.1cm&$#$\hfil\tabskip=2cm&\hfil$#$\tabskip=.1cm&$\hfil\longto$#\hfil\tabskip=.1cm&$#$\hfil\cr
+    t_0\colon\ \pc_1=1 && (\pc_1,x)\coloneqq(2,1) & t_1\colon\ \pc_2=1\land y=0 && \pc_2\coloneqq2\cr
+    t_2\colon\ \pc_2=2 && \pc_2\coloneqq1 & t_3\colon\ \pc_2=2\land x=1 && (\pc_2,y)\coloneqq(1,1)\cr
+}}}
+The initial condition is $\Theta\colon\ x=0\land y=0\land\pc_1=1\land\pc_2=1$.
+
+Weak transition and weak process fairness do not guarantee termination.
+This is since in order for termination to occur, $t_3$ must be executed.
+But $t_3$ isn't necessarily enabled from a state onward, in fact every time $t_2$ is executed $t_3$ stops being enabled.
+So we can use the transitions $t_0,t_2,t_2,\dots$ and the induced execution is allowed by weak fairness.
+This is also allowed by strong process fairness.
+
+Under strong transition fairness, the program will indeed terminate.
+This is since $t_3$ is enabled an infinite number of times, since it is enabled after every execution of $t_1$ (and $t_0$ which must also be executed).
+Thus it must be eventually executed, terminating the process.
+
+\bdefn
+
+    Let $\phi$ and $\psi$ be fairness conditions, we say that $\phi$ is {\emphcolor weaker} than $\psi$ (and $\psi$ is {\emphcolor stronger} than $\phi$) if $\vdash\psi\to\phi$.
+    Meaning if $\xi$ is an execution, $\xi\vDash\psi$ implies $\xi\vDash\phi$, so $\phi$ allows for more executions than $\psi$.
+
+\edefn
+
+Then we have the following hierarchy of fairness conditions:
+
+\medskip
+\centerline{\drawdiagram{
+    &\wdbox{3cm}{Strong transition fairness}\cr
+    \wdbox{3cm}{Strong process fairness}&&\wdbox{3cm}{Weak transition fairness}\cr
+    \wdbox{3cm}{Weak process fairness}\cr
+}{
+    \diagarrow{from={1,2}, to={2,1}}
+    \diagarrow{from={1,2}, to={2,3}}
+    \diagarrow{from={2,1}, to={3,1}}
+}}
+
 \bye
 
