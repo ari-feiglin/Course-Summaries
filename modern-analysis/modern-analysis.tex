@@ -963,7 +963,7 @@ We use integration by parts (since Lebesgue and Riemann integration are the same
 Notice that by assumption $f(a)=f(b)=0$ (or we can extend the bounds outside the support) so this just becomes
 $$ \lim_{n\to\infty}\abs{\int_{\bb R}f(x)\sin(nx)} = \lim_{n\to\infty}\abs{\int_{\bb R}f'(x)\frac{\cos(nx)}n} $$
 Now $\abs{f'}$ is bound by $\norm{f'}_\infty=\sup_{x\in[a,b]}\abs{f'}$ which exists since $f'$ is continuous, and so
-$$ \leq \norm{f'}_\infty\cdot\int_a^b1\lim_{n\to\infty}\frac1n = \norm{f'}_\infty(b-a)\cdot0 = 0 $$
+$$ \leq \norm{f'}_\infty\cdot\lim_{n\to\infty}\int_a^b\frac1n = \norm{f'}_\infty(b-a)\cdot0 = 0 $$
 We then approximate $f$ by continuously differentiable $g$ up to $\frac\epsilon2$.
 Then we can take an $n$ such that we have $\abs{\int_{\bb R}g(x)\sin(nx)}<\frac\epsilon2$ so
 $$ \abs{\int_{\bb R}f(x)\sin(nx)} \leq \abs{\int_{\bb R}g(x)\sin(nx)} + \abs{\int_{\bb R}(f-g)\sin(nx)} \leq \frac\epsilon2 + \abs{\int_{\bb R}f-g} < \epsilon $$
@@ -975,7 +975,7 @@ so the limit is zero, as required.
 \bdefn
 
     Let $(X,\mu)$ be a measure space, define the equivalence relation $\sim$ on functions $f\colon X\longto\overline{\bb R}$ by $f\sim g$ if $f=g$ almost everywhere.
-    Then $L^1(X,\mu)$ is the quotient space of functions $X\longto\overline{\bb R}$ with respect to this relation.
+    Then $L^1(X,\mu)$ is the quotient space of integrable functions $X\longto\overline{\bb R}$ with respect to this relation.
 
     Define for $p>0$
     $$ L^p(X,\mu) = \set{f\colon X\longto\overline{\bb R}}[\abs f^p\in L^1(X,\mu)]/{\sim} $$
@@ -1067,6 +1067,125 @@ So we have shown that
 $$ \norm{f+g}_p^{p-p/q} \leq \norm f_p + \norm g_p $$
 but $p-p/q=1$ so we have $\norm{f+g}_p\leq\norm f_p+\norm g_p$ as required.
 \qed
+
+This means that for $p\geq1$, $\norm{\bullet}_p$ is indeed a norm on $L^p(X,\mu)$.
+Minkowski's inequality proves the triangle inequality, if $\norm f_p=0$ implies $\int_X\abs f^p=0$ and since $\abs f^p\geq0$ this means $\abs f=0$ almost everywhere so it is zero in $L^p(X,\mu)$, and the
+norm is trivially nonnegative.
+
+Now we want to prove that $L^p(X,\mu)$ is complete.
+
+\blemm
+
+    Let $(X,\norm\bullet)$ be a normed vector space.
+    Then $X$ is complete if and only if every series which converges absolutely also converges.
+    Meaning if $\sum_{n=1}^\infty\norm{x_n}$ converges, so too does $\sum_{n=1}^\infty x_n$.
+
+\elemm
+
+\Proof suppose that absolute convergence implies convergence.
+Let $\set{x_n}_{n=1}^\infty$ be a Cauchy sequence.
+Define $n_k$ to be the index such that for every $n>n_k$, $\norm{x_{n_k}-x_n}<\frac1{2^k}$, and so let $n>n_k,n_{k+1}$:
+$$ \norm{x_{n_k} - x_{n_{k+1}}} \leq \norm{x_{n_k} - x_n} + \norm{x_n - x_{n_{k+1}}} < \frac1{2^k} + \frac1{2^{k+1}} = \frac3{2^{k+1}} $$
+and so $\sum\norm{x_{n_k}-x_{n_{k+1}}}$ converges, meaning $\sum(x_{n_k}-x_{n_{k+1}})$ converges to a value.
+Notice that
+$$ x_{n_k} = x_{n_1} + \sum_{k=1}^\infty\bigl(x_{n_k} - x_{n_{k+1}}\bigr) $$
+and so $x_{n_k}$ converges to some $x_0\in X$, ie. $x_{n_k}\xvarrightarrow{k\to\infty}x_0$.
+So $\set{x_n}_{n=1}^\infty$ is a Cauchy sequence with a convergent subsequence, which we knows means that $x_n$ itself is convergent.
+
+For the converse, all we must do is show that $\sum x_n$ is Cauchy.
+Notice that for $N>M$,
+$$ \norm{\sum_{n=1}^N x_n - \sum_{n=M}^M x_n} = \norm{\sum_{n=M+1}^Nx_n} \leq \sum_{n=M+1}^N\norm{x_n} \leq \sum_{n=M+1}^\infty\norm{x_n} $$
+and since $\sum\norm{x_n}$ is convergent, its tail converges to zero.
+Thus for any $\epsilon>0$ we can find a $n_0$ such that for every $N>M>n_0$ the above expression is less than $\epsilon$ and we have the desired.
+\qed
+
+\bthrm
+
+    The normed vector spaces $L^p(X,\mu)$ are complete for $p\geq1$.
+
+\ethrm
+
+\Proof let $\sum_{n=1}^\infty f_n$ be a series that converges absolutely where $f_n\in L^p$.
+Let us define
+$$ g(x) = \sum_{n=1}^\infty\abs{f_n(x)} $$
+which exists for every $x\in X$ (in a general sense, it can be $\infty$).
+Let us define the partial sums
+$$ g_N(x) = \sum_{n=1}^N\abs{f_n(x)} $$
+So we have that
+$$ \norm{g_N}_p \leq \sum_{n=1}^N\norm{f_n}_p \leq \sum_{n=1}^\infty\norm{f_n}_p = M < \infty $$
+since $\sum f_n$ converges absolutely.
+And $g_N$ monotonically increase to $g$, and so $\abs{g_N}^p$ does to $\abs g^p$ as well, meaning by the monotone convergence theorem
+$$ \int_X\abs g^p = \lim_{N\to\infty}\int_X\abs{g_N}^p = \lim_{N\to\infty}\norm{g_N}_p^p \leq M^p $$
+This means that $g\in L^p(X,\mu)$, and in particular $g(x)<\infty$ almost everywhere.
+Thus $\sum_{n=1}^\infty f_n(x)$ converges absolutely almost everywhere (as a series of real numbers), and thus converges almost everywhere to $f(x)=\sum_{n=1}^\infty f_n(x)$.
+Since $\abs{f(x)}\leq g(x)$ we have that $f\in L^p(X,\mu)$.
+
+Now we need to show that in $L^p(X,\mu)$, $\sum_{n=1}^N f_n\longto f$.
+Let us define $S_N=\sum_{n=1}^N f_n$, then also $\abs{S_N}\leq g$ so $\abs{f-S_N}\leq\abs f+\abs{S_N}\leq\abs f+g$ which is integrable.
+So by the dominated convergence theorem since $f-S_N\longto0$,
+$$ \lim_{N\to\infty}\norm{f-S_N}^p = \lim_{N\to\infty}\int_X\abs{f-S_N}^p = \int_X\lim_{N\to\infty}\abs{f-S_N}^p = \int_X0 = 0 \qed $$
+
+\bthrm
+
+    Let $\set{f_n}_{n=1}^\infty$ be a convergent sequence of functions in $L^p(X,\mu)$.
+    Then there exists a subsequence $\set{f_{n_k}}_{k=1}^\infty$ which converges pointwise almost everywhere.
+
+\ethrm
+
+\Proof let $n_k$ be an index such that for every $n>n_k$, $\norm{f_n-f_{n_k}}_p<2^{-k}$ and so as before $\sum\norm{f_{n_{k+1}}-f_{n_k}}$ is convergent.
+Now we showed in the above proof that we can define $f(x)=f_{n_1}+\sum_{k=1}^\infty\bigl(f_{n_{k+1}}-f_{n_k}\bigr)$ and this converges pointwise almost everywhere.
+Noticing once again that $f_{n_k}=f_{n_1}+\sum_{i=1}^{k-1}\bigl(f_{n_{i+1}}-f_{n_i}\bigr)$, this means $f_{n_k}$ converges pointwise almost everywhere to $f$ as required.
+\qed
+
+\bdefn
+
+    Let $(X,\norm\bullet_X)$ and $(Y,\norm\bullet_Y)$ be two normed vector spaces.
+    Further let $T\colon X\longto Y$ be a linear transform.
+    Define the {\emphcolor operator norm} to be
+    $$ \norm T_{\rm op}\coloneqq\sup_{0\neq x\in X}\frac{\norm{Tx}_Y}{\norm x_X} $$
+
+\edefn
+
+Notice that if $\norm x_X=\alpha$ then
+$$ \norm{T\frac x\alpha}_Y = \frac{\norm{Tx}_Y}{\norm x_X} $$
+and thus
+$$ \norm T_{\rm op} = \sup_{\norm x_X=1}\norm{Tx}_Y $$
+
+\bthrm
+
+    Let $(X,\norm\bullet_X)$ and $(Y,\norm\bullet_Y)$ be two normed vector spaces, and $T\colon X\longto Y$ a linear transform.
+    Then the following are equivalent:
+    \benum
+        \item $T$ is bound: $\norm T_{\rm op}<\infty$,
+        \item $T$ is uniformly continuous on $X$,
+        \item $T$ is continuous at a single point $x_0\in X$,
+        \item $T$ is continuous at $0\in X$.
+    \eenum
+
+\ethrm
+
+\Proof $(1)\implies(2)$: we know that $\norm T\geq\frac{\norm{Tx_1-Tx_2}_Y}{\norm{x_1-x_2}_X}$ so $\norm{Tx_1-Tx_2}_Y\leq\norm T_{\rm op}\norm{x_1-x_2}_X=M\norm{x_1-x_2}_X$ where $M=\norm T_{\rm op}$.
+Thus for every $\epsilon>0$ take $x_1,x_2\in X$ such that $\norm{x_1-x_2}<\frac\epsilon M$ and then $\norm{Tx_1-Tx_2}_Y\leq\epsilon$, so $T$ is uniformly continuous.
+$(2)\implies(3)$: trivial.
+$(3)\implies(4)$: let $x_n\to0$ then $x_n+x_0\to x_0$ and so $T(x_n+x_0)\to Tx_n+Tx_0\to Tx_0$ thus $Tx_n\to0$.
+Meaning $T$ is continuous at $0$.
+$(4)\implies(1)$: since $T$ is continuous at $0$, so there exists a $\delta>0$ such that $\norm x<\delta$ implies $\norm{Tx}<1$.
+So for $z\in X$ define $x\coloneqq\frac{\delta z}{2\norm z}$ so that $\norm x<\delta$ and thus $\norm{Tx}=\frac\delta{2\norm z}\norm{Tz}<1$, meaning $\frac{\norm{Tz}}{\norm z}<\frac2\delta$.
+Thus $\norm T_{\rm op}\leq\frac2\delta$ as required.
+\qed
+
+For example, let $f\in L^p(X,\mu)$ and $\frac1p+\frac1q=1$, define
+$$ T_f\colon L^q(X,\mu)\longto{\bb R},\qquad T_fg = \int_X fg\,d\mu $$
+This is obviously a linear transform.
+By H\"older,
+$$ \abs{T_fg} \leq \norm f_p\norm g_q $$
+which means that $\norm{T_f}\leq\norm f_p$.
+Now let us take $g={\rm sign}f\cdot\abs f^{p-1}$ and notice that $\abs g^q=\abs f^{q(p-1)}=\abs f^p$ so $g\in L^q(X,\mu)$ and
+$$ T_fg = \int_X\abs f^p = \norm f_p^p $$
+and since $\norm g_q^q=\norm f_p^p$, we have that $\norm g_q\norm f_p=\norm f_p^{p/q}\norm f_p=\norm f_p^{p/q+1}=\norm f_p^p$
+$$ T_fg = \norm f_p^p = \norm g_q\norm f_p $$
+And thus our previous inequality is strict,
+$$ \norm{T_f}_{\rm op} = \norm f_p $$
 
 \bye
 
