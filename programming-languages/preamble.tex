@@ -233,38 +233,6 @@
 % \grabline\cs <line of text> -> \cs{<line of text>}
 \long\def\grabline#1{\bgroup\obeylines\catcode`\ =11\@grabline{#1}}
 
-\def\@endcases{\noexpand\@endcases}
-\def\default{\noexpand\default}
-\let\@default=\default
-\def\@@default{\noexpand \@@default}
-
-% \strcmp{str1}{str2}{true}{false} -> if str1==str2 then true else false
-\def\strcmp#1#2#3#4{%
-	\edef\s@A{#1}\edef\s@B{#2}%
-	\ifx\s@A\s@B #3\else #4\fi%
-}
-
-\def\@@strcasecmp#1#2#3{%
-	\ifx\@default#2%
-		#3%
-	\else%
-		\strcmp{#1}{#2}{#3 \let\default=\@@default}{}%
-		\afterfi\ifstrcases{#1}%
-	\fi%
-}
-
-% \ifstrcases{str}{cases} -> matches str to cases
-% cases will be in the form of a list {<case 1>}...{<case n>} where each case is of the form {{match}{code}}
-% where if str==match, code is executed.
-% if match is \default, then code is executed by default.
-\def\ifstrcases#1#2{%
-	\ifx#2\@endcases%
-		\let\default=\@default%
-	\else%
-		\afterfi\@@strcasecmp{#1}#2%
-	\fi%
-}
-
 \def\bracedmacro@out#1#2{\def#1##1##{##1\bgroup #2 \let\next=}}
 \def\bracedmacro@in#1#2{\def#1##1##{\bgroup #2##1 \let\next=}}
 
@@ -789,6 +757,7 @@
 \def\impliedby{\,\longvarLeftarrow\,}
 \def\iff{\,\longvarLeftRightarrow\,}
 \def\coloneqq{\mathrel{{\mathop:}{=}}}
+\def\ccoloneqq{\mathrel{{\mathop:}{\mathop:}{=}}}
 
 \mathchardef\nvDash="3532
 \mathchardef\nvdash="3530
@@ -1102,3 +1071,7 @@
 \def\[{[\![}\def\]{]\!]}
 \def\fun{{\sf fun}\ }
 
+\appendarraymanyvalued{colors}{rgb{0 1 .3}}{{type}{list}{let}{rec}{fun}{match}{with}{then}{if}{else}{and}{in}{of}}
+\appendarraymanyvalued{colors}{rgb{0 1 .3}}{*:|=@}
+\appendarray{initcolors}{{"}{"}{rgb{.8 .8 .3}}}
+\def\syntax@buf{.15cm}

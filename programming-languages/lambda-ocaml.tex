@@ -71,7 +71,7 @@ We will return to step $(2)$ later.
 
 \bdefn
 
-    A {\emphcolor substitution} is a function $\sigma$ which maps between type variables such that $\sigma(\T_1\to\T_2)=\sigma(\T_1)\to\sigma(\T_2)$.
+    A {\emphcolor substitution} is a function $\sigma$ which maps between type terms such that $\sigma(\T_1\to\T_2)=\sigma(\T_1)\to\sigma(\T_2)$.
     $\sigma$ {\emphcolor preserves} an equality $\T_1\eq\T_2$ if $\sigma(\T_1)=\sigma(\T_2)$, and it preserves a set of equations if it preserves every equality in the set.
 
 \edefn
@@ -126,6 +126,119 @@ We split into cases by the type of equations in $A_t$:
 \eenum
 
 So to solve step $(2)$ all we must do is find a suitable substitution.
-This is called the problem of {\it unification}: given a set of equations of terms (since $\beta$ is a correspondence, we can view the equation of type variables as equations of terms) finding a
-substitution which preserves it.
+This is called the problem of {\it unification}: given a set of equations of type variables, we must find a substitution which preserves it.
+
+The unification algorithm, due to Hindley-Milner, functions as follows (its code written in OCaml):
+
+\beginhi \color{white} \globcounttrue
+type id = string
+
+type term =
+    | Var of id
+    | Term of id * (term list)
+
+type substitution = (id * term) list
+\endhi
+
+Let us take a quick second to understand the types here.
+Firstly {\tt id} is simply an alias for {\tt string}.
+{\tt term}s (denoted $\tau$) are type terms, whose formal definition is:
+$$ \tau \ccoloneqq \alpha\ |\ C\tau\dots\tau $$
+$\alpha$ is the set of type variables, and $C$ is a set of {\it type functions}.
+So for example $C$ may contain the $0$-ary {\tt int} and {\tt string} which represent types of integers and strings respectively.
+Another example is {\tt Map} which is a $2$-ary type function: \lcalc{Map string int} is a hashmap from {\tt string}s to {\tt int}s.
+Yet another example is {\tt Set}: \lcalc{Set int} is a set of {\tt int}s.
+In this $C$, we can chain type functions, so for example \lcalc{Map (Set string) int} is a type term.
+
+Hindley-Milner imposes only the restriction that $C$ must include the type function $\to$ which represents a function.
+Instead of $\to \tau \tau'$ though, we write $\tau\to\tau'$ (use infix instead of polish notation).
+
+A {\tt substitution} is simply a map from {\tt Var}s to terms.
+
+\beginhi \color{white} \globcounttrue
+let rec occurs (x : id) (t : term) : bool =
+    match t with
+    | Var y -> x = y
+    | Term(_,s) -> List.exists (occurs x) s
+\endhi
+
+{\tt occurs} takes a variable $x$ and a term $t$ and checks if $x$ occurs in $t$. 
+It does so as follows: if $t$ is a variable $y$, then return if $x=y$.
+Otherwise $t=Ct_1\dots t_n$, so return if $x$ occurs in any $t_i$.
+
+\beginhi \color{white} \globcounttrue
+let rec subst (s : term) (x : id) (t : term) : term =
+    match t with
+    | Var y -> if x = y then s else t
+    | Term(f,u) -> Term(f, List.map (subst s x) u)
+\endhi
+
+\lcalc{subst s x t} corresponds to the substitution \lcalc{t[x\mapsto s]}.
+So recursively, if $t$ is the variable $y$, if $x=y$ then $t[x\mapsto s]=s$ otherwise $t$ remains the same.
+And
+$$ (Ct_1\dots t_n)[x\mapsto s] = C(t_1[x\mapsto s])\dots(t_n[x\mapsto s]) $$
+
+\beginhi \color{white} \globcounttrue
+let apply (s : substitution) (t : term) : term =
+    List.fold_right (fun (x,u) -> subst u x) s t
+\endhi
+
+Here, if $s=[(x_1,t_1),\dots,(x_n,t_n)]$ we want to apply $s$ to a term $t$.
+Then what we want in the end is to get $t[x_n\mapsto t_n]\cdots[x_1\mapsto t_1]$ which is what this does.
+
+Now we get to the meat of the algorithm: the code which actually unifies the a list of equations.
+First we have the function {\tt unify\_one} which unifies a single equation $s\eq t$.
+Then using this we define {\tt unify}.
+
+\beginhi \color{white} \globcounttrue
+let rec unify_one (s : term) (t : term) : substitution =
+    match (s,t) with
+    | (Var x, Var y) -> if x = y then [] else [(x,t)]
+    | (Term(f,sc), Term(g,tc)) ->
+        if f = g && List.length sc = List.length tc
+        then unify (List.combine sc tc)
+        else failwith "not unifiable: head symbol conflict"
+    | (Var x, Term(_,_) as t) | (Term(_,_) as t, Var x) ->
+        if occurs x t
+        then failwith "not unifiable: circularity"
+        else: [(x,t)]
+
+and unify (e : (term * term) list) : substitution =
+    match e with
+    | [] -> []
+    | (x,y) :: t ->
+        let s2 = unify t in
+        let s1 = unify_one (apply s2 x) (apply s2 y) in
+        s1 @ s2
+\endhi
+
+So the algorithm is as follows: given a list of equivalences {\tt e=(x,y)::t} first unify the equivalences in {\tt t} recursively to get a substitution {\tt s2}.
+Apply this substitution to {\tt x} and {\tt y} and unify them.
+
+To unify a single equivalence $s\eq t$, we split into cases:
+\benum
+    \item if both $s=x$ and $t=y$ are variables, then if they are the same variable no unification is needed.
+    Otherwise we simply have $x$ be substituted with $t$.
+    \item If $s=Cs_1\dots s_n$ and $t=C't_1\dots t_m$, we must have that $C=C'$ and $n=m$ (we cannot unify \lcalc{Set $\alpha$} with \lcalc{Map int $\beta$} for example).
+    If such is the case, we unify the list $[(s_1,t_1),\dots,(s_n,t_n)]$ recursively, since we now have the equivalences $s_i\eq t_i$.
+    \item If $s=x$ is a variable and $t=Ct_1\dots t_n$ is a compound term (or vice versa), then we cannot have that $x$ occurs in $t$ (we cannot unify \lcalc{Set $\alpha$} with $\alpha$ for example).
+    If such is the case (that $x$ does not occur in $t$), then we simply have that $x$ is substituted with $t$.
+\eenum
+
+Notice that the same equivalence can have multiple unifiers.
+For example the equivalence between $f\ x\ (g\ y)$ and $f\ (g\ z)\ w$ has the unifiers: we can take $S=[x\mapsto g\ z,\, w\mapsto g\ y]$.
+Applying this to both yields $f\ (g\ z)\ (g\ y)$.
+But we can also have the unifier $T=[x\mapsto g(f\ a\ b),\, y\mapsto f\ b\ a,\, z\mapsto f\ a\ b,\, w\mapsto g(f\ b\ a)]$.
+Both terms then substitute out to $f\ (g\ (f\ a\ b))\ (g\ (f\ b\ a))$.
+
+\bdefn
+
+    The {\emphcolor most general unifier} (mgu) for a set of equations $A_t$ is a unifier $\sigma$ such that for every other unifier $\sigma'$ there exists a substitution $\sigma''$ such that
+    $\sigma'=\sigma\sigma''$.
+    Meaning that all other unifiers can be obtained from $\sigma$ using further substitutions.
+
+\edefn
+
+In the above example, $S$ is an mgu and $T=S[z\mapsto f\ a\ b,\,y\mapsto f\ b\ a]$.
+Hindlery-Milner's algorithm returns an mgu for the set of equivalences.
 
