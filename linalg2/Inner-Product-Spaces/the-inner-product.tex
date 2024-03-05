@@ -190,3 +190,267 @@ which is a generalization of Pythagorean's theorem: since if $v$ and $u$ are ort
 
 \end{proof}
 
+If $B=(v_1,\dots,v_n)$ is a basis, then let $v,u$ be two vectors such that $v=\sum_{i=1}^n\alpha_iv_i$ and $u=\sum_{i=1}^n\beta_iu_i$ then
+\[ \iprod{v,u} = \iprod{\sum_{i=1}^n\alpha_iv_i,\;\sum_{j=1}^n\beta_jv_j} = \sum_{i=1}^n\sum_{j=1}^n\alpha_i\overline{\beta_j}\iprod{v_i,v_j} \]
+This leads us to the following definition
+
+\begin{defn*}
+
+    Let $B=(v_1,\dots,v_n)$ be a set of vectors (not necessarily a basis), then define the \ppemph{Gram matrix} to be the matrix $G_B\in\bF^{n\times n}$ defined by $[G_B]_{ij}=\iprod{v_i,v_j}$.
+    Meaning
+    \[ G_B = \pmat{
+        \iprod{v_1,v_1} & \iprod{v_1,v_2} & \cdots & \iprod{v_1,v_n}\cr
+        \iprod{v_2,v_1} & \iprod{v_2,v_2} & \cdots & \iprod{v_2,v_n}\cr
+        \vdots & \vdots & \ddots & \vdots\cr
+        \iprod{v_n,v_1} & \iprod{v_n,v_2} & \cdots & \iprod{v_n,v_n}
+    } \]
+
+\end{defn*}
+
+Then we get that if $B$ is a basis,
+\[ \iprod{v,u} = [v]^\top_BG_B\overline{[w]_B} \]
+(In general $v^\top Au=\sum_{i=1}^n\sum_{j=1}^nv_iA_{ij}u_j$, which is easy enough to verify.)
+
+\begin{thrm*}
+
+    $B$ is a linearly independent if and only if $G_B$ is invertible.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Suppose $B$ is a basis, then we will show that $G_B$'s columns are linearly independent.
+    Let $\alpha_1,\dots,\alpha_n$ be scalars such that $\sum_{i=1}^n\alpha_iC_i(G_B)=0$, thus we must have that for every $1\leq j\leq n$ the $j$ coefficient of this linear combination is zero so,
+    \[ \sum_{i=1}^n\alpha_i[G_B]_{ji} = \sum_{i=1}^n\alpha_i\iprod{v_j,v_i} = \iprod{v_j,\;\sum_{i=1}^n\overline\alpha_iv_i} = 0 \]
+    Let us define $u=\sum_{i=1}^n\overline\alpha_iv_i$, then for every $1\leq j\leq n$, $\iprod{v_j,u}=0$.
+    This means that
+    \[ \iprod{u,u} = \iprod{\sum_{j=1}^n\overline\alpha_jv_j,u} = \sum_{j=1}^n\overline\alpha_j\iprod{v_j,u} = 0 \]
+    Thus $u=0$, and since $v_i$ are linearly independent this means $\overline\alpha_i=0$ and so $\alpha_i=0$ for every $i$.
+    So $G_B$ is invertible.
+
+    Now suppose $G_B$ is invertible, then let $\alpha_1,\dots,\alpha_n$ be scalars such that $\sum_{i=1}^n\alpha_iv_i=0$.
+    Then for $1\leq j\leq n$,
+    \[ \bracks{\sum_{i=1}^n\overline\alpha_iC_i(G_B)}_j = \sum_{i=1}^n\overline\alpha_i[G_B]_{ji} = \sum_{i=1}^n\overline\alpha_i\iprod{v_j,v_i} = \iprod{v_j,\;\sum_{i=1}^n\alpha_iv_i} = \iprod{v_j,0} = 0 \]
+    So $\sum_{i=1}^n\overline\alpha_iC_i(G_B)=0$, but since $G_B$ is invertible, this means that $\overline\alpha_i=0$ and so $\alpha_i=0$ for every $i$.
+    So $B$ is linearly independent.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    Call a set $S\subseteq V$ \ppemph{orthogonal} if every two vectors in $S$ are orthogonal.
+    $S$ is \ppemph{orthonormal} if it is orthogonal and the norm of every vector in it is $1$.
+
+\end{defn*}
+
+\begin{coro*}
+
+    Every orthogonal set not containing $0$ is linearly independent.
+
+\end{coro*}
+
+\begin{proof}
+
+    Let $S$ be an orthogonal set not containing $0$.
+    Then $G_S$ is a diagonal matrix without zeroes on its diagonal and is therefore invertible.
+    By the above theorem this means that $S$ is linearly independent.
+    \qed
+
+\end{proof}
+
+\begin{lemm*}
+
+    Let $E=(e_1,\dots,e_n)$ be an orthonormal basis and $v\in V$ with $[v]_E=(\alpha_1,\dots,\alpha_n)$.
+    Then $\alpha_i=\iprod{v,e_i}$ and $\norm v^2=\sum_{i=1}^n\abs{\alpha_i}^2$.
+
+\end{lemm*}
+
+\begin{proof}
+
+    Notice that
+    \[ \iprod{v,e_i} = \iprod{\sum_{j=1}^n\alpha_je_j,e_i} = \sum_{j=1}^n\alpha_j\iprod{e_j,e_i} = \alpha_i \]
+    since $\iprod{e_j,e_i}=1$ when $i=j$ and zero otherwise.
+    And
+    \[ \norm v^2 = \iprod{v,v} = \iprod{\sum_{i=1}^n\alpha_ie_i,\sum_{j=1}^n\alpha_je_j} = \sum_{i,j=1}^n\alpha_i\overline\alpha_j\iprod{e_i,e_j} = \sum_{i=1}^n\alpha_i\overline\alpha_i =
+    \sum_{i=1}^n\abs\alpha_i^2 \qed \]
+
+\end{proof}
+
+Let $v$ be a non-zero vector, then we can \textit{normalize} it to give the vector $\frac v{\norm v}$.
+This vector has a norm of $1$: $\norm{\frac v{\norm v}}=\frac1{\norm v}\norm v=1$.
+
+\begin{thrm*}[gramschmidt,The\ Gram-Schmidt\ Theorem]
+
+    Every vector space has a orthonormal basis.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let $V$ be a vector space with a basis $B=(v_1,\dots,v_n)$, we will convert this to an orthogonal basis (the vectors can then be normalized to give an orthonormal basis).
+    Define $E=(w_1,\dots,w_n)$ recursively as follows:
+    \[ w_1 = v_1,\qquad w_k = v_k - \sum_{i=1}^{k-1}\alpha_{ik}w_i \]
+    Our goal now is to find the appropriate $\alpha_{ik}$s to make this set orthogonal.
+    Let us suppose that $\set{w_1,\dots,w_{k-1}}$ is orthogonal, then we want to find $\alpha_{ik}$ such that $\set{w_1,\dots,w_k}$ is orthogonal.
+    Let $k>\ell$, then
+    \[ \iprod{w_k,w_\ell} = \iprod{v_k - \sum_{i=1}^{k-1}\alpha_{ik}w_i,\,w_\ell} = \iprod{v_k,w_\ell} - \sum_{i=1}^{k-1}\alpha_{ik}\iprod{w_i,w_\ell} \]
+    By our assumption, $\iprod{w_i,w_\ell}=0$ for $i\neq\ell$ so
+    \[ = \iprod{v_k,w_\ell} - \alpha_{\ell k}\iprod{w_\ell,w_\ell} \]
+    We want this to be zero, so we must have that $\alpha_{\ell k}=\frac{\iprod{v_k,w_\ell}}{\iprod{w_\ell,w_\ell}}$.
+    And so we have that
+    \[ w_k = v_k - \sum_{i=1}^{k-1}\frac{\iprod{v_k,w_i}}{\iprod{w_i,w_i}}w_i \]
+    This is only well-defined if $w_k\neq0$ for every $k$.
+
+    But notice that $w_i\in\lspanof{v_1,\dots,v_i}$ and since $B$ is linearly independent this means that $w_k$ cannot be zero.
+    Explicitly, $w_k=v_k+\alpha_1v_1+\cdots+\alpha_{k-1}v_{k-1}$ for some $\alpha_i$s and since $\set{v_1,\dots,v_k}$ is linearly independent and the coefficient of $v_k$ is nonzero, the sum is not zero.
+    So $E$ is a set of orthogonal vectors which doesn't contain zero.
+    Thus $E$ is a set of $n$ linearly independent vectors, thus a basis.
+    \qed
+
+\end{proof}
+
+\begin{coro*}
+
+    Every orthogonal set $B_0$ not containing zero can be extended to an orthogonal basis.
+
+\end{coro*}
+
+\begin{proof}
+
+    Extend $B_0=(w_1,\dots,w_k)$ to a basis $B=(w_1,\dots,w_k,v_{k+1},\dots,v_n)$ and perform the Gram-Schmidt process on $(v_{k+1},\dots,v_n)$ using $w_1,\dots,w_k$ as the initial vectors.
+    This extends $B_0$ to an orthogonal basis.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    Let $S\subseteq V$ be a set of vectors, then define its \ppemph{orthogonal complement} to be the set of vectors orthogonal to all vectors in $S$:
+    \[ S^\perp = \set{v\in V}[\forall w\in S\colon\iprod{v,w}=0] \]
+
+\end{defn*}
+
+Notice that $S^\perp$ is always a subspace: $0\in S^\perp$ trivially and if $v,u\in S^\perp$ then for $w\in S$: $\iprod{\alpha v+\beta u,w}=\alpha\iprod{v,w}+\beta\iprod{u,w}=0$.
+Also trivially if $S_1\subseteq S_2$ then $S_2^\perp\subseteq S_1^\perp$.
+Further notice that $S^\perp=\lspan(S)^\perp$, since if a vector is orthogonal to $S$ then it is orthogonal to any linear combination in $S$, since the inner product is linear.
+
+\begin{thrm*}
+
+    Let $W$ be a subspace of $V$, then $V=W\oplus W^\perp$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Firstly it is obvious that $W\cap W^\perp=\set0$ since if $w\in W\cap W^\perp$ then it is orthogonal to itself and thus zero.
+    Suppose $B_0=(w_1,\dots,w_k)$ is an orthogonal basis for $W$ which is extended to an orthogonal basis $B=(w_1,\dots,w_n)$ of $V$.
+    Then we claim that $B_1=(w_{k+1},\dots,w_n)$ is a basis for $W^\perp$.
+    Obviously all these vectors in $W^\perp$ since they are orthogonal to $B_0$ and thus its span, $W$.
+    This means that $\dim W^\perp \geq n-k$, and so $\dim(W\oplus W^\perp)=\dim W+\dim W^\perp\geq n=\dim V$ so $V=W\oplus W^\perp$.
+    \qed
+
+\end{proof}
+
+Notice the term
+\[ \sum_{i=1}^{k-1}\frac{\iprod{v,w_i}}{\iprod{w_i,w_i}}w_i \]
+in the proof of Gram-Schmidt.
+Geometrically, $\frac{\iprod{v,w_i}}{\iprod{w_i,w_i}}w_i$ is the result of projecting $v$ onto $w_i$.
+This is since $\iprod{v,w_i}$ is equal to the length of the projection of $v$ onto $w_i$ times the length of $w_i$.
+Divide this by $\norm{w_i}$ to get the length of the projection, and multiplied by $w_i$ normalized ($\frac1{\norm{w_i}}w_i$) to get the projection itself.
+This leads us to the following definition:
+
+\begin{defn*}
+
+    Let $V$ be a vector space and $W\leq V$ a subspace with an orthogonal basis $E=(w_1,\dots,w_n)$.
+    Define the \ppemph{projection map} from $V$ to $W$ to be the function $\pi_W\colon V\longto W$ defined by
+    \[ \pi_W(v) = \sum_{i=1}^n\frac{\iprod{v,w_i}}{\iprod{w_i,w_i}}w_i \]
+
+\end{defn*}
+
+Notice that despite being called \textit{the} projection map, it seems to be dependent on the choice of orthogonal basis $E$ for $W$.
+We will show that this is indeed not the case: it is independent of the choice of $E$.
+
+\begin{lemm*}
+
+    Let $W$ be a subspace of $V$ and $\pi_W\colon V\longto W$ its projection map (with respect to $E$).
+    Then
+    \benum
+        \item $\pi_W(v)\in W$,
+        \item $\pi_W$ is a linear transformation,
+        \item $\pi_W(v)=v$ if and only if $v\in W$,
+        \item for all $w\in W$, $\iprod{v,w}=\iprod{v,\pi_W(v)}$,
+        \item for all $w\in W$, $v-\pi_W(v)$ is orthogonal to $w$,
+        \item $\pi_W(v)=0$ if and only if $v$ is orthogonal to all vectors in $W$.
+    \eenum
+
+\end{lemm*}
+
+\begin{proof}
+
+    \benum
+        \item This is obvious as $\pi_W$ is in the span of $E$ by definition.
+        \item This is obvious and left as an exercise to the reader.
+        \item Since $\pi_W(v)\in W$ by $(1)$, if $v=\pi_W(v)$ then $v\in W$.
+            And for the converse, suppose $v=\sum_{i=1}^n\alpha_iw_i$ then since $\pi_W$ is a linear transformation $\pi_W(v)=\sum_{i=1}^n\alpha_i\pi_W(w_i)$ and it is trivial to see that $\pi_W(w_i)=w_i$.
+        \item If $w=\sum_{i=1}^n\alpha_iw_i$ then
+            \[ \iprod{\pi_W(v),w} = \iprod{\sum_{i=1}^n\frac{\iprod{v,w_i}}{\iprod{w_i,w_i}}w_i,\,\sum_{j=1}^n\alpha_jw_j} =
+            \sum_{i,j=1}^n\frac{\iprod{v,w_i}}{\iprod{w_i,w_i}}\overline\alpha_j\iprod{w_i,w_j} = \sum_{i=1}^n\overline\alpha_i\iprod{v,w_i} = \iprod{v,w} \]
+        \item This is since $\iprod{v-\pi_W(v),w}=\iprod{v,w}-\iprod{\pi_W(v),w}=0$ by the above point.
+        \item If $v$ is orthogonal to all vectors in $W$ then it is orthogonal to $w_i$ and thus $\iprod{v,w_i}=0$ so $\pi_W(v)=0$.
+            Conversely, $\iprod{v,w}=\iprod{\pi_W(v),w}=0$ so $v$ is orthogonal to all $w\in W$.
+            \qed
+    \eenum
+
+\end{proof}
+
+\begin{thrm*}
+
+    $\pi_W$ is independent on the choice of orthogonal basis for $W$.
+
+\end{thrm*}
+
+\begin{proof}
+
+    Let $E$ and $E'$ be two orthogonal basis for $W$, let us denote $\pi_E$ to be the projection function with respect to $E$ and $\pi_{E'}$ with respect to $E'$.
+    Then by the prior lemma, for every $v\in V$, $v-\pi_E(v)$ and $v-\pi_{E'}(v)$ are in $W^\perp$.
+    Thus
+    \[ v = \pi_E(v) + (v - \pi_E(v)) = \pi_{E'}(v) + (v - \pi_{E'}(v)) \]
+    But these are both representations of $v$ as the sum of vectors in $W$ and $W^\perp$, and since $W\oplus W^\perp$ is a direct sum, this means that such representations are unique, so
+    $\pi_E(v)=\pi_{E'}(v)$ as required.
+    \qed
+
+\end{proof}
+
+\begin{defn*}
+
+    A \ppemph{metric space} is a set $M$ equipped with a \ppemph{metric function} $\rho\colon M\times M\longto\bR$ such that for every $u,v\in M$:
+    \benum
+        \item $d$ is nonnegative: $\rho(u,v)\geq0$ and $\rho(u,v)=0$ if and only if $u=v$,
+        \item $d$ is symmetric: $d(u,v)=d(v,u)$
+        \item $d$ has the triangle inequality: for every $w\in M$, $d(u,v)\leq d(u,w)+d(w,v)$.
+    \eenum
+
+\end{defn*}
+
+Notice that if $(V,\norm\cdot)$ is a normed vector space then $d(u,v)=\norm{u-v}$ is a metric function (this is trivially proven).
+
+\begin{prop*}
+
+    Let $W$ be a subspace and $v\in V$ a vector.
+    Then the closest vector to $v$ in $W$ (the vector with the smallest metric) is $\pi_W(v)$, and no other vector is as close.
+
+\end{prop*}
+
+\begin{proof}
+
+    Let $w\in W$, we need to show that $\norm{v-\pi_W(v)}\leq\norm{v-w}$.
+    We know that $v-\pi_W(v)$ is in $W$'s orthogonal complement, so let $z=v-\pi_W(v)$ and so $\norm z=d\parens{\pi_W(v),v}$.
+    And define $z'=v-w$ so $\norm{z'}=d(v,w)$.
+    Now define $u=z'-z=\pi_W(v)-w$, which is in $W$.
+    Since $z\in W^\perp$ and $z'=u+z$ we have that $\norm{z'}^2=\norm u^2+\norm z^2$ since $\iprod{u,z}=0$, thus $\norm{z'}^2\geq\norm z^2$.
+    Thus $\norm z=d\parens{\pi_W(v),v}\leq d(w,v)=\norm{z'}$, and there is equality only when $u=0$, meaning $z'-z$ and $w=\pi_W(v)$.
+    \qed
+
+\end{proof}
+
