@@ -970,6 +970,9 @@ $$ \abs{\int_{\bb R}f(x)\sin(nx)} \leq \abs{\int_{\bb R}g(x)\sin(nx)} + \abs{\in
 so the limit is zero, as required.
 \qed
 
+\vfill\break
+\section{Functional Analysis}
+
 \subsection{$L^p$-spaces}
 
 \bdefn
@@ -1186,6 +1189,155 @@ and since $\norm g_q^q=\norm f_p^p$, we have that $\norm g_q\norm f_p=\norm f_p^
 $$ T_fg = \norm f_p^p = \norm g_q\norm f_p $$
 And thus our previous inequality is strict,
 $$ \norm{T_f}_{\rm op} = \norm f_p $$
+
+\subsection{Hilbert Spaces}
+
+\bdefn
+
+    A {\emphcolor Hilbert space} is a complete inner product space (complete relative to the induced norm $\norm f=\sqrt{\iprod{f,f}}$.
+
+\edefn
+
+Recall the Cauchy-Schwarz inequality (whose proof can be found in my summary of Linear Algebra 2): $\abs{\iprod{f,g}}\leq\norm f\norm g$ in an inner product space.
+
+\bprop[title=The Parallelogram Identity]
+
+    In an inner product space, $\norm{f+g}^2+\norm{f-g}^2 = 2\norm f^2+2\norm g^2$.
+
+\eprop
+
+\Proof trivial.\qed
+
+Notice that $L^2(X,\mu)$ is a Hilbert space, whose inner product is given by $\iprod{f,g}=\int_X f\overline g\,d\mu$ (this integral exists by H\"older's inequality, since $p=q=2$).
+It is easy enough to verify that this is an inner product, and it induces the $L^2(X,\mu)$-norm which is complete.
+
+\bthrm
+
+    Let ${\cal H}$ be a Hilbert space and $M\subseteq{\cal H}$ a closed subspace.
+    If $x\in{\cal H}\setminus M$ then there exists a unique $y\in M$ such that $\norm{x-y}=d(x,M)=\inf_{z\in M}\norm{x-z}$.
+    Furthermore, $x-y$ is orthogonal to $M$.
+
+\ethrm
+
+\Proof since $M$ is closed, $d(x,M)>0$ since $M$ contains all its limit points as a closed space.
+So let $y_n$ be a sequence of points in $M$ such that $\lim_{n\to\infty}\norm{x-y_n}=d(x,M)$.
+We will show that $\set{y_n}$ is Cauchy and since $M$ is a closed subspace of a complete space, it is also complete and so $y_n$ has a limit point $y\in M$.
+Notice that
+$$ \norm{y_n-y_m} = \norm{(x-y_m) - (x-y_n)} \leq \norm{x-y_m} + \norm{x-y_n} $$
+for large enough $n,m$ the right-hand side is less than eny $\epsilon>0$ and so $\set{y_n}$ is indeed Cauchy.
+
+Now, norms are continuous and so
+$$ \norm{x-y} = \norm{\lim_{n\to\infty}x-y_n} = \lim_{n\to\infty}\norm{x-y_n} = d(x,M) $$
+as required.
+And if $\norm{x-w}=d(x,M)$ for some other $w\in M$ then we can show using the parallelogram identity,
+$$ \norm{w-y}^2 = 2\norm{x-y}^2 + 2\norm{x-w}^2 - 4\norm{x-\frac{y+w}2}^2 $$
+Let $d=d(x,M)$ and since $\frac12(y+w)\in M$ we have that this is bound by $\leq2d^2+2d^2-4d^2=0$.
+So $w=y$, meaning $y$ is unique.
+
+Now we must also show that $x-y$ is orthogonal to $M$, so let $z\in M$ be normalized.
+Then since $\norm{x-y}$ is minimal
+$$ \norm{x-y}^2 \leq \norm{x-(y+\alpha z)}^2 = \norm{x-y}^2 + \norm{\alpha z}^2 + 2\Re\norm{x-y,\alpha z} $$
+So we have that $0=\norm{\alpha z}^2 + 2\Re\norm{x-y,\alpha z}$ for all $\alpha$, and thus since $\norm z=1$,
+$$ 0=\abs\alpha^2 + 2\Re\bigl(\overline{\abs{\iprod{x-y,z}}}\bigr) $$
+So let $\alpha=-\norm{x-y,z}$ and we get that
+$$ 0 = \abs\alpha^2 - 2\abs\alpha^2 \implies \alpha = 0 $$
+so $x-y$ is orthogonal to $z$, as required.
+\qed
+
+\bprop[title=Bessel's Inequality, name=besselineq]
+
+    Let $\set{e_j}_{j=1}^N$ be a finite orthonormal set within a Hilbert space ${\cal H}$.
+    Then for every $f\in{\cal H}$,
+    $$ \norm f^2 \geq \sum_{j=1}^n\abs{\iprod{f,e_j}}^2 $$
+
+\eprop
+
+\Proof this is simply since
+\multlines{
+    0 \leq \norm{f-\sum_{j=1}^N\iprod{f,e_j}e_j}^2 = \norm f^2 - 2\sum_{j=1}^N\Re\iprod{f,\iprod{f,e_j}e_j} + \sum_{j=1}^N\abs{\iprod{f,e_j}}^2
+    = \norm f^2 - 2\sum_{j=1}^n\abs{\iprod{f,e_j}}^2 + \sum_{j=1}^N\abs{\iprod{f,e_j}}^2\cr
+    &= \norm f^2 - \sum_{j=1}^N\abs{\iprod{f,e_j}}^2
+}
+as required.
+\qed
+
+\bthrm[title=Parseval's Identity, name=parsevalid]
+
+    Let ${\cal H}$ be a Hilbert space and $\set{e_j}_{j=1}^\infty$ an orthonormal set which spans a dense space in ${\cal H}$.
+    Then
+    $$ \norm f^2 = \sum_{j=1}^\infty\abs{\iprod{f,e_j}}^2 $$
+
+\ethrm
+
+\Proof by Bessel we have that $\norm f^2\geq\sum_{j=1}^N\abs{\iprod{f,e_j}}$ for every partial sum, and so by taking the limit we get $\norm f^2\geq\sum_{j=1}^\infty\abs{\iprod{f,e_j}}$.
+Conversely since $\set{e_j}$ spans a dense space, let $g$ be in the span such that $\norm{f-g}<\epsilon$ and suppose $g=\sum_{j=1}^N\iprod{g,e_j}e_j$ (since spans are finite linear combinations).
+Now recall that $\abs{z+w}\geq\abs{\abs z-\abs w}$ and so $\abs{z+w}^2\geq\abs z^2+\abs w^2-2\abs z\abs w$, so
+$$
+    \sum_{j=1}^\infty\abs{\iprod{f,e_j}}^2 \geq \sum_{j=1}^N\abs{\iprod{f,e_j}}^2 = \sum_{j=1}^N\abs{\iprod{g,e_j} + \iprod{f-g,e_j}}^2 =
+    \sum_{j=1}^N\Bigl(\abs{\iprod{g,e_j}}^2 - 2\iprod{g,e_j}\iprod{f-g,e_j} + \abs{\iprod{f-g,e_j}}^2\Bigr)
+$$
+We know that $\sum_j\abs{\iprod{g,e_j}}^2=\norm g^2$ and so we get
+$$ \geq \norm g^2 - 2\parens{\sum_{j=1}^N\abs{\iprod{g,e_j}}^2}^{1/2}\cdot\parens{\sum_{j=1}^N\abs{\iprod{f-g,e_j}}^2}^{1/2} $$
+and so on (revisit this, I can't hear the audio).
+\qed
+
+\bthrm[title=Riesz Representation Theorem, name=riesz]
+
+    Let ${\cal H}$ be a Hilbert space.
+    For every $y\in{\cal H}$ define the linear transform $T_y\colon{\cal H}\longto{\bb C}$ by $T_yx=\iprod{x,y}$.
+    Then every bound (equivalently continuous) linear functional $T\colon{\cal H}\longto{\bb C}$ is of the form $T_y$ for some $y\in{\cal H}$.
+
+\ethrm
+
+\Proof firstly it is obvious that $T_y$ is bound since
+$$ \norm{T_y}_{\rm op} = \sup_{x\in{\cal H}}\frac{\abs{T_y(x)}}{\norm x} = \sup\frac{\abs{\iprod{x,y}}}{\norm x} \leq \norm y $$
+And since $T_y(y)=\iprod{y,y}$ we have that $\norm{T_y}_{\rm op}=\norm y$.
+
+The kernel of $T$ is a closed subspace of ${\cal H}$ since $T$ is continuous (so it contains all its limit points).
+Let $x\in{\cal H}\setminus\ker T$, and so there exists a $u\in\ker T$ which is closest to $x$ within the kernel and furthermore $x-u$ is orthogonal to $\ker T$.
+Define $z=\frac{x-u}{\norm{x-u}}$.
+Notice that for every $v\in{\cal H}$, $T(v)z-T(z)v$ is in the kernel of $T$, and so
+$$ 0 = \iprod{T(v)z-T(z)v,z} = T(v)\iprod{z,z} - T(z)\iprod{v,z} = T(v) - \iprod{v,\overline{T(z)}z} $$
+so define $y=\overline{T(z)}z$ and we have that $T=T_y$.
+\qed
+
+Recall that if $(X,\Sigma,\mu)$ is a measure space and $f$ is non-negative then $\nu(A)=\int_Af\,d\mu$ is a measure on $(X,\Sigma)$.
+It trivially satisfies the property that if $\mu(A)=0$ then $\nu(A)=0$.
+
+\bdefn
+
+    Let $\mu$ and $\nu$ be measures over the measurable space $(X,\Sigma)$ such that for all $A\in\Sigma$, if $\mu(A)=0$ then $\nu(A)=0$.
+    Then $\nu$ is said to be {\emphcolor uniformly continuous} relative to $\mu$, and this is denoted $\nu\ll\mu$.
+
+\edefn
+
+So every measure of the form $\nu(A)=\int_Af\,d\mu$ is uniformly continuous relative to $\mu$, but it turns out the converse is true as well:
+
+\bthrm[title=Radon-Nikodym, name=radonnikodym]
+
+    Let $\nu\ll\mu$ be measures over $(X,\Sigma)$, such that the space is $\sigma$-finite relative to both measures.
+    Then there exists an integrable $f\in L^1(X,\mu)$ such that $\nu(A)=\int_Af\,d\mu$ for every $A\in\Sigma$.
+    Moreso $\int_Xg\,d\nu=\int_Xgf\,d\mu$.
+
+\ethrm
+
+\Proof for the sake of the proof, we will assume that $(X,\Sigma)$ is finite.
+Define $\pi=\mu+\nu$ to be a new measure, and define
+$$ Tg = \int_Xg\,d\nu $$
+to be a linear functional over $L^2(X,\pi)$ and this is well-defined and bound since
+$$ \abs{Tg} \leq \int_X\abs g\,d\nu = \int_X\abs{g\cdot1}\,d\nu \leq \norm{g}_{L^2(X,\nu)}\nu(X)^{1/2} \leq\norm g_{L^2(X,\pi)}\nu(X)^{1/2} $$
+Thus by the Riesz representation theorem
+$$ T(g)=\iprod{g,h}_{L^2(\pi)} = \int_Xgh\,d\pi $$
+for some $h$.
+So we have that
+$$ \int_X\,d\nu = \int_Xgh\,d\pi = \int_Xgh\,d\nu + \int_Xgh\,d\mu $$
+so
+$$ \int_X g(1-h)\,d\nu = \int_Xgh\,d\mu $$
+So if we define $f=\frac h{1-h}$ we get that
+$$ \int_X g\,d\nu = \int_X \frac g{1-h}(1-h)\,d\nu = \int_X\frac g{1-h}h\,d\mu = \int_X fg\,d\mu $$
+as required.
+And this is sufficient since we just plug in $g=\chi_A$ and we obtain $\nu(A)=\int_Xf\,d\mu$.
+\qed
 
 \bye
 
