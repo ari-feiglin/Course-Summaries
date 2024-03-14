@@ -1339,5 +1339,112 @@ as required.
 And this is sufficient since we just plug in $g=\chi_A$ and we obtain $\nu(A)=\int_Xf\,d\mu$.
 \qed
 
+\subsection{The Fundamental Theorem of Calculus}
+
+\bdefn
+
+    Let $(M_1,\rho_1)$ and $(M_2,\rho_2)$ be two metric spaces, then a function $f\colon M_1\longto M_2$ is {\emphcolor Lipschitz continuous} if there exists an $M>0$ such that for every $x,y\in M_1$,
+    $\rho_2(f(x),f(y))\leq M\rho_1(x,y)$.
+
+\edefn
+
+\bnote
+
+    We can construct the {\emphcolor Cantor function} ${\cal C}\colon[0,1]\longto[0,1]$ such that:
+    \benum
+        \item ${\cal C}$ is continuous,
+        \item differentiable almost everywhere with derivative $0$,
+        \item ${\cal C}(0)=0$ and ${\cal C}(1)=1$.
+    \eenum
+    So we have that
+    $$ \int_0^1{\cal C}'(x)\,dx = 0 \neq 1 = {\cal C}(1) - {\cal C}(0) $$
+    so the Cantor function does not satisfy the fundamental theorem of calculus.
+
+\enote
+
+\bdefn
+
+    Let $(M_i,\rho_i)$ be metric spaces for $i=1,2$.
+    Then a function $f\colon M_1\longto M_2$ is {\emphcolor uniformly continuous} if for every $\epsilon>0$ there exists a $\delta>0$ such that if $\rho_1(x,y)<\delta$ then $\rho_2(f(x),f(y))<\epsilon$.
+
+\edefn
+
+\bdefn
+
+    A function $f\colon[a,b]\longto{\bb R}$ is {\emphcolor absolutely continuous} if for every $\epsilon>0$ there is a $\delta>0$ such that for every finite set of intervals $\set{(a_i,b_i)}_{i=1}^n$, if
+    $\sum_{i=1}^n\abs{b_i-a_i}<\delta$ then $\sum_{i=1}^n\abs{f(b_i)-f(a_i)}<\epsilon$.
+
+\edefn
+
+Notice that if $f\colon[a,b]\longto{\bb R}$ is Lipschitz continuous then set $\delta=\frac\epsilon M$ so that if $\sum_{i=1}^n\abs{b_i-a_i}<\frac\epsilon M$ then
+$$ \sum_{i=1}^n\abs{f(b_i)-f(a_i)} \leq \sum_{i=1}^n M\abs{b_i-a_i} = \epsilon $$
+so $f$ is absolutely continuous.
+
+Some results we will not be proving:
+\benum
+    \item {\bf Lebesgue's differentiation theorem}: every monotonically increasing function $f\colon[a,b]\longto{\bb R}$ is differentiable almost everywhere and $\int_a^b f'\leq f(b)-f(a)$.
+    \item If $f\in L^1[a,b]$ then $F(x)=\int_a^xf\,dm$ is absolutely continuous and $F'(x)=f(x)$ almost everywhere.
+    \item If $f\colon[a,b]\longto{\bb R}$ is absolutely continuous then $\int_a^bf\,dm=f(b)-f(a)$.
+\eenum
+
+\bdefn
+
+    Let $P\colon a=x_0<x_1<\cdots<x_n=b$ be a partition of $[a,b]$.
+    Then define $f$'s variation with respect to $P$ to be ${\rm var}_P(f)=\sum_{i=1}^n\abs{f(x_{i-1})-f(x_i)}$.
+    Then define $f$'s {\emphcolor total variation} to be
+    $$ T^b_a(f) = \supof{{\rm var}_P(f)}[\hbox{$P$ is a partition of $[a,b]$}] $$
+    $f$ is said to have {\emphcolor bounded variation} if $T^b_a(f)<\infty$.
+
+\edefn
+
+\bthrm
+
+    $f\colon[a,b]\longto{\bb R}$ has bounded variation if and only if it is the difference of two increasing functions.
+
+\ethrm
+
+\Proof define $G(x)=T^x_a(f)$.
+This is obviously increasing, for $x>y$:
+$$ G(x) - G(y) = T^x_a(f) - T^y_a(f) \geq T^y_x(f) \geq \abs{f(x) - f(y)} \geq 0 $$
+and we see here that $G(x)-f(x)\geq G(y)-f(y)$ so defining $H(x)=G(x)-f(x)$ then we have that $H(x)\geq H(y)$ for $x>y$ so $G$ and $H$ are both increasing and $G(x)-H(x)=f(x)$.
+\qed
+
+\bthrm[title=Lebesgue's Differentiation Theorem, name=lebesguediff]
+
+    If $f$ is monotonically increasing in $[a,b]$ then $f'$ exists almost everywhere in $[a,b]$ and $\int_a^b f'\leq f(b)-f(a)$.
+    Specifically if $f$ has bounded variation then $f'$ exists almost everywhere and is $L^1$.
+
+\ethrm
+
+\bthrm
+
+    If $f\colon[a,b]\longto{\bb R}$ is absolutely continuous, then it has bounded variation.
+
+\ethrm
+
+\Proof let $\delta>0$ be the appropriate value for $\epsilon=1$ for absolute continuity.
+Meaning if $\sum_{i=1}^n\abs{b_i-a_i}<\delta$ then $\sum_{i=1}^n\abs{f(b_i)-f(a_i)}<1$.
+In particular for every interval $(x,y)$ such that $y-x<\delta$ we have that $T^y_x(f)\leq1$ (since every partition is a finite set of intervals where the sum of the lengths is less than $\delta$).
+So if we divide $(a,b)$ into subintervals each of length $\delta$, $I_1,\dots,I_m$, we have that
+$$ T^b_a(f) \leq T_{I_1}(f) + \cdots + T_{I_m}(f) \leq m < \infty $$
+so $f$ has bounded variation.
+
+\bthrm
+
+    Let $f\in L^1[a,b]$ then for every $\epsilon>0$ there exists a $\delta0$ such that for every set satisfying $m(E)<\delta$, $\int_E\abs f\,dm<\epsilon$.
+
+\ethrm
+
+\Proof define
+$$ f_n(x) = \cases{f(x) & $f(x)\leq n$\cr n & $f(x)>n$} $$
+$f_n(x)$ is obviously monotonically increasing to $f(x)$, and so $\int_a^bf_n\longto\int_a^bf$.
+So for a large enough $N$, for every $n>N$, $\int_a^b(f-f_n)<\epsilon/2$.
+And so we define $\delta=\frac\epsilon{2n}$ we get that if $mE<\delta$ then
+$$ \int_Ef_n \leq \int_En = mE\cdot n = \frac\epsilon2 $$
+Then
+$$ \int_E f = \int_E(f-f_n) + \int_Ef_n \leq \frac\epsilon2 + \frac\epsilon2 = \epsilon $$
+as required.
+\qed
+
 \bye
 
