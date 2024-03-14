@@ -1,0 +1,107 @@
+\bdefn
+
+    An {\emphcolor environment} is a list $(x_1:v_1)\cc\cdots\cc(x_n:v_n)$ where $x_i$ is a variable and $v_i$ is a value (in whatever language, so a number, boolean, function, etc).
+    Given an environment $E$, we define $E(x)$ to be the value given to $x$ by $E$ (ie. $E$ is of the form $\cdots\cc(x:E(x))\cc\cdots$).
+
+\edefn
+
+We define a ternary relation between environments, expressions, and values:
+$$ E\vdash e\To v $$
+which is to be read as ``the expression $e$ has value $v$ in environment $E$''.
+We define this using the following Gentzen-style rules:
+
+\centerline{\vbox{\everycr={\noalign{\kern3pt}}
+\halign{\hfil$#$\tabskip=2cm&$#$\hfil\tabskip=\z@\crcr
+    \gentzen{}{E\vdash v\To v}\ (\hbox{\tensc Val}) &
+    \gentzen{E(x) = v}{E\vdash x\To v}\ (\hbox{\tensc Var})\cr
+    \multispan2\hfil$\gentzen{E\vdash e_1\To v_1&\cdots&E\vdash e_n\To v_n}{E\vdash(e_1,\dots,e_n)\To(v_1,\dots,v_n)}\ (\hbox{\tensc N-Tuple})$\hfil
+    \cr
+    \gentzen{\quad E\vdash e_1\To{\sf true} & E\vdash e_2\To v\quad}{E\vdash{\tt if}\ e_1\ {\tt then}\ e_2\ {\tt else}\ e_3\To v}\ (\hbox{\tensc Cond1})&
+    \gentzen{\quad E\vdash e_1\To{\sf false} & E\vdash e_3\To v\quad}{E\vdash{\tt if}\ e_1\ {\tt then}\ e_2\ {\tt else}\ e_3\To v}\ (\hbox{\tensc Cond2})
+    \cr
+}}}
+
+These should all be pretty self-explanatory rules.
+
+Now, for a function we must somehow give it a value which captures all the values in the environment, thus we create new values of the form $\gen{E,f}$ where $E$ is an environment and $f$ is a function.
+This is called the {\it closure} of $f$ in $E$.
+We continue developing rules for $\vdash$:
+
+$$ \displaylines{
+    \gentzen{}{E\vdash(\fun x\to e)\To\gen{E,(\fun x\to e)}}\ (\hbox{\tensc Fun1})\cr\noalign{\kern3pt}
+    \gentzen{}{E\vdash(\fun(x_1,\dots,x_n)\to e)\To\gen{E,(\fun(x_1,\dots,x_n)\to e)}}\ (\hbox{\tensc Fun2})\cr\noalign{\kern3pt}
+} $$
+So we give to a function $f$ the value of its closure $\gen{E,f}$ in the environment $E$.
+$$ \displaylines{
+  \gentzen{E\vdash e_1\To\gen{E',(\fun x\to e)} & E\vdash e_2\To v' & (x:v')\cc E'\vdash e\To v}{E\vdash(e_1\ e_2)\To v}\ (\hbox{\tensc App1})\cr\noalign{\kern3pt}
+  \gentzen{E\vdash e_1\To\gen{E',(\fun(x_1,\dots,x_n)\to e)} & E\vdash e_2\To (v_1,\dots,v_n) & (x:v_1)\cc\cdots\cc(x:v_n)\cc E'\vdash e\To v}{E\vdash(e_1\ e_2)\To v}
+  \ (\hbox{\tensc App1})\cr\noalign{\kern3pt}
+} $$
+
+Now recall that the syntax for setting a variable is $\Let x=e_1\In{e_2}$
+So the rule for {\tt let} is that we just add $(x:e_1)$ to the environment:
+$$ \gentzen{E\vdash e_1\To v_1 & (x:v_1)\cc E\vdash e_2\To v}{E\vdash\Let{x=e_1}\In{e_2}\To v}\ (\hbox{\tensc Let}) $$
+We also have {\tt let rec} whose syntax is $\Letrec f\ x=e_1\In{e_2}$.
+Now the idea is that ${\tt let\ rec}f\ x=e$ will be given the closure $\gen{E,(\fun x\to e)}$ where $E$ contains an infinite pair $f:\gen{E,(\fun x\to e)}$.
+Such an object can be represented in memory as an object with a pointer which points to itself.
+So given an environment $E$, a function name $f$, and an expression $(\fun x\to e)$ (where importantly $e$ may contain occurrences of $f$), we assumed we can construct an environment $E'$ such that
+$E'=(f:\gen{E',(\fun x\to e)})\cc E$, and then the rule is:
+$$ \gentzen{E'=(f:\gen{E',(\fun x\to e)})\cc E \vdash e_2\To v}{E\vdash\Letrec f\ x=e_1\In e_2\To v}\ (\hbox{\setfont{sc}Letrec}) $$
+
+Before giving an example, let us define some boolean and arithmetic rules:
+
+\centerline{\vbox{\everycr={\noalign{\kern3pt}}
+\halign{\hfil$#$\tabskip=2cm&$#$\hfil\tabskip=\z@\crcr
+    \gentzen{E\vdash e_1\To v_1 & E\vdash e_2\To v_2 & v_1\leq v_2}{E\vdash e_1\leq e_2\To{\tt true}}\ (\hbox{\setfont{sc}Leq1}) &
+    \gentzen{E\vdash e_1\To v_1 & E\vdash e_2\To v_2 & v_1>v_2}{E\vdash e_1\leq e_2\To{\tt false}}\ (\hbox{\setfont{sc}Leq2})\cr
+    \gentzen{E\vdash e_1\To v_1 & E\vdash e_2\To v_2 & v_1=v_2}{E\vdash e_1=e_2\To{\tt true}}\ (\hbox{\setfont{sc}Eq1})&
+    \gentzen{E\vdash e_1\To v_1 & E\vdash e_2\To v_2 & v_1\neq v_2}{E\vdash e_1=e_2\To{\tt false}}\ (\hbox{\setfont{sc}Eq2})\cr
+    \gentzen{E\vdash e_1\To v_1 & E\vdash e_2\To v_2}{E\vdash e_1+e_2\To v_1+v_2}\ (\hbox{\setfont{sc}Add})&
+    \gentzen{E\vdash e_1\To v_1 & E\vdash e_2\To v_2}{E\vdash e_1-e_2\To v_1-v_2}\ (\hbox{\setfont{sc}Sub})\cr
+    \gentzen{E\vdash e_1\To v_1 & E\vdash e_2\To v_2}{E\vdash e_1\cdot e_2\To v_1\cdot v_2}\ (\hbox{\setfont{sc}Mul})&
+    \gentzen{E\vdash e_1\To v_1 & E\vdash e_2\To v_2}{E\vdash e_1/e_2\To v_1/v_2}\ (\hbox{\setfont{sc}Div})\cr
+}}}
+
+So for example, suppose our initial environment is the empty list, and we'd like to compute the value of
+$$ \Letrec f\ x = (\If x=1\Then 1\Else x\cdot f(x-1))\In{(f\ 2)} $$
+Which should give $2!=2$.
+Let us write ${\tt fact}$ in place of $\fun x\to(\If x=0\Then 1\Else x\cdot f(x-1))$, so
+\vfill\break
+
+{
+\setlayout{page width=60cm, page height=20cm, horizontal margin=2cm, vertical margin=2cm}
+\headline={}
+\vbox to\vsize{\vss\centerline{\syntaxtree{
+    {[]\vdash\Letrec f\ x = (\If x=1\Then 1\Else x\cdot f(x-1))\In{(f\ 2)}\To2}[\setfont{sc}Letrec]{
+        {E=(f:\gen{E,{\tt fact}})\vdash(f\ 2)\To2}[\setfont{sc}App1]{
+            {E\vdash f\To\gen{E,{\tt fact}}}[\setfont{sc}Var]\noc
+            {E\vdash2\To2}[\setfont{sc}Val]\noc
+            {E'=(x:2)\cc E\vdash(\If x=0\Then 1\Else x\cdot f(x-1))}[\setfont{sc}Cond2]{
+                {E'\vdash x=1\To{\tt false}}[\setfont{sc}Eq2]{
+                    {E'\vdash x\To2}[\setfont{sc}Var]\noc
+                    {E'\vdash1\To1}[\setfont{sc}Val]\noc
+                }
+                {E'\vdash x\cdot f(x-1)\To2}[\setfont{sc}Mul]{
+                    {E'\vdash x\To2}[\setfont{sc}Var]\noc
+                    {E'\vdash f(x-1)\To1}[\setfont{sc}App1]{
+                        {E'\vdash f\To{\tt fact}}[\setfont{sc}Var]\noc
+                        {E'\vdash x-1\To1}[\setfont{sc}Sub]{
+                            {E'\vdash x\To2}[\setfont{sc}Var]\noc
+                            {E'\vdash 1\To1}[\setfont{sc}Val]\noc
+                        }
+                        {E''=(x:1)\cc E'\vdash(\If x=1\Then 1\Else x\cdot f(x-1))\To1}[\setfont{sc}Cond1]{
+                            {E''\vdash x=1\To{\tt true}}[\setfont{sc}Eq]{
+                                {E''\vdash x\To1}[\setfont{sc}Var]\noc
+                                {E''\vdash 1\To1}[\setfont{sc}Val]\noc
+                            }
+                            {E''\vdash1\To1}[\setfont{sc}Val]\noc
+                        }
+                    }
+                }
+            }
+        }
+    }
+}}\vss}
+\vfill\break
+}
+
