@@ -1,0 +1,198 @@
+\bprop
+
+    Let $F$ be a field and $f\in F[x]$ be an irreducible polynomial.
+    Then there exists a field extension $K/F$ such that $f$ has a root in $K$ and $[K:F]=\deg f$.
+
+\eprop
+
+\Proof since $f$ is irreducible, $(f)$ is maximal (since $F[x]$ is a PID so prime ideals are maximal).
+Thus $K=\slfrac{F[x]}{(f)}$ is a field.
+The dimension of $K$ is $\deg f$ since it has a basis $\set{1,x,\dots,x^{\deg f-1}}$.
+
+By the second isomorphism theorem,
+$$ \slfrac F{F\cap(f)} \cong \slfrac{F+(f)}{(f)} \subseteq \slfrac{F[x]}{(f)} = K $$
+But $F\cap(f)=0$, and so $\slfrac F{F\cap(f)}=\slfrac F{0}\cong F$.
+Thus we can embed $F$ into $K$, so we can view $K/F$ as a field extension.
+
+Now, define $\alpha=x+(f)$, and suppose $f(x)=\sum_{i=0}^na_ix^i$ for $a_i\in F$.
+Then
+$$ f(\alpha) = \sum_{i=0}^na_i\bigl(x+(f)\bigr)^i = \sum_{i=0}^na_i(x^i+(f)) = \sum_{i=0}^na_ix^i + \sum_{i=0}^na_i(f) = f + (f) = 0 $$
+Thus $\alpha$ is a root of $f$ in $K$.
+\qed
+
+\bcoro[name=polyhasroot]
+
+    Let $F$ be a field and $f\in F[x]$ a polynomial.
+    Then there exists a field extension $K/F$ such that $f$ has a root in $K$ and $[K:F]\leq\deg f$.
+
+\ecoro
+
+\Proof take an irreducible factorization of $f$ and apply the above result to one of its factors.
+\qed
+
+\bdefn
+
+    Suppose $F$ is a field and $f\in F[x]$.
+    Then $f$ {\emphcolor splits} in $F$ if there exist $\alpha_1,\dots,\alpha_n\in F$ such that $f(x)=(x-\alpha_1)\cdots(x-\alpha_n)$.
+
+\edefn
+
+\bprop
+
+    Let $f\in F[x]$ then there exists a field extension $K/F$ such that $f$ splits in $K$ and $[K:F]\leq(\deg f)!$.
+
+\eprop
+
+\Proof by induction on $n=\deg f$.
+For $n=1$, $f$ is linear and thus has a root so we can take $K=F$.
+Now suppose $\deg f=n+1$, then by \refmath[corollary]{polyhasroot} there exists a field extension $K_0/F$ such that $f$ has a root in $K_0$ and $[K_0:F]\leq n+1$.
+Now suppose $\alpha\in K_0$ is a root of $f$, then there exists a $g(x)\in K_0[x]$ such that $(x-\alpha)g(x)=f(x)$ and so $\deg g\leq n$.
+Therefore inductively there is a field extension $K/K_0$ which splits $g(x)$ and thus $f(x)$ and
+$$ [K:F] = [K:K_0]\cdot[K_0:F] \leq n!\cdot(n+1) = (n+1)! $$
+as required.
+\qed
+
+\bdefn
+
+    Suppose $K/F$ is a field extension and $\phi\colon F\longembeds E$ is an embedding into some other field $E$.
+    Then an {\emphcolor extension} of $\phi$ to $K$ is an embedding $\overline\phi\colon K\longembeds E$ such that $\overline\phi\bigl|_F=\phi$ ($\overline\phi$ is equal to $\phi$ on $F$).
+    Let us then define
+    $$ \eta^\phi_{K/F} \coloneqq \#\set{\overline\phi}[\hbox{$\overline\phi$ is an extension of $\phi$}] $$
+
+\edefn
+
+In other words, an extension is an embedding $\overline\phi$ such that the following diagram commutes:
+
+\medskip
+\centerline{\drawdiagram{
+    &$E$\cr
+    $F$&&$K$\cr
+}{
+    \diagarrow{from={2,1}, to={2,3}, text=$\iota$, y distance=.25cm}
+    \diagarrow{from={2,1}, to={1,2}, text=$\phi$, x distance=-.35cm, slide=.6}
+    \diagarrow{from={2,3}, to={1,2}, text=$\overline\phi$, x distance=.35cm, slide=.6}
+}}
+\medskip
+
+Where $\iota\colon F\longto K$ is the inclusion embedding.
+
+Suppose $f,g$ are two field homomorphisms $F(a_1,\dots,a_n)\longto K$ such that $f(x)=g(x)$ for all $x\in F$ and $f(a_i)=g(a_i)$ for $1\leq i\leq n$.
+Then $f(x)=g(x)$ on all of $F(a_1,\dots,a_n)$.
+This is since $\set{r\in F(a_1,\dots,a_n)}[f(r)=g(r)]$ is a field containing $F$ and $a_1,\dots,a_n$ and thus $F(a_1,\dots,a_n)$.
+
+In particular if $\phi\colon F\longembeds E$ is an embedding, then an extension $\overline\phi\colon F(a_1,\dots,a_n)\longto E$ is defined entirely by its image on $a_1,\dots,a_n$.
+
+\bprop
+
+    Suppose $K=F[\alpha]$, then $\eta_{K/F}^\phi$ is equal to the number of distinct roots the minimal polynomial of $\alpha$ has in $E$.
+    Formally, if $h(x)=\sum_{i=0}^na_ix^i$ then define $\hat h(x)=\sum_{i=0}^n\phi(a_i)x^i$, and $\eta_{K/F}^\phi$ is equal to the number of roots $\hat h(x)$ has in $E$.
+
+    In particular $\eta_{K/F}^\phi$ is independent of the choice of $\phi$.
+
+\eprop
+
+\Proof let $h(x)\in F[x]$ be the minimal polynomial of $\alpha$, and $\overline\phi$ be an extension of $\phi$ to $K$, then
+$$ \hat h(\overline\phi(\alpha)) = \sum_{i=0}^n\phi(a_i)\overline\phi(\alpha)^i = \sum_{i=0}^n\overline\phi(a_i)\overline\phi(\alpha^i) = \overline\phi\parens{\sum_{i=0}^na_i\alpha^i} =
+\overline\phi(h(\alpha)) = \overline\phi(0) = 0 $$
+Thus $\overline\phi(\alpha)$ must be a root of $\hat h(x)$, and as explained above extensions of embeddings to $K=F[\alpha]$ are dependent only on their image of $\alpha$. 
+So there are at most as many extensions as there are distinct roots of $\hat h$.
+
+Now suppose $\beta\in E$ is a root of $\hat h$, then we claim that there exists an extension with $\overline\phi(\alpha)=\beta$.
+Indeed, $\alpha\notin F$ and $\beta$ is not in the image of $\phi$ (as then $0=\hat h(\phi(a))=\phi(\hat h(a))$ so $a$ is a root of $\hat h(x)$ but $\hat h$ is irreducible), so this is well-defined.
+\qed
+
+\bdefn
+
+    A polynomial $f$ which splits over $E$ is called {\emphcolor separable} over $E$ if its linear factors are all distinct (ie. it has $n=\deg f$ distinct roots in $E$).
+
+\edefn
+
+When we have an embedding $\phi\colon F\longembeds E$ and a polynomial $f\in F[x]$ and we say that $f$ has some property in $E$ (eg. splits over $E$, separable over $E$), then we mean that its image under
+$\phi$ has that property.
+Meaning if $f(x)=\sum_{i=0}^na_ix^i$ then $\sum_{i=0}^n\phi(a_i)x^i$ has said property.
+
+\bthrm
+
+    Let $K/F$ be a finite extension, and let $\phi\colon F\longembeds E$ be an embedding.
+    Then
+    \benum
+        \item $\eta^E_{K/F}\leq[K:F]$;
+        \item if $K=F[\alpha_1,\dots,\alpha_n]$ where $\alpha_i$ are roots of some $f\in F[x]$ which splits over $E$, then $1\leq\eta^\phi_{K/F}$.
+        Meaning there exists at least one extension of $\phi$ to $K$;
+        \item if $f$ is also separable over $E$, then $\eta^\phi_{K/F}=[K:F]$.
+    \eenum
+
+\ethrm
+
+\Proof since $K/F$ is finite, we have that $K=F[\alpha_1,\dots,\alpha_n]$ (we can take $\set{\alpha_1,\dots,\alpha_n}$ to be a basis for $K$ as a $F$-linear space).
+\bgroup\def\enumindent{0pt}
+\benum
+    \item We proceed inductively on $n$.
+    For $n=1$, by the previous proposition $\eta_{K/F}^\phi$ is equal to the number of roots $h_{\alpha_1}$ (the minimal polynomial of $\alpha_1$) has in $E$.
+    
+    For the inductive step, define $F_1=F[\alpha_1]$, and so
+    $$ \eqalign{
+        \eta^\phi_{K/F} &= \#\set{\phi''\colon K\longto E\hbox{ is an extension of $\phi$}}\cr
+            &= \#\bigcup\set{\phi''\colon K\longto E\hbox{ is an extension of $\phi'$}}[\phi'\colon F_1\longto E\hbox{ is an extension of $\phi$}]\cr
+            &= \sum_{\phi'}\eta_{K/F_1}^{\phi'}
+    } $$
+    By our inductive hypothesis, $\eta_{K/F_1}^{\phi'}\leq[K:F_1]$ and $\eta_{F_1/F}^\phi\leq[F_1:F]$ so
+    $$ \leq \sum_{\phi'}[K:F_1] = [F_1:F]\cdot[K:F] = [K:F] $$
+    as required.
+
+    \item Again, we proceed inductively on $n$.
+    For $n=1$, $K=F[\alpha]$ and $\eta_{K/F}^\phi$ is equal to the number of roots $h_\alpha$ has in $E$.
+    But since $f(\alpha)=0$ and $h_\alpha$ is minimal, $h_\alpha$ must divide $f$ and therefore split in $E$, meaning it has at least one root in $E$.
+    So $1\leq\eta^\phi_{K/F}$ as required.
+
+    Inductively, set $F_1=F[\alpha_1]$ and so there exists an extension of $\phi$ to $\phi'\colon F_1\longembeds E$ by our base case.
+    And there then exists an extension of $\phi'$ to $\phi''\colon K\longembeds E$, so there exists at least one extension as required.
+
+    \item If we review the proof of $(2)$, for the base case we must have that $f$ is separable and splits in $E$, which means that $h_\alpha$ does as well.
+    Then $h_\alpha$ has precisely $\deg h_\alpha$ distinct roots in $E$, so $\eta^\phi_{K/F}=\deg h_\alpha=[K:F]$ as required.
+    The rest of the proof proceeds similarly.
+    \qed
+\eenum
+\egroup
+
+\bdefn
+
+    Let $f\in F[x]$ be any polynomial over $F$.
+    Then a field $F\subseteq K$ is called a {\emphcolor splitting field} if $f$ splits over $K$ and it contains no other field over which $f$ splits (meaning it is the smallest field which splits $f$).
+
+\edefn
+
+Notice that if $K$ is a splitting field of $f\in F[x]$, then $K$ is of the form $K=F[\alpha_1,\dots,\alpha_n]$ where $\alpha_i$ are roots of $f$ in $K$.
+Then
+$$ [K:F] \leq \prod_{i=1}^n[F[\alpha_i]:F] < \infty $$
+so $K/F$ is a finite extension.
+
+\bthrm
+
+    Any two splitting fields of a polynomial $f\in F[x]$ are isomorphic.
+
+\ethrm
+
+\Proof let $K$ be a splitting field of $f$, and suppose $f$ splits in $E$, where $F\subseteq E$.
+By the above theorem, there must exist an extension of the inclusion embedding $F\longembeds E$ to an embedding $K\longembeds E$.
+This embedding gives rise to an embedding of $F$-linear spaces, meaning $[K:F]\leq[E:F]$.
+In particular, if $E$ is another splitting field of $f$ then $[E:F]\leq[K:F]$ as well, so that $K$ and $E$ are isomorphic $F$-linear spaces, and thus are isomorphic as fields.
+\qed
+
+Recall that for any ring $R$, there is a unique homomorphism $\phi\colon{\bb Z}\longto R$.
+In particular if $F$ is a field then $\slfrac{\bb Z}{\ker\phi}\cong{\rm Im}\phi\subseteq F$.
+Since $F$ is a field, ${\rm Im}\phi$ is an integral domain and so $\ker\phi$ is a prime ideal of ${\bb Z}$, meaning $\ker\phi=(p)$ for some prime $p$ or $0$.
+This is called the {\it characteristic} of $F$.
+
+Since $\phi(n)=1+\cdots+1$, the characteristic of $F$ is simply the prime $p$ such that $\phi(p)=0$, ie. $1+\cdots+1=0$ ($p$ times), or $0$ if no such primes exist.
+
+\bdefn
+
+    The {\emphcolor characteristic} of a field $F$ is the unique positive generator of the kernel of $\phi\colon{\bb Z}\longto F$.
+    Equivalently it is the minimum number $p$ such that $1+\cdots+1=0$ ($p$ times), or $0$ if no such $p$ exists.
+
+\edefn
+
+If $F$ has characteristic $0$, then $\phi$ is an embedding so we can view ${\bb Z}$ as a subfield of $F$.
+But then the field generated by ${\bb Z}$ must also be a subfield of (embeddable into) $F$, meaning ${\bb Q}\subseteq F$.
+
