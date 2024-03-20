@@ -1,0 +1,378 @@
+\bdefn
+
+    Let $K/F$, $K'/F$ be field extensions, then a homomorphism $\phi\colon K\longto K'$ is called a {\emphcolor $F$-homomorphism} if $\phi(a)=a$ for all $a\in F$.
+    $\phi$ is an {\emphcolor $F$-automorphism} if $K=K'$ and $\phi$ is an automorphism.
+
+\edefn
+
+Notice that if $\phi$ is a field homomorphism, then it is injective since its kernel is an ideal, and the only ideals of a field are $F$ and $0$.
+Since a homomorphism must map $1$ to $1$, its kernel cannot be $F$, meaning it must be injective.
+Thus to validate that $\phi\colon K\longto K$ is an automorphism, we need to check only that it is surjective. 
+
+Furthermore, if $\phi\colon K\longto K$ is an $F$-homomorphism, then it is an injective linear operator on $K$.
+If $[K:F]$ is finite, we know from linear algebra that $\phi$ is then surjective.
+So over finite field extensions, all $F$-endomorphisms (homomorphisms over a field) are automorphisms.
+
+\bdefn
+
+    Let $K/F$ be a field extension, then we define its {\emphcolor Galois group} to be
+    $$ \Galof{K/F} \coloneqq \set{\sigma\colon K\longto K}[\hbox{$\sigma$ is an $F$-automorphism}] $$
+
+\edefn
+
+Let $f\in F[x]$ with a root $\alpha\in K$ and $\sigma\in\Galof{K/F}$.
+Then we know that
+$$ f(\sigma(a)) = \sigma(f(a)) = \sigma(0) = 0 $$
+thus $F$-automorphisms must permute the roots of polynomials.
+
+\bprop
+
+    Let $K/F$ be a field extension and $f\in F[x]$ be irreducible with roots $a,b\in K$.
+    Then there exists an $F$-isomorphism $\phi\colon F[a]\longto F[b]$.
+
+\eprop
+
+\Proof the inclusion map $\iota\colon F\longto F[b]$ can be extended to $\iota\colon F[x]\longto F[b]$ by $\iota(x)=b$.
+This is obviously surjective, and its kernel is all polynomials $g$ such that $g(b)=0$.
+Since $f$ is the minimal polynomial of $b$, we have that $\ker\iota=(f)$, and so by the first isomorphism theorem there is an isomorphism
+$$ \phi\colon\slfrac{F[x]}{(f)} \longto F[b] $$
+similarly we can construct an isomorphism
+$$ \psi\colon\slfrac{F[x]}{(f)} \longto F[a] $$
+then our desired isomorphism is $\phi\psi^{-1}$.
+\qed
+
+Recall from \refmath[theorem]{etacount} that if $K/F$ is a field extension and $\iota\colon F\longto K$ the inclusion map, then
+$$ \eta^\iota_{K/F} \leq [K:F] $$
+but extensions of $\iota$ to embeddings $K\longembeds K$ are precisely the $F$-homomorphisms.
+Meaning $\abs{\Galof{K/F}}\leq\eta^\iota_{K/F}$, and this is an equality when $[K:F]$ is finite since $F$-homomorphisms are automorphisms over finite dimensional vector spaces.
+So $\abs{\Galof{K/F}}\leq[K:F]$.
+
+Furthermore, if $K$ is the splitting field of some $f\in F[x]$ which is also separable in $K$ then by the same theorem, $\abs{\Galof{K/F}}=[K:F]$.
+Let us summarize this:
+
+\bprop[name=2to3]
+
+    If $K/F$ is a finite extension, then $\abs{\Galof{K/F}}\leq[K:F]$.
+    And if furthermore $K$ is the splitting field of some separable polynomial $f\in F[x]$, then this becomes an equality.
+
+\eprop
+
+In the future we will generalize this result: in fact $\abs{\Galof{K/F}}=[K:F]$ if and only if $K$ is the splitting field of some separable polynomial.
+
+\bexam
+
+    Compute $\Galof{{\bb Q}[\sqrt2,\sqrt3]/{\bb Q}}$.
+
+\eexam
+
+Notice that $E={\bb Q}[\sqrt2,\sqrt3]$ is the splitting field of $(x^2-2)(x^2-3)$, which is also separable.
+So by the above proposition
+$$ \abs{\Galof{E/{\bb Q}}} = [E:{\bb Q}] = [E:{\bb Q}[\sqrt2]]\cdot[{\bb Q}[\sqrt2]:{\bb Q}] $$
+We know that $x^2-2$ is the minimal polynomial of $\sqrt2$ over ${\bb Q}$ and so $[{\bb Q}[\sqrt2]:{\bb Q}]=2$.
+And $x^2-3$ is a zeroing polynomial of $\sqrt3$ in $E$, and since $\sqrt3\notin{\bb Q}[\sqrt2]$, we have that $[E:{\bb Q}[\sqrt2]]=2$.
+Thys $\abs{\Galof{E/{\bb Q}}}=4$.
+
+And as we know, every $F$-automorphism is defined entirely by where it maps $\sqrt2$ and $\sqrt3$.
+We know that $\sqrt2$ must map to $\pm\sqrt2$ because these are the roots of $x^2-2$.
+And $\sqrt3$ must map to $\pm\sqrt3$.
+This gives us exactly $4$ automorphisms, and so we have found all the elements of $\Galof{E/{\bb Q}}$.
+
+If we denote $\sqrt2$ by $1$, $-\sqrt2$ by $2$, $\sqrt3$ by $3$, and $-\sqrt3$ by $4$ we can embed $\Galof{E/{\bb Q}}$ in $S_4$ as follows:
+\benum
+    \item the automorphism $\sqrt2\mapsto-\sqrt2$ and $\sqrt3\mapsto\sqrt3$ corresponds to the transposition $(1,2)$;
+    \item the automorphism $\sqrt2\mapsto\sqrt2$ and $\sqrt3\mapsto\sqrt3$ corresponds to the identity.
+    \item the automorphism $\sqrt2\mapsto-\sqrt2$ and $\sqrt3\mapsto-\sqrt3$ corresponds to the permutation $(1,2)(3,4)$;
+    \item the automorphism $\sqrt2\mapsto\sqrt2$ and $\sqrt3\mapsto-\sqrt3$ corresponds to the transposition $(3,4)$;
+\eenum
+This is the Klein four-group $V$, and so
+$$ \Galof{{\bb Q}[\sqrt2,\sqrt3]/{\bb Q}} \cong V \cong {\bb Z}/2{\bb Z}\times{\bb Z}/2{\bb Z} \qed $$
+
+Notice that if $F$ is the {\it prime field} of $K$ (meaning $F={\bb F}_p$ if $K$ is of characteristic $p>0$, and $F={\bb Q}$ if $p=0$), then every automorphism of $K$ must keep $F$ constant, since
+$\sigma(n)=\sigma(1)+\cdots+\sigma(1)=n$ and $\sigma(a/b)=\sigma(a)/\sigma(b)=a/b$.
+Thus every automorphism of $K$ is an $F$-automorphism automatically, meaning in the case that $F$ is $K$'s prime field:
+$$ \Autof K = \Galof{K/F} $$
+
+\bdefn
+
+    Let $K$ be a field and $G\leq\Autof K$ a subgroup of $K$'s automorphisms, then define the {\emphcolor fixed-point field}
+    $$ K^G \coloneqq \set{a\in K}[\forall\sigma\in G\colon\sigma(a)=a] $$
+
+\edefn
+
+The fixed point field is indeed a field, as is easily verified.
+
+Notice the following properties:
+\benum
+    \item If $F_2\subseteq F_1$ then $\Galof{K/L_2}\supseteq\Galof{K/L_1}$ since any $L_1$-automorphism must necessarily also keep $L_2$ constant.
+    \item If $H_2\subseteq H_1$ then $K^{H_2}\supseteq K^{H_1}$ since if $a$ is held constant by every $\sigma\in H_1$, then it must also be held constant by every $\sigma\in H_2$.
+    \item For every $F$, $F\subseteq K^{\Galof{K/F}}$ since by definition, every element of $F$ must be held constant by an $F$-automorphism.
+    \item For every $H$, $H\subseteq\Galof{K/K^H}$ since every automorphism in $H$ must be a $K^H$-automorphism, since it by definition holds elements of $K^H$ constant.
+\eenum
+
+Notice then that if $L$ is an intermediate field of $K/F$ (meaning $K/L/F$), $\Galof{K/L}$ is a subgroup of $\Galof{K/F}$, since $F\subseteq L$.
+And conversely, if $H$ is a subgroup of $\Galof{K/F}$ then $H$ is an intermediate field of $K/F$, since $F$ is necessarily contained in $K^H$.
+
+So we have the following correspondence between objects:
+
+\kern.8cm
+\centerline{\drawdiagram{
+    $\set{\hbox{Subgroups of }\Galof{K/F}}$&&$\set{\hbox{Intermediate fields of $K/F$}}$\cr
+}{
+    \diagarrow{left cap=|-, from={1,3}, to={1,1}, curve=-0.3cm, text=$\Galof{K/\bullet}$, y distance=.6cm, y off=.2cm}
+    \diagarrow{left cap=|-, from={1,1}, to={1,3}, curve=-0.3cm, text=$K^\bullet$, y distance=-.6cm, y off=-.2cm}
+}}
+\kern.8cm
+
+\bdefn
+
+    Let $X$ and $Y$ be two posets (partially ordered sets), then a pair of functions $\alpha\colon X\longto Y$ and $\beta\colon Y\longto X$ is a {\emphcolor Galois correspondence} if
+    \benum
+        \item $\alpha$ and $\beta$ reverse order, meaning if $x_1\leq x_2$ then $\alpha(x_1)\leq\alpha(x_2)$ and similar for $\beta$;
+        \item for every $x\in X$ and $y\in Y$, $x\leq\beta(\alpha(x))$ and $y\leq\alpha(\beta(y))$.
+    \eenum
+
+\edefn
+
+For example (in fact, this is {\it the} example), $\alpha\colon F\mapsto\Galof{K/F}$ and $\beta\colon H\mapsto K^H$ is a Galois correspondence by the properties above.
+
+\bprop
+
+    $\alpha,\beta$ form a Galois correspondence if and only if for all $x\in X$ and $y\in Y$, $y\leq\alpha(x)\iff x\leq\beta(y)$.
+
+\eprop
+
+\Proof suppose $\alpha,\beta$ form a Galois correspondence.
+Then if $x\leq\beta(y)$ then $y\leq\alpha(\beta(y))\leq\alpha(x)$ (both inequalities are due to the correspondence being Galois: the first is by $(2)$ and the second is by $(1)$).
+The proof for $\alpha$ is similar.
+
+Conversely, since $\beta(y)\leq\beta(y)$ we get that $y\leq\alpha(\beta(y))$ (setting $x=\beta(y)$).
+And similar for $\alpha$.
+Now if $x\leq x'$ then $x\leq x'\leq\beta(\alpha(x'))$, so setting $y=\alpha(x')$ we have $x\leq\beta(y)$ and so $y\leq\alpha(x)$, meaning $\alpha(x')\leq\alpha(x)$ as required.
+\qed
+
+\bprop
+
+    Let $\alpha,\beta$ be a Galois correspondence, then
+    \benum
+        \item $\alpha\circ\beta\circ\alpha=\alpha$ and $\beta\circ\alpha\circ\beta=\beta$,
+        \item $\beta(\alpha(x))=x$ if and only if $x\in{\rm Im}(\beta)$ and $\alpha(\beta(y))=y$ if and only if $y\in{\rm Im}\alpha$,
+        \item $\alpha$ and $\beta$ are inverse functions between ${\rm Im}\beta$ and ${\rm Im}\alpha$.
+    \eenum
+
+\eprop
+
+\Proof
+\benum
+    \item Since $x\leq\beta\alpha x$, we have $\alpha x\geq\alpha\beta\alpha x$
+    Conversely, let $y=\alpha x$ then this means $y\leq\alpha\beta y$, and so $\alpha x\leq\alpha\beta\alpha x$ as required.
+    Similar for $\beta\alpha\beta$.
+
+    \item If $\alpha\beta(y)=y$ then trivially $y\in{\rm Im}\alpha$, and if $y\in{\rm Im}\alpha$ then $y=\alpha x$ and so $\alpha\beta(y)=\alpha\beta\alpha(x)=\alpha(x)=y$ by $(1)$.
+
+    \item This is direct from $(2)$.
+    \qed
+\eenum
+
+\bdefn
+
+    An extension $K/F$ is
+    \benum
+        \item {\emphcolor Separable} if it is algebraic and the minimal polynomial of every $a\in K$ is separable.
+        \item {\emphcolor Normal} if it is algebraic and the minimal polynomial of every $a\in K$ splits over $K$.
+        \item {\emphcolor Galois} if it is both separable and normal.
+        Meaning every minimal polynomial splits into distinct linear factors over $K$.
+    \eenum
+
+\edefn
+
+\blemm
+
+    Let $K/F$ be an extension, $a,b\in K$ with minimal polynomials $f_a$ and $f_b$ respectively.
+    Then $f_a=f_b$ or $f_a,f_b$ are coprime (which is independent on what field we look at, since the gcd is the same).
+
+\elemm
+
+\Proof suppose $f_a\neq f_b$.
+Then they can't share a root since because if they did then they would both be the minimal polynomial of said root.
+Now, let $E$ be a splitting field of $f_a$, then since $f_a$ splits into linear factors over $E$ and these are all coprime with $f_b$ since they don't share a root, the gcd in $E$ of $f_a$ and $f_b$ is
+$1$.
+But the gcd in a field extension is equal to the gcd in the field itself, so $f_a$ and $f_b$ are coprime.
+\qed
+
+\bthrm[name=galoisextension]
+
+    Let $K/F$ be a finite extension, then the following are equivalent:
+    \benum
+        \item $K/F$ is Galois,
+        \item $K$ is the splitting field of some separable polynomial over $F$,
+        \item $\abs{\Galof{K/F}}=[K:F]$,
+        \item $F=K^{\Galof{K/F}}$,
+        \item $F=K^G$ for some $G\leq\Galof{K/F}$.
+    \eenum
+
+\ethrm
+
+\Proof $(1)\implies(2)$: suppose $K=F[a_1,\dots,a_n]$ and let $f_i$ be the minimal polynomial of $a_i$.
+Since $K/F$ is Galois, each $f_i$ splits into distinct linear factors over $K$.
+Define $f=\prod_if_i$ where we remove repetitions, and by the above lemma these are all coprime and in particular do not share roots.
+Therefore $f$ is separable.
+$K$ is generated by the roots of $f$ and is therefore its splitting field, as required.
+
+$(2)\implies(3)$: we proved this in \refmath[proposition]{2to3}.
+
+$(5)\implies(1)$: let $a\in K$ and $f$ be its minimal polynomial.
+Let $a_1,\dots,a_n$ be the distinct roots of $f$ in $K$, then define $h=\prod_i(x-a_i)\in K[x]$.
+Obviously we have that $h$ divides $f$.
+Now, we know that $\sigma\in G$ permutes roots of $f$, and so $h\in\bigl(K[x]\bigr)^G=K^G[x]=F[x]$.
+
+$(3)\implies(4)$: let $G=\Galof{K/F}$ and define $F'=K^G$, so $F'$ satisfies $(5)$ which implies $(1)$, meaning $K/F'$ is Galois.
+And we showed that $(1)$ implies $(3)$, meaning $\abs{\Galof{K/F'}}=[K:F']$.
+Now, we know that $\Galof{K/F'}=\alpha\beta\alpha(F)=\Galof{K/F}$ so we have that
+$$ [K:F] = \abs{\Galof{K/F}} = \abs{\Galof{K/F'}} = [K:F'] $$
+and $F\subseteq F'$, meaning $F=F'$ as required.
+
+$(4)\implies(5)$ is trivial.
+\qed
+
+If $K/L/F$ is an extension such that $K/F$ is Galois, then $K/L$ is also Galois.
+This is since for $a\in K$, let $h_a^F$ and $h_a^L$ be the minimal polynomials of $a$ in $F$ and $L$ respectively.
+We know that $h_a^F$ splits into distinct linear factors over $K$, and since $h_a^L$ must divide it, it does too.
+So $K/L$ is also Galois.
+In particular $K^{\Galof{K/L}}=L$.
+
+So if we once again look at our Galois correspondence,
+
+\kern.8cm
+\centerline{\drawdiagram{
+    $\set{\hbox{Subgroups of }\Galof{K/F}}$&&$\set{\hbox{Intermediate fields of $K/F$}}$\cr
+}{
+    \diagarrow{left cap=|-, from={1,3}, to={1,1}, curve=-0.3cm, text={$\alpha=\Galof{K/\bullet}$}, y distance=.6cm, y off=.2cm}
+    \diagarrow{left cap=|-, from={1,1}, to={1,3}, curve=-0.3cm, text={$\beta=K^\bullet$}, y distance=-.6cm, y off=-.2cm}
+}}
+\kern.8cm
+
+In particular, we have that $\beta\alpha={\rm id}$.
+We have shown then that for every $K/L/F$ Galois, there exists a subgroup $G\leq\Galof{K/F}$ such that $K^G=L$.
+But then we can ask, for which subgroups $H\leq G$ is there an intermediate field $L$ such that $\Galof{K/L}=H$?
+
+\blemm[title=Artin's Lemma, name=artin]
+
+    Let $H\leq\Autof K$ be a finite subgroup, then $[K:K^H]\leq\abs H$.
+
+\elemm
+
+\Proof suppose $H=\set{\sigma_1=1,\sigma_2,\dots,\sigma_n}$, and take any $x_1,\dots,x_m\in K$ for any $m$ larger than $n$.
+We need to show that $x_1,\dots,x_m$ is linearly dependent over $K^H$.
+Meaning we need to find $a_1,\dots,a_m\in K^H$ such that $\sum_ia_ix_i=0$.
+If we apply $\sigma_i\in H$ to this sum, since $a_j\in K^H$, we get
+$$ \sigma_i\parens{\sum_ja_jx_j} = \sum_ja_j\sigma_i(x_j) = 0 $$
+Let $X$ be the $n\times m$ matrix defined by $X=(\sigma_i(x_j))_{ij}$ and define $\vec a=(a_1,\dots,a_m)^\top$.
+So we need to solve
+$$ X\vec a = 0 $$
+But $X\in M_{n\times m}(K)$, and since $m>n$, it has a nontrivial nullspace.
+So there exists a $\vec a\in K^m$ which solves this equation.
+But recall we need $\vec a$ to be a vector over $K^H$.
+
+So let us choose a solution $\vec a$ whose number of zeroes is minimal (meaning $\#\set{1\leq i\leq m}[a_i=0]$ is minimal).
+We can reorder indexes and assume that $a_1\neq0$, and so $a_1^{-1}\vec a$ is also solution with the same number of zeros, so we can assume $a_1=1$.
+We now claim that $a_i\in K^H$ for all $i$, and once we have proved this we have finished our proof.
+
+Suppose that $a_i\notin K^H$, without loss of generality $i=2$.
+So there exists a $\sigma_k\in K^H$ such that $\sigma_k(a_i)\neq a_i$.
+We know that $\sum_ja_j\sigma_i(x_j)=0$ for all $i$, and so composing with $\sigma_k$ we get
+$$ \sum_j\sigma_k(a_j)\sigma_{k+i}(x_j) = 0 $$
+for all $i$.
+But since composing with $\sigma_k$ is an invertible operation, this means that $\sum_j\sigma_k(a_j)\sigma_i(x_j)=0$ for all $i$.
+Thus $(1,\sigma_k(a_2),\dots,\sigma_k(a_m))$ is also a solution to $X\vec a=0$.
+And thus
+$$ (1,a_2,\dots,a_m) - (1,\sigma_k(a_2),\dots,\sigma_k(a_m)) = (0,a_2-\sigma_k(a_2),\dots,a_m-\sigma_k(a_m)) $$
+is also a solution to the system.
+It is non-trivial since $a_2\neq\sigma_k(a_2)$, but it has fewer zeros than our first solution since if $a_i=0$ then $a_i-\sigma_k(a_i)=0$ still, and we made the first index $0$.
+This is a contradiction to the fact that we chose our first solution to have a minimal number of zeros, completing the proof.
+\qed
+
+So for a Galois extension $K/F$, if $H\leq\Galof{K/F}$ then by \refmath[theorem]{galoisextension}, $K^H$ is Galois and so $[K:K^H]=\abs{\Galof{K/K^H}}$.
+And since $H\leq\Galof{K/K^H}$, we have that
+$$ \abs H\leq\abs{\Galof{K/K^H}}=[K:K^H] \leq \abs H $$
+where the final inequality is due to \refmath{artin}.
+Thus $\Galof{K/K^H}=H$.
+So we have proven
+
+\bthrm[title=The Fundamental Theorem of Galois Theory, name=ftogt]
+
+    Let $K/F$ be a finite dimensional Galois extension.
+    Then the Galois correspondence
+
+    \kern.8cm
+    \centerline{\color rgb{.1 .1 .8}\drawdiagram{
+        $\set{\hbox{Subgroups of }\Galof{K/F}}$&&$\set{\hbox{Intermediate fields of $K/F$}}$\cr
+    }{
+        \diagarrow{color=rgb{.1 .1 .8}, left cap=|-, from={1,3}, to={1,1}, curve=-0.3cm, text={$\alpha=\Galof{K/\bullet}$}, y distance=.6cm, y off=.2cm}
+        \diagarrow{color=rgb{.1 .1 .8}, left cap=|-, from={1,1}, to={1,3}, curve=-0.3cm, text={$\beta=K^\bullet$}, y distance=-.6cm, y off=-.2cm}
+    }}
+    \kern.8cm
+
+    is a bijective correspondence (meaning $\alpha$ and $\beta$ are inverses of one another).
+
+\ethrm
+
+\bcoro
+
+    If $K/F$ is a finite Galois extension, then there are only a finite number of intermediate fields.
+
+\ecoro
+
+\Proof the number of intermediate fields is $\Galof{K/F}$ which is $[K:F]$, finite.\qed
+
+\bcoro[name=galoisproperties]
+
+    Let $K/F$ be a finite Galois extension, $G=\Galof{K/F}$.
+    \benum
+        \item if $H_1\leq H_2$ then $[H_2:H_1]=\bigl[K^{H_1}:K^{H_2}\bigr]$,
+        \item for $\sigma\in G$, $H\leq G$, $L=K^H$, then $\sigma(L)$ corresponds to $\sigma H\sigma^{-1}$ in the Galois correspondence,
+        \item $H\leq G$ is normal in $G$ if and only if $K^H/F$ is Galois.
+        In such a case, $\Galof{E^H/F}\cong\slfrac GH$.
+    \eenum
+
+\ecoro
+
+\Proof
+\bgroup\def\enumindent{0pt}
+\benum
+    \item We know that
+    $$ \abs{H_2} = \bracks{K:K^{H_2}} = \bracks{K:K^{H_1}}\cdot\bracks{K^{H_1}:K^{H_2}} = \abs{H_1}\cdot\bracks{K^{H_1}:K^{H_2}} $$
+    and so $[H_2:H_1]=\frac{\abs{H_2}}{\abs{H_1}}=\bracks{K^{H_1}:K^{H_2}}$.
+    \item We need to show that $\Galof{K/\sigma(L)}=\sigma H\sigma^{-1}$ and $K^{\sigma H\sigma^{-1}}=L$.
+    But since we know that the correspondence is bijective, proving only the first equality is sufficient.
+    $$ \eqalign{
+        \Galof{K/\sigma(L)} &= \set{\phi\in G}[\forall\alpha\in L\colon \phi(\sigma(\alpha))=\sigma(\alpha)]\cr
+        &= \set{\phi\in G}[\forall\alpha\in L\colon\sigma^{-1}\phi\sigma\alpha=\alpha]\cr
+        &= \set{\phi\in G}[\sigma\phi\sigma^{-1}\in\Galof{K/L}]\cr
+        &= \sigma\Galof{K/L}\sigma^{-1} = \sigma H\sigma^{-1}
+    } $$
+    \item Suppose first that $H\normaleq G$ is normal in $G$.
+    So $\sigma H\sigma^{-1}=H$ for all $\sigma\in G$ and thus by $(2)$,
+    $$ \sigma(K^H) = K^{\sigma H\sigma^{-1}} = K^H $$
+    Thus the map $\sigma\mapsto\sigma\bigl|_{K^H}$ from $G$ to $\Galof{K^H/F}$ is well-defined since $\sigma(K^H)=K^H$.
+    The map is also surjective since every $K^H$-automorphism can be extended to an $K$-automorphism by \refmath[theorem]{etacount} (since $K/K^H$ is Galois and thus can be generated by the roots of a
+    polynomial which splits over $K$).
+
+    Notice that the kernel of this map is all $K$-automorphisms which keep $K^H$ constant, meaning the kernel is $\Galof{K/K^H}=H$.
+    Thus by the first isomorphism theorem, $G/H\cong\Galof{K^H/F}$.
+    Furthermore,
+    \multlines{
+        (K^H)^{\Galof{K^H/F}} = \set{\alpha\in E^H}[\forall\sigma\in G\colon\sigma\bigl|_{E_H}(\alpha)=\alpha] = \set{\alpha\in E^H}[\forall\sigma\in G\colon\sigma(\alpha)=\alpha]\cr
+        &= E^G\cap E^H = F\cap E^H = F
+    }
+    So by \refmath[theorem]{galoisextension}, $K^H/F$ is Galois.
+
+    Conversely, let $L=K^H$ and suppose that $L/F$ is Galois and let $L=F[\alpha_1,\dots,\alpha_n]$.
+    Let $h_i$ be the minimal polynomial of $\alpha_i$, then for all $\sigma\in G$, $\sigma(\alpha_i)$ is still a root of $h_i$.
+    Since $L/F$ is Galois and thus normal, this means that $\sigma(\alpha_i)\in L$ for all $i$ and so $\sigma(L)=L$ for all $\sigma\in G$.
+    By $(2)$ this means that
+    $$ \sigma H\sigma^{-1}=\sigma\Galof{K/L}\sigma^{-1}=\Galof{K/\sigma(L)}= \Galof{K/L} = H $$
+    so $H$ is normal, as required.
+    \qed
+\eenum
+\egroup
+
