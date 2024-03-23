@@ -1,0 +1,144 @@
+\bdefn
+
+    Let $F$ be a field, then a {\emphcolor root of unity} of order $n$ is an element $\rho\in F$ such that $\rho^n=1$.
+    Furthermore define
+    $$ \mu_n(F) = \set{\rho\in F}[\rho^n=1] $$
+    to be the set of all roots of unity of order $n$.
+
+\edefn
+
+Notice that $F$ can have a primitive root of unity of order $n$ only when $\Char F=0$ or $n$ and $\Char F$ are coprime.
+Otherwise, suppose $\Char F=p$ and $n=mp$ then
+$$ x^n - 1 = (x^m)^p - 1 = (x^m - 1)^p $$
+meaning $\rho^m=1$ and so $n$ cannot be minimal.
+
+\blemm
+
+    Every finite subgroup of the multiplicative group of a field is cyclic.
+
+\elemm
+
+\Proof let $A\leq F^\times$, then recall the definition of the exponent:
+$$ \exp A \coloneqq \minof[m>1]{\forall a\in A\colon a^m=1} = \lcm\set{o(a)}[a\in A] $$
+define $e=\exp A$.
+Then the polynomial $x^e-1$ has every element in $A$ as a root, and so $\abs A\leq e$ as there can be at most $e$ roots.
+Since in general $\abs A\geq e$, we must then have that $\abs A=e$ and this means that $A$ is cyclic.
+\qed
+
+Since $\mu_n(F)$ is a finite subgroup of $F^\times$, by the above lemma it is cyclic.
+
+\bdefn
+
+    A {\emphcolor primitive root of unity} of order $n$ is a generator of $\mu_n(F)$.
+
+\edefn
+
+An equivalent definition is that a primitive root of unity is a root of $x^n-1$ but not $x^m-1$ for $m<n$.
+
+Notice that if $\rho$ is a primitive root of unity of order $n$, then all other primitive roots of unity of order $n$ are of the form $\rho^j$ for $(j,n)=1$.
+
+In ${\bb C}$, all roots of unity of order $n$ are of the form $\exp\parens{2\pi k/n}$, so define $\rho_n=\exp\parens{2\pi/n}$.
+Then all roots of unity of order $n$ are of the form $\rho_n^k$.
+So the splitting field of $x^n-1$ over ${\bb Q}$ is
+$$ {\bb Q}[1,\rho_n,\rho_n^2,\dots,\rho_n^{n-1}] = {\bb Q}[\rho_n] $$
+Since $x^n-1$ splits into distinct linear factors, ${\bb Q}[\rho_n]$ is the splitting field of a separable polynomial and so ${\bb Q}[\rho_n]/{\bb Q}$ is Galois.
+
+Now if $\Char F=0$ then ${\bb Q}\subseteq F$ and the compositum is ${\bb Q}[\rho_n]F=F[\rho_n]$ and so by \refmath[proposition]{res} $F[\rho_n]/F$ is also Galois.
+
+But $x^n-1$ is obviously not irreducible for $n\geq2$ since it has $1$ as a root.
+So we can then ask what the minimal polynomial of each root is.
+
+\bdefn
+
+    Let $E$ be the splitting field of $x^n-1\in F[x]$, then the {\emphcolor Cyclotomic polynomial} of order $n$ is defined as
+    $$ \Phi_n(x) = \prod_\xi(x-\xi) = \prod_{(j,n)=1}\bigl(x-\rho_n^j\bigr) $$
+    where $\xi$ runs over all primitive roots of unity of order $n$ (which are all of the form $\rho_n^j$) (which are all of the form $\rho_n^j$) (which are all of the form $\rho_n^j$) (which are all of
+    the form $\rho_n^j$).
+
+\edefn
+
+Notice that $\deg\Phi_n=\phi(n)$ where $n$ is the Euler totient function.
+
+Notice that if $\rho\in\mu_n(F)$ and $o(\rho)=k$ then $\rho$ is a primitive root of unity of order $k$.
+And vice versa: if $\rho$ is a primitive root of unity of order $k\divides n$ then $\rho^n=1$.
+Thus $\mu_n(F)$ decomposes into the sets of primitive roots of unity for $k\divides n$, and so
+$$ x^n - 1 = \prod_{\rho\in\mu_n(F)}(x-\rho) = \prod_{k\divides n}\prod_{\rho_k}(x-\rho_k) = \prod_{k\divides n}\Phi_k(x) $$
+where $\rho_k$ runs over all primitive roots of unity of order $k$.
+
+For $\sigma\in\Galof{E/F}$, $\sigma$ must permute the roots of $\Phi_n$ (since it maps roots of $x^n-1$ to roots of $x^n-1$, and $n$ is the minimum value for which a primitive root of unity is a root).
+Thus $\sigma$ must fix $\Phi_n$, and so
+$$ \Phi_n \in E^{\Galof{E/F}}[x] = F[x] $$
+
+If $\Char F=0$ then for $\sigma\in\Galof{{\bb Q}[\rho_n]/{\bb Q}}$, $\sigma$ must permute the roots of $\Phi_n$ and so the same argument as before works to show that
+$$ \Phi_n \in {\bb Q}[x] $$
+Recall Gauss's lemma that the product of two primitive polynomials is primitive.
+So suppose $f\in{\bb Z}[x]$ is monic and $f=gh$ for $g,h\in{\bb Q}[x]$ also monic.
+Then there exists $m,n\in{\bb Z}$ such that $mg$ and $nh$ are primitive in ${\bb Z}$ and so $mg\cdot nh=mnf$ is primitive by Gauss's lemma.
+But then the gcd of its coefficients is $mn$, meaning $mn=\pm1$, so $g,h$ are in ${\bb Z}[x]$.
+In particular we have
+$$ x^n - 1 = \prod_{k\divides n}\Phi_k(x) $$
+where $\Phi_k(x)$ is a rational polynomial, and so $\Phi_k(x)\in{\bb Z}[x]$.
+
+\bthrm
+
+    $\Phi_n(x)\in{\bb Z}[x]$ is irreducible.
+
+\ethrm
+
+\Proof let $f\in{\bb Q}[x]$ be a monic irreudcible factor of $\Phi_n$.
+Then it is sufficient to show that if $z$ is a root of $f$, so is $z^i$ for every $i$ coprime with $n$.
+Then $f$ and $\Phi_n$ share roots as all primitive roots of order $n$ are of the form $z^i$ for $z$ primitive root and $i$ coprime with $n$.
+And so this implies $\Phi_n=f$.
+
+It is sufficient to prove this for $i$ prime, as we can find the prime factorization of $i$ and inductively raise $z$ to the power of the prime factor.
+So suppose there is a prime $p$ such that $f(z)=0$ but $f(z^p)\neq0$.
+Let $\Phi_n(x)=f(x)g(x)$ for $g(x)\in{\bb Z}[x]$ which exists due to Gauss's lemma.
+Then $g(z^p)=0$, but since $f$ is the minimal polynomial of $z$ it must divide $g(x^p)$ in ${\bb Z}[x]$.
+Meaning there exists $h\in{\bb Z}[x]$ such that $g(x^p)=f(x)h(x)$.
+
+By taking everything modulo $p$ in ${\bb F}_p[x]$, we get that by the Frobenius homomorphism
+$$ (\bar g(x))^p = \bar g(x^p) = \overline{fh} = \bar f\bar h $$
+And so $\bar f$ and $\bar g$ must share a common irreducible factor.
+But then $q(x)=x^n-1$ has a multiple root in ${\bb F}_p$, since it has $\bar f$ and $\bar g$ as factors.
+But $q'(x)=nx^{n-1}\neq0$ since $(n,p)=1$ and so $\gcd(q,q')=1$ which by \refmath[theorem]{derivsep} means $q$ is separable and so has no multiple roots.
+\qed
+
+This means that $\Phi_n$ is the minimal polynomial of every primitive root of unity of order $n$.
+
+\bcoro
+
+    If $\rho_n$ is a primitive root of unity of order $n$, then $\Galof{{\bb Q}[\rho_n]/{\bb Q}}\cong{\cal U}_n$ where ${\cal U}_n$ is the Euler group of $n$ elements.
+
+\ecoro
+
+\Proof we already know that ${\bb Q}[\rho_n]/{\bb Q}$ is Galois, and the minimal polynomial of $\rho_n$ is $\Phi_n$ so
+$$ \abs{{\bb Q}[\rho_n]/{\bb Q}} = [{\bb Q}[\rho_n] : {\bb Q}] = \deg\Phi_n = \phi(n) = \abs{{\cal U}_n} $$
+Now we know that $\rho_n$ must be mapped to the other roots of $\Phi_n$, which tells us that all automorphisms of the Galois group must be of the form $\sigma_k\colon\rho_n\mapsto\rho_n^k$.
+Since $\Phi_n$'s roots are distinct, these are precisely $\phi(n)$ roots automorphisms.
+So every automorphism $\sigma_k$ is in the Galois group.
+
+Let us define $\psi\colon{\cal U}_n\longto\Galof{{\bb Q}[\rho_n]/{\bb Q}}$ by $k\mapsto\sigma_k$.
+It is easily verified that this is a homomorphism since $\sigma_{kk'}=\sigma_k\sigma_{k'}$.
+This is obviously surjective and injective, as required.
+\qed
+
+\bcoro
+
+    Every finite-dimension subfield of ${\bb Q}_{ab}\coloneqq\bigcup_n{\bb Q}[\rho_n]$ is Galois over ${\bb Q}$, and its Galois group is Abelian.
+
+\ecoro
+
+\Proof this is since every subfield generated by $\rho_{n_1},\dots,\rho_{n_k}$ is contained in some extension ${\bb Q}[\rho]$.
+As we showed before, this is Galois with Galois group ${\cal U}_n$.
+Every subgroup of ${\cal U}_n$ is normal since it is an Abelian group, in particular $\Galof{{\bb Q}[\rho_{n_1},\dots,\rho_{n_k}]/{\bb Q}}$.
+So by \refmath[corollary]{galoisproperties}, ${\bb Q}[\rho_{n_1},\dots,\rho_{n_k}]/{\bb Q}$ is Galois.
+\qed
+
+\bthrm[title=Kronecker-Weber Theorem]
+
+    Every Galois extension of ${\bb Q}$ is a subfield of ${\bb Q}_{ab}$.
+
+\ethrm
+
+\Proof not in this course.\qed
+
