@@ -86,6 +86,7 @@ In such a case we take upon ourselves the following convention:
 \eppbox
 
 This means that we can view $\lambda y.x\,y$ as $\lambda w.x\,w$ and so the substitution becomes $\lambda w.y\,z\,w$.
+The rules for $\alpha$-equivalence is that if $\lambda x.t$ is equivalent to $\lambda y.t[x\mapsto y]$ if $y\notin\var t$. 
 
 \bdefn
 
@@ -264,10 +265,10 @@ so that \lcalc{\plus n m s z} will apply {\tt s} \lcalc{n s z} $m$ times, result
 Similarly we define
 
 \smallskip
-\centerline{\tt times = \lambda n.\lambda m.\lambda s.\lambda z.m (\plus\ n) \cn0}
+\centerline{\tt times = \lambda n.\lambda m.m (\plus\ n) \cn0}
 
-so that \lcalc{times n m s z} will apply \lcalc{\plus n} $m$ times to \cn0, resulting in $n+n+\cdots+n+0=n\cdot m$.
-In a similar vein, we can define \lcalc{pow = \lambda n.\lambda m.\lambda s.\lambda z.m (times\ n) \cn1}, so that \lcalc{pow \cn n \cn m} is equal to \cn{n^m}.
+so that \lcalc{times n m} will apply \lcalc{\plus n} $m$ times to \cn0, resulting in $n+n+\cdots+n+0=n\cdot m$.
+In a similar vein, we can define \lcalc{pow = \lambda n.\lambda m.m (times\ n) \cn1}, so that \lcalc{pow \cn n \cn m} is equal to \cn{n^m}.
 
 To test if a numeral is zero, we'd like to find a functions {\tt ss} and {\tt zz} such that applying {\tt ss} one or more times to {\tt zz} yields false, while not applying it at all yields true.
 That way when we do \lcalc{\cn n ss zz}, it will result in \tru{} only if {\tt ss} was never applied, meaning $n=0$.
@@ -288,8 +289,8 @@ One implementation is
 }}}
 
 The idea here is that applying {\tt ss} to a $(n,m)$ will result in $(m,m+1)$.
-So starting from $(0,0)$, you get $(0,1)$ then $(1,2)$ then $(3,2)$ and so on.
-In general ${\tt ss}^n{\tt z}=(n,n-1)$ for $n\geq1$ and so the predecessor is just the second value.
+So starting from $(0,0)$, you get $(0,1)$ then $(1,2)$ then $(2,3)$ and so on.
+In general ${\tt ss}^n{\tt z}=(n-1,n)$ for $n\geq1$ and so the predecessor is just the first value.
 
 Using the predecessor combinator we can define a subtraction combinator similar to addition:
 
@@ -422,5 +423,5 @@ Indeed:
 }
 
 Though the final equality is only true up to $\beta$-reduction, meaning that \lcalc{\Y\ g} and \lcalc{g(\Y\ g)} both reduce to a similar term, not to one another.
-
+This is the trait which allows for recursion.
 
