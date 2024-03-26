@@ -30,7 +30,7 @@ Let us define $\id=\lambda x\colon{\sf Bool}.x$, then $\id$ is a term.
     We define $\beta$-reduction on simply typed redexes as follows:
     \benum
         \item $(\lambda x\colon T.t)t'\xvarrightarrow{\,\beta\,}t[x\mapsto t']$,
-        \item ${\tt if\;}{\sf true}{\tt\;then\;}t_1{\tt\;else\;}t_2\xvarrightarrow{hello}[there]t_1$,
+        \item ${\tt if\;}{\sf true}{\tt\;then\;}t_1{\tt\;else\;}t_2\xvarrightarrow{\,\beta\,}t_1$,
         \item ${\tt if\;}{\sf false}{\tt\;then\;}t_1{\tt\;else\;}t_2\xvarrightarrow{\,\beta\,}t_2$.
     \eenum
 
@@ -165,9 +165,67 @@ But we have that $\Gamma,\tt x\colon\T_1\vdash t_1\colon\T_2$ and $\Gamma\vdash\
 
 \bdefn
 
-    A term $t$ {\emphcolor can be normalized} if there exists a value $t'$ such that $t$ can be reduced to $t'$.
+    A term $t$ {\emphcolor can be normalized} if there exists a closed value $t'$ such that $t$ can be reduced to $t'$.
 
 \edefn
+
+Our goal is to prove that a closed well-typed term can be normalized.
+To do so we require some further mechanisms and proofs.
+
+\bdefn
+
+    Let $\T$ be a type, then we define the predicate $R_\T$ on terms recursively as follows:
+    \benum
+        \item $R_{\sf Bool}$ is the set of all terms of type $\Bool$ which can be normalized.
+        \item $R_{\T_1\to\T_2}$ is the set of all terms $t$ of type $\T_1\to\T_2$ that can be normalized and if $R_{\T_1}(s)$ then $R_{\T_2}(ts)$.
+    \eenum
+
+\edefn
+
+\blemm
+
+    Suppose $\vdash t\colon\T$ and $t$ can be reduced to $t'$ then $R_\T(t)$ if and only if $R_\T(t')$.
+
+\elemm
+
+\Proof by induction on $\T$.
+For $\T={\sf Bool}$ then if $t\colon{\sf Bool}$ and $t$ can be normalized, so can $t'$ and $t'\colon{\sf Bool}$ by the preservation theorem.
+And if $t'\colon{\sf Bool}$ then $t\colon{\sf Bool}$ again by the preservation theorem.
+
+Now suppose $\T=\T_1\to\T_2$, if $R_\T(t)$ then it is obvious by the preservation theorem that $t'\colon\T$.
+Now let $R_{\T_1}(s)$ then we must show that $R_{\T_2}(t's)$, but since $ts\to t's$ both of their types must be $\T_2$ as required.
+\qed
+
+\bcoro
+
+    Suppose $x_1\colon\T_1,\dots,x_n\colon\T_n\vdash t\colon\T$ and $v_1,\dots,v_n$ are values of type $\T_i$ such that $R_{\T_i}(r_i)$.
+    Then for $t'=t[x_n\mapsto v_n]\cdots[x_1\mapsto v_1]$, $R_\T(t')$.
+
+\ecoro
+
+\Proof firstly recall by the substitution lemma that $t'$ has type $\T$.
+We continue the rest of the proof by induction on the derivation $x_1\colon\T_1,\dots,x_n\colon\T_n\vdash t\colon\T$.
+For {\tensc T-Var} this is simply because $t=x_i$ and $\T=\T_i$ for some $i$, and the result is immediate.
+
+For {\tensc T-Abs}, $t=\lambda x\colon\S_1.s_2$, so deriving gives
+$$ x_1\colon\T_1,\dots,x_n\colon\T_n,x\colon\S_1\vdash s_2\colon\S_2\implies \T=\S_1\to\S_2 $$
+Now, $t'$ is a value since $t$ is already a value.
+So all that remains to show is that if $R_{\S_1}(s)$ then $R_{\S_2}(t's)$.
+So we have that $s$ can be normalized to some value $v$ and by the previous lemma $R_{\S_1}(v)$.
+Furthermore, we know that $x_1\colon\T_1,\dots,x_n\colon\T_2,x\colon\S_1\vdash s_2\colon\S_2$, so by the induction hypothesis, we have that
+$$ R_{\S_2}\bigl(s_2[x\mapsto v][x_n\mapsto v_n]\cdots[x_1\mapsto v_1]\bigr) $$
+But notice that by call-by-value:
+$$ t's = \bigl(\lambda x\colon\S_1.s_2[x_n\mapsto v_n]\cdots[x_1\mapsto v_1]\bigr)s \longto s_2[x\mapsto v][x_n\mapsto v_n]\cdots[x_1\mapsto v_1] $$
+as required.
+
+For {\tensc T-App}, we have $t=t_1t_2$ and so
+$$ x_1\colon\T_1,\dots,x_n\colon\T_n\vdash t_1\colon\T_1\to\T_2,\,t_2\colon\T_1 $$
+so $\T=\T_2$.
+By induction, we have that $R_{\T_1\to\T_2}(t_1[x_1\mapsto v_1]\cdots[x_n\mapsto v_n])$ and $R_{\T_1}(t_2[x_1\mapsto v_1]\cdots[x_n\mapsto v_n])$.
+By definition this means
+$$ R_{\T_2}(t_1[x_1\mapsto v_1]\cdots[x_n\mapsto v_n]\,t_2[x_1\mapsto v_1]\cdots[x_n\mapsto v_n]) = R_{\T_2}\bigl((t_1t_2)[x_1\mapsto v_1]\cdots[x_n\mapsto v_n]\bigr) $$
+as required.
+\qed
 
 \bthrm
 
@@ -175,5 +233,5 @@ But we have that $\Gamma,\tt x\colon\T_1\vdash t_1\colon\T_2$ and $\Gamma\vdash\
 
 \ethrm
 
-\Proof in the book.
+\Proof by the above corollary, if $\vdash t\colon\T$ then $R_{\T}(t)$.
 \qed
