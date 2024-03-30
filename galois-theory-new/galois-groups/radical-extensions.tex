@@ -62,3 +62,154 @@ Meaning $K/F$ is simple radical.
 
 \edefn
 
+Recall the following definitions from group theory:
+
+\bdefn
+
+    Let $G$ be a group, then a {\emphcolor subnormal series} is a series
+    $$ 1 = G_m \normal \cdots \normal G_1 \normal G_0 = G $$
+    And a {\emphcolor composition series} is a subnormal series whose factors ($G_{i+1}/G_i$) are simple.
+    Equivalently, the series is maximal.
+
+    A group $G$ is {\emphcolor solvable} if it has a subnormal series with Abelian factors.
+    Without loss of generality, if $G$ is finite, we can assume that it is a composition series with cyclic groups of prime order.
+
+\edefn
+
+Recall the {\it Jordan-H\"older Theorem}: two composition series of the same group have the same factors, up to order.
+
+\bthrm
+
+    Let $K/F$ be Galois, $G=\Galof{K/F}$ and $n\coloneqq\abs G$.
+    Further suppose that $\rho_k\in F$ for every prime $k\leq n$ (where $\rho_k$ is the primitive root of unity of degree $k$).
+    Then $K/F$ is radical if and only if $G$ is solvable.
+
+\ethrm
+
+\Proof if $G$ is solvable, then there exists a composition sequence
+$$ 1 = G_m \normal \cdots \normal G_1 \normal G_0 = G $$
+with cyclic factors of prime order (since $G$ is finite).
+Using the Galois correspondence, let us define
+$$ F_m = K^1 = K \supset F_{m-1} = K^{G_{m-1}} \supset \cdots \supset F_1 = K^{G_1} \supset F_0 = F^G = F $$
+Now we know that $\Galof{F_{i+1}/F_i}=\Galof{K^{G_{i+1}}/K^{G_i}}$, then by \refmath[corollary]{quotientgalois} with $F=K^{G_i}$ and $L=K^{G_{i+1}}$, we have that this is equal to
+$$ \Galof{F_{i+1}/F_i} \cong \slfrac{\Galof{K/K^{G_i}}}{\Galof{K/K^{G_{i+1}}}} = \slfrac{G_i}{G_{i+1}} $$
+which is cyclic of order $\leq n$.
+Since $F$ has every root of unity of order $\leq n$, this means that $F_{i+1}/F_i$ is simple radical.
+Thus $K/F$ is radical.
+
+Conversely, suppose $K/F$ is radical, then there exists a sequence of simple radical extensions
+$$ K = F_m \supseteq \cdots \supseteq F_0 = F $$
+Each of these is Galois and cyclic, and so if we define
+$$ G_m = 1 \normal G_1 = \Galof{K/F_1} \normal \cdots \normal G_0 = \Galof{K/F} $$
+this gives a subnormal sequence with cyclic factors, so $G$ is solvable.
+\qed
+
+\blemm
+
+    If $f\in F[x]$ irreducible has a root in a radical extension, then every root can be found in a radical extension.
+
+\elemm
+
+\Proof let $E/F$ be a Galois extension where $f$ splits in $E$ (by taking perhaps the Galois closure of the extension to the splitting field of $f$).
+Now suppose $\alpha$ is a root of $f$ where $K=F[\alpha]$ is a radical extension.
+Meaning there exists
+$$ F = F_0 \subseteq F_1 \subseteq \cdots \subseteq F_n = K $$
+simple radical extensions.
+Then if we take $\sigma\in\Galof{E/F}$, we still have that $\sigma F_{i+1}/\sigma F_i$ is a simple radical extension since if $F_{i+1}=F_i[\beta]$ where $\beta^n\in F_i$, then
+$\sigma F_{i+1}=(\sigma F_i)[\sigma\beta]$
+and $(\sigma\beta)^n\in\sigma F_i$.
+So $\sigma\alpha$ can be found in a radical extension.
+Since $f$ is irreducible, every other root can be mapped to from $\alpha$ by an $F$-automorphism of its splitting field (by \refmath[proposition]{rootmap}), thus completing the proof.
+\qed
+
+Notice that the compositum of two radical extensions is also a radical extension.
+It is sufficient to show that the compositum of two simple radical extensions is a radical extension, and this is easy enough: suppose $K=F[\root n\of\alpha]$ and $E=F[\root m\of\beta]$.
+Then $KF=F[\root n\of\alpha,\root m\of\beta]$ and $F\subseteq K\subseteq KF$ is a tower of simple radical extensions.
+
+\bthrm
+
+    Let $F$ be a field, $f\in F[x]$ an irreducible polynomial of degree $n$.
+    Further suppose $F$ has every primitive root of unity of prime order $\leq n$.
+    Then the following are equivalent:
+    \benum
+        \item $f$ has a root in a radical extension of $F$ where each step in the extension has a dimension $\leq n$.
+        \item the splitting field $K$ of $f$ is a radical extension;
+        \item $\Galof{K/F}$ is solvable;
+        \item $f$ splits in some solvable extension (meaning the Galois group is solvable).
+    \eenum
+
+\ethrm
+
+\Proof $(1)\implies(2)$: let $K$ be the splitting field of $f$ and $\alpha_1,\dots,\alpha_n$ be its roots.
+By the above lemma $F[\alpha_1],\dots,F[\alpha_n]$ are all radical extensions, and so their compositum $K=F[\alpha_1,\dots,\alpha_n]$ is also a radical extension.
+
+$(2)\implies(1)$: this is by the first direction in the previous theorem's proof.
+
+$(2)\iff(3)$: this is what we showed in the previous theorem.
+
+$(3)\implies(4)$: trivial.
+
+$(4)\implies(3)$: suppose $f$ splits in the solvable extension $E/F$.
+Then $E/K/F$, and
+$$ G=\Galof{K/F}=\slfrac{\Galof{E/F}}{\Galof{E/K}} $$
+by \refmath[corollary]{quotientgalois}, which is the quotient of a solvable group and is thus solvable.
+\qed
+
+\bprop
+
+    Suppose $F$ is a field which has all roots of unity of order $<m$.
+    Then the field extension $F[\rho_m]/F$ is cyclic and radical (where $\rho_m$ is a primitive root of unity of order $m$).
+
+\eprop
+
+\Proof if $m=m'm''$ are coprime, then $\rho_m=\rho_{m'}^\alpha\rho_{m''}^\beta$ where $\alpha m'+\beta m''=1$.
+Otherwise, if $m=p^k$ for $m>1$ then $\rho_{m/p}\in F$ and $\rho_m^p=\rho_{m/p}$, and so it is simple radical and thus cyclic.
+Finally if $m=p$ then $[F[\rho_p]:F]\leq p-1$ since
+$$ 1 + \rho_p + \cdots + \rho_p^{n-1} = \Phi_p(\rho_p) = 0 $$
+and the field extension is Abelian since the Galois group is a quotient of the Euler group of order $p$ (by using the roots of order $<p$) which is cyclic.
+Thus it is solvable and therefore cyclic and radical.
+\qed
+
+\bthrm
+
+    Let $f\in F[x]$ be a polynomial of degree $n$ and $K$ be its splitting field.
+    Then $f$ is solvable by radicals if and only if $\Galof{K/F}$ is solvable.
+
+\ethrm
+
+\Proof define $F'=F[\rho_2,\dots,\rho_n]$ be the field extension of all roots of unity up to order $n$.
+Then by the previous proposition, $F'$ is a radical extension of $F$.
+First suppose $f$ is irreducible.
+Now, we know that the splitting field of $f$ in $F'$ is $F'K$, and $f$ is solvable by radicals in $F'$ if and only if $F'K/F'$ is radical.
+Now, since $F'/F$ is radical, $F'K/F'$ is radical if and only if $F'K/F$ is radical (if $F'K/F'$ is radical, compose the tower with the tower $F'/F$.
+If $F'K/F$ is radical, multiply the tower by $F'$).
+And if $F'K/F$ is radical, then $f$ is solvable by radicals over $F$ by definition.
+So $f$ is solvable by radicals in $F'$ if and only if it is solvable by radicals in $F$.
+We also know it is solvable by radicals in $F'$ if and only if $\Galof{F'K/F'}$ is solvable, and this is if and only if $\Galof{K/F}$ is solvable.
+
+For the case that $f$ is not irreducible, we simply induct on its irreducible components.
+\qed
+
+Since every polynomial of degree $\leq 4$'s Galois group (meaning the Galois group of its splitting field) is a subgroup of $S_4,S_3,S_2,S_1$, which are solvable, we get:
+
+\bcoro
+
+    Every polynomial of degree $\leq 4$ is solvable by radicals.
+
+\ecoro
+
+For every $n$, there exists a polynomial $f\in{\bb Q}[x]$ such that the Galois group of its splitting field is $S_n$.
+We will show this for $n=5$: define
+$$ f(x) = x^5 - 20x + 5 $$
+this is irreducible by Eisenstein $p=5$.
+Its derivative is $f'(x)=5x^4-20=5(x^4-4)$ which has two real zeroes and so $f$ has $3$ real roots (or graph the polynomial).
+Let $K$ be its splitting field, so $K$ is not real.
+The complex conjugate forms a ${\bb R}$-automorphism of $K$ since it maps the complex roots to one another, which is a transposition in $S_5$.
+
+Now, $G=\Galof{K/{\bb Q}}\subseteq S_5$.
+$G$ acts transitively on the set of roots (since $f$ is irreducible, so for all roots $\alpha,\beta$, there exists a $\sigma\in G$ such that $\sigma\alpha=\beta$) and so it has a $5$-cyclie
+$(1,2,3,4,5)\in G$.
+This implies that $G=S_5$.
+So $f(x)$ is not solvable by radicals.
+Meaning {\it none} of its roots can be written as radicals.
+
