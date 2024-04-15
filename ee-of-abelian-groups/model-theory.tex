@@ -1,0 +1,214 @@
+Let $\Sigma\subseteq{\cal L}$ be a set of formulas in free variables $x_1,\dots,x_n$.
+Then if ${\cal A}$ is an ${\cal L}$-structure and $a_1,\dots,a_n\in A$, we write ${\cal A}\vDash\Sigma[a_1,\dots,a_n]$ to mean that ${\cal A}\vDash\phi[a_1,\dots,a_n]$ for every $\phi\in\Sigma$.
+We then say that $a_1,\dots,a_n$ {\it realizes} or {\it satisfies} $\Sigma$.
+
+\bdefn
+
+    An {\emphcolor $n$-type} $\Gamma(x_1,\dots,x_n)$ is a maximally consistent set of ${\cal L}$-formulas in free variables $x_1,\dots,x_n$.
+    Let ${\cal A}$ be an ${\cal L}$-structure and $a_1,\dots,a_n\in A$ then the {\emphcolor type} of $a_1,\dots,a_n$ is all the formulas $\phi(x_1,\dots,x_n)\in{\cal L}$ satisfied in ${\cal A}$ by the
+    sequence $a_1,\dots,a_n$.
+
+\edefn
+
+This is indeed a type, as it is consistent (${\cal A},a_1,\dots,a_n$) models it, and it is maximal since for every $\phi(\vec x)\in{\cal L}$ either $\phi$ or $\neg\phi$ are in the type.
+
+\bexam
+
+    $({\bb R},+,\cdot,0,1<)$ is the ordered field of real numbers.
+    Then for every $a<b$, $a$ and $b$ have distinct $1$-types, as there exists a rational number $a<\frac nm<b$ and so $x<\frac nm$ is in $a$'s type but not $b$'s ($\frac nm$ is definable in the signature).
+
+\eexam
+
+\bdefn
+
+    Let $\Sigma(\vec x)$ be a set of ${\cal L}$-formulas in $\vec x$ and ${\cal A}$ a ${\cal L}$-structure.
+    ${\cal A}$ {\emphcolor realizes} $\Sigma$ if $\Sigma$ is satisfied by some sequence $\vec a\in A^n$.
+    Otherwise ${\cal A}$ {\emphcolor omits} $\Sigma$.
+
+\edefn
+
+\bdefn
+
+    Let $\Sigma(\vec x)$ be a set of ${\cal L}$-formulas and $T$ a ${\cal L}$-theory.
+    Then $\Sigma$ is {\emphcolor compatible} with $T$ if $T$ has a model realizing $\Sigma$.
+
+\edefn
+
+\bdefn
+
+    Let $\varkappa$ be a cardinal, then a model ${\cal A}$ is called {\emphcolor $\varkappa$-saturated} if for every $X\subset A$ of cardinality strictly less than $\varkappa$, ${\cal A}_X$ realizes every
+    $1$-type $\Sigma(v)$ in the language ${\cal L}X$ compatible with $\Th{\cal A}_X$.
+    And ${\cal A}$ is {\emphcolor saturated} if it is $\abs A$-saturated.
+
+\edefn
+
+The reason we consider ${\cal A}$ $\varkappa$-saturated using sets of cardinality {\it strictly} less than $\varkappa$ is because otherwise no model would be saturated: since the type
+$\set{x\neq a}[a\in{\cal A}]$ is finitely satisfiable by ${\cal A}$ and thus is compatible with $\Th{\cal A}_X$, but it is not realized by ${\cal A}$.
+
+\bthrm[title=Craig's Interpolation Theorem, name=craigthrm]
+
+    Let $\phi,\psi$ be ${\cal L}$-formulas such that $\phi\vDash\psi$.
+    Then there exists a ${\cal L}$-formula $\theta$ such that $\phi\vDash\theta$ and $\theta\vDash\psi$ such that all extralogical symbols occurring in $\theta$ occur in both $\phi$ and $\psi$.
+    $\theta$ is called a {\it Craig interpolate} of $\phi$ and $\psi$.
+
+\ethrm
+
+\Proof suppose $\phi$ and $\psi$ have no Craig interpolate, then we will show that $\set{\phi,\neg\psi}$ is satisfiable by constructing a model for it.
+Without loss of generality, we can assume that ${\cal L}$'s signature contains only the extralogical symbols occurring in $\phi$ or $\psi$, and in particular it is then countable.
+Define ${\cal L}_1$ to be the language whose signature consists of only symbols in $\phi$ and ${\cal L}_2$ for $\psi$.
+Define ${\cal L}_0={\cal L}_1\cap{\cal L}_2$.
+
+Let $C$ be a countably infinite set of new constant symbols and define ${\cal L}'_i={\cal L}_iC$.
+
+Let $T$ be a ${\cal L}'_1$-theory and $S$ a ${\cal L}'_2$-theory.
+Say that $\theta\in{\cal L}'_0$ {\it separates} them if $T\vDash\theta$ and $S\vDash\neg\theta$.
+Call $T$ and $S$ {\it inseparable} if no ${\cal L}'_0$-formula separates them.
+
+First notice that $\set\phi$ and $\set{\neg\psi}$ are inseparable: as if $\theta(c_1,\dots,c_n)$ separated them ($c_i\in C$) then $\exists\vec x\theta(\vec x)$ would be a Craig interpolate of $\phi$ and
+$\psi$.
+
+Since ${\cal L}$ and $C$ are countable, so is ${\cal L}C$ and therefore every ${\cal L}'_i$.
+So enumerate the sentences of ${\cal L}'_1$ by $\set{\phi_i}_{i=0}^\infty$ and ${\cal L}'_2$ by $\set{\psi_i}_{i=0}^\infty$.
+Let us define two sequences of theories
+$$ \set\phi = T_0 \subseteq T_1 \subseteq \cdots,\qquad \set{\neg\psi} = S_0 \subseteq S_1 \subseteq \cdots $$
+inductively as follows:
+\benum
+    \item if $T_m\cup\set{\phi_m}$ and $S_m$ are inseparable, then put $\phi_m\in T_{m+1}$;
+    \item if $S_m\cup\set{\psi_m}$ and $T_{m+1}$ are inseparable, then put $\psi_m\in S_{m+1}$;
+    \item if $\phi_m=\exists x\sigma(x)$ and $\phi_m\in T_{m+1}$ then put $\sigma(c)\in T_{m+1}$ for some unused $c\in C$.
+    Similar for $\psi_m$.
+\eenum
+After steps $1$ and $2$, if $T_m$ and $S_m$ were inseparable, so is $T_{m+1}$ and $S_{m+1}$.
+Notice that $3$ still preserves inseparability (\localcolor{red}{why?})
+Then let us define
+$$ T_\omega = \bigcup_{n=0}^\infty T_n,\qquad S_\omega = \bigcup_{n=0}^\infty S_n $$
+these are inseparable theories, if $T_\omega\vDash\theta$ then $T_n\vDash\theta$ for some $n$ by compactness, and so then we cannot have that $S_n\vDash\neg\theta$ and therefore $S_\omega\nvDash\neg\theta$.
+Both of these theories are then consistent, as otherwise $\perp$ would separate them.
+
+Now we claim that $T_\omega$ is maximally consistent in ${\cal L}'_1$ and $S_\omega$ is maximally consistent in ${\cal L}'_2$.
+Suppose not: that $\phi_m,\neg\phi_m\notin T_\omega$.
+That means then that $T_m\cup\set{\phi_m}$ is separable from $S_m$, so there exists an ${\cal L}'_0$-sentence $\theta$ such that
+$$ T_\omega\vDash\phi_m\to\theta,\qquad S_\omega\vDash\neg\theta $$
+Similarly there exists $\theta'$ such that
+$$ T_\omega\vDash\neg\phi_m\to\theta',\qquad S_\omega\vDash\neg\theta' $$
+But then we'd have that
+$$ T_\omega\vDash\theta\lor\theta',\qquad S_\omega\vDash\neg(\theta\lor\theta') $$
+and so $T_\omega$ and $S_\omega$ are separable, in contradiction.
+
+We now claim that $T_\omega\cap S_\omega$ is a maximally consistent ${\cal L}'_0$-theory.
+Let $\sigma$ be a ${\cal L}'_0$-sentence, so either $\sigma\in T_\omega$ or $\neg\sigma\in T_\omega$ and $\sigma\in S_\omega$ or $\neg\sigma\in S_\omega$.
+But $T_\omega$ and $S_\omega$ are inseparable, so we have that $\sigma\in T_\omega\cap S_\omega$ or $\neg\sigma\in T_\omega\cap S_\omega$ as required.
+
+Finally let us construct a model for $T_\omega\cup S_\omega$, which contains both $\phi$ and $\neg\psi$.
+Let ${\cal B}_1'=({\cal B}_1,b_i)_{i\in C}$ be a model for $T_\omega$.
+By $(3)$ in the construction of $T_\omega$, this means that if we take the substructure ${\cal A}_1'=({\cal A}_1,b_i)_{i\in C}$ whose domain is $\set{b_i}_{i\in C}$, ${\cal A}_1'$ also satisfies $T_\omega$.
+Similarly we can take ${\cal A}_2'=({\cal A}_2,d_i)_{i\in C}$ a structure whose domain is $\set{d_i}_{i\in C}$ which satisfies $S_\omega$.
+Then the map $b_i\mapsto d_i$ is an isomorphism since both structures model the complete theory $T_\omega\cap S_\omega$ (so it contains all formulas of the form $fc_1\cdots c_n=c$ and $rc_1\cdots c_n$ and
+their negations).
+So without loss of generality, $b_i=d_i$, meaning ${\cal A}_1'$ and ${\cal A}_2'$ have the same ${\cal L}_0$-reduct.
+Thus we can take an ${\cal L}$-structure ${\cal A}$ whose ${\cal L}_1$-reduct is ${\cal A}_1$ and ${\cal L}_2$-reduct is ${\cal A}_2$, and so it models both $T_\omega$ and $S_\omega$, meaning it models
+$\phi\land\neg\psi$ in contradiction.
+\qed
+
+\bthrm[title=Robinson's Theorem, name=robinsonthrm]
+
+    Let ${\cal L}_1,{\cal L}_2$ be two first-order languages and define ${\cal L}={\cal L}_1\cap{\cal L}_2$.
+    If $T$ is a complete ${\cal L}$-theory, $T_1\supseteq T$ and $T_2\supseteq T$ are consistent ${\cal L}_1$- and ${\cal L}_2$-theories respectively, then $T_1\cup T_2$ is a consistent
+    ${\cal L}_1\cup{\cal L}_2$-theory.
+
+\ethrm
+
+\Proof suppose that $T_1\cup T_2$ is inconsistent, then take $\Sigma_1\subseteq T_1$ and $\Sigma_2\subseteq T_2$ finite such that $\Sigma_1\cap\Sigma_2$ is inconsistent.
+Define $\sigma_1=\bigwedge\Sigma_1$ and $\sigma_2=\bigwedge\Sigma_2$, and so we have that $\sigma_1\vDash\neg\sigma_2$.
+By \refmath{craigthrm}, there is a Craig interpolate $\theta$ where $\sigma_1\vDash\theta$ and $\theta\vDash\neg\sigma_2$ and $\theta$ contains only extralogical symbols contained in both $\sigma_1$ and
+$\sigma_2$.
+So $\theta$ is a ${\cal L}_1\cap{\cal L}_2$-sentence.
+Since $T_1$ is consistent, $T_1\nvDash\neg\theta$ meaning $T\nvDash\neg\theta$, but $T_2\vDash\sigma_2\vDash\neg\theta$ so by consistency $T_2\nvDash\theta$ meaning $T\nvDash\neg\theta$.
+But this contradicts $T$'s completeness.
+\qed
+
+\blemm
+
+    Let ${\cal L}$ be a first-order language of cardinality $\leq\alpha$ and ${\cal A}$ be an ${\cal L}$-structure whose cardinality is $\omega\leq\abs{\cal A}\leq 2^\alpha$.
+    Then there exists an elementary extension ${\cal A}\preceq{\cal B}$ of cardinality $2^\alpha$ such that for every $X\subseteq A$ of cardinality $\alpha$, $({\cal B},a)_{a\in X}$ realizes all
+    types consistent with $({\cal A},a)_{a\in X}$.
+
+\elemm
+
+\Proof since $\abs A\leq2^\alpha$, we have that $\abs{\set{X\subseteq A}[\abs X=\alpha]}\leq2^\alpha$, meaning there are at most $2^\alpha$ subsets $X$ of cardinality $\alpha$.
+Furthermore ${\cal L}X$ is of cardinality $\leq\alpha$ and so there are at most $2^\alpha$ $1$-types over ${\cal L}X$.
+So for every $X\subseteq A$ of cardinality $\alpha$ and every $1$-type $\Sigma(v)$ define a new constant symbol $c_{X\Sigma}$.
+Let us define
+$$ T = D_{\it el}{\cal A}\cup\bigcup_{X,\Sigma}\Sigma[c_{X\Sigma}] $$
+Notice that $D_{\it el}{\cal A}$ is a complete theory consistent with $\Sigma(v)$ by definition, and so consistent with $\Sigma[c_{X\Sigma}]$ and thus $D_{\it el}\c A\cup\Sigma[c_{X\Sigma}]$ is a consistent
+extension of $D_{\it el}\c A$.
+So by Robinson's Theorem, every finite subset of $T$ is consistent and therefore $T$ is consistent.
+
+Since the language of $T$ contains at most $2^\alpha$ symbols, it has a model of cardinality $2^\alpha$.
+Since this model models $D_{\it el}\c A$, it is an elementary extension of $\c A$.
+\qed
+
+\bthrm
+
+    Let $\c A$ be an $\c L$-structure where $\abs{\c L}\leq\alpha$ and $\omega\leq\abs{\c A}\leq2^\alpha$.
+    Then there exists an $\alpha^+$-saturated elementary extension $\c B\succeq\c A$ of cardinality $2^\alpha$.
+
+\ethrm
+
+\Proof we will construct an elementary chain $\set{\c B_\xi}_{\xi<2^\alpha}$ such that every $\c B_\xi$ is an elementary extension of $\c A$ of cardinality $2^\alpha$, for every subset
+$X\subseteq\c B_\epsilon$ of cardinality $\alpha$, $(\c B_{\xi+1},a)_{a\in X}$ realizes every type over $(\c B_\xi,a)_{a\in X}$.
+For $\c B_0$ we take the structure created in the previous lemma.
+If $\eta$ is a limit ordinal, define $\c B_\eta=\bigcup_{\xi<\eta}\c B_\xi$.
+Otherwise if $\eta=\xi+1$, then take $\c B_\eta$ to be the structure created in the previous lemma, with $\c B_\xi$ instead of $\c A$.
+Then define
+$$ \c B = \bigcup_{\xi<2^\alpha}\c B_\xi $$
+Clearly $\set{\c B_\xi}$ is an elementary chain and so $\c B$ is an elementary extension of $\c A$.
+Now let $X\subseteq\c B$ of cardinality $\alpha$ and $\Sigma(v)$ a type over $(\c B,a)_{a\in X}$.
+Since $2^\alpha$ has larger cofinality than $\alpha$ there must exist $\xi<2^\alpha$ such that $X\subseteq\c B_\xi$.
+But since $\c B_\xi$ is an elementary substructure of $\c B$, $\Sigma(v)$ is also a type over $(\c B_\xi,a)_{a\in X}$ and so is realized by $\c B_{\xi+1}$ and thus by $\c B$ as an elementary extension.
+\qed
+
+Notice that this does not guarantee the existence of a {\it saturated} elementary extension, as this requires the generalized continuum hypothesis (GCH): that $\alpha^+=2^\alpha$ which is independent of
+ZFC.
+If it were true, then $\c B$ would be $\alpha^+=2^\alpha$-saturated and of cardinality $2^\alpha$, as required.
+
+\blemm[title=Shuttle Lemma]
+
+    Let $\alpha$ be an infinite cardinal, $\c A,\c B$ be $\alpha$-saturated and elementary equivalent.
+    Let $a\colon\alpha\longto A,b\colon\alpha\longto B$ be injective, then there exists $a'\colon\alpha\longto A,b'\colon\alpha\longto B$ such that
+    $$ {\rm Im}a \subseteq {\rm Im}a',\qquad {\rm Im}b \subseteq {\rm Im}b',\qquad (\c A,a'_\xi)_{\xi<\alpha} \equiv (\c B,b'_\xi)_{\xi<\alpha} $$
+
+\elemm
+
+\Proof every ordinal $\xi$ has a unique representation as $\xi=\lambda+\eta$ where $\lambda$ is a limit ordinal and $\eta\in\omega$.
+Call $\xi$ {\it even} if $\eta$ is even, otherwise odd.
+We will define two injective functions $a'\colon\alpha\longto A$ and $b'\colon\alpha\longto B$ such that for all ordinals $\xi<\alpha$:
+\benum
+    \item if $\xi=\lambda+2n$ is even, then $a'_\xi=a_{\lambda+n}$,
+    \item if $\xi=\lambda+2n+1$ is odd, then $b'_\xi=b_{\lambda+n}$,
+    \item $(\c A,a'_\eta)_{\eta\leq\xi}\equiv(\c B,b'_\eta)_{\eta\leq\xi}$
+\eenum
+Notice that $(3)$ can indeed be satisfied: first suppose $(\c A,a'_\eta)_{\eta<\xi}\vDash\phi$, we must have that $(\c A,a'_\eta)_{\eta<\xi'}\vDash\phi$ for some $\xi'<\xi$ by compactness (look at the
+theory of the model).
+And so $(\c B,b'_\eta)_{\eta<\xi}\vDash\phi$, meaning $(\c A,a'_\eta)_{\eta<\xi}\equiv(\c B,b'_\eta)_{\eta<\xi}$.
+
+So let us assume that $\xi$ is even, then let us define the $1$-type
+$$ \Sigma(x) = \set{\phi(b'_\eta,x)_{\eta<\xi}\in\c L(b'_\eta)_{\eta<\xi}}[\c A\vDash\phi(a'_\eta)_{\eta\leq\xi}] $$
+$\Sigma(x)$ is consistent with the theory of $\c B(b'_\eta)_{\eta<\xi}$ since (since $\c A$ is a deductively closed theory we can consider single formulas) for $\phi(\bar b'_\eta,x)\in\Sigma(x)$,
+we have that $\c A\vDash\exists x\phi(\bar a'_\eta,x)$ and so $\c B\vDash\exists x\phi(\bar b'_\eta,x)$.
+Since $\c B$ is $\alpha$-saturated, we have that there must exist a $b'_\xi$ which realizes $\Sigma(x)$, and thus satisfies $(3)$.
+
+If we have a sequence which satisfies $(1),(2),(3)$, then we must have the required results.
+\qed
+
+\bthrm[title=Uniqueness of Saturated Models, name=uniqsat]
+
+    If $\c A$ and $\c B$ are elementarily equivalent saturated models of the same cardinality, then they are isomorphic.
+
+\ethrm
+
+\Proof suppose $\abs A=\abs B=\alpha$, then there exist enumerations $a\colon\alpha\longto A,b\colon\alpha\longto B$.
+By the Shuttle Lemma, there exists $a',b'$ whose images contain $A$ and $B$ repspectively such that $(\c A,a'_\xi)_{\xi<\alpha}\equiv(\c B,b'_\xi)_{\xi<\alpha}$.
+But then $a'_\xi\mapsto b'_\xi$ is an isomorphism.
+\qed
+
