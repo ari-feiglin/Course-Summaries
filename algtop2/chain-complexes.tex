@@ -1,0 +1,144 @@
+We begin by defining a {\it chain complex}.
+A chain complex is a sequence of Abelian groups with homomorphisms between them:
+
+\medskip
+\centerline{\drawdiagram{
+    $\cdots$ & $C_{n+1}$ & $C_n$ & $C_{n-1}$ & $\cdots$ & $C_0$ & $0$\cr
+}{
+    \diagarrow{from={1,1}, to={1,2}, dashed}
+    \diagarrow{from={1,2}, to={1,3}, text=$\partial_{n+1}$, y distance=.25cm}
+    \diagarrow{from={1,3}, to={1,4}, text=$\partial_{n}$, y distance=.25cm}
+    \diagarrow{from={1,4}, to={1,5}, dashed}
+    \diagarrow{from={1,5}, to={1,6}, dashed}
+    \diagarrow{from={1,6}, to={1,7}}
+}}
+\medskip
+
+such that for every $n$, $\partial_n\circ\partial_{n+1}=0$, in other words ${\rm Im}\partial_{n+1}\subseteq\ker\partial_n$.
+Define $Z_n=\ker\partial_n$, and its elements will be called {\it $n$-dimensional cycles}.
+And define $B_n={\rm Im}\partial_{n+1}$, its elements will be called {\it boundaries}.
+Elements of the groups $C_n$ will be called {\it $n$-dimensional chains}.
+
+We now want to define a category of chain complexes.
+To do so we must define morphisms between chain complexes.
+So suppose we have two chain complexes ${\scr C}=\set{C_n,\partial_n}$ and ${\scr D}=\set{D_n,\partial'_n}$.
+We define a morphism from ${\scr C}$ to ${\scr D}$ to be a sequence of homomorphisms $f_n\colon C_n\longto D_n$ which preserves the structure of the chain.
+Meaning $\partial_n'\circ f_n=f_{n-1}\circ\partial_n$, in other words the following diagram commutes:
+
+\bigskip
+\centerline{\def\diagrowbuf{.5cm}\drawdiagram{
+    $\cdots$ & $C_{n+1}$ & $C_n$ & $C_{n-1}$ & $\cdots$ & $C_0$ & $0$\cr
+    $\cdots$ & $D_{n+1}$ & $D_n$ & $D_{n-1}$ & $\cdots$ & $D_0$ & $0$\cr
+}{
+    \diagarrow{from={1,1}, to={1,2}, dashed}
+    \diagarrow{from={1,2}, to={1,3}, text=$\partial_{n+1}$, y distance=.25cm}
+    \diagarrow{from={1,3}, to={1,4}, text=$\partial_{n}$, y distance=.25cm}
+    \diagarrow{from={1,4}, to={1,5}, dashed}
+    \diagarrow{from={1,5}, to={1,6}, dashed}
+    \diagarrow{from={1,6}, to={1,7}}
+    \diagarrow{from={2,1}, to={2,2}, dashed}
+    \diagarrow{from={2,2}, to={2,3}, text=$\partial'_{n+1}$, y distance=.25cm}
+    \diagarrow{from={2,3}, to={2,4}, text=$\partial'_{n}$, y distance=.25cm}
+    \diagarrow{from={2,4}, to={2,5}, dashed}
+    \diagarrow{from={2,5}, to={2,6}, dashed}
+    \diagarrow{from={2,6}, to={2,7}}
+    \diagarrow{from={1,2}, to={2,2}, text=$f_{n+1}$, x distance=-.5cm}
+    \diagarrow{from={1,3}, to={2,3}, text=$f_{n}$, x distance=-.25cm}
+    \diagarrow{from={1,6}, to={2,6}, text=$f_{0}$, x distance=-.25cm}
+}}
+\medskip
+
+To simplify writing, we will write $\partial\circ f=f\circ\partial$, which $f$ and which $\partial$ is being referred to will be understood from context.
+
+The composition of two morphisms $\set{f_n}\colon{\scr C}\longto{\scr D}$ and $\set{g_n}\colon{\scr D}\longto{\scr E}$ is defined to be $\set{g_n\circ f_n}\colon{\scr C}\longto{\scr E}$.
+This is indeed a morphism:
+$$ \partial\circ f\circ g = f\circ\partial\circ g = f\circ g\circ\partial $$
+And then this implies that the identity morphism is just ${\rm Id}_{\scr C}=\set{\rm Id_{C_n}}\colon{\scr C}\longto{\scr C}$, as if $\set{f_n}\colon{\scr C}\longto{\scr D}$ then
+$$ \set{f_n}\circ{\rm Id}_{\scr C} = \set{f_n\circ {\rm Id}_{C_n}} = \set{f_n},\qquad {\rm Id}_{\scr D}\circ\set{f_n} = \set{{\rm Id}_{D_n}\circ f_n} = \set{f_n} $$
+
+Now recall that by definition $\partial_n\circ\partial_{n+1}=0$, meaning
+$$ B_n \subseteq Z_n \subseteq C_n $$
+Since these groups are all Abelian, they are normal in one another, so let us define the {\it $n$th homology group} of a chain complex $\scr C$ as
+$$ H_n({\scr C})\coloneqq\slfrac{\displaystyle B_n}{\displaystyle Z_n} = \slfrac{\displaystyle\ker\partial_n}{\displaystyle{\rm Im}\partial_{n+1}} $$
+
+\bprop
+
+    A chain complex morphism $\set{f_n}\colon\C\longto\D$ maps cycles to cycles and boundaries to boundaries.
+
+\eprop
+
+\Proof let $z\in C_n$ be a cycle, i.e. $\partial z=0$, but then $f(z)$ is a cycle since $\partial f(z)=f(\partial z)=f(0)=0$.
+And let $b\in C_n$ be a boundary, so there exists an $a\in C_{n+1}$ such that $b=\partial a$.
+Then $f(b)=f\partial(a)=\partial f(a)=\partial b$, so $f(b)$ is a boundary as well.
+\qed
+
+This means that if $\set{f_n}\colon\C\longto\D$ is a morphism of chain complexes, $\set{f_n}\colon Z_n(\C)\longto Z_n(\D)$ is well-defined, and so we have that
+
+\centerline{\def\diagrowbuf{.5cm}\def\diagcolbuf{.5cm}
+\drawdiagram{
+    $Z_n(\C)$ & $Z_n(\D)$\cr
+    $H_n(\C)$ & $H_n(\D)$\cr
+}{
+    \diagarrow{from={1,1}, to={1,2}}
+    \diagarrow{from={1,1}, to={2,1}}
+    \diagarrow{from={1,2}, to={2,2}}
+    \diagarrow{from={1,1}, to={2,2}, curve=1cm, color=blue}
+}}
+
+Where the blue arrow $\psi$ is just the quotient map composed with $f_n$.
+This induces a group morphism
+$$ f_*\colon H_n(\C)\longto H_n(\D) $$
+since we can define $f_*([z])=\psi(z)$ since if $[z]=[z']$ then $z-z'\in B_n(\C)$ and so $f(z-z')\in B_n(\D)$ and thus the quotient of $f(z-z')$ is just $0$, so $\psi(z)=\psi(z')$.
+
+So we have shown that $H_n$ is a functor between the category of chain complexes and the category of Abelian groups.
+
+\bdefn
+
+    Let $B$ be a set, then define the {\emphcolor free Abelian group} over $B$ to be
+    $$ \FAof B = \bigoplus_{b\in B}{\bb Z} = \set{\phi\colon B\longto{\bb Z}}[\phi(b)\neq0\hbox{ for only finitely many $b\in B$}] $$
+
+\edefn
+
+Note then that there is a correspondence between $B$ and $\FAof B$: $b\oto\phi_b$ where
+$$ \phi_b(x) = \cases{1 & $x=b$\cr 0 & $x\neq b$} $$
+so we can identify $b$ with $\phi_b$, and it is easy to see that every element of $\FAof B$ can be written as $\sum_{i=1}^kn_i\phi_{b_i}$, abusing notation $\sum_{i=1}^knb_i$ and such a representation is
+unique.
+
+Notice that if $B$ is a set, $G$ an Abelian group, and $g\colon B\longto G$ a function, then there exists a unique group homomorphism $L\colon\FAof B\longto G$ which extends $g$.
+This is defined by
+$$ L\colon\sum_{i=1}^kn_ib_i \longmapsto \sum_{i=1}^kn_ig(b_i) $$
+
+\bdefn
+
+    The {\emphcolor $n$-dimensional simplex} is defined to be
+    $$ \Delta^n \coloneqq \set{(x_0,\dots,x_n)\in{\bb R}^{n+1}}[x_i\geq0,\sum_{i=0}^nx_i=1] $$
+
+\edefn
+
+$\Delta^n$ has $n+1$ faces, and is homeomorphic to $D^n$.
+
+\bdefn
+
+    Let $X$ be a topological space, then an {\emphcolor $n$-dimensional singular simplex} in $X$ is a morphism (in the category of topological spaces; a continuous map) $\Delta^n\longto X$.
+    Define $S_n(x)$ to be the set of all $n$-dimensional singular simplexes in $X$, and define $C_n(X)=\FAof{S_n(x)}$.
+
+\edefn
+
+We now want to define a chain complex on the sequence $C_n(X)$.
+
+Let us define a set of maps $\tau_i^n\colon\Delta^{n-1}\longto\Delta^n$ for $0\leq i\leq n$ which maps
+$$ \tau_i^n\colon (x_0,\dots,x_{n-1})\mapsto(x_1,\dots,x_{i-1},0,x_{i+1},\dots,x_{n-1}) $$
+This is a well-defined continuous map, and geometrically it maps $\Delta^{n-1}$ to one of the faces of $\Delta^n$.
+
+Let $\sigma\in S_n(x)$, then let us define
+$$ \partial(\sigma) \coloneqq \sum_{i=0}^n(-1)^i\sigma\circ\tau_i^n $$
+Note that the composition is well-defined since $\Delta^{n-1}\xvarrightarrow{\tau_i^n}\Delta^n\xvarrightarrow{\,\sigma\,}X$, meaning $\sigma\circ\tau_i^n$ is an $n-1$-dimensional singular simplex.
+Thus $\partial$ can be extended to a map $\partial\colon C_n(X)=\FAof{S_n(X)}\longto\FAof{S_{n-1}(X)}=C_{n-1}(X)$
+Notice that
+$$ \partial_{n-1}(\partial_n\sigma) = \partial_{n-1}\parens{\sum_{i=0}^n(-1)^i\sigma\circ\tau_i^n} = \sum_{i=0}^n(-1)^i\partial_{n-1}(\sigma\circ\tau_i^n) =
+\sum_{i=0}^n\sum_{j=0}^{n-1}(-1)^{i+j}\sigma\circ\tau_i^n\circ\tau_j^{n-1} $$
+Notice that $\tau^n_i\circ\tau_j^{n-1}=\tau^n_j\circ\tau^{n-1}_{i-1}$ which can be verified from its definition, but the first has a sign of $(-1)^{i+j}$ in the sum and the second has $-(-1)^{i+j}$.
+And so the sum is zero.
+
+Thus we have defined a chain complex on $C_n(X)$, let us denote it by $\C(X)$.
+
