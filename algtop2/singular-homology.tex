@@ -1,3 +1,5 @@
+\subsection{Chain Complexes}
+
 We begin by defining a {\it chain complex}.
 A chain complex is a sequence of Abelian groups with homomorphisms between them:
 
@@ -44,6 +46,7 @@ Meaning $\partial_n'\circ f_n=f_{n-1}\circ\partial_n$, in other words the follow
     \diagarrow{from={2,6}, to={2,7}}
     \diagarrow{from={1,2}, to={2,2}, text=$f_{n+1}$, x distance=-.5cm}
     \diagarrow{from={1,3}, to={2,3}, text=$f_{n}$, x distance=-.25cm}
+    \diagarrow{from={1,4}, to={2,4}, text=$f_{n-1}$, x distance=-.5cm}
     \diagarrow{from={1,6}, to={2,6}, text=$f_{0}$, x distance=-.25cm}
 }}
 \medskip
@@ -55,11 +58,12 @@ This is indeed a morphism:
 $$ \partial\circ f\circ g = f\circ\partial\circ g = f\circ g\circ\partial $$
 And then this implies that the identity morphism is just ${\rm Id}_{\scr C}=\set{\rm Id_{C_n}}\colon{\scr C}\longto{\scr C}$, as if $\set{f_n}\colon{\scr C}\longto{\scr D}$ then
 $$ \set{f_n}\circ{\rm Id}_{\scr C} = \set{f_n\circ {\rm Id}_{C_n}} = \set{f_n},\qquad {\rm Id}_{\scr D}\circ\set{f_n} = \set{{\rm Id}_{D_n}\circ f_n} = \set{f_n} $$
+Associativity is clear, so ${\bf Comp}$, the category of chain complexes, is indeed a category.
 
 Now recall that by definition $\partial_n\circ\partial_{n+1}=0$, meaning
 $$ B_n \subseteq Z_n \subseteq C_n $$
 Since these groups are all Abelian, they are normal in one another, so let us define the {\it $n$th homology group} of a chain complex $\scr C$ as
-$$ H_n({\scr C})\coloneqq\slfrac{\displaystyle B_n}{\displaystyle Z_n} = \slfrac{\displaystyle\ker\partial_n}{\displaystyle{\rm Im}\partial_{n+1}} $$
+$$ H_n({\scr C})\coloneqq\slfrac{\displaystyle Z_n}{\displaystyle B_n} = \slfrac{\displaystyle\ker\partial_n}{\displaystyle{\rm Im}\partial_{n+1}} $$
 
 \bprop
 
@@ -87,10 +91,33 @@ This means that if $\set{f_n}\colon\C\longto\D$ is a morphism of chain complexes
 
 Where the blue arrow $\psi$ is just the quotient map composed with $f_n$.
 This induces a group morphism
-$$ f_*\colon H_n(\C)\longto H_n(\D) $$
+$$ H_n(\set{f_n}) = f_*\colon H_n(\C)\longto H_n(\D) $$
 since we can define $f_*([z])=\psi(z)$ since if $[z]=[z']$ then $z-z'\in B_n(\C)$ and so $f(z-z')\in B_n(\D)$ and thus the quotient of $f(z-z')$ is just $0$, so $\psi(z)=\psi(z')$.
 
-So we have shown that $H_n$ is a functor between the category of chain complexes and the category of Abelian groups.
+We now claim that $H_n$ is a functor from the category of chain complexes ${\bf Comp}$ to the category of Abelian groups ${\bf Ab}$.
+Now suppose $\set{f_n}\colon\C\longto\D$ and $\set{g_n}\colon\D\longto\E$ are chain complex morphisms, then the following diagram commutes
+
+\bigskip
+\centerline{\def\diagrowbuf{.5cm}\def\diagcolbuf{.5cm}
+\drawdiagram{
+    $Z_n(\C)$ & $Z_n(\D)$ & $Z_n(\E)$\cr
+    $H_n(\C)$ & $H_n(\D)$ & $H_n(\E)$\cr
+}{
+    \diagarrow{from={1,1}, to={1,2}, text=$f$, y distance=.25cm}
+    \diagarrow{from={1,1}, to={2,1}}
+    \diagarrow{from={1,2}, to={2,2}}
+    \diagarrow{from={1,2}, to={1,3}, text=$g$, y distance=.25cm}
+    \diagarrow{from={1,3}, to={2,3}}
+    \diagarrow{from={2,1}, to={2,2}, text=$f_*$, y distance=-.25cm}
+    \diagarrow{from={2,2}, to={2,3}, text=$g_*$, y distance=-.25cm}
+}}
+\bigskip
+
+And so $(g\circ f)_*=g_*\circ f_*$, and it is easily verified that ${\rm id}_*={\rm id}$ so $H_n$ is a functor ${\bf Comp}\longto{\bf Ab}$ (the category of Abelian groups).
+
+\subsection{Singular Complex}
+
+We now define a functor from ${\bf Top}$ to ${\bf Comp}$.
 
 \bdefn
 
@@ -140,5 +167,105 @@ $$ \partial_{n-1}(\partial_n\sigma) = \partial_{n-1}\parens{\sum_{i=0}^n(-1)^i\s
 Notice that $\tau^n_i\circ\tau_j^{n-1}=\tau^n_j\circ\tau^{n-1}_{i-1}$ which can be verified from its definition, but the first has a sign of $(-1)^{i+j}$ in the sum and the second has $-(-1)^{i+j}$.
 And so the sum is zero.
 
-Thus we have defined a chain complex on $C_n(X)$, let us denote it by $\C(X)$.
+Thus we have defined a chain complex on $C_n(X)$, let us denote it by $\C(X)$, this is the first step in defining the functor.
+Next we must define the correspondence between morphisms.
+
+Let $f\colon X\longto Y$ be a continuous map between topological spaces.
+Let us define $f_\sharp\colon\C(X)\longto\C(Y)$.
+First we define it for $\sigma\in S_n(X)$ by $f_\sharp(\sigma)=f\circ\sigma$.
+Since $\sigma\colon\Delta^n\longto X$ is continuous, so is $f\circ\sigma\colon\Delta^n\longto Y$ and so $f_\sharp$ is well-defined on the generators of $C_n(X)$.
+This can be extended by linearity to $f_\sharp\colon C_n(X)\longto C_n(Y)$.
+Notice that we ignore the subscripts and superscripts $(f_\sharp)_n^X$ for brevity and readability.
+
+Now we must verify that this is a morphism of chain complexes, i.e. that $\partial f_\sharp = f_\sharp\partial$.
+So
+$$ f_\sharp\partial\sigma = f_\sharp\parens{\sum_{i=0}^n(-1)^i\sigma\circ\tau_i^n} = \sum_{i=0}^n(-1)^if_\sharp(\sigma\circ\tau_i^n) = \sum_{i=0}^n(-1)^if\circ\sigma\circ\tau_i^n
+= \sum_{i=0}^n(-1)^i(f\circ\sigma)\circ\tau_i^n = \partial f_\sharp\sigma $$
+and since this holds for generators, by linearity it holds for all $C_n(X)$.
+Thus $f_\sharp$ is indeed a morphism of chain complexes.
+
+Thus we have defined a functor ${\bf Top}\longto{\bf Comp}$.
+
+\subsection{Singular Homology}
+
+We have two functors ${\bf Top}\longto{\bf Comp}\longto{\bf Ab}$, and so composing them together gives us a functor ${\bf Top}\longto{\bf Ab}$.
+For a topological space $X$, we will denote its image under this functor as $H_n(X)$, called the {\it $n$th homological group} of $X$.
+And for a continuous map $f$, we denote its image as $f_*$ or $H_n(f)$.
+
+Let us compute the homological groups of the trivial space: $X=\set{p}$.
+Notice that $S_n(X)=\set{K_n}$ where $K_n$ is the constant map $\Delta^n\longto\set p$, and so $C_n(X)={\bb Z}$.
+We want to now compute what the boundary operators are, so
+$$ \partial K_n = \sum_{i=0}^n(-1)^iK_n\circ\tau_i^n $$
+but $K_n\circ\tau_i^n$ is a morphism $\Delta^{n-1}\longto\set p$ meaning it is equal to $K_{n-1}$, thus $\partial K_n=\parens{\sum_{i=0}^n(-1)^i}K_{n-1}$.
+For $n$ even this is then $K_{n-1}$ (or $1$), and $0$ for $n$ odd.
+This means that either $\ker\partial=0$ or ${\rm Im}\partial={\bb Z}$, thus $H_n=0$ for $n>0$.
+For $n=0$, we have that $\partial_0\colon{\bb Z}\longto0$ and so its kernel is ${\bb Z}$, but $\partial_1$ is trivial and so its image is $0$.
+Thus $H_0={\bb Z}$.
+
+So we have shown
+
+\bprop
+
+    Let $X=\set p$ be the trivial topological space, then its homological groups are
+    $$ H_n(X) = \cases{{\bb Z} & $n=0$\cr0 & $n>0$} $$
+
+\eprop
+
+\bprop
+
+    Let $X$ be path connected, then $H_0(X)\cong{\bb Z}$.
+
+\eprop
+
+\Proof we are concerned with the chain:
+
+\bigskip
+\centerline{\drawdiagram{
+    $C_1(X)$ & $C_0(X)$ & $0$\cr
+}{
+    \diagarrow{from={1,1}, to={1,2}, text=$\partial_1$, y distance=.25cm}
+    \diagarrow{from={1,2}, to={1,3}, text=$\partial_0$, y distance=.25cm}
+}}
+\bigskip
+
+So first let us understand $C_0(X)$, this is generated by $S_0(X)$, all the maps $\Delta^0\longto X$ which are just all the points in $X$.
+And $S_1(X)$ is generated by all the maps $I\cong\Delta^1\longto X$, so all the paths in $X$.
+The boundary of a $1$-simplex is then
+$$ \partial_1\sigma = \sigma(1) - \sigma(0) $$
+and thus $B_1(X)={\rm Im}\partial_1$ is generated by elements of the form $a-b$ where there exists a path between $a$ and $b$.
+Since $X$ is path-connected, this means that $B_1(X)$ is generated by $a-b$ for $a,b\in X$.
+Now, the subgroup generated by this is $\set{\sum n_ip_i}[p_i\in X,\,\sum n_i=0]$.
+
+And now $\partial_0$'s kernel is just $C_0(X)$ which is simply the free group generated by $X$.
+Thus
+$$ H_0(X) = \slfrac{\ds\set{\sum n_ip_i}}{\ds\set{\sum n_ip_i}[\sum n_i=0]} $$
+This is isomorphic to ${\bb Z}$ since we can define $\phi\colon C_0(X)\longto{\bb Z}$ by $\sum n_ip_i\mapsto\sum n_i$ and this is a group homomorphism whose image is ${\bb Z}$ and whose kernel is all the
+points $\sum n_ip_i$ where $\sum n_i=0$.
+Thus by the isomorphism theorem, $H_0(X)\cong{\bb Z}$.
+\qed
+
+\bthrm
+
+    Let $X$ be a topological space where $\set{A_\alpha}_{\alpha\in I}$ are its path connected components.
+    Then for every $n$,
+    $$ H_n(X) \cong \bigoplus_{\alpha\in I}H_n(A_\alpha) $$
+
+\ethrm
+
+\Proof notice that if $\sigma\colon\Delta^n\longto X$ is an $n$-simplex, then its image is contained within a path connected component.
+This is since $\Delta^n$ is path-connected, so $\sigma\Delta^n$ must be too.
+Thus for every $\gamma=\sum n_i\sigma_i\in S_n(X)$ we can write it as $\gamma=\sum\gamma_i$ for $\gamma_i\in S_n(A_i)$.
+And so $C_n(X)=\bigoplus_{\alpha\in I}C_n(A_\alpha)$.
+
+Notice that $\gamma$ is a cycle iff every $\gamma_i$ is a cycle, since $\partial\gamma=\sum\partial\gamma_i$ and this is an element of a direct sum, so it is zero iff $\partial\gamma_i=0$.
+Thus $Z_n(X)=\bigoplus_{\alpha\in I}Z_n(A_\alpha)$.
+And similarly we see that $B_n(X)=\bigoplus_{\alpha\in I}B_n(A_\alpha)$.
+Thus $H_n(X)=\bigoplus_{\alpha\in I}H_n(A_\alpha)$.
+\qed
+
+\bcoro
+
+    If $X$ is a topological space with $\set{A_\alpha}_{\alpha\in I}$ path connected components, $H_n(X)=\bigoplus_{\alpha\in I}{\bb Z}$.
+
+\ecoro
 
