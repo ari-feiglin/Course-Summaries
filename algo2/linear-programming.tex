@@ -1,3 +1,5 @@
+\subsection{Linear Programs}
+
 Suppose we have a pizzeria which sells different types of pizzas, each with an assortment of toppings.
 This pizzeria has one-thousand units of dough, $500$ units of sauce, and $800$ units of cheese.
 The pizzeria sells the following types of pizzas, which each require the following units of toppings and have the following prices:
@@ -17,7 +19,7 @@ This is an example of {\it linear programming} (LP).
 
 \bdefn
 
-    A {\emphcolor Linear Programming} problem is the problem of maximizing some expression of the form
+    A {\emphcolor Linear Program} is the problem of maximizing some objective expression of the form
     $$ f(x_1,\dots,x_n\;;\;c_1,\dots,c_n)=\sum_{i=1}^nc_ix_i $$
     for some parameters $c_i$ under the constraints
     $$ \sum_{j=1}^n\alpha_{i,j}x_i\leq\beta_i $$
@@ -33,12 +35,12 @@ Now say we want to {\it minimize} $f(x_1,\dots,x_n\;;\;c_1,\dots,c_n)$, this is 
 
 \bdefn
 
-    An LP problem is in {\emphcolor standard form} if it has the constraints $x_i\geq0$ for every variable $x_i$.
+    An LP is in {\emphcolor standard form} if it has the constraints $x_i\geq0$ for every variable $x_i$.
 
 \edefn
 
-This seems to weaken the strength of LP, but in fact every general LP problem can be converted to an equivalent LP problem in standard form.
-Suppose we have the LP problem $f(x_1,\dots,x_n\;;\;c_1,\dots,c_n)$ with constraints using $\alpha_{11},\dots,\alpha_{n,m}$ and $\beta_1,\dots,\beta_m$.
+This seems to weaken the strength of LP, but in fact every general LP can be converted to an equivalent LP in standard form.
+Suppose we have the LP $f(x_1,\dots,x_n\;;\;c_1,\dots,c_n)$ with constraints using $\alpha_{11},\dots,\alpha_{n,m}$ and $\beta_1,\dots,\beta_m$.
 Then we can define
 $$ f'(x_1^+,x_1^-,\dots,x_n^+,x_n^-) = \sum_{i=1}^n c_i(x_i^+-x_i^-) $$
 and the constraints
@@ -46,7 +48,7 @@ $$ \sum_{j=1}^n\alpha_{i,j}(x_i^+-x_i^-) \leq \beta_i \qquad (1\leq i\leq m) $$
 along with $x_i^+,x_i^-\geq0$.
 This is equivalent, as we can then just define $x_i=x_i^+-x_i^-$, we have split $x_i$ into is positive and negative parts.
 
-Thus given an LP problem in standard form, we can write it as a problem of the form
+Thus given an LP in standard form, we can write it as a problem of the form
 $$ \vbox{\tabskip=.25cm\openup1\jot\halign{\hfil#&\hfil#\hfil\cr
 Maximize&$\vec c^\top\cdot\vec x$\cr
 Such that&$A\vec x\leq\vec b$\cr
@@ -108,7 +110,7 @@ And if we multiply LP by $2$, then every vector in Sol gets multiplied by $2$, a
 
 \bdefn
 
-    The {\emphcolor slack form} of an LP problem is one of the form:
+    The {\emphcolor slack form} of an LP is one of the form:
     $$ \vbox{\tabskip=.25cm\openup1\jot\halign{\hfil#&\hfil#\hfil\cr
     Maximize&$\vec c^\top\cdot\vec x$\cr
     Such that&$A\vec x=\vec b$\cr
@@ -116,84 +118,294 @@ And if we multiply LP by $2$, then every vector in Sol gets multiplied by $2$, a
 
 \edefn
 
-Every LP problem in general form can be brought to one in slack form by adding variables.
+Every LP in general form can be brought to one in slack form by adding variables.
 For every constraint $\sum_{j=1}^n\alpha_{i,j}x_j\leq\beta_i$ we add a basic variable $s_i$ and alter the constraint to be $\sum_{j=1}^n\alpha_{i,j}x_j+s_i=\beta_i$.
 Since we must also add the constraint $s_i\geq0$, this is equivalent.
 The coefficients of the basic variables in the expression we optimize is of course zero.
 
 We will also assume that in slack form, $\vec b\geq\vec 0$ as otherwise there may be no solution.
 
-In slack form, we can just set all $x_j=0$ and $s_i=\beta_i$, and this gives us a solution (though it is not maximal), and is called the basic feasible solution (bfs).
+\subsection{The Simplex Algorithm}
 
-{\bf Example:} Returning to our pizzeria example, but in slack form, we want to maximize $25x_1+30x_2+40x_3$ under the constraints
-$$ \eqalign{
-    2x_1+x_2+x_3+s_1 &= 1000\cr
-    2x_1+3x_2+2x_3+s_2 &= 500\cr
-    x_1+2x_2+3x_3+s_3 &= 800\cr
-} $$
-We can rewrite this as (swapping $s_i$ with $x_{i+3}$):
-$$ \eqalign{
-    x_4 &= 1000 - 2x_1-x_2-x_3\cr
-    x_5 &= 500 - 2x_1-3x_2-2x_3\cr
-    x_6 &= 800 - x_1-2x_2-3x_3
-} $$
-The basic variables are the variables on the left.
-Now, we start at the bfs $(0,0,0,1000,500,800)$.
-We want to maximize $25x_1+30x_2+40x_3$, so let us maximize $x_3$ (with the largest coefficient) using the smallest constraint.
-We call this variable the {\it pivot}:
-$$ x_3 = 250 - x_1 - 1.5x_2 - 0.5x_5 $$
-so if we set $x_5=0$ we get the bfs (since now that $x_3$ is on the left, it is a basic variable), $(0,0,250,1000,0,800)$.
+First we begin by defining a few mathematical concepts.
 
-Now since basic variables cannot be in our expression we are maximizing, we write it as
-$$ 25x_1+30x_2+40(250 - x_1 - 1.5x_2 - 0.5x_5) = 10{,}000 - 15x_1 - 30x_2 - 20x_5 $$
-And
+\bdefn
+
+    A {\emphcolor convex set} $S\subseteq{\bb R}^n$ is a set such that for every $x,y\in S$, $\lambda x+(1-\lambda)y\in S$ for all $\lambda\in[0,1]$.
+    The {\emphcolor convex hull} of a set of points $\set{p_1,\dots,p_m}$ is the smallest convex set containing these points.
+    It can be shown that the convex hull is
+    $$ [p_1,\dots,p_n] = \set{\sum_{i=1}^m\lambda_ip_i}[\sum_{i=1}^m\lambda_i=1] $$
+    An {\emphcolor extreme point} of a convex set is a point $x\in S$ such that there exists no $a,b\in S$ such that $x$ lies on the open segment between $a$ and $b$.
+    I.e. there exist no $a,b\in S$, $\lambda\in(0,1)$ such that $x=\lambda a+(1-\lambda)b$.
+    Two extreme points $x,y$ are {\emphcolor adjacent} if the line connecting them is not intersected by any other line between two points not on the line between $x$ and $y$.
+
+\edefn
+
+Notice that if $[p_1,\dots,p_n]$ is a convex hull, then every extreme point is one of the $p_i$s.
+
+\bdefn
+
+    A {\emphcolor convex polytope} is the region of some $n$-dimensional space defined by $A\vec x\leq\vec b$.
+    The extreme points of a convex polytope are called {\emphcolor vertices} and there are finitely many of them (in fact a convex polytope is the convex hull of its vertices).
+
+\edefn
+
+Notice that the space of {\it feasible solutions} to an LP problem under the constraint $A\vec x\leq\vec b$ and $\vec x\geq0$ forms a convex polytope (it is obviously a polytope, convexity is easy to
+verify).
+We will use the following results for constructing an algorithm to find the maximum of some objective $\vec c^\top\vec x$.
+
+\blemm
+
+    Let $P$ be a convex polytope with vertices $v_1,\dots,v_n$ and $f$ be a convex function over $P$.
+    Then $f$ attains its maximum at one of the vertices.
+
+\elemm
+
+\Proof suppose $x$ is the maximum of $f$, then since it is in $P$, it can be written as $x=\sum_{i=1}^n\lambda_iv_i$ for $\sum_{i=1}^n\lambda_i=1$ and $\lambda_i\geq0$.
+So by convexity
+$$ f(x) = f\parens{\sum_{i=1}^n\lambda_iv_i} \leq \sum_{i=1}^n\lambda_if(v_i) \leq \sum_{i=1}^n\lambda_if(x) = f(x) $$
+Thus $f(x)=\sum_{i=1}^n\lambda_if(v_i)$, but $f(v_i)\leq f(x)$ for all $i$ so $f(v_i)=f(x)$ for all $i$ with $\lambda_i\neq0$, meaning $v_i$ must be a maximum.
+\qed
+
+So to find the maximum of the objective, it is sufficient to find its maximum over the vertices of the polyope defined by $A\vec x\leq\vec b$.
+But there are many vertices, so how can we effectively find the maximum?
+
+\blemm
+
+    Let $P$ be a convex polytope and a linear function $f(\vec x)=\vec c^\top\vec x$, then if a vertex is larger than all its adjacent vertices, it is a maximum.
+
+\elemm
+
+We will proceed without proving this.
+But this tells us that if we start from a vertex and traverse to adjacent vertices such that each one is larger than the next, we will eventually reach a vertex greater than all its neighbors and this must
+be a maximum.
+
+Notice that when we consider $A\vec x=\vec b$, we can assume that $A$ has full row rank, since otherwise there is no solution or $A$ has extra equations which we can remove.
+
+\bdefn
+
+    A {\emphcolor basis} of the polytope defined by $A\vec x\leq\vec b$ is a set of indexes $B$ such that when we take the matrix whose columns are the columns of $A$ whose index are in $B$, denoted $A_B$,
+    $A_B$ is invertible.
+
+\edefn
+
+If we have the boundary of a convex polytope $A\vec x=\vec b$ where $A\in{\bb R}^{m\times n}$, then the vertices are the vectors $\vec x$ where $x_i=0$ for $i\notin B$ where $B$ is some basis.
+Call such vectors {\it basic feasible solutions} (bfs), we will show later why these are precisely the vertices of the polytope.
+For each basis $B$, such a point is unique, since they must have $A_B\vec x=\vec b$ and so $\vec x=A_B^{-1}\vec x$.
+
+These are indeed vertices: we prove this by showing that they are extreme points.
+Suppose that $\vec\alpha,\vec\beta$ are two points in the polytope such that $\lambda\vec\alpha+(1-\lambda)\vec\beta=\vec x$ for $\lambda\in(0,1)$.
+Then on one hand
+$$ A(\lambda\vec\alpha+(1-\lambda)\vec\beta) = \lambda A\vec\alpha + (1-\lambda)A\vec\beta \leq\lambda\vec b+(1-\lambda)\vec b=\vec b $$
+but on the other hand this must be an equality since $\lambda\vec\alpha+(1-\lambda)\vec\beta=\vec x$.
+So $A\vec\alpha=A\vec\beta=\vec b$.
+For every $i$ for which $x_i=0$ we must have $\alpha_i=\beta_i=0$ since $\lambda\alpha_i+(1-\lambda)\beta_i=0$ and $\alpha_i,\beta_i\geq0$.
+But we said that such points are unique, so $\vec\alpha=\vec\beta=\vec x$, so $\vec x$ is an extreme point.
+
+We also make the following observation: maximizing $c^\top\vec x$ by $A\vec x=\vec b$ is the same as finding a maximal $v$ such that there exists a $\vec x$ where
+$$ \pmatrix{A & 0 & b\cr -c^\top & 1 & 0}\pmatrix{\vec x\cr v\cr-1} = 0 $$
+The left matrix is called the {\it tableau} of the LP.
+
+Now suppose $B$ is a basis for $A$, then if we multiply by $A_B^{-1}\oplus1$ (which is legal since it is invertible) we get that we can solve for the tableau
+$$ \pmatrix{I \mid_B A' & 0 & A_B^{-1}b\cr -c^\top & 1 & 0} $$
+Where $I\mid_B A'$ means that the columns of matrix $I$ are inserted at indexes in $B$ to the matrix $A'$.
+Let us assume that $I\mid_B A'=(I\ A')$, then we have a tableau of the form
+$$ \pmatrix{I & A' & 0 & \overline b\cr -c_1^\top & -c_2^\top & 1 & 0} $$
+Performing some row-reduction gives us
+$$ \pmatrix{I & A' & 0 & \overline b\cr 0 & -\overline c_2^\top & 1 & z_B} $$
+Recall that the vertex associated with the basis $B$ has zeroes when $i\notin B$, so multiplying by $(\vec x\ v\ -1)^\top$ gives us
+$$ \pmatrix{I & A' & 0 & \overline b\cr 0 & -\overline c_2^\top & 1 & z_B}\pmatrix{\vec x\cr v\cr -1} = \pmatrix{\vec x_B-\overline b\cr v-z_B} $$
+So we have that $\vec x_B=\overline b$ gives us the value $v=z_B$ ($\vec x_B$ is the vector $\vec x$ with indexes not in $B$ removed).
+What this tells us that if we evaluate $x_i=\overline b_i$ for $i\in B$ and $x_i=0$ for $i\notin B$ we get a vertex of the polytope, and its value is $z_B$.
+
+Using the second lemma, that a vertex is a maximum if and only if its value is greater than all its neighbors, we can continue this algorithm.
+How do we determine if two vertices are adjacent?
+We will answer this through the following lemmas.
+
+\blemm
+
+    Let $B_1,B_2$ be two bases which differ in a single index, and $x,y$ be the bfs-s corresponding to the bases.
+    Then for every point $a$ in the boundary of the polytope (meaning $Aa=b$), if $a_i=0$ for every $i\notin B_1\cup B_2$, $a$ lies on the line between $x$ and $y$.
+
+\elemm
+
+\Proof we will show that the line passing through $a$ and $x$ contains $y$.
+That is, there exists a $\lambda$ such that $\lambda a+(1-\lambda)x=y$.
+Suppose that $B_1\setminus B_2=\set j$ and $B_2\setminus B_1=\set k$.
+Then it is sufficient that $\lambda a_i+(1-\lambda)x_i=0$ for $i\notin B_2$, since $A(\lambda a+(1-\lambda)x)=b$ and such a point is uniquely $y$.
+Therefore it is sufficient that $\lambda a_j+(1-\lambda)x_j=0$, i.e. $\lambda(a_j-x_j)=-a_j$.
+This has a solution when $x_j\neq a_j$.
+
+Thus the only issue arises when $x_j=a_j$.
+Let us denote $A_i=A_{B_i}$, then
+$$ Aa = b \implies A_1^{-1}Aa = x \implies (I\mid_B A_1^{-1}A_{B_1^c})a = x $$
+Since $a_i=0$ for $i\notin B_1\cup B_2$, we have that
+$$ a_{B_1} + a_k A_1^{-1}C_k(A) = a_{B_1} + a_k C_k(A_1^{-1}A) = x $$
+Thus $x_j=a_j+a_k[A_1^{-1}A]_{jk}$, so $a_k[A_1^{-1}A]_{jk}=0$.
+If $a_k=0$ then $a=x$ by uniqueness.
+Otherwise, $[A_1^{-1}A]_{jk}=0$ \localcolor{red}{why can't this happen?}
+\qed
+
+Generalizing this lemma, we get the converse of what we stated earlier: a point is a vertex iff it is a bfs.
+This is since we can generalize this lemma to say that if $B_1,\dots,B_k$ differ each by a point and $Aa=b$ such that $a_i=0$ for $i\notin\bigcup_j B_j$, then $a$ lies on the convex hull defined by
+$x_1,\dots,x_k$ where $x_i$ is the bfs defined by by $B_i$.
+So the polytope is the convex hull of all the bfs-s, and thus each extreme point must be a bfs.
+
+\blemm
+
+    Two bfs-s are adjacent iff their bases differ by a single point.
+
+\elemm
+
+\Proof suppose that $B_1,B_2$ are bases which differ by a single index.
+Let $x,y$ be the corresponding bfs-s, and suppose that $\alpha,\beta$ are two points in the polytope such that the open segment between them intersects the line segment between $x$ and $y$.
+Then there exists $\gamma\in(0,1),\lambda\in[0,1]$ such that
+$$ \lambda x + (1-\lambda)y = \gamma\alpha + (1-\gamma)\beta $$
+this means that for $i\notin B_1\cup B_2$, $\gamma\alpha_i+(1-\gamma)\beta_i=0$, since $\alpha,\beta\geq0$ this means $\alpha_i=\beta_i=0$.
+But then by the above lemma, they are both on the line segment of $x$ and $y$, so $x$ and $y$ are adjacent.
+
+\localcolor{red}{Show converse}
+\qed
+
+So now let us discuss the significance of these lemmas on our algorithm.
+A current naive algorithm would be to iterate over all the bases $B$, and multiply the tableau by $A_B^{-1}$.
+Notice that this is just equivalent to row-reducing the tableau at the columns indicated by $B$.
+Recall that if we have a basis $B$, our tableau will be in the following form:
+$$ \pmatrix{I\mid_BA' & 0 & \bar b\cr 0 \mid_B-\bar c^\top & 1 & z_B} $$
+and the value at the vertex $x_B$ (the bfs defined by $B$) is $z_B$.
+Choosing a basis $B'$ which differs from $B$ by a single index and then looking at the resulting tableau is the same as choosing a column from $A'$ and using an element from that column as a pivot.
+The column we choose is what will determine the {\it entering index} (or entering variable), and the row we choose will determine which column from $B$ will leave (the {\it leaving index} or variable).
+
+Suppose we choose the index $i$ to enter and the index $j$ to leave, i.e. the column $i$ and the row $j$.
+Then to row reduce the final row, we must add $\bar c_j/A'_{ji}$, resulting in a change of $z_B$ to $z_{B'}=z_B+\frac{\bar c_j}{A'_{ji}}\bar b_j$.
+So we want to find the $i,j$ which maximize $\frac{\bar c_j\cdot\bar b_j}{A'_{ji}}$.
+Notice that if all of $c$ is negative, then this means that our current bfs is larger than all its neighbors and so it is maximal by an above lemma.
+
+Comparing $n\times m$ values is not efficient for every iteration of our algorithm, so we make a suboptimal compromise which requires us compare $n+m$ values instead.
+To do so we just find the index $j$ which maximizes $\bar c_j$, then find the $i$ which maximizes $\frac{\bar b_j}{A'_{ji}}$.
+These will be our entering and leaving variables.
+
+This is the simplex algorithm.
+It is correct since at the worst case we visit every vertex, but that's still a finite number of vertices.
+Why is it called the {\it simplex} algorithm?
+Who knows, in my opinion a more fitting name would be ``the convex polytope algorithm'', but that's a bit of a mouthful.
+
+\subsection{The Simplex Algorithm; In Short}
+
+Suppose we want to solve the following LP in slack form: maximize $c^\top x$ constrained to $Ax=b$ where $A\in{\bb R}^{m\times n}$.
+Then we write out the {\it initial tableau}:
+$$ \pmatrix{A & 0 & b\cr -c^\top & 1 & 0} $$
+If $A$ contains the $m\times m$ identity matrix, then say that the tableau is in {\it canonical form}.
+Changing names of variables (i.e. column swapping), this means that the tableau is of the form
+$$ \pmatrix{I & A & 0 & b\cr -d^\top & -c^\top & 1 & 0} $$
+Row reducing gives us
+$$ \pmatrix{I & A & 0 & b\cr 0 & -c^\top & 1 & z_B} $$
+$z_B$ is a feasible solution to the problem when we set the variables in the columns corresponding to the identity matrix to the values of $b$ and all the other variables to zero.
+
+If the tableau is not in canonical form, we can find $m$ independent columns and row reduce those to get the identity.
+
+If $c$ has no positive values, then we finish and $z_B$ is the maximum value.
+Otherwise, choose the column $i$ for which $c_i$ is maximal.
+Then choose the row $j$ for which $\frac{b_j}{A_{ji}}$ is maximal, and use the index $(j,i)$ as a pivot in row reducing.
+This will give (after swapping columns)
+$$ \pmatrix{I & \bar A & 0 & \bar b\cr 0 & -\bar c^\top & 1 & z_{B'}} $$
+where $z_{B'}>z_B$, and this is another feasible solution.
+Continue iteratively choosing a pivot until $c$ has no positive values.
+
+{\bf Example:} suppose we want to maximize
+$$ 2x + 3y + 4z $$
+subject to
 $$ \eqalign{
-    x_4 &= 1000 - 2x_1-x_2-(250 - x_1 - 1.5x_2 - 0.5x_5)\cr
-    x_3 &= 250 - x_1 - 1.5x_2 - 0.5x_5\cr
-    x_6 &= 800 - x_1-2x_2-3(250 - x_1 - 1.5x_2 - 0.5x_5)
+    3x + 2y +  z &\leq 10\cr
+    2x + 5y + 3z &\leq 15\cr
+    x,y,z &\geq0
 } $$
-Since in the expression we are maximizing all the coefficients are negative, we have reached a bfs which gives us a maximum value: $10{,}000$.
+Adding slack variables, this is equivalent to
+$$ \eqalign{
+    3x + 2y +  z + s_1 &= 10\cr
+    2x + 5y + 3z + s_2 &= 15\cr
+    x,y,z,s_1,s_2 &\geq0
+} $$
+So our initial tableau is
+$$ \pmatrix{
+    3 & 2 & 1 & 1 & 0 & 0 & 10\cr
+    2 & 5 & 3 & 0 & 1 & 0 & 15\cr
+    -2 & -3 & -4 & 0 & 0 & 1 & 0
+} $$
+We now perform a pivot operation:
+\benum
+    \item we first choose the most negative value in the bottom row: $-3$, this will be our column.
+    \item we then compute $b_j/A_{ji}$ and take the row with the maximum value.
+    The values are $10/3$ and $15/2$, so we choose $2$ as the pivot.
+\eenum
+Row reducing will give
+$$ \pmatrix{
+    0 & -5.5 & -3.5 & 1 & -1.5 & 0 & -12.5\cr
+    1 & 2.5 & 1.5 & 0 & 0.5 & 0 & 7.5\cr
+    0 & 2 & -1 & 0 & 1 & 1 & 15
+} $$
+The next pivot column will be the third column, and computing the quotients gives $-12.5/-3.5=25/7$ and $7.5/1.5=5$ so we choose the second row as the pivot column.
+The resulting tableau is
+$$ \pmatrix{
+    0 & -5.5 & -3.5 & 1 & -1.5 & 0 & -12.5\cr
+    2/3 & 5/3 & 1 & 0 & 1/3 & 0 & 5\cr
+    2/3 & 11/3 & 0 & 0 & 4/3 & 1 & 20
+} $$
+The bottom row is all positive, so we can no longer pivot.
+Thus the maximum value is $20$.
 \qqed
 
-This algorithm is called the {\it simplex algorithm}.
+\subsection{The Simplex Algorithm; Phase I}
 
-{\bf Example:} suppose we want to maximize $x_1+x_2+x_3$ under the constraints $x_1+x_2\leq10$ and $x_2\geq x_3$.
-In slack form we have
-$$ x_4 = 10 - x_1 - x_2,\qquad x_5 = x_2 - x_3 $$
-This has a bfs of $(0,0,0,10,0)$.
-Choosing $x_1$ as the pivot we get
-$$ x_1 = 10 - x_2 - x_4,\qquad x_5 = x_2 - x_3 $$
-and so we maximize $10-x_4+x_3$.
-So we now choose $x_3$ as a pivot, and we get
-$$ x_1 = 10 - x_2 - x_4,\qquad x_3 = x_2 - x_5 $$
-and we now must maximize $10-x_4+x_2-x_5$, and so we now choose $x_2$ as a pivot:
-$$ x_2 = 10 - x_1 - x_4,\qquad x_3 = 10 - x_1 - x_4 - x_5 $$
-and so we must maximize $10-x_3+10-x_1-x_4-x_5$.
-So the maximum value is $20$ with bfs $(0,10,10,0,0)$.
+So far what we discussed relies on us having an initial bfs to our problem, otherwise our initial tableau is not in canonical form (and then we have to find a basis for which the bfs is non-negative).
+Instead of iterating over each basis, we can instead solve an LP to find an initial bfs.
+
+Suppose we want to maximize $c^\top x$ constrained to $Ax=b$.
+Now instead let us minimize $1^\top s$ ($1$ is the vector containing all ones) constrained to $(A\mid I)\binom{x}{s}=b$ as well as $-c^\top x+w=0$ for some other variable $w$ (this is in order to keep track
+of the changes to $c^\top x$ as we row reduce).
+This is equivalent to $Ax+s=b$, i.e. $Ax\leq b$, and the idea is that if we can make $s=0$ then the resulting bfs will be a vertex in the polytope $Ax=b$.
+So we minimize $1^\top s$ (equivalently, maximize $-1^\top s$) and if we get $s=0$ then we have an initial bfs.
+Otherwise, we can't minimize $s$ to $0$ and so we have no solution to $Ax=b$, meaning our polytope is empty.
+
+This procedure is the first step in the simplex algorithm, also called {\it Phase I}.
+The second step (row reducing the tableau) is called {\it Phase II}.
+
+{\bf Example:} suppose we want to maximize
+$$ 2x + 3y + 4z $$
+subject to
+$$ \eqalign{
+    3x + 2y +  z &=10\cr
+    2x + 5y + 3z &=15\cr
+    x,y,z &\geq0
+} $$
+So our initial tableau is
+$$ \pmatrix{
+    3 & 2 & 1 & 0 & 10\cr
+    2 & 5 & 3 & 0 & 15\cr
+    -2 & -3 & -4 & 1 & 0
+} $$
+which is not in canonical form.
+So now according to phase I, we want to maximize $-u-v$ subject to
+$$ \eqalign{
+    3x + 2y +  z + u &=10\cr
+    2x + 5y + 3z + v &=15\cr
+    -2x - 3y - 4z + w &= 0\cr
+    x,y,z,u,v &\geq0
+} $$
+The initial tableau for this is
+$$ \pmatrix{
+    3 & 2 & 1 & 0 & 1 & 0 & 0 & 10\cr
+    2 & 5 & 3 & 0 & 0 & 1 & 0 & 15\cr
+    -2 & -3 & -4 & 1 & 0 & 0 & 0 & 0\cr
+    0 & 0 & 0 & 0 & 1 & 1 & 1 & 0\cr
+} $$
+Converting to its canonical form, we get
+$$ \pmatrix{
+    3 & 2 & 1 & 0 & 1 & 0 & 0 & 10\cr
+    2 & 5 & 3 & 0 & 0 & 1 & 0 & 15\cr
+    -2 & -3 & -4 & 1 & 0 & 0 & 0 & 0\cr
+    -5 & -7 & -4 & 0 & 0 & 0 & 1 & -25
+} $$
+We could take the second column as the pivot column, but let's choose column $3$ instead.
+We then perform the simplex algorithm on this to give an initial tableau.
 \qqed
-
-This example highlights an important point: what if through choosing a pivot we get back to the original list of basic variables, or a list of basic variables we have already encountered?
-Then we have a loop, and our algorithm doesn't terminate.
-
-Say our algorithm goes through bfs-s like so:
-$$ {\rm bfs}_1 \to {\rm bfs}_2 \to \cdots \to {\rm bfs}_\ell $$
-and it doesn't have a loop.
-Then we have $\binom{n+m}m$ choices for basic variables (since we choose which $m$ of the $n+m$ variables are basic), and so we must have $\ell\leq\binom{n+m}m=\binom{n+m}n$.
-
-Now suppose we have a standard form LP problem: we maximize $\vec c^\top\vec x$ with the constraints $A\vec x\leq\vec b$ and $\vec x\geq0$.
-Now if we look at
-$$ (y_1,\dots,y_m)A\vec x = \sum_{i=1}^n\parens{\sum_{j=1}^m\alpha_{ji}y_j}x_i $$
-If we get that $\sum_{j=1}^m\alpha_{ji}y_j\geq c_i$, i.e. $A^\top\vec y\geq\vec c$, then we have that
-$$ \vec y^\top\vec b\geq \vec y^\top A\vec x\geq \sum_{i=1}^n c_ix_i = \vec c^\top\vec x $$
-So we have that there exists some duality between the two problems:
-
-$$ \vcenter{\tabskip=.25cm\openup1\jot\halign{\hfil#&\hfil#\hfil\cr
-Maximize&$\vec c^\top\cdot\vec x$\cr
-Such that&$A\vec x\leq\vec b$\cr
-&$\vec x\geq\vec 0$\cr}}
-\kern.5cm\iff\kern.5cm
-\vcenter{\tabskip=.25cm\openup1\jot\halign{\hfil#&\hfil#\hfil\cr
-Minimize&$\vec b^\top\cdot\vec y$\cr
-Such that&$A^\top\vec y\leq\vec c$\cr
-&$\vec y\geq\vec 0$\cr}}
-$$
