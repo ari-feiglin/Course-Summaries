@@ -1,0 +1,141 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+\parindent=0pt
+\parskip=3pt plus 2pt minus 2pt
+
+\input preamble
+
+\footline={}
+
+\setcounter{section}{1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+
+{\bppbox{rgb{.5 1 .5}}{rgb{0 .4 0}}{rgb{.1 .4 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Machine Learning}
+    \smallskip
+    \centerline{\setfont{it}Homework \the\counter{section}}
+    \centerline{\setfont{it}Ari Feiglin}
+
+\eppbox}
+
+\bexerc
+
+    \benum
+        \item Let $X,Y$ be independent, show that $\expecof{XY}=\expecof X\expecof Y$.
+        \item Prove that $\Covof{X,Y}=0$.
+        \item Give an example of uncorrelated RVs which are not independent.
+    \eenum
+
+\eexerc
+
+\benum
+    \item By LOTUS (the law of the unconscious statistician), since $p_{X,Y}=p_X\cdot p_Y$:
+    $$ \expecof{XY} = \int_{\bR^2}xyp_{X,Y}(x,y) = \int_{\bR^2}xyp_X(x)p_Y(y) = \int_{\bR}xp_X(x)\parens{\int_{\bR}yp_Y(y)} = \int_{\bR}xp_X(x)\cdot\int_{\bR}yp_Y(y) = \expecof X\expecof Y $$
+    \item By definition
+    $$ \Covof{X,Y} = \expecof{XY} - \expecof X\expecof Y $$
+    since $\expecof{XY} = \expecof X\expecof Y$, this is zero.
+    \item Let $X$ be symmetric (i.e. its pdf $p_X$ is even), $Y=f(X)$ so that $Y$ is not independent of $X$.
+    Then
+    $$ \expecof X = \int_{\bR} xp_X(x) = 0 $$
+    since $xp_X$ is odd.
+    Thus
+    $$ \Covof{X,Y}=\expecof{XY} = \int_{\bR^2}xyp_{x,y}(x,y) = \int_\bR xf(x)p_X(x) $$
+    since $p_{x,y}(x,y)=0$ if $y\neq f(x)$.
+    So if $f(x)$ is even, then $xf(x)p_X(x)$ is odd, so this integral becomes zero.
+    So let us take $X\sim U(-1,1)$ and $Y=X^3$.
+\eenum
+
+\bexerc
+
+    What's the best choice in the Monty Hall problem?
+
+\eexerc
+
+Let $X\in\set{1,2,3}$ be the door chosen, $Y\in\set{1,2,3}$ be the door with the prize.
+We know that $Z\sim U\set{1,2,3}$.
+Now we ask what the probability of $Z=X$ is modulo that a door was opened without the prize.
+If $Z=X$, then the door opened could be any of the two and this gives no extra information, so $\probof{Z=X}=\frac13$.
+If $Z\neq X$, then the door opened is already determined, but now $\probof{Z\neq X}=\frac23$.
+So there is a higher probability that $Z\neq X$, so the best strategy is to change choices.
+
+\bexerc
+
+    Let $x_1,\dots,x_n\in\bR^d$, and let $C=\sum_{i=1}^nx_ix_i^\top$.
+    \benum
+        \item Show that $C$ is positive semi-definite.
+        \item Prove that $C$ has rank at most $\minof{n,d}$.
+    \eenum
+
+\eexerc
+
+\benum
+    \item Let $u\in\bR^d$ then
+    $$ u^\top Cu = \sum_{i=1}^n u^\top x_ix_i^\top u = \sum_{i=1}^n (x_iu)^\top (x_iu) = \sum_{i=1}^n\norm{x_iu}^2 \geq 0 $$
+    so $C$ is positive semi-definite.
+    \item We know that $\rankof{A+B}\leq\rank A+\rank B$ so $\rank C\leq\sum_{i=1}^n\rankof{x_ix_i^\top}$.
+    Furthermore $\rankof{AB}\leq\rank A,\rank B$ so $\rankof{x_ix_i^\top}\leq1$, thus $\rank C\leq n$.
+    Furthermore $C\in\bR^{d\times d}$ so $\rank C\leq d$ as required.
+\eenum
+
+\bexerc
+
+    Show that if a jointly normal distributions are uncorrelated, then they are independent.
+
+\eexerc
+
+Suppose $X\sim{\cal N}(\mu,\Sigma)$ so the pdf of $X$ is
+$$ f_X(x) = \frac1{\sqrt{2\pi}^n}\cdot\frac1{\sqrt{\det\Sigma}}\exp\parens{\frac{-(x-\mu)^\top\Sigma^{-1}(x-\mu)}{2}} $$
+Let $\Sigma={\rm diag}[\sigma_1,\dots,\sigma_n]$ then
+$$ (x-\mu)^\top\Sigma^{-1}(x-\mu) = \sum_{i=1}^n\sigma_i^{-1}(x_i-\mu_i)^2 $$
+So since $\det\Sigma=\sigma_1\cdots\sigma_n$,
+$$ f_X(x) = \prod_{i=1}^n\frac1{\sqrt{2\pi}}\cdot\frac1{\sqrt{\sigma_i}}\cdot\exp\parens{\frac{-(x_i-\mu_i)^2}{2\sigma_i}} $$
+Since $X_i\sim{\cal N}(\mu_i,\sigma_i)$ (since $\Varof{X_i}=\Sigma_{ii}=\sigma_i$), this is just
+$$ f_X(x) = \prod_{i=1}^n f_{X_i}(x_i) $$
+as required.
+
+\bexerc
+
+    Let $X\sim{\cal N}(0,I)$ of dimension $d$.
+    \benum
+        \item For $d=1$, what is the probability of a sample landing within one standard deviation of the mean?
+        \item For $d\to\infty$ show that this probability tends to zero.
+    \eenum
+
+\eexerc
+
+\benum
+    \item This is just $\probof{-1\leq Z\leq 1}=\probof{Z\leq 1}-\probof{Z\leq-1}=0.84134-0.15866$.
+    \item $\set{\norm X\leq1}$ is contained in the set that $\abs{X_i}\leq1$ for every $i\in[d]$.
+    The probability of each of these is $c\in(0,1)$ for the $c$ computed in the previous subquestion.
+    Since $X_i$ are all independent (by the previous question/definition), we have that
+    $$ \probof{\bigwedge_i\abs{X_i}\leq1} = \prod_{i=1}^d\probof{\abs{X_i}\leq1} = c^d \longto 0 $$
+    since $c^d\longto0$ for $c\in(-1,1)$.
+\eenum
+
+\bexerc
+
+    Let $X$ be a $d$-dimensional random vector with covariance matrix $\Sigma$.
+    \benum
+        \item Let $w\in\bR^d$, and let $y=w^\top X$.
+        Show that $\Varof y=w^\top\Sigma w$.
+        \item Prove that $\Sigma$ is positive semi-definite.
+    \eenum
+
+\eexerc
+
+\benum
+    \item We know that
+    $$ \Varof y = \Varof{\sum_i w_iX_i} = \sum_iw_i^2\Varof{X_i} + 2\sum_{i<j}w_iw_j\Covof{X_i,X_j} = \sum_iw_i^2\Varof{X_i} + \sum_{i\neq j}w_i2_j\Covof{X_i,X_j} $$
+    and
+    $$ w^\top\Sigma w = \sum_{i,j}w_i\Sigma_{ij}w_j = \sum_{i,j} w_iw_j\Covof{X_i,X_j} = \sum_i w_i^2\Varof{X_i} + \sum_{i\neq j}w_iw_j\Covof{X_i,X_j} = \Varof y $$
+    as required.
+    \item Let $w\in\bR^d$ and define $y=w^\top X$, then $w^\top\Sigma w=\Varof y\geq0$, so $\Sigma$ is positive semi-definite.
+\eenum
+
+\bye
+
