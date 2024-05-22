@@ -170,13 +170,13 @@ Thus $f(x)=\sum_{i=1}^n\lambda_if(v_i)$, but $f(v_i)\leq f(x)$ for all $i$ so $f
 So to find the maximum of the objective, it is sufficient to find its maximum over the vertices of the polyope defined by $A\vec x\leq\vec b$.
 But there are many vertices, so how can we effectively find the maximum?
 
-\blemm
+\blemm[name=localmax]
 
     Let $P$ be a convex polytope and a linear function $f(\vec x)=\vec c^\top\vec x$, then if a vertex is larger than all its adjacent vertices, it is a maximum.
 
 \elemm
 
-We will proceed without proving this.
+We will prove this later.
 But this tells us that if we start from a vertex and traverse to adjacent vertices such that each one is larger than the next, we will eventually reach a vertex greater than all its neighbors and this must
 be a maximum.
 
@@ -266,6 +266,8 @@ But then by the above lemma, they are both on the line segment of $x$ and $y$, s
 
 \localcolor{red}{Show converse}
 \qed
+
+{\bf Proof }(of \refmath[lemm]{localmax}):
 
 So now let us discuss the significance of these lemmas on our algorithm.
 A current naive algorithm would be to iterate over all the bases $B$, and multiply the tableau by $A_B^{-1}$.
@@ -409,3 +411,60 @@ $$ \pmatrix{
 We could take the second column as the pivot column, but let's choose column $3$ instead.
 We then perform the simplex algorithm on this to give an initial tableau.
 \qqed
+
+\subsection{Duality}
+
+\bdefn
+
+    Call an LP problem of the form: maximize $c^\top x$ such that $Ax\leq b,x\geq0$ {\emphcolor primal}.
+    Its {\emphcolor dual} is: minimize $b^\top y$ such that $A^\top y\geq c,y\geq0$.
+
+\edefn
+
+\blemm[title=The Weak Duality Theorem]
+
+    If $x$ is a feasible solution to the primal LP and $y$ to the dual LP, then $c^\top x\leq b^\top y$.
+
+\elemm
+
+\Proof this is just a chain of inequalities:
+$$ c^\top x = x^\top c \leq x^\top (A^\top y) = (x^\top A^\top)y = (Ax)^\top y \leq b^\top y \qed $$
+
+\bthrm[title=The Strong Duality Theorem]
+
+    If $x$ is a maximal solution to the primal LP, and $y$ a minimal solution to the dual LP, then $c^\top x=b^\top y$.
+
+\ethrm
+
+\Proof let us show that if $x$ is a maximal solution to the primal problem, then there exists a solution $y$ to the dual problem such that $c^\top x=b^\top y$.
+By the weak duality theorem, this is sufficient.
+
+Suppose first that our problem is in slack form: $Ax=b$.
+Let $x$ be a maximal solution, and its corresponding basis is $B$.
+Suppose that $A=A_B\mid_BA_N$ and $c^\top=c_B^\top\mid_Bc_N^\top$, then our initial tableau, multiplied by $A_B^{-1}\oplus(1)$ is
+$$ \pmatrix{A_B^{-1}\cr&1}\cdot\pmatrix{A & 0 & b\cr -c^\top & 1 & 0} = \pmatrix{I&\mid_B&A_B^{-1}A_N & 0 & A_B^{-1}b\cr -c_B^\top&\mid_B&-c_N^\top & 1 & 0} $$
+Row reducing gives us
+$$ \pmatrix{I&\mid_B&A_B^{-1}A_N & 0 & A_B^{-1}b\cr 0^\top&\mid_B&-c_N^\top+c_B^\top A_B^{-1}A_N & 1 & z_B} $$
+Since $x$ is optimal, the bottom row must be positive, so
+$$ c_N^\top - c_B^\top A_B^{-1}A_N \leq 0 $$
+but trivially, we also know (since the following is equal to $0$)
+$$ c_B^\top - c_B^\top A_B^{-1}A_B \leq 0 $$
+Thus by concatenating them with their order determined by $B$,
+$$ c^\top - c_B^\top A_B^{-1}A \leq 0 $$
+
+Now, our problem was $Ax\leq b$, which is equivalent to $(A\mid I)\binom xs=b$ by introducing slack variables.
+And the objective function is $(c^\top\mid0)\binom xs$, so by our above computation (by splitting according to which indexes are slack variables), we get
+$$ \eqalign{
+    \hbox{For non-slack variables:}\quad&c^\top - c_B^\top\bar A_B^{-1}A \leq 0\cr
+    \hbox{For slack variables:}\quad&0^\top - c_B^\top\bar A_B^{-1}I \leq 0
+} $$
+where $\bar A=A\mid I$.
+So let us define $y^\top=c_B^\top\bar A_B^{-1}$, then we have that
+$$ c^\top - c_B^\top\bar A_B^{-1}A = c^\top - y^\top A \leq 0 \implies y^\top A\geq c^\top $$
+and $y^\top\geq0$.
+So $y$ is a solution to the dual LP problem.
+Furthermore
+$$ b^\top y = y^\top b = c^\top_B\bar A_B^{-1}b = c^\top_Bx_B = c^\top x $$
+as required.
+\qed
+
