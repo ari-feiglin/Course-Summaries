@@ -154,7 +154,7 @@ $\Delta^n$ has $n+1$ faces, and is homeomorphic to $D^n$.
 We now want to define a chain complex on the sequence $C_n(X)$.
 
 Let us define a set of maps $\tau_i^n\colon\Delta^{n-1}\longto\Delta^n$ for $0\leq i\leq n$ which maps
-$$ \tau_i^n\colon (x_0,\dots,x_{n-1})\mapsto(x_1,\dots,x_{i-1},0,x_{i+1},\dots,x_{n-1}) $$
+$$ \tau_i^n\colon (x_0,\dots,x_{n-1})\mapsto(x_0,\dots,x_{i-1},0,x_i,\dots,x_{n-1}) $$
 This is a well-defined continuous map, and geometrically it maps $\Delta^{n-1}$ to one of the faces of $\Delta^n$.
 
 Let $\sigma\in S_n(x)$, then let us define
@@ -269,3 +269,475 @@ Thus $H_n(X)=\bigoplus_{\alpha\in I}H_n(A_\alpha)$.
 
 \ecoro
 
+\bthrm[name=abelofhomotopy]
+
+    Let $X$ be path-connected and $a\in X$, then $H_1(X)\cong\Ab\pi_1(X,a)$.
+
+\ethrm
+
+For two chains, $a,b\in C_n(X)$ say that they are {\it homological} if $a-b$ is a boundary (i.e. $a-b\in B_n(X)$).
+Write this as $a\approx b$.
+
+\blemm
+
+    Let $\sigma,\tau$ be $1$-simplexes.
+    \benum
+        \item if $\sigma$ is constant, then it is a boundary, i.e. $\sigma\approx0$.
+        \item if $\sigma\hdi\tau$ (since they are maps from $I\cong\Delta^1\longto X$), then $\sigma\approx\tau$.
+        \item if $\sigma(1)=\tau(0)$ then $\sigma*\tau\approx\sigma+\tau$.
+        \item $\sigma+\bar\sigma\approx0$
+    \eenum
+
+\elemm
+
+\Proof
+\benum
+    \item If $\sigma$ is constant, then it is $K^1_p$ for some $p\in X$.
+        And as we have already computed
+        $$ \partial K^n_p = \cases{K^{n-1}_p & $n$ even\cr 0 & $n$ odd} $$
+        Thus $\partial K^2_p=K^{n-1}_p$, meaning $\sigma$ is a boundary.
+    \item Let us look at the homotopy
+
+        \centerline{\def\coordhbuf{0pt}\def\coordvbuf{-5pt}
+        \drawdiagram{
+            &&\cr
+            &$H$&\cr
+            &&\cr
+        }{
+            \diagarrow{from={1,1}, to={1,3}, text=$\tau$, y distance=.25cm}
+            \diagarrow{from={3,1}, to={3,3}, text=$\sigma$, y distance=-.25cm}
+            \diagarrow{from={1,1}, to={3,1}, right cap=-, text=$K_a$, x distance=-.25cm}
+            \diagarrow{from={1,3}, to={3,3}, right cap=-, text=$K_b$, x distance=.25cm}
+        }}
+
+        Since $H$ is surjective, it induces a map on the quotient space $\slfrac{I\times I}{I\times\set1}$, the map $G$:
+
+        \centerline{\def\coordhbuf{0pt}\def\coordvbuf{-5pt}
+        \drawdiagram{
+            &&\cr
+            &$G$&\cr
+            &&\cr
+        }{
+            \diagarrow{from={1,1}, to={2,3}, text=$\tau$, y distance=.25cm}
+            \diagarrow{from={3,1}, to={2,3}, text=$\sigma$, y distance=-.25cm}
+            \diagarrow{from={1,1}, to={3,1}, right cap=-, text=$K_a$, x distance=-.25cm}
+        }}
+
+        The quotient space can be viewed as a $2$-simplex by assigning an order to its vertices.
+        Then its boundary is
+        $$ \partial G = K_a - \sigma + \tau $$
+        and since $\partial G$ is a boundary, we have that
+        $$ K_a - \sigma + \tau \approx 0 $$
+        by $(1)$ we have that $K_a\approx0$ so $\sigma-\tau\approx0$.
+
+    \item The idea is to define a simplex of the form
+
+        \centerline{\def\coordhbuf{0pt}\def\coordvbuf{-2.5pt}
+        \drawdiagram{
+            &&\cr
+            &$G$&\cr
+            &&\cr
+        }{
+            \diagarrow{from={2,3}, to={1,1}, text=$\tau$, y distance=.25cm}
+            \diagarrow{from={3,1}, to={2,3}, text=$\sigma$, y distance=-.25cm}
+            \diagarrow{from={1,1}, to={3,1}, text=$\sigma*\tau$, x distance=-.5cm}
+        }}
+
+        Notice that such a simplex is possible: each horizontal line in the domain can be made constant.
+        And its boundary is
+        $$ \partial G = \tau - \sigma*\tau + \sigma $$
+        so $\sigma*\tau\approx\sigma+\tau$ since $\partial G\approx0$.
+
+    \item This is direct from the previous three points:
+        $$ \sigma+\overline\sigma \buildrel(3)\over\approx \sigma*\overline\sigma \buildrel(2)\over\approx K_b \buildrel(1)\over\approx 0 $$
+\eenum
+
+{\bf Proof} (of \refmath[theorem]{abelofhomotopy}): let us define a homomorphism
+$$ F\colon\pi_1(X,a) \longto H_1(X) $$
+Denote homotopy equivalence classes by $\gen\bullet$ and the equivalence classes of $H_1(X)$ by $[\bullet]$.
+Then we define
+$$ \gen\phi\xvarmapsto{\quad F\quad}\relax[\phi] $$
+This is well-defined: if $\phi\hdi\psi$ then $\phi\approx\psi$ and so $[\phi]=[\psi]$ (since $H_n(X)$ is the partition of $Z_n(X)$ relative to $\approx$).
+Notice that $\gen{\phi*\psi}\mapsto[\phi*\psi]=[\phi+\psi]=[\phi]+[\psi]$.
+So this is indeed a homomorphism.
+Since $H_1(X)$ is Abelian, this induces a homomorphism
+$$ \overline F\colon\Ab\pi_1(X,a)\longto H_1(X) $$
+Let us now define a homomorphism
+$$ G\colon C_1(X)\longto\Ab\pi_1(X,a) $$
+denote the equivalence classes of $\Ab\pi_1(X,a)$ by $\gen{\gen\bullet}$.
+For every $x\in X$, choose a path $\gamma_x$ from $a$ to $x$, then for $\sigma\in S_1(X)$ define
+$$ \hat\sigma = \gamma_{\sigma(0)}*\sigma*\overline\gamma_{\sigma(1)} \hbox{ from $a$ to $a$} $$
+And define
+$$ \sigma\xvarmapsto{\quad G\quad}\gen{\gen{\hat\sigma}} $$
+And extend by linearity to $G\colon C_1(X)\longto\Ab\pi_1(X,a)$.
+We can then restrict $G$ to $Z_1(X)$, and in order for this to induce a map on $\slfrac{Z_1(X)}{B_1(X)}$ we must have that $G\bigl|_{B_1(X)}=0$.
+So let $A$ be a $2$-simplex, then we must show $G(\partial A)=0$.
+We know
+$$ G(\partial A) = G(A\circ\tau_0-A\circ\tau_1+A\circ\tau_2) = \ggen{\widehat{A\circ\tau_0}} - \ggen{\widehat{A\circ\tau_1}} + \ggen{\widehat{A\circ\tau_2}} $$
+Now, $\ggen\sigma+\ggen\tau=\gen{\!\gen\sigma\gen\tau\!}$ and $-\ggen\sigma=\gen{\!\sigma^{-1}\!}$ by Abelianization, so this is equal to
+$$ \gen{\!\gen{\widehat{A\circ\tau_0}}\gen{\widehat{A\circ\tau_1}}\gen{\widehat{A\circ\tau_2}}\!} = \ggen{\widehat{A\circ\tau_0}*\overline{\widehat{A\circ\tau_1}}*\widehat{A\circ\tau_2}} $$
+As is easily verified,
+$$ = \ggen{\widehat{A\circ\tau_0}*\widehat{\overline{A\circ\tau_1}}*\widehat{A\circ\tau_2}} = \ggen{\varwidehat{A\circ\tau_0*\overline{A\circ\tau_1}*A\circ\tau_2}} $$
+Since $A\colon\Delta^2\longto X$ is a simplex, $A\circ\tau_0*\overline{A\circ\tau_1}*A\circ\tau_2$ is null-homotopic (the homotopy can condense the curve to a point through the image of $A$).
+Therefore its hat is as well, meaning this is all equal to zero, as required.
+
+So $G$ induces a homomorphism
+$$ \overline G\colon H_1(X)\longto\Ab\pi_1(X,a) $$
+Notice that
+$$ \overline G\circ\overline F\ggen\phi = \overline G[\phi] = \ggen{\hat\phi} $$
+We know that $\hat\phi=\gamma_a\phi\overline\gamma_a$ which is conjugate to $\phi$, so in the Abelianization they are equal.
+So $\overline G\circ\overline F={\rm id}$.
+Now suppose $[z]\in H_1(X)$ where $z=\sum n_i\sigma_i$ then
+$$ \overline F\circ\overline G[z] = \overline F\parens{\sum n_i\ggen{\hat\sigma_i}} = \sum n_i[\hat\sigma_i] = \bracks{\sum n_i\hat\sigma_i} $$
+So we need to show that if $\sum n_i\sigma_i$ is a cycle then $\sum n_i\hat\sigma_i\approx\sum n_i\sigma_i$.
+Define $T\colon C_0(X)\longto C_1(X)$ by $T(p)=\gamma_p$, so
+$$ \hat\sigma = \gamma_{\sigma0}*\sigma*\overline\gamma_{\sigma1} \approx \gamma_{\sigma0} + \sigma - \gamma_{\sigma1} = \sigma - T\partial\sigma $$
+And so
+$$ \sum n_i\hat\sigma_i \approx \sum n_i\sigma_i - T\partial\sum n_i\sigma_i = z - T\partial z $$
+since $z$ is a cycle, $\partial z=0$ and so this is equal to $z$.
+Thus $\hat z\approx z$ as required.
+
+So $\overline F,\overline G$ are inverse isomorphisms, meaning $H_1(X)\cong\Ab\pi_1(X,a)$.
+\qed
+
+\bdefn
+
+    Let $\C,\D$ be two categories and let $F,G\colon\C\longto\D$ be functors.
+    Then a {\emphcolor natural transformation} $\eta$ from $F$ to $G$ is a correspondence such that
+    \benum
+        \item for every object $X\in\C$, $\eta$ associates a morphism $\eta_X\colon F(X)\longto G(X)$ called the {\emphcolor component} of $X$.
+        \item for every $f\colon X\longto Y$ morphism, $\eta_Y\circ F(f)=G(f)\circ\eta_X$, i.e. the following diagram commutes
+
+            \bigskip
+            \centerline{\def\diagrowheight{1cm}\drawdiagram{
+                $F(X)$ & $G(X)$\cr
+                $F(Y)$ & $G(Y)$\cr
+            }{
+                \diagarrow{from={1,1}, to={1,2}, text=$\eta_X$, y distance=.25cm, color=rgb{.8 .1 .1}}
+                \diagarrow{from={2,1}, to={2,2}, text=$\eta_Y$, y distance=-.25cm, color=rgb{.8 .1 .1}}
+                \diagarrow{from={1,1}, to={2,1}, text=$F(f)$, x distance=-.5cm, color=rgb{.8 .1 .1}}
+                \diagarrow{from={1,2}, to={2,2}, text=$G(f)$, x distance=.5cm, color=rgb{.8 .1 .1}}
+            }}
+    \eenum
+
+\edefn
+
+So for every pointed topology $(X,a)$ we defined a group homomorphism $F_{X,a}\colon\pi_1(X,a)\longto H_1(X)$.
+We claim that this is a natural transformation from $\pi_1$ to $H_1$.
+
+Suppose there is a morphism $h\colon(X,a)\longto(Y,b)$, so we need the following diagram to commute:
+
+\bigskip
+\centerline{\def\diagrowheight{1cm}\drawdiagram{
+    $\pi_1(X,a)$ & $H_1(X)$\cr
+    $\pi_1(Y,b)$ & $H_1(Y)$\cr
+}{
+    \diagarrow{from={1,1}, to={1,2}, text=$F_{X,a}$, y distance=.25cm}
+    \diagarrow{from={2,1}, to={2,2}, text=$F_{Y,b}$, y distance=-.25cm}
+    \diagarrow{from={1,1}, to={2,1}, text=$\pi_1(h)$, x distance=-.5cm}
+    \diagarrow{from={1,2}, to={2,2}, text=$H_1(h)$, x distance=.5cm}
+}}
+
+This is indeed the case:
+$$ \gen\phi \xvarrightarrow{\;F_{X,a}\;} [\phi] \xvarrightarrow{\;H_1(h)\;} [h\circ\phi],\qquad \gen\phi \xvarrightarrow{\;\pi_1(h)\;} \gen{h\circ\phi} \xvarrightarrow{\;F_{Y,b}\;} [h\circ\phi] $$
+
+\bexam
+
+    If we look at the identity functor (on the category of groups) and Abelianization, then $\rho_\bullet$, which is the quotient map $\bullet\longto\Ab\bullet$, is a natural transformation.
+    Indeed
+
+    \bigskip
+    \centerline{\def\diagrowheight{1cm}\drawdiagram{
+        $G$ & $\Ab G$\cr
+        $H$ & $\Ab H$\cr
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=$\rho_G$, y distance=.25cm, color=rgb{.1 .65 .1}}
+        \diagarrow{from={2,1}, to={2,2}, text=$\rho_H$, y distance=-.25cm, color=rgb{.1 .65 .1}}
+        \diagarrow{from={1,1}, to={2,1}, text=$\phi$, x distance=-.25cm, color=rgb{.1 .65 .1}}
+        \diagarrow{from={1,2}, to={2,2}, text=$\hat\phi$, x distance=.25cm, color=rgb{.1 .65 .1}}
+    }}
+
+    Where $\hat\phi[g]=[\phi(g)]$.
+    This is indeed natural:
+    $$ \rho_H\circ\phi(g) = [\phi(g)],\qquad \hat\phi\circ\rho_G(g)=\hat\phi[g] = [\phi(g)] $$
+
+\eexam
+
+\bdefn
+
+    The {\emphcolor simplified singular chain complex} of a topological space $X$ is the chain complex
+
+    \bigskip
+    \centerline{\drawdiagram{
+        $\cdots$ & $C_{n+1}(X)$ & $C_n(X)$ & $C_{n-1}(X)$ & $\cdots$ & $C_0(X)$ & ${\bb Z}$ & $0$\cr
+    }{
+        \diagarrow{from={1,1}, to={1,2}, dashed, color=rgb{.8 .1 .1}}
+        \diagarrow{from={1,2}, to={1,3}, text=$\partial_{n+1}$, y distance=.25cm, color=rgb{.8 .1 .1}}
+        \diagarrow{from={1,3}, to={1,4}, text=$\partial_{n}$, y distance=.25cm, color=rgb{.8 .1 .1}}
+        \diagarrow{from={1,4}, to={1,5}, dashed, color=rgb{.8 .1 .1}}
+        \diagarrow{from={1,5}, to={1,6}, dashed, color=rgb{.8 .1 .1}}
+        \diagarrow{from={1,6}, to={1,7}, text=$\epsilon$, y distance=.25cm, color=rgb{.8 .1 .1}}
+        \diagarrow{from={1,7}, to={1,8}, color=rgb{.8 .1 .1}}
+    }}
+    \medskip
+
+    Where we define $\epsilon$ as follows:
+    $$ \epsilon\sum n_ip_i = \sum n_i $$
+    i.e. $\epsilon p=1$ for every $p\in X$.
+    And a morphism between two simplified singular chain complexes differ only from morphisms between normal singular chain complexes in that the map from ${\bb Z}$ to ${\bb Z}$ is the identity.
+
+    The homology induced by a simplified singular chain complex is called the {\emphcolor simplified homology} and denoted $\tilde H_n(X)$.
+
+\edefn
+
+Obviously for every $n\geq1$, $\tilde H_n(X)=H_n(X)$.
+
+\bdefn
+
+    A chain of Abelian groups
+
+    \bigskip
+    \centerline{\drawdiagram{
+        $\cdots$ & $A$ & $B$ & $C$ & $\cdots$\cr
+    }{
+        \diagarrow{from={1,1}, to={1,2}, dashed, color=rgb{.8 .1 .1}}
+        \diagarrow{from={1,2}, to={1,3}, text=$f$, y distance=.25cm, color=rgb{.8 .1 .1}}
+        \diagarrow{from={1,3}, to={1,4}, text=$g$, y distance=.25cm, color=rgb{.8 .1 .1}}
+        \diagarrow{from={1,4}, to={1,5}, dashed, color=rgb{.8 .1 .1}}
+    }}
+    \bigskip
+
+    is {\emphcolor exact} at $B$ if ${\rm Im}f=\ker g$.
+    If the sequence is exact at every group, then the sequence itself is called an {\emphcolor exact sequence}.
+    (Recall that chain complexes require ${\rm Im}f\subseteq\ker g$.)
+
+\edefn
+
+If we have an exact sequence in one of the following forms, then:
+
+\benum
+    \item $0\longto A\xvarrightarrow{\;f\;}B$, then $0=\ker f$ so $f$ is injective.
+    \item $A\xvarrightarrow{\;f\;}B\longto0$, then ${\rm Im}f=B$ so $f$ is surjective.
+    \item $0\longto A\xvarrightarrow{\;f\;}B\longto0$, then $f$ is an isomorphism.
+\eenum
+
+\bdefn
+
+    A {\emphcolor short exact sequence} is an exact sequence of the form
+    $$ 0\longto A\xvarrightarrow{\;f\;}B\xvarrightarrow{\;g\;}C\longto0 $$
+
+\edefn
+
+In a short exact sequence, by above $f$ is injective and $g$ is surjective, and furthermore ${\rm Im}f=\ker g$.
+In such a case, we can view $A$ as being a subgroup of $B$ (since $f$ is an embedding) and since by the isomorphism theorem $C\cong\slfrac B{\ker g}=\slfrac B{{\rm Im}f}=\slfrac BA$, a short exact sequence
+can be viewed as
+$$ 0 \longto A\xvarrightarrow{\;{\it inclusion}\;}B\xvarrightarrow{\;{\it quotient}\;}\slfrac BA\longto0 $$
+
+\localcolor{white}{This next lemma took fucking forever to \TeX{} out, so you'd better appreciate me!}
+
+\blemm[title=The Lemma of Five]
+
+    Suppose the chains $\set{A_i}_i,\set{B_i}_i$ are exact, and the following diagram commutes:
+
+    \medskip
+    \centerline{\def\diagrowheight{1cm}\def\diagcolwidth{1cm}\drawdiagram{
+        $A_1$ & $A_2$ & $A_3$ & $A_4$ & $A_5$\cr
+        $B_1$ & $B_2$ & $B_3$ & $B_4$ & $B_5$\cr
+    }{
+        \diagarrow{from={1,1}, to={1,2}, color=rgb{.8 .1 .8}}
+        \diagarrow{from={1,2}, to={1,3}, color=rgb{.8 .1 .8}}
+        \diagarrow{from={1,3}, to={1,4}, color=rgb{.8 .1 .8}}
+        \diagarrow{from={1,4}, to={1,5}, color=rgb{.8 .1 .8}}
+        \diagarrow{from={2,1}, to={2,2}, color=rgb{.8 .1 .8}}
+        \diagarrow{from={2,2}, to={2,3}, color=rgb{.8 .1 .8}}
+        \diagarrow{from={2,3}, to={2,4}, color=rgb{.8 .1 .8}}
+        \diagarrow{from={2,4}, to={2,5}, color=rgb{.8 .1 .8}}
+        \diagarrow{from={1,1}, to={2,1}, color=rgb{.8 .1 .8}, text=$f_1$, x distance=-.25cm}
+        \diagarrow{from={1,2}, to={2,2}, color=rgb{.8 .1 .8}, text=$f_2$, x distance=-.25cm}
+        \diagarrow{from={1,3}, to={2,3}, color=rgb{.8 .1 .8}, text=$f_3$, x distance=-.25cm}
+        \diagarrow{from={1,4}, to={2,4}, color=rgb{.8 .1 .8}, text=$f_4$, x distance=-.25cm}
+        \diagarrow{from={1,5}, to={2,5}, color=rgb{.8 .1 .8}, text=$f_5$, x distance=-.25cm}
+    }}
+
+    \kern-.5cm
+    \localcolor rgb{1 .9 1}{That actually wasn't too bad :)}
+
+    \benum
+        \item If $f_2,f_4$ are injective and $f_1$ is surjective, then $f_3$ is injective.
+        \item If $f_2,f_4$ are surjective and $f_5$ is injective, then $f_3$ is surjective.
+    \eenum
+
+\elemm
+
+\Proof We write $x\xvarmapsto Ay$ to mean $x$ maps to $y$ in the exact sequence ($x\in A_i$).
+\benum
+    \item Suppose $f_3a$, then $a\xmaps{f_3}0\xmaps{B}0$, now suppose $a\xmaps{A}b\xmaps{f_4}c$.
+        Since the diagram commutes, we must have that $c=0$, but $f_4$ is injective so $b=0$.
+        This means $a\in\ker A$, so there exists some $d$ such that $d\xmaps{A}a$.
+        Suppose $d\xmaps{f_2}e$, then $e\xmaps{B}0$ by commutativity, so there exists an $f$ such that $f\xmaps{B}e$, and since $f_1$ is surjective there exists a $g\xmaps{f_1}f$.
+        Now suppose $g\xmaps{A}h$.
+        By commutativity, since $g\xmaps{f_1}f\xmaps{B}e$ we have $f_2h=e$ and since $f_2$ is injective, $h=d$.
+        So $d$ is in the image of $A$, so it is in the kernel and so $a=0$.
+    \item is a little more complicated, but it's just chasing.
+        \qed
+\eenum
+
+\bdefn
+
+    Suppose $\C$ and $\D$ are two chain complexes, with two morphisms $f,g\colon\C\longto\D$.
+    Then a {\emphcolor chain homotopy} from $f$ to $g$ is a sequence of maps $T_n\colon C_n\longto D_{n+1}$ such that $\partial T+T\partial=f-g$.
+    If there exists a chain homotopy between $f$ and $g$, we write $f\hch g$.
+
+\edefn
+
+In a diagram, we have that $T$ are the red arrows.
+
+\bigskip
+\centerline{\def\diagrowbuf{1cm}\def\diagcolbuf{1cm}\drawdiagram{
+    $\cdots$ & $C_{n+1}$ & $C_n$ & $C_{n-1}$ & $\cdots$\cr
+    $\cdots$ & $D_{n+1}$ & $D_n$ & $D_{n-1}$ & $\cdots$\cr
+}{
+    \diagarrow{from={1,1}, to={1,2}, dashed}
+    \diagarrow{from={1,2}, to={1,3}}
+    \diagarrow{from={1,3}, to={1,4}}
+    \diagarrow{from={1,4}, to={1,5}, dashed}
+    \diagarrow{from={2,1}, to={2,2}, dashed}
+    \diagarrow{from={2,2}, to={2,3}}
+    \diagarrow{from={2,3}, to={2,4}}
+    \diagarrow{from={2,4}, to={2,5}, dashed}
+    \diagarrow{from={1,2}, to={2,2}, text=$f_{n+1}$, x distance=-.75cm, x off=-.25cm}
+    \diagarrow{from={1,3}, to={2,3}, text=$f_{n}$, x distance=-.5cm, x off=-.25cm}
+    \diagarrow{from={1,4}, to={2,4}, text=$f_{n-1}$, x distance=-.75cm, x off=-.25cm}
+    \diagarrow{from={1,2}, to={2,2}, text=$g_{n+1}$, x distance=.5cm}
+    \diagarrow{from={1,3}, to={2,3}, text=$g_{n}$, x distance=.25cm}
+    \diagarrow{from={1,4}, to={2,4}, text=$g_{n-1}$, x distance=.5cm}
+    \diagarrow{from={1,2}, to={2,1}, dashed, color=red}
+    \diagarrow{from={1,3}, to={2,2}, color=red}
+    \diagarrow{from={1,4}, to={2,3}, color=red}
+}}
+\medskip
+
+Let $X\subseteq{\bb R}^k$ be convex.
+For $a\in X$ let us define the {\it cone construction} $C_a\colon C_n(X)\longto C_{n+1}(X)$ as follows: we start with generators of $C_n(X)$, i.e. we define $C_a\sigma$ for $\sigma\colon\Delta^n\longto X$
+an $n$-simplex.
+Geometrically, $C_a\sigma$ will be a cone whose tip is $a$ and whose base is $\sigma$.
+We define this by:
+$$ C_a\sigma(t_0,\dots,t_{n+1}) = t_0b + (1-t_0)\sigma\parens{\frac{t_1}{1-t_0},\dots,\frac{t_{n+1}}{1-t_0}} $$
+Let us now compute the faces of $C_a\sigma$.
+For $i=0$ then
+$$ (C_a\sigma)\tau_0^{n+1}(t_0,\dots,t_n) = C_a\sigma(0,t_0,\dots,t_n) = \sigma(t_0,\dots,t_n) $$
+For $i>0$ then
+$$ (C_a\sigma)\tau_i^{n+1}(t_0,\dots,t_n) = C_a\sigma(t_0,\dots,0,\dots,t_n) $$
+if $t_0=1$ as well, then this is just
+$$ C_a\sigma(1,0,\dots,0) = a $$
+Otherwise,
+$$ \eqalign{
+    &= t_0b + (1-t_0)\sigma\parens{\frac{t_1}{1-t_0},\dots,0,\dots,\frac{t_n}{1-t_0}}\cr
+    &= t_0b + (1-t_0)\sigma\tau^n_{i-1}\parens{\frac{t_1}{1-t_0},\dots,\frac{t_n}{1-t_0}}\cr
+    &= C_a^{n-1}(\sigma\tau^n_{i-1})(t_0,\dots,t_n)
+} $$
+So we see that
+$$ (C_a\sigma)\tau_0^{n+1} = \sigma,\qquad (C_a\sigma)\tau_i^{n+1} = C_a^{n-1}(\sigma\tau^n_{i-1}) $$
+So
+$$ \eqalign{
+    \partial_{n+1} C_a^n(\sigma) = \sum_{i=0}^{n+1}(-1)^i(C_a^n\sigma)\tau_i^{n+1} &= \sigma + \sum_{i=1}^{n+1}C_a^{n-1}(\sigma\tau^n_{i-1})\cr
+    &= \sigma - \sum_{i=0}^n(-1)^iC_a^{n-1}(\sigma\tau^n_i)\cr
+    &= \sigma - C_a^{n-1}\parens{\sum_{i=0}^n(-1)^i\sigma\tau^n_i}\cr
+    &= \sigma - C_a^{n-1}\partial_n\sigma
+} $$
+So we see that
+$$ \partial C_a - C_a\partial = {\rm id} $$
+so in other words, $C_a$ is a chain homotopy from ${\rm id}$ to $0$.
+
+\bthrm
+
+    Let $X$ be a convex set in ${\bb R}^k$, then for all $n>0$, $H_n(X)=0$.
+
+\ethrm
+
+\Proof let $\gamma\in C_n(X)$, then $\gamma=\partial C_a\gamma + C_a\partial\gamma$.
+If $\gamma\in Z_n(X)$, i.e. it is a cycle, then $\partial\gamma=0$ and so $\gamma=\partial C_a\gamma$.
+Thus $\gamma\in B_n(X)$, so $Z_n(X)=B_n(X)$, and then $H_n(X)=0$.
+\qed
+
+\blemm
+
+    If $f,g\colon X\longto Y$ are two homotopic continuous maps, then $f_\sharp$ and $g_\sharp$ are chain homotopic.
+
+\elemm
+
+\Proof let us define $i,j\colon X\longto X\times I$ where $i(x)=(x,0)$ and $j(x)=(x,1)$.
+If $H\colon X\times I\longto Y$ is a homotopy from $f$ to $g$, then $f=H\circ i$ and $g=H\circ j$.
+Also $i\sim j$, so if we can show that $i_\sharp\hch j_\sharp$ then we have that
+$$ f_\sharp = H_\sharp\circ i_\sharp \hch H_\sharp\circ j_\sharp = g_\sharp $$
+so it is sufficient to show that $i_\sharp\hch j_\sharp$.
+
+So we need to define a sequence of morphisms $T_n^X\colon C_n(X)\longto C_{n+1}(X\times I)$ such that $\partial T^X+T^X\partial=i^X_\sharp-j^X_\sharp$.
+We will define $T^X_n$ by induction on $n$, such that $T^X$ is natural.
+Natural between what two functors?
+The first functor maps topological spaces $X$ to their chain complexes $\C(X)$ and maps morphisms $X\xvarrightarrow{\,f\,}Y$ to $f_\sharp\colon\C(X)\longto\C(Y)$.
+The second functor maps topological spaces $X$ to the chain complex $C_{n+1}(X\times I)$ and morphisms $X\xvarrightarrow{\,f\,}Y$ to $(f\times{\rm id})_\sharp\colon C_{n+1}(X)\longto C_{n+1}(Y)$.
+
+$T^X$ being natural means that the diagram commutes for all $f\colon X\longto Y$:
+
+\bigskip
+\centerline{\def\diagrowbuf{.5cm}\def\diagcolbuf{.5cm}
+\drawdiagram{
+    $C_n(X)$ & $C_{n+1}(X\times I)$\cr
+    $C_n(Y)$ & $C_{n+1}(Y\times I)$\cr
+}{
+    \diagarrow{from={1,1}, to={1,2}, text=$T^X$, y distance=.25cm}
+    \diagarrow{from={2,1}, to={2,2}, text=$T^Y$, y distance=-.25cm}
+    \diagarrow{from={1,1}, to={2,1}, text=$f_\sharp$, x distance=-.25cm}
+    \diagarrow{from={1,2}, to={2,2}, text=$(f\times{\rm id})_\sharp$, x distance=.75cm}
+}}
+\medskip
+
+So $T_Y\circ f_\sharp=(f\times{\rm id})_\sharp\circ T_X$.
+
+Let $I_n\colon\Delta^n\longto\Delta^n$ be the identity $n$-dimensional simplex.
+If we determine $T^{\Delta^n}(I_n)$, then we have determined $T^X(\sigma)$ for all $\sigma\in C_n(X)$ for all $X$.
+This is because $\sigma=\sigma\circ I_n=\sigma_\sharp(I_n)$, since we can view $\sigma$ as a continuous map $X\longto\Delta^n$ and so $\sigma_\sharp$ is defined.
+Thus
+$$ T^X(\sigma) = T^X\circ\sigma_\sharp(I_n) = (\sigma\times{\rm id})_\sharp\circ T^{\Delta^n}(I_n) $$
+And so determining $T^{\Delta^n}(I_n)$ determines $T^X(\sigma)$.
+So if we define $A=T^{\Delta^n}(I_n)$, then
+$$ T^X(\sigma)=(\sigma\times{\rm id})_\sharp(A) $$
+$A$ is some simplex in $C_{n+1}(\Delta^n\times I)$, and we claim that for any choice of $A$, this defines a natural transformation.
+
+This is because
+$$ T^Y\circ f_\sharp(\sigma) = T^Y(f\circ\sigma) = \bigl((f\circ\sigma)\times{\rm id}\bigr)_\sharp(A) = (f\times{\rm id})_\sharp\circ(\sigma\times{\rm id})_\sharp(A) $$
+And
+$$ (f\times{\rm id})_\sharp\circ T^X(\sigma) = (f\times{\rm id})_\sharp\circ(\sigma\times{\rm id})_\sharp(A) $$
+so these are indeed equal, as required.
+
+Now we claim that
+$$ (\partial T^X + T^X\partial)(\sigma) = (i^X_\sharp - j^X_\sharp)(\sigma) $$
+for all $X,\sigma$.
+It is sufficient to show this for $X=\Delta^n$ and $\sigma=I_n$, since if
+$$ (\partial T^{\Delta^n} + T^{\Delta^n}\partial)(I_n) = (i^{\Delta^n}_\sharp - j^{\Delta^n}_\sharp)(I_n) $$
+if we compose it on the left with $(\sigma\times{\rm id})_\sharp$, the LHS gives
+$$ (\partial(\sigma\times{\rm id})_\sharp T^{\Delta^n} + (\sigma\times{\rm id})_\sharp T^{\Delta^n}\partial)(I_n) = (\partial T^X\sigma_\sharp + T^X\partial\sigma_\sharp)(I_n)
+= \partial T^X\sigma + T^X\partial\sigma $$
+since $T$ is natural, $T^Y\circ f_\sharp=(f\times{\rm id})_\sharp\circ T^X$ and $\partial f_\sharp=f_\sharp\partial$.
+The RHS is
+$$ \bigl((\sigma\times{\rm id})_\sharp\circ i^{\Delta^n}_\sharp - (\sigma\circ{\rm id})\circ j_\sharp^{\Delta^n}\bigr)(I_n) $$
+Now notice that
+
+\centerline{
+\drawdiagram{
+    $\Delta^n$ & $\Delta^n\times I$ & $X\times I$\cr
+    $s$ & $(s,0)$ & $(\sigma(s),0)$\cr
+}{
+    \diagarrow{from={1,1}, to={1,2}, text=$i^{\Delta^n}$, y distance=.25cm}
+    \diagarrow{from={1,2}, to={1,3}, text=$\sigma\times{\rm id}$, y distance=.25cm}
+    \diagarrow{from={2,1}, to={2,2}, left cap=|-}
+    \diagarrow{from={2,2}, to={2,3}, left cap=|-}
+}}
+
+So $(\sigma\times{\rm id})\circ i^{\Delta^n}=i^X\circ\sigma$, and similar for $j$.
+So the RHS is just
+$$ i^X_\sharp\circ\sigma_\sharp(I_n) - j^X_\sharp\circ\sigma_\sharp(I_n) = i^X_\sharp(\sigma) - j^X_\sharp(\sigma) $$
+So we get
+$$ \partial T^X(\sigma) + T^X\partial\sigma = i^X_\sharp(\sigma) - j^X_\sharp(\sigma) $$
+as required.
