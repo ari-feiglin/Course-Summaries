@@ -1,0 +1,144 @@
+\subsection{Formalizing the Theory}
+
+Let us imagine the following scenario: you, a computer science student, are preparing to leave your house for the first time in a while.
+Should you or should you not take your umbrella?
+If you take your umbrella and it doesn't rain then you've inconvenienced yourself, but if you don't and it rains then you'll end up getting wet.
+You look outside, see that clouds are grey, and decide to take your umbrella.
+
+Here you are trying to decide between some possible actions, each with their own cost.
+These actions are based on the state of the world, of which you have some set of observations.
+
+The problem can be formalized as follows, you have
+\benum
+    \item a set of world states: $\set{\omega_i}_{i\in I}$, which are disjoint and exhaustive: $\Omega=\bigcup_{i\in I}\omega_i$ (where $\Omega$ is the entire space).
+    \item a set of observations: $S_n=\set{x_1,\dots,x_n}$.
+    \item a probabilistic model: conditionals $\probof{S_n}[\omega]$ and priors $\probof{\omega}$.
+    \item a set of possible actions $A=\set{\alpha_1,\dots,\alpha_k}$.
+    \item a set of cost functions $\Lambda=\set{\costof{\alpha_k}[\omega_j]}_{j,k}$.
+\eenum
+
+So in our example above, we have two world states: raining and not raining, our observation is that the clouds are grey, we have some prior belief about the probabilities of each world state as well as
+the probability of observing our observation given a world state, our actions are to take and to not take an umbrella, each has an associated cost.
+
+So suppose we've made an observation $x$, we'd like to compute the new probability of a world state $\omega$ given this observation.
+This can be done via Bayes's law:
+$$ \probof{\omega}[x] = \frac{\probof{x}[\omega]}{\probof x}\cdot\probof\omega $$
+$\probof\omega[x]$ is called the {\it posterior}.
+But $\probof x$ is not known, so how do we compute it?
+Using total probability:
+$$ \probof x = \sum_{i\in I}\probof x[\omega_i]\probof{\omega_i} $$
+As we make more and more observations, we can employ Baye's law over and over to refine the posterior.
+
+\subsection{Minimizing Risk}
+
+Our goal in Bayes decision theory is to define a strategy $\alpha(S_n)$ which determines which action $\alpha$ to take so that it minimizes our expected costs, given observations $S_n$.
+
+\bdefn
+
+    Given an action $\alpha$, we define its {\emphcolor conditional risk} given an observation $x$ to be
+    $$ \riskof\alpha[x] = \sum_{i\in I}\costof\alpha[\omega_i]\probof{\omega_i}[x] $$
+    Where the posterior $\probof{\omega_i}[x]$ is computed as above using Bayes's law.
+    If we define the random variable $\costof\alpha$ to be $\costof\alpha[\omega]$ under the state $\omega$, then this is just $\expecof{\costof\alpha}[x]$.
+
+\edefn
+
+\bexam
+
+    Suppose our actions $\alpha_1,\dots,\alpha_k$ are to guess the world state $\omega_1,\dots,\omega_k$.
+    The cost we pay is $1$ if we are wrong and $0$ if we are correct, meaning $\costof{\alpha_k}[\omega_j]=1-\delta_{kj}$ where $\delta_{kj}=1$ when $k=j$ and $0$ otherwise.
+    Then the conditional risk is
+    $$ \riskof{\alpha_k}[x] = \sum_{j=1}^k\costof{\alpha_k}[\omega_j]\probof{\omega_j}[x] = \sum_{j\neq k}\probof{\omega_j}[x] = 1 - \probof{\omega_k}[x] $$
+    So we minimize the conditional risk when we take $\alpha_k$ such that the posterior $\probof{\omega_k}[x]$ is maximal.
+
+\eexam
+
+\bexam
+
+    Suppose we have two world states $\omega_1,\omega_2$ and two actions $\alpha_1,\alpha_2$.
+    Then our costs form a $2\times2$ matrix: $\lambda_{kj}=\costof{\alpha_k}[\omega_j]$.
+    And by definition
+    $$ \riskof{\alpha_i}[x] = \lambda_{i1}\probof{\omega_1}[x] + \lambda_{i2}\probof{\omega_2}[x] $$
+    We choose $\alpha_1$ if $\riskof{\alpha_1}[x]<\riskof{\alpha_2}[x]$, which is equivalent to
+    $$ (\lambda_{12}-\lambda_{22})\probof{\omega_2}[x] < (\lambda_{21} - \lambda_{11})\probof{\omega_1}[x] $$
+    which is equivalent to
+    $$ \iff \frac{\probof{\omega_1}[x]}{\probof{\omega_2}[x]} > \frac{\lambda_{12}-\lambda_{22}}{\lambda_{21}-\lambda_{11}} \iff
+    \frac{\probof{x}[\omega_1]}{\probof{x}[\omega_2]} > \frac{\probof{\omega_2}}{\probof{\omega_1}}\cdot\frac{\lambda_{12}-\lambda_{22}}{\lambda_{21}-\lambda_{11}} $$
+    The left-hand side is called the {\emphcolor likelihood ratio} and the right-hand side is called the {\emphcolor decision boundary}.
+
+    If we have many observations $x_1,\dots,x_n$ then this becomes
+    $$ \eqalign{
+        \hbox{Likelihood ratio} & \hphantom{{}>{}}\hbox{Decision boundary}\cr
+        \frac{\probof{x_1,\dots,x_n}[\omega_1]}{\probof{x_1,\dots,x_n}[\omega_2]} &> \frac{\probof{\omega_2}}{\probof{\omega_1}}\cdot\frac{\lambda_{22}-\lambda_{12}}{\lambda_{11}-\lambda_{21}} = \Theta
+    } $$
+    If the observations $x_1,\dots,x_n$ are independent then this becomes
+    $$ \frac{\prod_i\probof{x_i}[\omega_1]}{\prod_i\probof{x_i}[\omega_2]} > \Theta $$
+    taking the log of both sides gives
+    $$ \sum_i\log\frac{\probof{x_i}[\omega_1]}{\probof{x_i}[\omega_2]} > \log\Theta = \Theta' $$
+    the left-hand side is called the {\emphcolor log-likelihood ratio}.
+
+\eexam
+
+\subsection{Parameter Estimation}
+
+Suppose we know the distribution of some random variable $X$ up to some parameter $\theta$, i.e. we know the function $\probof{X}[\theta]$.
+For example, $X$ is the number of heads in $n$ coin tosses where the coin has a bias of $\theta$, then $X\mid\theta\sim\Binof{n,\theta}$.
+
+We use Bayes decision theory to estimate $\theta$.
+Suppose we have a prior $\probof\theta$, we use this to estimate $\theta$.
+Our actions will be choosing some prediction of $\theta$, $\hat\theta$.
+Define a cost function $\cost(\hat\theta,\theta)$.
+Then given a sequence of observations $S_n=\set{x_1,\dots,x_n}$, we want to minimize the expected cost
+$$ \expecof{\costof{\varwidehat\theta}}[S_n] = \int \costof{\hat\theta,\theta}\probof\theta[S_n]\,d\theta $$
+We then define the {\it Bayes estimator} to be the prediction $\theta^*$ which minimizes this:
+$$ \theta^* = \argmin\nolimits_{\hat\theta}\expecof{\costof{\hat\theta}}[S_n] $$
+To find $\theta^*$ we differentiate $\expecof{\costof{\hat\theta}}[S_n]$ and compare it with zero.
+Hand-waving away all the technical details because this is computer science, we can swap the order of differentiation and integration and so
+$$ \frac d{d\hat\theta}\expecof{\costof{\hat\theta}}[S_n] = \frac d{d\hat\theta}\int\costof{\hat\theta,\theta}\probof{\theta}[S_n]\,d\theta =
+\int\frac d{d\hat\theta}\costof{\hat\theta,\theta}\probof\theta[S_n]\,d\theta $$
+
+\bexam[title=Square Loss]
+
+    Suppose we use a {\emphcolor square loss} cost function: $\costof{\hat\theta,\theta}=(\theta-\hat\theta)^2$.
+    Then the Bayes estimator is
+    $$ \expecof{\costof{\hat\theta}} = \int\costof{\hat\theta,\theta}\probof\theta[S_n]\,d\theta = \int(\theta-\hat\theta)^2\probof\theta[S_n]\,d\theta $$
+    Differentiating gives that we want
+    $$ \int\theta\probof\theta[S_n]\,d\theta = \hat\theta\int\probof\theta[S_n]\,d\theta = \hat\theta $$
+    (since $\int\probof\theta[S_n]=1$.)
+    So we get that our estimator is
+    $$ \hat\theta_{\it SE} = \int\theta\probof\theta[S_n]\,d\theta = \expecof{\theta}[S_n] $$
+
+\eexam
+
+\bexam[title=Maximum Aposteriori]
+
+    Suppose we use a {\emphcolor zero-one} cost function: $\costof{\hat\theta,\theta}=1-\delta_{\hat\theta\theta}$.
+    We have already showed that to minimize the cost, we must maximize $\argmax\probof\theta[S_n]$.
+    By Bayes, this is just $\argmax\probof{S_n}[\theta]\frac{\probof\theta}{\probof{S_n}}=\argmax\probof{S_n}[\theta]\probof\theta$.
+    Since the observations in $S_n$ are independent, we see that this is then just equal to $\argmax\prod_i\probof{x_i}[\theta]\probof\theta$.
+    Finally we take the log, which is monotonic, to get that the estimator
+    $$ \hat\theta_{\it MAP} = \argmax\sum_i\log\probof{x_i}[\theta] + \log\probof\theta $$
+    as $n$ grows, the last term becomes negligible and this just becomes the maximum log likelihood function.
+
+\eexam
+
+\bexerc
+
+    Compute the MAP estimator for $X\sim\Expof\theta$, i.e. $f_X(x)=\theta\exp(-\theta x)$, with the prior $\probof\theta=\exp(-\theta)$.
+    We want to compute
+    $$ \sum_i\log\probof{x_i}[\theta] + \log\probof\theta = \sum_i\log\bigl(\theta\exp(-\theta x_i)\bigr) + \log\exp(-\theta) = n\log\theta - \theta\sum_ix_i - \theta $$
+    Differentiating with respect to $\theta$ gives
+    $$ \frac n\theta - \sum_ix_i - 1 = 0 \implies \hat\theta_{\it MAP} = \frac n{\sum_ix_i + 1} $$
+    Here the prior behaves similarly to a sample, it can be viewed as a ``pseudo-sample''.
+
+\eexerc
+
+\bexam[title=Maximum Likelihood]
+
+    We know that
+    $$ \hat\theta_{\it MAP} = \argmax\sum_i\log\probof{x_i}[\theta] + \log\probof\theta $$
+    A common approach is to approximate this by dropping the prior, giving
+    $$ \hat\theta_{\it ML} = \argmax\sum_i\log\probof{x_i}[\theta] $$
+    Asymptotically this is efficient.
+
+\eexam
+
