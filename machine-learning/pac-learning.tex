@@ -1,0 +1,75 @@
+We now define {\it Probably Approximately Correct (PAC)} Learning.
+
+\bdefn
+
+    Let $\c X$ be the {\emphcolor input space}, the set of all possible examples or instances.
+    The set of all {\emphcolor labels} or {\emphcolor target values} is $\c Y$.
+    For now, we restrict our view to be binary: $\c Y=\set{0,1}$.
+    A {\emphcolor concept} is a map $c\colon\c X\longto\c Y$, or equivalently a subset of $\c X$ (the set $\set{x\in\c X}[c(x)=1]$).
+    A {\emphcolor concept class} is a class of concepts which we would like to learn (approximate) and is denoted $\c C$.
+
+\edefn
+
+The idea of PAC learning is as follows: the learner considers a fixed set of concepts $\c H$ called the {\it hypothesis set}, which may or may not coincide with $\c C$.
+The learner then receives a sequence of samples $S=(x_1,\dots,x_n)$ which are independent and distribute according to some distribution $\c D$.
+The learner also receives labels $(c(x_1),\dots,c(x_n))$ according to some concept $c\in\c C$ which it is tasked with learning.
+Using this information the learner attempts to choose a hypothesis $h_S\in\c H$ which minimizes the {\it generalization error} (or {\it risk}):
+
+\bdefn
+
+    Given a hypothesis $h\in\c H$, target concept $c\in\c C$, and an underlying distribution $\c D$, the {\emphcolor generalized error} (or {\emphcolor risk}) is:
+    $$ R(h) = \probof{h(x)\neq c(x)}[x\sim\c D] = \expecof{\b1\set{h(x)\neq c(x)}}[x\sim\c D] $$
+    i.e. it is the probability that $h(x)$ differs from $c(x)$ when $x$ is chosen randomly with a distribution of $\c D$.
+
+\edefn
+
+But the generalized error cannot be known to the learner, as it knows not the target concept nor the underlying distribution.
+So instead the learner minimizes the {\it empirical error} (or {\it risk}):
+
+\bdefn
+
+    Given a hypothesis $h\in\c H$, a target concept $c\in\c C$, and a sample $S=(x_1,\dots,x_n)$, define the {\emphcolor empirical error} (or {\emphcolor risk}) to be:
+    $$ \hat R_S(h) = \frac1n\sum_{i=1}^n\b1\set{h(x_i)\neq c(x_i)} $$
+
+\edefn
+
+Notice that
+$$ \eqalign{
+    \expecof{\hat R_S(h)}[S\sim\c D^n] &= \frac1n\sum_{i=1}^n\expecof{\b1\set{h(x_i)\neq c(x_i)}}[S\sim\c D^n]\cr
+    &= \frac1n\sum_{i=1}^n\expecof{\b1\set{h(x)\neq c(x)}}[x\sim\c D] = \frac1n\sum_{i=1}^nR(h) =
+    R(h)
+} $$
+
+We now formally define what PAC learning is.
+Let $n$ be a number such that the size of every $x\in\c X$ can be represented in $O(n)$ space, for $c\in\c C$ let $\size c$ be the maximal computational cost of $c$.
+We focus on algorithms $\c A$ which take as input a sample $S$ and return a hypothesis $h_S$.
+
+\bdefn
+
+    A concept class $\c C$ is {\emphcolor PAC-learnable} if there exists an algorithm $\c A$ and a polynomial function $\poly(\bullet,\bullet,\bullet,\bullet)$ such that for all $\epsilon,\delta>0$,
+    distribution $\c D$ on $\c X$ and target concept $c\in\c C$, for every sample size $n\geq\poly(1/\epsilon,1/\delta,n,\size c)$,
+    $$ \probof{R(h_S)\leq\epsilon}[S\sim\c D^n] \geq 1 - \delta $$
+    If $\c A$ runs in $\poly(1/\epsilon,1/\delta,n,\size c)$ time then $\c C$ is {\emphcolor efficiently PAC-learnable}.
+    An algorithm $\c A$, if one exists, is called a {\emphcolor PAC-learning algorithm} for $\c C$.
+
+\edefn
+
+The intuition is as follows: a concept class $\c C$ is PAC-learnable if there exists an algorithm $\c A$ where given a sample size at least polynomial in $1/\epsilon$ and $1/\delta$, it returns a hypothesis
+with an error bound by $\epsilon$ at least $1-\delta$ of the time.
+Note that if the running time is polynomial in $1/\epsilon$ and $1/\delta$, then assuming the total input is read by the algorithm, the input must too be polynomial in $1/\epsilon$ and $1/\delta$.
+
+\bexam
+
+    Let $\c X={\bb R}^2$ be the points of the plane, and $\c C$ is the set of all axis-aligned rectangles in the plane (i.e. the edges are parallel to the axes), so each $c\in\c C$ is the set of all points
+    inside an axis-aligned rectangle.
+    So the learning problem is learning which points lie within a particular target axis-aligned rectangle.
+    We show that this is PAC-learnable.
+
+    Our algorithm will simply return the tightest rectangle ${\sf R}_S$ which encloses all the sampled points labeled with $1$.
+    This by definition returns no false positives (i.e. the returned hypothesis will not label as $1$ anything not labeled by $1$ by the target concept).
+
+    Let ${\sf R}\in\c C$ be the target concept, let $\epsilon>0$, and denote $\probof{\sf R}$ the probability mass of the region defined by $\sf R$, that is the probability a point chosen with distribution
+    $\c D$ falls in ${\sf R}$.
+    We can assume $\probof{\sf R}>\epsilon$ as otherwise since $\probof{{\sf R}_S}\leq\probof{\sf R}$, the generalized error of ${\sf R}_S$ is less than $\epsilon$.
+
+\eexam
