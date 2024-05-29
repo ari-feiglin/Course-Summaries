@@ -1,3 +1,5 @@
+\subsection{Definitions}
+
 We now define {\it Probably Approximately Correct (PAC)} Learning.
 
 \bdefn
@@ -58,18 +60,60 @@ The intuition is as follows: a concept class $\c C$ is PAC-learnable if there ex
 with an error bound by $\epsilon$ at least $1-\delta$ of the time.
 Note that if the running time is polynomial in $1/\epsilon$ and $1/\delta$, then assuming the total input is read by the algorithm, the input must too be polynomial in $1/\epsilon$ and $1/\delta$.
 
-\bexam
+\subsection{The Finite Case}
 
-    Let $\c X={\bb R}^2$ be the points of the plane, and $\c C$ is the set of all axis-aligned rectangles in the plane (i.e. the edges are parallel to the axes), so each $c\in\c C$ is the set of all points
-    inside an axis-aligned rectangle.
-    So the learning problem is learning which points lie within a particular target axis-aligned rectangle.
-    We show that this is PAC-learnable.
+Given a concept $c\in\c C$ and a sample $S=(x_1,\dots,x_n)$, call an hypothesis $h\in\c H$ {\it consistent} if $h(x_i)=c(x_i)$ for all $1\leq i\leq n$.
+Equivalently, $\hat R_S(h)=0$.
+We will assume that our hypotheses are consistent, and so we can always assume that our target concept is in $\c H$.
 
-    Our algorithm will simply return the tightest rectangle ${\sf R}_S$ which encloses all the sampled points labeled with $1$.
-    This by definition returns no false positives (i.e. the returned hypothesis will not label as $1$ anything not labeled by $1$ by the target concept).
+\bthrm
 
-    Let ${\sf R}\in\c C$ be the target concept, let $\epsilon>0$, and denote $\probof{\sf R}$ the probability mass of the region defined by $\sf R$, that is the probability a point chosen with distribution
-    $\c D$ falls in ${\sf R}$.
-    We can assume $\probof{\sf R}>\epsilon$ as otherwise since $\probof{{\sf R}_S}\leq\probof{\sf R}$, the generalized error of ${\sf R}_S$ is less than $\epsilon$.
+    Let $\c H$ be a finite set of hypotheses, and $\c A$ an algorithm such that for any target concept $c\in\c H$, $\c A$ returns a consistent hypothesis $h_S$ for any input sample $S$ (where $S\sim\c D^n$).
+    Then for every every $\epsilon,\delta>0$, the inequality $\probof{R(h_S)\leq\epsilon}[S\sim\c D^n]\geq1-\delta$ holds if
+    $$ n\geq\frac1\epsilon\cdot\log\frac{\abs{\c H}}\delta $$
 
-\eexam
+\ethrm
+
+\Proof let $\epsilon>0$, and define $\c H_\epsilon=\set{h\in\c H}[R(h)>\epsilon]$.
+The probability that $h\in\c H_\epsilon$ is consistent is
+\multlines{
+    \probof{\hat R_S(h)=0} = \probof{h(x_1)=c(x_1),\dots,h(x_n)=c(x_n)}[x_i\sim\c D]\cr
+    &= \prod_{i=1}^n\probof{h(x_i)=c(x_i)}[x_i\sim\c D] = \probof{h(x)=c(x)}[x\sim\c D]^n = \bigl(1-\probof{h(x)\neq c(x)}[x\sim\c D]\bigr)^n
+}
+this is since the samples are independent and distributively equal.
+Now recall that by definition, we have that $\probof{h(x)\neq c(x)}[x\sim\c D]=R(h)$ which is greater than $\epsilon$ by definition, so
+$$ \probof{\hat R_S(h)=0} \leq (1-\epsilon)^n $$
+Thus the probability that a ``bad'' hypothesis tricks us by being consistent is bound by $(1-\epsilon)^n$.
+Now, we want to show that the probability that there exists a bad consistent hypothesis is bound by $\delta$.
+This means that with probability at least $1-\delta$, there exist no bad consistent hypotheses and so $h_S$ is necessarily a ``good'' hypothesis with $R(h_S)\leq\epsilon$.
+The probability of there existing a consistent bad hypothesis is
+$$ \probof{\exists h\in\c H_\epsilon.\;\hat R_S(h)=0} \leq \sum_{h\in\c H_\epsilon}\probof{\hat R_S(h)=0} \leq \sum_{h\in\c H_\epsilon}(1-\epsilon)^n \leq \abs{\c H}(1-\epsilon)^n $$
+We also know that $(1-\epsilon)^n\leq e^{-n\epsilon}$, so this probability is bound by $\abs{\c H}e^{-n\epsilon}$.
+If $n\geq\frac1\epsilon\cdot\log\frac{\abs{\c H}}\delta$ then this is bound by $\delta$, as required.
+\qed
+
+Since $\frac1\epsilon\cdot\log\frac{\abs{\c H}}\delta$ is bound by some polynomial in $\frac1\epsilon,\frac1\delta$, this means that when $\c H$ is finite a consistent algorithm $\c A$ is PAC-learning.
+But what if our algorithm isn't consistent, i.e. the target concept is not in $\c H$?
+
+\bthrm
+
+    For every $\epsilon,\delta>0$ if $n>\frac1{\epsilon^2}\log\frac{2\abs{\c H}}\delta$ then
+    $$ \probof{R(h_S) - \min_{h\in\c H}R(h)\leq\epsilon} \geq 1 - \delta $$
+
+\ethrm
+
+\Proof similar to before, but using Hoeffding's inequality $\probof{S-\expecof S\geq\epsilon}\leq\exp(-2\epsilon^2/n)$.\qed
+
+This is a generalization of the previous theorem, since if $c$ is taken from $\c H$ then $\min_{h\in\c H}R(h)=0$.
+Call a concept class $\c C$ which satisfies this probability bound {\it Agonistically PAC-learnable}:
+
+\bdefn
+
+    A concept class $\c C$ is {\emphcolor agonistically PAC-learnable} if there exists an {\emphcolor agnostic PAC-learner} $\c A$ such that for every $\epsilon,\delta>0$ distribution $\c D$ and 
+    $n\geq{\it poly}(1/\epsilon,1/\delta,n,\size c)$ for some ${\it poly}$,
+    $$ \probof{R(h_S) - \min_{h\in\c H}R(h)\leq\epsilon} \geq 1 - \delta $$
+
+\edefn
+
+So assuming the hypothesis class is finite, every concept class is PAC-learnable in the agnostic sense.
+
