@@ -1,0 +1,146 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+\parindent=0pt
+\parskip=3pt plus 2pt minus 2pt
+
+\input ../preamble
+
+\footline={}
+
+\setcounter{section}{2}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+
+{\bppbox{rgb{.5 1 .5}}{rgb{0 .4 0}}{rgb{.1 .4 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Machine Learning}
+    \smallskip
+    \centerline{\setfont{it}Homework \the\counter{section}}
+    \centerline{\setfont{it}Ari Feiglin $\vcenter{\hbox{\csname (m<3y)\endcsname}}$}
+
+\eppbox}
+
+\bexerc
+
+    \benum
+        \item Provide a sufficient condition on the prior $\probof\theta$ so that the MAP and MLE estimator coincide.
+        \item Consider a dataset of $n$ IID samples $x_1,\dots,x_n\sim{\cal N}(\mu,\sigma^2)$.
+        \benum
+            \item Find the MLE estimates of the parameters $\mu$ and $\sigma^2$.
+            \item Assume that a prior distribution of $\mu$ is given by ${\cal N}(\mu_0,\sigma_0^2)$.
+            Find the MAP estimator of the parameter $\mu$.
+            \item What is the relation between the MLE and MAP estimators as $n\to\infty$ or $\sigma_0^2\to\infty$.
+        \eenum
+        \item Find the MLE estimator of $\lambda$ of a dataset $x_1,\dots,x_n\sim{\rm Poi}(\lambda)$.
+    \eenum
+
+\eexerc
+
+\benum
+    \item Since
+    $$ \hat\theta_{\it MAP} = \argmax_\theta\parens{\sum_i\log\probof{x_i}[\theta] + \log\probof\theta},\qquad \hat\theta_{\it MLE} = \argmax_\theta\sum_i\log\probof{x_i}[\theta] $$
+    It is sufficient that $\probof\theta$ is constant over all possible $\theta$s, i.e. $\theta$ distributes uniformly.
+    Then $\log\probof\theta$ is constant and has no effect on the argmax.
+
+    \item
+    \benum
+        \item We know that
+        $$ \hat{\mu,\sigma^2}_{\it ML} = \argmax_{\mu,\sigma}\sum_i\log\frac1{\sqrt{2\pi}\sigma}\exp\parens{-\frac{(x_i-\mu)^2}{2\sigma^2}} = \argmax\sum_i\parens{-\frac{(x_i-\mu)^2}{2\sigma^2}-
+        \log(\sqrt{2\pi}\sigma)} $$
+        so let us take the gradient wrt $(\mu,\sigma)$,
+        $$ \xvarrightarrow{\;\nabla\;} \sum_i\pmatrix{\ds\frac{x_i-\mu}{\sigma^2}\cr\ds \frac{(x_i-\mu)^2}{\sigma^3}-\frac1\sigma} $$
+        Comparing with zero gives
+        $$ \frac1{\hat\sigma^2}\sum_i(x_i-\hat\mu) = 0,\qquad \sum_i\frac{(x_i-\hat\mu)^2}{\hat\sigma^2} - n = 0 $$
+        The first equation can be simplified to $\sum_i(x_i-\hat\mu)=0$, which gives $\hat\mu=\frac1n\sum_ix_i$.
+        The second equation gives
+        $$ \hat\sigma^2 = \frac1n\sum_i(x_i-\hat\mu)^2 $$
+        \item The MAP estimator is the argmax of
+        $$ \sum_i\parens{-\frac{(x_i-\mu)^2}{2\sigma^2}-\log(\sqrt{2\pi}\sigma)} -\frac{(\mu-\mu_0)^2}{2\sigma_0^2}-\log(\sqrt{2\pi}\sigma_0) $$
+        Differentitiating wrt $\mu$ gives
+        $$ \xvarrightarrow{\;\frac\partial{\partial\mu}\;} \sum_i\frac{x_i-\mu}{\sigma^2} - \frac{\mu-\mu_0}{\sigma_0^2} $$
+        Comparing to zero gives
+        $$ \sigma_0^2\sum_i x_i - \sigma_0^2n\hat\mu - \sigma^2\hat\mu+\sigma^2\mu_0 = 0 \iff (n\sigma_0^2+\sigma^2)\mu = \sigma^2\mu_0 + \sigma_0^2\sum_i x_i $$
+        And so
+        $$ \hat\mu = \frac{\sigma^2\mu_0 + \sigma_0^2\sum\nolimits_ix_i}{n\sigma_0^2+\sigma^2} $$
+        \item When $n\to\infty$ or $\sigma_0^2\to\infty$, $n\sigma_0^2+\sigma^2\sim n\sigma_0^2$ and so the MAP estimator acts like
+        $$ \frac{\sigma^2\mu_0 + \sigma_0^2\sum_ix_i}{n\sigma_0^2} = \frac{\sigma^2\mu_0}{n\sigma_0^2} + \frac1n\sum_ix_i \longto \frac1n\sum_ix_i $$
+        which is equal to the MLE estimator.
+    \eenum
+
+    \item The MLE estimator is the argmax of
+    $$ \sum_i\log\parens{\frac{\lambda^{x_i}e^{-\lambda}}{x_i!}} = \sum_i\parens{x_i\log\lambda - \lambda - \log(x_i!)} $$
+    Differentiating wrt $\lambda$ gives
+    $$ \xvarrightarrow{\;\frac\partial{\partial\lambda}\;} \sum_i \frac{x_i}\lambda - 1 $$
+    Comparing with zero gives
+    $$ \hat\lambda = \frac1n\sum_ix_i $$
+\eenum
+
+\bexerc
+
+    Let $\c H$ be a hypothesis class which is PAC learnable whose sample complexity is given by $N(\epsilon,\delta)$.
+    Show that $N$ is decreasing in both of its parameters.
+
+\eexerc
+
+This is obviously false.
+Our only restriction on $N$ is that it exists and for every $n\geq N$, $\probof{R(h_S)<\epsilon}[S\sim\c D^n]>1-\delta$.
+So we can choose arbitrary $\epsilon,\delta$ and increase $N(\epsilon,\delta)$ to be arbitrarily large and it still satisfies the condition and is not decreasing.
+But perhaps you want that $\probof{R(h_S)<\epsilon}[S\sim\c D^n]>1-\delta\iff n\geq N$?
+In such a case we can prove it:
+
+Let $0<\epsilon_1<\epsilon_2<1$ and $\delta\in(0,1)$, then if we set $n=N(\epsilon_1,\delta)$ we have that
+$$ \probof{R(h_S)<\epsilon_2}[S\sim\c D^n] \geq \probof{R(h_S)<\epsilon_1}[S\sim\c D^n] > 1 - \delta $$
+So $N(\epsilon_1,\delta)=n\geq N(\epsilon_2,\delta)$
+
+And let $0<\delta_1<\delta_2<1$ and $\epsilon\in(0,1)$, then if we set $n=N(\epsilon_1,\delta_1)$ we have that
+$$ \probof{R(h_S)<\epsilon}[S\sim\c D^n] > 1 - \delta_1 > 1 - \delta_2 $$
+So $N(\epsilon,\delta_1)=n\geq N(\epsilon,\delta_2)$ as required.
+
+\bexerc
+
+    Given a real number $r\geq0$, define the hypothesis $h_r\colon{\bb R}^d\longto\partial I$ by
+    $$ h_r(x) = \cases{1 & $\norm x<r$\cr 0 & else} $$
+    Consider the hypothesis class $\c H=\set{h_r}_{r\geq0}$.
+    Prove that it is PAC learnable in the realizable case.
+    How does the sample complexity depend on $d$?
+
+\eexerc
+
+Let us define the algorithm $\c A$ to get an input sample $S=(\vec x_1,\dots,\vec x_n)$ and to simply return $h_r$ where $r$ is the largest norm of the $\vec x_i$s whose label is $1$.
+This is indeed a PAC-learning algorithm for the problem, as we will prove.
+If we let $r=\max\norm{\vec x_i}$ and $h_R$ be the objective concept, then $R(h_S)$ is simply the probabilistic weight of the ring $\set{\vec x}[r<\norm{\vec x}\leq R]$.
+This would be when the probabilistic weight of the ring is at least $\epsilon$ (by uniformity), and so that we draw all of our samples from the area of $1-\epsilon$.
+This has a probability of occurring of $(1-\epsilon)^n$, so we want
+$$ (1-\epsilon)^n < \delta $$
+Since $1-\epsilon<e^{-\epsilon}$, we can require
+$$ e^{-\epsilon n} < \delta \iff n > \frac1\epsilon\log\frac1\delta $$
+And so we can define the sample complexity to be $N(\epsilon,\delta)=\frac1\epsilon\log\frac1\delta$, and this satisfies the requirement.
+Notice that the sample complexity is independent of $d$.
+
+\bexerc
+
+    Call a hypothesis class $\c H$ {\emphcolor PAC-learnable in expectation} if there exists an algorithm $\c A$ and a function $N(a)\colon(0,1)\longto{\bb N}$ such that for all $a\in(0,1)$ and distribution
+    $\c D$, for every $n\geq N(a)$:
+    $$ \expecof{R(h_S)}[S\sim\c D^n] \leq a $$
+    Show that $\c H$ is PAC-learnable iff it is PAC-learnable in expectation.
+
+\eexerc
+
+Suppose $\c H$ is PAC-learnable by $\c A$, and let $N(\epsilon,\delta)$ be its sample complexity.
+Then define $\tilde N(a)=N(a/2,a/2)$, and so for every $n\geq \tilde N(a)$:
+$$ \expecof{R(h_S)} = \expecof{R(h_S)}[R(h_S)\leq a/2]\probof{R(h_S)\leq a/2} + \expecof{R(h_S)}[R(h_S)\geq a/2]\probof{R(h_S)\geq a/2} $$
+We know that $\probof{R(h_S)\geq a}\leq a/2$ and since $R(h_S)\leq1$ we have
+$$ \expecof{R(h_S)} \leq \frac a2\cdot1 + 1\cdot\frac a2 = a $$
+as required.
+
+Now suppose $\c H$ is PAC-learnable in expectation by $\c A$.
+Then let $\tilde N(\epsilon,\delta)=N(\epsilon\delta)$, then for every $n\geq\tilde N(\epsilon,\delta)$ we have that $\expecof{R(h_S)}\leq\epsilon\delta$ and thus by Markov:
+$$ \probof{R(h_S)\geq\epsilon} \leq \frac{\expecof{R(h_S)}}\epsilon \leq \frac{\epsilon\delta}\epsilon = \delta $$
+as required.
+So $\c H$ is PAC-learnable.
+
+\bye
+
