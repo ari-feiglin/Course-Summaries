@@ -1,0 +1,133 @@
+\subsection{Optimization Complexity Classes}
+
+\bdefn
+
+    An {\emphcolor optimization problem} is a tuple $\c O=(I,{\sf Sol},m,{\sf type})$, where
+    \benum
+        \item $I$ is a set called the {\emphcolor instance set}, whose elements are instances of the problem.
+        \item ${\sf Sol}$ is a function such that for every instance $i\in I$, ${\sf Sol}(i)$ is the set of all feasible solutions to the instance $i$.
+        \item $m$ is a function such that for every instance $i\in I$ and solution $s\in{\sf Sol}(i)$, $m(i,s)$ is the {\emphcolor measure} of the solution.
+        \item ${\rm type}\in\set{\max,\min}$ which tells us if we want to maximize or minimize the measure of a solution.
+    \eenum
+    Then the {\emphcolor optimal measure} of an instance $i\in I$ is
+    $$ \optof i = \mathop{\rm type}_{s\in{\sf Sol}(i)}m(i,s) $$
+
+\edefn
+
+For example, for the problem of finding the shortest path between two vertices $s$ and $t$ can be described as such:
+\blist
+    \item $I=\set{\bigl(G=(V,E),s,t\bigr)}[s,t\in V]$
+    \item ${\sf Sol}(G,s,t) = \set{P}[\hbox{$P$ is a path from $s$ to $t$ in $G$}]$
+    \item $m\bigl((G,s,t),P)=\abs P$
+    \item ${\rm type}=\min$
+\elist
+
+Given an optimization problem $\c O$, its corresponding decision problem $\c D_{\c O}$ is the problem of determining if given a $k\in{\bb R}$ and instance $i\in I$, whether there exists a solution
+$s\in{\sf Sol}(i)$ such that $m(i,s)\geq k$ for ${\rm type}=\max$ and $m(i,s)\leq k$ for ${\rm type}=\min$.
+
+\bdefn
+
+    The complexity class {\emphcolor NPO} ({\bf NP} optimization) is the class of all optimization problems $\c O$ such that its corresponding decision problem $\c D_{\c O}$ is in ${\bf NP}$.
+
+\edefn
+
+Call an optimization problem $\c O$ {\bf NPO}-complete if $\c D_{\c O}$ is {\bf NP}-complete.
+
+\bdefn
+
+    An {\bf NPO} problem $\c O$ is in {\emphcolor PO} (polynomial optimization) if there is a deterministic polynomial-time algorithm to compute $\optof i$.
+
+\edefn
+
+Since NPO-complete problems are NPO-complete, we currently (and maybe always) do not have an efficient method of solving them.
+So the next best thing is approximating solutions.
+
+\subsection{Approximation Algorithms}
+
+\bprob
+
+    Given a graph $G=(V,E)$, a set $S\subseteq V$ is a {\emphcolor vertex cover} if for every edge $\set{u,v}$, either $u\in S$ or $v\in S$.
+    The optimization problem of vertex covers is to find the size of the minimum vertex cover of an input graph.
+
+\eprob
+
+As you should know, the decision problem is NP-complete.
+So the optimization problem is NPO-complete.
+
+We can come up with a naive algoritjm to solve this:
+
+\algorithm
+    \Function{Vertex-Cover}{$G=(V,E)$}
+        \State $A\gets\varnothing$
+        \While{there exists an edge $\set{u,v}$ st $u,v\notin A$}
+            \State $A\gets A\cup\set{u,v}$
+        \EndWhile
+        \State \Return $A$
+    \EndFunc
+\ealgorithm
+
+\bthrm
+
+    The above algorithm is a $2$-approximation, that is $A$ is a vertex cover and $\abs A\leq2\cdot\abs{\rm Opt}$.
+
+\ethrm
+
+\Proof let $M$ be the set of edges chosen in the algorithm.
+Then ${\rm Opt}$ must include a vertex from each edge in $M$ as it is a vertex cover, so $\abs M\leq\abs{\rm Opt}$.
+Furthermore, $\abs A=2\abs M$, so
+$$ \abs A = 2\abs M \leq 2\abs{\rm Opt} $$
+as required.
+\qed
+
+This analysis is tight: there exists a graph such that $\abs A=2\abs{\rm Opt}$.
+
+\bdefn
+
+    {\emphcolor APX} (approximation) is the family of all approximation problems $\c O\in{\bf NPO}$ such that for some constant $c\geq0$, there is a deterministic polynomial-time algorithm such that for
+    every $i\in I$, it finds a solution $s\in{\sf Sol}$ such that
+    \benum
+        \item If ${\rm type}=\min$ then $c\geq1$ and $m(i,s)\leq c\optof i$.
+        \item If ${\rm type}=\max$ then $c\leq1$ and $m(i,s)\geq c\optof i$.
+    \eenum
+
+\edefn
+
+So Vertex-Cover is in {\bf APX}.
+
+\bprob
+
+    Given a graph $G=(V,E)$ the problem of {\emphcolor max cut} is the problem of finding a cut $S\subseteq V$ that maximizes the number of edges in the cut
+    $$ E(S) = E(S,V\setminus S) = \set{\set{u,v}\in E}[u\in S,v\notin S] $$
+
+\eprob
+
+The decision problem of max cut is NP-complete, so max cut is NPO-complete.
+We describe an algorithm to approximate max cut:
+
+\algorithm
+    \Function{Max-Cut}{$G=(V,E)$}
+        \State $S\gets\varnothing$
+        \While{\sf true}
+            \If{there exists a $v\notin S$ such that $\abs{E(S\cup\set v)}>\abs{E(S)}$}
+                \State $S\gets S\cup\set v$
+            \ElseIf{there exists a $v\in S$ such that $\abs{E(S\setminus\set v)}>\abs{E(S)}$}
+                \State $S\gets S\setminus\set v$
+            \Else
+                \State \Return $S$
+            \EndIf
+        \EndWhile
+    \EndFunc
+\ealgorithm
+
+There are at most $\binom n2$ edges in the graph, and thus the maximum possible size of $E(S)$ is $\binom n2$.
+Notice that at each iteration, $\abs{E(S)}$ increases by at least $1$, and so there can be at most $\binom n2$ iterations, so this algorithm is polynomial-time.
+
+Notice that if the algorithm returns $S$, then for $v\in S$, $\abs{E(\set v,V\setminus S)}\geq\frac{{\rm deg}v}2$ since otherwise more than half of $v$'s neighbors are in $S$ and then the algorithm would've
+placed $v$ in $V\setminus S$.
+Similarly for $v\notin S$, $\abs{E(\set v,S)}\geq\frac{{\rm deg}v}2$.
+Thus
+$$ \abs{E(S,V\setminus S)} \geq \frac12\sum_{v\in V}\frac{{\rm deg}v}2 = \frac{\abs E}2 \geq \frac{\rm opt}2 $$
+This is because when we sum over $v\in V$, we count how many edges are in the cut, but since we count both $v\in S$ and $v\notin S$, we double count.
+So we must divide by $2$.
+
+Thus this algorithm is a $\frac12$-approximation, meaning max cut is in ${\sf APX}$.
