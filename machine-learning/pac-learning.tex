@@ -117,3 +117,52 @@ Call a concept class $\c C$ which satisfies this probability bound {\it Agonisti
 
 So assuming the hypothesis class is finite, every concept class is PAC-learnable in the agnostic sense.
 
+\subsection{The Infinite Case}
+
+\noindent Suppose now that $\c H$ is infinite, and we don't necessarily have that the target concept is in $\c H$.
+Define
+$$ h_S \coloneqq \argmin_{h\in\c H}\hat R_S(h),\qquad h_{\c D} \coloneqq \argmin_{h\in\c H}R_{\c D}(h) $$
+Then we have
+
+\blemm
+
+    $$ R_{\c D}(h_S) - R_{\c D}(h_{\c D}) \leq 2\sup_{h\in\c H}\abs{\hat R_S(h) - R_{\c D}(h)} $$
+
+\elemm
+
+\Proof let $\epsilon=\sup_{h\in\c H}\abs{\hat R_S(h)-R_{\c D}(h)}$, then
+
+\medskip
+\centerline{\vbox{\halign{\hfil$#$&$#$\hfil&\quad#\hfil\cr
+    R_{\c D}(h_S) &\leq \hat R_S(h_S) + \epsilon & since $h_S\in\c H$\cr
+    &\leq \hat R_S(h_{\c D}) + \epsilon & since $h_S$ minimizes $\hat R_S$\cr
+    &\leq R_{\c D}(h_{\c D}) + 2\epsilon & since $h_{\c D}\in\c H$\cr
+}}}
+\qed
+
+\bdefn
+
+    A hypothesis class $\c H$ {\emphcolor shatters} a finite set $C=\set{x_1,\dots,x_n}\subseteq\c X$ if for any labels $y_1,\dots,y_n\in\set{0,1}$ there exists an hypothesis $h\in\c H$ such that
+    $h(x_i)=y_i$ for all $i$.
+
+\edefn
+
+In other words, $\c H$ shatters $C$ if for every function $f\colon C\longto\c Y$, there exists an hypothesis $h$ such that $h\bigl|_C=f$.
+So if we define $\c H_C=\set{h\bigl|_C}[h\in\c H]$, then $\c H$ shatters $C$ if and only if $\abs{\c H_C}=2^{\abs C}$.
+
+\bdefn
+
+    The {\emphcolor VC dimension} of an hypothesis class $\c H$, denoted $\vcdimof{\c H}$, is the size of the largest set $C\subseteq\c X$ shattered by $\c H$.
+
+\edefn
+
+\bthrm
+
+    Let $\c H$ be an hypothesis class with VC dimension $d<\infty$.
+    Then there exists a constant $c>0$ such that for every $\epsilon,\delta\in(0,1)$ there is a polynomial such that for every $n\geq\polyof{1/\epsilon,1/\delta}$ for which
+    $$ \probof{\sup_{h\in\c H}\abs{\hat R_S(h) - R_{\c D}(h)} < c\sqrt{\frac dn}}[S\sim\c D^n] \geq 1 - \delta $$
+
+\ethrm
+
+The proof of this is beyond the scope of the class.
+
