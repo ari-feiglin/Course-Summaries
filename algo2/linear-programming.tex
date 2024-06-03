@@ -283,9 +283,14 @@ Then to row reduce the final row, we must add $\bar c_j/A'_{ji}$, resulting in a
 So we want to find the $i,j$ which maximize $\frac{\bar c_j\cdot\bar b_j}{A'_{ji}}$.
 Notice that if all of $c$ is negative, then this means that our current bfs is larger than all its neighbors and so it is maximal by an above lemma.
 
-Comparing $n\times m$ values is not efficient for every iteration of our algorithm, so we make a suboptimal compromise which requires us compare $n+m$ values instead.
-To do so we just find the index $j$ which maximizes $\bar c_j$, then find the $i$ which maximizes $\frac{\bar b_j}{A'_{ji}}$.
-These will be our entering and leaving variables.
+But we also need our new solution to be feasible, that is we cannot have that any $b_k$ turns negative.
+The new value of $b_k$ is, when $i,j$ are chosen, $b_k-\frac{b_j}{A_{ji}}A_{ki}$.
+So we must have that
+$$ \frac{b_k}{A_{ki}} \geq \frac{b_j}{A_{ji}} $$
+So after choosing $j$, we must choose $i$ to minimize $b_j/A_{ji}$.
+
+So what we do is we choose the column $j$ such that $\bar c_j$ is maximal (the most negative value in the bottom row) (this is to find the optimal neighbor), and then choose the row $i$ such that
+$b_j/A_{ji}$ is minimal (to ensure feasibility).
 
 This is the simplex algorithm.
 It is correct since at the worst case we visit every vertex, but that's still a finite number of vertices.
@@ -308,7 +313,7 @@ If the tableau is not in canonical form, we can find $m$ independent columns and
 
 If $c$ has no positive values, then we finish and $z_B$ is the maximum value.
 Otherwise, choose the column $i$ for which $c_i$ is maximal.
-Then choose the row $j$ for which $\frac{b_j}{A_{ji}}$ is maximal, and use the index $(j,i)$ as a pivot in row reducing.
+Then choose the row $j$ for which $\frac{b_j}{A_{ji}}$ is minimal, and use the index $(j,i)$ as a pivot in row reducing.
 This will give (after swapping columns)
 $$ \pmatrix{I & \bar A & 0 & \bar b\cr 0 & -\bar c^\top & 1 & z_{B'}} $$
 where $z_{B'}>z_B$, and this is another feasible solution.
@@ -337,7 +342,7 @@ $$ \pmatrix{
 We now perform a pivot operation:
 \benum
     \item we first choose the most negative value in the bottom row: $-3$, this will be our column.
-    \item we then compute $b_j/A_{ji}$ and take the row with the maximum value.
+    \item we then compute $b_j/A_{ji}$ and take the row with the minimum value.
     The values are $10/3$ and $15/2$, so we choose $2$ as the pivot.
 \eenum
 Row reducing will give
