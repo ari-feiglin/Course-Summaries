@@ -1,0 +1,223 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+\parindent=0pt
+\parskip=4pt plus 2pt minus 2pt
+
+\input ../preamble
+
+\footline={}
+
+\setcounter{section}{1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+
+{\bppbox{rgb{.5 1 .5}}{rgb{0 .4 0}}{rgb{.1 .4 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Advanced Algorithms}
+    \smallskip
+    \centerline{\setfont{it}Homework \the\counter{section}}
+    \centerline{\setfont{it}Ari Feiglin}
+
+\eppbox}
+
+\bexerc
+
+    Solve the following linear programs using the simplex method:
+    $$
+    (1)\quad\vtop{\halign{\hfil\emphcolor#\quad&\hfil${}#{}$&${}#{}$\hfil\cr
+        Maximize&3x_1+4x_2\cr
+        Subject to&15x_1+10x_2&\leq300\cr
+        &2.5x_1+5x_2&\leq110\cr
+        &x_1,x_2&\geq0\cr
+        }}
+    \kern3cm
+    (2)\quad\vtop{\halign{\emphcolor\hfil#\quad&\hfil${}#{}$&${}#{}$\hfil\cr
+        Minimize&3x_1+x_2\cr
+        Subject to&x_1+x_2&\leq5\cr
+        &2x_1+x_2&\geq8\cr
+        &x_1,x_2&\geq0\cr
+        }}
+    $$
+
+\eexerc
+
+\benum
+    \item We add slack variables and create the initial tableau:
+    $$ \pmatrix{
+        x_1&x_2&s_1&s_2&z&b\cr\hline
+        15&10&1&0&0&300\cr
+        2.5&5&0&1&0&110\cr\hline
+        -3&-4&0&0&1&0
+    } $$
+    We then choose the second column as the pivot column, since $-4$ has the most negative value.
+    Computing ratios: $300/10=30$ and $110/5=22$, we take the minimum so our pivot row is the second row.
+    Pivoting:
+    $$ \pmatrix{
+        x_1&x_2&s_1&s_2&z&b\cr\hline
+        10&0&1&-2&0&80\cr
+        0.5&1&0&0.2&0&22\cr\hline
+        -1&0&0&4&1&88
+    } $$
+    Our pivot column is now the first, and taking the minimum ratio gives the first row as the pivot row.
+    Pivoting:
+    $$ \pmatrix{
+        x_1&x_2&s_1&s_2&z&b\cr\hline
+        1&0&0.1&-0.2&0&8\cr
+        0.5&1&0&0.2&0&22\cr\hline
+        0&0&0.1&3.8&1&96
+    } $$
+    Since the bottom row is all positive, we have completed the algorithm and the maximum value is $96$.
+    (Because of this we don't need to finish the computation of row reducing the second row, unless we want the values for the variables.)
+
+    \item The second constraint is equivalent to $-2x_1-x_2\leq-8$.
+    And the objective is equivalent to maximizing $-3x_1-x_2$, and then taking the inverse.
+    We add slack variables and an artificial variable.
+    Phase I then becomes maximizing $-a$ subject to $x_1+x_2+s_1=5$ and $-2x_1-x_2+s_2-a=-8$.
+    We also want to save the original objective, so we add the constraint $z+3x_1+x_2=0$.
+    Our initial tableau for phase I becomes:
+    $$ \pmatrix{
+        x_1&x_2&s_1&s_2&z&a&w&b\cr\hline
+        1&1&1&0&0&0&0&5\cr
+        -2&-1&0&1&0&-1&0&-8\cr
+        3&1&0&0&1&0&0&0\cr\hline
+        0&0&0&0&0&1&1&0
+    } $$
+    $a$ must enter the initial basis, so row reducing gives
+    $$ \pmatrix{
+        x_1&x_2&s_1&s_2&z&a&w&b\cr\hline
+        1&1&1&0&0&0&0&5\cr
+        2&1&0&-1&0&1&0&8\cr
+        3&1&0&0&1&0&0&0\cr\hline
+        -2&-1&0&1&0&0&1&-8
+    } $$
+    We begin pivoting.
+    Our pivot column is the first, and pivot row the second.
+    Pivoting gives
+    $$ \pmatrix{
+        x_1&x_2&s_1&s_2&z&a&w&b\cr\hline
+        0&0.5&1&0.5&0&-0.5&0&1\cr
+        1&0.5&0&-0.5&0&0.5&0&4\cr
+        0&-0.5&0&1.5&1&-1.5&0&-12\cr
+        0&0&0&0&0&1&1&0
+    } $$
+    So we have finished applying the simplex method in phase I, and we have a maximum value of $0$, as required.
+    So we can now abandon the artificial variable and simplex on the resulting tableau:
+    $$ \pmatrix{
+        x_1&x_2&s_1&s_2&z&b\cr\hline
+        0&0.5&1&0.5&0&1\cr
+        1&0.5&0&-0.5&0&4\cr
+        0&-0.5&0&1.5&1&-12\cr
+    } $$
+    The pivot column is now the second, and the pivot row is the first.
+    Pivoting:
+    $$ \pmatrix{
+        x_1&x_2&s_1&s_2&z&b\cr\hline
+        0&1&2&1&0&2\cr
+        1&0&-1&-1&0&3\cr
+        0&0&1&2&1&-11
+    } $$
+    So the maximum value of $-3x_1-x_2$ is $-11$, and so the minimum value of $2x_1+x_2$ is $11$.
+\eenum
+
+\bexerc
+
+    Consider the following linear program: maximize $x_1+x_2$ subject to $-2x_1+x_2\leq2$ and $x_1-x_2\leq1$.
+    \benum
+        \item Use the simplex method to show that the problem is unbounded.
+        \item Make a picture of the feasible region of the dual problem.
+    \eenum
+
+\eexerc
+
+\benum
+    \item Adding slack variables, we get an initial tableau:
+    $$ \pmatrix{
+        x_1&x_2&s_1&s_2&z&b\cr\hline
+        -2&1&1&0&0&2\cr
+        1&-1&0&1&0&1\cr\hline
+        -1&-1&0&0&1&0
+    } $$
+    Pivoting on the first column, second row gives
+    $$ \pmatrix{
+        x_1&x_2&s_1&s_2&z&b\cr\hline
+        0&-1&1&2&0&4\cr
+        1&-1&0&1&0&1\cr
+        0&-2&0&1&1&1
+    } $$
+    Now we want to pivot on the second column, but none of the rows have a positive coefficient.
+    Thus the current vertex/bfs has no adjacent vertices other than the one we just traversed.
+    So the problem is unbounded.
+
+    \item The transpose of $A$ is
+    $$ A^\top = \pmatrix{-2 & 1\cr 1 & -1} $$
+    So the dual problem is minimizing $2x+y$ subject to $-2x+y\geq1$ and $x-y\geq1$.
+    These two graphs give us
+
+    \centerline{\vbox to80pt{\vss\hbox to40pt{\hss\pdfliteral{q 1.5 0 0 1.5 0 0 cm
+        1 J
+        1 .4 .4 rg
+        -30 -30 m
+        -30 50 l
+        20 50 l
+        -20 -30 l f
+        .4 .4 1 rg
+        -20 -30 m
+        30 -30 l
+        30 10 l
+        20 10 l f
+        -20 -30 m
+        20 50 l
+        -20 -30 m
+        20 10 l S
+        .9 w
+        -30 0 m
+        30 0 l
+        0 -35 m
+        0 55 l S
+        Q
+    }\hss}}}
+
+    \vfill\break
+    By duality, since the dual is unbounded, the primal must be infeasible.
+\eenum
+
+\bexerc
+
+    Construct a linear program with two variables and two constraints such that both the primal and dual problem have no feasible solution.
+
+\eexerc
+
+Take
+$$ A = \pmatrix{0 & 1\cr -1 & -1},\qquad b = \pmatrix{-1\cr1},\qquad c = \pmatrix{1\cr-1} $$
+The primal has the constraint $y\leq-1$ which cannot be satisfied, so it is infeasible.
+The transpose of $A$ is
+$$ A^\top = \pmatrix{0 & -1\cr1 & -1} $$
+and so it has the constraint $-y\geq1$, equivalently $y\leq-1$, which cannot be satisfied.
+So both the primal and the dual are infeasible.
+
+\bexerc
+
+    Construct an integer program for the 3D-Matching problem.
+    3D-Matching is defined as follows: given three disjoint sets each of $q$ elements $X,Y,Z$ and a set $M\subseteq X\times Y\times Z$, determine if there exists a subset $M'\subseteq M$ with $q$ elements
+    such that for every two elements in $M'$, they share no coefficient.
+
+\eexerc
+
+For every $(i,j,k)\in M$ let us define a variable $m_{i,j,k}$.
+Our problem is then to maximize the objective function $\sum_{(i,j,k)\in M}m_{i,j,k}$ subject to $m_{i,j,k}+m_{a,b,c}\leq1$ when $i=a$ or $j=b$ or $k=c$ for every $(i,j,k),(a,b,c)\in M$.
+This also means that for every $(i,j,k)\in M$, $m_{i,j,k}\in\set{0,1}$ since it is a nonnegative integer bound by $1$.
+
+Now suppose some valuation of the variables gives a value of $p$ for the objective function.
+Define $M'=\set{(i,j,k)}[m_{i,j,k}=1]$.
+This then has $p$ elements, as $m_{i,j,k}\in\set{0,1}$ for every $(i,j,k)\in M$.
+And for every $(i,j,k),(a,b,c)\in M'$ suppose they have a coefficient in common, wlog $i=a$.
+Then $m_{i,j,k}+m_{a,b,c}\leq1$ is one of the constraints, but because they're in $M'$ both their values are $1$ so we get $1+1\leq1$ in contradiction.
+
+So all we need to do is return if the maximum value is at least $q$ ($M'$ can only have at most $q$ elements, since every element in $X,Y,Z$ can be used in only a single element in $M'$, so it is sufficient
+to check if it {\it equals} $q$).
+
+\bye
+
