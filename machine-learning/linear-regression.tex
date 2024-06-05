@@ -1,0 +1,56 @@
+\subsection{Linear Regression}
+
+Suppose our input space $\c X$ is a subset of ${\bb R}^d$ for some $d$, and $\c Y$ is ${\bb R}$.
+Given a sample $\set{(\vec x_i,y_i)}_{1\leq i\leq n}$, we would like to find the best linear approximation $h\colon{\bb R}^d\longto{\bb R}$ which approximates the relation between the inputs and their
+labels.
+Thus the hypothesis class is then the set of all linear functions
+$$ \c H = \set{f(\vec x)=\vec x^\top\vec w+b}[\vec w\in{\bb R}^d,b\in{\bb R}] $$
+For a hypothesis $f$, let us denote $\hat y_i=f(x_i)=\vec x_i^\top\vec w+b$, notice that
+$$ \pmatrix{\hori & \vec x_1 & \hori & 1\cr & \vdots & & \vdots \cr \hori & \vec x_n & \hori & 1}\pmatrix{w_1\cr\vdots\cr w_d\cr b} = \pmatrix{\vec x_1^\top\vec w+b\cr\vdots\cr\vec x_n^\top\vec w+b} $$
+To simplify notation, we can just assume that the final coordinate of each $\vec x_i$ is $1$ and so we can view each hypothesis $f$ as its vector $\vec w$ (where the last coefficient is $b$).
+Thus
+$$ X\vec w = \hat y $$
+Where $X$ is the matrix whose rows are $\vec x_i$.
+
+We want to minimize the difference between $\hat y$ and $\vec y$.
+We can do this by taking the mean square error (MSE): $\frac1n\norm{\hat y-\vec y}^2=\frac1n\norm{X\vec w-\vec y}^2$.
+So we define
+$$ {\rm MSE}(\vec w) = \frac1n\norm{X\vec w-\vec y}^2 = \frac1n(X\vec w-\vec y)^\top(X\vec w-\vec y) $$
+We take the gradient and compare with zero:
+$$ \nabla{\rm MSE}(\vec w) = \frac2nX^\top(X\vec w-\vec y) $$
+comparing with zero gives
+$$ \nabla{\rm MSE}(\vec w) = 0 \iff X^\top X\vec w - X^\top\vec y = 0 \iff \vec w_{\min} = (X^\top X)^{-1}X^\top\vec y $$
+This must be a minimum since ${\rm MSE}$ is quadratic in $\vec w$.
+
+So now if we have new data $X_{\rm new}$, our estimator for the new values will be
+$$ \hat y_{\rm new} = X_{\rm new}\vec w_{\min} = X_{\rm new}(X^\top X)^{-1}X^\top\vec y $$
+Furthermore, notice that the error $\vec y-\hat y$ is orthogonal to $\hat y$:
+$$ \eqalign{
+    (\vec y-\hat y)^\top\hat y = (\vec y-X\vec w)^\top\hat y &= \vec y^\top\hat y - \vec w^\top X^\top X\vec w\cr
+    &= \vec y^\top X\vec w - \vec w^\top X^\top X(X^\top X)^{-1}X^\top\vec y\cr
+    &= \vec y^\top X\vec w - \vec w^\top X^\top\vec y\cr
+    &= \vec y^\top X\vec w - (X\vec w)^\top\vec y = 0
+} $$
+
+\subsection{Polynomial Fitting}
+
+Suppose we have $n$ points $\set{(x_i,y_i)}_{1\leq i\leq n}$ which we would like to approximate using a $k$-degree polynomial $\hat y=p(x)=w_0x^0+\cdots+w_kx^k$.
+We can do so using linear regression: define
+$$ X = \pmatrix{x_1^0 & x_1^1 & \cdots & x_1^k\cr \vdots & \vdots & & \vdots\cr x_n^0 & x_n^1 & \cdots & x_n^k} $$
+Then doing linear regression gets us the best vector $\vec w$ such that
+$$ X\vec w = \pmatrix{\sum_{i=0}^k w_ix_1^i\cr\vdots\cr\sum_{i=0}^k w_ix_n^i} = \pmatrix{p(x_1)\cr\vdots\cr p(x_n)} $$
+is closest to $\vec y$, as required.
+
+\subsection{Ridge Regression}
+
+What if $X^\top X$ is not invertible?
+Which can happen if we have too few samples, i.e. $n<d$.
+Notice that $X^\top X$ is positive semi-definite: $v^\top X^\top Xv = (Xv)^\top(Xv)\geq0$, and thus all its eigenvalues are nonnegative.
+Then for any $\lambda>0$, $(X^\top X+\lambda I)v=\mu v$ if and only if $X^\top Xv=(\mu-\lambda)v$ which must mean that $\mu-\lambda\geq0$ and in particular $\mu>0$.
+So all of $X^\top X+\lambda I$'s eigenvalues are positive, and in particular non-zero, meaning it is invertible.
+
+So using this knowledge, let us define the {\it ridge estimator} to be
+$$ \hat w_{\rm ridge} = \argmin_{\vec w}\norm{X\vec w - \vec y}^2 + \lambda\norm{\vec w}^2 $$
+Taking the gradient and equating to zero gives that
+$$ \hat w_{\rm ridge} = (X^\top X+\lambda I)^{-1}X^\top y $$
+which, as explained above, exists no matter what, for any $\lambda>0$.
