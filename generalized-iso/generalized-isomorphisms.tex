@@ -1,0 +1,747 @@
+\input pdfToolbox
+\input preamble
+
+\parindent=\z@
+\parskip=3pt plus 1pt
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+
+{\vbox{\leftskip=0pt plus 1fill\relax\rightskip=\leftskip\setfontandscale{bf}{25pt}%
+Generalizations of the Isomorphism Theorems\par}
+\smallskip
+\centerline{\it Ari Feiglin}
+}
+
+\bigskip
+\hbox to\hsize{\hfil\vbox{\hsize=.7\hsize
+\leftskip=0pt plus 1fil \rightskip=\leftskip \parfillskip=\z@
+\hrule
+\kern5pt
+
+In this lecture we will discuss certain generalizations of the three isomorphism theorems from algebra, and the relation of these generalizations to their algebraic counterparts.
+The lecture will discuss certain basic notions of universal algebra, without delving too deep.
+
+\kern5pt
+\hrule
+}\hfil}
+
+\section{The Isomorphism Theorems}
+
+Recall the following three group isomorphism theorems:
+
+\bthrm[title=The First Group Isomorphism Theorm]
+
+    Let $f\colon G\longto H$ be a group homomorphism, then $G/\ker f\cong{\rm im}f$.
+
+\ethrm
+
+\bthrm[title=The Second Group Isomorphism Theorm]
+
+    Let $G$ be a group, $H\leq G$ a subgroup, and $N\normaleq G$ a normal subgroup.
+    Then $N$ is normal in $HN$ and $H\cap N$ is normal in $H$ and
+    $$ \slfrac{HN}N \cong \slfrac H{H\cap N} $$
+
+\ethrm
+
+\bthrm[title=The Third Group Isomorphism Theorm]
+
+    Let $G$ be a group, $N\normaleq G$ a normal subgroup.
+    Then subgroups of $G/N$ are precisely $H/N$ for $N\leq H\leq G$, and normal subgroups are $K/N$ for $N\leq K\normaleq G$, furthermore
+    $$ \slfrac{G/N}{K/N} \cong \slfrac GK $$
+
+\ethrm
+
+This family of three theorems have corresponding results in ring theory:
+
+\bthrm[title=The First Ring Isomorphism Theorm]
+
+    Let $f\colon R\longto S$ be a ring homomorphism, then $R/\ker f\cong{\rm im}f$.
+
+\ethrm
+
+\bthrm[title=The Second Ring Isomorphism Theorm]
+
+    Let $R$ be a group, $S\leq R$ a subring, and $I\normaleq R$ an ideal.
+    Then $I$ is an ideal in $S+I$ and $S\cap I$ is an ideal in $S$ and
+    $$ \slfrac{S+I}I \cong \slfrac S{S\cap I} $$
+
+\ethrm
+
+\bthrm[title=The Third Ring Isomorphism Theorm]
+
+    Let $R$ be a ring, $I\normaleq R$ an ideal.
+    Then subrings of $R/I$ are precisely $S/I$ for $I\leq S\leq I$, and ideals are $J/I$ for $I\leq J\normaleq R$, furthermore
+    $$ \slfrac{R/I}{K/I} \cong \slfrac RJ $$
+
+\ethrm
+
+The statements and proofs of the ring isomorphism theorems are very similar to those of the group isomorphism theorems.
+This begs the question, can we generalize these theorems enough to encompass groups, rings, modules, and more?
+We turn to universal algebra for this.
+
+\section{Signatures and Structures}
+
+We begin by defining what signatures and structures are:
+
+\bdefn
+
+    A {\emphcolor signature} is an object $\sigma$ consisting of two disjoint sets: a set $\F$ of function symbols, and $\R$ of relation symbols.
+    In addition, it has a function $\ar\colon(\F\cup\R)\longto{\bb N}_{\geq0}$, called the {\emphcolor arity function}.
+    Functions with zero arity are called {\emphcolor constants}, and relations with zero arity are called {\emphcolor propositions}.
+
+\edefn
+
+\bdefn
+
+    Let $\sigma$ be a signature, then a {\emphcolor $\sigma$-structure} is an object $\c A$ consisting of the following three items:
+    \benum
+        \item A non-empty set $A$, called the {\emphcolor domain} of $\c A$.
+        \item For every function symbol $f\in\sigma$, a function $f^{\c A}\colon A^{\ar f}\longto A$.
+        \item For every relation symbol $r\in\sigma$, a relation $r^{\c A}\subseteq A^{\ar r}$.
+    \eenum
+
+\edefn
+
+For example, let $\sigma=\set\circ$ where $\circ$ is a binary function symbol.
+Then $\sigma$-structures are {\it magmas}, this includes semigroups, monoids, and groups.
+We can also have a signature $\sigma=\set{\circ,{}^{-1},1}$, where ${}^{-1}$ is a unary function symbol, and $1$ is a constant.
+
+So for example we can define a model $\c Z=({\bb Z},+,-,0)$ as such a $\sigma$-model.
+
+We can also take a signature of ordered groups $\sigma=\set{\circ,<}$ where $<$ is a binary relation.
+$\c Z$ with the standard order is a $\sigma$-structure.
+
+All these examples are pretty well structured, they satisfy some axioms regarding the signature (e.g. $\forall x,y,z. (x\circ y)\circ z=x\circ(y\circ z)$).
+But we need not have a $\sigma$-structure satisfy anything, all we require is that it associates to each a symbol a function or relation.
+What the structure satisfies is the subject of mathematical logic and beyond the scope of this lecture.
+
+\bdefn
+
+    Let $\c A$ be a $\sigma$-structure and $B\subseteq\c B$ such that for every $f\in\sigma$ of arity $n$ and $\vec b\in B^n$, $f\vec b\in B$, then we can make $\c B$ into a $\sigma$-structure where
+    $f^{\c B}=f^{\c A}\bigl|_{B^n}$ and $r^{\c B}=r^{\c A}\cap B^n$.
+    Such a structure is called a {\emphcolor substructure} of $\c A$.
+
+\edefn
+
+So for example, the only substructures of $\c Z$ are subgroups $n\c Z$.
+But if we take $\c Z$ over the reduced signature $\c Z=({\bb Z},+)$ then ${\bb N}$ is also a substructure.
+So the signature of a structure is very significant.
+
+To state the isomorphism theorems, we need some sense of a homomorphism:
+
+\bdefn
+
+    Let $\c A$ and $\c B$ be $\sigma$-structures, then a {\emphcolor homomorphism} from $\c A$ to $\c B$ is a function $h\colon A\longto B$ such that
+    \benum
+        \item For every $f\in\sigma$ and $\vec a\in A^n$, $h(f^{\c A}\vec a)=f^{\c B}(h\vec a)$ where $h\vec a=(ha_1,\dots,ha_n)$.
+        For constant symbols this means $hc^{\c A}=c^{\c B}$.
+        \item For every $r\in\sigma$ then $r^{\c B}h\vec a$ if and only if there exists a $\vec c\in A^n$ such that $h\vec a=h\vec c$ and $r^{\c A}\vec c$.
+        Ignore the definition for propositional symbols.
+    \eenum
+    Bijective homomorphisms are isomorphisms, etc.
+
+\edefn
+
+Notice that if $h$ is injective, then the condition on relations just says $r^{\c B}h\vec a\iff r^{\c A}\vec a$.
+
+\blemm
+
+    The image of a homomorphism is a substructure of the codomain.
+
+\elemm
+
+We also need some notion of quotienting:
+
+\bdefn
+
+    Let $\c A$ be a $\sigma$-structure, then a {\emphcolor congruence} on $\c A$ is an equivalence relation $\sim$ on $A$ such that for every $f\in\sigma$, if $\vec a\sim\vec b$ (meaning $a_i\sim b_i$
+    for every $i$), then $f^{\c A}\vec a\sim f^{\c A}\vec b$.
+
+    If $\sim$ is a congruence on $\c A$ then define the {\emphcolor quotient structure} $\c A/{\sim}$ as follows:
+    \benum
+        \item The domain is the partition $A/{\sim}$.
+        \item For $f\in\sigma$ and $a\in A$, $f^{\c A/{\sim}}\vec a_\sim = (f^{\c A}\vec a)_\sim$, this is well defined by congruence.
+        \item For $r\in\sigma$, $r^{\c A/{\sim}}\vec a_\sim$ if and only if there exists a $\vec b\sim\vec a$ such that $r^{\c A}\vec b$.
+    \eenum
+
+\edefn
+
+Notice that if $N\normaleq G$ is a normal subgroup, then $a\sim b\iff ab^{-1}\in N$ is a congruence.
+This is because if $(a_1,a_2)\sim(b_1,b_2)$ then $a_1a_2(b_1b_2)^{-1}=a_1a_2b_2^{-1}b_1^{-1}\in a_1Nb_1^{-1}=a_1b^{-1}N=N$.
+So $a_1a_2\sim b_1b_2$, as required.
+Similar for ${}^{-1}$ (for those who know logic, this is because ${}^{-1}$ is definable by $\circ$).
+
+Then the quotient group $G/N$ is precisely the quotient structure $G/{\sim}$.
+Notice: $a_\sim b_\sim = (ab)_\sim$ which is the same as saying $aN\,bN=abN$, since $aN=a_\sim$.
+
+\section{The Isomorphism Theorems}
+
+Notice that if $h\colon\c A\longto\c B$ is a homomorphism, then we can define a congruence $\sim_h$ on $\c A$ by $x\sim_hy$ if and only if $hx=hy$.
+This is indeed a congruence: if $\vec x\sim_h\vec y$ then $hf^{\c A}\vec x=f^{\c B}h\vec x=f^{\c B}h\vec y=hf^{\c A}\vec y$ so $f^{\c A}\vec x\sim_hf^{\c A}\vec y$.
+This congruence is called the {\it kernel} of the homomorphism.
+
+Notice that if $h\colon G\longto H$ is a homomorphism of groups, then $a\sim_hb$ if and only if $ha=hb$ if and only if $h(ab^{-1})=1$, which is if and only if $ab^{-1}\in\ker h$.
+So $G/\ker h=G/{\sim_h}$ by our above discussion.
+
+\bthrm[title=The First Isomorphism Theorem]
+
+    \benum
+        \item Let $\sim$ be a congruence on $\c A$, then $\rho\colon\c A\longto\c A/{\sim}$ defined by $a\mapsto a/{\sim}$ is an epimorphism.
+        \item Let $h\colon\c A\longto\c B$ be a homomorphism of $\sigma$-structures, then $\iota\colon\c A/{\sim_h}\longto h\c A$ defined by $a/{\sim_h}\mapsto ha$ is an isomorphism.
+    \eenum
+
+\ethrm
+
+\Proof
+\benum
+    \item This is obviously surjective.
+    Now to prove it is a homomorphism:
+    $$ \rho f\vec a = (f\vec a)/{\sim} = f(\vec a/{\sim}) = f\rho\vec a $$
+    and $r\rho\vec a$ if and only if $r(\vec a/{\sim})$ if and only if there exists a $\vec b\sim\vec a$ such that $r\vec b$, and this is if and only if $\rho\vec b=\rho\vec a$.
+    So $\rho$ is a homomorphism.
+
+    \item Notice that if $a/{\sim_h}=b/{\sim_h}$ then $ha=hb$ by definition, so $\iota$ is well-defined.
+    $\iota$ is also trivially a bijection.
+    It is a homomorphism since
+    $$ \iota f(\vec a/{\sim_h}) = \iota(f\vec a/{\sim_h}) = hf\vec a = fh\vec a = f\iota(\vec a/{\sim_h}) $$
+    and
+    $$ r\iota(\vec a/{\sim_h}) \iff rh\vec a \iff \exists\vec b\sim\vec a.r\vec b \iff r(\vec a/{\sim_h}) \qed $$
+\eenum
+
+This gives us the classic first isomorphism theorem diagram:
+
+\bigskip
+\centerline{\def\diagcolbuf{1cm}\def\diagrowbuf{1cm}\drawdiagram{
+    $\c A$ & $\c B$\cr
+           & $\c A/{\sim_h}$\cr
+}{
+    \diagarrow{from={1,1}, to={1,2}, text=$h$, y distance=.25cm}
+    \diagarrow{from={1,1}, to={2,2}, text=$\rho$, y distance=.25cm}
+    \diagarrow{from={2,2}, to={1,2}, text=$\iota$, x distance=.25cm}
+}}
+
+This was pretty straightforward.
+Generalizing the next two isomorphism theorems requires a few more definitions.
+
+\medskip
+Recall the second isomorphism theorem: if $H\leq G$ is a subgroup and $N\normaleq G$ is a normal subgroup then $N\normaleq HN\leq G$, $H\cap N\normaleq H$, and $(HN)/N\cong H/(H\cap N)$.
+Our counterpart to the concept of normal subgroups in structures are congruences, which are relations on the underlying domain.
+So how do we define the product of a substructure and a congruence?
+
+Well, notice that $a\in HN$ if and only if there exists an $h\in H$ such that $a\sim_Nh$ (where $\sim_N$ is the congruence induced by $N$).
+So we can also define $HN=\set{a\in G}[\exists h\in H.\,a\sim_Nh]$.
+We generalize this
+
+\bdefn
+
+    Let $\c A$ be a $\sigma$-structure, $\c B\leq\c A$ a substructure, and $\sim$ a congruence on $\c A$.
+    Define the {\emphcolor $\sim$-closure} of $\c B$ to be $\c B_\sim=\set{a\in A}[\exists b\in B.\,a\sim b]$.
+
+\edefn
+
+And of course the induced congruence on $H$ by $H\cap N$ is just $\sim_N\cap H^2$, i.e. $\sim_N\bigr|_H$.
+So we would expect
+
+\bthrm[title=The Second Isomorphism Theorem]
+
+    Let $\sigma$ be an algebraic signature, $\c A$ be a $\sigma$-structure, $\c B\leq\c A$ a substructure, and $\sim$ a congruence on $\c A$.
+    Then
+    \benum
+        \item The $\sim$-closure $\c B_\sim$ is a substructure of $\c A$,
+        \item $\c B_\sim/{\sim}\cong\c B/{\sim}\bigr|_{\c B}$.
+        (The $\sim$ under $\c B_\sim$ should be restricted to $\c B_\sim$, but since $b\sim a\iff b\sim\bigr|_{\c B}a$ for $b\in\c B_\sim$, we omit the subscript.)
+    \eenum
+
+\ethrm
+
+\Proof
+\benum
+    \item Let $f\in\sigma$ and $\vec a\in\c B_\sim$, then $\vec a\sim\vec b\in\c B$, so $f\vec a\sim f\vec b\in\c B$ so $f\vec a\in B_\sim$.
+    \item Define
+    $$ h\colon\c B\longto\slfrac{\ds\c B_\sim}{\ds\sim},\qquad hb = b/{\sim} $$
+    This is a homomorphism:
+    $$ hf\vec b = (f\vec b)/\sim = f(\vec b/\sim) = f(h\vec b) $$
+    And its kernel is $a\sim_hb$ if and only if $a\sim b$, so the kernel is $\sim_h\bigr|_{\c B}$ as required.
+    \qed
+\eenum
+
+Why must the signature be algebraic?
+Well, otherwise $h$ may not have been a homomorphism:
+$$ rh\vec b \iff r(\vec b/{\sim}) \iff \exists\vec a\sim\vec b.\,r\vec a $$
+But suppose no $\vec b\in\c B$ satisfies $r\vec b$, but there exists a $\vec a\sim\vec b$ such that $r\vec a$.
+Then we don't have that there exists a $\vec b'$ such that $h\vec b'=h\vec b$ and $r\vec b'$, yet we do have $rh\vec b$.
+
+For example, here is a simple counterexample: let our signature contain a single unary relation $r$ and define $\c A=\set{a,b}$, $\c B=\set b$ where only $r^{\c A}a$.
+Define $a\sim b$, so we have that $\c B_\sim=\c A$, so $\c B_\sim/{\sim}=\set{\set{a,b}}$ and $\c B/{\sim\bigr|_B}=\set{\set b}$.
+But $r^{\c A/{\sim}}\set{a,b}$ since $r^{\c A}a$, but we don't have that $\c B_\sim/{\sim}\cong\c B/{\sim\bigr|_B}$.
+
+This shouldn't be surprising: quotienting should have weird effects on relations.
+For example, let us look at $({\bb Z},<)$: if we take the congruence $\sim_n$ corresponding to $n{\bb Z}$ over ${\bb Z}$ then $a/\sim_n<b/\sim_n$ if and only if there exists $a'\sim_na$ and $b'\sim_nb$ such
+that $a'<b'$.
+But this is always true since the congruence classes are all infinite.
+So $<^{{\bb Z}/n{\bb Z}}$ is just the trivial relation.
+
+This may not be all that surprising, after all how do you define an order on ${\bb Z}/n{\bb Z}$?
+But it does mean that while a structure may satisfy some theory, its quotient need not.
+Both of these examples have demonstrated this.
+
+The issue is congruences don't take relations into account.
+Let us fix this.
+
+\bdefn
+
+    A {\emphcolor total congruence} is a congruence $\sim$ on a $\sigma$-structure $\c A$ such that for all $\vec a,\vec b$, if $\vec a\sim\vec b$ then $r\vec a\iff r\vec b$ for all $r\in\sigma$.
+
+\edefn
+
+Notice that when quotienting by a total congruence, $r(\vec a/{\sim})\iff r\vec a$ since if $\vec a\sim\vec b$ and $r\vec b$ then $r\vec a$ by definition.
+
+\bthrm[title=The Second Isomorphism Theorem{,} Relational-Style]
+
+    Let $\sim$ be a total congruence on $\c A$ (which need not be algebraic), and $\c B\leq\c A$ a substructure.
+    Then
+    $$ \c B_\sim/{\sim}\cong\c B/{\sim}\bigr|_{\c B} $$
+
+\ethrm
+
+\Proof all we need to show is that the $h$ defined before is a homomorphism.
+$rh\vec b$ if and only if $r(\vec b/{\sim})$ if and only if $r\vec b$.
+\qed
+
+\medskip
+For the third isomorphism theorem, we have the following: let $N\normaleq G$, then
+\benum
+    \item Every subgroup of $G/N$ is of the form $K/N$ for $N\leq K\leq G$ (and vice versa).
+    \item Every normal subgroup of $G/N$ is of the form $K/N$ for $N\leq K\normaleq G$ (and vice versa).
+    \item If $N\leq K\normaleq G$ then $(G/N)/(K/N)\cong G/K$.
+\eenum
+
+But here $(G/N)/(K/N)$ is a quotient structure of a quotient structure, so we must somehow deal with this.
+Notice that
+$$ aN\cdot\slfrac KN = bN\cdot\slfrac KN \iff ab^{-1}N \in \slfrac KN \iff ab^{-1} \in K $$
+so we have that $a/{\sim_N}\sim_{K/N}b/{\sim_N}$ if and only if $a\sim_Kb$.
+
+\bdefn
+
+    Let $\c A$ be a $\sigma$-structure, $\sim_N$ and $\sim_K$ be congruences such that $\sim_N\subseteq\sim_K$.
+    Then define their {\emphcolor quotient congruence} to be $\sim_{K/N}={\sim_K}/{\sim_N}$ over $\c A/{\sim_N}$ by
+    $$ \slfrac{\ds a}{\ds\sim_N} \sim_{K/N} \slfrac{\ds b}{\ds \sim_N} \iff a\sim_Kb $$
+
+\edefn
+
+This is well-defined since if $a/{\sim_N}=b/{\sim_N}$ then $a\sim_Kb$ as well.
+And this is obviously a congruence.
+
+This helps us show the following:
+
+\bthrm[title=The Third Isomorphism Theorem]
+
+    Let $\c A$ be a $\sigma$-structure, and $\sim_N$ a congruence on $\c A$.
+    \benum
+        \item Every substructure of $\c A/{\sim_N}$ is of the form $\c B/{\sim_N}$ for some substructure satisfying $\c B_{\sim_N}=\c B$ and vice versa.
+        \item Every congruence on $\c A/{\sim_N}$ is of the form $\sim_{K/N}$ for some congruence on $\c A$, $\sim_K\supseteq\sim_N$, and vice versa.
+        \item $$ \slfrac{\slfrac{\ds\c A}{\ds\sim_N}}{\ds\sim_{K/N}} \cong \slfrac{\ds\c A}{\ds\sim_K} $$
+    \eenum
+
+\ethrm
+
+\Proof
+\benum
+    \item Let $\c C$ be a substructure of $\c A/{\sim_N}$, then define $B=\set{a\in A}[a/{\sim_N}\in C]$.
+    This defines a substructure of $\c A$, since for $f\in\sigma$ and $\vec a\in B^n$, $(f\vec a)/{\sim_N}=f(\vec a)/{\sim_N}\in C$ so $f\vec a\in B$.
+    And we can see that if $a\in B$ and $a\sim_Nb$ then $a/{\sim_N}=b/{\sim_N}$, so $b/{\sim_N}\in C$ and so $b\in B$, thus $\c B_\sim=\c B$ as required.
+    It is obvious that $\c B/{\sim_N}=\c C$.
+
+    And conversely, if $\c B_\sim=\c B$ then $\c B/{\sim_N}$ is well-defined (since $\c B$ contains all its equivalence classes), and so from definition it is a substructure.
+
+    \item Let $\sim$ be a congruence on $\c A/{\sim_N}$ then define $a\sim_Kb\iff (a/\sim_N)\sim(b/\sim_N)$, this obviously contains $\sim_N$.
+    This a congruence: if $\vec a\sim_K\vec b$ then
+    $$ (\vec a/\sim_N)\sim(\vec b/\sim_N) \implies f(\vec a/\sim_N) \sim f(\vec b/\sim_N) \implies (f\vec a/\sim_N)\sim(f\vec b/\sim_N) \implies f\vec a\sim_Kf\vec b $$
+    And by definition $\sim_{K/N}=\sim$.
+
+    \item Let us define
+    $$ h\colon\c A\longto\slfrac{\ds\slfrac{\ds\c A}{\ds\sim_N}}{\ds\sim_{K/N}},\qquad a\mapsto(a/{\sim_N})/{\sim_{K/N}} $$
+    This is indeed a homomorphism:
+    $$ hf\vec a = (f\vec a/{\sim_N})/{\sim_{K/N}} = f\bigl((a/{\sim_N})/{\sim_{K/N}}\bigr) = fh\vec a $$
+    And $rh\vec a$ is equivalent to $r(\vec a/{\sim_N})/{\sim_{K/N}}$ which is equivalent to there existing a $\vec b/{\sim_N}\sim_{K/N}\vec a/{\sim_N}$ such that $r(\vec b/{\sim_N})$.
+    This is equivalent to $\vec b\sim_K\vec a$ such that $r(\vec b/{\sim_N})$.
+    This is equivalent to there existing a $\vec c\sim_N\vec b$ such that $r\vec c$.
+    Now, since $\vec c\sim_N\vec b\sim_K\vec a$, we have $\vec c\sim_K\vec a$ by transitivity, so $h\vec c=(\vec c/{\sim_N})/{\sim_{K/N}}=(\vec a/{\sim_N})/{\sim_{K/N}}=h\vec a$.
+    So if $rh\vec a$ then there exists a $\vec c$ with $h\vec c=h\vec a$ and $r\vec c$.
+
+    The converse is trivial (in general, since $h\vec a=h\vec b$ and $r\vec b$ means $rh\vec b$ so $rh\vec a$).
+    \qed
+\eenum
+
+\section{Applications}
+
+\subsection{Rings}
+
+In this section, we will prove the well-known special cases of the isomorphism theorems for rings and modules.
+All we need to show is that congruences, closures, and quotient congruences can be associated with their corresponding notions in these objects.
+
+So for rings, we need to show that congruences can be associated with ideals.
+Let $R$ be a ring, $\sim$ a congruence.
+Then we claim that $I=0/{\sim}$ is an ideal: indeed $0\in I$, and if $a,b\sim0$ then $a+b\sim0+0=0$.
+Finally if $r\in R$ and $a\in I$ then $r\sim r$ and $a\sim0$ so $ra\sim r0=0$ so $ra\in I$, as required.
+Similar for $ar$.
+
+Now if $I$ is an ideal, then $a\sim b\iff a-b\in I$ is a congruence.
+This is because if $f$ is a homomorphism such that $\ker f=I$, then
+$$ a\sim_fb \iff f(a)=f(b) \iff f(a-b) = 0 \iff a-b\in I $$
+So $\sim_f=\sim$ and in particular $\sim$ is a congruence.
+
+Now suppose $R$ is a ring, $S\leq R$ a subring, and $I$ an ideal.
+Let $\sim$ be the congruence associated with $I$, then we claim $S+I=S_\sim$.
+Indeed, if $s+i\in S+I$ then $s+i\sim s$ so $s+i\in S_\sim$, thus $S+I\subseteq S_\sim$.
+And if $s\sim r$ then $r=s+i$.
+
+And finally if $I\normaleq R$ is an ideal and $I\leq J$ is another ideal, then the congruence associated with $J/I$ is the quotient congruence of $J$ by the congruence of $I$.
+I.e. we have that $\sim_{J/I}=\slfrac{\sim_J}{\sim_I}$.
+So we must show that $a\sim_Jb\iff(a/{\sim_I})\sim_{J/I}(b/{\sim_I})$.
+This is $a-b\in J\iff (a-b+I)\in J/I$ which is just $a-b\in J$ as required.
+
+\subsection{Boolean Algebras}
+
+\bdefn
+
+    A {\emphcolor Boolean algebra} is a $\set{\wedge,\vee,\neg,0,1}$-structure satisfying the following axioms:
+    \benum
+        \item $\vee,\wedge$ are associative and commutative
+        \item $a\vee(a\wedge b)=a$ and $a\wedge(a\vee b)=a$
+        \item $\vee,\wedge$ distribute: $a\vee(b\wedge c)=(a\vee b)\wedge(a\vee c)$ and $a\wedge(b\vee c)=(a\wedge b)\vee(a\wedge c)$
+        \item $a\vee0=a$ and $a\wedge1=a$
+        \item $a\vee\neg a=1$ and $a\wedge\neg a=0$
+    \eenum
+
+\edefn
+
+Suppose $\s B$ is a boolean algebra and $\sim$ a congruence on it.
+Then let $I=0/{\sim}$ then it has the following properties:
+\benum
+    \item If $a,b\in I$ then $a\vee b\sim0\vee0=$ so $a\vee b\in I$
+    \item If $a\in I$ and $x\in\s B$ then $a\wedge x\sim0\wedge x=0$ so $a\wedge x\in I$
+\eenum
+
+These two properties define what is called a {\it Boolean Ideal}, and every boolean ideal defines a congruence: let $I$ be a boolean ideal, then define $a\sim b\iff a\symdiff b\in I$.
+It can be seen by computation that this is indeed a congruence.
+So there is a correspondence between boolean ideals and congruences.
+A {\it Prime Ideal} is a filter such that for every $a\in\s B$ either $a$ or $\neg a\in I$, equivalently it is a maximal ideal.
+
+If we look at $F=1/{\sim}$, this has dual properties:
+\benum
+    \item If $a,b\in F$ then $a\wedge b\sim1\wedge1=1$ so $a\wedge b\in F$
+    \item If $a\in F$ and $x\in\s B$ then $a\vee x\sim1\vee x=1$ so $a\vee x\in F$.
+\eenum
+
+A subset of $\s B$ satisfying these properties is called a {\it Filter}.
+A filter $F$ defines a congruence by $a\sim b\iff a\oto b\in F$.
+An {\it Ultrafilter} is a filter such that for every $a\in\s B$, either $a$ or $\neg a\in F$, equivalently it is a maximal filter.
+
+Now, it can be shown that a substructure of a boolean algebra is itself a boolean algebra (for those who know logic, this is because the theory of boolean algebras is a $\forall$-theory).
+So let $\s C\leq\s B$ be a subboolean algebra, $I$ a boolean ideal, and $\sim$ its congruence.
+Then $\s C_\sim=\s C\symdiff I=\set{c\symdiff i}[c\in\s C,i\in I]$ since
+$$ x\in\s C_\sim \iff \exists c\in\s C.\, x\symdiff c\in I \iff \exists c\in\s C.i\in I.\, x=c\symdiff i \iff x\in C\symdiff I $$
+So we have that by the second isomorphism theorem,
+$$ \slfrac{\s C}{\s C\cap I} \cong \slfrac{\s C\symdiff I}{I} $$
+
+And by the third isomorphism theorem, every subboolean algebra of $\slfrac{\s B}I$ is of the form $\slfrac{\s C}I$ for $I\subseteq\s C$, and an ideal is of the form $\slfrac JI$ for $I\subseteq J$.
+This is because if $\sim$ is a congruence on $\slfrac{\s B}I$ then there exists some $J\supseteq I$ ideal such that $a/I\sim b/I\iff a\sim_Jb$.
+So $a/I\sim0/I$ if and only if $a\sim_J0$ if and only if $a\in J$ so the induced ideal is $J/I$.
+And then the third isomorphism says
+$$ \slfrac{\slfrac{\s B}I}{\slfrac JI} \cong \slfrac{\s B}J $$
+
+\section{Ideals}
+
+Notice that in all the objects discussed thus far there is some notion of an ideal.
+In each instance, an ideal is just a congruence class $e/{\sim}$ which satisfies the following properties:
+\benum
+    \item $e/{\sim}$ uniquely defines the congruence, i.e. if $e/{\sim}=e/{\approx}$ then ${\sim}={\approx}$.
+    \item For any substructure $\c B$, $e/{\sim}\subseteq\c B$ if and only if $\c B_\sim=\c B$.
+\eenum
+How can we get these properties in a general structure?
+Notice that for all of these structures, and any congruence which defines an ideal $I$, $a\sim b$ if and only if $t(a,b)\in I$ for some function $t$ which can be defined using the function symbols in the
+signature.
+Such a function is called a {\it term} (or more specifically, a {\it term function}).
+
+\bdefn
+
+    Let $\sigma$ be a signature and $V$ some collection of variables (we assume such a collection is global, we don't really care too much what it is).
+    Then a {\emphcolor $\sigma$-term} is defined recursively as follows:
+    \benum
+        \item Every constant $c\in\sigma$ is a term.
+        \item Every variable $x\in V$ is a term.
+        \item If $f\in\sigma$ has arity $n$, and $t_1,\dots,t_n$ are terms then $ft_1\cdots t_n$ is a term.
+    \eenum
+    We denote the set of all $\sigma$-terms by $\c T_\sigma$, and we omit the $\sigma$ when the signature is understood.
+    For a term $t\in\c T_\sigma$, we write $t=t(\bar x)$ to mean that the variables in $t$ are contained in $\bar x$.
+
+    If $\c A$ is a $\sigma$-structure, $t(\bar x)$ a $\sigma$-term, and $\bar a\in\c A^n$, we define $t(\bar a)\in\c A$ to be the result of substituting $\bar a$ for $\bar x$ in $t$.
+    Recursively this is defined as follows:
+    \benum
+        \item If $t=c$ then $t(\bar a)=c^{\c A}$.
+        \item If $t=x_i$ then $t(\bar a)=a_i$.
+        \item Otherwise $t=ft_1\cdots t_n$ and so $t(\bar a)=f^{\c A}t_1(\bar a)\cdots t_n(\bar a)$.
+    \eenum
+
+\edefn
+
+\blemm
+
+    If $\c B\leq\c A$ are $\sigma$-structures, $t(\bar x)$ a $\sigma$-term, if $\bar b\in\c B$ then $t(\bar b)\in\c B$.
+
+\elemm
+
+\Proof this is done by term induction, it's not complicated.\qed
+
+\blemm
+
+    If $\sim$ is a congruence on $\c A$, $t(\bar x)$ a term, and $\bar a\sim\bar b\in\c A$ then $t(\bar a)\sim t(\bar b)$.
+
+\elemm
+
+\Proof again by term induction.\qed
+
+\bdefn
+
+    Call a $\sigma$-structure $\c A$ {\emphcolor idealized} if there exists a constant $e\in\sigma$, and two $\sigma$-terms ${\frak t}$ and $\bar{\frak t}$ such that:
+    \benum
+        \item For every congruence $\sim$: $a\sim b \iff \f t(a,b) \in \slfrac e{\sim}$.
+        \item For every $a,b$, $\bar{\f t}(\f t(a,b),b)=a$.
+            This means that $\bar{\f t}(\f t(\bullet,b),b)={\rm id}$, so $\bar{\f t}(\bullet,b)$ is surjective and $\f t(\bullet,b)$ is injective for every $b\in\c A$.
+        \item $\f t(\bullet,b)$ is surjective (so it is a bijection), this is equivalent to $\bar{\f t}(\bullet,b)$ being a bijection since their composition is the identity.
+    \eenum
+    Call $e/{\sim}$ an {\emphcolor ideal} of $\sim$.
+
+\edefn
+
+\blist
+    \item Groups are idealized: $\f t(a,b)=ab^{-1}$ and $\bar{\f t}(a,b)=ab$.
+    \item Rings are idealized: $\f t(a,b)=a-b$ and $\bar{\f t}(a,b)=a+b$.
+    \item Boolean algebras are idealized: $\f t(a,b)=\bar{\f t}(a,b)=a\symdiff b$ and $e=0$, or $\f t(a,b)=\bar{\f t}(a,b)=a\oto b$ and $e=1$.
+\elist
+
+\bthrm
+
+    Let $\c A$ be idealized, then there is a bijective correspondence between congruences and ideals.
+
+\ethrm
+
+\Proof map $\sim$ to $e/{\sim}$.
+This is obviously surjective by the definition of ideals, and it is injective since if $e/{\sim}=e/{\approx}$ then
+$$ a\sim b \iff \f t(a,b)\in e/{\sim} = e/{\approx} \iff a\approx b $$
+so this correspondence is bijective.
+\qed
+
+This means that if $I$ is an ideal of $\c A$, we can write $\c A/I$ for $\c A/{\sim}$ where $I=e/{\sim}$ and there can be no confusion.
+
+\bprop
+
+    If $\c A$ is idealized, then for any congruence $\sim$, all of its cosets (congruence classes) have the same cardinality.
+
+\eprop
+
+\Proof notice that for the identity congruence, $\f t(b,b)\in e/{=}$ means $\f t(b,b)=e$.
+So $\f t(\bullet,b)$ maps $b/{\sim}\longto e/{\sim}$ since $\f t(b',b)\sim\f t(b,b)=e$.
+It is a bijection, so $\abs{b/{\sim}}=\abs{e/{\sim}}$.
+\qed
+
+\bthrm
+
+    Let $\c A$ be idealized, then $\c B_\sim=\bar{\f t}(e/{\sim},\c B)$.
+    Therefore $e/{\sim}\subseteq\c B$ if and only if $\c B_\sim=\c B$.
+
+\ethrm
+
+\Proof let $a\in\c B_\sim$, so there exists a $b\in\c B$ such that $a\sim b$.
+So $\f t(a,b)\in e/{\sim}$, then $\bar{\f t}(\f t(a,b),b)=a$ and this is in $\bar{\f t}(e/{\sim},\c B)$.
+And for $\bar{\f t}(e',b)\in\bar{\f t}(e/{\sim},\c B)$, notice that $\f t(\bar{\f t}(e',b),b)=e'\in e/{\sim}$.
+Thus $\bar{\f t}(e',b)\sim b\in\c B$.
+So $\bar{\f t}(e',b)\in\c B_\sim$.
+
+So if $e/{\sim}\subseteq\c B$ then $\c B_\sim=\bar{\f t}(e/{\sim},\c B)\subseteq\bar{\f t}(\c B,\c B)\subseteq\c B$.
+And since $\c B\subseteq\c B_\sim$ we have the required result.
+Conversely, since $e\in\c B$ as it is a constant, we always have that $e/{\sim}\subseteq\c B_\sim=\c B$.
+\qed
+
+Let us write $I\c B$ for $\bar{\f t}(I,\c B)$.
+Now, we'd like to state the following:
+
+\bthrm[title=The Idealized Second Isomorphism Theorem]
+
+    Let $\c A$ be idealized, $\c B\leq\c A$ a substructure, and $I\normaleq\c A$ an ideal.
+    Then $I$ is an ideal of $I\c B$ and $I\cap\c B$ is an ideal of $\c B$ and
+    $$ \slfrac{I\c B}I \cong \slfrac{\c B}{I\cap\c B} $$
+
+\ethrm
+
+Unfortunately, just because $\c A$ is idealized doesn't mean that its substructures are.
+So writing $\c B/(I\cap\c B)$ has no meaning.
+In order to get this result, we turn to model theory.
+The following is quite tedious and may have to be left for another lecture.
+But first let us generalize the third isomorphism theorem for ideals
+
+\bthrm[title=The Idealized Third Isomorphism Theorem]
+
+    Let $\c A$ be idealized, $I\normaleq\c A$ an ideal.
+    Then
+    \benum
+        \item $\c A/I$ is idealized.
+        \item Substructures of $\c A/I$ are of the form $\c B/I$ for $I\subseteq\c B$.
+        \item Ideals of $\c A/I$ are of the form $J/I$ for $I\subseteq J\normaleq\c A$.
+        \item $\slfrac{\c A/I}{J/I}\cong\slfrac{\c A}J$
+    \eenum
+
+\ethrm
+
+\Proof Let $\sim_N$ be the congruence associated with $I$.
+Let $\sim_{K/N}$ be a congruence of $\c A/I$, then
+Now suppose $\f t(a/I,b/I)\sim_{K/N} e/I$, that means that $\f t(a,b)/I\sim_{K/N} e/I$, so $\f t(a,b)\sim_Ke$ meaning $a\sim_Kb$.
+And so $a/I\sim_{K/N} b/I$.
+So $\c A/I$ is idealized, furthermore its ideals are $(e/I)/{\sim_{K/N}}$ and $e/I\sim_{K/N}e'/I$ if and only if $e\sim_Ke'$, so the ideal is of the form $J/I$ where $J$ is the ideal associated with
+$\sim_K$.
+$(2)$ and $(4)$ follow immediately.
+\qed
+
+\section{Theories Allowing For Ideals}
+
+Let us quickly define the groundwork for first order logic.
+We will gloss over the details due to lack of time.
+
+\bdefn
+
+    Given a signature $\sigma$, we define $\c L$ the set of all formulas recursively as follows:
+    \benum
+        \item If $t,s$ are $\sigma$-terms then $t\eq s\in\c L$.
+        \item If $r\in\sigma$ is an $n$-ary relation and $t_1,\dots,t_n$ are $\sigma$-terms then $rt_1\cdots t_n\in\c L$.
+        \item If $x\in V$ is a variable and $\phi\in\c L$ then $\forall x\phi\in\c L$.
+        \item If $\phi,\psi\in\c L$ then $(\phi\land\psi),\neg\phi\in\c L$.
+    \eenum
+
+\edefn
+
+\bdefn
+
+    Let $\phi\in\c L$ be a formula, and suppose $x\in V$ has an occurrence in $\phi$.
+    This occurrence is {\emphcolor bound} if it occurs within the scope of the quantifier $\forall x$, and otherwise {\emphcolor free}.
+    Let $\free\phi$ be all the variables which occur free in $\phi$.
+    Write $\phi=\phi(\bar x)$ if $\free\phi\subseteq\bar x$.
+
+\edefn
+
+\bdefn
+
+    Let $\phi(\bar x)$ be a formula, $\c A$ a structure, and $\bar a$ a sequence of elements from $\c A$.
+    Then we write $\c A\vDash\phi(\bar a)$ to mean that $\phi$ holds in $\c A$ when we valuate $\bar x$ as $\bar a$.
+    Formally:
+    \benum
+        \item If $\phi=t(\bar x)\eq s(\bar x)$, then $\c A\vDash\phi(\bar a)$ if and only if $t(\bar a)=s(\bar a)$.
+        \item If $\phi=rt_1(\bar x)\cdots t_n(\bar x)$, then $\c A\vDash\phi(\bar a)$ if and only if $r^{\c A}t_1(\bar a)\cdots t_n(\bar a)$.
+        \item If $\phi=\forall y\psi(\bar x,y)$, then $\c A\vDash\phi(\bar a)$ if and only if for every $b\in\c B$, $\c A\vDash\phi(\bar a,b)$.
+        \item $\c A\vDash(\phi\land\psi)(\bar a)$ if and only if $\c A\vDash\phi(\bar a),\psi(\bar a)$.
+        \item $\c A\vdash\neg\phi(\bar a)\iff\c A\nvDash\phi(\bar a)$.
+    \eenum
+    $\vDash$ is called the {\emphcolor satisfaction relation}.
+
+\edefn
+
+\bdefn
+
+    Let $X$ be a set of $\c L$-formulas, and $\phi\in\c L$.
+    Then we say $X\vDash\phi$ if and only if for every $\c A\vDash X$, $\c A\vDash\phi$.
+    This is called the {\emphcolor consequence relation}.
+
+\edefn
+
+\bdefn
+
+    An $\c L$-theory $T$ is a set of $\c L$ sentences (formulas with no free variables) such that $T\vDash\phi\implies\phi\in T$.
+    I.e. it is deductively closed.
+    Let $X$ be a set of sentences, then there exists a smallest theory which contains it (its deductive close: $T_X=\set{\phi}[X\vDash\phi]$).
+    $T_X$ is said to be {\emphcolor axiomatized} by $X$.
+
+\edefn
+
+Now for some model-theoretic results which we will not prove:
+
+\bthrm[title=The Compactness Theorem]
+
+    Let $X$ be a set of $\c L$-formulas, and $\phi\in\c L$.
+    Then $X\vDash\phi$ if and only if there exists a finite $X_0\subseteq X$ such that $X_0\vDash\phi$.
+
+\ethrm
+
+\bdefn
+
+    A {\emphcolor $\forall$ formula} is a formula of the form $\forall\vec x\phi$ where $\phi$ is quantifier-free.
+    A theory is a $\forall$-theory if it can be axiomatized by a set of $\forall$-sentences.
+
+\edefn
+
+\bthrm
+
+    A theory is invariant under substructures (i.e. $\c B\subseteq\c A\vDash T\implies\c B\vDash T$) if and only if it is a $\forall$-theory.
+
+\ethrm
+
+\bdefn
+
+    A {\emphcolor positive formula} is one constructed only by $\land,\lor,\forall,\exists$ (i.e. without $\neg$).
+
+\edefn
+
+\bthrm
+
+    A theory is invariant under homomorphic images if and only if it can be axiomatized by positive sentences.
+
+\ethrm
+
+\bdefn
+
+    Say that a positive theory $T$ {\emphcolor allows for weak ideals} if there exists a constant $e$ and a term $\f t$ such that
+    $$ T\vDash\forall a,b(\f t(a,b)\eq e\oto a\eq b) $$
+    And $T$ {\emphcolor allows for ideals} if it is also universal and there exists a constant $e$ and terms $\f t,\bar{\f t}$ such that
+    $$ T\vDash\forall a,b(\bar{\f t}(\f t(a,b),b)=a),\quad T\vDash\forall a,b(\f t(\bar{\f t}(a,b),b)=a),\quad T\vDash\forall a(\f t(a,a)=e) $$
+
+\edefn
+
+If $T$ allows for ideals then $\bar{\f t}(e,b)=\bar{\f t}(\f t(b,b),b)=b$.
+And so if $T$ allows for ideals then it allows for weak ideals: if $\f t(a,b) = e$ then $\bar{\f t}(\f t(a,b),b) = \bar{\f t}(e,b) = b$.
+And $\bar{\f t}(\f t(a,b),b)=a$, so $a=b$.
+
+\bdefn
+
+    Call $\c A$ {\emphcolor weakly idealized} by $e,\f t$ if for every congruence, $a\sim b\iff\f t(a,b)\sim e$.
+
+\edefn
+
+\bthrm
+
+    If $T$ allows for weak ideals, then all of its models are weakly idealized.
+    Similarly if $T$ allows for ideals, then all of its models are idealized.
+
+\ethrm
+
+\Proof let $\c A\vDash T$ be a model of $T$ and let $\sim$ be a congruence on $\c A$.
+Then the canonical homomorphism $f\colon\c A\longto\c A/{\sim}$ is surjective and thus since $T$ is positive, $\c A/{\sim}\vDash T$.
+Now,
+$$ a\sim b \iff fa = fb \iff \f t(fa,fb) = e \iff f\f t(a,b) = e = fe \iff \f t(a,b) \sim e $$
+as required.
+And so if $T$ allows for ideals, its models are obviously all idealized.
+\qed
+
+If $T$ allows for ideals then it is closed under substructures, so substructures of its models are also idealized.
+So we can now, in good conscience, restate the second isomorphism theorem:
+
+\bthrm[title=The Idealized Second Isomorphism Theorem]
+
+    Let $T$ allow for ideals, $\c A\vDash T$, $\c B\leq\c A$ a substructure, and $I\normaleq\c A$ an ideal.
+    Then $I$ is an ideal of $I\c B$ and $I\cap\c B$ is an ideal of $\c B$ and
+    $$ \slfrac{I\c B}I \cong \slfrac{\c B}{I\cap\c B} $$
+
+\ethrm
+
+Since the theory of groups, rings, modules, and boolean algebras all allow for ideals, we have successfully generalized all the isomorphism theorems in a way which takes ideals into account.
+
+\bye
+
