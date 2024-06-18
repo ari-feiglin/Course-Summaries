@@ -548,7 +548,7 @@ It is a bijection, so $\abs{b/{\sim}}=\abs{e/{\sim}}$.
 
 \bthrm
 
-    Let $\c A$ be idealized, then $\c B_\sim=\bar{\f t}(e/{\sim},\c B)$.
+    Let $\c A$ be idealized, then $\c B_\sim=\bar{\f t}(e/{\sim},\c B)$ for any set $\c B\subseteq\c A$.
     Therefore $e/{\sim}\subseteq\c B$ if and only if $\c B_\sim=\c B$.
 
 \ethrm
@@ -563,6 +563,10 @@ So if $e/{\sim}\subseteq\c B$ then $\c B_\sim=\bar{\f t}(e/{\sim},\c B)\subseteq
 And since $\c B\subseteq\c B_\sim$ we have the required result.
 Conversely, since $e\in\c B$ as it is a constant, we always have that $e/{\sim}\subseteq\c B_\sim=\c B$.
 \qed
+
+Notice that $\set a_\sim=a/{\sim}$, so we have that $a/{\sim}=\bar{\f t}(I,a)$.
+Thus we can view congruence classes as algebraic cosets:
+$$ \c A/{\sim} = \set{\bar{\f t}(I,a)}[a\in\c A] $$
 
 Let us write $I\c B$ for $\bar{\f t}(I,\c B)$.
 Now, we'd like to state the following:
@@ -742,6 +746,129 @@ So we can now, in good conscience, restate the second isomorphism theorem:
 \ethrm
 
 Since the theory of groups, rings, modules, and boolean algebras all allow for ideals, we have successfully generalized all the isomorphism theorems in a way which takes ideals into account.
+
+\section{The Chinese Remainder Theorem}
+
+Recall the Chinese Remainder Theorem:
+
+\bthrm[title=Chinese Remainder Theorem]
+
+    Let $R$ be a ring, and $I_1,\dots,I_n\normaleq R$ be pairwise comaximal ideals.
+    Then
+    $$ \slfrac R{I_1\cap\cdots\cap I_n} \cong \slfrac R{I_1}\times\cdots\times\slfrac R{I_n} $$
+
+\ethrm
+
+In order to generalize this, we need to define what it means for two ideals to be comaximal.
+Recall that $I,J$ are comaximal if and only if $I+J=R$.
+Recall that $I+J$ is just the smallest ideal containing both $I$ and $J$.
+Fortunately, we know the following
+
+\blemm
+
+    Let $\set{\theta_i}_{i\in I}$ be a family of congruences, then the smallest congruence containing all of them is
+    $$ \bigvee_{i\in I}\theta_i = \set{(a,b)}[\hbox{There exists a sequence $a=a_0,\dots,a_n=b$ such that $(a_j,a_{j+1})\in\theta_i$ for some $i\in I$}] $$
+    This is called the {\emphcolor join} of the congruences.
+
+\elemm
+
+If $\set{I_i}_{i\in I}$ is a family of ideals, let us denote their join to be the ideal of the join of the congruences associated with $I_i$ by $\bigvee_{i\in I}I_i$.
+This is simply
+$$ \bigvee_{i\in I}I_i = \set{a}[\hbox{There exists a sequence $e=a_0,\dots,a_n=a$ such that $\f t(a_j,a_{j+1})\in\bigcup_{i\in I}I_i$}] $$
+Furthermore, instead of $S_{\sim_I}$, we will denote the $\sim_I$-closure of a set $S$ by $S_I$.
+
+\blemm
+
+    Let $\c A$ be idealized, and $I\normaleq\c A$ an ideal.
+    Then $\bar{\f t}(I,I)=\bar{\f t}(I,e)=\bar{\f t}(e,I)=I$.
+
+\elemm
+
+\Proof this is since
+$$ \eqalign{
+    \bar{\f t}(I,I) = I_I &= I\cr
+    \bar{\f t}(I,e) = \set e_I &= I\cr
+    \bar{\f t}(e,I) = I_{\set e} &= I
+} $$
+as required.
+\qed
+
+\blemm
+
+    Let $\c A$ be idealized, and $I,J\normaleq\c A$ ideals.
+    Then $I_J=J_I$, i.e. $\bar{\f t}(I,J)=\bar{\f t}(J,I)$.
+
+\elemm
+
+\Proof we know that
+$$ \bar{\f t}(I,J) \sim_J \bar{\f t}(I,e) = I $$
+so $\bar{\f t}(I,J)\subseteq I_J = \bar{\f t}(J,I)$.
+By symmetry we have the other direction as well.
+\qed
+
+\blemm
+
+    $I\vee J=\bar{\f t}(I,J)$.
+
+\elemm
+
+\Proof we know that
+$$ I\vee J = \set{a}[\exists e=a_0,\dots,a_n=a\colon\f t(a_i,a_{i+1})\in I\cup J] $$
+So assume $a\in I\vee J$, we will prove by induction that $a_i\in\bar{\f t}(I,J)$.
+For $a_0=e$, this is trivial.
+Now, $a_i\in\bar{\f t}(I,J)$ and $\f t(a_{i+1},a_i)\in I\cup J$.
+Thus
+$$ a_{i+1} = \bar{\f t}(\f t(a_{i+1},a_i),a_i) \in \bar{\f t}(I\cup J,\bar{\f t}(I,J)) = \bar{\f t}(I,\bar{\f t}(I,J)) \cup \bar{\f t}(J,\bar{\f t}(I,J)) $$
+Now,
+$$ \bar{\f t}(I,\bar{\f t}(I,J)) \sim_I J $$
+so $\bar{\f t}(I,\bar{\f t}(I,J))\subseteq J_I=\bar{\f t}(I,J)$.
+By symmetry (since $\bar{\f t}(I,J)=\bar{\f t}(J,I)$), we have that $\bar{\f t}(J,\bar{\f t}(I,J))\subseteq\bar{\f t}(I,J)$).
+Thus $I\vee J\subseteq\bar{\f t}(I,J)$.
+
+Conversely, $\bar{\f t}(I,J)\sim_{I\vee J}\bar{\f t}(e,e)=e$ so $\bar{\f t}(I,J)\subseteq I\vee J$.
+\qed
+
+So the following definition is motivated
+
+\bdefn
+
+    Let $\c A$ be idealized, and $I,J\normaleq\c A$ ideals.
+    They are {\emphcolor comaximal} if $\bar{\f t}(I,J)=\c A$.
+
+\edefn
+
+\bthrm[title=The Idealized Chinese Remainder Theorem]
+
+    Let $I,J$ be comaximal ideals, then
+    $$ \slfrac{\c A}{I\cap J} \cong \slfrac{\c A}{I}\times\slfrac{\c A}{J} $$
+
+\ethrm
+
+\Proof let us define
+$$ h\colon\slfrac{\c A}{I\cap J} \longto \slfrac{\c A}{I}\times\slfrac{\c A}{J} $$
+Its kernel is all $a\in\c A$ such that $(a/I,a/J)=(e/I,e/J)$ i.e. $a\in I\cap J$.
+So all that remains is to show that $h$ is surjective.
+Let $a,b\in\c A$, then $a,b\in I_J,J_I$ so $a\sim_Ij\in J$ and $b\sim_J\bar{\f t}(i,e)\in I$ for some $i\in I$ since $\bar{\f t}(I,e)=I$, thus
+$$ \slfrac{\bar{\f t}(i,j)}I = \slfrac{\bar{\f t}(e,j)}I = \slfrac jI = \slfrac aI $$
+and
+$$ \slfrac{\bar{\f t}(i,j)}J = \slfrac{\bar{\f t}(i,e)}J = \slfrac bJ $$
+Thus $h\bar{\f t}(i,j)=(a/I,b/J)$ as required.
+So $h$ is indeed surjective, and we have the desired result.
+\qed
+
+Let us translate this to the world of boolean algebras:
+Notice that a filter $F$ is $\s B$ if and only if $0\in F$, and similarly an ideal is $\s B$ if and only if $1\in I$.
+Thus
+
+\bthrm
+
+    Let $\s B$ be a boolean algebra, and $F_1,F_2\subseteq\s B$ filters of $\s B$.
+    Then if there exists elements $a\in F_1,b\in F_2$ such that $a\oto b=0$ then
+    $$ \slfrac{\s B}{F_1\cap F_2} \cong \slfrac{\s B}{F_1}\times\slfrac{\s B}{F_2} $$
+    Similarly if $I_1,I_2\subseteq\s B$ are ideals such that there exists $a\in I_1,b\in I_2$ such that $a\symdiff b=1$ then
+    $$ \slfrac{\s B}{I_1\cap I_2} \cong \slfrac{\s B}{I_1}\times\slfrac{\s B}{I_2} $$
+
+\ethrm
 
 \bye
 
