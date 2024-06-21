@@ -1,0 +1,279 @@
+\input pdfToolbox
+\input preamble
+
+\parindent=\z@
+\parskip=3pt plus 1pt
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+
+{\vbox{\leftskip=0pt plus 1fill\relax\rightskip=\leftskip\setfontandscale{bf}{25pt}%
+Linear Algebra 2, Recitation 7
+}}
+
+\bdefn
+
+    An {\emphcolor inner product space} (\heb{mr.hb mkplh pnymy}) is a vector space $V$ along with an {\emphcolor inner product}\hfill\break(\heb{pwnq.syt mkplh pnymy}) which is
+    $$ \iprod{\bullet,\bullet}\colon V\times V\longto{\bb F} $$
+    where ${\bb F}\in\set{{\bb R},{\bb C}}$ and $\iprod{\bullet,\bullet}$ satisfies the following three axioms:
+    \benum
+        \item Linearity (in the first component): $\iprod{v+\alpha w,u}=\iprod{v,u}+\alpha\iprod{w,u}$.
+        \item Hermitianness (\heb{hrmy.tywt}): $\iprod{v,u}=\overline{\iprod{u,v}}$.
+        \item Nonnegativity: $\iprod{v,v}\geq0$ where equality occurs iff $v=0$.
+    \eenum
+
+\edefn
+
+\bexerc
+
+    Let $T\colon V\longto V$ be a linear operator on the inner product space $V$.
+    Show that $\iprod{v,u}_T=\iprod{Tv,Tu}$ is an inner product iff $T$ is injective (\heb{.h.h`})
+
+\eexerc
+
+First, suppose $\iprod{\bullet,\bullet}_T$ is an inner product, then $Tv=0$ means that $\iprod{v,v}_T=\iprod{Tv,Tv}=\iprod{0,0}=0$ so $v=0$.
+Thus $T$ is injective.
+
+Conversely, we must check the three axioms of inner products:
+\benum
+    \item Linearity:
+    $$ \iprod{v+\alpha w,u}_T = \iprod{T(v+\alpha w),Tu} = \iprod{Tv+\alpha Tw,Tu} = \iprod{Tv,Tu} + \alpha\iprod{Tw,Tu} = \iprod{v,u}_T + \alpha\iprod{w,u}_T $$
+    \item Hermitianness:
+    $$ \iprod{v,u}_T = \iprod{Tv,Tu} = \overline{\iprod{Tu,Tv}} = \overline{\iprod{u,v}_T} $$
+    \item Nonnegativity: $\iprod{v,v}_T=\iprod{Tv,Tv}\geq0$, and $\iprod{v,v}_T=0$ iff $Tv=0$ iff $v=0$ since $T$ is injective.
+\eenum
+\qqed
+
+\bexerc
+
+    Prove or disprove: for an inner product space $V$ and any $v_1,\dots,v_n\in V$:
+    $$ \sum_{i=1}^n\sum_{j=1}^n\iprod{v_i,v_j} \geq 0 $$
+
+\eexerc
+
+We will prove this.
+We can change the order of summation:
+$$ = \sum_{j=1}^n\sum_{i=1}^n\iprod{v_i,v_j} $$
+By linearity:
+$$ = \sum_{j=1}^n\iprod{\sum_{i=1}^nv_i,v_j} $$
+And by linearity again + Hermitianness:
+$$ = \iprod{\sum_{i=1}^nv_i,\sum_{j=1}^nv_j} $$
+So defining $u=\sum_{i=1}^nv_i$, this is just equal to $\iprod{u,u}\geq0$.
+\qqed
+
+\bexerc
+    
+    Let $V$ be an inner product space.
+    \benum
+        \item Take $v\in V$, prove that for all $u\in V\colon\;\iprod{v,u}=0$ iff $v=0$.
+        \item Take $B=(v_1,\dots,v_n)$ a basis of $V$, and $v,u\in V$.
+        Suppose for all $1\leq i\leq n\colon\; \iprod{v,v_i}=\iprod{u,v_i}$.
+        Show that $v=u$.
+    \eenum
+
+\eexerc
+
+\benum
+    \item Take $v=u$ then $\iprod{v,v}=0$ so $v=0$.
+    The converse was shown in lecture.
+    \item We have that $\iprod{v-u,v_i}=0$ for all $1\leq i\leq n$.
+    Now take any $w\in V$, there must exist $\alpha_i$s such that $w=\sum_i\alpha_iv_i$, then
+    $$ \iprod{v-u,w} = \iprod{v-u,\sum_i\alpha_iv_i} = \sum_i\overline\alpha_i\iprod{v-u,v_i} = \sum_i\overline\alpha_i\cdot0 = 0 $$
+    So for every $w\in V$, $\iprod{v-u,w}=0$ and so by (1), $v-u=0\implies v=u$.
+\eenum
+
+\bdefn
+
+    Let $V$ be an inner product space, and $S=(v_1,\dots,v_n)\subseteq V$ a subset.
+    Define $S$'s {\emphcolor Gram matrix} by $(G_S)_{ij}=\iprod{v_i,v_j}$.
+
+\edefn
+
+\bexerc
+
+    Let $S\subseteq V$, show that $G_S$ is singular (not invertible) iff $S$ is linearly dependent.
+
+\eexerc
+
+Suppose $G_S$ is singular, then there exist $\alpha_1,\dots,\alpha_n$ such that at least one is not zero and
+$$ \sum_{i=1}^n\alpha_iC_i(A) = \sum_{i=1}^n\alpha_i\pmatrix{\iprod{v_1,v_i}\cr\vdots\cr\iprod{v_n,v_i}} $$
+So for every $j$, $0=\sum_{i=1}^n\alpha_i\iprod{v_j,v_i}=\iprod{v_j,\sum_{i=1}^n\overline\alpha_iv_i}$.
+Let us define $u=\sum_{i=1}^n\overline\alpha_iv_i$.
+Now, we have that
+$$ 0 = \sum_{j=1}^n\overline\alpha_j\iprod{v_j,u} = \iprod{u,u} $$
+Thus $u=0$ and since at least one $\alpha_i$ is nonzero, $S$ is linearly dependent.
+
+The converse is shown similarly.
+\qqed
+
+\bdefn
+
+    A {\emphcolor normed vector space} (\heb{mr.hb nwrmy}) is a ${\bb R}$- or ${\bb C}$-vector space $V$ equipped with a {\emphcolor norm function} (\heb{pwnq.syt nwrmh})
+    $$ \norm{\bullet}\colon V\longto {\bb R} $$
+    Which satisfies the axioms:
+    \benum
+        \item Nonnegativity: $\norm v\geq0$ and equality occurs iff $v=0$.
+        \item Homogeneity (\heb{hwmwgnywt}): for all $\alpha\in{\bb F}$ and $v\in V$: $\norm{\alpha v}=\abs\alpha\norm v$.
+        \item The triangle inequality: $\norm{v+u}\leq\norm v+\norm u$.
+    \eenum
+    Intuitively, the norm measures the ``length'' of a vector.
+
+\edefn
+
+\bthrm
+
+    Let $V$ be an inner product space, then
+    $$ \norm v = \sqrt{\iprod{v,v}} $$
+    defines a norm function on $V$.
+
+\ethrm
+
+For example, the standard inner product $\iprod{v,u}=\sum_i\overline v_iu_i$ on ${\bb C}^n$ induces the norm $\norm v=\sqrt{\sum_i\abs{v_i}^2}$.
+
+\bexerc
+
+    Let $V$ be an inner product space, show that
+    $$ \abs{\norm v-\norm u} \leq \norm{v-u} $$
+    for all $v,u\in V$.
+
+\eexerc
+
+We have that
+$$ \norm v = \norm{(v-u)+u} \leq \norm{v-u} + \norm u $$
+and so
+$$ \norm v - \norm u \leq \norm{v-u} $$
+and similarly
+$$ \norm u - \norm v \leq \norm{u-v} $$
+so we get the desired result.
+\qqed
+
+\bdefn
+
+    Let $V$ be a normed vector space, then $v\in V$ is called {\emphcolor normal} (\heb{nwrmly}) if $\norm v=1$.
+    Every vector $v\in V$, save zero, can be {\emphcolor normalized} (\heb{nytnt lnyrmwl}) by $v\mapsto\frac{v}{\norm v}$.
+
+\edefn
+
+\bdefn
+
+    Let $V$ be an inner product space, then two vectors $v,u\in V$ are {\emphcolor orthogonal} (\heb{'wrtwgwnlyyM}) if $\iprod{v,u}=0$.
+    A set of vectors $\set{v_1,\dots,v_n}$ is said to be orthogonal if it is pairwise orthogonal (i.e. $\iprod{v_i,v_j}=0$ for every $i\neq j$).
+    A set of vectors $\set{v_1,\dots,v_n}$ is said to be {\emphcolor orthonormal} (\heb{'wrtwnwrmly}) if it is orthogonal and every vector is normal.
+
+\edefn
+
+\bthrm
+
+    Every orthogonal set which doesn't contain zero is linearly independent.
+
+\ethrm
+
+\bexerc
+
+    Find an orthonormal basis to ${\bb C}^{n\times n}$ wrt the inner product $\iprod{A,B}=\trof{AB^*}$.
+
+\eexerc
+
+Let $E_{ij}$ be the elementary matrix where $(E_{ij})_{k\ell}=\delta_{ik}\delta_{j\ell}$ ($\delta_{xy}=1$ when $x=y$ and zero otherwise).
+We claim that $\set{E_{ij}}_{i,j=1}^n$ is an orthonormal basis.
+Indeed:
+$$ \iprod{E_{ij},E_{k\ell}} = \trof{E_{ij}E_{k\ell}^*} = \trof{E_{ij}E_{\ell k}} $$
+Now
+$$ (E_{ab}E_{cd})_{xy} = \sum_t (E_{ab})_{xt}(E_{cd})_{ty} $$
+A coefficient of this sum is zero unless $a=x$, $b=t$, $c=t$, and $d=y$.
+So $E_{ab}E_{cd}=0$ if $b\neq c$ and $E_{ab}E_{cd}=E_{ad}$ if $b=c$.
+So in the case $(i,j)=(k,\ell)$ the inner product is
+$$ \iprod{E_{ij},E_{k\ell}} = \trof{E_{ij}E_{ji}} = \trof{E_{ii}} = 1 $$
+and otherwise we either have $j\neq k$ in which case the product of the two elementary matrices is zero, or $j=k$ and then
+$$ \iprod{E_{ij},E_{k\ell}} = \trof{E_{ij}E_{jk}} = \trof{E_{ik}} = 0 $$
+since $i\neq k$ so the diagonal is zero.
+\qqed
+
+\bexerc
+
+    Prove the generalized Pythagorean theorem: if $V$ is an inner product space, $\set{v_1,\dots,v_n}$ an orthogonal set, then
+    $$ \norm{\sum_{i=1}^nv_i}^2 = \sum_{i=1}^n\norm{v_i}^2 $$
+
+\eexerc
+
+We know that
+$$ \norm{\sum_{i=1}^nv_i}^2 = \iprod{\sum_{i=1}^nv_i,\sum_{j=1}^nv_j} = \sum_{i,j=1}^n\iprod{v_i,v_j} $$
+If $i\neq j$ then $\iprod{v_i,v_j}=0$, and so this is equal to
+$$ = \sum_{i=1}^n\iprod{v_i,v_i} = \sum_{i=1}^n\norm{v_i}^2 \qqed $$
+
+\bexerc
+
+    Let $e_1,\dots,e_n$ be an orthonormal basis of $V$.
+    Show that if $v_1,\dots,v_n$ are vectors of $V$ such that for every $i$,
+    $$ \norm{e_i-v_i} < \frac1{\sqrt n} $$
+    then $v_1,\dots,v_n$ is a basis of $V$.
+
+\eexerc
+
+Since there are $n$ $v_i$s, we need only prove that $v_1,\dots,v_n$ is linearly independent.
+Suppose $\sum_i\alpha_iv_i=0$, then
+$$ \sum_i(\alpha_iv_i - \alpha_ie_i) = -\sum_i\alpha_ie_i $$
+The norm of the left-hand side can be bound by
+$$ \norm{\sum_i\alpha_i(v_i-e_i)} \leq \sum_i\abs{\alpha_i}\norm{v_i-e_i} < \sum_i\abs{\alpha_i}\frac1{\sqrt n} $$
+And by the Pythagorean theorem, the right hand-side's norm is
+$$ \norm{-\sum_i\alpha_ie_i} = \sqrt{\sum_{i=1}^n\abs{\alpha_i}^2} $$
+Squaring these both, we want to prove
+$$ \parens{\sum_i\abs{\alpha_i}}^2 = \sum_{i,j}\abs{\alpha_i}\abs{\alpha_j} \leq n\sum_{i=1}^n\abs{\alpha_i}^2 = \sum_{i,j}\abs{\alpha_i}\abs{\alpha_i} $$
+That is, we want to show that $\sum_{i,j}\abs{\alpha_i}(\abs{\alpha_i}-\abs{\alpha_j})\geq0$.
+This is just equal to
+$$ \sum_{i<j}\bigl(\abs{\alpha_i}(\abs{\alpha_i}-\abs{\alpha_j}) + \abs{\alpha_j}(\abs{\alpha_j}-\abs{\alpha_i})\bigr) = \sum_{i<j}\bigl(\abs{\alpha_i}-\abs{\alpha_j}\bigr)^2 \geq 0 $$
+as required.
+\qqed
+
+\bdefn
+
+    Let $V$ be an inner product space, and $S\subseteq V$ a subset.
+    Define $S$'s {\emphcolor orthogonal complement} (\heb{hmr.hb hny.sb}) to be
+    $$ S^\perp = \set{v\in V}[\forall u\in S\colon\;\iprod{u,v}=0] $$
+
+\edefn
+
+\bexerc
+
+    Find the orthogonal complement of $S=\set{\pmatrix{1\cr2\cr3},\pmatrix{0\cr1\cr2}}$.
+
+\eexerc
+
+The orthogonal complement of $S$ is
+$$ S^\perp = \set{\pmatrix{x\cr y\cr z}\in{\bb R}^3}[\iprod{\pmatrix{1\cr2\cr3},\pmatrix{x\cr y\cr z}}=\iprod{\pmatrix{0\cr1\cr2},\pmatrix{x\cr y\cr z}}=0] =
+\set{\pmatrix{x\cr y\cr z}\in{\bb R}^3}[\cases{x+2y+3z=0\cr y+2z=0}] $$
+This is just
+$$ N\pmatrix{1 & 2 & 3\cr 0 & 1 & 2} = N\pmatrix{1 & 0 & -1\cr 0 & 1 & 2} = \lspanof{\pmatrix{1\cr-2\cr1}} \qqed $$
+
+\bexerc
+
+    Let $U,W$ be subspaces of an inner product space $V$, prove
+    $$ (U+W)^\perp = U^\perp\cap W^\perp $$
+
+\eexerc
+
+Suppose $v\in(U+W)^\perp$, let $u\in U$ and $w\in W$, then $u,w\in U+W$ so $\iprod{v,u}=\iprod{v,w}=0$.
+Thus $v\in U^\perp\cap W^\perp$.
+Conversely, let $v\in U^\perp\cap W^\perp$, let $u+w\in U+W$ then $\iprod{v,u}=\iprod{v,w}=0$ so $\iprod{v,u+w}=0$ by linearity.
+Thus $v\in (U+W)^\perp$ as required.
+\qqed
+
+\bexerc
+
+    Let $A\in{\bb R}^{m\times n}$, find $C(A)^\perp$ and $C(A^\top)^\perp$.
+
+\eexerc
+
+We know that
+$$ C(A^\top) = \set{A^\top w}[w\in{\bb R}^m] $$
+and so $C(A^\top )^\perp$ is the set of all vectors $v$ such that for every $w\in{\bb R}^n$: $\iprod{A^\top w,v}=(A^\top w)^\top v=w^\top Av$.
+Take in particular $w=e_i$, then this requires $e_i^\top Av=R_i(A)v=0$.
+This precisely means that $v\in N(A)$.
+So we claim that $C(A^\top)^\perp=N(A)$, we have already shown one direction of the equality.
+Now suppose $Av=0$ then for any $w$, $\iprod{A^\top w,v}=w^\top Av=w^\top0=0$.
+So we have shown equality.
+
+Thus we also get
+$$ C(A)^\perp = N(A^\top) $$
+
+\bye
+
