@@ -1,0 +1,103 @@
+Suppose we'd like to learn the class of halfspaces: $\c X={\bb R}^d,\c Y=\set{-1,1}$ and the hypothesis class is
+$$ \c H{\it S}_d = \set{{\bf x}\mapsto{\rm sign}(\iprod{{\bf w},{\bf x}}+b)}[{\bf w}\in{\bb R}^d, b\in{\bb R}] $$
+The idea here is that we split our space by the hyperplane $\iprod{{\bf w},{\bf x}}=-b$, and we classify elements as being either above or below the hyperplane depending on the sign of
+$\iprod{{\bf w},{\bf x}}+b$.
+Let us assume the realizable case, then we'd like to learn this hypothesis class.
+
+Notice that
+$$ \iprod{{\bf w},{\bf x}} + b = \iprod{(b,{\bf w}),(1,{\bf x})} $$
+so we can assume that $b=0$ and the input ${\bf x}$'s first index is $1$.
+
+\subsection{The Perceptron Algorithm}
+
+\algorithm
+    \Function{Perceptron}{$({\bf x}_1,y_1),\dots,({\bf x}_n,y_n)$}
+        \State ${\bf w}^{(1)}\gets(0,\dots,0)$
+        \For{$t=1,2,3,\dots$}
+            \If{There exists an $i$ such that $y_i\iprod{{\bf w}^{(t)},{\bf x}_i}\leq0$}
+                \State ${\bf w}^{(t+1)} \gets {\bf w}^{(t)} + y_i{\bf x}_i$
+            \Else
+                \State\Return ${\bf w}^{(t)}$
+            \EndIf
+        \EndFor
+    \EndFunc
+\ealgorithm
+
+Notice that the check $y_i\iprod{\b w^{(t)},\b x}\leq0$ is the same as ${\rm sign}\iprod{\b w^{(t)},\b x}\neq y_i$.
+So this algorithm checks if the current $\b w^{(t)}$ mislabels any input, and if so it alters $\b w^{(t)}$ to fix this.
+Notice that $w^{(t+1)}=\b w^{(t)}+y_i\b x_i$ will increase $y_i\iprod{\b w,\b x_i}$:
+$$ y_i\iprod{\b w^{(t+1)},\b x_i} = y_i\iprod{\b w^{(t)}+y_i\b x_i,\b x_i} = y_i\iprod{\b w^{(t)},\b x_i} + \norm{\b x_i}^2 $$
+so this will make the current hypothesis hopefully closer to objective concept.
+
+Indeed this algorithm does terminate, but the proof of this is not relevant to this course.
+
+\subsection{Gradient Descent}
+
+Suppose we want to minimize some loss function $\ell(\b w)$.
+Since $\nabla\ell$ is the direction in which the loss function increases the most, if we go in the opposite direction we hope that this decreases the function.
+So if we start with an initial guess for the minimum point of the loss function $\b w^{(1)}$, then at each iteration we just compute
+$$ \b w^{(t+1)} \gets \b w^{(t)} - \eta\nabla\ell(\b w^{(t)}) $$
+where $\eta>0$ is some constant.
+This iterative procedure is called {\it gradient descent}.
+Assuming $\ell$ is convex and $\nabla\ell$ is Lipschitz-continuous, and $0<\eta<1/L$ where $L$ is the Lipschitz constant for $\nabla\ell$, then gradient descent is ensured to converge.
+
+\subsection{Stochastic Gradient Descent}
+
+When we have a collection of samples $\set{(x_i,y_i)}_{i=1}^n$, then we want to minimize ${\it Err}(w)=\sum_{i=1}^n\ell(w;x_i,y_i)$ (i.e. $\ell$ is parameterized, and we want to minimize the mean over the
+samples).
+Then our iteration becomes
+$$ w^{(t+1)} \gets w^{(t)} - \eta\nabla{\it Err}(w^{(t)}) $$
+But computing the gradient of $n$ parameterizations is costly, so we can approximate this by defining
+$$ \hbox{\it Batch-Err}(w) = \sum_{i=1}^b\ell(w;x_i,y_i) $$
+where $b\ll n$ and the parameters $x_i,y_i$ are chosen randomly from the set of samples (the samples are chosen uniformly at each iteration).
+When $b=1$ this is called {\it pure stochastic gradient descent}.
+
+\subsection{Stochastic Gradient Descent Learning}
+
+Let us return to the problem of learning halfspaces.
+Recall that our samples are of the form $\set{(\b x_i,y_i)}$ where $y_i=\pm1$ depending on whether or not $\b x_i$ is in or out of the halfspace.
+The perceptron method works for the realizable case, but in the case that there is some noise in the sampling, it will not work.
+So let us use SGD to learn it, to do so we take a good loss function, for example the {\it hinge loss function}:
+$$ \ell_{\it hinge}(w;x,y) = \cases{-yw^\top x & $yw^\top x<0$\cr $0$ & else} $$
+Then the total loss function is
+$$ {\it Err}(w) = \sum_{i=1}^n\ell_{\it hinge}(w;\b x_i,y_i) $$
+We compute:
+$$ \nabla\ell_{\it hinge}(w;x,y) = \cases{-yx & $yw^\top x<0$\cr 0 & else} $$
+So using pure SGD we get the following algorithm for learning halfspaces:
+
+\medskip
+\algorithm
+    \Function{SGD-Learner}{$(\b x_1,y_1),\dots,(\b x_n,y_n),\eta$}
+        \State $\b w^{(1)} \gets (0,\dots,0)$
+        \While{There exists an $i$ such that $y_i(\b w^{(t)})^\top x_i<0$}
+            \State $\b w^{(t+1)}\gets \b w^{(t)} + \eta y_i\b x_i$
+        \EndWhile
+    \EndFunc
+\ealgorithm
+
+\subsection{Logistic Regression}
+
+The issue with the previous methods is that they check ${\rm sign}(\b w^\top\b x_i)$, which is binary and therefore very rigid.
+Instead, we can define the hypothesis class
+$$ \c H_{\rm sig} = \set{\b x\mapsto\sigma(\iprod{\b w,\b x})}[\b w\in{\bb R}^d] $$
+where $\sigma$ is the {\it sigmoid function}:
+$$ \sigma(z) = \frac1{1+\exp(-z)} $$
+The shape of this graph looks a lot like $f(x)=0$ for $x\ll0$ and $f(x)=1$ for $x\gg0$.
+For a hypothesis $h_{\b w}$, we can view $h_{\b w}(\b x)$ as the probability that the label of $\b x$ is $1$.
+
+We want to define a loss function which should determine how bad it is to predict $h_{\b w}(\b x)\in[0,1]$ given that the true label is $y=\pm1$.
+Suppose we have a sample $(x,y)$ then our model outputs $\probof{y=1}[x]$, and for a given weight $\b w$, this is $\probof{y=1}[x]=\sigma(\b w^\top\b x)$.
+For a given set of independent samples $\set{(\b x_i,y_i)}_{i=1}^n$, we want to maximize
+$$ \c L(\b w) = \prod_{y_i=1}\probof{y=1}[\b x_i]\cdot\prod_{y_i=0}\probof{y=0}[\b x_i] $$
+Since $x^0=x$ for all $x$, we can write this as
+$$ = \prod_{i=1}^n\probof{y=1}[\b x_i]^{y_i}\cdot\prod_{i=1}^n\probof{y=0}[\b x_i]^{1-y_i} = \prod_{i=1}^n\sigma(\b w^\top\b x_i)^{y_i}\cdot\prod_{i=1}^n\bigl(1-\sigma(\b w^\top\b x_i)\bigr)^{1-y_i} $$
+Maximizing this is the same as minimizing $-\log\c L(\b w)$ (because we can then use gradient descent to find the minimum).
+And so our total loss function is
+$$ {\it Err}(\b w) = -\log\c L(\b w) = \sum_{i=1}^ny_i\log\sigma(\b w^\top\b x_i) + \sum_{i=1}^n(1-y_i)\log\bigl(1-\sigma(\b w^\top\b x_i)\bigr) $$
+Let us write $\sigma$ for $\sigma(\b w^\top\b x_i)$, then computing the gradient gives
+$$ \nabla{\it Err}(\b w) = -\sum_{i=1}^n\parens{y_i\frac1\sigma(1-\sigma)\b x_i+(1-y_i)\frac{-1}{1-\sigma}\sigma(1-\sigma)\b x_i} = -\sum_{i=1}^n(y_i(1-\sigma)\b x_i - (1-y_i)\sigma\b x_i) $$
+And so we get that
+$$ \nabla{\it Err}(\b w) = -\sum_{i=1}^n\bigl(y_i-\sigma(\b w^\top\b x_i)\bigr)\b x_i $$
+Thus using pure stochastic gradient descent, we have the update rule
+$$ \b w^{(t+1)} \gets \b w^{(t)} - \eta\b x_i\bigl(\sigma(\b w^\top\b x_i)-y_i\bigr) $$
+
