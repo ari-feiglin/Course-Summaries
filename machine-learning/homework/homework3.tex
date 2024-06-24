@@ -1,0 +1,123 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+\parindent=0pt
+\parskip=3pt plus 2pt minus 2pt
+
+\input ../preamble
+\def\accent@skew{0}
+
+\footline={}
+
+\setcounter{section}{3}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+
+{\bppbox{rgb{.5 1 .5}}{rgb{0 .4 0}}{rgb{.1 .4 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Machine Learning}
+    \smallskip
+    \centerline{\setfont{it}Homework \the\counter{section}}
+    \centerline{\setfont{it}Ari Feiglin $\vcenter{\hbox{\csname (m<3y)\endcsname}}$}
+
+\eppbox}
+
+\bexerc
+
+    Consider the total loss function for polynomial fitting:
+    $$ \Errof{\b w} = \frac1n\sum_{i=1}^n(h_{\b w}(\b x_i)-y_i)^2 + \lambda\norm{\b w}^2 $$
+    \benum
+        \item Derive a solution for a zero-degree polynomial.
+        Analyze this solution as $\lambda\to0,\infty$.
+        \item Derive a solution for a one-degree polynomial.
+        Analyze this solution as $\lambda\to0,\infty$.
+    \eenum
+
+\eexerc
+
+\benum
+    \item $\Err$ is the ridge loss function, i.e. it is just
+    $$ \Errof{\b w} = \frac1n\norm{X\b w-\b y}^2 + \lambda\norm{\b w}^2 $$
+    where $k$ is the degree of the polynomial we are fitting and
+    $$ X = \pmatrix{x_1^0 & x_1^1 & \cdots & x_1^k\cr \vdots & \vdots & & \vdots\cr x_n^0 & x_n^1 & \cdots & x_n^k} $$
+    and we saw in lecture that this takes a minimum when
+    $$ \hat{\b w}_{\rm ridge} = (X^\top X+\lambda nI)^{-1}X^\top\b y $$
+    where $I=I_n$.
+    Here, because $k=0$ we have that
+    $$ X = \pmatrix{1\cr\vdots\cr1} $$
+    and so
+    $$ \hat{\b w}_{\rm ridge} = (n+\lambda n)^{-1}\sum_{i=1}^ny_i = \frac1{n(1+\lambda)}\sum_{i=1}^ny_i $$
+    Thus when $\lambda\to0$, $\hat{\b w}_{\rm ridge}\to\frac1n\sum_{i=1}^ny_i$, and when $\lambda\to\infty$ it approaches $0$.
+    \item Here we have that
+    $$ X = \pmatrix{1 & x_1\cr\vdots & \vdots\cr 1 & x_n} $$
+    So
+    $$ X^\top X + \lambda n I = \pmatrix{n(1+\lambda) & \sum_ix_i\cr \sum_ix_i & \sum_ix_i^2},\qquad X^\top\b y = \pmatrix{\sum_jy_j\cr\sum_jx_jy_j} $$
+    Thus
+    $$ \hat{\b w}_{\rm ridge} = \frac1{n(1+\lambda)\sum_ix_i^2-\sum_{i,j}x_ix_j}\pmatrix{\sum_{i,j}y_jx_i(x_i-x_j)\cr-\sum_{i,j}y_i(x_j+(1+\lambda)x_i)} $$
+    So as $\lambda\to0$:
+    $$ \hat{\b w}_{\rm ridge} \longto \frac1{\sum_{i,j}x_i(x_i-x_j)}\pmatrix{\sum_{i,j}y_jx_i(x_i-x_j)\cr\noalign{\kern3pt}-\sum_{i,j}y_i(x_i+x_j)} $$
+    And as $\lambda\to\infty$ by LHopital:
+    $$ \hat{\b w}_{\rm ridge} \longto \pmatrix{0\cr-\frac{\sum_iy_ix_i}{\sum_ix_i^2}} $$
+\eenum
+
+\bexerc
+
+    \benum
+        \item For a vector $\b z\in{\bb R}^K$ define the softmax function
+        $$ \smof[i]{\b z} = \frac{\exp(\b z_i)}{\sum_{k=1}\exp(\b z_k)} $$
+        for a vector $b\b 1\in{\bb R}^K$, show that $\smof[i]{\b z+b\b1}=\smof[i]{\b z}$. 
+        \item Define
+        $$ f_i(\b z) = \smof[i]{T\b z} $$
+        and consider the {\emphcolor one-hot} representation of the argmax function:
+        $$ \argmax(\b z) = e_{\argmax\b z} $$
+        \benum
+            \item For any $\b z$ whose maximum element is unique, show that
+            $$ \lim_{T\to\infty}(f_1(\b z),\dots,f_K(\b z)) = \argmax(\b z) $$
+            \item For a $\b z$ whose maximum is not necessarily unique, compute an expression for
+            $$\lim_{T\to\infty}(f_1(\b z),\dots,f_K(\b z))$$
+            \item What happens when $T\to0$?
+        \eenum
+        \item Write the gradient update rule for a logistic regression model, when the usual loss of the negative log likelihood is regularized by $\frac12\norm{\b w}^2$.
+    \eenum
+
+\eexerc
+
+\benum
+    \item By definition
+    $$ \smof{\b z+b\b1} = \frac{\exp(\b z_i+b)}{\sum_k\exp(\b z_k+b)} = \frac{\exp(\b z_i)\exp(b)}{\sum_k\exp(\b z_k)\exp(b)} = \frac{\exp(\b z_i)}{\sum_k\exp(\b z_k)} = \smof{\b z} $$
+    \item 
+    \benum
+        \item Suppose $\argmax(z)=i$, then for every $j\neq i$, $\exp(Tz_j)/\exp(Tz_i)=\exp(T(z_j-z_i))$ and since $z_j-z_i<0$, $\exp(T(z_j-z_i))\to0$ as $T\to\infty$.
+        And so
+        $$ f_i(\b z) = \frac1{\sum_j\exp(Tz_j)/\exp(Tz_i)} \longto \frac1{\sum_j\delta_{ij}} = 1 $$
+        And so $\exp(Tz_i)/\exp(Tz_j)\to\infty$ and thus
+        $$ f_j(\b z) = \frac1{\sum_k\exp(Tz_k)/\exp(Tz_j)} = \frac1{\exp(Tz_i)/\exp(Tz_k)+\sum_{k\neq i}\exp(Tz_k)/\exp(Tz_j)} \longto 0 $$
+        thus since convergence in ${\bb R}^K$ is equivalent to pointwise convergence,
+        $$ \lim_{T\to\infty}(f_1(\b z),\dots,f_K(\b z)) = e_i $$
+        as required.
+        \item Suppose $I$ is the set of indexes for which $z_i$ are maximal.
+        Then for $i\in I$:
+        $$ f_i(\b z) = \frac1{\sum_{j\in I}\exp(Tz_j)/\exp(Tz_i) + \sum_{j\notin I}\exp(Tz_j)/\exp(Tz_i)} \longto \frac1{\sum_{j\in I}1} = \frac1{\abs I} $$
+        And for $i\notin I$:
+        $$ f_i(\b z) = \frac1{\sum_{j\in I}\exp(Tz_j)/\exp(Tz_i) + \sum_{j\notin I}\exp(Tz_j)/\exp(Tz_i)} \longto 0 $$
+        since $\exp(Tz_j)/\exp(Tz_i)\to\infty$.
+        Thus
+        $$ \lim_{T\to\infty}(f_1(\b z),\dots,f_K(\b z)) = \frac1{\abs I}\sum_{i\in I}e_i,\qquad I = \set{1\leq i\leq K}[\hbox{$z_i$ is maximal}] $$
+        \item For any $i,j$, $\lim_{T\to0}\exp(Tz_j)/\exp(Tz_i)=1$.
+        Thus
+        $$ f_i(\b z) = \frac1{\sum_j\exp(Tz_j)/\exp(Tz_i)} = \frac1{K} $$
+        so the limit is just $\frac1K\b1$.
+    \eenum
+    \item The total loss function just becomes
+    $$ \Errof{\b w} = \sum_{i=1}^ny_i\log\sigma + \sum_{i=1}^n(1-y_i)\log(1-\sigma) + \frac12\norm{\b w}^2 $$
+    where $\sigma=\sigma(\b w^\top\b x_i)$.
+    Then the gradient becomes
+    $$ \nabla\Errof{\b w} = \nabla\parens{\sum_{i=1}^ny_i\log\sigma + \sum_{i=1}^n(1-y_i)\log(1-\sigma)} + \b w = - \sum_{i=1}^n\bigl(y_i-\sigma(\b w^\top\b x_i)\bigr)\b x_i + \b w $$
+    So the update rule becomes (as we take the $i$th component of the sum of the gradient):
+    $$ \b w^{(t+1)} \gets \b w^{(t)} - \eta\parens{\sigma(\b w^\top\b x_i)-y_i + \frac1n\b w} $$
+    Since $\b w$ gives a component of $\frac1n\b w$ to each of the summands.
+\eenum
+
+\bye
