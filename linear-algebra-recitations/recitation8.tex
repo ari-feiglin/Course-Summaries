@@ -1,0 +1,236 @@
+\input pdfToolbox
+\input preamble
+
+\parindent=\z@
+\parskip=3pt plus 1pt
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+
+{\vbox{\leftskip=0pt plus 1fill\relax\rightskip=\leftskip\setfontandscale{bf}{25pt}%
+Linear Algebra 2, Recitation 8
+}}
+
+\section*{Final Part of Recitation 7}
+
+\bdefn
+
+    Let $V$ be an inner product space, and $S\subseteq V$ a subset.
+    Define $S$'s {\emphcolor orthogonal complement} (\heb{hmr.hb hny.sb}) to be
+    $$ S^\perp = \set{v\in V}[\forall u\in S\colon\;\iprod{u,v}=0] $$
+
+\edefn
+
+\bexerc
+
+    Find the orthogonal complement of $S=\set{\pmatrix{1\cr2\cr3},\pmatrix{0\cr1\cr2}}$.
+
+\eexerc
+
+The orthogonal complement of $S$ is
+$$ S^\perp = \set{\pmatrix{x\cr y\cr z}\in{\bb R}^3}[\iprod{\pmatrix{1\cr2\cr3},\pmatrix{x\cr y\cr z}}=\iprod{\pmatrix{0\cr1\cr2},\pmatrix{x\cr y\cr z}}=0] =
+\set{\pmatrix{x\cr y\cr z}\in{\bb R}^3}[\cases{x+2y+3z=0\cr y+2z=0}] $$
+This is just
+$$ N\pmatrix{1 & 2 & 3\cr 0 & 1 & 2} = N\pmatrix{1 & 0 & -1\cr 0 & 1 & 2} = \lspanof{\pmatrix{1\cr-2\cr1}} \qqed $$
+
+\bexerc
+
+    Let $U,W$ be subspaces of an inner product space $V$, prove
+    $$ (U+W)^\perp = U^\perp\cap W^\perp $$
+
+\eexerc
+
+Suppose $v\in(U+W)^\perp$, let $u\in U$ and $w\in W$, then $u,w\in U+W$ so $\iprod{v,u}=\iprod{v,w}=0$.
+Thus $v\in U^\perp\cap W^\perp$.
+Conversely, let $v\in U^\perp\cap W^\perp$, let $u+w\in U+W$ then $\iprod{v,u}=\iprod{v,w}=0$ so $\iprod{v,u+w}=0$ by linearity.
+Thus $v\in (U+W)^\perp$ as required.
+\qqed
+
+\bexerc
+
+    Let $A\in{\bb R}^{m\times n}$, find $C(A)^\perp$ and $C(A^\top)^\perp$.
+
+\eexerc
+
+We know that
+$$ C(A^\top) = \set{A^\top w}[w\in{\bb R}^m] $$
+and so $C(A^\top )^\perp$ is the set of all vectors $v$ such that for every $w\in{\bb R}^n$: $\iprod{A^\top w,v}=(A^\top w)^\top v=w^\top Av$.
+Take in particular $w=e_i$, then this requires $e_i^\top Av=R_i(A)v=0$.
+This precisely means that $v\in N(A)$.
+So we claim that $C(A^\top)^\perp=N(A)$, we have already shown one direction of the equality.
+Now suppose $Av=0$ then for any $w$, $\iprod{A^\top w,v}=w^\top Av=w^\top0=0$.
+So we have shown equality.
+
+Thus we also get
+$$ C(A)^\perp = N(A^\top) \qqed $$
+
+Note that $C(A^\top)=R(A)$, so we have in essence shown that $R(A)^\perp=N(A)$.
+
+\section*{Recitation 8}
+
+Recall the following definition:
+
+\bdefn
+
+    Let $V$ be an inner product space, and $S=\set{v_1,\dots,v_n}\subseteq V$, then $S$'s {\emphcolor Gram Matrix} is
+    $$ G_S \coloneqq \pmatrix{\iprod{v_1,v_1} & \iprod{v_1,v_2} & \cdots & \iprod{v_1,v_n}\cr \vdots & \vdots & \ddots & \vdots\cr \iprod{v_n,v_1} & \iprod{v_n,v_2} & \cdots & \iprod{v_n,v_n}} $$
+
+\edefn
+
+Last recitation we showed that $G_S$ is invertible iff $S$ is linearly independent.
+Now we show
+
+\bprop
+
+    Let $V$ be an inner product space and $B=\set{v_1,\dots,v_n}\subseteq V$ a basis.
+    Then for any $v,u\in V$:
+    $$ \iprod{v,u} = [v]_B^\top\cdot G_B\cdot\overline{[u]_B} $$
+
+\eprop
+
+\Proof suppose $[v]_B=(\alpha_1,\dots,\alpha_n)^\top$ and $[u]_B=(\beta_1,\dots,\beta_n)^\top$.
+Then
+$$ \iprod{v,u} = \iprod{\sum_i\alpha_iv_i,\;\sum_j\beta_jv_j} = \sum_i\sum_j\alpha_i\overline\beta_j\iprod{v_i,v_j} = \sum_i\sum_j\alpha_i\overline\beta_j(G_B)_{ij} $$
+Now,
+$$ [v]_B^\top G_B\overline{[u]_B} = (\alpha_1,\dots,\alpha_n)\pmatrix{\sum_j\overline\beta_j(G_B)_{1j}\cr\vdots\cr\sum_j\overline\beta_j(G_B)_{nj}} = \sum_i\sum_j\alpha_i\overline\beta_j(G_B)_{ij} $$
+as required.
+\qed
+
+\bthrm[title=Cauchy-Schwarz -- \heb{qw/sy--/swwr.S}]
+
+    Let $V$ be an inner product space, then for every $v,u\in V$:
+    $$ \abs{\iprod{v,u}} \leq \norm v\norm u $$
+    and there is equality if and only if $v$ and $u$ are linearly dependent.
+
+\ethrm
+
+\bexerc
+
+    Let $a_1,\dots,a_n\in{\bb R}$, show that
+    $$ (a_1+\cdots+a_n)^2 \leq n(a_1^2+\cdots+a_n^2) $$
+
+\eexerc
+
+\Proof let $V={\bb R}^n$, and define $v=(a_1,\dots,a_n)^\top$ and $\b1=(1,\dots,1)^\top$.
+Then $\iprod{v,\b1}=a_1+\cdots+a_n$, $\norm v=\sqrt{a_1^2+\cdots+a_n^2}$, and $\norm{\b1}=\sqrt n$.
+So by Cauchy-Schwarz,
+$$ \abs{a_1+\cdots+a_n} \leq \sqrt n\sqrt{a_1^2+\cdots+a_n^2} \implies (a_1+\cdots+a_n)^2 \leq n(a_1^2+\cdots+a_n^2) \qqed $$
+
+\bexerc
+
+    Let $V$ be an inner product space and define $B_1=\set{u\in V}[\norm u=1]$.
+    Show that for every $0\neq v\in V$, $\min\set{\norm{v-u}}[u\in B_1]$ is given by $v$'s normalization: $\hat v=\frac v{\norm v}$.
+
+\eexerc
+
+\Proof note that minimizing $\norm{v-u}$ is the same as minimizing $\norm{v-u}^2$ since norms are nonnegative.
+For $\hat v$:
+$$ \norm{v-\hat v}^2 = \norm{v\parens{1-\frac1{\norm v}}}^2 = \abs{1-\frac1{\norm v}}^2\norm v^2 = \norm v^2 - 2\norm v + 1 $$
+And for a general $u\in B_1$:
+$$ \norm{v-u}^2 = \iprod{v-u,v-u} = \norm v^2 - \iprod{v,u} - \iprod{u,v} + \norm u^2 $$
+notice that $\iprod{v,u}+\iprod{u,v}=\iprod{v,u}+\overline{\iprod{v,u}}=2\Re\iprod{v,u}$.
+So we need to show that
+$$ \norm v^2 - 2\norm v + 1 \leq \norm v^2 - 2\Re\iprod{v,u} + 1 \iff \Re\iprod{v,u} \leq \norm v $$
+This is indeed true, as by Cauchy-Schwarz:
+$$ \Re\iprod{v,u} \leq \abs{\iprod{v,u}} \leq \norm v\norm u = \norm v \qqed $$
+
+\bthrm
+
+    Let $U\leq V$ be a subspace, then $V=U\oplus U^\perp$.
+
+\ethrm
+
+\bexerc
+
+    Let $U\leq V$ be a subspace, show that $(U^\perp)^\perp=U$.
+
+\eexerc
+
+\Proof firstly, it is obvious that $U\subseteq(U^\perp)^\perp$ since for every $u\in U$, $u$ is orthogonal to everything in $U^\perp$.
+Now, suppose $\dim V=n$ and $\dim U=k$, then
+$$ \dim V = \dim U + \dim U^\perp \implies \dim U^\perp = n - k$$
+and
+$$ \dim V = \dim U^\perp + \dim(U^\perp)^\perp \implies \dim(U^\perp)^\perp = k = \dim U $$
+so by considering dimensions, we have that $U=(U^\perp)^\perp$.
+\qqed
+
+\bdefn
+
+    Let $V$ be an inner product space, and $W\leq V$ a subspace with an orthogonal basis $B=\set{w_1,\dots,w_n}$.
+    Then define the {\emphcolor projection map on $W$} (\heb{hy.tl}) by
+    $$ \pi_W\colon V\longto W,\qquad \pi_W(v) = \sum_{i=1}^n\frac{\iprod{v,w_i}}{\norm{w_i}^2}w_i $$
+
+\edefn
+
+\bthrm
+
+    The following hold for projection maps:
+    \benum
+        \item $\pi_W(v)\in W$ for all $v\in V$ (i.e. $\pi_W$ is well-defined).
+        \item $\pi_W(v)=v\iff v\in W$.
+        \item $\pi_W(v)=0\iff v\in W^\perp$.
+        \item $v-\pi_W(v)\in W^\perp$.
+        \item $\pi_W$ is independent on choice of orthogonal basis.
+    \eenum
+
+\ethrm
+
+\bexerc
+
+    Let $V={\bb R}^3$ and $W=\lspanof{\pmatrix{1\cr2\cr3},\pmatrix{2\cr2\cr-3}}$.
+    Find the projection of $v=\pmatrix{1\cr1\cr0}$ onto $W$.
+
+\eexerc
+
+\def\u{\pmatrix{1\cr2\cr3}}\def\w{\pmatrix{2\cr2\cr-3}}\def\v{\pmatrix{1\cr1\cr0}}
+\Proof the set $\set{\u,\w}$ is orthogonal so
+$$ \pi_W(v) = \frac{\iprod{\v,\u}}{\norm\u^2}\u + \frac{\iprod{\v,\w}}{\norm\w^2}\w = \frac3{14}\u + \frac4{12}\w \qqed $$
+
+\bdefn
+
+    The {\emphcolor Gram-Schmidt process} (\heb{thlyK gr'm--/smyd.t}) is a process of converting a basis to an orthogonal basis.
+    Suppose $B=\set{v_1,\dots,v_n}$ is a basis, then we define $C=\set{w_1,\dots,w_n}$ recursively as follows:
+    $$ w_1 = v_1,\qquad w_{i+1} = v_{k+1} - \pi_{\lspanof{w_1,\dots,w_k}}(v_{k+1}) = v_{i+1} - \sum_{i=1}^k \frac{\iprod{v_{k+1},w_i}}{\norm{w_i}^2}w_i $$
+    Using the Gram-Schmidt process, we see that every inner product space has an orthogonal, and thus orthonormal, basis.
+
+\edefn
+
+\bexerc
+
+    Let us define an inner product on ${\bb R}^3$ by
+    $$ \iprod{\pmatrix{x\cr y\cr z},\pmatrix{a\cr b\cr c}} = xa + xb + ya + 2yb + zc $$
+    Find an orthogonal basis relative to this inner product.
+
+\eexerc
+
+\def\eA{\pmatrix{1\cr0\cr0}}\def\eB{\pmatrix{0\cr1\cr0}}\def\eC{\pmatrix{0\cr0\cr1}}
+\Proof let us take the standard basis as our initial basis.
+We will then perform the Gram-Schmidt process on it to convert it to an orthogonal basis.
+So $w_1=(1,0,0)^\top$ and
+$$ w_2 = \eB - \frac{\iprod{\eB,\eA}}{\norm\eA^2}\eA = \eB - \eA = \pmatrix{-1\cr1\cr0} $$
+and
+$$ w_3 = \eC - \frac{\iprod{\eC,\eA}}{\norm\eA^2}\eA - \frac{\iprod{\eC,\pmatrix{-1\cr1\cr0}}}{\norm{\pmatrix{-1\cr1\cr0}}^2}\pmatrix{-1\cr1\cr0} = \eC \qqed $$
+
+\bexerc
+
+    Let $V$ be an inner product space, and $W$ a subspace, show that for every $v\in V$ and $w\in W$:
+    $$ \norm{v-\pi_W(v)} \leq \norm{v-w} $$
+    and there is equality iff $w=\pi_W(v)$.
+
+\eexerc
+
+\Proof take an orthonormal basis of $W$ (so that $\pi_W$ looks nicer), $E_W=\set{e_1,\dots,e_k}$, and then extend it to an orthonormal basis of $E=\set{e_1,\dots,e_k,\dots,e_n}$ of $V$ (why can we do this?
+Don't explain; it'll be in the homework.)
+Suppose $v=\sum_{i=1}^n\alpha_ie_i$, then
+$$ \pi_W(v) = \sum_{i=1}^k\iprod{v,e_i}e_i = \sum_{i=1}^k\alpha_ie_i $$
+let $w\in W$ and suppose $w=\sum_{i=1}^k\beta_ie_i$.
+Then by Pythagoras:
+$$ \norm{v-\pi_W(v)}^2 = \norm{\sum_{i=k+1}^n\alpha_ie_i} = \sum_{i=k+1}^n\alpha_i^2 $$
+and
+$$ \norm{v-w}^2 = \norm{\sum_{i=1}^k(\alpha_i-\beta_i)e_i+\sum_{i=k+1}^n\alpha_ie_i}^2 = \sum_{i=1}^k(\alpha_i-\beta_i)^2 + \sum_{i=k+1}^n\alpha_i^2 $$
+So we get that
+$$ \norm{v-\pi_W(v)}^2 \leq \norm{v-2}^2 $$
+as required, and there is equality iff $\sum_{i=1}^k(\alpha_i-\beta_i)^2=0$ which is iff $\alpha_i=\beta_i$ for $1\leq i\leq k$, which just means $w=\pi_W(v)$ as required.
+\qqed
+
+\bye
+
