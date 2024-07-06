@@ -1,0 +1,186 @@
+\input pdfToolbox
+\input preamble
+
+\parindent=\z@
+\parskip=3pt plus 1pt
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+
+{\vbox{\leftskip=0pt plus 1fill\relax\rightskip=\leftskip\setfontandscale{bf}{25pt}%
+Linear Algebra 2, Homework 7 Solution
+}}
+
+\bexerc
+
+    Let $V$ be an inner product space over ${\bb R}$, show that for all $u,v\in V$:
+    $$ (u-v)\perp(u+v) \iff \norm v = \norm u $$
+
+\eexerc
+
+We have that
+$$ (u-v)\perp(u+v) \iff \iprod{u-v,u+v} = \norm u^2 + \iprod{u,v} - \iprod{v,u} - \norm v^2 = 0 \iff \norm u^2 = \norm v^2 \iff \norm u = \norm v $$
+\qqed
+
+\bexerc
+
+    Find for which $\alpha\in{\bb R}$ the following is an inner product over ${\bb R}$:
+    $$ \iprod{(x_0,x_1),(y_0,y_1)} = x_0y_0 - 3x_0y_1 - 3x_1y_0 + \alpha x_1y_1 $$
+
+\eexerc
+
+Firstly, notice that
+$$ \iprod{(x_0,x_1),(y_0,y_1)} = (x_0,x_1)\pmatrix{1 & -3\cr -3 & \alpha}\pmatrix{y_0\cr y_1} $$
+So the function is obviously linear, and since the matrix is symmetric, so is the function.
+So all we need to confirm is that $\iprod{(x_0,x_1),(x_0,x_1)}\geq0$ and equal to zero iff $x_0,x_1=0$.
+Computing gives
+$$ \iprod{(x_0,x_1),(x_0,x_1)} = x_0^2 - 6x_0x_1 + \alpha x_1^2 = (x_0-3x_1)^2 + (\alpha-9)x_1^2 $$
+So we must have that $\alpha\geq9$ for nonnegativity.
+And in such a case, this is equal to zero if and only if $x_1=0$ and $x_0=3x_1=0$, as required.
+\qqed
+
+\bexerc
+
+    Let $V$ be a complex inner product space, and $T\colon V\longto V$ a linear operator such that for every $v\in V$, $\iprod{Tv,v}=0$.
+    Show that $T=0$.
+
+\eexerc
+
+Let $u,w\in V$ and $\alpha\in{\bb C}$, then by setting $v=u+\alpha w$, we get
+$$ 0 = \iprod{Tv,v} = \iprod{Tu+\alpha Tw,u+\alpha w} = \iprod{Tu,u} + \overline\alpha\iprod{Tu,w} + \alpha\iprod{Tw,u} + \abs\alpha^2\iprod{Tw,w} = \overline\alpha\iprod{Tu,w} + \alpha\iprod{Tw,u} $$
+Thus we get, by choosing $\alpha=1,i$,
+$$ \iprod{Tu,w} + \iprod{Tw,u} = -\iprod{Tu,w} + \iprod{Tw,u} = 0 $$
+Thus for all $u,w\in V$ we have $\iprod{Tw,u}=0$.
+Choosing $u=Tw$ we have $\iprod{Tw,Tw}=0$ for all $w\in V$ and so $Tw=0$ for all $w\in V$, so $T=0$.
+\qqed
+
+\bexerc
+
+    Let $V$ be an $n$-dimensional inner product space and let $B\subseteq V$ be a set of vectors.
+    Show that $B$ is an orthonormal basis if and it is an orthonormal set of $n$ vectors.
+
+\eexerc
+
+If $B$ is an orthonormal basis, it must be a set of $\dim V=n$ orthonormal vectors.
+If $B$ is a set of $n$ orthonormal vectors, then it must be linearly independent since a set of orthogonal vectors not containing zero is linearly independent.
+So it is a set of $n$ linearly independent vectors, and thus a basis.
+\qqed
+
+\bexerc
+
+    Let $V$ be a complex inner product space of dimension $n$.
+    \benum
+        \item Let $B\subseteq V$ be a basis.
+        Define an inner product on $V$ such that $B$ is orthnormal with respect to this inner product.
+        \item Let $V={\bb C}^2$ and $B=\set{\pmatrix{i\cr i},\pmatrix{1+i\cr-2+i}}$, find the corresponding inner product,
+    \eenum
+
+\eexerc
+
+\benum
+    \item We know that every inner product can be written as
+    $$ \iprod{v,u} = [v]_B^\top G_B\overline{[u]_B} $$
+    so in order for $B$ to be an orthnormal basis, we must have $G_B=I$ and so
+    $$ \iprod{v,u} = [v]_B^\top\overline{[u]_B} $$
+    We now prove that this is an inner product and that $B$ is orthnormal with respect to it:
+    \benum
+        \item Linearity in the first component:
+        $$ \iprod{v+\alpha w,u} = [v+\alpha w]_B^\top\overline{[u]_B} = [v]_B^\top\overline{[u]_B} + \alpha[w]_B^\top\overline{[u]_B} = \iprod{v,u} + \alpha\iprod{w,u} $$
+        \item Hermitianess:
+        $$ \overline{\iprod{v,u}} = \overline{[v]_B^\top\overline{[u]_B}} = \overline{[v]_B}^\top[u]_B $$
+        since this is a scalar, it is equal to its transpose:
+        $$ = [u]_B^\top\overline{[v]_B} = \iprod{u,v} $$
+        \item Nonnegativity: suppose $[v]_B=(\alpha_1,\dots,\alpha_n)^\top$, then
+        $$ \iprod{v,v} = [v]_B^\top\overline{[v]_B} = \sum_i\abs{\alpha_i}^2 $$
+        this is nonnegative and zero iff $\alpha_i=0$ for all $i$, i.e. iff $[v]_B=0$, which is iff $v=0$.
+    \eenum
+    Now suppose $B=(b_1,\dots,b_n)$ then
+    $$ \iprod{b_i,b_j} = [b_i]_B^\top\overline{[b_j]_B} = e_i^\top e_j = \delta_{ij} $$
+    as required.
+    \item By the previous subquestion, all we must find is $[\bullet]_B$.
+    We can do this by computing $[I]^S_B$, which is just the inverse of $[I]^B_S$:
+    $$ [I]^S_B = \bigl([I]^B_S\bigr)^{-1} = \pmatrix{i & 1+i\cr i & -2+i}^{-1} = \frac13\pmatrix{-1-2i & 1-i\cr 1 & -1} = A $$
+    So $[v]_B=Av$ and so
+    $$ \iprod{v,u} = (Av)^\top\overline{Au} = v^\top A^\top\overline A\overline u $$
+    So we must compute $A^\top\overline A$:
+    $$ = \frac19\pmatrix{-1+2i & 1+i\cr 1 & -1}\pmatrix{-1-2i & 1-i\cr 1 & -1} = \frac19\pmatrix{6+i & 2i\cr -2-2i & 2-i} $$
+    Thus we get that
+    $$ \iprod{v,u} = \frac19v^\top\pmatrix{6+i & 2i\cr -2-2i & 2-i}\overline u = \frac19\bigl((6+i)v_1\overline u_1 + 2iv_1\overline u_2 - (2+2i)v_2\overline u_1 + (2-i)v_2\overline u_2\bigr) $$
+    \qqed
+\eenum
+
+\bexerc
+
+    Let $V$ be a {\emphcolor pseudonorm space}, i.e. it is equipped with a function
+    $$ \norm\bullet\colon V\longto{\bb R}_{\geq0} $$
+    which satisfies $\norm{\alpha v}=\abs\alpha\norm v$ and the triangle inequality (but not necessarily $\norm v=0\implies v=0$).
+    Let us define a relation $\sim$ on $V$ by
+    $$ u\sim v \iff \norm{u-v} = 0$$
+    \benum
+        \item Show that this is indeed an equivalence relation.
+        \item Show that one can define a vector-space structure on the quotient set $V/{\sim}$ by
+        $$ \alpha[v] = [\alpha v],\qquad [v]+[u] = [v+u] $$
+        \item Define a norm over $V/{\sim}$ and show that it is indeed a norm.
+    \eenum
+
+\eexerc
+
+\benum
+    \item We need to show the following three properties:
+    \benum
+        \item Reflexivity: $\norm{v-v}=\norm0$ and $\norm0=norm{0\cdot0}=0\norm0=0$, so $v\sim v$.
+        \item Symmetry:
+        $$ u\sim v \iff \norm{u-v} = 0 \iff \abs{-1}\norm{u-v} = \norm{v-u} = 0 \iff v\sim u $$
+        \item Transitivity: suppose $u\sim v$ and $v\sim w$, then
+        $$ \norm{u-w} = \norm{(u-v)+(v-w)} \leq \norm{u-v} + \norm{v-w} = 0 $$
+        so $u\sim w$.
+    \eenum
+    \item First let us show that these operations are well-defined:
+    \benum
+        \item Suppose $v_1\sim v_2$, we must then show that $\alpha v_1\sim\alpha v_2$.
+        This is because $\norm{\alpha v_1-\alpha v_2}=\abs\alpha\norm{v_1-v_2}=0$.
+        \item Now suppose $v_1\sim v_2,u_1\sim u_2$, we must show that $v_1+u_1\sim v_2+u_2$.
+        This is because
+        $$ \norm{(v_1+u_1)-(v_2+u_2)} = \norm{(v_1-v_2)+(u_1-u_2)} \leq \norm{v_1-v_2} + \norm{u_1-u_2} = 0 $$
+        so indeed $v_1+u_1\sim v_2+u_2$.
+    \eenum
+    Now we show that they form a vector space:
+    \benum
+        \item Associativity:
+        $$ [v] + ([u] + [w]) = [v] + [u+w] = [v+u+w] = [v+u] + [w] = ([v]+[u]) + [w] $$
+        \item Commutativity:
+        $$ [v] + [u] = [v+u] = [u+v] = [u] + [v] $$
+        \item Additive identity: we will show that $[0]$ is the additive identity:
+        $$ [0] + [v] = [0+v] = [v] $$
+        \item Additive inverses: we will show $-[v]=[-v]$ satisfies this:
+        $$ [v] + (-[v]) = [v] + [-v] = [v-v] = [0] $$
+        \item Compatibility:
+        $$ \alpha(\beta[v]) = \alpha[\beta v] = [\alpha\beta v] = (\alpha\beta)[v] $$
+        \item Identity:
+        $$ 1[v] = [1v] = [v] $$
+        \item Scalar distributivity:
+        $$ \alpha([v] + [u]) = \alpha[v+u] = [\alpha v+\alpha u] = [\alpha v] + [\alpha u] = \alpha[v] + \alpha[u] $$
+        \item Vector distributivity:
+        $$ (\alpha+\beta)[v] = [(\alpha+\beta)v] = [\alpha v] + [\beta v] = \alpha[v] + \beta[v] $$
+    \eenum
+    Phew.
+    \item Let us define the norm $\norm\bullet_\sim$ on $V/{\sim}$ by
+    $$ \norm{[v]}_\sim = \norm v $$
+    This is well-defined: if $v\sim u$ then $\norm{v-u}=0$ and so
+    $$ \norm v = \norm{v-u+u} = \norm{v-u} + \norm u = \norm u $$
+    and similarly $\norm u\leq\norm v$, thus $v\sim u\implies\norm v=\norm u$, as required.
+
+    And this is a norm:
+    \benum
+        \item Nonnegativity: $\norm{[v]}_\sim=\norm v\geq0$.
+        And this is equal to zero if and only if $\norm v=0$, which is iff $\norm{v-0}=0$, iff $v\sim0$, iff $[v]=[0]$.
+        \item Scalar multiplication:
+        $$ \norm{[\alpha v]}_\sim = \norm{\alpha v} = \abs\alpha\norm v = \abs\alpha\norm{[v]}_\sim $$
+        \item Triangle inequality:
+        $$ \norm{[v]+[u]}_\sim = \norm{[v+u]}_\sim = \norm{v+u} \leq \norm v + \norm u = \norm{[v]}_\sim + \norm{[u]}_\sim $$
+        as required.
+        \qqed
+    \eenum
+\eenum
+
+\bye
+
