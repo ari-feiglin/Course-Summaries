@@ -1,0 +1,534 @@
+In this paper Professor Ting Zhang discusses forcing and its applications to model theory.
+
+In this paper, our logical signature consists of $\land,\lor,\neg,\exists$, all other logical symbols are considered abbreviations.
+The diagram of a structure $\c A$ is denoted $\Delta[\c A]$.
+A {\it basic sentence} is an atomic sentence or a negated atomic sentence (a ``literal sentence'').
+
+\bdefn[title=Forcing Condition]
+
+    Let $T$ be an ${\cal L}$-theory, a {\emphcolor forcing condition} $P$ is a set of basic sentences. of ${\cal L}[A]$ where $A$ is a set of constant symbols, such that $T\cup P$ is consistent.
+    For $\phi\in\c L[A]$, we define the {\emphcolor forcing relation} $P\Vdash\phi$ on the recursive structure of $\phi$ as follows:
+    \benum
+        \item if $\phi$ is atomic, then $P\Vdash\phi\iff\phi\in P$.
+        \item $P\Vdash\phi\lor\psi$ iff $P\Vdash\phi$ or $P\Vdash\psi$.
+        \item $P\Vdash\phi\land\psi$ iff $P\Vdash\phi$ and $P\Vdash\psi$.
+        \item $P\Vdash\neg\phi$ iff there exists no forcing condition $Q\supseteq P$ such that $Q\Vdash\phi$.
+        \item $P\Vdash\exists x\phi$ iff there exists a closed term $t$ of $\c L[A]$ such that $P\Vdash\phi(t)$.
+    \eenum
+    If $P\Vdash\phi$, we say $P$ {\it forces} $\phi$.
+    We also define the {\emphcolor weak forcing relation}, where $P\Vdash^w\phi\iff P\Vdash\neg\neg\phi$.
+
+\edefn
+
+Note that
+$$ P\Vdash^w\phi \iff P\Vdash\neg\neg\phi \iff (\forall Q\supseteq P)(Q\nVdash\neg\phi) \iff (\forall Q\supseteq P)(\exists Q'\supseteq Q)(Q'\Vdash\phi) \eqcnt[wforce] $$
+
+Note the following:
+\benum
+    \item $P$ cannot force both $\phi$ and $\neg\phi$, $P\Vdash\neg\phi$ requires that for all $Q\supseteq P$ (including $P$), $Q\nVdash\phi$.
+    \item If $P\Vdash\phi$ then $Q\Vdash\phi$ for $Q\supseteq\phi$ (proven by induction on $\phi$).
+    \item If $P\Vdash\phi$ then $P\Vdash^w\phi$, which is direct from equivalence (\wforce) and point (2) by taking $Q'=Q$.
+    \item If $P\Vdash^w\neg\phi$ then $P\Vdash\neg\phi$, since if $P\Vdash^w\neg\phi$ then $(\forall Q\supseteq P)(\exists Q'\supseteq Q)(\forall Q''\supseteq Q')(Q''\nVdash\phi)$.
+    Now suppose $P$ didn't force $\neg\phi$, then that would mean there exists a $Q\supseteq P$ which forces $\phi$.
+    But this obviously contradicts the assumption.
+    \item $P\Vdash^w\neg\neg\phi\iff P\Vdash^w\phi$.
+    This can be seen quite easily by looking at equivalence (\wforce).
+    \item If $P\Vdash\phi$ and $\phi$ is a literal, then $P\cup\set\phi$ is a forcing condition for $T$.
+    The only interesting case is with $\neg\phi$ where $\phi$ is an atomic sentence.
+    Since $P\Vdash\neg\phi$, $P\cup\set\phi$ cannot be a forcing condition and so it is not consistent with $T$.
+    Since $T\cup P$ is consistent, this means that $T\cup P\cup\set{\neg\phi}$ is consistent.
+\eenum
+
+\bdefn
+
+    Let $P$ be a forcing condition on $T$, then we denote $T[P]$ the set of all $\c L$-sentences forced by $P$.
+    Similarly $T^f[P]$ is the set of all sentences weakly forced by $P$.
+    Denote $T^f=T^f[\varnothing]$ and call it the {\emphcolor forcing companion} of $T$.
+    If $T\equiv T^f$, then $T$ is considered {\emphcolor forcing complete}.
+
+\edefn
+
+Write $P\Vdash_A\phi$ if $P$ forces $\phi$ in $\c L[A]$.
+Furthermore write $P=P(\bar a)$ and $\phi=\phi(\bar a)$ to mean that $P$ is a forcing condition in $\c L[A]$ and $\phi$ is a $\c L[A]$-sentence, where $\bar a$ denotes all the constants not in $\c L$ but
+occur in either $P$ or $\phi$.
+
+\blemm
+
+    Let $P=P(\bar a)$ be a condition of $T$ in $\c L[A]$ and $\phi=\phi(\bar a)$ be a sentence of $\c L[A]$ weakly forced by $P$ ($\bar a$ are constants not in $\c L$).
+    Then for any closed terms $\bar t$, if $P(\bar t)$ is a condition for $T$, then $P(\bar t)\Vdash^w\phi(\bar t)$.
+
+\elemm
+
+\blemm[name=lemm3.5]
+
+    Let $\phi$ be an $\c L$-sentence, then $T^f[P]\vDash\phi$ implies $\phi\in T^f[P]$.
+    In particular, both $T^f[P]$ and $T[P]$ are consistent.
+
+\elemm
+
+\Proof by completeness, it is sufficient to prove this for $T^f[P]\vdash\phi$.
+We induct on the length of the proof that if $T^f[P]\vdash\phi(\bar x)$ then $\phi(\bar t)\in T^f[P]$ for all sequence of closed terms of $\c L[A]$.
+Let us skip the proof for logical axioms, as these are routine and tedious.
+
+Now consider modus ponens, so $T^f[P]\vdash\phi(\bar x)\to\psi(\bar x),\phi(\bar x)$ and so $\phi(\bar t)\to\psi(\bar t),\phi(\bar t)\in T^f[P]$ (we can assume the same sequence of closed terms since we can
+extend the set of variables to be shared).
+Thus we have
+$$ \eqalign{
+    (\forall Q\supseteq P)(\exists Q'\supseteq Q)&\ (Q'\Vdash\neg\phi(\bar t)\hbox{ or }Q'\Vdash\psi(\bar t))\cr
+    (\forall Q\supseteq P)(\exists Q'\supseteq Q)&\ (Q'\Vdash\phi(\bar t))\cr
+} $$
+We claim that $P\Vdash^w\psi(\bar t)$, so let us suppose otherwise.
+Let $Q\supseteq P$ then by the first equivalence there exist $Q'\supseteq P$ such that $Q'\Vdash\neg\phi(\bar t)$, but then by the second equivalence there exists a $Q''\supseteq Q'$ such that
+$Q''\Vdash\phi(\bar t)$.
+By monotonocity, we also have $Q''\Vdash\neg\phi(\bar t)$ in contradiction.
+
+Now consider generalization, so $\phi(\bar t)\in T^f[P]$ and suppose $P\nVdash^w\forall\bar x\phi(\bar x)=\neg\exists\bar x\neg\phi(\bar x)$.
+By definition, we get that
+$$ (\exists Q\supseteq P)(\exists\bar t)(\forall Q'\supseteq Q)(Q'\nVdash\phi(\bar t)) $$
+and since $P\Vdash^w\phi(\bar t)$, we get
+$$ (\forall\bar t)(\forall Q\supseteq P)(\exists Q'\supseteq Q)(Q'\Vdash\phi(\bar t)) $$
+and these obviously form a contradiction.
+\qed
+
+Recall that for a structure $\c A$, the following are equivalent:
+\benum
+    \item $\Delta[\c A]\cup T$ is consistent,
+    \item $\c A$ can be embedded into a $T$-model,
+    \item Every finite $P\subseteq\Delta[\c A]$ is a condition for $T$.
+\eenum
+$(1)\iff(3)$ is trivial.
+
+\blemm
+
+    Let $\c A$ be a structure such that $\Delta[\c A]\cup T$ is consistent, then for all existential formulas $\phi(\bar x)$ and closed terms $\bar t$ of $\c L[\c A]$,
+    $$ \c A\vDash\phi(\bar t) \iff P\Vdash\phi(\bar t) \hbox{ for some finite $P\subseteq\Delta[\c A]$} $$
+
+\elemm
+
+By existential formula, we mean a formula in the form
+$$ \exists\bar x\phi $$
+where $\phi$ is a CNF (or DNF).
+
+\Proof only $\implies$ is shown.
+We prove this by induction on the structure of $\phi$:
+\benum
+    \item For $\phi(\bar x)$ literal, we let $P=\set{\phi(\bar t)}$ (since $\c A\vDash\phi(\bar t)$, $P\subseteq\Delta[\c A]$ and by definition $P\Vdash\phi(\bar t)$).
+    \item For $\phi(\bar t)=\phi_1(\bar t)\lor\phi_2(\bar t)$, wlog $\c A\vDash\phi_1(\bar t)$ and so $P\Vdash\phi_1(\bar t)$ and thus $P\Vdash\phi(\bar t)$.
+    \item For $\phi(\bar t)=\phi_1(\bar t)\land\phi_2(\bar t)$, we have $\c A\vDash\phi_1(\bar t),\phi_2(\bar t)$.
+    Thus there exists finite $P,Q\subseteq\Delta[\c A]$ such that $P\Vdash\phi_1(\bar t)$ and $Q\Vdash\phi_2(\bar t)$.
+    Then $P\cup Q\subseteq\Delta[\c A]$ is also finite and by monotonicity, $P\cup Q\Vdash\phi_1(\bar t),\phi_2(\bar t)$ and so $P\cup Q\Vdash\phi(\bar t)$.
+    \item For $\phi(\bar t)=\exists\bar x\psi(\bar x,\bar t)$, then $\c A\vDash\psi(\bar s,\bar t)$ for some closed terms $\bar s$ of $\c L[\c A]$.
+    Thus $P\Vdash\psi(\bar s,\bar t)$ for some finite $P\subseteq\Delta[\c A]$, and so $P\Vdash\exists\bar x\psi(\bar x,\bar t)$.
+    \qed
+\eenum
+
+\blemm[name=lemm3.8]
+
+    Let $\phi$ be a universal sentence of $\c L[\c A]$, then for all conditions $P$, $P\Vdash\phi$ if and only if $T\cup P\vDash\phi$.
+
+\elemm
+
+\Proof $\phi$ is universal iff it is of the form $\phi=\neg\psi$ for $\psi$ existential.
+So it is sufficient to show that $P\Vdash\neg\phi$ iff $T\cup P\vDash\neg\phi$ for $\phi$ existential.
+Let $\c A$ model $T\cup P$ and so surely $P\subseteq\Delta[\c A]$.
+If $P\Vdash\neg\phi$, for every $Q\supseteq P$ we have $Q\nVdash\phi$ and in particular for every $Q\subseteq\Delta[\c A]$ it cannot be that $Q\Vdash\phi$ (as then $Q\cup P\Vdash\phi$).
+So by the above lemma, we have that $\c A\nvDash\phi$ so $\c A\vDash\neg\phi$, meaning $T\cup P\vDash\phi$ as required.
+And if $\c A\vDash\neg\phi$ then $\c A\nvDash\phi$, so for any finite $Q\subseteq\Delta[\c A]$, $Q\nVdash\phi$.
+In particular for every $Q\supseteq P$, $Q\nVdash\phi$ and so $P\Vdash\neg\phi$.
+\qed
+
+Let $T$ be a theory, its {\it universal part} denoted $T_\forall$ is all universal sentences consequent of $T$.
+
+\blemm[name=lemm3.9]
+
+    Let $P$ be a finite set of basic sentences of $\c L[\c A]$.
+    $P$ is a forcing condition for $T$ iff $P$ is a forcing condition for $T_\forall$.
+    And for all $\c L[\c A]$-sentences $\phi$, $P\Vdash\phi$ in $T$ if and only if $P\Vdash\phi$ in $T_\forall$.
+    That is, $T[P]=T_\forall[P]$ and moreso $T^f[P]=T_\forall^f[P]$.
+
+\elemm
+
+\Proof if $P$ is consistent with $T$, it must be consistent with $T_\forall$.
+So suppose $P$ is consistent with $T_\forall$, and suppose it is not consistent with $T$.
+Let $\phi(\bar a)=\bigwedge P$ where $\bar a$ are constants not in $\c L$, then $T\vDash\neg\phi(\bar a)$ and since $\bar a$ doesn't occur in $T$, $T\vDash\forall\bar x\neg\phi(\bar x)$.
+Thus $\forall\bar x\neg\phi(\bar x)\in T_\forall$ so $T_\forall\vDash\neg\phi(\bar a)$ which contradicts $T_\forall$ being consistent with $P$.
+
+Since the forcing relation is totally determined by the forcing conditions, the rest follows immediately.
+\qed
+
+\blemm[name=condforcompanion]
+
+    Let $P(\bar a)$ be a finite forcing condition in $\c L[\c A]$, and $\phi(\bar a)$ a sentence of $\c L[\c A]$ (where $\bar a$ lists constants not in $\c L$).
+    Let $P(\bar x),\phi(\bar x)$ be the results of substituting $\bar a$ with the variables $\bar x$.
+    If $P(\bar a)\Vdash\phi(\bar a)$, then
+    $$ \forall\bar x\parens{\bigwedge P(\bar x)\to\phi(\bar x)} \in T^f $$
+
+\elemm
+
+\Proof we need to show that
+$$ \varnothing\Vdash^w\neg\exists\bar x\neg\parens{\neg\bigwedge P(\bar x)\lor\phi(\bar x)} $$
+Since $P\Vdash\neg\phi\iff P\Vdash^w\neg\phi$, we shall show this for $\Vdash$ in place of $\Vdash^w$.
+Suppose not, then there exists a condition $Q$ and a set of closed terms $\bar t$ such that
+$$ Q\Vdash\neg\parens{\neg\bigwedge P(\bar t)\lor\phi(\bar t)} $$
+This means that for all $Q'\supseteq Q$:
+$$ Q'\nVdash\neg\bigwedge P(\bar t)\hbox{ and } Q'\nVdash\phi(\bar t) $$
+This means there exists a $Q''\supseteq Q'$ such that $Q''\Vdash\bigwedge P(\bar t)$.
+Since $\bigwedge P(\bar t)$ is universal (as it is quantifier-free), by a previous lemma this means $T\cup Q''\vDash\bigwedge P(\bar t)$.
+In particular $P(\bar t)\cup Q''$ is a condition for $T$.
+Since $P(\bar a)\Vdash\phi(\bar a)$ we have $P(\bar t)\Vdash\phi(\bar t)$ by a previous lemma (\localcolor{red}{this seems like a mistake, it should be $\Vdash^w$, but the proof requires normal
+forcing\dots}).
+Thus $Q\subseteq P(\bar t)\cup Q''\Vdash\phi(\bar t)$, which is a contradiction.
+\qed
+
+\bdefn
+
+    Let $\c L[A]$ be a countable language, $T$ a $\c L$-theory, and $\bP=\set{P_i}_{i<\omega}$ a sequence of finite forcing conditions on $T$.
+    $\bP$ is called {\emphcolor $T$-generic} if
+    \benum
+        \item for any atomic sentence $\phi$, exactly one of $\phi,\neg\phi$ is in $\bigcup\bP$,
+        \item for any $\c L[\c A]$-sentence $\phi$, exactly one of $\phi,\neg\phi$ is forced by some $P\in\bP$.
+    \eenum
+
+\edefn
+
+\bthrm
+
+    If $\c L[A]$ is countable, then for every consistent $\c L$-theory $T$ there exists a $T$-generic sequence $\bP$.
+
+\ethrm
+
+\Proof since $\c L[A]$ is countable, we can enumerate its sentences by $\phi_0,\phi_1,\dots$.
+Let $P_0=\varnothing$ and assuming $P_i$ is constructed we define $P_i$ as follows: if $P_i\Vdash\neg\phi_i$, then define
+$$ P_{i+1} = \cases{P_i\cup\set{\neg\phi_i} & if $\phi_i$ is atomic\cr P_i & else} $$
+Otherwise $P_i\nVdash\neg\phi_i$ so there exists a $Q\supseteq P_i$ such that $Q\vDash\phi_i$, so set $P_{i+1}=Q$.
+Then let $\bP=\set{P_i}_{i<\omega}$, this is an increasing sequence of conditions and so it is $T$-generic (since if $P_i\Vdash\phi$ and $P_j\Vdash\neg\phi$ then since $\bP$ is increasing, one is contained
+in the other, so one forces both $\phi$ and $\neg\phi$ in contradiction).
+\qed
+
+\bdefn
+
+    Let $\c A$ be a $\c L$-structure, then $\c A$ is {\emphcolor $T$-generic} if the following two conditions hold:
+    \benum
+        \item $T\cup\Delta[\c A]$ is consistent,
+        \item For every $\c L[\c A]$-sentence $\phi$, $\c A\vDash\phi$ iff there exists a finite $P\subseteq\Delta[\c A]$ which forces $\phi$.
+    \eenum
+
+\edefn
+
+\bthrm
+
+    Let $\c L$ be countable, then for every $T$-generic sequence $\bP$, there exists a countable $T$-generic structure $\c A$ such that $\Delta[\c A]=\bigcup\bP$.
+
+\ethrm
+
+\Proof let $\c A$ be the canonical term model over $\bigcup\bP$, then we have that $\Delta[\c A]=\bigcup\bP$.
+Now, $T\cup\Delta[\c A]$ is consistent because every finite $P\subseteq\Delta[\c A]$ is a subset of some $P'\in\bP$ and $T\cup P'$ is consistent.
+Furthermore to show that $\c A\vDash\phi\iff P\Vdash\phi$ for some finite $P\subseteq\Delta[\c A]$ it is sufficient to take some $P_i\in\bP$.
+We prove this by induction.
+\benum
+    \item For basic sentences $\phi$, $\c A\vDash\phi$ iff $\phi\in\Delta[\c A]=\bigcup\bP$ iff there exists some $P_i\in\bP$ which contains, and thus forces, $\phi$.
+    \item For $\lor,\land$ the step is trivial.
+    \item $\c A\vDash\exists\bar x\phi(\bar x,\bar a)$ if and only if there exists closed $\c L[A]$-terms $\bar t$ such that $\c A\vDash\phi(\bar t,\bar a)$ which by induction means
+    $P_i\Vdash\phi(\bar t,\bar a)$ for some $P_i\in\bP$ and then $P_i\Vdash\exists\bar x\phi(\bar x,\bar a)$.
+    \item $\c A\vDash\neg\phi$ iff $\c A\nvDash\phi$ iff $P_i\nVdash\phi$ for all $P_i\in\bP$ iff $P_i\Vdash\neg\phi$ for some $P_i\in\bP$ (since $\bP$ is generic).
+    \qed
+\eenum
+
+Conversely, if $\c A$ is a countable $T$-generic structure, then the set of finite subsets of $\Delta[\c A]$ is a $T$-generic sequence.
+The following is immediate from the previous proof and this comment:
+
+\bcoro
+
+    A countable $\c L$-structure $\c A$ is $T$-generic iff there exists a $T$-generic sequence $\bP$ such that $\Delta[\c A]=\bigcup\bP$.
+
+\ecoro
+
+\blemm[name=lemm4.1]
+
+    Any $T$-generic structure is a model of the forcing companion of $T$, $T^f$.
+
+\elemm
+
+\Proof suppose $\phi\in T^f$, then $\varnothing\Vdash\neg\neg\phi$, and $\varnothing\subseteq\Delta[\c A]$ is finite, so $\c A\vDash\phi$.
+\qed
+
+\bdefn
+
+    A first-order theory $T$ is {\emphcolor model-complete} if every embedding betwee $T$-models is elementary.
+
+\edefn
+
+\bthrm[name=robinsontest]
+
+    $T$ is model-complete iff every formula is equivalent to an existential formula modulo $T$.
+
+\ethrm
+
+\blemm
+
+    $T$ is model-complete iff for any $T$-model $\c A$, $T\cup\Delta[\c A]$ is complete in $\c L[\c A]$.
+
+\elemm
+
+\Proof if $T$ is model complete, let $\c A\vDash T$.
+Now suppose $\c B\vDash T\cup\Delta[\c A]$, so $\c B$ is a $T$-model which $\c A$ is embeddable in, meaning $\c A\equiv\c B$ in $\c L[\c A]$.
+Thus all models of $T\cup\Delta[\c A]$ are elementarily equivalent, meaning $T\cup\Delta[\c A]$ is complete.
+And conversely if $T\cup\Delta[\c A]$ is complete, suppose $\c A$ is embeddable into a $T$-model $\c B$, so $\c B\vDash T\cup\Delta[\c A]$, then $\c A\equiv\c B$ in $\c L[\c A]$.
+And this means that the embedding from $\c A$ to $\c B$ is elementary.
+\qed
+
+\bdefn
+
+    Let $T,T^*$ be two $\c L$-theories with $T\subseteq T^*$.
+    We say that $T^*$ is the {\emphcolor model completion} of $T$ if for any $T$-model $\c A$, $T^*\cup\Delta[\c A]$ is complete in $\c L[\c A]$.
+
+\edefn
+
+Note the following:
+\benum
+    \item If $T^*$ is the model completion of $T$, then any model of $T$ can be embedded into a model of $T^*$.
+    This is because $T^*\cup\Delta[\c A]$ is consistent, and thus there is a $T^*$-model in which $\c A$ is embeddable.
+    \item If $T^*$ is the model completion of $T$, $T^*$ is model-complete.
+    This is because a model of $T^*$ is a model of $T$ (since $T\subseteq T^*$) and so $T^*\cup\Delta[\c A]$ is complete.
+    \item If $T$ is model complete, then $T$ is its own model completion.
+    This is direct from the previous lemma.
+    \item If $T_1^*,T_2^*$ are two model completions of $T$ then they are logically equivalent.
+    This will be proven in more depth later.
+\eenum
+
+\bthrm[name=thrm5.2]
+
+    A $T^f$-model $\c A$ is $T$-generic iff $T^f\cup\Delta[\c A]$ is complete.
+
+\ethrm
+
+\Proof $(\implies)$ suppose $\c A\vDash T^f$ is $T$-generic.
+Then let $\c A\vDash\phi$ for $\phi\in\c L[\c A]$, then by definition there exists a finite $P\subseteq\Delta[\c A]$ such that $P\Vdash\phi$.
+Let $P=P(\bar a)$ and $\phi=\phi(\bar a)$ where $\bar a$ lists constants not in $\c L$, then by \refmath[lemma]{condforcompanion} we have that $\forall\bar x\parens{\bigwedge P(\bar x)\to\phi(\bar x)}$ is
+in $T^f$.
+Thus $T^f\vDash\bigwedge P(\bar a)\to\phi(\bar a)$.
+Since $\Delta[\c A]\vDash\bigwedge P(\bar a)$, we have $T^f\cup\Delta[\c A]\vDash\phi(\bar a)$, so it is complete (since every $\phi$ is either satisfied or its negation is by $\c A$).
+
+$(\impliedby)$ suppose that $T^f\cup\Delta[\c A]$ is complete, then we must show the following:
+\benum
+    \item $T\cup\Delta[\c A]$ is consistent: this will be proven in more generality later.
+    \item $\c A\vDash\phi$ iff $P\Vdash\phi$ for some finite $P\subseteq\Delta[\c A]$.
+    Since we have already proven this for existential $\phi$ by induction, it is sufficient to induct on the case that $\phi$ is negated: $\phi=\neg\psi$.
+    Suppose $\c A\vDash\neg\psi$, then by completeness $T^f\cup\Delta[\c A]\vDash\neg\psi$.
+    Then by compactness there exists a finite $P\subseteq\Delta[\c A]$ such that $T^f\cup P\vDash\neg\psi$, we claim that $P\Vdash\neg\psi$.
+    Otherwise, there exists a $Q\supseteq P$ such that $Q\Vdash\psi$, and so
+    $$ T^f\vDash\forall\bar x\parens{\bigwedge Q(\bar x)\to\psi(\bar x)} $$
+    Then
+    $$ T^f[Q]\vDash\forall\bar x\parens{\bigwedge Q(\bar x)\to\psi(\bar x)} $$
+    and since $T^f[Q]\vDash\bigwedge Q(\bar a)$, we have that $T^f[Q]\vDash\psi(\bar a)$.
+    But $T^f\cup P\subseteq T^f[P]\subseteq T^f[Q]$ and so by completeness, $T^f\cup P\vDash\psi(\bar a)$, in contradiction.
+
+    Now conversely, suppose $P\Vdash\phi$ for some finite $P\subseteq\Delta[\c A]$, then for any $Q\supseteq P$, $Q\nVdash\psi$.
+    We then claim there is no $Q\subseteq\Delta[\c A]$ which forces $\psi$.
+    As otherwise by montonocity $P\cup Q$ would force $\psi$.
+    So by induction $\c A\nvDash\psi$, meaning $\c A\vDash\neg\psi$ as required.
+    \qed
+\eenum
+
+An immediate consequence of this theorem is
+
+\bcoro[name=coro5.1]
+
+    $T^f$ is model-complete iff every one of its models is $T$-generic.
+
+\ecoro
+
+\bdefn
+
+    Call a class of structures $\boldsymbol K$ {\emphcolor inductive} if it is closed under union of chains.
+
+\edefn
+
+\bthrm
+
+    The class of $T$-generic structures is inductive.
+
+\ethrm
+
+\Proof let $\set{\c A_\alpha}_{\alpha<\lambda}$ be an increasing chain of $T$-generic structures, where $\lambda$ is a limit ordinal.
+We know that every $T$-generic structure is a model of $T^f$, and so $T^f\cup\Delta[\c A_\alpha]$ is complete in $\c L[\c A_\alpha]$.
+Since $\c A_{\alpha+1}\vDash T^f\cup\Delta[\c A_\alpha]$ as $\c A_{\alpha}\subseteq\c A_{\alpha+1}$, we have that $\c A_\alpha\equiv\c A_{\alpha+1}$ in $\c L[\c A_\alpha]$, meaning
+$\c A_\alpha\preceq\c A_{\alpha+1}$.
+By Tarski's elementary chain lemma, this means that $\c A_\alpha\preceq\bigcup_{\alpha<\lambda}\c A_\alpha=\c A$.
+Since every finite subset of $\Delta[\c A]$ contains symbols entirely from some $\c A_\alpha$, $T\cup\Delta[\c A]$ is consistent (take a finite subset, it is contained in $T\cup\Delta[\c A_\alpha]$ which
+is consistent).
+Let $\phi$ be a sentence of $\c L[\c A]$, then since there are only finitely many constant symbols in $\phi$, it is a sentence of some $\c L[\c A_\alpha]$.
+Then
+$$ \c A\vDash\phi \iff \c A_\alpha\vDash\phi \iff P\Vdash\phi\hbox{ for some finite $P\subseteq\Delta[\c A_\alpha]$} $$
+now, $P\subseteq\Delta[\c A]$ as well.
+And if such a $P$ exists, then it has only finitely many symbols in $\c A$, so it is in $\Delta[\c A_\alpha]$.
+\qed
+
+\bdefn
+
+    Let $T_1,T_2$ be first-order theories.
+    $T_1$ is {\emphcolor model-consistent} with $T_2$ if every $T_2$-model can be embedded into a $T_1$-model.
+    If $T_1$ is model-consistent with $T_2$ and $T_2$ is model-consistent with $T_1$, then $T_1$ and $T_2$ are {\emphcolor mutually model-consistent}.
+
+\edefn
+
+\blemm
+
+    $T_1$ is model-consistent with $T_2$ iff $(T_1)_\forall\subseteq(T_2)_\forall$.
+    In particular they are mututally model-consistent if $(T_1)_\forall=(T_2)_\forall$.
+
+\elemm
+
+\Proof recall that $\c A\vDash T_\forall$ iff $\c A$ can be embedded into a $T$-model.
+Thus $T_1$ is model-consistent with $T_2$ if $\c A\vDash T_2\implies\c A\vDash(T_1)_\forall$, which is equivalent to $T_2\vDash(T_1)_\forall$.
+In turn this is equivalent to $(T_1)_\forall\subseteq(T_2)_\forall$, as required.
+\qed
+
+\blemm
+
+    $T^f$ is model-consistent with $T$ for any theory.
+
+\elemm
+
+\Proof let $\phi\in(T^f)_\forall$, by \refmath[lemma]{lemm3.5}, we have that $\phi\in T^f$, i.e. $\varnothing\Vdash\phi$, and by \refmath[lemma]{lemm3.8} $T\vDash\phi$ and so $\phi\in T_\forall$ as required.
+\qed
+
+\blemm
+
+    For any theory $T$, $T_{\forall\exists}\subseteq T^f$, in particular $T_\forall\subseteq(T^f)_\forall$.
+
+\elemm
+
+\Proof let $\phi\in T_{\forall\exists}$, so $\phi=\neg\exists\bar x\neg\psi(\bar x)$ where $\psi(\bar x)$ is existential.
+Now suppose $\phi\notin T^f$, meaning $\varnothing\nvDash\phi$ so there exists a condition $P\Vdash\exists\bar x\neg\psi(\bar x)$.
+So there are closed $\c L[A]$-terms $\bar t$ such that $P\Vdash\neg\psi(\bar t)$.
+Since $\neg\psi(\bar t)$ is universal, by \refmath[lemma]{lemm3.8}, $T\cup P\vDash\neg\psi(\bar t)$.
+But this contradicts $T\vDash\forall\bar x\psi(\bar x)$.
+
+Note that a $\forall$-formula is a $\forall\exists$-formula, so $T_\forall\subseteq T^f$ and thus $T_\forall\subseteq(T^f)_\forall$.
+\qed
+
+As a direct consequence of the previous lemma:
+
+\bcoro[name=coro6.1]
+
+    If $T$ is a $\forall\exists$-theory, then $T\subseteq T^f$ (so $T^f$ is the forcing completion of $T$).
+
+\ecoro
+
+And as a direct consequence of the previous two lemmas, we have
+
+\bthrm
+
+    $T$ and $T^f$ are mutually model-consistent.
+
+\ethrm
+
+\bcoro
+
+    Let $T_1,T_2$ be two first-order theories.
+    Then they are mutually model-consistent if and only if $T_1^f=T_2^f$.
+
+\ecoro
+
+\Proof $(\implies)$ if $T_1$ and $T_2$ are mutually model-consistent then $(T_1)_\forall=(T_2)_\forall$.
+By \refmath[lemma]{lemm3.9} $T_\forall^f=T^f$ so
+$$ T_1^f = ((T_1)_\forall)^f = ((T_2)_\forall)^f = T_2^f $$
+as required.
+$(\impliedby)$ by the above theorem we have $T_\forall=(T^f)_\forall$.
+So
+$$ (T_1)_\forall = (T_1^f)_\forall = (T_2^f)_\forall = (T_2)_\forall $$
+as required.
+\qed
+
+\bcoro
+
+    Let $T_1$ and $T_2$ be two mutually model-consistent theories.
+    Then a structure $\c A$ is $T_1$-generic iff it is $T_2$-generic.
+
+\ecoro
+
+\Proof by \refmath[lemma]{lemm3.9}, a condition for $T$ is a condition for $T_\forall$.
+So $P$ is a condition for $T_1$ iff it is a condition for $(T_1)_\forall=(T_2)_\forall$ iff it is a condition for $T_2$.
+So $\Delta[\c A]$ is consistent with $T_1$ (i.e. a condition) iff it is consistent with $T_2$, this proves the first condition.
+And for any condition $P$, $P\Vdash\phi$ for $T_1$ iff $P\Vdash\phi$ for $(T_1)_\forall=(T_2)_\forall$ iff $P\Vdash\phi$ for $T_2$.
+So if $\c A$ is $T_1$-generic then $\c A\vDash\phi$ iff $P\Vdash\phi$ for $T_1$ for some finite $P\subseteq\Delta[\c A]$ iff $P\Vdash\phi$ for $T_2$.
+Meaning $\c A$ is $T_2$-generic.
+\qed
+
+\bdefn
+
+    If $T$ is an $\c L$-theory, a $\c L$-theory $T'$ is $T$'s {\emphcolor model companion} if
+    \benum
+        \item $T$ and $T'$ are mutually model-consistent.
+        \item $T'$ is model complete.
+    \eenum
+
+\edefn
+
+Recall that if $T^*$ is the model completion of $T$, then it is model complete and every model of $T$ can be embedded into a model of $T^*$.
+Since $T^*$ is an extension of $T$, every model of $T^*$ is a model of $T$ and thus can be trivially embedded into itself.
+So $T$ and $T^*$ are mutually model-consistent.
+Thus a model completion is a model companion.
+
+\bthrm
+
+    If $T_1,T_2$ are model companions of $T$ then they are logically equivalent.
+    In particular two model completions of $T$ are logically equivalent.
+
+\ethrm
+
+\Proof we will show that a model of $T_1$ is a model of $T_2$.
+Let $\c A_0\vDash T_1$ be a $T_1$-model.
+Then since $T_1,T_2$ ar mutually model-consistent, it can be embedded into a $T_2$-model, which can be embedded into a $T_1$-model, and so on.
+So we get a chain
+$$ \c A_0\subseteq\c A_1\subseteq\c A_2\subseteq\cdots $$
+where $\c A_{2i}\vDash T_1$ and $\c A_{2i+1}\vDash T_2$.
+Since $T_1$ and $T_2$ are both model complete,
+$$ \c A_0\subseteq\c A_2\subseteq\c A_4\subseteq\cdots,\qquad \c A_1\subseteq\c A_3\subseteq\c A_5\subseteq\cdots $$
+are both elementary chains, and so
+$$ \c A = \bigcup_{i<\omega}\c A_i = \bigcup_{2i<\omega}\c A_{2i} = \bigcup_{2i+1<\omega}\c A_{2i+1} $$
+is an elementary extension of $\c A_i$ by the Tarski chain theorem.
+So $\c A\vDash T_2$ since $\c A_1\vDash T_2$, and since $\c A_0\equiv\c A$, we have $\c A_0\vDash T_2$ as required.
+\qed
+
+\bcoro
+
+    If a theory $T$ has a model companion $T'$, then $T'$ and $T^f$ are logically equivalent.
+
+\ecoro
+
+\Proof since $T'$ is model-complete, by \refmath[theorem]{robinsontest} it is equivalent to a set of existential sentences.
+Thus it is a $\forall\exists$-theory, and so $T'\subseteq(T')^f$ by \refmath[corollary]{coro6.1}.
+Since $T$ and $T'$ are by definition mutually model-consistent, $(T')^f=T^f$, so $T'\subseteq T^f$.
+Since $T^f$ is a superset of a model-complete theory, it too is therefore model-complete.
+Thus $T$ and $T^f$ are mutually model-complete and $T^f$ is model-complete, so $T^f$ is $T$'s model companion.
+By the previous theorem, $T'$ and $T^f$ are therefore logically equivalent.
+\qed
+
+\bthrm
+
+    A theory $T$ is model-complete iff every model of $T$ is $T$-generic.
+
+\ethrm
+
+\Proof $(\implies)$ if $T$ is model-complete it is its own model companion.
+So $T$ and $T^f$ are logically equivalent, so by \refmath[corollary]{coro5.1} every model of $T$ is $T$-generic.
+
+$(\impliedby)$ if every $T$-model is $T$-generic, then every model of $T$ models $T^f$ by \refmath[lemma]{lemm4.1}.
+So by \refmath[theorem]{thrm5.2} for every $T$-model $\c A$, it is a $T^f$-model and so $T^f\cup\Delta[\c A]$ and thus $T\cup\Delta[\c A]$ is complete.
+Thus $T$ is model-complete.
+\qed
+
+\bcoro
+
+    Every model-complete theory is forcing-complete.
+
+\ecoro
+
+\Proof this is because every $T$-model is $T$-generic, and so every model of $T$ models $T^f$.
+Thus $T\vDash T^f$, meaning $T^f\subseteq T$.
+Since $T$ is a $\forall\exists$-theory, we showed that $T\subseteq T^f$.
+So $T=T^f$, and $T$ is forcing-complete.
+\qed
+
