@@ -1,0 +1,147 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+\parindent=0pt
+\parskip=4pt plus 2pt minus 2pt
+
+\input ../preamble
+
+\footline={}
+
+\setcounter{section}{3}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+
+{\bppbox{rgb{.5 1 .5}}{rgb{0 .4 0}}{rgb{.1 .4 0}}
+
+    \centerline{\setfontandscale{bf}{20pt}Advanced Algorithms}
+    \smallskip
+    \centerline{\setfont{it}Homework \the\counter{section}}
+    \centerline{\setfont{it}Ari Feiglin}
+
+\eppbox}
+
+\bexerc
+
+    In the Solitaire Memory Game, there are $n$ pairs of cards distributed randomly and face down on a table.
+    The single player plays each round by picking two (of the $2n$) cards from the table, and if they match he removes them, otherwise he returns them face down.
+    The game ends when all the pairs are removed from the game.
+    Suppose the player can remember the picture on every card he has seen.
+    \benum
+        \item Show a deteriministic algorithm for the game with a competitive ratio of $2$.
+        \item Show a lower bound of $(2-2/n)$ for the competitive ratio of any deterministic algorithm for the game.
+        \item Give a random algorithm which per round chooses the first card uniformly from the unseen cards, and show it has an expected competitive ratio of $1\frac34$ against an oblivious adversary.
+    \eenum
+
+\eexerc
+
+\benum
+    \item The algorithm is just the naive one: for the first $n$ rounds, uncover all the cards.
+    Then the next $n$ rounds is spent matching all the pairs remembered from the first rounds.
+    The optimal algorithm matches a pair each round and so it takes $n$ rounds, thus our competitive ratio is $\frac{2n}n=2$, as required.
+    \item We can assume the following: as soon as a pair is found, the player matches them; if no match is known, then the first available unknown card is chosen; and that the player starts from card $1$.
+    Then the cards can be arranged such that the player plays
+    $$ (1,2)\ (3,1)\ (4,5)\ (5,3)\ (6,7)\ (7,4)\ (8,9)\ (9,6)\cdots $$
+    in general, the game is built of rounds of the form $(2k,2k+1)\ (2k+1,2k-2)$ for $k>1$.
+    This will occur $n-2$ times, and including the first two rounds gives $2(n-2)+2=2n-2$ rounds.
+    Then we must make another round to match $2n$, to give us $2n-1$ rounds.
+    Thus the competitive ratio is $(2-1/n)$ (since the optimal algorithm works in $n$ rounds).
+    \item Our algorithm will pick its first card at random, and if it has a match in a card already looked at, match it.
+    Otherwise pick another card at random.
+    For each match, there are three ways for it to be matched:
+    \benum
+        \item The algorithm matched it immediately (so it picks a card not seen before, then its match).
+        \item The algorithm matched it by finding a match at a later round (i.e. card A found in one round, then card B found as the first card in another round).
+        \item The algorithm matched it by finding each card in separate rounds, then matching them in a third round (i.e. card A found in one round, then card B found as the second card in another
+        round).
+    \eenum
+    Note that for {\bf i}, each card in the pair is flipped once.
+    For {\bf ii}, one is flipped once and one is flipped twice, so we can view this as flipping $1.5$ times.
+    For {\bf iii}, both are flipped twice.
+    Thus if $A,B,C$ are the number of occurrences of each type of match, the total rounds are $A+1.5B+2C$, and we know $A+B+C=n$, so the total rounds are $n+0.5B+C$.
+    The probability of {\bf iii} occurring is less than {\bf ii} occurring, so the expected number of rounds is $\leq n+1.5\expecof B$.
+\eenum
+
+\bexerc
+
+    Find a randomized algorithm for the random path search problem with a better competitive ratio than $9$.
+
+\eexerc
+
+Our algorithm will first uniformly choose between $\pm1$ (let this be $s$), then it will make the following steps:
+$$ \set{s,-2s,4s,\dots,s(-1)^i2^i} $$
+Now suppose that the cow is found at $(-1)^n(2^n+\epsilon)$, for $s=1$ the path taken will be
+$$ 1,-2,\dots,(-1)^n2^n,(-1)^{n+1}2^{n+1},(-1)^n(2^n+\epsilon) $$
+So the time taken is
+$$ 2(1+2+\cdots+2^{n+1})+2^n+\epsilon = 2(2^{n+2}-1) + 2^n+\epsilon = 92^n+\epsilon-2 $$
+And for $s=-1$ the path taken will be
+$$ -1,2,\dots,-(-1)^n2^n,(-1)^n2^n+\epsilon $$
+So the time taken is
+$$ 2(1+\cdots+2^n) + 2^n+\epsilon = 2(2^{n+1}-1) + 2^n+\epsilon = 52^n-2+\epsilon $$
+So the expected time is then
+$$ 72^n+\epsilon-1 $$
+The optimal time is $2^n+\epsilon$, and so we have a competitive ratio of $7$ (since this is the worst possible input, the analysis for $-(-1)^n(2^n+\epsilon)$ is similar).
+
+\bexerc
+
+    Find a randomized algorithm for the rental ski problem with a better competitive adversary than shown in class.
+
+\eexerc
+
+Our algorithm will buy with probability $p$ on day $\alpha M$, and otherwise on day $M$.
+If we go skiing on day $M$ then the expected price we pay is
+$$ p(\alpha M+M) + (1-p)(M+M) = M(\alpha p+p-2p+2) = M(p(\alpha-1)+2) $$
+since the optimal algorithm in this case will just buy straight away, we have that
+$$ \expecof{C(M)} = (p(\alpha-1)+2)C_{\rm opt}(M) $$
+Otherwise if we go skiing on day $\alpha M$, then the optimal thing to do is rent for $\alpha M$ days, and our expected price is
+$$ p(\alpha M+M) + (1-p)\alpha M $$
+since with probability $p$ we buy on day $\alpha M$, and otherwise we wait for day $M$, but by then we will have gone skiing.
+Thus
+$$ \expecof{C(\alpha M)} = \alpha M\parens{p\parens{1+\frac1\alpha}+1-p} = \parens{\frac p\alpha+1}C_{\rm opt}(\alpha M) $$
+So the competitive ratio is $\maxof{p(\alpha-1)+2,\frac p\alpha+1}$, which is minimized when they're equal:
+$$ p(\alpha-1) + 2 = \frac p\alpha + 1 \implies p\alpha^2 + \alpha(1-p) - p = 0 $$
+So
+$$ \alpha = \frac{p-1\pm\sqrt{5p^2-2p+1}}{2p} $$
+In order for this to be positive, we must have
+$$ \alpha = \frac{p-1+\sqrt{5p^2-2p+1}}{2p} $$
+Then the competitive ratio is
+$$ p(\alpha-1)+2 = \frac{p-1+\sqrt{5p^2-2p+1}}2-p+2 = \frac{3-p+\sqrt{5p^2-2p+1}}2 $$
+Which obtains a minimum at $p=0.4$ with a value of $1.8$.
+And we compute $\alpha=0.5$.
+
+So our algorithm will buy with probability $0.4$ on day $M/2$ and $0.6$ on day $M$.
+This has a competitive ratio of $1.8$.
+
+\bexerc
+
+    The {\it periodicity} of a string $S$ is the smallest $p$ such that $S[i]=S[i+p]$ for all $i\leq n-p$.
+    Make use of the KMP algorithm to find the periodicity of a string $S$.
+
+\eexerc
+
+Recall that KMP computes the following function in $\Theta(n)$ time:
+$$ \pi(q) = \maxof{k<q}[\hbox{$S[1,\dots,k]$ is a suffix of $S[1,\dots,q]$}] $$
+Now if $S=\xi^m$ where $\xi$ is the period of $S$, then notice that $\xi^{m-1}$ is the largest suffix of $S=\xi^m$.
+Thus $\pi(n)=n-\abs\xi$, thus $n-\pi(n)=\abs\xi=p$.
+
+Now if $S=\xi^m\xi'$ where $\xi'$ is a prefix of $\xi$, then the largest prefix of $S$ which is a proper suffix of $S$ is $\xi'$, and so $\pi(n)=\abs\xi'$.
+So our first step is to compute $\ell=\pi(n)$, then we focus on $P[1,\dots,n-\ell]$ and compute $n-\ell-\pi(n-\ell)$.
+That is, we just return
+$$ \abs S - \pi(\abs S) - \pi(\abs S-\pi(\abs S)) $$
+
+\bexerc
+
+    Give a linear algorithm, which given a string $S$, computes the longest substring of $S$ which is also a palindrome.
+
+\eexerc
+
+Now, a substring palindrome is a substring $S[i:i+k)$ such such that $S[i:i+k)^r=S[i:i+k)$.
+We know that
+$$ S = S[0:i)\,S[i:i+k)\,S[i+k:n) \implies S^r = S[i+k:n)^r\,S[i:i+k)^r\,S[0:i)^r $$
+Thus $S[i:i+k)^r=S^r[n-i-k:n-i)$.
+So we require $S[i:i+k)=S^r[n-i-k:n-i)$.
+
+\bye
+
