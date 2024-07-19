@@ -93,6 +93,8 @@ Where the blue arrow $\psi$ is just the quotient map composed with $f_n$.
 This induces a group morphism
 $$ H_n(\set{f_n}) = f_*\colon H_n(\C)\longto H_n(\D) $$
 since we can define $f_*([z])=\psi(z)$ since if $[z]=[z']$ then $z-z'\in B_n(\C)$ and so $f(z-z')\in B_n(\D)$ and thus the quotient of $f(z-z')$ is just $0$, so $\psi(z)=\psi(z')$.
+Explicitly,
+$$ f_*[z] = [f_nz] $$
 
 We now claim that $H_n$ is a functor from the category of chain complexes ${\bf Comp}$ to the category of Abelian groups ${\bf Ab}$.
 Now suppose $\set{f_n}\colon\C\longto\D$ and $\set{g_n}\colon\D\longto\E$ are chain complex morphisms, then the following diagram commutes
@@ -741,3 +743,141 @@ $$ i^X_\sharp\circ\sigma_\sharp(I_n) - j^X_\sharp\circ\sigma_\sharp(I_n) = i^X_\
 So we get
 $$ \partial T^X(\sigma) + T^X\partial\sigma = i^X_\sharp(\sigma) - j^X_\sharp(\sigma) $$
 as required.
+
+So we must show that
+$$ \partial TI_n + T\partial I_n = i_\sharp I_n - j_\sharp I_n $$
+in order to get this for every $\sigma\in C_n(\Delta^n)$.
+So we must show $\partial TI_n=-T\partial I_n+i_\sharp-j_\sharp I_n$, since $\partial TI_n\in C_n(\Delta^n\times I)$, and $\Delta^n\times I$ is a convex set in ${\bb R}^{n+2}$.
+In a convex set so a simplex is a boundary if and only if it is a cycle.
+We want $-T\partial I_n+i_\sharp I_n-j_\sharp I_n$ to be a boundary, and so it is sufficient to check that it is a cycle:
+$$ -\partial T\partial I_n + \partial i_\sharp I_n - \partial j_\sharp I_n $$
+Since $\partial I_n\in C_{n-1}(\Delta^n)$, we have that
+$$ \partial T\partial I_n + T\partial\partial I_n = i_\sharp\partial I_n - j_\sharp\partial I_n $$
+and thus we must have that the following is zero:
+$$ T\partial\partial I_n - i_\sharp\partial I_n + j_\sharp\partial I_n + \partial i_\sharp I_n - \partial j_\sharp I_n $$
+Since $\partial\partial=0$, and $i_\sharp,j_\sharp$ are chain homomorphisms, this is indeed zero.
+So $-T\partial I_n+i_\sharp I_n-j_\sharp I_n$ is a cycle and thus a boundary since the universe is convex.
+So let us take $A$ to be a chain such that $\partial A$ is this element.
+\qed
+
+So notice now that if $f\sim g$, then $f_\sharp\sim g_\sharp$ are chain homotopic, and so $f_*=g_*$.
+
+\bcoro
+
+    If $f\colon X\longto Y$ is a homotopy equivalence, then $f_*\colon H_n(X)\longto H_n(Y)$ is an isomorphism.
+
+\ecoro
+
+\Proof there exists a $g\colon Y\longto X$ such that $fg\sim{\rm id}_Y$ and $gf\sim{\rm id}_X$.
+Thus
+$$ g_*\circ f_* = (g\circ f)_* = ({\rm id}_X)_* = {\rm id}_{H_n(X)} $$
+and similarly $f_*\circ g_*={\rm id}_{H_n(Y)}$, so $f_*$ is an isomorphism.
+\qed
+
+\subsection{Affine Spaces}
+
+\bdefn
+
+    Let $p_1,\dots,p_n$ be vectors in a vector space, then their {\emphcolor affine hull} is
+    $$ \AHof{p_1,\dots,p_n} = \set{\sum_{i=1}^n\alpha_ip_i}[\sum_{i=1}^n\alpha_i=1] $$
+    Elements of the affine hull are called {\emphcolor affine combinations}.
+    We similarly define the {\emphcolor convex hull}:
+    $$ \CHof{p_1,\dots,p_n} = \set{\sum_{i=1}^n\alpha_ip_i}[\sum_{i=1}^n\alpha_i=1,\,\alpha_i\geq0] $$
+    And its elements are called {\emphcolor convex combinations}.
+
+\edefn
+
+\bdefn
+
+    $p_1,\dots,p_n$ are {\emphcolor affine independent} if $\sum_{i=1}^n\alpha_iv_i=0$ and $\sum_{i=1}^n\alpha_i=0$ implies every $\alpha_i$ is $0$.
+
+\edefn
+
+\bdefn
+
+    $A\subseteq{\bb R}^k$ is an {\emphcolor $n$-simplex} if it is the convex hull of a set of $n+1$ affine independent set of vectors.
+
+\edefn
+
+\bdefn
+
+    Let $\Sigma=\CHof{p_0,\dots,p_n}$ be an $n$-simplex, then its $i$th {\emphcolor face} is $\CHof{p_0,\dots,p_{i-1},p_i,\dots,p_n}$.
+    And its {\emphcolor barycenter} is
+    $$ b = \frac1{n+1}\sum_{i=0}^np_i $$
+    We define the {\emphcolor barycentric subdivision} of $\Sigma$, denoted $\Sd\Sigma$, to be a set of $n$-simplices which we define inductively on $n$ as follows:
+    \benum
+        \item For a $0$-simplex, $\Sd\Sigma=\Sigma$.
+        \item If $\Sigma$ is an $n$-simplex, then let $\phi_0,\dots,\phi_n$ be its faces (which are $n-1$-simplices) and $b$ its barycenter.
+            Then define $\Sd\Sigma$ to be the $n$-simplices spanned by $b$ and the simplices in the barycentric subdivisions of $\phi_i$.
+            I.e.
+            $$ \Sd\Sigma = \set{\CHof{b,\Sigma^{n-1}}}[\Sigma^{n-1}\in\Sd\phi_i,0\leq i\leq n] $$
+    \eenum
+
+\edefn
+
+Inductively, $\Sigma=\bigcup\Sd\Sigma$ and $\#\Sd\Sigma=(n+1)!$.
+
+\bthrm
+
+    For every $n$, there exists a constant $c<1$ such that for every $n$-simplex $\Sigma$ then for every $\Sigma'\in\Sd\Sigma$:
+    $$ \diamof{\Sigma'} \leq c\diamof\Sigma $$
+
+\ethrm
+
+\bdefn
+
+    We define $\Sd_n\colon C_n(\Delta^n)\longto C_n(\Delta^n)$ by induction on $n$.
+    Let $\sigma\colon\Delta^n\longto\Delta^n$ be a generator, then
+    \benum
+        \item $\Sd_0(\sigma)=\sigma$
+        \item $\Sd_n(\sigma)=C_{\sigma(b)}(\Sd_{n-1}(\partial\sigma))$ where $b$ is the barycenter of $\Delta^n$.
+    \eenum
+    Let $X$ be a topological space, then let $\Sd\colon C_n(X)\longto C_n(X)$ be defined on generators $\sigma\colon\Delta^n\longto X$ by $\Sd\sigma=\sigma_\sharp\Sd_n{\rm id}_{\Delta^n}$.
+
+\edefn
+
+\bthrm
+
+    $\Sd$ is a chain map ($\Sd=\set{\Sd_n}_{n=0}^\infty$) and is natural (between the chain functor ${\bf Top}\to{\bf Comp}$ and itself).
+
+\ethrm
+
+$\Sd$ being natural means the following diagram commutes
+
+\bigskip
+\centerline{\def\diagrowheight{1cm}\drawdiagram{
+    $C_n(X)$ & $C_n(X)$\cr
+    $C_n(Y)$ & $C_n(Y)$\cr
+}{
+    \diagarrow{from={1,1}, to={1,2}, text=$\Sd_n$, y distance=.25cm}
+    \diagarrow{from={2,1}, to={2,2}, text=$\Sd_n$, y distance=-.25cm}
+    \diagarrow{from={1,1}, to={2,1}, text=$f_\sharp$, x distance=-.25cm}
+    \diagarrow{from={1,2}, to={2,2}, text=$f_\sharp$, x distance=.25cm}
+}}
+
+\bdefn
+
+    Let $X$ be a topological space, and $\U=\set{\U_\alpha}_{\alpha\in I}$ a collection of subsets of $X$ such that $\bigcup\Dot\U_\alpha=X$ (where $\Dot\U$ is the interior of $\U$).
+    Such a collection will be called a {\emphcolor good cover} of $X$.
+
+    We will say that $\sigma\colon\Delta^n\longto X$ {\emphcolor preserves} the cover if there exists an $\alpha\in I$ such that $\sigma(\Delta^n)\subseteq\U_\alpha$.
+    And we will say that $\sum_in_i\sigma_i\in C_n(X)$ {\emphcolor preserves} the cover if each $\sigma_i$ preserves the cover.
+
+    Let us define
+    $$ C_n^\U(X) = \set{\sigma\in C_n(X)}[\sigma\hbox{ preserves $\U$}] $$
+
+\edefn
+
+$C_n^\U(X)$ is a subgroup of $C_n(X)$, as can be easily verified.
+Notice that if $\sigma(\Delta^n)\subseteq\U_\alpha$ then $\sigma\tau_i(\Delta^{n-1})=\sigma(\tau_i\Delta^{n-1})\subseteq\U_\alpha$ so that $\sigma\tau_i\in C_{n-1}^\U(X)$.
+Thus $\partial\sigma\in C_{n-1}^\U(X)$, so we can define a subcomplex of $\C(X)$, $\C^\U(X)$ whose coefficients are $C_n^\U(X)$.
+So we can define $H_n^\U(X)$ to be the $n$th homology group of $\C^\U(X)$.
+
+The inclusion map $\iota\colon C_n^\U(X)\longto C_n(X)$ is a chain morphism, so this induces a $\iota_*\colon H_n^\U(X)\longto H_n(X)$.
+
+\bthrm
+
+    This $\iota_*$ is an isomorphism.
+
+\ethrm
+
