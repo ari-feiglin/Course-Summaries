@@ -1,0 +1,204 @@
+\input pdfToolbox
+\input preamble
+
+\parindent=\z@
+\parskip=3pt plus 1pt
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+
+{\vbox{\leftskip=0pt plus 1fill\relax\rightskip=\leftskip\setfontandscale{bf}{25pt}%
+Linear Algebra 2, Homework 8 Solution
+}}
+
+\bexerc
+
+    Define an inner product on ${\bb R}^3$ by
+    $$ \iprod{\pmatrix{x\cr y\cr z},\pmatrix{a\cr b\cr c}} = x(a-b) + y(-a+2b-c) + z(-b+2c) $$
+    \benum
+        \item Find an orthonormal basis for the space.
+        \item Find the orthogonal complement of $(0,1,0)$ and compute the projection of $(1,2,3)$ onto it.
+    \eenum
+
+\eexerc
+
+\benum
+    \item To make the second part easier, we will start with the basis $\set{(0,1,0),(1,0,0),(0,0,1)}$.
+    So we set $w_0=(0,1,0)$, which has a squared norm of $2$, so
+    $$ w_1 = \pmatrix{1\cr 0\cr 0} - \pi_{w_0}\pmatrix{1\cr 0\cr 0} = \pmatrix{1\cr 0\cr 0} - \frac12\iprod{\pmatrix{1\cr0\cr0},\pmatrix{0\cr1\cr0}}\pmatrix{0\cr1\cr0} = \pmatrix{1\cr\frac12\cr0} $$
+    And $w_1$ has a squared norm of $1(1-0.5)+0.5(-1+1)=0.5$, so
+    $$ \eqalign{
+        w_2 &= \pmatrix{0\cr0\cr1} - \pi_{w_0,w_1}\pmatrix{0\cr0\cr1} = \pmatrix{0\cr0\cr1} - \frac12\iprod{\pmatrix{0\cr0\cr1},\pmatrix{0\cr1\cr0}}\pmatrix{0\cr1\cr0} -
+        2\iprod{\pmatrix{0\cr0\cr1},\pmatrix{1\cr\frac12\cr0}}\pmatrix{1\cr\frac12\cr0}\cr
+        &= \pmatrix{0\cr0\cr1} + \pmatrix{0\cr\frac12\cr0} + \pmatrix{1\cr\frac12\cr0}\cr
+        &= \pmatrix{1\cr1\cr1}
+    } $$
+    So we have an orthogonal basis
+    $$ \set{\pmatrix{0\cr1\cr0},\pmatrix{1\cr\frac12\cr0},\pmatrix{1\cr1\cr1}} $$
+    normalizing gives
+    $$ \set{\pmatrix{0\cr1/\sqrt2\cr0},\pmatrix{1/\sqrt2\cr1/2\sqrt2\cr0},\pmatrix{1\cr1\cr}} $$
+    Alternatively, had we started with the standard basis in its canonical order then we would've gotten
+    $$ \set{\pmatrix{1\cr0\cr0},\pmatrix{1\cr1\cr0},\pmatrix{1\cr1\cr1}} $$
+    \item By the previous subquestion, we already have a basis for $(0,1,0)^\perp$, so
+    $$ \pmatrix{0\cr1\cr0}^\perp = \lspanof{\pmatrix{1\cr\frac12\cr0},\pmatrix{1\cr1\cr1}} $$
+    Notice that
+    $$ \iprod{\pmatrix{0\cr1\cr0},\pmatrix{1\cr2\cr3}} = 0 $$
+    so it is already in the orthogonal complement, thus $\pi(1,2,3)=(1,2,3)$.
+    \qqed
+\eenum
+
+\bexerc
+
+    In recitation we defined
+    $$ B_1 = \set{u\in V}[\norm u=1],\qquad \hat v =\frac v{\norm v} $$
+    And we said that for all $v\neq0$, $\min_{u\in B_1}\norm{u-v}$ is obtained when $u=\hat v$.
+    Now prove that this vector is unique, i.e.
+    $$ \norm{v-\hat v} = \norm{v-u} \implies u = \hat v $$
+
+\eexerc
+
+By the recitation, we take $u\in B_1$ and we get that
+$$ \norm{v-u}^2 = \norm v^2 - 2\Re\iprod{v,u} + 1 $$
+And
+$$ \norm{v-\hat v}^2 = \norm v^2-2\norm v + 1 $$
+these are equal only when
+$$ \Re\iprod{v,u} = \norm v $$
+Now, we have the chain of inequalities (from the recitation):
+$$ \Re\iprod{v,u} \leq \abs{\iprod{v,u}} \leq \norm v\norm u = \norm v $$
+In order for this to be an equality, we must have $\abs{\iprod{v,u}}=\norm v\norm u$, which by Cauchy-Schwarz occurs only when $v,u$ are linearly dependent.
+Thus $u=\alpha v$.
+Now we must also have
+$$ \Re\iprod{v,u} = \abs{\iprod{v,u}} \iff \norm v^2\Reof\alpha = \norm v^2\abs\alpha \iff \Reof\alpha = \abs\alpha $$
+This occurs only when $\alpha\in{\bb R}$ and $\alpha>0$.
+Furthermore, since $\norm u=1$, we have $\abs\alpha=\frac1{\norm v}$, so $\alpha=\frac1{\norm v}$.
+\qqed
+
+\bexerc
+
+    Let $V$ be an inner product space of dimension and $T$ a linear operator over it such that for all $v\in V$: $\iprod{v,Tv}=0$.
+    Prove or disprove:
+    \benum
+        \item If $T$ is invertible, it has no eigenvalues.
+        \item If $T$'s characteristic polynomial splits (into linear factors), then $T$ is nilpotent.
+        \item If $T$ is not invertible, then $T$ is nilpotent.
+        \item If $n$ is odd, then $T$ is singular (not invertible).
+    \eenum
+
+\eexerc
+
+\benum
+    \item {\bf True}: Suppose $T$ did have an eigenvalue $\lambda$, so $Tv=\lambda v$ for some $v\neq0$.
+    Then $\iprod{Tv,v}=\lambda\iprod{v,v}=\lambda\norm v^2$.
+    This is zero, so $\lambda=0$ in contradiction.
+    Notice that this shows that the only eigenvalue of $T$ is $0$.
+    \item {\bf True}: Since $T$'s only eigenvalue is $0$, and its characteristic polynomial splits, its characteristic polynomial must be $p_T(x)=x^n$.
+    By Cayley-Hamilton, we have $0=p_T(T)=T^n$, so $T$ is nilpotent.
+    \item {\bf False}: Take $T$ over ${\bb R}$ with a characteristic polynomial of $x(x^2+1)=x^3+x$.
+    A matrix with this property is
+    $$ A = \pmatrix{0 & 0 & 0\cr0 & 0 & -1\cr0 & 1 & 0} $$
+    Notice that
+    $$ A\pmatrix{x\cr y\cr z} = \pmatrix{0\cr z\cr-y} $$
+    which is orthogonal to $(x,y,z)$ as required.
+    \item {\bf True}: Suppose $T$ is invertible, then it has no eigenvalues by $(1)$.
+    So all of the roots of $p_T(x)$ must be non-real.
+    But non-real roots come in pairs, so the degree of $p_T(x)$ must be even (alternatively, all odd-degree polynomials have a real root).
+    \qqed
+\eenum
+
+\bexerc
+
+    Let $\iprod{\bullet,\bullet}_1$ and $\iprod{\bullet,\bullet}_2$ be two inner products over $V$.
+    Let $\norm\bullet_1,\norm\bullet_2$ be their respective induced norms.
+    Show that there exists a $c>0$ such that for all $v\in V$:
+    $$ \norm v_1\leq c\norm v_2 $$
+
+\eexerc
+
+Let $E=\set{e_1,\dots,e_n}$ be an orthonormal basis with respect to $\iprod{\bullet,\bullet}_2$.
+Now take $v\in V$, suppose $v=\sum_i\alpha_ie_i$, then by Pythagoras:
+$$ \norm v_2^2 = \sum_i\abs{\alpha_i}^2 $$
+and
+$$ \norm v_1^2 = \norm{\sum_i\alpha_ie_i}^2 \leq \parens{\sum_i\abs{\alpha_i}\norm{e_i}_1}^2 $$
+Let $M=\max_{1\leq i\leq n}\norm{e_i}_1$ so that
+$$ \norm v_1^2 \leq M^2\parens{\sum_i\abs{\alpha_i}}^2 $$
+We know by Cauchy-Schwarz (we showed this in recitation) that $(a_1+\cdots+a_n)^2\leq n(a_1^2+\cdots+a_n^2)$, so
+$$ \norm v_1^2 \leq M^2n\sum_i\abs{\alpha_i}^2 = M^2n\norm v_2^2 $$
+So we take $c=M\sqrt n$ and we have the desired result.
+\qqed
+
+\bexerc
+
+    Moshe wants to find a correspondence between the number of hours he studies for a test ($P_1$), the amount of homework he solved ($P_2$), and the number of books he read ($P_3$).
+    He put the data in a table:
+
+    \centerline{\vbox{\tabskip=.25cm\halign{\hfil\strut$#$\hfil&\vrule\kern.25cm\hfil$#$\hfil&\hfil$#$\hfil&\hfil$#$\hfil&\vrule\kern.25cm\hfil$#$\hfil\cr
+        & P_1 & P_2 & P_3 & {\rm Grade}\cr\noalign{\hrule}
+        1 & 4 & 2 & 3 & 7\cr
+        2 & 2 & 3 & 3 & 4\cr
+        3 & 4 & 4 & 5 & 8\cr
+        4 & 2 & 5 & 5 & 6\cr
+    }}}
+
+    Moshe wanted to find values $x_1,x_2,x_3$ which satisfy
+    $$ x_1P_1 + x_2P_2 + x_3P_3 = {\rm Grade} $$
+    unfortunately no such solution exists, so instead he decided to find a solution to 
+    $$ \eqalign{
+        4x_1 + 2x_2 + 3x_3 &= b_1'\cr
+        2x_1 + 3x_2 + 3x_3 &= b_2'\cr
+        4x_1 + 4x_2 + 5x_3 &= b_3'\cr
+        2x_1 + 5x_2 + 5x_3 &= b_4'
+    } $$
+    which is closest (in norm) to $b=(7,4,8,6)$.
+
+\eexerc
+
+We need $b'\in C(A)$ to be closest to $b$, where
+$$ A = \pmatrix{
+4 & 2 & 3\cr
+2 & 3 & 3\cr
+4 & 4 & 5\cr
+2 & 5 & 5} $$
+Notice that indeed $Ax=b$ has no solution (using row reduction).
+So we just want to find $b'=\pi_{C(A)}(b)$.
+So we must find an orthogonal basis for $C(A)$.
+Using row reduction we can see that $A$'s columns are linearly independent, so we start by applying the Gram-Schmidt process to $A$'s columns.
+Let $v_1,v_2,v_3$ be the columns of $A$, then
+$$ \eqalign{
+    w_1 &= v_1 = \pmatrix{4\cr2\cr4\cr2}\cr
+    w_2 &= v_2 - \pi_{w_1}(v_2) = v_2 - \frac{\iprod{v_2,w_1}}{\iprod{w_1,w_1}}w_1 = \pmatrix{-2\cr1\cr0\cr3}\cr
+    w_3 &= v_3 - \pi_{w_1,w_2}(v_3) = v_3 - \frac{\iprod{v_3,w_1}}{\iprod{w_1,w_1}}w_1 - \frac{\iprod{v_3,w_2}}{\iprod{w_2,w_2}}w_2 = \frac1{35}\pmatrix{-3\cr-9\cr7\cr1}
+} $$
+Now, all we need to do is compute $b'=\pi_{C(A)}(b)=\pi_{w_1,w_2,w_3}(b)$.
+This is just
+$$ b' = \frac{\iprod{b,w_1}}{\iprod{w_1,w_1}}w_1 + \frac{\iprod{b,w_2}}{\iprod{w_2,w_2}}w_2 + \frac{\iprod{b,w_3}}{\iprod{w_3,w_3}} = \frac14\pmatrix{27\cr17\cr33\cr23} $$
+And solving $Ax=b'$ gives
+$$ x = \pmatrix{1\cr-1/2\cr5/4} \qqed $$
+
+\bexerc
+
+    Let $H\in{\bb R}^{m\times n}$ whose columns are linearly independent.
+    \benum
+        \item Prove that $H^\top H$ is invertible.
+        \item Given the linear system $Hx=b$, $\tilde x=(H^\top H)^{-1}H^\top b$ is called the {\emphcolor least squares} (LSQ).
+        Show that
+        $$ \min_{x\in{\bb R}^n}\set{\sum_{i=1}^m\bigl(b_i-(Hx)_i\bigr)^2} $$
+        is obtained at $\tilde x$.
+    \eenum
+
+\eexerc
+
+\benum
+    \item We will show that $N(H^\top H)=N(H)$.
+    Obviously if $Hx=0$ then $H^\top Hx=0$.
+    Conversely, if $H^\top Hx=0$ then $x^\top H^\top Hx=(Hx)^\top Hx=\norm{Hx}^2=0$, thus $Hx=0$.
+    Thus $r(H^\top H)=r(H)=n$ since $H$'s columns are linearly independent, thus $H^\top H$ has full rank and is therefore invertible.
+    \item Notice that we are trying to minimize $\norm{b-Hx}^2$, which is obtained when $Hx=\pi_{C(H)}(b)$.
+    So we want to show that $H\tilde x=\pi_{C(H)}(b)$, that is:
+    $$ H(H^\top H)^{-1}H^\top b = \pi_{C(H)}(b) $$
+    Let us define $\tilde b=H(H^\top H)^{-1}H^\top b$, and we can see that $\tilde b\in C(H)$.
+    Now all that remains to show is that $b-\tilde b\in C(H)^\perp=N(H^\top)$ (we showed this in recitation).
+    So
+    $$ H^\top\tilde b = H^\top H(H^\top H)^{-1}H^\top b = H^\top b $$
+    so $H^\top(b-\tilde b)=0$ as required.
+\eenum
+
+\bye
