@@ -1,0 +1,167 @@
+\input pdfToolbox
+\setlayout{horizontal margin=.5cm, vertical margin=.5cm}
+\parindent=0pt
+\parskip=3pt plus 2pt minus 2pt
+\input preamble
+
+\newbox\columnbox
+\output={\twocoloutput}
+
+\newdimen\oldhsize \oldhsize=\hsize
+\hsize=.49\hsize
+
+\def\twocoloutput{
+    \ifvoid\columnbox%
+        \global\setbox\columnbox=\vtop{\unvbox255}%
+    \else%
+        \shipout\hbox to\oldhsize{\vtop{\box\columnbox}\hfill\vtop{\kern\z@\box255}}%
+    \fi%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setscale{8pt}
+\baselineskip=1.5pt plus 1pt
+
+\quitvmode\kern.5cm{\bf SQL injections:} a server making SQL query by client input can be exploited.
+For example the query {\tt select person from people where name=\allowbreak`\$name'} where {\tt\$name} is user input, the user can set {\tt\$name = "' or 1=1 -- "}.
+The query then will list every person in people: {\tt select person from people where name=`' or 1=1 -- }.
+
+Similarly the user can set {\tt\$ = "'; drop table people -- }, which will\hfill\break delete the table.
+
+Similarly the user can use {\tt union} to get information from other tables.
+
+\quitvmode\kern.5cm{\bf Blind SQL injections:} suppose there is no visual representation of the results of the query.
+Instead we can create queries which ask true/false questions, and wait a certain amount of time upon a positive answer.
+For example, the following code checks if a password starts with ASCII 50, if so it waits 5 seconds.
+
+{\tt select if(substring(pswd,1,1) = char(50), benchmark(5000000,
+
+encode(`msg',`by 5 seconds')), null) from users where id=1;}
+
+\quitvmode\kern.5cm{\bf Prevention:} sanitize user input (escape quotation marks, etc.).
+Use parameterized SQL queries, where the parameters are of a set datatype.
+So injecting something like {\tt\$name = "' or 1=1 -- "} will match {\it literally} when {\tt name} is {\tt' or 1=1 --}.
+
+\quitvmode\kern.5cm{\bf Buffer overflow:} suppose we have code
+\begincode
+void func(char* str) {
+    char buf[126];
+    strcpy(buf, str);
+}
+/endcode
+The stack will look like:
+\fullstack{buf&ebp&return addr&str}
+So if {\tt str} is longer than 126 bytes, then it will begin to overwrite {\tt ebp} and {\tt return addr}.
+Suppose we could find an address in {\tt buf}, {\tt ptr}.
+Then we could write malicious code {\tt code} and make {\tt str = nop-sled\ code\ garbage\ ptr} ({\tt garbage} overwrites {\tt ebp}).
+Then the stack will look like
+\fullstack{buf&ebp&return addr&str\cr nop-sled code&garbage&ptr&$\cdots$}
+Then when the function returns it will return to where {\tt ptr} points, which is hopefully inside {\tt nop-sled} (a stream of {\tt nop}s), and will eventually execute {\tt code}.
+
+Problems we may encounter are as follows: firstly we need to find an address inside {\tt buf} for {\tt ptr}.
+Secondly, our shellcode cannot contain any nul bytes, as these will cause {\tt strcpy} to stop copying.
+We can also write it so that the return address is overwritten to point to existing code in the system.
+
+A similar exploit can be found when we have a local variable which is a function pointer: we can use the buffer overflow to alter the function pointer to point where we want it.
+
+\quitvmode\kern.5cm{\bf Prevention:} [1] type safe languages (e.g. Python, Rust), [2] safer functions (e.g. {\tt strncpy}), [3] static source code analysis (use a tool to check static code for
+vulnerabilities), [4] canaries, [5] ASLR (place memory in a random location: makes getting the address for shellcode harder), [6] non-executable stack (so shellcode can't be put into buffer).
+
+\quitvmode\kern.5cm{\bf Canaries:} we place a random number into memory called a {\it canary} to protect the return address from buffer overflow.
+Before returning check that the canary has not changed.
+Split frame into three (four, whatever) parts:
+\fullstack{{\bf C} local vars&{\bf B} arrays&{\bf canary}&ebp&ret addr&{\bf A} args}
+Our code will look like:
+
+\begincode
+... func(args...) {
+    int canary = XXX;
+    /fslash/fslash/ arrays
+    /fslash/fslash/ local vars
+    /fslash* function logic */fslash
+    if (canary != XXX) /fslash/fslash/ exit logic
+    return ...;
+}
+/endcode
+
+\quitvmode\kern.5cm{\bf Return into libc:} using what is called {\bf DEP} we can make it so that memory is only either written to or executed (not both).
+But this can be overcome by {\it return into libc}: where an attacker overwrites {\tt ret addr} to point into libc and execute code there.
+For example make it point to {\tt system}, which runs its argument as a shell script.
+
+\quitvmode\kern.5cm{\bf Return oriented programming (ROP):} the issue (seemingly) with ret2libc is that the attacker can only use functions in libc, and only directly.
+But this can be overcome.
+Libc has many {\it gadgets} which are small snippets of code ending in {\tt ret} which are used by larger functions (e.g. {\tt add \$8, \%esp; ret}).
+If we take control of the stack (e.g. through buffer overflow), we can chain these gadgets together to form malicious code.
+Suppose we have gadgets {\tt g1, g2, g3} and the code
+\begincode
+void func(char* str) {
+    char buf[126];
+    strcpy(buf, str);
+}
+/endcode
+and we want it to call these gadgets in this order.
+Assuming we know the addresses of these gadgets, our payload {\tt str} will be 126 garbage bytes, 4 more garbage bytes to overwrite {\tt ebp}, {\tt g1}, {\tt g2}, {\tt g3}.
+Our stack will look like
+\fullstack{buf&ebp&ret addr&\omit\span$\cdots$\cr garbage&garbage&g1&g2&g3}
+Since we overwrote {\tt ret addr} with {\tt g1}, the function will return into {\tt g1}, which then returns and since the top of the stack is {\tt g2} it returns there.
+And similarly then returns into {\tt g3}.
+
+\quitvmode\kern.5cm{\bf Double free attack:} suppose we have code
+\begincode
+p = malloc(100); q = malloc(100);
+free(p); free(q);
+p = malloc(200);
+strncpy(p, str, 200);
+free(q);
+/endcode
+Instead of freeing {\tt p} at the end, {\tt q} was freed.
+{\tt q} still points to the original area of memory, which was overwritten by {\tt str}.
+{\tt malloc} works by storing metadata on the allocated area of memory before the pointer, so the line allocating 200 bytes to {\tt p} will have overwritten the metadata and {\tt free(q)} will utilize this
+erroneous metadata.
+
+As a basic model of malloc, suppose the metadata stored are two pointers: one to the left (previous) chunk, and one to the right (next) chunk (in total eight bytes).
+Since the data is 8 byte-aligned, the last three bytes of each pointer can be used as a flag, in particular we can have a {\it free} flag denoting if the chunk is not utilized.
+{\tt free} will set this flag, and will merge the chunk with the left/right chunks if they are free.
+Excplicitly, {\tt free(q)} will do {\tt (q->lptr)->rptr=q->rptr} if {\tt q->lptr} is free, and {\tt (q->rptr)->lptr=q->lptr} if {\tt q->rptr} is free.
+
+Let us focus on {\tt (q->lptr)->rptr=q->rptr}.
+We overwrite the metadata so {\tt lptr} points inside the stack to {\tt ebp}, and {\tt rptr} points to the shellcode (potentially in the payload {\tt str}).
+Then {\tt (q->lptr)->rptr} is {\tt ret addr}, and setting this to {\tt q->rptr} sets {\tt ret addr} to point to the shellcode.
+
+\quitvmode\kern.5cm{\bf Heap spraying:} when ASLR is enabled, the previous attacks are now useless (since they require getting some address).
+Even if we use a nop-sled, the heap is so large that the nop-sled must be gigabytes long.
+Instead:
+\begincode
+nopblock = "0c0c0c0c"
+sled = nopblock * 256kb;
+spray = new [sled + shellcode for i in range(1000)];
+/endcode
+This will fill the heap up with 256mb of heap spray.
+{\tt0c0c0c0c} is generally always in the heap, and since it corresponds to the {\tt nop} instruction, if we use buffer overflow to write this into a {\tt ret addr}, jumping to it will {\it likely} jump to
+a nop-sled in the heap leading to the shellcode.
+But heap spraying is not reliable, and can fail.
+Making it more reliable requires more memory being used in the spray, which will slow down the machine.
+
+\quitvmode\kern.5cm{\bf Heap Feng Shui:} first fill up the heap with blocks the size of some object.
+Then free some of these blocks at the end, and place instances of the object in the other.
+Now write {\tt 0c0c0c0c} many times in the free blocks, so that they overflow and overwrite the instance of the object's vtable.
+Then the object's vtable will point to {\tt0c0c0c0c}, and we can control the flow.
+
+\quitvmode\kern.5cm{\bf Encryption schemes:} an encryption scheme has three algorithms: $\gen$ to generate a key, $\enc_{k_e}(m)$ to encode plaintext $m$ with encryption key $k_e$, and $\dec_{k_d}(c)$ to
+decrypt ciphertext $c$ with decryption key $k_d$.
+
+\quitvmode\kern.5cm{\bf One-time pad:} Alice and Bob choose a random $k$, and encrypt plaintext $m$ by $c=m\oplus k$.
+Then decrypt by $m=c\oplus k$.
+Call a cipher {\it perfect} if for a uniform distribution of messages, $\probof{M=m}[C=c]=\probof{M=m}$, i.e. knowledge of the ciphertext doesn't give any knowledge of plaintext.
+One-time pad is perfect.
+But if we use OTP twice, notice that $c_1=m_1\oplus k,c_2=m_2\oplus k$ and so $c_1\oplus c_2=m_1\oplus m_2$ and so we have gained knowledge of the plaintexts.
+
+\quitvmode\kern.5cm{\bf Secure schemes:} a scheme is {\it secure} against an efficient adversary if when running in polynomial time, they can break the scheme with only negligible probability (smaller than
+$p(n)^{-1}$ for any polynomial $p(n)$).
+
+\quitvmode\kern.5cm{\bf Eavesdropping:} a scheme is secure against eavesdropping if for any two messages $m_1,m_2$ no polynomial adversary can distinguish between encryptions of the messages.
+I.e. given $\enc_k(m_b)$ the probability $A$ outputs $b$ is at most $\frac12+\negl(n)$ (neglible).
+
+\bye
+
