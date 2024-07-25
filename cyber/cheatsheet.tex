@@ -18,6 +18,9 @@
     \fi%
 }
 
+\abovedisplayskip=0pt
+\belowdisplayskip=0pt
+
 %%%%%%%%%%%%%%%%%%%%%%%%
 
 \setscale{8pt}
@@ -68,7 +71,7 @@ A similar exploit can be found when we have a local variable which is a function
 \quitvmode\kern.5cm{\bf Prevention:} [1] type safe languages (e.g. Python, Rust), [2] safer functions (e.g. {\tt strncpy}), [3] static source code analysis (use a tool to check static code for
 vulnerabilities), [4] canaries, [5] ASLR (place memory in a random location: makes getting the address for shellcode harder), [6] non-executable stack (so shellcode can't be put into buffer).
 
-\quitvmode\kern.5cm{\bf Canaries:} we place a random number into memory called a {\it canary} to protect the return address from buffer overflow.
+\quitvmode\kern.5cm{\bf Canaries:} we place a random number into memory called a {\bf canary} to protect the return address from buffer overflow.
 Before returning check that the canary has not changed.
 Split frame into three (four, whatever) parts:
 \fullstack{{\bf C} local vars&{\bf B} arrays&{\bf canary}&ebp&ret addr&{\bf A} args}
@@ -86,12 +89,12 @@ Our code will look like:
 /endcode
 
 \quitvmode\kern.5cm{\bf Return into libc:} using what is called {\bf DEP} we can make it so that memory is only either written to or executed (not both).
-But this can be overcome by {\it return into libc}: where an attacker overwrites {\tt ret addr} to point into libc and execute code there.
+But this can be overcome by {\bf return into libc}: where an attacker overwrites {\tt ret addr} to point into libc and execute code there.
 For example make it point to {\tt system}, which runs its argument as a shell script.
 
 \quitvmode\kern.5cm{\bf Return oriented programming (ROP):} the issue (seemingly) with ret2libc is that the attacker can only use functions in libc, and only directly.
 But this can be overcome.
-Libc has many {\it gadgets} which are small snippets of code ending in {\tt ret} which are used by larger functions (e.g. {\tt add \$8, \%esp; ret}).
+Libc has many {\bf gadgets} which are small snippets of code ending in {\tt ret} which are used by larger functions (e.g. {\tt add \$8, \%esp; ret}).
 If we take control of the stack (e.g. through buffer overflow), we can chain these gadgets together to form malicious code.
 Suppose we have gadgets {\tt g1, g2, g3} and the code
 \begincode
@@ -153,7 +156,7 @@ decrypt ciphertext $c$ with decryption key $k_d$.
 
 \quitvmode\kern.5cm{\bf One-time pad:} Alice and Bob choose a random $k$, and encrypt plaintext $m$ by $c=m\oplus k$.
 Then decrypt by $m=c\oplus k$.
-Call a cipher {\it perfect} if for a uniform distribution of messages, $\probof{M=m}[C=c]=\probof{M=m}$, i.e. knowledge of the ciphertext doesn't give any knowledge of plaintext.
+Call a cipher a {\bf perfect cipher} if for a uniform distribution of messages, $\probof{M=m}[C=c]=\probof{M=m}$, i.e. knowledge of the ciphertext doesn't give any knowledge of plaintext.
 One-time pad is perfect.
 But if we use OTP twice, notice that $c_1=m_1\oplus k,c_2=m_2\oplus k$ and so $c_1\oplus c_2=m_1\oplus m_2$ and so we have gained knowledge of the plaintexts.
 
@@ -162,6 +165,170 @@ $p(n)^{-1}$ for any polynomial $p(n)$).
 
 \quitvmode\kern.5cm{\bf Eavesdropping:} a scheme is secure against eavesdropping if for any two messages $m_1,m_2$ no polynomial adversary can distinguish between encryptions of the messages.
 I.e. given $\enc_k(m_b)$ the probability $A$ outputs $b$ is at most $\frac12+\negl(n)$ (neglible).
+
+\quitvmode\kern.5cm{\bf Pseudorandom generator (PRG):} is a function mapping a short random seed (key) to a longer output such that if an adversary does not know the seed, it cannot distinguish the output
+from a truly random stream.
+Formally, $G$ is a PRG iff for any polynomial time $D$ the difference between the probability that $D$ outputs ``pseudorandom'' when the input is from $G$ and when the input is truly random, is negligible.
+
+OTP with PRG is secure against eavesdropping: $\enc_k(m)=G(k)\oplus m$ and $\dec_k(c)=G(k)\oplus c$.
+
+\quitvmode\kern.5cm{\bf Chosen plaintext attack (CPA):} the adversary outputs a pair of lists of messages $\vec m_i=(m_{i,1},\dots,m_{i,t})$ for $i=0,1$.
+Receives $\vec c_b=\enc_k(\vec m_b)$, and must guess what $b$ is.
+If a scheme is secure against CPA it must be nondeterministic: otherwise set $\vec m_0=(0,0)$ and $\vec m_1=(0,1)$ then if $\vec c_b=(c_0,c_1)$ output $c_0\neq c_1$.
+
+\quitvmode\kern.5cm{\bf Pseudorandom function (PRF):} is an effectively computable keyed function $F_k(\cdot)\colon\set{0,1}^n\to\set{0,1}^\ell$ such that an adversary cannot distinguish between it and
+a truly random function sampled from $\set{0,1}^n\to\set{0,1}^\ell$.
+
+We can form a scheme using a PRF: $\gen(1^n)\in\set{0,1}^n$, $\enc_k(m)=(r,F_k(r)\oplus m)$ where $r$ is chosen randomly, $\dec_k(r,s)=F_k(r)\oplus s$.
+This is CPA-secure.
+
+\quitvmode\kern.5cm{\bf ECB:} suppose we want to encode a long message, then assuming that $F_k$ is efficiently invertible given $k$, we can then do
+$$ \enc_k(m_1\cdots m_\ell)=(F_k(m_1),\dots,F_k(m_\ell)) . $$
+But this is deterministic and thus not CPA-secure.
+
+\quitvmode\kern.5cm{\bf CBC:} instead what we can do is start with some initial vector $m_0={\rm IV}$ and encrypt as follows: $c_i=F_k(m_i\oplus c_{i-1})$, and then transmit ${\rm IV},c_1,\dots,c_\ell$.
+Decrypting is just $m_i\oplus c_{i-1}=F_k^{-1}(c_i)$ so $m_i=F_k^{-1}(c_i)\oplus c_{i-1}$.
+Benefits of this is that: [1] the receiver can start decrypting at any ciphertext block, [2] errors in one ciphertext block only propogate to the next block, [3] conceals plaintext pattern (same block,
+different ciphertext block), [4] if {\rm IV} chosen randomly and $F_k$ invertible PRF then CBC is CPA-secure.
+
+\quitvmode\kern.5cm{\bf MAC authentication:} suppose Alice sends Bob an encrypted, but Eve intercepts it and alters the contents.
+No matter how secure the encryption, it is susceptible to such attacks.
+A MAC scheme has three algorithms: $k\gets\gen(1^n)$ generates a key, $t\gets\mac_k(m)$ generates a tag $t$, $b\gets\vrfy_k(m,t)$ verifies if a message and tag pair are valid.
+
+The adversary plays the following game: $A$ is given pairs $(m_i,\mac_k(m_i))$ where $m_i$ may be chosen by $A$ (chosen plaintext).
+$A$ then outputs $(m,\alpha)$ where $m\neq m_i$.
+$A$ wins if $\alpha=\mac_k(m)$.
+The scheme is secure if $A$ wins with negligible probability.
+
+A fixed-length MAC is as follows: generate $k\in\set{0,1}^n$, $\mac_k(m)=F_k(m)$, and $\vrfy_k(m,t)$ outputs if $t=F_k(m)$.
+This is only secure when the messages are $n$ bits long.
+
+\quitvmode\kern.5cm{\bf CBC-MAC:} suppose $m=m_1\cdots m_\ell$, then $\mac_k(m)=t_\ell$ where $t_0=0^{\abs m}$ and $t_i=F_k(t_{i-1}\oplus m_i)$.
+It is necessary to prepend $0^{\abs m}$ since otherwise a CPA would be: get $(m_1,t_1),(t_1\oplus m_2,t_2)$, then output $(m_1\|m_2,t_2)$.
+
+\quitvmode\kern.5cm{\bf Hashing:} a hash function is a function $h\colon X\to Y$ where $\abs X>\abs Y$ such that ({\bf weak collision resistance}) for any $x\in X$ it is hard to find $x'\neq x$ such that
+$h(x)=h(x')$.
+Or ({\bf strong collision resistance}) it is hard to find a pair $x,x'$ such that $h(x)=h(x')$.
+Instead of MAC on $m$, MAC on $h(m)$ (requires at least weak collision resistance).
+
+\quitvmode\kern.5cm{\bf Authenticated encryption:} generate $k=(k_e,k_m)$, $c=\enc_{k_e}(m),t=\mac_{k_m}(c)$, send $(c,t)$.
+Verify $\vrfy_{k_m}(c,t)$ and decrypt $m=\dec_{k_e}(c)$.
+It is necessary to MAC the ciphertext, since the tag may reveal information about the message.
+
+\quitvmode\kern.5cm{\bf Hard problems in cyclic groups:} {\bf DL} (discrete log): given $g,h\in G$ find $n$ st $g^x=h$.
+{\bf CDH} (computational Diffie-Hellman): given $g^{n_1},g^{n_2}\in G$ compute $g^{n_1\cdot n_2}$.
+{\bf DDH} (decisional Diffie-Hellman): given $g^{n_1},g^{n_2},h\in G$ return if $h=g^{n_1\cdot n_2}$.
+These problems are not hard in all cyclic groups, but they are believed to be hard in cyclic groups of prime order.
+Note that ${\bb Z}_p^\times$ is not of prime order, but it is cyclic.
+
+\quitvmode\kern.5cm{\bf Diffie-Hellman key exchange:} take a generator $g\in G$ and randomly choose an integer $n\in{\bb Z}_q$ ($q=\abs G$), compute $h_A=g^n$.
+Then Alice sends Bob $(G,g,q),h_A$.
+Bob chooses $m\in{\bb Z}_q$ and computes $h_B=g^m$ and sends Alice $h_B$.
+Alice sets $k_A=h_B^n$, and Bob sets $k_B=h_A^m$.
+Note $k_A=g^{mn}=k_B$.
+If DDH is hard in $G$, then this protocol is secure in eavesdropping.
+
+\quitvmode\kern.5cm{\bf Public-key encryption (PKE):} $\gen(1^n)=(k_s,k_p)$, $\enc_{k_p}(m)=c$, $\dec_{k_s}(c)=m$.
+PKE must be nondeterministic, as we cannot have an adversary distinguish between two messages.
+
+\quitvmode\kern.5cm{\bf ElGamal encryption:} $k_p=(G,g,q,h)$ where $h=g^n$ for some $n\in{\bb Z}_q$ and set $k_s=n$.
+$\enc_{k_p}(m)$, choose a random $r\in{\bb Z}_q$ and set $c=(g^r,h^r\cdot m)$.
+$\dec_{k_s}(c_1,c_2)=\frac{c_2}{c_1^{k_s}}$.
+Note that
+$$ \frac{c_2}{c_1^{k_s}} = \frac{h^r\cdot m}{c_1^n} = \frac{g^{nr}m}{g^{nr}} = m $$
+Alternatively, use a hash function $H$ and encrypt using $(g^r,H(h^r)\oplus m)$ and decrypt by $H(c_1)^n\oplus c_2$.
+
+\quitvmode\kern.5cm{\bf Textbook RSA:} in general given $N=pq$, it is hard to factor and find $p,q$.
+RSA works as follows: $\gen(1^n)=(k_p,k_s)$ where $k_p=(N,e)$ and $k_s=d$ st $ed\equiv1\bmod\phi(N)$.
+$\enc_{k_p}(m)=m^e\bmod N$ and $\dec_{k_s}(c)=c^d\bmod N$.
+The issue is that while $e$ may be chosen to be small, $d$ may be large and so decryption expensive.
+Note though that $x^y\equiv x^{y\bmod\phi(N)}\bmod N$.
+And using CRT, $y\equiv a\bmod p,y\equiv b\bmod q$ and so can compute $a^d\bmod p,b^d\bmod q$ (can use $d\bmod p-1,q-1$), and from that get $y^d\bmod N$.
+But textbook RSA is deterministic and thus not CPA secure.
+
+\quitvmode\kern.5cm{\bf Padded RSA:} if messages are $\abs N-L$ bits, choose a random string $r$ of $L$ bits and encrypt with $(r\|m)^e\bmod N$.
+After decrypting, discard the first $L$ bits.
+Not proven to be secure.
+
+\quitvmode\kern.5cm{\bf Digital signature:} allows someone to sign something, anyone can verify that the signature is valid, but only the sender can sign.
+A digital signature must have three algorithms: $(k_p,k_s)\gets\gen(1^n)$, $\sigma\gets\sign_{k_s}(m)$ and output $(m,\sigma)$, $\vrfy_{p_k}(m,\sigma)$ verifies that $\sigma$ is a valid signature of $m$.
+
+Consider the game where the adversary $A$ has $k_p$ and an oracle which signs messages.
+$A$ then outputs $(m,\sigma)$ where $m$ was not queried to the oracle.
+$A$ wins if $\sigma$ is a valid signature.
+The scheme is {\bf existentially unforgeable} under chosen message attack if $A$ wins with negligible probability.
+
+For example using RSA: have $p,q,N,e,d$ as in RSA, $k_p=(N,e)$ and $k_s=d$.
+Then sign by $s=m^d\bmod N$.
+Verify by checking that $s^e\equiv m\bmod N$.
+
+This is not secure: an attacker needs to generate $(m,s)$ st $m\equiv s^e\bmod N$.
+So simply choose $s$ and compute $s^e\bmod N$.
+And suppose it wants to sign $m$, choose a random $r$ and sign $m^*\equiv mr^e\bmod N$, then $s^*\equiv(mr^e)^d\equiv m^dr\bmod N$, then compute $s\equiv s^*/r\equiv m^d\bmod N$.
+So $(m,s)$ is valid signature.
+
+Instead choose a hash function $H$, and have $\sign(m)=H(m)^d\bmod N$.
+This protects against the previously mentioned attacks.
+
+\quitvmode\kern.5cm{\bf PK authority:} note that Diffie-Helman is vulnerable to MITM.
+Can use digital signatures.
+Choose from a dictionary of public keys called a {\bf PK authority}.
+But what if the PK authority is tampered with?
+We use {\bf certificates}: suppose Charlie knows that $k_p^B$ is Bob's public key, and Charlie has $(k_s^C,k_p^C)$, then Charlie generates a certificate:
+$$ \cert_{C\to B}=\sign_{k_s^C}(\hbox{``Bob's key is $k_p^B$''}) . $$
+If Bob wants to talk to Alice, and Alice knows Charlie, then Bob can send her $\cert_{C\to B}$.
+But what if Alice trusts neither Bob nor Charlie?
+Create a chain of {\bf trusted certificate authorities} where each CA certifies others, then Alice can verify Bob's CA by checking that it is verified in some chain from her CA.
+Certificates must be able to be revoked, and have expiry dates for security.
+
+\quitvmode\kern.5cm{\bf SSL/TLS:} these are the protocols used for secure communication with a server.
+A simplified model of an SSL handshake is as follows: [1] the client sends the ciphers it supports to server as well as a random $R_C$, [2] server sends back certificate using $k_p^{\it server}$, the cipher
+it chooses, and $R_S$, [3] client computes the master key ${\it MK}=f(S,R_C,R_S)$ and sends $\enc_{k_p^{\it server}}(S),\mac_{\it MK}({\rm transcript})$, [4] the server decrypts $S$ and computes ${\it MK}$,
+verifies MAC, then sends $\mac_{\it MK}({\rm transcript})$ which is verified by client.
+
+\quitvmode\kern.5cm{\bf URLs:} a url has the following structure:
+
+\centerline{\tt <protocol>://<host>:<port>/<path>;<params>?<query>\#<fragment>}
+
+\quitvmode\kern.5cm{\bf HTTP:} HTTP is a protocol for sending requests to servers.
+A request has three parts: [1] the request itself (protocol, type of request, url), [2] headers, [3] contents.
+A response has three parts: [1] the status of the response, [2] headers, [3] contents.
+HTTP messages are written in readable text.
+HTTP is stateless, it cannot save states.
+To overcome this, we use {\bf cookies} which are small key-value files that a browser stores for each website.
+One common cookie to store is {\tt session\_id}, which is a unique identifier for the current session on a website.
+The server stores information keyed by the session id.
+
+\quitvmode\kern.5cm{\bf CSRF:} suppose Alice uses a bank which transfers money using a GET request, like so:
+
+\centerline{\tt https://bank.com/transfer?amount=5000\&account=1234}
+The server will check the {\tt session\_id} cookie sent and transfer this amount to account 1234.
+Now suppose an attacker wants to transfer \$5000 to account 666.
+Assuming Alice has an active session with the bank currently (and is thus signed in), the attacker may trick her into opening an innocent-looking website {\tt https://nice.com} which has an image tag
+
+\centerline{\tt <img src="https://bank.com/transfer?amount=5000\&account=666">}
+The browser will open this link automatically, expecting an image, without Alice's consent.
+Since Alice is signed into the bank, it will send the session id, and the bank will follow through with this request.
+
+\quitvmode\kern.5cm{\bf Same-origin policy (SOP):} only allow you to read HTML objects which originate from the same {\bf origin}, which is a thruple: [1] protocol (e.g. https), [2] address (must fully
+agree, cannot be a subdomain), [3] port.
+The opposite of this, which is disabled by default usually, is {\bf cross origin resource sharing (CORS)}.
+
+\quitvmode\kern.5cm{\bf CSRF token:} consider now the previous example with Alice in CSRF.
+Now suppose the bank serves a {\bf CSRF token} to each session, which is a large random number.
+To complete a transaction, you must include this token in the URL.
+Since the attacker cannot know this token, it cannot complete its malicious request.
+
+\quitvmode\kern.5cm{\bf SameSite cookies:} a cookie can have the following SameSite attributes which dictate when the cookie is sent upon a cross-site request: [1] none (the cookie is always sent), [2] lax
+(the cookie is sent only on a safe method (e.g. GET, not POST), and only when the change in site is top-level (changes the URL in the top bar, e.g. not iframe)), [3] strict (the cookie is never sent upon
+cross-site request).
+
+\quitvmode\kern.5cm{\bf Clickjacking:} the attacker hides malicious HTTP objects at the top of the page (so they are clicked and not some other object; hide by setting opacity to zero).
+Place at the same location some misleading text (win a million dollars!) so they click it, but really they click the malicious HTTP object.
+For this reason, many websites don't allow for them to be viewed through an iframe.
+
+\quitvmode\kern.5cm{\bf XSS:} inject malicious code into a website which doesn't properly sanitize user input.
+[1] Stored XSS: the script is stored on the server, [2] reflected XSS: the script comes from the URL, [3] DOM-based XSS: the script comes from the DOM, i.e. input from the user.
 
 \bye
 
