@@ -776,7 +776,7 @@ $$ g_*\circ f_* = (g\circ f)_* = ({\rm id}_X)_* = {\rm id}_{H_n(X)} $$
 and similarly $f_*\circ g_*={\rm id}_{H_n(Y)}$, so $f_*$ is an isomorphism.
 \qed
 
-\subsection{Excision}
+\subsection{Mayer-Vietoris}
 
 \bdefn
 
@@ -1014,4 +1014,419 @@ since $\U,\V$ are contractible, $\tilde H_i(\U)=\tilde H_i(\V)=0$ for all $i$ an
 $$ 0 \longto \tilde H_i(S^n) \longto \tilde H_{i-1}(S^{n-1}) \longto 0 $$
 which means that $\tilde H_i(S^n)\cong\tilde H_{i-1}(S^{n-1})$, and so inductively we have our result.
 \qed
+
+Since their homology groups differ, we immediately get
+
+\bthrm
+
+    If $n\neq m$ then $S^n$ is not homotopic to $S^m$.
+
+\ethrm
+
+\bcoro
+
+    If $n\neq m$ then ${\bb R}^n$ is not homeomorphic to ${\bb R}^m$.
+
+\ecoro
+
+\Proof suppose $f\colon{\bb R}^n\longto{\bb R}^m$ is a homeomorphism, then it is a homeomorphism $f\colon{\bb R}^n\setminus\set0\longto{\bb R}^m\setminus\set{f(0)}$.
+So we have
+$$ S^n \simeq {\bb R}^n\setminus\set0 \cong {\bb R}^m\setminus\set{f(0)} \simeq S^m $$
+in contradiction.
+\qed
+
+\bthrm
+
+    $\partial D^n$ is not a retract of $D^n$.
+
+\ethrm
+
+\Proof suppose $r\colon D^n\longto\partial D^n$ is a retraction, then $r\iota={\rm id}_{\partial D^n}$ where $\iota$ is the inclusion $\partial D^n\longto D$.
+Thus $r_*\iota_*={\rm id}_{H_i(\partial D^n)}$.
+This implies that $\iota_*$ is injective, in particular for $i=n-1$ and so $i_*\colon\tilde H_{n-1}(\partial D^n)\longto\tilde H_{n-1}(D^n)$.
+Since $\partial D^n\cong S^{n-1}$ and $D^n$ is contractible, we have an injective map ${\bb Z}\longto0$ in contradiction.
+\qed
+
+\blemm
+
+    Let us define $R\colon S^n\longto S^n$ by $R(x_1,\dots,x_n)=(-x_1,x_2,\dots,x_n)$.
+    Then $R_*\colon\tilde H_n(S^n)\longto\tilde H_n(S^n)$ satisfies $R_*=-{\rm id}_{\tilde H_n(S^n)}$.
+
+\elemm
+
+\Proof by induction on $n$.
+For $n=0$, $R(1)=-1$ and $R(-1)=1$, and $\tilde H_0(S^0)={\bb Z}$.
+Now, $\epsilon$ must map the generator of the reduced homology to zero, so the generator must be $kp_1-kp_2$, and composing $R_*$ on this gives $kp_2-kp_1$ which is the inverse of the generator, so
+$R_*$ is indeed minus the identity.
+
+Now for $n>0$, let us split the sphere $S^n$ into two hemispheres $\U$ and $\V$ whose intersection is homotopic to $S^{n-1}$.
+By Mayer-Vietoris, we have
+
+\centerline{\drawdiagram{
+    $0$ & $H_n(S^n)$ & $H_{n-1}(S^{n-1})$ & $0$\cr
+    $0$ & $H_n(S^n)$ & $H_{n-1}(S^{n-1})$ & $0$\cr
+}{
+    \diagarrow{from={1,1}, to={1,2}}
+    \diagarrow{from={1,2}, to={1,3}}
+    \diagarrow{from={1,3}, to={1,4}}
+    \diagarrow{from={2,1}, to={2,2}}
+    \diagarrow{from={2,2}, to={2,3}}
+    \diagarrow{from={2,3}, to={2,4}}
+    \diagarrow{from={1,2}, to={2,2}, text=$R_*$, x distance=-.25cm}
+    \diagarrow{from={1,3}, to={2,3}, text={$R_*=-{\rm id}$}, x distance=1cm}
+}}
+
+This diagram commutes by naturality, so $R_*=-{\rm id}$ for $S^n$.
+\qed
+
+By symmetry, we can define $R_i\colon(x_1,\dots,x_i,\dots,x_{n+1})\mapsto(x_1,\dots,-x_i,\dots,x_{n+1})$ and we have that $R_{i,*}=-{\rm id}$.
+Let us define
+$$ A\colon S^n\longto S^n,\qquad x\mapsto -x $$
+the {\it antipodal map}.
+Since $A=R_1\circ\cdots\circ R_{n+1}$, we have that $A_*=(-{\rm id})^{n+1}=(-1)^{n+1}{\rm id}$.
+
+\bcoro
+
+    If $n$ is even, then the antipodal map is not homotopic to the identity.
+
+\ecoro
+
+Note that for $n=2k-1$, we can view $S^n$ as the unit sphere in ${\bb C}^k$ and take the homotopy $H(z,t)=e^{\pi it}z$ which is a homotopy from ${\rm id}$ to $A$.
+
+\blemm
+
+    Let $n\geq0$, and let $f,g\colon S^n\longto S^n$ such that for all $x\in S^n$, $f(x)\neq-g(x)$.
+    Then $f\sim g$.
+
+\elemm
+
+\Proof we define the homotopy
+$$ H(x,t) = \frac{(1-t)f(x)+tg(x)}{\norm{(1-t)f(x)+tg(x)}} $$
+this cannot be zero, since the line $(1-t)f(x)+tg(x)$ connects $f(x)$ and $g(x)$, and it can only be zero when $f(x)$ and $g(x)$ are antipodal points on the sphere.
+\qed
+
+\bthrm
+
+    Let $n$ be even and $f\colon S^n\longto S^n$, then there exists an $x\in S^n$ such that either $f(x)=x$ or $f(x)=-x$.
+
+\ethrm
+
+\Proof suppose not.
+Then for all $x$, $f(x)\neq x$, so $f(x)\neq -A(x)$ so $f\sim A$.
+And for all $x$, $f(x)\neq -x$, i.e. $f(x)\neq -{\rm id}(x)$ so $f\sim{\rm id}$.
+Thus $A\sim{\rm id}$, which contradicts $n$ being even.
+\qed
+
+\bdefn
+
+    A {\emphcolor vector field} of $S^n$ is a continuous map $f\colon S^n\longto{\bb R}^{n+1}$ such that for all $x\in S^n$, $\iprod{f(x),x}=0$.
+
+\edefn
+
+\bthrm[title=Hairy Ball Theorem]
+
+    Let $n$ be even.
+    Then for every vector field on $S^n$, there is an $x\in S^n$ such that $f(x)=0$.
+
+\ethrm
+
+\Proof suppose not, then we can define a continuous map $x\mapsto\frac{f(x)}{\norm{f(x)}}$ which is a map $S^n\longto S^n$.
+These points are still tangent to $x$, in particular they cannot be $x$ or antipodal to $x$, in contradiction to $n$ being even.
+\qed
+
+Note that in general if $\U,\V$ is a good cover of $X$ and $\U\cap\V$ is contractible, then by Mayer-Vietoris we have
+$$ 0 = \tilde H_i(\U\cap\V) \longto \tilde H_i(\U)\oplus\tilde H_i(\V) \longto \tilde H_i(X) \longto \tilde H_{i-1}(\U\cap\V) = 0 $$
+so $\tilde H_i(X)\cong\tilde H_i(\U)\oplus\tilde H_i(\V)$.
+In particular let us look at $S^n\vee S^m$, we can take $\U$ to be $S^n$ with a bit of $S^m$ and $\V$ to be $S^m$ with a bit of $S^n$, then $\U\cap\V$ is contractible and $\U$ is homotopic to $S^n$ and $\V$
+to $S^m$ so
+$$ \tilde H_i(S^n\vee S^m) \cong \tilde H_i(S^n) \oplus \tilde H_i(S^m) $$
+and similarly by induction
+$$ \tilde H_i\parens{\bigvee_{j=1}^k S^{n_j}} \cong \bigoplus_{j=1}^k\tilde H_i(S^{n_j}) $$
+
+Now let us look at $X=nT$.
+Let us take $\U$ to be a disk in $X$, and $\V$ to be the rest of $X$ with a bit of $\U$.
+Then $\U$ is homotopic to a point, $\U\cap\V\simeq S^1$ and we showed last semester that $\V\simeq\bigvee_{2n}S^1$.
+Mayer-Vietoris gives us
+$$ \tilde H_i(\U\cap\V) \longto \tilde H_i(\U)\oplus\tilde H_i(\V) \longto \tilde H_i(X) \longto \tilde H_{i-1}(\U\cap\V) $$
+when $i\geq2$ $\tilde H_i(\U\cap\V)=\tilde H_i(\U)\oplus\tilde H_i(\V)=0$, but we require $i\geq3$ for $\tilde H_{i-1}(\U\cap\V)=0$.
+So when $i\geq3$, $\tilde H_i(nT)=0$.
+So let us look at $i=2$:
+$$ \displaylines{
+    H_2(\U\cap\V) \longto H_2\U\oplus H_2\V \longto H_2X \longto H_1(\U\cap\V) \longto H_1\U\oplus H_1\V \longto H_1X \longto\cr
+    \longto \tilde H_0(\U\cap\V) \longto \tilde H_0\U\oplus\tilde H_0\V \longto\tilde H_0X \longto 0
+} $$
+We get from this
+$$ 0 \longto 0 \longto H_2X \longto {\bb Z} \longto {\bb Z}^{2n} \longto H_1X \longto 0 \longto 0 \longto \tilde H_0X \longto 0 $$
+So we get that $\tilde H_0X=0$.
+Let us focus on the map ${\bb Z}\longto{\bb Z}^{2n}$ here, that is we need to understance $H_1(\U\cap\V)\longto H_1(\U)\oplus H_1(\V)=H_1(\V)$.
+Visually, this can be shown to just be zero (using abelianization of $\pi_1$).
+We can then just insert $0$ into the sequence where the zero morphism was:
+$$ 0 \longto 0 \longto H_2X \longto {\bb Z} \longto 0 \longto {\bb Z}^{2n} \longto H_1X \longto 0 \longto 0 \longto \tilde H_0X \longto 0 $$
+So we get that $H_2X\cong{\bb Z}$ and $H_1X\cong{\bb Z}^{2n}$.
+
+\bthrm
+
+    If $f\colon D^k\longto S^n$ is injective, then $\tilde H_i(S^n-f(D^k))=0$ for all $i$.
+
+\ethrm
+
+\Proof by induction on $k$.
+For $k=0$, $S^n-\set\cdot\cong{\bb R}^n$ which is contractible and thus has a homotopy group of zero.
+We will be working with the $k$-dimensional cube $I^k\cong D^k$.
+So $f\colon I^k\times I\longto S^n$ is injective.
+Define $A_1=I^k\times[0,1/2]$ and $B_1=I^k\times[1/2,1]$, and let $\U=S^n-f(A_1)=f(A_1)^c$ and $\V=S^n-f(B_1)=f(B_1)^c$.
+So $\U\cup\V= f(A_1\cap B_1)^c=f(I^k\times\set{1/2})^c$.
+So inductively, $\tilde H_i(\U\cup\V)=0$ for all $i$.
+And $\U\cap\V=f(A_1\cup B_1)^c=f(I_{k+1})^c$ which is the space we want to compute the homology groups of.
+By Mayer-Vietoris:
+$$ 0 = \tilde H_{i+1}(\U\cup\V) \longto \tilde H_i(\U\cap\V) \longto \tilde H_i(\U)\oplus\tilde H_i(\V) \longto \tilde H_i(\U\cup\V) = 0 $$
+So $\tilde H_i(\U\cap\V)\cong\tilde H_i\U\oplus\tilde H_i\V$.
+So suppose that $\tilde H_i(\U\cap\V)\neq0$, then take $[z]\neq0$ in $\tilde H_i(\U\cap\V)$.
+Taking the inclusion maps $i,j$ we have that one of $i_*[z]$ and $-j_*[z]$ is nonzero.
+Continue.
+\qed
+
+\bthrm
+
+    Let $f\colon S^k\longto S^n$ be injective, then
+    $$ \tilde H_i(S^n-f(S^k)) = \cases{{\bb Z} & $i=n-k-1$\cr0 & else} $$
+
+\ethrm
+
+\Proof similarly by induction on $k$.
+\qed
+
+\bthrm[title=Jordan's Theorem]
+
+    Let $f\colon S^{n-1}\longto S^n$ injective then $S^n-f(S^{n-1})$ has two path-connected components and they are open.
+
+\ethrm
+
+\bthrm[title=Invariance of Domain]
+
+    Let $\U\subseteq{\bb R}^n$ be open, and $f\colon\U\longto{\bb R}^n$ injective.
+    Then $f(\U)$ is open.
+
+\ethrm
+
+\Proof let $x\in\U$ then let us look at the restriction of $f$ to a closed ball around $x$, and show that the image of its interior is open.
+If we choose this closed ball to lie in $\U$, looking at the union of these balls, we see that $\U$'s image is open.
+So we must show that if $f\colon D^n\longto{\bb R}^n$ is injective, then $f(\Dot D^n)$ is open.
+
+Now, ${\bb R}^n-f(\partial D^n)=f(\Dot D^n)\sqcup({\bb R}^n-f(D^n))$.
+This is the union of two disjoint path-connected spaces (the left is the continuous map of a path-connectedt space, and the right is because $\tilde H_i({\bb R}^n-f(D^n))=0$ as an exercise).
+By Jordan's theorem, there are two path-connected components and they are open.
+So these are the two open path-connected components, in particular $f(\Dot D^n)$ is open.
+\qed
+
+Note then that if $\U\subseteq{\bb R}^n$ is open, then it is not homeomorphic to any subspace $A\subseteq{\bb R}^n$ which is not open.
+This is because the homeomorphism $\U\longto A$ would mean by the invariance of domain that $A$ is open.
+In particular, an open set in ${\bb R}^n$ is not homeomorphic to any open set in ${\bb R}^m$ for $n\neq m$.
+This is because ${\bb R}^m\subset{\bb R}^n$ assuming $m<n$, and so $\U\longto A$ means that $A$ is open, but the last coordinates of $A$ are all zero and so it cannot be open.
+
+\bdefn
+
+    An $n$-dimensional {\emphcolor manifold} is a Hausdorff topological space $M$ with a countable basis such that for every $x\in M$ there exists a neighborhood homeomorphic to an open ball in ${\bb R}^n$.
+    An $n$-dimensional {\emphcolor manifold with boundary} is a Hausdorff topological space $M$ with a countable basis such that every $x\in M$ has a neighborhood homeomorphic either to an open ball or
+    to the half-open ball (which is defined to be $\set{(x_1,\dots,x_n)}[\norm{(x_1,\dots,x_n)}<1,x_1\geq0]$).
+    A {\emphcolor closed manifold} is a compact manifold (without a boundary).
+
+\edefn
+
+\subsection{Excision}
+
+Let $A\subseteq X$ be a subspace, then $\C(A)\subseteq\C(X)$ is a subcomplex, so we can define the {\it quotient complex} $\C(X,A)=\C(X)/\C(A)$.
+Explicitly, $C_n(X,A)=C_n(X)/C_n(A)$.
+The boundary operator $\partial$ maps from $C_n(A)$ to $C_{n-1}(A)$, so we can simply take $\partial[z]=[\partial z]$ in the quotient complex.
+Thus we can define the {\it relative homology} groups of $X$ with respect to $A$ to be
+$$ H_n(X,A) \coloneqq H_n(\C(X,A)) $$
+Now, suppose $f\colon(X,A)\longto(Y,B)$ is a map, then we have $f_\sharp\colon C_n(X)\longto C_n(Y)$.
+Do we have that this induces a map $f_\sharp\colon C_n(X,A)\longto C_n(Y,B)$?
+In order for this to occur we must have $f_\sharp(C_n(A))\subseteq C_n(B)$, which is indeed the case (since $f\colon A\longto B$).
+Thus we have a function $f_\sharp\colon C_n(X,A)\longto C_n(Y,B)$ and we can see that this is a chain morphism.
+So we have defined a functor ${\bf Top}^2\longto{\bf Comp}$.
+And in particular we can compose this with our functor ${\bf Comp}\longto{\bf Ab}$ to get ${\bf Top}^2\longto{\bf Ab}$.
+
+Now, we have a short exact sequence of chain complexes
+$$ 0 \longto C_n(A) \longto C_n(X) \longto C_n(X,A) \longto 0 $$
+since this is precisely an inclusion-quotient chain, and the boundary operators are defined in such a way so that the diagram commutes.
+Thus we have an exact sequence of homology groups:
+
+\centerline{\drawdiagram{
+    && $H_{n+1}(X,A)$\cr
+    $H_n(A)$ & $H_n(X)$ & $H_n(X,A)$\cr
+    $H_{n-1}(A)$ &&\cr
+}{
+    \diagarrow{from={1,1}, to={1,3}, dashed}
+    \diagarrow{from={1,3}, to={2,1}}
+    \diagarrow{from={2,1}, to={2,2}}
+    \diagarrow{from={2,2}, to={2,3}}
+    \diagarrow{from={2,3}, to={3,1}}
+    \diagarrow{from={3,1}, to={3,3}, dashed}
+}}
+
+And this short exact sequence of chain complexes is natural, so this exact sequence is natural as well.
+
+\bthrm
+
+    $$ H_i(D^n,\partial D^n) = \cases{{\bb Z} & $i=n$\cr 0 & else} $$
+
+\ethrm
+
+\Proof by the exact sequence of homology groups we have
+$$ 0 = \tilde H_i(D^n) \longto H_i(D^n,\partial D^n) \longto \tilde H_{i-1}(\partial D^n) \longto \tilde H_{i-1}(D^n) = 0 $$
+so $H_i(D^n,\partial D^n)\cong\tilde H_{i-1}(\partial D^n)=\tilde H_{i-1}(S^{n-1})$ which is exactly what we want.
+\qed
+
+We can generalize this:
+
+\blemm
+
+    Let $A\subseteq X$ then
+    \benum
+        \item if $A$ is contractible, then $\tilde H_i(X)\cong H_i(X,A)$;
+        \item if $X$ is contractible, then $\tilde H_{i-1}(A)\cong H_i(X,A)$.
+    \eenum
+
+\elemm
+
+\Proof again we use the exact sequence:
+$$ 0 = \tilde H_i(A) \longto \tilde H_i(X) \longto H_i(X,A) \longto \tilde H_{i-1}(A) = 0 $$
+so $H_i(X,A)\cong\tilde H_i(X)$.
+Similar for the second case.
+\qed
+
+\bprop
+
+    Note if we have $f\colon(X,A)\longto(Y,B)$ then we have
+    $$ f_*\colon H_n(X)\longto H_n(Y),\quad f_*\colon H_n(A)\longto H_n(Y),\quad f_*\colon H_n(X,A)\longto H_n(Y,B) $$
+    If any two of these are isomorphisms, so is the third.
+
+\eprop
+
+\Proof immediate from the naturality of the exact sequence of homology groups, and the lemma of five.
+\qed
+
+In particular we have that
+
+\bcoro
+
+    If $f\colon X\longto Y$ and $f\colon A\longto B$ are both homotopic equivalences, then $f_*\colon H_n(X,A)\longto H_n(Y,B)$ is an isomorphism.
+
+\ecoro
+
+In particular, the inclusion map $(D^n,\partial D^n)\subseteq(D^n,D^n-\set0)$ is a homotopic equivalence, and so $H_i(D^n,\partial D^n)\cong H_i(D^n,D^n-\set0)$.
+Thus
+$$ H_i(D^n,D^n-\set0) = \cases{{\bb Z} & $i=n$\cr 0 & else} $$
+And we can look at our good friend $R\colon(x_1,\dots,x_n)\mapsto(-x_1,x_2,\dots,x_n)$ which can be viewed as $R\colon(D^n,\partial D^n)\longto(D^n,\partial D^n)$ and we have the commutative diagram
+
+\centerline{\drawdiagram{
+    $H_n(D^n,\partial D^n)$ & $\tilde H_{n-1}(\partial D^n)$\cr
+    $H_n(D^n,\partial D^n)$ & $\tilde H_{n-1}(\partial D^n)$\cr
+}{
+    \diagarrow{from={1,1}, to={1,2}, text=$\cong$, y distance=.25cm}
+    \diagarrow{from={2,1}, to={2,2}, text=$\cong$, y distance=-.25cm}
+    \diagarrow{from={1,1}, to={2,1}, text=$R_*$, x distance=-.25cm}
+    \diagarrow{from={1,2}, to={2,2}, text={$R_*=-{\rm id}$}, x distance=1cm}
+}}
+
+And so $R_*=-{\rm id}$ for the map over $H_n(D^n,\partial D^n)$.
+
+\bdefn
+
+    Let $\U=\set{\U_\alpha}_{\alpha\in I}$ be a good covering of $X$, and let $A\subseteq X$, then we define
+    $$ C_n^\U(X,A) = \slfrac{C_n^\U(X)}{C_n^\U(X)\cap C_n(A)} $$
+    This is indeed a chain complex, since if a chain preserves $\U$ and is contained in $A$, then its boundary preserves $\U$ and is contained in $A$.
+
+\edefn
+
+Similar to before, the inclusion map $\iota\colon C_n^\U(X,A)\longto C_n(X,A)$ induces an isomorphism $\iota_*\colon H_n^\U(X,A)\longto H_n(X,A)$.
+
+\bthrm[title=Excision]
+
+    Let $K\subseteq A\subseteq X$ such that $\overline K\subseteq\Dot A$, then the inclusion $(X-K,A-K)\longto(X,A)$ induces an isomorphism of all homology groups $H_n(X-K,A-K)\longto H_n(X,A)$.
+
+\ethrm
+
+\Proof note that $\overline K\subseteq\Dot A$ is equivalent to $\U=\set{A,K^c}$ being a good cover.
+So $C_n(A),C_n(X-K)\subseteq C_n^\U(X)$.
+So we can compose the inclusion map with the quotient map to get $C_n(X-K)\longto C_n^\U(X)/C_n(A)\cap C_n^\U(X)=C_n^\U(X)/C_n(A)$.
+We claim that this is a surjective map, as chains in $C_n^\U(X)/C_n(A)$ are classes of chains which respect $\set{X-K,A}$, but the simplexes which respect $A$ are identified with zero, so we are left with
+formal sums of simplexes which respect $X-K$.
+The kernel is just $C_n(X-K)\cap C_n(A)=C_n((X-K)\cap A)=C_n(A-K)$.
+Thus by the first isomorphism theorem
+$$ C_n(X-K,A-K) = \slfrac{C_n(X-K)}{C_n(A-K)} \cong \slfrac{C_n^\U(X)}{C_n(A)} = C_n^\U(X,A) $$
+Thus we get that
+$$ H_n(X-K,A-K) \cong H_n^\U(X,A) \cong H_n(X,A) \qed $$
+
+\bthrm
+
+    Let $M$ be an $n$-dimensional manifold with or without a boundary, and $p\in M$ be a point in its interior.
+    Then
+    $$ H_i(M,M-\set p) = \cases{{\bb Z} & $i=n$\cr 0 & else} $$
+
+\ethrm
+
+\Proof let $j\colon D^n\longto M$ be an embedding of $D^n$ into $M$ which maps $0$ to $p$ and which maps $\Dot D^n$ to a neighborhood of $p$.
+Let us identify $D^n$ with its image in $M$ and $p$ with $0$.
+Then $(D^n,D^n-\set0)\subseteq(M,M-\set0)$ is an excision: take $A=M-\set0$ and $K=M-D^n$.
+Thus $H_i(M,M-\set0)\cong H_i(D^n,D^n-\set0)$ which is precisely what we want.
+\qed
+
+\bcoro
+
+    The dimension of a manifold $M$ is a topological property of $M$ (i.e. it is unique).
+
+\ecoro
+
+\Proof this is since it is determined by its homology groups.
+\qed
+
+\bthrm
+
+    Let $M$ be a manifold with a boundary and $p$ a point on its boundary.
+    Then $H_i(M,M-\set p)=0$ for all $i$.
+
+\ethrm
+
+\Proof take $j\colon C\longto M$ an embedding of the half-open ball into $M$.
+Then as before $(C,C-\set0)\subseteq(M,M-\set0)$ is an excision and both $C$ and $C-\set0$ are contractible.
+We have the exact sequence
+$$ 0 = \tilde H_i(C) \longto H_i(C,C-\set0) \longto \tilde H_i(C-\set0) = 0 $$
+so $H_i(M,M-\set p)\cong H_i(C,C-\set0)=0$.
+\qed
+
+\bcoro
+
+    The boundary of a manifold is a topological property of $M$ (a point cannot be both in its boundary and interior).
+
+\ecoro
+
+Note that if $p\in M$ is a boundary point, then it has a neighborhood homeomorphic to $\set{\vec x\in B_1^n(0)}[x_n\geq0]$.
+Thus it has a neighborhood homeomorphic to $B_1^{n-1}(0)$ (taking the last coordinate equal to $0$), and all the points in this neighborhood must also be boundary points.
+Thus the boundary of an $n$-dimensional manifold is an $n-1$-dimensional manifold.
+
+\bthrm
+
+    $[{\rm id}_n]\in H_n(\Delta^n,\partial\Delta^n)$ generates the homological group.
+
+\ethrm
+
+\bthrm
+
+    Let $A\subseteq X$ be closed and suppose that there exists an open $\U$ such that $A\subseteq\U\subseteq X$ and $A$ is a deformation retract of $\U$.
+    Then
+    $$ H_n(X,A) = \tilde H_n(X/A) $$
+
+\ethrm
+
+\Proof since $A$ is a deformation retract, the inclusion $(X,A)\longto(X,\U)$ induces an isomorphism $H_n(X,A)\cong H_n(X,\U)$.
+Furthermore by excision, $H_n(X-A,\U-A)\cong H_n(X,\U)$.
+Let $a$ be the point which represents $A$ in $X/A$.
+Then $H_n(X/A,\set a)\cong H_n(X/A,\U/A)$ similar to above.
+And by excision $H_n(X/A-\set a,\U/A-\set a)\cong H_n(X/A,\U/A)$.
+Note though that $(X-A,\U-A)$ is homeomomorphic to $(X/A-\set a,\U/A-\set a)$ (both just remove $A$).
+Thus
+$$ H_n(X,A) \cong H_n(X,\U) \cong H_n(X-A,\U-A) \cong H_n(X/A-\set a,\U/A-\set a) \cong H_n(X/A,\U/A) \cong H_n(X/A,\set a) $$
+But since $\set a$ is contractible, by our exact sequence we see that this isomorphic to $H_n(X/A)$.
 
