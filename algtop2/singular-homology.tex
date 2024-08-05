@@ -1430,3 +1430,123 @@ Thus
 $$ H_n(X,A) \cong H_n(X,\U) \cong H_n(X-A,\U-A) \cong H_n(X/A-\set a,\U/A-\set a) \cong H_n(X/A,\U/A) \cong H_n(X/A,\set a) $$
 But since $\set a$ is contractible, by our exact sequence we see that this isomorphic to $H_n(X/A)$.
 
+\bdefn
+
+    An {\emphcolor orientation} on an $n$-dimensional manifold $M$ is a choice of a generator of $a_p\in H_n(M,M-\set p)$ such that for every $p\in M$ there is a euclidean neighborhood $\U$ and a choice
+    of generator $a\in H_n(M,M-\U)$ such that for every $q\in\U$ with the inclusion $i_q\colon(M,M-\U)\longto(M,M-\set q)$ we have $i_{q,*}(a)=a_q$.
+
+    If we can choose an orientation of a manifold, call it {\emphcolor orientable}.
+
+\edefn
+
+Note that since $H_n(M,M-\set p)\cong{\bb Z}$, there are two choices of orientation for each $p\in M$.
+
+Further note that if we have a path on a manifold, $\gamma\colon I\longto M$, we can choose an orientation for $p=\gamma(0)$.
+Then by covering the path with open balls, we can ensure that this orientation is consistent in each open ball.
+This will give us an orientation for $q=\gamma(1)$.
+This is independent on the choice of covering of the path.
+If $M$ is orientable then the orientation of $q$ is also independent on the choice of the path (and is dependent only on $p$'s orientation).
+Notice then that a closed loop in $M$ must start and end with the same orientation (i.e. it is {\it orientation-preserving}), in fact this is equivalent to $M$ being orientable.
+
+\bthrm
+
+    $M$ is orientable if and only if every closed loop in $M$ is orientation-preserving.
+
+\ethrm
+
+So for example, since a loop on the center of the M\"obius strip is not orientation-preserving, the M\"obius strip is not orientable.
+
+Furthermore, if we have two paths $\gamma,\delta$ which are homotopic relative to their endpoints, then they have the same orientation (i.e. if $p=\gamma(0)=\delta(0)$ is given an orientation, both paths
+give the same orientation to $q=\gamma(1)=\delta(1)$).
+Further note that if $\gamma$ preserves orientation and $\delta$ flips orientation then $\gamma*\delta$ flips orientation, and so on for all combinations.
+So we can assign to orientation-preserving loops the value $0$, and to orientation-flipping loops the value $1$.
+For example if $\gamma,\delta$ are both orientation-flipping, the value of $\gamma*\delta$ is $0$.
+By these two facts, we can define a homomorphism
+$$ \phi\colon\pi_1(M,b) \longto {\bb Z}/2{\bb Z} $$
+which assigns to each closed loop on $b$ $0$ if it preserves orientation and $1$ if it flips orientation.
+$M$ is orientable if and only if this is the trivial homomorphism for all $b$ (all closed loops preserve orientation).
+
+The issue is to check if $M$ is orientable we must check this homomorphism for every path-connected component of $M$.
+But since ${\bb Z}/2{\bb Z}$ is Abelian and $H_1(M)={\rm Ab}\pi_1(M,b)$, there is an induced homomorphism $H_1(M)\longto{\bb Z}/2{\bb Z}$.
+And $M$ is orientable if and only if this homomorphism is trivial.
+And this homomorphism is trivial if it is trivial on the generators of $H_1(M)$.
+
+So $M$ is orientable if and only if the generators of $H_1(M)$ preserve orientation.
+
+For example take $M=nT$.
+All of the generators of $H_1(M)$ (which are the center circles of the torii) preserve orientatiom, so $M$ is orientable.
+
+Note that if $M$ is not orientable, there exists a closed loop on $M$ which flips orientation.
+This loop can be blown up (since the orientation is taken in a neighborhood) to a quotient of $D^{n-1}\times I$ where $D^{n-1}\times\set0$ and $D^{n-1}\times\set1$ are identified but with the orientation
+swapped.
+Such a space is called a {\it full Klein bottle}.
+So $M$ is not orientable if and only if a full Klein bottle can be embedded into it.
+
+\subsection{Homology of CW Complexes}
+
+Let a CW complex $K$ be constructed out of skeletons $K^0\subseteq K^1\subseteq\cdots\subseteq K^m=K$.
+We would like to compute $H_i(K^n,K^{n-1})$.
+We claim that there exists an open $\U$ such that $K^{n-1}\subseteq\U\subseteq K^n$ and $K^{n-1}$ is a deformation retract of $\U$.
+This $\U$ can be taken to include part of the cells added to $K^{n-1}$ (in particular, something like $D^n-\set0$).
+Thus we have that $H_i(K^n,K^{n-1})=\tilde H_i(K^n/K^{n-1})$.
+
+Recall that $K^n$ is obtained by adding disks to $K^{n-1}$.
+So if we contract $K^{n-1}$ to a point, we have essentially just added these disks to a point.
+And we know that contracting the disk $D^n$ at its boundary to a point is just $S^n$, so we have that $K^{n-1}/K^n=\bigvee_{f_n}S^n$, and thus
+$$ H_i(K^n,K^{n-1}) = H_i\parens{\bigvee_{f_n}S^n} = \cases{{\bb Z}^{f_n} & $i=n$\cr 0 & else} $$
+
+We have an exact sequence
+$$ H_{i+1}(K^n,K^{n-1}) \longto H_i(K^{n-1}) \longto H_i(K^n) \longto H_i(K^n,K^{n-1}) $$
+If $n\neq i,i+1$ then $H_i(K^n)=H_i(K^{n-1})$.
+In particular for $n<i$ we have $H_i(K^n)=0$ (since $H_i(K^n)=H_i(K^0)$ and the homology group of a set of points is $0$).
+We have a sequence of homomorphisms (not necessarily exact, it is induced by the inclusion maps):
+$$ 0 = H_i(K^{i-1}) \longto H_i(K^i) \longto H_i(K^{i+1}) $$
+So let $A=H_i(K^i)$ and $B=H_i(K^{i+1})$, then we know that for $n>i+1$ we have $H_i(K^n)=H_i(K^{i+1})=B$.
+In particular $H_i(K)=H_i(K^{i+1})$.
+Thus we get the following
+
+\bthrm
+
+    Let $K^0\subseteq\cdots\subseteq K^m=K$ be a CW complex.
+    Then
+    \benum
+        \item $$ H_i(K^n,K^{n-1}) = \cases{{\bb Z}^{f_n} & $i=n$\cr 0 & else} . $$
+        \item $H_i(K^n)=0$ for $i<n$.
+        \item $H_i(K^n)=H_i(K)$ for $n>i$.
+    \eenum
+
+\ethrm
+
+Let us define $E_n=H_n(K^n,K^{n-1})={\bb Z}^{f_n}$.
+Now, recall that we have two exact sequences:
+$$ E_n = H_n(K^n,K^{n-1}) \longto H_{n-1}(K^{n-1}) $$
+and
+$$ E_{n-1} = H_{n-1}(K^{n-1}) \longto H_{n-1}(K^{n-1},K^{n-2}) $$
+composing them gives a sequence (not necessarily exact):
+$$ E_n \xvarrightarrow{\ \Delta\ } H_{n-1}(K^{n-1}) \xvarrightarrow{\ i_*\ } E_{n-1} $$
+If we now look at the composition of these maps, we get a sequence
+$$ \cdots \longto E_n \longto E_{n-1} \longto \cdots \longto E_0 $$
+This is a chain complex, as if we look at
+$$ E_n \xto{\ \Delta\ } H_{n-1}(K^{n-1}) \xto{\ i_*\ } E_{n-1} \xto{\ \Delta\ } H_{n-2}(K^{n-2}) \xto{\ i_*\ } E_{n-2} $$
+the middle part of teh chain $H_{n-1}(K^{n-1}) \xto{\ i_*\ } E_{n-1} \xto{\ \Delta\ } H_{n-2}(K^{n-2})$ is part of $(K^{n-1},K^{n-2})$'s sequence, and so the composition is zero.
+It turns out
+
+\bthrm
+
+    $H_i(K)$ is equal to the $i$th homology group of the chain complex of $E_n$.
+
+\ethrm
+
+Let us look at the $K^n$ skeleton of a CW complex, it is of the form $K^{n-1}\coprod_{i=1,\phi_i}^{f_n}D^n$, meaning
+$$ K^n = \slfrac{K^{n-1}\coprod_{i=1}^{f_n}D^n_i}{x\sim\phi_i(x)\hbox{ for $x\in\partial D^n_i$}} $$
+where $\phi_i\colon\partial D^n_i\longto K^{n-1}$ are the attaching maps.
+We can look at the sequence
+$$ D^n\amalg\cdots\amalg D^n \xvarrightarrow{\ i\ } K^{n-1}\amalg D^n\amalg\cdots\amalg D^n \xvarrightarrow{\ \rho\ } K^n $$
+where $i$ is the inclusion map and $\rho$ is the quotient map.
+Note that $\rho\circ i$ restricted to $\partial D^n_i$ s the attaching map, i.e. $\phi_i$.
+So we can look at
+$$ g = \rho\circ i\colon (D^n\amalg\cdots\amalg D^n,\partial D^n\amalg\cdots\amalg\partial D^n) \longto (K^n,K^{n-1}) $$
+and on the boundaries, this is just the attaching map.
+Note that $H_n\parens{\coprod D^n,\coprod\partial D^n}=\bigoplus H_n(D^n,\partial D^n)={\bb Z}^{f_n}$.
+So $H_n\parens{\coprod D^n,\coprod\partial D^n}=H_n(K^n,K^{n-1})$ and indeed $g_*$ is actually an isomorphism.
+
