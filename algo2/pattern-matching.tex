@@ -1,0 +1,395 @@
+We will focus on the following problem: given a text $T[1,\dots,n]$, we would like to find the first occurrence of a pattern $P[1,\dots,m]$.
+That is, we want to find the first index $i$ such that
+$$ T[i,\dots,i+m-1] = P[1,\dots,m] $$
+A common way of doing this is constructing an automaton.
+This is done as follows: we define a {\it suffix function} $\sigma\colon\Sigma^*\longto\set{0,1,\dots,m}$ for which given a string $w$, $\sigma(w)$ is the (index of the end of the) longest prefix of $P$
+which is also a suffix of $w$.
+Formally
+$$ \sigma(w) = \maxof{k}[{P[1,\dots,k]\sqsupseteq w}] $$
+where $w_1\sqsubseteq w_2$ means that $w_2$ is a suffix of $w_1$.
+Now we define the automaton as follows:
+\benum
+    \item The state space is $Q=\set{0,1,\dots,m}$.
+    The initial state is $q_0=0$ and the single accepting state is $m$.
+    \item The transition function is $\delta(q,a)=\sigma(P[1,\dots,q]a)$.
+\eenum
+The idea is as follows: if we are on state $q$, then we have matched $P[1,\dots,q]$.
+Now if the next character is $a$, then is $a=P[q+1]$, great: $\delta(q,a)=q+1$.
+Otherwise, the current text we have matched looks like: $T[1,\dots,N]=\dots P[1,\dots,q]a$, and we know that we have not found $P$ yet.
+So we want to find the maximum index $k$ such that $P[1,\dots,k]$ is a suffix of $P[1,\dots,q]a$, since then our text looks like $T[1,\dots,N]=\dots P[1,\dots,k]$ and we can continue the automaton from state
+$k$.
+
+So for example, given $\Sigma=\set{a,b}$ and $P={\rm abbaba}$, our atomaton looks like:
+
+\kern1cm
+
+\centerline{\drawdiagram{
+    0 & 1 & 2 & 3 & 4 & 5 & 6\cr
+}{
+    \diagarrow{from={1,1}, to={1,2}, text=a, y distance=.25cm}
+    \diagarrow{from={1,2}, to={1,3}, text=b, y distance=.25cm}
+    \diagarrow{from={1,3}, to={1,4}, text=b, y distance=.25cm}
+    \diagarrow{from={1,4}, to={1,5}, text=a, y distance=.25cm}
+    \diagarrow{from={1,5}, to={1,6}, text=b, y distance=.25cm}
+    \diagarrow{from={1,6}, to={1,7}, text=a, y distance=.25cm}
+    \diagarrow{from={1,1}, to={1,1}, origin orient={left,top}, dest orient={right,top}, curve=1cm, text=b, y distance=.85cm}
+    \diagarrow{from={1,2}, to={1,2}, origin orient={left,top}, dest orient={right,top}, curve=1cm, text=a, y distance=.85cm}
+    \diagarrow{from={1,3}, to={1,2}, curve=1cm, text=a, y distance=-.6cm, y off=-.1cm}
+    \diagarrow{from={1,4}, to={1,1}, curve=-1.5cm, text=b, y distance=1cm, y off=.2cm}
+    \diagarrow{from={1,5}, to={1,2}, curve=-1.5cm, text=a, y distance=1cm, y off=.2cm}
+    \diagarrow{from={1,7}, to={1,2}, curve=-1.5cm, text=a, y distance=1cm, y off=.2cm}
+    \diagarrow{from={1,6}, to={1,4}, curve=1cm, text=b, y distance=-.75cm, y off=-.2cm}
+    \diagarrow{from={1,7}, to={1,3}, curve=2cm, text=b, y distance=-1.3cm, y off=-.2cm}
+}}
+
+\kern1cm
+
+Now suppose that we add another character to our alphabet, then we need to add new transitions for each node.
+Each node requires $\abs\Sigma$ transitions, so the size of our automaton is $\Theta(m\abs\Sigma)$ and thus the build time is $\Omega(m\abs\Sigma)$.
+This is not ideal for large alphabets.
+
+\subsection{Knuth-Morris-Pratt (KMP) Algorithm}
+
+A goal of the KMP algorithm is to prevent computing $\delta$ in its entirety altogether.
+Suppose that the text is $T=\dots P[1,\dots,q]$ and then the next character is different from $P[q+1]$.
+Then we want to find the maximum $k$ such that $P[1,\dots,q]=\dots P[1,\dots,k]$, as then we can check if the next character is $P[k+1]$.
+So let us define
+$$ \pi(q) = \maxof{k<q}[{P[1,\dots,k]\sqsupseteq P[1,\dots,q]}] $$
+So our algorithm will function as follows: if we miss a match at state $q$, go to state $\pi(q)$ and try again:
+
+\algorithm
+    \Function{KMP-Matcher}{$T,P,\pi$}
+        \State $q=0$
+        \For{$i=0$ to $n$}
+            \lWhile{$q>0$ and $P[q+1]\neq T[i]$} $q=\pi(q)$ \lComment If miss match
+            \lIf{$P[q+1]=T[i]$} $q=q+1$
+            \lIf{$q=m$} \Return $i-m$
+        \EndFor
+    \EndFunc
+\ealgorithm
+
+Now the auxiliary space is $\Theta(m)$ as opposed to $\Theta(m\abs\Sigma)$ and fortunately the matching time by KMP is still $\Theta(n)$.
+
+\subsection{Karp-Rabin Algorithm}
+
+Suppose we have a pattern $p_0p_1\dots p_{m-1}$, then we can choose a random $r$ and convert this into $\hat P=p_0r^{m-1}+p_1r^{m-2}+\cdots+p_{m-1}\bmod q$ for some prime $q$ (since ${\bb F}_q$ is a field).
+Given a text $t_0t_1\dots t_{n-1}$, we can compute $S_i=t_ir^{m-1}+t_{i+1}r^{m-2}+\cdots+t_{i+m-1}\bmod q$.
+Then if $\hat P\neq S_i$, then $T[i:i+m-1]\neq P$.
+If $\hat P=S_i$ then we can report that there is a match; this is a randomized/nondeterministic algorithm and so it is allowed false positives.
+
+But computing $S_i$ is costly, how can we optimize this.
+Well, notice that
+$$ S_{i+1} = rS_i + t_{i+m} - t_ir^m\bmod q $$
+So once we compute $S_0$, computing each subsequent $S_i$ takes $O(1)$ time.
+
+Now, what is the probability of a false positive?
+Let us define the following two polynomials:
+$$ p_P(x) = p_0x^{m-1} + p_1x^{m-2} + \cdots + p_{m-1} \bmod q,\qquad p_{T,i}(x) = t_ix^{m-1} + t_{i+1}x^{m-2} + \cdots + t_{i+m-1} \bmod q $$
+we have that $\hat P=S_i$ when $p_P(r)=p_{T,i}(r)$, i.e. $r$ is a root of $H(x)=p_P(x)-p_{T,i}(x)$.
+This is a root $m-1$ polynomial, and thus has at most $m-1$ roots.
+Choosing $r$ uniformly from ${\bb F}_q$ gives us that the probability of choosing an $r$ which gives a false positive at an index $i$ is $\frac{m-1}q$.
+
+\subsection{Dictionary Matching}
+
+The problem of dictionary matching, is that given a {\it dictionary} (list) of patterns, we want to find all instances of any pattern in the dictionary in an input text.
+One solution is to just look for each pattern in the dictionary, but we can do better.
+
+Let us familiarize ourself with a datastructure called a {\it trie}.
+Given a dictionary $D=\set{d^1,\dots,d^n}$ we create a tree $T$ whose edges are labeled with characters.
+Then suppose that we have a node $q$, and suppose to get to the node we must pass through edges $\omega=\sigma_1\cdots\sigma_k$.
+Then for every $\sigma\in\Sigma$ where $\omega\sigma$ is a prefix of a word in the dictionary, we add a new node and a connecting edge labelled $\sigma$.
+For example if $D=\set{{\rm aba,aabb,babb,bbaab}}$ then the trie would be (edges's labels are below them):
+
+\centerline{\drawdiagram{
+    &&&\cr
+    &a&&&&b\cr
+    a&&b&&a&&b\cr
+    b&&a&&b&&a\cr
+    b&&&&b&&a\cr
+    &&&&&&b\cr
+}{
+    \diagarrow{from={1,4}, to={2,2}}
+    \diagarrow{from={1,4}, to={2,6}}
+    \diagarrow{from={2,2}, to={3,1}}
+    \diagarrow{from={2,2}, to={3,3}}
+    \diagarrow{from={2,6}, to={3,5}}
+    \diagarrow{from={2,6}, to={3,7}}
+    \diagarrow{from={3,1}, to={4,1}}
+    \diagarrow{from={3,3}, to={4,3}}
+    \diagarrow{from={3,5}, to={4,5}}
+    \diagarrow{from={3,7}, to={4,7}}
+    \diagarrow{from={4,1}, to={5,1}}
+    \diagarrow{from={4,5}, to={5,5}}
+    \diagarrow{from={4,7}, to={5,7}}
+    \diagarrow{from={5,7}, to={6,7}}
+}}
+
+Now if we want to check if a word $\sigma_1\cdots\sigma_k$ is in the dictionary, we simply follow the edges.
+
+If we store only the relevant characters in each edge, this will take $O(\abs D)$ storage ($\abs D$ is the size of $D$, i.e. $\sum_i\abs{d_i}$).
+If $\abs\Sigma$ is constant or we use a hash table to locate the edges, search time is $O(\abs{\it query})$.
+Otherwise we need to perform a binary search to locate each pointer, which takes $O(\abs{\it query}\log\abs\Sigma)$ time.
+
+\subsection{Indexing}
+
+Suppose we have a text $T$ and a pattern $P$, and we want to find all the {\it indices} where $P$ is in $T$.
+What we can do is construct a dictionary $D=\set{\omega\$}[\hbox{$\omega$ is a prefix of $T$}]$ and construct a trie from $D$.
+At each childless node, we put the index of the suffix which formed it (so if $\sigma_i\cdots\sigma_{n-1}$ is a prefix, it ends on a node $q$ which will be given the number $i$).
+Then, when we want to find if a pattern $P$ is in $T$, we simply query $T$ and this may give us a node $q$.
+We follow its children until we get to indices, and we return these.
+This tree is called the {\it suffix tree}.
+
+For example $T={\rm ababb}$.
+If we query $P={\rm ab}$, following it down the trie gives us a node which has two children, following these children give us the indices $0,2$.
+
+The issue is the query time here can be very long, and the size is $O(n^2)$.
+So we can compress the trie as follows: for every path in the trie (i.e. each node has a single child), we compress it to a single node where we store the substring in the path as well as the indices which
+start and end the substring.
+This still takes $O(n^2)$ space (as we still must store the substrings).
+
+\subsection{$k$-Mismatches}
+
+\subsubsection{LCP}
+
+Suppose we have a pattern $P$ and a text $T$, and we want to find all the indices which match with $T$ up to $k$ places (i.e. all indices $i$ such that $\#\set{j}[{P[j]\neq T[i+j]}]\leq k$).
+
+To do so we will use a suffix tree with LCA (least common ancestor), i.e. a datastructure where for any two nodes we can find their closest common ancestor.
+Given a piece of text $T$, and two leaves $i,j$ (which correspond to the indices $i,j$ respectively in $T$), their least common ancestor is the node which corresponds to where they split in the text.
+That is if their LCA has a path $\sigma_0\cdots\sigma_{k-1}$ from the root, then $T[i:i+k-1]=T[j:j+k-1]$ and $T[i+k]\neq T[j+k]$.
+
+So let us construct the suffix tree with LCA of $T\#P\$$, then if we take a character $T[i]$ and $P[0]$, then their LCA corresponds to the largest $j$ such that $T[i:i+j-1]=P[0:j-1]$
+Iterating $k$ times, we can find $j_2$ such that $T[i+j:i+j_2-1]=P[j:j_2-1]$, and so on.
+If after $k$ iterations (or fewer) we have covered $P$ then we know that we have matched $T$ with $P$ up to $k$ mismatches.
+Since at every index we must iterate $k$ times, the total time is $O(nk)$.
+
+\subsubsection{Amir-Lewenstein-Porat}
+
+Now suppose we have two strings $T[0:n-1]$ and $P[0:m-1]$, for every $\sigma\in\Sigma$ we define $T_\sigma$ to be $T$ where $T_\sigma[i]$ is $0$ when $T[i]=\sigma$ and otherwise $1$, and we define
+$P_\sigma$ to be $P_\sigma[i]=1$ when $P[i]=\sigma$ and otherwise zero.
+Now, if we convolve $P_\sigma$ and $T_\sigma$, that is for every $0\leq i\leq n-m-1$, we have
+$$ (T_\sigma\star P_\sigma)[i] = T_\sigma[i:i+m-1]\cdot P_\sigma $$
+where the product is the standard dot product.
+If we now define
+$$ O = \sum_{\sigma\in\Sigma} T_\sigma\star P_\sigma $$
+we get that $O[i]$ is how many mismatches there are at index $i$ between $T$ and $P$.
+
+For example take $T={\rm abcbacbbacabbc}$ and $P={\rm abcbca}$, then
+$$ \eqalign{
+    T={\rm abcbacbbacabbc},&\quad P={\rm abcbca}\cr
+    T_a = 01110111010111,&\quad P_a = 100001\cr
+    T_b = 10101100111001,&\quad P_b = 010100\cr
+    T_c = 11011011101110,&\quad P_c = 001010
+} $$
+Using FFT, convolving $T_\sigma$ and $P_\sigma$ takes $O(n\log m)$ time, so all in all computing $O$ takes $O(n\abs\Sigma\log m)$ time.
+Notice that this method supports the use of wildcards: a character $\varphi$ which can be matched with any other character.
+We simply define $T_\sigma[i]=0$ when $T[i]=\sigma$ or $\varphi$.
+We can then go over $O$ and return the indices where $O[i]\leq k$.
+
+But this takes $O(n\abs\Sigma\log m)$ time, which can be quite long for large alphabets.
+Instead suppose we had a filter $F$ such that if $P$ matches with $T$ at an index, so must $F$.
+Thus if $F$ doesn't match with $T$ then $P$ won't either, and we can excuse ourselves from checking that specific index for a match.
+
+We create a filter $F$ which is equal to $P$ except at certain indices where we place a wildcard.
+We first assume that $P$ has $2k$ distinct symbols, that is $\abs\Sigma=2k$ (since if a symbol occurs in $T$ but not $P$, we know to never count it as a match), and then place wildcards so that each
+character in $F$ shows up only once.
+Now let us create an output array of the same size of $T$ and initialize it to zero: $O[0:n-1]=0$.
+We iterate over $T$ and at $T[i]$ we find the index $j$ such that $T[i]=P[j]$, and then we increment $O[i-j]$ by $1$ (since there is a match between $T[i-j:i-j+m-1]$ and $P$).
+After we iterate over $T$, $O[i]$ will have the number of matches between $T[i:i+m-1]$ and $P$ (i.e. $m$ minus the Hamming distance).
+
+If at $T[i]$ there are at most $k$ mismatches, then $O[i]\geq k$ (since there are $2k$ characters in $P$).
+So next we go over $O$ and find for which indices $O[i]\geq k$ and then check if there is actually $k$ mismatches there (by comparing with $P$).
+
+Notice though that we incremented $O$ at most $n$ times, so $\sum O[i]\leq n$.
+Thus if we have $N$ indices where $O[i]\geq k$, we have that $Nk\leq\sum O[i]\leq n$ and so $N\leq\frac nk$.
+So we need to check only $\frac nk$ places, and each takes $O(k)$ time, so in total this algorithm takes $O(n)$ time.
+
+Now recall that we required there to be $2k$ distinct characters in $P$.
+Now instead we want to make this work for any pattern $P$.
+So instead suppose we can create a filter $F$ which is a wildcard except for at $2k$ places, such that every character occurs in the filter at most $\sqrt k$ times.
+Not every pattern can satisfy this.
+
+Now at each $T[i]$ we must increment $O$ at every index where $P[j]=T[i]$, which is at most $O(\sqrt k)$ places.
+In total this takes $O(n\sqrt k)$ time.
+Now, we have that $\sum O[i]\leq n\sqrt k$ and so $Nk\leq\sum O[i]\leq n\sqrt k$ so $N\leq\frac n{\sqrt k}$.
+Thus the time to check is $O(n\sqrt k)$ as well (checking $\frac n{\sqrt k}$ indices each takes $O(k)$ time).
+So assuming we can construct such a filter, this algorithm takes $O(n\sqrt k)$ time.
+
+Otherwise we cannot create such a filter, this means that there exists at most $2\sqrt k$ characters in $P$ which occur in $P$ at least $\sqrt k$ times (and other characters as well).
+As otherwise there exists at least $2\sqrt k$ characters in $P$ which occur at least $\sqrt k$ times, and so we can just take these characters and create a filter.
+Suppose then $\sigma\in\Sigma$ is common (occurs at least $\sqrt k$ times), then define $T_\sigma$ as before but where $T_\sigma[i]=1$ when $T[i]=\sigma$ and $P_\sigma$ as before.
+Then $T_\sigma\star P_\sigma$ gives the number of times where $T$ matches with $P$ only counting $\sigma$.
+So we then sum over all the common characters to get $O_{\it heavy}$, and this takes $O(n2\sqrt k\log m)=O(n\sqrt k\log m)$ time.
+
+For uncommon characters we just do the previous algorithm where at $T[i]$ (which is uncommon) we find all $P[j]=T[i]$ and increment an array $O_{\it light}$ by $1$.
+We then sum $O_{\it heavy}+O_{\it light}$.
+At each $i$ there are at most $\sqrt k$ matches and so this takes $O(n\sqrt k)$ time.
+So in total we have taken $O(n\sqrt k\log m)$ time.
+
+So in the first case it takes $O(n\sqrt k)$ time, and in the second case $O(n\sqrt k\log m)$.
+So our algorithm takes $O(n\sqrt k\log m)$.
+
+We can improve this to $O(n\sqrt{k\log m})$ where
+\benum
+    \item In the first case (where a filter can be built), require that a filter have $2k$ non-wildcard spots where each character occurs at most $\sqrt{k\log m}$ times.
+    \item In the second case, there then are at most $2\sqrt k/\sqrt{\log m}$ characters which are common: occur at least $\sqrt{k\log m}$ times).
+        Then perform the algorithm as discussed on this new definition of commonness.
+\eenum
+
+\subsection{Search with Wildcards}
+
+Suppose our pattern has wildcards as well.
+Our previous algorithm which ran in $O(n\abs\Sigma\log m)$ time works here of course as well.
+But if $\Sigma$ is large then this is not efficient.
+So instead what we can do is encode $\Sigma$ as binary: each character will be converted into $\log\abs\Sigma$ bits, then we run our algorithm on the encoded $T$ and $P$.
+The new length of $T$ is $n\log\abs\Sigma$, and the new length of $P$ is $m\log\abs\Sigma$, so all in all the time is
+$$ O\bigl(n\log\abs\Sigma\log(m\log\abs\Sigma)\bigr) = O\bigl(n\log\abs\Sigma\log m\bigr) $$
+
+\subsubsection{$L_2^2$ Matching}
+
+Suppose we have a text $T[0:n-1]$ and a pattern $P[0:m-1]$, and we want to compute the $L_2$-norm squared distance between $T$ and $P$.
+I.e. we want to create an array $L[i]=\norm{T[i:i+m-1]-P}_{L_2}^2$.
+Note that this is just
+$$ L[i] = \sum_{j=0}^{m-1}(T[i+j]-P[j])^2 = \sum_{j=0}^{m-1}T[i+j]^2 - 2\sum_{j=0}^{m-1}T[i+j]P[j] + \sum_{j=0}^{m-1}P[j]^2 $$
+The first sum can be computed for every index in $O(n)$ time (compute it for $L[0]$, then $L[i+1]=L[i]+T[m]^2-T[i]^2$).
+The second sum is just a convolution, so it can be computed in $O(n\log m)$ time.
+And the third and final sum can be computed once in $O(m)$ time.
+So $L$ can be computed in $O(n\log m)$ time.
+
+Now suppose we want to perform $L_2^2$ matching with wildcards: $T$ and $P$ can have a wildcard character $\varphi$ which is matched (equal) to any other character.
+That is, $x-\varphi=0$ for any $x$.
+We can do this as follows:
+\benum
+    \item First we replace the wildcards in the text and pattern with $0$ to create $T'$ and $P'$ and compute the $L_2^2$ matching to get $L'$.
+    \item Define $T''[i]=1$ when $T[i]=\varphi$ and zero otherwise, and define $P''=(P')^2$.
+        Convolve $T''$ with $P''$ to get $C''$.
+    \item Define $T'''=(T')^2$ and $P'''[i]=1$ when $P[i]=\varphi$ and zero otherwise.
+        Convolve $T'''$ with $P'''$ to get $C'''$.
+    \item Return $L=L'-C''-C'''$.
+\eenum
+Notice then that
+$$ L'[i] = \sum_{T[i+j],P[j]\neq\varphi}(T[i+j]-P[j])^2 + \sum_{T[i+j]=\varphi}P'[j]^2 + \sum_{P[j]=\varphi}T'[i+j]^2 $$
+Where we use $P'$ and $T'$ because if $T[i+j]=P[j]=\varphi$ then they match and don't add to the sum, so we count the wildcard places as zero.
+And
+$$ C''[i] = \sum_{T[i+j]=\varphi}P'[j]^2,\qquad C'''[i] = \sum_{P[j]=\varphi}T'[i+j]^2 $$
+Thus we have that $L=L'-C''-C'''$ as required.
+This takes $O(n\log m)$ time, as each step does.
+
+\subsubsection{One Error}
+
+Suppose we want to look for $k$-mismatches where $k=1$ and we want to support wildcards.
+We just showed a way to compute
+$$ L[i] = \sum_{j=0}^{m-1}\bigl(T[i+j]-P[j]\bigr)^2 $$
+with wildcards.
+Now let us define
+$$ S[i] = \sum_{j=0}^{m-1}j\bigl(T[i+j]-P[j]\bigr)^2 $$
+Now suppose $T[i:i+m-1]$ matches with $P$ except for at index $\ell$, then we get that $L[i]=(T[i+\ell]-P[\ell])^2$ and $S[i]=\ell(T[i+\ell]-P[\ell])^2$.
+So we get that $\ell=S[i]/L[i]$.
+Notice also that if there are no mismatches, then $S[i]=0$ and so we can easily check if there are no mismatches.
+
+But what if there are two or more mismatches?
+It is possible that it gives an invalid output (a fraction), but it can also give a valid index.
+Let $\ell=S[i]/L[i]$, then if $\ell$ gives a valid index then there is at least one mismatch.
+If $T[i+\ell]=P[\ell]$, then there must be more than one mismatch.
+But if they are distinct, we still don't know if there is a single mismatch.
+Notice though that $L[i]=\sum_{T[i+j]\neq P[j]}(T[i+j]-P[j])^2$, and so if $\ell$ gives a valid index, we can look at $L[i]-(T[i+\ell]-P[\ell])^2$.
+If $\ell$ is the only mismatch, $L[i]=(T[i+\ell]-P[\ell])^2$ and so this will be zero.
+Otherwise it will be more than zero, and so we know there exists more than a single error.
+
+Now, computing $S$ works as follows:
+$$ S[i] = \sum_{j=0}^{m-1}jT[i+j]^2 - 2\sum_{j=0}^{m-1}T[i+j](jP[j]) + \sum_{j=0}^{m-1}jP[j]^2 $$
+The first sum is a convolution of $(0,1,\dots,m-1)$ with $T'=T^2$.
+The second sum is a convolution of $T$ with $P'[j]=jP[j]$.
+The third sum can be computed once in $O(m)$ time.
+The convolutions take $O(n\log m)$ time.
+
+\subsubsection{A Probabilistic Algorithm for $k$ Mismatches with Wildcards}
+
+We will now use One Error to form a probabilistic to return the indices of all the mismatches in the text.
+Let us define $r$ (to be determined later) patterns $P_{S_1},\dots,P_{S_r}$ where
+$$ P_{S_t}[i] = \cases{P[i] & with probability $1/2k$\cr \varphi & with probability $1-1/2k$} $$
+Let $S_t$ be the indices in $P_{S_t}$ which are not wildcards.
+If $P_{S_t}$ has only a single mismatch from $T[i:i+m-1]$ then One Error will return the index of this mismatch.
+Let $E=\set{\ell_1,\dots,\ell_{k'}}$ be the set of mismatches in $T[i:i+m-1]$ (let us assume $k'\leq k$), then the probability of this occurring is
+$$ \eqalign{
+    \probof{E\cap S_j=\set{\ell_i}} &= \probof{\ell_i\in S_j,\forall t\neq i\colon\ell_t\notin S_j} = \probof{\ell_i\in S_j}\cdot\probof{\forall t\neq i\colon\ell_t\notin S_j}\cr
+    &= \frac1{2k}\cdot\bigl(1-\probof{\exists t\neq i\colon\ell_t\in S_j}\bigr)\geq \frac1{2k}\cdot\parens{1-\frac{k'-1}{2k}}\cr
+    &\geq \frac1{4k}
+} $$
+Then the probability that one of the patterns from the $r$ witnesses the error $\ell_i$ is greater than $1=\parens{1-\frac1{4k}}^r$, so let $r=4k\log(n^c)=O(k\log n)$.
+Then the probability that one of the patterns witnesses the error is at least $1-\parens{1-\frac1{4k}}^{4k\log(n^c)}\approx1-\frac1{n^c}$.
+Now the text has at most $nk$ mismatches, and so the probability that one is not witnessed is, by the union bound, at most $\frac{nk}{n^c}\leq\frac1{n^{c-2}}$, which is also small.
+
+So suppose that using the pattern $P_{S_t}$ on index $i$ we get the mismatch $\ell_i^t$.
+Then we get the matrix of mismatches
+$$ \matrix{
+    P_{S_1} & \ell_0^1 & \ell_1^1 & \ell_2^1 & \cdots\cr
+    P_{S_2} & \ell_0^2 & \ell_1^2 & \ell_2^2 & \cdots\cr
+    \vdots & \vdots & \vdots & \vdots & \cdots\cr
+    P_{S_r} & \ell_0^r & \ell_1^r & \ell_2^r & \cdots\cr
+} $$
+Then with high probability the $i$th column gives all the mismatches at index $i$.
+
+Note that the time complexity of this algorithm is $O(nr\log m)=O(nk\log n\log m)$ since we must perform One Error on each pattern.
+
+\subsection{Suffix Arrays}
+
+Suppose we have text $T$, as we saw before we can create a suffix tree.
+The issue is storing pointers is not ideal, so instead we would like to store a suffix {\it array}.
+The suffix array is defined as follows: it is an array $\sa$ where $\sa[i]$ is the $i$th suffix in the lexicographic ordering.
+That is, we impose an ordering on $\Sigma$ (the special character \$ is defined to be smaller than all other characters), use this to order all the suffixes of $T$, and place these in order in an array.
+We also define an array $\lcp$ where $\lcp[i]$ is the length of $\lcp\bigl(T[\sa[i-1]],\,T[\sa[i]]\bigr)$ (so if $T[\sa[i-1]]=\omega\omega'$ and $T[\sa[i]]=\omega\omega''$, then $\lcp=\abs\omega$).
+
+For example if $T={\rm ababb}$ then its prefixes are:
+
+\medskip
+\centerline{\vbox{\tabskip=.25cm\halign{#\hfil\tabskip=.25cm&#\hfil\tabskip=1cm&#\hfil\tabskip=.25cm&#\hfil\cr
+Index & Suffix & Sorted Suffixes & Index\cr\noalign{\kern3pt\hrule\kern3pt}
+0 & ababb\$ & \$ & 5\cr
+1 & babb\$ & ababb\$ & 0\cr
+2 & abb\$ & abb\$ & 2\cr
+3 & bb\$ & b\$ & 3\cr
+4 & b\$ & babb\$ & 1\cr
+5 & \$ & bb\$ & 4\cr
+}}}
+\medskip
+
+So $\sa=[5,0,2,3,1,4]$ and $\lcp=[-,0,2,0,1,1]$.
+
+The suffix array and LCP array can be constructed from a suffix tree in $O(n)$ time.
+And a suffix tree can be constructed from a suffix array and LCP array in $O(n)$ time as well.
+
+\subsection{Pattern Matching in the Streaming Model}
+
+In the {\it communication model}, we are not concerned with time or space complexity, rather with the amount of information being exchanged between players.
+We want to reduce the amount of data needed to transport information.
+
+For example, suppose Alice lives on the moon and Bob on Earth.
+Alice has an array of $n$ numbers $a_0,\dots,a_{n-1}$ and Bob does too: $b_0,\dots,b_{n-1}$, all the numbers are between $0$ and $n^c$.
+Alice and Bob want to compute what the joint median of these two arrays are: i.e. the median of $a_0,\dots,a_{n-1},b_0,\dots,b_{n-1}$.
+The naive way of doing this is for both Alice and Bob to exchange their arrays and both compute the joint median.
+Since each element of an array requires $O(\log n)$ bits, this protocol requires an exchange of $O(n\log n)$ bits.
+
+Now let us consider the following alternative protocol.
+Let Alice and Bob both sort their arrays so they have $a_0,\dots,a_{n/2},\dots,a_{n-1}$ and $b_0,\dots,b_{n/2},\dots,b_{n-1}$.
+Alice then sends $a_{n/2}$ to Bob.
+Notice that if $a_{n/2}=b_{n/2}$ then the joint median is just $a_{n/2}$ so Bob can send back $=$ in $O(1)$ bits and Alice and Bob will both know the joint median.
+Otherwise, suppose $a_{n/2}>b_{n/2}$, then we know that the median must be between $b_{n/2}$ and $a_{n/2}$.
+So anything greater than $a_{n/2}$ and less than $b_{n/2}$ cannot be the median.
+So Bob sends back $<$ and Alice knows to disregard $a_{n/2+1},\dots,a_{n-1}$ and Bob knows to disregard $b_0,\dots,b_{n/2-1}$.
+The joint median is still the same in this new joint array (of $a_0,\dots,a_{n/2},b_{n/2},\dots,b_{n-1}$), whose size is half that of the original.
+So now we have the same problem but on an array half the size.
+Continuing recursively, we see that we require $O(\log n)$ recursive calls.
+Each call transmits $O(\log n)$ bits of information, so in total this protocol uses $O(\log(n)^2)$ bits of information.
+
+In the {\it streaming model}, we can only store something like ${\it poly}(\log n)$ space and we must read the input sequentially.
+So for example we can create streaming models for the following problems with relative ease:
+\benum
+    \item {\it Counter}: we can store a counter of the number of bits read in $O(\log n)$ bits.
+    \item {\it Min/Max}: we can store the minimum/maximum of a stream of numbers in $O(\log U)$ bits where $U$ is the size of the universe.
+    \item {\it Average}: we can store the average of a stream of numbers in $O(\log U+\log n)$ bits (given $n$ numbers the maximum value is $nU$, and we need a counter to store the number of numbers we have
+        read, all in all $O(\log(nU)+\log n)=O(\log U+\log n)$.
+\eenum
+
+Now suppose Alice and Bob both have a set of $n$ numbers, and they want to figure out if their sets are disjoint.
+It can be shown that this requires $\Omega(n)$ bits to be transmitted.
+

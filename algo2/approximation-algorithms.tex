@@ -42,7 +42,7 @@ Call an optimization problem $\c O$ {\bf NPO}-complete if $\c D_{\c O}$ is {\bf 
 Since NPO-complete problems are NPO-complete, we currently (and maybe always) do not have an efficient method of solving them.
 So the next best thing is approximating solutions.
 
-\subsection{Approximation Algorithms}
+\subsection{Vertex Cover}
 
 \bprob
 
@@ -54,7 +54,7 @@ So the next best thing is approximating solutions.
 As you should know, the decision problem is NP-complete.
 So the optimization problem is NPO-complete.
 
-We can come up with a naive algoritjm to solve this:
+We can come up with a naive algorithm to solve this:
 
 \algorithm
     \Function{Vertex-Cover}{$G=(V,E)$}
@@ -94,6 +94,8 @@ This analysis is tight: there exists a graph such that $\abs A=2\abs{\rm Opt}$.
 
 So Vertex-Cover is in {\bf APX}.
 
+\subsection{Max Cut}
+
 \bprob
 
     Given a graph $G=(V,E)$ the problem of {\emphcolor max cut} is the problem of finding a cut $S\subseteq V$ that maximizes the number of edges in the cut
@@ -131,3 +133,219 @@ This is because when we sum over $v\in V$, we count how many edges are in the cu
 So we must divide by $2$.
 
 Thus this algorithm is a $\frac12$-approximation, meaning max cut is in ${\sf APX}$.
+
+\subsection{Minimum Makespan Scheduling}
+
+\bdefn
+
+    The problem of minimum makespan scheduling is as follows: given $n$ jobs and the time it takes to complete each one: $j_1,\dots,j_n$, as well as the amount $m$ of identical machines, find an allocation
+    of the jobs to the machines such to minimize the total time spent (also called the makespan).
+
+\edefn
+
+This is an ${\bf NP}$-hard problem, but we can come up with a greedy algorithm:
+\benum
+    \item Order the jobs arbitrarily.
+    \item For each job, allocate it to the machine which has the least amount of work currently.
+\eenum
+
+Now consider an optimal solution $\opt$, notice that each machine must work for at most $\opt$ time, and so $\sum_{i=1}^nj_i\leq m\opt$, or equivalently $\frac{\sum_{i=1}^nj_i}m\leq\opt$.
+Furthermore, trivially, $\max_ij_i\leq\opt$.
+
+\bthrm
+
+    The greedy algorithm is a $2-\frac1m$-approximation to the minimum makespan scheduling problem.
+
+\ethrm
+
+\Proof suppose machine $q$ takes the maximum amount of time in our algorithm, suppose it takes $t_{\max}$ time.
+Let $j_s$ be the last job assigned to $q$ at time $t_s$, so at time $t_s$ the rest of the machines were computing and so
+$$ t_s\cdot m + j_s \leq \sum_ij_i \leq m\opt $$
+and thus $j_s\leq\opt$ and $t_s+\frac{j_s}m\leq\opt$, so
+$$ {\sf alg} = t_s + j_s = t_s + \frac{j_s}m + \parens{1-\frac1m}j_s \leq \opt + \parens{1-\frac1m}\opt = \parens{2-\frac1m}\opt \qed $$
+
+\bthrm
+
+    If we alter the greedy algorithm slightly so that it orders the jobs in decreasing order first, then it gives a $\frac32$-approximation for the minimum makespan scheduling problem.
+
+\ethrm
+
+\Proof let $j_1\geq\cdots\geq j_n$ be the jobs in decreasing order, and let $J_L=(j_1,\dots,j_k)$ be the jobs longer than $\frac\opt2$.
+Call these jobs {\it large}.
+Notice that $k\leq m$, as otherwise some machine would get two large jobs, and this would take greater than $\opt$ time.
+So suppose machine $q$ has the maximum completion time in the algorithm, and let $j_s$ be the last job allocated to $q$ at time $t_s$.
+If $s\leq k$ then $j_s$ is the only job of $q$ so ${\sf alg}=t_s\leq j_s\leq\opt$.
+So we can assume $s>k$.
+Since at $t_s$ all other machines are occupied,
+$$ t_s\cdot m \leq t_s\cdot m + j_s \leq \sum_ij_i \leq m\opt $$
+thus
+$$ {\sf alg} = t_s + j_s \leq \opt + \frac\opt2 = \frac32\opt \qed $$
+
+\bdefn
+
+    \benum
+        \item We say that a minimization problem admits a {\emphcolor polynomial-time approximation scheme} (PTAS) if for every $\epsilon>0$, there is a $1+\epsilon$ approximation in polynomial time.
+        \item A problem which admits a PTAS in $\poly(n)\cdot f(1/\epsilon)$ time (for $f$ arbitrary) is said to admit a {\emphcolor efficient polynomial-time approximation scheme} (EPTAS).
+        \item A problem which admits a PTAS in $\poly(n+1/\epsilon)$ time is said to admit a {\emphcolor fast polynomial-time approximation scheme} (FPTAS).
+    \eenum
+
+\edefn
+
+\bthrm
+
+    The minimum makespan scheduling problem admits a PTAS.
+
+\ethrm
+
+\subsection{Bin Packing Problem}
+
+\bdefn
+
+    The problem of {\emphcolor bin packing} can be stated as follows: given a finite set $U=\set{\mu_1,\dots,\mu_n}$ of objects with rational size $\s s(\mu_i)\in[0,1]$, return a partition of $U$ into
+    subsets $U_1,\dots,U_k$ such that for every $1\leq j\leq k$:
+    $$ \sum_{\mu_i\in U_j}\s s(\mu_i) \leq 1 $$
+    The goal is to minimize $k$.
+
+\edefn
+
+\bdefn
+
+    The problem of {\emphcolor partition} is as follows: given a multiset of numbers $S=\set{x_1,\dots,x_n}$, determine if one can partition $S$ into $S_1\dcup S_2$ such that
+    $\sum_{x\in S_1}x=\sum_{x\in S_2}x$.
+
+\edefn
+
+Parition is ${\bf NP}$-hard.
+
+\bthrm
+
+    Unless ${\bf P}={\bf NP}$, for every $\epsilon>0$ there is no $\frac32-\epsilon$-approximation for bin packing.
+
+\ethrm
+
+\Proof suppose for some $\epsilon>0$ there is a $\frac32-\epsilon$-approximation for bin packing, we will use it to solve partition.
+Let $S=\set{x_1,\dots,x_n}$ be an instance of partition, let $\mu=\sum_{x\in S}x$, then let $S'=\set{\frac2\mu x_1,\dots,\frac2\mu x_n}$ be an input to the bin packing problem.
+Using our $\frac32-\epsilon$-approximation, find a solution $U_1,\dots,U_k$ to the bin packing problem.
+Return {\sf true} if $k=2$ and otherwise {\sf false}.
+
+Suppose that the true answer is {\sf true}, then $S=S_1\dcup S_2$ and $\sum_{x\in S_1}x=\sum_{x\in S_2}x=\frac\mu2$.
+Then $U_i=\set{\frac2\mu x}[x\in S_i]$ is a solution to bin packing since
+$$ \sum_{x\in S_i}\frac2\mu x = \frac2\mu\cdot\frac\mu2 = 1 $$
+The approximation algorithm of bin packing must return a solution of at most size $(3/2-\epsilon)\cdot2<3$, so $2$.
+Thus if the answer is {\sf true}, then our algorithm will return {\sf true}.
+
+Now suppose the algorithm returned {\sf true}, then since the total weight of $S'$ is $2$, there must be two bins of size $1$, the corresponding partition of $S$ is a valid solution to partition.
+\qed
+
+We can develop an algorithm for bin packing, called first fit, as follows: for every object $\mu_i$ place it in the first bin in which it fits.
+If no bin is available, open a new one.
+Denote the number of bins used by the algorithm on an instance $I$ by $\ffof I$.
+
+\blemm
+
+    $\ffof I\leq2\abs\opt+1$
+
+\elemm
+
+\Proof first notice that if $\opt$ uses bins $B_1,\dots,B_n$ then
+$$ \sum_i\s s(\mu_i) = \sum_i\s s(B_i) \leq \sum_i1 = \abs\opt $$
+Now suppose $\ffof I$ uses bins $B_1,\dots,B_m$, then there is a single bin of weight $\leq\frac12$ as otherwise the algorithm would've merged the two bins.
+Thus
+$$ \abs\opt \geq \sum_i\s s(B_i) \geq \frac12(m-1) $$
+so $m\leq2\abs\opt+1$, as required.
+\qed
+
+\bthrm
+
+    There is a PTAS for bin packing.
+    In other words, for every $\epsilon>0$, there is a poly-time algorithm which solves the bin-packing problem using at most $(1+\epsilon)\abs\opt+1$ bins.
+
+\ethrm
+
+To prove this, we will utilize the following lemmas:
+
+\blemm[name=smallitems]
+
+    Suppose that all the elements are of size at most $\delta$, then $\ffof I\leq(1+2\delta)\abs\opt+1$.
+
+\elemm
+
+\Proof if $\delta\geq\frac12$ then since $\ffof I\leq2\abs\opt+1\leq(1+2\delta)\abs\opt+1$ as required.
+So let us assume $\delta<\frac12$, then all the bins besides the last have at least $1-\delta$ weight.
+This is since if the weight of a bin is $\leq1-\delta$ then it can take another object.
+Thus
+$$ (\ffof I-1)(1-\delta) < \sum_i\s s(\mu_i) \leq \abs\opt \implies \ffof I \leq \frac{\abs\opt}{1-\delta}+1 \leq (1+2\delta)\abs\opt + 1 \qed $$
+
+\blemm
+
+    Suppose that there are only $k$ distinct weights, then there is an algorithm to find the optimal solution in $O(n^{2k+1})$ time.
+
+\elemm
+
+\Proof let $A$ be the set of the different weights.
+Then let $S$ be the set of all multi-sets with $n$ values from $A$, then by definition
+$$ \abs S = \parens{\!\!\binom kn\!\!} = \binom{n+k-1}n = \frac{(n+k-1)!}{n!(k-1)!} = \frac{(n+1)\cdots(n+k-1)}{1\cdots(k-1)} $$
+This is a polynomial of degree $k-1$, so it is less than (asymptotically) $n^k$.
+Let $S_1\subseteq S$ be all multisets which can be packed into a single bin, then $S_1$ can be computed in $O(n^k)$ time.
+Let $S_{i-1}\subseteq S$ be all the multisets which be packed into $i-1$ bins.
+Then
+$$ S_i \subseteq \set{B\cup C}[B\in S_{i-1},C\in S_1] $$
+So we can simply iterate over all pairs in $S_{i-1}\times S_1$ and check if their union is in $S_i$.
+There are $O(n^{2k})$ such pairs, so computing $S_i$ takes $O(n^{2k})$ time.
+Once $\set{\s s(\mu_j)}[\mu_j\in U]$ is in $S_i$, then we know we can pack all the objects into at least $i$ bins.
+So we stop and return $i$.
+And since all the objects can be trivially packed into $n$ bins, we stop at $n$ iterations at most.
+So the total runtime is $O(n^{2k+1})$.
+\qed
+
+\blemm[name=largeelements]
+
+    Suppose that all the items are of size $\geq\delta$.
+    Then there is an algorithm producing a solution with $(1+\delta)\abs\opt+1$ bins in runtime $O(n^{2/\delta^2}+1)$.
+
+\elemm
+
+\Proof fix some $k$, which will be determined later.
+Then sort $U$ in nonincreasing order (largest elements first), and partition $U$ into $\ceil{\frac nk}$ subsets of size $k$ (the final subset may have fewer than $k$ elements).
+Let these subsets be $G_1,\dots,G_{\ceil{n/k}}$.
+Create a new instance $U'$ where we first discard $G_1$, then for $2\leq i\leq\ceil{\frac nk}$ we change all the values in the set $G_i$ to the maximal value in $G_i$.
+Let these new sets be $G'_2,\dots,G'_{\ceil{n/k}}$.
+Notice that we can map the elements of $G'_{i+1}$ to $G_i$ so that $w'$ is mapped to a unique $w\geq w'$, let this mapping be $f$.
+This means that $\abs{\opt(U')}\leq\abs{\opt(U)}$ since if we put $U$ into bins $B_1,\dots,B_m$ then $f^{-1}B_1,\dots,f^{-1}B_m$ (excuse the abuse of notation) are valid bins for $U'$ (since
+$f^{-1}w\leq w$).
+
+Now, there are $\ceil{\frac nk}-1\leq\frac nk$ distinct values in $U'$, so by the previous lemma, we can compute $\abs{\opt(U')}$ in $O(n^{2\frac nk+1})$ time.
+
+So our algorithm will work as follows: put every element in $G_1$ into its own bin.
+Then find an optimal solution for $U'$.
+Since $U'$ is greater than $G_2,\dots,G_{\ceil{n/k}}$ use this optimal solution to pack $G_2,\dots,G_{\ceil{n/k}}$.
+This uses
+$$ \abs{{\rm alg}(U)} = \abs{\opt(U')} + k \leq \abs{\opt(U)} + k $$
+Now let
+$$ k = \ceil{\delta\cdot\sum_{\mu_i\in U}\s s(\mu_i)} $$
+Since $\abs\opt\geq\sum_\mu\s s(\mu)$, we have that $k\leq\ceil{\delta\abs\opt}\leq\delta\abs\opt+1$.
+So
+$$ \abs{{\rm alg}(U)} = \abs{\opt(U')} + k \leq \abs{\opt(U)} + k \leq (1+\delta)\abs{\opt(U)} + 1 $$
+and the runtime is
+$$ O(n^{2n/k+1}) = O\parens{n^{2\cdot\frac{n}{\delta\sum_\mu\s s(\mu)}+1}} \leq O\parens{n^{2\cdot\frac n{\delta\sum_\mu\delta}+1}} = O\parens{n^{2/\delta^2+1}} $$
+as required.
+\qed
+
+\bthrm
+
+    For every $\epsilon>0$ there is a polynomial-time algorithm returning a solution to the bin-packing probkem using at most $(1+\epsilon)\abs\opt+1$ bins in $O(n^{8/\epsilon^2+1})$ time.
+
+\ethrm
+
+\Proof let $U_L$ be the set of all objects of weight $\geq\epsilon/2$, and let $U_S=U\setminus U_L$.
+We run the algorithm of \refmath[lemma]{largeelements} on $U_L$, and then use first-fit on $U_S$ to pack it into the remaining space of the $U_L$ bins.
+If there is no more space, use first-fit on new bins.
+If no new bins were opened using first-fit then
+$$ \abs{\rm alg} = \abs{{\rm alg}_L(U_L)} \leq \parens{1+\frac\epsilon2}\opt(U_L) + 1 \leq \parens{1+\frac\epsilon2}\opt(U) + 1 $$
+Otherwise, notice that if we ended up with $m$ bins, then all but $1$ of them must end up with a weight of at least $1-\epsilon/2$ (since we can't pack any small items into it).
+Thus $(m-1)(1-\epsilon/2)<\sum_\mu\s s(\mu)\leq\opt$.
+Thus
+$$ m \leq \frac1{1-\epsilon/2}\opt + 1 \leq (1+\epsilon)\opt + 1 $$
+as required.
+\qed
+
