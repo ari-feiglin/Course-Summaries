@@ -1,0 +1,162 @@
+\subsection{Softmax Regression}
+
+Suppose we have $K$ different classes we want to classify our input into (e.g. airplane, automobile, bird, cat, etc.).
+One way to do this is to define $K$ binary classifiers and then return the class identified as true.
+Though this will of course not work if two binary classifiers both return true, and furthermore this is expensive.
+
+Instead what we can do is have our output space be probability tuples, i.e. it is the $K$-simplex $\Delta^K=\set{(p_1,\dots,p_K)}[p_i\geq0,\sum_ip_i=1]$.
+Suppose we have an input vector $\b x$, then we can multiply it with weights $\b w_1,\dots,\b w_m$ to get $\b w_1^\top\b x,\dots,\b w_m^\top\b x$.
+Since the sum of these outputs is not necessarily $1$, we can normalize these and return
+$$ p_i = \frac{\b w_i^\top\b x}{\sum_j\b w_j^\top\b x} $$
+But this is not good enough; what if $\b w_i^\top\b x$ isn't positive?
+We will use the {\it softmax} function: a continuous function which approximates the maximum of a vector:
+
+\bdefn
+
+    We define the {\emphcolor softmax} function to be a function $\sm\colon{\bb R}^n\longto{\bb R}^n$ with components $\sm_i\colon{\bb R}^n\longto{\bb R}$:
+    $$ \sm_i(\b z) = \frac{\exp(\b z_i)}{\sum_j\exp(\b z_j)} $$
+    we can then define the softmax of $\b z$ to be $\sm(\b z)=(\sm_1(\b z),\dots,\sm_n(\b z))$.
+
+\edefn
+
+\noindent Notice that trivially the sum of $\sm_i(\b z)$ is $1$, and $\sm_i(\b z)>0$ for all $i$.
+Thus we will define
+$$ p_i = \sm_i(\b w_i^\top\b x) = \frac{\exp\bigl(\b w_i^\top\b x\bigr)}{\sum_j\exp\bigl(\b w_j^\top\b x\bigr)} $$
+In matrix form
+$$ \b p = \sm(\b W\b x) $$
+where the rows of $\b W$ are the weight vectors $\b w_i$.
+
+$p_i$ is the probability that the class of $\b x$ is $i$.
+We will also write it as $p_i=\probof{y=i}[\b x]$, i.e. the probability that the output class is $i$ given the input $x$.
+If the variable $y$ is in use, I will also use $\probof{o=i}[\b x]$ ($o$ for output).
+
+\bdefn
+
+    Suppose we are given a sequence of independent identically distributed training samples $\set{(\b x_i,y_i)}_{i=1}^n$.
+    Then the {\emphcolor likelihood} of a weight matrix $\b W$ is defined to be
+    $$ \c L(\b W) = \prod_{i=1}^n\prod_{k=1}^K\probof{o_i=k}[\b x_i]^{\b 1\set{y_i=k}} = \prod_{i=1}^n\probof{o_i=y_i}[\b x_i] $$
+    Then the {\emphcolor log-likelihood} is
+    $$ \log\c L(\b W) = \sum_{i=1}^n\sum_{k=1}^K\b 1\set{y_i=k}\log\probof{o_i=k}[\b x_i] = \sum_{i=1}^n\sum_{k=1}^K\b 1\set{y_i=k}\log\frac{\exp(\b w_k^\top\b x_i)}{\sum_j\exp(\b w_j^\top\b x_i)} $$
+
+\edefn
+
+\noindent We can then perform stochastic gradient descent where the loss function is the log-likelihood.
+
+\subsection{Support Vector Machines (SVM)}
+
+Suppose we want to solve the problem of binary classification, i.e. we want to split our space into halfspaces.
+There can be many halfspaces which do so (think of the simplest problem, where we have two points), so we want to find some optimal halfspace.
+Let us define the {\it margin} of a class to a half space to be the minimum distance between the dividing hyperplane and a point from the class.
+
+We need a quick result from linear algebra:
+
+\bprop
+
+    Let $\c H$ be the space defined by $\b w^\perp$ for $\b w\neq0$.
+    Show that for any $\b x$, $\b x-\pi_{\c H}(\b x)=\frac{\iprod{\b x,\b w}}{\iprod{\b w,\b w}}\b w$.
+
+\eprop
+
+\Proof First let us assume that $\b w$ is normalized, then let us extend $\b w$ to an orthonormal basis, $\set{\b w,\b w_1,\dots,\b w_n}$.
+Then $\set{\b w_1,\dots,\b w_n}$ is an orthonormal basis for $\c H$.
+Now suppose that $\b x=\alpha\b w+\sum_i\alpha_i\b w_i$, then $\pi_{\c H}(\b x)=\sum_i\alpha_i\b w_i$ and so $\b x-\pi_{\c H}(\b x)=\alpha\b w$.
+And $\iprod{\b x,\b w}=\alpha$, so we have that $\b x-\pi_{\c H}(\b x)=\iprod{\b x,\b w}\b w$ as required (since $\b w$'s norm is $1$).
+
+Now let $\hat{\b w}$ be the normalization of $\b w$, i.e. $\hat{\b w}=\b w/\norm{\b w}$.
+Then by above
+$$ \b x - \pi_{\c H}(\b x) = \iprod{\b x,\hat{\b w}}\hat{\b w} = \frac{\iprod{\b x,\b w}}{\iprod{\b w,\b w}}\b w $$
+as required.
+\qed
+
+If our hyperplane is given by $\c H=\set{\b x}[\iprod{\b w,\b x}=0]=\b w^\perp$ then the distance between a point $\b x$ and $\c H$ is just $\norm{\b x-\pi_{\c H}(\b x)}$, and by the above proposition this
+is just
+$$ \norm{\frac{\iprod{\b x,\b w}}{\iprod{\b w,\b w}}\b w} = \frac{\abs{\b w^\top\b x}}{\norm{\b w}} $$
+So the margin of a class $\c C$ is just
+$$ \min_{\b x\in\c C}\frac{\b w^\top\b x}{\norm{\b w}} $$
+In our situation we have two classes: those $\b x$s where $\b w^\top\b x>0$ and those where $\b w^\top\b x<0$.
+So the margin of the first class is just $\min_{\b w^\top\b x>0}\frac{\b w^\top\b x}{\norm{\b w}}$, and the margin of the second class is
+$\min_{\b w^\top\b x<0}-\frac{\b w^\top\b x}{\norm{\b w}}=-\max_{\b w^\top\b x<0}\frac{\b w^\top\b x}{\norm{\b w}}$.
+That means that $\min_{\b w^\top\b x>0}\b w^\top\b x=-\max_{\b w^\top\b x<0}\b w^\top\b x=\epsilon$.
+
+So $y_i=1$ ($\b x_i$ is in the positive class) if and only if $\b w^\top\b x_i\geq\epsilon$ and $y_i=-1$ if and only if $\b w^\top\b x_i\leq-\epsilon$.
+That is we have that $y_i\b w^\top\b x_i\geq\epsilon$.
+These form two new parallel hyperplanes, and their distance is $\frac{2\epsilon}{\norm{\b w}}$.
+So to maximize the distance between these hyperplanes, we want to minimize $\norm{\b w}$, equivalently $\norm{\b w}^2$.
+We can assume without loss of generality that $\epsilon=1$, so we want to solve the problem of minimizing $\norm{\b w}^2$ with respect to the constraints $y_i\b w^\top\b x_i\geq1$ for every sample $\b x_i$.
+
+\subsection{Constrained Optimization}
+
+Suppose we have a problem, like in the previous subquestion, where we want to minimize some function $f(\b x)$ with respect to some constraints $g_i(\b x)\leq0$:
+$$ \min_{\b x}f(\b x) \hbox{\quad s.t.\quad} \forall i\colon g_i(\b x)\leq 0 $$
+This is equivalent to minimizing the function $J(\b x)=f(\b x) + \sum_i\pen(g_i(\b x))$ where $\pen=I$ is the infinite step function: $I(x)=\infty$ if $x>0$ and zero otherwise.
+But this is hard to minimize since $\pen$ here is not continuous.
+Instead we can approximate $I$ linearly, using the {\it Lagrangian}:
+$$ \c L(\b x,\fakebold\lambda) = f(\b x) + \sum_i\lambda_ig_i(\b x) $$
+
+\bprop
+
+    For every $\b x$, $\max\limits_{\fb\lambda\geq0}\c L(\b x,\fb\lambda)=J(\b x)$.
+
+\eprop
+
+\Proof if $f_i(\b x)\leq0$ for all $i$ then $\c L(\b x,\fb\lambda)$ is maximized when $\fb\lambda=0$ and then $\c L(\b x,0)=f(\b x)=J(\b x)$.
+If $f_i(\b x)>0$ for some $i$ then taking $\lambda_i\to\infty$ we get $\c L(\b x,\fb\lambda)\to\infty$, so the maximum is $\infty$, and $J(\b x)=\infty$.
+\qed
+
+Thus the problem is equivalent to $\min_{\b x}\max_{\fb\lambda\geq0}\c L(\b x,\fb\lambda)$.
+Suppose we flip the minimum and maximum: $\max_{\fb\lambda\geq0}\min_{\b x}\c L(\b x,\fb\lambda)$.
+Let us define
+$$ g(\fb\lambda) = \min_{\b x}\c L(\b x,\fb\lambda),\qquad h(\b x) = \max_{\fb\lambda\geq0}\c L(\b x,\fb\lambda) $$
+Notice then that for all $\b x,\fb\lambda$:
+$$ g(\fb\lambda) \leq \c L(\b x,\fb\lambda) \leq h(\b x) $$
+Thus we can maximize $\fb\lambda$ and minimize $\b x$ and we get
+$$ \max_{\fb\lambda\geq0}g(\fb\lambda) = \max_{\fb\lambda\geq0}\min_{\b x}\c L(\b x,\fb\lambda) \leq \min_{\b x}\max_{\fb\lambda\geq0}\c L(\b x,\fb\lambda) = \min_{\b x}h(\b x) $$
+
+\bdefn
+
+    The {\emphcolor Lagrangian dual program} of the primal program
+    $$ \min_{\b x}f(\b x) \hbox{\quad s.t.\quad} \forall i\colon g_i(\b x)\leq 0 $$
+    is the program of maximizing $g(\fb\lambda)$: $\max_{\fb\lambda\geq0}g(\fb\lambda)$ where $g(\fb\lambda)=\min_{\b x}\c L(\b x,\fb\lambda)$.
+
+\edefn
+
+\noindent We have just shown
+
+\bthrm[title=Weak Duality Principle]
+
+    The Lagrangian dual program gives a lower bound to the optimal solution of the primal program.
+
+\ethrm
+
+\subsection{Solving Support Vector Machines}
+
+Recall that an SVM is of the form (we minimize $\frac12\norm{\b w}^2$ so the gradient is nicer):
+$$ \min_{\b w}\frac12\norm{\b w}^2 \hbox{\quad s.t.\quad} \forall i\colon y_i\b w^\top\b x_i \geq 1 $$
+which can be equivalently written as
+$$ \min_{\b w}\frac12\norm{\b w}^2 \hbox{\quad s.t.\quad} \forall i\colon 1-y_i\b w^\top\b x_i \leq 0 $$
+The Lagrangian is then
+$$ \c L(\b w,\fb\lambda) = \frac12\norm{\b w}^2 + \sum_{i=1}^n\lambda_i(1-y_i\b w^\top\b x_i) $$
+Taking the gradient gives
+$$ \nabla\c L(\b w,\fb\lambda) = \b w - \sum_{i=1}^n\lambda_i y_i\b x_i $$
+This is zero when
+$$ \b w = \sum_{i=1}^n\lambda_iy_i\b x_i $$
+
+\subsection{Solving Noise}
+
+Suppose our data is not separable; there is noise.
+That means that there is no halfspace which correctly classifies our training data.
+For each $\b x_i$ we define a parameter $\xi_i$ which will measure how far away $\b x_i$ is from the correct class (the margin).
+
+If we have that $y_i\b w^\top\b x_i\geq1$ then $\b x_i$ is properly classified and so $\xi_i$ should be zero.
+Otherwise we want to measure how far away $\b x_i$ is from the margin $\b w^\top\b x=1$.
+The distance to the halfspace $\b w^\top\b x=0$ is $\frac{\abs{\b w^\top\b x_i}}{\norm{\b w}}$, and the distance from $\b w^\top\b x=1$ to $\b w^\top\b x=0$ is $\frac1{\norm{\b w}}$.
+If $\b x_i$ is misclassified, then the first distance is $-\frac{y_i\b w^\top\b x_i}{\norm{\b w}}$, so the total distance to the correct margin is $\frac1{\norm{\b w}}(1-y_i\b w^\top\b x_i)$.
+And if $\b x_i$ is classified correctly but not beyond the margin, then we want the difference between the two distances, which is the same.
+So all in all we should have something like $\xi_i=\frac1{\norm{\b w}}(1-y_i\b w^\top\b x_i)$.
+$\norm{\b w}$ is just a constant so we can simply set $\xi_i=1-y_i\b w^\top\b x_i$.
+
+Notice that in the second case we have that $y_i\b w^\top\b x_i<1$ and so $1-y_i\b w^\top\b x_i>0$ so we can just define
+$$ \xi_i = \maxof{0,1-y_i\b w^\top\b x_i} $$
+
+So to solve noise what we can do is minimize $\frac12\norm{\b w}^2+c\sum_i\xi_i$ where $c$ is the cost of a misclassification, according to the constraints $y_i\b w^\top\b x_i\geq1-\xi_i$.
+
