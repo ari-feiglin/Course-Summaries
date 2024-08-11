@@ -82,7 +82,8 @@ So $y_i=1$ ($\b x_i$ is in the positive class) if and only if $\b w^\top\b x_i\g
 That is we have that $y_i\b w^\top\b x_i\geq\epsilon$.
 These form two new parallel hyperplanes, and their distance is $\frac{2\epsilon}{\norm{\b w}}$.
 So to maximize the distance between these hyperplanes, we want to minimize $\norm{\b w}$, equivalently $\norm{\b w}^2$.
-We can assume without loss of generality that $\epsilon=1$, so we want to solve the problem of minimizing $\norm{\b w}^2$ with respect to the constraints $y_i\b w^\top\b x_i\geq1$ for every sample $\b x_i$.
+Note that if $\b w$ is an optimal solution so is $\alpha\b w$ (since they define the same hyperplanes), so we can scale $\b w$ so that $\epsilon=1$.
+Meaning we want to solve the problem of minimizing $\norm{\b w}^2$ with respect to the constraints $y_i\b w^\top\b x_i\geq1$ for every sample $\b x_i$.
 
 \subsection{Constrained Optimization}
 
@@ -136,10 +137,18 @@ which can be equivalently written as
 $$ \min_{\b w}\frac12\norm{\b w}^2 \hbox{\quad s.t.\quad} \forall i\colon 1-y_i\b w^\top\b x_i \leq 0 $$
 The Lagrangian is then
 $$ \c L(\b w,\fb\lambda) = \frac12\norm{\b w}^2 + \sum_{i=1}^n\lambda_i(1-y_i\b w^\top\b x_i) $$
-Taking the gradient gives
-$$ \nabla\c L(\b w,\fb\lambda) = \b w - \sum_{i=1}^n\lambda_i y_i\b x_i $$
+Taking the gradient only with respect to $\b w$ gives
+$$ \nabla_{\b w}\c L(\b w,\fb\lambda) = \b w - \sum_{i=1}^n\lambda_i y_i\b x_i $$
 This is zero when
 $$ \b w = \sum_{i=1}^n\lambda_iy_i\b x_i $$
+Notice then that
+$$ \norm{\b w}^2 = \sum_{i,j=1}^n\lambda_i\lambda_jy_iy_j\b x_i^\top\b x_j $$
+So plugging this back into the Lagrangian we get
+$$ g(\fb\lambda) = \min_{\b w}\c L(\b w,\fb\lambda) = \frac12\sum_{i,j=1}^n\lambda_i\lambda_jy_iy_j\b x_i^\top\b x_j + \sum_{i=1}^n\lambda_i - \sum_{i,j=1}^n\lambda_i\lambda_jy_iy_j\b x_i^\top\b x_j =
+\sum_{i=1}^n\lambda_i - \frac12\sum_{i,j=1}^n\lambda_i\lambda_jy_iy_j\b x_i^\top\b x_j $$
+Taking the partial derivative of $g(\fb\lambda)$ with respect to $\lambda_i$ gives
+$$ \frac\partial{\partial\lambda_i}g(\fb\lambda) = 1 - \frac12\sum_{j=1}^n\lambda_jy_iy_j\b x_i^\top\b x_j $$
+So we can use this to compute the gradient ascent of (since we want to increase) $g(\fb\lambda)$.
 
 \subsection{Solving Noise}
 
@@ -159,4 +168,99 @@ Notice that in the second case we have that $y_i\b w^\top\b x_i<1$ and so $1-y_i
 $$ \xi_i = \maxof{0,1-y_i\b w^\top\b x_i} $$
 
 So to solve noise what we can do is minimize $\frac12\norm{\b w}^2+c\sum_i\xi_i$ where $c$ is the cost of a misclassification, according to the constraints $y_i\b w^\top\b x_i\geq1-\xi_i$.
+
+\subsection{Nonlinear SVMs}
+
+Suppose our data is not linearly separable: perhaps it is a circle.
+The idea to solve this is we can perform a transformation of the input space into some larger dimension, and hope that the inputs are now linearly classifiable in this larger dimension.
+So we define a {\it feature map} which is a function from the input space to a feature space, $\phi\colon{\bb R}^d\longto{\bb R}^D$ where $D\gg d$.
+Recall that the gradient of $g(\fb\lambda)$ has components of the form
+$$ \frac\partial{\partial\lambda_i}g(\fb\lambda) = 1 - \frac12\sum_{j=1}^n\lambda_jy_iy_j\b x_i^\top\b x_j $$
+So if we now replace $\b x_i$ with the feature $\phi(\b x_i)$, we get
+$$ \frac\partial{\partial\lambda_i}g(\fb\lambda) = 1 - \frac12\sum_{j=1}^n\lambda_jy_iy_j\phi(\b x_i)^\top\phi(\b x_j) $$
+Notice that $\phi$ always appears in an inner product, so we can define the {\it kernel} to be $k(\b x,\b y)=\phi(\b x)^\top\phi(\b y)$, and then we have that
+$$ \frac\partial{\partial\lambda_i}g(\fb\lambda) = 1 - \frac12\sum_{j=1}^n\lambda_jy_iy_jk(\b x_i,\b x_j) $$
+
+For some types of feature maps computing $k$ is simpler than $\phi$.
+For example:
+$$ \phi(\b x) = \phi\pmatrix{x1\cr x_2} = \pmatrix{x_1^2\cr x_2^2\cr\sqrt2x_1x_2\cr x_1\cr x_2\cr 1} $$
+Then a computation gives us
+$$ k(\b x,\b z) = (\b x^\top\b z+1)^2 $$
+So we can focus on kernels instead of feature maps, in fact we have the following result due to Moore-Aronszajn:
+
+\bthrm[title=Moore-Aronszajn]
+
+    Every positive semi-definite function $k$ defines a valid kernel.
+
+\ethrm
+
+So for example, we can define
+$$ k(\b x,\b z) = \exp\parens{-\frac{\norm{\b x-\b z}^2}{\sigma^2}} $$
+and this is positive semi-definite so it defines a kernel.
+
+\subsection{Decision Trees}
+
+A {\it decision tree} is an iterative procedure where at each iteration data is split according to some cutoff on a certain feature.
+The features and cutoff points are chosen to minimize either variance: $\frac1n\sum_y(y-\bar y)^2$ (for numeric/real $y$), or entropy: $-\sum_yp(y)\log p(y)$ (for discrete $y$) where $p(y)$ is the
+probability of a sample belong to class $y$.
+Take for example the following decision tree to classify flowers:
+
+\centerline{\pdfximage width.5\hsize{decision tree.png}\pdfrefximage\pdflastximage}
+
+Each node has the following information:
+\benum
+    \item The feature and cutoff: the features here are petal width and sepal length, and the cutoffs are the conditions at the top of each (non-leaf) node.
+    \item Gini: an alternative for entropy and variance, ignore this.
+    \item The number of samples: the number of samples remaining to be classified.
+    \item The value: an array showing how many of the current samples belong to each class.
+    \item The class: the current class the set of samples are believed to belong to.
+\eenum
+
+Here we need to use entropy and not variance since the classes are discrete (and not numeric).
+The entropy of the first node is $-\frac13\log\frac13-\frac13\log\frac13-\frac13\log\frac13=\log3$, since the probability of being in a class is $\frac13$ (by the values array).
+The entropy of its left child is $-1\log1-0\log0-0\log0=0$ (since there is no unknown, the entropy should be zero).
+The entropy of its right child is $-\frac12\log\frac12-\frac12\log\frac12=1$.
+
+\subsection{Boosting and Gradient Boosting}
+
+Boosting is an ensemble-based approach to machine learning (meaning it uses many other learning algorithms to improve performance).
+Suppose we have a labeled sample $\set{(\b x_i,y_i)}_{i=1}^n$ which are independent and identically distributed.
+Furthermore we have a loss function $\ell(\bullet,\bullet)$.
+We want to learn a function $f$ which minimizes the empirical risk (as this is an approximation to minimizing generalized risk):
+$$ \c L(f) = \frac1n\sum_i\ell(y_i,f(\b x_i)) $$
+But there are far too many functions to choose from, so instead we consider a class $\c H$ of simple base learners (typically small decision trees), and focus on functions of the form
+$$ f(\b x) = \sum_i\gamma_ih_i(\b x),\qquad h_i\in\c H $$
+
+Typically in gradient descent we have an update rule of the form $\theta_{t+1}=\theta_t-\gamma_t\frac\partial{\partial\theta}\c L(\theta_t)$.
+Here our update rule will be of the form
+$$ f_{t+1} = f_t - \gamma_{t+1}\frac\partial{\partial f}\c L(f_t) $$
+Our iterations are of the form $f_t=\sum_{i=1}^t\gamma_ih_i$, and so $f_{t+1}=f_t+\gamma_{t+1}h_{t+1}$.
+Thus we want to learn $h_{t+1}\in\c H$ to fit $-\frac\partial{\partial f}\c L(f_t)$, so that $f_{t+1}$ is an approximation to the step we got in gradient descent.
+And we choose $\gamma_{t+1}$ to minimize the overall loss:
+$$ \gamma_{t+1} = \argmin_\gamma\c L(f_t+\gamma h_{t+1}) = \argmin_\gamma\sum_{i=1}^n\ell(y_i,f_t(\b x_i)+\gamma h_{t+1}(\b x_i)) $$
+
+The gradient boosting algorithm is as follows:
+
+\algorithm
+\Function{Gradient Boosting}{$\set{\b x_i,y_i}_{i=1}^n$}
+    \State $f_1\gets c$ for some constant $c$
+    \For{$t=1,\dots,M$}
+        \State compute the residuals: $r_i=\frac\partial{\partial f(\b x)}\ell(y_i,f_t(\b x_i))$
+        \State learn $h_{t+1}\in\c H$ to the new training data $\set{\b x_i,r_i}_{i=1}^n$
+        \State find $\gamma_{t+1}$ which minimizes $\c L(f_t+\gamma_{t+1}h_{t+1})$
+        \State $f_{t+1}\gets f_t+\gamma_{t+1}h_{t+1}$
+    \EndFor
+\EndFunc
+\ealgorithm
+
+Some common loss functions include:
+\blist
+    \item Continuous $y$: MSE: $\ell(y,f(\b x))=\frac12(y-f(\b x))^2$.
+        Then the residual is $\frac\partial{\partial\ell}(y_i,f_t(\b x_i))=-(y_i-f_t(\b x_i))$.
+    \item Categorical/discrete $y$: consider $y=\pm1$
+        \benum
+            \item Bernoulli loss: $\ell(y,f(\b x))=\log(1+\exp(-2yf(\b x)))$.
+            \item Adaboost loss: $\ell(y,f(\b x))=\exp(-2yf(\b x))$.
+        \eenum
+\elist
 
