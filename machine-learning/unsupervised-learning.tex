@@ -1,0 +1,144 @@
+\subsection{$k$-Means}
+
+Suppose we have samples $\set{\b x_i}_{i=1}^n$ from ${\bb R}^d$ and a number of clusters $K$.
+We want to assign to every $\b x_i$ a cluster in $\set{1,\dots,K}$.
+The idea behind our algorithm is to find a set of {\it prototypes} $\fb\mu=\set{\fb\mu_i}_{i=1}^n\subseteq{\bb R}^d$ and we cluster $\b x_i$ according to which prototype it is closest to.
+That is, we want to find the $j$ which minimizes $d(\b x_i,\fb\mu)=\min_j\norm{\b x_i-\fb\mu_j}^2$, and we assign to $\b x_i$ the cluster $j$.
+
+The problem is that we want to minimize $D(\fb\mu)=\sum_id(\b x_i,\fb\mu)$, i.e. find $\fb\mu^*=\argmin_{\fb\mu}D(\fb\mu)$.
+Unfortunately this problem is NP-hard, so instead we present an algorithm to iteratively improve $D(\fb\mu)$.
+
+\algorithm
+\Function{$k$-Means}{$\set{\b x_i}_{i=1}^n$}
+    \State let $\set{\fb\mu_j^0}_{j=1}^K$ be randomly initialized
+    \For{$t=0,\dots,M$}
+        \State for each $i$, ${\rm cluster}(\b x_i)\gets\argmin_j\norm{\b x_i,\fb\mu_j^t}^2$
+        \State for each $j$, $\fb\mu_j^{t+1}={\rm mean}\set{\b x_i}[{\rm cluster}(\b x_i)=j]$
+    \EndFor
+    \State\Return $\set{\fb\mu_j}_{j=1}^K$
+\EndFunc
+\ealgorithm
+
+\blemm
+
+    Let $\set{\b x_i}_{i=1}^n\subseteq{\bb R}^d$, then
+    $$ {\rm mean}\set{\b x_i}_{i=1}^n = \argmin\c L(\fb\mu) = \argmin\sum_i\norm{\b x_i-\fb\mu}^2 $$
+
+\elemm
+
+\Proof we differentiate $\c L(\fb\mu)$ and get
+$$ \frac\partial{\partial\fb\mu}\c L = 2\sum_i(\b x_i-\fb\mu) $$
+This is zero if and only if
+$$ \fb\mu = \frac1n\sum_i\b x_i = {\rm mean}\set{\b x_i}_{i=1}^n \qed $$
+
+\bprop
+
+    In the above algorithm, $D(\fb\mu)$ improves every iteration.
+
+\eprop
+
+\Proof let $\fb\mu^t=\set{\fb\mu_j^t}_{j=1}^K$, so we want to show that $D(\fb\mu^t)\geq D(\fb\mu^{t+1})$.
+Let us define $r_{ij}=1$ if $\b x_i$ is in cluster $j$ and zero otherwise.
+Notice then that
+$$ d(\b x_i,\fb\mu) = \min_j\norm{\b x_i-\fb\mu_j}^2 = \min_{r_{ij}}\sum_jr_{ij}\norm{\b x_i-\fb\mu_j}^2 $$
+Thus
+$$ \min_{\fb\mu}D(\fb\mu) = \min_{\fb\mu}\sum_id(\b x_i,\fb\mu) = \min_{\fb\mu}\min_{r_{ij}}\sum_{i,j}r_{ij}\norm{\b x_i-\fb\mu_j}^2 $$
+let us denote this as $\min_{\fb\mu}\min_{\b r}g(\fb\mu,\b r)$, so $D(\fb\mu)=\min_{\b r}g(\fb\mu,\b r)$.
+Now let us define a new procedure where every iteration takes two steps:
+\benum
+    \item $\b r^{t+1}=\argmin_{\b r}g(\fb\mu^t,\b r)$
+    \item $\fb\mu^{t+1}=\argmin_{\fb\mu}g(\fb\mu,\b r^{t+1})$
+\eenum
+After these two steps we have that
+$$ g(\fb\mu^{t+1},\b r^{t+1}) = \min_{\b r}g(\fb\mu^{t+1},\b r) = D(\fb\mu^{t+1}) $$
+And since $g(\fb\mu^t,\b r^t)\geq g(\fb\mu^{t+1},\b r^{t+1})$ we have that $D(\fb\mu^{t+1})\leq D(\fb\mu^t)$.
+
+Now we will show that this procedure is equivalent to {\tencsc $k$-Means}.
+\benum
+    \item $\b r^{t+1}=\argmin_{\b r}g(\fb\mu^t,\b r)$: this minimizes $\min_{\b r}\sum_jr_{ij}\norm{\b x_i-\fb\mu_j^t}^2$, i.e. we find assignments $r_{ij}$ which minimizes $\norm{\b x_i-\fb\mu_j^t}^2$.
+    This is what line 4 does in {\tencsc $k$-Means}.
+    \item $\fb\mu^{t+1}=\argmin_{\fb\mu}g(\fb\mu,\b r^{t+1})$, this finds $\fb\mu_j$ which minimizes $\min_{\fb\mu_j}\sum_{{\rm cluster}(\b x_i)=j}\norm{\b x_i-\fb\mu_j}^2$.
+    By the above lemma, this just means $\fb\mu_j={\rm mean}\set{\b x_i}[{\rm cluster}(\b x_i)=j]$, which is what line 5 does.
+\eenum
+\qed
+
+\subsection{Expectation Maximization}
+
+Recall the following result:
+
+\bthrm[title=Jensen's Inequality]
+
+    Let $X$ be a random variable and $\phi\colon{\bb R}\longto{\bb R}$ a convex function then
+    $$ \phi(\expecof X) \leq \expecof{\phi X} $$
+
+\ethrm
+
+\bdefn
+
+    Let $P,Q$ be two distributions on $\c X$ with pdfs $p,q$ respectively.
+    Then their {\emphcolor Kullback-Leibler divergence} (KL divergence) is defined as
+    $$ \klof{P\|Q} = \int_{\c X}p(x)\log\frac{p(x)}{q(x)}\,dx = \expecof[x\sim P]{\log\frac{p(x)}{q(x)}} $$
+
+\edefn
+
+\bthrm
+
+    $\klof{P\|Q}\geq0$
+
+\ethrm
+
+\Proof by flipping the fraction, we have
+$$ \klof{P\|Q} = \expecof[x\sim P]{-\log\frac{q(x)}{p(x)}} \geq -\log\expecof[x\sim P]{\frac{q(x)}{p(x)}} $$
+where the inequality is due to Jensen.
+Continuing, we have
+$$ = -\log\int_{\c X}p(x)\frac{q(x)}{p(x)}\,dx = -\log\int_{\c X}q(x) = -\log1 = 0 \qed $$
+
+Suppose we have samples $\b X\subseteq\c X$ whose distribution is dependent on some latent variables $\b Z\subseteq\c Z$.
+Now suppose that we know the distribution of $\b Z$, which is $\b Z\sim Q$, and we know the joint distribution of $(\b X,\b Z)$ up to some unkown $\fb\theta$, $(\b X,\b Z)\sim P(\fb\theta)$
+Let the pdf of $Q$ be $q$ and the pdf of $P(\fb\theta)$ be $p_{\fb\theta}$.
+Given that we've seen $\b X$ we want to find the $\fb\theta$ which maximizes $\probof{\fb\theta}[\b X]$, this can be written as
+$$ \probof{\b X}[\fb\theta] = \int_{\c Z}\probof{\b X,\b Z}[\fb\theta]\,d\b Z = \int_{\c Z}p_{\fb\theta}(\b X,\b Z)\,d\b Z $$
+This is unfortunately hard to maximize.
+
+So instead let us focus on maximizing $\expecof{\log\probof{\b X}[\fb\theta]}$.
+We know that $(\b X,\b Z)\sim P(\fb\theta)$ and $\b Z\sim Q$ so
+$$ \expecof{\log\probof{\b X}[\fb\theta]} = \int_{\c Z}q(\b Z)\log\probof{\b X}[\fb\theta,\b Z]\,d\b Z = \int_{\c Z}q(\b Z)\log\frac{p_{\fb\theta}(\b X,\b Z)}{q(\b Z)}\,d\b Z $$
+Let us denote this
+
+\bdefn
+
+    Define the {\emphcolor elbo} function as
+    $$ \c L(q,\fb\theta) = \expecof{\log\probof{\b X}[\fb\theta]} = \int_{\c Z}q(\b Z)\log\frac{p_{\fb\theta}(\b X,\b Z)}{q(\b Z)}\,d\b Z $$
+
+\edefn
+
+\noindent Notice that by Jensen
+$$ \c L(q,\fb\theta) \leq \log\expecof{\probof{\b X}[\fb\theta]} = \log\int_{\c Z}q(\b Z)\probof{\b X}[\fb\theta,\b Z]\,d\b Z = \log\int_{\c Z}p_{\fb\theta}(\b X,\b Z)\,d\b Z =
+\log\probof{\b X}[\fb\theta] $$
+So the elbo function is a lower bound for $\log\probof{\b X}[\fb\theta]$, thus maximizing it should give us an approximation for the maximum of $\log\probof{\b X}[\fb\theta]$.
+
+Also notice that
+$$ \eqalign{
+    \c L(q,\fb\theta) &= \int_{\c Z}q(\b Z)\log\frac{p_{\fb\theta}(\b X,\b Z)}{q(\b Z)}\,d\b Z = \int_{\c Z}q(\b Z)\log\frac{\probof{\b Z}[\b X,\fb\theta]\probof{\b X}[\fb\theta]}{q(\b Z)}\,d\b Z\cr
+    &= \int_{\c Z}q(\b Z)\log\frac{\probof{\b Z}[\b X,\fb\theta]}{q(\b Z)}\,d\b Z + \int_{\c Z}q(\b Z)\log\probof{\b X}[\fb\theta]\,d\b Z\cr
+    &= -\klof{\b Z,(\b Z\,|\,\b X,\fb\theta)} + \log\probof{\b X}[\fb\theta]\cr
+} $$
+Similarly we have
+$$ \c L(q,\fb\theta) = \int_{\c Z}q(\b Z)\log\frac{p_{\fb\theta}(\b X,\b Z)}{q(\b Z)}\,d\b Z = \int_{\c Z}q(\b Z)\log\bigl(p_{\fb\theta}(\b X,\b Z)\bigr) - \int_{\c Z}q(\b Z)\log q(\b Z) 
+= \int_{\c Z}q(\b Z)\log\bigl(p_{\fb\theta}(\b X,\b Z)\bigr) - H(q) $$ 
+The expectation-maximization (EM) algorithm works in two steps: the E step and the M step.
+First in the E-step we maximize $\c L(q,\fb\theta)$ with respect to $q$, holding $\fb\theta$ constant.
+In the M-step we maximize $\c L(q,\fb\theta)$ with respect to $\fb\theta$, holding $q$ constant.
+
+\benum
+    \item E-step: we want to maximize $-\klof{\b Z,(\b Z\,|\,\b X,\fb\theta)} + \log\probof{\b X}[\fb\theta]$ with respect to $q$.
+    Notice that the second term is independent on $q$, and the first term is non-positive.
+    So $\c L(q,\fb\theta)$ is maximized when the first term is zero, which is when $\b Z$ distributes the same as $\b Z\,|\,\b X,\fb\theta$, i.e. $q(\b Z)=\probof{\b Z}[\b X,\fb\theta]$.
+    And in such a case we have $\max_q\c L(q,\fb\theta)=\log\probof{\b X}[\fb\theta]$.
+    \item M-step: we want to maximize $\int_{\c Z}q(\b Z)\log\bigl(p_{\fb\theta}(\b X,\b Z)\bigr)-H(q)$ with respect to $\fb\theta$.
+    Since $H(q)$ does not depend on $\fb\theta$, we want to maximize $\int_{\c Z}q(\b Z)\log p_{\fb\theta}(\b X,\b Z)$.
+    This can be easier than optimizing $\probof{\b X}[\fb\theta]$ if $p_{\fb\theta}$ is a nice function.
+\eenum
+
+Since at each E-step we have $\c L(q,\fb\theta)=\log\probof{\b X}[\fb\theta]$, and at each M-step we increase $\c L(q,\fb\theta)$, it follows that $\probof{\b X}[\fb\theta]$ is increased each iteration.
+
