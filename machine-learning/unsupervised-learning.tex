@@ -259,3 +259,76 @@ And finally we want to maximize with respect to $\pi_k$ under the constraint tha
 Using Lagrangian multipliers, we get
 $$ \pi_k^{\rm new} = \frac{\sum_iq(z_{i,k}=1)}n $$
 
+\subsection{Principal Component Analysis (PCA)}
+
+Deep neural networks (which will be studied more later) split classification into two parts: learning a representation, and classification of the representation.
+Consider a baby who is not taught the name of objects; he will still be able to learn representations of these objects (know that object A and object B have the same representation), he just won't be able
+to classify them as their name (e.g. a cup).
+
+PCA is a form of unsupervised learning which will learn a representation of information on a smaller dimension than the input.
+That is, PCA maps input to a lower dimension while (hopefully) preserving the important characteristics.
+
+Let $(\b v_1,\dots,\b v_r)=V\in M_{d\times r}({\bb R})$ be an orthonormal set, a basis for a subspace.
+Note then that if $\b x\in\lspanof V$, $\b x=\sum_ia_iv_i$ for some $a_i\in{\bb R}$, meaning $\b x=V\b a$ for $\b a=(a_1,\dots,a_r)^\top$.
+Since $\b v_1,\dots,\b v_r$ are orthonormal, $V$ is an orthonormal (but not square) matrix, so $V^\top V=I_r$ (but not necessarily $VV^\top=I_d$, unless $d=r$).
+
+Now consider an encoder-decoder construct where we encode a vector $\b x$ by $\b a=V^\top\b x$, and decode it by $V\b a$.
+Take a vector $\b x$, then notice that $VV^\top\b x$ is the projection of $\b x$ onto $\lspanof V$: suppose we extend to an orthonormal basis $(\b v_1,\dots,\b v_d)$ then $\b x=\sum_ia_i\b v_i$ and
+$V^\top\b x=\sum_{i=1}^ra_i\b e_i$ and thus $VV^\top\b x=\sum_{i=1}^ra_i\b v_i=\pi_V(\b x)$.
+So $VV^\top\b x=\b x$ if and only if $\b x\in\lspanof V$.
+
+So our goal is to find the orthonormal basis $V$ which distorts our samples $\set{\b x_i}_{i=1}^n$ as little as possible.
+We know that $V$ is orthonormal if and only if $V^\top V=I_r$, so we want to find $V$ such that $V^\top V=I$ with the smallest total distortion:
+$$ \argmin_{V^\top V=I}\sum_i\norm{VV^\top\b x_i-\b x_i}^2 $$
+Now, we will assume that the mean of $\set{\b x_i}_{i=1}^n$ is zero, so we must map $\b x_i\mapsto\b x_i-\bar{\b x}$ where $\bar{\b x}=\frac1n\sum_{i=1}^n\b x_i$.
+This will be explained later.
+
+Let us define $\b X$ to be the matrix whose rows are $\b x_i$, that is
+$$ \b X = \pmatrix{\hori & \b x_1 & \hori\cr & \vdots\cr\hori & \b x_n & \hori} \in M_{n\times d}({\bb R}) $$
+then we define the {\it covariance matrix} of $\b X$ to be
+$$ \Covof{\b X} = \frac1n\b X^\top\b X\in M_d({\bb R}) $$
+this approximates the covariance matrix of the distribution of the samples, that is it approximates $\Covof{\c D}=\expecof[\b x\sim\c D]{\b x\b x^\top}$ (here it is $\b x\b x^\top$ and not $\b x^\top\b x$
+since $\b x$ is a column vector).
+Assuming the mean is zero, the covariance matrix quantifies how much each sample/feature correlates with the other samples/features.
+
+Note that $\Covof{\b X}$ is a symmetric positive-definite matrix.
+This means that its eigenvalues are nonnegative real, and its eigenvectors can be taken to be orthonormal.
+Thus it has a {\it spectral decomposition}:
+$$ \Covof{\b X} = \fb U\b\Lambda\fb U^\top $$
+where $\fb U$ is the orthogonal matrix whose columns are the eigenvectors of $\Covof{\b X}$, and $\b\Lambda={\rm diag}(\lambda_1,\dots,\lambda_n)$ are the eigenvalues ordered such that
+$\lambda_1\geq\cdots\geq\lambda_n$.
+Let us write the associated eigenvector as $\b u_1,\dots,\b u_n$ (i.e. the eigenvector whose eigenvalue is $\lambda_i$ is $\b u_i$), so $U$'s columns are (in order) $\b u_i$.
+
+\bthrm[title=PCA Solution]
+
+    $$ \argmin_{V^\top V=I}\sum_i\norm{VV^\top\b x_i-\b x_i}^2 $$
+    where $\b v_i=\b u_i$ for $1\leq i\leq r$.
+    That is, the columns of $V$ are the first $r$ eigenvectors of $\Covof{\b X}$.
+
+\ethrm
+
+Let $Y=VV^\top\b X^\top-X^\top$, then the columns of $Y$ are $VV^\top\b x_i-\b x_i$.
+This means that the diagonals of $Y^\top Y$ are $\norm{VV^\top\b x_i-\b x_i}^2$, and so the total distortion is $\traceof{Y^\top Y}=\traceof{YY^\top}$.
+Then using the fact that we can commute matrices inside the trace, we have
+$$ \traceof{YY^\top} = \traceof{VV^\top\b X^\top\b XVV^\top} - 2\traceof{V^\top\b X^\top\b XV} + \traceof{\b X\b X^\top} $$
+Now we know that $V=(\b u_1,\dots,\b u_r)$ so $V^\top\Covof{\b X}V={\rm diag}(\lambda_1,\dots,\lambda_r)=\b\Lambda_r$.
+Since $\Covof{\b X}=\frac1n\b X^\top\b X$, this means that $V^\top\b X^\top\b XV=n\b\Lambda_r$.
+So we have
+$$ = n\traceof{V\b\Lambda_rV^\top} - 2n\traceof{\b\Lambda_r} + \sum_{i=1}^n\norm{\b x_i}^2 $$
+since we can commute inside the trace and $V^\top V=I$, this is equal to
+$$ \sum_{i=1}^n\norm{\b x_i}^2 - n\sum_{i=1}^r\lambda_i $$
+We know that $\traceof{\Covof{\b X}}=\sum_{i=1}^d\lambda_i$ and so $\traceof{\b X\b X^\top}=n\sum_{i=1}^d\lambda_i$.
+And we know that $\traceof{\b X\b X^\top}=\sum_{i=1}^n\norm{\b x_i}^2$.
+So we get that the total distortion is
+$$ n\sum_{i=1}^d\lambda_i - n\sum_{i=1}^r\lambda_i = n\sum_{i=r+1}^d\lambda_i $$
+So we have shown:
+
+\bprop
+
+    The total distortion by PCA is
+    $$ n\sum_{i=r+1}^d\lambda_i $$
+
+\eprop
+
+So we want to choose an $r$ small enough so that we can more easily deal with the dimension, but large enough so that the remainder $\sum_{i=r+1}^d\lambda_i$ is small.
+
