@@ -1,0 +1,120 @@
+Consider the following problem: we are given a stream of $n$ bits, and we have to return whether the number of $1$s is even or odd.
+For $n=2$ this just reduces to exclusive-or (i.e. the answer is $x_1\oplus x_2$).
+This is simple enough, but since the input is not linearly separable, it cannot be learned by the perceptron algorithm.
+
+The idea of a perceptron is simple enough, recall that all we do is take all our features (a vector $\b x$) and multiply by some weights (a vector $\b w$) to get our output.
+We then alter the weight $\b w$ in an attempt to minimize some loss function $\sum_{i=1}^n\ell(\b w^\top\b x_i,y_i)$.
+But as discussed, this requires the samples be linearly separable.
+The simplest way to remedy this is to add a step which applies some non-linear function $\sigma$.
+This can be described simply in the following image:
+
+{\def\diagcolbuf{1cm}\def\diagrowbuf{0cm}\centerline{\drawdiagram{
+    $\bullet$\cr
+    $\bullet$\cr
+    $\bullet$&$\bullet$&$\bullet$\cr
+    $\bullet$\cr
+    $\vdots$\cr
+    $\bullet$\cr
+}{
+    \diagarrow{from={1,1}, to={3,2}, right cap=-, text=$\b w$, y distance=.25cm}
+    \diagarrow{from={2,1}, to={3,2}, right cap=-}
+    \diagarrow{from={3,1}, to={3,2}, right cap=-}
+    \diagarrow{from={4,1}, to={3,2}, right cap=-}
+    \diagarrow{from={6,1}, to={3,2}, right cap=-}
+    \diagarrow{from={3,2}, to={3,3}, right cap=-, text=$\sigma$, y distance=.25cm}
+}}}
+
+In this {\it perceptron unit}, we take an input vector $\b x$, apply the weight $\b w^\top\b x$, then apply the nonlinearity $\sigma(\b w^\top\b x)$.
+We can compose multiple perceptron units together, for example we can make a two-layer network:
+
+{\def\diagcolbuf{1cm}\def\diagrowbuf{0cm}\centerline{\drawdiagram{
+    $\bullet$\cr
+    $\bullet$&$\bullet$&$\bullet$\cr
+    $\bullet$&$\bullet$&$\bullet$&$\bullet$&$\bullet$\cr
+    $\bullet$&$\bullet$&$\bullet$\cr
+    $\vdots$\cr
+    $\bullet$\cr
+}{
+    \diagarrow{from={1,1}, to={2,2}, right cap=-, color=red, text=$\color{red}\b w_1$, y distance=.25cm}
+    \diagarrow{from={2,1}, to={2,2}, right cap=-, color=red}
+    \diagarrow{from={3,1}, to={2,2}, right cap=-, color=red}
+    \diagarrow{from={4,1}, to={2,2}, right cap=-, color=red}
+    \diagarrow{from={6,1}, to={2,2}, right cap=-, color=red}
+    \diagarrow{from={2,2}, to={2,3}, right cap=-, color=red, text=$\color{red}\sigma_1$, y distance=.25cm}
+    %
+    \diagarrow{from={1,1}, to={3,2}, right cap=-, color=blue, text=$\color{blue}\b w_2$, y distance=.25cm}
+    \diagarrow{from={2,1}, to={3,2}, right cap=-, color=blue}
+    \diagarrow{from={3,1}, to={3,2}, right cap=-, color=blue}
+    \diagarrow{from={4,1}, to={3,2}, right cap=-, color=blue}
+    \diagarrow{from={6,1}, to={3,2}, right cap=-, color=blue}
+    \diagarrow{from={3,2}, to={3,3}, right cap=-, color=blue, text=$\color{blue}\sigma_2$, y distance=.25cm}
+    %
+    \diagarrow{from={1,1}, to={4,2}, right cap=-, color=green, text=$\color{green}\b w_3$, y distance=.25cm}
+    \diagarrow{from={2,1}, to={4,2}, right cap=-, color=green}
+    \diagarrow{from={3,1}, to={4,2}, right cap=-, color=green}
+    \diagarrow{from={4,1}, to={4,2}, right cap=-, color=green}
+    \diagarrow{from={6,1}, to={4,2}, right cap=-, color=green}
+    \diagarrow{from={4,2}, to={4,3}, right cap=-, color=green, text=$\color{green}\sigma_3$, y distance=.25cm}
+    %
+    \diagarrow{from={2,3}, to={3,4}, right cap=-, color=orange, text=$\color{orange}\b u$, y distance=.25cm}
+    \diagarrow{from={3,3}, to={3,4}, right cap=-, color=orange}
+    \diagarrow{from={4,3}, to={3,4}, right cap=-, color=orange}
+    \diagarrow{from={3,4}, to={3,5}, right cap=-, color=orange, text=$\color{orange}\tau$, y distance=.25cm}
+}}}
+
+\noindent If we want to keep track of the values at each node:
+
+{\def\diagcolbuf{1cm}\def\diagrowbuf{0cm}\centerline{\drawdiagram{
+    $\bullet$\cr
+    $\bullet$&$\b w_1^\top\b x$&$z_1=\sigma_1(\b w_1^\top\b x)$\cr
+    $\bullet$&$\b w_2^\top\b x$&$z_2=\sigma_2(\b w_2^\top\b x)$&$\b u^\top\b z$&$\tau(\b u^\top\b z)$\cr
+    $\bullet$&$\b w_3^\top\b x$&$z_3=\sigma_3(\b w_3^\top\b x)$\cr
+    $\vdots$\cr
+    $\bullet$\cr
+}{
+    \diagarrow{from={1,1}, to={2,2}, right cap=-, color=red, text=$\color{red}\b w_1$, y distance=.25cm}
+    \diagarrow{from={2,1}, to={2,2}, right cap=-, color=red}
+    \diagarrow{from={3,1}, to={2,2}, right cap=-, color=red}
+    \diagarrow{from={4,1}, to={2,2}, right cap=-, color=red}
+    \diagarrow{from={6,1}, to={2,2}, right cap=-, color=red}
+    \diagarrow{from={2,2}, to={2,3}, right cap=-, color=red, text=$\color{red}\sigma_1$, y distance=.25cm}
+    %
+    \diagarrow{from={1,1}, to={3,2}, right cap=-, color=blue, text=$\color{blue}\b w_2$, y distance=.25cm}
+    \diagarrow{from={2,1}, to={3,2}, right cap=-, color=blue}
+    \diagarrow{from={3,1}, to={3,2}, right cap=-, color=blue}
+    \diagarrow{from={4,1}, to={3,2}, right cap=-, color=blue}
+    \diagarrow{from={6,1}, to={3,2}, right cap=-, color=blue}
+    \diagarrow{from={3,2}, to={3,3}, right cap=-, color=blue, text=$\color{blue}\sigma_2$, y distance=.25cm}
+    %
+    \diagarrow{from={1,1}, to={4,2}, right cap=-, color=green, text=$\color{green}\b w_3$, y distance=.25cm}
+    \diagarrow{from={2,1}, to={4,2}, right cap=-, color=green}
+    \diagarrow{from={3,1}, to={4,2}, right cap=-, color=green}
+    \diagarrow{from={4,1}, to={4,2}, right cap=-, color=green}
+    \diagarrow{from={6,1}, to={4,2}, right cap=-, color=green}
+    \diagarrow{from={4,2}, to={4,3}, right cap=-, color=green, text=$\color{green}\sigma_3$, y distance=.25cm}
+    %
+    \diagarrow{from={2,3}, to={3,4}, right cap=-, color=orange, text=$\color{orange}\b u$, y distance=.25cm}
+    \diagarrow{from={3,3}, to={3,4}, right cap=-, color=orange}
+    \diagarrow{from={4,3}, to={3,4}, right cap=-, color=orange}
+    \diagarrow{from={3,4}, to={3,5}, right cap=-, color=orange, text=$\color{orange}\tau$, y distance=.25cm}
+}}}
+
+\noindent Of course we don't want a single output, our network should have multiple output nodes, one for each class we are trying to classify by.
+In the final output we can apply a softmax nonlinearity to ensure that our outputs give valid probabilities.
+Some common choices for nonlinear activation functions ($\sigma$) are:
+\benum
+    \item Sigmoid: $\sigma(x)=\frac1{1+e^{-x}}$
+    \item Tanh: ${\rm tanh}(x)$
+    \item ReLU: $\max(0,x)$
+    \item Leaky ReLU: $\max(0.1x,x)$
+    \item Maxout: $\max(w_1x+b_1,w_2x+b_2)$
+    \item ELU: $\cases{x & $x\geq0$\cr \alpha(e^x-1) & $x<0$}$
+\eenum
+\noindent We also have choices for loss functions:
+\benum
+    \item 0-1 loss
+    \item Hinge loss
+    \item Cross-entropy loss
+    \item Exponential loss
+\eenum
+
