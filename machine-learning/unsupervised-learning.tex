@@ -212,3 +212,50 @@ Since at each E-step we have $\c L(q,\fb\theta)=\log\probof{\b X}[\fb\theta]$, a
 
 \eexam
 
+\subsection{The Gaussian Mixture Model (GMM)}
+
+Suppose we have samples $\set{\b x_i}_{i=1}^n$ which are sampled from $K$ multivariate Gaussian distributions of dimension $d$.
+That is we have a latent variable $\b z_i$ telling us which Gaussian distribution $\b x_i$ is sampled from:
+$$ \b x_i\,|\,(\b z_i=k) \sim {\cal N}(\mu_k,\Sigma_k) $$
+and suppose $\probof{\b z_i=k}=\pi_k$, $\pi_k$ are called the {\emphcolor mixing values}.
+Suppose that $\pi_k,\mu_k,\Sigma_k$ are all unknowns, so we have $\fb\theta=(\pi_k,\mu_k,\Sigma_k)_{k=1}^K$.
+Then we have
+$$ \probof{\b x_1,\dots,\b x_n}[\fb\theta] = \prod_{i=1}^n\probof{\b x_i}[\fb\theta] = \prod_{i=1}^n\sum_{k=1}^K\probof{\b x_i}[\fb\theta,\b z_i=k]\probof{\b z_i=k}
+= \prod_{i=1}^n\sum_{k=1}^K\pi_k\Nof{\b x_i}[\mu_k,\Sigma_k] $$
+Where $\Nof{\b x}[\mu,\Sigma]$ is the multivariate normal density:
+$$ \Nof{\b x}[\mu,\Sigma] = \frac1{\sqrt{(2\pi)^d\det\Sigma}}\exp\parens{-\frac12(\b x-\mu)^\top\Sigma^{-1}(\b x-\mu)} $$
+So let us define
+$$ \ell(\fb\theta) = \log\probof{\b x_1,\dots,\b x_n}[\fb\theta] = \sum_{i=1}^n\log\parens{\sum_{k=1}^K\pi_k\Nof{\b x_i}[\mu_k,\Sigma_k]} $$
+Unfortunately, this is hard to maximize (differentiate).
+
+Instead let us redefine our latent variables $\b Z_i=(z_{i,1},\dots,z_{i,K})$ where $z_{i,k}=1$ when $\b x_i$ is chosen from $\Nof{\mu_k,\Sigma_k}$ and $0$ otherwise (i.e. it indicates whether $\b x_i$
+comes from cluster $k$).
+Thus
+$$ \probof{\b x_1,\dots,\b x_n,\b Z_1,\dots,\b Z_n}[\fb\theta] = \prod_{i=1}^n\probof{\b x_i,\b Z_i} = \prod_{i=1}^n\prod_{k=1}^K\pi_k^{z_{i,k}}\Nof{\b x_i}[\mu_k,\Sigma_k]^{z_{i,k}} $$
+Then the log-likelihood is
+$$ \log p_{\fb\theta}(\b x_1,\dots,\b x_n,\b Z_1,\dots,\b Z_n) = \sum_{i=1}^n\sum_{k=1}^Kz_{i,k}\bigl(\log\pi_k+\log\Nof{\b x_i}[\mu_k,\Sigma_k]\bigr) $$
+
+Now for the E-step we set $q(z_{i,k})=\probof{z_{i,k}}[\b x_i,\fb\theta]$, which is
+$$ q(z_{i,k}=1) = \probof{z_{i,k}=1}[\b x_i,\fb\theta] = \frac{\probof{z_{i,k}=1,\b x_i}[\fb\theta]}{\probof{\b x_i}[\fb\theta]} =
+\frac{\pi_k\Nof{\b x_i}[\mu_k,\Sigma_k]}{\sum_k\pi_k\Nof{\b x_i}[\mu_k,\Sigma_k]} $$
+Recall that $z_{i,k}=1$ means that $\b x_i$ comes from cluster $k$, so this is the probability of that.
+
+Now for the M-step we want to maximize
+$$ \c L(q,\fb\theta) = \expecof[\b Z\sim q]{\log\probof{\b X,\b Z}[\fb\theta]} = \sum_{i=1}^n\sum_{k=1}^Kq(z_{i,k}=1)\log\probof{\b x_i,z_{i,k}=1}[\fb\theta] $$
+and recall that $\probof{\b x_i,z_{i,k}=1} = \pi_k\Nof{\b x_i}[\mu_k,\Sigma_k]$ so
+$$ \log\probof{\b x_i,z_{i,k}=1} = \log\pi_k + \log\frac1{\sqrt{(2\pi)^d\det\Sigma_k}} - \frac12(\b x_i-\mu_k)^\top\Sigma_k^{-1}(\b x_i-\mu_k) $$
+We now want to differentiate $\c L(q,\fb\theta)$ with respect to $\fb\theta$, so we must differentiate it with respect to every element in $\fb\theta$.
+We start with $\mu_k$:
+$$ \frac\partial{\partial\mu_k}\log\probof{\b x_i,z_{i,k}=1}[\fb\theta] = \Sigma_k^{-1}(\b x_i-\mu_k) $$
+Now we get that
+$$ \frac\partial{\partial\mu_k}\c L(q,\fb\theta) = 0 \iff \sum_i\sum_kq(z_{i,k}=1)\Sigma_k^{-1}(\b x_i-\mu_k) = 0 $$
+This can occur when
+$$ \sum_iq(z_{i,k}=1)(\b x_i-\mu_k) = 0 \iff \mu_k^{\rm new} = \frac{\sum_iq(z_{i,k}=1)\b x_i}{\sum_iq(z_{i,k}=1)} $$
+Similarly for $\Sigma_k$ we have
+$$ \frac\partial{\partial\Sigma_k}\log\probof{\b x_i,z_{i,k}=1}[\fb\theta] = (\b x_i-\mu_k)(\b x_i-\mu_k)^\top $$
+So we get that by setting $\frac\partial{\partial\Sigma_k}\c L(q,\fb\theta)=0$ we have
+$$ \Sigma_k^{\rm new} = \frac{\sum_iq(z_{i,k}=1)(\b x_i-\mu_k)(\b x_i-\mu_k)^\top}{\sum_iq(z_{i,k}=1)} $$
+And finally we want to maximize with respect to $\pi_k$ under the constraint that $\sum_k\pi_k=1$.
+Using Lagrangian multipliers, we get
+$$ \pi_k^{\rm new} = \frac{\sum_iq(z_{i,k}=1)}n $$
+
