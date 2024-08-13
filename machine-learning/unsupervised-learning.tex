@@ -94,7 +94,7 @@ Continuing, we have
 $$ = -\log\int_{\c X}p(x)\frac{q(x)}{p(x)}\,dx = -\log\int_{\c X}q(x) = -\log1 = 0 \qed $$
 
 Suppose we have samples $\b X\subseteq\c X$ whose distribution is dependent on some latent variables $\b Z\subseteq\c Z$.
-Now suppose that we know the distribution of $\b Z$, which is $\b Z\sim Q$, and we know the joint distribution of $(\b X,\b Z)$ up to some unkown $\fb\theta$, $(\b X,\b Z)\sim P(\fb\theta)$
+Suppose we know the joint distribution of $(\b X,\b Z)$ up to some unkown $\fb\theta$, $(\b X,\b Z)\sim P(\fb\theta)$, and let the distribution of $\b Z$ be $Q$.
 Let the pdf of $Q$ be $q$ and the pdf of $P(\fb\theta)$ be $p_{\fb\theta}$.
 Given that we've seen $\b X$ we want to find the $\fb\theta$ which maximizes $\probof{\fb\theta}[\b X]$, this can be written as
 $$ \probof{\b X}[\fb\theta] = \int_{\c Z}\probof{\b X,\b Z}[\fb\theta]\,d\b Z = \int_{\c Z}p_{\fb\theta}(\b X,\b Z)\,d\b Z $$
@@ -141,4 +141,74 @@ In the M-step we maximize $\c L(q,\fb\theta)$ with respect to $\fb\theta$, holdi
 \eenum
 
 Since at each E-step we have $\c L(q,\fb\theta)=\log\probof{\b X}[\fb\theta]$, and at each M-step we increase $\c L(q,\fb\theta)$, it follows that $\probof{\b X}[\fb\theta]$ is increased each iteration.
+
+\bexam
+
+    Suppose we have two biased coins, one with a bias of $\theta_A$ and the other with a bias of $\theta_B$.
+    Meaning when we flip coin $A$, its result distributes $\Berof{\theta_A}$.
+    Now suppose we get a sequence of flips, where the sequence is constructed as follows: we choose a coin randomly with equal probability, then flip it ten times, and repeat this process five times total.
+    Can we estimate $\theta_A,\theta_B$?
+    If we know which coin was flipped for each flip then this is simple (suppose coin $A$ gave $24$ heads and $6$ tails, then $\theta_A$ can be approximated as $24/(24+6)$, this is the MLE estimator).
+    But suppose we don't know which coin was flipped, then we have a latent variable $Z$ which has a bernoulli distribution which determines which coin we flip.
+
+    Our space $\c X$ consists of $5$-tuples of $10$-tuples of flips (i.e. $(\set{0,1}^{10})^5$), and $\c Z$ is $\set{A,B}^5$.
+    Suppose our flips are (ignoring the order):
+    
+    \vfill\break
+    \centerline{\vbox{\tabskip=.25cm\halign{\strut$\b X_{#}$\hfil\ \vrule\tabskip=.25cm&#\hfil\tabskip=.25cm&#\hfil\cr
+        \omit\strut Flip \#\hfil\ \vrule& \# Heads & \# Tails\cr\noalign{\hrule}
+        1 & 5 & 5\cr
+        2 & 9 & 1\cr
+        3 & 8 & 2\cr
+        4 & 4 & 6\cr
+        5 & 7 & 3\cr
+    }}}
+
+    So we want to maximize $\c L(q,\fb\theta)=\sum_{\b Z}q(\b Z)\log\frac{p_\theta(\b X,\b Z)}{q(\b Z)}$.
+    We begin with an estimate for $\fb\theta$: $\fb\theta^0$ which we can choose randomly.
+    Suppose we choose $\theta_A^0=0.6$ and $\theta_B^0=0.5$.
+    Now we want to compute $\probof{\b Z}[\b X,\fb\theta^0]$ for the E-step.
+
+    Note that in the first row we have $5$ heads and $5$ tails, the probability of this occurring with a bias of $\theta^0_A=0.6$ is $0.6^5\cdot0.4^5\approx0.0008$ and the probability of this occurring with
+    a bias of $\theta^0_B=0.5$ is $0.5^5\cdot0.5^5\approx0.001$.
+    That is $\probof{\b X_1}[\b Z_1=A,\fb\theta^0]=0.0008$ and $\probof{\b X_2}[\b Z_1=B,\fb\theta^0]=0.001$.
+    Now we know that $\probof{\b Z_1=A}=\probof{\b Z_1=B}=0.5$ (and this is independent of $\fb\theta$) so we get that
+    $$ \probof{\b Z_1=A}[\b X_1,\fb\theta^0] = \probof{\b X_1}[\b Z_1=A,\fb\theta] \cdot \frac{\probof{\b Z_1=A}[\fb\theta^0]}{\probof{\b X_1}[\fb\theta^0]} $$
+    Now we know that
+    $$ \probof{\b X_1}[\fb\theta^0] = \sum_{i=A,B}\probof{\b X_1}[\b Z_1=i,\fb\theta^0]\cdot\probof{\b Z_1=i} = 0.5(0.0008 + 0.001) $$
+    So we get that
+    $$ \probof{\b Z_1=A}[\b X_1,\fb\theta^0] = \frac{0.0008\cdot0.5}{0.5(0.0008+0.001)} = \frac{0.0008}{0.0008 + 0.001} \approx 0.45 $$
+    And similarly
+    $$ \probof{\b Z_1=B}[\b X_1,\fb\theta^0] = \frac{0.001}{0.0008 + 0.001} \approx 0.55 $$
+    Continuing this computation we get
+
+    \centerline{\vbox{\tabskip=.25cm\halign{\strut$#$\hfil\ \vrule&$#$\hfil&$#$\hfil\cr
+        i& \probof{\b Z_i=A}[\b X_i,\fb\theta^0] & \probof{\b Z_i=B}[\b X_i,\fb\theta^0]\cr\noalign{\hrule}
+        1 & 0.45 & 0.55\cr
+        2 & 0.8 & 0.2\cr
+        3 & 0.73 & 0.27\cr
+        4 & 0.35 & 0.65\cr
+        5 & 0.65 & 0.35\cr
+    }}}
+
+    So what this tells us is that we can view $0.45$ of the first ten flips to belong to coin A and $0.55$ of the first ten flips to belong to coin B and so on.
+    Since in the first ten flips we have $5$ heads and $5$ tails, $0.45\cdot5\approx2.2$ of them are from coin A, etc.
+    So we get the following table
+
+    \centerline{\vbox{\tabskip=.25cm\halign{\strut#\hfil\ \vrule&&\hfil#\cr
+        Flip \# & \omit\span\hfil Coin A\hfil &\omit\span \hfil Coin B\hfil\cr\noalign{\hrule}
+        1 & 2.2 H& 2.2 T & 2.8 H& 2.8 T\cr
+        2 & 7.2 H& 0.8 T & 1.8 H& 0.2 T\cr
+        3 & 5.9 H& 1.5 T & 2.1 H& 0.5 T\cr
+        4 & 1.4 H& 2.1 T & 2.6 H& 3.9 T\cr
+        5 & 4.5 H& 1.9 T & 2.5 H& 1.1 T\cr\noalign{\hrule}
+        Total &21.3 H&8.6 T &11.7 H& 8.4 T\cr
+    }}}
+
+    For the M-step we will use the MLE on these values.
+    We get that
+    $$ \theta_A^1 = \frac{21.3}{21.3 + 8.6} \approx 0.71,\qquad \theta_B^1 = \frac{11.7}{11.7 + 8.4} \approx 0.58 $$
+    And then we continue the next iteration with $\fb\theta^1$.
+
+\eexam
 
