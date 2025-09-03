@@ -1,0 +1,446 @@
+\section{Topological Vector Spaces}
+
+\subsection{Separation Properties}
+
+Recall the definitions of vector, normed, and inner product spaces (or refer to the reference of your choice).
+Also recall the definitions of topological and metric spaces.
+A {\it complete\/} metric space is one where all Cauchy sequences converge.
+
+\bdefn
+
+    A {\emphcolor topological field} is a field endowed with a topology which agrees with its operations.
+    Explicitly, the maps $\alpha,\beta\mapsto\alpha+\beta$; $\alpha,\beta\mapsto\alpha\beta$; $\alpha\mapsto-\alpha$; and $\alpha\mapsto\alpha^{-1}$ are continuous.
+
+\edefn
+
+We will focus mostly on the topological fields $\bb R$ and $\bb C$.
+
+\bdefn
+
+    A {\emphcolor topological vector space} is a vector space endowed with a topology which behaves well with its existing vector space structure.
+    Formally, it is a vector space $\bV$ with a topology $\tau$ such that
+    \benum
+        \item every singleton in $\bV$ is closed;
+        \item the vector space operations (vector addition and scalar multiplication) are continuous w.r.t.\ the topology.
+    \eenum
+
+\edefn
+
+We can explicitly state what it means for addition (an operation $\bV\times \bV\to \bV$) and scalar multiplication (a mapping $F\times \bV\to \bV$) to be continuous.
+Addition is continuous if and only if for every neighborhood $\U\subseteq \bV$ the set $\set{(x_1,x_2)}[x_1+x_2\in\U]$ is open.
+This is equivalent to saying that there exists neighborhoods $\U_1,\U_2$ of $x_1,x_2$ such that $\U_1+\U_2\subseteq\U$, since then
+$$ \U = \bigcup_{x_1+x_2\in\U}\U_{x_1}+\U_{x_2} \implies \set{(x_1,x_2)}[x_1+x_2\in\U] = \bigcup\U_{x_1}\times\bigcup\U_{x_2} $$
+Similarly scalar multiplication $\cdot\colon F\times \bV\to \bV$ is continuous if for every neighborhood $\U$ of $\alpha x$, then there is some neighborhood $O$ of $\alpha$ and $\V$ of $x$ such that
+$$ O\cdot\V\subseteq\c U $$
+
+Let us define the mappings $T_a\colon x\mapsto a+x$ for $a\in X$ and $M_\lambda\colon x\mapsto\lambda x$ for $\lambda\in F$ nonzero.
+Then $T_a$ and $M_\lambda$ are homeomorphisms over $X$.
+They are both obviously bijective, with inverses $T_{-a}$ and $M_{1/\lambda}$ respectively.
+Since $T_a$ is just the restriction of addition to $a$, it is continuous (similar for $M_\lambda$).
+Thus they are homeomorphisms (since their inverses are also of the given form).
+
+\bprop
+
+    The following are equivalent:
+    \benum
+        \item $\U$ is open;
+        \item $a+\U$ is open for some (all) $a$;
+        \item $\lambda\U$ is open for some (all) $\lambda$.
+    \eenum
+
+\eprop
+
+This is due to $T_a$ and $M_\lambda$ being homeomorphisms.
+
+Thus the topology $\tau$ is entirely determined by any local base (a local base of point $x$ is a collection of neighborhoods of $x$ such that any neighborhood of $x$ contains some set in the base).
+In particular the local base around $0$ (from now on, when we say local base we will mean around $0$).
+
+\bdefn
+
+    A metric on a vector space $\bV$ is {\emphcolor invariant} if $d(x+z,y+z)=d(x,y)$ for all $x,y,z\in \bV$.
+
+\edefn
+
+\blemm
+
+    If $\U$ is a neighborhood of $0$, then there exists a symmetric neighborhood of $0$ $\V$ (i.e.\ $-\V=\V$) where $\V+\V\subseteq\U$.
+
+\elemm
+
+\bproof
+
+    Since addition is continuous, the preimage of $\U$ is open and therefore contains $\V_1\times\V_2$; i.e.\ $\V_1+\V_2\subseteq\U$ for $\V_i$ open.
+    Let
+    $$ \V = \V_1\cap\V_2\cap(-\V_1)\cap(-\V_2), $$
+    it is easy to see that $\V$ has the desired properties.
+    \qed
+
+\eproof
+
+Note that there then exists a symmetric neighborhood $\V'$ of $\V$ such that $\V'+\V'\subseteq\V$ and thus $\sum_4\V'\subseteq\U$.
+We can induct, and we get that for any $n$ there exists a symmetric neighborhood $\V$ of $0$ such that
+$$ \sum_n\V\subseteq\U . $$
+
+\bthrm
+
+    Suppose $K,C\subseteq \bV$ where $K$ compact and $C$ closed and both sets are disjoint.
+    Then there exists a neighborhood $\U$ of $0$ such that $K+\U$ and $C+\U$ are disjoint.
+
+\ethrm
+
+\bproof
+
+    If $K$ is empty then this is trivial (since $K+\U$ is empty).
+    Otherwise let $x\in K$, since $x\notin C$ this means there exists an open set $\V'_x$ such that $\V'_x$ is disjoint from $C$.
+    Then $\V'_x-x$ is a neighborhood of $0$ and thus contains $\V_x+\V_x+\V_x$ for $\V_x$ symmetric.
+    And so $x+\V_x+\V_x+\V_x$ is disjoint from $C$ (as a subset of $\V'_x$).
+    Thus $x+\V_x+\V_x$ is disjoint from $C-\V_x=C+\V_x$.
+
+    Since $K$ is compact, we can find finitely many points such that $K\subseteq\bigcup x_i+\V_{x_i}$.
+    Let $\U=\bigcap\V_{x_i}$, then
+    $$ K+\U \subseteq \bigcup (x_i+\V_{x_i}+\U) \subseteq \bigcup (x_i+\V_{x_i}+\V_{x_i}) , $$
+    each of which is disjoint from $C+\V_{x_i}$ and thus $C+\U$.
+    \qed
+
+\eproof
+
+Notice that
+$$ K+\U = \bigcup_{k\in K}k+\U , $$
+and is therefore open.
+This means that compact and closed sets can be separated by open sets.
+Since singletons are closed and compact, this means that topological vector spaces are Hausdorff.
+
+\bthrm
+
+    A topological vector space is Hausdorff.
+
+\ethrm
+
+\bthrm
+
+    If $\b B$ is a local base for $\bV$, then every member of $\b B$ contains the closure of some member of $\b B$.
+
+\ethrm
+
+\bproof
+
+    Let $\U\in\b B$; by the theorem above, there exists a neighborhood $\V$ (we can assume to be in $\b B$) of $0$ such that $\U^c+\V$ and $\set0+\V=\V$ are disjoint.
+    Recall that if $X,Y$ are open and disjoint then $\overline X,Y$ are disjoint.
+    Thus $\U^c\subseteq\U^c+\V$ and $\overline\V$ are disjoint, meaning $\overline\V\subseteq\U$.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $\bV$ be a topological vector space.
+    \benum
+        \item if $A\subseteq \bV$ then $\overline A=\bigcap(A+\U)$ (where $\U$ runs over all neighborhoods of $0$);
+        \item if $A,B\subseteq \bV$ then $\overline A+\overline B\subseteq\overline{A+B}$
+        \item if $Y\leq \bV$ (i.e.\ is a subspace) then $\overline Y\leq\bV$;
+        \item if $C$ is a convex subset of $\bV$ then so are $\overline C$ and $\interior C$;
+    \eenum
+
+\eprop
+
+\bproof
+
+    \benum
+        \item $x\in\overline A$ iff $x+\U\cap A\neq\emptyset$ for all $\U$ neighborhoods of $0$.
+        This is iff $x\in A-\U$ for all such $\U$, and $-\U$ is a neighborhood of $0$ iff $\U$ is one, completing the proof.
+        \item Let $x\in\overline A,y\in\overline B$ and $\U$ a neighborhood of $x+y$.
+        Then there exists $x\in\U_1,y\in\U_2$ such that $\U_1+\U_2\subseteq\U$.
+        Since $x\in\overline A$ and $y\in\overline B$, there are $a\in\U_1\cap A,b\in\U_2\cap B$, and so $a+b\in\U\cap(A+B)$.
+        Thus $\U\cap(A+B)\neq\emptyset$.
+        This means that $x+y\in\overline{A+B}$.
+        \item Since $M_a$ is a homeomorphism for $a\neq0$ we have that $a\overline Y=\overline{aY}$ (and for $a=0$ this is true trivially).
+        We then have by the previous point
+        $$ a\overline Y + b\overline Y = \overline{aY} + \overline{bY} \subseteq \overline{aY+bY} = \overline Y $$
+        as required.
+        \item Notice that
+        $$ t\overline C + (1-t)\overline C \subseteq \overline{tC + (1-t)C} \subseteq \overline C $$
+        and since $\interior C\subseteq C$ and $C$ is convex, we have that $t\interior C+(1-t)\interior C\subseteq C$.
+        The sum of two open sets is open, we have that $t\interior C+(1-t)\interior C\subseteq\interior C$ as required.
+        \qed
+    \eenum
+
+\eproof
+
+\bdefn
+
+    When $F=\bb R$ or $\bb C$ (with the usual topology) and $\bV$ a $F$-topological vector space, a {\emphcolor balanced subset} of $\bV$ is a set $B$ such that $\alpha B\subseteq B$ for every $\abs\alpha\leq1$.
+    And $E$ is {\emphcolor bounded} if for every neighborhood of $0$ $\U$ there is a number $s_{\U}$ such that $E\subseteq t\U$ for every $t>s_{\U}$.
+
+\edefn
+
+\bprop
+
+    Let $\bV$ be a real or complex topological vector space.
+    \benum
+        \item If $B$ is balanced, so is $\overline B$.
+        If $0\in\interior B$ then $\interior B$ is also balanced.
+        \item If $E$ is bounded, so is $\overline E$.
+    \eenum
+
+\eprop
+
+\bproof
+
+    \benum
+        \item If $0<\abs a<1$ then $M_a$ is a homeomorphism so $a\interior B=\interior{(aB)}$.
+        And so $a\interior B=\interior{(aB)}\subseteq\interior B$ since $aB\subseteq B$.
+        And if $0\in\interior B$ then $0\interior B=\set0\subseteq\interior B$.
+        \item Let $\U$ be a neighborhood of $0$; by the previous theorem, $\overline\V\subseteq\U$ for some neighborhood $\V$ of $0$.
+        Then $E\subseteq t\V$ for all $t>s_{\V}$ and then $\overline E\subseteq t\overline\V\subseteq t\U$.
+        \qed
+    \eenum
+
+\eproof
+
+\bnote
+
+    From now on, all vector spaces under consideration are either real or complex.
+
+\enote
+
+\bthrm
+
+    In a topological vector space $\bV$,
+    \benum
+        \item every neighborhood of $0$ contains a balanced neighborhood of $0$;
+        \item every convex neighborhood of $0$ contains a balanced convex neighborhood of $0$.
+    \eenum
+
+\ethrm
+
+\bproof
+
+    \benum
+        \item Let $\U$ be a neighborhood of $0$, since scalar multiplication is continuous the preimage of $\U$ under multiplication contains $B_r(0)\times\V$ where $\V$ is a neighborhood of $0$.
+        This means that if $\abs a<r$ then $a\V\subseteq\U$.
+        Let $\c W$ be the union of all such $a\V$, then $\c W$ is a balanced neighborhood of $0$ contained in $\U$.
+        \item Let $A=\bigcap_{\abs a=1}a\U$ and $\c W$ be as in the previous point.
+        Since $\c W$ is balanced, when $\abs a=1$ we have $a^{-1}\c W\subseteq\c W$ and so $\c W\subseteq a\c U$.
+        Therefore $\c W\subseteq A$.
+        Since $\c W$ is a neighborhood of $0$, this means that $\interior A$ is a neighborhood of $0$ as well, clearly contained in $\U$.
+        Since $a\U$ is convex, $A$ is an intersection of convex sets and is therefore convex, and therefore so is $\interior A$.
+
+        All that remains is to show that $\interior A$ is balanced.
+        It is sufficient to show that $A$ is balanced.
+        Let $0\leq r\leq 1$ and $\abs b=1$ then,
+        $$ rb A = \bigcap_{\abs a=1}rba\U = \bigcap_{\abs a=1}ra\U . $$
+        Since $a\U$ is a convex set containing $0$, we have $ra\U\subseteq aU$ (since $ra\U\subseteq ra\U+(1-r)a\U$).
+        Thus $rb A\subseteq A$ as required.
+        \qed
+    \eenum
+
+\eproof
+
+Let us say that a local base $\b B$ is {\it balanced\/} if its members are balanced, and {\it convex\/} if its members are convex.
+
+\bcoro
+
+    \benum
+        \item Every topological vector space has a balanced local base.
+        \item Every topological vector space has a convex local base.
+    \eenum
+
+\ecoro
+
+\bthrm
+
+    Let $\U$ be a neighborhood of $0$ in $\bV$.
+    \benum
+        \item If $\set{r_i}_i$ is an increasing sequence to $\infty$, then
+        $$ V = \bigcup_i r_i\U . $$
+        \item Every compact subset of $\bV$ is bounded.
+        \item If $\set{\delta_i}_i$ is a decreasing sequence to $0$ and $\U$ is bounded, then $\set{\delta_i\U}_i$ is a local base for $\bV$.
+    \eenum
+
+\ethrm
+
+\bproof
+
+    \benum
+        \item Let $x\in\bV$, then $\V_x=\set{a\in F}[ax\in\U]$ is open (as the projection of the preimage of $\U$ under scalar multiplication).
+        Furthermore, it contains $0$ and therefore $1/r_n$ for large enough $n$ (as it is open).
+        Therefore $1/r_nx\in\U$ and so $x\in r_n\U$ as required.
+        \item Let $\U$ be a balanced neighborhood of $0$.
+        By the above point, $\set{n\U}$ is an open cover of $K$, and thus there exist $n_1,\dots,n_k$ such that $K\subseteq\bigcup_1^k n_i\U$.
+        Since $\U$ is balanced, for $a<b$ we have $a\U\subseteq b\U$ since $a/b\U\subseteq\U$.
+        Thus $K\subseteq n_k\U$, and we can take $s=n_k$.
+        And for $\U$ arbitrary, it contains a balanced neighborhood.
+        \item Let $\c W$ be a neighborhood of $0$.
+        Since $\U$ is bounded $\U\subseteq t\c W$ for $t>s$ and therefore $1/t\U\subseteq\c W$.
+        Since $\delta_i$ is decreasing, there is a $\delta_n$ such that $\delta_n\U\subseteq\c W$ and therefore $\set{\delta_i\U}_i$ is a local base.
+        \qed
+    \eenum
+
+\eproof
+
+\subsection{Linear Mappings}
+
+Note that if $\Lambda$ is a linear map, then it and its preimage preserve subspaces, convex sets, and balanced sets.
+
+\bthrm
+
+    The following are equivalent of a linear map $\Lambda\colon X\to Y$:
+    \benum
+        \item $\Lambda$ is continuous at $0$;
+        \item $\Lambda$ is continuous everywhere;
+        \item $\Lambda$ is uniformly continuous: for every $0\in\V\subseteq Y$ open there is a $0\in\U\subseteq X$ open where
+        $$ x-y\in\U \iff \Lambda x-\Lambda y\in\V $$
+    \eenum
+
+\ethrm
+
+\bproof
+
+    Obviously $(2)\implies(1)$, so we show that $(1)\implies(2),(3)$ and $(3)\implies(1)$.
+
+    Let $\U$ be a neighborhood of $\Lambda(x)\in Y$, then $\U-\Lambda(x)$ is a neighborhood of $0$ and so $\Lambda^{-1}(\U-\Lambda(x))$ is open.
+    But this is equal to $\set{a\in X}[\Lambda a\in\U-\Lambda(x)]=\set{a\in X}[\Lambda(a+x)\in\U]=\Lambda^{-1}\U-x$.
+    So $\Lambda^{-1}\U$ is open, and therefore $\Lambda$ is continuous.
+
+    For $(1)\implies(3)$, let $\U=\Lambda^{-1}\V$ which is open as $\Lambda$ is continuous at $0$ (and $\Lambda0=0$).
+    Now,
+    $$ x-y\in\U \iff \Lambda x-\Lambda y\in\V $$
+    This also shows $(3)\implies(1)$.
+    \qed
+
+\eproof
+
+\bthrm
+
+    Let $\Lambda$ be a non-constant linear functional $X\to F$.
+    Then the following are equivalent:
+    \benum
+        \item $\Lambda$ is continuous;
+        \item The kernel $\ker\Lambda$ is closed;
+        \item $\ker\Lambda$ is not dense in $X$;
+        \item $\Lambda$ is bounded in some neighborhood $\U$ of $0$.
+    \eenum
+
+\ethrm
+
+\bproof
+
+    $(1)\implies(2)$ follows since $\ker\Lambda=\Lambda^{-1}\set0$ and $\set0$ is closed.
+
+    $(2)\implies(3)$: since $\Lambda$ is non-constant, $\ker\Lambda\neq X$ and is closed.
+    Since it is closed and non-trivial, it cannot be dense.
+
+    $(3)\implies(4)$: so $\ker\Lambda^c$ has non-empty interior.
+    We know then that there exists a balanced neighborhood $\U$ of $0$ and $x\in X$ such that $x+\U$ and $\ker\Lambda$ are disjoint.
+    (This is because we can have a local basis of balanced neighborhoods.)
+    Now, $\Lambda\U$ is a balanced subset of $F$, which means that if it is unbounded $\Lambda\U=F$.
+    But then there exists a $y\in\U$ such that $\Lambda y=-\Lambda x$ and so $x+y\in x+\U$ and $\ker\Lambda$, in contradiction.
+    \qed
+
+\eproof
+
+\subsection{Finite-Dimension Vector Spaces}
+
+In this chapter we focus on finite-dimension vector spaces.
+We endow upon $\bb R^n$ and $\bb C^n$ the topologies induced by their euclidean norms (which is equivalent to the product topology).
+
+\blemm
+
+    If $X$ is a complex topological vector space, and $f\colon\bb C^n\to X$ is linear, then it is continuous.
+
+\elemm
+
+\bproof
+
+    Let $\set{e_1,\dots,e_n}$ form the standard basis for $\bb C^n$.
+    Note that
+    $$ f(z) = \sum_{i=1}^n\pi_i(z)f(e_i) , $$
+    where $\pi_i$ are the projections $\bb C^n\to\bb C$.
+    Projections are continuous, and thus $f$ is the linear combination of continuous functions and is therefore continuous.
+    \qed
+
+\eproof
+
+\bthrm
+
+    If $Y$ is an $n$-dimensional subspace of a complex topological vector space $X$, then
+    \benum
+        \item every vector space isomorphism of $\bb C^n$ and $Y$ is a homeomorphism;
+        \item $Y$ is closed.
+    \eenum
+
+\ethrm
+
+Note that $(1)$ is not a trivial consequence of the above lemma: an isomorphism $\bb C^n\to Y$ is continuous, but it is not obvious that its inverse $Y\to\bb C^n$ is!
+
+\bproof
+
+    Let $S=\partial B_1(0)\subseteq\bb C^n$ (i.e.\ $z\in S\iff\sum_i\abs z_i^2=1$).
+    Now suppose $f\colon\bb C^n\to Y$ is an isomorphism.
+    By the above lemma is continuous, and therefore since $S$ is compact so is $K=fS$.
+    Since $f$ is injective and $0\notin S$, this means that $0\notin K$, and so there is a balanced neighborhood of $0$ which does not intersect $K$, let this be $\U$.
+    Define
+    $$ E = f^{-1}(\U\cap Y) , $$
+    this is disjoint from $S$ (since $x\in E\cap S$ would imply $fx\in\U$ and $fx\in K$).
+    Since $f$ is linear, and $\U\cap Y$ is balanced, so is $E$.
+    Since balanced subsets of $\bb C^n$ are connected, $E$ is connected.
+    Since $0\in E$, $E\subseteq B_1(0)$ (since otherwise $fE$ would have an element of $K$).
+
+    Now, $f^{-1}$ is a tuple of linear functionals, each of which is bounded around $0$ and therefore are continuous.
+    Therefore $f$ is a homeomorphism.
+
+    For $(2)$, let $p\in\overline Y$, and have $f$ and $\U$ has above.
+    Then for some $t>0$, $p\in t\U$, so $p$ is in the closure of $Y\cap t\U$.
+    Since $\U\subseteq fB$ we have that $\overline{Y\cap t\U}\subseteq\overline{f(tB)}\subseteq\overline{f(t\overline B)}$.
+    But $\overline B$ is compact and therefore so is $f(t\overline B)$.
+    Thus $p\in f(t\overline B)$.
+    And $f(t\overline B)\subseteq Y$, as required.
+    \qed
+
+\eproof
+
+\bthrm
+
+    Every locally compact topological vector space has finite dimension.
+
+\ethrm
+
+\bproof
+
+    Since $X$ is locally compact, $0\in X$ has a neighborhood $\U$ whose closure is compact.
+    Thus $\U$ is bounded and therefore $2^{-n}\U$ form a local basis for $X$.
+    Compactness of $\overline\U$ shows that there exist $x_1,\dots,x_n\in X$ such that $\overline\U\subseteq\bigcup_ix_i+1/2\U$.
+    Let $Y=\gen{x_1,\dots,x_n}$, and so $Y$ has dimension $\leq n$ and by the previous theorem is closed.
+
+    So we have $\overline\U\subseteq\bigcup_ix_i+1/2\U\subseteq Y+1/2\U$.
+    This is open so $\U\subseteq Y+1/2\U$.
+    Since $\lambda Y=Y$ for $\lambda\neq0$ we see that $\frac12\U\subseteq Y+1/4\U$ and so $\U\subseteq Y+1/4\U$.
+    Continuing we get
+    $$ \U \subseteq \bigcap_{n=1}^\infty(Y+2^{-n}\U) . $$
+    Now, $\set{2^{-n}\U}$ is a local base, and so $\U\subseteq\overline Y=Y$ (since $Y$ is closed).
+    But then $n\U\subseteq Y$ for all $n>0$, and since $\bigcup_nn\U=X$ we see that $X=Y$, and so $X$ is finite-dimensional.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A topological vector space has the {\emphcolor Heine-Borel property} if compactness is equivalent to being closed and bounded.
+
+\edefn
+
+\bthrm
+
+    If $X$ is a locally bounded topological vector space with the Heine-Borel property, then $X$ is finite-dimensional.
+
+\ethrm
+
+\bproof
+
+    By assumption, $0\in X$ has a bounded neighborhood $\U$.
+    Therefore $\overline\U$ is bounded too, and closed, and therefore compact.
+    So $0$ has a compact neighborhood, and therefore $X$ is locally compact so we can apply the above theorem.
+    \qed
+
+\eproof
+
