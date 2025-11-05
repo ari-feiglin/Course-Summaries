@@ -1,0 +1,780 @@
+\section{Basic Representation Theory}
+
+\subsection{Group actions}
+
+We recall that we can view a group action of a group $G$ on a set $X$ equivalently as either a group homomorphism $\rho\colon G\to S_X$, or as a map $\cdot\colon G\times X\to X$ (written as juxtaposition) where
+\benum
+    \item $ex=x$,
+    \item $g_1(g_2x)=(g_1g_2)x$
+\eenum
+The relation between these two equivalent definitions is $\rho(g)(x)=gx$.
+A group action is also called a {\bf $G$-set}.
+
+\bexam
+
+    Consider a finite-dimensional vector space $V$.
+    Then the group of automorphisms over $V$ (denoted $\gl(V)$) acts on $V$ in the obvious way.
+
+    If we further assume that $V$ is an inner product space, then let $S=\set{v\in V}[\norm v=1]$ and let $O(V)$ be the group of orthonormal automorphisms (those which preserve the inner product).
+    Then $O(V)$ acts on $S$ again in the obvious way.
+    Note that $\gl(V)$ acts on $V$ the same way that $O(V)$ acts on $S$.
+
+\eexam
+
+\bexam
+
+    Let $H\subseteq G$ be a subgroup (not necessarily normal).
+    Then $G/H$ (the set of cosets) can be made into a $G$-set by defining $g(g'H)=(gg')H$.
+
+\eexam
+
+\bdefn
+
+    Let $X$ and $Y$ be $G$-sets.
+    Then a {\emphcolor morphism of $G$-sets} $X\to Y$ is a function $f\colon X\to Y$ satisfying $f(gx)=gf(x)$ for all $g\in G$, $x\in X$.
+
+\edefn
+
+This definition of morphisms of $G$-sets, along with the usual composition, makes the class of $G$-sets into a category.
+We denote this category by $\St G$ (or $\St_G$), and similarly denote the hom-set of morphisms as $\St_G(X,Y)$.
+
+Recall that a transitive group action is one where for every $x_1,x_2\in X$ there exists a $g\in G$ such that $gx_1=x_2$.
+
+\bexam
+
+    Let $G$ act on $X$ transitively.
+    Let $x_0\in X$ and define
+    $$ \stab_G(x_0) = \set{g\in G}[gx_0=x_0] $$
+    the {\emphcolor stabilizer} of $x_0$.
+    The stabilizer is clearly a subgroup of $G$, and we have a natural isomorphism of $G$-sets $G/\stab_G(x_0)\cong X$.
+
+\eexam
+
+\bexam
+
+    Notice that $O(V)$ acts transitively on $S$ (this is a simple result of linear algebra).
+    Let $s_0\in S$, and define $W$ to be the orthogonal complement of $s_0$.
+    Then notice that $\stab_{O(V)}(s_0)$ is naturally isomorphic to $O(W)$ (since an orthonormal automorphism of $W$ can be uniquely extended to an orthonormal automorphism of $V$ with $s_0$ as a fixed point).
+
+    By the above example, we have that
+    $$ O(V)/\stab_{O(V)}(s_0) \cong S $$
+    We can thus abuse notation and write $O(V)/O(W)\cong S$ (viewing $O(W)$ as a subgroup of $O(V)$).
+    Writing $O(n)$ for $O(V)$ when $n=\dim V$, we thus have $O(n)/O(n-1)\cong S^n$.
+
+\eexam
+
+\subsection{Representations}
+
+\bdefn
+
+    Given a group $G$, a {\emphcolor representation of $G$} (or a {\emphcolor $G$-representation}), is a group homomorphism $\rho\colon G\to\gl(V)$ (where $V$ is a vector space over some given field).
+    $\rho$ is usually kept implicit, so instead of writing $\rho(g)v$ for example, we write $gv$.
+
+    Given two $G$-representations $rho_1\colon G\to\gl(V_1)$ and $\rho_2\colon G\to\gl(V_2)$, a morphism $\rho_1\to\rho_2$ is a linear morphism $T\colon V_1\to V_2$ such that
+    $T(\rho_1(g)v)=\rho_2(g)(Tv)$ (i.e.\ $Tgv=gTv$).
+
+\edefn
+
+We denote the space of linear morphisms $V\to W$ by $\hom(V,W)$, and of $G$-representations by $\hom_G(V,W)$ (which is a subspace of $\hom(V,W)$).
+
+\bexam
+
+    $\bF^n$ can be made into a representation of $S_n$ by defining
+    $$ \sigma\pmatrix{x_1\cr\vdots\cr x_n} = \pmatrix{x_{\sigma^{-1}1}\cr\vdots\cr x_{\sigma^{-1}n}} $$
+
+\eexam
+
+\bexam
+
+    In general, consider the space of (pure) functions $X\to\bF$ $\St(X,\bF)$ where $X$ is a $G$-set.
+    This can be made into a representation of $G$ by setting
+    $$ (gf)(x) = f(g^{-1}x) $$
+
+    Consider then the $\bF$-vector space $\bF[X]$ (which is the space obtained by taking formal linear combinations of symbols $x\in X$).
+    Then $\bF[X]$ can be made into a $G$-representation where $x$ is mapped to $gx$ (this uniquely extends to all of $\bF[X]$).
+
+    Now, when $X$ is finite, we have that $\St(X,\bF)\cong\bF[X]$ naturally (as vector spaces).
+    If $X$ is a $G$-set, this is an isomorphism of $G$-representations.
+
+\eexam
+
+Let $V$ be an $\bF$-vector space, and $G$ a group.
+Then the {\bf trivial representation} of $G$ is the representation which maps each $g\in G$ to the identity morphism.
+
+\bexam
+
+    A {\emphcolor character} is a group morphism $\chi\colon G\to\bF^\times$.
+    Given a character, we can make $\bF$ a $G$-representation by defining
+    $$ gc = \chi(g)c $$
+    We denote this representation by $\bF_\chi$.
+    This is indeed a representation: $\bF_\chi(g)$ is clearly in $\gl(\bF)$ for each $g\in G$, and $\bF_\chi(gh)c=\chi(g)\chi(h)c=\bF_\chi(g)\chi(h)c=\bF_\chi(g)\bF_\chi(h)c$.
+
+\eexam
+
+\bdefn
+
+    Let $V$ be a $G$-representation, and $W$ a subspace of $V$.
+    Then $W$ is a {\emphcolor $G$-subrepresentation} of $V$ if it is invariant: $gw\in W$ for all $w\in W$.
+    We can then naturally view $W$ as a $G$-representation in and of itself.
+
+\edefn
+
+\bdefn
+
+    Let $V$ be a $G$-representation and $W$ a $G$-subrepresentation.
+    Then $V/W$ forms a $G$-representation, called the {\emphcolor quotient $G$-representation} defined by $g(v+W)=gv+W$.
+    This is well-defined precisely because $W$ is a $G$-subrepresentation.
+
+\edefn
+
+\bdefn
+
+    A $G$-representation $V$ is {\emphcolor irreducible} (or {\emphcolor simple}) if $V\neq0$ and it has no non-trivial $G$-subrepresentations (meaning that every $G$-subrepresentation is either $V$ or $0$).
+    $V$ is {\emphcolor indecomposable} if $V$ is non-trivial and when $V=W_1\oplus W_2$ then the direct summands are trivial (i.e.\ $W_1=V$ or $0$).
+
+\edefn
+
+Clearly an irreducible representation is indecomposable.
+We will later see that when the characteristic of the underlying field is zero, the converse is true.
+
+\bexam[title=An indecomposable representation which is not irreducible]
+
+    Let us consider $S_2$ acting on $\bF^2$ as above, where $\bF=\bZ/2\bZ$.
+    Then $\bF^2$ is not an irreducible $S_2$-representation, since $W=\set{(x_1,x_2)}[x_1+x_2=0]$ is a $S_2$-subrepresentation of $\bF^2$ which is non-trivial.
+    However, $\bF^2$ is an indecomposable $S_2$-representation.
+
+    For let $\bF^2=W_1\oplus W_2$, then $W_1,W_2$ must have dimension $1$, let $L$ have dimension $1$.
+    Since linear automorphisms of $L$ must be scalar multiplications, $(1\ 2)\in S_2$ acts as scalar multiplication.
+    But since the only non-zero scalar in the field is $1$, $S_2$ acts trivialy on $L$.
+
+    Then $S_2$ acts trivially on $W_1,W_2$, and thus trivially on all of $\bF^2$.
+    But $(1\ 2)$ does not act trivially on all of $\bF^2$, in contradiction.
+
+\eexam
+
+\subsection{Semisimple representations}
+
+The {\bf direct sum} of two $G$-representations $V_1$ and $V_2$ is constructed over their direct sum as vector spaces $V_1\oplus V_2$ where $g(v_1,v_2)=(gv_1,gv_2)$.
+
+\bprop
+
+    Let $V_1,V_2$ be $G$-representations, and $T\colon V_1\to V_2$ be a morphism of $G$-representations.
+    Then the kernel of $T$ is a $G$-subrepresentation of $V_1$, and the image of $T$ is a $G$-subrepresentation of $V_2$.
+    Furthermore, the {\emphcolor cokernel} $\coker T$, defined to be $V_2/\im T$, is a $G$-representation.
+
+\eprop
+
+\bdefn
+
+    A $G$-representation $V$ is {\emphcolor semisimple} if for every $G$-subrepresentation $W\subseteq V$, there exists another $G$-subrepresentation $W'\subseteq V$ such that $V=W\oplus W'$.
+
+\edefn
+
+\bthrm[title=Maschke's Theorem]
+
+    Let $G$ be a finite group, and $\bF$ a field whose characteristic does not divide the order of $G$.
+    Then every finite-dimensional $G$-representation is semisimple.
+
+\ethrm
+
+We give two distinct proofs of Maschke's theorem.
+
+\bproof[first proof]
+
+    Let $V$ be a finite-dimensional $G$-representation, where $\rho$ is the representation, and let $W\subseteq V$ be a $G$-subrepresentation.
+    Since $V$ is finite-dimensional, there exists a complementary subspace $W'\subseteq V$ where $V=W\oplus W'$.
+    We now consider the projection operator of $W$ along $W'$: i.e.\ $P(w+w')=w$.
+    We define the endomorphism $Q\colon V\to V$:
+    $$ Q = \frac1{\abs G}\sum_{g\in G}\rho(g)\circ P\circ\rho(g)^{-1} $$
+
+    We claim that $Q$ is a projection operator of $W$.
+    First we note that $Q$ is the identity on $W$: since $\rho(g)^{-1}(w)=\rho(g^{-1})(w)\in W$ we have that $\rho(g)P\rho(g^{-1})(w)=\rho(g)\rho(g^{-1})(w)=w$.
+    And so
+    $$ Qw = \frac1{\abs G}\sum_{g\in G}w = w $$
+    as required.
+    Now we note that the image of $Q$ is contained within $W$.
+    This is simply because the image of $P$ is $W$, and $\rho$ preserves $W$.
+    Thus $Q$ is a projection operator of $W$ (where $V=W\oplus\ker Q$).
+
+    Now we claim that $Q$ is a morphism of $G$-representations: for $h\in G$ we must show that $Q\circ\rho(h)=\rho(h)\circ Q$.
+    Indeed:
+    $$ Q\circ\rho(h) = \frac1{\abs G}\sum_{g\in G}\rho(g)\circ P\circ\rho(g)^{-1}\rho(h) = \frac1{\abs G}\sum_{g\in G}\rho(g)\circ P\circ\rho((h^{-1}g)^{-1}) $$
+    substituting $h^{-1}g$ for $g$ in the sum gives
+    $$ \frac1{\abs G}\sum_{g\in G}\rho(hg)\circ P\circ\rho(g^{-1}) = \frac1{\abs G}\rho(h)\sum_{g\in G}\rho(g)\circ P\circ\rho(g^{-1}) = \rho(h)\circ Q $$
+    as required.
+
+    So $Q\colon V\to V$ is a morphism of $G$-representations and a projection operator of $W$.
+    Since it is a morphism of $G$-representations, $\ker Q$ is a $G$-subrepresentation.
+    And as noted, this is a complementary subspace of $W$, as required.
+    \qed
+
+\eproof
+
+Let us take a moment to internalize a few parts of this proof.
+
+\bdefn
+
+    Let $V$ and $W$ be $G$-representations.
+    On $\hom(V,W)$ (not just $\hom_G(V,W)$) we define the structure of a $G$-representation by defining
+    $$ (g\phi)(v) = g\phi(g^{-1}v) $$
+    (The representation maps $g$ to an automorphism of $\hom(V,W)$, i.e.\ we must map $\phi$ to another morphism in $\hom(V,W)$.)
+    We also denote $g\phi$ by $g\star\phi$, to note confuse it with $\rho(g)\circ\phi$.
+    So $g\star\phi=\rho(g)\circ\phi\circ\rho(g)^{-1}$.
+
+\edefn
+
+This is indeed a representation: $g\star\phi$ is clearly linear so $g\star\phi\in\hom(V,W)$.
+Now, $\phi\mapsto g\star\phi$ is itself an automorphism of $\hom(V,W)$: it is clearly a bijection, and it is similarly clearly linear.
+Now let us consider the representation itself $R\colon G\to\gl(\hom(V,W))$, $R(g)(\phi)=g\star\phi$.
+This must be a group homomorphism: $R(gh)=R(g)\circ R(h)$.
+Indeed: $R(g)\circ R(h)(\phi)=R(g)(h\star\phi)=g\star(h\star\phi)=(gh)\star\phi=R(gh)(\phi)$ as required.
+
+\bdefn
+
+    Let $V$ be a $G$-representation, define the $G$-subrepresentation of {\emphcolor invariants} to be
+    $$ V^G = \set{v\in V}[\hbox{for all $g\in G$, $gv=v$}] $$
+
+\edefn
+
+This is indeed a subspace, since $\rho(g)$ is linear, and it is a subrepresentation since $g(hv)=(gh)v=v$.
+
+\bdefn
+
+    Let $V$ be a $G$-representation, and suppose that the characteristic of $\bF$ does not divide $\abs G$ (so that $\abs G\neq0$ and is therefore invertible).
+    Define the {\emphcolor averaging operator} $\av^G_V\colon V\to V$ to be
+    $$ \av^G_V(v) = \frac1{\abs G}\sum_{g\in G}gv $$
+
+\edefn
+
+Note that $\av^G_V$ is a projection operator on $V^G$: clearly it is the identity on $V^G$, and its image is contained in $V^G$.
+
+Now, notice that $T\in\hom(V,W)$ is a morphism of $G$-representations if and only if $g\star T=T$ for all $g\in G$.
+Indeed, $g\star T=\rho(g)\circ T\circ\rho(g)^{-1}$, and this is always $T$ if and only if $T$ commutes with all $\rho(g)$, i.e.\ is a morphism.
+Thus
+$$ \hom_G(V,W) = \hom(V,W)^G $$
+
+So in our above proof, we consider the $G$-representation $\hom(V,V)$ and an element $P\in\hom(V,V)$.
+We then define $Q=\av^G_{\hom(V,V)}(P)$, and so $Q\in\hom(V,V)^G=\hom_G(V,V)$.
+And we further showed that $P$ being a projection implies $Q$ being a projection.
+
+\bproof[second proof]
+
+    Consider the projection $\pi\colon V\to V/W$.
+    We want to show the existence of a $G$-morphism $\iota\colon V/W\to V$ such that $\pi\circ\iota={\rm id}_{V/W}$.
+    Then the image of $\iota$ would be complementary to $W$, and would be a $G$-subrepresentation.
+
+    More generally, given a surjective morphism of $G$-representations $\pi\colon V\to Z$, and a $G$-representation $U$ we would like to show that $\pi_*\colon\hom_G(U,V)\to\hom_G(U,Z)$ (post composition with $\pi$) is
+    surjective.
+    This map is the restriction of the more general $\pi_*\colon\hom(U,V)\to\hom(U,Z)$.
+    This map is clearly surjective and a morphism of $G$-representations.
+
+    So now we recast the problem as follows: given $G$-representations $V$ and $W$ and a sujective $G$-morphism $p\colon V\to W$, the restricted morphism $p\colon V^G\to W^G$ is surjective as well.
+    Indeed: given $w\in W^G$ let $v\in V$ such that $pv=w$, then $p(\av^G_V(v))=\av^G_V(p(v))=\av^G_V(w)=w$, so $\av^G_V(v)$ is in the preimage of $w$ under the restricted $p$.
+    \qed
+
+\eproof
+
+\subsection{Decomposition into irreducibles}
+
+We will assume in this section that $G$ is a finite group and $\bF$'s characteristic does not divide $G$'s order.
+
+\blemm
+
+    Let $V$ be a finite-dimensional $G$-representation.
+    Then there exist irreducible $G$-representations $E_1,\dots,E_n$ such that $V$ is isomorphic to $E_1\oplus\cdots\oplus E_n$ as $G$-representations.
+
+\elemm
+
+\bproof
+
+    We induct on the dimension of $V$.
+    If $\dim V=0$, then an empty sum suffices.
+    If $V$ is itself irreducible, then $E_1=V$ works.
+    Otherwise, let $W$ be a non-trivial subrepresentation of $V$.
+    By Maschke's theorem, $V$ is semisimple and therefore there exists a subrepresentation $W'$ such that $V=W\oplus W'$.
+    By induction, both of these subrepresentations are isomorphic to the direct sum of irreducible $G$-representations.
+    Then $V$ is isomorphic to the direct sum of these direct sums, itself a direct sum.
+    \qed
+
+\eproof
+
+\blemm[title=Schur's Lemma]
+
+    Let $E$ and $F$ be irreducible $G$-representations.
+    Then a morphism between them is either trivial or an isomorphism.
+
+\elemm
+
+\bproof
+
+    Let $T\colon E\to F$ be a non-trivial morphism of $G$-representations.
+    Since $T$ is non-trivial, $\ker T$ mustn't be all of $E$, and since $E$ is irreducible this means that $\ker T$ must be trivial.
+    So $T$ is injective.
+    Similarly, consider $\im T$, which cannot be trivial and therefore (since $F$ is irreducible) must be all of $F$.
+    So $T$ is surjective.
+    Therefore, $T$ is an isomorphism.
+    \qed
+
+\eproof
+
+\bprop
+
+    An irreducible $G$-representation (when $G$ is finite), is finite-dimensional.
+
+\eprop
+
+\bproof
+
+    Let $V$ be an infinite-dimensional $G$-representation.
+    Take $v\in V$ non-zero, and define $W=\lspan\set{gv}_{g\in G}$.
+    Since $v\in W$, it is non-zero, and because it is spanned by a finite set $W$ is not all of $V$.
+    And furthermore $W$ is clearly a $G$-representation.
+    \qed
+
+\eproof
+
+\blemm
+
+    Let $V$ be finite-dimensional, and $V\cong E_1\oplus\cdots\oplus E_n\cong F_1\oplus\cdots\oplus F_m$ be irreducible factorizations of $V$.
+    Then for every irreducible $G$-representation $E$, the number of $E_i$ isomorphic to $E$ is equal the number of $F_i$ isomorphic to $E$, both being
+    $\dim\hom_G(V,E)/\dim\hom_G(E,E)$.
+
+\elemm
+
+\bproof
+
+    Let $d=\hom_G(E,E)$, and $d\geq1$ as $\hom_G(E,E)$ is non-trivial (the identity).
+    By Schur's lemma, for an irreducible $G$-representation $F$, $\dim_G(E,F)=0$ if $F$ is not isomorphic to $E$.
+    Thus:
+    $$ \dim\hom_G(V,E) = \dim\hom_G(E_1\oplus\cdots\oplus E_n,E) = \dim\hom_G(E_1,E)+\cdots+\dim\hom_G(E_n,E) $$
+    For all $E_i$ not isomorphic to $E$, the summands are zero, and so we are left with $d$ times the number of $E_i$ isomorphic to $E$:
+    $$ \dim\hom_G(V,E) = d\cdot\#\set{\hbox{$E_i$ isomorphic to $E$}} $$
+    And so we obtain that the number of $E_i$ isomorphic to $E$ is the aforementioned number.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $V$ be a finite-dimensional $G$-representation, and $E$ be an irreducible $G$-representation.
+    Then the {\emphcolor multiplicity} of $E$ in $V$, denoted $[V:E]$, is the number of irreducible components in a factorization of $V$ isomorphic to $V$.
+    That is,
+    $$ [V:E] = \frac{\dim\hom_G(V,E)}{\dim\hom_G(E,E)} $$
+
+\edefn
+
+Let $V$ be a finite-dimensional $G$-representation, and $E$ an irreducible one.
+Consider the $G$-subrepresentation of $V$ obtained by taking the sum of all $G$-subrepresentations of $V$ isomorphic to $E$.
+This is called the {\bf isotypical component} $V_E$.
+
+
+\blemm
+
+    Let $V=E_1\oplus\cdots\oplus E_n$ be a factorization of $V$ into a direct sum of irreducible $G$-subrepresentations.
+    Then $V_E$ is equal to the sum of the $E_i$s isomorphic to $E$.
+
+\elemm
+
+\bproof
+
+    Clearly the sum of the $E_i$s isomorphic to $E$ is contained in $V_E$.
+    Now, suppose that $F\subseteq V$ is isomorphic to $E$.
+    We will show that given an $E_i$ not isomorphic to $E$, composing the inclusion $F\to V$ with the projection $V\to E_i$ is $0$.
+    From this it follows that $F$ must be contained in the sum of $E_i$s isomorphic to $E$, giving us our desired result.
+
+    Indeed, since $F$ is irreducible $F\to V\to E_i$ must be either zero or an isomorphism (by Schur).
+    Since $F$ is isomorphic to $E$ which is not isomorphic to $E_i$, we get that this morphism must be zero, as desired.
+    \qed
+
+\eproof
+
+Although the decomposition of $V$ into a direct sum of irreducible subrepresentations is not necessarily unique, if we group the subrepresentations
+by isomorphism class, we get a result independent of the representation, the isotypical component of that isomorphism class.
+
+Note that $V_E$ has a unique complementary subrepresentation.
+Firstly it has one by Maschke.
+Let $W$ be a complementary subrepresentation of $V_E$, then it decomposes into irreducible subrepresentations.
+That is, $W=F_1\oplus\cdots\oplus F_n$, and so $V=V_E\oplus F_1\oplus\cdots\oplus F_n$.
+In particular this means that if we group $F_i$ by isomorphism class, we get $W=V_{F_1}\oplus\cdots\oplus V_{F_n}$, as required.
+
+Let $\bF$ be the trivial representation of $G$, i.e.\ $gx=x$ for all $x\in\bF$.
+This is clearly irreducible, as it has dimension one.
+Notice that $V^G$ is equal to the isotypical component $V_{\bF}$.
+Let $E\subseteq V$ be isomorphic to $\bF$, then since $\bF$ is $G$-invariant so too must be $E$.
+And so $V_{\bF}\subseteq V^G$.
+Let $E\subseteq V^G$ be irreducible, then it must be isomorphic to $\bF$ (since every subvector-space of $V^G$ is a subrepresentation, so the only
+irreducible subrepresentations are one-dimensional, and $V^G$'s representation is trivial).
+Thus $V^G\subseteq V_{\bF}$.
+
+The kernel of the projection operator on $V^G$, $\av_V^G$, is thus the sum of all irreducible components of $V$ not isomorphic to $\bF$.
+
+\blemm[name=Schur]
+
+    Let $\bF$ be algebraically closed, and $E$ an irreducible $G$-representation.
+    Then $\endo_G(E)=\hom_G(E,E)$ is equal to $\bF\cdot{\rm id}_E$.
+
+\elemm
+
+\bproof
+
+    Let $f\colon E\to E$ be an endomorphism of $E$.
+    Since $\bF$ is algebraically closed, $f$ has an eigenvalue $\lambda$.
+    Then $f-\lambda{\rm id}_E$ is also an endomorphism of $E$ which is not invertible, and thus by Schur's lemma is zero.
+    Therefore $f=\lambda{\rm id}_E$ as required.
+    \qed
+
+\eproof
+
+Since $\hom_G(E,E)$ is one-dimensional for algebraically-closed $\bF$ we have that
+$$ [V:E] = \frac{\dim\hom_G(V,E)}{\dim\hom_G(E,E)} = \dim\hom_G(V,E) $$
+
+\subsection{The regular representation}
+
+For a set $X$ and a field $\bF$, we define the vector space $\bF[X]$ to be the space of all formal linear combinations of elements of $X$.
+For clarity, we will denote elements of $X$ in $\bF[X]$ by $\delta_x$ for $x\in X$.
+That is, $\bF[X]=\set{\sum_i a_i\delta_{x_i}}[x_i\in X]$.
+This is the free vector space over $X$.
+
+\bdefn
+
+    The {\emphcolor regular $G$-set} is simply $G$, with the action given by left-multiplication by $G$: $\rho(g)(h)=gh$.
+    The {\emphcolor regular $G$-representation} is $\bF[G]$ with the action given by $\rho(g)(\delta_h)=\delta_{gh}$ (this defines a unique
+    automorphism).
+
+\edefn
+
+Recall that morphisms out of $\bF[X]$ are determined uniquely by their image of $X$; $\hom(\bF[X],V)\cong\St(X,V)$.
+This is an isomorphism of vector spaces.
+
+Let $\St_G$ be the category of $G$-sets.
+
+\blemm
+
+    Let $X$ be a $G$-set and $V$ a $G$-representation.
+    Then the isomorphism of vector spaces $\hom(\bF[X],V)\cong\St(X,V)$ restricts to an isomorphism of vector spaces
+    $\hom_G(\bF[X],V)\cong\St_G(X,V)$.
+
+\elemm
+
+This is simple.
+Recall that $\hom_G(\bF[X],V)\cong\hom(\bF[X],V)^G$ has a trivial representation structure.
+
+Let $E$ be an irreducible $G$-representation, then
+$$ [\bF[G]:E] = \frac{\dim\hom_G(\bF[G],E)}{\dim\hom_G(E,E)} = \frac{\dim\St_G(G,E)}{\dim\endo_G(E)} $$
+$\St_G(G,E)$ is one-dimensional: for $f\in\St_G(G,E)$ we have that $f(g)=gf(1)$ so $\St_G(G,E)\cong E$ (by mapping $f$ to $f(1)$).
+Thus
+$$ [\bF[G]:E] = \frac{\dim E}{\dim\endo_G(E)} $$
+In particular, if $\bF$ is algebraically closed then $\dim\endo_G(E)=1$ and so $[\bF[G]:E]=\dim E$.
+
+\bcoro
+
+    There are finitely many isomorphism classes of irreducible $G$-representations.
+
+\ecoro
+
+\bproof
+
+    By above, every irreducible $G$-representation occurs in $\bF[G]$ $[\bF[G]:E]>0$ times.
+    Since $\bF[G]$ is finite-dimensional, it has finitely many non-isomorphic subspaces, and thus there can only be finitely many irreducible
+    $G$-representations.
+    \qed
+
+\eproof
+
+Notice that in general, if $E_1,\dots,E_n$ are all irreducible subrepresentations of $V$ up to isomorphism.
+Now, $V=E_1^{\oplus[V:E_1]}\oplus\cdots\oplus E_n^{[V:E_n]}$ and so $\dim V=\sum_i[V:E_i]\dim E_i$.
+In particular if $E_1,\dots,E_n$ list all irreducible $G$-representations up to isomorphism,
+$$ \dim\bF[G] = \sum_i[\bF[G]:E_i]\dim E_i $$
+and if $\bF$ is algebraically closed, $[\bF[G]:E_i]=\dim E_i$, and so we get:
+
+\bcoro
+
+    Suppose that $\bF$ is algebraically closed.
+    Let $E_1,\dots,E_n$ be all irreducible $G$-representations up to isomorphism.
+    Then
+    $$ \abs G = \sum_i(\dim E_i)^2 $$
+
+\ecoro
+
+\bexam
+
+    Consider the group $G=S_3$ (permutations on $\set{0,1,2}$).
+    Let $\bF$ be an algebraically closed field whose characteristic does not divide $\abs G=3!$, i.e.\ its characteristic is not $2$ or $3$.
+    We have two irreducible one-dimensional representations of $G$: the trivial, and the other given by the sign character
+    ${\rm sgn}\colon S_3\to\set{\pm1}$.
+    We have already shown that the usual representation of $S_3$ on $\bF^3$ has an irreducible subrepresentation of vectors whose entries sum to zero.
+    This subrepresentation has dimension two, and we see that
+    $$ \abs{S_3} = 6 = 1 + 1 + 2^2 $$
+    So these are all the irreducible $S_3$-representations, up to isomorphism
+
+\eexam
+
+\subsection{The group algebra}
+
+A ring here has an identity, but may be non-commutative.
+
+\bdefn
+
+    A $\bF$-algebra is a ring $A$ which is also a $\bF$-vector space, such that multiplication $A\times A\to A$ is bilinear.
+
+\edefn
+
+Notice that if $A$ is a $\bF$-algebra, then we have a map $\bF\to A$ given by $c\mapsto c\cdot1$ ($1$ is the unit in $A$).
+This map is injective, so we can embed $\bF$ in $A$.
+In fact, an equivalent formulation of a $\bF$-algebra is a ring $A$ together with a ring homomorphism $\bF\to Z(A)$.
+Indeed, this map ($c\mapsto c\cdot1$) is a ring homomorphism $\bF\to Z(A)$.
+And given a ring homomorphism $\sigma\colon\bF\to Z(A)$, we can define $c\cdot a=\sigma(c)a$.
+This clearly defines a vector space over $A$, and multiplication is bilinear.
+
+We recall the definition of an $R$-module, and $R$-module-morphisms.
+
+Note that if $A$ is a $\bF$-algebra and $M$ an $A$-module, then $M$ can be naturally given the structure of a $\bF$-vector space.
+This is since $\bF$ embeds in $A$.
+
+\bdefn
+
+    The {\emphcolor group algebra} of $G$, denoted $\bF[G]$, is the vector space denoted as above with multiplication given by
+    $\delta_g\delta_h=\delta_{gh}$.
+
+\edefn
+
+Notice that if $A$ is a $\bF$-algebra, then there is a natural bijection
+$$ \alg_{\bF}(\bF[G],A) \cong \grp(G,A^\times) $$
+(The left is morphisms of $\bF$-algebras, and the right is morphisms of groups.
+$A^\times$ is the group of invertible elements of $A$.)
+This is given by sending $f\colon\bF[G]\to A$ to the map $g\to f(\delta_g)$.
+This is well-defined since $f(\delta_g)f(\delta_{g^{-1}})=f(\delta_1)=1$ and so $f(\delta_g)$ are all invertible.
+This is also clearly a homomorphism: $f(\delta_{gh})=f(\delta_g\delta_h)=f(\delta_g)f(\delta_h)$.
+Being a bijection and natural is also clear.
+
+Note that $\bF$-algebra homomorphisms $A\to\endo(V)$ give rise to $A$-modules on $V$, and vice versa.
+Indeed: given $\sigma\colon A\to\endo(V)$ define $a\cdot v=\sigma(a)(v)$.
+
+\bcoro
+
+    Let $V$ be an $\bF$-vector space, then there is a natural bijection between $G$-representations on $V$ and $\bF[G]$-modules
+    on $V$.
+
+\ecoro
+
+\bproof
+
+    $G$-representations on $V$ are homomorphisms $G\to\endo(V)^\times=\gl(V)$.
+    $\bF[G]$-modules on $V$ are $\bF$-algebra homomorphisms $\bF[G]\to\endo(V)$.
+    Then apply the previous remark.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $V,W$ be two $G$-representations, so also $\bF[G]$-modules.
+    Then a linear morphism $T\colon V\to W$ is a morphism of $G$-representations if and only if it is a morphism of
+    $\bF[G]$-modules.
+
+\eprop
+
+This is just definition chasing.
+
+\subsection{The non-commutative Fourier transform}
+
+As before, we assume that $G$ is a finite group whose size is divisible in $\bF$.
+
+A division ring is one for which every nonzero element in the ring is invertible.
+A division algebra is an algebra which is a division ring as a ring.
+
+\blemm[title=Schur]
+
+    Let $E$ be an irreducible $G$-representation.
+    Then $\endo_G(E)$ is a division algebra.
+
+\elemm
+
+This is immediate since every non-zero endomorphism is an isomorphism.
+
+\blemm
+
+    Let $A$ be a finite-dimensional division $\bF$-algebra, then every subalgebra is also a division algebra.
+
+\elemm
+
+\bproof
+
+    Let $B$ be a subalgebra of $A$, and let $b\in B$ be nonzero.
+    Let $m\in\bF[x]$ be the minimal polynomial of the linear map $\ell_b\colon A\to A$ given by left-multiplication by $b$.
+    Note then that $m(\ell_b)=0$ and so $m(\ell_b1)=m(b)=0$.
+    We write $m(x)=xn(x)+c$, and we note that $c$ must be nonzero as since $\ell_b$ is invertible (because $b$ has an inverse),
+    $\ell_b n(\ell_b)=0$ would imply $n(\ell_b)=0$, contradicting $m$'s minimality.
+    Since $c$ is nonzero, it has an inverse in $A$.
+    So $m(b)=0$ means $bn(b)+c=0$, so $bn(b)=-c$ and so $b^{-1}=-c^{-1}n(b)$.
+    This is in $B$, as required.
+    \qed
+
+\eproof
+
+\bprop
+
+    Suppose $\bF$ is algebraically closed, and let $A$ be a finite-dimensional division $\bF$-algebra.
+    Then $A=\bF$.
+
+\eprop
+
+\bproof
+
+    Let $a\in A$, and take $B$ be the subalgebra spanned by $a$: $B=\lspan\set{a^n}_{n\in\bN}$.
+    By the above lemma, $B$ is itself a division algebra.
+    But $B$ is commutative, and thus is a field, moreso a finite field extension of $\bF$ (as it has finite dimension).
+    But $\bF$ is algebraically closed, so $B=\bF$ (since all extensions of an algebraically closed field are transcendental).
+    Thus $a\in\bF$, so $A=\bF$.
+    \qed
+
+\eproof
+
+Note that we have stumbled upon another proof of Schur: $\endo_G(E)$ is a division algebra, and since it is finite-dimensional, if $\bF$ is
+algebraically closed it must be $\bF$.
+
+\bnote
+
+    Modules over division rings behave similarly to modules over fields (vector spaces).
+    For example, the proof that vector spaces have unique (up to size) bases is the same for modules over division rings.
+    Moreso, linearly independent sets can be extended to bases.
+
+    If $D$ is a $\bF$-algebra, then we have that $\dim_{\bF}V=\dim_D V\cdot\dim_{\bF}D$ (the proof is similar as that for field extensions).
+
+\enote
+
+Let $E$ be an irreducible $G$-representation, and let $D_E=\endo_G(E)$ (it is a division algebra by Schur).
+Then we have a natural $\bF$-algebra morphism
+$$ \F_E\colon\bF[G]\to\endo_{D_E}(E) $$
+given by $\F_E(g)(x)=gx$.
+This is well-defined: $\F_E(g)$ is an endomorphism of $E$ over $D_E$ since $\F_E(g)(f\cdot e)=\F_E(g)(fe)=gfe$, and since $f$ is a $G$-morphism,
+this is equal to $fge=f\cdot\F_E(g)(e)$.
+
+Let $E_1,\dots,E_n$ list all the non-isomorphic irreducible representations of $G$.
+For each $E_i$ we have $\F_{E_i}\colon\bF[G]\to\endo_{D_{E_i}}(E_i)$, and thus we can gather them into one large $\bF$-algebra morphism
+$$ \F\colon\bF[G] \to \prod_{i=1}^n\endo_{D_{E_i}}(E_i) $$
+This is called the {\bf non-commutative Fourier transform} of $G$.
+
+Let $E$ and $F$ be finitely-generated modules over a division $\bF$-algebra $D$ also of finite dimension.
+Then
+$$ \dim_{\bF}\hom_D(E,F) = \dim_DE\cdot\dim_{\bF}F = \frac{\dim_{\bF}E\cdot\dim_{\bF}F}{\dim_{\bF}D} $$
+Indeed, let $v_1,\dots,v_n$ be a basis of $E$ over $D$, then $\hom_D(E,F)$ is isomorphic to $F^r$ as $\bF$-vector spaces: send $T$ to
+$(Tv_1,\dots,Tv_n)$.
+The rest of the equality follows from towering dimensions.
+
+\bprop[title={Artin-Wedderburn, special case}]
+
+    $\F$ is an isomorphism of $\bF$-algebras.
+
+\eprop
+
+\bproof
+
+    We show that $\F$ is an injection and that domain and codomain of $\F$ have equal dimension.
+    To show that $\F$ is injective, suppose $\F(a)=0$, so $a$ acts trivially on each $E_i$.
+    So $a$ acts trivially on every finite-dimensional representation (as the sum of $E_i$s), in particular it must act trivially on $\bF[G]$.
+    This is only possible if $a=0$ (since $a=a\cdot1=0$).
+
+    The dimension of the domain is $\abs G$.
+    Let $e_i=\dim_{\bF}E_i$ and $d_i=\dim_{\bF}D_{E_i}$.
+    By above, we have that
+    $$ \dim_{\bF}\endo_{D_{E_i}}E_i=\frac{(\dim_{\bF}E_i)^2}{\dim_{\bF}D_{E_i}}=e_i^2/d_i $$
+    And so we need to show that
+    $$ \abs G = \sum_{i=1}^n\frac{e_i^2}{d_i} $$
+    And indeed, recall that
+    $$ \abs G = \sum_{i=1}^n[\bF[G]:E_i]\cdot\dim_{\bF}E_i = \sum_{i=1}^n\frac{e_i^2}{d_i} $$
+    Since $[\bF[G]:E_i]=e_i/d_i$ since we showed
+    $$ [\bF[G]:E] = \frac{\dim\hom_G(\bF[G],E)}{\dim\endo_G(E)} = \frac{\dim_{\bF}E}{\dim_{\bF}\endo_G(E)} \qed $$
+
+\eproof
+
+In the case that $\bF$ is algebraically closed, we have that $D_{E_i}=\bF$ and so $\F$ forms an isomorphism
+$$ \F\colon\bF[G]\to\prod_{i=1}^n\endo_{\bF}(E_i) $$
+So we can consider the group algebra to be the product of matrix alegbras.
+
+\bexam
+
+    We can identify $\bF[G]$ with $\St(G,\bF)$ (map $f\colon G\to\bF$ to $\sum_{g\in G}f(g)\delta_g$).
+    Now notice that the center $Z(\bF[G])$ are all functions $f\colon G\to\bF$ for which for all $h\colon G\to\bF$:
+    $$ \parens{\sum_{g\in G}f(g)\delta_g}\parens{\sum_{g\in G}h(g)\delta_g} = \sum_{g\in G}\parens{\sum_{ab=g}f(a)h(b)}\delta_g $$
+    is equal to
+    $$ \sum_{g\in G}\parens{\sum_{ab=g}h(a)f(b)}\delta_g $$
+    That is, $\sum_{ab=g}f(a)h(b)=\sum_{ab=g}f(b)h(a)$.
+
+    In particular, if we let $h_x$ be the indicator of $x\in G$: $h_x(x)=1$ and $h_x(y)=0$, then we see that for $g\in G$,
+    $$ \sum_{ab=g}f(a)h_x(b) = f(ax^{-1}) = f(x^{-1}a) = \sum_{ab=g}f(b)h_x(a) $$
+    So $f(gh)=f(hg)$ for all $g,h\in G$.
+    Equivalently $f(hgh^{-1})=f(g)$, i.e.\ $f$ is a {\emphcolor class function}: it is identical on conjugacy classes.
+
+    This is also sufficient:
+    $$ \sum_{ab=g}f(a)h(b) = \sum_{b\in G}f(gb^{-1})h(b) = \sum_{a\in G}f(a^{-1}g)h(a) = \sum_{ab=g}f(b)h(a) $$
+    So $Z(\bF[G])$ can be identified with the set of class functions: $\St(G,\bF)^\cl$.
+
+\eexam
+
+\bexam
+
+    Let $D$ be a division ring and $V$ a finite-dimensional $D$-module.
+    Then the morphism of rings $Z(D)\to Z(\endo_D(V))$, which maps $z$ to $v\mapsto zv$, is an isomorphism.
+    Let $n=\dim V$, then $\endo_D(V)$ is isomorphic to ${\rm Mat}_n(D^{\sf op})$ ($D^{\sf op}$ being the opposite ring of $D$).
+    Indeed, let $B=\set{v_1,\dots,v_n}$ form a basis for $V$, then mapping $T\in\endo_D(v)$ to the representation matrix $[T]_B$ is an isomorphism.
+    Note that this indeed must be in the opposite ring since
+    $$ [T]_B[\sum_id_iv_i]_B = \sum_i [Tv_i]_B\cdot^{\sf op}d_i = \sum_i d_i[Tv_i]_B = [T(\sum_i d_iv_i)]_B $$
+
+    A matrix in the center of ${\rm Mat}_n(D^{\sf op})$ must be a scalar matrix, whose entries are in $Z(D^{\sf op})=Z(D)$.
+    So the center of $Z(\endo_DV)$ is isomorphic to $Z(D)$.
+
+\eexam
+
+\bcoro[title=Basic formula]
+
+    Let $\bF$ be algebraically closed, then the cardinality of the set of isomorphism classes of irreducible $G$-representations is equal to
+    the cardinality of the set of conjugacy classes of $G$.
+
+\ecoro
+
+\bproof
+
+    By the above exercise, the center of $Z(\bF[G])$ is isomorphic to $\St(G,\bF)^\cl$, the set of class functions.
+    The dimension of the codomain of $\F$ is $\prod_{i=1}^n Z(\endo_{D_{E_i}}(E_i))$, which by the above exercise is isomorphic to
+    $\prod_{i=1}^n Z(D_{E_i})$.
+    Since $\bF$ is algebraically closed, $D_{E_i}\cong\bF$, and so this is isomorphic to $\bF^n$.
+    Thus we have that $n=\dim\St(G,\bF)^\cl$, where $n$ is the number of irreducible $G$-representations.
+
+    Let the conjugacy classes of $G$ be $[g_1],\dots,[g_m]$.
+    Define $f_i\colon G\to\bF$ to be the indicator of $[g_i]$.
+    This forms a basis of $\St(G,\bF)^\cl$ and as such $\dim\St(G,\bF)^\cl$ is equal to the number of conjugacy classes of $G$, thus completing our
+    proof.
+    \qed
+
+\eproof
+
+In total, let $G$ be a finite group and $\bF$ an algebraically closed field whose characteristic does not divide $\abs G$.
+Let $n$ be the number of conjugacy classes of $G$, and $d_1,\dots,d_n$ be the dimensions of the irreducible representations of $G$.
+Then
+$$ \abs G = \sum_{i=1}^n d_i^2 $$
+
+\bexam
+
+    The following example will not be used, but is an example of a result of the above investigation.
+    Define the {\emphcolor zeta function} of the group $G$ to be
+    $$ \zeta_G(s) = \sum_{i=1}^n d_i^{-s} $$
+    Note that $\zeta_G(0)$ is equal to the number of conjugacy classes in $G$, and $\zeta_G(-2)$ is equal to the number of elements in $G$.
+    In general one has
+    $$ \zeta_G(-2+2n) = \frac1{\abs G^{2n-1}}\abs{c_n^{-1}(1)} $$
+    where $c_n\colon G^{2n}\to G$ is given by $c_n(x_1,y_1,\dots,x_n,y_n)=[x_1,y_1]\cdots[x_n,y_n]$.
+    (Note that $\abs{c_n^{-1}(1)}$ is the cardinality of the fiber of $1$.)
+
+\eexam
+
+Let $E$ be an irreducible $G$-representation.
+Then there is a unique element $e_E\in\bF[G]$ which acts as the identity on irreducible subrepresentations isomorphic to $E$ and as $0$ on
+irreducible subrepresentations not isomorphic to $E$.
+Indeed, such an element must satisfy $\F(e_E)=(T_i)_i$ where $T_i={\rm id}_{E_i}$ when $E_i\cong E$ and $0$ otherwise.
+Due to $\F$'s bijectivity a unique element must exist.
+
+Notice that $e_E\in Z(\bF[G])$ and $e_E^2=e_E$ (since $(T_i)_i$ satisfies this).
+And the action of $e_E$ on any finite-dimensional $G$-representation $V$ is the unique $G$-morphic projection onto the isotypic component $V_E$.
+So if we want a formula for this projection, we can equivalently find a formula for $e_E$: scalars $c_g$ such that $e_E=\sum_gc_g\delta_g$.
+We shall return to this.
+
