@@ -1,0 +1,777 @@
+\section{Rings and Modules}
+
+\subsection{Finiteness properties of modules and rings}
+
+\bdefn
+
+    Let $M$ be an $R$-module.
+    It is {\emphcolor Noetherian} (resp.\ {\emphcolor Artinian}) if it has no infinite strictly increasing (resp.\ decreasing) sequence of $R$-submodules.
+
+\edefn
+
+\bexam
+
+    If $R$ is a $\bF$-algebra for some field $\bF$, then every $R$-module can be regarded as a $\bF$-vector space.
+    In particular, if $M$ is finite-dimensional as a $\bF$-vector space, then it is both Noetherian and Artinian.
+    Indeed, submodules are subspaces, and a chain of subspaces must have distinct dimensions.
+
+\eexam
+
+\bthrm
+
+    An $R$-module $M$ is Noetherian if and only if every submodule of $M$ is finitely generated.
+
+\ethrm
+
+\bproof
+
+    Suppose that $M$ is Noetherian, and let $N\subseteq M$ be a submodule.
+    Assume that $N$ is not finitely generated, then for every finite set of elements $v_1,\dots,v_n\in N$, $Rv_1+\cdots+Rv_n\neq N$.
+    We will construct an infinite increasing sequence of finitely generated submodules of $N$.
+    Define $N_0=0$, and if $N_n=Rv_1+\cdots+Rv_n$, since this cannot be equal to $N$ there is a $v_{n+1}\in N-N_n$.
+    Define $N_{n+1}=N_n+Rv_{n+1}$.
+    This is an infinite sequence of strictly increasing submodules.
+
+    Now conversely suppose that every submodule of $M$ is finitely generated.
+    Let $M_1\subseteq M_2\subseteq\cdots$ be an increasing sequence of submodules in $M$.
+    Let $N=\bigcup_n M_i$ be their union, which is itself a submodule of $M$.
+    By assumption $N$ is finitely generated, $N=Rv_1+\cdots+Rv_n$.
+    Since the $M_i$ form a chain, we must have that all $v_i\in M_N$ for some $N$.
+    But then $N=M_N$, so the chain is finite.
+    \qed
+
+\eproof
+
+\blemm
+
+    Let $M$ be an $R$-module and $N\subseteq M$ a submodule.
+    Then $M$ is Noetherian (resp.\ Artinian) iff $N$ and $M/N$ are.
+
+\elemm
+
+\bproof
+
+    We prove only the case for Noetherian modules, the Artinian case is handled similarly.
+    If $M$ is Noetherian, then clearly every submodule is too (since submodules of $N$ are submodules of $M$).
+    And submodules of $M/N$ are of the form $L/N$ for $N\subseteq L\subseteq M$, so a chain of $M/N$ submodules is of the form
+    $$ L_1/N \subseteq L_2/N \subseteq \cdots $$
+    and so $L_1\subseteq L_2\subseteq\cdots$ forms a chain of $M$ submodules, and thus must be finite as well.
+
+    Conversely, if $N$ and $M/N$ are Noetherian then let $M_1\subseteq M_2\subseteq\cdots$ be a chain of $M$ submodules.
+    Consider then $M_1\cap N\subseteq M_2\cap N\subseteq\cdots$, a chain of $N$ submodules.
+    Since $N$ is Noetherian this must be finite, i.e.\ $M_i\cap N=M_k\cap N$ for $i\geq k$ for some $k$.
+    Similarly consider $(M_1+N)/N\subseteq(M_2+N)/N\subseteq\cdots$, a chain of $M/N$ submodules.
+    Once again this must be finite, so $(M_i+N)/N=(M_k+N)/N$ for some $i\geq k$ (we can assume wlog that this is the same $k$).
+    This means $M_i+N=M_k+N$ and $M_i\cap N=M_k\cap N$, which means that if $x\in M_i$ then
+    $$ x\in(M_i+N)\cap M_i = (M_k+N)\cap M_i = M_k\cap M_i + N\cap M_i = M_k\cap M_i + N\cap M_k \subseteq M_k $$
+    So $M_i=M_k$, as required.
+    \qed
+
+\eproof
+
+\bcoro
+
+    The direct sum of finitely many Noetherian (resp.\ Artinian) modules is Noetherian (resp.\ Artinian).
+
+\ecoro
+
+\bproof
+
+    Indeed, suppose $M,N$ are Noetherian (or Artinian).
+    Then $M\oplus0\subseteq M\oplus N$ is Noetherian, and $(M\oplus N)/(M\oplus0)\cong N$ is also Noetherian.
+    By our above lemma, this means $M\oplus N$ is Noetherian.
+    \qed
+
+\eproof
+
+Recall that $R$ is itself a left $R$-module, and submodules correspond to left ideals.
+$R$ is then Noetherian if it has no infinite strictly increasing sequence of left ideals, and it is Artinian if it has no infinite decreasing sequence of left ideals.
+There is of course the dual notion of a right Noetherian (Artinian) ring, where we consider right ideals.
+
+\bexam
+
+    $R$ is left Noetherian (Artinian) if and only if all finitely generated $R$-modules are Noetherian (Artinian).
+
+    Indeed, if $R$ is left Noetherian and $M$ is finitely generated, then suppose $M=Rv_1+\cdots+Rv_n$.
+    Then let $f\colon R^n\to M$ be the $R$-module morphism defined by $f(r_1,\dots,r_n)=r_1v_1+\cdots+r_nv_n$.
+    This is surjective, and as such $M\cong R^n/\ker f$.
+    Since $R^n$ is the direct sum of finitely many copies of $R$, it is Noetherian.
+    As such, all quotients of it are Noetherian, $M$ included.
+
+    And conversely if all finitely generated $R$-modules are Noetherian, then $R$ is too (as a finitely generated $R$-module).
+
+\eexam
+
+\bdefn
+
+    An $R$-module $M$ is {\emphcolor simple} (or {\emphcolor irreducible}) if $M$ is nonzero and has no non-trivial proper submodules (i.e.\ all submodules of $M$ are either $M$ or zero).
+
+\edefn
+
+\bprop
+
+    If $I\subseteq R$ is a maximal left ideal, then $R/I$ is a simple $R$-module.
+    And all simple $R$-modules are isomorphic to some quotient of this form.
+
+    In other words, if we define $\f M_R$ to be the set of maximal left ideals of $R$, and $\f S_R$ to be the set of isomorphism classes of simple $R$-modules,
+    we obtain a surjection
+    $$ \f M_R\to\f S_r,\qquad I\mapsto R/I $$
+
+\eprop
+
+\bproof
+
+    $R/I$ being simple is, simple.
+    A submodule of $R/I$ is a quotient of the form $J/I$ where $I\subseteq J\subseteq R$ is a left ideal.
+    Since $I$ is maximal, this means that $J/I$ must be trivial.
+
+    Let $M$ be a simple $R$-module, and define $f\colon R\to M$ by $f(r)=ra$ for some nonzero $a\in M$.
+    Now, $\im f$ is a nonzero submodule in $M$, and as such it must be all of $M$.
+    By the isomorphism theorem, this means $R/\ker f\cong M$.
+    Now $\ker f$ must be maximal: if $\ker f\subseteq I$ then $R/I\subseteq R/\ker f$ (by the injection $r+I\mapsto r+\ker f$, which is injective since if $r\in\ker f$ then $r\in I$).
+    Since $M$ is simple, then $R/I$ is either $0$ (so $I=R$) or $M$ (so $I=\ker f$), thus $\ker f$ is maximal.
+    \qed
+
+\eproof
+
+\bthrm[title=Schur]
+
+    A morphism between simple $R$-modules is either zero or an isomorphism.
+
+\ethrm
+
+\bdefn
+
+    An $R$-module $M$ is {\emphcolor semisimple} if every submodule $N\subseteq M$ has a complementary submodule $L\subseteq M$ such that $M=N\oplus L$.
+
+\edefn
+
+
+\blemm
+
+    \benum
+        \item The direct sum of finitely many semisimple modules is semisimple.
+        \item A submodule of a semisimple module is semisimple.
+        \item A quotient of a semisimple module is semisimple.
+    \eenum
+
+\elemm
+
+\bproof
+
+    \benum
+        \item Let $M_1,M_2$ be semisimple and let $N\subseteq M_1\oplus M_2$.
+        Let $p_1\colon M_1\oplus M_2\to M_1$ be the projection operator, and view $M_2\subseteq M_1\oplus M_2$ by inclusion.
+        Since $M_1,M_2$ are semisimple there exist $N_i\subseteq M_i$ such that
+        $$ M_1 = p_1(N)\oplus N_1,\qquad M_2 = (N\cap M_2)\oplus N_2 $$
+        Now we claim that $M_1\oplus M_2=N\oplus(N_1\oplus N_2)$.
+
+        Clearly their intersection is zero: $n\in N\cap(N_1\oplus N_2)$ means that $p_1(n)\in p_1(N)\cap N_1=0$.
+        So $p_1(n)=0$.
+        Thus $n\in M_2$ and so $n\in N\cap M_2\cap N_2=0$, so $n=0$.
+
+        Let $m=(m_1,m_2)\in M_1\oplus M_2$, then $m_1=p_1(m)=p_1(n)+n_1$ for $n\in N$ and $n_1\in N_1$.
+        Then $p_1(m-(n+n_1))=0$ so $m-(n+n_1)\in M_2$.
+        This means there exists $n'\in M_2\cap N$ and $n_2\in N_2$ such that $m-(n+n_1)=n'+n_2$ and so $m=(n+n')+n_1+n_2\in N\oplus(N_1\oplus N_2)$.
+
+        \item Let $N\subseteq M$ be a submodule, we want to show it too is semisimple.
+        Let $L\subseteq N$ be a submodule, then there exists $L'\subseteq M$ such that $M=L\oplus L'$.
+        But then $N=L\oplus(L'\cap N)$.
+
+        \item Let $N\subseteq M$ be a submodule, we want to show that $M/N$ is semisimple.
+        Let $L\subseteq M/N$ then there exists an $L'\subseteq M$ such that $M=L'\oplus p^{-1}(L)$ where $p\colon M\to M/N$ is the canonical projection.
+        Now $M/N=p(L')\oplus L$: for $m\in M$, $m=\ell'+\ell$, then $p(m)=p(\ell')+p(\ell)\in p(L')+L$.
+        Note that $pp^{-1}={\rm id}$ since $p$ is surjective, and so $p(L')\cap L=p(L'\cap p^{-1}L)=p(0)=N$.
+        \qed
+    \eenum
+
+\eproof
+
+\bprop
+
+    Let $M$ be a finitely generated $R$-module, then it is semisimple if and only if it can be written as a finite direct sum of simple modules.
+
+\eprop
+
+\bproof
+
+    If $M$ can be written as a finite direct sum of simple modules, then since simple modules are semisimple, it too is semisimple.
+
+    Conversely suppose $M$ is semisimple, and let $N\subseteq M$.
+    Then $N$ has a complement: $M=N\oplus N'$.
+    The projection operator $M\to N$ is surjective with kernel $N'$, so $M/N'\cong N$.
+    This shows us that $N$ must be finitely generated: $M$ is, so $M/N'$ is.
+    Thus $M$ is Noetherian, as all its submodules are finitely generated.
+
+    We now claim that every nonzero submodule of $M$ contains a maximal proper submodule.
+    Indeed, let $N\subseteq M$ be a nonzero submodule.
+    Suppose that $N$ has no maximal proper submodule: then by choosing an initial proper submodule we can create an increasing chain of
+    submodules of $N$: $N_1\subseteq N_2\subseteq\cdots$, a contradiction since $N$ is Noetherian as a submodule of $M$.
+
+    If $M$ is zero, the claim is trivial, so suppose $M\neq0$.
+    Otherwise, let $N_1\subseteq M$ be a maximal proper submodule and let $E_1\subseteq M$ be a complement.
+    Since $N_1$ is maximal, $E_1$ must be simple.
+    If $N_1$ is zero, we are done.
+    Otherwise we take $N_2\subseteq N_1$ maximal and $E_2$ its simple complement, and continue.
+    Thus we have simple $E_1,E_2,\dots$ with an increasing sequence
+    $$ E_1,E_1\oplus E_2,\dots $$
+    Since $M$ is Noetherian, this must be finite.
+    But then $M=E_1\oplus\cdots\oplus E_n$.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $R$ be left Artinian.
+    Then the set of isomorphism classes of simple $R$-modules is finite.
+
+\eprop
+
+\bproof
+
+    Suppose $E_1,E_2,\dots$ is an infinite sequence of non-isomorphic simple $R$-modules.
+    Choose nonzero $e_i\in E_i$, and let $I_i$ be the annihilator of $e_i$:
+    $$ I_i = \set{x\in R}[xe_i=0] $$
+    This is a left ideal of $R$, and we have an isomorphism $R/I_i\cong E_i$ (indeed, $r\mapsto re_i$ has kernel $I_i$).
+
+    We claim that $I_{n+1}$ does not contain $I_1\cap\cdots\cap I_n$.
+    If we can demonstrate this, then $\bigcap_{i=1}^nI_i$ forms an infinite descending chain, contradicting $R$ being left Artinian.
+
+    Now, suppose that $I_1\cap\cdots\cap I_n\subseteq I_{n+1}$.
+    Notice that the module morphism $R\to E_1\oplus\cdots\oplus E_n$ given by $x\mapsto(xe_1,\dots,xe_n)$ has kernel $I_1\cap\cdots\cap I_n$.
+    Thus it induces an injective morphism $R/(I_1\cap\cdots\cap I_n)\to E_1\oplus\cdots\oplus E_n$.
+    Since $E_1\oplus\cdots\oplus E_n$ is semisimple as a direct sum of semisimple modules, and so $R/(I_1\cap\cdots\cap I_n)$ has a complementary
+    submodule, and thus the projection operator provides a surjection $E_1\oplus\cdots\oplus E_n\to R/(I_1\cap\cdots\cap I_n)$.
+    Since $I_1\cap\cdots\cap I_n\subseteq I_{n+1}$, there is a surjection $R/(I_1\cap\cdots\cap I_n)\to R/I_{n+1}\cong E_{n+1}$.
+    And all in all, we have a surjection $E_1\oplus\cdots\oplus E_n\to E_{n+1}$.
+
+    In particular this is a non-zero map, and as such one of the factor $E_i\to E_{n+1}$ must be nonzero.
+    By Schur this means that $E_i\cong E_{n+1}$, a contradiction.
+    \qed
+
+\eproof
+
+\bcoro
+
+    If $G$ is a finite group, then the set of isomorphism classes of irreducible $G$-representations over $\bF$ is finite.
+
+\ecoro
+
+Note that we have dropped the condition that $\abs G\in\bF^\times$.
+
+\bproof
+
+    This follows immediately, since irreducible $G$-representations are simple $\bF[G]$-submodules, and $\bF[G]$, as a finite-dimensional algebra over a field, is Artinian.
+    \qed
+
+\eproof
+
+\subsection{Semisimple rings}
+
+\bdefn
+
+    A ring $R$ is {\emphcolor (left) semisimple} if it is semisimple as an $R$-module.
+
+\edefn
+
+\blemm
+
+    $R$ is semisimple iff all finitely generated $R$-modules are semisimple.
+
+\elemm
+
+\bproof
+
+    Since $R$ is a finitely generated $R$-module, one direction is trivial.
+    Now suppose that $R$ is semisimple, and let $M$ be a finitely generated $R$-module.
+    Then there exists a surjection $R^n\to M$, and as such $M$ is isomorphic to a quotient of $R^n$.
+    $R^n$ is semisimple as the direct sum of semisimple modules, and quotients of semisimple modules are semisimple.
+    \qed
+
+\eproof
+
+\bexam
+
+    Let $G$ be a group and $\bF$ a field with $\abs G\in\bF^\times$.
+    Then Maschke's theorem says all $\bF[G]$-modules which are finite-dimensional $\bF$-vector spaces are semisimple.
+    In particular, $\bF[G]$ is a finite-dimensional $\bF$-vector space, and as such $\bF[G]$ is a semisimple $\bF$-algebra.
+
+\eexam
+
+\bexam
+
+    Division rings are simple, and thus semisimple.
+    Indeed, $D$ has no nontrivial submodules: for $0\neq e\in D$, $De=D$.
+
+\eexam
+
+\bexam
+
+    Let $D$ be a division ring and $V$ a finite-dimensional $D$-module.
+    Then $\endo_D(V)$ is a semisimple ring.
+    Indeed, let $e_1,\dots,e_n$ form a basis for $V$.
+    Then let $L_i\subseteq\endo_D(V)$ be the submodule of operators which are zero on $e_j$ for $j\neq i$.
+    Then $L_i$ is a left ideal in $\endo_D(V)$, and clearly $\endo_D(V)=L_1\oplus\cdots\oplus L_n$.
+
+    Finally, each $L_i$ is simple.
+    Indeed, given $T_1,T_2\in L_i$ there is an $S\in\endo_D(V)$ such that $S(T_1(e_i))=T_2(e_2)$ (like in linear algebra).
+    Then $ST_1=T_2$ (since $ST_1(e_j)=0$ for $i\neq j$), and as such $L_i$ is simple.
+
+    Further note, with the $D^\op$-module $V=(D^\op)^n$, we have $\endo_{D^\op}(V)\cong M_n(D)$.
+    So we could restate this by saying that $M_n(D)$ are semisimple for $D$ a division ring.
+
+\eexam
+
+\bprop
+
+    A semisimple ring is both Noetherian and Artinian.
+
+\eprop
+
+\bproof
+
+    Since $R$ is semisimple and a finitely-generated $R$-module, it can be written as a finite direct sum of simple $R$-modules.
+    Simple $R$-modules are clearly Noetherian and Artinian, and their finite direct sums are as well.
+    \qed
+
+\eproof
+
+\bcoro
+
+    The set of isomorphism classes of simple $R$-modules, for a semisimple $R$, is finite.
+
+\ecoro
+
+\bproof
+
+    $R$ is Artinian, and the claim follows.
+    \qed
+
+\eproof
+
+\subsection{The Artin-Wedderburn Theorem}
+
+If $M$ is an $R$-module, let $S=\endo_R(M)$.
+Then $M$ can be viewed as an $S$-module: for $T\in S$ and $m\in M$, $T\cdot m=Tm$.
+
+\bprop[title=Jacobson's Density Theorem]
+
+    Let $M$ be a semisimple $R$-module, and let $S=\endo_R(M)$.
+    Given $T\in\endo_S(M)$ and $v_1,\dots,v_n\in M$ then there exists an $r\in R$ such that $Tv_i=rv_i$ for each $i$.
+
+\eprop
+
+\bproof
+
+    We first deal with $n=1$, so $v\in M$.
+    Since $M$ is semisimple, write $M=Rv\oplus N$ and let $P\in S$ be the projection of $M$ into $N$ along $Rv$.
+    Notice that $PTv=TPv=Tv$ (since $T\in\endo_S(M)$, $T$ commutes with elements of $S$).
+    Thus $Tv\in Rv$, and as such $Tv=rv$ for some $r\in R$.
+
+    We now reduce the general case to the case of $n=1$.
+    Consider the semisimple $R$-module $M^n$, and $(v_1,\dots,v_n)\in M^n$.
+    And consider $T^{\oplus n}\colon(m_1,\dots,m_n)\mapsto(Tm_1,\dots,Tm_n)$.
+    We want to show that $T^{\oplus n}$ is in $\endo_{\endo_R(M^n)}(M^n)$.
+
+    Notice that there is an isomorphism $\endo_R(M^n)\cong M_n(S)$.
+    Indeed, to $F\in\endo_R(M^n)$ we can define the matrix $[F]_{ij}=\iota_j\circ F\circ\pi_i$ ($\pi_i\colon M^n\to M$ the $i$th projection, and $\iota_i\colon M\to M^n$ the $i$th inclusion).
+    Then since $T^{\oplus n}$ is scalar multiplication by an element of $S=\endo_R(M)$, it commutes with matrices.
+    That is to say, $T^{\oplus n}\in\endo_{\endo_R(M^n)}(M^n)$.
+
+    So by the $n=1$ case, there is an $r\in R$ such that $T^{\oplus n}(v_1,\dots,v_n)=r(v_1,\dots,v_n)$ which is precisely what we want.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Let $M$ be a semisimple $R$-module, and let $S=\endo_R(M)$.
+    If $M$ is finitely generated as an $S$-module, then $R\to\endo_S(M)$ (defined by mapping $r$ to scalar multiplication by $r$) is surjective.
+
+\ecoro
+
+\bproof
+
+    Let $T_r\colon M\to M$ be scalar multiplication by $r$.
+    Clearly $T_r\in\endo_S(M)$ since for $F\in S$, $T_r(Fm)=rFm=Frm=FT_rm$.
+
+    Now suppose that $v_1,\dots,v_n$ generate $M$.
+    Then given $T\in\endo_S(M)$, we know that there exists an $r\in R$ such that $Tv_i=rv_i$.
+    But since $v_1,\dots,v_n$ generate $M$, this extends to all of $M$: $T=T_r$, as required.
+    \qed
+
+\eproof
+
+Let $E$ be a simple $R$-module, and let $D_E=\endo_R(E)$.
+Recall that $D_E$ is a division ring by Schur.
+Then define
+$$ \F_E\colon R\to\endo_{D_E}(E) $$
+the natural map which maps $r\in R$ to multiplication by $r$ on $E$.
+This is clearly a ring morphism.
+
+\bthrm[title=Artin-Wedderburn]
+
+    Let $R$ be semisimple, then $R$ has finitely many simple $R$-modules up to isomorphism.
+    Furthermore, every simple $R$-module $E$ is finite dimensional over $D_E$.
+    Let $E_1,\dots,E_n$ list all non-isomorphic simple $R$-modules, then the ring morphism
+    $$ \F\colon R\to\prod_{i=1}^n\endo_{D_{E_i}}(E_i) $$
+    given by the product $\F_{E_1}\times\cdots\times\F_{E_n}$ is an isomorphism.
+
+\ethrm
+
+\bproof
+
+    As already discussed, a semisimple ring is Artinian and thus has finitely many simple modules up to isomorphism.
+    $\F$ is injective: if $\F(r)=0$, then $r$ acts as zero on every simple $R$-module, and thus as zero on every finitely generated semisimple $R$-module (as they are the
+    finite sums of simple $R$-modules).
+    In particular, it is zero in $R$.
+
+    We now claim $\F$ is surjective.
+    Let us define $E=E_1\oplus\cdots\oplus E_n$, and let $S=\endo_R(E)$.
+    We know that
+    $$ S = \endo_R(E) \cong \prod_{i,j=1}^n\hom_R(E_i,E_j) $$
+    by mapping $(\phi_{ij})_{ij}$ on the right to $\phi(e_1,\dots,e_n)=\parens{\sum_i\phi_{i1}(e_i),\dots,\sum_i\phi_{in}(e_i)}$.
+    By Schur we then have
+    $$ S \cong \prod_{i=1}^n\hom_R(E_i,E_i) = \prod_{i=1}^nD_{E_i} $$
+    Now, notice that we have a ring morphism
+    $$ \endo_{D_{E_1}}(E_1)\times\cdots\times\endo_{D_{E_n}}(E_n) \to \endo_S(E) $$
+    which maps $(T_1,\dots,T_n)$ to $T(e_1,\dots,e_n)=(T_1e_1,\dots,T_ne_n)$.
+    We claim that this is an isomorphism.
+    Indeed it is clearly injective, we now show it is surjective.
+    Let $T\in\endo_S(E)$, and define $T_i=\pi_i\circ T\circ\iota_i$ where $\iota_i\colon E_i\to E$ is the inclusion morphism and $\pi_i\colon E\to E_i$ is the projection morphism.
+    Then $(T_i)_i$ are mapped to the morphism $\bar T$:
+    $$ (e_1,\dots,e_n) \mapsto (T_1e_1,\dots,Te_n) = (\pi_iT\iota_1e_1,\dots,\pi_nT\iota_ne_n) $$
+    Now consider $\Phi_i\in S$ which is the identity on the $i$th component and $0$ everywhere else.
+    We know that $\Phi_iT=T\Phi_i$ and $\pi_i\Phi_i=\pi_i$ and $\iota_ie_i=\Phi_i\bar e$.
+    Putting this together we have
+    $$ \pi_i\bar T\bar e = \pi_iT\iota_ie_i = \pi_iT\Phi_i\bar e = \pi_i\Phi_iT\bar e = \pi_iT\bar e $$
+    That is, $\pi_i\bar T=\pi_iT$ for all $i$, so $\bar T=T$ as required.
+
+    So we have that
+    $$ \endo_S(E) \cong \prod_{i=1}^n\endo_{D_{E_i}}(E_i) $$
+    Now, our map $\F$ can be identified with the natural map $R\to\endo_S(E)$.
+    We know that this map is surjective for $E$ semisimple and finitely generated as an $S$-module.
+    $E$ is clearly semisimple since it is the finite direct product of simple modules.
+    To show that $E$ is finitely generated, it is sufficient to show that $E_i$ is finitely generated as a $D_{E_i}$-module.
+
+    Indeed, let $E$ be a simple $R$-module.
+    We want to show that $E$ is a finitely generated $D_E$-module.
+    Notice that $E\cong\hom_R(R,E)$ (which maps $e$ to the map $\phi(1)=e$).
+    So a $D_E$ structure on $E$ corresponds to a $D_E$ structure on $\hom_R(R,E)$ where $d\in D_E$ and $\phi\in\hom_R(R,E)$, $d$ acts on $\phi$ by $d\circ\phi$.
+    $R$ is semisimple and as such it is isomorphic to a finite direct sum of simple $R$-modules, let $R=R_1\oplus\cdots\oplus R_k$.
+    Then $\hom_R(R,E)\cong\prod_{i=1}^k\hom_R(R_i,E_i)$ as $D_E$ modules.
+    It is therefore sufficient to show that $\hom_R(R_i,E)$ is finitely generated.
+    By Schur it is either zero or isomorphic to $\hom_R(E,E)=D_E$ which is finitely generated as a $D_E$ module obviously.
+    \qed
+
+\eproof
+
+\bcoro[title=Artin-Wedderburn]
+
+    A ring is semisimple if and only if it is isomorphic to a finite product of matrix rings over division algebras.
+
+\ecoro
+
+\bproof
+
+    Indeed, $\endo_{D_E}(E)$ can be viewed as a matrix ring, since $E$ is finitely generated over $D_E$, it is isomorphic to $M_n(D_E^\op)$ where $n=\dim_{D_E}E$.
+    Conversely a matrix ring over a division ring is semisimple ($M_n(D)\cong\endo_D(D^n)$ which we saw was semisimple), and the finite product of semisimple rings is semisimple.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $R$ be a semisimple ring, and $R\cong M_{n_1}(D_1)\times\cdots\times M_{n_k}(D_k)$.
+    Then the division rings $D_i$ and dimensions $n_i$ are unique up to isomorphism.
+
+\eprop
+
+\subsection{The Jacobson radical}
+
+Note that our Fourier transform can be extended to all rings $R$.
+Indeed, we know that the set of isomorphism classes of simple modules over $R$ is indeed a set (in bijection with the class of maximal ideals of $R$).
+So let $\f S_R$ be the set of simple $R$-modules, and we can consider
+$$ \F\colon R\to\prod_{E\in\f S_R}\endo_{D_E}(E) $$
+defined as before.
+
+If $R$ is not semisimple, then $\F$ may have a nontrivial kernel.
+That is, there may be a nonzero $r\in R$ which acts trivially on all simple $R$-modules.
+
+\bdefn
+
+    The {\emphcolor (left) Jacobson radical} of $R$ is the subset $J(R)\subseteq R$ consisting of all $r\in R$ for which $rE=0$ for all simple $R$-modules $E$.
+
+\edefn
+
+\blemm
+
+    \benum
+        \item The Jacobson radical is a two-sided ideal in $R$.
+        \item The Jacobson radical is equal to the intersection of all maximal left ideals in $R$.
+        \item Let $x\in R$, then $x\in J(R)$ iff $1-yx$ is left-invertible for all $y\in R$.
+    \eenum
+
+\elemm
+
+\bproof
+
+    \benum
+        \item Clearly $J(R)$ is a left ideal.
+        It is a right ideal because if $xE=0$ then $xrE=0$ as well ($rE\subseteq E$).
+        \item Let $\f M_R$ be the set of all maximal left ideals in $R$.
+        We know that every maximal left ideal in $R$ is of the form $\ann_R(e)=\set{r\in R}[re=0]$ for nonzero $e\in E$ where $E$ is simple.
+        (This was proven a while back.)
+        Now, $x\in J(R)$ if and only if it is in the annihlator of every simple $R$-module $E$.
+        That is, $x\in J(R)$ iff it is in $\ann_R(e)$ for every $e\in E$ for $e$ nonzero and $E$ simple.
+        Equivalently, $x\in J(R)$ iff it is every maximal left ideal, as required.
+        \item Note that $y\in R$ is left-invertible if and only if the left ideal generated by $y$ is all of $R$.
+        Equivalently, $y\in R$ is left-invertible iff it is not contained in any maximal left ideal.
+        So suppose $x\in J(R)$ and $y\in R$, then $1-yx$ cannot be in any maximal left ideal (let $I$ be a maximal ideal, then $x\in I$ so $yx\in I$, and
+        so if $1-yx\in I$ we get $1\in I$, a contradiction).
+        Thus $1-yx$ is left invertible.
+
+        Conversely suppose $x\notin J(R)$, then there exists a maximal ideal $I$ such that $x\notin I$.
+        Then $Rx+I=R$, so there exists a $y\in R,z\in I$ such that $yx+z=1$, i.e.\ $z=1-yx$.
+        But $z$ is not left-invertible, so $1-yx$ isn't.
+        \qed
+    \eenum
+
+\eproof
+
+\bprop
+
+    Let $R$ be a ring, then the following are equivalent:
+    \benum
+        \item $R$ is semisimple,
+        \item $R$ is left Artinian and $J(R)=0$.
+    \eenum
+
+\eprop
+
+\bproof
+
+    If $R$ is semisimple, we already know it is Artinian.
+    Furthermore, $J(R)=\ker\F$ which is an isomorphism so $J(R)=0$.
+
+    So now assume that $R$ is Artinian and $J(R)=0$.
+    Since $R$ is Artinian, it has a minimal left ideal $I_1\subseteq R$, which is thus a simple submodule.
+    Since $J(R)=0$, there is a maximal left ideal $\f m\subseteq R$ which does not include $I_1$.
+    Since $I_1$ is simple, $I_1\cap\f m=0$ and thus $R=I_1\oplus\f m$.
+    If $\f m=0$ then we are finished, otherwise find a simple submodule $I_2\subseteq\f m$ and a maximal left ideal $\f n\subseteq R$ such that
+    $R=I_2\oplus\f n$.
+    Then $\f m=I_2\oplus(\f n\cap\f m)$, and so $R=I_1\oplus I_2\oplus(\f m\cap\f n)$.
+    We can proceed, with $R=I_1\oplus\cdots\oplus I_n\oplus J_n$ with $J_{n+1}\subseteq J_n$.
+    Since $R$ is Artinian, eventually $J_n=0$ and we will have finished.
+    \qed
+
+\eproof
+
+\bexam
+
+    $\bZ$ and $\bF[X]$ are rings whose Jacobson radical is zero, but aren't semisimple (equivalently, not left Artinian).
+
+\eexam
+
+Note that a simple $R$-module $E$ can be seen as a $R/J(R)$-module.
+Indeed, $J(R)\subseteq\ann_R(E)$ so we can define $(x+J(R))e=xe$, so every simple $R$-module can also be seen as a $R/J(R)$-module.
+Since $R/J(R)$ is a quotient of $R$, every $R/J(R)$-module is also an $R$-module.
+Now let $E$ be a simple $R$-module, and as such it is a $R/J(R)$-module.
+It is simple as an $R/J(R)$-module: if $F\subseteq E$ is an $R/J(R)$-submodule, then it is also an $R$-module and thus is trivial.
+Now if $E$ is a simple $R/J(R)$-module, then let $F\subseteq E$ be an $R$-submodule.
+Since $\ann_R(E)\subseteq\ann_R(F)$, $J(R)\subseteq\ann_R(F)$ and so $F$ is also a $R/J(R)$-module, and as such is trivial.
+So $E$ is a simple $R$-module.
+
+So we have shown
+
+\bprop
+
+    $R$ and $R/J(R)$ have the same simple modules.
+
+\eprop
+
+\bcoro
+
+    Let $R$ be a ring, then $J(R/J(R))=0$.
+
+\ecoro
+
+\bproof
+
+    We know that $J(R/J(R))$ is the intersection of all the annihlators of $R/J(R)$-simple modules.
+    Since an $R/J(R)$-simple module is just an $R$-simple module, we get
+    $$ J(R/J(R)) = \bigcap_E\ann_{R/J(R)}(E) $$
+    where the intersection is over all the simple $R$-modules.
+    We know $(r+J(R))e=re$, and as such $\ann_{R/J(R)}(E)$ is equal to $\set{r+J(R)}[r\in\ann_R(E)]$.
+    This means that the intersection of all these annihlators is precisely $J(R)$.
+    So $J(R/J(R))=0$ (since $J(R)=0$ in $R/J(R)$).
+    \qed
+
+\eproof
+
+\bcoro
+
+    If $R$ is left Artinian, then $R/J(R)$ is semisimple.
+
+\ecoro
+
+\bproof
+
+    $R/J(R)$ is left Artinian, and we showed its Jacobson radical is zero.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Let $R$ be a left Artinian ring and $E_1,\dots,E_n$ list all non-isomorphic simple $R$-modules.
+    Then the ring morphism
+    $$ \F\colon R\to\prod_{i=1}^n\endo_{D_{E_i}}(E_i) $$
+    is surjective.
+
+\ecoro
+
+\bproof
+
+    We know that $\F$ quotients over its kernel, which is $J(R)$.
+    This quotient is precisely the Fourier transform of $R/J(R)$, which is semisimple.
+    (This is because $E_1,\dots,E_n$ list all the simple $R/J(R)$-modules too.)
+    Since the Fourier transform of a semisimple ring is an isomorphism, the quotient is surjective, and thus so too is $\F$.
+    \qed
+
+\eproof
+
+\blemm[title=Nakayama]
+
+    Let $M$ be a finitely generated $R$-module.
+    If $J(R)M=M$ then $M=0$.
+
+\elemm
+
+\bproof
+
+    Let $v_1,\dots,v_n$ generate $M$ as an $R$-module, so $M=Rv_1+\cdots+Rv_n$.
+    We know that $J(R)M=M$, and so $M=J(R)Rv_1+\cdots+J(R)Rv_n$.
+    $J(R)$ is a two-sided ideal, so $M=J(R)v_1+\cdots+J(R)v_n$.
+    In particular $v_1=x_1v_1+\cdots+x_nv_n$ for $x_i\in J(R)$, and so $(1-x_1)v_1=x_2v_2+\cdots+x_nv_n$.
+    But since $1-x_1$ is left invertible as $x_1\in J(R)$, we get $v_1\in Rv_2+\cdots+Rv_n$.
+    And so $v_2,\dots,v_n$ generates $M$.
+    We can then continue and iteratively remove vectors from this generating set to see that $M$ is generated by the
+    empty set, $M=0$.
+    \qed
+
+\eproof
+
+\bprop
+
+    \benum
+        \item Every nilpotent left ideal in $R$ is contained in $J(R)$.
+        \item If $R$ is left Artinian, then $J(R)$ is nilpotent.
+    \eenum
+
+\eprop
+
+\bproof
+
+    \benum
+        \item Let $I\subseteq R$ be a nilpotent ideal, i.e.\ $I^n=0$.
+        Let $E$ be a simple $R$-module, then if $IE\neq0$, since $E$ is simple we obtain $IE=E$.
+        (Note that $IE=\set{\sum_{j=1}^ni_je_j}[i_j\in I,e_j\in E]$.)
+        But then inductively $I^kE=E$, and in particular $0=I^nE=E$, a contradiction.
+        So $IE=0$ and thus $I\subseteq\ann_R(E)$, and so $I\subseteq J(R)$ as required.
+
+        \item Consider $J(R)^n$ for $n\geq1$.
+        They form a decreasing sequence, and since $R$ is left Artinian, must be finite.
+        That is $J(R)^{n+k}=J(R)^n$ for some $n$ and all $k\geq0$.
+        Let $I=J(R)^n$, we claim that it is zero.
+        Notice that we have $J(R)^kI=J(R)^{n+k}=I$ for all $k\geq0$, in particular for $k=1$: $J(R)I=I$ and $k=n$: $II=I$.
+
+        So let us assume that $I\neq0$.
+        Let $\c J$ be the set of left ideals $J\subseteq R$ for which $IJ\neq0$.
+        $\c J$ is nonempty (since it contains $R$), and since $R$ is Artinian, contains minimal elements.
+        Let $J_0\in\c J$ be minimal.
+        Notice that $IJ_0\in\c J$ since $I(IJ_0)=IIJ_0=IJ_0\neq0$, and since $IJ_0\subseteq J_0$ we must have $J_0=IJ_0$.
+        Then we have $J(R)J_0=J(R)(IJ_0)=IJ_0=J_0$.
+        Now if we can show that $J_0$ is finitely generated, by Nakayama we have $J_0=0$, a contradiction.
+
+        Since $IJ_0\neq0$, let $x\in J_0$ such that $Ix\neq0$, and thus $Rx\in\c J$.
+        By $J_0$'s minimality, $Rx=J_0$, so $J_0$ is indeed finitely generated and we are finished.
+        \qed
+    \eenum
+
+\eproof
+
+\bcoro
+
+    If $R$ is commutative then $J(R)$ contains all nilpotent elements.
+    If $R$ is Artinian, then every element in $J(R)$ is nilpotent.
+    Therefore if $R$ is commutative and Artinian, $J(R)$ contains precisely all nilpotent elements.
+
+\ecoro
+
+\bproof
+
+    Let $x\in R$ be nilpotent.
+    Then $Rx\subseteq R$ is a nilpotent ideal: if $x^n=0$ then $(rx)^n=r^nx^n=0$ for all $rx\in Rx$.
+    Thus by above $x\in Rx\subseteq J(R)$ as required.
+
+    If $R$ is Artinian, then $J(R)$ is itself nilpotent, and as such for every $x\in J(R)$, $x^n\in J(R)=0$.
+    So $x$ is nilpotent.
+    \qed
+
+\eproof
+
+Now, let $R$ be a finite-dimensional $\bF$-alegbra.
+Given $x\in R$ consider the $\bF$-linear transformation $m_x\colon R\to R$ given by $y\mapsto xy$.
+Let $\tr_R(x)$ be the trace of this linear transformation (which is well-defined as in linear algebra).
+Then define the function
+$$ (\bullet,\bullet)\colon R\times R\to R,\qquad (x,y)=\tr_R(xy) $$
+This is a symmetric bilinear form: this is because $m_{xy}=m_xm_y,m_{x+y}=m_x+m_y,m_{\alpha x}=\alpha m_x$ (and $\tr_R(m_xm_y)=\tr(m_ym_x)$).
+The {\bf radical} (or {\bf kernel}) of a bilinear form is given by
+$$ \set{x\in R}[(x,y)=0\hbox{ for all $y\in R$}] $$
+
+\bprop
+
+    Suppose $R$ is a finite-dimensional $\bF$-algebra.
+    Then $J(R)$ is contained in the radical of the symmetric bilinear form $(x,y)=\tr_R(xy)$.
+    In particular, if this bilinear form is nondegenerate then $R$ is semisimple.
+
+\eprop
+
+\bproof
+
+    Since $R$ is a finite-dimensional $\bF$-algebra it is Artinian (submodules are $\bF$-spaces), and so $J(R)$ is nilpotent, and thus contains only
+    nilpotent elements.
+    Let $x\in J(R)$ then for any $y\in R$ we have $xy\in J(R)$, and so $xy$ is nilpotent.
+    This means that $m_{xy}$ is nilpotent, and so $\tr_R(xy)=\tr(m_{xy})=0$.
+    So $x$ is in the radical of the bilinear form.
+
+    If the bilinear form is nondegenerate, then its radical is zero, and thus $J(R)=0$.
+    Since $R$ is Artinian, this means $R$ is semisimple.
+    \qed
+
+\eproof
+
+Now we can prove Maschke once more!
+
+\bproof[Maschke]
+
+    We recall that $G$ is a finite group and $\abs G\in\bF^\times$.
+    We want to show finite dimensional representations over $G$ are semisimple.
+    Since $G$-representations can be thought of $\bF[G]$-modules, it is sufficient to show that finite-dimensional $\bF[G]$-modules are semisimple.
+    A finite-dimensional $\bF[G]$-module is a quotient of $\bF[G]^n$, which is semisimple if $\bF[G]$ is.
+    Thus it is sufficient to prove that $\bF[G]$ is semisimple.
+
+    By the above proposition, it is sufficient to show that the bilinear form $(x,y)=\tr_{\bF[G]}(xy)$ is nondegenerate.
+    Given $g\in G$, $m_{\delta_g}(\delta_h)=\delta_{gh}$, which means that the matrix representation of $m_{\delta_g}$ is a permutation matrix.
+    This permutation has no fixed points if $g\neq1$ and is the identity if $g=1$.
+    As such $\tr_{\bF[G]}(\delta_g)=0$ if $g\neq1$ and $\tr_{\bF[G]}(\delta_1)=\abs G$.
+    All in all, we have
+    $$ \parens{\sum_gc_g\delta_g,\delta_h} = \sum_gc_g\tr_{\bF[G]}(\delta_{gh}) = \abs Gc_{h^{-1}} $$
+    So if $x=\sum_gc_g\delta_g\neq0$, let $c_g\neq0$, and then $(x,c_{g^{-1}})\neq0$.
+    So the bilinear form is indeed non-degenerate, as required.
+    \qed
+
+\eproof
+
