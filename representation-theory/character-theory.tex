@@ -1,0 +1,648 @@
+\section{Character Theory}
+
+We fix a finite group $G$ and a field $\bF$ whose characteristic does not divide the order of $G$.
+
+\subsection{Definition and orthogonality}
+
+Given a $G$-representation $V$, we will sometimes write $g_V$ for the image of $g\in G$ in this representation (e.g.\ $g_V=\rho(g)$).
+
+\bdefn
+
+    Let $V$ be a finite-dimensional $G$-representation.
+    The {\emphcolor character} of this representation is the function $\ch_V\in\St(G,\bF)$ given by
+    $$ \ch_V(g) = \tr(g_V) $$
+    i.e.\ $\ch_V(g)$ is the trace of $g$ in $V$.
+
+\edefn
+
+\bdefn
+
+    The space of {\emphcolor class functions} on $G$ is the set $\St(G,\bF)^\cl\subseteq\St(G,\bF)$ consisting of all functions constant on conjugacy classes of $G$,
+    that is functions $f\in\St(G,\bF)$ such that $f(hgh^{-1})=f(g)$ (equivalently $f(hg)=f(gh)$) for all $g,h\in G$.
+
+\edefn
+
+Clearly every character of $G$ is a class function: $\ch_V(hgh^{-1})=\tr(h_Vg_Vh^{-1}_V)=\tr(g_V)$, since similar transformations have equal traces.
+
+\bexam
+
+    Let $\chi\colon G\to\bF^\times$ be a character (in the previous sense, a group homomorphism).
+    Then $\ch_{\bF_\chi}=\chi$.
+
+\eexam
+
+\bexam
+
+    Let $X$ be a finite $G$-set, and recall the standard $G$-representation on $\bF[X]$.
+    Using $X$ as a basis, the representation matrix of $g\in G$ is its associated permutation matrix on $X$, a $1$ on the diagonal corresponds to a fixed point of $X$ under $g$.
+    Thus, $\ch_{\bF[X]}(g)$ is equal to the number of fixed points of $g$.
+
+\eexam
+
+\bdefn
+
+    Notice that function multiplication on $\St(G,\bF)$ can be defined pointwise: $(f_1\cdot f_2)(g)=f_1(g)\cdot f_2(g)$.
+    This restricts to multiplication in $\St(G,\bF)^\cl$ (i.e.\ the pointwise product of two class functions is another class function).
+
+\edefn
+
+\blemm
+
+    Let $V,W$ be finite $G$-representations, then
+    $$ \ch_{V\otimes W}=\ch_V\cdot\ch_W $$
+    We write $V\otimes W$ for $V\otimes_\bF W$.
+
+\elemm
+
+\bproof
+
+    Let $(e_i)_{i\in I}$ be a basis for $V$ and $(f_j)_{j\in J}$ a basis for $W$.
+    Write $ge_i=\sum_{i'}c_{ii'}e_{i'}$ and $gf_j=\sum_{j'}d_{jj'}f_{j'}$.
+    Then $(e_i\otimes f_j)_{i\in I,j\in J}$ is a basis for $V\otimes W$, and
+    $$ g(e_i\otimes f_j) = ge_i\otimes gf_j = \parens{\sum_{i'}c_{ii'}e_{i'}}\otimes\parens{\sum_{j'}d_{jj'}f_{j'}} = \sum_{i',j'}c_{ii'}d_{jj'}e_{i'}\otimes f_{j'} $$
+    Thus
+    $$ \ch_{V\otimes W}(g) = \tr_{V\otimes W}(g) = \sum_{i\in I,j\in J}c_{ii}d_{jj} = \sum_ic_{ii}\cdot\sum_jd_{jj} = \ch_V(g)\cdot\ch_W(g) $$
+    as required.
+    \qed
+
+\eproof
+
+\bdefn
+
+    For a function $f\in\St(G,\bF)$, define its {\emphcolor dual} $f^*\in\St(G,\bF)$ by $f^*(g)=f(g^{-1})$.
+    Note that this again restricts to class functions as well.
+
+\edefn
+
+\blemm
+
+    Let $V$ be a finite-dimensional $G$-representation, and let $V^*$ be its dual space.
+    Then $\ch_{V^*}=\ch_V^*$.
+
+\elemm
+
+\bproof
+
+    Let $(e_i)_{i\in I}$ be a basis for $V$ and let $(e_i^*)_{i\in I}$ be its dual basis in $V^*$.
+    Write $g^{-1}e_j=\sum_ic_{ji}e_i$.
+    Then $ge_i^*(e_j)=e_i^*(g^{-1}e_j)=c_{ji}$, meaning $ge_i^*=\sum_jc_{ji}e_j^*$, so
+    $$ \ch_{V^*}(g) = \sum_ic_{ii} = \ch_V(g^{-1}) $$
+    as required.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Let $V,W$ be finite-dimensional $G$-representations.
+    Then
+    $$ \ch_{\hom(V,W)} = \ch_V^*\cdot\ch_W $$
+
+\ecoro
+
+\bproof
+
+    This follows from the previous two lemmas, as $\hom(V,W)\cong V^*\otimes W$.
+    \qed
+
+\eproof
+
+\bdefn
+
+    For $f\in\St(G,\bF)$, define $\av(f)\in\bF$ by
+    $$ \av(f) = \frac1{\abs G}\sum_{g\in G}f(g) $$
+
+\edefn
+
+\blemm
+
+    For a finite-dimensional $G$-representation $V$: $\av(\ch_V)=\dim V^G$.
+
+\elemm
+
+\bproof
+
+    Recall the averaging operator $\av_V^G\colon V\to V$,
+    $$ \av_V^G(v) = \frac1{\abs G}\sum_{g\in G}gv $$
+    As it is a projection operator on $V^G$, we have $\tr_V(\av_V^G)=\dim V^G$.
+    But
+    $$ \tr_V(\av_V^G) = \frac1{\abs G}\sum_{g\in G}\tr_V(g) = \frac1{\abs G}\sum_{g\in G}\ch_V(g) = \av(\ch_V) $$
+    as required.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Define the symmetric bilinear form $(\bul,\bul)$ on $\St(G,\bF)$ by
+    $$ (f_1,f_2) = \av(f_1^*\cdot f_2) = \frac1{\abs G}\sum_{g\in G}f_1(g^{-1})f_2(g) $$
+
+\edefn
+
+This being symmetric and bilinear are obvious (for symmetry, note that $\av(f)=\av(f^*)$ and $(f_1^*\cdot f_2)^*=f_2^*\cdot f_1$).
+
+\bcoro
+
+    Let $V,W$ be finite-dimensional $G$-representations.
+    Then
+    $$ \dim\hom_G(V,W) = (\ch_V,\ch_W) $$
+
+\ecoro
+
+\bproof
+
+    Note that $\hom_G(V,W)=\hom(V,W)^G$ and as such
+    $$ \dim\hom_G(V,W) = \av(\ch_{\hom(V,W)}) = \av(\ch_V^*\cdot\ch_W) = (\ch_V,\ch_W) \qed $$
+
+\eproof
+
+As such, we have almost immediately:
+
+\bcoro
+
+    Let $E,F$ be irreducible $G$-representations.
+    Then
+    $$ (\ch_E,\ch_F) = \cases{d_E&$E\cong F$\cr0&else} $$
+    where $d_E\in\bZ_{\geq1}$ is the dimension of the division algebra $\endo_G(E)$.
+
+\ecoro
+
+\bproof
+
+    We know $(\ch_E,\ch_F)=\dim\hom_G(E,F)$.
+    Since $E,F$ are irreducible, by Schur $\hom_G(E,F)\cong\endo_G(E)$ iff $E\cong F$ and $\hom_G(E,F)=0$ otherwise.
+    \qed
+
+\eproof
+
+Note that, depending on the characteristic of our field $\bF$, we may have that $(\ch_E,\ch_F)=0$ even if $E\cong F$ (since $d_E$ may be $0$ in $\bF$).
+But if $\bF$ is algebraically closed then we know $\endo_G(E)\cong\bF$, as such:
+
+\bcoro
+
+    Let $E,F$ be irreducible $G$-representations over $\bF$ algebraically closed.
+    Then
+    $$ (\ch_E,\ch_F) = \cases{1&$E\cong F$\cr0&else} $$
+
+\ecoro
+
+\bcoro
+
+    If $\bF$ is algebraically closed, and $E_1,\dots,E_n$ be an exhaustive, non-isomorphic, list of all irreducible $G$-representations.
+    Then $\ch_{E_1},\dots,\ch_{E_n}\in\St(G,\bF)^\cl$ are linearly independent.
+
+\ecoro
+
+\bproof
+
+    Suppose $\sum_ic_i\ch_{E_i}=0$, then by orthogonality we have
+    $$ c_j = \parens{\sum_ic_i\ch_{E_i},\ch_{E_j}} = (0,\ch_{E_j}) = 0 $$
+    so $\ch_{E_1},\dots,\ch_{E_n}$ are indeed linearly independent.
+    \qed
+
+\eproof
+
+\bthrm
+
+    If $\bF$ is algebraically closed and $E_1,\dots,E_n$ an exhaustive list of irreducible $G$-representations.
+    Then $\ch_{E_1},\dots,\ch_{E_n}$ form a basis for $\St(G,\bF)^\cl$.
+
+\ethrm
+
+\bproof
+
+    We showed that the characters of $E_i$ are linearly independent.
+    Furthermore, we showed earlier that $\dim\St(G,\bF)^\cl=n$ (which is equal to the number of conjugacy classes of $G$).
+    Thus these characters must also span $\St(G,\bF)^\cl$, and as such they form a basis.
+    \qed
+
+\eproof
+
+For functions $f_1,f_2\in\St(G,\bF)$ we define $f_1+f_2$ pointwise as well.
+This again restricts to class functions.
+It is not hard to see that
+$$ \ch_{V\oplus W}=\ch_V+\ch_W $$
+
+\bprop
+
+    Suppose $\bF$ has characteristic $0$.
+    Let $V,W$ be finite-dimensional $G$-representations.
+    Then $V$ is isomorphic to $W$ if and only if $\ch_V=\ch_W$.
+
+\eprop
+
+\bproof
+
+    Clearly isomorphic $G$-representations have the same character.
+    Conversely, suppose $\ch_V=\ch_W$.
+    To show that $V\cong W$ it is sufficient to show that for every irreducible $E$, $[V:E]=[W:E]$ (since they are the sum of irreducibles).
+    Note that we have
+    $$ [V:E] = \dim\hom_G(V,E) = (\ch_V,\ch_E) = (\ch_W,\ch_E) = \dim\hom_G(W,E) = [W:E] $$
+    This is equality in $\bF$, but since it has characteristic $0$, it is equality in $\bZ$ as well.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $E$ be an irreducible $G$-representation over algebraically closed $\bF$.
+    Then the characteristic of $\bF$ does not divide $\dim_{\bF}E$.
+
+\eprop
+
+\bproof
+
+    Let $f\in\St(G,\bF)^\cl$ and define $d=\sum_{g\in G}f(g)\delta_g\in Z(\bF[G])$.
+    The action of $d$ on $E$ defines $T_d\in\endo_G(E)$, and so by Schur $T_d$ is scalar multiplication.
+    Thus the trace of $T_d$ is a multiple of $\dim_{\bF}E$.
+    If the characteristic of $\bF$ divides this dimension, this would mean $\tr(T_d)=0$.
+    But
+    $$ \tr(T_d) = \sum_{g\in G}f(g)\ch_E(g) = (f^*,\ch_E) $$
+    So let $f=\ch_E^*$, then we get $\tr(T_d)=(\ch_E,\ch_E)=1$.
+    But this contradicts $\tr(T_d)=0$.
+    \qed
+
+\eproof
+
+Recall that for an irreducible $G$-representation $E$ over an algebraically closed field $\bF$, we define $e_E\in Z(\bF[G])$ which acts by the identity on $E$ and $0$ on all other non-isomorphic
+irreducible representations.
+Equivalently, $e_E$ is the unique element whose action on every $G$-representation $V$ is projection onto $V_E$.
+Recall that we had a formula for $e_E$ in the commutative case.
+
+\bprop
+
+    $$ e_E = \frac{\dim_\bF E}{\abs G}\sum_{g\in G}\ch_E(g^{-1})\delta_g $$
+
+\eprop
+
+\bproof
+
+    We will take $e_E$ to be this formula, and show that it has the desired property.
+    Let $F$ be an irreducible $G$-representation, given by the homomorphism $\rho\colon\bF[G]\to\endo_\bF(F)$.
+    Now, we have that $\rho(e_E)\in\endo_G(F)$: (we show this for $e'_E=\abs G/\dim_\bF Ee_E$)
+    $$ \rho(e'_E)\rho(\delta_h) = \sum_{g\in G}\ch_E(g^{-1})\rho(\delta_{gh}) = \sum_g\ch_E(hg^{-1})\rho(\delta_g) = \sum_g\ch_E(g^{-1}h)\rho(\delta_g) $$
+    which is $\rho(\delta_h)\rho(e'_E)$.
+    Thus by Schur, $\rho(e_E)$ is scalar multiplication.
+
+    We showed that $\dim_\bF F\neq0$ in $\bF$.
+    As such, if $\tr(\rho(e_E))=0$ in $\bF$, then $\rho(e_E)=0$, and if $\tr(\rho(e_E))=\dim_\bF F$ then $\rho(e_E)={\rm id}$.
+    So we want to show that if $F$ is not isomorphic to $E$ then $\tr(\rho(e_E))$, and if $E\cong F$ then $\tr(\rho(e_E))=\dim_\bF E$.
+    Indeed:
+    $$ \tr(\rho(e_E)) = \frac{\dim_\bF E}{\abs G}\sum_{g\in G}\ch_E(g^{-1})\tr(\rho(g)) = \frac{\dim_\bF E}{\abs G}\sum_{g\in G}\ch_E(g^{-1})\ch_F(g) = \dim_\bF E\cdot(\ch_E,\ch_F) $$
+    So we have the desired result.
+    \qed
+
+\eproof
+
+Note that in the case $\bF=\bC$, we can also define the Hermitian form (inner product):
+$$ \gen{f_1,f_2} = \frac1{\abs G}\sum_{g\in G}f_1(g)\overline{f_2(g)} $$
+We claim that we have $(\ch_V,\ch_W)=\gen{\ch_V,\ch_W}$.
+Indeed, this is because $\ch_W(g^{-1})=\overline{\ch_W(g)}$; consider the eigenvalues $\set{\lambda_i}_i$ (with multiplicity) of $g_W$, since $g_W^{\abs W}={\rm id}$, these are all roots of unity.
+As such $\lambda_i^{-1}=\overline\lambda_i$.
+The eigenvalues of $g^{-1}_W$ are $\set{\lambda_i^{-1}}_i$, and thus
+$$ \ch_W(g^{-1}) = \sum_i\lambda_i^{-1} = \sum_i\overline\lambda_i = \overline{\sum_i\lambda_i} = \overline{\ch_W(g)} $$
+
+The benefit of using the inner product is that it can generalize to topological groups on Hilbert spaces.
+The bilinear form has the benefit of generalizing to other fields.
+
+\bprop
+
+    The bilinear form $(\bul,\bul)$ on $\St(G,\bF)$, and its restriction to the set of class functions, is nondegenerate.
+
+\eprop
+
+\bproof
+
+    Let $f\in\St(G,\bF)$.
+    If $(f,f')=0$ for all $f'\in\St(G,\bF)$ then in particular we have $(f,\delta_g^*)=0$ for all $g\in G$.
+    But by definition
+    $$ (f,\delta_g^*) = \frac1{\abs G}f(g) $$
+    and so $f(g)=0$ for all $g\in G$, so $f=0$.
+    So the bilinear form is non-degenerate on $\St(G,\bF)$.
+
+    Now we consider its restriction to $\St(G,\bF)^\cl$.
+    Consider
+    $$ \av\colon\St(G,\bF)\to\St(G,\bF)^\cl,\qquad \av(f)(g) = \frac1{\abs G}\sum_{h\in G}f(hgh^{-1}) $$
+    We quickly check that this is a projection operator onto $\St(G,\bF)^\cl$.
+    Furthermore, we have
+    $$ (\av(f),f') = (f,\av(f')) $$
+    Now suppose $f\in\St(G,\bF)^\cl$ with $(f,f')=0$ for all $f'\in\St(G,\bF)^\cl$.
+    Then for every $f'\in\St(G,\bF)$ we have
+    $$ (f,f') = (\av(f),f') = (f,\av(f')) = 0 $$
+    And so $f=0$ by the non-degeneracy of the bilinear form on $\St(G,\bF)$.
+    \qed
+
+\eproof
+
+\subsection{Integral elements}
+
+We will assume that $\bF$ is algebraically closed.
+
+\bdefn
+
+    An element $a$ in a ring $R$ is {\emphcolor integral} if it is the root of some monic polynomial $f\in\bZ[x]$.
+
+\edefn
+
+If $a\in S$ is integral and $S\subseteq R$, clearly $a\in R$ is integral.
+
+\blemm
+
+    Let $R$ be a ring and $a\in R$, then $a$ is integral iff $\bZ[a]\subseteq R$, defined to be the $\bZ$-span of $\set{1,a,a^2,\dots}$, is a finitely generated $\bZ$-module.
+
+\elemm
+
+\bproof
+
+    If $a$ is integral, then suppose $f\in\bZ[x]$ is monic with $f(a)=0$.
+    Suppose its degree is $n$, then $a^n\in\lspan_\bZ\set{1,\dots,a^{n-1}}$, and so we see that the span of $\set{1,a,\dots}$ is equal to the span of $\set{1,\dots,a^{n-1}}$.
+
+    Conversely, suppose $\lspan_\bZ\set{a^k}_k$ is finitely generated.
+    Notice that $\bZ[a]$ can be equivalently written as $\set{f(a)}[{f\in\bZ[x]}]$, and so if it is finitely generated, it can be generated by a set of the form $\set{1,\dots,a^{n-1}}$ (take $n-1$ to be the maximum
+    degree of polynomials in the generating set).
+    So $a^n$ can be expressed as a $\bZ$-linear combination of elements $1,\dots,a^{n-1}$, and so $a$ is integral.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Let $R$ be a ring, finitely-generated as a $\bZ$-module.
+    Then all elements of $R$ are integral.
+
+\ecoro
+
+\bproof
+
+    Let $a\in R$, then $\bZ[a]\subseteq R$ is a $\bZ$-submodule.
+    Since $\bZ$ is Noetherian, submodules of finitely generated modules are also finitely generated.
+    As such $\bZ[a]$ is finitely generated; the result follows from the previous lemma.
+    \qed
+
+\eproof
+
+\bprop
+
+    The subset of integral elements of a commutative ring is a subring.
+
+\eprop
+
+\bproof
+
+    Clearly $0,1\in R$ are integral.
+    Now if $a,b\in R$ are integral, say $\bZ[a]=\lspan_\bZ\set{1,\dots,a^n}$ and $\bZ[b]=\lspan_\bZ\set{1,\dots,b^m}$.
+    Then by commutativity, $\bZ[a,b]=\lspan_\bZ\set{a^kb^\ell}_{k\leq n,\ell\leq m}$ is finitely-generated.
+    Now we clearly have $\bZ[a+b],\bZ[ab]\subseteq\bZ[a,b]$, and since $\bZ$ is Noetherian, these must be finitely-generated too.
+    \qed
+
+\eproof
+
+\bexam
+
+    The subring of integral elements of $\bQ$ is $\bZ$.
+
+\eexam
+
+A clear property of integral elements is that they are preserved under ring morphisms: if $a\in R$ is integral and $\phi\colon R\to S$ is a morphism, then $\phi(a)\in S$ is integral.
+In particular what this means is that every integer in a ring is integral.
+Explicitly, let $n\in\bZ$, then $n$ is clearly integral in $\bZ$.
+Let $\phi\colon\bZ\to R$ be the canonical morphism, then $\phi(n)\in R$ is integral.
+
+\blemm
+
+    \benum
+        \item Let $d=\sum_{g\in G}c_g\delta_g\in\bF[G]$, and suppose that $c_g$ are all integers.
+        Then $d$ is integral.
+        \item Let $d=\sum_{g\in G}c_g\delta_g\in Z(\bF[G])$, and suppose that $c_g$ are all integral in $\bF$.
+        Then $d$ is integral.
+    \eenum
+
+\elemm
+
+\bproof
+
+    \benum
+        \item $d$ clearly lies in the obvious morphism $\bZ[G]\to\bF[G]$, and every element of $\bZ[G]$ is integral since $\bZ[G]$ is a finitely-generated $\bZ$-module.
+        \item Note that each $\delta_g$ is integral by the previous point, and $c_g\in\bF\subseteq\bF[G]$ are integral.
+        $Z(\bF[G])$ is commutative, and so its subring of integral elements forms a subring.
+        Thus $d$ must be integral, as the sum and product of integral elements.
+        \qed
+    \eenum
+
+\eproof
+
+\blemm
+
+    Let $V$ be a finite-dimensional $G$-representation.
+    Then for every $g\in G$, $\ch_V(g)\in\bF$ is integral.
+
+\elemm
+
+\bproof
+
+    Since $g^n=1$ in $G$, $g^n_V={\rm id}_V$ for some $n$.
+    Thus the eigenvalues of $g_V$ are all roots of unity, which are clearly integral.
+    Since $\ch_V(g)$ is the sum of these integral elements, and $\bF$ is commutative, $\ch_V(g)$ must be integral.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $E$ be an irreducible $G$-representation, then $\dim E$ divides $\abs G$.
+
+\eprop
+
+\bproof
+
+    We will prove this for the case that ${\rm char}\bF=0$.
+
+    Let $\rho\colon\bF[G]\to\endo(E)$ be the $\bF$-algebra morphism corresponding to $G$'s action on $E$.
+    Recall the central idempotent
+    $$ e_E = \frac{\dim E}{\abs G}\sum_{g\in G}\ch_E(g^{-1})\delta_g \in Z(\bF[G]) $$
+    This acts by identity on $E$, and so
+    $$ d = \sum_{g\in G}\ch_E(g^{-1})\delta_g \in Z(\bF[G]) $$
+    acts as multiplication by $\lambda=\abs G/\dim E$ on $E$.
+    Thus $\rho(d)=\lambda{\rm id}_E$ is integral in $\bF\cdot{\rm id}_E\subseteq\endo(E)$.
+    Thus $\lambda\in\bF$ (identified with $\rho(d)\in\bF\cdot{\rm id}_E\cong\bF$) is integral.
+    So $\lambda=\abs G/\dim E\in\bQ\subseteq\bF$ is integral, which means it must be an integrer, so $\dim E$ divides $\abs G$.
+    \qed
+
+\eproof
+
+We can strengthen this result.
+
+\bdefn
+
+    Let $V$ be a $G$-representation and $W$ an $H$-representation.
+    Their {\emphcolor outer tensor product} is the $G\times H$-representation $V\boxtimes_\bF H$, whose base vector space is $V\otimes_\bF H$, but with an action given by
+    $$ (g,h)(v\otimes w) = (gv)\otimes(hw) $$
+
+\edefn
+
+Note that if $V,W$ are both $G$-representations then composing the diagonal morphism $G\to G\times G$ with the representation $G\times G\to\endo(V\boxtimes_\bF W)$ gives the
+canonical $G$-representation $V\otimes_\bF W$.
+
+\bprop
+
+    Let $E_1,E_2$ be irreducible representations of the finite groups $G_1,G_2$ respectively.
+    Then $E_1\boxtimes E_2$ is an irreducible representation of $G_1\times G_2$.
+
+\eprop
+
+Using this we can show
+
+\bprop
+
+    Let $E$ be an irreducible $G$-representation.
+    Then $\dim E$ divides $[G:Z(G)]$.
+
+\eprop
+
+\bproof
+
+    Let us write $A=Z(G)$.
+    For $m\geq1$ consider the irreducible representation $E^{\boxtimes m}=E\boxtimes_\bF\cdots\boxtimes_\bF E$ of $G^m=G\times\cdots\times G$.
+    Let us consider the subgroup $A_m$ of $A^m$ given by all tuples $(a_1,\dots,a_m)\in A^m$ for which $a_1\cdots a_m=1$ (this is clearly a subgroup).
+
+    $A$ acts on $E$ by scalars (Schur), i.e.\ there exists a character $\chi\colon A\times\bF^\times$ such that $a\cdot v=\chi(a)v$ for $a\in A,v\in E$.
+    Then $A^m$ acts on $E^{\boxtimes m}$ by $(a_1,\dots,a_m)\cdot(v_1\otimes\cdots\otimes v_m)=\chi(a_1\cdots a_m)(v_1\otimes\cdots\otimes v_m)$ (by linearity and $\chi$ being a morphism).
+    This means that $A_m$ acts trivially on $E^{\boxtimes m}$.
+
+    In general if $H$ is a normal subgroup of $G$ which acts trivially on $V$, then $V$ can be given a natural $G/H$-representation, which preserves things like irreducibility.
+    $A_m$, as a subgroup of $A^m$, in turn a subgroup of $Z(G^m)$, is normal in $G^m$.
+    Thus $E^{\boxtimes m}$ has a natural $G/A_m$-representation, and is irreducible.
+    Thus we have that $\dim E^{\boxtimes m}=(\dim E)^m$ divides $\abs{G^m/A_m}=\abs G^m/\abs{A_m}=\abs G^m/\abs A^{m-1}$ (clearly by construction $\abs{A_m}=\abs A^{m-1}$).
+
+    Given a prime $p$ and an integer $n$, let $v_p(n)$ be the number of times $p$ divides $n$.
+    Clearly we have $v_p(n^k)=kv_p(n)$ and if $n$ divides $m$ then $v_p(n)\leq v_p(m)$ (in general $v_p(nm)=v_p(n)+v_p(m)$), so
+    $$ mv_p(\dim E) \leq v_p(\abs G^m / \abs A^{m-1}) = mv_p(\abs G) - (m-1)v_p(\abs A) $$
+    Thus
+    $$ v_p(\dim E) \leq v_p(\abs G/\abs A) + \frac1mv_p(\abs A) = v_p([G:Z(G)]) + \frac1mv_p(\abs A) $$
+    Letting $m\to\infty$ we get $v_p(\dim E)\leq v_p([G:Z(G)])$ for all prime $p$.
+    Thus we must have that $\dim E$ divides $[G:Z(G)]$.
+    \qed
+
+\eproof
+
+\subsection{Burnside's Theorem}
+
+We will prove the following theorem:
+
+\bthrm[title=Burnside]
+
+    If $G$ is a finite group whose order has at most two prime divisors, then $G$ is solvable.
+
+\ethrm
+
+This theorem's statement does not mention representation at all, yet its proof will utilize it.
+
+We will call integral elements of $\bC$ {\it algebraic integers}.
+
+\blemm
+
+    Let $\zeta_1,\dots,\zeta_n\in\bC^\times$ be roots of unity, then
+    \benum
+        \item The average $(\zeta_1+\cdots+\zeta_n)/n$ has modulus in $[0,1]$, and $1$ is attained iff $\zeta_1=\cdots=\zeta_n$.
+        \item The average $(\zeta_1+\cdots+\zeta_n)/n$ is an algebraic integer iff it is zero or $\zeta_1=\cdots=\zeta_n$.
+    \eenum
+
+\elemm
+
+\bproof
+
+    \benum
+        \item Clearly we have $\abs{(\zeta_1+\cdots+\zeta_n)/n}\leq(\abs{\zeta_1}+\cdots+\abs{\zeta_n})/n=1$ with equality occurring meaning that all $\zeta_i$ are real scalar multiples of one another by Cauchy-Schwarz.
+        Since these are roots of unity, they are real scalar multiples iff they differ only by sign.
+        The result follows.
+
+        \item By the previous point, it is sufficient to show that the average is an algebraic integer iff its modulus is $0$ or $1$.
+        Let $a$ be the average, suppose it is not zero, then consider the Galois extension $K=\bQ[\zeta_1,\dots,\zeta_n]/\bQ$ (it is Galois as it is the compositum of Galois extensions), which defines the norm
+        $$ N\colon K^\times\to\bQ^\times,\qquad N(x) = \prod_{\sigma\in{\rm Gal}(K/\bQ)}\sigma(x) $$
+        In particular, $N(a)\in\bQ$.
+        Furthermore, if $a$ is an algebraic integer, so is every $\sigma(a)$, and thus so is $N(a)$ as their product.
+        Therefore $N(a)\in\bZ$, and is nonzero.
+        Furthermore, $\sigma(a)$ must also be an average of roots of unity (since $\sigma(\zeta_i)$ is a root of unity), thus its modulus is in $[0,1]$.
+        Therefore the modulus (now absolute value) of $N(a)$ is in $[0,1]$; since it is a nonzero integer it must be $1$.
+        Thus the modulus of every $\sigma(a)$ must be $1$; in particular $\abs a=1$ as required.
+        \qed
+    \eenum
+
+\eproof
+
+We denote by $C_g$ the conjugacy class of an element $g\in G$.
+
+\blemm
+
+    Let $E$ be an irreducible $G$-representation over $\bC$.
+    Let $g\in G$ and suppose that $\abs{C_g}$ and $\dim E$ are relatively prime.
+    Then either $\ch_E(g)=0$ or $g$ acts on $E$ by scalar.
+
+\elemm
+
+\bproof
+
+    Let $\rho\colon\bC[G]\to\endo(E)$ be the $\bC$-algebra morphism corresponding to $G$'s action on $E$.
+    Define
+    $$ d = \sum_{h\in C_g}\delta_h \in Z(\bC[G]) $$
+    By Schur, $\rho(d)$ is scalar multiplication on $E$.
+    Furthermore, $d$ is an integral element, and so its image under $\rho$ in $\bC\cong\bC\cdot{\rm id}_E\subset\endo(E)$ is also an integral element.
+    Its image under this correspondence (i.e.\ the scalar it multiplies by) is
+    $$ \frac{\tr(\rho(d))}{\dim E} = \frac{\abs{C_g}\ch_E(g)}{\dim E} $$
+
+    Now, since $\abs{C_g}$ and $\dim E$ are relatively prime, this means that $\ch_E(g)/\dim E$ is integral.
+    Indeed, $1$ can be expressed as a $\bZ$-linear combination of $\abs{C_g}$ and $\dim E$, suppose $1=\alpha\abs{C_g}+\beta\dim E$ then
+    $$ \frac{\alpha\abs{C_g}\ch_E(g)}{\dim E} = \frac{(1-\beta\dim E)\ch_E(g)}{\dim E} = \frac{\ch_E(g)}{\dim E}-\beta\ch_E(g) $$
+    So $\ch_E(g)/\dim E\in\bZ[\abs{C_g}\ch_E(g)/\dim E]$, meaning $\bZ[\ch_E(g)/\dim E]=\bZ[\abs{C_g}\ch_E(g)/\dim E]$, which is finitely-generated and as such $\ch_E(g)/\dim E$ is integral.
+
+    Now, $\ch_E(g)/\dim E$ is the average of the eigenvalues of $g_E$; an average of roots of unity.
+    This is integral iff $\ch_E(g)=0$ or all of $g_E$'s eigenvalues are equal.
+    In the latter case, this means that $g_E$ is multiplication by scalar.
+    \qed
+
+\eproof
+
+\bprop
+
+    If $G$ contains a conjugacy class in which the number of elements is a positive power of a prime number, then $G$ is not simple.
+
+\eprop
+
+\bproof
+
+    Let $C_g\subseteq G$ be a conjugacy class whose order is a positive power of a prime $p$.
+    We will show there exists a non-trivial irreducible $G$-representation $E$ over $\bC$ over which $C_g$'s elements act by scalar multiplication (they all act by the same scalar, since they are conjugate).
+    Then for $g\neq h\in C_g$ we have that $gh^{-1}$ acts by identity, so the kernel of $\rho\colon G\to\gl(E)$ is a non-trivial proper normal subgroup of $G$; $G$ is not simple.
+
+    By the previous lemma, it is sufficient to find a non-trivial irreducible $G$-representation $E$ such that $p$ does not divide $\dim E$ and $\ch_E(g)\neq0$.
+    Recall that (letting the sum run over irreducible $G$-representations):
+    $$ \sum_E(\dim E)\cdot\ch_E(g) = 0 $$
+    We split this sum up
+    $$ 1 + \sum_{p\mid\dim E}(\dim E)\ch_E(g) + \sum_{\neg p\mid\dim E}(\dim E)\ch_E(g) = 0 $$
+    (The final sum also supposes that $E$ is nontrivial.)
+    This is an equation in the complex subring of algebraic integers.
+    Since $p$ is not a unit in this ring (since $1/p$ is not an integer; not integral in $\bQ$), there must be an $E$ such that $p$ does not divide $(\dim E)\cdot\ch_E(g)$.
+    In particular, $p$ does not divide $\dim E$ and $(\dim E)\cdot\ch_E(g)\neq0$ so $\ch_E(g)\neq0$ as desired.
+    \qed
+
+\eproof
+
+We can now prove Burnside's theorem:
+
+\bproof[Burnside]
+
+    We know that finite $p$-groups (groups of order $p^n$) are solvable.
+    So we will show that if $G$'s order is divisible by precisely two primes, then $G$ is not simple.
+    This is sufficient: inducting over the order of the group, a normal subgroup in $G$ is either a $p$-group (and thus solvable) or has order divisible by precisely two primes (solvable by induction),
+    similar for $G/N$, and so $G$ is solvable.
+
+    So let $G$ be a group whose order is divisible by two primes, $p$ and $q$.
+    If $Z(G)$ is nontrivial, then $G$ is not simple.
+    Otherwise $Z(G)=1$, then the sum of the orders of the non-trivial conjugacy classes is not divisible by $pq$ (let $C_1,\dots,C_n$ be thee non-trivial conjugacy classes, then
+    $\abs G\equiv\abs{C_1}+\cdots+\abs{C_n}+1\equiv0\pmod{pq}$, since $pq$ doesn't divide $1$, it doesn't divide the sums of $\abs{C_i}$).
+    Thus there must be a conjugacy class whose order is not divisible by $p$ or $q$.
+    Since the order of each conjugacy class divides the order of $\abs G$, this means such a conjugacy class's order is a positive power of $p$ or $q$, and the result follows from the previous proposition.
+    \qed
+
+\eproof
+
