@@ -1,0 +1,272 @@
+\section{Induction}
+
+\subsection{Linear categories and functors}
+
+We will define here linear category theory.
+In the language of category theory, this is simply the theory of categories enriched over the monoidal category of vector spaces (over a given field).
+But we will ignore this abstraction, and instead define everything from the ground-up.
+
+\bnote
+
+    I have grown weary of denoting fields using blackboard bold (e.g.\ $\bF$).
+    Instead a typical field will be denoted by $k$.
+    Blackboard bold seems to give more significance to the field than necessary in my opinion.
+
+\enote
+
+\bdefn
+
+    A {\emphcolor $k$-linear category} (or just a category) $\C$ consists of:
+    \benum
+        \item a class of objects (we abuse notation and denote this class also by $\C$);
+        \item for every two objects $M,N\in\C$, a $k$-vector space $\hom_\C(M,N)$, called a {\emphcolor hom-space};
+        \item for every three objects $M,N,L\in\C$, a $k$-bilinear map
+        $$ {\circ}\colon\hom(N,L)\times\hom(M,N)\to\hom(M,L) $$
+        (Equivalently, this is a $k$-linear map from the tensor product of the left hom-spaces.)
+        Such that for every $M\in\C$ there exists a ${\rm id}_M\in\hom(M,M)$ which is the identity under composition (left/right according to where composition is defined), and $\circ$ is associative
+        when defined.
+    \eenum
+
+\edefn
+
+When declaring $\alpha\in\hom_\C(M,N)$ we may instead write $\alpha\colon M\to N$.
+
+For example, given a group $G$ and field $k$, we can form a category $\Rep(G)$ whose objects are $G$-representations over $k$, and morphisms are $G$-equivariant morphisms.
+In particular, the hom-spaces are simply $\hom_G(M,N)$.
+
+Similarly, for a $k$-algebra $A$, we can consider the category ${}_A\Mod$ of left $A$-modules, and $\Mod_A$ of right $A$-modules.
+
+\bdefn
+
+    Let $\C$ and $\D$ be $k$-linear categories.
+    A {\emphcolor functor} from $\C$ to $\D$, denoted $F\colon\C\to\D$, associates for every object $M\in\C$ an object $F(M)\in\D$, and for every $M,N\in\C$ a $k$-linear map
+    $$ F\colon\hom_\C(M,N) \to \hom_\D(FM,FN) $$
+    such that $F{\rm id}_M={\rm id}_{FM}$ and $F(\alpha\circ\beta)=F(\alpha)\circ F(\beta)$.
+
+\edefn
+
+\bdefn
+
+    Let $F,G\colon\C\to\D$ be functors.
+    A {\emphcolor natural transformation} $\sigma\colon F\to G$ consists of associating to every $M\in\C$ a map $\sigma_M\colon FM\to GM$ such that for every $\alpha\colon M\to N$ in $\C$,
+    we have
+    $$ G(\alpha)\circ\sigma_M = \sigma_N\circ F(\alpha) $$
+    (Write out the commutative square for clarity.)
+
+\edefn
+
+A natural transformation for which every component ($\sigma_M$) is an isomorphism (in the usual category-theoretic sense) is called a {\it natural isomorphism}.
+Two functors are {\it naturally isomorphic} if there exists a natural isomorphism between them.
+
+Note that we can easily define the composition of functors, the product of categories and functors, opposite categories, in the standard way.
+In particular we can define the {\it hom-functor}:
+$$ \hom\colon\C^\op\times\C\to{\rm Vec}_k $$
+which maps pairs of objects $(M,N)$ to $\hom_\C(M,N)$ and pairs of morphisms $f\colon M\to N$ (in $\C$, so $N\to M$ in $\C^\op$) and $g\colon L\to K$ to
+$$ \hom(f,g)\colon\hom(N,L)\to\hom(M,K),\qquad \hom(f,g)(\alpha) = g\circ\alpha\circ f $$
+For a set object $M\in\C$, this restricts to give two functors:
+$$ \hom(M,\bul)\colon\C\to{\rm Vec}_k,\qquad\hom(\bul,M)\colon\C\to{\rm Vec}_k $$
+where $\hom(M,f)$ is post-composition with $f$ (i.e.\ $\hom(M,f)\alpha=f\alpha$) and $\hom(f,M)$ is pre-composition with $f$ ($\hom(f,M)\alpha=\alpha f$).
+
+We now define adjoint pairs;
+
+\bdefn
+
+    Let $F\colon\C\to\D$ and $G\colon\D\to\C$ be two functors.
+    They form an {\emphcolor adjoint pair} (or an {\emphcolor adjunction}) if the functors $\hom_\D(F\bul,\bul)$ and $\hom_\C(\bul,G\bul)\colon\C^\op\times\D\to{\rm Vec}_k$ are naturally isomorphic.
+    In such a case, we write $F\dashv G$, and call $F$ the {\emphcolor left adjoint} and $G$ the {\emphcolor right adjoint}.
+
+\edefn
+
+The naturality condition is equivalent to saying that for every $M\in\C$ and $U\in\D$ there exists a $k$-linear isomorphism $\gamma_{MU}\colon\hom_\D(FM,U)\to\hom_\C(M,GU)$ such that
+for every $\alpha\colon M_1\to M_2$ in $\C$ the following diagram commutes:
+
+\centerline{\drawdiagram{
+    $\hom_\D(FM_2,U)$&$\hom_\C(M_2,GU)$\cr
+    $\hom_\D(FM_1,U)$&$\hom_\C(M_1,GU)$
+}{
+    \diagarrow{from={1,1}, to={1,2}, text=$\gamma_{M_2U}$, y distance=.25cm}
+    \diagarrow{from={2,1}, to={2,2}, text=$\gamma_{M_1U}$, y distance=.25cm}
+    \diagarrow{from={1,1}, to={2,1}, text=$\bul\circ F\alpha$, x distance=-.5cm}
+    \diagarrow{from={1,2}, to={2,2}, text=$\bul\circ \alpha$, x distance=.5cm}
+}}
+
+as well as for every $\beta\colon U_1\to U_2$ in $\D$ an analogous diagram commute.
+
+An equivalent definition of adjunctions are via unit-counit pairs.
+
+\bdefn
+
+    Let $F\colon\C\to\D$ and $G\colon\D\to\C$ be two functors.
+    A {\emphcolor unit-counit pair} for $(F,G)$ (note the order) are two natural transformations $\eta\colon{\rm Id}_\C\to GF$ (the unit) and $\epsilon\colon FG\to{\rm Id}_\D$ such that the compositions
+    $$ F\xvarrightarrow{F\eta}FGF\xvarrightarrow{\epsilon F}F,\qquad G\xvarrightarrow{\eta G}GFG\xvarrightarrow{G\epsilon}G $$
+    are the respective identity natural transformations.
+
+\edefn
+
+In the above definition, we use the concept of {\it whiskering}.
+For a natural transformation $\sigma\colon F\to G$ and another functor $H$, we define the natural transformation $H\sigma\colon HF\to HG$ (if such composition is well-defined) by $(H\sigma)_X=H(\sigma_X)$
+and $\sigma H\colon FH\to GH$ by $(\sigma H)_X=\sigma_{H(X)}$.
+So the unit-counit conditions say that
+$$ {\rm id}_{FX} = \epsilon_{FX}\circ F(\eta_X),\qquad {\rm id}_{GY} = G(\epsilon_Y)\circ\eta_{GY} $$
+for all $X\in\C$ and $Y\in\D$.
+
+\bthrm
+
+    $F\dashv G$ form an adjunction if and only if there exists a unit-counit pair $(\eta,\epsilon)$ for $(F,G)$.
+
+\ethrm
+
+\bproof
+
+    Given an adjunction $F\dashv G$, let
+    $$ \eta_X=\gamma_{X,FX}({\rm id}_{FX})\in\hom_\D(FX,FX),\quad\hbox{and}\quad\epsilon_Y=\gamma^{-1}_{GY,Y}({\rm id}_{GY})\in\hom_\C(GY,GY) . $$
+    This forms the unit-counit pair.
+
+    Conversely, given a unit-counit pair $(\eta,\epsilon)$, define $\gamma\colon\hom_\D(F\bul,\bul)\to\hom_C(\bul,G\bul)$ by $\gamma_{XY}(\alpha)=G(\alpha)\circ\eta_X$ for $f\in\hom_\D(FX,Y)$.
+    Its inverse is $\gamma^{-1}_{YX}(\beta)=\epsilon_Y\circ F(\beta)$.
+    \qed
+
+\eproof
+
+Let's construct an example of an adjunction.
+Let $\iota\colon B\to A$ be a morphism of $k$-algebras.
+Then every $A$-module can be viewed as a $B$-module; given an $A$-module $M$, give it a $B$-module structure by $b\cdot m=\iota(b)m$ for $b\in B,m\in M$ (this is just composition of $\iota$ with the $A$-module
+structure).
+Note that with such a view, every $A$-module morphism is a $B$-module morphism: $f(bm)=f(\iota(b)m)=\iota(b)f(m)=bf(m)$.
+Thus we can define a functor
+$$ \res^A_B\colon\Mod(A)\to\Mod(B) $$
+which maps an $A$-module $M$ to its induced $B$-module structure, and an $A$-module morphism to itself.
+$\res^A_B$ is called the {\it restriction functor} (or the {\it forgetful functor}).
+
+Now, we ask ourselves if the forgetful functor has a left adjoint.
+Consider the functor
+$$ A\otimes_B\bul\colon\Mod(B)\to\Mod(A) $$
+which maps a $B$-module $M$ to the $A$-module $A\otimes_BM$ (this is well-defined, $A$ is a right $B$-module by $a\cdot b=a\iota(b)$).
+And it maps a morphism of $B$ modules $f\colon M_1\to M_2$ to $A\otimes f\colon A\otimes_BM_1\to A\otimes_BM_2$ which maps $a\otimes m$ to $a\otimes f(m)$.
+Such a morphism exists and is unique.
+
+We claim that $A\otimes_B\bul$ and $\res^A_B$ forms an adjunction.
+Given $M\in\Mod(B)$ and $N\in\Mod(A)$ we define an isomorphism
+$$ \gamma_{MN}\colon\hom_{\Mod(A)}(A\otimes_BM,N) \to \hom_{\Mod(B)}(M,\res^A_BN) $$
+by mapping $\alpha\colon A\otimes_BM\to N$ to $\beta\colon M\to\res^A_BN$ defined by $\beta(m)=\alpha(1\otimes m)$.
+Its inverse,
+$$ \gamma_{MN}^{-1}\colon\hom_{\Mod(B)}(M,\res^A_BN) \to \hom_{\Mod(A)}(A\otimes_BM,N) $$
+is given by mapping $\beta\colon M\to\res^A_BN$ to $\alpha\colon A\otimes_BM\to N$ by $\alpha(a\otimes m)=\iota(a)\beta(m)$.
+Their inverse-ness is readily checked, as well as their naturality.
+
+Thus we have
+$$ A\otimes_B\bul\,\dashv\,\res^A_B $$
+
+Interestinly, $\res^A_B$ has a right adjoint as well.
+Namely, consider the functor $\Mod(B)\to\Mod(A)$ $M\mapsto\hom_B(A,M)$ ($A$ is a $B$-module via $\iota$).
+$\hom_B(A,M)$ is a $A$-module by $(a\phi)(a')=\phi(a'a)$.
+Given a morphism $\alpha\colon M_1\to M_2$ we define $\alpha_*\colon\hom_B(A,M_1)\to\hom_B(A,M_2)$ by post-composition.
+
+Now given $M\in\Mod(B),N\in\Mod(A)$ we define
+$$ \gamma_{MN}\colon \hom_{\Mod(B)}(\res^A_BN,M) \to \hom_{\Mod(A)}(N,\hom_B(A,M)) $$
+by mapping $\alpha\colon\res^A_BN\to M$ to $\beta\colon N\to\hom_B(A,M)$ defined by $\beta(n)(a)=\alpha(an)$.
+Its inverse maps $\beta\colon N\to\hom_B(A,M)$ to $\alpha(n)=\beta(n)(1)$.
+All the conditions are readily checked.
+
+Thus we have a chain of adjunctions:
+$$ A\otimes_B\bul\,\dashv\,\res^A_B\,\dashv\,\hom_B(A,\bul) $$
+when $\iota\colon B\to A$ is a $k$-algebra morphism.
+
+\subsection{Basics of induction}
+
+Fix groups $G,H$, a base field $k$, and a group morphism $\iota\colon H\to G$.
+
+$\iota$ induces a morphism of $k$-algebras $\iota\colon k[H]\to k[G]$.
+Since there is an isomorphism of categories $\Rep_k(G)\cong\Mod(k[G])$, we have a chain of adjunctions:
+
+\kern1cm
+\centerline{\drawdiagram{
+    $\Rep(H)$&$\Rep(G)$
+}{
+    \diagarrow{from={1,1}, to={1,2}, text=$\ind^H_G$, y off=.5cm, y distance=.75cm}
+    \diagarrow{from={1,1}, to={1,2}, text=$\Ind^H_G$, y off=-.5cm, y distance=-.25cm}
+    \diagarrow{from={1,2}, to={1,1}, text=$\res^G_H$, y distance=.25cm}
+}}
+\kern.5cm
+
+Where
+$$ \ind^H_G\dashv\res^G_H\dashv\Ind^H_G $$
+Specifically $\res^G_H=\res^{k[G]}_{k[H]}$, $\ind^H_G$ is $k[G]\otimes_{k[H]}\bul$, and $\Ind^H_G$ is $\hom_{k[H]}(k[G],\bul)$.
+
+\subsubsection*{Understanding $\ind^H_G$}
+
+We will assume for now that $\iota\colon H\to G$ is an inclusion.
+We will examine first $\ind^H_G$.
+Let $(g_q)_{q\in G/H}$ be a set of representatives of the cosets in $G/H$ (so $g_q\in q$).
+Then we have an isomorphism of right $k[H]$-modules:
+$$ k[G]\cong\bigoplus_{q\in G/H}k[H] $$
+given by mapping $(d_q)_{q\in G/H}$ on the right to $\sum_{q\in G/H}\delta_{g_q}\cdot d_q$ on the left.
+It is readily checked that this is an injective morphism of right $k[H]$-modules, and by considering dimensions we have that it is an isomorphism.
+Thus, given a (left) $k[H]$-module $M$:
+$$ k[G]\otimes_{k[H]}M \cong \parens{\bigoplus_{q\in G/H}k[H]}\otimes_{k[H]}M \cong \bigoplus_{q\in G/H}(k[H]\otimes_{k[H]}M) \cong \bigoplus_{q\in G/H}M $$
+Sending $(m_q)_{q\in G/H}$ on the right to $\sum_{q\in G/H}\delta_{g_q}\otimes m_q$ on the left.
+
+So we can think of $\ind^H_GM$ as $\bigoplus_{q\in G/H}g_qM$ (where $g_q$ ``acts'' on $M$ to give $M$), and we have $g(g_qm)=g_{q'}(hm)$ for $g\in G$ where $gg_q=g_{q'}h$ for $h\in H$.
+In particular, we have
+$$ \dim(\ind^H_G(V)) = [G:H]\cdot\dim V $$
+
+So suppose we have a $G$-representation $V$, and an $H$-subrepresentation $W\subseteq V$.
+Then as the inclusion forms a morphism of $H$-representations $W\to\res^G_HV$, by adjunction we get a $G$-morphism $\ind^H_GW\to V$.
+This is an isomorphism if and only if $[G:H]\cdot\dim W=\dim V$.
+And it is an injection iff the subspaces $(g_qW)_{q\in G/H}$ are linearly independent (i.e.\ have a direct sum in $V$).
+
+\subsubsection*{Understanding $\Ind^H_G$}
+
+Let us examine now $\Ind^H_G$.
+Given a $k[H]$-module $M$, we can think of $\hom_{k[H]}(k[G],M)$ as a subspace of $\hom_k(k[G],M)$, which we can identify with $\St(G,M)$.
+In particular, $\hom_{k[H]}(k[G],M)$ can be identified with maps $f\colon G\to M$ such that $f(hx)=hf(x)$ for all $h\in H$ and $x\in G$.
+The $G$-action on this space is $(gf)(x)=f(xg)$ (as per the action on $\hom_{k[H]}(k[G],M)$).
+So we can consider
+$$ \Ind^H_G(M) = \set{f\colon G\to M}[\forall h\in H,x\in G.\,f(hx)=hf(x)],\qquad (gf)(x)=f(xg) $$
+
+\subsubsection*{Back to business}
+
+Note that $k[G]$ can be viewed as $\ind^1_G(k)$, and we can compute $[kG:E]$ using the adjunction $\ind^1_G\dashv\res^G_1$.
+
+We want to compare $\ind^H_G$ and $\Ind^H_G$; we show that we have a natural transformation $\ind^H_G\to\Ind^H_G$, which is an isomorphism when $[G:H]$ is finite.
+By the adjunction, a $G$-morphism $\ind^H_G(V)\to\Ind^H_G(V)$ is equivalent to an $H$-morphism $V\to\res^G_H\Ind^H_G(V)$ (we abuse notation and write $\Ind^H_G(V)$ for the right side).
+We define such a morphism by mapping $v\in V$ to the function $G\to V$ defined by mapping $h\in H$ to $hv$ and $g\in G-H$ to $0$.
+
+If $[G:H]$ is finite, we define its inverse $\Ind^H_G(V)\to\ind^H_G(V)$ as follows: let $(g_q)_{q\in G/H}$ be representatives of the cosets.
+Then map $f\in\Ind^H_G(V)$ to $\sum_{q\in G/H}\delta_{g_q^{-1}}\otimes f(g_q)$.
+This indeeds forms an inverse morphism.
+
+So in our case, where $G$ is finite, we have that $\ind^H_G$ and $\Ind^H_G$ are isomorphic.
+
+We can also abstract this argument.
+Let $\iota\colon B\to A$ be a morphism of $k$-algebras.
+Then we have the following natural morphism (in $M$):
+$$ \hom_B(A,B)\otimes_B M \to \hom_B(A,M) $$
+$\hom_B(A,B)$ is a right $B$-module since $B$ is a right $B$-module, so the left-hand side is well-defined.
+And both sides are left $A$-modules since $A$ is.
+This morphism maps $T\otimes m$ to $a\mapsto T(a)m$.
+
+Now suppose $e\colon A\to B$ is a morphism of left $B$-modules.
+Then we can construct a morphism of $(A,B)$-bimodules
+$$ A\to\hom_B(A,B) $$
+by mapping $a$ to $a'\mapsto e(a'a)$.
+This gives a morphism of $A$-modules, natural in $M$:
+$$ A\otimes_BM\to\hom_B(A,B)\otimes_BM $$
+
+Composing gives us a morphism (natural in $M$):
+$$ A\otimes_BM\to\hom_B(A,B)\otimes_BM\to\hom_B(A,M) $$
+Note that this is a morphism $\ind^B_A\to\Ind^B_A$.
+
+We claim that the second arrow is an isomorphism when $A$ is a free left $B$-module of finite rank.
+Indeed, for a left $B$-module $N$, we can extend our second arrow to
+$$ \hom_B(N,B)\otimes_BM\to\hom_B(N,M) $$
+This is clearly an isomorphism when $N=B$.
+And if it is an isomorphism for $N_1,N_2$ then it is an isomorphism for $N_1\oplus N_2$.
+Thus if $N$ is a free left $B$-module of finite rank (so $N=B\oplus\cdots\oplus B$), then this is an isomorphism.
+
+The first arrow is an isomorphism if $A\to\hom_B(A,B)$ is also an isomorphism.
+
+In our case, we have $A=k[G]$, $B=k[H]\subseteq k[G]$ and $e\colon k[G]\to k[H]$ defined by $e(\delta_h)=\delta_h$ for $h\in H$ and $e(\delta_g)=0$ for $g\in G-H$.
+Then $A$ is indeed a free left $B$-module of finite rank (when $[G:H]$ is finite): $k[G]=k[H]^{\oplus[G:H]}$.
+And $A\mapsto\hom_B(A,B)$ is readily shown to be an isomorphism.
+
