@@ -270,3 +270,726 @@ In our case, we have $A=k[G]$, $B=k[H]\subseteq k[G]$ and $e\colon k[G]\to k[H]$
 Then $A$ is indeed a free left $B$-module of finite rank (when $[G:H]$ is finite): $k[G]=k[H]^{\oplus[G:H]}$.
 And $A\mapsto\hom_B(A,B)$ is readily shown to be an isomorphism.
 
+\subsection{Applications to dimensions of irreducible representations}
+
+\bdefn
+
+    Let $\theta\colon G\to G'$ be a group isomorphism, and $(V,\rho)$ a $G$-representation.
+    This defines a $G'$-representation $({}^\theta V,{}^\theta\rho)$ via $\theta$'s inverse: ${}^\theta V$ is just $V$ and
+    $$ {}^\theta\rho(g') = \rho(\theta^{-1}g') $$
+    i.e.\ $g'v=\theta^{-1}(g)v$ for all $g'\in G',v\in V$.
+
+\edefn
+
+Note that ${}^\theta V$ shares pretty much all important properties with $V$ (they are pretty much the same representation).
+
+We can specialize this definition: given an automorphism $\theta$ of $G$, and a subgroup $H$ of $G$, an $H$-representation $V$ can be made into a $\theta(H)$-representation ${}^\theta V$ by
+restricting $\theta$ along $H$.
+In particular we focus on conjugation by a specific element of $G$, say $g_0$, call it $\theta_{g_0}\colon g\mapsto g_0^{-1}gg_0$.
+Then ${}^{g_0}V={}^{\theta_{g_0}}V$ has its action given by $h*v=g_0hg_0^{-1}v$ (this is a $g_0^{-1}Hg_0$-representation).
+
+If $\theta$ is a $G$-automorphism clearly ${}^\theta V$ is isomorphic to $V$.
+In particular ${}^gV\cong V$ for all $g\in G$.
+
+\bprop
+
+    Let $H$ be a subgroup of $G$ and $\theta$ a $G$-automorphism, and $V$ an $H$-representation.
+    Then $\ind^{\theta(H)}_G({}^\theta V)\cong{}^\theta\ind^H_GV$.
+    In particular for all $g\in G$, $\ind^{gHg^{-1}}_G({}^gV)\cong\ind^H_GV$ (since ${}^g\ind^H_GV\cong\ind^H_GH$ as it is a $G$-representation).
+
+\eprop
+
+\bprop
+
+    Let $N$ be a normal subgroup of $G$, $V$ a $G$-representation, and $g\in G$.
+    If $F\subseteq V$ is an $N$-isotypic component, $gF$ is an $N$-isotypic component as well.
+
+\eprop
+
+\bdefn
+
+    A representation is {\emphcolor isotypical} if all its irreducible subrepresentations are isomorphic (i.e.\ it has only one isotypic component).
+
+\edefn
+
+\blemm
+
+    Let $N$ be a normal subgroup of $G$, and $E$ an irreducible $G$-representation.
+    Let $F\subseteq E$ be an $H$-isotypic component.
+    Consider
+    $$ K = \set{g\in G}[gF=F] \subseteq G $$
+    Then $K$ is a subgroup of $G$ containing $N$, and $F$ is a $K$-subrepresentation of $E$.
+    Consider the $G$-morphism $\ind^K_GF\to E$ corresponding to the inclusion ($K$-morphism) $F\to E$; it is an isomorphism.
+    $F$ as a $K$-representation is irreducible.
+
+\elemm
+
+\bproof
+
+    Since $E$ is irreducible, it is sufficient to show that $\ind^K_GF\to E$ is injective.
+    By the structure of the induced representation, this map is injective if and only if the subspaces $(g_qF)_{q\in G/K}$ (where $g_q\in q$) are linearly independent in $E$.
+    We will show this by showing they are distinct $H$-isotypic components in $E$.
+    Them being isotypic follows from the previous proposition.
+    And if $g_qF=g_{q'}F$ then $g_{q'}^{-1}g_q\in K$ so $q'=q$.
+
+    All that remains is to show that $F$ is an irreducible $K$-representation.
+    Suppose not, let $F=F'\oplus F''$ for non-trivial $F',F''$.
+    Then
+    $$ E \cong \ind^K_G(F) \cong \ind^K_G(F')\oplus\ind^K_G(F'') $$
+    These are non-zero, and this contradicts $E$ being irreducible.
+    \qed
+
+\eproof
+
+\blemm
+
+    Let $N$ be a normal subgroup of $G$, and let $E$ be an irreducible $G$-representation.
+    Then either $\res^G_H(E)$ is isotypical or there exists a subgroup $N\subseteq H\subsetneq G$ such that $E$ is isomorphic to a representation of the form $\ind^K_G(F)$ where $F$
+    is an irreducible $H$-representation.
+
+\elemm
+
+\bproof
+
+    Let $F\subseteq\res^G_H(E)$ be an isotypic component, and let $H=\set{g\in G}[gF=F]$ as above.
+    Then $N\subseteq H\subseteq G$, and $F$ is a $H$-subrepresentation of $E$.
+    By the previous lemma, $F$ is an irreducible $H$-representation and $\ind^H_G(F)\cong E$ as $G$-representations.
+    We need to see that if $H=G$ then $\res^G_N(E)$ is isotypical.
+    Indeed, if $H=G$ then $F$ is a $G$-subrepresentation of $E$ and as such is equal to it (as $E$ is irreducible).
+    So $E=F$ is an isotypical $H$-representation.
+    \qed
+
+\eproof
+
+\bthrm
+
+    Let $A\subseteq G$ be an Abelian normal subgroup.
+    Then the dimension of any irreducible $G$-representation divides $[G:A]$.
+
+\ethrm
+
+\bproof
+
+    We induct on $\abs G$ (the base case is trivial).
+    Apply the above lemma to our situation (with $N=A$), and we must consider two cases.
+    In the first case $\res^G_A(E)$ is isotypical.
+    Since $A$ is Abelian, an isotypical representation is one on which $A$ acts by scalars.
+    Let $\rho\colon G\to\gl(E)$ be the representation, then we have that $\rho(A)$ lies in the center of $\rho(G)$.
+    $E$ can be considered an irreducible $\rho(G)$-representation.
+    Then we have shown that $\dim E$ divides $[\rho(G):Z(\rho(G))]$, which in turn turn divides $[\rho(G):\rho(A)]$, which divides $[G:A]$ as desired.
+
+    In the second case $E$ is isomorphic to $\ind^K_G(F)$ with $A\subseteq K\subsetneq G$ and $F$ irreducible.
+    By induction $\dim F$ divides $[K:A]$.
+    Thus
+    $$ \dim E = \dim\ind^K_G(F) = [G:K]\dim F $$
+    which divides $[G:K]\cdot[K:A]=[G:A]$ as desired.
+    \qed
+
+\eproof
+
+\subsection{Irreducible representations of semidirect products $A\rtimes H$, $A$ commutative}
+
+We quickly recall the definition of inner and outer semidirect products:
+
+\bdefn
+
+    Let $G$ be a group, $N,H\subseteq G$ be subgroups with $N$ normal.
+    Suppose that $N\cap H=1$ and $NH=G$, then we call $G$ the {\emphcolor inner semidirect product} of $N$ with $H$, writteb $G=N\rtimes H$.
+
+\edefn
+
+Note that every element of $G$ can be written uniquely in the form $nh$ for $n\in N,h\in H$.
+Indeed, suppose $n_1h_1=n_2h_2$, then $n_2^{-1}n_1=h_2h_1^{-1}\in N\cap H$ so $n_1=n_2,h_1=h_2$.
+Moreover, as $N$ is a normal subgroup of $G$, $H$ acts on $N$ by conjugation.
+In fact, multiplication in $G$ can be written in terms of multiplication in $N,H$ and $H$'s action on $N$:
+$$ n_1h_1n_2h_2 = n_1(h_1n_2h_1^{-1})h_1h_2 = n_1(h_1.n_2)h_1h_2 $$
+This leads to the following definition:
+
+\bdefn
+
+    Let $N,H$ be groups, and $\phi\colon H\to{\rm Aut}(N)$ a group homomorphism (a group action on a group).
+    We define their {\emphcolor outer semidirect product} (relative to $\phi$) to be $N\rtimes_\phi H$ as follows.
+    The underlying set is the cartesian product $N\times H$, and multiplication is given by
+    $$ (n_1,h_1)\cdot(n_2,h_2) = (n_1(\phi(h_1)n_2),h_1h_2) $$
+
+\edefn
+
+Note that the inner direct product $N\rtimes H$ is isomorphic to $N\rtimes_\theta H$ where $\theta$ is the group action given by conjugation.
+Furthermore, $N$ is a normal subgroup of the semidirect product and $(N\rtimes H)/N\cong H$.
+
+For this section suppose $G=A\rtimes H$ where $A$ is Abelian, and $k$ is an algebraically closed group whose characteristic does not divide $\abs G$.
+
+Since $H$ acts on $A$, it also acts on the group of characters of $A$, $\ch_k(A)=\hom(A,k^\times)$ by $(h\chi)(a)=\chi(h.a)$.
+In particular, since outer semidirect products are inner semidirect products (of themselves), viewing $A,H\subseteq G$ subgroups, $(h\chi)(a)=\chi(h^{-1}ah)$.
+This extends to all of $G$: $G$ acts on $\ch_k(A)$ by $(g\chi)(a)=\chi(g^{-1}ag)$.
+
+For a $G$-representation $V$ and a character $\chi\in\ch_k(A)$, define
+$$ V_{A,\chi} = \set{v\in V}[\forall a\in A.\,av=\chi(a)v] \subseteq V $$
+This is the isotypical component of $\res^G_AV$ corresponding to the irreducible $A$-representation $k_\chi$.
+Let us also define $\supp(V)\subseteq\ch_k(A)$ to be all characters $\chi$ for which $V_{A,\chi}\neq0$.
+$\supp(V)$ is $G$-invariant: if $v\in V_{A,\chi}$ then $gv\in V_{A,g\chi}$.
+Furthermore the support is nonempty if $V$ is finite-dimensional (and nonzero).
+
+For a character $\chi\in\ch_k(A)$ define
+$$ G_\chi = \set{g\in G}[g\chi=\chi] \subseteq G,\qquad H_\chi = H\cap G_\chi = \set{h\in H}[h\chi=\chi] $$
+then $G_\chi=A\rtimes H_\chi$: $A$ is clearly subgroup of $G_\chi$, $A\cap H_\chi\subseteq A\cap H=1$, $A$ is normal in $G$ and so in $G_\chi$ as well, and $AH_\chi\subseteq G_\chi$ and for $ah\in G_\chi$ since
+$a\in G_\chi$ we have $h\in G_\chi$ so in $H_\chi$.
+
+Note that since $gV_{A,\chi}=V_{A,g\chi}$,
+$$ G_\chi = \set{g\in G}[gV_{A,\chi}=V_{A,\chi}] $$
+
+\blemm
+
+    Suppose $V$ is finite-dimensional and nonzero, then $V$ is $G$-irreducible iff $\supp(V)$ is $G$-transitive (has one orbit) and for one/all $\chi\in\supp(V)$, $V_{A,\chi}$ is $H_\chi$-irreducible.
+    In that case, the inclusion $V_{A,\chi}\to V$ induces a $G$-isomorphism $\ind^{G_\chi}_G(V_{A,\chi})\to V$.
+
+\elemm
+
+\bproof
+
+    If $V$ is irreducible, let $\chi\in\supp(V)$, and define
+    $$ V' = \sum_{g\in G}gV_{A,\chi} = \sum_{g\in G}V_{A,g\chi} $$
+    This is a nonzero subrepresentation, and as such is equal to $V$.
+    These are all $A$-isotypical components, so for $V_{A,\mu}$ which is another $A$-isotypical component, it must be contained in one of them.
+    I.e.\ $V_{A,\mu}=V_{A,g\chi}$ for some $g\in G$ for all $\mu\in\supp(V)$.
+    Since $\mu$ is in the support this means $\mu=g\chi$, so $\supp(V)=G\chi$, a single orbit, so $\supp(V)$ is indeed $G$-transitive.
+
+    Furthermore $V_{A,\chi}$ is $\set{g\in G}[gV_{A,\chi}=V_{A,\chi}]$-irreducible (by a previous lemma).
+    But this is just $G_\chi$, since $V_{A,\chi}=V_{A,g\chi}$ implies equality over all of $\supp(V)$ (by transitivity).
+    So $V_{A,\chi}$ is $G_\chi$-irreducible.
+    Since $A$ acts on $V_{A,\chi}$ by scalars, $H_\chi$-subrepresentations are the same as $G_\chi$-subrepresentations, so $V_{A,\chi}$ is $H_\chi$-irreducible as well.
+
+    Finally, the same lemma tells us that $\ind^{G_\chi}_GV_{A,\chi}$ is isomorphic to $V$.
+
+    Conversely, suppose $\supp(V)$ is $G$-transitive and $V_{A,\chi}$ is $H_\chi$-irreducible.
+    Let $\chi\in\supp(V)$.
+    Let $V'\subseteq V$ be a nonzero $G$-subrepresentation, then $\supp(V')\neq\emptyset$.
+    Since $\supp(V')\subseteq\supp(V)$ is $G$-invariant and $\supp(V)$ is transitive, $\supp(V')=\supp(V)$.
+    Then $V'_{A,\chi}=V'\cap V_{A,\chi}$ is nonzero, but this is a $H_\chi$-subrepresentation of $V_{A,\chi}$ so $V'\cap V_{A,\chi}=V_{A,\chi}$, i.e.\ $V_{A,\chi}\subseteq V'$.
+    This is true for all $\chi\in\supp(V)$, and since these are all the $A$-isotypic components of $V$, this means that $V=V'$.
+    So $V$ is indeed $G$-irreducible.
+    \qed
+
+\eproof
+
+Given a character $\chi\in\ch_k(A)$ and a $H_\chi$-representation $F$, this can be viewed as a $G_\chi$-representation $F_\chi$ over the same vector space $F$ where
+$$ (ah).v = \chi(a)(hv) $$
+i.e.\ $A$ acts by $\chi$ and $H_\chi$ as it does on $F$ (since $G_\chi=A\rtimes H_\chi$).
+From the above lemma, we see that every irreducible $G$-representation is isomorphic to $\ind^{G_\chi}_GF_\chi$ for some $\chi\in\ch_k(A)$ and $H_\chi$-irreducible representation $F$.
+Conversely $V=\ind^{G_\chi}_GF_\chi$ is irreducible for all such $\chi,F$.
+Indeed, let $(h_q)_{q\in G/G_\chi}$ be representatives in $H$ for cosets in $G/G_\chi$, then
+$$ V \cong \oplus_qh_qF_\chi $$
+Notice that $F_\chi\subseteq V_{A,\chi}$, but we actually have equality.
+Indeed, for $q\neq G_\chi$ we have $h_qF_\chi\subseteq V_{A,h_q\chi}$ and $h_q\chi\neq\chi$, so we must have equality (since $V$ is their direct sum).
+So we readily see that $\supp(V)=G\chi$, and $V_{A,\chi}$ is an irreducible $G_\chi$-representation.
+So by the lemma $V$ is irreducible.
+
+To summarize: we can parameterize irreducible $G$-representations as follows.
+We take one $\chi\in\ch_k(A)$ for each $H$-orbit, and we look at all irreducible $H_\chi$-representations $F$ and consider $\ind^{G_\chi}_GF_\chi$.
+This gives all irreducible $G$-representations.
+
+\subsection{Characters of induced representations}
+
+Let $G$ be a finite group, with subgroup $H\subseteq G$ and $k$ an algebraically closed field whose characteristic does not divide $\abs G$.
+
+Our goal is to compute a map which maps the characters of $H$-representations to the characters of their induced $G$-representations.
+That is, a map
+$$ \find^H_G\colon\St(H,k)^\cl\to\St(G,k)^\cl $$
+such that for a finite-dimensional $H$-representation $V$:
+$$ \find^H_G(\ch_V) = \ch_{\Ind^H_G(V)} $$
+Such a map must exist: since $\Ind^H_G(V\oplus W)\cong\Ind^H_G(V)\oplus\Ind^H_G(W)$ (in general $\hom(\bul,A\oplus B)\cong\hom(\bul,A)\oplus\hom(\bul,B)$), we must have that
+$\find^H_G(\ch_V)$ is determined by the irreducible components of $V$.
+And since the characters of irreducible $H$-representations form a basis for the $H$-class functions, such a map is well-defined.
+
+Now, notice that clearly
+$$ \ch_{\res^G_HV} = (\ch_W)|_H $$
+where $(\ch_W)|_H$ is the restriction of $\ch_W$ to $H$.
+Recall our non-degenerate bilinear form $(\bul,\bul)$ on $\St(G,k)^\cl$, which satisfies $(\ch_V,\ch_W)=\dim\hom_G(V,W)$.
+Thus we have for all $G$-representations $W$:
+$$ (\ch_W,\find^H_G(\ch_V)) = (\ch_W,\ch_{\Ind^H_G V}) = \dim\hom_G(W,\Ind^H_GV) = \dim\hom_H(\res^G_HW,V) = (\ch_{\res^G_HW},\ch_V) $$
+which is equal to $(\ch_W|_H,\ch_V)$.
+So $\find^H_G$ is the adjoint of the restriction operator $\bul|_H\colon\St(G,k)^\cl\to\St(H,k)^\cl$.
+
+As a quick aside, we can give $\St(G,k)$ a $G$-representation: $(gf)(x)=f(gxg^{-1})$.
+Then $\St(G,k)^\cl$ are simply the $G$-invariants of this representation: those $f\colon G\to k$ for which $f(g\bul g^{-1})=f(\bul)$ for all $g\in G$.
+In particular, we then are given the averaging operator:
+$$ \av\colon\St(G,k) \to \St(G,k)^\cl,\qquad \av(f)(x) = \frac1{\abs G}\sum_{g\in G}f(gxg^{-1}) $$
+
+Thus by studying the restriction operator, we can compute $\find^H_G$ explicitly.
+We can consider $\bul|_H$ on our class functions as the composition
+$$ \St(G,k)^\cl \xvarrightarrow{\rm inclusion} \St(G,k) \xvarrightarrow{\bul|_H} \St(H,k) \xvarrightarrow{\av} \St(H,k)^\cl $$
+where $\av$ is the averaging operator just discussed.
+This is because $\av$ is simply projection onto $\St(H,k)^\cl$.
+
+The adjoint of $\av$ (with respect to the bilinear form) is simply inclusion (since $(\av f,f')=(f,\av f')$ and $\av$ is the identity on class functions).
+The adjoint of $\bul|_H$ is the composition of the adjoints of the above, i.e.\
+$$ \St(H,k)^\cl \xvarrightarrow{\rm inclusion} \St(H,k) \xvarrightarrow{\rm adj} \St(G,k) \xvarrightarrow{\av} \St(G,k)^\cl $$
+where ${\rm adj}$ is the adjoint to $\bul|_H$ on all functions.
+This is given by ${\rm adj}(f)(x)=[G:H]f(x)$ if $x\in H$ and $0$ otherwise, indeed for $\phi\colon H\to k$ and $\psi\colon G\to k$,
+$$ ({\rm adj}\phi,\psi) = \frac1{\abs G}\sum_{g\in G}{\rm adj}\phi(g)\psi(g^{-1}) = \frac1{\abs G}\sum_{h\in H}[G:H]\phi(h)\psi(h^{-1}) = \frac1{\abs H}\sum_{h\in H}\phi(h)\psi(h^{-1}) $$
+which is just equal to $(\phi,\psi|_H)$, as desired.
+
+Thus we have that
+$$ \find^G_H(f)(x) = \av\circ{\rm adj}(f)(x) = \frac1{\abs G}\sum_{g\in G}{\rm adj}(gxg^{-1}) = \frac1{\abs H}\sum_{g\in G,gxg^{-1}\in H}f(gxg^{-1}) $$
+It is more convenient to switch $g$ with $g^{-1}$, i.e.\
+$$ \find^G_H(f)(x) = \frac1{\abs H}\sum_{g\in G,g^{-1}xg\in H}f(g^{-1}xg) $$
+Now notice that if $g\in G$ appears in the sum, then $gh$ appears in the sum for all $h\in H$.
+Since $f$ is a class function, $f(g^{-1}xg)=f(h^{-1}g^{-1}xgh)$.
+That is to say, we can split the sum over cosets, removing the factor of $1/\abs H$ as each coset has size $\abs H$:
+$$ \find^G_H(f)(x) = \sum_{g\in G/H,g^{-1}xg\in H}f(g^{-1}xg) $$
+(By $g\in G/H$ we mean that we choose a representative for the coset, the representative does not matter since $f(\bul x\bul^{-1})$ is equal to $f(x)$.)
+
+\subsection{Mackey's theory}
+
+Again, $G$ is a finite field whose order is not divisible by the characterstic of the algebraically closed field $k$.
+
+Given a subgroup $H\subseteq G$, we would like to find irreducible representations of $G$ from the induced representations of irreducible $H$-representations.
+Note that every irreducible $G$-representation $F$ is a subrepresentation of $\Ind^H_GE$ for $E$ an irreducible $H$-representation.
+Indeed, since $\res^G_HF\neq0$, take a projection onto an irreducible subrepresentation $\res^G_HF\to E$.
+The adjunction gives us a non-zero map $F\to\Ind^H_GE$, which must be an injection since $F$ is irreducible.
+
+So if we know the irreducible representations of $H$, we can try and find the irreducible representations of $G$.
+To do so, we consider their induced representations and study how they decompose into irreducible components.
+
+Note that if we take $H=G$, then we get nothing of interest since $\Ind^G_G={\rm id}$.
+And if we take $H=1$, then since its only irreducible representation is the trivial one we get that all irreducible $G$-representations are components of
+$\Ind^1_G{\rm triv}=kG$, which again doesn't tell us anything we don't know.
+
+Let us focus on a simpler question: when is $\Ind^H_GE$ irreducible for an irreducible $H$-representation $E$?
+Now, $V$ is irreducible iff $\dim\hom_G(V,V)=1$, and
+$$ \dim\hom_G(\Ind^H_GE,\Ind^H_GE) = \dim\hom_H(\res^G_H\Ind^H_GE,E) $$
+so we would like to understand $\res^G_H\Ind^H_GE$.
+It turns out it is beneficial to study $\res^G_K\circ\Ind^H_G$ for $H,K\subseteq G$ subgroups.
+
+\bdefn
+
+    Let $H,K\subseteq G$ be subgroups of $G$.
+    Then a {\emphcolor $(H,K)$-double coset} is a set of the form
+    $$ HgK = \set{hgk}[h\in H,k\in K] $$
+    for $g\in G$.
+    Double cosets are disjoint and cover $G$, and we denote by $H\ls G/K$ the set of all $(H,K)$-double cosets of $G$.
+
+\edefn
+
+It is not hard to see that $HgK$ is the orbit of $g$ under the action of $H\times K$ on $G$ given by $(h,k).g=hgk^{-1}$.
+This quickly shows us that indeed double cosets are disjoint and cover $G$.
+This action can help study the double cosets.
+
+\bprop[title=Mackey]
+
+    Let $H,K\subseteq G$ be subgroups, and choose representatives of the double cosets $(g_q)_{q\in H\ls G/K}$ (so $g_q\in q$).
+    Then there is an isomorphism of functors:
+    $$ \res^G_K\circ\Ind^H_G \cong \bigoplus_{q\in H\ls G/K}\Ind^{K\cap g_q^{-1}Hg_q}_K\circ\res^{g_q^{-1}Hg_q}_{K\cap g_q^{-1}Hg_q}\circ{}^{g_q^{-1}}\bul $$
+
+\eprop
+
+Recall that ${}^g\bul$ is a functor between $G$-representations which preserves the base space, and changes the action by conjugation.
+That is for $x\in G$ and $v\in V$, $x.v=(g^{-1}xg)v$.
+
+\bproof
+
+    Recall that $\res^G_K\Ind^H_GV$ consists of functions $f\colon G\to V$ where $f(hg)=hf(g)$ for all $g\in G,h\in H$, and its action is $(kf)(g)=f(gk)$ for $k\in K$.
+
+    For $q\in H\ls G/K$, let us consider the subspace $S_q(V)\subseteq\res^G_K\Ind^H_GV$ given by all those functions $f$ whose support lies within $q$, i.e.\ $f(x)=0$ if $x\notin q$.
+    This is clearly a $K$-subrepresentation: it is clearly linear, and since $qK=q$ it is closed under $K$'s action.
+    Furthermore, we also clearly have that the $S_q(V)$s are linearly independent, and every function $f$ can be written as a sum of functions from the $S_q(V)$s.
+    That is,
+    $$ \res^G_K\Ind^H_GV = \bigoplus_{q\in H\ls G/K}S_q(V) $$
+
+    So let us now investigate these $S_q(V)$s.
+    $S_q(V)$ is clearly isomorphic to the set of functions $f\colon q\to V$ where $f(hg)=hf(g)$ for $g\in G,h\in H$.
+    Given $f\in S_q(V)$ consider the function $f'\colon K\to V$ defined by $f'(k)=f(g_qk)$.
+    This defines a linear map $S_q(V)\to\St(K,k)$ mapping $f$ to $f'$.
+
+    Now notice that for $k\in K$ and $\ell\in K\cap g_q^{-1}Hg_q$, we have
+    $$ f'(\ell k) = f(g_q\ell k) = f(g_q\ell g_q^{-1}\cdot g_qk) = (g_q\ell g_q^{-1})f(g_qk) = (g_q\ell g_q^{-1})f'(k) $$
+    That is to say,
+    $$ f'\in\Ind^{K\cap g_q^{-1}Hg_q}_K\res^{g_q^{-1}Hg_q}_{K\cap g_q^{-1}Hg_q}{}^{g_q^{-1}}V $$
+    We claim that our map $\Phi_q\colon S_q(V)\to\Ind^{K\cap g_q^{-1}Hg_q}_K\res^{g_q^{-1}Hg_q}_{K\cap g_q^{-1}Hg_q}{}^{g_q^{-1}}V$ is $K$-equivariant.
+    Indeed, $(kf)'(k')=(kf)(g_qk')=f(g_qk'k)$, and $(k.f')(k')=f'(k'k)=f(g_qk'k)$.
+
+    Now we claim that $\Phi_q$ is an isomorphism.
+    We will explicitly describe its inverse.
+    For $g\in q$, we have $g=hg_qk$ for $h\in H,k\in K$, so given $f'$ define $f(g)=hf'(k)$.
+    Notice that $hf'(k)=hf(g_qk)=f(hg_qk)=f(g)$, so this gives an inverse in one direction.
+    And $\Phi_q(f)(k)=f(g_qk)=f'(k)$ (since $g_qk=1g_qk$), so it is an inverse in the other direction as well.
+
+    Thus we have
+    $$ \res^G_K\Ind^H_G(V) = \bigoplus_{q\in H\ls G/K}S_q(V) \cong \bigoplus_{q\in H\ls G/K}\Ind^{K\cap g_q^{-1}Hg_q}_K\res^{g_q^{-1}Hg_q}_{K\cap g_q^{-1}Hg_q}{}^{g_q^{-1}}V $$
+    as desired.
+    (This isomorphism is also natural, which can be verified.)
+    \qed
+
+\eproof
+
+Notice that if $H\subseteq G$ is normal, then
+$$ S_q(V) \cong \Ind^{K\cap H}_K\res^H_{K\cap H}{}^{g_q^{-1}}V $$
+and if $K=H$ then
+$$ S_q(V) \cong {}^{g_q^{-1}}V $$
+
+Let us denote by $\irr_k(G)$ the (isomorphism classes of) irreducible representations of $G$ over $k$.
+Given a normal subgroup $H\subseteq G$, we have an action of $G$ on $\irr_k(H)$ by mapping $[E]$ to $[{}^gE]$ ($[\bul]$ are the isomorphism classes).
+As discussed before, $H$ acts trivially here.
+Thus we actually have an action of $G/H$ on $\irr_k(H)$.
+
+\bprop
+
+    Let $H\subseteq G$ be a normal subgroup, $E,F$ irreducible $H$-representations.
+    \benum
+        \item The dimension of $\hom_G(\Ind^H_GE,\Ind^H_GF)$ is equal to the cardinality of
+        $$ {\rm trans}_{G/H}([E],[F]) = \set{q\in G/H}[{{}^q[E]=[F]}] $$
+        \item $\Ind^H_GE$ is irreducible iff it is a free point for this action (that is, $\stab_{G/H}([E])=\set1$).
+        \item $\Ind^H_GE$ and $\Ind^H_GF$ have common irreducible components iff $[E]$ and $[F]$ lie in the same orbit.
+        In this case, $\Ind^H_GE$ and $\Ind^H_GF$ are isomorphic.
+    \eenum
+
+\eprop
+
+\bproof
+
+    \benum
+        \item Since $H$ is normal in $G$, double cosets are simply one-sided cosets, in particular $H\sl G/H=G/H$.
+        So let $(g_q)_{q\in G/H}$ be representatives of cosets in $G/H$.
+        Then letting $K=H$ and using Mackey, we have
+        $$ \hom_G(\Ind^H_GE,\Ind^H_GF) \cong \hom_H(\res^G_H\Ind^H_GE,F) \cong \bigoplus_{q\in G/H}\hom_H({}^{g_q^{-1}}E,F) $$
+        By Schur, the dimensions of the hom-sets on the right-hand side are $0$ or $1$, depending on whether or not ${}^{g_q^{-1}}E$ is isomorphic to $F$.
+        Thus the dimension is equal to the number of $q\in G/H$ such that ${}^{g_q^{-1}}[E]=[F]$, which gives the desired result.
+
+        \item This is clear, since $\Ind^H_GE$ is irreducible iff $\dim\hom_G(\Ind^H_GE,\Ind^H_GE)=1$.
+        By the above point this is iff ${\rm trans}_{G/H}([E],[E])=\stab_{G/H}([E])$ is a singleton.
+
+        \item Note that $V,W$ have a common irreducible component iff $\hom_G(V,W)\neq0$.
+        Thus the first assertion follows: they share an irreducible component iff ${\rm trans}_{G/H}([E],[F])\neq\emptyset$, i.e.\ iff they lie in the same orbit.
+        Now, if $[E]$ and $[F]$ lie in the same orbit we must show that $\Ind^H_GE\cong\Ind^H_GF$.
+        Suppose ${}^gE\cong F$, then $\Ind^H_G({}^gE)\cong\Ind^H_G(F)$.
+        It is not hard to show that $\Ind^H_G({}^gE)\cong{}^g\Ind^H_G(E)\cong\Ind^H_G(E)$ as desired.
+        \qed
+    \eenum
+
+\eproof
+
+For example, suppose $H\subseteq G$ is normal with an index of $2$.
+Then the orbits of $\irr_k(H)$ have a size of either $1$ or $2$ (since $G/H$ has a size of $2$).
+If an orbit is a single point $[E]$, then $\Ind^H_GE$ decomposes as the sum of two irreducible representations.
+This is because
+$$ \dim\endo_G(\Ind^H_GE) = \#\set{q\in G/H}[{{}^q[E]=[E]}] = \abs{G/H} = 2 $$
+and this tells us that it has two (non-isomorphic) irreducible subrepresentations.
+And if an orbit is two points $[E],[E']$ then $\Ind^H_GE$ (which is isomorphic to $\Ind^H_GE'$ as they lie in the same orbit) is irreducible (since it must be a free point).
+This gives us all irreducible $G$-representations.
+
+\subsection{Brauer's induction theorem}
+
+We focus now on representations over $\bC$.
+For a subring $A\subseteq\bC$ we denote by $R_A(G)$ the $A$-span of characters of finite-dimensional $G$-representations in $\St(G,\bC)^\cl$.
+This is an $A$-algebra, and the characters of irreducible $G$-representations form an $A$-basis for $R_A(G)$ (since $\ch_V$ can be written as the
+$\bZ$-combination of irreducible characters).
+
+Given a subgroup $H\subseteq G$, recall that we have a linear map $\find^H_G\colon\St(H,\bC)^\cl\to\St(G,\bC)^\cl$.
+This map restricts to $R_A(H)\to R_A(G)$ (since characters are mapped to characters).
+We will simplify notation and write $\find^H_G$ simply as $\Ind^H_G$.
+In the other direction restriction also restricts to these algebras: $\res^G_H\colon R_A(G)\to R_A(H)$.
+
+In particular we have $R_\bC(G)=\St(G,\bC)^\cl$.
+And we denote $R(G)=R_\bZ(G)$, this is called the {\it representation ring} of $G$, elements of which are called {\it virtual characters.}
+Notice that a virtual character $f\in R(G)$ is the character (or its minus) of an irreducible representation iff $(f,f)=1$.
+Indeed, $f=\sum_in_i\chi_i$ for irreducible characters $\chi_i$, and so $(f,f)=\sum_in_i^2$ which is equal to $1$ iff there is a unique $n_i=\pm1$
+with the rest being $0$.
+
+Now suppose we have a family of subgroups $(H_i)_{i\in I}$ such that every element in $G$ is conjugate to an element in some $H_i$.
+{\bf Artin's induction theorem} states that the map
+$$ \bigoplus_{i\in I}\Ind^{H_i}_G\colon\bigoplus_{i\in I}R_\bQ(H_i)\to R_\bQ(G) $$
+is surjective.
+Some linear algebra shows that this is surjective iff the map
+$$ \bigoplus_{i\in I}\Ind^{H_i}_G\colon\bigoplus_{i\in I}R_\bC(H_i)\to R_\bC(G) $$
+is.
+We will show that if $f\in R_\bC(G)$ is orthogonal to the image of this map, then it is zero.
+Since the orthogonal complement is zero, this means that the image is the entire space.
+
+Indeed, if $f$ is orthogonal to the image then $(f,\Ind^{H_i}_Gf')=0$ for all $f'\in R_\bC(H_i)$, by reciprocity this is equal to
+$(\res^G_{H_i}f,f')=0$.
+Since the form is nondegenerate, this means $\res^G_{H_i}f=0$ for all $i$.
+But then $f=0$ since every $g\in G$ is conjugate to an element in some $H_i$ and $f$ is a class function.
+
+We can take $H_i$ to be the cyclic subgroups of $G$.
+And so every function in $R_\bQ(G)$ is the $\bQ$-linear combination of the induced characters of $\ch_\bC(H_i)$ (as these span $R_\bQ(H_i)$).
+Thus we get
+
+\bthrm[title=Artin's induction theorem]
+
+    Let $V$ be a finite-dimensional $G$-representation.
+    Then there exist cyclic subgroups $H_1,\dots,H_n\subseteq G$ and characters $\chi_i\in\ch_\bC(H_i)$ such that $\ch_V$ is a rational
+    linear combination of the induced characters $\Ind^{H_1}_G\chi_1,\dots,\Ind^{H_n}_G\chi_n$.
+
+\ethrm
+
+The goal for the rest of this section is to prove the following:
+
+\bthrm[title=Brauer's induction theorem]
+
+    Let $V$ be a finite-dimensional $G$-representation.
+    Then there exist subgroups $H_1,\dots,H_n\subseteq G$ and characters $\chi_i\in\ch_\bC(H_i)$ such that $\ch_V$ is a $\bZ$-combination
+    of the induced characters $\Ind^{H_1}_G\chi_1,\dots,\Ind^{H_n}_G\chi_n$.
+
+\ethrm
+
+\bdefn
+
+    A group $H$ is {\emphcolor $0$-nilpotent} if it is trivial, and {\emphcolor $n$-nilpotent} if $H/Z(H)$ is $n-1$-nilpotent.
+    $H$ is {\emphcolor nilpotent} if it is $n$-nilpotent for some $n$.
+
+\edefn
+
+Subgroups and quotients of nilpotent groups are nilpotent, as well as the product of nilpotent groups.
+Further $p$-groups are nilpotent.
+
+\blemm
+
+    Let $H$ be a non-Abelian nilpotent group, then $H$ contains a normal Abelian subgroup which is not central.
+
+\elemm
+
+\bproof
+
+    Since $H$ is Abelian, $Z(H)\neq H$.
+    Consider then the projection $H\to H/Z(H)$, and take an element $h\in H$ which is mapped to a non-trivial element of $Z(H/Z(H))$.
+    Let $K$ be the subgroup generated by $Z(H)$ and $h$.
+    It is not central, is Abelian, and it is normal: it is the preimage of a central group in $H/Z(H)$ (the group generated by the image of $h$).
+    \qed
+
+\eproof
+
+\blemm
+
+    Let $H$ be a finite nilpotent group, and let $E$ be an irreducible $H$-representation.
+    Then there exists a subgroup $K\subseteq H$ and a character $\chi\in\ch_\bC(K)$ such that $E\cong\Ind^K_H(\bC_\chi)$.
+
+\elemm
+
+\bproof
+
+    We proceed by induction on the order of $H$.
+    First we reduce this to the case when $E$ is a faithful $H$-representation.
+    Let $L\subseteq H$ be the kernel of the representation; if $L\neq1$ then viewing $E$ as an $H/L$-representation, by induction there exists a subgroup $\tilde K\subseteq H/L$ and a
+    character $\chi\in\ch_\bC(\tilde K)$ such that $E$ is isomorphic to $\Ind^{\tilde K}_{H/L}(\bC_\chi)$.
+    $\tilde K$ is of the form $K/L$ for some subgroup $L\subseteq K\subseteq H$, and we can view $\chi$ as a character in $\ch_\bC(K)$ (by precomposing with the projection $K\to\tilde K$).
+    It is not hard to show (in fact, it is shown in homework) that $\Ind^{K/L}_{H/L}(\bC_\chi)\cong\Ind^K_L(\bC_\chi)$, as desired.
+    So all that remains is to show this for the case when $L=1$, i.e.\ when $E$ is faithful.
+
+    If $H$ is Abelian then this is clear: $E$ is of the form $\bC_\chi$ for $\chi\in\ch_\bC(H)$, so taking $H=K$ gives us the desired result.
+    Then by the above lemma, there is a non-central Abelian normal subgroup $L\subseteq H$.
+    We showed (a while ago) that either $E$ is either isotypical as an $L$-representation, or there exists a proper subgroup $L\subseteq K\subsetneq H$ such that $E\cong\Ind^K_H(F)$ for an
+    irreducible $K$-representation $F$.
+    In the latter case, by induction there is a subgroup $K'\subseteq K$ and a character $\chi\in\ch_\bC(K')$ such that $F\cong\Ind^{K'}_K(\bC_\chi)$.
+    Then $E\cong\Ind^K_H\Ind^{K'}_K(\bC_\chi)\cong\Ind^{K'}_H(\bC_\chi)$ as desired.
+
+    We will show that the former case is impossible: $E$ cannot be an isotypical $L$-representation.
+    Since $L$ is Abelian, $L$ acts on $E$ by scalars.
+    Then the center of the image of $L$ in $\gl(E)$ is contained in the center of the image of $H$ in $\gl(E)$.
+    Since the representation is faithful, this means that the center of $L$ is contained in the center of $H$, which is impossible since $L$ is Abelian non-central.
+    \qed
+
+\eproof
+
+\bdefn
+
+    For a prime $p$, a finite group $H$ is {\emphcolor $p$-elementary} if it is isomorphic to the product of a $p$-group with a cyclic group.
+    A group is {\emphcolor elementary} if it is $p$-elementary for some $p$.
+
+\edefn
+
+Since $p$-groups and cyclic groups are nilpotent, elementary groups are nilpotent as well.
+
+We now state {\bf Brauer's induction theorem}:
+
+\bthrm[title=Brauer's induction theorem]
+
+    Let $\c E_G$ be the collection of elementary subgroups of $G$, then the map
+    $$ \bigoplus_{H\in\c E_G}\Ind^H_G\colon\bigoplus_{H\in\c E_G}R(H)\to R(G) $$
+    is surjective.
+
+\ethrm
+
+This indeed implies our original formulation of Brauer's induction theorem: a character of a $G$-representation is equal to the $\bZ$-combination of induced characters of elementary subgroup representations.
+But by the above lemma, for an elementary subgroup $H$ and an $H$-representation $V$, we have that $\ch_V=\Ind^K_H(\chi)$ for some $\chi\in\ch_\bC(K)$.
+Then $\Ind^H_G$ maps this to $\Ind^K_H(\chi)$, giving us the original result.
+
+Let us for a second discuss something that probably should've been discussed before.
+Recall that there is a canonical isomorphism $G\cong G^\op$ by mapping $g\mapsto g^{-1}$.
+A right $G$-set is simply a left $G^\op$-set, which means that in general given a left $G$-set $X$ it can be given a right $G$-set structure by defining $xg=g^{-1}x$, i.e.\ precomposing with the isomorphism $G\to G^\op$.
+
+Recall that a $G$-representation is simply a left $kG$-module.
+Equivalently we can view a $G$-representation as a right $kG$-module by setting $vg=g^{-1}v$.
+
+\blemm
+
+    Let $H\subseteq G$ be a subgroup, $V$ a $G$-representation and $W$ an $H$-representation.
+    Then
+    $$ \ind^H_G(W\otimes\res^G_HV) \cong \ind^H_GW\otimes V $$
+
+\elemm
+
+\bproof
+
+    We compute:
+    $$ \ind^H_G(W\otimes\res^G_HV) = kG\otimes_{kH}(W\otimes\res^G_HV),\qquad \ind^H_GW\otimes V = (kG\otimes_{kH}W)\otimes V $$
+    While a first glance may seem to indicate a trivial isomorphism via associativity: it is not the case.
+    This is because the $kH$-module structure on $W\otimes\res^G_HV$ is not given by the $kH$-module structure on $W$, but by $\res^G_HV$'s as well: $h(w\otimes v)=hw\otimes hv$, not $hw\otimes v$.
+
+    So instead we will compute their characters:
+    $$ \ch_{\ind^H_G(W\otimes\res^G_HV)}(x) = \Ind^H_G(\ch_W\cdot\ch_V|_H) = \sum_{g\in G/H,g^{-1}xg\in H}\ch_W(g^{-1}xg)\ch_V(x) = (\Ind^H_G(\ch_W)\cdot\ch_V)(x) $$
+    which is just the character of $\Ind^H_G(W)\otimes V$, as desired.
+    \qed
+
+\eproof
+
+Notice that this implies that the image of our map is an ideal.
+Indeed, for $\ch_V\in R(G)$ and $\ch_W\in R(H)$ we have that $\Ind^H_G(\ch_W)\cdot\ch_V=\Ind^H_G(\ch_{W\otimes\res^G_HV})$ by above, which is in the image of our map.
+Let us denote the image of our map by $I$; so to show that our map is surjective, it is sufficient to show that $1\in I$.
+
+For subrings $A,B\subseteq\bC$ let us denote by $R^B_A(G)\subseteq R_A(G)$ the subset of functions whose values lie in $B$.
+$R^B_A(G)$ is clearly a subring of $R_A(G)$, and restriction and induction preserve $R^B_A(\bul)$.
+Let us denote by $I^B_A$ the image of the map
+$$ \bigoplus_{H\in\c E_G}\Ind^H_G\colon\bigoplus_{H\in\c E_G}R^B_A(H)\to R^B_A(G) $$
+so that $I=I^\bC_\bZ$.
+Define $A$ to be the subring of $\bC$ generated by all $\abs G$th roots of unity.
+
+\blemm
+
+    To show that our original map is surjective, it is sufficient to show $1\in I^\bC_A$.
+
+\elemm
+
+\bproof
+
+    Since $A$ is a finitely-generated $\bZ$-module, all of its elements are integral.
+    Thus $A\cap\bQ=\bZ$, and so $A/\bZ$ is a torsion-free finitely-generated $\bZ$-module.
+    And so we can write $A=\bZ\oplus A'$ for a $\bZ$-submodule $A'\subset A$.
+    Now consider the projection $p\colon A\to\bZ$ which induces a projection $P\colon R_A(G)\to R_\bZ(G)$ given by mapping an $A$-linear combination of irreducible characters to the
+    linear combination of the projection of those values (i.e.\ $a_1\chi_1+\cdots+a_n\chi_n\mapsto p(a_1)\chi_1+\cdots+p(a_n)\chi_n$).
+
+    Note that $P(a\chi)=p(a)\chi$ holds for all characters $\chi$ (not just irreducible ones).
+    Indeed, $\chi$ is the $\bZ$-linear combination of irreducible characters, $\chi=\sum_in_i\chi_i$.
+    Then $P(a\chi)=P(\sum_ian_i\chi_i)=\sum_ip(an_i)\chi_i=p(a)\sum_in_i\chi_i=p(a)\chi$.
+
+    Now if $1\in I^\bC_A$ then we can write $1=\sum_ia_i\ch_{\Ind^{H_i}_GE_i}$ where $a_i\in A$ and $H_i$ are elementary subgroups of $G$.
+    Then
+    $$ 1 = P(1) = P\parens{\sum_ia_i\ch_{\Ind^{H_i}_GE_i}} = \sum_iP\parens{a_i\ch_{\Ind^{H_i}_GE_i}} = \sum_ip(a_i)\ch_{\Ind^{H_i}_GE_i} \in I $$
+    as desired.
+    \qed
+
+\eproof
+
+In particular since $I^\bZ_A\subseteq I^\bC_A$, it is sufficient to show that $1\in I^\bZ_A$.
+
+So we consider $R^\bZ_A(G)\subseteq R^\bZ_\bC(G)$.
+Notice that $R^\bZ_\bC(G)=\St(G,\bZ)^\cl$, so it is a finitely generated free Abelian group (as it is generated by the characters of $G$-representations).
+
+We have the following lemma:
+
+\blemm
+
+    Let $L$ be a finitely generated Abelian group, $M\subseteq L$ a subgroup and $\ell\in L$.
+    If $\ell\in M+p^kL$ for all prime $p$ and $k\geq1$, then $\ell\in M$.
+
+\elemm
+
+Applying this to $L=R^\bZ_\bC(G)$ and $M=I^\bZ_A$ and $\ell=1$, we have the following reduction:
+
+\blemm
+
+    In order to show that our map is surjective, it is enough to show that for every prime $p$ and $k\geq1$, there exists $f_{pk}\in I^\bZ_A$ such that all values
+    of $1-f_{pk}$ are divisible by $p^k$.
+
+\elemm
+
+\blemm
+
+    It is enough to show that for every prime $p$, there is a $f_p\in I^\bZ_A$ all of whose values are coprime to $p$.
+
+\elemm
+
+\bproof
+
+    Let $k\geq1$, then by Euler's theorem all values of $1-f_p^{\phi(p^k)}$ are divisible by $p^k$.
+    So defining $f_{pk}=f_p^{\phi(p^k)}$ gives us the requires condition for the previous lemma.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $H$ be finite and $h\in H$.
+    $h$ is {\emphcolor $p$-regular} if $h$'s order is coprime to $p$, and {\emphcolor $p$-torsion} if its order is a power of $p$.
+
+\edefn
+
+\blemm
+
+    Let $H$ be finite and $p$ prime, then every $h\in H$ can be uniquely written as $h=h_rh_t$ for $h_r$ $p$-regular and $h_t$ $p$-torsion, where $h_r,h_t$ commute.
+
+\elemm
+
+We now reduce further:
+
+\blemm
+
+    It is sufficient to prove the following: for every $p$ prime and $g\in G$ $p$-regular, there exists $f_g\in I^\bZ_A$ such that $f_g(x)$ is coprime to $p$
+    if $x_r$ is conjugate to $g$ and $0$ otherwise.
+
+\elemm
+
+\bproof
+
+    Let $f_p$ be the sum of all $f_g$s where $g$ runs over the conjugacy classes of $p$-regular elements in $G$.
+    Clearly $f_p$'s values are all coprime to $p$.
+    \qed
+
+\eproof
+
+Let us consider a Sylow $p$-subgroup $S$ of $Z_G(g)=\set{h\in G}[hg=gh]$.
+Then $E=S\cdot\gen g$ is a $p$-elementary subgroup of $G$.
+Let $o(g)$ be the order of $g$, and define $f=o(g)\cdot\delta_{g}\in R^\bZ_A(\gen g)$.
+$f$ does indeed lie in $R^\bZ_A$, since $\delta_g$ can be written (recall the commutative Fourier transform) as $\delta_g=\sum_{\chi\in\ch(\gen g)}\chi(g)e_\chi$ where
+$e_\chi\chi(\bul)^{-1}/o(g)$, so $f=\sum_\chi\chi(g)^{-1}\chi$ which is an $\bZ\subseteq A$-span of characters, and $o(g)\delta_g$ clearly has its image lie in $\bZ$, so $f\in R^\bZ_A$ as desired.
+Now let $f_1\in R^\bZ_A(E)$ be the pullback of $f$ under the projection $E\to\gen g$, i.e.\ $f_1=o(g)\delta_{Sg}$.
+Finally we define $f_g=\Ind^E_G(f_1)\in I^\bZ_A$, and we claim that $f_g$ has the desired trait from the above lemma.
+
+Indeed,
+$$ f_g(x) = \sum_{y\in G/E,y^{-1}xy\in E}f_1(y^{-1}xy) = o(g)\cdot\#\set{y\in G/E}[y^{-1}xy\in Sg] = \#\set{y\in G/S}[y^{-1}xy\in Sg] $$
+If $x_r$ is not conjugate to $g$, then this is $0$.
+And if $x_r$ is conjugate to $g$, then by conjugating we can assume $x_r=g$ and so $x\in Z_G(\gen g)$, and by further conjugating by Sylow's theorem we can assume $x\in E$.
+So we write $x=sg$ with $s\in S$.
+Then $y\in G$ satisfying $y^{-1}xy\in Sg$ has $y^{-1}sgy=(y^{-1}sy)(y^{-1}gy)\in Sg$.
+This requires that $y^{-1}sy\in S,y^{-1}gy=g$ i.e.\ $y\in Z_G(g)$ and $y^{-1}sy\in S$.
+So we want to show that $\#\set{y\in Z_G(g)/S}[y^{-1}sy\in S]$ is coprime with $p$.
+
+We can interpret this set as $\#\set{yS\in Z_G(g)/S}[s(yS)=yS]$.
+So we want to show that the number of fixed points of $s$ in $S$'s action on $Z_G(g)/S$ is coprime with $p$.
+We have the following result:
+
+\blemm
+
+    Let $X$ be a finite set whose size is coprime with $p$.
+    Let $\sigma\colon X\to X$ be a permutation whose order is a power of $p$.
+    Then the number of fixed points of $\sigma$ is coprime to $p$.
+
+\elemm
+
+\bproof
+
+    $\gen\sigma$ acts on $X$, and the set of fixed points of this action are precisely the fixed points of $\sigma$.
+    $\gen\sigma$ is a $p$-group, and in general ${\rm fp}(X)\equiv\#X\pmod p$ for any $p$-group set $X$.
+    Since $\#X$ is coprime with $p$, ${\rm fp}(X)$ is as well.
+
+    We show that ${\rm fp}(X)\equiv\#X\pmod p$ for a $P$-set $X$ ($P$ a $p$-group).
+    Indeed, we have $\#X=\sum_{\sigma\in X/P}\#\sigma$.
+    We know that $\#\sigma$ divides $\#P$ for all orbits $\sigma$.
+    For a non-trivial orbit, this means its size is divisible by $p$ and thus equal to $0$ modulo $p$.
+    Thus $\#X$ is equal to the number of trivial orbits, i.e.\ fixed points, modulo $p$.
+    \qed
+
+\eproof
+
+$s$ is a permutation of $Z_G(g)/S$ whose order divides $s$'s order in $G$, which is a power of $p$ (following the group morphism which is $S$'s action).
+Thus we get the desired result.
+
