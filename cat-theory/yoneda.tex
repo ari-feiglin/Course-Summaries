@@ -1,0 +1,243 @@
+\section{Yoneda's Lemma}
+
+\subsection{Representable functors}
+
+\bdefn
+
+    Let $\C$ be a category, then we have a bifunctor
+    $$ \hom\colon\C^\op\times\C\to\Set $$
+    call the {\emphcolor hom-functor} which maps pairs of objects $c,d$ to their hom-set $\hom(c,d)$.
+    Pairs of morphisms $f\colon c\to d$ and $f'\colon c'\to d'$ are mapped to the function $\hom(f,f')\colon\hom(d,c')\to\hom(c,d')$ mapping $g\colon d\to c'$ to $f'\circ g\circ f\colon c\to d'$.
+    I.e.\ $\hom(f,f')=f\bul f'$.
+
+\edefn
+
+The hom-functors restrict along $\C^\op$ and $\C$.
+Specifically for any $c\in\C$ we have single-variable functors
+$$ \hom(c,\bul)\colon\C\to\Set,\qquad \hom(\bul,c)\colon\C^\op\to\Set $$
+where $\hom(c,f)=1_C\bul f$ which we will denote by $f_*$ and $\hom(c,f)=f\bul1_C=f^*$.
+
+\bdefn
+
+    A covariant functor $F\colon\C\to\Set$ is called {\emphcolor corepresentable} if there is some $X\in\C$ such that $F$ is naturally isomorphic to the hom-functor $\hom(X,\bul)$.
+    A contravariant functor $F\colon\C^\op\to\Set$ is {\emphcolor representable} if $F$ is naturally isomorphic to $\hom(\bul,X)$ for some $X\in\C$.
+    It is said that $F$ is {\emphcolor (co)represented} by $X\in\C$.
+
+\edefn
+
+We will sometimes say ``represented'' instead of ``corepresented'' when the variance is clear.
+
+\bexam
+
+    \benum
+        \item The forgetful functor $U\colon\grp\to\Set$ is represented by $\bZ$.
+        That is, we have a natural isomorphism $UG\cong\hom(\bZ,G)$ which maps $\phi\colon\bZ\to G$ to $\phi(1)$.
+        This is a bijection (because $\bZ$ is the free group on a single generator), and it can be seen to be natural.
+
+        \item In a somewhat generalization, the forgetful functor from the category of $R$-modules $U\colon\mod_R\to\Set$ is represented by $R$.
+        Indeed, $\hom(R,M)\cong UM$ by mapping $\phi\mapsto\phi(1)$.
+
+        \item The functor $O_n\colon\grp\to\Set$ mapping a group to the set of elements of order $\leq n$ is represented by $\bZ/n\bZ$.
+        A morphism $\hom(\bZ/n\bZ,G)$ maps to its image on $1$ again.
+
+        \item The contravariant powerset functor $\c P\colon\Set^\op\to\Set$, which maps sets to their powersets and $f\colon X\to Y$ to $f^{-1}\colon\c P(Y)\to\c P(X)$
+        is represented by $\set{0,1}$.
+
+        \item The open-set functor ${\rm Open}\colon{\sf Top}^\op\to\Set$ mapping a topology to its collection of open sets (and $f\colon X\to Y$ maps to $f^{-1}\colon{\rm Open}(Y)\to{\rm Open}(X)$)
+        is represented by $\set{0,1}$ with the Sierpenski topology $\set{\emptyset,\Set0,\set{0,1}}$.
+    \eenum
+
+\eexam
+
+Representations are useful due to the following lemma.
+
+\subsection{Yoneda's lemma}
+
+For two functors $F,G$ we denote by $\nat(F,G)$ the set of natural transformations $F\To G$ (i.e.\ $\nat$ is the hom-set of the functor category).
+
+\bthrm[title=Yoneda's Lemma]
+
+    Let $F\colon\C\to\Set$ be a functor and $X\in\C$.
+    Then there is a bijection
+    $$ \Phi\colon\nat(\hom(X,\bul),F) \xto{\ \sim\ } F(X) $$
+    which is natural in both $X$ and $F$.
+
+\ethrm
+
+\bproof
+
+    We build $\Phi$ explicitly: given a natural transformation $\alpha\colon\hom(X,\bul)\To F$, map it to $\alpha_X(1_X)$.
+    To show its bijectivity, we explicitly construct its inverse as well.
+    For $a\in F(X)$ let us define the natural transformation $\alpha\colon\hom(X,\bul)\To F$ whose components are
+    $$ \alpha_Y\colon\hom(X,Y)\to F(Y),\qquad \alpha_Y(f) = F(f)(a) $$
+
+    Explicitly, we have
+    $$ \Phi(\alpha)=\alpha_X(1_X),\qquad \Psi(a)_Y(f) = F(f)(a) $$
+    These are inverses:
+    $$ \Phi(\Psi(a)) = \Psi(a)_X(1_X) = F(1_X)(a) = a,\qquad \Psi(\Phi(\alpha))_Y(f) = F(f)(\Phi(\alpha)) = F(f)\alpha_X(1_X) = \alpha_Y(f) $$
+    where the final equality is due to naturality: $F(f)\alpha_X=\alpha_Yf_*$ so taking the value of this at $1_X$ gives $\alpha_Y(f)$.
+
+    We show that $\Phi$ is natural in $X$ and $F$ separately; first we set $F$ constant and consider $\Phi_X$.
+    To show that $\Phi_F$ is natural, let us consider what exactly our functors are.
+    On the right clearly it is $F$, but on the left it is not as clear.
+    Explicitly, we have a functor $\C\to[\C,\Set]^\op$ which maps $X\in\C$ to $h^X=\hom(X,\bul)$ and $f$ to $f_*\colon\hom(Y,\bul)\to\hom(X,\bul),h\mapsto hf$
+    Since $\nat$ is the hom-functor $\nat(\bul,F)\colon[\C,\Set]^\op\to\Set$, we see that $\nat(h^\bul,F)$ is the composition:
+    $$ \C \to [\C,\Set]^\op \xto{\nat(\bul,F)} \Set $$
+    This maps $f\colon X\to Y$ to $f^{**}$ which maps $\alpha$ to $\alpha\circ f^*$ (whose $Z$ component maps $g\colon Y\to Z$ to $\alpha_Z(gf)$).
+
+    So we want to show that $F(f)\circ\Phi_X=\Phi_Y\circ f^{**}$.
+    For $\alpha\colon\hom(X,\bul)\To F$ the left maps to $F(f)(\alpha_X(1_X))$, and the right maps to $(\alpha f^*)_Y(1_Y)=\alpha_Y(f)$.
+    We already showed (when showing $\Psi\Phi(\alpha)=\alpha$) that $F(f)\alpha_X(1_X)=\alpha_Y(f)$, as desired.
+
+    Now we set $X$ and we consider $\Phi_F$ as $F$ varies.
+    The left-hand side is simply the covariant hom-functor represened by $\hom(X,\bul)$, while the right-hand side is the functor ${\rm ev}_X\colon[\C,\Set]\to\Set$
+    which evaluates $F\colon\C\to\Set$ at $F(X)$, and $\lambda\colon F\To G$ is mapped to ${\rm ev}_X(\lambda)=\lambda_X\colon F(X)\to G(X)$.
+    Thus naturality just states that $\lambda_X\circ\Phi_F=\Phi_G\circ\lambda_*$ for all $\lambda\colon F\To G$.
+    Indeed, if $\alpha\colon\hom(X,\bul)\To F$ is natural its image on the left is $\lambda_X\alpha_X(1_X)$ and its image on the right is $\Phi_G(\lambda\circ\alpha)=(\lambda_X\alpha_X)(1_X)$,
+    which is equal.
+    \qed
+
+\eproof
+
+Yoneda's lemma dualizes to:
+
+\bcoro
+
+    Let $F\colon\C^\op\to\Set$ be a contravariant functor and $X\in\C$, then there is a natural bijection
+    $$ \nat(\hom(\bul,X),F) \cong FX,\qquad \alpha\mapsto\alpha_X(1_X) $$
+
+\ecoro
+
+In our proof we defined a functor $\C\to[\C,\Set]^\op$ which mapped $X\in\C$ to $\hom(X,\bul)$ and $f\colon X\to Y$ to $f_*\colon\hom(Y,\bul)\To\hom(X,\bul)$.
+A functor $\C\to\D^\op$ is equivalent to a functor $\C^\op\to\D$ (with the same definition), so this is simply a functor $\C^\op\to[\C,\Set]$.
+Replacing $\C$ with its opposite category, we get a functor $\C\to[\C^\op,\Set]$ defined as follows:
+\benum
+    \item $X\in\C$ is mapped to $\hom(\bul,X)$,
+    \item $f\colon X\to Y$ is mapped to $f_*\colon\hom(\bul,X)\To\hom(\bul,Y)$ (composition with $f$).
+\eenum
+
+\bdefn
+
+    The functor $\C\to[\C^\op,\Set]$ just described is called the {\emphcolor Yoneda embedding}, and it is denoted $\y$.
+    We denote the related functor $\C^\op\to[\C,\Set]$ (the Yoneda embedding for the opposite category) by $\y^\op$ (or just $\y$ when no confusion arises).
+
+\edefn
+
+\bprop
+
+    $\y$ is a fully faithful embedding.
+
+\eprop
+
+\bproof
+
+    To show that $\y$ is fully faithful, we must consider for $X,Y\in\C$ the enduced function $\y_{XY}\colon\hom(X,Y)\to\nat(\y(X),\y(Y))$ and show it is a bijection.
+    Notice that $\nat(\y(X),\y(Y))\cong\hom(X,Y)$ by the Yoneda lemma, which maps $\alpha\colon\y(X)\To\y(Y)$ to $\alpha_X(1_X)$.
+    We know that this is a bijection, so it is sufficient to show that composition with $\y_{XY}$ is the identity (in either direction) in order to show that $\y_{XY}$ is a bijection.
+    Let $f\colon X\to Y$, then $\y(f)_X(1_X)=f$ by definition, as desired.
+    \qed
+
+\eproof
+
+Since fully faithful functors reflect isomorphisms:
+
+\bprop
+
+    For any two objects $X,Y\in\C$, $\hom(X,\bul)\cong\hom(Y,\bul)$ iff $X\cong Y$.
+    Similarly for represented functors.
+    Thus, a representation of a functor is unique up to isomorphism.
+
+\eprop
+
+\bdefn
+
+    A contravariant functor $\C^\op\to\Set$ is called a {\emphcolor presheaf}.
+    We denote the category of presheaves (i.e.\ $[\C^\op,\Set]$) by $\psh(\C)$.
+
+\edefn
+
+So the Yoneda embedding gives a fully faithful embedding $\C\to\psh(\C)$.
+
+Recall that the center of a category is the commutative monoid of natural transformations $1_C\To1_C$.
+Further recall that the center of equivalent categories are isomorphic.
+
+\bexam
+
+    We claim that $\grp$ and $\ab$ are not equivalent, we prove this by computing their centers.
+    Recall that the forgetful functor $U\colon\grp\to\ab$ is represented by $\bZ$, and it is faithful.
+    As it is faithful, it induces and embedding $Z(\grp)\to\nat(U,U)\cong\hom(\bZ,\bZ)\cong\bZ$.
+    The bijection is given by $n\in\bZ$ maps to the natural transformations whose components are given by $x\mapsto x^n$.
+    The only one of these natural transformations whose components are group morphisms are when $n=0,1$.
+    Thus $Z(\grp)=\set{0,1}$ with multiplication.
+
+    This shows that $Z(\ab)=\bZ$ since $x\mapsto x^n$ are all group morphisms.
+    Thus $Z(\ab)\cong Z(\grp)$ and so they cannot be equivalent.
+
+\eexam
+
+\subsection{Representables and (co)limits}
+
+\bprop
+
+    Let $F\colon\C\to\Set$, then $F$ is corepresentable iff $\int F$ has an initial object.
+    Dually $F\colon\C^\op\to\Set$ is representable iff $\int F$ has a terminal object.
+
+\eprop
+
+\bproof
+
+    Suppose that $(c,x)\in\int F$ is initial.
+    Recall the proof of the Yoneda lemma, in which we define the natural transformation $\Psi(x)\colon\hom(c,\bul)\To F(c)$ by $\Psi(x)_d(f)=Ff(x)$.
+    For each $d\in\C$ and $y\in F(d)$ there is a unique $f\colon c\to d$ such that $Ff(x)=y$.
+    Thus this $f$ is the unique $f\colon c\to d$ such that $\Psi(x)_d(f)=y$.
+    Thus $\Psi(x)_d$ is a bijection for each $d\in\C$, and thus $\Psi(x)$ is a natural isomorphism represented $F$.
+
+    Now suppose $\alpha\colon\hom(c,\bul)\To F$ is an isomorphism.
+    Consider then $(c,\Phi(\alpha)=\alpha_c(1_c))\in\int F$: it is initial.
+    Indeed, let $(d,x)\in\int F$; a morphism $(c,\Phi(\alpha))\to(d,x)$ is a morphism $f\colon c\to d$ such that $x=Ff(\Phi(\alpha))=\Psi(\Phi(\alpha))_d(f)=\alpha_d(f)$.
+    Such a morphism exists and is unique since $\alpha_d\colon\hom(c,d)\to Fd$ is a bijection.
+    Thus $(c,\Phi(\alpha))$ is initial.
+    \qed
+
+\eproof
+
+Since limits are terminal objects in the category of elements of $\cone(\bul,F)$, we get the following:
+
+\bcoro
+
+    $F\colon I\to\C$ has a limit $\lim_IF$ if and only if $\lim_IF$ represents $\cone(\bul,F)$ (i.e.\ $\hom(\bul,\lim_IF)\cong\cone(\bul,F)$).
+    Dually $F\colon I\to\C$ has a colimit $\colim_IF$ iff $\colim_IF$ corepresents $\cone(F,\bul)$.
+
+\ecoro
+
+Given a diagram $F\colon I\to\C$ and an element $X\in\C$, consider the functor $\hom(X,F\bul)\colon I\to\Set$.
+Since $\Set$ is complete, this has a limit $\lim_I\hom(X,F\bul)$.
+Recall that the limit of a diagram $F\colon I\to\Set$ is the equalizer of
+$$ f,g\colon\prod_{i\in I}F(i)\tto\prod_{\alpha\colon i\to j}F(j),\qquad f=(p_j)_{\alpha\colon i\to j},\ g=(F(\alpha)p_i)_{\alpha\colon i\to j} $$
+which is simply
+$$ \lim_IG = \set{(a_i)_{i\in I}}[\forall\alpha\colon i\to j.\,a_j=F(\alpha)(a_i)] $$
+So in our case
+$$ \lim_I\hom(X,F\bul) = \set{(\lambda_i\colon X\to F(i))_{i\in I}}[\lambda_j=F(\alpha)\circ\lambda_i] $$
+this is precisely the set of cones $X\To F$, i.e.\ $\lim_I\hom(X,F\bul)\cong\cone(X,F)$.
+This isomorphism is natural.
+
+Thus if $F$ has a limit $\lim_IF$ then it represents $\cone(\bul,F)$, i.e.\ 
+$$ \lim_I\hom(X,F\bul) \cong \cone(X,F) \cong \hom(X,\lim_IF) $$
+naturally.
+This isomorphism also preserves the limit cone, so we have that $\hom(X,\bul)$ preserves limits.
+Dually, $\hom(\bul,X)$ preserves limits in the opposite category, i.e.\ it carries colimits to limits.
+
+\bprop
+
+    The covariant hom-functors $\hom(X,\bul)$ preserve limits, while contravariant hom-functors $\hom(\bul,X)$ carry colimits to limits.
+
+\eprop
+
+Since isomorphic functors preserve the same limits, we get
+
+\bprop
+
+    Representable and corepresentable functors preserve limits (representable functors carry colimits to limits, as their codomain is the opposite category).
+
+\eprop
+

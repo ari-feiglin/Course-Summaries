@@ -1,0 +1,314 @@
+\section{Abelian Categories}
+
+\subsection{Zero morphisms, zero objects}
+
+\bdefn
+
+    A category $\C$ is said to have {\emphcolor zero morphisms} if for every $X,Y\in\C$ there exists a morphism $0_{XY}\colon X\to Y$ such that
+    for all morphisms $f\colon X\to Y,g\colon Y\to Z$,
+    $$ 0_{YZ}\circ f = g\circ0_{XY} = 0_{XZ} $$
+
+\edefn
+
+Notice that the zero morphism $0_{XY}$ is unique per $X,Y$.
+Generally we omit the subscripts and just write e.g.\ $0\circ f=g\circ 0=0$.
+
+\bdefn
+
+    A {\emphcolor zero object} in a category is an object which is both terminal and initial.
+
+\edefn
+
+Clearly if a category has a zero object, all terminal objects are initial and vice versa.
+
+\bprop
+
+    A category with a zero object has zero morphisms.
+
+\eprop
+
+\bproof
+
+    Let $0\in\C$ be the zero object, then for every $X,Y\in\C$ there is a unique map $0_{XY}\colon X\to Y$ which factors uniquely through $0$:
+    $$ 0_{XY} = X\xto{\ !\ }0\xto{\ !\ }Y $$
+    These are clearly zero morphisms.
+    \qed
+
+\eproof
+
+\bexam
+
+    The category of groups has a zero object: the trivial group.
+
+\eexam
+
+Consider a diagram $K\colon I\to\C$ which has both a limit and a colimit.
+Recall
+$$ \hom(\colim_I K,\lim_I K) \cong \lim_{i\in I^\op}\lim_{j\in I}\hom(Ki,Kj) \cong \lim_{(i,j)\in I^\op\times I}\hom(Ki,Kj) $$
+Now we know that for a general functor $F\colon J\to\Set$, we have
+$$ \lim F \cong \set{(a_j\in Fj)_j}[\forall\phi\colon i\to j.\,a_j=F(\phi)a_i] $$
+In our case we have that for $(i,i'),(j,j')\in I^\op\times I$, a morphism $(i,j)\to(i',j')$ is a pair of morphisms $\phi\colon i'\to i$ and $\psi\colon j\to j'$.
+The value of this functor on $(\phi,\psi)$ is the map $\hom(Ki,Kj)\to\hom(Ki',Kj')$ which maps $f\colon Ki\to Ki'$ to $K\psi\circ f\circ K\phi$.
+Thus we have
+$$ \hom(\colim K,\lim K) \cong \set{(f_{ij}\colon Ki\to Kj)_{ij}}[\forall\phi\colon i'\to i,\psi\colon j\to j'.\,f_{i'j'}=K\psi\circ f_{ij}\circ K\phi] $$
+
+If $\C$ has zero morphisms it makes sense to consider the collection $(\delta_{ij}\colon Ki\to Kj)_{ij}$ defined by $\delta_{ii}={\rm id}_{Ki}$ and $\delta_{ij}=0$ when $i\neq j$.
+Does this correspond to a morphism $\colim k\to\lim K$?
+Let us consider when $i=j,i'=j'$, then we must have
+$$ K\psi\circ K\phi = 1 \implies K(\psi\circ\phi) = 1 $$
+for every $\phi\colon i'\to i,\phi\colon i\to i'$.
+So $K$ must map endomorphisms to the identity (i.e.\ for $\phi\colon i\to i$, $K\phi=1$).
+And when $i=j,i'\neq j'$ we must have $K(\psi\circ\phi)=0$.
+So $K$ must map non-endomorphisms to $0$.
+
+Such a $K$ can be viewed as a functor from the discrete category of $I$ (one with the same objects, but no non-identities), and as such $\delta$ is really on a morphism
+when the diagram is from a discrete category, i.e.\ the limit and colimit are products and coproducts respectively.
+But in such a case clearly $\delta$ is a morphism from $\coprod Ki$ to $\prod Ki$.
+As we saw, morphisms $\coprod Ki\to\prod Ki$ can be viewed as (potentially infinite) matrices $(f_{ij}\colon Ki\to Kj)$, and $\delta$ can be viewed as the identity morphism.
+
+\bdefn
+
+    The {\emphcolor biproduct} of a collection of objects $\set{X_i}_{i\in I}$ is the product $\prod_iX_i$ such that $\coprod_iX_i$ also exists and the map $\delta\colon\coprod_iX_i\to\prod_iX_i$
+    is an isomorphism.
+    A biproduct is denoted $\bigoplus_iX_i$.
+
+\edefn
+
+The following is clear:
+
+\bprop
+
+    A collection $\set{X_i}_{i\in I}$ has a biproducts iff there is an object $\bigoplus_iX_i$ along with maps $p_j\colon\bigoplus_iX_i\to X_j$ and $i_j\colon X_j\to\bigoplus_iX_i$
+    such that
+    \benum
+        \item $p_k\circ i_k=1_{X_k}$,
+        \item $p_\ell\circ i_k=0$ for $\ell\neq k$,
+        \item $\bigoplus_iX_i$ equipped with the $p_k$s is a product of $\set{X_i}_i$,
+        \item $\bigoplus_iX_i$ equipped with the $i_k$s is a coproduct of $\set{X_i}_i$.
+    \eenum
+
+\eprop
+
+\bdefn
+
+    A category is {\emphcolor semiadditive} if it has zero morphisms and all binary biproducts.
+
+\edefn
+
+Suppose $\C$ is semiadditive, then for every $X\in\C$ we have canonical morphisms $\Delta\colon X\to X\oplus X$ and $\nabla\colon X\oplus X\to X$ given by the universal properties
+of products and coproducts respectively.
+That is, $p_k\circ\Delta=1_X$ for $k=1,2$ and $\nabla\circ i_k=1_X$ for $k=1,2$.
+
+\bprop
+
+    Let $\C$ be semiadditive, then every hom-set forms a commutative monoid such that composition is biadditive.
+
+\eprop
+
+\bproof
+
+    Consider the operation defined by
+    $$ \hom(X,Y)\times\hom(X,Y) \cong \hom(X,Y\oplus Y) \xto{\ \nabla_Y\ } \hom(X,Y) $$
+    that is, we map $(f,g)$ to $\nabla_Y\circ(f,g)$, i.e.\ $f+g=\nabla(f,g)$.
+    We claim that this gives hom-sets the structure of a commutative monoid.
+    Firstly, this is commutative since the isomorphism is symmetric.
+    Now consider
+    $$ \hom(X,Y)^3 \cong \hom(X,Y\oplus Y\oplus Y) \xto{\ \nabla\ }\hom(X,Y) $$
+    Since $Y\oplus(Y\oplus Y)\cong(Y\oplus Y)\oplus Y$, this is just the same as both $\bul+(\bul+\bul)$ and $(\bul+\bul)+\bul$, i.e.\ addition is associative.
+    And we have $\nabla\circ(f,0)=\nabla\circ i_1\circ f=f$, so $0$ is the additive identity; i.e.\ the hom-sets indeed form commutative monoids.
+
+    Now we need to show that $(f+g)\circ h=f\circ h+g\circ h$.
+    This is because $h\circ (f+g)=h\circ \nabla\circ(f,g)$, and $h\circ\nabla\circ i_k=h$ meaning $h\circ\nabla=\nabla(h,h)$.
+    Thus $h\circ(f+g)=\nabla(h,h)(f,g)=\nabla(hf,hg)=hf+hg$ as desired.
+    \qed
+
+\eproof
+
+\subsection{Preadditive categories}
+
+\bdefn
+
+    A category $\C$ is {\emphcolor preadditive} if every hom-set is equipped with an operation $+$ turning it into an Abelian group, such that composition is bilinear.
+
+\edefn
+
+A preadditive category necessarily has zero morphisms: let $0_{XY}$ be the additive identity in $\hom(X,Y)$.
+This is a zero morphism since $f\circ0=f\circ(0+0)=f\circ0+f\circ0$ so $f\circ0=0$, and similar for $0\circ f$.
+
+\bprop
+
+    All finite products and coproducts in a preadditive category are necessarily biproducts.
+
+\eprop
+
+\bproof
+
+    It is sufficient to show this for binary products.
+    Suppose $X\times Y$ exists, then define $i_X\colon X\to X\times Y$ by $i_X=(1_X,0)$ and similarly $i_Y=(0,1_Y)$.
+    These form a coproduct: suppose $f\colon X\to Z$ and $g\colon Y\to Z$ are morphisms then the unique morphism $\phi\colon X\times Y\to Z$
+    making the diagram commute is $\phi=f\circ p_X+g\circ p_Y$.
+    Indeed, notice
+    $$ \phi\circ(1_X,0) = f\circ p_X(1_X,0) + g\circ p_Y(1_X,0) = f + g\circ0 = f $$
+    And if $\phi$ makes this diagram commute (i.e.\ $\phi\circ(1,0)=f$ and $\phi\circ(0,1)=g$) then
+    $$ fp_X + gp_Y = \phi((1,0)p_X + (0,1)p_Y) $$
+    and $(1,0)p_X+(0,1)p_Y$ is the identity (the identity of $X\times Y$ is the unique morphism such that $p_X1=p_X$ and $p_Y1=p_Y$, since morphisms are determined by
+    their projections), so we see that $\phi=fp_X+gp_Y$ is the unique morphism satisfying this.
+
+    So we have that $X\times Y$ is a coproduct as well, and its inclusion and projection maps are related by $p_k\circ i_\ell=\delta_{k\ell}$, so it is a biproduct.
+    \qed
+
+\eproof
+
+\bdefn
+
+    An {\emphcolor additive category} is a preadditive category which has all finite biproducts.
+
+\edefn
+
+Equivalently, an additive category is a preadditive category with all finite products, or all finite coproducts, or binary products and a terminal object, etc.
+But importantly an additive category has binary biproducts and a zero object.
+
+Notice that an additive category is a semiadditive category, and as such each hom-set is a commutative monoid as discussed above.
+The commutative monoid structure coincides with the preadditive one.
+
+\subsection{(Co)kernels, monomorphisms, epimorphisms}
+
+\bdefn
+
+    Let $\C$ be a category with zero morphisms.
+    The {\emphcolor kernel} of a morphism $f\colon X\to Y$ is the equalizer $\ker f=\eq(f,0_{XY})$, and its {\emphcolor cokernel} is the coequalizer $\coker f=\coeq(f,0_{XY})$.
+
+\edefn
+
+Kernels and cokernels need not exist.
+Explicitly the kernel of $f\colon X\to Y$ is a pair $(K\in\C,k\colon K\to X)$ such that
+\benum
+    \item $f\circ k=0$
+    \item For any other $h\colon Z\to X$ such that $f\circ h=0$, there is a unique $\phi\colon Z\to K$ such that $h=k\circ\phi$.
+\eenum
+And the cokernel of $f\colon X\to Y$ is a pair $(Q\in\C,q\colon Y\to Q)$ such that
+\benum
+    \item $q\circ f=0$
+    \item For any other $h\colon Y\to Z$ such that $h\circ f=0$, there is a unique $\psi\colon Q\to Z$ such that $h=\psi\circ q$.
+\eenum
+
+\bexam
+
+    Consider $\grp$, which has a zero object and is complete and cocomplete.
+    Thus $\grp$ has kernels and cokernels.
+    The kernel of $f\colon G\to H$ is the usual group-theoretic kernel equipped with inclusion.
+    The cokernel of $f$ is the quotient of $H$ by the normal closure of ${\rm im}f$, equipped with projection.
+
+\eexam
+
+\bprop
+
+    Let $\C$ be preadditive with a zero object, then for every $f,g\colon X\to Y$, $\eq(f,g)=\ker(f-g)$ and $\coeq(f,g)=\coker(f-g)$.
+
+\eprop
+
+\bproof
+
+    Notice that $h\circ(f-g)=0$ iff $h\circ f=h\circ g$.
+    So cones over $f-g,0$ are precisely cones over $f,g$.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A {\emphcolor monomorphism} is a morphism $f\colon X\to Y$ which is left-cancellative: $f\circ g=f\circ h$ implies $g=h$.
+    An {\emphcolor epimorphism} is a morphism $f\colon X\to Y$ which is right-cancellative $g\circ f=h\circ f$ implies $g=h$.
+
+\edefn
+
+\bexam
+
+    In $\Set$, monomorphisms are precisely injections, and epimorphisms are precisely surjections.
+
+\eexam
+
+\bprop
+
+    Let $\C$ be a preadditive category with a zero object, and consider a morphism $f\colon X\to Y$.
+    Let $(K,k\colon K\to X)$ be the kernel of $f$ and $(Q,q\colon Y\to Q)$ its cokernel.
+    \benum
+        \item $k$ is a monomorphism and $q$ is an epimorphism.
+        \item If $\phi\colon Y\to Z$ is a monomorphism then $(K,k)$ is the kernel of $\phi\circ f$.
+        Similarly if $\psi\colon Z\to X$ is an epimorphism then $(Q,q)$ is the cokernel of $f\circ\psi$.
+        \item $f$ is a monomorphism iff $K$ is the zero object.
+        And $f$ is an epimorphism iff $Q$ is the zero object.
+    \eenum
+
+\eprop
+
+\bproof
+
+    \benum
+        \item First suppose $k\circ h=0$.
+        Clearly $f\circ k\circ h=0$, and so by the universal property there is a unique morphism such that $k\circ h=k\circ g$.
+        But clearly $g=0$ is such a morphism, and since it is unique this means that $h=0$.
+        In general if $k\circ h=k\circ g$ then $k\circ(h-g)=0$ and so $h-g=0$ meaning $h=g$ as desired.
+
+        \item Clearly $\phi\circ f\circ k=0$, so now we must just show it is universal.
+        Suppose $\phi\circ f\circ h=0$, then $f\circ h=0$ by monomorphism, and so by the universal property of $\ker f$, $h$ factors through $k$.
+
+        \item If $f$ is a monomorphism then $f\circ k=0$ implies $k=0$.
+        This means that $K$ must be zero.
+        Conversely, if $K=0$ (and so $k=0$), if $f\circ g=f\circ h$ then $f\circ(g-h)=0$ and so $g-h$ must factor through $0$ and as such $g-h=0$.
+        So $g=h$ and $f$ is a monomorphism.
+        \qed
+    \eenum
+
+\eproof
+
+\bdefn
+
+    A monomorphism is {\emphcolor normal} if it is the kernel of some morphism.
+    Dually an epimorphism is {\emphcolor conormal} if it is the cokernel of some morphism.
+
+\edefn
+
+\bdefn
+
+    A category $\C$ is {\emphcolor Abelian} if
+    \benum
+        \item it is preadditive with a zero object,
+        \item has all binary biproducts (equivalently all finite biproducts),
+        \item all kernels and cokernels exist,
+        \item all monomorphisms are normal and all epimorphisms are conormal.
+    \eenum
+
+\edefn
+
+An Abelian category has finite biproducts, equalizers, and coequalizers.
+As such Abelian categories are necessarily finitely complete and finitely cocomplete.
+
+\bexam
+
+    The category $\ab$ is Abelian.
+    Clearly it is preadditive, has a zero object, has binary biproducts, and kernels and cokernels exist ($\coker f=H/{\rm im}(f)$).
+    Now we must show that monomorphisms are normal and epimorphisms are conormal.
+
+    Let $f\colon A\to B$ be a monomorphism, then consider the projection $p\colon B\to B/{\rm im}(f)$ (the cokernel of $f$).
+    Then $f$ is the kernel of $p$: clearly $p\circ f=0$ and if $p\circ h=0$ then we have ${\rm im}(h)\subseteq\ker p={\rm im}(f)$.
+    $f$ is injective and so it has an inverse from its image $f^{-1}\colon{\rm im}(f)\to B$, and we have $f\circ f^{-1}\circ h=h$.
+
+\eexam
+
+In general one does have that monomorphisms satisfy $f=\ker\coker f$, and epimorphisms $f=\coker\ker f$.
+
+Abelian categories are important as they allow one to do homology on them.
+One can also discuss exact sequences in Abelian categories (to do so we must define what the image of a morphism is, which can be done in a general category, but in an Abelian category one
+has that it is equal to $\ker\coker f$).
+
+Another interesting result (but far too complicated to prove here) is the following:
+
+\bthrm[title=Freyd-Mitchell]
+
+    All Abelian categories are isomorphic to a full subcategory of the category of modules of some ring.
+
+\ethrm
+
+That is to say, for any Abelian category $\C$, there is a ring $R$ and a fully faithful embedding $\C\to{\rm Mod}_R$ (this embedding also preserves left and right exact sequences).
+

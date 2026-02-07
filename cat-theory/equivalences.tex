@@ -1,0 +1,245 @@
+\section{Equivalences}
+
+\bdefn
+
+    Let $F,G\colon\C\to\D$ be functors and $\eta\colon F\To G$ be a natural transformation.
+    \benum
+        \item Let $H\colon\D\to\E$ be another functor, then $H\eta\colon HF\To HG$ defined by $(H\eta)_c=H(\eta_c)$ is a natural transformation.
+        \item Let $K\colon\E\to\C$ be another functor, then $\eta H\colon FH\to GH$ defined by $(\eta H)_e=\eta_{Hc}$ is a natural transformation.
+    \eenum
+    These operations on natural transformations are called {\emphcolor whiskering}.
+
+\edefn
+
+\bdefn
+
+    Let $\eta\colon F\To G$ and $\epsilon\colon G\To H$ be natural transformations between functors $\C\to\D$, then their {\emphcolor vertical composition} is a natural
+    transformation $\epsilon\circ\eta\colon F\To H$ defined to be $(\epsilon\circ\eta)_X=\epsilon_X\circ\eta_X$.
+    This is called {\it vertical\/} composition as we can view $F,G,H$ as being stacked vertically and $\eta,\epsilon$ as arrows pointing vertically between them, their vertical
+    composition is taken by following these arrows.
+
+    Similarly if $\eta\colon F\To G$ is natural between functor $\C\to\D$ and $\epsilon\colon J\To K$ between functors $\D\to\E$, then their {\emphcolor horizontal composition}
+    is a natural transformation $\epsilon*\eta\colon JF\To KG$ defined by $(\epsilon*\eta)_X=\epsilon G\circ J\eta=K\eta\circ\epsilon F$.
+
+\edefn
+
+Note that for natural transformations $\alpha,\alpha',\beta,\beta'$ we have the {\bf interchange law}:
+$$ (\beta'\circ\alpha')*(\beta\circ\alpha) = (\beta'*\beta)\circ(\alpha'*\alpha) $$
+
+\bdefn
+
+    An {\emphcolor equivalence} of two categories $\C,\D$ is a pair of functors $F\colon\C\tof\D\colon G$ such that the compositions are naturally isomorphic to the identity functors on the
+    respective categories.
+    That is, $GF\cong1_\C$ and $FG\cong1_\D$.
+    Two categories are {\emphcolor equivalent} if there exists an equivalence between them.
+
+\edefn
+
+Clearly the equivalence of categories forms an equivalence relation; transitivity is due to the composition of equivalences being an equivalence.
+
+\bdefn
+
+    A functor $F\colon\C\to\D$ is:
+    \benum
+        \item {\emphcolor full} if for every $x,y\in\C$, the map $\C(x,y)\to\D(Fx,Fy),f\mapsto Ff$ is surjective;
+        \item {\emphcolor faithful} if for every $x,y\in\C$, the map $\C(x,y)\to\D(Fx,Fy)$ is injective;
+        \item {\emphcolor essentially surjective} if for every $d\in\D$ there exists a $c\in\C$ such that $Fc$ is isomorphic to $d$.
+    \eenum
+    A full and faithful functor is called {\emphcolor fully faithful}.
+
+\edefn
+
+\bthrm
+
+    A functor in an equivalence is fully faithful and essentially surjective.
+    Conversely any fully faithful and essentially surjective function forms an equivalence.
+
+\ethrm
+
+\bproof
+
+    $F$ being fully faithful means that $\C(x,y)\to\D(Fx,Fy)$ is a bijection.
+    Indeed, if $G$ is the other component in the equivalence then we have a composition of maps
+    $$ \C(x,y)\xto{\ F\ }\D(Fx,Fy)\xto{\ G\ }\C(GFx,GFy)\cong\C(x,y) $$
+    where the last bijection is induced by the natural isomorphism $\epsilon\colon GF\cong1_\C$.
+    This maps $f\colon x\to y$ to $\epsilon_YGFf\epsilon^{-1}_X$, which is just equal to $f$ by naturality.
+    Composition in the other direction gives the identity as well, so our map is bijective as desired.
+    Essential surjectivity is clear: $FGx\cong x$ for all $x\in\D$.
+
+    For the converse we construct $G\colon\D\to\C$ as the other component in the equivalence.
+    Let $d\in\D$, then by essential surjectivity there exists $x\in\C$ such that $Fx\cong d$.
+    Let us choose such an $x$, and define $Gd=x$.
+    And for $g\colon d\to d'$, as we have $\alpha\colon d\cong Fx,\alpha'\colon d'\cong Fx'$ then $\alpha'g\alpha^{-1}\colon Fx\to Fx'$.
+    By full faithfulness, there is a unique $f\colon x\to x'$ such that $Ff=g$, so define $Gg=f$.
+    This can be seen to be a functor, and we can see that $F,G$ forms an equivalence.
+    \qed
+
+\eproof
+
+\bprop
+
+    Fully faithful functors reflect isomorphisms: if $F\colon\C\to\D$ is fully faithful and $Ff$ is an isomorphism, then so is $f$.
+
+\eprop
+
+\bproof
+
+    Suppose $f\colon c\to d$ such that $Ff$ is an isomorphism.
+    Then there is a unique $g\colon d\to c$ such that $Fg$ is its inverse, by full faithfulness.
+    Then we have that $F(fg),F(gf)$ are both the identities, but since $F$ is faithful this means that $fg$ and $gf$ must be the identities, so $f^{-1}=g$.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A category is {\emphcolor connected} if every finite full subcategory is connected as an undirected graph.
+    That is to say, for every two objects $X,Y$ there is a finite sequence of objects $X=X_0,\dots,X_n=Y$ such that $\hom(X_i,X_{i+1})$ or $\hom(X_{i+1},X_i)$ is non-empty.
+
+\edefn
+
+\bcoro
+
+    Any connected groupoid is equivalent to the automorphism group of any of its objects.
+
+\ecoro
+
+\bproof
+
+    A connected groupoid is one for which there exists isomorphisms between any two objects.
+    Let $g\in\c G$ and let $G=\c G(g,g)$ denote its automorphism group.
+    Then the functor $\B G\to\c G$ mapping the unique object of $\B G$ to $g$ and the elements of $G$ to their respective elements in $G=\c G(g,g)$ is fully faithful and essentially surjective
+    (as all objects in $\c G$ are isomorphic).
+    Thus this forms an equivalence.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $\C$ be a category, its {\emphcolor skeleton} is the subcategory $\sk\C\subseteq\C$ obtained by choosing a single object from each isomorphism class in $\C$.
+
+\edefn
+
+Note that we say {\it the\/} skeleton of $\C$ even though the construction of $\sk\C$ depends on choosing a representative from each isomorphism class.
+But it is not hard to see that any choice gives isomorphic categories, thus $\sk\C$ is defined uniquely up to isomorphism.
+
+\bprop
+
+    The inclusion $\sk\C\to\C$ is an equivalence of categories.
+
+\eprop
+
+\bproof
+
+    This is clear, since $\sk\C$ is a full subcategory the inclusion is fully faithful.
+    By definition of $\sk\C$ the inclusion is also essentially surjective, as desired.
+    \qed
+
+\eproof
+
+For a connected groupoid, we clearly have that $\sk\c G$ is simply a category with a single object whose hom-set is the automorphism group of any object in $\c G$.
+That is, $\sk\c G=\B\c G(g,g)$ for any $g\in\c G$.
+So our previous claim is just a special example of the above proposition.
+
+\bexam
+
+    Let $\C$ be a category equivalent to the trivial category $[0]$.
+    Then $F\colon\C\to[0]$ is fully faithful, which means that $\hom(x,y)\cong\hom_0(0,0)$, i.e.\ it is a singleton.
+    So between every two objects in $\C$ there is a unique morphism, in particular it must be an isomorphism.
+
+    In general if $\C$ is equivalent to a groupoid, it is a groupoid.
+    Notice that if $F\colon\C\to\D$ is an equivalence then every $\D$-morphism is of the form $\alpha\circ Ff\circ\beta$ for $\alpha,\beta$ isomorphisms and $f$ a $\C$-morphism.
+    So if $F\colon G\to\C$ is an equivalence then every $\C$-morphism is of the form $\alpha\circ Fg\circ\beta$, and since $g$ is an isomorphism so is $Fg$, so every $\C$-morphism is an isomorphism.
+
+\eexam
+
+\bprop
+
+    For categories $\C,\D$ the following are equivalent:
+    \benum
+        \item $\C$ and $\D$ are equivalent,
+        \item $\sk\C$ and $\sk\D$ are isomorphic,
+        \item $\sk\C$ and $\sk\D$ are equivalent.
+    \eenum
+
+\eprop
+
+\bproof
+
+    If $F\colon\sk\C\to\sk\D$ is an equivalence, then it must be surjective by essential surjectivity.
+    Furthermore it must be injective: if $F(c)=F(c')$ then in particular $F(c),F(c')$ are isomorphic and since $F$ reflects isomorphisms, $c\cong c'$.
+    Thus $c=c'$ since the skeleton has a unique object of each isomorphism class.
+    This means that $F$ is an isomorphism, so $(2)$ and $(3)$ are equivalent.
+
+    If $F\colon\C\to\D$ is an equivalence then it restricts to an equivalence $\sk\C\to\sk\D$ (as it is still fully faithful and essentially surjective).
+    And if $\sk\C$ and $\sk\D$ are equivalent, since $\C$ and $\D$ are equivalent to their skeletons, by transitivity $\C$ and $\D$ are equivalent.
+    \qed
+
+\eproof
+
+Thus if $\C$ is equivalent to $[0]$, then $\sk\C\cong\sk[0]=[0]$, i.e.\ it has a single isomorphism class, as we already showed.
+And if $\C$ is equivalent to a groupoid $\c G$, then $\sk\C\cong\sk\c G$ which has a single object whose hom-set is only isomorphisms.
+Thus $\C$ must be a groupoid: it has a single isomorphism class and all of its morphisms are isomorphisms.
+
+\bexam
+
+    \def\Vec{{\rm Vec}}\def\fin{{\sf fin}}\def\mat{{\rm Mat}}
+    Let $k$ be a field, then we have a category $\Vec_k^\fin$ of finite-dimensional $k$-vector spaces.
+    We also have $\mat_k$, the category of matrices over $k$ defined as follows:
+    \benum
+        \item Objects in $\mat_k$ are natural numbers (including $0$),
+        \item Morphisms $n\to m$ are matrices of dimension $m\times n$, i.e.\ $\mat_k(n,m)=\mat_{m\times n}(k)$,
+        \item For matrices $A\colon n\to m$ and $B\colon m\to p$, define their composition to be their multiplication: $B\circ A=BA$.
+    \eenum
+
+    These categories are equivalent: we define a functor $F\colon\mat_k\to\Vec_k^\fin$ by $F(n)=k^n$ and for $A\colon n\to m$, $F(A)\colon k^n\to k^m,v\mapsto Av$.
+    Simple linear algebra shows that this is essentially surjective and fully faithful.
+
+    Note that $\sk\mat_k=\mat_k$, and thus by equivalence $\sk\Vec_k^\fin\cong\mat_k$.
+
+\eexam
+
+\bexam
+
+    We define the category of sets with partial functions $\Set_p$ as follows:
+    \benum
+        \item Objects are sets,
+        \item Morphisms $X\to Y$ are partial functions from $X$ to $Y$, which we view as pairs $(U,f)$ where $U\subseteq X$ and $f\colon U\to Y$,
+        \item Composition is defined as follows: for $(U,f)\colon X\to Y$ and $(V,g)\colon Y\to Z$, $(V,g)\circ(U,f)=(f^{-1}(V),g\circ f)$.
+    \eenum
+
+    This is equivalent to $\Set_*$, the category of pointed sets (objects are $(X,x)$ for $x\in X$ and morphisms $f\colon(X,x)\to(Y,y)$ are functions $X\to Y$ such that $f(x)=y$).
+    Indeed, we define a functor $F\colon\Set_p\to\Set_*$ by $F(X)=(X\dcup\Set*,*)$ and for $(U,f)\colon X\to Y$ define $F(U,f)\colon X\dcup\Set*\to Y\dcup\Set*$ by $*\mapsto*$, $x\mapsto f(x)$ if defined and
+    otherwise to $*$.
+    This is essentially surjective clearly, and fully faithful clearly.
+
+\eexam
+
+\bdefn
+
+    For a category $\C$, we define its {\emphcolor center} to be the set of natural transformations $1_\C\To1_\C$.
+    Denote this by $Z(\C)$.
+
+\edefn
+
+Note that $Z(\C)$ equipped with composition (vertical and horizontal agree on the center) is a commutative monoid.
+Clearly it is a monoid, as the natural transformation defined by the identity on all components is its identity.
+And it is commutative; by naturality for every $f\colon X\to X$ one has $f\alpha_X=\alpha_Xf$, in particular for $f=\beta_X$.
+
+\bprop
+
+    If $\C$ and $\D$ are equivalent categories, then their centers are isomorphic commutative monoids.
+
+\eprop
+
+\bproof
+
+    Let $F\colon\C\tof\D\colon G$ be an equivalence, with isomorphisms $\epsilon\colon FG\cong1_D$ and $\eta\colon1_C\cong GF$.
+    Then we define $Z(\C)\to Z(\D)$ as follows: $\alpha\mapsto\epsilon\circ F\alpha G\circ\epsilon^{-1}$.
+    This is a monoid morphism: $(\epsilon\circ F1G\circ\epsilon^{-1})_X=\epsilon_X\circ 1_{FGx}\circ\epsilon^{-1}_X=1_X$ and since $F\alpha\beta G=(F\alpha G)(F\beta G)$ we get commutativity.
+    Its inverse is given by $\beta\mapsto\eta^{-1}\circ G\beta F\circ\eta$.
+    \qed
+
+\eproof
+

@@ -1,0 +1,713 @@
+\section{Adjunctions}
+
+Consider the concept of a ``free'' functor.
+For example, the functor $\bZ[\bul]\colon\Set\to\ab$ which maps a set $X$ to the free Abelian group on $X$; $\bZ[X]$ is simply the set of formal integer combinations of elements from $X$.
+This is free in the sense that every morphism $\bZ[X]\to A$ factors uniquely through a pure set-theoretic function $X\to A$, and vice versa (every such function gives rise to such a morphism).
+In particular, this gives us a natural isomorphism
+$$ \hom_\ab(\bZ[X],A) \cong \hom_\Set(X,UA) $$
+where $U$ is the forgetful functor.
+As it turns out such an occurrence is quite important in category theory and beyond.
+
+\bdefn
+
+    An {\emphcolor adjunction} is a pair of functors $F\colon\C\tof\D\colon G$ such that there exists a natural isomorphism
+    $$ \Phi_{cd}\colon\hom_\D(Fc,d) \xto{\ \sim\ }\hom_\C(c,Gd) $$
+    considering both sides as functors $\C^\op\times\D\to\Set$.
+    In such a case $F$ is called the {\emphcolor left adjoint} and $G$ the {\emphcolor right adjoint}.
+    This relation is denoted $F\dashv G$.
+
+\edefn
+
+Note that $F\dashv G$ forms an adjunction iff $G^\op\dashv F^\op$ does, so there is a duality between left and right adjoints.
+
+Recall that given a bifunctor $F\colon\C\times\D\to\E$, for every $c\in\C,d\in\D$ we have functors $F(c,\bul)\colon\C\to\E$ and $F(\bul,d)\colon\D\to\E$.
+Furthermore, if $f\colon c\to c'$ then we have natural transformations $F(f,\bul)\colon F(c,\bul)\To F(c',\bul)$ (similar for $\D$) defined by $F(f,\bul)_d=F(f,1_d)$.
+This is simply currying: $[\C\times\D,E]\cong[\C,[\D,\E]]$.
+
+In particular for the bifunctor $\hom_C\colon\C^\op\times\C\to\Set$ we have the usual hom-functors.
+For $f\colon c\to c'$ these natural transformations are $f^*=\hom(f,\bul)\colon\hom(c',\bul)\To\hom(c,\bul)$ ($g\mapsto gf$) and $f_*=\hom(\bul,f)\colon\hom(\bul,c)\To\hom(\bul,c')$ ($g\mapsto fg$).
+Note that these are simply the images of $f$ under the respective Yoneda embeddings.
+
+\bthrm
+
+    Right (and thus by duality left) adjoints are unique up to unique isomorphism.
+    Explicitly, if $F\colon\C\to\D$ has two right adjoints $G,G'$ (with isomorphisms $\Phi,\Phi'$) then there exists a unique isomorphism $\theta\colon G\to G'$
+    such that for every $d$, $(\theta_d)_*\circ\Phi_d=\Phi'_d$ (so for every $f\colon Fc\to d$, $\Phi'(f)=\theta_d\circ\Phi(f)$).
+
+\ethrm
+
+\bproof
+
+    We require that $(\theta_d)_*=\Phi'_d\circ\Phi_d^{-1}$, and since the Yoneda embedding is fully faithful there exists a unique $\theta_d$ for each such $d$ which satisfy this
+    (i.e.\ $f_*=g_*$ iff $f=g$), given by $\theta_d=\Phi'_{Gd,d}\circ\Phi_{Gd,d}^{-1}(1_{Gd})$.
+    $\theta_d$ is an isomorphism (since fully faithful functors reflect isomorphisms, and $\Phi'_d\circ\Phi_d^{_1}$ is clearly an isomorphism).
+    All that remains to show is that $\theta$ forms a natural transformation.
+
+    For $f\colon d\to d'$ we need to show that $G'f\circ\theta_d=\theta_{d'}\circ Gf$.
+    Since the Yoneda embedding is fully faithful, this holds iff the equation holds when taking the Yoneda embedding of it: $(G'f)_*\circ\Phi'_d\circ\Phi^{-1}_d=\Phi'_{d'}\circ\Phi^{_1}_{d'}\circ(Gf)_*$.
+    This holds by $\Phi,\Phi'$'s naturality.
+    \qed
+
+\eproof
+
+\bexam
+
+    An extremely common example of an adjunction is a ``free $\dashv$ forgetful'' adjunction.
+    The example we gave at the beginning is one such adjunction, others include:
+    \benum
+        \item $k[\bul]\colon\Set\to\Vec_k$ which maps a set $X$ to the free vector space on $X$: all $k$-linear combinations of $X$.
+        \item $\bZ[\bul]\colon\Set\to{\sf CRing}$ which maps a set $X$ to the set of all polynomials with coefficients in $\bZ$ whose variables commute.
+        \item $F[\bul]\colon\Set\to\grp$ which maps a set to the free group on that set.
+        \item $(\bul)_*\colon\Set\to\Set_*$ which maps a set $X$ to the pointed set $(X\sqcup\Set*,*)$.
+    \eenum
+
+\eexam
+
+\bexam
+
+    Some other types of adjunctions are:
+    \benum
+        \item The forgetful functor $U\colon{\sf Top}\to\Set$ has both a left and right adjoint.
+        The left adjoint as always is a free functor: a set $X$ maps to the discrete topology on $X$ (every set is open).
+        The right adjoint maps a set $X$ to the trivial space on $X$ (only $X$ and the empty set are open).
+
+        \item For a subgroup $H\subseteq G$ the forgetful functor from $G$-representations to $H$-representations ${\rm Res}^G_H\colon\Vec_G\to\Vec_H$
+        also admits left and right adjoints: ${\rm ind}^G_H\dashv{\rm Res}^G_H\dashv{\rm Ind}^G_H$.
+        When $G,H$ are finite then the left and right adjoints are isomorphic.
+        This is an important result in representation theory.
+    \eenum
+
+\eexam
+
+Recall that by currying we have a natural isomorphism:
+$$ \hom_\Set(X\times Y,Z) \cong \hom_\Set(X,\hom_\Set(Y,Z)) $$
+which is natural in all variables.
+If we set $Y$ constant, this gives us an adjunction
+$$ \cdot\times Y\dashv\hom(Y,\bul) $$
+
+Similarly for Abelian groups, the tensor product gives us a similar adjunction:
+$$ \hom_\ab(A\otimes B,C) \cong \hom_\ab(A,\hom_\ab(B,C)) $$
+so we have
+$$ \cdot\otimes B\dashv\hom(B,\bul) $$
+
+\subsection{The unit and counit}
+
+Consider a free functor $F\colon\C\to\D$: this means that for every $X\in\C$ there is a map $\eta_X\colon X\to UFX$ such that every map $FX\to A$ factors through it.
+That is, for every $f\colon FX\to A$ there is a unique $f'\colon X\to UA$ such that $f'=U(f)\circ\eta_X$.
+
+What is this $\eta_X$?
+Well it is natural $\eta\colon 1_\C\To UF$, and it defines the adjunction's isomorphism: $\hom(FX,A)\to\hom(X,UA)$ by $f\mapsto U(f)\circ\eta_X$.
+So it is natural to ask, is this a one-time occurrence?
+As it turns out, no; it is an equivalent way of characterizing adjunctions.
+
+\blemm
+
+    Let $\Phi_{cd}\colon\hom(Fc,d)\to\hom(c,Gd)$, then $\Phi$'s naturality is equivalent to the property that the following left diagram commutes iff the right one does (for every choice
+    of objects and morphisms):
+    
+    \hbox{\hfil\drawdiagram{
+        $F(X_1)$&$Y_1$\cr
+        $F(X_2)$&$Y_2$
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=$\alpha$, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,1}, text=$F(f)$, x distance=.25cm}
+        \diagarrow{from={2,1}, to={2,2}, text=$\beta$, y distance=.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text=$g$, y distance=.25cm}
+    }\hfil\drawdiagram{
+        $X_1$&$G(Y_1)$\cr
+        $X_2$&$G(Y_2)$
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=$\Phi(\alpha)$, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,1}, text=$f$, x distance=.25cm}
+        \diagarrow{from={2,1}, to={2,2}, text=$\Phi(\beta)$, y distance=.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text=$G(g)$, y distance=.25cm}
+    }\hfil}
+
+\elemm
+
+\bproof
+
+    For $f=1_X$ we get that the condition means:
+    $$ \beta = g\alpha \iff G(g)\Phi(\alpha) = \Phi(\beta) $$
+    i.e.\
+    $$ G(g)\Phi(\alpha) = \Phi(g\alpha) $$
+    Which is just equivalent to $\Phi$'s naturality in its second component.
+    Similar for $g=1_Y$.
+    Thus this condition implies $\Phi$'s naturality, and the other direction is a usual computation.
+    \qed
+
+\eproof
+
+For an adjunction $F\colon\C\tof\D\colon G$ we have a natural isomorphism
+$$ \Phi_{X,FX}\colon \hom(FX,FX) \cong \hom(X,GFX) $$
+and so we get a morphism $\eta_X=\Phi_{X,FX}(1_{FX})\colon X\to GFX$.
+
+\blemm
+
+    $\eta_X$ forms a natural transformation $1_\C\To GF$.
+
+\elemm
+
+\bproof
+
+    We need to show that for every $f\colon X\to Y$, $\eta_Yf=GF(f)\eta_X$.
+    That is, $\Phi_{Y,FY}(1_{FY})f=GF(f)\Phi_{X,FX}(1_{FX})$, which by the above lemma commutes iff $1_{FY}Ff=Ff1_{FX}$ which obviously does.
+    \qed
+
+\eproof
+
+Similarly we have
+$$ \Phi_{GY,Y}\colon\hom(FGY,Y) \cong \hom(GY,GY) $$
+and so we get $\epsilon_Y=\Phi_{GY,Y}^{-1}(1_{GY})\colon FGY\to Y$, which is also natural $FG\To1_\D$.
+
+\bdefn
+
+    Let $F\dashv G$ be an adjunction, with $\Phi$ the isomorphism.
+    Then the {\emphcolor unit} of the adjunction is the natural transformation $\eta\colon1_\C\To GF$ defined by $\eta_X=\Phi_{X,FX}(1_{FX})$.
+    And the {\emphcolor counit} of the adjunction is the natural transformation $\epsilon\colon FG\To1_\D$ by $\epsilon_Y=\Phi^{-1}_{GY,Y}(1_{GY})$.
+
+\edefn
+
+\blemm[title=The triangle identities]
+
+    For an adjunction $F\dashv G$, its unit-counit pair $\eta,\epsilon$ satisfies the following {\emphcolor triangle identites}: the compositions
+    $$ F\xto{F\eta}FGF\xto{\epsilon F}F,\qquad G\xto{\eta G}GFG\xto{G\epsilon}G $$
+    are the identities.
+
+\elemm
+
+\bproof
+
+    We want to show hat $\epsilon_{FX}\circ F(\eta_X)=1_{FX}$ for every $X\in\C$.
+    Note that this is equivalent to $\epsilon_{FX}\circ F(\eta_X)=F(1_X)\circ 1_{FX}$, i.e.\ $\Phi^{-1}(1_{GFX})\circ F(\eta_X)=F(1_X)\circ\Phi^{-1}(\eta_X)$.
+    By the above lemma this is just equivalent to $1_{GFX}\circ\eta_X=1_X\circ\eta_X$ which is clearly true.
+    The second identity follows by symmetry.
+    \qed
+
+\eproof
+
+\bthrm
+
+    Let $F\colon\C\tof\D\colon G$ be a pair of functors, with natural transformations $\eta\colon1_\C\To GF$ and $\epsilon\colon FG\To1_\D$ which satisfy the above triangle identities.
+    Then $F\dashv G$ forms an adjunction (with unit-counit pair $\eta,\epsilon$).
+
+\ethrm
+
+\bproof
+
+    We define $\Phi\colon\hom(FX,Y)\to\hom(X,GY)$ by the composition $\Phi(f)\colon X\xto{\eta_X}GF(X)\xto{G(f)}GY$.
+    Similarly we define its inverse $\Psi\colon\hom(X,GY)\to\hom(FX,Y)$ by $\Psi(g)\colon FX\xto{Fg}FG(Y)\xto{\epsilon_Y}Y$.
+    These are indeed inverses:
+    $$ \Psi(\Phi(f)) = \Psi(G(f)\eta_X) = \epsilon_YFG(f)F(\eta_X) $$
+    Now since $\epsilon_Y\circ FG(f)=f\circ\epsilon_{FX}$ by naturality, we get that this is equal to $f\epsilon_{FX}F(\eta_X)=f$ by the triangle identity.
+    Similarly $\Phi(\Phi(g))=g$, so they are indeed inverses.
+
+    By definition $\Phi(1_{FX})=\eta_X$ and $\Psi(1_{GY})=\epsilon_Y$, so this isomorphism gives $\eta,\epsilon$ as the unit-counit pair.
+    \qed
+
+\eproof
+
+\bprop
+
+    If $\eta,\epsilon$ satisfy the triangle identities, then $\eta$ only satisfies them with $\epsilon$, and $\epsilon$ only with $\eta$.
+
+\eprop
+
+\bproof
+
+    Notice that above we defined $\Phi$ only using $\eta$.
+    Thus if $\epsilon'$ also satisfies the triangle identities, then $\Phi^{-1}(g)$ is given by both $\epsilon_YF(g)$ and $\epsilon'_YF(g)$.
+    In particular they are equal for $g=1$, and so $\epsilon_Y=\epsilon'_Y$.
+    \qed
+
+\eproof
+
+Notice that if $f\colon X\to Y$, then
+$$ \Phi(f\circ\epsilon_X) = G(f)G(\epsilon_X)\eta_{GX} = G(f) $$
+so we can recover $G$'s action on morphisms by the unit and counit.
+
+\blemm
+
+    The following are all equivalent:
+    \benum
+        \item $F\dashv G$,
+        \item There is a natural isomorphism $\hom_\D(FX,Y)\cong\hom_\C(X,GY)$,
+        \item There are natural transformations $\eta\colon1_\C\To GF$ and $\epsilon\colon FG\To1_\D$ satisfying the triangle identities,
+        \item There is a natural transformation $\eta\colon1_\C\To GF$ such that
+        $$ \hom_\D(FX,Y) \xto{\ G\ }\hom_\C(GFX,GY) \xto{\circ\eta_X} \hom_\C(X,GY) $$
+        forms an isomorphism,
+        \item There is a natural transformation $\epsilon\colon FG\To1_\D$ such that
+        $$ \hom_\C(X,GY) \xto{\ F\ }\hom_\D(FX,FGY) \xto{\epsilon_Y\circ}\hom_\D(FX,Y) $$
+        forms an isomorphism.
+    \eenum
+
+\elemm
+
+\bproof
+
+    $(1)$ and $(2)$ are equivalent by definition, and we showed they are equivalent to $(3)$.
+    Furthermore we showed that they imply $(5)$, and by symmetry $(4)$, and these both clearly imply $(2)$.
+    \qed
+
+\eproof
+
+\bprop
+
+    Consider four functors $\C\xtof{F}[G]\D\xtof{F'}[G']\E$ which form adjunctions $F\dashv G$, $F'\dashv G'$.
+    Then $F'F\dashv GG'$ forms an adjunction $\C\tof\E$.
+
+\eprop
+
+\bproof
+
+    The composition of isomorphisms
+    $$ \hom_\E(F'Fc,e) \cong \hom_\D(Fc,G'e) \cong \hom_\C(c,GG'e) $$
+    is a natural isomorphism.
+    If the isomorphisms are given by $\Phi,\Phi'$, this new one is given by
+    $$ \hat\Phi_{c,e} = \Phi_{c,G'e}\circ\Phi'_{Fc,e} $$
+    \qed
+
+\eproof
+
+We can then ask ourselves, what is the unit-counit pair of the composition of adjunctions?
+Suppose $(\eta,\epsilon)\colon F\dashv G$ and $(\eta',\epsilon')\colon F'\dashv G'$ form adjunctions, then they form isomorphisms $\Phi_{c,d}(f)=G(f)\eta_c$ and $\Phi'_{d,e}(f)=G'(f)\eta'_d$ with inverses
+$\Psi_{c,d}(g)=\epsilon_dF(g)$ and $\Psi'_{d,e}(g)=\epsilon'_eF'(g)$.
+Then if $\hat\Phi$ and $\hat\Psi$ are the isomorphisms of the composition and $\hat\eta,\hat\epsilon$ the unit-counit pair, we have:
+$$ \hat\eta_c = \hat\Phi_{c,F'Fc}(1_{F'Fc}) = \Phi_{c,G'F'Fc}\Phi'_{Fc,F'Fc}(1_{F'Fc}) = \Phi_{c,G'F'Fc}(\eta'_{Fc}) = G(\eta'_{Fc})\eta_c $$
+and similarly
+$$ \hat\epsilon_e = \epsilon'_eF'(\epsilon_{G'e}) $$
+Using whiskering we have the following:
+
+\bprop
+
+    Given adjunctions $(\eta,\epsilon)\colon F\dashv G$ and $(\eta',\epsilon')\colon F'\dashv G'$, we have $(G\eta'F\circ\eta,\epsilon'\circ F'\epsilon G')\colon F'F\dashv GG'$.
+
+\eprop
+
+\subsection{Equivalences and adjunctions}
+
+\bprop
+
+    Let $F\dashv G$ be an adjunction.
+    \benum
+        \item $G$ is fully faithful iff the counit $\epsilon\colon FG\To1_\D$ is an isomorphism.
+        \item $F$ is fully faithful iff the unit $\eta\colon1_\C\To GF$ is an isomorphism.
+    \eenum
+
+\eprop
+
+\bproof
+
+    Recall that $G$'s action on morphisms is given by
+    $$ \hom_\C(X,Y) \xto{\circ\epsilon_X} \hom_\C(FGX,Y) \xto{\Phi} \hom_\D(GX,GY) $$
+    Since $\Phi$ is always a bijection, this is a bijection iff $\circ\epsilon_X$ is a bijection.
+    This is just the image of $\epsilon_X$ under the Yoneda embedding, and as such it is a bijection iff $\epsilon_X$ is a bijection.
+    Thus $G$ is fully faithful iff $\epsilon$ is an isomorphism.
+    \qed
+
+\eproof
+
+\bdefn
+
+    An adjunction $F\dashv G$ is an {\emphcolor adjoint equivalence} if $F$ and $G$ are equivalences.
+
+\edefn
+
+Note that we are implicitly including a unit-counit pair or an isomorphism $\Phi$ in our definition here.
+Recall that an equivalence comes with isomorphisms $\eta\colon1_\C\To GF$ and $\epsilon\colon FG\To1_\D$ by definition.
+But these don't necessarily satisfy the triangle identities!
+
+\bprop
+
+    Every equivalence $(F,G,\eta,\epsilon)$ can be upgraded to an adjoint equivalence $F\dashv G$ such that the unit (or counit) stays the same.
+
+\eprop
+
+\bproof
+
+    We can form an isomorphism:
+    $$ \hom_\D(Fc,d) \xto{\ G\ }\hom_\C(GFc,Gd) \xto{\ \circ\eta_c\ } \hom_\C(c,Gd) $$
+    (this is an isomorphism since $\eta_c$ is and $G$ is fully faithful.)
+    The unit of this is $\eta$, but its counit is not necessarily $\epsilon$.
+    Similarly we can give an isomorphism whose counit is $\epsilon$.
+    \qed
+
+\eproof
+
+\subsection{Adjunctions and (co)limits}
+
+Recall that a cone $c\To K$ can be viewed as a natural transformation $\hom_\C(\bul,c)\To\cone(\bul,K)$ via the Yoneda lemma.
+This correspondence is given by
+\benum
+    \item Mapping a cone $\lambda\colon c\To K$ to $\Psi(\lambda)_d(f)=\lambda f$ for $d\in\C$ and $f\colon d\to c$.
+    \item Mapping a natural transformation $\alpha\colon\hom(\bul,c)\To\cone(\bul,K)$ to $\alpha_c(1_c)$.
+\eenum
+The limit of $K$ is just a natural isomorphism $\hom(\bul,c)\cong\cone(\bul,K)$.
+
+Following this, if $F\colon\C\to\D$ is a functor then to a cone $\lambda\colon c\To K$ we have its image $F\lambda\colon Fc\To K$.
+What is the associated natural transformation?
+It is $\Psi(F\lambda)\colon\hom_\D(\bul,Fc)\To\cone(\bul,FK)$ defined by
+$$ \Psi(F\lambda)_d(f) = F(\lambda)f $$
+for all $d\in\D$ and $f\colon d\to Fc$
+So $F\alpha$ is the natural transformation
+$$ (F\alpha)_d(f) = F(\alpha_c(1_c))f $$
+
+Furthermore recall that $\cone(\bul,K)$ is simply the composition
+$$ \cone(\bul,K) = \C^\op \xto{\ \Delta_I^\op\ } [I,\C]^\op \xto{\ \nat(\bul,K)\ } \Set $$
+where $\Delta_I$ is the diagonal functor.
+So the limit of $K$ is just a representation $\hom(\bul,c)\cong\nat(\Delta\bul,K)$.
+
+Now suppose $K$ has a limit $\lim K$ and $F\lim K$ is a limit for $FK$.
+This is not enough to show that $F$ preserves limits: the limit cone needs to be preserved as well.
+Suppose we have an isomorphism $\alpha\colon\hom(\bul,F\lim K)\cong\nat(\Delta\bul,FK)$, in order to have $F$ preserve limits, we need $\alpha$ to induce the $F\lambda$
+where $\lambda\colon\lim K\To K$ is the limit cone of $K$.
+By Yoneda this is iff $\alpha_{F\lim K}(1_{F\lim K})=F\lambda$.
+
+Further recall that to a morphism $f\colon c\to d$ we have $f^*\colon\hom(\bul,c)\to\hom(\bul,d)$ natural.
+In the case that $\C$ is the category of categories, then for a functor $F\colon\C\to\D$ we get $F^*\colon[\bul,\C]\to[\bul,\D]$.
+These give us an action on objects $F^I\colon[I,\C]\to[I,\D]$ ($F^I(K)=FK$).
+But how should it act on morphisms (natural transformations)?
+If $\alpha\colon K\To K'$ is a natural transformation then $F^I(\alpha)\colon FK\To FK'$ is defined by $F^I(\alpha)=F\alpha$.
+This defines a functor $F^I\colon[I,\C]\to[I,\D]$ natural in $I$.
+
+\bprop
+
+    Let $F\dashv G$ form an adjunction and let $I$ be a small category.
+    Then $F^I\dashv G^I$.
+
+\eprop
+
+\bproof
+
+    Let $K\in[I,\C]$ and $L\in[I,\D]$ then $\hom(FK,L)\cong\hom(K,GL)$ by mapping a natural transformation $(\alpha_i)\colon FK\To L$ to $(\Phi\alpha_i)\colon K\To GL$.
+    This is natural in $K,L$ and is an isomorphism.
+    The unit of this adjunction is $\eta_K=(\Phi1_{FKi})=(\eta_{Ki})$.
+    And the counit is $\epsilon_L=(\epsilon_{Li})$.
+    \qed
+
+\eproof
+
+We will omit the superscript and just write $F$ for the induced functor.
+
+\bthrm
+
+    Left adjoints preserve colimits and right adjoints preserve limits.
+
+\ethrm
+
+\bproof
+
+    Let $F\dashv G$ be an adjunction with unit-counit $\eta,\epsilon$.
+    Let $K\colon I\to\D$ be a diagram with a limit: $\lambda\colon\lim_IK\To K$
+    Let $\alpha\colon\nat(\Delta\bul,K)\cong\hom(\bul,\lim_IK)$ be the corresponding isomorphism (so $\lambda=\alpha_{\lim K}(1_{\lim K})$, and $\alpha_d(f)=\lambda f$).
+
+    Then we have an isomorphism (since $F\dashv G$ in the functor categories):
+    $$ \nat(\Delta\bul,GK) \cong \nat(F\Delta\bul,K) \cong \nat(\Delta F\bul,K) \cong \hom(F\bul,\lim_IK) \cong \hom(\bul,G\lim_IK) $$
+    The first isomorphism is by the adjunction in the functor categories, the second is since $F\Delta=\Delta F$, the third because $\lim_IK$ represents the cone
+    functor, and the final by adjunction (in the normal categories).
+
+    This shows that $G\lim_IK\cong\lim_IGK$ (and the right side exists), but it doesn't quite show that $G$ preserves limits: to do that we need to show that $G\lambda$
+    is a limit cone.
+    To do this we must investigate this isomorphism; in particular we need to watch the inverse image of this isomorphism on $1_{G\lim K}$ and show that it is isomorphic to $G\lambda$.
+    First this maps to $\epsilon_{\lim K}$, then to $(\alpha F)(\epsilon_{\lim K})=\lambda\epsilon_{\lim K}$, then finally to the adjunct of this: $G(\lambda\epsilon_{\lim K})\eta_{\Delta G\lim K}$.
+    At $i\in I$ this is just $G(\lambda_i\epsilon_{\lim K})\eta_{G\lim K}$, by the triangle identities this is just $G(\lambda_i)$, as desired.
+    \qed
+
+\eproof
+
+\subsection{(Co)limits as adjunctions}
+
+\bthrm
+
+    $\C$ has all limits of shape $I$ iff $\Delta_I$ has a right adjoint.
+    Similarly $\C$ has all colimits of shape $I$ iff $\Delta_I$ has a left adjoint.
+    These adjoints are $\lim_I,\colim_I$ respectively.
+
+\ethrm
+
+\bproof
+
+    $\Delta_I\colon\C\tof[I,\C]\colon F$ is an adjunction iff $\nat(\Delta\bul,K)\cong\hom(\bul,F(K))$ is an isomorphism.
+    This means that for every $K\colon I\to\C$, $\nat(\Delta\bul,K)=\cone(\bul,K)$ is representable, i.e.\ $K$ has a limit.
+    And similarly if $\lim_I$ exists then the representation by $\lim_IK$ is natural, so it forms an adjunction.
+    \qed
+
+\eproof
+
+Let us consider $\Delta_{I\times J}\colon\C\to[I\times J,\C]$, $\Delta_J\colon\C\to[J,\C]$, and $\Delta_I\colon[J,\C]\to[I,[J,\C]]$.
+If $\Phi\colon[I\times J,\C]\to[I,[J,\C]]$ is currying, then we have $\Phi\Delta_{I\times J}=\Delta_I\Delta_J$.
+Since adjoints are unique, $\Phi\lim_{I\times J}$ must be right adjoint to $\Delta_I\Delta_J$ which already has right adjoint $\lim_J\lim_I$.
+So they must be isomorphic, thus
+$$ \lim_{I\times J}F(i,j) \cong \lim_J\lim_IF(i,j) \cong \lim_I\lim_JF(i,j) $$
+
+\subsection{Per-object adjunctions}
+
+Consider an adjunction $F\colon\C\tof\D\colon G$, giving a natural isomorphism $\Phi\colon\hom_\D(Fc,d)\cong\hom_\C(c,Gd)$.
+If we set $d\in\D$ constant, this means that $\hom_\C(\bul,Gd)$ is a representation of the composite functor $\hom_\D(F\bul,d)$.
+This gives rise to the following definition:
+
+\bdefn
+
+    A functor $F\colon\C\to\D$ has a {\emphcolor right adjoint at $d\in\D$} if the functor $\hom_\D(F\bul,d)\colon\C^\op\to\Set$ is representable.
+
+\edefn
+
+\bthrm
+
+    A functor $F\colon\C\to\D$ has a right adjoint iff it has a right adjoint at every object in $\D$.
+    In particular, if for every $d\in\D$ we choose a representation $G(d)\in\C$ for $\hom_\D(F\bul,d)$, then we can extend $G$ to a right adjoint functor of $F$.
+
+\ethrm
+
+\bproof
+
+    If $F$ has a right adjoint then this is clear.
+    Conversely, consider the Yoneda embedding $\y_\D\colon\D\to[\D^\op,\Set]$, and compose it with $\circ F^\op\colon[\D^\op,\Set]\to[\C^\op,\Set]$.
+    That is, define $\hat G\colon\D\to[\C^\op,\Set]$ by $\hat G=(\circ F^\op)\y_\D$.
+    So $\hat G$ satisfies
+    $$ \hat G(d)(\bul) = \hom(F\bul,d) $$
+    By assumption for every $d\in\D$, $\hat G(d)\cong\hom(\bul,G(d))=\y_\C(G(d))$, so $\hat G$'s image lies in $\y_\C$'s image (up to isomorphism).
+    Since $\y_\C$ is fully faithful and thus an equivalence on its image, we get a functor $G\colon\D\to\C$ such that $\y_\C\circ G\cong\hat G$.
+    \qed
+
+\eproof
+
+Now suppose we want to represent $\hom_\D(F\bul,d)$.
+So we are looking for $G(d)$ and a natural isomorphism $\Psi_d\colon\hom(\bul,Gd)\to\hom(F\bul,d)$.
+By Yoneda, natural transformations $\alpha$ of this sort are in one-to-one correspondence with elements of $\hom(FGd,d)$.
+The correspondence given by mapping $\alpha\mapsto\alpha_{Gd}(1_{Gd})$, denote it by $\hat\alpha$.
+
+Recall that we can write $\alpha$ via $\hat\alpha$:
+$$ \alpha_c(f) = \hom(Ff,d)(\hat\alpha) = \hat\alpha\circ Ff $$
+So we can write $\alpha$ as the composition
+$$ \alpha_c = \hom(c,Gd) \xto{\ F\ }\hom(Fc,FGd)\xto{\ \hat\alpha\circ\ }\hom(Fc,d) $$
+In particular $\alpha$ is an isomorphism iff this is an isomorphism for every $c\in\C$.
+
+\bdefn
+
+    Let $d\in\D$, then $\epsilon_d\colon FGd\to d$ is the {\emphcolor counit at $d$} if the composition $\epsilon_d\circ F\bul\colon\hom(\bul,Gd)\to\hom(F\bul,d)$ is an isomorphism.
+
+\edefn
+
+\bthrm
+
+    $F\colon\C\to\D$ has a right adjoint iff for every $d\in\D$ there exists an object $G(d)\in\C$ with a counit at $d$ $\epsilon_d\colon FGd\to d$.
+    In such a case $G$ can be extended to a right adjoint and $\epsilon$ forms the counit of the adjunction.
+
+\ethrm
+
+Dually $G\colon\D\to\C$ has a unit at $c\in\C$ if there is a map $\eta_c\colon c\to GFc$ such that $G\bul\circ\eta_c$ is an isomorphism.
+Then $G$ has a left adjoint iff for every $c\in\C$ there is a unit at $c$.
+
+\bdefn
+
+    Consider two functors $\D\xto{\ F\ }\C\xot{\ G\ }\E$, we construct their {\emphcolor comma category} $F\down G$ with
+    \benum
+        \item Objects are triples $(d\in\D,e\in\E,f\colon Fd\to Ge\in\C)$,
+        \item Morphisms $(d,e,f)\to(d',e',f')$ are pairs of morphisms $(h\colon d\to d',k\colon e\to e')$ such that $f'\circ Fh=Gk\circ f$.
+    \eenum
+
+\edefn
+
+(Co)cone categories are examples of comma categories: for a diagram $K\colon I\to\C$ consider it as $K\colon1\to[I,\C]$ and then consider the comma category
+$$ \Delta_I\down K:\qquad \C\xto{\ \Delta_I\ }\relax[I,\C]\xot{\ K\ }1 $$
+Objects are (removing redundancies) $(c\in\C,\lambda\colon\Delta c\To K)$ and morphisms $(c,\lambda)\to(d,\mu)$ are morphisms $f\colon c\to d$ such that $\mu f=\lambda$.
+This is precisely the category of cones over $K$.
+
+We can extend this: consider $F\colon\C^\op\to\Set$ as $F\colon1\to[\C^\op,\Set]$.
+Then $\int F$ is isomorphic to $\y_\C\down F$.
+Indeed, objects are $(c\in\C,\alpha\colon\y(c)\To F)$, and morphisms $(c,\alpha)\to(d,\beta)$ are morphisms $f\colon c\to d$ such that $\beta\circ\y_\C(f)=\alpha$.
+Recall that natural transformations $\alpha\colon\y(c)\To F$ are in bijection with elements of $Fc$, and the condition on morphisms $f$ just requires $Ff(y)=x$.
+Thus this comma category is isomorphic to the category of elements:
+
+\bprop
+
+    Let $F\colon\C^\op\to\Set$ be a presheaf, then
+    $$ \int F \cong \y_\C\down F $$
+
+\eprop
+
+Our particular case of interest though is comma categories from functors of the form $1\to\C\xot{\ G\ }\D$.
+A functor $1\to\C$ is just a choice of object $c\in\C$, and so we get the comma category denoted $c\down G$.
+We simplify: the category consists of
+\benum
+    \item objects are pairs $(d\in\D,f\colon c\to Gd)$,
+    \item morphisms $(d,f)\to(d',f')$ are $\D$-morphisms $g\colon d\to d'$ such that $G(g)\circ f=f'$.
+\eenum
+
+\blemm
+
+    Given $G\colon\D\to\C$, a unit at $c\in\C$ is just an initial object in the comma category $c\down G$.
+
+\elemm
+
+\bproof
+
+    A map $\eta_c\colon c\to GF(c)$ is initial iff for every $f\colon c\to Gd$ there exists a unique $g\colon Fc\to d$ such that $f=G(g)\eta_X$.
+    That is, iff
+    $$ \hom(Fc,d) \xto{\ G\ } \hom(GFc,Gd) \xto{\ \circ\eta_c\ } \hom(c,Gd) $$
+    is a bijection.
+    This is precisely the requirement that $\eta_c$ be a unit at $c$.
+    \qed
+
+\eproof
+
+\bcoro
+
+    $G$ has a left adjoint iff for every $c\in\C$, the comma category $c\down G$ has an initial object.
+
+\ecoro
+
+\subsection{The adjoint functor theorem}
+
+\blemm
+
+    The limit of the diagram $1_\D\colon\D\to\D$ is an initial object in $\D$.
+
+\elemm
+
+\bproof
+
+    Suppose $\lambda\colon d\To1_\D$ is a limit cone, so we have morphisms $\lambda_c\colon d\to c$ for every $c\in\C$.
+    Now $\lambda_d\colon d\to d$ is a cone morphism from $\lambda$ to itself: $\lambda_c\lambda_d=\lambda_c$ by naturality.
+    Since $\lambda$ is terminal, this means that $\lambda_d$ must be the identity.
+
+    Now consider another morphism $f\colon d\to c$, we want to show $f=\lambda_c$.
+    Since $\lambda$ is natural, we have that $\lambda_c=f\circ\lambda_d=f\circ{\rm id}_d=f$.
+    So $\hom(d,c)=\set{\lambda_c}$, meaning $d$ is initial.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A category $\D$ satisfies the {\emphcolor solution set condition} if there exists a small set $I$ and family of objects in $\D$ $\set{d_\alpha}_{\alpha\in I}$
+    such that for every $d\in\D$ there exists an $\alpha\in I$ and a morphism $d_\alpha\to d$.
+
+\edefn
+
+\blemm
+
+    Let $\D$ be a complete and locally small category.
+    Then $\D$ satisfies the solution set condition iff $\D$ has an initial object.
+
+\elemm
+
+\bproof
+
+    If $\D$ has an initial object it clearly satisfies the solution set condition: just take the solution set to be that initial object.
+    Conversely suppose $\set{d_\alpha}_{\alpha\in I}$ is a solution set, and let $\D_0$ be the full subcategory of $\D$ spanned by these objects.
+    Since $\D$ is locally small and $I$ is small, $\D_0$ is small.
+
+    Since $\D$ is complete, the inclusion $\iota\colon\D_0\to\D$ has a limit, let it be $\lambda\colon d_0\To\iota$.
+    We will show that we can lift $\lambda$ to a limit cone $d_0\To1_\D$, and by the previous lemma this shows that $\D$ has an initial object.
+    For $d\notin\D_0$ there exists $d_\alpha\in\D_0$ and a morphism $f_d\colon d_\alpha\to d$.
+    We define $\lambda_d\colon d_0\to d$ to be the composition $d_0\xto{\lambda_{d_\alpha}}d_\alpha\xto{f_d}d$.
+    This extends $\lambda$ to a collection of morphisms on all of $\D$, but we must show that it is both natural and limiting.
+
+    For a morphism $g\colon d\to d'$, consider $\lambda_d=f_d\circ\lambda_{d_\alpha}$ and $\lambda_{d'}=f_{d'}\circ\lambda_{d_\beta}$.
+    Now consider the pullout $P$ of $d_\beta\xto{f_{d'}}d'\xot{g\circ f_d}d_\alpha$.
+    We then further have $\lambda_P=f_P\circ\lambda_{d_\gamma}$.
+
+    So we have a diagram:
+
+    \centerline{\drawdiagram{
+        $d$\cr
+        &$d_\gamma$\cr
+        &$P$&&$d_\beta$\cr
+        &$d_\alpha$&$d$&$d'$\cr
+    }{
+        \diagarrow{from={1,1}, to={2,2}, text=$\lambda_\gamma$, y distance=.25cm}
+        \diagarrow{from={1,1}, to={4,2}, text=$\lambda_\alpha$, y distance=.25cm}
+        \diagarrow{from={1,1}, to={3,4}, text=$\lambda_\beta$, y distance=.25cm}
+        \diagarrow{from={4,3}, to={4,4}, text=$g$, y distance=.25cm}
+        \diagarrow{from={2,2}, to={3,2}}
+        \diagarrow{from={3,2}, to={4,2}}
+        \diagarrow{from={4,2}, to={4,3}}
+        \diagarrow{from={3,2}, to={3,4}}
+        \diagarrow{from={3,4}, to={4,4}}
+    }}
+
+    The arrows between $d_0,d_\alpha,d_\beta,d_\gamma$ commute by naturality of $\lambda$.
+    So we can write $\lambda_\alpha,\lambda_\beta$ as factoring through $\lambda_P\colon d_0\to P$.
+    This $\lambda_P$ is the unique map $d_0\to P$ through which they factor.
+    By the universal property of the pullout, this whole diagram must commute then.
+    This gives us $g\circ\lambda_d=\lambda_{d'}$, so $\lambda$ is natural.
+
+    Instead of showing that the lift of $\lambda$ is universal, note that in our proof of the lemma above, it was sufficient to show that $\lambda_{d_0}={\rm id}_{d_0}$.
+    And indeed this must be the case, since $\lambda_{d_0}$ is a morphism of $\lambda$ to itself.
+    \qed
+
+\eproof
+
+This in and of itself is not very interesting, but it does allow us to prove a very powerful theorem.
+
+\blemm
+
+    For $G\colon\D\to\C$ and $c\in\C$, the forgetful functor $U\colon c\down G\to\D$ creates all limits which exist in $\D$ and are preserved by $G$.
+    In particular if $G$ preserves limits and $\D$ is complete, $c\down G$ is complete as well.
+
+\elemm
+
+\bproof
+
+    Notice that $c\down G$ is isomorphic to the category of elements of the functor $\hom(c,G\bul)\colon\D\to\Set$.
+    Its objects are $(d\in\D,f\colon c\to Gd)$ and morphisms $(d,f)\to(d',f')$ are morphisms $h\colon d\to d'$ such that $Gh\circ f=f'$.
+    And the forgetful functor $\int\hom(c,G\bul)\to\D$ creates all limits in $\D$ preserved by $\hom(c,G\bul)$.
+    Since hom-functors preserve limits, this preserves all limits preserved by $G$.
+    \qed
+
+\eproof
+
+\bthrm
+
+    Let $\D$ be a locally small complete category.
+    Then a functor $G\colon\D\to\C$ has a left adjoint iff
+    \benum
+        \item $G$ preserves small limits,
+        \item For every $c\in\C$, the comma category $c\down G$ satisfies the solution set condition.
+    \eenum
+
+\ethrm
+
+\bproof
+
+    If $G$ has a left adjoint, we know that it preserves small limits and $c\down G$ has an initial object (the unit at $c$).
+    Recall that showing $G$ has a left adjoint is equivalent to showing that $c\down G$ has an initial object for every $c\in\C$.
+    So we just need to show that $c\down G$ is complete, but that holds because of our previous lemma.
+    \qed
+
+\eproof
+
+Generally people write out what it means for $c\down G$ to satisfy the solution set condition explicitly: for every $c\in\C$ there exists a set of objects $\set{d_i}_{i\in I}$
+such that for every $f\colon c\to Gd$ there exists morphisms $h\colon d_i\to d$ and $\phi_i\colon c\to Gd_i$ such that $f=Gh\circ\phi_i$.
+
+If $\C$ is not locally small we need to add the morphisms $\phi_i$ to the definition (so that the collection of $\phi_i$ form a set).
+If $\C$ is locally small then we do not.
+
+\bexam
+
+    The forgetful functor $U\colon\grp\to\Set$ has a left adjoint.
+    $\grp$ is complete as we know, and $U$ preserves those limits.
+    So we need to show that $U$ satisfies the solution set condition.
+
+    So for every $X\in\Set$ we need to find a collection of morphisms $\set{f_i\colon X\to UG_i}_{i\in I}$ such that every $f\colon X\to UG$ factors through one of the $f_i$s.
+    For every $f\colon X\to UG$ consider the subgroup $G_f\subseteq G$ generated by $f$'s image; this has cardinality bound by $2^{\abs X}=\kappa$.
+    And we have that $f$ factors through $X\to U(G_f)\to UG$.
+
+    So let $\set{G_i}_i$ be the collection of groups of cardinality $\leq\kappa$ (a representative for each isomorphism class).
+    This satisfies the the solution set condition; as such $U$ has a left adjoint $F\colon\Set\to\grp$.
+    This functor forms the so-called ``free group'' over a set $X$.
+
+\eexam
+
+\bexam
+
+    Let ${\sf CBool}$ be the category of complete boolean algebras (boolean algebras where every subset has a supremum).
+    ${\sf CBool}$ is complete, and the forgetful functor $U\colon{\sf CBool}\to\Set$ preserves limits, but has no left adjoint.
+
+    This is because for any infinite set $X$ we can construct an arbitrarily large complete boolean algebra generated by $X$.
+    Thus the solution set condition does not hold.
+
+\eexam
+

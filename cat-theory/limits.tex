@@ -1,0 +1,807 @@
+\section{Limits}
+
+\subsection{First examples of (co)limits}
+
+Our first example of a limit is a {\bf product}.
+Suppose we have objects $X,Y\in\C$, their product is an object $X\times Y$ with associated morphisms $p_X\colon X\times Y\to X$ and $p_Y\colon X\times Y\to Y$ such that
+for any other object $C\in\C$ with $q_X\colon C\to X$ and $q_Y\colon C\to Y$, there exists a unique $f\colon C\to X\times Y$ making the following diagram commute:
+
+\centerline{\drawdiagram{
+&&$X$\cr
+$C$&$X\times Y$\cr
+&&$Y$
+}{
+    \diagarrow{from={2,1}, to={2,2}, dashed, text=$f$, y distance=.25cm}
+    \diagarrow{from={2,1}, to={1,3}, text=$q_X$, y distance=.25cm}
+    \diagarrow{from={2,1}, to={3,3}, text=$q_Y$, y distance=-.25cm}
+    \diagarrow{from={2,2}, to={1,3}, text=$p_X$, y distance=.25cm}
+    \diagarrow{from={2,2}, to={3,3}, text=$p_Y$, y distance=-.25cm}
+}}
+
+Such an object $X\times Y$, if it exists, is unique up to isomorphism.
+This isomorphism is in fact the unique isomorphism which commutes (as above) with $p_X,p_Y$.
+
+This construct can clearly be generalized to products of families of objects, $\set{X_i}_{i\in I}$.
+Here are some examples:
+
+\benum
+    \item For objects $\set{x_i}_{i\in I}$ in a partial order $P$ (a partial order viewed as a category has a unique morphism $x\to y$ iff $x\leq y$), their product is their infimum (if it exists).
+    Indeed, it must be an object $p\in P$ such that for every $c\leq x_i$, $c\leq p$.
+    \item In $\Set$, the product is the usual set-theoretic product, and the morphisms $p_i\colon\prod_{i\in I}X_i\to X_i$ are the projections.
+    \item In $\grp,\ab,\ring,\Vec_k$, etc.\ the product is the usual product of such algebraic structures (i.e.\ the set-theoretic product with the usual operations).
+    \item In $\top$, the category of topological spaces, the product of topological spaces $X_i$ is their set-theoretic product endowed with the {\it product topology}.
+    This topology has a basis $\prod_iU_i$ for $U_i\subseteq X_i$ open, with all but finitely many being equal to $X_i$.
+    \item In the category of metric spaces, the product of $X_i$ is their set-theoretic product with the supremum metric $d((x_i)_i,(y_i)_i)=\sup_{i\in I}d(x_i,y_i)$.
+    Of course this only exists if the metric spaces are uniformly bounded, or we allow for infinite distance.
+    \item The product in the category of (small or locally small) categories is the usual product of categories.
+\eenum
+
+Our first example of a colimit is a {\bf coproduct}.
+It is the dual of a product: the coproduct of $X,Y\in\C$ is an object $X\coprod Y\in\C$ with morphisms $p_X\colon X\to X\coprod Y$ and $p_Y\colon Y\to X\coprod Y$ such that
+for every other object $C$ with $q_X\colon X\to C$ and $q_Y\colon Y\to C$, there exists a unique $f\colon X\coprod Y\to C$ such that the dual diagram to the one above commutes.
+That is, $fp_x=q_X$ and $fp_Y=q_Y$.
+Equivalently, the coproduct of objects is their product in $\C^\op$.
+
+\benum
+    \item The coproduct of objects in a partial order is their supremum.
+    \item The coproduct in $\Set$ is the {\it disjoint union}: $\coprod_{i\in I}X_i$, which is the union of the sets $X_i\times\Set i$.
+    \item The coproduct in $\ab$ is the direct sum: $\bigoplus_{i\in I}X_i$ the subset of $\prod_{i\in I}X_i$ for which all but finitely many elements are $0$.
+    \item Coproducts in $\grp$ is the free product (not discussed here).
+    \item Coproducts in $\top$ is the set-theoretic disjoint union $\coprod_{i\in I}X_i$ whose topology has a base given by the open sets in each $X_i$.
+    \item In the category of commutative rings, the coproduct of $R,S$ is their tensor product $R\otimes S$ with multiplication given by $(r\otimes s)\cdot(r'\otimes s')=(rr)\otimes(ss')$.
+\eenum
+
+\subsection{In general}
+
+We can generalize the notion of products and coproducts to {\bf limits} and {\bf colimits}.
+
+\bdefn
+
+    For a (small) category $I$, we define its {\emphcolor initial completion} and {\emphcolor terminal completion} as $I_i$ and $I_f$.
+    In both $I_i$ and $I_f$ we add a new object to $I$, call it $*$.
+    In $I_i$ we add a unique morphism $*\to x$ for every $x\in I$, and for $I_f$ a unique morphism $x\to *$ for every $x\in I$ (this uniquely determines composition).
+    Clearly $*$ is an initial object in $I_i$ and final in $I_f$.
+
+\edefn
+
+\bdefn
+
+    Given a (small) diagram (a functor) $F\colon I\to\C$, a {\emphcolor cone} over $F$ is a functor $\hat F\colon I_f\to\C$ which agrees with $F$ on $I$.
+    A morphism of cones $\hat F\to\hat F'$ is a natural transformation $\alpha\colon\hat F\To\hat F'$ such that $\alpha_i={\rm id}_{Fi}$ for every $i\in I$.
+    This forms a category of cones, $\C_{/F}$.
+
+    Dually a {\emphcolor cocone} under $F$ is a functor $\hat F\colon I_i\to\C$ which agrees with $F$ on $I$, and morphisms are defined similarly.
+    This forms a category of cocones, $\C_{F/}$.
+
+\edefn
+
+Thus a cone over $F$ is simply an object $\hat F(*)=X$ and morphisms $\hat F(*\to i)=f_i\colon X\to X_i$ (where $Fi=X_i$) such that for every $\phi\colon i\to j$ in $I$, we have
+$F(\phi)s_i=s_j$.
+So we can view a cone simply as this data $(X,s_i)_{i\in I}$.
+A morphism of cones $(X,s_i)\to(Y,t_i)$ is simply a morphism $f\colon X\to Y$ such that $s_i=t_if$ for every $i\in I$.
+
+Dually a cocone can be viewed as $(X,s_i)_{i\in I}$ such that for every $\phi\colon i\to j$ in $I$, we have $s_jF(\phi)=s_i$.
+A morphism of cocones $(X,s_i)\to(Y,t_i)$ is simply a morphism $f\colon X\to Y$ such that $t_i=fs_i$.
+
+\bdefn
+
+    A {\emphcolor limit} of $F$ is a terminal object in $C_{/F}$, and a {\emphcolor colimit} is an initial object in $C_{F/}$.
+
+\edefn
+
+Since terminal and initial objects are unique up to unique isomorphism, the limits of a functor (if they exist) are all isomorphic (as are colimits), with a unique
+isomorphism that commutes with the diagram.
+
+We denote the (we can say ``the'' since it is unique up to isomorphism) limit of $F$ by $\lim_IF$ and its colimit by $\colim_IF$.
+Formally these are objects of $\C$ along with extra information, but generally we keep that information implicit, and write $\lim_IF,\colim_IF\in\C$ to be their associated objects.
+
+We note that a colimit is just a limit in the opposite category.
+Explicitly, a cocone under $F\colon I\to\C$ is the same as a cone over $F^\op\colon I^\op\to\C^\op$: $I^\op_f=(I_i)^\op$ and so a cone over $F^\op$ is a functor
+$\hat F^\op\colon(I_i)^\op\to\C^\op$ which agrees with $F^\op$ on $I$, equivalently a functor $\hat F\colon I_I\to\C$ which agrees with $F$ on $I$.
+That is to say $\C^\op_{/F^\op}\cong\C_{F/}$.
+
+\subsection{More examples}
+
+Let us consider the index category $I=\bul\tto\bul$ (two objects, two non-identity morphisms), and diagrams over it.
+Such a diagram is $X\xvarrightarrows{f}[g]Y$.
+Explicitly a cone over this diagram is an object $C$ and $h\colon C\to X,h'\colon C\to Y$ such that $fh=gh=h'$.
+Thus $h'$ is redundant and we can view a cone as simple $(C,h)$ where $h\colon C\to X$ such that $fh=gh$.
+
+The limit of this diagram is called an {\bf equalizer}: it is $(E,h)$ with $h\colon E\to X$ such that $fh=gh$ and for every other cone $(C,h')$
+there is a unique morphism $\phi\colon C\to E$ such that $h'=h\phi$.
+
+For example, in $\Set$ the equalizer is just $\set{x\in X}[fx=gx]\subseteq X$.
+This is clearly a cone, and if $fh=gh$ for any other $h\colon C\to X$ we have that $h$ restricts to being in the equalizer, so $\phi$ is just the inclusion.
+
+\subsection{Limits as products and equalizers}
+
+Every limit (in any category) can be written using products and equalizers.
+Indeed, let $F\colon I\to\C$ be a diagram and let us consider the following diagram:
+$$ f,g\colon\prod_{i\in I}F(i)\tto\prod_{\alpha\colon i\to j\in I}F(j) $$
+we construct $f,g$ and show that the limit of $F$ is the equalizer of the above diagram.
+
+We begin by defining $f$.
+In general $\hom(\bul,\prod_{i\in I}X_i)\cong\prod_{i\in I}\hom(\bul,X_i)$ naturally, since $f\colon Y\to\prod_{i\in I}X_i$ corresponds to $f_i=p_if$, and $f_i$ gives us a unique $f$ which
+factors through the $f_i$s by the universal property of products.
+In particular, to define $f$ we need to define $f_\alpha\colon\prod_{i\in I}F(i)\to F(j)$ for every $\alpha\colon i\to j$ to simply be $p_j$.
+And similarly we define $g_\alpha\colon\prod_{i\in I}F(i)\to F(j)$ to be the composition $F(\alpha)p_i$.
+
+\bthrm
+
+    If $\phi\colon X\to\prod_{i\in I}F(i)$ is an equalizer for the above diagram, then $(\phi_i\colon X\to F(i))$ is a limit to the diagram $F$.
+
+\ethrm
+
+\bproof
+
+    Since $\phi$ is an equalizer for $f,g$, i.e.\ $f\phi=g\phi$ then for $\alpha\colon i\to j$ we compose with $p_j$ to get $p_j\phi=F(\alpha)p_i\phi$, i.e.\ $\phi_j=F(\alpha)\phi_i$.
+    This is exactly what it means for $(\phi_i)$ to be a cone for $F$ though.
+    So $F$-cones can be viewed as equalizer cones, and then equalizer morphisms are the same as $F$-cone morphisms.
+    Indeed, if $\psi\colon Y\to\prod_{i\in I}F(i)$ is another equalizer cone, then a morphism $\psi\to\phi$ is a morphism $f\colon Y\to X$ such that $\psi=\phi f$.
+    That is equivalent to $\psi_i=\phi_if$ for all $i$, i.e.\ a morphism of $F$-cones.
+    So we see that equalizers and $F$-limits are the same, as desired.
+    \qed
+
+\eproof
+
+Note that the limit of $F$ can exist without $\prod_{i\in I}F(i)$ or $\prod_{\alpha\colon i\to j}F(j)$ existing.
+But if a category has arbitrary products and equalizers, then it has all limits.
+
+Similarly for cocones, by dualizing, we get that a coequalizer (since $I^\op=I$) of $X\tto{f}[g]Y$ is an $h\colon Y\to E$ such that $hf=hg$, and is universal in this regard.
+And so given a diagram $F\colon I\to\C$, a limit is a coequalizer of
+$$ f,g\colon\coprod_{\alpha\colon i\to j}F(j)\to\coprod_{i\in I}F(i) $$
+where $f_\alpha\colon F(j)\to\coprod_{i\in I}F(i)$ is the inclusion $\iota_j$ and $g_\alpha\colon F(j)\to\coprod_{i\in I}F(i)$ is the composition $F(\alpha)\iota_i$.
+
+\bdefn
+
+    A category $\C$ is {\emphcolor complete} if it has all (small) limits.
+    A category $\C$ is {\emphcolor cocomplete} if it has all (small) colimits.
+
+\edefn
+
+\bcoro
+
+    A category is complete iff it has arbitrary products and equalizers.
+    A category is cocomplete iff it has arbitrary coproducts and coequalizers.
+
+\ecoro
+
+\bexam
+
+    In $\Set$, we already have a characterization of products, coproducts, equalizers, and coequalizers.
+    Thus the limit of $F\colon I\to\Set$ is simply (since for $\alpha\colon i\to j$, $f_\alpha(x_i)_{i\in I}=x_j$ and $g_\alpha(x_i)_{i\in I}=F(\alpha)(x_i)$),
+    $$ \lim_IF = \set{(x_i)_{i\in I}\in\prod_{i\in I}F(i)}[\forall\alpha\colon i\to j.\,x_j=F(\alpha)(x_i)] $$
+    The coequalizer of $f,g$ in $\Set$ is $Y/{\sim}$ where $\sim$ is the smalleste equivalence relation such that $f(x)\sim g(x)$ for all $x\in X$.
+    Thus
+    $$ \colim_IF = \coprod_{i\in I}F(i)/(\forall\alpha\colon i\to j.\,x_j\sim F(\alpha)x_i) $$
+
+\eexam
+
+Since we already know that the following categories have products and coproducts, and we can find equalizers and coequalizers:
+
+\bcoro
+
+    $\Set,\ab,\top,\grp,\ring,{\sf CRing},\Vec_k$ are all complete and cocomplete.
+
+\ecoro
+
+Note that the restriction of (co)complete categories to {\it small\/} limits and colimits is necessary:
+
+\bprop
+
+    If $\C$ is a category such that every diagram (not just small ones) has a limit, then $\C$ is a preorder (a partial order which is not necessarily antisymmetric).
+
+\eprop
+
+\bproof
+
+    We need to show that between every two objects there is at most a single morphism.
+    Suppose that there are two morphisms $f,g\colon X\tto Y$, then let $\kappa$ be the cardinality of all the morphisms in $\C$.
+    Consider then $Y^\kappa$ (the product $\prod_\kappa Y$), then since $\hom(X,Y^\kappa)\cong\hom(X,Y)^\kappa$, we have that there are at least $2^\kappa$ morphisms $X\to Y^\kappa$,
+    a contradiction since $2^\kappa>\kappa$.
+    \qed
+
+\eproof
+
+\bprop
+
+    If $I$ has an initial element $i_0$, then for every $F\colon I\to\C$, $\lim_IF=F(i_0)$.
+    Dually if $I$ has a terminal element, then $\colim_IF=F(i_0)$.
+
+\eprop
+
+\bproof
+
+    A cone over $F$ is $(X,s_i\colon X\to X_i)$ such that $F(\phi)s_i=s_j$ for all $\phi\colon i\to j$.
+    Let $\phi\colon i_0\to i$ be the unique morphism, then we have $s_i=F(\phi)s_{i_0}$ and so we can view a cone simply as $(X,s_{i_0}\colon X\to X_{i_0})$.
+    Thus $X_{i_0}$ is a cone ($s_{i_0}=\id$) and it clearly is terminal, thus it is a limit.
+    \qed
+
+\eproof
+
+\bexam
+
+    A {\emphcolor directed set} is a partial order $(I,\leq)$ such that every finite set has an upper bound; equivalently for every $a,b\in I$ there exists a $c\in I$ such that $a,b\leq c$.
+    The colimit of a functor $I\to\C$ is called a {\emphcolor direct limit}, while the limit of a functor $I^\op\to\C$ is called a {\emphcolor inverse limit}.
+
+    A functor $I\to\C$ is also called a {\emphcolor direct system}, it can be characterized as a collection of objects $\set{X_i}_{i\in I}$ and morphisms $\set{f_{ij}\colon X_i\to X_j}_{i\leq j}$ such that
+    $f_{ii}=\id_{X_i}$ and $f_{ik}=f_{jk}\circ f_{ij}$.
+    In algebraic categories like $\grp,\ring$, etc.\ we can characterize the direct limit as
+    $$ \colim X_i = \bigsqcup_{i\in X_i}X_i/\set{x_i\sim x_j\iff\exists i,j\leq k.\,f_{ik}(x_i)=f_{jk}(x_j)} $$
+    where $\sqcup$ is the set-theoretic disjoint union.
+
+    A functor $I^\op\to\C$ is also called a {\emphcolor inverse system}, a collection of objects $\set{X_i}_{i\in I}$ and morphisms $\set{f_{ij}\colon X_j\to X_i}_{i\leq j}$ such that
+    $f_{ii}=\id_{X_i}$ and $f_{ik}=f_{ij}\circ f_{jk}$ for $i\leq j\leq k$.
+    In algebraic categories the inverse limit is
+    $$ \lim X_i = \set{(x_i)_{i\in I}\in\prod_{i\in I}X_i}[x_i=f_{ij}(x_j)\hbox{ for all $i\leq j$}] $$
+
+    In particular if $f_{ij}\colon X_i\inj X_j$ are inclusions then $\colim X_i$ is simply the union of the $X_i$s.
+    And if $f_{ij}\colon X_j\inj X_i$ are inclusions then $\lim X_i$ is the intersection.
+
+    We consider now the directed set $\omega$ (finite numbers), a functor $\omega\to\C$ is characterized simply by morphisms $X_i\to X_{i+1}$.
+    More interestingly consider the maps $\bZ\xto{\times p}\bZ$ for prime $p$.
+    The direct limit of this direct system ($\bZ\xto{\times p}\bZ\xto{\times p}\cdots$) is $\bZ[1/p]\subseteq\bQ$, the subgroup of all rational numbers whose denominator is a power of $p$.
+    The projections $\bZ_i\to\bZ[1/p]$ (where $\bZ_i$ is the $i$th copy of $\bZ$ in the system) are given by $\times1/p^i$.
+
+    An inverse system of $\omega$ are morphisms $X_{i+1}\to X_i$.
+    Let us consider the inverse system whose morphisms $\bZ/p^{k+1}\bZ\to\bZ/p^k\bZ$ are inclusion.
+    The inverse limit of this inverse system is called $\bZ_p$, the {\emphcolor $p$-adic integers}, which are $(x_n)_n$ such that $x_n\in\bZ/p^n\bZ$ and $x_n\equiv x_{n+1}\pmod{p^n}$.
+
+    Another example of an interesting inverse limit is the inverse limit of the $\omega^\op$-system of morphisms $S^1\to S^1$ given by wrapping the circle $p$ times around itself.
+    This gives an interesting compact Hausdorff topological space.
+
+\eexam
+
+\subsection{Group actions}
+
+A group $G$ can be viewed as a category $\B G$ with a single object whose hom-set is $G$.
+Then a $G$-set is just a functor $F\colon\B G\to\Set$ (i.e.\ the two categories are isomorphic).
+Indeed, a functor $F\colon\B G\to\Set$ is a set $X$ along with automorphisms $f_g$ for every $g\in G$ which preserve composition.
+
+Since $\B G$ is a small category, we can consider the limits and colimits of $G$-actions.
+These are the invariants and coinvariants of the action, respectively:
+$$ \lim F = \set{x\in X}[\forall g\in G.\,gx=x] = X^G,\qquad \colim F = X/\set{\forall g\in G.\,gx\sim x} = X_G $$
+
+If we swap $\Set$ with $\top$, then a functor $F\colon\B G\to\top$ is just a topological space $X$ and homeomorphisms for every $g\in G$ which preserve composition.
+The limit of such a functor is still the subspace of $G$-invariants, while the colimit is the space of paths with the quotient topology $X\to X/G$.
+
+And if we swap $\Set$ with $\Vec_k$, then a functor $F\colon\B G\to\Vec_k$ is a $G$-representation.
+The limit is still the subspace of $G$-invariants, and the colimit is $X/\lspan\set{x-gx}[g\in G,x\in X]$.
+
+\subsection{Pullbacks and pushforwards}
+
+\bdefn
+
+    A {\emphcolor pullback} is the limit of a functor from the category $\bul\to\bul\ot\bul$.
+    A {\emphcolor pushforward} is the colimit of a functor from the category $\bul\ot\bul\to\bul$ (the opposite category of that for pullbacks).
+
+\edefn
+
+Since the category $\bul\to\bul\ot\bul$ has a terminal object, colimits over it are noninteresting, hence why we don't define ``copullbacks''.
+Similarly $\bul\ot\bul\to\bul$ has an initial object, so we don't define ``copushforwards''.
+
+The limit cone of a pullback is also called a {\bf pullback square}.
+That is, a pullback square is
+
+\centerline{\drawdiagram{
+$P$&$Y$\cr
+$X$&$Z$
+}{
+    \diagarrow{from={1,1}, to={1,2}}
+    \diagarrow{from={1,1}, to={2,1}}
+    \diagarrow{from={2,1}, to={2,2}, text=$f$, y distance=.25cm}
+    \diagarrow{from={1,2}, to={2,2}, text=$g$, x distance=.25cm}
+}}
+
+\noindent where $P$ is the pullback of the diagram.
+In $\Set$, the pullback of $X\xto{\ f\ }Z\xot{\ g\ }Y$ is $X\times_ZY=\set{(x,y)\in X\times Y}[f(x)=g(y)]$.
+
+Similarly the colimit cone of a pushforward is called a {\bf pushforward square}:
+
+\centerline{\drawdiagram{
+$Z$&$Y$\cr
+$X$&$P$
+}{
+    \diagarrow{from={1,1}, to={1,2}, text=$g$, y distance=.25cm}
+    \diagarrow{from={1,1}, to={2,1}, text=$f$, x distance=.25cm}
+    \diagarrow{from={2,1}, to={2,2}}
+    \diagarrow{from={1,2}, to={2,2}}
+}}
+
+\noindent In $\Set$ the pushforward of $X\xot{\ f\ }Z\xto{\ g\ }Y$ is $X\cup_ZY=X\dcup Y/(f(z)\sim g(z))$.
+
+\bprop[title=Gluing lemma]
+
+    Given the following commutative diagram:
+
+    \centerline{\drawdiagram{
+        $A$&$B$&$C$\cr
+        $A'$&$B'$&$C'$
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=$p$, y distance=.25cm}
+        \diagarrow{from={1,2}, to={1,3}, text=$q$, y distance=.25cm}
+        \diagarrow{from={2,1}, to={2,2}, text=$p'$, y distance=.25cm}
+        \diagarrow{from={2,2}, to={2,3}, text=$q'$, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,1}, text=$f$, x distance=.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text=$g$, x distance=.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text=$h$, x distance=.25cm}
+    }}
+
+    \benum
+        \item If the right square is a pullback square, then the left square is a pullback square iff the outer square is a pullback square.
+        \item If the left square is a pushforward square, then the right square is a pushforward square iff the outer square is a pushforward square.
+    \eenum
+
+\eprop
+
+\blemm
+
+    If $\C$ has a terminal object $1$, then the pullback of $A\to1\ot B$ defines the product $A\times B$.
+    Dually if $\C$ has an initial object $0$, then the pushforward of $A\ot0\to B$ defines the coproduct $A\sqcup B$.
+
+\elemm
+
+\bproof
+
+    A cone over $A\to1\ot B$ is the data $(X,p_1\colon X\to A,p_2\colon X\to B,!\colon X\to1)$ which commute.
+    But since $1$ is terminal, this is equivalent to $(X,p_1\colon X\to A,p_2\colon X\to B)$, i.e.\ a cone over $A,B$.
+    Thus pullbacks of this diagram are simply products.
+    \qed
+
+\eproof
+
+\blemm
+
+    If $\C$ has binary products then the pullback of $A\xto{(f,g)}B\times B\xot{(1_B,1_B)}B$ is the equalizer of $f,g\colon A\tto B$.
+    Dually for pushforwards and binary coproducts.
+
+\elemm
+
+For $f\colon X\to A$ and $g\colon X\to B$ we denote by $(f,g)$ the unique morphism $(f,g)\colon X\to A\times B$ which projects onto $f$ and $g$.
+
+\bproof
+
+    A cone over $A\xto{(f,g)}B\times B\xot{(1_B,1_B)}B$ is the data $(X,\phi\colon X\to A,\psi\colon X\to B,\chi\colon X\to B\times B)$ such that
+    $$ (f,g)\circ\phi = (1_B,1_B)\circ\psi = \chi $$
+    so equivalently $(X,\phi,\psi)$ such that $(f,g)\phi=(1_B,1_B)\psi$, which is equivalent to requiring that $f\phi=\psi,g\phi=\psi$, so equivalently a cone
+    is just $(X,\phi\colon X\to A)$ such that $f\phi=g\phi$, which is a cone over the equalizer diagram of $f,g$.
+    \qed
+
+\eproof
+
+By considering our proof from before relating products and equalizers to all (small) limits, we see that we can write all finite limits with finite products and equalizers.
+Similar for colimits.
+Further note that the finite product $X_1\times\cdots\times X_n$ is equal to $X_1\times(X_2\times\cdots)$ (if all binary products exist).
+In general if $\C$ has all products up to a certain size, then for a set $I$ and a partition of $I$, $\set{I_j}_{j\in J}$ we have that $\prod_{j\in J}\prod_{i\in I_j}X_i$
+is the product $\prod_{i\in I}X_i$.
+We will omit the proof of that here, but it means that a category has all finite products iff it has all binary products.
+Similar for coproducts.
+
+Furthermore, consider the empty category $0$.
+A functor $F\colon0\to\C$ has a limit iff $\C$ has a terminal object.
+Indeed, $\C_{/F}$ is just $\C$, so a limit of $F$ (a terminal cone) is just a terminal object in $\C$.
+Since $0$ is a discrete category (i.e.\ no non-trivial morphisms), we can view a terminal object as the empty product.
+Similarly an initial object is the empty coproduct.
+
+\bcoro
+
+    A category has all finite limits iff it has all pullbacks and a terminal object.
+    Dually a category has all finite colimits iff it has all pushforwards and an initial object.
+
+\ecoro
+
+\subsection{Preservation of (co)limits}
+
+\bdefn
+
+    Let $I$ be an index category, and $c\in\C$ an object.
+    We define the {\emphcolor constant functor} at $c$ to be the functor $c\colon I\to\C$ which maps all objects in $I$ to $c$ and all morphisms to $1_c$.
+    This defines the so-called {\emphcolor diagonal functor} $\Delta\colon\C\to\C^I$ which maps $c\in\C$ to the constant functor at $c$, and $f\colon c\to d$ to be the natural
+    transformation whose components at each $i\in I$ to be $f$.
+
+\edefn
+
+Recall that a cone over $F\colon I\to\C$ is a functor $\hat F\colon I_f\to\C$ which agrees with $F$.
+That is, it is the data $(c,f_i\colon c\to F(i))_{i\in I}$ such that for every $\phi\colon i\to j\in I$ we have that $F(\phi)f_i=f_j$.
+Notice that this is equivalent to a natural transformation $\lambda\colon c\To F$ (from the constant functor to $F$): $\lambda_i=f_i$.
+So we can view cones over $F$ to simply be natural transformations $\lambda\colon c\To F$.
+A morphism of cones from $\lambda\colon c\To F$ to $\mu\colon d\To F$ is a $\C$-morphism $f\colon c\to d$ such that $\mu f=\lambda$.
+Dually we can consider cocones under $F$ to be natural transformations $\lambda\colon F\To c$.
+
+Consider a diagram $F\colon I\to\C$ and a functor $G\colon\C\to\D$.
+This induces a diagram $G\circ F\colon I\to\D$, and as such we can try and relate $\lim_IG\circ F$ and $G(\lim_IF)$.
+
+First notice that $G\colon\C\to\D$ induces a functor $G\colon\C_{/F}\to\D_{/F}$ by whiskering: $\lambda\colon c\To F$ maps to $G\lambda\colon Gc\To G\circ F$.
+Similarly it induces a functor $G\colon\C_{F/}\to\D_{F/}$ by whiskering as well: $\lambda\colon F\To c$ maps to $G\lambda\colon G\circ F\To Gc$.
+This leads us to the following definition:
+
+\bdefn
+
+    Let $K\colon I\to\C$ be a class of diagram (i.e.\ a collection of functors $I\to\C$) and $G\colon\C\to\D$ be a functor.
+    Then
+    \benum
+        \item $G$ {\emphcolor preserves} $K$'s limits if $\lambda$ is a limit cone of $K$ (of some functor in $K$), $G\lambda$ is a limit cone of $G\circ K$.
+        \item $G$ {\emphcolor reflects} $K$'s limits if for every for every cone $\mu\in\C_{/K}$, if $G\mu$ is a limit cone of $G\circ K$, then $\mu$ is a limit cone of $K$.
+        \item $G$ {\emphcolor creates} $K$'s limits if it reflects limits and if $G\circ K$ has a limit then there is a limit $\lambda$ of $K$ such that $G\lambda$ is a limit.
+    \eenum
+    This dualizes to colimits.
+
+\edefn
+
+So if $F\colon\C\to\D$ creates limits for some class of diagrams and $\D$ has limits of those diagrams, then $\C$ has all those limits and $F$ preserves them.
+
+As discussed, $G\colon\C\to\D$ induces a functor $G\colon\C_{/F}\to\D_{/F}$, so if $\lim_IG\circ F$ exists then it is terminal in $\D_{/F}$ and since $G(\lim_IF)\in\D_{/F}$ we have
+a unique morphism $\alpha\colon G(\lim_IF)\to\lim_I(G\circ F)$ (it is unique in $\D_{/F}$).
+Similarly we have a unique morphism $\beta\colon\colim_I(G\circ F)\to G(\colim_IF)$.
+These are called the {\emphcolor assembly maps}.
+
+The following is immediate:
+
+\bprop
+
+    $G$ preserves $F$'s limit (colimit) iff $\alpha$ (respectively $\beta$) is an isomorphism.
+
+\eprop
+
+\bexam
+
+    Consider the {\emphcolor forgetful functor} $U\colon\ab\to\Set$ which maps Abelian groups to their underlying sets and morphisms to their underlying pure functions.
+    Given two Abelian groups $A,B$ we have projections $A\xot{p_A}A\times B\xto{p_B}B$.
+    Applying $U$ gives us the diagram $U(A)\xot{U(p_A)}U(A\times B)\xto{U(p_B)}U(B)$, which is precisely a cone over $\set{U(A),U(B)}$.
+    Thus we have a unique morphism (unique as a cone morphism):
+    $$ U(A\times B) \to U(A)\times U(B) $$
+    This is an isomorphism, and as such $U$ preserves binary products.
+
+    Similarly we have the coproduct $A\xto{j_A}A\oplus B\xot{j_B}B$, which gives us $U(A)\xto{j_A}U(A\oplus B)\xot{j_B}U(B)$ and thus we have a morphism
+    $$ U(A)\sqcup U(B) \to U(A\oplus B) $$
+    which is not an isomorphism.
+    Thus $U$ does not preserve coproducts, and so $U$ doesn't preserve colimits ($U$ may preserve specific colimits though).
+
+\eexam
+
+The following are immediate:
+
+\bprop
+
+    Let $\C,\D$ be complete categories, then $F\colon\C\to\D$ preserves all limits iff it preserves all products and equalizers.
+    Dually for colimits.
+
+\eprop
+
+\blemm
+
+    If $G\colon\C\to\D$ and $H\colon\D\to\E$ are functors which preserve all $I$-limits (limits whose diagram is of shape $I$), then $H\circ G$ preserves all $I$-limits as well.
+    Similar for colimits.
+
+\elemm
+
+Notice that we can consider the composition for $F\colon I\to\C$:
+$$ H\circ G(\lim_IF) \to H(\lim_IG\circ F) \to \lim_I(H\circ G\circ F) $$
+This is the assembly morphism for $H\circ G$.
+As such if $H\circ G$ preserves limits and $H$ reflects isomorphisms (i.e.\ $Hf$ is an isomorphism iff $f$ is), then $G$ preserves limits.
+
+\bexam
+
+    If we consider the forgetful functors $\ab\xto{U_1}\grp\xto{U_2}\Set$, then since $U_2$ reflects isomorphisms and $U_2\circ U_1$ preserves limits, $U_1$ preserves limits as well.
+
+\eexam
+
+\bprop
+
+    Fully faithful functors reflect limits and colimits.
+
+\eprop
+
+\bproof
+
+    Let $F\colon I\to\C$ be a diagram and $G\colon\C\to\D$ be fully faithful.
+    We claim that the induced functor $G\colon\C_{/F}\to\D_{/G\circ F}$ is fully faithful as well.
+    Indeed, let $\lambda,\mu\in\C_{/F}$ be cones of objects $c,d$ respectively; then $f\in\hom(G\lambda,G\mu)$ is a morphism $Gc\to Gd$ such that $(G\mu)f=G\lambda$.
+    Clearly $G\colon\hom(\lambda,\mu)\to\hom(G\lambda,G\mu)$ is injective (since it is a restriction of $\hom(c,d)\to\hom(Gc,Gd)$).
+    And since $G$ is full, there is a $g\colon c\to d$ such that $Gg=f$; we claim that $g$ is a morphism $\lambda\to\mu$.
+    Indeed: we have $(G\mu)(Gg)=G(\mu g)=G\lambda$, and since $G$ is fully faithful this means $\mu g=\lambda$.
+
+    This means that if $G\lambda$ is a limit cone, then for every $\mu\in\C_{/F}$ we have $\hom(\mu,\lambda)\cong\hom(G\mu,G\lambda)=\Set*$.
+    Thus $\lambda$ is terminal and thus a limit cone.
+    So $G$ reflects limits.
+    \qed
+
+\eproof
+
+\bcoro
+
+    If $F\colon\C\to\D$ is an equivalence, it preserves and creates all limits and colimits.
+
+\ecoro
+
+\bproof
+
+    We claim that for any diagram $D\colon I\to\C$, $F\colon\C_{/D}\to\D_{/F\circ D}$ is an equivalence.
+    We just need to show essential surjectivity, let $\lambda\colon d\To F\circ D$ be a cone.
+    Since $F$ is an equivalence, $\iota\colon d\cong Fc$ for some $c\in\C$ and for each $i\in I$ there exists $\mu_i\colon c\to D(i)$ such that $\lambda_i=F(\mu_i)\iota$.
+    Then $\mu$ is a cone $c\To D$ such that $(F\mu)\iota=\lambda$, i.e.\ $F\mu$ and $\lambda$ are isomorphic.
+
+    Since $F$ is fully faithful we already know it reflects limits.
+    Now if $\lambda$ is a limit cone over $F\circ D$, then it is isomorphic to $F\mu$ so $\mu$ is a limit cone over $D$.
+    Thus $F$ creates all limits.
+
+    And if $\lambda$ is a limit cone over $D$, then for every limit cone $\mu$ over $F\circ D$ it is isomorphic to $F\mu'$ so, $\hom(\mu,F\lambda)\cong\hom(F\mu',F\lambda)\cong\hom(\mu',\lambda)$
+    a singleton.
+    Thus $F\lambda$ is a limit cone over $F\circ D$, so $F$ preserves limits.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Equivalent categories have the same shape limits.
+
+\ecoro
+
+\bexam
+
+    We claim that $\Vec_k$ and $\Vec_k^\op$ are not equivalent.
+    Note that all vector spaces are isomorphic to coproducts of $k$.
+    Now suppose that $E\colon\Vec_k\to\Vec_k^\op$ is an equivalence, then since it preserves coproducts it must map $\coprod_{i\in I}k$ to $\coprod_{i\in I}Ek$.
+    But notice that coproducts in the opposite category are simply products, so $\coprod_{i\in I}k$ maps to $\prod_{i\in I}Ek$.
+    Now notice that $k\cong\hom(k,k)\cong\hom(Ek,Ek)$, since in general $V$ can be embedded into $\hom(V,V)$ we have that $Ek$ has cardinality at most $\abs k$.
+
+    Take $I$, $J$ index sets, then we have that
+    $$ \hom(\coprod_Ik,\coprod_Jk) \cong \prod_I\hom(k,\coprod_Jk) \cong \prod_I\coprod_Jk $$
+    and
+    $$ \hom(\prod_JEk,\prod_IEk) \cong \prod_I\hom(\prod_JEk,Ek) $$
+    in general we have that $\hom(V,Ek)\supseteq V$ (comparing cardinalities), and so we get that the above is a superset of $\prod_I\prod_JEk\supset\prod_{I,J}k$.
+    Thus by equivalence we must have that $\abs{\prod_{I,J}k}\leq\abs{\prod_I\coprod_Jk}$.
+    But for $I,J$ large enough this means $\abs{k^{I\times J}}\leq\abs J^{\abs I}$.
+    Letting $J=k^I$ we get $k^J=k^{k^I}\leq k^I$ which is impossible.
+
+\eexam
+
+\bdefn
+
+    An object $c\in\C$ can be viewed as a functor from the one-object category $c\colon1\to\C$ (there is an isomorphism $\C\cong\C^1$).
+    The category of cones over $c$ is called the {\emphcolor overcategory} of $c$ and is denoted $\C/c$ (instead of $\C_{/c}$).
+    Dually the category of cocones under $c$ is called the {\emphcolor undercategory} of $c$ and is denoted $c/\C$ (instead of $\C_{c/}$).
+
+\edefn
+
+Now, a cone over $c$ is just a natural transformation $\lambda\colon X\To c$ for some $X\in\C$.
+Such a natural transformation is just a morphism $f\colon X\to c$.
+A morphism of cones from $f\colon X\to c$ to $g\colon Y\to c$ is a morphism $h\colon X\to Y$ such that $f=gh$.
+So we have an alternative characterization of $\C/c$:
+\benum
+    \item Objects are pairs $(X,f)$ where $X\in\C$ and $f\colon X\to c$ is a morphism;
+    \item A morphism $(X,f)\to(Y,g)$ is a morphism $h\colon X\to Y$ such that $f=gh$.
+\eenum
+
+Similarly a cocone under $c$ is a morphism $f\colon c\to X$.
+A morphism of cocones $f\colon c\to X$ to $g\colon c\to Y$ is a morphism $h\colon X\to Y$ such that $hf=g$.
+
+In general we have a forgetful functor $U\colon\C_{/F}\to\C$ which maps $\lambda\colon c\To F$ to $c$.
+And we also have $U\colon\C_{F/}\to\C$ which maps $\lambda\colon F\To c$ to $c$.
+Special cases of these are of course forgetful functors from the overcategory and undercategory.
+
+We can characterize the category of cones another way:
+
+\bdefn
+
+    Let $F\colon\C\to\Set$ be a $\Set$-valued functor.
+    Then $F$'s {\emphcolor category of elements} of $\C$ is the category $\int F$ whose objects are pairs $(c,x)$ where $c\in\C$ and $x\in F(c)$, and a morphism
+    $(c,x)\to(d,y)$ is a $\C$-morphism $f\colon c\to d$ such that $y=F(f)(x)$.
+
+    For a contravariant functor $F\colon\C^\op\to\Set$, it has a category of elements of $\C^\op$.
+    We define its category of elements of $\C$ to be the opposite category of this: $\int_\C F=(\int_{\C^\op}F)^\op$.
+
+\edefn
+
+Explicitly, for a contravariant functor $F\colon\C^\op\to\Set$ its category of elements $\int_\C F$ has pairs $(c,x)$ for $c\in\C$ and $x\in F(c)$ and a morphism
+$(c,x)\to(d,y)$ is a $\C$-morphism $f\colon c\to d$ such that $x=F(f)(y)$.
+
+Let $F\colon I\to\C$ be a diagram, we define two functors:
+$$ \cone(\bul,F)\colon\C^\op\to\Set,\qquad \cone(F,\bul)\colon\C\to\Set $$
+where $\cone(c,F)$ is equal to the set of natural transformations $c\To F$, and $\cone(F,c)$ is the set of natural transformations $F\To c$.
+For a morphism $f\colon c\to d$, $\cone(f,F)\colon\cone(d,F)\to\cone(c,F)$ by $\lambda\mapsto\lambda\circ f$.
+Similarly $\cone(F,f)\colon\cone(F,c)\to\cone(F,d)$ by $\lambda\mapsto f\circ\lambda$.
+
+Now, we can characterize the category of cones and cocones as follows:
+$$ \C_{/F} = \int\cone(\bul,F),\qquad \C_{F/} = \int\cone(F,\bul) $$
+Indeed, an object in the category of elements of $\cone(\bul,F)$ is a pair $(c,\lambda\colon c\To F)$ and morphisms $(c,\lambda)\to(d,\mu)$ are morphisms $f\colon c\to d$ such that
+$\lambda=\cone(f,F)(\mu)=\mu f$.
+This is precisely the definition of the category of cones.
+Similarly for cocones.
+
+There is a clear forgetful functor $U\colon\int F\to\C$ which maps $(c,x)\mapsto c$.
+Note that because of our definition for contravariant functors, this is a forgetful functor both when $F$ is covariant and when it is contravariant.
+
+Let us now consider limits of the category of elements.
+To do so let us consider what it means for $D\colon I\to\int F$ to be a diagram.
+We can view such diagrams equivalently as diagrams: $UD\colon I\to\C$ as well as a cone $\lambda\colon*\To FUD$ (viewing both as functors $I\to\Set$, where $*$ is a singleton).
+Indeed: if $D(i)=(c_i,x_i\in F(c_i))$ we can define $\lambda$ to be $\lambda_i=x_i\in FUD(i)$.
+And conversely given a diagram $D\colon I\to\C$ and a cone $\lambda\colon*\to FD$ then this defines a diagram $I\to\int F$ by $i\mapsto(D(i),\lambda_i)$ and $\phi\colon i\to j$ maps
+to $D(\phi)$.
+
+So a diagram $I\to\int F$ is simply a diagram $D\colon I\to\C$ as well as a cone $a\colon*\To FD$ in $\Set$.
+A morphism from a cone $\mu\colon(d,y)\To(D,a)$ to $\lambda\colon(c,x)\To(D,a)$ is a morphism $f\colon d\to c$ such that $x=Ff(y)$ and $U\mu=(U\lambda)f$.
+
+\bprop
+
+    For a covariant functor $F$, the forgetful functor $U\colon\int F\to\C$ creates all limits which $\C$ admits and $F$ preserves.
+    What this means is that for every diagram $D\colon I\to\C$ which has a limit in $\C$ preserved by $F$, then this limit in $\C$ is created by $U$.
+
+\eprop
+
+\bproof
+
+    We need to show that if $D\colon I\to\C$ has a limit preserved by $F$, and $a\colon*\To FD$ is a cone, then:
+    \benum
+        \item if $\lambda$ is a cone over $(D,a)$ such that $U\lambda$ is a limit of $D$, then $\lambda$ is a limit of $(D,a)$.
+        \item there exists a limit $\lambda$ over $(D,a)$ such that $U\lambda$ is a limit of $D$.
+    \eenum
+    Let $\eta\colon\lim D\To D$ be the limit cone of $D$, then since $F$ preserves it $F\eta\colon F(\lim D)\To FD$ is a limit cone as well.
+
+    Now suppose there is a $\bar\eta\colon X\To(D,a)$ such that $U\bar\eta=\eta$.
+    This means that $UX=\lim D$ and $\bar\eta_i=\eta_i$ for all $i\in I$.
+    Thus, $\bar\eta\colon(\lim D,x)\To(D,a)$ for $x\in F(\lim D)$, and since it is a cone we must have that $F(\eta_i)(x)=a_i$ for all $i\in I$ as well.
+    Now we know that $F(\eta)\colon F(\lim D)\To FD$ is a limit cone, and so there exists a unique morphism from $a\colon*\To FD$ to $F(\eta)$.
+    A morphism from $a$ to $F(\eta)$ is precisely a choice of element $x\in F(\lim D)$ such that $F(\eta_i)(x)=a_i$ for all $i\in I$, as desired.
+
+    So there does indeed exist such a $\bar\eta\colon(\lim D,x)\To(D,a)$ such that $U\bar\eta=\eta$.
+    We claim that $\bar\eta$ is a limit of $(D,a)$, proving both points.
+    Let $\lambda\colon(c,y)\To(D,a)$ be a cone, then $\hom(\lambda,\bar\eta)$ is the set of all morphisms $f\colon c\to\lim D$ such that $x=Ff(y)$ and $\eta=(U\lambda)f$.
+    This is a subset of $\hom(U\lambda,\eta)$ which is a singleton.
+    Now, the extension of $U\lambda$ to $\lambda$ corresponds to the morphism $a\to F(U\lambda)$ choosing $y$ (as before), and the composition of this with the unique morphism
+    $Ff\colon F(U\lambda)\to F(\eta)$ must be equal to the unique morphism $a\to F(\eta)$ corresponding to choosing $x$.
+    This means that we have $Ff(y)=x$ as desired.
+    So we have that $\bar\eta$ must indeed be terminal, as desired.
+    \qed
+
+\eproof
+
+\bcoro
+
+    If $\C$ is complete, then $U\colon\int F\to\C$ creates and preserves all limits $F$ preserves.
+
+\ecoro
+
+If $F$ is contravariant then the forgetful functor $U\colon\int_\C F\to\C$ is simply the opposite functor of $U^\op\colon\int_{\C^\op}F\to\C^\op$ which is the forgetful
+functor discussed above.
+Since $U^\op$ creates limits, this means that $U$ creates colimits.
+
+\bcoro
+
+    If $F\colon\C^\op\to\Set$ is a contravariant functor then the forgetful functor $U\colon\int_\C F\to\C$ creates all colimits which $\C$ admits and $F$ preserves.
+
+\ecoro
+
+In particular for our cone categories, we must consider what limits and colimits the functors $\cone(F,\bul)\colon\C\to\Set$ and $\cone(\bul,F)\colon\C^\op\to\Set$ preserve.
+
+\bprop
+
+    If $\C$ is complete, then $U\colon\C_{F/}\to\C$ creates and preserves all limits.
+    If $\C$ is cocomplete then $U\colon\C_{/F}\to\C$ creates and preserves all colimits.
+
+\eprop
+
+\bproof
+
+    By the above arguments, we just need to show that $\cone(F,\bul)$ and $\cone(\bul,F)$ preserve all limits and colimits respectively.
+    Notice that if $\set{A_i}_{i\in I}$ are objects in $\C$ then $\cone(F,\prod_{i\in I}A_i)\cong\prod_{i\in I}\cone(F,A_i)$ naturally, and we also have that
+    the cocone of an equalizer is naturally isomorphic to the equalizer of cocones.
+    Thus $\cone(F,\bul)$ preserves all limits, and thus by our above arguments $U$ creates and preserves all limits.
+    \qed
+
+\eproof
+
+\subsection{Limits in functor categories}
+
+For categories $\C,\D$ we consider the functor category $\D^\C$ of functors $\C\to\D$ whose morphisms are natural transformations.
+We alternatively write it by $[\C,\D]$.
+
+\blemm
+
+    For categories $\C,\D,\E$ there is an isomorphism of categories $[\C,[\D,\E]]\cong[\C\times\D,\E]\cong[\D,[\C,\E]]$.
+
+\elemm
+
+\bproof
+
+    We give an isomorphism $\Phi\colon[\C,[\D,\E]]\to[\C\times\D,\E]$.
+    For a functor $F\colon\C\to\E^\D$, we define $\Phi(F)\colon\C\times\D\to\E$ by $\Phi(F)(c,d)=F(c)(d)$ on objects and if $\alpha\colon F\To G$ is a natural transformation,
+    we note that this means for every $c\in\C$, $\alpha_c\colon Fc\To Gc$ is a natural transformation of functors $\D\to\E$, and so it has a component $\alpha_{c,d}\colon F(c)(d)\to G(c)(d)$.
+    So we define $\Phi(\alpha)\colon\Phi(F)\To\Phi(G)$ is given by $\Phi(\alpha)_{(c,d)}=\alpha_{c,d}$.
+    This is a functor.
+
+    We define its inverse $\Psi\colon[\C\times\D,\E]\to[\C,[\D,\E]]$ as follows: for $F\colon\C\times\D\to\E$ define $\Psi(F)\colon\C\to\E^\D$ by $\Psi(F)(c)(d)=F(c,d)$ on objects $c\in\C$.
+    For morphisms $f\colon c\to c'$ we define $\Psi(F)(f)\colon\Psi(F)(c)\To\Psi(F)(c')$ by $\Psi(F)(f)_d=F(f,1_d)$.
+    And for $\alpha\colon F\To G$ natural, we define $\Psi(\alpha)_{c,d}\colon F(c,d)\to G(c,d)$ to be $\alpha_{(c,d)}$.
+
+    The last isomorphism follows because $\C\times\D\cong\D\times\C$.
+    \qed
+
+\eproof
+
+This gives us an isomorphism $[\C,[\D,\E]]\cong[\D,[\C,\E]]$ which maps $F\colon\C\to\E^\D$ to $\hat F\colon\D\to\E^\C$ defined by
+\benum
+    \item $\hat F(d)(c)=F(c)(d)$,
+    \item for $f\colon c\to c'$, $\hat F(d)(f)=F(f)_d$,
+    \item for $f\colon d\to d'$, $\hat F(f)_c=F(c)(f)$.
+\eenum
+
+\bthrm
+
+    Let $F\colon I\to[\C,\D]$ be a diagram and consider its curried functor $\hat F\colon\C\to[I,\D]$.
+    Show that if for every $X\in\C$, $\hat F(X)\colon I\to\D$ has a limit $\lim_I\hat F(X)$, then $F$ has a limit and there are natural isomorphisms
+    $$ (\lim_I F)(X) \cong \lim_I\hat F(X) $$
+
+\ethrm
+
+\bproof
+
+    We need to show that there is a functor $\lim_IF\colon\C\to\D$ which acts on objects by $(\lim_IF)(X)=\lim_I\hat F(X)$ and that it has an associated terminal cone.
+    For brevity we write $L\colon\C\to\D$ instead of $\lim_IF$.
+
+    Let $f\colon X\to Y$ be a $\C$-morphism, then we have a natural transformation $\hat F(f)\colon\hat F(X)\To\hat F(Y)$.
+    Now let $\lambda_X\colon\lim_I\hat F(X)\To\hat F(X)$ be the limit cone, then $\hat F(f)\lambda_X\colon\lim_I\hat F(X)\To\hat F(Y)$ is another cone, and as such there is a unique
+    $\D$-morphism $L(f)\colon\lim_I\hat F(X)\To\lim_I\hat F(Y)$ such that $\lambda_YL(f)=\hat F(f)\lambda_X$.
+    So we define $L$ by:
+    $$ L(X) = \lim_I\hat F(X),\qquad \lambda_YL(f)=\hat F(f)\lambda_X $$
+    This is functorial: $\hat F(gf)\lambda_X=\hat F(g)\hat F(f)\lambda_X=\hat F(g)\lambda_YL(f)=\lambda_ZL(g)L(f)$, since $L(gf)$ is the unique morphism satisfying this, we have $L(gf)=L(g)L(f)$.
+
+    Now we need to find a cone $\Lambda\colon L\To F$, that is for every $i\in I$ a natural transformation $\Lambda_i\colon L\To F(i)$ such that everything commutes.
+    For $X\in\C$ we have the projection $(\lambda_X)_i\colon\lim_I\hat F(X)=L(X)\to\hat F(X)(i)=F(i)(X)$, so define $\Lambda_{i,X}=\lambda_{X,i}$.
+    Each $\Lambda_i$ is natural: this assertion just means that $\Lambda_{iY}L(f)=F(i)(f)\Lambda_{iX}$ for all $f\colon X\to Y$.
+    Expanding definitions, this just means $\lambda_{Yi}L(f)=\hat F(f)_i\lambda_{Xi}$, which clearly holds by definition of $L(f)$.
+    And $\Lambda$ as a whole is natural: to show $\Lambda_j=F(\phi)\Lambda_i$ for every $\phi\colon i\to j$ it is necessary and sufficient to show this for every component, that is to show
+    $\lambda_{Xj}=F(\phi)_X\lambda_{Xi}$.
+    This is true by naturality of $\lambda_X$ (since $\hat F(X)(\phi)=F(\phi)_X$).
+
+    Now we claim that it is terminal.
+    Let $f\colon\C\to\D$ be another functor with a cone $\Phi\colon f\To F$, we need to show that there is a unique natural transformation $\alpha\colon f\To F$ such that $\Phi=\Lambda\alpha$.
+    This is equivalent to saying that for every $i\in I,X\in\C$ we have $\Phi_{iX}=\lambda_{Xi}\alpha_X$.
+    And indeed this is true: $\Phi_{\bul X}\colon f(X)\To\hat F(X)$ is a cone over $\hat F(X)$ and since $\lambda_X$ is a limit cone there exists a unique $\alpha_X$ such that $\Phi_{\bul X}=\lambda_X\alpha_X$.
+    This $\alpha$ is natural and thus concludes our proof.
+    \qed
+
+\eproof
+
+This tells us that limits (and by duality colimits) in functor categories can be computed ``pointwise'': if $F\colon I\to[\C,\D]$ is a diagram then we have
+$$ (\lim_IF_i)(X) = \lim_I(F_i(X)) $$
+
+\bcoro
+
+    If $\D$ has all (co)limits of shape $I$, then so does the functor category $[\C,\D]$.
+    In particular the functor categories over (co)complete categories are all (co)complete.
+
+\ecoro
+
+\subsection{Functorality of limits and colimits}
+
+Notice that if $\C$ has all limits of shape $I$, then we can define a functor
+$$ \lim_I\colon[I,\C]\to\C $$
+which is defined for functors to be the limit of $F$ (we need choice to choose an explicit representation of the limit in $\C$, as it is only defined up to isomorphism).
+For a natural transformation $\alpha\colon F\To G$ of functors $I\to\C$, note that if $\lambda_F\colon\lim_IF\To F$ is the limit cone over $F$, then $\alpha\lambda_F\colon\lim_IF\To G$ is a cone as well,
+and as such there is a unique morphism $f_\alpha\colon\lim_IF\to\lim_IG$ such that $\alpha\lambda_F=\lambda_Gf_\alpha$, so define $\lim_I(\alpha)=f_\alpha$.
+This is the same construction as before; it is functorial for the same reason.
+
+Similarly if $\C$ has all colimits of shape $I$ we define
+$$ \colim_I\colon[I,\C]\to\C $$
+
+\bthrm
+
+    If $F\colon I\times J\to\C$ is a diagram, then considering its curried functors $I\to[J,\C]$ and $J\to[I,\C]$ we have
+    $$ \lim_{i\in I}\lim_{j\in J}F(i,j) \cong \lim_{I\times J}F \cong \lim_{j\in J}\lim_{i\in I}F(i,j) $$
+    when either the first or last limits exist (and their existence implies the existence of the middle limit).
+
+\ethrm
+
+We omit the proof for now, and will give a slick one in the future.
+We also have:
+
+\bthrm
+
+    $\lim_I$ preserves all limits and $\colim_I$ all colimits.
+
+\ethrm
+
+Which we will prove slickly in the future as well.
+
