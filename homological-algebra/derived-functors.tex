@@ -1,0 +1,973 @@
+\section{Derived Functors}
+
+\subsection{$\delta$-functors}
+
+Recall that morphisms of exact sequences are collections of morphisms which commute with everything.
+That is to say, if we have two exact sequences $\set{A_n,f_n}_n$ and $\set{B_n,g_n}_n$ (i.e.\ $f_n\colon A_n\to A_{n+1}$ and $\im f_n=\ker f_{n+1}$), a morphism $A\to B$
+is a collection $\set{s_n\colon A_n\to B_n}_n$ such that $sf=gs$ (i.e.\ view the exact sequences as chain complexes).
+
+\bdefn
+
+    A {\emphcolor homological} (resp.\ {\emphcolor cohomological}) {\emphcolor $\delta$-functor} from $\A$ to $\B$ (Abelian categories) is a collection of
+    additive functors $T_n\colon\A\to\B$ (resp.\ $T^n\colon\A\to\B$) for $n\geq0$, along with morphisms $\delta_n\colon T_n(C)\to T_{n-1}(A)$ (resp.\ 
+    $\delta^n\colon T^n(C)\to T^{n+1}(A)$) for every short exact sequence $0\to A\to B\to C\to0$ in $\A$.
+
+    A $\delta$-functor must satisfy the following (set $T_n=T^n=0$ for $n<0$):
+    \benum
+        \item for a short exact sequence $0\to A\to B\to C\to0$, we get a long exact sequence
+        $$ \cdots\to T_{n+1}(C) \xtos\delta T_n(A) \to T_n(B) \to T_n(C) \xtos\delta T_{n-1}(A) \to \cdots $$
+        (ascending indices for cohomological $\delta$-functors.)
+        In particular $T_0$ is right exact (since $T_{-1}=0$) and $T^0$ is left exact ($T_n,T^n$ in general are not: we have an exact sequence $T_n(A)\to T_n(B)\to T_n(C)$ but we cannot append $0$).
+
+        \item For a morphism of short exact sequences, $\delta$ commutes with the induced morphisms.
+        That is, if we have a morphism between short exact sequences $0\to A'\to B'\to C'\to0$ and $0\to A\to B\to C\to0$, we get commutative squares
+
+        \bigskip
+        \centerline{\drawdiagram{
+            $T_n(C')$&$T_{n-1}(A')$\cr
+            $T_n(C)$&$T_{n-1}(A)$
+        }{
+            \diagarrow{from={1,1}, to={1,2}, text=$\delta$, y distance=.25cm}
+            \diagarrow{from={2,1}, to={2,2}, text=$\delta$, y distance=.25cm}
+            \diagarrow{from={1,1}, to={2,1}}
+            \diagarrow{from={1,2}, to={2,2}}
+        }}
+
+        for every $n\geq0$.
+    \eenum
+
+\edefn
+
+\bprop
+
+    Homology gives a homological $\delta$-functor $H_\bul\colon\Ch_{\geq0}(\A)\to\A$; cohomology gives a cohomological $\delta$-functor $H^\bul\colon\Ch^{\geq0}(\A)\to\A$.
+
+\eprop
+
+\bproof
+
+    The $\delta$ morphisms are the connecting maps $\partial$.
+    The axioms are satisfied because the connecting maps are functorial.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $\S(\A)$ be the category of short exact sequences in $\A$.
+    If $T$ is a $\delta$-functor then $\delta_n$ is a natural transformation from $T_n$ to $T_{n-1}$ (viewed as functors mapping $0\to A\to B\to C\to0$ to $T_nC$ and $T_{n-1}A$ respectively).
+
+\eprop
+
+\bproof
+
+    This is immediate from the second axiom of $\delta$-functors.
+    \qed
+
+\eproof
+
+\bexam
+
+    Let $p\in\bZ$ then define a homological $\delta$-functor $\Ab\to\Ab$ by $T_0(A)=A/pA$ and $T_1(A)={}_pA=\set{a\in A}[pa=0]$ ($T_n=0$ for all other $n$).
+    To get the $\delta$ morphisms, the snake lemma on the diagram
+
+    \centerline{\drawdiagram{
+        $0$&$A$&$B$&$C$&$0$\cr
+        $0$&$A$&$B$&$C$&$0$
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,2}, to={1,3}}
+        \diagarrow{from={1,3}, to={1,4}}
+        \diagarrow{from={1,4}, to={1,5}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={2,3}, to={2,4}}
+        \diagarrow{from={2,4}, to={2,5}}
+        \diagarrow{from={1,2}, to={2,2}, text=$p$, x distance=.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text=$p$, x distance=.25cm}
+        \diagarrow{from={1,4}, to={2,4}, text=$p$, x distance=.25cm}
+    }}
+
+    Since $\ker p={}_pA$ and $\coker p=A/pA$ we get an exact sequence
+    $$ 0 \to {}_pA \to {}_pB \to {}_pC \xtos\delta A/pA \to B/pB \to C/pC \to 0 $$
+    Which is precisely the first axiom.
+    Functorality of the connecting morphism gives us the second axiom.
+
+    We can also view this as a cohomological $\delta$-functor by swapping $T_0$ and $T_1$.
+
+\eexam
+
+\bdefn
+
+    A morphism $S\to T$ of $\delta$-functors is a system of natural transformations $S_n\to T_n$ (or $S^n\to T^n$) which commute with $\delta$.
+
+    A homological $\delta$-functor $T$ is {\emphcolor universal} if given any other homological $\delta$-functor $S$ and a natural transformation $f_0\colon S_0\to T_0$,
+    we can uniquely extend $f_0$ to a morphism $\set{f_n}_n\colon S\to T$.
+    Dually a cohomological $\delta$-functor $T$ is {\emphcolor universal} if given any other cohomological $\delta$-functor $S$ and natural $f_0\colon T^0\to S^0$ it can be uniquely
+    extended to $T\to S$.
+
+\edefn
+
+\bexam
+
+    We will show later that homology and cohomology are universal.
+
+\eexam
+
+\bprop
+
+    If $F\colon\A\to\B$ is exact, then $T_0=F$ and $T_n=0$ for $n\neq0$ is a universal $\delta$-functor (both homological and cohomological).
+
+\eprop
+
+\bproof
+
+    A quick check of the axioms shows that $F$ is indeed a $\delta$-functor (with $\delta=0$).
+    Let $S$ be another $\delta$-functor (suppose homological) and if $f_0\colon S_0\to F$ is natural then define $f_n\colon S_n\to T_n=0$ to be zero.
+    This is the only way to extend $f_0$, and it is a morphism.
+    \qed
+
+\eproof
+
+\subsection{Projective resolutions}
+
+\bdefn
+
+    An object $P$ in an Abelian category $\A$ is {\emphcolor projective} if it satisfies the following universal lifting property: given an epimorphism $g\colon B\to C$
+    and a map $\gamma\colon P\to C$ there exists a (not necessarily unique) map $\beta\colon P\to B$ such that $\gamma=g\circ\beta$.
+    In a diagram:
+
+    \centerline{\drawdiagram{
+        &$P$\cr
+        $B$&$C$&$0$
+    }{
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={1,2}, to={2,2}, text=$\gamma$, x distance=.25cm}
+        \diagarrow{from={1,2}, to={2,1}, text=$\exists\beta$, x distance=-.25cm, dashed}
+    }}
+
+\edefn
+
+We are mostly concerned with {\emphcolor projective modules} (projective objects in $\Mod_R$).
+Clearly free modules are projective: take a basis $(v_i)_i$ and map $v_i$ to a preimage of $\gamma(v_i)$.
+
+\bprop
+
+    Direct summands of projective modules are projective.
+
+\eprop
+
+\bproof
+
+    If $P=M\oplus M'$ is projective then any map $\gamma\colon M\to C$ can be extended to a map $\gamma\colon P\to C$ and the rest follows.
+    \qed
+
+\eproof
+
+\bprop
+
+    An $R$-module is projective iff it is a direct summand of a free $R$-module (that is, $M$ is projective iff there exists $M'$ such that $M\oplus M'$ is free).
+
+\eprop
+
+\bproof
+
+    Direct summands of a free module are by the previous proposition projective.
+
+    Conversely $F(A)$ be the free $R$-module on the set $A$, for a module $M$ we can consider $F(M)$ on the set underlying $M$ and we have a surjection $\pi\colon F(M)\to M$.
+    If $M$ is projective then the universal lifting property gives us a map $i\colon M\to F(M)$ such that $\pi i=\id_M$:
+
+    \centerline{\drawdiagram{
+        &$M$\cr
+        $F(M)$&$M$&$0$
+    }{
+        \diagarrow{from={2,1}, to={2,2}, text=$\pi$, y distance=.25cm}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={1,2}, to={2,2}, text=$\id_M$, x distance=.25cm}
+        \diagarrow{from={1,2}, to={2,1}, text=$\exists i$, x distance=-.25cm, dashed}
+    }}
+
+    So $i\pi$ is a projection onto $i(M)\cong M$, meaning $M$ is a direct summand of $F(M)$.
+    \qed
+
+\eproof
+
+Over many nice rings (e.g.\ $\bZ$, division rings), projective modules are all free.
+This is not always the case:
+
+\bexam
+
+    If $R=R_1\times R_2$ is the product of two rings then $R_1\times0,0\times R_2$ are projective as their sum is $R$ (a free $R$-module).
+    $P=R_1\times0$ is not free since $(0,1)P=0$ (meaning for any choice $B\subseteq P$ there is an $r\in R$ such that $rB=0$ so $B$ cannot be linearly independent).
+    So for example $\bZ/6\bZ\cong\bZ/2\bZ\times\bZ/3\bZ$ is projective but not free.
+
+\eexam
+
+\bexam
+
+    Let $k$ be a field and consider the matrix ring $R=M_n(k)$.
+    This has a module $k^n$ (multiplication is given by vector-matrix multiplication), and as an $R$-module we have $R\cong k^n\oplus\cdots\oplus k^n$, so $k^n$ is projective.
+    A free $R$-module needs to have dimension $dn^2$ over $k$ for some $d>0$, but $\dim_kk^n=n$ so it cannot be free.
+
+\eexam
+
+The category of finite Abelian groups has no projective objects (other than $0$): non-trivial subgroups of free Abelian groups are torsion-free and thus infinite.
+
+\bdefn
+
+    $\A$ has {\emphcolor enough projectives} if for every $A\in\A$ there is an epimorphism $P\to A$ with $P$ projective.
+
+\edefn
+
+$\Mod_R$ has enough projectives, take the epimorphism $F(M)\to M$.
+
+\blemm
+
+    $M$ is projective iff $\hom_A(M,\bul)$ is exact.
+
+\elemm
+
+\bproof
+
+    Suppose $\hom(M,\bul)$ is exact, and we have a surjection $g\colon B\to C$ and a map $\gamma\colon M\to C$.
+    Since $g$ is surjective and $\hom(M,\bul)$ is exact, $g_*$ is surjective as well.
+    Thus we can lift $\gamma$ to $\beta$ such that $\gamma=g_*\beta=g\circ\beta$; $M$ has the universal lifting property, it is projective.
+
+    Recall that in general $\hom(M,\bul)$ is left exact.
+    So to show that it is exact, we must only show that for $0\to A\to B\xto gC\to0$, $g_*$ is surjective as well (i.e.\ we can append $\to0$).
+    This is precisely what the universal lifting property says.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A chain complex where every component is projective is called a {\emphcolor chain complex of projectives}.
+    It is not necessarily projective in $\Ch$.
+
+\edefn
+
+\bprop
+
+    A chain complex $P$ is projective in $\Ch$ iff it is a split exact complex of projectives.
+
+\eprop
+
+\bproof
+
+    If $P$ is projective then so is $P[-1]$: a surjection $B\to C$ and a map $P[-1]\to C$ can be shifted up to $B[1]\to C[1]$ and $P\to C[1]$, then the resulting
+    lift can be shifted back down $P[-1]\to B$ ($[p]$ is functorial).
+    We have a short exact sequence
+    $$ 0 \to P \to \cone(P) \to P[-1] \to 0 $$
+    Now a surjection onto a projective object gives rise to a projection: we can lift $\id_{P[-1]}$ to $\beta\colon P[-1]\to\cone(P)$ such that $\delta\beta=\id_{P[-1]}$ where $\delta$ is the surjection.
+    Then $\beta\delta$ is a projection onto $P[-1]$ whose kernel is $P$, thus $\cone(P)\cong P\oplus P[-1]$.
+    Since $\cone(P)$ is exact, so too must $P$ be.
+
+    Since $\delta(p,q)=-p$ we have that $\beta$ is of the form $\beta(p)=(-p,s(p))$ for $s\colon P[-1]\to P$ (not necessarily a chain map).
+    Now we claim that $s$ is a splitting map.
+    Since $\beta$ is a chain map we have
+    $$ d\beta(p) = d(-p,s(p)) = (dp,ds(p)+p),\qquad \beta(-dp) = (dp,-s(dp)) $$
+    So we have $ds+\id=-s d$ so $\id=-sd-ds$ meaning $P$ is split exact.
+
+    Now we must show that $P$'s components are all projectives.
+    So we need to show that each $B'_n$ is projective: let $g\colon N\to M$ surjective and $\gamma\colon B'_n\to M$.
+    Considering $N$ and $M$ as chain complexes centered at $n$ with all other terms $0$, $g$ gives rise to a surjection of a chain complex, and $\gamma$ a map from $P$ to $M$.
+    Then we can lift it to $\beta\colon P\to N$, and we get the desired result.
+
+    Recall that if $P$ is split exact then $P_n\cong B_n\oplus B'_n$ for $B'_n\cong B_{n-1}$.
+    The differential is zero on $B_n$ and an isomorphism $B'_n\cong B_{n-1}$, so we can view $P_n\cong B_n\oplus B_{n-1}$ with $d(b,b')=(b',0)$.
+    Now a map $\gamma\colon P\to C$ is of the form $(\gamma_n,\gamma'_n)\colon P_n\to C_n$ and this is a chain map iff $d\gamma'_n=\gamma_{n-1}$.
+    Indeed: $(\gamma_{n-1},\gamma'_{n-1})d(b,b')=\gamma_{n-1}(b')$ and $d(\gamma_n(b)+\gamma'_n(b'))=d\gamma_nb+d\gamma'_nb'$.
+    This is true for all $b,b'$ and so take $b=0$ and we get $\gamma_{n-1}=d\gamma'_n$.
+    And conversely this implies $d\gamma_n=0$ and so we have equality.
+
+    So if $P$ is split exact of projectives, let $(\gamma_n,\gamma'_n)\colon P\to C$ and $g\colon A\to C$ surjective.
+    Each $B_n$ is projective (as it is a direct summand of a projective), so we have maps $\beta_n\colon B_{n-1}\to A_n$ which lift $\gamma'_n$ along $g_n$.
+    Notice then that the map $d\beta_{n+1}\colon B_n\to A_n$ lifts $\gamma_n$ along $g_n$:
+    $$ g_nd\beta_{n+1} = dg_{n+1}\beta_{n+1} = d\gamma'_{n+1} = \gamma_n $$
+    Then the map $(d\beta_{n+1},\beta_n)\colon P\to A$ is a chain map and it lifts $\gamma+\gamma'$ along $g$ as desired.
+    \qed
+
+\eproof
+
+\bcoro
+
+    If $\A$ has enough injectives, so does $\Ch(\A)$.
+
+\ecoro
+
+\bproof
+
+    Let $C$ be a chain complex, then for each $C_n$ let $g_n\colon B_n\to C_n$ be a surjection from a projective module.
+    Then define $P_n=B_n\oplus B_{n-1}$ with differential mapping $d(b,b')=(b',0)$.
+    This is a split exact complex of projectives, thus a projective complex.
+    Now $(dg_{n+1},g_n)\colon P\to C$ is a chain map as discussed in the previous proof, and is surjective as desired.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A short exact sequence $0\to A\to B\to C\to0$ is called {\emphcolor split} if there is an isomorphism $f\colon B\to A\oplus C$ that commutes with the short
+    exact sequence (with inclusion $\iota\colon A\to A\oplus C$ and projection $\pi\colon A\oplus C\to C$).
+    Explicitly, the following diagram commutes:
+
+    \centerline{\drawdiagram{
+        $0$&$A$&$B$&$C$&$0$\cr
+        &&$A\oplus C$
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,2}, to={1,3}}
+        \diagarrow{from={1,3}, to={1,4}}
+        \diagarrow{from={1,4}, to={1,5}}
+        \diagarrow{from={1,2}, to={2,3}, text=$\iota$, x distance=-.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text=$f$, x distance=-.25cm}
+        \diagarrow{from={2,3}, to={1,4}, text=$\pi$, x distance=-.25cm}
+    }}
+
+\edefn
+
+\blemm[title=Splitting lemma]
+
+    For a split exact sequence $0\to A\xto fB\xto gC\to0$, the following are equivalent:
+    \benum
+        \item the sequence splits;
+        \item the sequence is {\emphcolor left split}: there exists a morphism $t\colon B\to A$ such that $tf=\id_A$;
+        \item the sequence is {\emphcolor right split}: there exists a morphism $s\colon C\to B$ such that $gs=\id_C$.
+    \eenum
+
+\elemm
+
+\bproof
+
+    The sequence being split implies being left and right split: define $t\colon A\oplus C\cong B\to A$ to project onto $A$ and $s\colon C\to B\cong A\oplus C$ to
+    embed $C$ into $B$.
+    If the sequence is left split then $B=\ker t\oplus\im f$ since their intersection is zero and $b=(b-ft(b))+ft(b)$.
+    Now $\im f\cong A$ and $\ker t\cong C$ since we can map $b\in\ker t$ to $g(b)\in C$: this map is injective since its kernel is $\ker t\cap\ker g=\ker t\cap\im f=0$.
+    It is surjective since $g(b-ft(b))=g(b)$.
+    Thus $B\cong A\oplus C$ and this commutes with the sequence.
+    \qed
+
+\eproof
+
+Note that this lemma is not true in the category of groups: being (left) split is equivalent to $B$ being the direct product of $A$ and $C$, but being right split
+is equivalent to $B$ being the semidirect product of $A$ and $C$.
+Thus (left) split implies right split, but not the other way around.
+
+\bprop
+
+    An object $P\in\A$ is projective iff every short exact sequence $0\to A\to B\to P\to0$ is split.
+
+\eprop
+
+\bproof
+
+    If $P$ is projective then we can lift $\id_P$ along the surjection $B\to P$ to give us a map which composes with it to give the identity.
+    Thus the sequence is right split, and thus split.
+
+    Conversely suppose every such short exact sequence is split.
+    Now $\A$ is finitely complete and thus for a surjection $A\to B$ and a map $P\to B$ we can consider the diagram's pullback $C$:
+
+    \centerline{\drawdiagram{
+        $C$&$P$&$0$\cr
+        $A$&$B$&$0$\cr
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=$f$, y distance=-.25cm}
+        \diagarrow{from={1,2}, to={1,3}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={1,1}, to={2,1}}
+        \diagarrow{from={1,2}, to={2,2}}
+    }}
+
+    It can be shown that the first row is indeed exact ($f$ is epi), since in Abelian categories epimorphisms are regular (cokernels of their kernels), and we can follow
+    the kernel of the bottom map.
+    Taking $K$ to be the kernel of $f$, we have an exact sequence $0\to K\to C\xto fP\to0$, which must split.
+    Then there is a map $g\colon P\to C$ such that $fg=\id_P$.
+    Now consider $P\xto gC\to A$: by commutativity we have that it gives the desired lifting of $P\to B$.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $M\in\A$, a {\emphcolor left resolution} of $M$ is an exact sequence
+    $$ \cdots\xtos d P_1\xtos dP_0\xtos\epsilon M\to0 $$
+    The map $\epsilon$ is called the {\emphcolor augmentation map}.
+    This is a {\emphcolor projective resolution} if each $P_i$ are projective.
+
+\edefn
+
+\blemm
+
+    If $\A$ has enough projectives, every object $M$ has a projective resolution.
+    In particular every $R$-module has a projective resolution.
+
+\elemm
+
+\bproof
+
+    First take a projective $P_0$ and a surjection $\epsilon_0\colon P_0\to M$, and set $M_0=\ker\epsilon_0$.
+    Inductively given $M_{n-1}$ choose a projective $P_n$ and surjection $\epsilon_n\colon P_n\to M_{n-1}$.
+    Define $M_n=\ker\epsilon_n$ and let $d_n$ be the composite $P_n\to M_{n-1}\to P_{n-1}$.
+    Since $M_{n-1}\to P_{n-1}$ is monic $\ker d_n=\ker\epsilon_n=M_n$.
+    And we have $d_n(P_n)=M_{n-1}=\ker d_{n-1}$, thus the resulting sequence is exact.
+    \qed
+
+\eproof
+
+\bprop
+
+    A left resolution $\cdots\to P_1\to P_0\to M\to0$ is the same as a quasi-isomorphism $P\to M$ where $P$ is the chain complex $\cdots\to P_1\to P_0\to0$ and $M$
+    is considered as a chain complex focused at $0$.
+
+\eprop
+
+\bproof
+
+    A chain map $P\xtos\epsilon M$ is given by a map $P_0\xto\epsilon M$ such that $\epsilon d=0$ (for $d\colon P_1\to P_0$).
+    This is a quasi-isomorphism if $\epsilon\colon H_0(P)=P_0/dP_1\to M$ is an isomorphism, meaning $\ker\epsilon=\im d$, i.e.\ the sequence is exact.
+    \qed
+
+\eproof
+
+\bthrm[title=Comparison theorem]
+
+    Let $P\xtos\epsilon M$ be a projective resolution of $M$ and $f'\colon M\to N$ a map in $\A$.
+    Then for every resolution $Q\xtos\eta N$, there is a chain map $f\colon P\to Q$ lifting $f'$ in the sense that $\eta f_0=f'\circ\epsilon$:
+
+    \centerline{\drawdiagram{
+        $\cdots$&$P_1$&$P_0$&$M$&$0$\cr
+        $\cdots$&$Q_1$&$Q_0$&$N$&$0$\cr
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,2}, to={1,3}}
+        \diagarrow{from={1,3}, to={1,4}}
+        \diagarrow{from={1,4}, to={1,5}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={2,3}, to={2,4}}
+        \diagarrow{from={2,4}, to={2,5}}
+        \diagarrow{from={1,2}, to={2,2}}
+        \diagarrow{from={1,3}, to={2,3}}
+        \diagarrow{from={1,4}, to={2,4}, text=$f'$, x distance=-.25cm}
+    }}
+
+    $f$ is unique up to chain homotopy equivalence.
+
+\ethrm
+
+Alternatively we could say that there exists a unique (up to chain homotopy equivalence) chain map between the chain complexes $P\to M$ to $Q\to N$.
+
+The proof will show that $P\to M$ being a projective resolution is stronger a condition than necessary: it is sufficient to be given a chain complex $P\to M\to0$
+where $P_n$ are all projective.
+
+\bproof
+
+    We construct $f_n$ inductively; let $f_{-1}=f'$ and $f_{-2}=0$.
+    Suppose $f_i$ has been constructed for $i\leq n$, so that $f_{i-1}d=df_i$.
+    To construct $f_{n+1}$ we consider the $n$-cycles of $P,Q$: if $n=-1$ then set $Z_{-1}(P)=M$ and $Z_{-1}(Q)=N$.
+    Since $f_{n-1}d=df_n$ we know that $f_n$ induces a map $f'_n\colon Z_n(P)\to Z_n(Q)$, so we have two diagrams with exact rows:
+
+    \hbox{\hfill\drawdiagram{
+        $\cdots$&$P_{n+1}$&$Z_n(P)$&$0$\cr
+        $\cdots$&$Q_{n+1}$&$Z_n(Q)$&$0$\cr
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,2}, to={1,3}}
+        \diagarrow{from={1,3}, to={1,4}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={2,3}, to={2,4}}
+        \diagarrow{from={1,2}, to={2,2}, dashed}
+        \diagarrow{from={1,3}, to={2,3}, text=$f'_n$, x distance=.25cm}
+    }%
+    \hfill\drawdiagram{
+        $0$&$Z_n(P)$&$P_n$&$P_{n-1}$\cr
+        $0$&$Z_n(Q)$&$Q_n$&$Q_{n-1}$\cr
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,2}, to={1,3}}
+        \diagarrow{from={1,3}, to={1,4}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={2,3}, to={2,4}}
+        \diagarrow{from={1,2}, to={2,2}, text=$f'_n$, x distance=.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text=$f_n$, x distance=.25cm}
+        \diagarrow{from={1,4}, to={2,4}, text=$f_{n-1}$, x distance=.25cm}
+    }\hfill}
+
+    Using the first diagram and $P_{n+1}$ being projective allows us to lift $f'_nd$ to $f_{n+1}\colon P_{n+1}\to Q_{n+1}$ such that $df_{n+1}=f'_nd=f_nd$.
+    And so $\set{f_n}$ is a chain map extending $f'$ as desired.
+
+    To show uniquess, suppose $g\colon P\to Q$ is a chain map extending $f'$ as well.
+    Let $h=f-g$ and we will construct a contraction $\set{s_n\colon P_n\to Q_{n+1}}$ inductively.
+    For negative $n$ we must have $s_n=0$.
+    For $n=0$ we have $\eta h_0=(f'-f')\epsilon=0$, and so $h_0$ maps $P_0$ to $\ker\eta=Z_0(Q)=dQ_1$.
+    And so we can lift $h_0$ to $s_0\colon P_0\to Q_1$ such that $h_0=ds_0=ds_0+s_{-1}d$.
+
+    Inductively suppose for $i<n$ we have maps $s_i$ such that $ds_{n-1}=h_{n-1}-s_{n-2}d$ and then consider $h_n-s_{n-1}d\colon P_n\to Q_n$.
+    Note
+    $$ d(h_n-s_{n-1}d) = dh_n - ds_{n-1}d = dh_n - (h_{n-1} - s_{n-2}d)d = dh_n - h_{n-1}d = 0 $$
+    Thus $h_n-s_{n-1}d$ maps into $Z_n(Q)=dQ_{n+1}$, and so we can lift it to a map $s_{n+1}\colon P_n\to Q_{n+1}$ such that $ds_{n+1}=h_n-s_{n-1}d$.
+    And so we have $h=ds+sd$ as desired.
+    \qed
+
+\eproof
+
+Note that we did not use $P\to M$'s exactness: only $Q\to M$'s.
+
+\blemm[title=Horeshoe lemma]
+
+    Suppose we have the following diagram:
+
+    \centerline{\drawdiagram{
+        &&&$0$\cr
+        $\cdots$&$P'_1$&$P'_0$&$A'$&$0$\cr
+        &&&$A$\cr
+        $\cdots$&$P''_1$&$P''_0$&$A''$&$0$\cr
+        &&&$0$\cr
+    }{
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={2,3}, to={2,4}, text=$\epsilon'$, y distance=.25cm}
+        \diagarrow{from={2,4}, to={2,5}}
+        %
+        \diagarrow{from={4,1}, to={4,2}}
+        \diagarrow{from={4,2}, to={4,3}}
+        \diagarrow{from={4,3}, to={4,4}, text=$\epsilon''$, y distance=.25cm}
+        \diagarrow{from={4,4}, to={4,5}}
+        %
+        \diagarrow{from={1,4}, to={2,4}}
+        \diagarrow{from={2,4}, to={3,4}, text=$i_A$, x distance=.25cm}
+        \diagarrow{from={3,4}, to={4,4}, text=$\pi_A$, x distance=.25cm}
+        \diagarrow{from={4,4}, to={5,4}}
+    }}
+
+    such that the column is exact and the rows are projective resolutions.
+    Set $P_n=P'_n\oplus P''_n$, then $P_n$ form a projective resolution $P$ of $A$, and the colimn lifts to an exact sequence of complexes $0\to P'\xto iP\xto\pi P''\to0$,
+    where $i_n\colon P'_n\to P_n$ and $\pi_n\colon P_n\to P''_n$ are the inclusion and projection maps.
+
+\elemm
+
+\bproof
+
+    Lift $\epsilon''$ to a map $P''_0\to A$; then the direct sum of this map with $i_A\epsilon'\colon P_0'\to A$ gives a map $\epsilon\colon P_0\to A$.
+    Then the following diagram commutes:
+
+    \centerline{\drawdiagram{
+        &$0$&$0$&$0$\cr
+        $0$&$\ker\epsilon'$&$P_0'$&$A'$&$0$\cr
+        $0$&$\ker\epsilon$&$P_0$&$A$&$0$\cr
+        $0$&$\ker\epsilon''$&$P_0''$&$A''$&$0$\cr
+        &$0$&$0$&$0$\cr
+    }{
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={2,3}, to={2,4}, text=$\epsilon'$, y distance=.25cm}
+        \diagarrow{from={2,4}, to={2,5}}
+        \diagarrow{from={3,1}, to={3,2}}
+        \diagarrow{from={3,2}, to={3,3}}
+        \diagarrow{from={3,3}, to={3,4}, text=$\epsilon$, y distance=.25cm}
+        \diagarrow{from={3,4}, to={3,5}}
+        \diagarrow{from={4,1}, to={4,2}}
+        \diagarrow{from={4,2}, to={4,3}}
+        \diagarrow{from={4,3}, to={4,4}, text=$\epsilon''$, y distance=.25cm}
+        \diagarrow{from={4,4}, to={4,5}}
+        \diagarrow{from={1,2}, to={2,2}}
+        \diagarrow{from={2,2}, to={3,2}}
+        \diagarrow{from={3,2}, to={4,2}}
+        \diagarrow{from={4,2}, to={5,2}}
+        \diagarrow{from={1,3}, to={2,3}}
+        \diagarrow{from={2,3}, to={3,3}}
+        \diagarrow{from={3,3}, to={4,3}}
+        \diagarrow{from={4,3}, to={5,3}}
+        \diagarrow{from={1,4}, to={2,4}}
+        \diagarrow{from={2,4}, to={3,4}}
+        \diagarrow{from={3,4}, to={4,4}}
+        \diagarrow{from={4,4}, to={5,4}}
+    }}
+
+    The two right columns are exact, and all the top and bottom rows are as well.
+    The snake lemma gives us that the left column is exact, and $\coker\epsilon=0$ (since $0=\coker\epsilon'\to\coker\epsilon\to\coker\epsilon''=0$ is exact).
+    Thus $\epsilon$ is epic, as desired.
+
+    Now we have another horseshoe:
+
+    \centerline{\drawdiagram{
+        &&&$0$\cr
+        $\cdots$&$P'_2$&$P'_1$&$\ker\epsilon'$&$0$\cr
+        &&&$\ker\epsilon$\cr
+        $\cdots$&$P''_2$&$P''_1$&$\ker\epsilon''$&$0$\cr
+        &&&$0$\cr
+    }{
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={2,3}, to={2,4}, text=$d'$, y distance=.25cm}
+        \diagarrow{from={2,4}, to={2,5}}
+        %
+        \diagarrow{from={4,1}, to={4,2}}
+        \diagarrow{from={4,2}, to={4,3}}
+        \diagarrow{from={4,3}, to={4,4}, text=$d''$, y distance=.25cm}
+        \diagarrow{from={4,4}, to={4,5}}
+        %
+        \diagarrow{from={1,4}, to={2,4}}
+        \diagarrow{from={2,4}, to={3,4}}
+        \diagarrow{from={3,4}, to={4,4}}
+        \diagarrow{from={4,4}, to={5,4}}
+    }}
+
+    and we can induct.
+    \qed
+
+\eproof
+
+\subsection{Injective resolutions}
+
+We can duallize the notion of projective objects:
+
+\bdefn
+
+    An object $I$ in an Abelian category $\A$ is {\emphcolor injective} if it satisfies the following universal lifting property:
+    given a monomorphism $f\colon A\to B$ and a map $\alpha\colon A\to I$, we can lift $\alpha$ to a map $\beta\colon B\to I$ such that $\alpha=\beta\circ f$.
+
+    \centerline{\drawdiagram{
+        $0$&$A$&$B$\cr
+        &$I$\cr
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,2}, to={1,3}, text=$f$, y distance=-.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text=$\alpha$, x distance=-.25cm}
+        \diagarrow{from={1,3}, to={2,2}, text=$\beta$, x distance=.25cm, dashed}
+    }}
+
+    $\A$ has enough injectives if for every object $A\in\A$ there is an injective $I\in\A$ and a monomorphism $A\to I$.
+
+\edefn
+
+Note that if $\set{I_\alpha}$ are injectives, so is their product (if it exists).
+
+\blemm
+
+    An injective object in $\A$ is precisely a projective object in $\A^\op$.
+    $\A$ has enough injectives iff $\A^\op$ has enough projectives.
+
+\elemm
+
+\bcoro
+
+    $I$ is injective iff $\hom_\A(\bul,I)$ is exact.
+
+\ecoro
+
+\bproof
+
+    $I\in\A$ is injective iff $I\in\A^\op$ is projective iff $\hom_{A^\op}(I,\bul)=\hom_A(\bul,I)$ is exact.
+    \qed
+
+\eproof
+
+\bprop[title=Baer's criterion]
+
+    A right $R$-module $E$ is injective iff for every right ideal $J$ of $R$, every map $J\to E$ can extend to a map $R\to E$.
+
+\eprop
+
+\bproof
+
+    If $E$ is injective then we lift $J\to E$ along the injection $J\to R$.
+    Conversely suppose we have an $R$-module $B$ and a submodule $A$ along with a map $\alpha\colon A\to E$.
+    Let $\c E$ be the poset of all extensions of $\alpha$: maps $\alpha'\colon A'\to E$ for $A\subseteq A'\subseteq B$, partially ordered by $\alpha'\leq\alpha''$ iff $\alpha''$ extends $\alpha'$.
+    This clearly satisfies the criteria for Zorn's lemma, as such it has a maximal element, $\alpha'\colon A'\to E$.
+    We claim that $A'=B$.
+
+    Suppose not; there is some $b\in B$ not in $A'$.
+    Define then $J=\set{r\in R}[br\in A']$: a right ideal of $R$.
+    Then the composition $J\xtos bA'\xtos{\alpha'}E$ extends to a map $f\colon R\to E$.
+    Let $A''=A'+bR$, and define $\alpha''\colon A''\to E$ by $\alpha''(a+br)=\alpha'(a)+f(r)$.
+    This is well-defined since for $br\in A'$ we know $\alpha'(br)=f(r)$ by definition.
+    As such $\alpha''$ is a proper extension of $\alpha'$, a contradiction.
+    \qed
+
+\eproof
+
+Recall that a semisimple $R$-module is one for which every submodule has a complement: if $A\leq M$ is a submodule then there exists $A'\leq M$ such that $M=A\oplus A'$.
+A semisimple ring is one which is semisimple as a module over itself (every ideal has a complement).
+Clearly then modules over semisimple rings are injective: let $J'$ be $J$'s complement and extend $J\to E$ to $R=J\oplus J'\to E$.
+
+\bcoro
+
+    Let $R$ be semisimple, then every $R$-module is injective.
+
+\ecoro
+
+\bcoro
+
+    Let $R$ be a PID.
+    Then an $R$-module $M$ is injective iff it is {\emphcolor divisible}: for every nonzero $r\in R$ and $a\in M$ there is a $b\in M$ such that $a=br$.
+
+\ecoro
+
+\bproof
+
+    If $M$ is injective then for $r\in R$ and $a\in M$ we define $f\colon R\to M$ by $f(1)=a$ and extend by linearity: $f(x)=xa$.
+    And define $g\colon R\to R$ by $g(1)=r$ (so $g(x)=rx$).
+    Since $R$ is an integral domain $g$ is injective, and thus we can lift $f$ to $f'\colon R\to M$ such that $f'g=f$.
+    Then $f'g(1)=f'(r)=rf'(1)=a$ as desired.
+
+    If $M$ is divisible then for every $x\in R$, a map $f\colon (x)\to M$ is determined by its value on $1$: $f(rx)=rxf(1)$.
+    Then we can simply extend it to $f\colon R\to M$ by $f(r)=rf(1)$.
+    All ideals of $R$ are of this form (principal) since $R$ is a PID, so by Baer $M$ is injective as desired.
+    \qed
+
+\eproof
+
+In particular $\bQ,\bZ_{p^\infty}=\bZ[1/p]/\bZ,\bQ/\bZ$ are injective Abelian groups ($\bZ[1/p]$ are all rationals of the form $a/p^n$).
+
+\bprop
+
+    $\Ab$ has enough injectives.
+
+\eprop
+
+\bproof
+
+    For an Abelian group $A$, define $I(A)$ to be the product of $\bQ/\bZ$ indexed by $\hom_\Ab(A,\bQ/\bZ)$.
+    This is a product of injectives and is thus also injective.
+    Define $e_A\colon A\to I(A)$ by $e_A(a)=(f(a))_{f\colon A\to\bQ/\bZ}$.
+
+    We claim that $e_A$ is an injection, so we must show that $\ker e_A=0$.
+    To do this we show that for every $0\neq a\in A$, there is some $f\colon A\to\bQ/\bZ$ such that $f(a)\neq0$.
+    Let $\gen a\leq A$ be the subgroup generated by $a$, then by injectivity of $\bQ/\bZ$ we can lift any map $f\colon\gen a\to\bQ/\bZ$ to a map $A\to\bQ/\bZ$
+    (following the inclusion $\gen a\subseteq A$).
+    Now $\gen a\cong\bZ/m\bZ$ or $\bZ$ depending on $a$'s order; in the first case define $f(a)=1/m$ and in the second define $f(a)=1/2$ say.
+    In both cases these are well-defined maps where $f(a)\neq0$, as desired.
+    \qed
+
+\eproof
+
+Note that since $A\to(\bQ/\bZ)^{\hom(A,\bQ/\bZ)}$ is injective, if $\hom(A,\bQ/\bZ)=0$ the right-hand side is zero and so too is $A$.
+Thus $A=0$ iff $\hom(A,\bQ/\bZ)=0$.
+
+\bprop
+
+    $I\in\A$ is injective iff every short exact sequence $0\to I\to A\to B\to0$ splits.
+
+\eprop
+
+\bproof
+
+    By the duality between injectives and projectives.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $M\in\A$, then a {\emphcolor right resolution} of $M$ is a cochain complex $I$ with $I^n=0$ for $n<0$ and a map $M\to I^0$ such that the augmented
+    complex
+    $$ 0 \to M \to I^0 \xtos d I^1 \xtos d \cdots $$
+    is exact.
+    This is the same as a quasi-isomorphism $M\to I$.
+    This is a {\emphcolor injective resolution} if each $I_n$ is injective.
+
+\edefn
+
+A right resolution in $\A$ is the same as a left resolution in $A^\op$; an injective resolution in $\A$ is a projective resolution in $\A^\op$.
+Thus by dualizing our previous results we have the following:
+
+\blemm
+
+    If $\A$ has enough injectives, every object in $\A$ has an injective resolution.
+
+\elemm
+
+\bthrm[title=Comparison theorem]
+
+    Let $N\to I$ be an injective resolution of $N$, and $f'\colon M\to N$ a map in $\A$.
+    Then for every resolution $M\to E$ there is a cochain map $f\colon E\to N$ lifting $f'$, unique up to chain homotopy equivalence.
+
+\ethrm
+
+\bprop
+
+    $I\in\Ch(\A)$ is injective iff it is a split exact chain complex of injectives.
+    Furthermore if $\A$ has enough injectives, so does $\Ch(\A)$.
+
+\eprop
+
+\bproof
+
+    This follows immediately from previous results on projectives and the isomorphism $\Ch(\A)^\op\cong\Ch(\A^\op)$.
+    This can be seen as follows: $\Ch(\A)$ can be viewed as the functor category $[\bZ_0,\A]$ (of additive functors) where $\bZ_0$ is the category whose objects are integers and $\hom(i,j)=\bZ$ when $j=i-1$
+    and $0$ otherwise.
+    Now in general $[\C,\D]^\op\cong[\C^\op,\D^\op]$ by mapping $F\colon\C\to\D$ to its opposite functor $F^\op\colon\C^\op\to\D^\op$ (which acts precisely as $F$ does).
+    Note that natural transformations $F^\op\To G^\op$ are precisely natural transformations $G\To F$, so this is a well-defined functor and clearly an isomorphism.
+
+    Note that $\bZ_0^\op\cong\bZ_0$ by mapping $n\mapsto-n$, and so
+    $$ \Ch(\A)^\op \cong [\bZ_0,\A]^\op \cong [\bZ_0,\A^\op] \cong \Ch(\A^\op) $$
+    as desired.
+
+    Explicitly, we map a chain complex $C_\bul$ to its cochain complex $C^\bul$ (recall $C^n=C_{-n}$), and a chain map to its dual ($f^n=f_{-n}$).
+    \qed
+
+\eproof
+
+We now will show that every category of modules has enough injectives.
+Note that since the opposite of a category of modules is itself not a category of modules, this is not a trivial result.
+
+If $A$ is an Abelian group and $B$ a left $R$-module, then $\hom_\Ab(B,A)$ can be given a right $R$-module structure by $fr\colon b\mapsto f(rb)$.
+
+\blemm
+
+    For every right $R$-module $M$, we have a natural isomorphism
+    $$ \tau\colon\hom_\Ab(M,A) \to \hom_{\Mod_R}(M,\hom_\Ab(R,A)) $$
+    given by $(\tau f)(m)\colon r\mapsto f(mr)$.
+
+\elemm
+
+\bproof
+
+    We define $\tau$'s inverse $\mu$ as follows: for $g\colon M\to\hom_\Ab(R,A)$ define $(\mu g)(m)=g(m)(1)$.
+    For $f\in\hom_\Ab(M,A)$ then $(\mu\tau f)(m)=(\tau f)(m)(1)=f(m)$ so $\mu\tau$ is the identity.
+    And for $f\in\hom_{\Mod_R}(M,\hom_\Ab(R,A))$ then $(\tau\mu f)(m)\colon r\mapsto(\mu f)(mr)=f(mr)(1)$.
+    Notice $f(m)(r)=(f(m)r)(1)=(fmr)(1)$ as desired, so $\tau\mu f=f$ as desired.
+    \qed
+
+\eproof
+
+Thus $\hom_\Ab(R,\bul)\colon\Ab\to\Mod_R$ is {\emphcolor right-adjoint} to the forgetful functor $U\colon\Mod_R\to\Ab$:
+
+\bdefn
+
+    Functors $L\colon\A\tof\B\colon R$ form an {\emphcolor adjunction} if there is a natural isomorphism
+    $$ \tau_{AB}\colon\hom_\B(L(A),B) \cong \hom_\A(A,R(B)) $$
+    (i.e.\ a natural isomorphism of the bifunctors given by the compositions of the hom-functors and $L$ and $R$.)
+    $L$ is the {\emphcolor left adjoint} and $R$ the {\emphcolor right adjoint}.
+    This is commonly written $L\dashv R$.
+
+\edefn
+
+\bprop
+
+    Suppose we have an adjunction of additive functors $L\colon\A\tof\B\colon R$, then
+    \benum
+        \item if $L$ is exact and $I\in\B$ injective then $R(I)\in\A$ is injective as well;
+        \item dually if $R$ is exact and $P\in\A$ projective then $L(P)\in\B$ is projective.
+    \eenum
+
+\eprop
+
+\bproof
+
+    We must show that $\hom_\A(\bul,R(I))$ is exact, but by assumption this is isomorphic to $\hom_\B(L\bul,I)$.
+    Since $I$ is injective, $\hom_\B(\bul,I)$ is exact, and the composition of exact functors is obviously exact.
+    Duality follows because $L\dashv R$ iff $R^\op\dashv L^\op$.
+    \qed
+
+\eproof
+
+We showed that $U\dashv\hom_\Ab(R,\bul)$ and the forgetful functor $U$ is clearly exact.
+Thus $\hom_\Ab(R,I)$ is an injective $R$-module for any injective Abelian group $I$.
+
+\bthrm
+
+    $\Mod_R$ has enough injectives.
+
+\ethrm
+
+\bproof
+
+    For an $R$-module $M$, define $I(M)$ to be the product of $I_0=\hom_\Ab(R,\bQ/\bZ)$ with itself indexed by $\hom_R(M,I_0)$.
+    As explained, $I_0$ is injective and thus so is $I(M)$.
+    Now define $e_M\colon M\to I(M)$ by $e_M(m)=(f(m))_{f\colon M\to I_0}$.
+    Let $\alpha\colon R\to\bQ/\bZ$ be non-zero (which exists by extending a non-zero map $\gen1\to\bQ/\bZ$ where $\gen1$ is the subgroup generated by $1$, which exists as per
+    our previous argument).
+    Now for $m\in M$ define $f\colon mR\to I_0$ by $f(m)=\alpha$, and since $I_0$ is injective this extends to $M\to I_0$ where $f(m)\neq0$.
+    Thus $e_M$ has trivial kernel and is thus an injection.
+    \qed
+
+\eproof
+
+\bexam
+
+    Consider $\sh(X)$, the category of sheaves (of Abelian groups) over a topological space $X$.
+    We claim that $\sh(X)$ has enough injectives.
+
+    For a sheaf $\F$ and a point $x\in X$, $\F$'s {\emphcolor stalk} at $x$ is the colimit $\F_x=\colim\set{\F(U)}[x\in U]$ (i.e.\ the limit of the restriction of $\F$ to the poset of open subsets containing $x$).
+    This is functorial $\sh(X)\to\Ab$ for every $x\in X$ (since $\colim$ is).
+    If $A$ is an Abelian group and $x\in X$, we define the {\emphcolor skyscraper sheaf} $x_*A$ at $x\in X$ to be the presheaf $(x_*A)(U)=A$ iff $x\in U$ and $0$ otherwise.
+    $x_*$ acts on inclusions by either maps to zero or the identity, that is if $U\subseteq V$ then $\bul|_U\colon(x_*A)(V)\to(x_*A)(U)$ is the identity if $x\in U$ and the zero map otherwise.
+
+    The skyscraper sheaf is indeed a sheaf.
+    If $\set{U_i}$ is an open cover of $U$, suppose $x\in U$; then $a_i,a_j$ ($a_i\in(x_*A)(U_i)$) agreeing on their intersection means that $a_i=a_j\in A$ if $x\in U_i,U_j$.
+    Let $a$ be the common element of all open sets containing $x$, this is the unique extension.
+    Otherwise if $x\notin U$ all $a_i=0$, so $a=0$.
+
+    Note that $\set{U}[x\in U]$ is a directed set and as such $\F_x$ is a direct limit which we can explicitly write out.
+    $\F_x$ has underlying set $\bigsqcup\F(U)$ quotiented by an equivalence, where $s_i\in\F(U_i),s_j\in\F(U_j)$ are equated iff they have a common restriction (on some neighborhood of $x$).
+
+    Now we claim that $\F_x\dashv(x_*A)$ (functorial in $x$) for every sheaf $\F$ and Abelian group $A$.
+    That is, we need a natural isomorphism
+    $$ \hom_\Ab(\F_x,A) \cong \hom_{\sh(X)}(\F,x_*A) $$
+    Let $\phi\colon\F_x\to A$ be an Abelian morphism, then define $\phi'_U\colon\F(U)\to x_*(A)$ by $\phi'_U(s)=\phi([s])$ (where $[s]$ is the equivalence class of $s$ in $\F_x$), this defines a morphism of sheaves
+    $\phi'\colon\F\to x_*A$.
+    Indeed: if $x\in U\subseteq V$ then $\phi'_U(s|_U)=\phi([s])=\phi'_V(s)$ (the restriction of $x_*A(V)$ to $x_*A(U)$ is the identity.
+    If $x\notin U$ then all maps compose to zero.
+
+    Conversely given $\psi\colon\F\to x_*A$ defining $\hat\psi\colon\F_x\to A$ by $\hat\psi([s])=\psi_U(s)$ where $s\in\F(U)$.
+    This is well-defined: if $s\in\F(U)$ and $s'\in\F(V)$ have the same restriction to a neighborhood of $x$, $W$ ($s|_W=s'|_W$) then because $\psi$ is a sheaf map we have that $\psi_U(s)|_W=\psi_V(s')|_W$.
+    But restriction in the skyscraper sheaf is the identity: $\psi_U(s)=\psi_V(s')$ as desired.
+    The composition of $\hat\bul$ and $\bul'$ gives the identities clearly, so we have a natural isomorphism, as desired.
+
+    Note that $\F\mapsto\F_x$ is an exact functor: for a morphism of sheaves $\phi\colon\F\to\c G$ the induced map $\phi_x\colon\F_x\to\c G_x$ is given by $\phi_x([s])=[\phi_U(s)]$ for $s\in\F(U)$.
+    The kernel of $\phi$ can be given by the sheaf $\ker\phi(U)=\ker\phi_U$, with restriction inherited from $\F$ (since $\ker\phi(U)\subseteq\F(U)$).
+    And its image is given by $\im\phi(U)=\im\phi_U$, with restriction inherited from $\c G$.
+    Then $\ker\phi_x=\set{[s]\in\F_x}[\hbox{$s|_U=0$ for some $x\in U$}]=\bigcup_{x\in U}[\ker\phi_U]$, and $\im\phi_x=\bigcup_{x\in U}[\im\phi_U]$.
+    So if $\im\phi=\ker\psi$ we see that $\im\phi_x=\ker\psi_x$ as desired.
+
+    Thus $x_*A$ is right-adjoint to an exact functor; it preserves injectives.
+    So for every $x\in X$ choose an injective Abelian group, then $x_*A_x$ is injective in $\sh(X)$, and thus so is $\prod_{x\in X}x_*A_x$.
+
+    Now given a sheaf $\F$, for every $x\in X$ choose an injection $\F_x\to I_x$ with $I_x$ injective.
+    Composing $\F\to x_*\F_x$ ($\phi_U(s)=[s]$ if $x\in U$ and $0$ otherwise) with $x_*\F_x\to x_*I_x$ gives a map $\F\to\prod_{x\in X}x_*I_x=\c I$.
+    This is an injection: for $0\neq s\in\F(U)$, note that there must be some $x\in V$ such that $s|_W\neq0$ for all $W\subseteq V$ (by the sheaf axiom), and so $\phi_V(s)\neq0$.
+    Thus its kernel is zero.
+
+    So we have shown $\sh(X)$ has enough injectives.
+
+\eexam
+
+\bexam
+
+    Let $I$ be a small category and $\A$ Abelian and complete with enough injectives, we will show the functor category $\A^I=[I,\A]$ has enough injectives.
+
+    Consider the {\emphcolor $k$th coordinate functor} for $k\in I$: map $A\colon I\to\A$ to $A(k)\in\A$.
+    This is an exact functor.
+
+    Now for $k\in I$ and $A\in\A$ define $k_*A\colon I\to A$ mapping $i\in I$ to
+    $$ k_*A(i) = \prod_{\hom_I(i,k)}A $$
+    and if $f\colon i\to j$ is a map in $I$, the map $k_*A(f)\colon k_*A(i)\to k_*A(j)$ is determined by $f^*\colon\hom(j,k)\to\hom(i,k)$.
+    That is, the coordinate $k_*A(i)\to A$ of this map corresponding to $\phi\in\hom_I(i,k)$ is the projection of $k_*A(i)$ onto the factor corresponding to $f^*\phi=\phi f$.
+    And for $f\colon A\to B\in\A$ then define $k_*f\colon k_*A\to k_*B$ which maps each component $A\in k_*A$ to the corresponding term $B\in k_*B$ via $f$.
+    This makes $k_*$ a functor $\A\to\A^I$.
+
+    Now, $k_*$ is right-adjoint to the $k$th coordinate functor:
+    $$ \hom_\A(A(k), B) \cong \hom_{\A^I}(A,k_*B),\qquad A\in\A^I,B\in\A $$
+    Map $\phi\colon A(k)\to B$ to $\phi'\colon A\To k_*B$ where $\phi'_i\colon A(i)\to k_*B(i)$ is defined by mapping $A(i)\xto{A(f)}A(k)\xto\phi B$ for each component $f\colon i\to k$.
+    And for $\psi\colon A\To k_*B$ map to $\hat\psi\colon A(k)\to B$ by the composition $A(k)\xto{\psi_k}k_*B(k)\xto{\pi_\id}B$ where $\pi_\id$ is the projection to the component associated with $\id\in\hom(k,k)$.
+
+    Thus $k_*$ preserves injectives.
+    For $F\in\A^I$, for each $k\in I$ embed $F(k)\to A_k$ for $A_k$ injective.
+    Then $E=\prod_{k\in I}k_*A_k$ exists (functor categories over complete categories are complete) and is injective.
+    Further, $\eta\colon F\To E$ is given by $\eta_i\colon F(i)\to\prod_{k\in I}k_*A_k(i)$ whose projection $F(i)\to A_k$ for $\phi\colon i\to k$ is given by the composition $F(i)\xto{F\phi}F(k)\to A_k$.
+    This is a monomorphism.
+
+    Thus when $\A$ is complete Abelian and has enough injectives, so does $\A^I$.
+
+    Conversely if $\A$ is cocomplete and has enough projectives, $\A^\op$ has enough injectives and thus so does $[I^\op,\A^\op]\cong(\A^I)^\op$.
+    Thus $\A^I$ has enough projectives.
+
+\eexam
+
