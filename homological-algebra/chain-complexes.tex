@@ -271,7 +271,15 @@ This is an additive category, and homology are additive functors $\Ch(\A)\to\A$.
 \eproof
 
 Since $\Ch(\A)$ is itself Abelian, we can form the category of chain complexes over $\Ch(\A)$.
-These can be characterized more elegantly as follows:
+Elements of $\Ch(\Ch(\A))$ are families $\set{C_{p,q}}_{p,q\in\bZ}$ with horizontal and vertical differentials $d^h\colon C_{p,q}\to C_{p-1,q}$ and $d^v\colon C_{p,q}\to C_{p,q-1}$ such that
+$$ d^h\circ d^h = d^v\circ d^v = 0,\qquad d^h\circ d^v = d^v\circ d^h $$
+Indeed, a chain complex of chain complexes consist of a family of chain complexes $\set{\set{C_{p,q},d^h}_p}_q$ and differentials $d^v\colon C_{\bul,q}\to C_{\bul,q-1}$.
+The first two equalities above say that these are differentials, the last says that $d^v$ is a chain map.
+
+A map of bicomplexes $f\colon C_{\bul\bul}\to D_{\bul\bul}$ is then a family of maps $f_{p,q}\colon C_{p,q}\to D_{p,q}$ such that $f_{p,\bul},f_{\bul,q}$ are chain maps for all $p,q$.
+
+For reasons which will become clearer later, we call such a construction a {\emphcolor positive bicomplex}.
+We define a (signed) bicomplex as follows:
 
 \bdefn
 
@@ -287,7 +295,7 @@ If $C_{pq}$ is a bicomplex, $C_{\bul q}$ and $C_{p\bul}$ are chain complexes for
 Note that due to anticommutativity ($d^vd^h=-d^hd^v$), $d^v$ are not maps $C_{\bul q}\to C_{\bul q-1}$, but they can be used to construct them: define
 $$ f_{pq} = (-1)^pd^v_{pq}\colon C_{pq}\to C_{p,q-1} $$
 Then $f_{\bul q}$ defines a chain map $C_{\bul q}\to C_{\bul q-1}$: $d^hf_{pq}=d^h(-1)^pd^v_{pq}=(-1)^{p-1}d^v_{p-1,q}d^h=f_{p-1,q}d^h$.
-This ``sign trick'' allows us to identify the category of bicomplexes with $\Ch(\Ch(\A))$.
+This ``sign trick'' allows us to identify the category of bicomplexes with $\Ch(\Ch(\A))$ (i.e.\ this defines an isomorphism of categories).
 
 Let $C$ be a bicomplex, and define the chain complexes $\tot^\Pi(C)$ and $\tot^\oplus(C)$ by
 $$ \tot^\Pi(C)_n = \prod_{p+q=n}C_{pq},\qquad \tot^\oplus(C)_n = \bigoplus_{p+q=n}C_{pq} $$
@@ -298,6 +306,15 @@ These are differential maps: $(d^h+d^v)(d^h+d^v)=0$ precisely because $d^hd^v+d^
 
 And so $\tot^\Pi(C)$ and $\tot^\oplus(C)$ define chain complexes, called {\emphcolor total complexes}.
 If $C$ is bounded, then $\tot^\Pi(C)=\tot^\oplus(C)$ (as there are only finitely many nonzero $C_{pq}$ for which $p+q=n$).
+
+The reason for using (signed) bicomplexes is because they simplify the construction of the total complexes.
+If we were to use a positive bicomplex, then the total complex would have differential $d^h+(-1)^pd^v$.
+
+Note that both total complex constructions form functors $\Ch(\Ch(\A))\to\Ch(\A)$.
+Indeed, if $f_{p,q}\colon C_{p,q}\to D_{p,q}$ is a map of bicomplexes, then it defines a chain map between total complexes in a natural way.
+Map $(a_{p,q})_{p+q=n}\in\tot(C)_n$ to $(f_{p,q}a_{p,q})_{p+q=n}\in\tot(D)_n$.
+This is indeed a chain map:
+$$ f(d^ha_{pq}+(-1)^pd^va_{pq}) = (d^hfa_{pq}+(-1)^pd^vfa_{pq}) = (d^h+(-1)^pd^v)(fa_{pq}) $$
 
 \bnote
 
@@ -327,6 +344,10 @@ And so we get
 $$ H_i(\tau_{<n}C) = \cases{H_i(C)&$i<n$\cr0&$i\geq n$} $$
 
 The more naive method defining truncation does not give as clean of a homology group (defining the $n$th term to be $0$ or $C_n$, whatever).
+These are the {\emphcolor brutal truncations} of a chain complex $C$: $(\sigma_{<n}C)_i=C_i$ when $i<n$ and $0$ otherwise.
+And then $\sigma_{\geq n}C=C/(\sigma_{<n}C)$.
+Note that
+$$ H_n(\sigma_{\geq n}C) = C_n/B_n $$
 
 \bdefn
 

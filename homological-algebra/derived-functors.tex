@@ -716,8 +716,9 @@ Clearly then modules over semisimple rings are injective: let $J'$ be $J$'s comp
     Since $R$ is an integral domain $g$ is injective, and thus we can lift $f$ to $f'\colon R\to M$ such that $f'g=f$.
     Then $f'g(1)=f'(r)=rf'(1)=a$ as desired.
 
-    If $M$ is divisible then for every $x\in R$, a map $f\colon (x)\to M$ is determined by its value on $1$: $f(rx)=rxf(1)$.
-    Then we can simply extend it to $f\colon R\to M$ by $f(r)=rf(1)$.
+    If $M$ is divisible then for every $x\in R$, a map $f\colon (x)\to M$ is determined by its value on $x$: $f(rx)=rf(x)$.
+    We want to find a value $f(1)$ such that $xf(1)=f(x)$, which exists precisely because $M$ is divisible.
+    And so we can extend $f$ to $f\colon R\to M$ by $f(r)=rf(1)$.
     All ideals of $R$ are of this form (principal) since $R$ is a PID, so by Baer $M$ is injective as desired.
     \qed
 
@@ -970,4 +971,1018 @@ Thus $\hom_\Ab(R,I)$ is an injective $R$-module for any injective Abelian group 
     Thus $\A^I$ has enough projectives.
 
 \eexam
+
+\subsection{Left derived functors}
+
+\bdefn
+
+    Let $F\colon\A\to\B$ be a right exact functor between Abelian categories, where $\A$ has enough projectives.
+    Define the {\emphcolor left derived functors} of $F$, $\set{L_iF}_{i\geq0}$ as follows.
+    If $A$ is an object of $\A$, choose a projective resolution $P\to A$ and define $L_iF(A)=H_i(F(P))$.
+    For a map $f\colon A\to B$ in $\A$, suppose we chose a resolution $Q\to B$ then by comparison we have a unique extension of $f$ to a chain map between the complexes (up to chain homotopy),
+    then $Ff$ is a chain map and as such we have a unique map $L_iF(f)$ from $H_i(F(P))\to H_i(F(Q))$ (since chain homotopic maps induce the same morphisms on homology modules).
+
+\edefn
+
+Note that $H_i(F(P))$ corresponds to the homology module of the complex $\cdots\to F(P_1)\to F(P_0)\to0$, not the augmented complex containing $A$.
+
+These are indeed functors: clearly $\id\colon A\to A$ lifts to $\id\colon P\to P$ and thus $L_iF(\id)$ is the identity.
+And given $P\to A,P'\to A',P''\to A''$ and maps $A\xtos fA'\xtos{f'}A''$, $f$ lifts to $P\to P'$ and $f'$ lifts to $P'\to P''$, then the composition of these lifts is a lift of $f'\circ f$.
+They are additive functors, too: for $f,g\colon A\to B$ if $\tilde f,\tilde g$ are their lifts then $\tilde f+\tilde g$ lifts $f+g$.
+
+Now notice that since $F$ is right exact, $F(P_1)\xto dF(P_0)\xto{d'}F(A)\to0$ is exact, and as such such $H_0(F(P_0))=F(P_0)/\im d$ and we know $\im d=\ker d'$.
+Since $d'$ is a projection we have $H_0(F(P_0))=F(P_0)/\ker d'\cong F(A)$.
+Thus $L_0F(A)\cong F(A)$, and since $L_0F(f)$ is just the induced map of $f$, we have that $L_0\cong F$ naturally.
+
+\blemm
+
+    Let $F$ have left derived functors $L_iF$, then $L_0F\cong F$.
+
+\elemm
+
+Also we show the naturality of $L_iF$.
+
+\blemm
+
+    Different choices of projective resolutions result in naturally isomorphic left derived functors.
+    That is, left derived functors are well-defined up to a unique natural isomorphism.
+
+\elemm
+
+\bproof
+
+    Let $P\to A$ and $Q\to A$ be two projective resolutions.
+    Then there are chain maps $f\colon P\tof Q\colon g$ lifting $\id_A$, and these are unique up to chain homotopy.
+    But then $gf\colon P\to P$ and $fg\colon Q\to Q$ are lifts of $\id_A$, and since $\id_P,\id_Q$ are lifts as well, $gf$ and $fg$ are chain homotopic to the identities.
+    Consider then the induced maps $F(f)_*\colon H_i(F(P))\tof H_i(F(Q))\colon F(g)_*$.
+    Additive functors preserve chain homotopy, so $F(fg),F(gf)$ are chain homotopic to the identities, and as such $F(fg)_*=F(f)_*F(g)_*$ is the identity, similar for $gf$.
+    Thus we have an isomorphism $H_iF(P)\cong H_iF(Q)$ as desired.
+    \qed
+
+\eproof
+
+\bcoro
+
+    If $A$ is projective, $L_iF(A)=0$ for $i\neq0$.
+
+\ecoro
+
+\bproof
+
+    There is a simple projective resolution of $A$: $\cdots\to0\to0\to A\xtos\id A\to0$.
+    Then applying $F$ gives us the chain complex $\cdots\to0\to0\to FA\to0$, whose nonzero homology groups are all $0$.
+    \qed
+
+\eproof
+
+\bdefn
+
+    An object $Q\in\A$ is {\emphcolor $F$-acyclic} if $L_iFQ=0$ for all $i\neq0$.
+    An {\emphcolor $F$-acyclic resolution} of $A\in\A$ is a left resolution $Q\to A$ where the $Q_i$s are all $F$-acyclic.
+
+\edefn
+
+We will later show that $L_iF(A)\cong H_i(F(Q))$ for any $F$-acyclic resolution $Q$ of $A$.
+
+\bthrm
+
+    The derived functors $L_\bul F$ form a homological $\delta$-functor.
+
+\ethrm
+
+\bproof
+
+    Given a short exact sequence $0\to A'\to A\to A''\to0$ choose projective resolutions $P'\to A'$ and $P''\to A''$.
+    By the horseshoe lemma there is a projective resolution $P\to A$ fitting into a short exact sequence $0\to P'\to P\to P''\to0$ of projective complexes in $\A$.
+    Since $P''_n$ is projective, each $0\to P'_n\to P_n\to P''_n\to0$ is split exact, and thus so is $0\to FP'_n\to FP_n\to FP''_n\to0$, in particular we have a short exact sequence
+    $0\to FP'\to FP\to FP''\to0$.
+    We thus have a long exact homology sequence
+    $$ \cdots\xtos\partial L_iF(A') \to L_iF(A) \to L_iF(A'') \xtos\partial L_{i-1}F(A') \to L_{i-1}F(A) \to L_{i-1}F(A'') \xtos\partial\cdots $$
+
+    These $\partial$s are natural (and thus form the $\delta$-morphisms of the $\delta$-functor).
+    Indeed, suppose we have a morphism of exact sequences
+
+    \centerline{\drawdiagram{
+        $0$&$A'$&$A$&$A''$&$0$\cr
+        $0$&$B'$&$B$&$B''$&$0$\cr
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,2}, to={1,3}}
+        \diagarrow{from={1,3}, to={1,4}}
+        \diagarrow{from={1,4}, to={1,5}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}, text=$i_B$, y distance=.25cm}
+        \diagarrow{from={2,3}, to={2,4}, text=$\pi_B$, y distance=.25cm}
+        \diagarrow{from={2,4}, to={2,5}}
+        \diagarrow{from={1,2}, to={2,2}, text=$f'$, x distance=-.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text=$f$, x distance=-.25cm}
+        \diagarrow{from={1,4}, to={2,4}, text=$f''$, x distance=-.25cm}
+    }}
+
+    and choose projective resolutions $\epsilon'\colon P'\to A',\epsilon\colon P''\to A'',\eta'\colon Q'\to B',\eta''\colon Q''\to B''$.
+    The connecting morphisms are obtained via the horseshoe lemma, which give $\epsilon\colon P\to A,\eta\colon Q\to B$.
+    The horseshoe lemma gives us $\epsilon$ is the direct sum of the lift of $\epsilon''$ with $i_A\epsilon'$.
+    The comparison lemma gives us unique lifts of $f',f''$ to $F'\colon P'\to Q'$ and $F''\colon P''\to Q''$.
+    We show that there is a lift of $f$ to $F\colon P\to Q$ such that the following diagram commutes
+
+    \centerline{\drawdiagram{
+        $0$&$P'$&$P$&$P''$&$0$\cr
+        $0$&$Q'$&$Q$&$Q''$&$0$\cr
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,2}, to={1,3}}
+        \diagarrow{from={1,3}, to={1,4}}
+        \diagarrow{from={1,4}, to={1,5}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={2,3}, to={2,4}}
+        \diagarrow{from={2,4}, to={2,5}}
+        \diagarrow{from={1,2}, to={2,2}, text=$F'$, x distance=-.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text=$F$, x distance=-.25cm}
+        \diagarrow{from={1,4}, to={2,4}, text=$F''$, x distance=-.25cm}
+    }}
+
+    To construct $F$, we define $\gamma_n\colon P''_n\to Q'_n$ (not a chain map) such that
+    $$ F_n = \pmatrix{F'_n&\gamma_n\cr0&F''_n} \colon P'_n \oplus P''_n \to Q'_n \oplus Q''_n,\qquad
+    F(p',p'') = (F'p'+\gamma(p''),F''(p'')) $$
+    If $F$ is a chain map, then this diagram will indeed commute.
+    In order for $F$ to lift $f$ we must have that $\eta F_0-f\epsilon$ is zero on $P_0=P_0'\oplus P_0''$.
+    This is true for any $\gamma$ on $P_0'$, so we must require just that
+    $$ i_B\eta'\gamma_0 = f\lambda_P - \lambda_QF''_0 $$
+    where $\lambda_P,\lambda_Q$ are the restrictions of $\epsilon,\eta$ to $P_0''$ and $Q_0''$, $i_B$ is the inclusion of $B'\to B$.
+    Note that in $B''$ we have
+    $$ \pi_B(f\lambda-\lambda F_0'') = f''\pi_A\lambda_P - \pi_B\lambda F_0'' = f''\epsilon'' - \eta''F_0'' = 0 $$
+    thus there is a map $\beta\colon P_0''\to B'$ such that $i_B\beta=f\lambda-\lambda F_0''$ (since it is zero on $B''$).
+    Lift $\beta$ to $\gamma_0\colon P_0''\to Q_0'$: $\beta=\eta'\gamma_0$.
+    Now we have
+    $$ dF - Fd = \pmatrix{d'F'-F'd'& (d'\gamma-\gamma d''+\lambda F''-F'\lambda')\cr0&d''F''-F''d''} $$
+    and for $F$ to be a chain map, this must vanish.
+    So we must have $d'\gamma=\gamma d''-\lambda F''+F'\lambda'$.
+    This can be constructed inductively.
+    \qed
+
+\eproof
+
+\bprop[title=Dimension shifting]
+
+    If $0\to M\to P\to A\to0$ is exact with $P$ projective (or $F$-acyclic), then $L_iF(A)\cong L_{i-1}F(M)$ for $i\geq2$,
+    and $L_1F(A)$ is the kernel of $F(M)\to F(P)$.
+
+    In general if we have an exact sequence
+    $$ 0 \to M_m \to P_m \to P_{m-1} \to \cdots \to P_0 \to A \to 0 $$
+    with $P_i$ projective (or in general $F$-acyclic), then $L_iF(A)\cong L_{i-m-1}F(M_m)$ for $i\geq m+2$, and $L_{m+1}F(A)$ is the kernel of
+    $F(M_m)\to F(P_m)$.
+
+\eprop
+
+\bproof
+
+    If $0\to M\to P\to A\to0$ is short exact, then since derived functors are $\delta$-functors, we have a long exact sequence
+    $$ \cdots\to L_iF(P) \to L_iF(A) \to L_{i-1}F(M) \to L_{i-1}F(P) \to \cdots $$
+    and for $i\geq2$ we have that $L_iF(P)=L_{i-1}F(P)=0$ and so we have the isomorphism.
+    For $i=1$ (recalling $L_0F\cong F$) this gives us $0\to L_1F(A)\to F(M)\to F(P)\to0$ as desired.
+
+    Now we induct on $m$, we have shown it for $m=0$.
+    Given an exact sequence $0\to M_m\to P_m\to\cdots\to P_0\to A\to0$, consider the two exact sequences
+    $$ 0 \to P_m/M_m \to P_{m-1} \to \cdots P_0\to A\to0,\qquad 0\to M_m \to P_m \to P_m/M_m\to 0 $$
+    then inductively we have $L_iF(A)\cong L_{i-m}F(P_m/M_m)\cong L_{i-m-1}F(M_m)$ (the second isomorphism due to our base case).
+    \qed
+
+\eproof
+
+In particular suppose we have an $F$-acyclic resolution
+$$ \cdots P_{m+1} \xto{f_{m+1}} P_m \xto{f_m} \cdots \to P_0 \to A \to 0 $$
+we can turn this into
+$$ 0 \to \coker(f_{m+1}) \to P_{m-1} \cdots \to P_0 \to A \to 0 $$
+so that $L_mF(A)$ is the kernel of the map $F\coker(f_{m+1})\to FP_{m-1}$, by our above proposition.
+Since $F$ is right-exact, it preserves cokernels, and in general the homology group of $A\to B\to C$ is the kernel of $\coker(A\to B)\to C$, as desired.
+
+\bprop
+
+    If $P\to A$ is an $F$-acyclic resolution of $A$, then $L_mF(A)\cong H_m(FP)$.
+
+\eprop
+
+\bthrm
+
+    If $\A$ has enough projectives, the left derived functors of any right exact functor $F\colon\A\to\B$ form a universal homological $\delta$-functor.
+
+\ethrm
+
+\bproof
+
+    Suppose we have another homological $\delta$-functor $T_*$ and a natural map $\phi_0\colon T_0\to F\cong L_0F$.
+    We need to show that $\phi_0$ can be uniquely extended to a map $\phi_\bul\colon T_\bul\to L_\bul F$.
+    We construct $\phi_n$ inductively: suppose $\phi_i$ is constructed for $0\leq i<n$, such that they commute with the appropriate $\delta$s.
+
+    Given $A\in\A$, choose an exact sequence $0\to K\to P\to A\to0$ with $P$ projective.
+    Since $L_nF(P)=0$ we have a commutative diagram with exact rows:
+
+    \centerline{\drawdiagram{
+        &$T_nA$&$T_{n-1}K$&$T_{n-1}P$\cr
+        $0$&$L_nFA$&$L_{n-1}FK$&$L_{n-1}FP$\cr
+    }{
+        \diagarrow{from={1,2}, to={1,3}, text=$\delta_n$, y distance=-.25cm}
+        \diagarrow{from={2,2}, to={2,3}, text=$\delta_n$, y distance=.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text=$\phi_{n-1}$, x distance=.25cm}
+        \diagarrow{from={1,4}, to={2,4}, text=$\phi_{n-1}$, x distance=.25cm}
+    }}
+
+    Since the bottom $\delta_n$ is monic, $\delta_n\circ\phi_n=\phi_{n-1}\circ\delta_n$ has a unique solution (explicitly, if a solution exists it is unique,
+    we can check that such a solution exists in $\Mod_R$ via diagram chase).
+    So we have defined $\phi_n$ on $A$: we must now show that the resulting map is natural $T_n\to L_nF$.
+    Note that our $\phi_n$ ostensibly depends on choice of $K,P$; we will show that this is not the case.
+
+    So suppose we have a map $f\colon A'\to A$ and an exact sequence $0\to K'\to P'\to A'\to0$ with $P'$ projective.
+    Since $P'$ is projective, we can lift $P'\to A$ (composing $P'\to A'$ with $f$) to $g\colon P'\to P$ (via the epic $P\to A$).
+    This in turn induces a map $h\colon K'\to K$ such that the diagram commutes
+
+    \centerline{\drawdiagram{
+        $0$&$K'$&$P'$&$A'$&$0$\cr
+        $0$&$K$&$P$&$A$&$0$
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,2}, to={1,3}}
+        \diagarrow{from={1,3}, to={1,4}}
+        \diagarrow{from={1,4}, to={1,5}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={2,3}, to={2,4}}
+        \diagarrow{from={2,4}, to={2,5}}
+        \diagarrow{from={1,2}, to={2,2}, text=$h$, x distance=.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text=$g$, x distance=.25cm}
+        \diagarrow{from={1,4}, to={2,4}, text=$f$, x distance=.25cm}
+    }}
+
+    We now show that $\phi_n$ commutes with $f$.
+    Note that in the following diagram, each small quadrilateral commutes:
+
+    \centerline{\drawdiagram{
+        $T_n(A')$&&&$T_n(A)$\cr
+        &$T_{n-1}(K')$&$T_{n-1}(K)$\cr
+        &$L_{n-1}F(K')$&$L_{n-1}F(K)$\cr
+        $L_nF(A')$&&&$L_nF(A)$\cr
+    }{
+        \diagarrow{from={1,1}, to={1,4}, text=$T_nf$, y distance=-.25cm}
+        \diagarrow{from={4,1}, to={4,4}, text=$L_nFf$, y distance=.25cm}
+        \diagarrow{from={2,2}, to={2,3}, text=$T_nh$, y distance=-.25cm}
+        \diagarrow{from={3,2}, to={3,3}, text=$L_nFh$, y distance=.25cm}
+        \diagarrow{from={1,1}, to={4,1}, text=$\phi_n(A')$, x distance=-.25cm}
+        \diagarrow{from={1,4}, to={4,4}, text=$\phi_n(A)$, x distance=.25cm}
+        \diagarrow{from={2,2}, to={3,2}, text=$\phi_{n-1}$, x distance=-.25cm}
+        \diagarrow{from={2,3}, to={3,3}, text=$\phi_{n-1}$, x distance=.25cm}
+        \diagarrow{from={1,1}, to={2,2}, text=$\delta$, x distance=.25cm}
+        \diagarrow{from={1,4}, to={2,3}, text=$\delta$, x distance=-.25cm}
+        \diagarrow{from={4,1}, to={3,2}, text=$\delta$, x distance=-.25cm}
+        \diagarrow{from={4,4}, to={3,3}, text=$\delta$, x distance=.25cm}
+    }}
+
+    And so we have
+    $$ \delta\circ L_n(f)\circ\phi_n(A') = \delta\circ\phi_n(A)\circ T_n(f) $$
+    both of these $\delta$s are $L_nF(A)\to L_{n-1}F(K)$ which is monic, and thus we can cancel it from both sides.
+    Thus we have that $\phi_n$ is indeed natural.
+    Note that choosing $A=A'$ and $f=\id_A$ we see that $\phi_n(A)$ is independent on choice of short exact sequence.
+
+    We also need to show that $\phi_n$ commutes with $\delta_n$.
+    Given a short exact sequence $0\to A'\to A\to A''\to0$, choose a short exact sequence $0\to K''\to P''\to A''\to0$ with $P''$ projective.
+    Then we can construct $f,g$ making the following diagram commute
+
+    \centerline{\drawdiagram{
+        $0$&$K''$&$P''$&$A''$&$0$\cr
+        $0$&$A'$&$A$&$A''$&$0$
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,2}, to={1,3}}
+        \diagarrow{from={1,3}, to={1,4}}
+        \diagarrow{from={1,4}, to={1,5}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={2,3}, to={2,4}}
+        \diagarrow{from={2,4}, to={2,5}}
+        \diagarrow{from={1,2}, to={2,2}, text=$g$, x distance=.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text=$f$, x distance=.25cm}
+        \diagarrow{from={1,4}, to={2,4}, text={$=$}, x distance=.25cm}
+    }}
+
+    This gives us a commutative diagram
+
+    \centerline{\drawdiagram{
+        $T_n(A'')$&$T_{n-1}(K'')$&$T_{n-1}(A')$\cr
+        $L_nF(A'')$&$L_{n-1}F(K'')$&$L_{n-1}F(A')$\cr
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=$\delta$, y distance=-.25cm}
+        \diagarrow{from={1,2}, to={1,3}, text=$Tg$, y distance=-.25cm}
+        \diagarrow{from={2,1}, to={2,2}, text=$\delta$, y distance=.25cm}
+        \diagarrow{from={2,2}, to={2,3}, text=$LF(g)$, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,1}, text=$\phi_n$, x distance=.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text=$\phi_{n-1}$, x distance=.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text=$\phi_{n-1}$, x distance=.25cm}
+    }}
+
+    the horizontal composites are the $\delta$s of $0\to A'\to A\to A''\to0$ (by the $\delta$-functorality of $T_\bul$, $L_\bul F$), giving us the desired commutativity of $\phi_n$ with $\delta$.
+    \qed
+
+\eproof
+
+\bdefn
+
+    An additive functor $F\colon\A\to\B$ is {\emphcolor effaceable} if for every $A\in\A$ there is a monomorphism $u\colon A\to I$ such that $F(u)=0$.
+    $F$ is {\emphcolor coeffaceable} if for every $A$ there is an epimorphism $u\colon P\to A$ such that $F(u)=0$.
+
+    A $\delta$-functor is (co)effaceable if every component (other than $0$) is (co)effaceable.
+
+\edefn
+
+\bthrm
+
+    A homological coeffaceable $\delta$-functor is universal.
+    Dually a cohomological effaceable $\delta$-functor is universal.
+
+\ethrm
+
+\bproof
+
+    In the above proof, instead of choosing $P$ projective choose $P$ with $P\to A$ epic whose image is $0$.
+    The proof then proceeds the same.
+    \qed
+
+\eproof
+
+Note that left derived functor are coeffaceable (choosing $P\to A$ with $P$ projective), so this is a generalization of the above theorem.
+
+Furthermore, homology $H_\bul\colon\Ch_{\geq0}(\A)\to\A$ is coeffaceable.
+Indeed, recall that a map $f\colon B\to C$ induces a short exact sequence $0\to C\to\cone(f)\to B[-1]\to0$.
+In particular for a chain complex $A$ we have an epic $\sigma_{\geq0}\cone(A)[1]\to A$ which maps $(a,a')\mapsto-a$.
+Since $\id_A$ is a quasi-isomorphism we have that $\cone(A)$ is acyclic and in particular the induced homology map of this epimorphism is zero (except at the zero index, which is unimportant).
+So we have shown
+
+\bthrm
+
+    Homology and cohomology are universal $\delta$-functors $\Ch_{\geq0}(\A)\to\A$ and $\Ch^{\geq0}(\A)\to\A$ respectively.
+
+\ethrm
+
+\subsection{Right derived functors}
+
+\bdefn
+
+    Let $F\colon\A\to\B$ be a left exact functor between additive categories.
+    If $\A$ has enough injectives, we define $F$'s {\emphcolor right derived functors} $R^iF\colon\A\to\B$ as follows.
+    For $A\in\A$, choose an injective resolution $A\to I$ and define
+    $$ R^iF(A) = H^i(F(I)) $$
+
+\edefn
+
+Note that since $0\to F(A)\to F(I^0)\to F(I^1)$ is exact, we have that $R^0F\cong F$.
+
+Furthermore, $F\colon\A\to\B$ defines a functor $F^\op\colon\A^\op\to\B^\op$ and $\A^\op$ has enough projectives so we have left derived functors $L_iF^\op$.
+Since $I$ is a projective resolution of $A$ in $\A^\op$ we clearly have that
+$$ R^iF = (L_iF^\op)^\op $$
+thus all results about left derived functors hold dually for right derived functors.
+In particular $R^iF$'s construction is independent on choice of injective resolution, $R^\bul F$ is a universal cohomological $\delta$-functor, and $R^iF(I)=0$ for injective $I$ when $i\neq0$.
+
+\bdefn
+
+    For an $R$-module $A$, the functor $\hom_R(A,\bul)$ is left-exact.
+    Thus it has right derived functors, called {\emphcolor Ext groups}:
+    $$ \ext^i_R(A,\bul) = R^i\hom_R(A,\bul) $$
+
+\edefn
+
+In particular we have $\ext^0_R(A,B)=\hom(A,B)$.
+
+\bprop
+
+    The following are equivalent:
+    \benum
+        \item $B$ is injective,
+        \item $\hom_R(\bul,B)$ is exact,
+        \item $\ext^i_R(A,B)$ vanishes for all $i\neq0$ and all $A$,
+        \item $\ext^1_R(A,B)$ vanishes for all $A$.
+    \eenum
+
+\eprop
+
+\bproof
+
+    As already explained $(1)$ and $(2)$ are equivalent, and these imply the rest.
+    Now if $\ext^1_R(\bul,B)=0$ then consider a short exact sequence $0\to C\to D\to E\to0$ then we have a long exact sequence
+    $$ 0 \to \hom(C,B) \to \hom(D,B) \to \hom(E,B) \to \ext^1(C,B) = 0 $$
+    thus $\hom(\bul,B)$ is exact as desired.
+    \qed
+
+\eproof
+
+Dually we have
+
+\bprop
+
+    The following are equivalent:
+    \benum
+        \item $A$ is projective,
+        \item $\hom_R(A,\bul)$ is exact,
+        \item $\ext^i_R(A,B)$ vanishes for all $i\neq0$ and all $B$,
+        \item $\ext^1(A,B)$ vanishes for all $B$.
+    \eenum
+
+\eprop
+
+We can consider derived functors of contravariant functors.
+For example, left $F\colon\A^\op\to\B$ be left exact, then if $\A$ has enough projectives ($\A^\op$ has enough injectives), $F$ has right derived functors via cohomology of
+$F(P)$ for $P\to A$ a projective resolution.
+
+In particular we have left exact $\hom_R(\bul,B)$ and thus right derived functors $R^i\hom_R(\bul,B)$.
+We will show later that these are not new:
+$$ R^\bul\hom_R(\bul,B)(A) \cong R^\bul\hom_R(A,\bul)(B) = \ext_R^\bul(A,B) $$
+
+\bexam
+
+    Consider the {\emphcolor global sections} functor $\Gamma\colon\sh(X)\to\Ab$ via $\Gamma(\F)=\F(X)$.
+    It can be shown that this is right adjoint to the constant sheaves functor, and in particular is left exact.
+    Thus $\Gamma$ has right derived functors, called the {\emphcolor cohomology functors} on $X$:
+    $$ H^i(X,\F) = R^i\Gamma(\F) $$
+
+\eexam
+
+\subsection{Adjointness and exactness}
+
+Note that we can characterize (left/right) exactness purely categorically:
+
+\blemm
+
+    A functor $F\colon\A\to\B$ is left exact iff it preserves finite limits, right exact iff it preserves finite colimits, and exact iff it preserves finite
+    limits and colimits.
+
+\elemm
+
+\bproof
+
+    It is a classic result that a functor is additive iff it preserves finite biproducts, and note that an exact diagram $0\to A\to B\to C$ is simply a kernel diagram.
+    So preserving diagrams of this form is the same as preserving kernels, and thus a functor is left exact iff it preserves finite limits (finite biproducts and kernels).
+    Similarly exact $A\to B\to C\to0$ are cokernel diagrams.
+    \qed
+
+\eproof
+
+This result allows us to generalize the concept of exactness to arbitrary categories, but this is not necessary here.
+More importantly (for us) it gives us the following.
+
+\bcoro
+
+    Left adjoints are right exact, right adjoints are left exact.
+
+\ecoro
+
+\bproof
+
+    Left adjoints preserve (arbitrary) colimits, and right adjoints preserve (arbitrary) limits.
+    \qed
+
+\eproof
+
+In particular (assuming the existence of enough projectives/injectives) left adjoints have left derived functors and right adjoints have right derived functors.
+
+Another interesting result is the following:
+
+\blemm
+
+    The following are equivalent for an exact functor $F\colon\A\to\B$:
+    \benum
+        \item $F$ reflects exact sequences: if $FA\to FB\to FC$ is exact, so is $A\to B\to C$.
+        \item $F$ is faithful.
+        \item $F$ reflects zero morphisms: if $Ff=0$ then $f=0$.
+        \item $F$ reflects zero objects: if $FA=0$ then $A=0$.
+    \eenum
+
+\elemm
+
+\bproof
+
+    Clearly $F$ reflects zero morphisms iff it is faithful as $Ff=Fg$ iff $F(f-g)=0$ iff $f=g$.
+    If $F$ reflects zero morphisms then suppose $FA=0$; then $F\id_A=0$ and so $\id_A=0$, meaning $A=0$.
+
+    If $F$ reflects zero objects, suppose $f\colon A\to B$ is non-zero: we want to show $Ff$ is non-zero as well.
+    Consider the exact sequence
+    $$ 0 \to \ker f \to A \xtos f B \to \coker f \to 0 $$
+    which maps to the exact sequence
+    $$ 0 \to F\ker f \to FA \xtos{Ff} FB \to F\coker f \to 0 $$
+    $0$ is the unique map whose kernel and cokernel are isomorphisms, so we want to show that the induced maps $F\ker f\to FA,FB\to F\coker f$ are not isomorphisms.
+    But indeed, $\coker(F\ker f\to FA)\cong F\coker(\ker f\to A)$ is non-zero since $\ker f\to A$ is non-zero; so $F\ker f\to FA$ is not an isomorphism.
+    Similarly $\ker(FB\to F\coker f)\cong F\ker(B\to\coker f)$ is non-zero and thus $FB\to F\coker f$ is not an isomorphism.
+    So $Ff$ is non-zero as well, meaning $F$ reflects zero morphisms if it reflects zero objects.
+
+    Thus we have shown the equivalence of $(2),(3),(4)$.
+    If $F$ reflects exact sequences then it reflects zero objects, as if $FA=0$ then $0\to FA\to0$ is exact and so $0\to A\to0$ is as well.
+
+    And if $F$ is faithful then it must reflect exact sequences: it is sufficient to show that $F$ reflects kernels and cokernels.
+    Let $A\xto fB\xto gC$ such that $Ff=\ker Fg$, and let $h\colon K\to B$ be a kernel of $g$.
+    Since $F(gf)=0$ and $F$ is faithful, $gf=0$, so there is a unique $i\colon K\to A$ such that $f=hi$; we want to show $i$ is an isomorphism.
+    Similarly since $F(gh)=0$ there is a unique $j\colon FA\to FK$ such that $Fh=(Ff)j$.
+    Then we have that
+    $$ F(f)jF(i) = F(h)F(i) = F(f) $$
+    and since $F(f)$ is monic we have $jF(i)=\id$, in particular $F(i)$ is monic.
+    Faithfulness reflects monomorphisms, so $i$ is monic as well.
+
+    Let $p\colon K\to K/A$ be a cokernel of $i$, and $q\colon B\to B/A$ a cokernel of $f$.
+    Now $qhi=qf=0$, which means there exists a unique $h'\colon K/A\to B/A$ such that $qh=h'p$.
+    Since $h$ is monic, so is $h'$.
+    And note
+    $$ F(h'p) = F(qh) = F(q)F(f)j = 0 $$
+    So $h'p=0$ and thus $p=0$ since $h'$ is monic.
+    But $p=\coker i$, thus $i$ is an epic monic, thus an isomorphism as desired.
+    \qed
+
+\eproof
+
+Recall that in particular we have the tensor-hom adjunction $\bul\otimes_RB\colon\Mod_R\tof\Ab\colon\hom_\Ab(B,\bul)$ for all $B\in{}_R\Mod$.
+If $B$ is an $(R,S)$-bimodule then this adjunction lands in $\Mod_S$ and not just $\Ab$.
+So $\bul\otimes_RB$ is left adjoint and thus right exact.
+
+\bdefn
+
+    For an $(R,S)$-bimodule $B$, define its {\emphcolor Tor modules} to be the right $S$-modules
+    $$ \tor^R_n(A,B) = (L_n(\bul\otimes_RB))(A) $$
+    for $A\in\Mod_R$.
+
+\edefn
+
+If $S'\subseteq S$ is a subring then for an $(R,S)$-bimodule $B$ we can also view it as an $(R,S')$-bimodule.
+Thus $\tor^R_n(\bul,B)$ can be viewed to land in either $\Mod_S$ or $\Mod_{S'}$.
+But the forgetful functor $U\colon\Mod_S\to\Mod_{S'}$ is exact, and thus
+$$ U(L_\bul(\otimes_RB)) \cong L_\bul(U\otimes_RB) $$
+thus the underlying $S'$-module is the same in either case.
+
+Note that for a right $R$-module $A$, $A\otimes_R\bul$ is also right-exact (due to a similar adjunction), and thus we can construct its left derived functors
+as well.
+We will show soon that $L_\bul(A\otimes_R\bul)(B)\cong L_\bul(\bul\otimes_RB)(A)$, so this yields nothing new.
+
+\bexam
+
+    Consider the inclusion functor $I\colon\sh(X)\to\Psh(X)$.
+    It has a left adjoint called {\emphcolor sheafification}, and is thus left exact and has right derived functors.
+    Further consider the exact ``section'' functors $\Psh(X)\to\Ab$ mapping a presheaf $\F$ to $\F(U)$, call this $\Gamma_U$.
+    Then we have
+    $$ \Gamma_UR^n(I) \cong R^n(\Gamma_U\circ I) $$
+    note that $\Gamma_U$ is just the section functor restricted to sheaves.
+    $\Gamma_U\circ I$ just maps a sheaf $\F$ to $\Gamma\F|_U$ (the global section of the restriction of $\F$ to $U$), and thus by definition
+    $$ \Gamma_UR^n(I) \cong H^n(U,\F|_U) $$
+    meaning that $R^n(I)$ maps a sheaf $\F$ to the presheaf $U\mapsto H^n(U,\F|_U)$.
+
+\eexam
+
+\bexam
+
+    Let $f\colon X\to Y$ be continuous, then define the {\emphcolor direct image} functor $f_*\colon\Psh(X)\to\Psh(Y)$ by $(f_*\F)(V)=\F(f^{-1}V)$
+    for $V$ open in $Y$.
+    For $V'\subseteq V$, we have $f^{-1}V'\subseteq f^{-1}V$ so this defines a presheaf: map $s\in f_*\F(V)$ to $s|_{f^{-1}V'}\in f_*\F(V')$.
+    Note that if $\F\in\sh(X)$ is a sheaf, then consider the exact diagram for an open cover $\set{V_i}$ of $V\subseteq Y$.
+    $\set{f^{-1}V_i}$ is an open cover of $f^{-1}V$ and so we have an exact diagram
+    $$ 0 \to \F(f^{-1}V) \to \prod_i\F(f^{-1}V_i) \to \prod_{i,j}\F(f^{-1}V_i\cap f^{-1}V_j) $$
+    The maps are precisely the maps in the diagram for $f_*\F$, thus $f_*\F$ is a sheaf.
+    So $f_*$ restricts to a map $\sh(X)\to\sh(Y)$.
+
+    We also define the {\emphcolor inverse image} functor $f^{-1}\colon\sh(Y)\to\sh(X)$ to map $\G\in\sh(Y)$ to the sheafification of the presheaf
+    mapping $U$ to the direct colimit $\colim\G(V)$ over the poset of all $V\subseteq Y$ containing $f(U)$.
+    Then we have that $f^{-1}\dashv f_*$ form an adjunction.
+
+    Now, let $*$ be the one-point topological space.
+    Then we have $\sh(*)\cong\Ab$.
+    Consider the unique map $f\colon X\to*$.
+    The direct image functor $f_*\colon\sh(X)\to\Ab$ maps $\F\in\sh(X)$ to $\F(f^{-1}*)=\F(X)$, i.e.\ $f_*$ is the global section functor.
+    The inverse image functor maps $A\in\Ab$ to the sheafification of $\F(U)=A$, i.e.\ the constant sheaf.
+    Thus we have that ${\rm const}\dashv\Gamma$: the constant sheaf functor is a left adjoint to the global section functor.
+    This shows us that $\Gamma$ is indeed left exact and so sheaf cohomology is well-defined.
+
+    For $x\in X$ consider the map $x\colon*\to X$ mapping the point to $x\in X$.
+    Then $x_*\colon\Ab\to\sh(X)$ maps an Abelian group $A$ to the sheaf defined by $\F(U)=A$ if $x\in U$ (so $x^{-1}U=*$) and $0$ otherwise (so $x^{-1}U=\emptyset$), i.e.\ the skyscraper sheaf.
+    And $x^{-1}\colon\sh(X)\to\Ab$ maps $\F\in\sh(X)$ to the direct colimit $\colim_{x\in U}\F(U)$, i.e.\ the stalk of $\F$ at $x$.
+    So we have shown that $\bul_x\dashv x_*\bul$.
+
+\eexam
+
+\bexam
+
+    For a small category $I$, we have the {\emphcolor diagonal functor} $\Delta_I\colon\A\to\A^I$ which maps $A\in\A$ to the {\emphcolor constant functor}
+    $\Delta A$ mapping $i\in I$ to $A$, and $i\to j$ to $\id_A$.
+    A classical result is $\colim_I\dashv\Delta_I\dashv\lim_I$ when all co/limits of shape $I$ exist.
+    This is pretty immediate: $\lim_IF$ is an object $A\in\A$ along with a natural map (the limit cone) $\lambda\colon\Delta A\to F$ which is universal in a particular way (terminal in the category of cones).
+    So then for $A\in\A$ and functor $F$, a map $\Delta A\to F$ defines a unique map $A\to\lim F$ commuting with the limit cone (by terminal-ness), and vice versa.
+
+    In particular $\colim$ is right exact, $\lim$ left exact, and $\Delta$ exact.
+    $\lim,\colim$ are not necessarily exact though.
+
+\eexam
+
+Recall that all limits can be computed via products and equalizers.
+In Abelian categories this means that all limits can be computed via products and kernels.
+Similarly colimits can be computed via coproducts (direct sums) and cokernels.
+Thus we have the following.
+
+\bthrm
+
+    An Abelian category is cocomplete (all colimits exist) iff all direct sums exist, and is complete (all limits exist) iff all products exist.
+
+\ethrm
+
+Note that if $\D$ is a full subcategory of a cocomplete category $\C$ such that the inclusion $i\colon\D\to\C$ has a left adjoint ($\D$ is a {\emphcolor reflective subcategory}),
+$\D$ is also cocomplete.
+Indeed, let $s\colon\C\to\D$ be the left adjoint then the composition $\D\xtos i\C\xto\Delta\C^I$ is just the diagonal functor on $\D$, and since we can compose adjunctions,
+it has a left adjoint $s\circ\colim$.
+So $s\circ\colim$ is the colimit functor of $\D$, meaning $\D$ is cocomplete.
+We can also show that if $\C$ is complete, so is $\D$.
+
+In particular it is simple to show that $\Psh(X)$ is co/complete, and since $\sh(X)$ is a reflective subcategory, it too is co/complete.
+Thus we have the following co/complete categories:
+$$ \Mod_R,\qquad \Psh(X),\qquad \sh(X) $$
+
+\bdefn
+
+    An Abelian category $\A$ satisfies axiom {\emphcolor (AB4)} if it is cocomplete and direct sums of monics are monic.
+
+\edefn
+
+The direct sum of maps $f_i\colon A_i\to B_i$ is the induced map $\oplus_if_i\colon\oplus_iA_i\to\oplus_iB_i$ defined by composing $f_i$ with the inclusion $B_i\to\oplus_iB_i$,
+and then utilizing the universal property of direct sums.
+That is, $\oplus_if_i$ is the unique map where composing with inclusion $A_i\to\oplus A_i$ is equal to $f_i$ composed with inclusion $B_i\to\oplus B_i$.
+
+Axiom (AB4) is equivalent to saying that direct sums are exact.
+Since direct sums are colimits, they are automatically right exact.
+The direct sums of monics being monic is equivalent to saying that direct sums preserve monomorphisms: direct sums are thus exact.
+
+Since homology commutes with exact functors we have the following.
+
+\bthrm
+
+    Suppose $\A$ satisfies (AB4) and has enough projectives.
+    Let $F\colon\A\to\B$ be left adjoint, then for any collection $\set{A_i}$ in $\A$, we have
+    $$ L_\bul F\parens{\bigoplus_iA_i} \cong \bigoplus_iL_\bul F(A_i) $$
+
+\ethrm
+
+\bproof
+
+    The direct sum of projectives is projective ($\oplus P_i\to C$ factors as $P_i\to C$ which then lifts to $P_i\to B$, giving us $\oplus P_i\to B$).
+    Since direct sums are exact, if $P_i\to A_i$ are projective resolutions then so is $\oplus P_i\to A_i$.
+    Then since $F$ is left adjoint and thus commutes with colimits, in particular direct sums, we have
+    $$ L_\bul F\parens{\bigoplus_iA_i} = H_\bul(F(\oplus_iP_i) \cong H_\bul(\oplus_iF(P_i)) \cong \bigoplus_iH_\bul(F(P_i)) = \bigoplus_iL_\bul F(A_i) $$
+    as desired.
+    \qed
+
+\eproof
+
+We can define the dual axiom of AB4:
+
+\bdefn
+
+    An Abelian category $\A$ satisfies axiom {\emphcolor (AB4\star)} if the product of epimorphisms is epic.
+
+\edefn
+
+$\A$ satisfies (AB4\star) iff $\A^\op$ satisfies (AB4) clearly.
+Thus by duality we have:
+
+\bcoro
+
+    Suppose $\A$ satisfies (AB4\star) and has enough injectives.
+    Let $F\colon\A\to\B$ be right adjoint, then for any $\set{A_i}$ in $\A$, we have
+    $$ R_\bul F\parens{\prod_iA_i} \cong \prod_i R_\bul F(A_i) $$
+
+\ecoro
+
+It is not hard to see that $\Mod_R$ satisfies both (AB4) and (AB4\star), thus we have
+
+\bcoro
+
+    In $\Mod_R$:
+    $$ \tor_\bul\parens{A,\bigoplus_iB_i}\cong \bigoplus_i\tor_\bul(A,B_i),\qquad \ext_\bul\parens{A,\prod_iB_i} \cong \prod_i\ext_\bul(A,B_i) $$
+
+\ecoro
+
+\bdefn
+
+    A nonempty category $I$ is {\emphcolor filtered} if
+    \benum
+        \item for every $i,j\in I$, there is some $k\in I$ with arrows $i\to k\ot j$.
+        \item for every two parallel arrows $u,v\colon i\tto j$ there is an arrow $w\colon j\to k$ such that $wu=wv$.
+    \eenum
+
+    A {\emphcolor filtered colimit} is the colimit of a functor $I\to\A$ where $I$ is filtered.
+    A filtered colimit is denoted by $\coflim$.
+
+\edefn
+
+We can dualize this to {\emphcolor cofiltered} categories and {\emphcolor cofiltered limits}.
+Note that posets always satisfy (2) (since in such a case $u=v$), so a filtered poset is just one where every two elements can be bound.
+Filtered posets are called {\emphcolor directed}.
+Filtered colimits from directed posets are often called directed limits, but for clarity I will call them directed {\it colimits}.
+
+\blemm
+
+    Let $I$ be filtered, and $A\colon I\to\Mod_R$ a functor.
+    \benum
+        \item Every element $a\in\coflim(A_i)$ is the image of some element $a_i\in A_i$ under the canonical map $A_i\to\coflim A_i$.
+        \item For every $i\in I$, the kernel of the canonical map $A_i\to\coflim A_i$ is the union of kernels of the maps $\phi\colon A_i\to A_j$ (where $\phi\colon i\to j$).
+    \eenum
+
+\elemm
+
+I explain quickly what we mean by ``canonical map''.
+Recall that a colimit is given by a cone $\mu\colon A\to\Delta(\colim A)$, and thus we have maps $\mu_i\colon A_i\to\colim A$; these are the canonical maps.
+
+\bproof
+
+    Recall that in general the colimit of $A$ is given by the coequalizer diagram
+    $$ \bigoplus_{\phi\colon i\to j}A_i \xvarrightarrows{\ f\ }[\ g\ ]\bigoplus_{i\in I}A_i \to \coflim A $$
+    where $f=\bigoplus_\phi f_\phi$ and $g=\bigoplus_\phi g_\phi$ for $f_\phi,g_\phi\colon A_i\to\bigoplus_iA_i$ by setting $f_\phi$ to be the inclusion of $A_i$,
+    and $g_\phi$ to be the composition of the inclusion of $A_j$ with $\phi$.
+    I.e.\ %
+    $$ \coflim A = \coker\parens{\bigoplus_{\phi\colon i\to j}\lambda_i-\lambda_j\phi} $$
+    where $\lambda_i\colon A_i\to\bigoplus_iA_i$ is inclusion.
+    The canonical maps $A_i\to\coflim A_i$ are the compositions of $\lambda_i$ with the coequalizer arrow.
+
+    Thus $\coflim A$ is the quotient of $\bigoplus_iA_i$ by the image of $\bigoplus_{\phi\colon i\to j}\lambda_i-\lambda_j\phi$.
+    Elements of $\bigoplus_iA_i$ are of the form $\sum_{j\in J}\lambda_j(a_j)$ for a finite set $J\subseteq I$.
+    Since $I$ is filtered, $J$ has a bound, let it be $J\leq i$.
+    Let $\phi_i\colon j\to i$ for $j\in J$ then we have that $\lambda_j=\lambda_i\phi$ in the filtered colimit (we quotient by these direct sums), so we have
+    $$ \sum_{j\in J}\lambda_j(a_j) = \sum_{j\in J}\lambda_i(\phi a_j) = \lambda_i\parens{\sum_j\phi a_j} $$
+    proving our first point.
+
+    If $a_i\in A_i$ vanishes in $\coflim A_i$ then this means that $\lambda_i(a_i)=\sum_{j,k}\lambda_j(a_j)-\lambda_k(\phi_{jk}a_j)$ for finitely many $j,k$,
+    $\phi_{jk}\colon j\to k$, and $a_j\in A_j$.
+    Let $t$ be an upper bound for all these $i,j,k$, then we have
+    $$ \lambda_t(\phi_{it}a_i) = \sum_{j,k}\lambda_t(\phi_{jt}a_j) - \lambda_t(\phi_{kt}\phi_{jk}a_j) $$
+    for $\phi_{it}\colon i\to t$.
+    We can assume that $\phi_{kt}\phi_{jk}=\phi_{jt}$, potentially by increasing $t$ (due to the second condition of filtered categories).
+    Thus we have
+    $$ \lambda_t(\phi_{it}a_i) = \sum_{j,k}\lambda_t(\phi_{jt}a_j)-\lambda_t(\phi_{jt}a_j) = 0 $$
+    since $\lambda_t$ is injective, this means that $a_i\in\ker\phi_{it}$ as desired.
+    The converse (if an element is in the union of kernels, it vanishes) is because $\lambda_i(a_i)=\lambda_j(\phi_{ij}a_i)=0$.
+    \qed
+
+\eproof
+
+This lemma shows that we can define a surjection $\bigsqcup A_i\to\coflim A_i$, by mapping $a_i\in A_i$ to $\lambda_i(a_i)$.
+Then $a_i,a_j$ define the same element in the filtered colimit iff $a_i-a_j$ is in the kernel of one of the maps.
+Bounding $i,j$ by $k$, this means that $a_i-a_j$ is in the kernel of some $\phi\colon A_k\to A_{k'}$, i.e.\ $\phi(a_i)=\phi(a_j)$.
+That is,
+$$ \coflim A_i \cong \left.\bigsqcup A_i\middle/\sim\right.,\qquad a_i\sim a_j\hbox{ iff there exists some $i,j\to k$ such that $\phi_{ik}(a_i)=\phi_{jk}(a_j)$} $$
+
+\bthrm
+
+    Filtered colimits (in particular directed colimits) of $R$-modules are exact, as functors $\Mod_R^I\to\Mod_R$.
+
+\ethrm
+
+\bproof
+
+    Let $\A=\Mod_R$, and $I$ be a filtered category.
+    Colimits are in general right exact, and so $\coflim_I\colon\A^I\to\A$ is right exact.
+    So we need only show that $\coflim_I$ preserves monics.
+    So suppose $f\colon A\to B$ is monic in $\A^I$ (when $\A=\Mod_R$ this just means that every component of $f$ is monic).
+    We want to show that the induced map $f_*\colon\coflim A_i\to\coflim B_i$ is monic as well.
+    So suppose $a\in\coflim A_i$ vanishes in $\coflim B_i$, by the above lemma $a$ is the image of some $a_i\in A_i$.
+    Thus $f_i(a_i)\in B_i$ vanishes in $\coflim B_i$, meaning there is some $\phi\colon i\to j$ such that $\phi(f_i(a_i))=f_j(\phi(a_i))=0$ in $B_j$.
+    Since $f_j$ is monic, $\phi(a_i)=0$, so $a_i$ vanishes in $\coflim A_i$, i.e.\ $a=0$.
+    \qed
+
+\eproof
+
+This leads us to the following definition:
+
+\bdefn
+
+    An Abelian category $\A$ satisfies the axiom {\emphcolor (AB5)} if it is cocomplete and filtered colimits are exact.
+    Dually it satisfies {\emphcolor (AB5\star)} if it is complete and cofiltered limits are exact.
+
+\edefn
+
+$\Mod_R$ is not (AB5\star): $\Mod_R^\op$ is not (AB5).
+
+\bexam
+
+    Recall that for continuous $f\colon X\to Y$, the inverse image functor $f^{-1}\colon\sh(Y)\to\sh(X)$ is given by the sheafification of
+    $f^{-1}\G(U)=\colim_{f(U)\subseteq V}\G(V)$.
+    Sheafification is exact, so we need only show that $f^{-1}\colon\Psh(Y)\to\Psh(X)$ is exact to show that the inverse image functor on sheaves is.
+
+    A sequence of presheaves (not sheaves) is exact iff it is exact at every open set.
+    Note that the set of open sets $V$ containing $f(U)$ is directed, and thus $f^{-1}\G(U)$ is a filtered colimit, and thus exact.
+    That is to say if $\G\to\G'\to\G''$ is exact, then these define an exact sequence of functors on the directed set of open subsets containing $f(U)$.
+    Then taking their filtered colimit over this directed set gives us that $f^{-1}\G(U)\to f^{-1}\G'(U)\to f^{-1}\G''(U)$ is exact.
+    This is true for all $U$, and thus $f^{-1}$ is exact, as desired.
+
+\eexam
+
+Since filtered colimits are exact, they commute with homology.
+And left adjoints commute with colimits in general, so we have the following.
+
+\bthrm
+
+    Suppose $\A,\B$ satisfy (AB5), $\A$ has enough projectives.
+    If $F\colon\A\to\B$ is left adjoint such that filtered limits of projectives in $\A$ are $F$-acyclic, then for every $A\colon I\to\A$ with $I$ filtered,
+    $$ L_\bul F(\coflim A_i) \cong \coflim L_\bul F(A_i) $$
+
+\ethrm
+
+Note that the filtered limit of projective modules are $\bul\otimes A$-acylic for every $R$-module $A$.
+Indeed, $\bul\otimes(\coflim P_i)$ is exact, as it is isomorphic to $\coflim(\bul\otimes P_i)$ which is the filtered colimit of exact functors, and is thus exact by (AB5).
+This gives us the result (after balancing $\tor$, i.e.\ showing that it can be viewed as a bifunctor).
+Thus we have the following corollary:
+
+\bcoro
+
+    For every filtered $B\colon I\to\Mod_R$ and $A\in{}_R\Mod$,
+    $$ \tor_\bul(A,\coflim B_i) \cong \coflim \tor_\bul(A,B_i) $$
+
+\ecoro
+
+\subsection{Balancing Tor and Ext}
+
+Recall that since tensor products and hom-sets are bifunctors, which are (left/right) exact in both their coordinates, they both provide two derived functors.
+I.e.\ $L_\bul(\bul\otimes_RB),L_\bul(A\otimes_R\bul)$ for tensor products.
+We claimed that $L_\bul(\bul\otimes_RB)(A)\cong L_\bul(A\otimes_R\bul)(B)$ (similar for $\ext$); we show this now.
+
+\bdefn
+
+    Let $P,Q$ be chain complexes of right and left $R$-modules, respectively.
+    Form the bicomplex $P\otimes_RQ$ whose components are $P_p\otimes_RQ_q$, with horizontal differential $d_P\otimes1$, and vertical differential $(-1)^p\otimes d_Q$.
+    This is called the {\emphcolor tensor product bicomplex}, and $\tot^\oplus(P\otimes_RQ)$ is the {\emphcolor tensor product chain complex} of $P$ and $Q$.
+
+\edefn
+
+This is indeed a bicomplex: $(d\otimes1)\circ(1\otimes d)$ maps $p\otimes q$ to $dp\otimes dq$, and thus these differentials form a positive bicomplex, we use the sign trick
+to give us a signed bicomplex.
+
+If $P$ is a chain complex of right $R$-modules and $A$ is a left $R$-module, then we can view $A$ as a chain complex concentrated at $0$, thus defining $P\otimes A$.
+Note then that $\tot^\oplus(P\otimes_RA)$ has coefficient at index $n$, $P_n\otimes_RA$, since all other coefficients in $A$ are $0$.
+The differential is $d_P\otimes1+(-1)^p\otimes d_A=d_P\otimes1$.
+
+If we have chain maps $f\colon P\to A$ and $g\colon Q\to B$, these define chain (bicomplex) maps $f\otimes g\colon P\otimes Q\to A\otimes B$ whose components are $f_p\otimes g_q$.
+
+\bthrm
+
+    $L_n(A\otimes_R\bul)(B)\cong L_n(\bul\otimes_RB)(A)=\tor^R_n(A,B)$ for all $A,B$ and $n$.
+
+\ethrm
+
+\bproof
+
+    Choose projective resolutions $P\xto\epsilon A$ in $\Mod_R$ and $Q\xto\eta B$ in ${}_R\Mod$.
+    Consider $A,B$ as complexes concentrated at degree $0$, then we have three bicomplexes: $P\otimes Q$, $P\otimes B$, and $A\otimes Q$.
+    The augmentations $\epsilon$ and $\eta$ define maps from $P\otimes Q$ to $A\otimes Q$ and $P\otimes B$ respectively.
+    The {\emphcolor acyclic assembly lemma} (below) will help us show that the maps
+    $$ A\otimes Q = \tot(A\otimes Q) \xot{\epsilon\otimes Q} \tot(P\otimes Q) \xto{P\otimes\eta} \tot(P\otimes B) = P\otimes B $$
+    are quasi-isomorphisms, inducing the desired isomorphisms on homology:
+    $$ L_\bul(A\otimes_R)(B) \xot{\ \cong\ } H_\bul(\tot(P\otimes Q)) \xtos\cong L_\bul(\otimes_RB)(A) $$
+    (Recall that $L_\bul(A\otimes_R)(B)$ is computed by taking a projective resolution $Q\to B$ and then computing the homology of $A\otimes Q$.)
+
+    Consider the bicomplex $C$ obtained by adding $A\otimes Q$ in the column $p=-1$ of $P\otimes Q$, so that $C_{-1,q}=A\otimes Q_q$, and the horizontal differential
+    $C_{0,q}=P_0\otimes Q_q\to C_{-1,q}=A\otimes Q_q$ is given by $\epsilon\otimes1$.
+    Now consider $\tot(C)$: its $n$th coefficient is $(A\otimes Q_{n+1})\oplus\tot(P\otimes Q)_n$.
+    Its differentials are the direct sum of $\epsilon\otimes1-1\otimes d_Q$ with the differential of $\tot(P\otimes Q)$, $d^\tot$.
+    So $\tot(C)[-1]$ has its $n$th coefficient $(A\otimes Q_n)\oplus\tot(P\otimes Q)_{n-1}$ with differential $-d^\tot\oplus(1\otimes d_Q-\epsilon\otimes1)$.
+
+    Consider the mapping cone of $\epsilon\otimes1\colon\tot(P\otimes Q)\to A\otimes Q$.
+    Its $n$th component is $\tot(P\otimes Q)_{n-1}\oplus(A\otimes Q_n)$, and its differential is $-d^\tot\oplus(1\otimes d_Q-\epsilon\otimes1)$.
+    Thus $\tot(C)$ is isomorphic to the mapping cone of $\epsilon\otimes1$.
+    So to show that $\epsilon\otimes1$ is a quasi-isomorphism (equivalently its mapping cone is acyclic), it is sufficient to show $C$ is acyclic.
+
+    Since $\otimes Q_q$ is an exact functor, the rows of $C$ are exact, and $C$ is an upper half plane bicomplex.
+    Thus the acyclic assembly lemma tells us $\tot C$ is acyclic, as desired.
+
+    Similarly we can add $P\otimes B$ to the row $q=-1$ of $P\otimes Q$ and the resulting bicomplex's total complex is acyclic (by the assembly lemma) and isomorphic
+    to the mapping cone of $P\otimes\eta$.
+    \qed
+
+\eproof
+
+\blemm[title=Acyclic assembly lemma]
+
+    Let $C$ be a bicomplex of $R$-modules.
+    Then
+    \benum
+        \item $\tot^\Pi(C)$ is acylic if either of the following hold:
+        \benum
+            \item $C$ is an upper half-plane complex with exact columns, or
+            \item $C$ is a right half-plane complex with exact rows.
+        \eenum
+        \item $\tot^\oplus(C)$ is acylic if either of the following hold:
+        \benum
+            \item $C$ is an upper half-plane complex with exact rows, or
+            \item $C$ is a right half-plane complex with exact columns.
+        \eenum
+    \eenum
+
+\elemm
+
+\bproof
+
+    Consider the transpose of $C$, $C^\top$.
+    Then $\tot(C^\top)=\tot(C)$, and $C^\top$ is right half-plane iff $C$ is upper half-plane so $(1)$ and $(2)$ are equivalent, and $(3)$ and $(4)$ are equivalent.
+
+    We claim that $(1)$ implies $(4)$: suppose $C$ is right half-plane with exact columns.
+    Define $\tau_nC$ by truncating the columns of $C$ at level $n$:
+    $$ (\tau_nC)_{pq} = \cases{C_{pq} & if $q>n$\cr \ker(d^v\colon C_{pn}\to C_{p,n-1}) & if $q=n$\cr 0 & else} $$
+    Each $\tau_n$ is (up to translation) a first-quadrant bicomplex, and so its total complexes coincide: $\tot^\oplus(\tau_nC)=\tot^\Pi(\tau_nC)$.
+    Furthermore $\tau_nC$ has exact columns (its columns are the truncations of the chain complex $C_{p,\bul}$ which has the same homology of $C_{p,\bul}$; zero).
+    Assuming $(1)$, this means that $\tot(\tau_nC)$ is acylic.
+
+    Now $\tot(\tau_nC)$ are subcomplexes of $\tot^\oplus(C)$, and their union (union of each component) is all of $\tot^\oplus(C)$.
+    Thus every cycle of $\tot^\oplus(C)$ is a cycle in some $\tot(\tau_nC)$, and thus also a boundary since $\tot(\tau_nC)$ is acylic.
+    This means that $\tot^\oplus(C)$ is acyclic, as desired.
+
+    To show $(1)$, by translating $C$ left and right, it is sufficient to show that $H_0(\tot(C))=0$.
+    Let $c=(\dots,c_{-p,p},\dots,c_{-1,1},c_{0,0})_p\in\prod_pC_{-p,p}=\tot(C)_0$ be a $0$-cycle.
+    This means that $d^v(c_{-pp})+d^h(c_{-p+1,p-1})=0$.
+    We find by induction elements $b_{-p,p+1}$ such that $d^v(b_{-p,p+1})+d^h(b_{-p+1,p})=c_{-p,p}$.
+    The differential of $b$ is then $c$, meaning that $c$ is a boundary; and then $H_0(\tot(C))=0$ as desired.
+
+    For $p=-1$ choose $b_{1,0}=0$.
+    And for $p=0$, since $C_{0,-1}=0$ we must have that $d^v(c_{00})=0$, and since the zeroth column is exact there is a $b_{0,1}\in C_{0,1}$ such that $d^v(b_{0,1})=c_{00}$.
+    This gives us $d^v(b_{0,1})+d^h(b_{1,0})=c_{00}$ as desired.
+
+    Inductively, we have
+    $$ d^v(c_{-p,p}-d^h(b_{-p+1,p})) = d^v(c_{-pp}) + d^hd^v(b_{-p+1,p}) = d^v(c_{-pp}) + d^h(c_{-p+1,p-1}) - d^hd^h(b_{-p+2,p-1}) = d^v(c_{-pp}) + d^h(c_{-p+1,p-1}) = 0 $$
+    Since the $-p$th column is exact, $c_{-p,p}-d^h(b_{-p+1,p}$ must be in the image of $d^v$: there is a $b_{-p,p+1}\in C_{-p,p+1}$ such that
+    $$ d^v(b_{-p,p+1}) = c_{-p,p} - d^h(b_{-p+1,p}) $$
+    as desired.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $P$ be a chain complex, and $I$ a cochain complex.
+    We define their {\emphcolor hom bicomplex} to be the cochain bicomplex $\hom(P,I)$ with components $\hom(P,I)_{p,q}=\hom(P_p,I^q)$ and differentials
+    $$ d^h\colon\hom(P_p,I^q)\to\hom(P_{p+1},I^q),\ f\mapsto f\circ d_P,\qquad d^v\colon\hom(P_p,I^q)\to\hom(P_p,I^{q+1}),\ f\mapsto (-1)^{p+q+1}d_Q\circ f $$
+    Their {\emphcolor (total) hom cochain complex} is defined to be $\tot^\Pi(\hom(P,I))$.
+
+\edefn
+
+Suppose we have two chain complexes, $C$ and $D$.
+Reindexing $D$ as a cochain complex, then an $n$-cycle $f$ of the hom cochain complex $\hom(C,D)$ is a collection of maps $f_p\colon C_p\to D^{n-p}=D_{p-n}$ whose differential is zero.
+The differential is
+$$ d(f_p) = (f_pd_C\colon C_{p+1}\to D_{p-n}) + ((-1)^{n+1}d_Df_p\colon C_p\to D_{p-n-1}) $$
+and so is zero when $f_pd=(-1)^ndf_{p+1}$.
+Equivalently, $n$-cycles are chain maps $C\to D[-n]$.
+$n$-boundaries are null homotopic chain maps.
+And so the cohomology grousp of the hom cochain complex, $H^n\hom(C,D)$, are the chain homotopy classes of chain maps $C\to D[-n]$, i.e.\ the hom-set of maps $C\to D[-n]$ in $\K$.
+
+\bprop
+
+    There is an internal tensor-hom adjunction, that is a natural isomorphism
+    $$ \tot^\Pi\hom_\Ab(\tot^\oplus(P\otimes Q),I) \cong \tot^\Pi\hom_R(P,\tot^\Pi\hom_\Ab(Q,I)) $$
+    for $P,Q$ right and left $R$-module chain complexes, and $I$ a cochain complex of Abelian groups.
+
+\eprop
+
+\bthrm
+
+    For all $R$-modules and $n$, we have isomorphisms
+    $$ \ext^n_R(A,B) = R^n\hom_R(A,\bul)(B) \cong R^n\hom_R(\bul,B)(A) $$
+
+\ethrm
+
+\bproof
+
+    Choose a projective resolution $P\to A$ and an injective resolution $B\to I$.
+    Then we have a first-quadrant double cochain complex $\hom(P,I)$.
+    The augmentations induce maps $\hom(A,I)\to\hom(P,I)\ot\hom(P,B)$.
+    As for tensor products, the mapping cones of $\hom(A,I)\to\tot\hom(P,I)$ and $\hom(P,B)\to\tot\hom(P,I)$ are translates of the total complex obtained by
+    adding $\hom(A,I)$ and $\hom(P,B)$ to $\hom(P,I)$.
+    By the acylic assembly lemma (or rather its dual for cochain bicomplexes), these are exact and thus quasi-isomorphisms.
+    Taking cohomology gives us
+    $$ R^\bul\hom(A,\bul)(B) = H^\bul(\hom(A,I)) \cong H^\bul\tot\hom(P,I) \cong H^\bul\hom(P,B) = R^\bul\hom(\bul,B)(A) $$
+    as desired.
+    \qed
+
+\eproof
+
+We can naturally extend these results to a broader class of derived functors.
+
+\bdefn
+
+    Let $T$ be a multivariate functor $\A_1\times\cdots\times\A_n\to\c B$ between Abelian categories such that $T$ is left exact (equivalently left exact in each of
+    its components).
+    $T$ is then {\emphcolor right balanced} if whenever any of its components are held constant at an injective object, $T$ becomes exact (in each of its other components).
+
+    Dually a right exact functor is {\emphcolor left balanced} if it becomes exact when its components are held constant at a projective object.
+
+\edefn
+
+For example $\hom(\bul,\bul)$ is right balanced (since injectives in $\A^\op$ are projectives in $\A$), and $\bul\otimes\bul$ are left balanced.
+
+If $T$ is right balanced, then all of its right derived functors are isomorphic in the sense that $R^\bul T(A_1,\dots,\hat A_i,\dots,A_n)(A_i)$ are all isomorphic ($\hat A_i$ means
+the omission of $A_i$, replaced by an indeterminant $\bul$).
+Thus for $T$ right balanced, we can construct its {\emphcolor right derived functors} $R^\bul T\colon\A_1\times\cdots\times A_n\to\c B$.
+Dually for $T$ left balanced.
+
+The proof proceeds as above.
+It is sufficient to consider only bifunctors (since the rest of the variables are held constant) $T\colon\A_1\times\A_2\to\c B$.
+For cochain complexes $P^\bul,Q^\bul$ we can construct a (positive) cochain bicomplex $T(P^p,Q^q)$ with horizontal and vertical differentials as expected:
+$$ d^h=T(d_P,Q^\bul)\colon T(P^p,Q^q)\to T(P^{p+1},Q^q),\qquad d^v=T(P^\bul,d_Q)\colon T(P^p,Q^q)\to T(P^p,Q^{q+1}) $$
+
+Let $A_i\in\A_i$ and injective resolutions $A_i\to I^i_\bul$, then we can consider the bicomplex $T(I^1_p,I^2_q)$.
+Appending $T(A_1,I^2_\bul)$ and $T(I^1_\bul,A_2)$ give us bicomplexes whose total complexes are isomorphic to the mapping cones $T(A_1,I^2_\bul),T(I^1_\bul,A_2)\to\tot(T(I^1_\bul,T^2_\bul))$.
+By the acylic assembly lemma, these bicomplexes are acylic and thus these maps are quasi-isomorphisms.
+In particular the cohomology of $T(A_1,I^2_\bul)$ and $T(I^1_\bul,A_2)$, which are $R^\bul T(A_1,\bul)(A_2)$ and $R^\bul T(\bul,A_2)(A_1)$, are isomorphic as desired.
 

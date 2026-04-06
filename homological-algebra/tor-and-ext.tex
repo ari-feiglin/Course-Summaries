@@ -1,0 +1,1127 @@
+\section{Tor and Ext}
+
+\subsection{Tor for Abelian groups}
+
+Consider the following projective resolution of $\bZ/p\bZ$:
+$$ 0 \to \bZ \xtos p \bZ \to \bZ/p \to 0 $$
+Then for any Abelian group $B$, computing $\tor$ amounts to computing the homology of $0\to B\xtos pB\to0$ (recall $R\otimes_RM\cong M$, and the tensor of multiplication by $p$
+with $\id_B$ is multiplication by $p$ in $B$).
+This shows us that $\tor^\bZ_0(\bZ/p\bZ,B)=B/pB$ and $\tor^\bZ_1(\bZ/p\bZ,B)={}_pB=\set{b\in B}[pb=0]$; all higher $\tor$-groups are trivial.
+
+\bprop
+
+    For all Abelian $A,B$:
+    \benum
+        \item $\tor^\bZ_1(A,B)$ is torsion,
+        \item All higher ($n\geq2$) $\tor$-groups are trivial.
+    \eenum
+
+\eprop
+
+\bproof
+
+    $A$ is the directed colimit of its finitely-generated subgroups $A_i$, and since $\tor$ commutes with filtered colimits, $\tor_\bul(A,B)\cong\coflim\tor_\bul(A_i,B)$.
+    The direct colimit of torsion groups is torsion (consider the construction of the colimit), so it is sufficient to consider only finitely-generated $A$.
+    Thus we have $A\cong\bZ^m\oplus\bZ/p_1\bZ\oplus\cdots\oplus\bZ/p_n\bZ$ for some integers $m,p_i$.
+    $\tor$ again commutes with direct sums, and since $\bZ^m$ is projective, we have for $n>0$,
+    $$ \tor_n(A,B) \cong \tor_n(\bZ/p_1\bZ,B) \oplus\cdots\oplus \tor_n(\bZ/p_n\bZ,B) $$
+    These are all torsion for $n=1$ and $0$ for $n\geq2$, as computed right before this proposition.
+    \qed
+
+\eproof
+
+\bprop
+
+    $\tor^\bZ_1(\bQ/\bZ,B)$ is the torsion subgroup of $B$ for all Abelian $B$.
+
+\eprop
+
+\bproof
+
+    $\bQ/\bZ$'s finitely-generated subgroups are all of the form $\bZ/p\bZ$ for some integer $p$.
+    $\bQ/\bZ$ is the direct colimit of these subgroups, and thus
+    $$ \tor_1(\bQ/\bZ,B) \cong \coflim\tor_1(\bZ/p\bZ,B) \cong \coflim {}_pB = \bigcup_p\set{b\in B}[pb=0] $$
+    as desired.
+    \qed
+
+\eproof
+
+\bprop
+
+    If $A$ is torsion-free, then $\tor_n(A,B)=0$ for all $n\neq0$.
+
+\eprop
+
+\bproof
+
+    Finitely-generated subgroups of $A$ are isomorphic to $\bZ^m$, all projective.
+    \qed
+
+\eproof
+
+Note that since $\otimes_R$ is commutative (up to isomorphism) for any commutative ring $R$, $\tor^R_\bul(A,B)\cong\tor^R_\bul(B,A)$ naturally for all $R$-modules $A$ and $B$.
+This is because for fixed $B$, both form universal $\delta$-functors over $\bul\otimes B\cong B\otimes\bul$.
+Thus we have,
+
+\bcoro
+
+    $A$ is torsion-free iff $\tor_1(A,\bul)=0$ iff $\tor_1(\bul,A)=0$.
+
+\ecoro
+
+Note that these computations are not as simple over arbitrary commutative rings.
+For example take $R=\bZ/m\bZ$ and $A=\bZ/d\bZ$ for a divisor $d$ of $m$.
+Consider then the free resolution
+$$ \cdots\xtos d\bZ/m\bZ \xtos{m/d} \bZ/m\bZ \xtos d \bZ/m\bZ \xtos\epsilon \bZ/d\bZ \to 0 $$
+Then for all $\bZ/m\bZ$-module $B$ we have
+$$ \tor^{\bZ/m\bZ}_n(\bZ/d\bZ,B) = \cases{B/dB&if $n=0$\cr{}_dB/(m/d)B&if $n$ is odd\cr{}_{m/d}B/dB&if $n$ is even} $$
+
+\bexam
+
+    Let $r\in R$ be a left-nonzero divisor, i.e.\ ${}_rR=\set{s\in R}[rs=0]$ is zero.
+    Then we have a free resolution $0\to R\xtos rR\to R/rR\to0$, giving us
+    $$ \tor_0(R/rR,B) \cong B/rB,\qquad \tor^R_1(R/rR,B) \cong {}_rB $$
+    and all higher $\tor$-modules are zero.
+
+\eexam
+
+\bexam
+
+    Now if ${}_rR$ is nonzero, then we have an exact sequence,
+    $$ 0 \to {}_rR \to R \xtos r R \to R/rR \to 0 $$
+    since $R$ are projective, then by dimension shifting we have $\tor_n^R(R/rR,B)\cong\tor_{n-2}^R({}_rR,B)$ for $n\geq3$.
+    $\tor_2^R(R/rR,B)$ is the kernel of ${}_rR\otimes B\to B$ given by multiplication: $s\otimes b\mapsto sb$, so it can be viewed as ${}_rR\otimes B\to{}_rB$.
+
+\eexam
+
+\bexam
+
+    Let $R$ be an integral domain whose field of fractions is $F$.
+    The finitely-generated submodules of $F/R$ are isomorphic to $R/rR$ (generalizing $\bQ/\bZ$), and so
+    $$ \tor_1^R(F/R,B) \cong \coflim\tor_1^R(R/rR,B) \cong \coflim{}_rB = \bigcup_r{}_rB $$
+    i.e.\ the torsion submodule of $B$.
+
+\eexam
+
+\subsection{Tor and flatness}
+
+\bdefn
+
+    A left $R$-module is {\emphcolor flat} if $\bul\otimes_RB$ is exact.
+    Similarly a right $R$-module $A$ is {\emphcolor flat} if $A\otimes_R\bul$ is exact.
+
+\edefn
+
+Projective modules are flat, but flat modules need not be projective: any torsion-free Abelian group is flat.
+
+\bprop
+
+    An $R$-module $B$ is flat iff $\tor^R_n(\bul,B)=0$ for all $n>0$ iff $\tor^R_1(\bul,B)=0$.
+
+\eprop
+
+\bproof
+
+    If $B$ is flat then $\bul\otimes B$ is exact and thus its higher derived functors are trivial.
+    Conversely if $\tor^R_1(\bul,B)=0$ then if $0\to A_1\to A_2\to A_3\to0$ is exact, then the long exact sequence given by $\tor(\bul,B)$ shows us that
+    $0\to A_1\otimes B\to A_2\otimes B\to A_3\otimes B\to0$ is exact.
+    \qed
+
+\eproof
+
+So flat $R$-modules are precisely those which are $A\otimes\bul$-acylic for all $R$-modules $A$.
+Recall that when showing $\tor$ commutes with filtered colimits we showed that filtered colimits of projective $R$-modules make the tensor product exact.
+That is to say, filtered colimits of projectives are flat.
+
+\bthrm
+
+    If $S$ is a central multiplicatively closed set in $R$ (meaning it is closed under multiplication, contains $1$, and commutes with all elements of $R$), then $S^{-1}R$ is flat.
+
+\ethrm
+
+\bproof
+
+    Let $I$ be the filtered category whose objects are elements of $S$ and $\hom_I(s_1,s_2)=\set{s\in S}[s_1s=s_2]$.
+    This is filtered, since $s_1,s_2$ can be bound by $s_1s_2$ and if $s_1s=s_1s'$ then we can just take the arrow $s_1$ to equalize.
+
+    Define the functor $F\colon I\to\Mod_R$ by $F(s)=R$ and $F(s\colon s_1\to s_2)$ is multiplication by $s$.
+    Now if we define the map $F(s)=R\to S^{-1}R$ by mapping $1$ to $1/s$, this defines a surjection $\bigsqcup F(s)\cong R\times S\to S^{-1}R$ mapping $(r,s)$ to $r/s$.
+    Recall that $r/s=r'/s'$ iff there is a $t\in S$ such that $(rs'-r's)t=0$.
+    Now in the colimit $(r,s)$ and $(r',s')$ are equivalent iff there are $t_1,t_2$ such that $st_1=s't_2$ and $rt_1=r't_2$.
+    Then $(rs'-r's)t_1t_2=0$ meaning $r/s=r'/s'$, so this map can be quotient to a surjection $\coflim F\to S^{-1}R$.
+    And conversely if $(rs'-r's)t=0$ then $t_1=s't$ and $t_2=st$ show that $(r,s)$ and $(r',s')$ are equivalent, so this surjection is injective and thus an isomorphism.
+
+    Thus $S^{-1}R\cong\coflim F$, a filtered colimit of free $R$-modules and is therefore flat.
+    \qed
+
+\eproof
+
+Recall that localization of an $R$-module by a multiplicative set $S\subseteq R$ is equivalent to tensoring with $S^{-1}R$; $S^{-1}M\cong M\otimes_RS^{-1}R$.
+Thus this theorem shows us that
+$$ S^{-1}\bul\colon\Mod_R\to\Mod_{S^{-1}R} $$
+is an exact functor.
+
+\bexam
+
+    Let $0\to A\to B\to C\to0$ be short exact such that $B,C$ are flat, then $A$ is flat as well.
+    This is true in general for $F$-acylic objects by taking the long exact sequence; we have $0=L_{n+1}F(C)\to L_nF(A)\to L_nF(B)=0$ exact.
+
+\eexam
+
+\bdefn
+
+    The {\emphcolor Pontrjagin dual} of a left $R$-module $B$ is the right $R$-module $B^*=\hom_\Ab(B,\bQ/\bZ)$ where $r\in R$ acts by $(fr)(b)=f(rb)$.
+
+\edefn
+
+Recall that $\bQ/\bZ$ is an injective Abelian group, so $\hom_\Ab(\bul,\bQ/\bZ)$ is exact.
+But duality is stronger in that it reflects exactness as well: it is exact, and we showed (when discussing having enough injectives) that $A^*=0$ iff $A=0$.
+Thus duality reflects zero objects and is exact; we showed this means it reflects exactness.
+In particular it reflects and preserves monics and epics: since it is contravariant this means that $f$ is monic (resp.\ epic) iff $f^*$ is epic (resp.\ monic).
+
+\bprop
+
+    The following are equivalent for every left $R$-module $B$:
+    \benum
+        \item $B$ is flat,
+        \item $B^*$ is injective,
+        \item $I\otimes_RB\cong IB=\set{x_1b_1+\cdots+x_nb_n}[x_i\in I,b_i\in B]$ for every right ideal $I$ of $R$,
+        \item $\tor^R_1(R/I,B)=0$ for every right ideal $I$ of $R$.
+    \eenum
+
+\eprop
+
+\bproof
+
+    We have a short exact sequence $0\to I\to R\to R/I\to0$ which gives us a long exact sequence
+    $$ 0 \to \tor^R_1(R/I,B) \to I\otimes B \to B \to R/I\otimes B \cong B/IB \to 0 $$
+    Where the isomorphism is given by $(r+I)\otimes b\mapsto rb+IB$.
+    Then $\tor^R_1(R/I,B)=0$ iff $0\to I\otimes B\to B\to B/IB\to0$ is exact, which is iff $I\otimes B\cong IB$.
+    Thus $(3)$ and $(4)$ are equivalent.
+
+    $B^*$ is injective iff $\hom(\bul,B^*)\cong\hom(\bul\otimes B,\bQ/\bZ)=(\bul\otimes B)^*$ is exact.
+    Since duality reflects and preserves exactness, this is iff $\bul\otimes B$ is exact, i.e.\ $B$ is flat.
+    (In general if $F$ preserves and relects exactness, then $F\circ G$ is exact iff $G$ is.)
+
+    By Baer, $B^*$ is injective iff every $I\to B^*$ extends to $R\to B^*$ for every $I$.
+    That is, $\hom(R,B^*)\to\hom(I,B^*)$ is surjective.
+    Meaning $(R\otimes B)^*\to(I\otimes B)^*$ is surjective for all $I$, and since the dual map maps epics to monics and vice versa, this is iff
+    $I\otimes B\to R\otimes B\cong B$ is injective.
+    This is equivalent to $I\otimes B\cong IB$ (its image) for all $I$, as desired.
+    \qed
+
+\eproof
+
+\bdefn
+
+    An $R$-module $M$ is {\emphcolor finitely presented} if it has a presentation using finitely many generators and relations.
+    That is, $M$ is isomorphic to the quotient of $R(e_1,\dots,e_n)$ (the free $R$-module on $e_1,\dots,e_n$) by the submodule generated by $\sum_j\alpha_{ij}e_j$ for $i=1,\dots,m$.
+
+\edefn
+
+Equivalently $M$ is finitely presented iff there exists an $m\times n$ matrix $\alpha$ and an exact sequence $R^n\xtos\alpha R^m\to M\to A$.
+
+There is a natural map $\sigma\colon A^*\otimes_RM\to\hom_R(M,A)^*$ given by $\sigma(f\otimes m)$ being the map $h\mapsto f(h(m))$.
+This is well-defined: $(fr)\otimes m$ maps to $h\mapsto(fr)(h(m))=f(rh(m))=f(h(rm))$ which is the same as the image of $f\otimes(rm)$.
+
+\blemm
+
+    $\sigma$ is an isomorphism for every finitely presented $M$ and all $A$.
+
+\elemm
+
+\bproof
+
+    For $M=R$, $\sigma$ reduces to a map $\sigma\colon A^*\to A^*$ mapping $f$ to $f$; the identity.
+    For $M=R^n$, $\sigma\colon(A^*)^n\to(A^*)^n$ is the identity as well.
+    Now if $R^n\to R^m\to M\to0$ is exact, then by right exactness of $A^*\otimes\bul$, left exactness of $\hom(\bul,A)^*$, we get that the following diagram
+    commutes and has exact rows:
+
+    \centerline{\drawdiagram{
+        $A^*\otimes R^n$&$A^*\otimes R^m$&$A^*\otimes M$&$0$\cr
+        $\hom(R^n,A)^*$&$\hom(R^m,A)^*$&$\hom(M,A)^*$&$0$
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,2}, to={1,3}}
+        \diagarrow{from={1,3}, to={1,4}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={2,3}, to={2,4}}
+        \diagarrow{from={1,1}, to={2,1}, text=$\sigma$, x distance=.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text=$\sigma$, x distance=.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text=$\sigma$, x distance=.25cm}
+    }}
+
+    By the five-lemma, the rightmost $\sigma$ is an isomorphism as well.
+    \qed
+
+\eproof
+
+\bthrm
+
+    Every finitely presented flat $R$-module $M$ is projective.
+
+\ethrm
+
+\bproof
+
+    We show that $\hom(M,\bul)$ is exact: it is sufficient to show that it preserves surjections (as it is already left exact).
+    Suppose $B\to C$ is surjective, then $C^*\to B^*$ is an injection, and since $M$ is flat
+    $$ \hom(M,C)^* \cong C^*\otimes M \to B^*\otimes M \cong \hom(M,B)^* $$
+    is an injection.
+    And then $\hom(M,C)\to\hom(M,B)$ is a surjection, as desired.
+    \qed
+
+\eproof
+
+Recall that we can compute the derived functor of $F$ using the homology of $F$-acylic resolutions.
+In particular:
+
+\bthrm
+
+    If $F\to A$ is a flat resolution of $A$, then $\tor_\bul(A,B)\cong H_\bul(F\otimes B)$.
+
+\ethrm
+
+\bprop
+
+    Suppose $R\to T$ is a ring map which gives $T$ the structure of a flat $R$-module.
+    Then for all $R$-modules $A$ and all $T$-modules $C$,
+    $$ \tor^R_\bul(A,C) \cong \tor^T_\bul(A\otimes_RT,C) $$
+
+\eprop
+
+\bproof
+
+    Let $P\to A$ be a projective $R$-module resolution.
+    Since $T$ is $R$-flat and $P_n\otimes_RT$ is $T$-projective (since $\hom_T(P_n\otimes_RT,\bul)\cong\hom_R(P_n,\hom_T(T,\bul))$ is the compostion of exact functors),
+    we have that $P\otimes_RT\to A\otimes T$ is a $T$-projective resolution.
+    Thus $\tor^T_\bul(A\otimes T,C)=H_\bul((P\otimes_RT)\otimes_TC)\cong H_\bul(P\otimes_RC)=\tor^R_\bul(A,C)$.
+    \qed
+
+\eproof
+
+\bcoro
+
+    If $R$ is commutative and $T$ is a flat $R$-algebra, then for all $A,B\in\Mod_R$,
+    $$ T\otimes_R\tor^R_\bul(A,B) \cong \tor^T_\bul(A\otimes_RT,T\otimes_RB) $$
+
+\ecoro
+
+\bproof
+
+    Let $C=T\otimes_RB$, by the above proposition it is sufficient to show $\tor^R_\bul(A,T\otimes B)\cong T\otimes\tor^R_\bul(A,B)$.
+    Since $T$ is flat, $T\otimes\bul$ is exact and derived functors commute with exact functors, as desired.
+    \qed
+
+\eproof
+
+We assume $R$ is commutative so that $\tor^R_\bul$ map into $\Mod_R$.
+
+\blemm
+
+    If $\mu\colon A\to A$ is multiplication by an element $r\in R$, then so are the induced maps $\mu_\bul\colon\tor^R_\bul(A,\bul)\to\tor^R_\bul(A,\bul)$.
+
+\elemm
+
+\bproof
+
+    Let $P\to A$ be a projective resolution, then multiplication by $r\in R$ is a chain map $\tilde\mu\colon P\to P$.
+    And $\tilde\mu\otimes B$ is multiplication by $r$ on $P\otimes B$, and since $\tor^R_\bul(A,B)$ are subquotients of these modules, the induced map is still multiplication by $r$.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Let $A$ be an $R/I$ module, then for every $R$-module $B$, $\tor^R_\bul(A,B)$ is an $R/I$-module as well.
+
+\ecoro
+
+This just says that if $IA=0$ then $I\tor^R_\bul(A,\bul)=0$ as well.
+This is clearly true since $\mu=0$ is multiplication by $r\in I$, and so $\mu_\bul=0$ is also multiplication by $r\in I$.
+
+\bcoro[title=Localization for Tor]
+
+    If $R$ is commutative and $A,B\in\Mod_R$, then the following are equivalent for each $n$:
+    \benum
+        \item $\tor^R_n(A,B)=0$,
+        \item For every prime ideal $\p$ of $R$, $\tor^{R_\p}_n(A_\p,B_\p)=0$.
+        \item For every maximal ideal $\m$ of $R$, $\tor^{R_\m}_n(A_\m,B_\m)=0$.
+    \eenum
+
+\ecoro
+
+\bproof
+
+    An $R$-module $M$ is zero iff all of its localizations by prime ideals are zero iff all of its localizations by maximal ideals are zero.
+    For $M=\tor^R_n(A,B)$ we have
+    $$ M_\p = R_\p\otimes_RM = \tor^{R_\p}(A_\p,B_\p) $$
+    since $R_\p$ is flat: we showed that $S^{-1}R$ is always flat.
+    \qed
+
+\eproof
+
+\subsection{Ext for nice rings}
+
+Recall that $R$-modules are injective iff they are divisible when $R$ is a PID.
+
+\blemm
+
+    $\ext^n_\bZ(A,B)=0$ for all Abelian groups $A,B$ when $n\geq2$.
+
+\elemm
+
+\bproof
+
+    Embed $B$ in an injective $I^0$, and since divisibility is preserved by quotients, the quotient $I^1$ is divisible and thus injective.
+    So we have an injective resolution $0\to B\to I^0\to I^1\to0$, giving the desired result (take the homology of the induced complex).
+    \qed
+
+\eproof
+
+For $A=\bZ/p\bZ$ we have the short exact sequence
+$$ 0 \to \bZ \xtos p \bZ \to \bZ/p\bZ \to 0 $$
+This is a projective resolution of $\bZ/p\bZ$ and thus we can compute its Ext-groups via the cohomology of $0\ot B\xot pB\ot0$ (recall $\ext$ in the first variable is computed via
+projective resolutions, and injective resolutions in the second variable).
+Thus
+$$ \ext^0_\bZ(\bZ/p\bZ,B) = {}_pB,\qquad \ext^1_\bZ(\bZ/p\bZ,B) = B/pB $$
+and all higher Ext-groups vanish.
+
+Since $\ext$ commutes with finite direct sums, for a finitely generated $A\cong\bZ^m\oplus\bZ/p_1\bZ\oplus\cdots\oplus\bZ/p_n\bZ$, we have
+$$ \ext^\bul_\bZ(A,B) \cong \bigoplus_i\ext^\bul_\bZ(\bZ/p_i\bZ,B) $$
+
+\bexam
+
+    We have an injective resolution $0\to\bZ\to\bQ\to\bQ/\bZ\to0$.
+    Thus $\ext^\bul(A,\bZ)$ is the cohomology of $0\to\hom(A,\bQ)\to A^*\to0$.
+    If $A$ is torsion, then $\hom(A,\bQ)=0$ and so we have $\ext^0(A,\bZ)=0$ and $\ext^1(A,\bZ)=A^*$.
+
+\eexam
+
+\bprop
+
+    $\ext$ commutes with arbitrary direct products in its second component, and maps direct sums to direct products in its first.
+    That is,
+    $$ \ext^\bul_R\parens{\bigoplus_iA_i,\bul} \cong \prod_i\ext^\bul_R(A_i,\bul),\qquad \ext^\bul_R\parens{\bul,\prod_iB_i} \cong \prod_i\ext^\bul_R(\bul,B_i) $$
+
+\eprop
+
+\bproof
+
+    If $P_i\to A_i$ are projective resolutions, so is $\oplus P_i\to\oplus A_i$.
+    And if $B_i\to I_i$ are injective resolutions, so is $\prod_iB_i\to\prod_iI_i$.
+    Since $\hom(\oplus P_i,\bul)\cong\prod\hom(P_i,\bul)$ and $\hom(\bul,\prod I_i)\cong\prod\hom(\bul,I_i)$, this results from cohomology commuting with direct products.
+    \qed
+
+\eproof
+
+\bexam
+
+    Let $B=\prod_p\bZ/p\bZ$, then
+    $$ \ext^1(A,B) \cong \prod_p A/pA $$
+    which vanishes iff $A$ is torsion-free.
+
+\eexam
+
+\blemm
+
+    Let $R$ be a commutative ring, so we can view $\hom_R(A,B),\ext_R^\bul(A,B)$ as $R$-modules.
+    If $\mu\colon A\to A,\nu\colon B\to B$ are multiplication by $r\in R$, so are $\mu^\bul,\nu_\bul$ of $\ext_R^\bul(A,B)$.
+
+\elemm
+
+\bproof
+
+    Pick a projective resolution $P\to A$, then $\mu$ extends to a chain map $\tilde\mu\colon P\to P$ given by multiplication by $r$ (which is the up-to-homotopy unique extension).
+    Then $\hom(\tilde\mu,B)$ is multiplication by $r$ on $\hom(P,B)$: $f$ maps to $f\tilde\mu$ which maps $p\in P_n$ to $f(rp)=rf(p)$.
+    Thus $\tilde\mu$ is multiplication by $r$ on subquotients, in particular $\ext^\bul_R(A,B)$.
+    \qed
+
+\eproof
+
+\bcoro
+
+    If $R$ is commutative and $A\in\Mod_R$ is an $R/I$-module (i.e.\ $IA=0$), then $\ext^\bul_R(A,\bul)$ are $R/I$-modules.
+
+\ecoro
+
+We want to show, similar to $\tor$, that $\ext$ commutes with localization.
+There is a natural map $\Phi\colon S^{-1}\hom_R(A,B)\to\hom_{S^{-1}R}(S^{-1}A,S^{-1}B)$, as we can view $f/s\in S^{-1}\hom(A,B)$ as mapping $a/s'\mapsto f(a)/ss'$.
+
+\blemm
+
+    If $A$ is finitely presented, then for every multiplicative set $S\subseteq R$, $\Phi$ is an isomorphism.
+
+\elemm
+
+\bproof
+
+    When $A=R$ then $\Phi$ is a map $S^{-1}B\to S^{-1}B$ which maps $b/s$ (viewed as $f(r)=rb$) to $b/s$ (since $1$ maps to $b/s$), so $\Phi$ is an isomorphism.
+    By additivity of $\hom$, $\Phi$ is an isomorphism when $A=R^n$.
+    If $R^n\to R^m\to A\to0$ is exact, we can apply the $5$-lemma to the diagram (since $\hom(\bul,B)$ is left exact)
+
+    \centerline{\drawdiagram{
+        $0$&$S^{-1}\hom(A,B)$&$S^{-1}\hom(R^m,B)$&$S^{-1}\hom(R^n,B)$\cr
+        $0$&$\hom(S^{-1}A,S^{-1}B)$&$\hom(S^{-1}R^m,S^{-1}B)$&$\hom(S^{-1}R^n,S^{-1}B)$
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,2}, to={1,3}}
+        \diagarrow{from={1,3}, to={1,4}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={2,3}, to={2,4}}
+        \diagarrow{from={1,2}, to={2,2}, text=$\Phi$, x distance=.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text=$\cong$, x distance=.25cm}
+        \diagarrow{from={1,4}, to={2,4}, text=$\cong$, x distance=.25cm}
+    }}
+
+    and we get that $\Phi$ is an isomorphism, as desired.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A ring $R$ is {\emphcolor (right) Noetherian} if it satisfies the {\emphcolor ascending chain condition}: there exists no infinite proper ascending chain of (right) ideals.
+
+\edefn
+
+There is an obvious definition of left Noetherian rings.
+The dual condition, that $R$ satisfies the {\emphcolor descending chain condition}, makes $R$ an {\emphcolor Artinian ring}.
+
+A classic result is the following:
+
+\blemm
+
+    A ring $R$ is (right) Noetherian iff every (right) ideal is finitely generated.
+
+\elemm
+
+Furthermore, it is a well-known result that every finitely-generated module over a Noetherian ring is finitely presented.
+In particular every finitely-generated module has a left presentation by finitely-generated free modules (since when constructing the left resolution we can always choose finitely-generated free modules).
+
+\bprop
+
+    Let $A$ be a finitely generated module over a commutative Noetherian ring $R$, then for every multiplicative set $S\subseteq R$ and $B\in\Mod_R$,
+    $\Phi$ extends to an isomorphism $S^{-1}\ext^\bul_R(A,B)\cong\ext^\bul_{S^{-1}R}(S^{-1}A,S^{-1}B)$.
+
+\eprop
+
+\bproof
+
+    Let $F\to A$ be a resolution by finitely-generated free $R$-modules.
+    Then since $S^{-1}\bul\colon\Mod_R\to\Mod_{S^{-1}R}$ is exact and maps finitely-generated free $R$-modules to finitely-generated free $S^{-1}R$-modules, we get the desired result.
+    \qed
+
+\eproof
+
+\bcoro[title=Localization for Ext]
+
+    If $R$ is commutative Noetherian and $A\in\Mod_R$ is finitely-generated, then the following are equivalent for all $B\in\Mod_R$ and $n$:
+    \benum
+        \item $\ext^n_R(A,B)=0$.
+        \item For every prime ideal $\p\leq R$, $\ext^n_{R_\p}(A_\p,B_\p)=0$.
+        \item For every maximal ideal $\m\leq R$, $\ext^n_{R_\m}(A_\m,B_\m)=0$.
+    \eenum
+
+\ecoro
+
+\subsection{Ext and extensions}
+
+\bdefn
+
+    An {\emphcolor extension} $\xi$ of $A$ by $B$ is an exact sequence $0\to B\to X\to A\to0$.
+    Two extensions $\xi,\xi'$ are {\emphcolor equivalent} if there is a map $X\to X'$ commuting with the short exact sequences:
+
+    \centerline{\drawdiagram{
+        $0$&$A$&$X$&$B$&$0$\cr
+        $0$&$A$&$X'$&$B$&$0$\cr
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,2}, to={1,3}}
+        \diagarrow{from={1,3}, to={1,4}}
+        \diagarrow{from={1,4}, to={1,5}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={2,3}, to={2,4}}
+        \diagarrow{from={2,4}, to={2,5}}
+        \diagarrow{from={1,2}, to={2,2}, text={$=$}, x distance=.25cm}
+        \diagarrow{from={1,3}, to={2,3}}
+        \diagarrow{from={1,4}, to={2,4}, text={$=$}, x distance=.25cm}
+    }}
+
+    Note that by the $5$-lemma such a map must be an isomorphism, so this is indeed an equivalence.
+
+    An extension is {\emphcolor split} if it is equivalent to $0\to B\to A\oplus B\to A\to0$.
+
+\edefn
+
+\blemm
+
+    If $\ext^1(A,B)$ then every extension of $A$ by $B$ is split.
+
+\elemm
+
+\bproof
+
+    Let $\xi\colon0\to B\to X\to A\to0$ be an extension, then applying $\ext^\bul(A,\bul)$ gives the exact sequence
+    $$ \hom(A,X) \to \hom(A,A) \xtos\partial \ext^1(A,B) = 0 $$
+    meaning the map $\hom(A,X)\to\hom(A,A)$ is surjective.
+    In particular we can lift $\id_A$ to a map $\sigma\colon A\to X$; i.e.\ $\sigma$ is a section of the above short exact sequence, so it splits.
+    \qed
+
+\eproof
+
+By naturality of the connecting morphism $\delta$, $\Theta(\xi)=\partial(\id_A)$ is well-defined on the equivalence classes of extensions.
+Furthermore $\xi$ is split iff $\id_A$ lifts to $\hom(A,X)$ iff $\Theta(\xi)=\partial(\id_A)=0$ (since this means $\id_A\in\ker\partial$, the image of $\hom(A,X)\to\hom(A,A)$).
+We can thus interpret $\Theta(\xi)$ as an {\it obstruction\/} to $\xi$ being split.
+
+\bthrm
+
+    Given two $R$-modules $A,B$, the mapping $\Theta\colon\xi\mapsto\partial(\id_A)$ is a bijection between (equivalence classes of) extensions of $A$ by $B$ and $\ext^1(A,B)$,
+    which maps split extensions to $0$.
+
+\ethrm
+
+\bproof
+
+    Fix an exact sequence $0\to M\xto jP\to A\to0$ with $P$ projective.
+    Applying $\hom(\bul,B)$ gives an exact sequence (since $\ext^1(P,B)=0$)
+    $$ 0 \to \hom(A,B) \to \hom(P,B) \to \hom(M,B) \xtos\partial \ext^1(A,B) \to 0 $$
+    Given $x\in\ext^1(A,B)$, choose $\beta\in\hom(M,B)$ such that $\partial(\beta)=x$.
+    Let $X$ be the pushout of $j,\beta$, i.e.\ the cokernel of $M\to P\oplus B,m\mapsto(j(m),-\beta(m))$.
+    Then we have a diagram
+
+    \centerline{\drawdiagram{
+        $0$&$M$&$P$&$A$&$0$\cr
+        $0$&$B$&$X$&$A$&$0$
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,2}, to={1,3}, text=$j$, y distance=-.25cm}
+        \diagarrow{from={1,3}, to={1,4}}
+        \diagarrow{from={1,4}, to={1,5}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}, text=$i$, y distance=.25cm}
+        \diagarrow{from={2,3}, to={2,4}}
+        \diagarrow{from={2,4}, to={2,5}}
+        \diagarrow{from={1,2}, to={2,2}, text=$\beta$, x distance=.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text=$\sigma$, x distance=.25cm}
+        \diagarrow{from={1,4}, to={2,4}, text={$=$}, x distance=.25cm}
+    }}
+
+    The map $X\to A$ is induced by $B\xto0A$ and $P\to A$.
+    The bottom sequence is exact, and by naturality of $\partial$ we see that $\partial(\id_A)=\partial(\beta)=x$, so $\Theta$ is surjective.
+
+    Now notice that if $\beta'\in\hom(M,B)$ is another lift of $x$, then there is an $f\in\hom(P,B)$ so that $\beta'=\beta+fj$.
+    If $X'$ is the pushout of $\beta',j$ then $i\colon B\to X,\sigma+if\colon P\to X$ induce an isomorphism $X'\cong X$ giving an equivalence between $\xi'$ and $\xi$.
+    Thus we have a map $\Psi$ from $\ext^1(A,B)$ to the set of equivalences of extensions, which satisfies $\Psi\Theta(\xi)=\xi$, meaning $\Theta$ is injective and thus bijective.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $\xi\colon0\to B\to X\to A\to0$ and $\xi'\colon0\to B\to X'\to A\to0$ be two extensions of $A$ by $B$.
+    Let $X''$ be the pullback of $X\to A,X'\to A$: $X''=\set{(x,x')\in X\times X'}[\bar x=\bar x'\in A]$.
+    Then $X''$ contains three copies of $B$: $B\times0,0\times B$ and the skew diagonal $\set{(-b,b)}[b\in B]$ (since $\bar b=0$ by exactness).
+    Let $Y$ be the quotient of $X''$ by the skew diagonal; this identifies $B\times 0$ and $0\times B$.
+
+    Thus we have a natural embedding $B\to Y,b\mapsto[b,0]$, and the induced epimorphism $Y\to A$ given by the pullback.
+    The kernel of $Y\to A$ are $[x,x']$ such that $\bar x=\bar x'=0$, which means that $x,x'\in B$ and so the kernel is the image of $B$.
+    Thus the sequence $\phi\colon0\to B\to Y\to A\to0$ is exact, and is called the {\emphcolor Baer sum} of $\xi$ and $\xi'$.
+
+\edefn
+
+\bcoro
+
+    The set of extensions of $A$ by $B$ is an Abelian group with the Baer sum, isomorphic to $\ext^1(A,B)$ via $\Theta$.
+
+\ecoro
+
+\bproof
+
+    We will show $\Theta(\phi)=\Theta(\xi)+\Theta(\xi')$ which is sufficient: the isomorphic structure is given by $\xi+\xi'=\Theta^{-1}(\Theta(\xi)+\Theta(\xi'))$,
+    and so if we show this we show that Baer summation is well-defined, as well as the isomorphism.
+
+    We can lift $P\to A$ via the surjection $X\to A$ to give us a map $\tau\colon P\to X$, similarly $\tau'\colon P\to X'$.
+    These induce maps $\gamma,\gamma'\colon M\to B$ which make the short exact sequences commute.
+    Further, we have an induced map $\bar\tau\colon P\to Y$ whose restriction to $M$ is induced by $\gamma+\gamma'\colon M\to B$ so we have another map of short exact sequences.
+    Thus $\Theta(\phi)=\partial(\gamma+\gamma')=\partial(\gamma)+\partial(\gamma')=\Theta(\xi)+\Theta(\xi')$ as desired.
+    \qed
+
+\eproof
+
+This construction allows us to define $\ext^1(A,B)$ in {\it any\/} Abelian category, no matter the presence of projectives or injectives.
+The Freyd-Mitchell embedding theorem shows us that $\ext^1(A,B)$ is always an Abelian group; but it can be shown directly as well.
+We can also generalize $\ext^n(A,B)$ due to Yoneda.
+
+$\ext^n(A,B)$ is the equivalence class of exact sequences of the form
+$$ \xi\colon B\to X_n\to\cdots\to X_1\to A\to 0 $$
+by the equivalence $\xi\sim\xi'$ iff there is a morphism of complexes $\xi\to x'$, whose maps $B\to B,A\to A$ are the respective identities.
+This is not obviously an equivalence (since the morphisms need not be isomorphisms, so transitivity is not clear), but it can be shown.
+
+To add $\xi,\xi'$, let $X_1''$ be the pullback of $X_1,X_1'$ over $A$ and $X_n''$ the pusout of $X_n,X_n''$ under $B$.
+Then define $Y_n$ to be the quotient of $X_n''$ by the skew diagonal copy of $B$.
+Then $\xi+\xi'$ is the class of the extension
+$$ 0 \to B \to Y_n \to X_{n-1}\oplus X_{n-1}' \to \cdots \to X_2 \oplus X_2' \to X_1'' \to A \to 0 $$
+If $\A$ has enough projectives and we take a projective resolution $P\to A$, the comparison theorem gives us a chain map $P\to\xi$, thus a diagram
+
+\centerline{\drawdiagram{
+    $0$&$M$&$P_{n-1}$&$\cdots$&$P_0$&$A$&$0$\cr
+    $0$&$B$&$X_n$&$\cdots$&$X_1$&$A$&$0$\cr
+}{
+    \diagarrow{from={1,1}, to={1,2}}
+    \diagarrow{from={1,2}, to={1,3}}
+    \diagarrow{from={1,3}, to={1,4}}
+    \diagarrow{from={1,4}, to={1,5}}
+    \diagarrow{from={1,5}, to={1,6}}
+    \diagarrow{from={1,6}, to={1,7}}
+    \diagarrow{from={2,1}, to={2,2}}
+    \diagarrow{from={2,2}, to={2,3}}
+    \diagarrow{from={2,3}, to={2,4}}
+    \diagarrow{from={2,4}, to={2,5}}
+    \diagarrow{from={2,5}, to={2,6}}
+    \diagarrow{from={2,6}, to={2,7}}
+    \diagarrow{from={1,2}, to={2,2}, text=$\beta$, x distance=.25cm}
+    \diagarrow{from={1,3}, to={2,3}, text=$\gamma_n$, x distance=.25cm}
+    \diagarrow{from={1,5}, to={2,5}, text=$\gamma_1$, x distance=.25cm}
+    \diagarrow{from={1,6}, to={2,6}, text={$=$}, x distance=.25cm}
+}}
+
+Dimension shifting gives us $\ext^n(A,B)\cong\hom(M,B)$: $\Theta(\xi)=\partial(\beta)$ is the bijection.
+
+\subsection{Derived functors of the inverse limit}
+
+Recall that we showed $\A^I$ has enough injectives when $\A$ is complete and has enough injectives (see the last example in the chapter on injective resolutions).
+In particular $\Mod_R^I$ has enough injectives.
+
+We are interested in the case $\A=\Ab$ and $I=\omega^\op$ (the opposite poset of natural numbers).
+Elements of $\Ab^{\omega^\op}$ are called {\emphcolor towers} of Abelian groups: they are sequences
+$$ \set{A_i}_{i<\omega}\colon \cdots\to A_2\to A_1\to A_0 $$
+Note that since $\omega^\op$ has a maximum (terminal) element, colimits over it are uninteresting (the colimit from a category with a terminal element is just the image of
+that element, if it exists).
+$\omega$ is a directed set, and thus $\omega^\op$ is cofiltered, and so limits from it are {\emphcolor inverse limits} $\ilim\colon\Ab^{\omega^\op}\to\Ab$.
+
+Recall the axiom (AB4\star): $\A$ is complete and the product of any set of surjections is surjective.
+That is, $\prod$ is an exact functor.
+It is not hard to see that $\Mod_R$ satisfies (AB4\star).
+
+Recall that the limit of a diagram $A\colon\A^I\to\A$ is the kernel of
+$$ \prod_{i\in I}A_i\xtos\Delta\prod_{\phi\colon i\to j}A_j $$
+where $\Delta_\phi\colon\prod_{i\in I}A_i\to A_j$ is $p_j-A(\phi)p_i$, where $p_i\colon\prod_{i\in I}A_i\to A_i$ is the projection map.
+
+\bprop
+
+    Let $\A$ be (AB4\star), and $I$ small.
+    Then $\lim_I\colon\A^I\to\A$ is left exact, and we can define a cohomological $\delta$-functor
+    $$ \lim_I^1A = \coker\Delta_A,\qquad \lim_I^nA=0 $$
+
+\eprop
+
+\bproof
+
+    If $0\to A\to B\to C\to0$ is an exact sequence of functors, then by (AB4\star) we have a commutative diagram of exact rows
+
+    \centerline{\drawdiagram{
+        $0$&$\prod_iA_i$&$\prod_iB_i$&$\prod_iC_i$&$0$\cr
+        $0$&$\prod_\phi A_j$&$\prod_\phi B_j$&$\prod_\phi C_j$&$0$\cr
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,2}, to={1,3}}
+        \diagarrow{from={1,3}, to={1,4}}
+        \diagarrow{from={1,4}, to={1,5}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={2,3}, to={2,4}}
+        \diagarrow{from={2,4}, to={2,5}}
+        \diagarrow{from={1,2}, to={2,2}, text=$\Delta_A$, x distance=.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text=$\Delta_B$, x distance=.25cm}
+        \diagarrow{from={1,4}, to={2,4}, text=$\Delta_C$, x distance=.25cm}
+    }}
+
+    The snake lemma gives us a connecting morphism $\partial$ so that
+    $$ 0\to\ker\Delta_A\to\ker\Delta_B\to\ker\Delta_C\xtos\partial\coker\Delta_A\to\coker\Delta_B\to\coker\Delta_C\to0 $$
+    is exact.
+    Thus $\lim_I^\bul$ is a cohomological $\delta$-functor (by naturality of the connecting morphism).
+    \qed
+
+\eproof
+
+Recall that a functor is effaceable if for every object $A$, there is a monic $A\to I$ mapped to zero.
+A $\delta$-functor is effaceable if every component (other than zero) is effaceable, and we showed that in such a case the functor is universal.
+To show that $\lim_I^\bul$ is the right derived functor of $\lim_I$, it is sufficient then to show it is effaceable.
+This is not true in general, but it is when $I=\omega^\op$.
+
+In this case, let us consider more closely $\Delta$.
+Given a tower of Abelian groups
+$$ \cdots\to A_2\xto{f_1}A_1\xto{f_0}A_0 $$
+$\Delta$ is the map
+$$ \Delta\colon\prod_{n<\omega}A_n \to \prod_{n\geq m}A_m $$
+where $\Delta_{n,m}(a_i)_i=a_m-f_{n,m}a_n$ where $f_{n,m}=f_m\circ\cdots\circ f_{n-1}\colon A_n\to A_m$.
+The kernel of $\Delta$ are those $(a_i)_i$ such that $a_m-f_{n,m}a_n=0$ for all $n\geq m$, equivalently $a_n-f_na_{n+1}=0$ for all $n$.
+So we can simplify $\Delta$:
+$$ \Delta\colon\prod_{n<\omega}A_n\to\prod_{n<\omega}A_n,\qquad \Delta(a_n)_n = (a_n-f_na_{n+1})_n $$
+
+\blemm
+
+    If all maps $f_n$ are surjective, then $\ilim^1A_i=0$.
+
+\elemm
+
+\bproof
+
+    We want to show that $\Delta$ is surjective, and thus $\coker\Delta=0$.
+    So let $(b_i)\in\prod_iA_i$ and choose $a_0\in A_0$.
+    Then we inductively can choose $a_{i+1}\in A_{i+1}$ such that $f_ia_{i+1}=a_i-b_i$, then $\Delta(a_i)_i=(b_i)_i$ as desired.
+    \qed
+
+\eproof
+
+\bcoro
+
+    $\ilim^\bul$ is the right derived functor of $\ilim$.
+
+\ecoro
+
+\bproof
+
+    As explained, it is sufficient to show that $\ilim^1$ is effaceable.
+    When showing that $\A^I$ has enough injectives, we showed that we can embed every functor $F$ into an injective of the form $\prod_{k\in I}k_*I_k$ for $I_k$ injective.
+    $k_*E$ is defined by
+    $$ k_*E(i) = \prod_{\hom_I(i,k)}E,\qquad k_*E(f\colon i\to j)\colon\prod_{\hom(i,k)}E\to\prod_{hom(j,k)}E,(a_\phi)_{\phi\colon i\to k}\mapsto(a_{\psi f})_{\phi\colon j\to k} $$
+    So in our case $k_*E$ is the tower $\cdots\to E\to E\to0\to\cdots\to0$, where $k_*E(i)=0$ when $i<k$, and the maps $E\to E$ are identities.
+    In particular $k_*E$'s maps are all surjective, and thus by (AB4\star) so are all the maps of $\prod_{k\in I}k_*I_k$.
+    So $\ilim^1$ maps $\prod_{k\in I}k_*I_k$ to zero and is thus effaceable, as desired.
+    \qed
+
+\eproof
+
+\bexam
+
+    Let $\set{A_i}$ be a tower such that $A_{i+1}\to A_i$ are all inclusions, and set $A=A_0$.
+    Then $A$ is a topological group where $\set{a+A_i}[a\in A,i\geq0]$ form a basis of open sets.
+    Then $\ilim A_i=\bigcap A_i$ is zero iff $A$ is Hausdorff: $\set{A_i}$ form a local basis at $0$, so if $A$ is Hausdorff then for every $a\neq0$ there must be some neighborhood
+    of $0$ ($A_i$) not including $a$, as desired.
+    And conversely, if $a\neq0$ then let $a\notin A_i$; $a\in a+A_i$ and $0\in A_i$ are distinct, and thus disjoint, cosets, as desired.
+
+    Now $\ilim^1A_i=0$ iff $A$ is complete (Cauchy sequences being sequences $(a_i)_i$ such that for every open $0\in U$ there is an $N$ such that for every $n,m\geq N$, $a_n-a_m\in U$).
+    We consider the inverse limit of quotients, $\ilim(A/A_i)$.
+    Elements of $\ilim(A/A_i)$ are sequences $(a_i+A_i)_i$ such that $a_i-a_j\in A_i$ for all $i\leq j$.
+    Note that if $(a_i+A_i)_i\in\ilim(A/A_i)$, then $(a_i)_i$ is Cauchy.
+    We have an exact sequence of towers,
+    $$ 0 \to \set{A_i} \to \set{A} \to \set{A/A_i} \to 0 $$
+    which yields
+    $$ 0 \to \ilim(A_i) \to A \to \ilim(A/A_i) \to \ilim^1A_i \to 0 $$
+    since $\set A$'s maps are all surjective, its derived inverse limit is zero.
+    The map $A\to\ilim(A/A_i)$ is the map $a\mapsto(a+A_i)_i$.
+    By exactness, this map is surjective iff $\ilim^1A_i=0$.
+
+    If $A$ is complete, then for $(a_i+A_i)_i\in\ilim(A/A_i)$, $(a_i)_i$ must have some limit for it is Cauchy.
+    Call it $a$, then for every $i$ we must have $a-a_j\in A_i$ for every $j\geq N$ for some $N$.
+    If $i\geq N$ this means $a-a_i\in A_i$, and if $i<N$ then $a_i-a_N\in A_i$ and $a-a_N\in A_i$ implies $a-a_i\in A_i$ as well.
+    Thus $(a+A_i)_i=(a_i+A_i)_i$, so this map is indeed surjective and $\ilim^1A_i=0$ as desired.
+
+    Conversely if this map is surjective, then consider a Cauchy sequence $(a_n)_n$.
+    For every $i$, there is an $N_i$ such that $a_n-a_m\in A_i$ for all $n,m\geq N_i$.
+    Since $A_i$ decrease, we can assume that $N_i$ is monotonically increasing, and so $(a_n)_n$ has a limit iff $(a_{N_i})_i$ does (Cauchy sequences have a limit
+    iff some subsequence does).
+    Now $a_{N_i}-a_{N_j}\in A_i$ since $N_j\geq N_i$ and so $(a_{N_i}+A_i)_i\in\ilim(A/A_i)$ and thus is equal to $(a+A_i)_i$.
+    But then $a$ is the limit of $(a_{N_i})_i$: $a_{N_j}-a\in A_i$ for $j\geq i$ (since it is true for $j=i$ by definition and $a_{N_j}-a_{N_i}\in A_i$).
+    Thus $A$ is complete, as desired.
+
+\eexam
+
+\bdefn
+
+    A tower of Abelian groups $\set{A_i}$ satisfies the {\emphcolor Mittag-Leffler condition} if for every $k$ there is some $j\geq k$ such that the image
+    of every $A_i\to A_k$ is constant for all $i\geq j$.
+    Equivalently, we could say that the images of $A_i\to A_k$ satisfies the descending chain condition.
+
+    If for each $k$ there is a $j>k$ such that the map $A_j\to A_k$ is zero, then this obviously satisfies the Mittag-Leffler condition.
+    In this case, we say the tower satisfies the {\emphcolor trivial Mittag-Leffler condition}.
+
+\edefn
+
+\bprop
+
+    If $\set{A_i}$ satisfies the Mittag-Leffler condition, then $\ilim^1A_i=0$.
+
+\eprop
+
+\bproof
+
+    We need to show that $\Delta\colon\prod_iA_i\to\prod_iA_i$ is surjective.
+    If the tower satisfies the trivial Mittag-Leffler condition, then let $(b_i)_i\in\prod_iA_i$.
+    Now let $a_k=b_k+\bar b_{k+1}+\cdots+\bar b_{j-1}$ where $\bar b_i$ is the image of $b_i\in A_i$ in $A_k$.
+    Note that $\bar b_i=0$ for $i\geq j$.
+    $\Delta$ maps $(a_i)_i$ to $(a_i-\bar a_{i+1})_i=(b_i)_i$, so $\Delta$ is surjective as desired.
+
+    Now if $\set{A_i}$ satisifes the general condition, let $B_k\subseteq A_k$ be the image of $A_i\to A_k$ for large $i$.
+    The maps $B_{k+1}\to B_k$ are surjective, and so $\ilim^1B_i=0$.
+    Furthermore, the map $A_i/B_i\to A_k/B_k$ is zero and so $\set{A_k/B_k}$ satisfies the trivial condition and thus $\ilim^1A_i/B_i=0$.
+    The short exact sequence
+    $$ 0 \to \set{B_k} \to \set{A_k} \to \set{A_k/B_k} \to 0 $$
+    gives us the desired result: $\ilim^1A_i=0$.
+    \qed
+
+\eproof
+
+Note that $\Ab$ can be replaced with $\Mod_R$ or $\Ch(\Mod_R)$ in all of these results; the proofs are the same.
+
+\bexam
+
+    If $\set{A_i}$ is a tower of Noetherian modules (e.g.\ finite Abelian groups, finite-dimensional vector spaces), then it must satisfy the Mittag-Leffler condition since the images of $A_i\to A_k$
+    are descending.
+    Thus $\ilim^1A_i=0$ in this case.
+
+\eexam
+
+\bthrm
+
+    Let $\cdots\to C_1\to C_0$ be a tower of chain complexes of Abelian groups satisfying the Mittag-Leffler condition.
+    Set $C=\ilim C_i$, then we have an exact sequence for every $q$:
+    $$ 0 \to \ilim^1H_{q+1}(C_i) \to H_q(C) \to \ilim H_q(C_i) \to 0 $$
+
+\ethrm
+
+\bproof
+
+    Let $B_i\subseteq Z_i\subseteq C_i$ be the subcomplexes of boundaries and cycles, so that $H_\bul(C_i)=Z_i/B_i$ with zero differentials.
+    We have an exact sequence $0\to\set{Z_i}\to\set{C_i}\xto d\set{C_i[-1]}$, and so we can apply the left-exact functor $\ilim$ to get
+    $0\to\ilim Z_i\to C\xto dC[-1]$.
+    This means that $Z=\ilim Z_i$ is the subcomplex of cycles of $C$ (since these are precisely those chains in the kernel of $d$).
+
+    Let $B$ be the subcomplex $d(C)[1]=(C/Z)[1]$ of boundaries in $C$, so $Z/B$ is the chain complex $H_\bul(C)$.
+    We have an exact sequence
+    $$ 0 \to \set{Z_i} \to \set{C_i} \xtos d \set{B_i[-1]} \to 0 $$
+    which gives us, since $\ilim^1C_i=0$,
+    $$ 0 \to Z=\ilim Z_i \to C=\ilim C_i \to \ilim B_i[-1] \to \ilim^1Z_i \to 0 \to \ilim^1B_i[-1] \to 0 $$
+    So $\ilim^1B_i=(\ilim^1B_i[-1])[1]=0$.
+    Since $C/Z=B[-1]$ we also have the exactness of
+    $$ 0 \to B[-1] \to \ilim B_i[-1] \to \ilim^1Z_i \to 0 $$
+
+    Now we also have an exact sequence of towers $0\to\set{B_i}\to\set{Z_i}\to\set{H_\bul(C_i)}\to0$, which gives us the exact
+    $$ 0 \to \ilim B_i \to Z \to \ilim H_\bul(C_i) \to 0 \to \ilim^1Z_i \to \ilim^1H_\bul(C_i) \to 0 $$
+    so $\ilim^1Z_i\cong\ilim^1H_\bul(C_i)$.
+
+    Now if we have a filtration $A\subseteq B\subseteq C$, then we have a short exact sequence $0\to B/A\to C/A\to C/B\to0$.
+    We have a filtration here $B\subseteq\ilim B_i\subseteq Z$, and our short exact sequences show $\ilim B_i/B=\ilim^1Z_i[1]\cong\ilim^1H_\bul(C_i)[1]$
+    and $Z/\ilim B_i\cong\ilim H_\bul(C_i)$.
+    Since $Z/B\cong H_\bul(C)$ we get the desired short exact sequence.
+    \qed
+
+\eproof
+
+\bcoro
+
+    If $\cdots\to C_1\to C_0$ is a tower of cochain complexes satisfying the Mittag-Leffler condition, the sequences become
+    $$ 0 \to \ilim^1H^{q-1}(C_i) \to H^q(C) \to \ilim H^q(C_i) \to 0 $$
+
+\ecoro
+
+\bexam
+
+    Let $X$ be a topological CW complex, and denote by $H^\bul(X)$ the integral cohomology of $X$.
+    Recall that integral cohomology of $X$ is the cohomology of $\hom(S(X),\bZ)$ where $S(X)$ is the singular chain complex of $\bZ$.
+    Now let $\set{X_i}$ be an increasing sequence of subcomplexes with $X=\bigcup X_i$.
+    Let $C_i$ be the cochain complex $\hom(S(X_i),\bZ)$.
+    Now, $S_n(X_{i+1})/S_n(X_i)$ is free Abelian, and so the inclusion $S(X_i)\subseteq S(X_{i+1})$ splits.
+    Thus $C_{i+1}\to C_i$ is surjective, and so $\cdots\to C_1\to C_0\to0$ satisfies the Mittag-Leffler condition.
+
+    Furthermore, $S(X)$ is the union of $S(X_i)$s.
+    Thus $H^\bul(X)$ is the cohomology of
+    $$ \hom\parens{\bigcup S(X_i),\bZ} = \ilim\hom(S(X_i),\bZ) = \ilim C_i $$
+    By our above theorem, this tells us we have a short exact sequence
+    $$ 0 \to \ilim^1H^{\bul-1}(X_i) \to H^\bul(X) \to \ilim H^\bul(X_i) \to 0 $$
+
+    This is the historic motivation for the usage of $\ilim^1$, discovered by Milnor.
+
+\eexam
+
+\subsection{Universal coefficient theorems}
+
+Recall that for a short exact sequence of chain complexes $0\to A\xto fB\xto gC\to0$, we have connecting morphisms $H_{n+1}(C)\xto\partial H_n(A)$ giving a long exact sequence.
+$\partial$ is given by lifting $[z]\in H_{n+1}(C)$ to $b\in B_{n+1}$ (so that $g(b)=z$) and then defining $\partial(z)=f^{-1}(db)$.
+
+If we have an exact sequence
+$$ A\xtos fB\to X\to C\xtos gD $$
+then we get a short exact sequence
+$$ 0\to\coker f\to X\to\ker g\to0 $$
+
+\bthrm[title=K\"unneth formula]
+
+    Let $P$ be a chain complex of flat right $R$-modules such that the boundary submodules $B_n(P)=d(P_{n+1})$ are also flat.
+    Then for every left $R$-module $M$ and every $n$, we have an exact sequence
+    $$ 0 \to H_n(P)\otimes M \to H_n(P\otimes M) \to \tor^R_1(H_{n-1}(P),M) \to 0 $$
+
+\ethrm
+
+\bproof
+
+    Since $P_n,d(P_n)$ are flat ($\otimes$-acylic) and we have a short exact sequence $0\to Z_n\to P_n\to d(P_n)\to0$, this shows the $Z_n$ are flat as well
+    and that $0\to Z_n\otimes M\to P_n\otimes M\to d(P_n)\otimes M\to0$ is exact.
+    Thus we have a short exact sequence of chain complexes $0\to Z\otimes M\to P\otimes M\to d(P)\otimes M\to0$.
+
+    Thus we have the induced long exact sequence of homology modules,
+    $$ \cdots\to H_{n+1}(dP\otimes M) \xtos\partial H_n(Z\otimes M) \to H_n(P\otimes M) \to H_n(dP\otimes M) \xtos\partial H_{n-1}(Z\otimes M) \to\cdots $$
+    since the differentials of $dP$ and $Z$ are zero, this gives us
+    $$ \cdots\to dP_{n+1}\otimes M \xtos\partial Z_n\otimes M \to H_n(P\otimes M) \to dP_n\otimes M \xtos\partial Z_{n-1}\otimes M \to\cdots $$
+    In particular we get a short exact sequence
+    $$ 0\to\coker\partial \to H_n(P\otimes M)\to\ker\partial\to 0 $$
+
+    The connecting morphism is given as follows: given $dp\otimes m\in dP\otimes M$, we lift it to $p\otimes m$ then apply $d$ to get $dp\otimes m\in P\otimes M$, and then lift to
+    $Z\otimes M$.
+    Thus $\partial$ is just $i\otimes M$, where $i$ is the inclusion $dP_{n+1}\to Z_n$.
+    But
+    $$ 0 \to d(P_{n+1}) \xtos i Z_n \to H_n(P) \to 0 $$
+    is a flat resolution of $H_n(P)$, so $\tor_\bul(H_n(P),M)$ is the homology of
+    $$ 0 \to d(P_{n+1})\otimes M \xtos\partial Z_n\otimes M \to 0 $$
+    Thus $H_n(P)\otimes M$ is $\coker\partial$ and $\tor_1(H_n(P),M)$ is $\ker\partial$.
+    This gives us the desired result.
+    \qed
+
+\eproof
+
+\bthrm[title=Universal coefficient theorem for homology]
+
+    Let $P$ be a chain complex of free Abelian groups.
+    Then for every $n$ and every Abelian group $M$, the above K\"unneth formula splits noncanonically.
+    Thus we have a non-natural isomorphism
+    $$ H_n(P\otimes M) \cong (H_n(P)\otimes M)\oplus\tor_1^\bZ(H_{n-1}(P),M) $$
+
+\ethrm
+
+\bproof
+
+    Subgroups of free Abelian groups are free, thus $P$ satisfies the condition for the above theorem.
+    Since $d(P_n)$ is free and thus projective, the short exact sequence $0\to Z_n\to P_n\to d(P_n)\to0$ splits, giving a noncanonical isomorphism
+    $$ P_n \cong Z_n\oplus d(P_n) $$
+    Thus $P_n\otimes M\cong(Z_n\otimes M)\oplus(d(P_n)\otimes M)$.
+    In fact, $Z_n\otimes M$ is a direct summand of the kernel of $d_n\otimes M\colon P_n\otimes M\to P_{n-1}\otimes M$.
+    Now $H_n(P)\otimes M$ is the quotient of $Z_n\otimes M$ by the image of $d_{n+1}\otimes M$, and quotienting $\ker d_n\otimes M$ by this image gives $H_n(P\otimes M)$.
+    Thus $H_n(P)\otimes M$ is a direct summand of $H_n(P\otimes M)$.
+    The K\"unneth formula gives us the rest (since if $A$ is a direct summand of $B$, then $B\cong A\oplus B/A$; thus $B\cong A\oplus C$ for any short exact sequence $0\to A\to B\to C\to0$).
+    \qed
+
+\eproof
+
+Recall if $P,Q$ are chain complexes of right and left $R$-modules respectively, we defined their tensor product $P\otimes Q$ to be the chain complex
+$$ (P\otimes Q)_n = \bigoplus_{p+q=n}P_p\otimes Q_q,\qquad d(a\otimes b)=(da)\otimes b+(-1)^pa\otimes d(b) $$
+For a left $R$-module $M$, $P\otimes M$ is the special case where $M$ is viewed as a chain complex focused at $0$.
+
+\bthrm[title=K\"unneth theorem for complexes]
+
+    Let $P,Q$ be chain complexes such that $P_n,d(P_n)$ are flat for all $n$.
+    Then there is an exact sequence for all $n$,
+    $$ 0 \to \bigoplus_{p+q=n}H_p(P)\otimes H_q(Q) \to H_n(P\otimes Q) \to \bigoplus_{p+q=n-1}\tor^R_1(H_p(P),H_q(Q)) \to 0 $$
+    If $R=\bZ$ and $P_n$ are all free Abelian, then this splits noncanonically.
+
+\ethrm
+
+\bproof
+
+    As before, letting $Z_p=Z_p(P)$, we have an exact sequence for every $p,q$:
+    $$ 0 \to Z_p \otimes Q_q \to P_p\otimes Q_q\to d(P_p)\otimes Q_q\to 0 $$
+    By the exactness of direct sums (i.e.\ (AB4)), we get an exact sequence
+    $$ 0 \to \bigoplus_{p+q=n}Z_p\otimes Q_q \to \bigoplus_{p+q=n}P_p\otimes Q_q \to \bigoplus_{p+q=n}dP_p\otimes Q_q\to 0 $$
+    This forms into a short exact sequence of chain complexes, $0\to Z\otimes Q\to P\otimes Q\to dP\otimes Q\to0$ (it is simple and routine to check that these maps
+    commute with the differentials).
+    Now, notice that since $Z$'s differentials are all zero, we can write
+    $$ Z\otimes Q = \bigoplus_{p\in\bZ}(Z_p\otimes Q)[-p] $$
+    and since homology commutes with direct sums and exact functors (recall $Z_n$ are all flat),
+    $$ H_\bul(Z\otimes Q) \cong \bigoplus_{p\in\bZ}H_{\bul-p}(Z_p\otimes Q) \cong \bigoplus_{p\in\bZ}Z_p\otimes H_{\bul-p}(Q) $$
+    Similarly for $dP$:
+    $$ H_\bul(dP\otimes Q) \cong \bigoplus_{p\in\bZ}dP_p\otimes H_{\bul-p}(Q) $$
+
+    Thus our short exact sequence gives us a long exact sequence
+    $$ \bigoplus_p dP_p\otimes H_{n+1-p}(Q) \xtos\partial \bigoplus_p Z_p\otimes H_{n-p}(Q) \to H_n(P\otimes Q) \to \bigoplus_p dP_p\otimes H_{n-p}(Q) \xtos\partial \bigoplus_p Z_p\otimes H_{n-1-p}(Q) $$
+    $\partial$ being the direct sum of the maps $dP_{p+1}\otimes H_{n-p}(Q)\to Z_p\otimes H_{n-p}(Q)$, i.e.\ $i\otimes1$ as before.
+    Then again,
+    $$ 0 \to dP_{p+1} \xtos i Z_p \to H_p(P) \to 0 $$
+    is a flat resolution of $H_p(P)$ and so $\tor^R_\bul(H_p(P),H_{n-p}(Q))$ is the homology of
+    $$ 0 \to dP_{p+1}\otimes H_{n-p}(Q) \xtos{i\otimes1} Z_p\otimes H_{n-p}(Q) \to 0 $$
+    That is to say, $\coker i\otimes1=H_p(P)\otimes H_{n-p}(Q)$ and $\ker i\otimes1=\tor^R_1(H_p(P),H_{n-p}(P))$
+
+    $\partial$ is the direct sum of these $i\otimes1$, and since the direct sum is exact it preserves kernels and cokernels.
+    That is to say,
+    $$ \coker\partial = \bigoplus_{p\in\bZ}H_p(P)\otimes H_{n-p}(Q),\qquad \ker\partial = \bigoplus_{p\in\bZ}\tor^R_1(H_p(P),H_{n-p}(P)) $$
+    and refining our long exact sequence to $0\to\coker\partial\to H_n(P\otimes Q)\to\ker\partial\to0$ gives us the desired result.
+    \qed
+
+\eproof
+
+\bexam
+
+    Let $S(X)$ be the singular chain complex of a topological space; $S_n(X)$ are all free Abelian.
+    If $M$ is an Abelian group, the {\emphcolor homology of $X$ with coefficients in $M$} is the homology of $S(X)\otimes M$:
+    $$ H_\bul(X;M) = H_\bul(S(X)\otimes M) $$
+    We write $H_\bul(X)$ when $M=\bZ$.
+    The above theorems then give us
+    $$ H_n(X,M) \cong (H_n(X)\otimes M) \oplus \tor_1^\bZ(H_{n-1}(X),M) $$
+    This result is called the {\emphcolor universal coefficient theorem} in topology.
+    Note that this isomorphism is noncanonical, and thus does not allow us to compute the long exact sequence associated with the homology groups.
+
+    If $Y$ is another topological space, the Eilenberg-Zilber theorem says that $S(X\otimes Y)$ and $S(X)\otimes S(Y)$ are chain-homotopic.
+    Thus $H_\bul(X\otimes Y)$ can be computed as $H_\bul(S(X)\otimes S(Y))$ and in particular we have a non-canonical isomorphism
+    $$ H_n(X\otimes Y) \cong \parens{\bigoplus_{p=0}^nH_p(X)\otimes H_{n-p}(Y)} \oplus \parens{\bigoplus_{p=1}^n\tor^\bZ_1(H_{p-1}(X),H_{n-p}(Y))} $$
+
+\eexam
+
+\bthrm[title=Universal coefficient theorem for cohomology]
+
+    Let $P$ be a chain complex of projective $R$-modules such that each $dP_n$ is projective as well.
+    Then for every $n$ and $R$-module $M$, there is a noncanonically split exact sequence
+    $$ 0 \to \ext^1_R(H_{n-1}(P),M) \to H^n(\hom_R(P,M)) \to \hom_R(H_n(P),M) \to 0 $$
+
+\ethrm
+
+\bproof
+
+    The short exact sequence $0\to Z_n\to P_n\to dP_n\to0$ gives us the long exact sequence
+    $$ 0 \to \hom(dP_n,M) \to \hom(P_n,M) \to \hom(Z_n,M) \to 0 $$
+    since $\ext^1_R(dP_n,M)=0$ as $dP_n$ is projective.
+    This gives us a short exact sequence of cochain complexes $0\to\hom(dP,M)\to\hom(P,M)\to\hom(Z,M)\to0$.
+    As before since the differentials of the complexes $\hom(dP,M),\hom(Z,M)$ are zero, this gives us a long exact sequence
+    $$ \hom(Z_{n-1},M) \xtos\partial \hom(dP_n,M) \to H^n\hom(P,M) \to \hom(Z_n,M) \xtos\partial \hom(dP_{n+1},M) $$
+    which then gives us the short exact sequence
+    $$ 0 \to \coker\partial \to H^n\hom(P,M) \to \ker\partial \to 0 $$
+    $\partial$ is defined by taking $f\in\hom(Z_n,M)$ and then mapping it to $\hat f\in\hom(P_n,M)$ restricting to $f$ on $Z_n$; then we apply $\hom(d,M)$ to get $\hat fd$ and we
+    then need to lift it to $\hom(dP,M)$, which we do by restricting $f$ to $dP$.
+    Thus $\partial(f)=f|_{dP}$, i.e.\ $\partial$ is $\hom(i,M)$ where $i$ is the inclusion of $dP_{n+1}\subseteq Z_n$.
+
+    As before
+    $$ 0 \to dP_{n+1} \xtos i Z_n \to H_n(P) \to 0 $$
+    is a projective resolution of $H_n(P)$ and so $\ext^\bul_R(H_n(P),M)$ is the cohomology of $0\to\hom(Z_n,M)\xto\partial\hom(dP_{n+1},M)\to0$.
+    So $\ker\partial=\hom(H_n(P),M)$ and $\coker\partial=\ext^1_R(H_n(P),M)$, as desired.
+    \qed
+
+\eproof
+
+\bexam
+
+    If $X$ is a topological space and $M$ an Abelian group, the {\emphcolor cohomology of $X$ with coefficients in $M$} is
+    $$ H^\bul(X;M) = H^\bul\hom(S(X),M) $$
+    Thus we get
+    $$ H^n(X;M) \cong \hom(H_n(X),M) \oplus \ext^1_\bZ(H_{n-1}(X),M) $$
+
+    If $X$ has $n$ path-connected components then $H_0(X)=\bZ^n$, so
+    $$ H^0(X;M) \cong M^n,\qquad H^1(X;M) \cong \ext^1(H_1(X),\bZ) $$
+
+\eexam
+
+Dual to the tensor of chain complexes, recall if $P$ is a chain complex and $Q$ a cochain complex, we define their {\emphcolor internal hom cochain complex} to be
+$$ \hom(P,Q)^n = \prod_{p+q=n}\hom(P_p,Q^q),\qquad d(f\colon P_p\to Q^q)_{p+q=n} = fd - (-1)^ndf $$
+Then we have an exact sequence
+$$ 0 \to \prod_{p+q=n-1}\ext^1_R(H_p(P),H^q(Q)) \to H^n\hom(P,Q) \to \prod_{p+q=n}\hom_R(H_p(P),H^q(Q)) \to 0 $$
+
+Note that in our discussion of the splitting of the above short exact sequences, we needed only that $dP_n$ all be projective (so that $0\to Z\to P\to dP\to0$ split).
+In particular, we can replace $R=\bZ$ with a {\emphcolor hereditary} ring, and require only that $P$ be a chain complex of projective modules.
+
+\bdefn
+
+    A ring is {\emphcolor hereditary} if every submodules of any free module is projective.
+    Since a module is projective iff it is a direct summand of a free module, a ring is hereditary iff submodules of projective modules are projective.
+
+\edefn
+
