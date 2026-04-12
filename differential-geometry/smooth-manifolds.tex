@@ -1,0 +1,355 @@
+\section{Smooth Manifolds}
+
+\subsection{Topological manifolds}
+
+\bdefn
+
+    A {\emphcolor topological manifold of dimension $n$} (or an {\emphcolor $n$-manifold}) is a topological space $M$ such that
+    \benum
+        \item $M$ is Hausdorff (every two points have disjoint open neighborhoods),
+        \item $M$ is second-countable (there is a countable basis for $M$),
+        \item $M$ is {\emphcolor locally Euclidean} of dimension $n$: every point is contained in a neighborhood homeomorphic to an open subset of $\bR^n$.
+    \eenum
+
+\edefn
+
+The empty set is a topological manifold of every dimension, but for the most part we will ignore this special case.
+It can be shown that the dimension of a topological manifold is well-defined: its dimension is unique (other than the empty space).
+This can be shown via standard tools in algebraic geometry.
+
+The most basic example of an $n$-manifold is $\bR^n$ itself: it is clearly locally Euclidean and Hausdorff, and the set of all balls with rational center and radius forms
+a countable basis.
+
+\bdefn
+
+    Let $M$ be an $n$-manifold.
+    A {\emphcolor coordinate chart} on $M$ is a pair $(U,\phi)$ with $U\subseteq M$ and $\phi\colon U\to\bR^n$ an embedding (equivalently $\phi\colon U\to\phi(U)\subseteq\bR^n$
+    a homeomorphism).
+    $U$ is the {\emphcolor coordinate domain} or {\emphcolor coordinate neighborhood} of the chart, $\phi$ is the {\emphcolor (local) coordinate map} the coordinates of $\phi$
+    (i.e.\ the composition with the projections $\bR^n\to\bR$) are called the {\emphcolor local coordinates} on $U$.
+
+    By the definition of a manifold, every point in $M$ is contained in the domain of some chart.
+    A chart $(U,\phi)$ is {\emphcolor centered} at $p\in U$ if $\phi(u)=0$.
+    Clearly every point in $M$ is the center of some chart.
+
+\edefn
+
+\bexam
+
+    Let $U\subseteq\bR^n$ be open and $f\colon U\to\bR^k$ continuous.
+    Define its {\emphcolor graph}:
+    $$ \Gamma(f) = \set{(x,y)\in\bR^n\times\bR^k}[x\in U,\ f(x)=y], $$
+    and endow it with the subspace topology of $\bR^n\times\bR^k$.
+
+    Now consider the projection $\pi_1\colon\bR^{n+k}\to\bR^n$ and its restriction to $\Gamma(f)$: $\phi\colon\Gamma(f)\to U$.
+    This is a continuous map, and it has a continuous inverse $\phi^{-1}(x)=(x,f(x))$.
+    Thus $\phi$ forms a homeomorphism between $\Gamma(f)$ and $U$, meaning $\Gamma(f)$ is an $n$-manifold.
+
+\eexam
+
+\bexam
+
+    For an integer $n\geq0$, consider the unit $n$-sphere $S^n$ of all vectors $x\in\bR^{n+1}$ with unit norm, endowed with the subspace topology.
+    As a subspace of $\bR^{n+1}$, it is Hausdorff and second-countable.
+    It is also locally Euclidean of dimension $n$, and thus an $n$-manifold.
+
+    Indeed, define for each $i=1,\dots,n+1$:
+    $$ U_i^+ = \set{(x^1,\dots,x^{n+1})\in\bR^{n+1}}[x^i>0],\qquad U_i^- = \set{(x^1,\dots,x^{n+1})\in\bR^{n+1}}[x^i<0] $$
+    And consider $f\colon B^n\to\bR$ by $f(u)=\sqrt{1-\norm u^2}$, where $B^n$ is the unit ball on $\bR^n$ (all vectors with norm $<1$).
+    Then $U_i^+\cap S^n$ is the graph of the function
+    $$ x^i = f(x^1,\dots,\hat x^i,\dots,x^{n+1}), $$
+    where the hat means the indicated index is removed, viewed as a function $\bR^n\to\bR$.
+    Similarly $U_i^-\cap S^n$ is the graph of $x^i=-f(x^1,\dots,\hat x^i,\dots,x^{n+1})$.
+
+    Thus each $U_i^\pm\cap S^n$ is locally Euclidean of dimension $n$, as per our previous example.
+    The maps $\phi_i^\pm\colon U_i^\pm\cap S^n\to B^n$ from the example are given by
+    $$ \phi_i^\pm(x^1,\dots,x^{n+1}) = (x^1,\dots,\hat x^i,\dots,x^{n+1}) . $$
+    These are all local homeomorphisms to an open subset of $\bR^n$; and furthermore every point in $S^n$ is in some $U_i^\pm\cap S^n$, thus $S^n$ is indeed locally Euclidean
+    of dimension $n$.
+
+\eexam
+
+\bexam
+
+    The {\emphcolor $n$-dimensional real projective space}, denoted $\RP^n$ is the quotient of $\bR^{n+1}-0$ by equating scalar multiples of vectors.
+    Equivalently, it is the set of $1$-dimensional subspaces of $\bR^{n+1}$.
+    Its quotient topology is given by the natural map $\pi\colon\bR^{n+1}-0\to\RP^n$.
+    Recall that this means the open sets are those $U\subseteq\RP^n$ for which $\pi^{-1}(U)\subseteq\bR^{n+1}-0$ is open (equivalently if $\pi^{-1}(U)\cup0\subseteq\bR^{n+1}$ is open).
+
+    $\RP^n$ is an $n$-manifold.
+    It can be shown to be second-countable (using any countable basis of $\bR^{n+1}$) and Hausdorff.
+    We show now local Euclidean-ness.
+
+    For $i=1,\dots,n+1$ define $\tilde U_i\subseteq\bR^{n+1}$ to be the set of all vectors whose $i$th component is nonzero, and define $U_i=\pi(\tilde U_i)$.
+    Notice that $\pi^{-1}(U_i)=\tilde U_i$, which is open, thus $U_i\subseteq\RP^n$ is open and $\pi|_{\tilde U_i}\colon\tilde U_i\to U_i$ is a quotient map.
+    Now define $\phi_i\colon U_i\to\bR^n$ by
+    $$ \phi_i[\bar x] = \frac1{x^i}(x^1,\dots,\hat x^i,\dots,x^n) , $$
+    where $[\bar x]$ is the equivalence class of $\bar x\in\bR^{n+1}$.
+    $\phi_i$ is continuous since $\phi_i\circ\pi$ is, and it is a quotient map.
+
+    $\phi_i$ has an inverse:
+    $$ \phi_i^{-1}(\bar u) = [u^1,\dots,u^{i-1},1,u^i,\dots,u^n], $$
+    and this map is continuous so $\phi_i\colon U_i\to\bR^n$ is a homeomorphism.
+    And as before, $U_1,\dots,U_{n+1}$ cover $\RP^n$ so it is locally Euclidean of dimension $n$.
+
+\eexam
+
+\bprop
+
+    The product of manifolds is a manifold.
+    More specifically if $M_1,\dots,M_k$ are manifolds of dimension $n_1,\dots,n_k$ respectively, then their product space $M_1\times\cdots\times M_k$ is a manifold
+    of dimension $n_1+\cdots+n_k$.
+
+\eprop
+
+\bproof
+
+    It is clearly Hausdorff and second countable.
+    Let $\bar p\in\prod_1^kM_i$ and let $(U_i,\phi_i)$ be a coordinate chart for $p_i\in M_i$.
+    These assimilate into a coordinate chart $(\prod_1^kU_i,\prod_1^k\phi_i\colon\prod_1^kU_i\to\bR^{n_1+\cdots+n_k})$.
+    \qed
+
+\eproof
+
+Recall that the {\emphcolor $n$-torus} is the $n$-fold product $T^n=S^1\times\cdots\times S^1$, and by this proposition and the above example is an $n$-manifold.
+
+We now turn to some topological properties of topological manifolds.
+Recall the following definitions:
+
+\benum
+
+    A topological space $X$ is
+    \benum
+        \item {\emphcolor connected} if it cannot be written as the disjoint union of two non-empty open subsets (equivalently it has no non-trivial clopen sets);
+        \item {\emphcolor path connected} if every two points in $X$ can be connected by a path (a continuous $\gamma\colon[0,1]\to X$ whose endpoints are the given points);
+        \item {\emphcolor locally path connected} if $X$ has a basis of path-connected open subsets.
+    \eenum
+
+    Furthermore, $X$'s {\emphcolor connected components} is the set of its maximally connected subsets.
+    Its {\emphcolor path components} is the set of its maximally path connected subsets.
+
+\eenum
+
+\bprop
+
+    Let $M$ be a topological manifold, then
+    \benum
+        \item $M$ is locally path connected,
+        \item $M$ is connected iff it is path connected,
+        \item The connected and path components of $M$ coincide,
+        \item $M$ has countably many components, all of which is an open subset of $M$ and a connected topological manifold.
+    \eenum
+
+\eprop
+
+\bproof
+
+    Every point in $M$ is contained in a coordinate ball (a coordinate chart whose image is a ball).
+    Since balls are path-connected, the coordinate ball is as well.
+    Thus we can form a basis of coordinate balls, which are all path connected.
+
+    $(2)$ and $(3)$ are true in any locally path connected space.
+    Furthermore in any locally path connected space, its components are open.
+    Thus the components form an open cover of $M$, and must have a countable subcover by second-countability.
+    But components are disjoint, and thus form a minimal cover; the cover must be countable already.
+    In general an open subset of a manifold is itself a manifold clearly.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A topological space $X$ is {\emphcolor locally compact} if every point has a {\emphcolor compact neighborhood}.
+    That is to say, for every $x\in X$ there is an open $U$ and compact $K$ such that $x\in U\subseteq K$.
+
+    A {\emphcolor precompact} set in $X$ is a subset $Y\subseteq X$ whose closure is compact.
+
+\edefn
+
+\blemm
+
+    Every topological manifold $M$ has a countable basis of precompact coordinate balls.
+
+\elemm
+
+\bproof
+
+    First consider the case where $M$ can be covered by a single chart, $\phi\colon M\to\hat U\subseteq\bR^n$.
+    Consider the set of all balls with rational center and radius $B_q(x)$ such that $B_{q'}(x)\subseteq\hat U$ for some $q'>q$.
+    These form a countable precompact basis of $\hat U$ (they are precompact because their closure in $\bR^n$ is contained in the closed ball of the same radius,
+    which in turn is contained in $B_{q'}(x)$).
+    $\phi$ lifts this precompact basis to a precompact basis of $M$, as desired.
+
+    $M$ can be covered by countably many charts: take all the charts and then take a countable subcover, which exists by second-countability.
+    Each of these charts $U_i$ has a countable precompact basis, and if $V\subseteq U_i$ is precompact then it is precompact in $M$.
+    Thus the countable union of these countable precompact bases is a countable precompact basis for $M$, as desired.
+    \qed
+
+\eproof
+
+\bcoro
+
+    A topological manifold is locally compact.
+
+\ecoro
+
+\bproof
+
+    The basis of precompact coordinate balls gives the desired result: let $p\in U$ be a precompact coordinate ball, then $p\in U\subseteq\bar U$ is compact.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $X$ be a topological space.
+    Then a collection $\c X$ of subsets of $X$ is {\emphcolor locally finite} if every $x\in X$ has a neighborhood that intersects at most finitely many subsets in $\c X$.
+    Given a cover $\c U$ of $X$, a {\emphcolor refinement} of $\c U$ is another cover $\c V$ such that every set in $\c V$ is contained in some set in $\c U$.
+    $X$ is {\emphcolor paracompact} if every open cover of $X$ admits an open locally finite refinement.
+
+\edefn
+
+If $\c X$ is locally finite, then so is $\cl{\c X}=\set{\cl X}[X\in\c X]$ and we have
+$$ \cl{\bigcup\c X} = \bigcup\cl X $$
+
+\bthrm
+
+    Topological manifolds are paracompact.
+    Moreso, if $\U$ is an open cover of $M$ and $\B$ is a basis, there is a locally finite open refinement of $\U$ consisting of elements from $\B$.
+
+\ethrm
+
+\bproof
+
+    The above lemma tells us that $M$ can be covered by countably many compact subsets.
+    Recall that the union of finitely many compact subsets is compact, and so we can construct an ascending chain of compact subsets $(K_i)_i$ whose union is $M$.
+    We can also require that $K_i\subseteq K^\circ_{i+1}$.
+
+    Define $V_i=K_{i+1}-K_i^\circ$ and $W_i=K_{i+2}^\circ-K_{i-1}$ for all $i$ (let $K_i=\emptyset$ for negative $i$).
+    Then $V_i$ is compact, and contained in the open set $W_i$.
+    For $x\in V_i$ there is some $X_x\in\c X$ containing $x$, and since $\B$ is a basis there is a $B_x\in\B$ such that $x\in B_x\subseteq X_x\cap W_i$.
+    Consider then the set of all such $B_x$ as $x$ ranges over $V_i$, this forms an open cover of $V_i$ and thus has a finite subcover.
+
+    The union of all these finite subcovers as $i$ ranges over all integers forms a countable open cover of $M$ that refines $\c X$.
+    The finite subcover of $V_i$ consists of sets contained in $W_i$, and $W_i\cap W_{i'}=\emptyset$ except when $\abs{j-j'}\leq2$, thus this is a locally finite open cover
+    of $M$ refining $\c X$.
+    \qed
+
+\eproof
+
+\subsection{Smooth structures}
+
+Thus far we have restricted our attention to {\it topological\/} manifolds.
+But in this course we want to do analysis on manifolds, so we must now consider smooth structures on manifolds.
+
+Recall that a function $f\colon U\to V$ for $U\subseteq\bR^n,V\subseteq\bR^m$ is $C^k$ (for a potentially infinite nonnegative integer $k$) if it is continuous,
+and each of its component functions can be continuously differentiated at least $k$ times.
+That is to say, $f=(f_1,\dots,f_m)$ and each of its partial derivatives
+$$ \frac{\partial^\alpha f}{\partial x_1^{\alpha_1}\cdots\partial x_n^{\alpha_n}} $$
+exist and are continious, for $\alpha=\alpha_1+\cdots+\alpha_n\leq k$.
+
+We are mostly concerned with $C^\infty$ functions; those which can be continuously differentiated an arbitrary number of times.
+Such functions are also called {\emphcolor smooth}.
+A smooth function with a smooth inverse is called a {\emphcolor diffeomorphism}.
+
+\bdefn
+
+    Let $M$ be an $n$-manifold.
+    Let $(U,\phi),(V,\psi)$ be two non-disjoint charts.
+    Consider then the map $\psi\circ\phi^{-1}\colon\phi(U\cap V)\to\psi(U\cap V)$, this is called the {\emphcolor transition map} from $\phi$ to $\psi$.
+    As the composition of homeomorphisms, it itself is a homeomorphism.
+    Two charts $(U,\phi),(V,\psi)$ are {\emphcolor smoothly compatible} if they are either disjoint or their transition map is a diffeomorphism.
+
+    An {\emphcolor atlas} for $M$ is a collection of charts whose domains cover $M$.
+    A {\emphcolor smooth atlas} for $M$ is an atlas whose charts are all smoothly compatible.
+
+\edefn
+
+To show that an atlas is smooth, we need only show that each transition map is smooth (and not a diffeomorphism).
+This is because its inverse is a transition map itself: $(\psi\circ\phi^{-1})^{-1}=\phi\circ\psi^{-1}$.
+
+\bdefn
+
+    Let $M$ be a manifold, then a {\emphcolor smooth structure} on $M$ is a maximal smooth atlas (i.e.\ one not contained in any other atlas).
+    A {\emphcolor smooth manifold} is a pair $(M,\A)$ where $\A$ is a smooth structure on a topological manifold $M$.
+
+\edefn
+
+\bprop
+
+    Let $M$ be a topological manifold.
+    \benum
+        \item An atlas for $M$ is contained in a unique maximal smooth atlas (smooth structure),
+        \item Two smooth atlases for $M$ are contained in the same smooth structure iff their union is a smooth atlas.
+    \eenum
+
+\eprop
+
+\bproof
+
+    Let $\A$ be a smooth atlas for $M$, and define $\cl\A$ to be the set of all charts smoothly compatible with every chart in $\A$.
+    We claim that $\cl\A$ is itself a smooth atlas; i.e.\ that every two charts in it are smoothly compatible.
+
+    Let $(U,\phi),(V,\psi)$ be charts in $\cl\A$, and let $x=\phi(p)\in\phi(U\cap V)$.
+    Then take some chart $(W,\theta)$ from $\A$ such that $p\in W$.
+    Now $(U,\phi)$ and $(V,\psi)$ are both smoothly compatible with $(W,\theta)$, so $\theta\circ\phi^{-1},\psi\circ\theta^{-1}$ are smooth when defined.
+    In particular since $p\in U\cap V\cap W$, $\psi\circ\phi^{-1}$ is smooth, as the composition of these two smooth functions, in a neighborhood of $p$.
+    This is true for every $p\in U\cap V$, so $\psi\circ\phi^{-1}$ is smooth as desired.
+    Thus $\cl\A$ is indeed a smooth atlas.
+    It is also clearly maximal: any chart not in it by definition is not smoothly compatible with some chart in $\A\subseteq\cl\A$.
+
+    If $\B$ is any other smooth structure containing $\A$, then its charts are smoothly compatible with $\A$ and thus by definition $\B\subseteq\cl\A$.
+    By maximality, this is equality.
+    So we have shown the first point.
+
+    The second point is clear: if $\A,\B$ are contained in the same smooth structure, then their union is as well and thus must be a smooth atlas.
+    Conversely if $\A\cup\B$ is a smooth atlas, it is contained in a unique smooth structure, and this smooth structure contains $\A$ and $\B$.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $\A$ be a smooth atlas for $M$, and $\B$ a smooth atlas for $N$.
+    A map $f\colon M\to N$ is {\emphcolor smooth} if for every chart $p\in M$ there are charts $(U,\phi)\in\A,(V,\psi)\in\B$ with $p\in U$ and $f(U)\subseteq V$ such that
+    the composite $\psi\circ f\circ\phi^{-1}\colon\phi(U)\to\psi(V)$ is smooth.
+    A bijection $f$ is a {\emphcolor diffeomorphism} if it is smooth and has a smooth inverse.
+
+\edefn
+
+Note that this definition should seemingly talk about smooth structures, and not just smooth atlases.
+But this is unnecessary:
+
+\bprop
+
+    $f\colon(M,\A)\to(N,\B)$ is smooth iff $f\colon(M,\cl\A)\to(N,\cl\B)$ is.
+
+\eprop
+
+\bproof
+
+    Clearly the right implies the left.
+    Now let $(U,\phi)$ be a chart compatible with $\A$ and $(V,\psi)$ compatible with $\B$.
+    For $p\in\phi(U)$ let $(W,\theta)$ be a chart in $\A$ with $p$ in its domain, and $(W',\theta')$ a chart in $\B$ with $f(p)$ in its domain.
+    Then we can write
+    $$ \psi\circ f\circ\phi^{-1} = (\psi\circ{\theta'}^{-1})\circ(\theta'\circ f\circ\theta^{-1})\circ(\theta\circ\phi^{-1}), $$
+    a composition of smooth maps, and is thus smooth.
+    So $\psi\circ f\circ\phi^{-1}$ is smooth on a neighborhood of any element in its domain, thus smooth as desired.
+    \qed
+
+\eproof
+
+Thus we can characterize smoothness by any compatible smooth atlas.
+An immediate result is the following (expanding definitions):
+
+\blemm
+
+    Two smooth atlases $\A,\B$ for $M$ are smoothly compatible iff the identity $(M,\A)\to(M,\B)$ is a diffeomorphism.
+
+\elemm
+
+Note that two atlases may give diffeomorphic manifolds without them being smoothly compatible.
+Necessarily the diffeomorphism must be different from the identity.
+
+So instead of talking about maximal smooth atlases, we can concentrate on ordinary smooth atlases, while keeping in mind that distinct smooth atlases can give the same smooth structure.
+

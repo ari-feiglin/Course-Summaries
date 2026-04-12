@@ -1,0 +1,943 @@
+\section{Monads}
+
+\subsection{Monads from adjunctions}
+
+\bdefn
+
+    A {\emphcolor monad} on a category $\C$ is a triple $(T,\eta,\mu)$ where
+    \benum
+        \item $T$ is an endofunctor $\C\to\C$,
+        \item $\eta$ is the {\emphcolor unit}: a natural transformation $1_\C\To T$,
+        \item $\mu$ is the {\emphcolor multiplication}: a natural transformation $T^2\To T$
+    \eenum
+    such that the following diagrams of functors commute
+
+    \centerline{\drawdiagram{
+        $T^3$&$T^2$\cr
+        $T^2$&$T$\cr
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=$T\mu$, y distance=-.25cm}
+        \diagarrow{from={2,1}, to={2,2}, text=$\mu$, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,1}, text=$\mu T$, x distance=.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text=$\mu$, x distance=.25cm}
+    }\hfil\drawdiagram{
+        $T$&$T^2$&$T$\cr
+        &$T$
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=$\eta T$, y distance=-.25cm}
+        \diagarrow{from={1,3}, to={1,2}, text=$T\eta$, y distance=-.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text=$\mu$, x distance=.25cm}
+        \diagarrow{from={1,1}, to={2,2}, text=$1_\C$, x distance=-.25cm}
+        \diagarrow{from={1,3}, to={2,2}, text=$1_\C$, x distance=.25cm}
+    }}
+
+\edefn
+
+These diagrams are reminiscient of associative and unital identities.
+We can make this more precise: a {\emphcolor monoidal category} is a category $\C$ equipped with a bifunctor $\otimes\colon\C\times\C\to\C$, a {\emphcolor unit} $I\in\C$,
+and various natural isomorphisms satisfying various coherence conditions (e.g.\ an associator $\alpha\colon A\otimes(B\otimes C)\cong(A\otimes B)\otimes C$).
+A {\emphcolor monoid object} in a monoidal category is a triple $(M,\mu,\eta)$ with $M\in\C$, $\mu\colon M\otimes M\to M$, and $\eta\colon I\to M$, satisfying
+certain commutativity conditions much like the above ones.
+
+For example, if $\C$ has finite products then it forms a monoidal category with multiplication given by the usual category-theoretic binary product, and the unit being
+the terminal object.
+In particular a monoid in $\Set$ gives precisely the usual definition of a monoid: a set equipped with associative multiplication and an identity.
+
+In the case of the category of endofunctors $[\C,\C]$, it forms a {\emphcolor strict monoidal category} in the sense that all the coherence conditions are {\it equalities}.
+Multiplication is given by composition, and the unit is $1_\C$.
+Indeed, associativity of functors is an equality and not just an isomorphism.
+A monad is precisely a monoid object in the category of endofunctors is precisely a monad over $\C$.
+
+\blemm
+
+    Suppose we have an adjunction $F\colon\C\tof\D\colon G$ with unit $\eta\colon1_\C\To GF$ and counit $\epsilon\colon FG\To1_\D$.
+    These form into a monad over $\C$: $T=GF$, the unit is $\eta$, and multiplication is given by whiskering: $\mu=G\epsilon F$.
+
+\elemm
+
+\bproof
+
+    The triangle identities give e.g.\ $G\epsilon F\circ\eta UF=1_{UF}$, and so the unit diagram for the monad commutes.
+    The multiplication diagram requires
+    $$ (G\epsilon F)(G\epsilon FGF) = (G\epsilon F)(GFG\epsilon F) $$
+    both sides are just the horizontal composition $U\epsilon*U\epsilon$, and are thus equal.
+    \qed
+
+\eproof
+
+\bexam
+
+    Consider various monads induced by free-forgetful adjunctions.
+    \benum
+        \item The free functor $F\colon\Set\to\Set_*$ from sets to pointed sets, which adds a new base point to a set gives rise to the {\emphcolor maybe monad}.
+        This monad $(\bul)_+\colon\Set\to\Set$ adds a disjoint point to the set.
+        The identity $\eta_A\colon A\to A_+$ is given by the natural inclusion, and multiplication $\mu_A\colon(A_+)_+\to A_+$ restricts to the identity on $A$ and maps
+        the two new points in $A_{++}$ to the unique new point in $A_+$.
+        The reason for the naming will be explained later.
+
+        \item The free functor $F\colon\Set\to{\sf Mon}$ from sets to monoids, which maps a set $X$ to the monoid of all finite words on $X$ gives rise to the
+        {\emphcolor free monoid monad}, or the {\emphcolor list monad}:
+        $$ TX = X^* \coloneqq \coprod_{n\geq0}X^n $$
+        The unit $\eta_X\colon X\to X^*$ is the natural inclusion, mapping $x\in X$ to the singleton list.
+        Multiplication $\mu_X\colon X^{**}\to X^*$ is concatenation, which takes a list of lists and concatenates them to a single list.
+    \eenum
+
+\eexam
+
+\bexam
+
+    Other monads arise naturally:
+    \benum
+        \item The covariant powerset functor $\P\colon\Set\to\Set$ (which maps a set to its powerset, and $f\colon X\to Y$ to its direct image) is a monad.
+        The unit $\eta_A\colon A\to\P(A)$ maps $a\mapsto\set a$.
+        Multiplication $\mu_A\colon\P^2(A)\to\P(A)$ takes a union of a set of subsets.
+
+        \item The {\emphcolor Giry monad} is a monad on ${\sf Meas}$, the category of measurable spaces and measurable functions.
+        A measurable space is a set equipped with a $\sigma$-algebra, and a measurable function $f\colon(X,\c F)\to(Y,\c F')$ is a function $f\colon X\to Y$
+        such that the inverse image $f^{-1}$ maps $\c F'$ into $\c F$: $f^{-1}(Y')\in\c F$ for $Y'\in\c F'$.
+
+        The Giry monad maps $X$ to ${\rm Prob}(X)$: the space of probability measures on $X$, equipped with the smallest $\sigma$-algebra making every
+        $\ev_A\colon{\rm Prob}(X)\to[0,1]$ (mapping $\mu$ to $\mu(A)$) measurable for $A\subseteq X$ measurable.
+        The unit $\eta_X\colon X\to{\rm Prob}(X)$ maps $x\in X$ to the Dirac measure $\delta_x$, which maps $A\subseteq X$ to $1$ iff $x\in A$ and $0$ otherwise.
+        Multiplication $\mu_X\colon{\rm Prob}^2(X)\to{\rm Prob}(X)$ is defined via integration.
+    \eenum
+
+\eexam
+
+We can dualize the notion of a monad:
+
+\bdefn
+
+    A {\emphcolor comonad} on $\C$ is a monad on $\C^\op$.
+    Explicitly, it is an endofunctor $K\colon\C\to\C$ with counit $\epsilon\colon K\To1_\C$, and comultiplication $\delta\colon K\To K^2$ such that the dual
+    diagrams for monads commute.
+
+\edefn
+
+A comonad is a comonoid in the category of endofunctors of $\C$.
+The dual of the above lemma (recall $F\dashv G$ iff $G^\op\dashv F^\op$) tells us that comonads arise from the right adjoint of an adjunction.
+
+\bexam
+
+    A monad on a preorder $(P,\leq)$ is an order-preserving function $T\colon P\to P$ such that $p\leq Tp$ and $T^2p\leq Tp$.
+    If $P$ is a poset (i.e.\ antisymmetric), then these imply $T^2p=Tp$.
+    An order-preserving function such that $p\leq Tp$ and $T^2=T$ is called a {\emphcolor closure operator}.
+
+    A comonad is an order preserving function $K\colon P\to P$ such that $Kp\leq p$ and $Kp\leq K^2p$.
+    When $P$ is a poset, this again implies $K^2=K$ and $Kp\leq p$, which makes $K$ into a {\emphcolor kernel operator}.
+
+    For example, if $X$ is a topological space, then the poset $(\P X,\subseteq)$ admits both a closure and kernel operator.
+    Closure maps a subset $A$ to its closure (the smallest closed set containing $A$), and the kernel operator maps a subset $A$ to its interior (the largest open set
+    contained in $A$).
+
+\eexam
+
+\subsection{Adjunctions from monads}
+
+In the previous section we showed that adjunctions give rise to monads.
+In this section we will show the converse is true: monads give rise to adjunctions.
+
+\bdefn
+
+    Let $\C$ be a category with a monad $(T,\eta,\mu)$.
+    The {\emphcolor Eilenberg-Moore category} for $T$, or the {\emphcolor category of $T$-algebras} is the category $\C^T$ defined by:
+    \benum
+        \item Objects are pairs $(A\in\C,a\colon TA\to A)$ so that $a\eta_A=1_A$ and $a\circ\mu_A=a\circ Ta$, i.e.\ the following diagrams commute:
+
+        \centerline{\drawdiagram{
+            $A$&$TA$\cr
+            &$A$
+        }{
+            \diagarrow{from={1,1}, to={1,2}, text=$\eta_A$, y distance=-.25cm}
+            \diagarrow{from={1,1}, to={2,2}, text=$1_A$, x distance=-.25cm}
+            \diagarrow{from={1,2}, to={2,2}, text=$a$, x distance=.25cm}
+        }\hfil\drawdiagram{
+            $T^2A$&$TA$\cr
+            $TA$&$A$
+        }{
+            \diagarrow{from={1,1}, to={1,2}, text=$\mu_A$, y distance=-.25cm}
+            \diagarrow{from={1,1}, to={2,1}, text=$Ta$, x distance=-.25cm}
+            \diagarrow{from={1,2}, to={2,2}, text=$a$, x distance=.25cm}
+            \diagarrow{from={2,1}, to={2,2}, text=$a$, y distance=.25cm}
+        }}
+
+        \item Morphisms $f\colon(A,a)\to(B,b)$ are $T$-algebra {\emphcolor homomorphisms}: maps $f\colon A\to B$ in $\C$ so that $b\circ Tf=f\circ a$:
+
+        \centerline{\drawdiagram{
+            $TA$&$TB$\cr
+            $A$&$B$
+        }{
+            \diagarrow{from={1,1}, to={1,2}, text=$Tf$, y distance=-.25cm}
+            \diagarrow{from={1,1}, to={2,1}, text=$a$, x distance=-.25cm}
+            \diagarrow{from={1,2}, to={2,2}, text=$b$, x distance=.25cm}
+            \diagarrow{from={2,1}, to={2,2}, text=$f$, y distance=.25cm}
+        }}
+    \eenum
+
+    Composition in $\C^T$ is given via composition in $\C$, and identities are the identities in $\C$.
+
+\edefn
+
+\bexam
+
+    \benum
+        \item Consider the monad $\bul_+\colon\Set\to\Set$.
+        An algebra here is a set $A$ with a function $a\colon A_+\to A$ such that $a\eta_A=1_A$, i.e.\ $a$ restricts to the identity on $A$ and
+        $a\mu_A=aa_+$ which adds no more information (since $a_+$ maps the new point in $A_{++}$ to the point in $A_+$, as does $\mu_A$).
+        Thus the data of an algebra is just the choice of some point $a\in A$.
+
+        Then a homomorphism $f\colon(A,a)\to(B,b)$ is just a function $f\colon A\to B$ such that $f(a)=b$.
+        Thus the Eilenberg-Moore category is isomorphic to $\Set_*$, the category of pointed sets.
+
+        \item Consider the free monoid monad (list monad) $\bul^*\colon\Set\to\Set$.
+        An algebra is a set $A$ with a function $a\colon A^*\to A$, so a collection of functions $(a_n\colon A^n\to A)_{n\geq0}$ such that
+        \benum
+            \item $a\eta_A=1_A$, meaning $a_1=1_A$;
+            \item $a\mu_A=aa^*$, which says that given a list of lists $((x_{11},\dots,x_{1m_1}),\dots,(x_{n1},\dots,x_{nm_n}))$, the following are equal:
+            $$ a(x_{11},\dots,x_{1m_1},\dots,x_{n1},\dots,x_{nm_n}) = (a(x_{11},\dots,x_{1m_1}),\dots,a(x_{n1},\dots,x_{nm_n})) $$
+        \eenum
+
+        Now recall that a monoid is a set $A$ with an associative operation $A^2\to A$ and a unit $e\in A$.
+        A monoid defines an algebra: the $0$-ary operation ($a_0$) picks out $e$, $a_1$ is the identity, $a_2$ is the binary operation.
+        Then the $n$-ary operation is given by associativity: map $(x_1,\dots,x_n)$ to the image of $(x_1,(x_2,(\dots)))$.
+        Conversely an algebra defines a monoid via $a_0,a_2$.
+
+        Algebra morphisms correspond to monoid morphisms, so there is an equivalence of algebras and monoids.
+    \eenum
+
+\eexam
+
+For a monad $T$, there is an evident forgetful functor $U^T\colon\C^T\to\C$.
+
+\blemm
+
+    Let $(T,\eta,\mu)$ be a monad on $\C$.
+    Then $U^T$ is right-adjoint to a free functor $F^T\colon\C\to\C^T$ such that the monad induced by the adjunction is $(T,\eta,\mu)$.
+
+\elemm
+
+\bproof
+
+    The free functor $F^T\colon\C\to\C^T$ maps $A\in\C$ to the {\emphcolor free algebra}: $F^TA=(TA,\mu_A\colon T^2A\to TA)$,
+    and maps $f\colon A\to B$ to the morphism $F^Tf\colon(TA,\mu_A)\xtos{Tf}(TB,\mu_B)$.
+    This is indeed a well-defined morphism: we require $F^Tf\circ\mu_A=\mu_B\circ TF^Tf$, which is just $TF\circ\mu_A=\mu_B\circ T^2f$; precisely the naturality condition
+    of multiplication.
+
+    Note that $U^TF^T=T$.
+    So let us take the unit of the adjunction to be $\eta$, and define the counit $\epsilon\colon F^TU^T\To1_{\C^T}$ whose component at $(A,a)$ is
+    $$ \epsilon_{(A,a)}\colon(TA,\mu_A)\xtos a(A,a) $$
+    That is, the counit at $(A,a)$ is the algebra homomorphism $a$.
+    Note that $U^T\epsilon F^T=\mu$, since $U^T\epsilon_{F^T(A)}=U^T\epsilon_{(TA,\mu_A)}=\mu_A$.
+    Thus assuming $\eta,\epsilon$ do define a unit-counit pair, we have finished.
+
+    All that remains is to show the triangle identities: $(\epsilon F^T)(F^T\eta)$ and $(U^T\epsilon)(\eta U^T)$ are the identities.
+    Indeed:
+    $$ (\epsilon F^T)(F^T\eta)_A = \epsilon_{(TA,\mu_A)}\circ T\eta_A = \mu_A\circ T\eta_A = 1_A $$
+    by the definition of a monad, and
+    $$ (U^T\epsilon)(\eta U^T)_{(A,a)} = a\circ\eta_a = 1_A $$
+    by the definition of a homomorphism.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $(T,\eta,\mu)$ be a monad on $\C$.
+    The {\emphcolor Kleisli category} $\C_T$ is defined so that
+    \benum
+        \item its objects are the objects of $\C$,
+        \item a morphism $A\to B$ in $\C^T$ is a morphism $A\to TB$ in $\C$: $\hom_{\C^T}(A,B)=\hom_\C(A,TB)$.
+    \eenum
+    Identities and composition are defined as follows:
+    \benum
+        \item The unit $\eta_A\colon A\to TA$ is the identity of $A$ in $\C_T$,
+        \item The composition of $f\colon A\to TB$ with $g\colon B\to TC$ is the composite
+        $$ A \xtos f TB \xtos{Tg} T^2C \xtos{\mu_C} TC $$
+    \eenum
+    A morphism from $A$ to $B$ in $\C_T$ is depicted $A\tosq B$.
+
+\edefn
+
+Composition is indeed associative: given $f\colon A\to TB,g\colon B\to TC,h\colon C\to TD$, the two composites are:
+$$ \displaylines{
+    h\circ(g\circ f)\colon A\xto fTB\xto{Tg}T^2C\xto{\mu_C}TC\xto{Th}T^2D\xto{\mu_D}TD\cr
+    (h\circ g)\circ f\colon A\xto fTB\xto{Tg}T^2C\xto{T^2h}T^3D\xto{T\mu_D}T^2D\xto{\mu_D}TD
+} $$
+So we need to show the equality $\mu_D\circ T\mu_D\circ T^2h=\mu_D\circ Th\circ\mu_C$.
+By naturality of $\mu$ we have $\mu_{TD}\circ T^2h=Th\circ\mu_C$, so it is sufficient to show $\mu_D\circ\mu_{TD}\circ T^2h=\mu_D\circ T\mu_D\circ T^2h$.
+This is precisely due to $\mu$ being multiplicative: $\mu\circ T\mu=\mu\circ \mu T$.
+
+And $\eta$ does indeed form an identity: given $f\colon A\to TB$, $f\circ\eta_A$ is
+$$ A \xtos{\eta_A} TA \xtos{Tf} T^2A \xtos{\mu_A} TA $$
+by naturality of $\eta$, $Tf\circ\eta_A=\eta_{TA}\circ f$ and $\mu_A\circ\eta_{TA}=1_A$ as desired.
+And $\eta_B\circ f$ is
+$$ A \xtos f TB \xtos{T\eta_B} T^2B \xtos{\mu_B} TB $$
+which is again just $f$.
+So $\C_T$ is indeed a category.
+
+\bexam
+
+    \benum
+        \item Consider the maybe monad $T=\bul_+$.
+        A map $A\tosq B$ is $A\to B_+$ which can be considered partial maps from $A$ to $B$.
+        The composition of $A\tosq B\tosq C$ is simply the composition of partial maps.
+        Thus $\C_T$ is equivalent to $\Set^\partial$, the category of sets with partially-defined functions.
+
+        \item Consider the list monad $T=\bul^*$.
+        A map $A\tosq B$ is $A\to B^*$, and a composition $g\circ f$ maps $a\in A$ to a list $f(a)\in B^*$ then applys $g$ to each element of the list and concatenates them.
+
+        \item Let $S$ be a fixed set of ``states'', and consider the adjunction $S\times\bul\dashv\bul^S$.
+        This induces a monad $(S\times\bul)^S$ on $\Set$.
+        A $A\tosq B$ in the Kleisli category is, by adjunction, a map $f\colon A\times S\to B\times S$.
+        That is, it is a map which maps an input $a\in A$ and a state $s\in S$, and returns a new value $f_s(a)\in B$ along with a new state $s'\in S$.
+        This monad is called the {\emphcolor side-effect monad}.
+
+        \item The Kleisli category of the Giry monad is the category of measurable spaces and {\emphcolor Markov kernels}.
+    \eenum
+
+\eexam
+
+\blemm
+
+    For any monad $(T,\eta,\mu)$ on $\C$, there is an adjunction $F_T\colon\C\tof\C_T\colon U_T$ whose induced monad is $(T,\eta,\mu)$.
+
+\elemm
+
+\bproof
+
+    The functor $F_T$ is the identity on objects and maps $f\colon A\to B$ to the morphism $A\tosq B$ defined by
+    $$ F_Tf\colon A\xtos fB\xtos{\eta_B}TB $$
+    And the functor $U_T$ maps $A\in\C_T$ to $TA\in\C$ and a morphism $g\colon A\tosq B$ to the morphism
+    $$ U_Tg\colon TA\xtos{Tg}T^2B\xtos{\mu_B}TB $$
+    The functorality of these definitions is readily provable.
+    Their adjunction is simple, as
+    $$ \C_T(F_TA,B) = \C_T(A,B) = \C(A,TB) = \C(A,U_TB) $$
+    and naturality is again readily provable.
+    The unit of this adjunction is the image of the identity in $\C_T$, which is just $\eta$.
+    The counit is the image of the identity of $TA\to TA$, i.e.\ $TA\tosq A$.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $(T,\eta,\mu)$ be a monad on $\C$.
+    Define the category $\adj_T$ whose objects are fully-specified adjunctions $(F\colon\C\tof\D\colon U,\eta,\epsilon)$ inducing the monad $T$ on $\C$.
+    A morphism from $F\dashv U$ to $F'\dashv U'$ is a functor $K\colon\D\to\D'$ such that $KF=F'$ and $U'K=U$ (i.e.\ the obvious diagram commutes).
+
+\edefn
+
+Recall that a morphism of adjunctions $F\colon\C\tof\D\colon G$ to $F'\colon\C'\tof\D'\colon G'$ is a pair of functors $H\colon\C\to\C'$ and $K\colon\D\to\D'$ such that $KF=F'H$ and $HG=G'K$ and
+one of the following equivalent conditions holds:
+\benum
+    \item $H\eta=\eta' H$ ($\eta,\eta'$ are the respective units of the adjunction), or
+    \item $K\epsilon=\epsilon' K$, or
+    \item Transposition commutes with $H,K$, i.e.\ the following diagram commutes:
+
+    \centerline{\drawdiagram{
+        $\D(Fc,d)$&$\C(c,Gd)$\cr
+        $\D'(KFc,Kd)$&$\C'(Hc,HGd)$\cr
+        $\D'(F'Hc,Kd)$&$\C'(Hc,G'Kd)$
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=$\cong$, y distance=-.25cm}
+        \diagarrow{from={3,1}, to={3,2}, text=$\cong$, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,1}, text=$K$, x distance=-.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text=$H$, x distance=.25cm}
+        \diagarrow{from={2,1}, to={3,1}, text={$=$}, x distance=-.25cm}
+        \diagarrow{from={2,2}, to={3,2}, text={$=$}, x distance=.25cm}
+    }}
+\eenum
+
+Note that since adjunctions in $\adj_T$ have the same unit ($\eta$), the first of the above conditions hold ($H=1_\C$).
+Thus $\adj_T$ is a subcategory of the category of adjunctions.
+In particular this means that $K$ satisfies the other two conditions: $K\epsilon=\epsilon'K$ and given $f\colon c\to Ud=U'Kd$, transposing $Kf$ is the same as the tranpose of $f$.
+
+\bprop
+
+    The Kleisli category $\C_T$ is initial in $\adj_T$, and the Eilenberg-Moore category $\C^T$ is terminal.
+
+\eprop
+
+\bproof
+
+    Suppose we have an adjunction $F\colon\C\tof\D\colon U$ with induced monad $T$.
+    The requirement of a monadic morphism $J$ from $\C_T$ to $\D$ requires that $JF_T=F$ and $UJ=U_T$.
+    Since $F_T$ is the identity on objects, this requires us to define $Jc=Fc$ on objects $c\in\C_T$.
+
+    Furthermore, let $\epsilon\colon FU\To1_\D$ be the counit of $F\dashv U$.
+    For $J$ to be a monadic morphism, we must have that $J$ commutes with transposition: if we take a morphism $f\colon c\tosq c'$ in $\C_T$ and then transpose it via $F_T\dashv U_T$
+    to get $f\colon c\to Tc'=U_Tc'$, and then transpose it via $F\dashv U$, it is the same as $Jf$.
+    The transposition of $f\colon c\to U_Tc'$ is (recall $T=UF$),
+    $$ Jf\colon Fc\xtos{Ff}FTc'=FUFc'\xtos{\epsilon F_{c'}}Fc' $$
+    This is readily shown to be functorial (remember $U\epsilon F=\mu$).
+
+    Similarly to define $K\colon\D\to\C^T$, we must have $U^TK=U$ so that $Kd$ is a suitable $T$-algebra on $Ud$.
+    For an algebra $(c,\gamma\colon Tc\to c)\in\C^T$, we have that $\epsilon^T_{(c,\gamma)}=\gamma$ for the counit of $F^T\dashv U^T$.
+    So $\gamma$ can be viewed as a morphism $\gamma\colon(Tc,\mu_c)\to(c,\gamma)$ from the free $T$-algebra on $c$ to the given algebra, and it is the transpose of the identity on $c=U^T(c,\gamma)$.
+    $K$ needs to preserve transposes, and thus we need to define $Kd=(Ud,U\epsilon_d)$; $U\epsilon_d$ being a homomorphism is due to $U\epsilon F=\mu$.
+    Since $U^TK=U$, we have that $Kf=Uf$.
+    Functorality is then obvious.
+    \qed
+
+\eproof
+
+Recall that a {\emphcolor free $T$-algebra} is one of the form
+$$ F^Tc = (Tc,\mu_c) \in \C^T $$
+
+\blemm
+
+    The unique functor $K\colon\C_T\to\C^T$ is fully faithful, and its image are all the free $T$-algebras.
+
+\elemm
+
+\bproof
+
+    Our definition above tells us $Kc=(U_Tc,U_T\epsilon_c)$; $U_Tc=Tc$ and recall that $\epsilon_c$ is the identity of $\C$ on $Tc$ and thus $U_T\epsilon_c=\mu_c$.
+    So $Kc=(Tc,\mu_c)$, i.e.\ its image are the free $T$-algebras.
+    The action of $K$,
+    $$ \C_T(c,c') \xtos K \C^T((Tc,\mu_c),(Tc',\mu_{c'})) $$
+    commutes with the transposition isomorphisms:
+
+    \centerline{\drawdiagram{
+        $\C_T(c,c')$&$\C(c,Tc')$\cr
+        $\C^T((Tc,\mu_c),(Tc',\mu_{c'}))$&$\C(c,Tc')$
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=$\cong$, y distance=-.25cm}
+        \diagarrow{from={1,1}, to={1,2}, text=$\cong$, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,1}, text=$K$, x distance=.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text={$=$}, x distance=.25cm}
+    }}
+
+    So $K$ is a composition of isomorphisms and thus an isomorphism, as desired.
+    \qed
+
+\eproof
+
+\subsection{Monadic functors}
+
+Consider the free-forgetful adjunction $\bZ[\bul]\colon\Set\tof\ab\colon U$; $\bZ[S]$ is the set of all formal $\bZ$-linear combinations of elements of $S$.
+For $f\colon S\to T$, $\bZ[f]\colon\bZ[S]\to\bZ[T]$ maps $\sum_in_is_i$ to $\sum_in_if(s_i)$.
+The unit of this adjunction is $\eta_S\colon S\to U\bZ[S]$, which maps $s\in S$ to the formal sum consisting of only $s$, i.e.\ the natural inclusion $S\subseteq\bZ[S]$.
+The counit is $\epsilon_A\colon\bZ[UA]\to A$, which ``evaluates'' a formal sum $\sum_in_ia_i\in\bZ[UA]$.
+Thus multiplication is $\mu=U\epsilon\bZ[\bul]$, which is the map $\mu_S\colon\bZ[\bZ[S]]\to\bZ[S]$ evaluating a sum of sums.
+
+By our above consideration, there is a unique functor $K\colon\ab\to\Set^{\bZ[\bul]}$ commuting with the aforementioned adjunction and $F^{\bZ[\bul]}\dashv U^{\bZ[\bul]}$.
+Our definition gives us
+$$ K(A) = (UA,U\epsilon_A) $$
+That is, $K(A)$ is the algebra over $A$ whose map is the evaluation map, $\ev_A\colon\bZ[A]\to A$.
+Now, $K$ is actually an isomorphism of categories.
+
+Indeed, an object $(A,a\colon\bZ[A]\to A)$ in the Eilenberg-Moore category is a set $A$ and a morphism $a$ such that $1_A=a\eta_A$ so that $a$ is the identity on $A\subseteq\bZ[A]$,
+and $a\mu_A=a\bZ[a]$.
+This $a$ gives $A$ the structure of an Abelian group: where we define $x+y$ to be $a(x+y)$ for $x,y\in A$.
+And a morphism $f\colon(A,a)\to(B,b)$ is just a function $f\colon A\to B$ which preserves evaluations of formal sums, i.e.\ a group homomorphism.
+
+This is to say, $\bZ[\bul]\dashv U$ is a {\it monadic adjunction}:
+
+\bdefn
+
+    An adjunction $F\colon\C\tof\D\colon U$ is {\emphcolor monadic} if the unique adjunction functor $\D\to\C^T$ is an equivalence of categories.
+    A functor $U\colon\D\to\C$ is {\emphcolor monadic} if it has a left adjoint making a monadic adjunction.
+
+    An adjunction or functor is {\emphcolor strictly monadic} if the unique adjunction functor is an isomorphism instead of just an equivalence.
+
+\edefn
+
+Recall that a reflective subcategory $\D\inj\C$ is one where the inclusion has a left adjoint (a {\emphcolor reflector}) $L\colon\C\to\D$.
+The induced endofunctor $L\colon\C\to\C$ defines a monad with unit $\eta_C\colon C\to LC$.
+Multiplication is $\mu_C={\rm inc}\epsilon L$, which we note is an isomorphism (assuming $\D$ is a full subcategory).
+A monad whose multiplication is an isomorphism is called an {\emphcolor idempotent monad}.
+
+\bprop
+
+    The inclusion of a reflective subcategory is monadic.
+
+\eprop
+
+\bproof
+
+    An $L$-algebra is an object $C\in\C$ along with $c\colon LC\to C$ such that $c\eta_C=1_C$ and $c\mu_C=c\circ Lc$.
+    By naturality, $\eta_Cc=Lc\eta_{LC}$; and $\eta_{LC}=L\eta_C$ as both are left inverses of the isomorphism $\mu_C$.
+    So $\eta_Cc=L(c\eta_C)=1_{LC}$; meaning $c$ and $\eta_C$ are inverse isomorphisms.
+    Furthermore $\mu_C=Lc$ is then satisfied since both are inverses to $\eta_{LC}=L\eta_C$.
+    So if $C\in\C$ admits an $L$-algebra, $\eta_C$ must be an isomorphism; and conversely $\eta_C^{-1}\colon LC\to C$ forms $C$ into an $L$-algebra.
+    Thus $\C^L$ has as objects $(C,\eta_C^{-1})$.
+
+    And it can be shown that $C\in\C$ is in the essential image of the inclusion of $\D$ iff $\eta_C$ is an isomorphism.
+    Thus all elements of $\C^L$ are isomorphic to (the unique) algebras over elements of $\D$, meaning $K$ is essentially surjective.
+    Full faithfulness is due to naturality of $\eta$.
+    \qed
+
+\eproof
+
+\subsection{Canonical presentations via free algebras}
+
+\bdefn
+
+    A {\emphcolor split coequalizer} diagram is one of the form
+
+    \medskip
+    \centerline{\drawdiagram{
+        $x$&$y$&$z$
+    }{
+        \diagarrow{from={1,1}, to={1,2}, y off=.05cm, text=$f$, y distance=.3cm}
+        \diagarrow{from={1,1}, to={1,2}, y off=-.05cm, text=$g$, y distance=-.3cm}
+        \diagarrow{from={1,2}, to={1,1}, curve=.75cm, y off=-.2cm, text=$t$, y distance=-.75cm}
+        \diagarrow{from={1,2}, to={1,3}, text=$h$, y distance=.25cm}
+        \diagarrow{from={1,3}, to={1,2}, curve=.5cm, y off=-.2cm, text=$s$, y distance=-.6cm}
+    }}
+    \bigskip
+
+    So that
+    $$ hf=hg,\qquad hs=1_z,\qquad gt=1_y,\qquad ft=sh $$
+
+\edefn
+
+The condition $hf=hg$ says that this triple $f,g,h$ defines a {\emphcolor fork}: $h$ is a cone under $f,g\colon x\to y$.
+
+\blemm
+
+    The underlying fork of a split coequalizer diagram is a coequalizer.
+    Moreso, it is an {\emphcolor absolute colimit}: it is preserved by any functor.
+
+\elemm
+
+\bproof
+
+    Let $k\colon y\to w$ so that $kf=kg$; we must show $k$ factors uniquely through $h$.
+    That is, there is a $\ell\colon z\to w$ such that $k=\ell h$.
+    Note that $h$ being a split epimorphism means that $\ell$ is necessarily unique: $\ell hs=\ell$.
+    The factorization is just $\ell=ks$:
+    $$ ksh = kft = kgt = k $$
+
+    A split coequalizer diagram is clearly preserved under any functor.
+    That is, the diagram $Ff,Fg,Fh$ is another split coequalizer diagram and thus is a coequalizer.
+    \qed
+
+\eproof
+
+\bexam
+
+    Let $(A,\alpha\colon TA\to A)$ be a $T$-algebra.
+    Then the following is a split coequalizer diagram:
+
+    \medskip
+    \centerline{\drawdiagram{
+        $T^2A$&$TA$&$A$
+    }{
+        \diagarrow{from={1,1}, to={1,2}, y off=.05cm, text=$T\alpha$, y distance=.3cm}
+        \diagarrow{from={1,1}, to={1,2}, y off=-.05cm, text=$\mu_A$, y distance=-.3cm}
+        \diagarrow{from={1,2}, to={1,1}, curve=.75cm, y off=-.2cm, text=$\eta_{TA}$, y distance=-.75cm}
+        \diagarrow{from={1,2}, to={1,3}, text=$\alpha$, y distance=.25cm}
+        \diagarrow{from={1,3}, to={1,2}, curve=.5cm, y off=-.2cm, text=$\eta_A$, y distance=-.6cm}
+    }}
+    \bigskip
+
+\eexam
+
+\bdefn
+
+    Given a functor $U\colon\D\to\C$,
+
+    \benum
+        \item A {\emphcolor $U$-split coequalizer} is a parallel pair $f,g\colon x\to y$ with a split coequalizer diagram
+
+        \medskip
+        \centerline{\drawdiagram{
+            $Ux$&$Uy$&$z$
+        }{
+            \diagarrow{from={1,1}, to={1,2}, y off=.05cm, text=$Uf$, y distance=.3cm}
+            \diagarrow{from={1,1}, to={1,2}, y off=-.05cm, text=$Ug$, y distance=-.3cm}
+            \diagarrow{from={1,2}, to={1,1}, curve=.75cm, y off=-.2cm, text=$t$, y distance=-.75cm}
+            \diagarrow{from={1,2}, to={1,3}, text=$h$, y distance=.25cm}
+            \diagarrow{from={1,3}, to={1,2}, curve=.5cm, y off=-.2cm, text=$s$, y distance=-.6cm}
+        }}
+        \bigskip
+
+        \item $U$ {\emphcolor creates coequalizer of $U$-split pairs} if any $U$-split coequalizer admits a coequalizer in $\D$ whose
+        image under $U$ is isomorphic to the underlying fork of the given $U$-split coequalizer diagram, and if any such fork (whose image under $U$ is isomorphic
+        to the fork of the $U$-split diagram) is a coequalizer.
+
+        \item $U$ {\emphcolor strictly creates coeqalizers of $U$-split pairs} if any $U$-split coequalizer admits a unique lift to a coequalizer in $\D$ (for the given
+        parallel pair).
+    \eenum
+
+\edefn
+
+\bprop
+
+    Let $T$ be a monad on $\C$.
+    Then the monadic forgetful functor $U^T\colon\C^T\to\C$ strictly creates coequalizers of $U^T$-split pairs.
+
+\eprop
+
+\bproof
+
+    Suppose we have a parallel pair $f,g\colon(A,\alpha)\to(B,\beta)$ in $\C^T$ with a $U^T$-splitting:
+
+    \medskip
+    \centerline{\drawdiagram{
+        $x$&$y$&$z$
+    }{
+        \diagarrow{from={1,1}, to={1,2}, y off=.05cm, text=$f$, y distance=.3cm}
+        \diagarrow{from={1,1}, to={1,2}, y off=-.05cm, text=$g$, y distance=-.3cm}
+        \diagarrow{from={1,2}, to={1,1}, curve=.75cm, y off=-.2cm, text=$t$, y distance=-.75cm}
+        \diagarrow{from={1,2}, to={1,3}, text=$h$, y distance=.25cm}
+        \diagarrow{from={1,3}, to={1,2}, curve=.5cm, y off=-.2cm, text=$s$, y distance=-.6cm}
+    }}
+    \bigskip
+
+    We must show that $C$ lifts to an algebra $(C,\gamma)$ and $h$ lifts to an algebra map such that they form a coequalizer for $f,g$ in $\C^T$,
+    and that such a lift is unique.
+
+    Recall that split coequalizers are absolute colimits, so that $Th$ is the coequalizer of $Tf$ and $Tg$.
+    As $f,g$ are algebra morphisms, we have that $\beta Tf=f\alpha$ and $\beta Tg=g\alpha$.
+    In particular
+    $$ h\beta Tf = hf\alpha = hg\alpha = h\beta Tg $$
+    and by the universal property of the colimit, there must be a unique map $\gamma\colon TC\to C$ which makes the following diagram commute:
+
+    \bigskip
+    \centerline{\drawdiagram{
+        $TA$&$TB$&$TC$\cr
+        $A$&$B$&$C$
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=$Tf$, y distance=.3cm, y off=.05cm}
+        \diagarrow{from={1,1}, to={1,2}, text=$Tg$, y distance=-.3cm, y off=-.05cm}
+        \diagarrow{from={1,2}, to={1,3}, text=$Th$, y distance=.25cm}
+        \diagarrow{from={2,1}, to={2,2}, text=$f$, y distance=.3cm, y off=.05cm}
+        \diagarrow{from={2,1}, to={2,2}, text=$g$, y distance=-.3cm, y off=-.05cm}
+        \diagarrow{from={2,2}, to={2,3}, text=$h$, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,1}, text=$\alpha$, x distance=.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text=$\beta$, x distance=.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text=$\gamma$, x distance=.25cm}
+    }}
+
+    In particular $h\colon(B,\beta)\to(C,\gamma)$ is an algebra morphism, assuming that $(C,\gamma)$ forms a $T$-algebra.
+    Since $\gamma$ is the unique morphism making the above square commute, $(C,\gamma)$ is the unique lift of $C$ such that $h$ is an algebra map.
+    We have that
+    $$ \gamma\eta_Ch = \gamma Th\eta_B = h\beta\eta_B = h $$
+    (the first equality is due to the naturality of $\eta$, the second due to the commuting square above.)
+    Since $h$ is epic (right-cancellative) as a coequalizer, $\gamma\eta_C=1_C$ as desired.
+    Similarly
+    $$ \gamma\mu_CT^2h = \gamma Th\mu_B = h\beta\mu_B = h\beta T\beta = \gamma ThT\beta = \gamma T\gamma T^2h $$
+    (diagram chasing on a 3d diagram.)
+    The split coequalizer is preserved by $T^2$, in particular $T^2h$ is a coequalizer and thus epic, so we have $\gamma\mu_C=\gamma T\gamma$, as desired.
+    Meaning $(C,\gamma)$ is indeed a $T$-algebra.
+
+    Now $h$ is a coequalizer in $\C^T$.
+    Suppose $k\colon(B,\beta)\to(D,\delta)$ satisfies $kf=kg$; then we can factorize $k$ through a unique $j\colon C\to D$.
+    $j$ defines a $T$-algebra morphism: we must show $j\gamma=\delta Tj$.
+    Indeed
+    $$ j\gamma Th = jh\beta = k\beta = \delta Tk = \delta Tj Th $$
+    and by $Th$'s epicness, $j\gamma=\delta Tj$ as desired.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Let $T$ be a monad on $\C$, and $(A,\alpha\colon TA\to A)$ a $T$-algebra.
+    Then
+
+    \medskip
+    \centerline{\drawdiagram{
+        $(T^2A,\mu_{TA})$&$(TA,\mu_A)$&$(A,\alpha)$
+    }{
+        \diagarrow{from={1,1}, to={1,2}, y off=.05cm, text=$T\alpha$, y distance=.3cm}
+        \diagarrow{from={1,1}, to={1,2}, y off=-.05cm, text=$\mu_A$, y distance=-.3cm}
+        \diagarrow{from={1,2}, to={1,1}, curve=.75cm, y off=-.2cm, text=$\eta_{TA}$, y distance=-.75cm}
+        \diagarrow{from={1,2}, to={1,3}, text=$\alpha$, y distance=.25cm}
+        \diagarrow{from={1,3}, to={1,2}, curve=.5cm, y off=-.2cm, text=$\eta_A$, y distance=-.6cm}
+    }}
+    \bigskip
+
+    is a coequalizer diagram in $\C^T$.
+
+\ecoro
+
+\bproof
+
+    As already noted in the above example, the image of this diagram under $U^T$ is a split coequalizer diagram.
+    We just showed $U^T$ strictly creates $U^T$-split coequalizers; as this given diagram in $\C^T$ is the unique lift of the $U^T$-split diagram,
+    it must be a coequalizer.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Let $F\colon\C\tof\D\colon U$ be a monadic adjunction, then
+    \benum
+        \item $U\colon\D\to\C$ creates coequalizers of $U$-split pairs,
+        \item For any $D\in\D$, there is a coequalizer diagram
+        $$ FUFU(D)\xtto{FU\epsilon_D}[\epsilon_{FUD}]FUD\xtos{\epsilon_D}D $$
+    \eenum
+
+\ecoro
+
+\bproof
+
+    $U\colon\D\to\C$ being monadic means that there is an equivalence of categories $K\colon\D\to\C^T$, where $T$ is the monad $UF$, and $U=U^TK$ and $F^T=KF$.
+
+    To show the first point, suppose $f,g\colon A\tto B$ is $U$-split in $\D$.
+    Since $U=U^TK$, we have that $Kf,Kg\colon KA\tto KB$ is $U^T$-split.
+    Then we can uniquely lift the fork of the $U^T$-split coequalizer diagram to a coequalizer of $Kf,Kg$, and then via an inverse equivalence $L\colon\C^T\to\D$, lift it to a
+    coequalizer of $f,g$ in $\D$.
+    $U$ also reflects coequalizers which are $U$-split, since $U^T$ reflects $U^T$-split coequalizers and $K$ reflects all coequalizers.
+    Thus if a fork is mapped to one isomorphic to a $U$-split diagram, it must be a coequalizer.
+    All in all, $U$ creates coequalizers of $U$-split pairs.
+
+    The image under $U$ of the diagram is split (take $t=\eta_{UFUD}$ and $s=\eta_{UD}$), and since $U$ reflects $U$-split coequalizers this means the original diagram
+    is a coequalizer.
+    \qed
+
+\eproof
+
+\subsection{Recognizing categories of algebras}
+
+\bthrm
+
+    A right adjoint $U\colon\D\to\C$ is monadic iff it creates coequalizers of $U$-split pairs.
+    It is strictly monadic iff it strictly creates coequalizers of $U$-split pairs.
+
+\ethrm
+
+\bproof
+
+    We only prove the first statement.
+    Let $F$ be a left adjoint, and consider the unique map $K\colon\D\to\C^T$.
+    We need to show that $K$ is an equivalence iff $U$ creates coequalizers of $U$-split pairs.
+    Our previous proposition already proved the first direction; monadic functors create coequalizers of their own split pairs.
+    So now suppose $U$ creates coequalizers of $U$-split pairs.
+
+    We have $U^TK=U$ and $KF=F^T$, so if $L\colon\C^T\to\D$ is an inverse equivalence then we must have $U^T\cong UL$ and $F\cong LF^T$; we will use these conditions to
+    guide our definition of $L$.
+    For free algebras, we have this isomorphism hold strictly:
+    $$ L(TA,\mu_A) = FA $$
+    and for the free map $Tf\colon(TA,\mu_A)\to(TB,\mu_B)$ map it to $LTf=Ff$.
+    We now need to expand this to non-free algebras and maps.
+
+    Equivalences preserve limits and colimits.
+    For an algebra $(A,\alpha)\in\C^T$, consider the parallel morphisms $F\alpha,\epsilon_{FA}\colon FUFA\tto FA$.
+    Applying $U$ gives us $T\alpha,\mu_A\colon T^2A\tto TA$, which we showed is split; thus $F\alpha,\epsilon_{FA}$ is $U$-split and so has a coequalizer.
+    Define $L(A,\alpha)$ to be this coequalizer:
+    $$ FUFA\xtto{F\alpha}[\epsilon_{FA}]FA\to L(A,\alpha) $$
+
+    For a map $f\colon(A,\alpha)\to(B,\beta)$ note that by naturality of $\epsilon$, $Ff\circ\epsilon_{FA}=\epsilon_{FB}\circ FUFf$.
+    And so there is a unique map $Lf$ making the following diagram commute:
+
+    \medskip
+    \centerline{\drawdiagram{
+        $FUFA$&$FA$&$L(A,\alpha)$\cr
+        $FUFB$&$FB$&$L(B,\beta)$\cr
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=$F\alpha$, y off=.05cm, y distance=.3cm}
+        \diagarrow{from={1,1}, to={1,2}, text=$\epsilon_{FA}$, y off=-.05cm, y distance=-.3cm}
+        \diagarrow{from={2,1}, to={2,2}, text=$F\beta$, y off=.05cm, y distance=.3cm}
+        \diagarrow{from={2,1}, to={2,2}, text=$\epsilon_{FB}$, y off=-.05cm, y distance=-.3cm}
+        \diagarrow{from={1,2}, to={1,3}, right cap=>>}
+        \diagarrow{from={2,2}, to={2,3}, right cap=>>}
+        \diagarrow{from={1,1}, to={2,1}, text=$FUFf$, x distance=.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text=$Ff$, x distance=.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text=$Lf$, x distance=.25cm}
+    }}
+    \medskip
+
+    In other words, we define $L$ to be the composite of $\C^T\to\D^{\bul\tto\bul}\xto\colim\D$; this is functorial.
+
+    Recall that $K\colon\D\to\C^T$ is defined by $K(D)=(UD,U\epsilon_D)$ and $Kf=Uf$, thus $K$ maps
+    $$ FUFA\xtto{F\alpha}[\epsilon_{FA}]FA\to L(A,\alpha) \mapsto{\ K\ } (T^2A,\mu_{TA})\xtto{T\alpha}[\mu_A](TA,\mu_A)\to KL(A,\alpha) $$
+    $U^T$ carries the parallel pair to a $U^T$-split parallel pair, and since it strictly creates such coequalizers, $KL(A,\alpha)$ must be the coequalizer
+    of this diagram; and we already know this is $(A,\alpha)$.
+    Thus $KL\cong1_{\C^T}$.
+
+    We must show that $LK\cong1_\D$ as well.
+    Given $D\in\D$, $LKD$ is the coequalizer of
+    $$ FUFUD\xtto{FU\epsilon_D}[\epsilon_{FUD}]FUD $$
+    which we already know to be $D$.
+    Thus $LKD\cong D$ uniquely so that it commutes with the coequalizer diagrams, and such an isomorphism must be natural $LD\cong1_\D$ as desired.
+    \qed
+
+\eproof
+
+\bexam
+
+    The free-forgeful adjunction $F\colon\Set\tof{\sf Monoid}\colon U$ is monadic.
+    It is sufficient to show that $U$ strictly creates the coequalizer of any pair of monoid homomorphisms $f,g\colon M\to M'$ whose underlying functions extend to a split coequalizer diagram in $\Set$.
+    So we have
+    $$ M\xtto{\ f\ }[\ g\ ]M'\xtos hM'' $$
+    which split via $t,s$; we need to give $M''$ a monoid structure making $h\colon M'\to M''$ a monoid morphism in such a way to make $h$ a coequalizer of $f,g$.
+
+    For $h$ to be a homomorphism, $M''$'s unit must be the composite $\eta''\colon1\xto{\eta'}M'\xto hM''$.
+    To define multiplication for $M''$, that is $\mu''\colon M''\times M''\to M''$, we use the fact that split coequalizers are absolute.
+    In particular, we use the functor $\bul^2\colon\Set\to\Set$, yielding parallel equalizer diagrams and a unique map $\mu''$ making it all commute:
+
+    \centerline{\drawdiagram{
+        $M\times M$&$M'\times M'$&$M''\times M''$\cr
+        $M$&$M'$&$M''$\cr
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text={$f\times f,g\times g$}, y distance=-.25cm}
+        \diagarrow{from={1,2}, to={1,3}, text=$h\times h$, y distance=-.25cm}
+        \diagarrow{from={2,1}, to={2,2}, text={$f,g$}, y distance=.25cm}
+        \diagarrow{from={2,2}, to={2,3}, text=$h$, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,1}, text=$\mu$, x distance=.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text=$\mu'$, x distance=.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text=$\mu''$, x distance=.25cm}
+    }}
+
+    Assuming that $(M'',\eta'',\mu'')$ do indeed form a monoid, we are finished; this is the unique lift of $h$ and $h$ must be a coequalizer.
+    The proof that this is indeed a monoid proceeds similar to before; we follow diagrams and quotient by an epic.
+    \qed
+
+\eexam
+
+\bexam
+
+    The free-forgetful adjunctions from $\Set$ to $\grp,\ab,{\sf Ring}$ are all monadic (the free ring on an Abelian group $A$ is $\bigoplus_{n\geq0}A^n$, multiplication given by concatenation;
+    thus the free ring on a set $S$ is $\bigoplus_{n\geq0}\bZ[S]^n$).
+
+\eexam
+
+\bdefn
+
+    A {\emphcolor filtered category} is a small category $I$ such that
+    \benum
+        \item every two objects $x,y\in I$ have a common bound: there is an object $z\in I$ and morphisms $x\to z\ot y$;
+        \item for every two parallel morphisms $u,v\colon x\tto y$ there is a morphism $w\colon y\to z$ such that $wu=wv$.
+    \eenum
+    A {\emphcolor filtered colimit} is the limit of a functor $I\to\C$ for $I$ filtered.
+
+    A functor is {\emphcolor finitary} if it preserves filtered colimits.
+
+\edefn
+
+If we have an adjunction $F\dashv U$ such that $U$ is finitary, so is the induced monad $T=UF$ as $F$ preserves colimits in general.
+
+\bdefn
+
+    A category $\A$ is called a {\emphcolor category of models for an algebraic theory} if there is a finitary monadic functor $U\colon\A\to\Set$.
+
+\edefn
+
+All of the aforementioned categories are categories of models for an algebraic theory, as their forgetful functors are monadic.
+
+\subsection{Limits and colimits in categories of algebras}
+
+\bdefn
+
+    A functor is {\emphcolor conservative} if it reflects isomorphisms: $Uf$ is an isomorphism iff $f$ is.
+
+\edefn
+
+\blemm
+
+    Monadic functors are conservative.
+
+\elemm
+
+\bproof
+
+    Monadic functors are equivalent to the forgetful functor $U^T\colon\C^T\to\C$ so it is sufficient to check this for $U^T$.
+    If $f\colon(A,\alpha)\to(B,\beta)$'s underlying map $f$ has an inverse $f^{-1}$, then that map is an algebra morphism.
+    Indeed, if $\beta Tf=f\alpha$ then $\alpha Tf^{-1}=f^{-1}\beta$.
+    So if $U^Tf$ is an isomorphism, so must $f$ be.
+    \qed
+
+\eproof
+
+\bexam
+
+    It can be shown that the forgetful functor from the category of compact Hausdorff spaces to $\Set$ is monadic.
+    Thus a bijective continuous function between compact Hausdorff spaces is a homeomorphism.
+
+\eexam
+
+\bexam
+
+    Any bijective homomorphism in a category of models for an algebraic theory is an isomorphism.
+    For example, the inverse of a bijective group/monoid/ring homomorphism is also a homomorphism.
+
+\eexam
+
+\bthrm
+
+    A monadic functor $U\colon\A\to\C$ creates
+    \benum
+        \item any limits $\C$ has, and
+        \item any colimits $\C$ has and the monad and its square preserve.
+    \eenum
+
+\ethrm
+
+\bproof
+
+    It is sufficient to prove this for $U^T\colon\C^T\to\C$.
+    For the first point, consider a diagram $D\colon J\to\C^T$; denote the image of $j\in J$ by $(Dj,\gamma_j)\in\C^T$.
+    Now suppose $U^TD\colon J\to\C$ has a limit cone $(\mu_j\colon L\to Dj)_{j\in J}$ in $\C$.
+    We need to lift this limit cone to one of $D$.
+
+    Since $(Dj,\gamma_j)$ are all algebras, $\gamma$ assembles into a natural transformation $\gamma\colon TD\To D$ in $\C^J$.
+    Consider then the composite $TL\xtos{T\mu}TD\xtos\gamma D$, this is a cone over $D$ with summit $TL$.
+    As $\mu\colon L\To D$ is the limit cone, this composite must factor uniquely through it: there exists a unique $\lambda\colon TL\to L$ so that $\gamma T\mu=\mu\lambda$.
+    Then $(L,\lambda)$ is a $T$-algebra, as can be shown via diagram chase and the universal property of $\mu$.
+    Furthermore this can be shown to be a limit cone, as desired.
+    \qed
+
+\eproof
+
+\bcoro
+
+    The inclusion of a reflective subcategory creates all limits.
+    In particular a reflective subcategory of a complete category is complete.
+
+\ecoro
+
+\bcoro
+
+    Any category which is monadic over $\Set$ is complete, with limits created by the monadic forgetful functor.
+
+\ecoro
+
+\bexam
+
+    Consider the functor $\omega^\op\to{\sf Ring}$ mapping $n\mapsto\bZ/p^n\bZ$.
+    Then define its limit $\bZ_p=\lim_n\bZ/p^n\bZ$, this is the {\emphcolor $p$-adic integers}.
+    Since $U\colon{\sf Ring}\to\Set$ preserves limits,
+    $$ \bZ_p = \set{(a_n\in\bZ/p^n\bZ)_n}[a_n\equiv a_m\pmod{p^n},\hbox{ for $n\geq m$}] $$
+    as a set.
+    The set functor $\omega^\op\to\Set$ also must then preserve the limit cone, which means that the ring structure on $\bZ_p$ is one such that
+    the projections $\bZ_p\to\bZ/p^n\bZ$ are all ring morphisms.
+    Thus addition and multiplication are done pointwise.
+
+\eexam
+
+Note that since the contravariant powerset functor $\P\colon\Set^\op\to\Set$ can be shown to be monadic, this tells us that $\Set^\op$ is complete and thus
+$\Set$ is cocomplete (as we already know).
+
+Recall that there is a canonical map $\kappa\colon\colim FK\to F\colim K$ for any diagram $K\colon J\to\C$ and $F\colon\C\to\D$ (this is the assembly map).
+
+\bprop
+
+    Suppose $\C$ is cocomplete and $U\colon\A\to\C$ is monadic.
+    Then $\A$ is cocomplete iff it has coequalizers.
+
+\eprop
+
+\bproof
+
+    All that remains is to show that if $U\colon\A\to\C$ is monadic and has coequalizers then $\A$ has coproducts.
+    We replace $U,A$ with the equivalent $U^T\colon\C^T\to\C$.
+    Let $(A_i,\alpha_i)_i$ be a family of $T$-algebras, and consider the coequalizer
+
+    \centerline{\drawdiagram{
+        $\parens{T\coprod_iTA_i,\mu_{\coprod_iTA_i}}$&&$\parens{T\coprod_iA_i,\mu_{\coprod_iA_i}}$&$(A,\alpha)$\cr
+        &$\parens{T^2\coprod_iA_i,\mu_{T\coprod_iA_i}}$
+    }{
+        \diagarrow{from={1,1}, to={1,3}, text=$T\coprod_i\alpha_i$, y distance=-.25cm}
+        \diagarrow{from={1,3}, to={1,4}}
+        \diagarrow{from={1,1}, to={2,2}, text=$T\kappa$, x distance=-.25cm}
+        \diagarrow{from={2,2}, to={1,3}, text=$\mu_{\coprod_iA_i}$, x distance=.25cm}
+    }}
+
+\eproof
+
