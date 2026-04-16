@@ -1,14 +1,39 @@
-This is a collection of summaries/notes I wrote for various courses I took in university.
-The material should for the most part follow what is taught at Bar Ilan University.
-These lecture notes and summaries were not transcribed verbatim, there are places where I added my own notes/additions for the sake of (my and/or others') understanding.
+This repository started as a collection of summaries I typeset during my undergraduate studies, but has since grown to
+include pretty much any academic material I typeset that I felt was significant enough to save.
 
-Included in the repository are also some of my solutions to coursework.
-Not all solutions are verified, so use them (as help, do not copy them directly) at your own risk.
-I am not liable for lost points.
+The material here consists of summaries, solved exercises, cheatsheets, and various notes.
+Many of the summaries and solved exercises are from courses I took during my undergraduate and graduate studies at the
+Bar-Ilan and Hebrew Universities, respectively.
+Other summaries are from my own self-study.
 
-The TeX source is not publicly available, but may be granted on a person-by-person basis.
-If you're interested in the source, send me an email.
+Each directory corresponds to a distinct course or field I studied, for the most part.
+A small note: `galois-theory` is a first draft of a summary of my course on Galois theory, which I found so unsatisfactory
+that I rewrote it in `galois-theory-new`.
 
-Good luck with your studies!
-Any questions can be forwarded to my email: `ari.feiglin@gmail.com`.
+Solutions to various past problem sheets from many courses are provided here, but I make no guarantees as to their
+correctness; the versions uploaded here are the same as the ones I submitted.
+And I did not always get 100s; I am aware of the existence of faulty solutions.
+So take care when reading over these solutions.
+
+To that end, the summaries provided here are also not perfect, and problems with them do exist.
+I do not particularly enjoy revising old summaries that are not relevant to my current studies.
+
+The TeX source for many of the PDFs are provided in this repository as well.
+Not all of these will be compilable outright: some utilize a version of a package I wrote from before I published it, and
+I don't recall if this version is compatible with the published one.
+Some files use old personal packages I no longer use and have since lost.
+Furthermore, I am aware of some problems with my published packages which I haven't gotten around to fixing.
+Newer material should be compilable after downloading the necessary packages (pdfToolbox and pdfMsym).
+
+Most of these of TeX files are *not* LaTeX files: they are plain TeX files.
+Thus you must compile them with `pdftex` and not `pdflatex`.
+During the summer before my final year in undergraduate I wrote the first version of pdfToolbox, a plain TeX package.
+I used this for all my summaries afterward, along with an earlier one of my packages, pdfMsym.
+Both of these packages are publicly available for download on CTAN (and thus by TeXLive and MikTeX).
+Material preceding this used a personal LaTeX package of mine of whose status I am unsure, as I have not used it
+in years.
+
+In any case all of the compiled PDFs are provided as well, so you shouldn't need to compile any TeX.
+
+I hope you find this repository useful.
 
