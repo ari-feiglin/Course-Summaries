@@ -1,0 +1,290 @@
+\section{Smooth Maps}
+
+\bprop
+
+    A smooth map between manifolds with or without boundary is continuous.
+
+\eprop
+
+\bproof
+
+    Let $F\colon M\to N$ be smooth, then for $p\in M$ take smooth charts $(U,\phi)$ and $(V,\psi)$ for $M,N$ respectively such that
+    $p\in U$ and $F(U)\subseteq V$.
+    Then $\psi\circ F\circ\phi^{-1}\colon\phi(U)\to\psi(V)$ is smooth, and thus $F|_U$ is continuous as the composition
+    $$ \psi^{-1}\circ(\psi\circ F\circ\phi^{-1})\circ\phi . $$
+    Thus $F$ is continuous at $p$ for all points $p\in M$, as desired.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $F\colon M\to N$ be a map, then
+    \benum
+        \item if every point has a neighborhood in which $F$ is smooth, then $F$ is smooth.
+        \item if $F$ is smooth, its restriction to any open subset is smooth.
+    \eenum
+
+\eprop
+
+This proposition has the useful corollary:
+
+\bcoro
+
+    Let $\set{U_i}_i$ be an open cover of $M$, and let $F_i\colon U_i\to N$ be a collection of smooth maps.
+    If the maps agree on overlaps: $F_i|_{U_i\cap U_j}=F_j|_{U_i\cap U_j}$, then there exists a unique extension of all these maps to a smooth map
+    $F\colon M\to N$.
+
+\ecoro
+
+\bprop
+
+    The composition of smooth maps is smooth.
+
+\eprop
+
+\bproof
+
+    If $F\colon M\to N$ and $G\colon N\to P$ are smooth, then
+    $$ \theta\circ(G\circ F)\circ\phi^{-1} = (\theta\circ G\circ\psi^{-1})\circ(\psi\circ F\circ\phi^{-1}) , $$
+    the composition of the relevant functions, is smooth.
+    \qed
+
+\eproof
+
+Thus the category of smooth manifolds with smooth maps between them forms a category (the identity is clearly smooth).
+The isomorphisms in this category are the diffeomorphisms.
+Other maps are the constant maps: for $c\in N$ the map $M\to N$ mapping every point to $c$, and the inclusion of an open submanifold in a larger
+manifold.
+
+\bprop
+
+    The product of manifolds (of which at most one has boundary) defines a product in the category of smooth manifolds, with the usual
+    projection maps.
+
+\eprop
+
+\bexam
+
+    Consider the map $\epsilon\colon\bR\to S^1$ given by $\epsilon(t)=e^{2\pi it}$.
+    This is a smooth map.
+
+    Thus $\epsilon^n\colon\bR\to T^n$ given by $\epsilon^n(t)=(\epsilon(t),\dots,\epsilon(t))$ is smooth as well.
+    This is because $T^n$ is the product of $S^1$s, and each of the projections of $\epsilon^n$ is smooth.
+
+\eexam
+
+\bexam
+
+    The inclusion $S^n$ in $\bR^{n+1}$ is smooth, as is the quotient map $\bR^{n+1}-0\to\RP^n$.
+    Thus their composition $S^n\to\RP^n$ is a smooth bijection (but not a diffeomorphism, the spaces are not even homeomorphic).
+
+\eexam
+
+Diffeomorphisms inherit the usual properties of isomorphisms (compositions of diffeomorphisms are diffeomorphisms, the product of diffeomorphisms
+is a diffeomorphism, etc).
+If $F\colon M\to N$ is a diffeomorphism, and $U\subseteq M$ is an open submanifold, then the restriction of $F$ to $U\to F(U)$ is a diffeomorphism.
+
+\subsection{Partitions of unity}
+
+\blemm
+
+    Define $f\colon\bR\to\bR$ by
+    $$ f(t) = \exp(-1/t),\hbox{ for $t>0$ and $0$ otherwise} , $$
+    then $f$ is smooth.
+
+\elemm
+
+\bproof
+
+    Clearly $f$ is smooth on $\bR-0$, so we need only show that it has continuous derivatives at the origin.
+    It is sufficient to show it derivatives of all order.
+    We show by induction that the $k$th derivative of $f$ at $t>0$ is
+    $$ f^{(k)}(t) = p_k(t)\frac{\exp(-1/t)}{t^{2k}} , $$
+    for some polynomial $p_k$.
+    This is clearly true for $k=0$ with $p_0=1$.
+    Then
+    $$ f^{(k+1)}(t) = p'_k(t)\frac{\exp(-1/t)}{t^{2k}} + p_k(t)\frac{t^{-2}\exp(-1/t)}{t^{2k}} - 2kp_k(t)\frac{\exp(-1/t)}{t^{2k+1}} . $$
+    Simplifying gives us the desired result with $p_{k+1}(t)=t^2p'_k(t)+p_k(t)-2ktp_k(t)$.
+
+    Now we show that $f^{(k)}(0)=0$ for all $k\geq0$.
+    We show this by induction; for $k=0$ this is clearly true.
+    To show that it is true for $k+1$ we show that $f^{(k)}$ has both one-sided derivatives at $0$ and they coincide.
+    Clearly the left derivative is zero.
+    The right derivative is
+    $$ \lim_{t\to0^+}\frac{p_k(t)\frac{\exp(-1/t)}{t^{2k}}}{t} = p_k(0)\cdot\lim_{t\to0^+}\frac{\exp(-1/t)}{t^{2k+1}} = 0 , $$
+    as desired.
+    Thus $f^{(k)}$ is differentiable, as desired.
+    \qed
+
+\eproof
+
+\blemm
+
+    Let $r_1<r_2$ be two real numbers.
+    Then there is a smooth function $h\colon\bR\to[0,1]$ such that $h(t)=1$ for $t\leq r_1$ and $h(t)=0$ for $t\geq r_2$.
+
+\elemm
+
+\bproof
+
+    Take $f$ as in the previous lemma and define
+    $$ h(t) = \frac{f(r_2-t)}{f(r_2-t)+f(t-r_1)} \qed $$
+
+\eproof
+
+Such a function is often called a {\emphcolor cutoff function}.
+
+\blemm
+
+    Let $r_1<r_2$ be real numbers.
+    Then there is a smooth function $H\colon\bR^n\to[0,1]$ such that $H(x)=1$ on $\cl B_{r_1}(0)$, and $H(x)=0$ on $\bR-B_{r_2}(0)$.
+
+\elemm
+
+\bproof
+
+    Define $H(x)=h(\norm x)$.
+    \qed
+
+\eproof
+
+Such a function is called a {\emphcolor smooth bump function}.
+
+\bdefn
+
+    Let $X$ be a topological space and $f\colon X\to\bR^n$ be a function.
+    Its {\emphcolor support} is defined to be
+    $$ \supp f = \cl{\set{x\in X}[f(x)\neq0]} , $$
+    the closure of the preimage of $\bR^n-0$.
+    If $\supp f\subseteq A$, then we say $f$ is {\emphcolor supported} in $A$.
+    $f$ is {\emphcolor compactly supported} if $\supp f$ is compact.
+
+\edefn
+
+Note every (vector-valued) function on a compact space is compactly supported.
+
+\bdefn
+
+    Let $\U=\set{U_i}_{i\in I}$ be an open cover for a topological space $X$.
+    A {\emphcolor partition of unity} subordinate to $\U$ is a collection $\set{\phi_i}_{i\in I}$ of continuous functions $\phi_i\colon X\to[0,1]$,
+    such that
+    \benum
+        \item $\supp\phi_i\subseteq U_i$ for all $i\in I$;
+        \item the set $\set{\supp\phi_i}_i$ is {\emphcolor locally finite}: every $x\in X$ has a neighborhood intersecting only finitely many
+        of the sets $\supp\phi_i$;
+        \item $\sum_i\phi_i(x)=1$ for all $x\in X$.
+    \eenum
+    Note that the last condition is well-defined, since only finitely many $\phi_i(x)$ are non-zero by the second condition.
+
+\edefn
+
+\bthrm
+
+    Suppose $M$ is a smooth manifold with or without boundary, and $\U=\set{U_i}_i$ an open cover of $M$.
+    Then there is a partition of unity subordinate to $\U$.
+
+\ethrm
+
+\bproof
+
+    We show for the case that $M$ has no boundary.
+    Consider for each $U_i$ a basis of regular coordinate balls: these are coordinate balls $B$ such that $B\subseteq B'$ another coordinate ball
+    with coordinate map $\phi$ such that $\phi(B)=B_r$, $\phi(\cl B)=\cl B_r$, and $\phi(B')=B_{r'}$ for $r<r'$.
+    For a regular coordinate ball $B_i$, let $(B'_i,\phi_i)$ be this extension.
+    Define $f_i\colon M\to R$ by
+    $$ f_i = \cases{H_i\circ\phi_i & on $B'_i$\cr 0&on $M-\cl B_i$} , $$
+    where $H_i$ is the smooth bump function positive in $B_{r_i}$ and zero elsewhere, as above.
+    $H_i\circ\phi_i$ is zero on $B'_i-\cl B_i$, so this is well-defined and smooth.
+    Note that $\supp f_i=\cl B_i$.
+
+    Define $f\colon M\to R$ by $f(x)=\sum_if_i(x)$ which is well-defined since $\cl B_i$ is locally finite, and thus also smooth.
+    $f(x)$ is nonnegative and positive on $B_i$, which cover $M$, so $f(x)$ is positive.
+    Thus define $g_i(x)=f_i(x)/f(x)$; this is smooth.
+    Immediately we have that $g_i(x)\in[0,1]$ and $\sum_ig_i(x)=1$.
+
+    These $g_i$s have support $\cl B_i$, and these form a locally finite cover of the corresponding $U_\alpha$.
+    For each $i$, choose an $\alpha_i$ such that $\cl B_i\subseteq U_{\alpha_i}$, and then let $\phi_\alpha$ be the sum of all the $g_i$s
+    where $\alpha_i=\alpha$.
+    By local finiteness, we have that $\phi_\alpha$'s support is
+    $$ \supp\phi_\alpha = \cl{\bigcup_{\alpha_i=\alpha}B_i} = \bigcup_{\alpha_i=\alpha}\cl B_i \subseteq U_\alpha , $$
+    as desired.
+    The sum over $\phi_\alpha$ is just the sum over $g_i$s, so $1$, as desired.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $X$ be a topological space, $A\subseteq X$ a closed subset, and $A\subseteq U$ open.
+    Then a continuous $\phi\colon X\to[0,1]$ is a {\emphcolor bump function for $A$ supported in $U$} if $\phi=1$ on $A$ and
+    $\supp\phi\subseteq U$.
+
+\edefn
+
+\bcoro
+
+    Let $M$ be a smooth manifold with or without boundary.
+    Then for every closed $A\subseteq M$ and open $A\subseteq U$, there is a bump function for $A$ supported in $U$.
+
+\ecoro
+
+\bproof
+
+    Let $\set{\phi_0,\phi_1}$ be a partition of unity subordinate to $\set{U,M-A}$.
+    Then $\phi_0$ has the desired property: $\supp\phi_0\subseteq U$ and since $\phi_0+\phi_1=1$ and $\phi_1=0$ on $A$, this means $\phi_0=1$ on $A$.
+    \qed
+
+\eproof
+
+Let $M,N$ be manifolds and $A\subseteq M$ be arbitrary.
+A map $F\colon A\to N$ is called {\emphcolor smooth} similar to before: if for every $p\in A$ there is a neighborhood $p\in U$ and a smooth
+function $\tilde F\colon W\to N$ agreeing with $F$ on $W\cap A$.
+
+\blemm
+
+    Let $M$ be a smooth manifold with or without boundary, $A\subseteq M$ closed, and $f\colon A\to\bR^k$ smooth.
+    For any open subset $U$ containing $A$, there is a smooth function $\tilde f\colon M\to\bR^k$ restricting to $f$ on $A$ such that
+    $\supp\tilde f\subseteq U$.
+
+\elemm
+
+\bproof
+
+    For $p\in A$ let $W_p$ be a neighborhood of $p$ and $\tilde f_p\colon W_p\to\bR^k$ restricting to $f$.
+    Replacing $W_p$ with $W_p\cap U$, we may assume that $W_p\subseteq U$.
+    Then $\set{W_p}[p\in A]\cup\set{M-A}$ is an open cover of $M$ and thus has a smooth partition of unity $\set{\psi_p}_{p\in A}\cup\set{\psi_0}$
+    which is subordinate to it: $\supp\psi_p\subseteq W_p$ and $\supp\psi_0\subseteq M-A$.
+
+    We can extend $\psi_p\tilde f_p$ to all of $M$ by defining it to be $0$ on $M-\supp\psi_p$.
+    This is well-defined since $\tilde f_p$ is zero in the overlap of $M-\supp\psi_p$ and $W_p$, thus it is also smooth.
+    Now define
+    $$ \tilde f(x) = \sum_{p\in A}\psi_p(x)\tilde f_p(x) , $$
+    this is well-defined by local finiteness, and is thus smooth.
+
+    If $x\in A$ then $\psi_0(x)=0$ and $\tilde f_p(x)=f(x)$ for every $p$ such that $\psi_p(x)\neq0$ (since then $x\in W_p\cap A$, in which
+    $\tilde f_p$ agrees with $f$).
+    Thus,
+    $$ \tilde f(x) = \sum_{p\in A}\psi_p(x)\tilde f_p(x) = \parens{\psi_0(x) + \sum_{p\in A}\psi_p(x)}f(x) = f(x) $$
+    as desired.
+
+    And furthermore
+    $$ \supp\tilde f = \cl{\bigcup_{p\in A}\supp\psi_p} = \bigcup_{p\in A}\cl{\supp\psi_p} \subseteq U , $$
+    as desired.
+    \qed
+
+\eproof
+
+Another application of partitions of unity is the following.
+
+\bdefn
+
+    Let $X$ be a topological space.
+    Then an {\emphcolor exhaustion function} is a continuous map $f\colon X\to\bR$ such that $f^{-1}(-\infty,c]$ is compact in $X$ for every
+    $c\in\bR$.
+
+\edefn
+
+We can show (via a partition of unity, shown in homework) that every smooth manifold with or without boundary admits a smooth nonnegative
+exhaustion function.
+
