@@ -1,0 +1,493 @@
+\section{Lie Groups}
+
+\subsection{Basic definitions}
+
+\bdefn
+
+    A {\emphcolor Lie group} is a smooth manifold $G$ without boundary, along with smooth maps
+    $$ m\colon G\times G\to G,\qquad i\colon G\to G $$
+    turning $G$ into a group with multiplicatio given by $m$ and inversion given by $i$.
+
+\edefn
+
+\bnote
+
+    A Lie group is a special type of {\emphcolor topological group}, which is a group which is also a topological space making
+    multiplication and inversion into continuous functions.
+
+\enote
+
+Note that $G$ is a Lie group iff the map $(g,h)\mapsto gh^{-1}$ is smooth.
+This map is a composition of multiplication and inversion, so if $G$ is a Lie group it is smooth, and conversely we note that it being smooth
+implies $i$ is smooth, and then that $m$ is smooth.
+
+For a Lie group $G$ and $g\in G$, define {\emphcolor left translation} and {\emphcolor right translation} by
+$$ L_g,R_g\colon G\to G,\qquad L_g(h) = gh,\quad R_g(h) = hg . $$
+These are smooth maps, as they are simply compositions of $m$ with a suitable inclusion $G\to G\times G$.
+Moreso, they are diffeomorphisms: the inverse of $L_g$ is $L_{g^{-1}}$ and similar for right translations.
+
+\bexam
+
+    Euclidean space $\bR^n$ is a Lie group under addition, clearly.
+
+\eexam
+
+\bexam
+
+    The general linear group $\gl_n(\bR)$ is an open submanifold of the Euclidean space $\mat_n(\bR)$.
+    Furthermore it is a Lie group, with multiplication and inversion given by usual multiplication and inversion of matrices.
+    These are smooth, as the coordinates of multiplication are polynomial in their inputs and inversion can be written as
+    $$ A^{-1} = 1/\det(A)\cdot{\rm adj}(A) , $$
+    the product of smooth functions (the coordinates of the adjugate are determinants of minors).
+
+    Denote by $\gl_n^+(\bR)$ the subgroup of $\gl_n(\bR)$ with positive determinant.
+    This is an open subspace of $\gl_n(\bR)$ (the preimage of $(0,\infty)$) and the restriction of multiplication and inversion to it
+    is still smooth (this is true for embedded submanifolds in general).
+
+\eexam
+
+Continuing the above example, if $G$ is a Lie group and $H\subseteq G$ is a subgroup which is also an open set, then it is also a Lie group.
+
+\bexam
+
+    The complex general linear group $\gl_n(\bC)$ is the group of invertible matrices in $\mat_n(\bC)$.
+    This is an open subset of $\mat_n(\bC)\cong\bR^{2n^2}$ and thus a $2n^2$-dimensional Lie group.
+
+\eexam
+
+\bdefn
+
+    If $G$ and $H$ are Lie groups, a {\emphcolor Lie group morphism} $G\to H$ is a smooth map which is also a group morphism.
+    A {\emphcolor Lie group isomorphism} is a Lie group morphism which is also a diffeomorphism (and in particular a group isomorphism).
+
+\edefn
+
+\bexam
+
+    Consider $\bR$ as a Lie group under addition, and $\bR^\times$ a Lie group under multiplication.
+    (We need not show that these are Lie groups again, $\bR$ is Euclidean and $\bR^\times=\gl_1(\bR)$.)
+    Then the exponential map, $\exp\colon\bR\to\bR^\times$, is a Lie group morphism.
+    Its image is $\bR^+$, and it has an inverse $\log\colon\bR^+\to\bR$, so that $\bR^+$ (with multiplication) and $\bR$ (with addition)
+    are isomorphic Lie groups.
+
+\eexam
+
+\bexam
+
+    The determinant $\det\colon\gl_n(\bC)\to\bR^\times$ is a Lie group morphism.
+
+\eexam
+
+Most importantly, if $G$ is a Lie group and $g\in G$, then {\emphcolor conjugation} by $g$,
+$$ C_g\colon G\to G,\qquad C_g(h) = ghg^{-1} $$
+is a Lie group morphism.
+It is clearly smooth, as a composition of multiplication and inversion, and it is an isomorphism with inverse $C_{g^{-1}}$.
+Recall that $H\subseteq G$ is {\emphcolor normal} if $C_g(H)=H$ for all $g\in G$.
+
+\bthrm
+
+    Every Lie group morphism has constant rank.
+
+\ethrm
+
+\bproof
+
+    Let $F\colon G\to H$ be a Lie group morphism, with $e,\tilde e$ the respective units of the groups.
+    Now let $g_0\in G$ and notice that
+    $$ F(L_{g_0}(g)) = F(g_0g) = F(g_0)F(g) = L_{F(g_0)}F(g) $$
+    so that $F\circ L_{g_0}=L_{F(g_0)}\circ F$.
+    Thus we get that
+    $$ dF_{g_0}\cdot d(L_{g_0})_e = d(L_{F(g_0)})_{\tilde e}\cdot dF_e . $$
+    Since left translations are diffeomorphism, they do not change rank, and thus $dF_{g_0}$ and $dF_e$ have the same rank, meaning
+    $F$ has constant rank.
+    \qed
+
+\eproof
+
+\bcoro
+
+    A Lie group morphism is an isomorphism iff it is bijective.
+
+\ecoro
+
+\bproof
+
+    A bijective Lie group morphism is a bijective immersion (by constant rank), thus a diffeomorphism.
+    \qed
+
+\eproof
+
+\subsection{Lie subgroups}
+
+\bdefn
+
+    Let $G$ be a Lie group.
+    A {\emphcolor Lie subgroup} of $G$ is a subgroup $H\leq G$ endowed with a smooth structure making it a Lie group and an immersed submanifold.
+
+\edefn
+
+\bprop
+
+    Let $G$ be a Lie group, and $H\leq G$ a subgroup which is an embedded submanifold.
+    Then $H$ is also a Lie group, and thus a Lie subgroup of $G$.
+
+\eprop
+
+\bproof
+
+    Since $H$ is embedded, multiplication $G\times G\to G$ restricts both on its domain (for all submanifolds) and its codomain (as $H$ is embedded),
+    to give $H$'s multiplication $H\times H\to H$.
+    Same for inversion.
+    \qed
+
+\eproof
+
+\blemm
+
+    Let $G$ be a Lie group and $H\subseteq G$ an open subgroup.
+    Then $H$ is an embedded Lie subgroup.
+    Moreso, $H$ is also closed, and thus a union of connected components of $G$.
+
+\elemm
+
+\bproof
+
+    By the above proposition, $H$ is an embedded Lie subgroup.
+    Furthermore, each coset $gH$ is open in $G$ as the image of $H$ under the diffeomorphism $L_g$.
+    Then $G-H=\bigcup_{g\in G-H}gH$ is open, and so $H$ is closed.
+    Clopen sets are unions of connected components.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $G$ be a Lie group, and $W\subseteq G$ an open, then
+    \benum
+        \item $W$ generates an open subgroup of $G$,
+        \item if $W$ is a connected neighborhood of the identity, it generates a connected open subgroup of $G$,
+        \item if $G$ is connected, then $W$ generates $G$.
+    \eenum
+
+\eprop
+
+\bproof
+
+    Denote for arbitrary sets $A,B$,
+    $$ AB = \set{ab}[a\in A,b\in B],\qquad A^{-1} = \set{a^{-1}}[a\in A] . $$
+    For each $k>0$ define by $W_k$ the set of all elements in $G$ that can be written as a product of $k$ or fewer elements of $W\cup W^{-1}$.
+    Then $W$'s generated subgroup is $\bigcup_{k>0}W_k$.
+
+    Note that $W_1=W\cup W^{-1}$ (we do not allow empty products, defined to be the identity, so if $e\notin W$ then it is not in $W_1$, but is
+    in $W_2$).
+    This is open, as $W^{-1}=i(W)$ is the diffeomorphic image of an open set.
+    And inductively we have
+    $$ W_k = W_1W_{k-1} = \bigcup_{g\in W_1}L_g(W_{k-1}) $$
+    is open.
+    Thus the subgroup generated by $W$ is a union of open sets and thus open.
+
+    If $W$ is a connected neighborhood of $e$, then so is $W^{-1}$ (as it is the diffeomorphic image of a connected set, and contains $e$).
+    Then $W_1=W\cup W^{-1}$ is also a connected neighborhood of $e$, and inductively so are $W_k=m(W_1\times W_{k-1})$, thus so is their union.
+    This is because $W_1\times W_{k-1}$ is connected, and the continuous image of a connected space is connected, and the union of connected
+    spaces with nontrivial intersection is connected (each $W_k$ contains $e$).
+
+    If $G$ is connected, then the subgroup $W$ generates is open by point (1), and thus closed.
+    Only trivial subspaces of a connected space are clopen, so $W$ generates $G$.
+    \qed
+
+\eproof
+
+For a Lie group $G$, the connected component containing the identity is called the {\emphcolor identity component}.
+
+\bprop
+
+    Let $G_0$ be the identity component of $G$.
+    Then $G_0$ is a normal subgroup of $G$, and it is the only connected open subgroup.
+    Every connected component of $G$ is diffeomorphic to $G_0$.
+
+\eprop
+
+\bproof
+
+    Any connected open neighborhood of the identity generates $G_0$ by the above proposition.
+    It is normal since $C_g(G_0)$ is a connected neighborhood of the identity, and thus contained in $G_0$ for all $g$.
+    And $L_g$ maps $G_0$ diffeomorphically to the connected component of $g\in G$.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $F\colon G\to H$ be a Lie group morphism, then $\ker F$ is a properly embedded Lie subgroup of $G$, whose codimension is equal to
+    $F$'s rank.
+
+\eprop
+
+\bproof
+
+    $\ker F$ is the level set $F^{-1}e$, and since $F$ has constant rank, it is a properly embedded submanifold of $G$.
+    We already showed that subgroups which are embedded submanifolds of Lie groups are Lie subgroups.
+    \qed
+
+\eproof
+
+\bprop
+
+    If $F\colon G\to H$ is an injective Lie group morphism, its image has a unique smooth manifold structure turning it into a Lie
+    subgroup of $H$ with $F$ an isomorphism onto its image.
+
+\eprop
+
+\bproof
+
+    $F$ is injective of constant rank, and thus an immersion.
+    Thus $F(G)$ has a unique smooth manifold structure turning it into an immersed submanifold of $H$ diffeomorphic to $G$.
+    Since it is diffeomorphic to $G$, it is also a Lie group and a subgroup (for obvious algebraic reasons).
+    Thus it is a Lie subgroup.
+    \qed
+
+\eproof
+
+\bexam
+
+    The set $\Sl_n(\bR)$ of $n\times n$ real matrices of determinant $1$ is a properly embedded Lie subgroup of $\gl_n(\bR)$, as the kernel
+    of the determinant.
+    The rank of the determinant map is $1$, so $\Sl_n(\bR)$ has dimension $n^2-1$.
+
+\eexam
+
+\bexam
+
+    The set $\Sl_n(\bC)$ of $n\times n$ complex matrices of determinant $1$ is the kernel of the determinant map to $\bC^\times$.
+    This is a surjective map, and thus has rank $2$ (since $\bC^\times$ does).
+    Thus $\Sl_n(\bC)$ is a properly embedded submanifold of $\gl_n(\bC)$ of dimension $2n^2-2$.
+
+\eexam
+
+\bthrm
+
+    Let $H\subseteq G$ be a Lie subgroup.
+    Then $H$ is closed iff it is embedded.
+
+\ethrm
+
+\bproof
+
+    If $H$ is embedded, let $g$ be a limit point of $H$ (recall that in Hausdorff spaces, a set is closed iff it contains its limit points).
+    Then there is a sequence of elements $h_i\in H$ converging to $g$.
+    Let $(U,\phi)$ be a chart for $G$ containing the identity such that $\iota$'s coordinate representation is concatenation with $0$.
+    Then we can take $W$ to be a smaller neighborhood so that $\cl W\subseteq U$.
+    We can take a neighborhood $V$ of $e$ such that $g_1g_2^{-1}\in W$ whenever $g_1,g_2\in V$.
+    Consider the smooth map $G\times G\to G$ by $g_1,g_2\mapsto g_1g_2^{-1}$ and then take $W$'s preimage, which is open and thus contains
+    a neighborhood $V_1\times V_2$ of the identity, and we can shrink them to give $V_1=V_2=V$.
+
+    Since $h_ig^{-1}\to e$, we can assume that $h_ig^{-1}\in V$ for all $i$ (since eventually this is true).
+    Thus
+    $$ h_ih_j^{-1} = (h_ig^{-1})(h_jg^{-1})^{-1} \in W $$
+    for all $i,j$.
+    Fixing $j$ and letting $i\to\infty$, we see that $h_ih_j^{-1}\to gh_j^{-1}\in\cl W\subseteq U$.
+    By our assumption, $H\cap U$ is closed and thus $gh_j^{-1}\in H$, so $g\in H$.
+
+    Conversely let $H$ be a closed Lie subgroup with $m=\dim H,n=\dim G$.
+    If $m=n$ then it must be embedded as full-rank immersed submanifolds are embedded.
+    So assume $m<n$.
+
+    It is sufficient to show that for some $h_1\in H$ there is a neighborhood $h_1\in U_1\subseteq G$ such that $H\cap U_1$ is an embedded submanifold
+    of $U_1$.
+    For any other $h\in H$, consider the right translation $L_{hh_1^{-1}}\colon G\to G$ which maps $H$ to $H$ and $U_1$ to a neighborhood
+    $U'_1$ of $h$.
+    Then $U'_1\cap H$ is embedded in $U'_1$.
+    So for every $h\in H$ there is a neighborhood $U\subseteq G$ such that $U\cap H$ is embeddable in $U$.
+    Then by the local slice criterion, $H$ is embeddable in $G$.
+
+    Every immersion is locally an embedding, so let $h_1\in V\subseteq G$ such that $\iota|_V\colon V\cap H\to V$ is an embedding.
+
+\eproof
+
+\TODO{Above}
+
+\subsection{Lie group actions}
+
+Recall that a (left) group action of a group $G$ on a set $X$ is a map $\theta\colon G\times X\to X$ written by juxtaposition satisfying
+$$ g_1(g_2x) = (g_1g_2)x,\qquad ex = x . $$
+A right group action is defined similarly.
+
+\bdefn
+
+    Let $G$ be a topological group and $X$ a topological space.
+    A {\emphcolor continuous (left) group action} of $G$ on $X$ is a group action $\theta\colon G\times X\to X$ which is continuous.
+    A {\emphcolor smooth group action} is a group action of a Lie group on a smooth manifold which is smooth.
+
+\edefn
+
+There is a duality between left and right group actions: a left group action defines a right group action by $xg=g^{-1}x$ and vice versa.
+
+Note that regular group actions can be equivalently characterized as group morphisms $G\to\sym(X)$ where $\sym(X)$ is the set of permutations of $X$.
+For continuous group actions, since the category of topological spaces doesn't in general have a right adjoint to products, there isn't in general
+a topological space like $\sym(X)$.
+
+But $\cdot\times X$ does have a right adjoint if $X$ is locally compact and Hausdorff.
+Its right adjoint is $Z^X$, the set of continuous maps $X\to Z$, given the compact-open topology: for compact $K\subseteq X$ and open $U\subseteq Z$,
+we add base sets $V(K,U)$, which are continuous maps $f\colon X\to Z$ where $f(K)\subseteq U$.
+Let $\aut(X)$ be the topological group of automorphisms of $X$, viewed as a subspace of $X^X$.
+In this case, a continuous group action is the same as a continuous group morphism
+$$ G \to \aut(X) . $$
+But when $X=M$ is a smooth manifold, we then need to give $\aut(M)$ a Lie group structure.
+
+For a group action $\theta\colon G\times M\to M$, for $g\in G$ we write the map $\theta_g\colon M\to M$.
+These are smooth maps, as $\theta$ is, and satisfy
+$$ \theta_g\circ\theta_h = \theta_{gh},\qquad \theta_e=\id_M . $$
+Thus $\theta_g$ is a diffeomorphism with inverse $\theta_{g^{-1}}$.
+
+\bdefn
+
+    For a group action of $G$ on $M$, define
+    \benum
+        \item the {\emphcolor orbit} of $p\in M$ to be $G\cdot p=\set{gp}[g\in G]$,
+        \item the {\emphcolor stabilizer} of $p\in M$ to be $G_p=\set{g\in G}[gp=p]$ (also called the {\emphcolor isotropy group}).
+    \eenum
+    The isotropy group is indeed a subgroup of $G$.
+    The action is
+    \benum
+        \item {\emphcolor transitive} if for every $p,q\in M$ there is a $g\in G$ such that $gp=q$, equivalently $M$ has a single orbit.
+        \item {\emphcolor free} if every isotropy group is trivial: if $gp=p$ then $g=e$.
+    \eenum
+
+\edefn
+
+\bexam
+
+    If $G$ is a Lie group and $M$ a smooth manifold, the {\emphcolor trivial action} of $G$ on $M$ is $gp=p$ for all $g\in G,p\in M$.
+
+\eexam
+
+\bexam
+
+    $\gl_n(\bR)$ has a natural action on $\bR^n$ by matrix multiplication: $(A,v)\mapsto Av$.
+    This is clearly a group action, and smooth since its components are all polynomially dependent on the inputs.
+    $\gl_n(\bR)$ almost acts transitively: for every $v,u\in\bR^n$ which are nonzero there is an invertible matrix $A$ such that $Av=u$.
+    So this action has two orbits: $\bR^n-0$ and $0$.
+
+\eexam
+
+If $H\subseteq G$ is a Lie subgroup, and $G$ acts on $M$, then we can restrict the action to $H$, and it remains smooth.
+This is because $H\times M$ is an immersed submanifold of $G\times M$.
+
+\bexam
+
+    Left translation defines a smooth action of a Lie group on itself (right translation defines a right smooth action).
+    This is transitive, as $g_2g_1^{-1}$ maps $g_1$ to $g_2$, and it is free.
+    The restriction of this to a Lie subgroup remains free and smooth, but not necessarily transitive.
+
+\eexam
+
+\bexam
+
+    Conjugation forms a smooth group action of a Lie group on itself.
+
+\eexam
+
+\bdefn
+
+    If $G$ acts smoothly on two manifold $M$ and $N$, a {\emphcolor $G$-equivariant} map $F\colon M\to N$ is a smooth map which is equivariant
+    in the usual way:
+    $$ F(g\cdot p) = g\cdot F(p) $$
+    for all $g\in G,p\in M$.
+
+\edefn
+
+If the actions of $G$ on $M$ and $N$ are given by $\theta,\phi$ respectively, this is the same as saying that the following diagram commutes for
+all $g\in G$:
+
+\centerline{\drawdiagram{
+    $M$&$N$\cr
+    $M$&$N$\cr
+}{
+    \diagarrow{from={1,1}, to={1,2}, text=$F$, y distance=-.25cm}
+    \diagarrow{from={2,1}, to={2,2}, text=$F$, y distance=.25cm}
+    \diagarrow{from={1,1}, to={2,1}, text=$\theta_g$, x distance=-.25cm}
+    \diagarrow{from={1,2}, to={2,2}, text=$\phi_g$, y distance=.25cm}
+}}
+
+\bthrm
+
+    Let $G$ act smoothly on $M$ and $N$ such that it acts transitively on $M$.
+    If $F\colon M\to N$ is $G$-equivariant, it has constant rank.
+
+\ethrm
+
+\bproof
+
+    For $p,q\in M$ let $g\in G$ be such that $gp=q$ (by transitivity).
+    Then we have $\phi_g\circ F=F\circ\theta_g$ and thus
+    $$ d(\phi_g)_{F(p)}\cdot dF_p = dF_q\cdot d(\theta_g)_p , $$
+    and since the actions are diffeomorphisms, we have that $dF_p$ and $dF_q$ have the same rank, as desired.
+    \qed
+
+\eproof
+
+For a smooth action $\theta\colon G\times M\to M$, consider the smooth maps for $p\in M$ defined by
+$$ \theta^{(p)}\colon G\to M,\qquad \theta^{(p)}(g) = gp . $$
+This is called the {\emphcolor orbit map}, as its image is the orbit $G\cdot p$.
+The preimage $(\theta^{(p)})^{-1}(p)$ is the isotropy group $G_p$.
+
+\bcoro
+
+    For any smooth action $\theta$ and $p\in M$, $\theta^{(p)}\colon G\to M$ is smooth and has constant rank.
+    Thus the isotropy group $G_p=(\theta^{(p)})^{-1}(p)$ is a properly embedded Lie subgroup of $G$.
+    If $G_p=\set e$, then $\theta^{(p)}$ is injective and thus a smooth immersion, so $G\cdot p$ is an immersed submanifold of $M$.
+
+\ecoro
+
+\bproof
+
+    $\theta^{(p)}$ is equivariant relative to the group action of $G$ on itself and $G$ on $M$:
+    $$ \theta^{(p)}(g_1g_2) = g_1g_2p = g_1\theta^{(p)}(g_2) , $$
+    and since $G$ acts transitively on above, this has constant rank as above.
+    Thus $G_p$ is a level set of a constant rank map, and thus a properly embedded smooth manifold, and thus a Lie subgroup.
+    If $G_p$ is trivial, then $\theta^{(p)}$ is clearly injective, and thus a smooth immersion, and the result follows.
+    \qed
+
+\eproof
+
+\bexam
+
+    A matrix $A\in\mat_n(\bR)$ is {\emphcolor orthogonal} if it preserves the Euclidean dot product:
+    $$ (Ax)\cdot(Ay) = x\cdot y , $$
+    or equivalently its columns are orthonormal, i.e.\ $A^\top A=I_n$.
+    Let $\orth(n)$ be the set of all orthogonal real $n\times n$ matrices.
+    So define $\Phi\colon\gl_n(\bR)\to\mat_n(\bR)$ by $\Phi(A)=A^\top A$, so that $\orth(n)$ is the level set $\Phi^{-1}I_n$.
+
+    To show that $\orth(n)$ is an embedded submanifold of the general linear group, we will show that it is equivariant for some group action.
+    There is the clear transitive smooth action of $\gl_n(\bR)$ on itself, and define its action on $\mat_n(\bR)$ by a sort of conjugation:
+    $$ A\cdot X = AXA^\top . $$
+    Then $\Phi$ is equivariant:
+    $$ \Phi(AB) = (AB)(AB)^\top = ABB^\top A^\top = A\cdot\phi(B) , $$
+    as desired.
+
+    $\orth(n)$ is compact, as it is closed and bounded in $\mat_n(\bR)$: closed as the preimage of a closed set, and bounded since norms of
+    orthogonal matrices are
+    $$ \norm A^2 = \trace(A^\top A) = \trace(I_n) = n , $$
+    so bound by $\sqrt n$.
+
+    To compute $\orth(n)$'s dimension we need to compute $\Phi$'s rank, which we can do at any matrix of our choosing, so take $I_n$.
+    To do this, we compute $d\Phi$'s image on tangent vectors, viewed as velocity curves.
+    So for $B\in\mat_n(\bR)$ we consider the curve $\gamma\colon(-\epsilon,\epsilon)\to\gl_n(\bR)$ by $\gamma(t)=I_n+tB$.
+    Since $T_{I_n}\gl_n(\bR)\cong\mat_n(\bR)$, all curves are uniquely of this form.
+    Then
+    $$ d\Phi_{I_n}(B) = \eval{\frac d{dt}}_{t=0}\Phi\circ\gamma(t) = \eval{\frac d{dt}}_{t=0}(I_n+tB)^\top(I_n+tB) = B^\top + B . $$
+    Thus $d\Phi$'s image is precisely the symmetric matrices, which has dimension $n+n(n-1)/2=n(n+1)/2$.
+    And so $\orth(n)$'s dimension is $n^2-n(n+1)/2=n(n-1)/2$.
+
+\eexam
+
+\bexam
+
+    The {\emphcolor special orthogonal group} of degree $n$ is the set of real orthogonal matrices of determinant $1$.
+    That is, $\sorth(n)=\orth(n)\cap\sl_n(\bR)$.
+    Notice that for $A\in\orth(n)$ we have
+    $$ 1 = \det I_n = \det(A^\top A) = \det(A)^2 , $$
+    so that $\sorth(n)$ is the set of orthogonal matrices of positive determinant, thus an open submanifold of $\orth(n)$.
+
+\eexam
+
