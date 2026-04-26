@@ -1,0 +1,283 @@
+\section{Sard's Theorem}
+
+\subsection{Sets of measure zero}
+
+\bdefn
+
+    Recall that a subset $S\subseteq\bR^n$ is said to be of {\emphcolor measure zero} if for every $\epsilon>0$, $S$ can be covered by
+    a countable collection of open rectangles where the sum of their volume is less than $\epsilon$.
+    Equivalently, $S$ literally has zero measure with respect to the Lebesgue measure on $\bR^n$.
+
+\edefn
+
+\blemm
+
+    Suppose that $A\subseteq\bR^n$ is measurable (including Borel subsets), such that for every $c\in\bR$,
+    $A$'s intersection with $\set c\times\bR^{n-1}$ has $(n-1)$-dimension measure zero.
+    Then $A$ has measure zero.
+
+\elemm
+
+\bproof
+
+    $A$ is measurable and so its indicator function $\chi_A$ is integrable.
+    By Fubini's theorem,
+    $$ \mu(A) = \int_{\bR^n}\chi_A\,d(x^1,\dots,x^n) = \int_\bR\int_{\bR^{n-1}}\chi_A(c,x^2,\dots,x^n)\,d(x^2,\dots,x^n)\,dx^1 , $$
+    where $\mu$ is the Lebesgue measure.
+    Now the integral of $\chi_A(c,\bar x)$ is the measure of the intersection of $A$ with $\set c\times\bR^{n-1}$, which we assumed to be zero.
+    Thus the integral is zero and $A$ has measure zero.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $A$ be open or closed in $\bR^{n-1}$ or $\bH^{n-1}$, and $f\colon A\to\bR$ continuous.
+    Then $f$'s graph has measure zero in $\bR^n$.
+
+\eprop
+
+\bproof
+
+    Note that $f$'s graph is closed: it is the preimage of $0$ under the map $g\colon\bR^n\to\bR$ mapping $(\bar x,a)$ to $f(\bar x)-a$.
+    For $c\in\bR$, $f$'s graph's intersection with $\set c\times\bR^{n-1}$ is the graph of the function mapping $x\in\bR^{n-2}$ to $f(c,x)$, i.e.\ the graph
+    of the restriction of $f$ to $\bR^{n-2}$.
+    We can then induct, showing that for every $c\in\bR$ these have measure zero, and then appeal to the above lemma.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Every proper affine subspace of $\bR^n$ has measure zero.
+
+\ecoro
+
+\bproof
+
+    If $S$ is an affine subspace of $\bR^n$ of dimension $n-1$, it is the graph of an affine function $\bR^{n-1}\to\bR$.
+    By the above proposition, it has measure zero.
+    \qed
+
+\eproof
+
+\bprop
+
+    Suppose $A\subseteq\bR^n$ has measure zero and $F\colon A\to\bR^n$ is smooth.
+    Then $F(A)$ has measure zero.
+
+\eprop
+
+\bproof
+
+    For $p\in A$, $F$ extends to an open ball around $p$.
+    By potentially shrinking the ball, we can extend $F$ to its closure, a compact set $\bar U$.
+    $A$ can be covered by countably many $A\cap\bar U$s, so it is sufficient to show that $F(A\cap\bar U)$ has measure zero.
+
+    Since $\bar U$ is compact, $\norm{JF(x)}$ is bound by some constant $C$ on it (this is true for all continuous real-valued functions
+    on compact sets).
+    Then we see that $\norm{F(x)-F(y)}\leq C\norm{x-y}$ for all $x,y\in\bar U$.
+    Since $A$ has measure zero, for any $\epsilon>0$ we can cover $A\cap\bar U$ with balls $\set{B_j}$ of total measure $<\epsilon$.
+    By Lipschitz continuity, $F(B_j)$'s measure is bound by $C$ times $B_j$'s, so that
+    $$ \mu F(A\cap\bar U) \leq \sum_j \mu F(B_j) \leq \sum_jC\mu(B_j) < C\epsilon . $$
+    Since $\epsilon$ is arbitrary, we have the desired result.
+    \qed
+
+\eproof
+
+\bnote
+
+    In the above proof we used the fact that smooth functions from a compact set are Lipschitz continuous.
+    Indeed, if $F\colon\bar U\to\bR^n$ is smooth (even $C^1$), then let $\norm{JF(x)}\leq C$ for all $x\in C$, then
+    $$ F(y) - F(x) = \int_0^1\frac d{dt}F(x+t(y-x))\,dt $$
+    by the fundamental theorem of calculus.
+    Now,
+    $$ \frac d{dt}F(x+t(y-x)) = (y-x)JF(x+t(y-x)) $$
+    so we have that
+    $$ \norm{F(y)-F(x)} = \norm{\int_0^1 (y-x)JF(x+t(y-x))\,dt} \leq \int_0^1\norm{y-x}\norm{JF(x+t(y-x))}\,dt . $$
+    We can bound the Jacobian by $C$, giving us
+    $$ \leq \norm{y-x} \int_0^1 C = C\norm{y-x} $$
+    as desired.
+
+\enote
+
+\bdefn
+
+    If $M$ is a smooth $n$-manifold, with or without boundary, a subset $A\subseteq M$ has {\emphcolor measure zero} if for every smooth chart
+    $(U,\phi)$ for $M$, $\phi(A\cap U)\subseteq\bR^n$ has measure zero.
+
+\edefn
+
+\blemm
+
+    Let $(U_\alpha,\phi_\alpha)$ be a collection of smooth charts covering $M$.
+    If $A\subseteq M$ is a subset where $\phi(A\cap U_\alpha)$ has measure zero for all $\alpha$, then $A$ has measure zero.
+
+\elemm
+
+\bproof
+
+    Let $(V,\psi)$ be an arbitrary smooth chart, we need to show $\psi(A\cap V)$ has measure zero.
+    For each $\alpha$, consider
+    $$ \psi(A\cap V\cap U_\alpha) = (\psi\circ\phi_\alpha)^{-1}\circ\phi_\alpha(A\cap V\cap U_\alpha) , $$
+    which has measure zero by the above proposition.
+    Since $\psi(A\cap V)$ is covered by countably many of these, it has measure zero.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $A\subseteq M$ be a subset with measure zero.
+    Then $M-A$ is dense in $M$.
+
+\eprop
+
+\bproof
+
+    If not, then there is an open subset $U$ contained in $A$
+    Let $(V,\phi)$ be a chart contained in $U\subseteq V$, then $\phi(A\cap V)=\phi(V)$, which is nonempty open in $\bR^n$.
+    But open subsets of $\bR^n$ cannot have measure zero (they contain an open ball/rectangle which by definition has positive measure),
+    a contradiction.
+    \qed
+
+\eproof
+
+\bthrm
+
+    Let $F\colon M\to N$ be smooth, and $A\subseteq M$ of measure zero.
+    Then $F(A)\subseteq N$ has measure zero.
+
+\ethrm
+
+\bproof
+
+    Let $(U_\alpha,\phi_\alpha)$ cover $M$, and let $(V,\psi)$ be a chart for $N$.
+    Then $\psi(F(A)\cap V)$ can be covered by $\psi\circ F\circ\phi_\alpha^{-1}(\phi_\alpha(A\cap U_\alpha\cap F^{-1}(V)))$.
+    Now $\psi\circ F\circ\phi_\alpha^{-1}$ is a smooth Euclidean map, and $\phi_\alpha(A\cap U_\alpha\cap F^{-1}(V))$ has measure zero by assumption,
+    so these coverings have measure zero.
+    Thus so does $\psi(F(A)\cap V)$ as desired.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $F\colon M\to N$ be smooth.
+    A point $p\in M$ is a {\emphcolor regular point} of $F$ if $F$ has rank $\dim N$ at $p$, otherwise it is a {\emphcolor critical point}.
+    The image of a regular point is called a {\emphcolor regular value}, and the image of a critical point is a {\emphcolor critical value}.
+
+\edefn
+
+In other words, a point is a regular point iff $dF_p\colon T_pM\to T_{Fp}N$ is a surjection.
+Notice that if $\dim M<\dim N$, every point is critical.
+
+\bthrm[title=Sard's theorem]
+
+    Let $F\colon M\to N$ be smooth map.
+    Then the set of critical values has measure zero in $N$.
+
+\ethrm
+
+\bproof
+
+    Let $m=\dim M,n=\dim N$, we induct on $m$.
+    For $m=0$ it is clear: either $n=0$ for which $F$ has no critical points, or $n>0$ and all points are critical but $M$ is countable and
+    thus $F(M)\subseteq N$ has measure zero.
+
+    By covering $F$ with countably many smooth charts, we can reduce this to the case that $F$ is a smooth map from an open subset $U$ of $\bR^m$
+    or $\bH^m$ to $\bR^n$.
+    Let $C\subseteq U$ be the set of critical points of $F$.
+    Define
+    $$ C_k = \set{x\in C}[\hbox{For $1\leq i\leq k$, all of the $i$th partial derivatives of $F$ vanish at $x$}] . $$
+    Then $C_k$ is decreasing, $C\supseteq C_1\supseteq C_2\supseteq\cdots$, and by continuity they are all closed in $U$.
+
+    Now we prove in three parts that $F(C)$ has measure zero.
+    \benum
+        \item Firstly, $F(C-C_1)$ has measure zero.
+        Because $C_1$ is closed in $U$, we can take $U=U-C_1$ and assume $C_1=\emptyset$.
+        Let $a\in C$, so we assumed that $F$'s first partial derivatives are not all $0$ at $a$.
+        Without loss of generality, $\ipdvof F^1{x^1}(a)\neq0$.
+        So we can define new smooth coordinates $(u,v)=(u,v^2,\dots,v^m)$ in a neighborhood of $a$, where $u=F^1$ and $v^i=x^i$.
+        This is because the Jacobian of these coordinates is invertible at $a$ and thus locally a diffeomorphism.
+        Let $V_a$ be the neighborhood of $a$ using these coordinates, and potentially shrinking it, we can assume $\cl V_a$ is compact in $U$.
+
+        In these coordinates, $F$ has representation
+        $$ F(u,v^2,\dots,v^m) = (u,F^2(u,v),\dots,F^n(u,v)) , $$
+        so its Jacobian is
+        $$ JF(u,v) = \pmatrix{1&0\cr *&\pdvof{F^i}{v^j}} . $$
+        Thus $C\cap\cl V_a$ consists of points the $(n-1)\times(m-1)$ matrix $\pdvof{F^i}{v^j}$ has rank $<n-1$.
+
+        We wish to show that $F(C\cap\cl V_a)$ has measure zero in $N$.
+        This set is compact, and thus measurable, so it is sufficient to show that its intersection with the hyperplane $y^1=c$ has $n-1$-dimensional
+        measure zero.
+        For $c\in\bR$, define $B_c=\set v[(c,v)\in\cl V_a]\subseteq\bR^{m-1}$, and define $F_c\colon B_c\to\bR^{n-1}$ by
+        $$ F_c(v) = (F^2(c,v),\dots,F^n(c,v)) . $$
+        Because $F(c,v)=(c,F_c(v))$, the critical values of $F|_{\cl V_a}$ which lie in the hyperplane $y^1=c$ are precisely the points of the form $(c,w)$
+        where $w$ is a critical value of $F_c$.
+        By induction, these have $n-1$-dimensional measure zero, so $F(C\cap\cl V_a)$ has measure zero.
+
+        We can cover $U$ with countably many sets of the form $\cl V_a$, and thus $C$ by countably many sets of the form $C\cap\cl V_a$.
+        Thus $F(C)$ is the countable union of sets of measure zero, and thus has measure zero.
+
+        \item For the second step, we claim $F(C_k-C_{k+1})$ has measure zero for each $k$.
+        As before, we can take $U=U-C_{k+1}$ and assume that every point in $C_k$ has a $k+1$th partial derivative which does not vanish.
+        Let $a\in C_k$, and denote by $y\colon U\to\bR$ some $k$th partial derivative of $F$ which has a nonvanishing partial derivative at $a$.
+        Since $a\in C_k$ we have that $y(a)=0$.
+
+        Then $a$ is a regular point of $y$, so it has a neighborhood $V_a$ consisting of regular points of $y$.
+        Let $Y$ be the zero set of $y$ in $V_a$, i.e.\ $Y=y^{-1}0$.
+        Since $V_a$ are regular points of $y$, by definition $Y$ is a regular level set, and thus an embedded submanifold of $V_a$ of codimension $1$.
+        Since $V_a$ is open, $Y$ is an embedded submanifold of $M$ of dimension $m-1$.
+
+        For any $p\in C_k\cap V_a$, $dF_p$ is not surjective (by assumption, $p$ is critical), so then neither is $d(F|_Y)_p=(dF_p)|_{T_pY}$.
+        So $F(C_k\cap V_a)$ is contained in the critical values of $F|_Y\colon Y\to\bR^n$, which by induction has measure zero.
+        Since $U$ can be covered by countably many $V_a$, the result follows.
+
+        \item Now, notice that the intersection of all $C-C_1$ and $C_k-C_{k+1}$ need not be all of $C$: we may have points in $C$ all of whose partial
+        derivatives vanish.
+        So for our final step, we claim that for $k>m/n+1$, $F(C_k)$ has measure zero.
+
+        For $a\in U$, let $E\subseteq U$ be a closed cube containing $a$.
+        Since $U$ can be covered by countably many such cubes, we will show $F(C_k\cap E)$ has measure zero for all such closed cubes.
+
+        Since $E$ is compact, we can find a value $A>0$ which bounds the absolute values of all of $F$'s $k+1$th partial derivatives in $E$.
+        Let $R$ be the side length of $E$, and let $K$ be some integer to be chosen.
+        Then we can subdivide $E$ into $K^m$ subcubes of side length $R/K$, denoted by $(E_1,\dots,E_{K^m})$.
+        If $E_i$ is a cube and there is an $a_i\in E_i\cap C_k$, then for all $x\in E_i$ we have
+        $$ \norm{F(x) - F(a_i)} \leq A'\norm{x-a_i}^{k+1} $$
+        for some value $A'$ dependent only on $A,k,m$.
+        Thus $F(E_i)$ is contained in a ball of radius $A'(R/K)^{k+1}$, so of measure $A''(R/K)^{nk+n}$.
+        Then $F(C_k\cap E)$ is contained in the union of $K^m$ balls of this radius.
+        So its measure is bound by
+        $$ K^m\cdot A''(R/K)^{nk+n} = A''R^{nk+n}K^{nk+n-m} . $$
+        By assumption $nk+n-m<1$, so this can be made arbitrarily small by taking large enough $K$, so $F(C_k\cap E)$ has measure zero.
+    \eenum
+
+    Now, we just note that
+    $$ C = (C-C_1) \cup \bigcup_k (C_k-C_{k+1}) \cup \bigcup_{k>m/n+1} C_k , $$
+    a countable union of sets of measure zero, and thus $C$ has measure zero.
+    \qed
+
+\eproof
+
+\bnote
+
+    In the above proof we had a point where we had a bound like
+    $$ \norm{F(x) - F(a)} \leq A\norm{x-a}^{k+1} . $$
+    We obtain this bound by considering each of $F$'s coordinate's Taylor expansions.
+
+    If $f\colon W\subseteq\bR^n\to\bR$ is smooth and defined in some convex subset $W$, then take $f$'s $k$th order Taylor expansion $P_k(x)$ around $a\in W$.
+    Its remainder can be bound by
+    $$ \abs{f(x) - P_k(x)} \leq \frac{n^{k+1}M}{(k+1)!}\norm{x-a}^{k+1} , $$
+    as well as
+    $$ \abs{P_k(x) - f(a)} \leq \frac{kn^kM}{k!}\norm{x-a}^k $$
+    (Just take a good look at the remainder and polynomial expressions, here $M$ is a bound on the partial derivatives.)
+    Then we have
+    $$ \abs{f(x) - f(a)} \leq \abs{f(x) - P_k(x)} + \abs{P_k(x) - f(a)} \leq A\norm{x-a}^{k+1} $$
+    for some absolute constant $A$ dependent only on $n,k$, and $M$ (a bound on the partial derivatives).
+    We then get that
+    $$ \norm{F(x) - F(a)} = \sqrt{\sum_i\abs{F^i(x)-F^i(a)}^2} \leq nA\norm{x-a}^{k+1} . $$
+
+\enote
+
