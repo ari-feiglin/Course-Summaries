@@ -491,3 +491,147 @@ The preimage $(\theta^{(p)})^{-1}(p)$ is the isotropy group $G_p$.
 
 \eexam
 
+\subsection{Quotient manifolds}
+
+\bdefn
+
+    Let $G$ be a Lie group acting on a smooth manifold $M$.
+    Define the {\emphcolor orbit space} as usual to be the set of all orbits:
+    $$ M/G = \set{G\cdot p}[p\in M] . $$
+    It can be equivalently viewed as the quotient of $M$ by the equivalence that two points are identified if they have the same orbit.
+    This is made into a topological space via the quotient topology: let $\pi\colon M\to M/G$ be the projection $p\mapsto G\cdot p$,
+    then $U\subseteq M/G$ is open iff $\pi^{-1}U\subseteq M$ is.
+
+\edefn
+
+\blemm
+
+    The projection map $\pi\colon M\to M/G$ is an open map.
+
+\elemm
+
+\bproof
+
+    We need to show that for $U\subseteq M$ open, $\pi^{-1}\circ\pi(U)\subseteq M$ is open.
+    We have
+    $$ \pi^{-1}\circ\pi(U) = \set{p\in M}[G\cdot p=G\cdot q\hbox{ for some $q\in U$}] = \bigcup_{g\in G}gU . $$
+    Where $gU=\theta_g(U)$, which is open as the diffeomorphic image of an open set.
+    Thus $\pi^{-1}\circ\pi(U)$ is open, as desired.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A map between topological spaces is {\emphcolor proper} if its inverse image of compact subsets are compact.
+    A smooth action of $G$ on $M$ is {\emphcolor proper} if the map $\Theta\colon G\times M\to M\times M$ given by $\Theta(g,p)=(gp,p)$ is proper.
+
+\edefn
+
+Note that proper continuous maps $\Theta\colon X\to Y$ where $Y$ is locally compact and Hausdorff (e.g.\ a manifold), then $\Theta$ is closed.
+
+\blemm
+
+    If a topological group acts continuously and properly on a topological manifold, then its orbit space is Hausdorff.
+
+\elemm
+
+\bproof
+
+    Let $G$ be a topological group acting continuously and properly on $M$, let $\Theta\colon G\times M\to M\times M$ be the proper map,
+    and $\pi\colon M\to M/G$ the quotient map.
+    Define the relation $\c O\subseteq M\times M$ by
+    $$ \c O = \Theta(G\times M) = \set{(gp,p)}[g\in G,p\in M] , $$
+    so that $(p,q)\in\c O$ iff they are in the same orbit.
+    Since $\Theta$ is proper and thus closed, $\c O\subseteq M\times M$ is closed.
+    Now if $Gp\neq Gq$ so that $(p,q)\notin\c O$ there is an open neighborhood $V\times U$ containing $(p,q)$ disjoint from $\c O$.
+    Then $\pi(U),\pi(V)$ are neighborhoods of $\pi(p),\pi(q)$, since $\pi$ is open, and they are disjoint.
+    \qed
+
+\eproof
+
+\blemm
+
+    Let $G$ be a topological group acting continuously on $M$.
+    Then the following are equivalent:
+    \benum
+        \item the action is proper;
+        \item if $(p_i)$ is a sequence in $M$ and $(g_i)$ a sequence in $G$ such that both $(p_i)$ and $(g_ip_i)$ converge, then a subsequence
+        of $(g_i)$ converges;
+        \item for every compact $K\subseteq M$, the set $G_K=\set{g\in G}[(gK)\cap K\neq\emptyset]$ is compact.
+    \eenum
+
+\elemm
+
+\bproof
+
+    If $\Theta$ is proper, and we have sequences as in the first point, then let $U,V$ be precompact neighborhoods of $p=\lim p_i$ and
+    $q=\lim g_ip_i$ respectively.
+    Then eventually $\Theta(g_i,p_i)$ lie in the compact set $\cl V\times\cl U$, we can assume they always do.
+    Then $(g_i,p_i)\in\Theta^{-1}(\cl V\times\cl U)$ is compact, and thus there is a subsequence of $(g_i,p_i)$ which converges, and so there
+    is a subsequence of $g_i$ which converges.
+
+    Now suppose we have the second point, and let $K\subseteq M$ be compact.
+    Let $g_i\in G_K$ be any sequence of points, so that there are $p_i\in(g_iK)\cap K$, meaning $p_i\in K$ and $g_i^{-1}p_i\in K$.
+    There are then subsequences of $p_i$ and $g_i^{-1}p_i$ which converge, and thus by assumption $g_i^{-1}$ has a subsequence which converges.
+    Thus $g_i$ has a subsequence which converges in $G$, let its limit be $g$.
+    Then $g\in G_K$ since if $p$ is the limit of $p_i$, we have $p\in(gK)\cap K$.
+
+    Finally assume that $G_K$ is always compact for compact $K$.
+    Suppose $L\subseteq M\times M$ is compact, and let $K=\pi_1(L)\cup\pi_2(L)\subseteq M$ where $\pi_i\colon M\times M\to M$ are the projections.
+    These are compact as the continuous image of compact sets, then
+    $$ \Theta^{-1}(L) \subseteq \Theta^{-1}(K\times K) = \set{(g,p)}[p\in K,gp\in K] \subseteq G_K\times K . $$
+    $L$ is closed and thus compact, so $\Theta^{-1}(L)$ is a closed subset of a compact space, and thus compact.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Every smooth action by a compact Lie group is proper.
+
+\ecoro
+
+\bproof
+
+    If $(p_i),(g_i)$ are sequences as in the above lemma, then a subsequence of $(g_i)$ converges because $G$ is compact and every sequence
+    has a convergent subsequence.
+    \qed
+
+\eproof
+
+\bprop
+
+    If $\theta$ is a smooth action of $G$ on $M$, then for every $p\in M$ the map $\theta^{(p)}$ is proper.
+    Thus the orbit $G\cdot p=\theta^{(p)}(G)$ is closed in $M$.
+    If $G_p$ is trivial, then $\theta^{(p)}$ is a smooth embedding and thus $G\cdot p$ is a properly embedded submanifold.
+
+    Furthermore, the isotropy groups $G_p$ are compact.
+
+\eprop
+
+\bproof
+
+    For $K\subseteq M$ compact, $(\theta^{(p)})^{-1}(K)$ is a closed subset contained in the compact set $G_{K\cup\set p}$, and is thus
+    compact.
+    The rest follows, as $\theta^{(p)}$ is then closed, and if it is also an injection it is a homeomorphism onto its image (as it is closed
+    and continuous).
+
+    The isotropy groups $G_p$ are just $G_{\set p}$, compact by assumption.
+    \qed
+
+\eproof
+
+\bthrm
+
+    If $G$ acts freely and properly on $M$, then $M/G$ has a unique smooth structure making $\pi\colon M\to M/G$ into a smooth submersion.
+
+\ethrm
+
+\bproof
+
+    The proof is long, but can be found in Lee's book for example.
+    \qed
+
+\eproof
+

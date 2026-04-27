@@ -1,0 +1,711 @@
+\section{Vector Fields}
+
+\subsection{Vector fields on manifolds}
+
+\bdefn
+
+    Let $M$ be a smooth manifold and $TM$ its tangent bunldle.
+    A {\emphcolor vector field} is a section of the map $\pi\colon TM\to M$, meaning a continuous map $X\colon M\to TM$ where $\pi\circ X=\id_M$.
+    A vector field is {\emphcolor smooth} if $X$ is.
+    A {\emphcolor rough vector field} is any set-theoretic function $X\colon M\to TM$ satisfying $\pi\circ X=\id_M$.
+
+\edefn
+
+For a vector field $X$ and $p\in M$, we write its value at $p$ as $X_p$ instead of $X(p)$.
+The requirement that $\pi\circ X=\id_M$ just means that $X(p)\in T_pM$ for all $p\in M$.
+
+If $X$ is a rough vector field on $M$, then for any point $p\in M$ and a chart $(U,\phi)$ containing $p$, we can write $X_p$ with respect to
+this chart:
+$$ X_p = X^i(p)\evpdv{x^i}_p . $$
+So we have defined functions $X^i\colon U\to\bR$, called the {\emphcolor component functions} of $X$.
+
+\bprop
+
+    Let $X$ be a rough vector field on a smooth manifold $M$, and let $(U,\phi)$ be a chart for $M$.
+    The restriction of $X$ to $U$ is smooth iff its component functions with respect to it are.
+
+\eprop
+
+\bproof
+
+    Consider the chart for $TM$ corresponding to $(U,\phi)$, i.e.\ $(\pi^{-1}U,\tilde\phi)$.
+    Then $X$'s representation with respect to these coordinates are
+    $$ \tilde\phi\circ X\circ\phi^{-1}(\hat p) = \tilde\phi\parens{X^i(p)\evpdv{x^i}_p} = (\hat p,X^1(p),\dots,X^n(p)) , $$
+    which is clearly smooth iff $X^i$ are.
+    \qed
+
+\eproof
+
+\bexam
+
+    If $(U,(x^i))$ is any coordinate chart for $M$, then the map
+    $$ p\mapsto\evpdv{x^i}_p $$
+    is a smooth vector field on $U$, called the $i$th {\emphcolor coordinate vector field}.
+    It is also denoted $\ipdv{x^i}$.
+
+\eexam
+
+\bexam
+
+    The vector field $V$ on $\bR^n$ whose value at $x$ is
+    $$ V_x = x^i\evpdv{x^i}_x $$
+    is smooth, as its coordinates are linear.
+    It is called the {\emphcolor Euler vector field}.
+
+\eexam
+
+If $U\subseteq M$ is open, then identifying $T_pU$ with $T_pM$, we can identify $TU$ with the open subset $\pi^{-1}U\subseteq TM$.
+So a vector field on $U$ can be viewed either as a map $U\to TU$ or $U\to TM$.
+The restriction of a vector field on $M$ to $U$ is smooth when the vector field is.
+
+Let $A\subseteq M$ arbitrary, then a {\emphcolor vector field along $A$} is a continuous map $X\colon A\to TM$ satisfying $\pi\circ X=\id_A$,
+i.e.\ $X_p\in T_pM$ for each $p\in A$.
+It is a smooth vector field if it can be extended to a smooth vector field at every point $p\in A$.
+
+\blemm
+
+    If $A\subseteq M$ is closed and $X\colon A\to TM$ is a smooth vector field along $A$, then for any open $A\subseteq U$,
+    there is a smooth vector field $\tilde X$ on $M$ such that $\tilde X|_A=X$ and $\supp\tilde X\subseteq U$.
+
+\elemm
+
+\bproof
+
+    This proof is similar to the usual extension lemma for Euclidean-valued smooth maps.
+    For $p\in A$ let $W_p$ be a neighborhood of $p$ and $\tilde X^p\colon W_p\to TM$ a smooth vector field agreeing with $X$ on $W_p\cap A$.
+    Then $\set{W_p}\cup\set{M-A}$ is an open cover of $M$ and thus has a subordinate partition of unity, $\set{\phi_p}\cup\set{\phi_0}$.
+
+    Define $\tilde X\colon M\to TM$ for $x\in M$ by
+    $$ \tilde X_x = \sum_{p\in A}\phi_p(x)\tilde X^p_x . $$
+    This is a smooth map, as for a neighborhood of $x$ we can consider the coordinates of $\tilde X^p_x$, and this is just a (finite)
+    smooth sum of them.
+    If $x\in A$ then $\tilde X^p_x=X_x$ and $\phi_0(x)=0$ so that $\tilde X_x=X_x$.
+    Furthermore,
+    $$ \supp\tilde X_x = \cl{\bigcup_{p\in A}\supp\phi_p} \subseteq \bigcup\cl{\supp\phi_p} \subseteq U $$
+    as desired.
+    \qed
+
+\eproof
+
+\bcoro
+
+    For any $p\in M$ and $v\in T_pM$, there is a smooth vector field on $M$ which maps $p$ to $v$.
+
+\ecoro
+
+\bproof
+
+    The vector field along $\set p$ mapping $p\mapsto v$ is smooth: it can be extended to any chart containing $p$ (as it then has constant
+    components).
+    By the above lemma it can be extended.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $M$ be a smooth manifold, then the set of its vector fields is denoted $\X(M)$.
+
+\edefn
+
+Notice that $\X(M)$ is a real linear space: for $X,Y\in\X(M)$ we can define their sum by
+$$ (X+Y)_p = X_p+Y_p , $$
+and for $a\in\bR$ we can define
+$$ (aX)_p = aX_p . $$
+These are smooth vector fields by considering their components in each open chart.
+Clearly these form a real linear space with the zero vector field being the zero vector.
+
+But moreso, they actually form a $C^\infty(M)$-module.
+For $f\in C^\infty(M)$ and $X\in\X(M)$ define
+$$ fX\colon M\to TM,\qquad (fX)_p = f(p)X_p . $$
+Again this is smooth by considering components in each chart.
+
+Thus when we wrote above
+$$ X_p = X^i(p)\evpdv{x^i}_p $$
+we could write this relation as a linear combination of fields above $C^\infty(M)$:
+$$ X = X^i\pdv{x^i} . $$
+
+More than just being a $C^\infty(M)$-module, smooth vector fields are also derivations in a sense to be explained.
+For an open set $U\subseteq M$, $f\in C^\infty(U)$, and $X\in\X(M)$, we define the function $Xf\colon U\to\bR$ by
+$$ (Xf)(p) = X_pf , $$
+recalling that $X_p\in T_pM$ is a derivation at $p$.
+This is a smooth map, again considering components.
+
+\bnote
+
+    While the notations $fX$ and $Xf$ may seem similar, they are distinct.
+    We could write them more distinctly as $f\cdot X$ and $X(f)$: the former is multiplication in the $C^\infty(M)$ module, while the second
+    is a sort of evaluation.
+
+\enote
+
+Because the actions of tangent vectors are locally determined, for $V\subseteq U$ we have that
+$$ (Xf)|_V = X(f|_V) . $$
+
+\bprop
+
+    Let $X\colon M\to TM$ be a rough vector field, then the following are equivalent:
+    \benum
+        \item $X$ is smooth,
+        \item for every $f\in C^\infty(M)$, the function $Xf$ is smooth on $M$,
+        \item for every open $U\subseteq M$ and $f\in C^\infty(U)$, $Xf$ is smooth on $U$.
+    \eenum
+
+\eprop
+
+\bproof
+
+    If $X$ and $f$ are smooth, then so is $Xf$.
+    Indeed, for any chart $(U,(x^i))$ and $x\in U$, we have that
+    $$ Xf(x) = \parens{X^i(x)\evpdv{x^i}_x}f = X^i(x)\pdvof{f}{x^i}(x) , $$
+    which is a smooth function of $x$, since $X^i$ and $f$ are smooth.
+
+    To prove the second implication, let $f\in C^\infty(U)$ and $p\in U$, let $\psi$ be a bump function identically equal to one in a neighborhood
+    of $p$ and supported in $U$.
+    Then $\tilde f=\psi f$ is identically equal to $f$ in a neighborhood of $p$ and supported in $U$.
+    By assumption, $X\tilde f$ is smooth, and equal to $Xf$ in a neighborhood of $p$.
+    Thus $Xf$ is smooth.
+
+    For the final implication, if $Xf$ is smooth for any $f\in C^\infty(U)$, let $(U,(x^i))$ be a chart for $M$ and notice that
+    $$ Xx^i = X^j\pdv{x^j}(x^i) = X^i $$
+    is then smooth for all $i$, meaning $X$ is smooth.
+    \qed
+
+\eproof
+
+Note then that a vector field $X\in\X(M)$ defines a map $C^\infty(M)\to C^\infty(M)$ by $f\mapsto Xf$.
+This map is clearly $\bR$-linear, and since $X_p\in T_pM$ we see that
+$$ X(fg) = fXg + gXf $$
+for all $f,g\in C^\infty(M)$, by simply plugging in $p$.
+Such a map is called a {\emphcolor derivation}:
+
+\bdefn
+
+    A {\emphcolor derivation} of a commutative $R$-algebra $A$ is a map $D\colon A\to A$ which is $R$-linear (a module morphism) and satisfies
+    $$ D(fg) = fD(g) + gD(f) . $$
+
+\edefn
+
+\bprop
+
+    The derivations of $C^\infty(M)$ are precisely the smooth vector fields over $M$.
+
+\eprop
+
+\bproof
+
+    As we showed, a smooth vector field is a derivation.
+    Conversely let $D$ be a derivation of $C^\infty(M)$; we want to find an $X\in\X(M)$ such that $Xf=Df$ for all $f\in C^\infty(M)$.
+    For $p\in M$, we must have that
+    $$ X_pf = (Df)(p) , $$
+    so simply define $X_p$ to be this.
+    Since $D$ is a derivation, this is a rough vector field.
+    Furthermore, $Xf=Df$ is smooth for all $f$ (since $Df\in C^\infty(M)$), and by the above proposition means that $X$ is a smooth vector
+    field.
+    \qed
+
+\eproof
+
+Thus we can naturally identify $\X(M)$ with derivations of $C^\infty(M)$.
+
+\subsection{Vector fields and smooth maps}
+
+\bdefn
+
+    Let $F\colon M\to N$ be a smooth map, $X\in\X(M)$ and $Y\in\X(N)$.
+    Then $X$ and $Y$ are {\emphcolor $F$-related} if for all $p\in M$,
+    $$ dF_p(X_p) = Y_{F(p)} . $$
+
+\edefn
+
+Not every vector field on $M$ is $F$-related to a vector field on $N$.
+If $F$ is not surjective, then there isn't a clear way to define $Y$ on points outside of $F$'s image, and if $F$ is not injective we may have
+conflicting definitions.
+
+\bprop
+
+    $X\in\X(M)$ and $Y\in\X(N)$ are $F$-related iff for every smooth real-valued $f$ defined on an open subset of $N$,
+    $$ X(f\circ F) = (Yf)\circ F . $$
+
+\eprop
+
+\bproof
+
+    For a $p\in M$ and $f\in C^\infty(U)$ for $F(p)\in U\subseteq N$ open
+    $$ X(f\circ F)(p) = X_p(f\circ F) = dF_p(X_p)(f) $$
+    and
+    $$ ((Yf)\circ F)(p) = (Yf)(F(p)) = Y_{F(p)}(f) . $$
+    Thus equality holds iff they are $F$-related.
+    \qed
+
+\eproof
+
+\bprop
+
+    If $F$ is a diffeomorphism, then for every $X\in\X(M)$ there is a unique vector field on $N$ which is $F$-related to $X$.
+    This is called the {\emphcolor pushforward} of $X$ by $F$, denoted $F_*X$.
+
+\eprop
+
+\bproof
+
+    If $Y$ is $F$-related to $X$, we must have
+    $$ Y_q = dF_{F^{-1}q}(X_{F^{-q}}) . $$
+    This definition is a rough vector field, and it is smooth as the composition
+    $$ Y\colon N\xtos{F^{-1}}M\xtos{M}TM\xtos{dF} .\qed $$
+
+\eproof
+
+If $S\subseteq M$ is an immersed submanifold, then a vector field on $M$ doesn't necessarily restrict to one on $S$.
+We say that a vector field $X\in\X(M)$ is {\emphcolor tangent to $S$ at $p\in S$} if $X_p\in T_pS\subseteq T_pM$.
+It is {\emphcolor tangent to $S$} if it is tangent to $S$ at every point of $S$.
+
+\bprop
+
+    $X\in\X(M)$ is tangent to $S$ iff $X(f)|_S=0$ for all $f\in C^\infty(M)$ such that $f|_S=0$.
+
+\eprop
+
+\bproof
+
+    Recall that
+    $$ T_pS = \set{v\in T_pM}[vf=0\hbox{ for $f\in C^\infty(M)$ when $f|_S=0$}] , $$
+    and the result follows.
+    \qed
+
+\eproof
+
+Let $S\subseteq M$ be immersed and $\iota\colon S\to M$ the immersion.
+If $Y\in\X(M)$ is $iota$-related to a vector field $X\in\X(S)$, then $Y_p=d\iota_p(X_p)$ (the inclusion $T_pS\subseteq T_pM$) is in $T_pS$
+and thus tangent to $S$.
+
+\bprop
+
+    If $S\subseteq M$ is immersed and $Y\in\X(M)$ is tangent to $S$, then there is a unique smooth vector field on $S$ which is
+    $\iota$-related to $Y$.
+    We denote this vector field by $Y|_S$.
+
+\eprop
+
+\bproof
+
+    Since $\iota$ is an immersion, $d\iota_p$ is an injection for all $p\in S$ and thus $Y|_S$ is unique if it exists.
+    To show it exists, let $p\in S$ and take a neighborhood $p\in V\subseteq S$ such that $\iota|_V$ is an embedding.
+    Let $(U,(x^i))$ be a slice chart for $V$ centered at $p$ so that $V\cap S$ is the subset where $x^{k+1}=\cdots=x^n=0$,
+    and $(x^1,\dots,x^k)$ form local coordinates for $S$ in $V\cap U$.
+    Now if $Y=Y^1\pdv{x^1}+\cdots+Y^n\pdv{x^n}$ in $U$, then $X$ must have the coordinate representation $Y^1\pdv{x^1}+\cdots+Y^k\pdv{x^k}$,
+    which is clearly smooth.
+    \qed
+
+\eproof
+
+\subsection{Lie brackets}
+
+Vector fields $X\in\X(U)$ are maps $C^\infty(M)\to C^\infty(M)$, and thus we can compose vector fields: for $X,Y\in\X(M)$ we have a linear map
+$XY\colon C^\infty(M)\to C^\infty(M)$.
+But the composition of two vector fields need not be a vector field itself.
+We can get something closed though.
+
+\bdefn
+
+    For two vector fields $X,Y\in\X(M)$, define their {\emphcolor Lie bracket} to be the map $[X,Y]\colon C^\infty(M)\to C^\infty(M)$ given by
+    $$ [X,Y] = XY - YX . $$
+
+\edefn
+
+\blemm
+
+    The Lie bracket of two vector fields is a vector field.
+
+\elemm
+
+\bproof
+
+    Let $f,g\in C^\infty(M)$ be real-valued, then
+    $$ \eqalign{
+        [X,Y](fg) &= XY(fg) - YX(fg) = X(fYg+gYf) - Y(fXg+gXf)\cr
+            &= fXYg + YgXf + gXYf + YfXg - fYXg - XgYf - gYXf - XfYg\cr
+            &= fXYg + gXYf - fYXg - gYXf\cr
+            &= f[X,Y](g) + g[X,Y](f).
+    } $$
+    As desired.
+    \qed
+
+\eproof
+
+By definition,
+$$ [X,Y]_pf = X_p(Yf) - Y_p(Xf) . $$
+
+\bprop
+
+    Let $X,Y\in\X(M)$ with coordinate representations $X=X^i\pdv{x^i}$ and $Y=Y^j\pdv{x^j}$ in some local coordinate chart $(x^i)$ for $M$.
+    Then their Lie bracket has the representation
+    $$ [X,Y] = \parens{X^i\pdvof{Y^j}{x^i} - Y^i\pdvof{X^j}{x^i}}\pdv{x^j} , $$
+    or more concisely
+    $$ [X,Y] = (XY^j - YX^j)\pdv{x^j} . $$
+
+\eprop
+
+\bproof
+
+    $[X,Y]$ is smooth, and thus determined by its actions locally.
+    So it is sufficient to compute its components in a single smooth chart, here we have
+    $$ [X,Y]f = X^i\pdv{x^i}\parens{Y^j\pdvof f{x^j}} - Y^j\pdv{x^j}\parens{X^i\pdvof f{x^i}} =
+    X^i\pdvof{Y^j}{x^i}\pdvof f{x^j} + X^iY^j\pdvof{^2f}{x^ix^j} - Y^j\pdvof{X^i}{x^j}\pdvof f{x^i} - Y^jX^i\pdvof{^2f}{x^jx^i} . $$
+    By symmetry of the second partial derivative, this is equal to
+    $$ [X,Y](f) = X^i\pdvof{Y^j}{x^i}\pdvof f{x^j} - Y^j\pdvof{X^i}{x^j}\pdvof f{x^i}. $$
+    This gives the desired result.
+    \qed
+
+\eproof
+
+Notice then for the coordinate vector fields $\ipdv{x^i}$, we have
+$$ \bracks{\pdv{x^i},\pdv{x^j}} = \parens{\pdv{x^i}\delta_{tj} - \pdv{x^j}\delta_{it}}\pdv{x^t} = 0 , $$
+since derivations of constants are zero.
+
+\bprop
+
+    The Lie bracket satisfies the following properties.
+    \benum
+        \item The Lie bracket is bilinear:
+        $$ [aX + bY,Z] = a[X,Z] + b[Y,Z],\qquad [Z,aX+bY] = a[Z,X] + b[Z,Y] . $$
+        \item The Lie bracket is antisymetric:
+        $$ [X,Y] = -[Y,X] . $$
+        \item The Lie bracket satisfies the {\emphcolor Jacobi identity}:
+        $$ [X,[Y,Z]] + [Z,[X,Y]] + [Y,[Z,X]] = 0 . $$
+        \item For $f,g\in C^\infty(M)$:
+        $$ [fX,gY] = fg[X,Y] + (fXg)Y - (gYf)X . $$
+    \eenum
+
+\eprop
+
+\bproof
+
+    By standard computations.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $F\colon M\to N$, $X_1,X_2\in\X(M)$ and $Y_1,Y_2\in\X(N)$ such that $X_i$ is $F$-related to $Y_i$ for $i=1,2$.
+    Then $[X_1,X_2]$ is $F$-related to $[Y_1,Y_2]$.
+
+\eprop
+
+\bproof
+
+    We have that
+    $$ X_1X_2(f\circ F) = X_1((Y_2f)\circ F) = (Y_1Y_2f)\circ F , $$
+    and similarly
+    $$ X_2X_1(f\circ F) = (Y_2Y_1)\circ F . $$
+    Thus
+    $$ [X_1,X_2](f\circ F) = X_1X_2(f\circ F) - X_2X_1(f\circ F) = (Y_1Y_2f-Y_2Y_1f)\circ F = ([Y_1,Y_2]f)\circ F , $$
+    as desired.
+    \qed
+
+\eproof
+
+\bcoro
+
+    If $F\colon M\to N$ is a diffeomorphism, and $X_1,X_2\in\X(M)$ then $F_*[X_1,X_2]=[F_*X_1,F_*X_2]$.
+
+\ecoro
+
+\bproof
+
+    By above, and the uniqueness of $F$-relationships for diffeomorphisms.
+    \qed
+
+\eproof
+
+\bcoro
+
+    If $S\subseteq M$ is immersed, and $Y_1,Y_2$ are smooth vector fields on $M$ tangent to $S$, then so is $[Y_1,Y_2]$.
+
+\ecoro
+
+\bproof
+
+    Being tangent to $S$ is the same as being $\iota$-related to some vector field on $S$.
+    \qed
+
+\eproof
+
+\subsection{Lie algebras of Lie groups}
+
+\bdefn
+
+    Let $G$ be a Lie group.
+    A vector field $X\in\X(G)$ is {\emphcolor left invariant} if it is $L_g$-related to itself for all $g\in G$.
+    Explicitly,
+    $$ d(L_g)_{g'}(X_{g'}) = X_{g'g} $$
+    for all $g,g'\in G$.
+
+\edefn
+
+Since $L_g$ is a diffeomorphism, we can write this as $(L_g)_*X=X$ for all $g\in G$.
+Because $(L_g)_*$ is linear, the set of all left invariant vector fields over $G$ is an $\bR$-linear subspace of $\X(G)$.
+
+\bprop
+
+    If $X,Y\in\X(G)$ are left-invariant, then so is $[X,Y]$.
+
+\eprop
+
+\bproof
+
+    For $g\in G$, we have
+    $$ (L_g)_*[X,Y] = [(L_g)_*X,(L_g)_*Y] = [X,Y] .\qed $$
+
+\eproof
+
+\bdefn
+
+    An {\emphcolor Lie algebra} over a ring $R$ is an $R$-module $\g$ equipped with a {\emphcolor Lie bracket}: an $R$-bilinear map
+    $$ [\bul,\bul]\colon\g\times\g\to\g, $$
+    which is antisymmetric (meaning $[X,Y]=-[Y,X]$ for all $X,Y\in\g$), and satisfying the Jacobi identity:
+    $$ [X,[Y,Z]] + [Z,[X,Y]] + [Y,[Z,X]] = 0 . $$
+    We consider here only real Lie algebras (where $R=\bR$).
+
+\edefn
+
+\bnote
+
+    The Jacobi identity and antisymmetry come together to give a slightly stronger property.
+    Extend the Lie bracket of $\g$ to finite words over $\g$: $[\bul]\colon\g^*\to\g$, by mapping a word $(X_1,\dots,X_n)$ to
+    $$ [X_1,\dots,X_n] = [X_1,[X_2,\dots,[X_{n-1},X_n]]\cdots] . $$
+    Define the Lie bracket of the empty word to be $0$ and $[X]=X$ for $X\in\g$.
+    Then for words $W\in\g^*$ of length $\geq2$, we have that
+    $$ \sum_\sigma [\sigma W] = 0 , $$
+    where the sum is over all cycles in $S_n$, and $\sigma W$ is obtained by permuting the indices of the word accordingly.
+
+\enote
+
+\bdefn
+
+    If $\g$ is a Lie algebra, a {\emphcolor Lie subalgebra} of $\g$ is a submodule $\h\subseteq\g$ which is closed under the Lie bracket.
+
+    A {\emphcolor Lie algebra morphism} is a map between Lie algebras $A\colon\g\to\h$ which is a morphism of modules, and preserves the Lie
+    bracket: $A[X,Y]=[AX,AY]$.
+    A Lie algebra morphism with an inverse is a {\emphcolor Lie algebra isomorphism}.
+    The set-theoretic inverse of a bijective Lie algebra morphism is a Lie algebra morphism, so this is the same as a bijective Lie algebra
+    morphism.
+
+\edefn
+
+\bexam
+
+    The space of vector fields over $M$, $\X(M)$, is a Lie algebra.
+    The space of left-invariant vector fields over a Lie group $G$ is a Lie subalgebra of $\X(G)$.
+
+\eexam
+
+\bexam
+
+    If $A$ is an associative algebra (an algebra in the usual sense), then it is also a Lie algebra whose bracket is defined by
+    $$ [X,Y] = XY - YX . $$
+    In particular $\mat_n(\bR)$ is a Lie algebra.
+    When considering $\mat_n(\bR)$ as a Lie algebra with this bracket, we denote it by $\lgl_n(\bR)$ (to be explained).
+    Similarly $\mat_n(\bC)$ is a Lie algebra, which we denote $\lgl_n(\bC)$.
+
+\eexam
+
+Every space can be made into a Lie algebra by making the Lie bracket identically zero.
+Such Lie algebras are called {\emphcolor Abelian}.
+If $A$ is an associative commutative algebra, the Lie bracket defined above by $[X,Y]=XY-YX$ is Abelian.
+
+\bdefn
+
+    Let $G$ be a Lie group.
+    Its {\emphcolor Lie algebra} is the space of all left-invariant vector fields in $\X(G)$.
+    We denote it by $\lie(G)$.
+
+\edefn
+
+\bthrm
+
+    Let $G$ be a Lie group with identity $e\in G$.
+    Then the {\emphcolor evaluation map} $\epsilon\colon\lie(G)\to T_e(G)$ defined by $\epsilon(X)=X_e$ is a vector space isomorphism.
+    Thus $\lie(G)$ is a finite-dimensional space of dimension $\dim G$.
+
+\ethrm
+
+\bproof
+
+    Clearly the evaluation map is linear.
+    By left-invariance, if $X_e=0$ then $X_g=d(L_g)_g(X_e)=0$ for all $g\in G$ so that $\epsilon$ is injective.
+
+    Now let $v\in T_eG$, and define the rough vector field $v^L$ on $G$ by
+    $$ v^L|_g = d(L_g)_e(v) . $$
+    That is, $v^L$'s value at $g\in G$ is the derivation $d(L_g)_e(v)$, which maps $f\in C^\infty(G)$ to $v(f\circ L_g)$.
+    Notice that this is left invariant:
+    $$ d(L_g)_{g'}(v^L|_{g'}) = d(L_g)_{g'}d(L_{g'})_e(v) = d(L_{gg'})_e(v) = v^L_{gg'} . $$
+    And clearly $\epsilon(v^L)=v$, so all that remains to show is that $v^L$ is smooth.
+
+    It is sufficient to show that $v^Lf$ is smooth for all $f\in C^\infty(G)$.
+    Take a curve $\gamma\colon(-\delta,\delta)\to G$ such that $\gamma(0)=e$ and $\gamma'(0)=v$.
+    Then for $g\in G$,
+    $$ (v^Lf)(g) = v^L|_gf = d(L_g)_e(v)f = v(f\circ L_g) = \gamma'(0)(f\circ L_g) = \evdrv t_{t=0}(f\circ L_g\circ\gamma)(t) . $$
+    Now define $\phi\colon(-\delta,\delta)\times G\to\bR$ by $\phi(t,g)=f\circ L_g\circ\gamma(t)=f(g\gamma(t))$.
+    So we have $(v^Lf)(g)=\ipdvof\phi t(0,g)$.
+    Now, $\phi$ is the composition of smooth maps, and thus is smooth.
+    Thus $v^Lf$ is smooth, as desired.
+    \qed
+
+\eproof
+
+We will continue to use the notation $\bul^L$ for $\epsilon$'s inverse.
+
+\bcoro
+
+    Every left-invariant rough vector field on a Lie group is smooth.
+
+\ecoro
+
+\bproof
+
+    If $X$ is a rough vector field on $G$, then $v=X_e$ is in $T_eG$.
+    $X$'s left invariance implies that $X=v^L$, which is smooth.
+    \qed
+
+\eproof
+
+This isomorphism induces a Lie algebra structure on $T_eG$:
+$$ [v,u] = \epsilon[v^L,u^L] = [v^L,u^L]_e, $$
+which maps
+$$ [v,u]f = [v^L,u^L]_ef = (v^Lu^L - u^Lv^L)_ef = v^L_e(u^Lf) - u^L_e(v^Lf) = v(u^Lf) - u(v^Lf) . $$
+
+Take for instance $G=\gl_n(\bR)$.
+We know that its tangent spaces are isomorphic to $\mat_n(\bR)$, thus we have natural linear isomorphisms
+$$ \lie(\gl_n(\bR)) \to T_{I_n}\gl_n(\bR) \to \lgl_n(\bR) , $$
+but is this also a Lie algebra morphism?
+Yes.
+
+\bprop
+
+    The above natural isomorphism is an isomorphism of Lie algebras.
+
+\eprop
+
+\bproof
+
+    The natural isomorphism $T_{I_n}\gl_n(\bR)\oto\lgl_n(\bR)$ is the map
+    $$ A^i_j\evpdv{X^i_j}_{I_n} \oto (A^i_j) . $$
+    We use Einstein summation here, viewing a lower index in a denominator as an upper index.
+    Let $\g$ be the Lie algebra of $\gl_n(\bR)$, then $A=(A^i_j)\in\lgl_n(\bR)$ maps through the isomorphisms to $A^L\in\g$, defined by
+    $$ A^L|_X = (dL_X)_{I_n}(A) = d(L_X)_{I_n}\parens{A^i_j\evpdv{X^i_j}_{I_n}},\qquad X\in\gl_n(\bR) . $$
+    The map $L_X$ is given by $A\mapsto XA$, whose differential is the $n^2\times n^2$ matrix whose $(i,j),(i,j)$ coordinate is $X^i_j$,
+    and zero elsewhere.
+    Thus
+    $$ A^L_X = X^i_jA^j_k\evpdv{X^i_k}_X . $$
+
+    Thus for $A,B\in\lgl_n(\bR)$, we have that (in local coordinates),
+    $$ [A^L,B^L] = \bracks{X^i_jA^j_k\pdv{X^i_k},X^p_qB^q_r\pdv{X^p_r}} = X^i_jA^j_k\pdv{X^i_k}(X^p_qB^q_r)\pdv{X^p_r}
+    - X^p_qB^q_r\pdv{X^p_r}(X^i_jA^j_k)\pdv{X^i_k} . $$
+    Now, $A$ and $B$ are constants, and $\pdvof{X^p_q}{X^i_k}=\delta_{i=p,q=k}$ so that this is equal to
+    $$ = X^i_jA^j_kB^k_r\pdv{X^i_r} - X^p_qB^q_r\pdv{X^p_k} = (X^i_jA^j_kB^k_r-X^i_jB^j_kA^k_r)\pdv{X^i_r} . $$
+    Evaluating this at $X=I_n$ gives
+    $$ [A^L,B^L]_{I_n} = (A^i_kB^k_r-B^i_kA^k_r)\evpdv{X^i_r}_{I_n} , $$
+    which corresponds to the matrix commutator $[A,B]$.
+    That is, $[A,B]^L_{I_n}=[A^L,B^L]_{I_n}$, and since left invariant vector fields are determined by their values at the identity,
+    we see that $[A,B]^L=[A^L,B^L]$ so this is indeed a Lie algebra morphism.
+    \qed
+
+\eproof
+
+For arbitrary Euclidean spaces $V$, we have $\gl(V)$ as the set of linear automorphisms, and $\lgl(V)$ as the Lie algebra of all linear
+endomorphisms.
+By choosing a basis for $V$, we see that there is an isomorphism of Lie algebras
+$$ \lie(\gl(V)) \to T_{\id}\gl(V) \to \lgl(V) . $$
+
+\bthrm
+
+    Let $G,H$ be Lie groups with respective Lie algebras $\g,\h$.
+    If $F\colon G\to H$ is a Lie group morphism, then for every $X\in\g$ there is a unique vector field in $\h$ that is $F$-related to $X$.
+    Denoting this vector field by $F_*X$, $F_*\colon\g\to\h$ becomes a Lie algebra morphism.
+
+\ethrm
+
+\bproof
+
+    If $Y\in\h$ is $F$-related to $X$, it must satisfy $Y_e=dF_e(X_e)$ and thus is uniquely determined by
+    $$ Y = (dF_e(X_e))^L . $$
+    We must now show that $Y$ is indeed $F$-related to $X$.
+    Since $F$ is a Lie group morphism, $F(L_gg')=L_{Fg}F(g')$ i.e.\ $F\circ L_g=L_{Fg}\circ F$.
+    Thus $dF\circ d(L_g)=d(L_{Fg})\circ dF$, and so
+    $$ dF(X_g) = dF(d(L_g)X_e) = d(L_{Fg})(dF(X_e)) = d(L_{Fg})(Y_e) = Y_g $$
+    as desired.
+
+    By naturality of Lie brackets, $F_*[X,Y]=[F_*X,F_*Y]$ (because $F_*X$ is unique).
+    Furthermore, $F_*$ is clearly linear, by linearity of differentials and $\bul^L$.
+    \qed
+
+\eproof
+
+The map $F_*\colon\g\to\h$ is called an {\emphcolor induced Lie algebra morphism}.
+
+\bprop
+
+    The correspondence $G\mapsto\lie(G)$, $F\mapsto F_*$ is functorial.
+    In particular isomorphic Lie groups have isomorphic Lie algebras.
+
+\eprop
+
+\bproof
+
+    By functorality of the differential, and since $F_*X$ is determined by its value on the identity, we get the desired result.
+    \qed
+
+\eproof
+
+Note that if $F\colon\g\to\h$ is a morphism of Lie algebras, then $\ker F\subseteq\g$ and $\im F\subseteq\h$ are Lie subalgebras.
+They are subspaces, and closed under brackets: for $X,Y\in\ker F$ then
+$$ F[X,Y] = [FX,FY] = [0,0] = 0 , $$
+and for $X,Y\in\g$, $[FX,FY]=F[X,Y]$ so that both $\ker F,\im F$ are Lie subalgebras.
+Note further that $\ker F$ is an {\it ideal\/} in the sense that for $X\in\ker F$ and $Y\in\g$,
+$$ F[X,Y] = [FX,FY] = [0,FY] = 0 , $$
+so that $[X,Y],[Y,X]\in\ker F$.
+
+\bthrm
+
+    Let $H\subseteq G$ be a Lie subgroup, and $\iota\colon H\inj G$ the inclusion.
+    Then the induced map $\iota_*\colon\lie(H)\to\lie(G)$ is an embedding of Lie algebras (meaning it is injective).
+    So we can identify $\lie(H)$ with its image in $\lie(G)$,
+    $$ \h = \iota_*(\lie(H)) = \set{X\in\lie(G)}[X_e\in T_eH] . $$
+
+\ethrm
+
+\bproof
+
+    The differential of an immersion is injective, so $\iota_*$ must be: if $\iota_*X=\iota_*Y$ then they are equal at $e$ and so
+    $$ d\iota_e(X_e) = d\iota_e(Y_e) \implies X_e = Y_e \implies X = Y . $$
+    $\iota_*$'s image are left invariant vector fields $X\in\lie(G)$ whose values at the identity is of the form $d\iota_e(v)$
+    for $v\in T_eH$.
+    We identify $T_eH$ in $T_eG$ via $d\iota_e$, so that the two characterizations of $\h$ above are equal.
+    \qed
+
+\eproof
+
+\bnote
+
+    We make the following observation, that if $\Phi\colon M\to N$ is smooth of constant rank $k$, and $S=\Phi^{-1}n$ is a level set,
+    then $T_pS$ is the kernel of $d\Phi_p\colon T_pM\to T_pN$ for all $p\in M$.
+
+    We know that $S$ is an embedded submanifold of $M$ of codimension $k$.
+    First of all, $d\Phi_p\circ d\iota_p=d(\Phi\circ\iota)_p$, and $\Phi\circ\iota$ is constant and thus its differential is zero.
+    Thus $T_pS\subseteq\ker d\Phi_p$, and they have equal dimension ($\ker d\Phi_p$ is $\dim M-k$ by rank-nullity), so they are equal.
+
+\enote
+
+\bexam
+
+    Recall that $\orth(n)$ is the Lie subgroup of $\gl_n(\bR)$ given by orthogonal matrices.
+    That is, it is the level set at $I_n$ of $\Phi\colon\gl_n(\bR)\to\mat_n(\bR)$ given by $\Phi(A)=A^\top A$.
+    Then $T_{I_n}\orth(n)$ is the kernel of $d\Phi_{I_n}\colon T_{I_n}\gl_n(\bR)\to T_{I_n}\mat_n(\bR)$.
+    The differential is given by $d\Phi_{I_n}(B)=B^\top+B$, so that
+    $$ T_{I_n}\orth(n) = \set{B\in\gl_n(\bR)}[B^\top+B=0] = \set{\hbox{Skew-symmetric $n\times n$ matrices}} . $$
+    Denote this subspace by $\lorth(n)$; by the above proposition it is a Lie subalgebra of $\gl_n(\bR)$.
+
+\eexam
+
