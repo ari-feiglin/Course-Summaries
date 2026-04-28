@@ -1,0 +1,449 @@
+\section{Vector Bundles}
+
+\subsection{Vector bundles}
+
+\bdefn
+
+    Let $X$ be a topological space.
+    A (real) {\emphcolor vector bundle} of rank $k$ is a topological space $E$ along with a surjective continuous map $\pi\colon E\to X$ satisfying the following conditions:
+    \benum
+        \item for each $p\in M$, the fiber $E_p=\pi^{-1}p$ is endowed with a $k$-dimensional real vector space structure,
+        \item for each $p\in M$ there is a neighborhood $p\in U\subseteq M$ and a homeomorphism $\Phi\colon\pi^{-1}(U)\to U\times\bR^k$, called 
+        a {\emphcolor local trivialization} of $E$ over $U$, satisfying
+        \benum
+            \item $\pi_U\circ\Phi=\pi$ where $\pi_U\colon U\times\bR^k$ is the projection,
+            \item for each $q\in U$, the restriction of $\Phi$ to $E_q$ is a vector space isomorphism from $E_q$ to $\set q\times\bR^k\cong\bR^k$.
+        \eenum
+    \eenum
+
+    $E$ is called the {\emphcolor total space} of the bundle, $X$ is its {\emphcolor base}, and $\pi$ the {\emphcolor projection}.
+
+    When $X=M$ and $E$ are smooth manifolds, $\pi$ is smooth, and the local trivializations are diffeomorphisms, then $E$ is called a {\emphcolor smooth vector bundle}.
+    The trivializations are called {\emphcolor smooth local trivializations}.
+
+\edefn
+
+If there is a trivialization of $E$ over all of $M$, then it is called a {\emphcolor global trivialization} and the bundle is called a {\emphcolor trivial bundle}.
+In such a case $E$ is necessarily homeomorphic to $M\times\bR^k$; when the bundle is smooth this is of course a diffeomorphism.
+
+The requirement that $\pi_U\circ\Phi=\pi$ means that for $p\in U$ and $v\in E_p$, $\Phi(v)=(p,\bul)$.
+
+\bnote
+
+    Unless specified otherwise, all vector bundles are assumed to be smooth.
+
+\enote
+
+\bexam
+
+    Define $E=M\times\bR^k$, and $\pi\colon M\times\bR^k\to M$ the obvious projection.
+    Then $\pi^{-1}p=\set p\times\bR^k$ has an obvious $k$-dimensional structure.
+    This is a trivial bundle in the obvious way, when $M$ is smooth it is a smooth trivial bundle.
+
+\eexam
+
+The tangent bundle is the prototypical example of a vector bundle.
+
+\bprop
+
+    Let $M$ be a smooth $n$-manifold, and $TM$ its tangent bundle.
+    With the ordinary projection map, the usual vector space structure on each fiber ($T_pM$), and the usual topology and smooth structure,
+    $TM$ forms a smooth vector bundle of rank $n$ over $M$.
+
+\eprop
+
+\bproof
+
+    For any smooth chart $(U,\phi)$ of $M$ with coordinate functions $(x^i)$, define $\Phi\colon\pi^{-1}(U)\to U\times\bR^n$ by
+    $$ \Phi\parens{v^i\evpdv{x^i}_p} = (p,v^1,\dots,v^n) . $$
+    Notice that the composite
+    $$ \pi^{-1}U \xtos\Phi U\times\bR^n \xtos{\phi\times\id} \phi(U)\times\bR^n $$
+    is the smooth atlas of $TM$ corresponding to the chart $(U,\phi)$.
+    It and $\phi\times\id$ are diffeomorphisms, thus $\Phi$ is smooth.
+
+    And clearly we have
+    $$ \pi_U\circ\Phi = \pi , $$
+    completing the proof.
+    \qed
+
+\eproof
+
+\blemm
+
+    Let $\pi\colon E\to M$ be a smooth vector bundle of rank $k$.
+    Suppose that $\Phi\colon\pi^{-1}(U)\to U\times\bR^k$ and $\Psi\colon\pi^{-1}(V)\to V\times\bR^k$ are two smooth local trivializations with $U\cap V$ being nonempty.
+    Then there is a smooth map $\tau\colon U\cap V\to\gl_k(\bR)$ such that the composition $\Phi\circ\Psi^{-1}\colon(U\cap V)\times\bR^k\to(U\cap V)\times\bR^k$ has the form
+    $$ \Phi\circ\Psi^{-1}(p,v) = (p,\tau(p)v) . $$
+
+\elemm
+
+\bproof
+
+    Note that restricting $\Phi$ to $\pi^{-1}(U\cap V)$ maps into $(U\cap V)\times\bR^k$: $\pi_1\circ\Phi=\pi$, meaning $\Phi$'s first coordinate is in
+    $\pi\circ\pi^{-1}(U\cap V)=U\cap V$.
+
+    The following diagram commutes
+
+    \bigskip
+    \centerline{\drawdiagram{
+        $(U\cap V)\times\bR^k$&$\pi^{-1}(U\cap V)$&$(U\cap V)\times\bR^k$\cr
+        &$U\cap V$
+    }{
+        \diagarrow{from={1,2}, to={1,1}, text=$\Psi$, y distance=.25cm}
+        \diagarrow{from={1,2}, to={1,3}, text=$\Phi$, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,2}, text=$\pi_1$, x distance=-.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text=$\pi$, x distance=.25cm}
+        \diagarrow{from={1,3}, to={2,2}, text=$\pi_1$, x distance=.25cm}
+    }}
+
+    Meaning that $\pi_1=\pi_1\circ\Psi^{-1}\circ\Phi$, so $\Psi^{-1}\circ\Phi$ doesn't change the first coordinate.
+    So there is a smooth map $\sigma\colon(U\cap V)\times\bR^k\to\bR^k$ such that
+    $$ \Phi\circ\Psi^{-1}(p,v) = (p,\sigma(p,v)) . $$
+    For a fixed $p\in U\cap V$, $\sigma(p,\bul)$ is an invertible linear map $\bR^k$ to $\bR^k$.
+    Thus there is an invertible matrix $\tau(p)\in\gl_k(\bR)$ such that $\sigma(p,v)=\tau(p)v$.
+    The map $\tau$ is constant, as its columns are given by $C_i\tau(p)=\sigma(p,e_i)$ ($e_i$ are the standard basis vectors), which are smooth.
+    \qed
+
+\eproof
+
+\bdefn
+
+    The map described in the above lemma, $\tau\colon(U\cap V)\to\gl_k(\bR)$, is called the {\emphcolor transition function} between the local trivializations
+    $\Phi$ and $\Psi$.
+
+\edefn
+
+\blemm
+
+    Let $M$ be a smooth manifold, and suppose for each $p\in M$ we are given a real vector space $E_p$ of some fixed dimension $k$.
+    Let $E=\coprod_{p\in M}E_p$, and let $\pi\colon E\to M$ be the obvious projection (its component on $E_p$ is the constant map to $p$).
+    Suppose further that we have:
+    \benum
+        \item an open cover $\set{U_\alpha}_\alpha$ of $M$;
+        \item for each $\alpha$, a bijective map $\Phi_\alpha\colon\pi^{-1}(U_\alpha)\to U_\alpha\times\bR^k$ whose restriction to each $E_p$ for $p\in U_\alpha$
+        is a vector space isomorphism $E_p\to\set p\times\bR^k$;
+        \item for each $\alpha,\beta$ where $U_\alpha\neq U_\beta$ is nonempty, a smooth map $\tau_{\alpha\beta}\colon U_\alpha\cap U_\beta\to\gl_k(\bR)$ such that the map
+        $\Phi_\alpha\circ\Phi_\beta^{-1}$ on $(U_\alpha\cap U_\beta)\times\bR^k$ is given by
+        $$ \Phi_\alpha\circ\Phi_\beta^{-1}(p,v) = (p,\tau_{\alpha\beta}(p)v) . $$
+    \eenum
+    Then $E$ has a unique topology and smooth structure making it into a smooth vector bundle over $M$ of rank $k$, with $\pi$ the projection, and $\set{(U_\alpha,\Phi_\alpha)}$
+    the trivializations.
+
+\elemm
+
+\bproof
+
+    For each $p\in M$, choose a $U_\alpha$ containing it, and a smooth chart $(V_p,\phi_p)$ for $M$ with $p\in V_p\subseteq U_\alpha$.
+    Then let $\hat V_p=\phi_p(V_p)\subseteq\bR^n$ or $\bH^n$, with $n=\dim M$.
+    Define the map $\tilde\phi_p\colon\pi^{-1}V_p\to\hat V_p\times\bR^k$ by
+    $$ \tilde\phi_p\colon \pi^{-1}\hat V_p \xtos{\Phi_\alpha} V_p\times\bR^k \xtos{\phi_p\times\id} \hat V_p\times\bR^k . $$
+    We will now show that the collection of charts $\set{(\pi^{-1}V_p,\tilde\phi_p)}_{p\in M}$ make $E$ into a vector bundle.
+
+    As a composition of bijective maps, $\tilde\phi_p$ is bijective, and its image $\hat V_p\times\bR^k$ is open in either $\bR^n\times\bR^k$
+    or $\bH^n\times\bR^k\cong\bH^{n+k}$.
+    For $p,q\in M$ we have
+    $$ \tilde\phi_p(\pi^{-1}V_p\cap\pi^{-1}V_q) = \phi_p(V_p\cap V_q)\times\bR^k $$
+    because $\Phi_\alpha$ maps $\pi^{-1}(X)$ to $X\times\bR^k$ bijectively for $X\subseteq U_\alpha$.
+    This is open, as $\phi_p$ is a homeomorphism.
+
+    Furthermore, if two charts overlap then
+    $$ \tilde\phi_p\circ\tilde\phi_q^{-1} = (\phi_p\times\id)\circ\Phi_\alpha\circ\Phi_\beta^{-1}\circ(\phi_q\times\id)^{-1} . $$
+    The maps $\phi_p\times\id$ and $\Phi_\alpha\circ\Phi_\beta^{-1}$ are diffeomorphisms, as desired.
+
+    The open cover $\set{V_p}_p$ of $M$ has a countable subcover, so there is a countable subcovering of $E$ by charts.
+
+    Finally we need to show that $E$ is Hausdorff.
+    If two points in $E$ lie in the same $E_p$, then they lie in $\pi^{-1}V_p$.
+    And if $\xi\in E_p$ and $\eta\in E_q$ for $p\neq q$, then taking disjoint $p\in V_p$ and $q\in V_q$, we have that $\xi\in\pi^{-1}V_p$ and $\eta\in\pi^{-1}V_q$
+    are disjoint neighborhoods.
+    Thus $E$ is a smooth manifold.
+
+    We now just need to verify that the data given forms a vector bundle.
+    $\Phi_\alpha$ is a diffeomorphism, because in terms of $(\pi^{-1}V_p,\tilde\phi_p)$ for $E$ and $(V_p\times\bR^k,\phi_p\times\id)$ for $U_\alpha\times\bR^k$,
+    the coordinate representation of $\Phi_\alpha$ is just the identity.
+    The coordinate representation of $\pi$ relative to $(V_p,\phi_p)$ for $M$ and its induced chart for $E$ is
+    $$ \phi_p\circ\pi\circ\tilde\phi_p^{-1}(x,v) = \phi_p\circ\pi\circ\Phi_\alpha^{-1}(\phi_p^{-1}x,v) = \phi_p(\phi_p^{-1}x) = x, $$
+    which is smooth.
+    By assumption, $\Phi_\alpha$ maps $E_p$ to $\set p\times\bR^k$ so that $\pi_1\circ\Phi_\alpha=\pi$.
+
+    This being the unique smooth structure follows from the requirement that $\Phi_\alpha$ be diffeomorphisms.
+    They are local diffeomorphisms whose domains cover $E$, and thus define the smooth structure on $E$.
+    \qed
+
+\eproof
+
+\bexam
+
+    Suppose we have two vector bundles on $M$, $E'\to M$ and $E''\to M$ of rank $k',k''$ respectively.
+    Then we can define their {\emphcolor Whitney sum} to be the vector bundle $E\to M$ whose fiber at $p\in M$ is $E'_p\oplus E''_p$.
+    The total space is $E=\coprod_{p\in M}E'_p\oplus E''_p$ and $\pi\colon E\to M$ is the obvious projection.
+    For $p\in M$ choose a neighborhood $U$ small enough so that there exist local trivializations $(U,\Phi')$ of $E'$ and $(U,\Phi'')$ of $E''$.
+    Then define $\Phi\colon\pi^{-1}U\to U\times\bR^{k'}\times\bR^{k''}$ by
+    $$ \Phi(v',v'') = (\pi'(v'),\pi_{k'}\circ\Phi'(v'),\pi_{k''}\circ\Phi''(v'')) , $$
+    where $\pi_{k'}\colon\bR^{k'}\times\bR^{k''}\to\bR^{k'}$ is the projection.
+    Note that $\Phi$'s restriction to $E_p=E'_p\oplus E''_p$ is a linear isomorphism to $\set p\times\bR^{k'}\times\bR^{k''}$ given by the linear isomorphisms
+    of $\Phi',\Phi''$.
+
+    Now if we have another pair of local trivlializations $(\tilde U,\tilde\Phi'),(\tilde U,\tilde\Phi'')$ with transition maps
+    $\tau'\colon U\cap\tilde U\to\gl_{k'}(\bR)$ and $\tau''\colon U\cap\tilde U\to\gl_{k''}(\bR)$.
+    Then the transition function for $E'\oplus E''$ has the form
+    $$ \tilde\Phi\circ\Phi^{-1}(p,v',v'') = (p,\tau(p)(v',v'')),\qquad \tau(p) = \tau'(p)\oplus\tau''(p) , $$
+    where the direct sum of matrices is given by the diagonal block matrix.
+
+    So by the above lemma, there is a unique vector bundle $E\to M$.
+    This vector bundle $E=E'\oplus E''$ is called the {\emphcolor Whitney sum}.
+
+\eexam
+
+\bexam
+
+    If $\pi\colon E\to M$ is a rank-$k$ vector bundle, and $S\subseteq M$, then define the {\emphcolor restriction} of $E$ to $S$ to be
+    the set $E|_S=\bigcup_{s\in S}E_s$, and the projection $E|_S\to S$ obtained by restricting $\pi$.
+    If $\Phi\colon\pi^{-1}U\to U\times\bR^k$ is a local trivialization, it restricts to a bijective map $\Phi|_S\colon(\pi|_S)^{-1}(U\cap S)\to(U\cap S)\times\bR^k$.
+    These form local trivializations for a continuous vector bundle structure on $E|_S$.
+
+    If $S\subseteq M$ is an immersed submanifold, then it can be shown by the above lemma that $E|_S$ has a smooth structure making it into
+    a smooth vector bundle over $S$.
+    When $E=TM$, $TM|_S$ is called the {\emphcolor ambient tangent bundle} over $M$.
+
+\eexam
+
+\subsection{Sections of vector bundles}
+
+\bdefn
+
+    Let $\pi\colon E\to M$ be a vector bundle.
+    A {\emphcolor section} of $E$ is a section of the map $\pi$, i.e.\ a map $\sigma\colon M\to E$ such that $\pi\circ\sigma=\id_M$ (i.e.\ $\sigma(p)\in E_p$).
+    If we do not assume that $\sigma$ is continuous, we call it a {\emphcolor rough section}, and if $\sigma$ is smooth it is a {\emphcolor smooth section}.
+
+    For an open subset $U\subseteq M$, a (rough/continuous/smooth) {\emphcolor local section} is a (rough/continuous/smooth) map $\sigma\colon U\to E$ such that
+    $\pi\circ\sigma=\id_M$.
+    Sections on all of $M$ are also called {\emphcolor global sections}.
+
+    The set of sections on $E$ is denoted by $\Gamma(E)$.
+
+\edefn
+
+The simplest example of a section is the {\emphcolor zero section}: $\zeta\colon M\to E$ which maps $p\in M$ to the zero vector of $E_p$.
+This is a smooth section, as for every $p\in M$ we can take a local trivialization $(U,\Phi)$.
+Consider the composition
+$$ U \xtos\zeta \pi^{-1}U \xtos\Phi U\times\bR^k , $$
+which maps $p\in U$ to $(p,0)$ (since $\zeta(p)=0\in E_p$ and $\Phi$ restricts to a linear isomorphism), and this is smooth.
+Since $\Phi$ is a diffeomorphism, $\zeta$ is smooth in $U$, and thus on all of $M$.
+
+Note that sections of $TM$ are the same as vector fields on $M$, so $\Gamma(TM)=\X(M)$.
+
+\bexam
+
+    A section of the ambient tangent bundle $TM|_S\to S$ is called a {\emphcolor vector field along $S$}.
+    It is a map $X\colon S\to TM$ such that $X_p\in T_pM$ for $p\in S$.
+    This is not a vector field {\it on\/} $S$ which requires $X_p\in T_pS$.
+
+\eexam
+
+\bexam
+
+    If $E=M\times\bR^k$ is a trivial bundle, then there is a natural correspondence between sections of $E$ and maps $M\to\bR^k$.
+    A map $F\colon M\to\bR^k$ then defines the section $\tilde F\colon M\to M\times\bR^k$ by $\tilde F(p)=(p,F(p))$, and vice versa.
+
+    In particular there is a natural correspondence between $C^\infty(M)$ and sections of the trivial line bundle $M\times\bR\to M$.
+
+\eexam
+
+\bprop
+
+    $\Gamma(E)$ is a $C^\infty(M)$-module under pointwise addition and multiplication: for $\sigma_1,\sigma_2\in\Gamma(E)$ and $f\in C^\infty(M)$,
+    $$ (\sigma_1+\sigma_2)(p) = \sigma_1(p) + \sigma_2(p),\qquad (f\sigma)(p) = f(p)\sigma(p) $$
+    are sections of $E$.
+
+\eprop
+
+\bproof
+
+    Note that at least as maps, these are well-defined, since $\sigma_i(p)\in E_p$ which is a vector space.
+    For $p\in M$ let $(U,\Phi)$ be a local trivialization with $p\in U$.
+    Then since $\Phi$ is a linear space isomorphism on $E_p$,
+    $$ \Phi\circ(\sigma_1+\sigma_2)(p) = (p,\Phi\circ\sigma_1(p)+\Phi\circ\sigma_2(p)) , $$
+    which is smooth, as desired.
+    Similarly
+    $$ \Phi\circ(f\sigma)(p) = (p,f(p)\Phi\circ\sigma) , $$
+    which is again smooth.
+    \qed
+
+\eproof
+
+\blemm
+
+    Let $\pi\colon E\to M$ be a smooth vector bundle.
+    Then for any $A\subseteq M$ closed contained in an open neighborhood $U$, and a section $\sigma\colon A\to E$ which is smooth (meaning it can be
+    extended to a smooth map in a neighborhood of any $p\in A$), then there exists a global section $\tilde\sigma\colon M\to E$ restricting to $\sigma$
+    on $A$ supported in $U$.
+
+\elemm
+
+\bproof
+
+    The proof is pretty much the same as the one for vector fields.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $E\to M$ be a vector bundle, and $U\subseteq M$ open.
+    A tuple of local sections of $E$ over $U$, $(\sigma_1,\dots,\sigma_k)$, is {\emphcolor linearly independent} if $(\sigma_1(p),\dots,\sigma_k(p))$ is
+    linearly independent in $E_p$ for all $p\in U$.
+    Similarly they {\emphcolor span $E$} if their values at $p$ span $E_p$ for all $p\in U$.
+    A {\emphcolor local frame} for $E$ over $U$ is a linearly independent tuple of local sections over $U$ which span $E$, i.e.\ their values form a basis
+    for $E_p$ for every $p\in U$.
+
+\edefn
+
+\bprop
+
+    Let $E\to M$ be a smooth vector bundle of rank $k$.
+    \benum
+        \item For any $p\in U$ and any linearly independent tuple of local sections of $E$ over $U$, there is a neighborhood $p\in V\subseteq U$
+        such that the tuple can be extended to a local frame for $E$ over $V$.
+        \item If $(v_1,\dots,v_k)$ are linearly independent elements in $E_p$, there exists a neighborhood of $p$ and a local frame over that neighborhood
+        whose values at $p$ are $v_i$.
+        \item If $A\subseteq M$ is closed and $(\tau_1,\dots,\tau_k)$ are smooth linearly independent sections of $E|_A$, then there is a smooth local frame
+        $(\sigma_1,\dots,\sigma_n)$ for $E$ over some neighborhood of $A$ such that $\sigma_i|_A=\tau_i$.
+    \eenum
+
+\eprop
+
+\bproof
+
+    Suppose that $(\sigma_1,\dots,\sigma_k)$ is linearly independent but not a local frame.
+    We show that we can extend it by another linearly independent section, and the result follows by inducting.
+    Let $(V,\Phi)$ be a trivialization with $p\in V\subseteq U$, then $\Phi\circ\sigma_i(p)\in\set p\times\bR^k$ are linearly independent and smooth.
+    We want to construct a smooth map $\sigma\colon V\to\bR^k$ which is linearly independent to these, and then $\Phi^{-1}\sigma$ gives the desired extension.
+    Choose $v\in E_p$ to be linearly independent of $\Phi\circ\sigma_i(p)$, and then for a chart $(V',\phi)$ with $\phi(p)=e_1$, define $\sigma(q)=\phi(q)_1v$ (where
+    $\phi(q)_1$ is the first coordinate of the real vector); this is clearly smooth.
+    Then $\sigma(p)=v$ is linearly independent of $\Phi\circ\sigma_i(p)$, the matrix $\Phi\circ\sigma_i(p),\sigma(p)$ is full rank, and since the set of full rank
+    matrices is open, there is a neighborhood of $p$ where $\Phi\circ\sigma_i,\sigma$ is still full rank and thus linearly independent.
+
+    The construction for the second point is similar to the first.
+
+    For the last point, we can extend $\tau_i$ to a local frame of $E|_A$.
+    The we can extend them to a neighborhood of $A$ using a partition of unity.
+    Then this extension is still linearly independent in a neighborhood of $A$, by virtue of being smooth and linear independence being an open property.
+    \qed
+
+\eproof
+
+\bexam
+
+    If $E=M\times\bR^k\to M$ is a trivial bundle, then the standard basis $e_1,\dots,e_k$ for $\bR^k$ defines a global frame $(\tilde e_i)$ for $E$ by
+    $\tilde e_i(p)=(p,e_i)$.
+
+\eexam
+
+\bexam
+
+    Suppose $\pi\colon E\to M$ is a smooth vector bundle and $\Phi\colon\pi^{-1}U\to U\times\bR^k$ a smooth local trivialization to construct a local frame
+    for $E$ over $U$.
+    Define $\sigma_1,\dots,\sigma_k\colon U\to E$ by $\sigma_i(p)=\Phi^{-1}(p,e_i)=\Phi^{-1}\circ\tilde e_i(p)$.
+    This is smooth as $\Phi$ is a diffeomorphism, and is a section since $\pi\circ\sigma_i(p)=\pi\circ\Phi^{-1}(p,e_i)=\pi_1(p,e_i)=p$.
+    These form a basis over each $E_p$ since $\Phi^{-1}(p,\bul)$ is a linear isomorphism.
+
+\eexam
+
+\bprop
+
+    Every local frame for a smooth vector bundle is associated with a smooth local trivialization as in the above example.
+    That is, every local frame is of the form $\Phi^{-1}\circ\tilde e_i$ for a local trivialization $\Phi$.
+
+\eprop
+
+\bproof
+
+    If $(\sigma_i)$ is a local frame for $E$ over $U\subseteq M$, define $\Psi\colon U\times\bR^k\to\pi^{-1}(U)$ by
+    $$ \Psi(p,v^1,\dots,v^k) = v^i\sigma_i(p) . $$
+    This is a bijection, since $(\sigma_i)$ is a local frame.
+    And $\sigma_i=\Psi\circ\tilde e_i$, so if we can show $\Psi^{-1}$ is a local trivialization, we are finished.
+
+    To show that $\Psi$ is a diffeomorphism, it is sufficient to show it is a local diffeomorphism as it is bijective.
+    For $q\in U$, choose a neighborhood $q\in V$ such that there exists a smooth trivialization $\Phi\colon\pi^{-1}V\to V\times\bR^k$.
+    Since $\Phi$ is a diffeomorphism, if we can show that $\Phi\circ\Psi$ is as well, then we will have that $\Psi$ is a local diffeomorphism.
+
+    For each section $\sigma_i$, $\Phi\circ\sigma_i|_V\colon V\to V\times\bR^k$ is smooth, and thus $\Phi\circ\sigma_i(p)=(p,\sigma^1_i(p),\dots,\sigma^k_i(p))$
+    for smooth $\sigma^j_i$.
+    Thus
+    $$ \Phi\circ\Psi(p,v^1,\dots,v^k) = \Phi(v^i\sigma_i(p)) = (p,v^i\sigma^1_i(p),\dots,v^i\sigma^k_i(p)) , $$
+    which is clearly smooth.
+
+    To show that $(\Phi\circ\Psi)^{-1}$ is smooth, note that the matrix $(\sigma^j_i(p))$ is invertible, as $\sigma_i(p)$ form a basis.
+    Taking the inverse of a matrix is smooth, and its inverse $(\tau^j_i(p))$ is smooth.
+    We also have
+    $$ (\Phi\circ\Psi)^{-1}(p,w^1,\dots,w^k) = (p,w^i\tau^1_i(p),\dots,w^i\tau^k_i(p)) $$
+    which is also smooth.
+    \qed
+
+\eproof
+
+\bcoro
+
+    A smooth vector bundle is smoothly trivial iff it admits a global frame.
+
+\ecoro
+
+\bproof
+
+    A global frame induces a global trivialization by the above proposition, and a global trivialization induces a global frame by the example above.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A smooth manifold $M$ is {\emphcolor parallelizable} if $TM$ admits a global frame.
+
+\edefn
+
+The above corollary shows that $M$ is parallelizable iff $TM\to M$ is trivial.
+
+If $(\sigma_i)$ is a local frame for $E$ over $U\subseteq M$, and $\tau\colon M\to E$ is a rough section, then since $(\sigma_i(p))$ span $E_p$ there are unique
+functions $\tau^i\colon M\to\bR$ such that
+$$ \tau(p) = \tau^i(p)\sigma_i(p) $$
+for all $p\in U$.
+These functions are called $\tau$'s {\emphcolor component functions} with respect to the local frame.
+
+\bprop
+
+    A rough section is smooth on $U$ iff its component functions with respect to a (equivalently, any) local frame over $U$ are smooth.
+
+\eprop
+
+\bproof
+
+    Let $\Phi\colon\pi^{-1}U\to U\times\bR^k$ be the local trivialization associated to the local frame $(\sigma_i)$.
+    Then for $\tau\colon U\to E$ rough, it is smooth iff $\Phi\circ\tau$ is, and
+    $$ \Phi\circ\tau(p) = \Phi(\tau^i(p)\sigma_i(p)) = (p,\tau^1(p),\dots,\tau^n(p)) , $$
+    so that it is smooth iff each $\tau^i$ is.
+    \qed
+
+\eproof
+
+\bprop
+
+    The topology and smooth structure on the tangent bundle $TM$ is the unique one making it a vector bundle over $M$, with the given
+    vector space structure on the fibers of the projection $\pi\colon TM\to M$, such that all coordinate vector fields are smooth local sections.
+
+\eprop
+
+\bproof
+
+    Suppose $TM$ is endowed with some topology and smooth structure making it into a smooth vector bundle with the given properties.
+    Let $(U,\phi)$ is any local chart, with the corresponding coordinate frame $(\ievpdv{x^i})$ over $U$.
+    Then there is a local trivialization $\Phi\colon\pi^{-1}U\to U\times\bR^n$ associated with this local frame.
+    By definition,
+    $$ \Phi(v^i\ievpdv{x^i}_p) = (p,v^1,\dots,v^n) . $$
+    Then the map $(\phi\times\id)\circ\Phi$ is the map $v^i\evpdv{x^i}_p\mapsto(\phi(p),v^1,\dots,v^n)$.
+    This is precisely $\tilde\phi$, the chart associated with $\phi$.
+    Thus $TM$ must contain all such charts, which means it has the canonical smooth structure we gave it.
+    \qed
+
+\eproof
+
