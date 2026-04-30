@@ -68,6 +68,21 @@ The tangent bundle is the prototypical example of a vector bundle.
 
 \eproof
 
+\bprop
+
+    Smooth vector bundles are smooth submersions.
+
+\eprop
+
+\bproof
+
+    Let $p\in M$, so there exists a neighborhood $p\in U$ with a diffeomorphism $\Phi\colon\pi^{-1}(U)\to U\times\bR^k$ such that $\pi=\pi_U\circ\Phi$.
+    Now $\pi_U$ and $\Phi$ are submersions, and thus so is $\pi|_{\pi^{-1}U}$.
+    These $\pi^{-1}U$ cover $E$ and so it is globally a smooth submersion.
+    \qed
+
+\eproof
+
 \blemm
 
     Let $\pi\colon E\to M$ be a smooth vector bundle of rank $k$.
@@ -443,6 +458,196 @@ These functions are called $\tau$'s {\emphcolor component functions} with respec
     Then the map $(\phi\times\id)\circ\Phi$ is the map $v^i\evpdv{x^i}_p\mapsto(\phi(p),v^1,\dots,v^n)$.
     This is precisely $\tilde\phi$, the chart associated with $\phi$.
     Thus $TM$ must contain all such charts, which means it has the canonical smooth structure we gave it.
+    \qed
+
+\eproof
+
+\subsection{Bundle morphisms}
+
+\bdefn
+
+    If $\pi\colon E\to M,\pi'\colon E'\to M'$ are vector bundles, then a {\emphcolor bundle morphism} is a continuous map $F\colon E\to E'$
+    such that there exists a continuous $f\colon M\to M'$ making the below diagram commute
+
+    \commsq{
+        $E$&$E'$\cr
+        $M$&$M'$
+    }{F}{f}{\pi}{\pi'}
+
+    And further that for each $p\in M$, $F|_{E_p}\colon E_p\to E'_{f(p)}$ is linear.
+    We say that $F$ {\emphcolor covers} $f$.
+
+\edefn
+
+Let $\zeta\colon M\to E$ be the zero section, then if $f\circ\pi=\pi'\circ F$, we have $f=\pi'\circ F\circ\zeta$.
+Thus if the vector bundles and $F$ are smooth, so is $\zeta$, and thus so is $f$.
+So requiring that $f$ be smooth for a smooth bundle morphism does not add any restriction.
+
+Bundle morphisms, and smooth bundle morphisms, can obviously be composed, and thus form a category.
+So we can talk about bundle isomorphisms, and isomorphic (or smoothly isomorphic) vector bundles.
+
+\bdefn
+
+    If $\pi\colon E\to M$ and $\pi'\colon E'\to M$ are vector bundles over the same base $M$, a {\emphcolor bundle morphism over $M$}
+    is a bundle morphism $F\colon E\to E'$ over $\id_M$.
+    Equivalently it is a map $F\colon E\to E'$ such that $\pi=\pi'\circ F$ and $F|_{E_p}\colon E_p\to E_p$ is linear.
+
+\edefn
+
+Clearly morphisms over a base $M$ form a subcategory, so we can discuss {\emphcolor smooth bundle isomorphisms over $M$}.
+
+\bprop
+
+    If $\pi\colon E\to M,\pi'\colon E'\to M$ are smooth vector bundles over $M$, a bijective smooth bundle morphism over $M$, $F\colon E\to E'$,
+    is an isomorphism over $M$.
+
+\eprop
+
+\bproof
+
+    We have that $\pi=\pi'\circ F$ and so $\pi\circ F^{-1}=\pi'$ is smooth.
+    Since vector bundles are surjective submersions, this means that $F^{-1}$ is smooth.
+    It restricts linearly to the fibers because $F$ does.
+    \qed
+
+\eproof
+
+\bexam
+
+    If $F\colon M\to N$ is smooth, $dF\colon TM\to TN$ is a smooth bundle morphism covering $F$.
+
+\eexam
+
+Now if $E\to M,E'\to M$ are smooth bundles, let $\Gamma(E),\Gamma(E')$ be their space of smooth global sections.
+Then if $F\colon E\to E'$ is a smooth bundle morphism over $M$, it induces a map $\tilde F\colon\Gamma(E)\to\Gamma(E')$ bu
+$$ \tilde F(\sigma)(p) = (F\circ\sigma)(p) . $$
+This is indeed a section of $\pi'$, since $\pi'\circ(F\circ\sigma)=\pi\circ\sigma=\id$.
+
+This map is a morphism of $C^\infty(M)$-modules:
+$$ \tilde F(u_1\sigma_1+u_2\sigma_2) = F\circ(u_1\sigma_1) + F\circ(u_2\sigma_2) = u_1(F\circ\sigma_1) + u_2(F\circ\sigma_2), $$
+since $F$ is linear on fibers.
+
+\blemm
+
+    All $C^\infty(M)$-morphisms $\Gamma(E)\to\Gamma(E')$ arise in this way.
+
+\elemm
+
+\bproof
+
+    Let $\c F\colon\Gamma(E)\to\Gamma(E')$ be a $C^\infty(M)$-morphism.
+    We claim that $\c F$ acts locally, so that if $\sigma_1=\sigma_2$ in an open $U\subseteq M$, then $\c F(\sigma_1)=\c F(\sigma_2)$ in $U$ as well.
+    By $\c F$'s linearity it is sufficient to prove this for $\sigma=0$ in $U$.
+
+    For $p\in U$ let $\psi\in C^\infty(M)$ be a smooth bump function supported in $U$ and equal to $1$ at $p$.
+    Then $\psi\sigma$ is zero on $M$ and thus
+    $$ 0 = \c F(\psi\sigma) = \psi\c F(\sigma) , $$
+    and then plugging in $p$ we see that $\c F(\sigma)(p)=0$ for all $p\in U$ as desired.
+
+    Now we show that if $\sigma_1(p)=\sigma_2(p)$ then $\c F(\sigma_1)(p)=\c F(\sigma_2)(p)$.
+    Again it is sufficient to assume $\sigma(p)=0$.
+    Let $(\sigma_1,\dots,\sigma_n)$ be a local frame for $E$ in a neighborhood $U$ of $p$, and let $\sigma=u^i\sigma_i$.
+    Then $\sigma(p)=0$ means that $u^i(p)=0$ for all $i$.
+    By our above point, since $\sigma=u^i\sigma_i$ locally,
+    $$ \c F(\sigma)(p) = (u^i\c F(\sigma_i))(p) = 0 $$
+    as desired.
+
+    Now define $F\colon E\to E'$ as follows.
+    For $p\in M$ and $v\in E_p$, define $F(v)=\c F(\tilde v)(p)\in E'_p$ where $\tilde v$ is any global section of $E$ such that $\tilde v(p)=v$.
+    This is independent on choice of $\tilde v$, as we just showed.
+    And it is linear in $E_p$ since $\tilde v+\tilde u$ is a section mapping $p$ to $v+u$, and $\lambda\tilde v$ is one mapping $p$ to $\lambda v$.
+    Also we have
+    $$ \pi'\circ F(v) = \pi'(\c F(\tilde v)(p)) = \pi'\circ\c F(\tilde v)(p) = p = \pi(v) , $$
+    since $\c F(\tilde v)$ is a section of $\pi'$.
+    For $p\in M$ and $\sigma\in\Gamma(E)$, by definition
+    $$ (F\circ\sigma)(p) = \c F(\widetilde{\sigma(p)})(p) = \c F(\sigma)(p) , $$
+    so that $F\circ\sigma=\c F(\sigma)$ as desired.
+
+    We need only show that $F$ is smooth.
+    For $p\in M$, let $(\sigma_i)$ be a local frame for $E$ in a neighborhood of $p$.
+    We can extend these to global sections $(\tilde\sigma_i)$ in a smaller neighborhood of $p$.
+    Potentially shrinking the neighborhood smaller, we can assume there is a local frame $(\sigma'_j)$ for $E'$ in that neighborhood, call it $U$.
+    Then $\c F(\tilde\sigma_i)|_U=A^j_i\sigma'_j$ for $A^j_i\in C^\infty(U)$.
+
+    Then for any $q\in U$ and $v\in E_q$, we have $v=v^i\sigma_i(q)$ for some real numbers $v^i$ and so
+    $$ F(v^i\sigma_i(q)) = \c F(v^i\tilde\sigma_i)(q) = v^i\c F(\tilde\sigma_i)(q) = v^iA^j_i(q)\sigma'_j(q) . $$
+    If $\Phi,\Phi'$ are the local trivializations associated with $\sigma_i,\sigma'_j$ then
+    $$ \Phi'\circ F\circ\Phi^{-1}(q,v^1,\dots,v^k) = \Phi'\circ F(v^i\sigma_i(q)) = \Phi'(v^iA^j_i(q)\sigma'_j(q)) = (q,v^iA^1_i(q),\dots,v^iA^n_i(q)) , $$
+    which is smooth.
+    Since $\Phi',\Phi^{-1}$ are diffeomorphisms, this shows that $F$ is smooth on $\pi^{-1}U$.
+    \qed
+
+\eproof
+
+\subsection{Subbundles}
+
+\bdefn
+
+    Let $\pi_E\colon E\to M$ be a vector bundle.
+    A {\emphcolor subbundle} is a topological subspace $D\subseteq E$ and a vector bundle $\pi_D\colon D\to M$ which is the restriction of $\pi_E$ to $D$.
+    Furthermore we require that for each $p\in M$, the subset $D_p=D\cap E_p$ is a linear subspace of $E_p$.
+    A {\emphcolor smooth subbundle} is a continuous subbundle where $D\subseteq E$ is an embedded submanifold, and $\pi_D\colon D\to M$ is a smooth bundle.
+
+\edefn
+
+\blemm
+
+    Let $\pi\colon E\to M$ be a smooth bundle, and suppose that for each $p\in M$ we have an $m$-dimensional subspace $D_p\subseteq E_p$.
+    Then $D=\bigcup_pD_p\subseteq E$ is a smooth subbundle of $E$ iff for every $p\in M$ there is a neighborhood $p\in U$ with smooth local sections $\sigma_i\colon U\to E$
+    such that $\sigma_i(q)$ form a basis for $D_q$ at each $q\in U$.
+
+\elemm
+
+\bproof
+
+    If $D$ is a smooth subbundle, then each $p\in M$ has a local trivialization over a neighborhood $p\in U$.
+    Then there is a local frame $(\sigma_i)$ over $D$.
+    Then composing $\sigma_i$ with the inclusion $D\inj E$ gives the desired local sections for $E$.
+
+    Now suppose that $\pi$ has rank $k$.
+    To show that $D$ is embedded, it is sufficient to show that for each $p\in M$ there is a neighborhood $p\in U$ such that $D\cap\pi^{-1}(U)\subseteq E$ is embedded.
+    Let $\sigma_1,\dots,\sigma_m$ be the local sections in the assumption of the lemma in a neighborhood $p\in U$.
+    We can then complete these to a local frame $\sigma_1,\dots,\sigma_k$ over $E$ in a potentially smaller neighborhood.
+    This is associated with a trivialization $\Phi\colon\pi^{-1}U\to U\times\bR^k$ mapping
+    $$ \Phi(s^i\sigma_i(q)) = (q,s^1,\dots,s^k) . $$
+    Then $\Phi$ takes $D\cap\pi^{-1}(U)$ to the subset $\set{(q,s^1,\dots,s^m,0)\in U\times\bR^k}$, which is an embedded submanifold of $U\times\bR^k$.
+    Thus $D\cap\pi^{-1}(U)$ is an embedded submanifold of $E$, as desired.
+    Projecting this down to $\bR^k$ gives the diffeomorphism $\pi_{\bR^k}\circ\Phi\colon D\cap\pi^{-1}(U)\to U\times\bR^m$, showing that $D$ is also a smooth vector bundle itself.
+    \qed
+
+\eproof
+
+\bthrm
+
+    Let $E,E'$ be smooth bundles over $M$, and $F\colon E\to E'$ be a smooth morphism over $M$.
+    Define $\ker F\subseteq E,\im F\subseteq E'$ by
+    $$ \ker F = \bigcup_{p\in M}\ker(F|_{E_p}),\qquad \im F = \bigcup_{p\in M}\im(F|_{E_p}) . $$
+    Then $\ker F,\im F$ are smooth subbundles of $E,E'$ respectively iff $F$ has constant rank.
+
+\ethrm
+
+\bproof
+
+    Note that $\ker(F|_{E_p})$ has codimension equal to the rank of $F$ on $E|_p$, and similar for the image.
+    Thus in order for $\ker F,\im F$ to be subbundles $F$ must have constant rank.
+
+    Now suppose $F$ has constant rank $r$, and suppose $E,E'$ have respective ranks $k,k'$.
+    Let $p\in M$ and choose a local frame $\sigma_i$ for $E$ over $U$.
+    For each $i$, $F\circ\sigma_i\colon U\to E'$ is a smooth local section of $E'$, and necessarily spans $(\im F)|_U$.
+    Then we can assume $F\circ\sigma_1(p),\dots,F\circ\sigma_r(p)$ forms a basis for $\im(F|_{E_p})$, and then by continuity they remain linearly
+    independent in a neighborhood of $p$.
+    Since $F$ has constant rank, these must form a basis for each $\im(F|_{E_q})$ for every $q$ in the neighborhood.
+    By the above lemma, we have finished.
+
+    For the kernel, let $\sigma_i$ be as above, defined on $U$.
+    Let $V\subseteq E|_U$ be the smooth subbundle spanned by $\sigma_i$, so that $F|_V\colon U\to(\im F)|_U$ is bijective, and thus a smooth bundle isomorphism.
+    Define $\Psi\colon E|_U\to E|_U$ by $\Psi(v)=v-(F|_V)^{-1}\circ F(v)$.
+    If $v\in V$ then $F(v)=F|_V(v)$ so that $F\circ\Psi(v)=F(v)-F\circ(F|_V)^{-1}\circ F(v)=F(v)-F(v)=0$.
+    And on the other hand, if $v\in\ker F$ then $\Psi(v)=v$, so again $F\circ\Psi(v)=0$.
+    Since $V$ and $(\ker F)|_U$ span $E|_U$ together, we see that $\Psi$ maps into $(\ker F)|_U$.
+    It is the identity on the kernel, so it is actually a projection onto $(\ker F)|_U$.
+    Thus $\Psi$ has constant rank, and then $(\ker F)|_U=\im\Phi$ is a smooth subbundle of $E|_U$ by the above argument.
+    This is true around each point, as desired.
     \qed
 
 \eproof
