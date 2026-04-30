@@ -163,6 +163,7 @@
 \def\parens#1{\mathopen{}\mathclose{\left(#1\right)}}
 \def\bracks#1{\mathopen{}\mathclose{\left[#1\right]}}
 \def\abs#1{\mathopen{}\mathclose{\left|#1\right|}}
+\def\iprod#1{\mathopen{}\mathclose{\left<#1\right>}}
 \def\ccoloneqq{\mathrel{{\mathop:}{\mathop:}{=}}}
 
 \def\U{{\c U}}
@@ -245,6 +246,23 @@
     }}%
 }
 
+\def\@multline#1{%
+\hbox to\dimexpr\displaywidth-1cm\relax{%
+    \ifx\@nfirst\space%
+        $\displaystyle#1$\hfill%
+        \global\let\@nfirst\undefined%
+    \else%
+        \hfill$\displaystyle#1$%
+    \fi%
+}}
+
+\def\multline#1{%
+    \let\@nfirst\space%
+    \vcenter{\halign{\@multline{##}\crcr
+        #1\crcr%
+    }}%
+}
+
 \def\St{{\rm Set}}
 \def\stab{{\rm Stab}}
 \def\orb{{\rm Orb}}
@@ -297,4 +315,6 @@
 \def\aut{{\rm Aut}}
 \def\lie{{\rm Lie}}
 \let\conj\overline
+\let\bar\overline
+\def\grad{{\rm grad}}
 

@@ -1,0 +1,318 @@
+\section{The Cotangent Bundle}
+
+\subsection{Covectors}
+
+Recall that for a finite-dimensional space $V$, its {\emphcolor dual} is the vector space $V^*=\hom(V,\bR)$ of all linear functionals.
+A basis $(E_i)$ for $V$ defines a {\emphcolor dual basis} $(\epsilon^i)$ for $V^*$ by
+$$ \epsilon^i(E_j) = \delta_{ij}, $$
+and extending by linearity.
+Then for $\omega\in V^*$, we have that $\omega=a_i\epsilon^i$ where $\omega(E_i)=a_i$.
+There is a natural isomorphism between $V$ and its double dual $V^{**}$ by mapping $v\in V$ to the map $\hat v\colon V^*\to\bR$ given by $\hat v(\sigma)=\sigma(v)$.
+
+\bdefn
+
+    Let $M$ be a smooth manifold, and $p\in M$.
+    The {\emphcolor cotangent space} of $M$ at $p$ is defined to be $T_p^*M=(T_pM)^*$, the dual of the tangent space of $M$ at $p$.
+    Elements of the cotangent space are called {\emphcolor covectors}.
+
+\edefn
+
+Given a coordinate chart $(x^i)$ in an open subset $U\subseteq M$, for each $p\in U$ the local frame $(\ievpdv{x^i}_p)$ for $T_pM$ gives rise to its dual basis
+$(\lambda^i|_p)$ in $T_p^*M$ (we will give $\lambda$ better notation soon).
+Then any covector $\omega\in T_p^*M$ can be write $\omega=\omega_i\lambda^i|_p$ where
+$$ \omega_i = \omega\parens{\evpdv{x^i}_p} . $$
+
+If $(\tilde x^i)$ is another coordinate chart whose domain contains $p$, then it defines the dual basis $(\tilde\lambda^i|_p)$.
+We know that
+$$ \evpdv{x^i}_p = \pdvof{\tilde x^j}{x^i}(p)\evpdv{\tilde x^j}_p , $$
+and so if $\omega=\omega_i\lambda^i|_p=\tilde\omega_j\tilde\lambda^j|_p$, we have
+$$ \omega_i = \omega\parens{\evpdv{x^i}_p} = \omega\parens{\pdvof{\tilde x^j}{x^i}(p)\evpdv{\tilde x^j}_p} = \pdvof{\tilde x^j}{x^i}(p)\tilde\omega_j . $$
+
+\bdefn
+
+    The {\emphcolor cotangent bundle} of a smooth manifold is the vector bundle $\pi\colon T^*M\to M$ given by mapping $T_p^*M$ to $p$.
+
+\edefn
+
+\bprop
+
+    There is a unique smooth structure on $M$ making the cotangent bundle a vector bundle, where each fiber is given the linear structure of $T_p^*M$.
+
+\eprop
+
+\bproof
+
+    For a smooth chart $(U,\phi)$ for $M$, define $\Phi\colon\pi^{-1}(U)\to U\times\bR^n$ by
+    $$ \Phi(\xi_i\lambda^i|_p) = (p,\xi_1,\dots,\xi_n) , $$
+    where for $p\in\pi^{-1}(U)$, $\lambda^i|_p$ is the dual basis of $T_p^*M$.
+    The restriction of $\Phi$ to $T_p^*M$ is clearly a linear isomorphism.
+
+    If $(\tilde U,\tilde\phi)$ is another smooth chart with associated trivialization $\tilde\Phi$, we see that
+    $$ \Phi\circ\tilde\Phi^{-1}(p,\tilde\xi_1,\dots,\tilde\xi_n) = \parens{p,\pdvof{\tilde x^j}{x^1}(p)\tilde\xi_j,\dots,\pdvof{\tilde x^j}{x^n}(p)\tilde\xi_j} , $$
+    which is smooth (the transition function is the Jacobian $\pdvof{\tilde x^j}{x^i}$).
+    Thus $T^*M$ is a vector bundle.
+    \qed
+
+\eproof
+
+The associated charts for these trivializations are $\tilde\phi\colon\pi^{-1}(U)\to\bR^{2n}$ given by $\tilde\phi=(\phi\times\id_{\bR^n})\circ\Phi$, i.e.
+$$ \tilde\phi(\xi_i\lambda^i|_p) = (\phi(p),\xi_1,\dots,\xi_n) . $$
+
+\bdefn
+
+    A section of $T^*M$ is called a {\emphcolor covector field}.
+
+\edefn
+
+As before we consider also rough and continuous covector fields.
+For a chart $(U,\phi)$ of $M$ we have local covector fields $\lambda^i\colon U\to T^*M$ mapping $p\in U$ to $\lambda^i|_p$.
+These are local frames by construction, as the local trivializations in the above proposition are associated to them.
+If $\omega\colon M\to T^*M$ is a rough covector field, then it has a local representation $\omega=\omega_i\lambda^i|_p$ with $\omega_i\colon U\to\bR$.
+As before, $\omega$ is smooth iff $\omega_i$ all are.
+
+If $X$ is a vector field of $M$, and $\omega$ a covector field, then we define $\omega(X)\colon M\to\bR$ by
+$$ \omega(X)(p) = \omega_p(X_p) . $$
+If we write $\omega=\omega_i\lambda^i|_p$ and $X=X^j\ievpdv{x^j}_p$ in terms of local coordinates from $(U,\phi)$, then $\omega(X)$'s coordinate representation is
+$$ \omega(X) = \omega_iX^i . $$
+
+\bprop
+
+    Let $M$ be a smooth manifold, and $\omega\colon M\to T^*M$ a rough covector field.
+    The following are equivalent:
+    \benum
+        \item $\omega$ is smooth,
+        \item In every smooth coordinate chart, the components of $\omega$ are smooth,
+        \item each point of $M$ is contained in a coordinate chart in which $\omega$ has smooth components,
+        \item for every $X\in\X(M)$, $\omega(X)$ is smooth,
+        \item for every open $U\subseteq M$ and every smooth local vector field $X\in\X(U)$, $\omega(X)\colon U\to\bR$ is smooth.
+    \eenum
+
+\eprop
+
+\bproof
+
+    The first three are equivalent for general sections, and imply the fourth clearly, which implies the last.
+    For the last point, notice that $\ievpdv{x^i}_p$ is a smooth local vector field and
+    $$ \omega\parens{\evpdv{x^i}_p} = \omega_i, $$
+    its $i$th component.
+    So the last point implies the third.
+    \qed
+
+\eproof
+
+\subsection{Dual bundles}
+
+We can generalize the results from the previous section.
+
+\bdefn
+
+    Let $\pi\colon E\to M$ be a vector bundle.
+    Its {\emphcolor dual bundle} is the bundle $E^*=\coprod_{p\in M}E_p^*$, with the obvious projection onto $M$.
+
+\edefn
+
+If we have a local frame $(\sigma_i)$ for $E$, it defines its {\emphcolor dual frame} $(\Sigma^i)$ for $E^*$ where $\Sigma^i|_p\in E_p^*$ is defined to be the
+dual basis of $\sigma_i|_p$ for each $p$ in the neighborhood of the local frame.
+If $(\tilde\sigma_j)$ is another local frame, consider the associated trivializations $\Phi,\tilde\Phi$, so that
+$$ \Phi(\xi^i\sigma_i|_p) = (p,\xi^1,\dots,xi^n) . $$
+So if $\sigma_i|_p=\tilde\xi^j\tilde\sigma_j$, then
+$$ \tilde\Phi(\sigma_i|_p) = (p,\tilde\xi) . $$
+Thus
+$$ \sigma_i|_p = \tilde\Phi^j(\sigma_i|_p)\tilde\sigma_j|_p . $$
+And so if $\omega=\omega_i\Sigma^i|_p=\tilde\omega_i\tilde\Sigma^i|_p$ then
+$$ \omega_i = \omega(\sigma_i|_p) = \omega\parens{\tilde\Phi^j(\sigma_i|_p)\tilde\sigma_j|_p} = \tilde\Phi^j(\sigma_i|_p)\tilde\omega_j|_p . $$
+
+Recall that $\sigma_i|_p=\Phi^{-1}(p,e_i)$ so we can also write this as
+$$ \omega_i = \tilde\Phi^j\circ\Phi^{-1}(p,e_i)\tilde\omega_j|_p = (\tilde\Phi\circ\Phi^{-1})^j(p,e_i)\tilde\omega_j|_p . $$
+
+\bprop
+
+    The dual bundle of a smooth vector bundle is a smooth vector bundle itself; it has a unique smooth structure making it into one.
+    The double dual of a bundle is isomorphic to the original bundle.
+
+\eprop
+
+\bproof
+
+    Let $\pi\colon E\to M$ be a smooth vector bundle, and $\pi_*\colon E^*\to M$ be the projection.
+    If $(\sigma^i)$ is a local frame for $E$ defined in $U$, then define the local trivialization $\Phi\colon\pi_*^{-1}(U)\to U\times\bR^n$ by
+    $$ \Phi(\xi_i\Sigma^i(p)) = (p,\xi_1,\dots,\xi_n) , $$
+    where $\Sigma^i\colon U\to E^*$ is defined at each point to be the dual basis for $\sigma^i(p)$.
+    Then if we have another local frame $(\tilde\sigma^i)$ and local trivialization $\tilde\Phi$, we have
+    $$ \Phi\circ\tilde\Phi^{-1}(p,\xi_1,\dots,\xi_n) = \Phi(\xi_i\tilde\Sigma^i|_p) = \Phi((\tilde\Phi\circ\Phi^{-1})^j(p,e_i)\xi_j\Sigma_i|_p) = (p,(\tilde\Phi\circ\Phi^{-1})^j(p,e_i)\xi_j) , $$
+    which is smooth.
+
+    The double dual is diffeomorphic to $E$ since the smooth structure is unique.
+    \qed
+
+\eproof
+
+If $\omega$ is a section of $E^*$, and $(U,\phi)$ is a chart for $M$ with an associated section of $E$, $(\sigma_i)$, and $(\Sigma^i)$ its dual frame, then $\omega=\omega_i\Sigma^i$ with
+$$ \omega_i|_p = \omega_p(\sigma_i|_p) . $$
+
+And as before if $\omega$ is a section of $E^*$ and $X$ a section of $E$, then define $\omega(X)\colon M\to\bR$ by $\omega(X)(p)=\omega_p(X_p)$ and the results above apply.
+
+\bprop
+
+    If $(\sigma_i)$ is a rough local frame on $U\subseteq M$ for $E$, and $(\Sigma_i)$ its dual frame for $E^*$, then $\sigma_i$ is smooth iff $\Sigma^i$ is.
+
+\eprop
+
+\bproof
+
+    Take a smooth local frame around a point in $U$, call it $e_i$, and its dual $\epsilon^i$.
+    These are smooth by assumption, and so we have
+    $$ \sigma_i = a^j_ie_j,\qquad \Sigma^i = b^i_j\epsilon^j . $$
+    Then $\sigma_i$ is smooth iff $a^j_i$ are, and $\Sigma^i$ are smooth iff $b^i_j$ are.
+    Now,
+    $$ \delta_{ij} = \Sigma^i(\sigma_j) = b^i_ja^j_i $$
+    implies that $(a^j_i)$ and $(b^i_j)$ are inverses matrices, and thus one is smooth iff the other.
+    \qed
+
+\eproof
+
+Since $E^*$ is a vector bundle, its space of sections $\Gamma(E)$ is a $C^\infty(M)$-module.
+In particular for the cotangent bundle $T^*M$, we denote its space of sections by $\X^*(M)$.
+
+\subsection{Differential of a function}
+
+\bdefn
+
+    Let $f\colon M\to\bR$ be real valued and smooth.
+    We define a covector field $df\colon M\to T^*M$ by mapping $p\in M$ to the linear functional $df_p\in T^*_pM$ by
+    $$ df_p(v) = vf,\qquad v\in T_pM. $$
+
+\edefn
+
+\bprop
+
+    The differential of a smooth function is a smooth covector field.
+
+\eprop
+
+\bproof
+
+    $df_p$ is indeed linear, so $df$ is a rough covector field at least.
+    Notice that for any vector field $X$ on $M$, $df(X)=Xf$, which is smooth.
+    \qed
+
+\eproof
+
+Let $(x^i)$ be coordinates of $U\subseteq M$, and $\lambda^i$ its corresponding coframe.
+Then $df_p=A_i(p)\lambda^i|_p$ for $A_i\colon U\to\bR$.
+Then
+$$ A_i(p) = df_p\parens{\evpdv{x^i}_p} = \evpdv{x^i}_pf = \pdvof{f}{x^i}(p) . $$
+Thus
+$$ df_p = \pdvof{f}{x^i}(p)\lambda^i|_p . $$
+In the special case that $f$ is a coordinate function $x^j\colon U\to\bR$, we get that
+$$ dx^j_p = \pdvof{x^j}{x^i}(p)\lambda^i|_p = \lambda^j|_p . $$
+So $\lambda^j|_p$ is equivalently viewed as $dx^j|_p$!
+So we can write
+$$ df = \pdvof f{x^i}dx^i . $$
+
+\bprop
+
+    Let $f,g\in C^\infty(M)$.
+    \benum
+        \item $d(af+bg)=a\,df+b\,dg$ for $a,b\in\bR$;
+        \item $d(fg)=f\,dg+g\,df$;
+        \item $d(f/g)=(g\,df-f\,dg)/g^2$ when $g\neq0$;
+        \item if $J\subseteq\bR$ is an interval containing $f$'s image and $h\colon J\to\bR$ is smooth, then $d(h\circ f)=(h'\circ f)df$;
+        \item if $f$ is constant, $df=0$.
+    \eenum
+
+\eprop
+
+\bprop
+
+    If $f\in C^\infty(M)$, then $df=0$ iff $f$ is constant on $M$'s components.
+
+\eprop
+
+\bproof
+
+    We assume that $M$ is connected and show that $df=0$ iff $f$ is constant.
+    One direct is easy, so assume $df=0$.
+    Let $p\in M$ and define $\c C=\set{q\in M}[f(p)=f(q)]$, a closed subset of $M$.
+    If $q\in\c C$, let $U$ be a smooth coordinate ball centered at $q$.
+    Then $\ipdvof f{x^i}=0$ on $U$ (representing $df$ via $dx^i$), so then $f$ is constant on $U$.
+    Thus $\c C$ is open; it is then nonempty clopen so must be equal to all of $M$.
+    \qed
+
+\eproof
+
+\subsection{Pullbacks of covector fields}
+
+\bdefn
+
+    Let $F\colon M\to N$ smooth, then the differential at $p\in M$ $dF_p\colon T_pM\to T_{Fp}N$ dualizes to give the {\emphcolor pullback} of $F$ at $p$,
+    or the {\emphcolor cotangent map} of $F$ at $p$: $dF^*_p\colon T_{Fp}^*N\to T_p^*M$.
+
+\edefn
+
+The dual of a map $f\colon V\to W$ is the map $f^*\colon W^*\to V^*$ defined by $f^*(\phi)(v)=\phi(f(v))$.
+Thus the cotangent map is given by
+$$ dF^*_p(\omega)(v) = \omega(dF_p(v)),\qquad \omega\in T_{Fp}^*N,\ v\in T_pM . $$
+
+\bnote
+
+    The correspondence $(M,p)\mapsto T_p^*M$ is contravariant by this definition.
+    Which is unfortunate since elements of $T_p^*M$ are called {\it covectors\/} (covariant vectors).
+
+\enote
+
+Recall that the pushforward of vector fields are only defined in some cases, e.g.\ when the morphism is a diffeomorphism.
+But pullbacks of covector fields always exist.
+
+\bdefn
+
+    Let $F\colon M\to N$ be smooth, and $\omega\in\X^*(N)$ a covector field.
+    Its {\emphcolor pullback} by $F$ is $F^*\omega\in\X^*(M)$ defined by
+    $$ (F^*\omega) = dF^*_p(\omega_{Fp}) , $$
+    or explicitly,
+    $$ (F^*\omega)_p(v) = \omega_{Fp}(dF_p(v)) . $$
+
+\edefn
+
+\bprop
+
+    Let $F\colon M\to N$ be smooth, $u\in C^\infty(N)$, and $\omega\in\X^*(N)$, then
+    $$ F^*(u\omega) = (u\circ F)F^*\omega . $$
+    If $u$ is in addition smooth, then
+    $$ F^*du = d(u\circ F) . $$
+
+\eprop
+
+\bproof
+
+    We compute,
+    $$ (F^*(u\omega))_p = dF^*_p(u(F(p))\omega_{Fp}) = u(F(p))dF^*_p(\omega_{F(p)}) = ((u\circ F)dF^*\omega)_p, $$
+    as desired.
+    And for $v\in T_pM$, we have
+    $$ (F^*du)_p(v) = (dF^*_p(du_{Fp}))(v) = du_{Fp}(dF_p(v)) = dF_p(v)u $$
+    by the definition of $du$, and by the definition of $dF_p(v)$,
+    $$ = v(u\circ F) = d(u\circ F)_p(v) . \qed $$
+
+\eproof
+
+\bprop
+
+    If $F\colon M\to N$ is smooth and $\omega\in\X^*(N)$, then $F^*\omega$ is smooth (if $\omega$ is continuous, then $F^*\omega$ is continuous).
+
+\eprop
+
+\bproof
+
+    Let $p\in M$ be arbitrary and choose coordinates $(y^j)$ for a neighborhood $V$ of $F(p)$.
+    Let $U=F^{-1}(V)$, and write $\omega=\omega_jdy^j$ for continuous/smooth coordinates $\omega_j$.
+    Then we have, by the above proposition, (applied to $F|_U\colon U\to V$ smooth)
+    $$ F^*\omega = F^*(\omega_jdy^j) = (\omega_j\circ F)F^*dy^j = (\omega_j\circ F)d(y^j\circ F) . $$
+    This is continuous, and smooth if $\omega$ is.
+    \qed
+
+\eproof
+
+We can write the formula in the above proof by
+$$ F^*\omega = (\omega_j\circ F)dF^j, $$
+where $F^j$ is the $j$th coordinate of $F$ relative to the coordinates.
+

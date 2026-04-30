@@ -1,0 +1,421 @@
+\section{Riemannian Manifolds}
+
+\subsection{Riemannian manifolds}
+
+A symmetric $2$-tensor $\alpha\in\sym^2(V^*)$ is {\emphcolor positive definite} if $\alpha(v,v)>0$ for all $v\neq0$.
+A symmetric covariant $2$-tensor field is positive definite if it is positive definite at every point.
+
+\bdefn
+
+    Let $M$ be a smooth manifold, a {\emphcolor Riemannian metric} on $M$ is a smooth symmetric covariant $2$-tensor field on $M$.
+    A {\emphcolor Riemannian manifold} is a smooth manifold $M$ equipped with a Riemannian metric $g$.
+
+\edefn
+
+Since $g_p$ is an positive semidefinite and symmetric, it forms an inner product on $T_pM$.
+We denote this by $\iprod{\bul,\bul}_g$.
+
+\bnote
+
+    Equivalently, we can characterize a Riemannian metric to be an association to each $p\in M$ an inner product $\iprod{\bul,\bul}_g$ on $T_pM$
+    which is smooth in the sense that $\iprod{X,Y}_g$ is in $C^\infty(M)$ for every $X,Y\in\X(M)$.
+
+\enote
+
+In any smooth coordinate chart $(x^i)$, a Riemannian metric has components
+$$ g = g_{ij}dx^i\otimes dx^j . $$
+Note then that by symmetry, $g_{ij}=g_{ji}$ and so
+$$ g = \frac12(g_{ij}dx^i\otimes dx^j + g_{ij}dx^i\otimes dx^j) = \frac12(g_{ij}dx^i\otimes dx^j + g_{ji}dx^i\otimes dx^j) =
+\frac12(g_{ij}dx^i\otimes dx^j + g_{ij}dx^j\otimes dx^i) = g_{ij}dx^idx^j , $$
+where $dx^idx^j$ is the symmetric product.
+
+\bexam
+
+    The {\emphcolor Euclidean metric} on $\bR^n$ is $\bar g$ given by gloabl coordinates
+    $$ \bar g = \delta_{ij}dx^idx^j . $$
+    Writing $\alpha^2$ for the symmetric product of $\alpha$ with itself, we have that
+    $$ \bar g = (dx^1)^2 + \cdots + (dx^n)^2 . $$
+    Then for $v,w\in T_p\bR^n$ we have
+    $$ \bar g_p(v,w) = \delta_{ij}v^iw^j = \sum_i v^iw^i = v\cdot w, $$
+    so that the Euclidean metric is the Euclidean inner product on $T_p\bR^n$.
+
+\eexam
+
+\bexam
+
+    If $(M_1,g^1)$ and $(M_2,g^2)$ are Riemannian manifolds, we can define a Riemannian metric $g=g^1\oplus g^2$ on $M_1\times M_2$ by
+    $$ g((v_1,w_1),(v_2,w_2)) = g^1(v_1,v_2) + g^2(w_1,w_2) , $$
+    for $(v_i,w_i)\in T_pM_1\oplus T_qM_2\cong T_{(p,q)}(M_1\times M_2)$.
+    This is the sum of two smooth tensor fields, and thus smooth itself, and symmetric.
+    It is positive definite at each point because $g^1,g^2$ are.
+
+    Given local coordinates $(x^i)$ for $M_1$ and $(y^j)$ for $M_2$, if $g^1$ has components $g^1_{ij}dx^idx^j$ and $g^2$ has components $g^2_{ij}dy^idy^j$, then
+    $g$'s coordinate representation is
+    $$ (g_{ij}) = \pmatrix{g^1_{ij}\cr&g^2_{ij}} . $$
+
+\eexam
+
+\bprop
+
+    Every smooth manifold admits a Riemannian metric.
+
+\eprop
+
+\bproof
+
+    Let $(U_\alpha,\phi_\alpha)$ cover $M$ by countably many coordinate charts.
+    Then $\phi_\alpha\colon U_\alpha\to\bR^m$ is smooth and thus we can pull back the Euclidean metric to $U_\alpha$ by $g_\alpha=\phi_\alpha^*\bar g$.
+    Its coordinate representation is $\delta_{ij}dx^idx^j$ relative to $\phi_\alpha$.
+    Now let $\set{\psi_\alpha}$ be a partition of unity subordinate to $U_\alpha$, and define
+    $$ g = \sum_\alpha\psi_\alpha g_\alpha . $$
+    This is smooth, by local finiteness.
+    It is also obviously symmetric, so only positivity needs to be checked.
+    All the functions in question are nonnegative, so we need to show that $g(v,v)\neq0$ when $v\neq0$.
+    Indeed,
+    $$ g(v,v) = \sum_\alpha\psi_\alpha(p)g_\alpha(v,v) , $$
+    and if $0\neq v\in T_pM$ then some $\psi_\alpha(p)$ must be positive (since they sum to $1$), and thus $g(v,v)\geq\psi_\alpha(p)g_\alpha(v,v)>0$.
+    \qed
+
+\eproof
+
+Note that such a choice of Riemannian metric is not natural.
+
+\bdefn
+
+    If $(M,g)$ is a Riemannian metric, then the {\emphcolor norm} of $v\in T_pM$ is defined to be $\norm v=\iprod{v,v}_g^{1/2}=g_p(v,v)^{1/2}$.
+    $v,w\in T_pM$ are {\emphcolor orthogonal} if $\iprod{v,w}_g=0$.
+
+\edefn
+
+\bprop
+
+    Let $(M,g)$ be a Riemannian manifold, and $(X_j)$ a smooth local frame for $M$ over an open subset $U\subseteq M$.
+    Then there is a smooth local frame $(E_j)$ over $U$ which is orthonormal at every point, and $\lspan(E_1|_p,\dots,E_j|_p)=\lspan(X_1|_p,\dots,X_j|_p)$
+    for all $j=1,\dots,n$.
+
+    In particular for every $p\in M$ there is an orthonormal frame in a neighborhood around $p$.
+
+\eprop
+
+\bproof
+
+    Apply Gram-Schmidt, and note that the resulting fields are smooth.
+    \qed
+
+\eproof
+
+\bdefn
+
+    If $F\colon M\to N$ is smooth, and $g$ is a Riemannian metric on $N$, then the pullback $F^*g$ is a smooth $2$-tensor field on $M$.
+    If it is positive definite, it is a Riemannian metric on $M$, called the {\emphcolor pullback metric}.
+
+\edefn
+
+
+\bprop
+
+    The pullback $F^*g$ is Riemannian iff $F$ is a smooth immersion.
+
+\eprop
+
+\bproof
+
+    The pullback is defined by
+    $$ F^*g_p(v,w) = g(dF_pv,dF_pw) , $$
+    and in general $\iprod{F\bul,F\bul}$ is an inner product only when $F$ is injective.
+    \qed
+
+\eproof
+
+\bdefn
+
+    If $(M,g)$ and $(N,\tilde g)$ are Riemannian manifolds, a smooth map $F\colon M\to N$ is a {\emphcolor (Riemannian) isometry} if it is a diffeomorphism
+    which satisfies $F^*\tilde g=g$.
+    A {\emphcolor local isometry} is one where for every $p\in M$ there is a neighborhood $p\in U$ such that $F|_U\colon U\to N$ is an isometry onto an open subset of $N$.
+    Equivalently, if it satisfies $F^*\tilde g=g$ and $F$ is a local diffeomorphism.
+
+    If there exists an isometry between Riemannian manifolds, we say they are {\emphcolor isometric}.
+    A Riemmanian $n$-manifold is a {\emphcolor flat Riemannian manifold} (and the metric is a {\emphcolor flat metric}) if it is locally isometric to $(\bR^n,\bar g)$.
+
+\edefn
+
+\bprop
+
+    Let $(M,g)$ be a Riemannian manifold.
+    The following are equivalent:
+    \benum
+        \item $g$ is flat;
+        \item Each point of $M$ is contained in the domain of a smooth coordinate chart in which $g$ has the coordinate representation $g=\delta_{ij}dx^idx^j$;
+        \item Each point of $M$ is contained in the domain of a smooth coordinate chart in which the coordinate frame is orthonormal;
+        \item Each point of $M$ is contained in the domain of a commuting orthnormal frame.
+    \eenum
+
+\eprop
+
+\bproof
+
+    The downwards implications are clear.
+
+    \TODO{Revisit after doing flows}
+    \qed
+
+\eproof
+
+\bdefn
+
+    If $S\subseteq M$ is an immersed submanifold with $(M,g)$ Riemannian, then $S$ inherits the pullback metric $\iota^*g$ where $\iota\colon S\inj M$ is the inclusion.
+    This is called the {\emphcolor induced metric}.
+
+\edefn
+
+The induced metric is indeed a metric since $\iota$ is by definition an immersion.
+Under this metric $S$ is called a {\emphcolor Riemannian submanifold}.
+
+\bexam
+
+    The induced metric $\iota^*g$ induced on $S^n$ by the inclusion $S^n\inj\bR^{n+1}$ is called the {\emphcolor round} or {\emphcolor standard metric} on the sphere.
+
+\eexam
+
+\bdefn
+
+    Let $(M,g)$ be a Riemannian $n$-manifold, and $S\subseteq M$ a $k$-dimensional submanifold.
+    We say that for $p\in S$, a vector $v\in T_pM$ is {\emphcolor normal to $S$} if it is orthogonal to $T_pS$ with respect to $\iprod{\bul,\bul}_g$.
+    The {\emphcolor normal space to $S$} at $p$ is the subspace $N_pS\subseteq T_pM$ of all vectors orthogonal to $T_pS$ (i.e.\ $N_pS=(T_pS)^\perp$).
+
+    Let $NS=\coprod_{p\in S}N_pS$, and $\pi_{NS}\colon NS\to S$ to be the obvious projection.
+
+\edefn
+
+\bprop
+
+    $NS\to S$ forms a smooth $(n-k)$-rank vector bundle over $S$, with a unique smooth structure where the linear structures on the fibers are given by $N_pS$.
+    For each $p\in S$ there is a smooth frame for $NS$ on a neighborhood of $p$ that is orthonormal with respect to $g$.
+
+\eprop
+
+\bproof
+
+    Take a coordinate frame $(X_i)$ for $T_pS$, and then we can extend it and apply Gram-Schmidt to get a coordinate frame $(X_i,Y_j)$ where $Y_j$ are in $N_pS$.
+    These form a basis, and thus satisfy the local frame criterion for subbundles.
+    \qed
+
+\eproof
+
+\subsection{The Riemannian distance function}
+
+\bdefn
+
+    Suppose $(M,g)$ is a Riemannian manifold, and $\gamma\colon[a,b]\to M$ a piecewise smooth curve segment.
+    $\gamma$'s {\emphcolor length} is
+    $$ L_g(\gamma) = \int_a^b\norm{\gamma'(t)}_g\,dt . $$
+    This is well-defined since $\gamma'(t)$ is defined at all but finitely many values of $t$.
+
+\edefn
+
+Note that if $F\colon M\to N$ is a local isometry, then since $F^*g_N=g_M$ we have that $F$ preserves lengths: if $\gamma\colon[a,b]\to M$ is piecewise smooth,
+$$ L_{g_N}(F\circ\gamma) = \int_a^b\norm{(F\circ\gamma)'(t)} = \int_a^b\norm{dF_{\gamma(t)}\circ\gamma'(t)} = \int_a^b\norm{\gamma'(t)} = L_{g_M}(\gamma). $$
+
+\bdefn
+
+    A {\emphcolor reparametrization} of a curve $\gamma\colon[a,b]\to M$ is a curve of the form $\tilde\gamma=\gamma\circ\phi$ where $\phi\colon[c,d]\to[a,b]$ is
+    a diffeomorphism.
+
+\edefn
+
+\bprop
+
+    Curve length is invariant under reparametrization.
+
+\eprop
+
+\bproof
+
+    Let $\phi\colon[c,d]\to[a,b]$ be a diffeomorphism and $\gamma\colon[a,b]\to M$ a piecewise smooth curve.
+    Since $\phi$ is a diffeomorphism, either $\phi'>0$ or $\phi'<0$ everywhere.
+    Assume $\phi'$ is always positive, then
+    $$ L_g(\gamma\circ\phi) = \int_c^d\norm{(\gamma\circ\phi)'(t)} = \int_c^d\norm{\phi'(t)\gamma'(\phi(t))} = \int_c^d\norm{\gamma'(\phi(t))}\phi'(t) = \int_a^b\norm{\gamma'(t)} , $$
+    where the final equality is due to change of variables.
+    If $\phi'<0$ then we'd have to multiply the second to last term by $-1$, then change of variables swaps the sign again.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $(M,g)$ be a connected Riemannian manifold.
+    For $p,q\in M$ define their {\emphcolor Riemannian distance}, denoted $d_g(p,q)$, to be the infimum over $L_g(\gamma)$ over all piecewise smooth curves $\gamma$
+    from $p$ to $q$.
+
+\edefn
+
+\bexam
+
+    Consider $\bR^n$ with the Euclidean metric $g$.
+    Then $d_g(p,q)=\norm{p-q}$, i.e.\ the Riemannian distance is the same as Euclidean distance.
+
+    Indeed, $\gamma\colon[0,1]\to\bR^n$ with $\gamma(t)=tp+(1-t)q$ has $\gamma'(t)=p-q$ and thus
+    $$ L_g(\gamma) = \int_0^1\norm{p-q} = \norm{p-q} . $$
+    So $d_g(p,q)\leq\norm{p-q}$.
+
+    Now if $\gamma$ is any other piecewise smooth curve, we need to show that $L_g(\gamma)\geq\norm{p-q}$.
+    If $\gamma\colon[a,b]\to\bR^n$ is a curve from $p$ to $q$, then if it diverses from the line connecting $p$ and $q$, say at $s$, we have
+    $$ \eqalign{
+        \int_a^b\norm{\gamma'(t)} &= \int_a^s\norm{\gamma'(t)} + \int_s^b\norm{\gamma'(t)}\cr
+            &\geq \norm{\int_a^s\gamma'(t)} + \norm{\int_s^b\gamma'(t)}\cr
+            &= \norm{\gamma(s)-\gamma(a)} + \norm{\gamma(b)-\gamma(s)} > \norm{\gamma(b)-\gamma(a)}
+    } $$
+    where the final strict inequality is due to the triangle inequality.
+
+    Thus $\gamma(t)=p+s(t)(q-p)$ where $s\colon[a,b]\to[0,1]$ is a smooth map (since $\gamma$ is), with $s(a)=0,s(b)=1$.
+    Then $\gamma'(t)=s'(t)(q-p)$ and so
+    $$ \int_a^b\norm{\gamma'(t)} = \norm{q-p}\int_a^b\abs{s'(t)} \geq \norm{q-p}\abs{\int_a^bs'(t)} = \norm{q-p}\abs{s(b)-s(a)} = \norm{q-p} , $$
+    as desired.
+
+\eexam
+
+\blemm
+
+    Let $g$ be a Riemannian metric on an open subset $U\subseteq\bR^n$.
+    Given a compact subset $K\subseteq U$, there exist positive constants $c,C$ such that for all $x\in K$ and $v\in T_x\bR^n$,
+    $$ c\norm v_{\bar g} \leq \norm v_g \leq C\norm v_{\bar g} . $$
+
+\elemm
+
+\bproof
+
+    Define $L\subseteq T\bR^n$ by
+    $$ L = \set{(x,v)\in T\bR^n}[x\in K,\norm v_{\bar g}=1] . $$
+    Under the canonical identification of $T\bR^n$ with $\bR^n\times\bR^n$, this is just $L=K\times S^{n-1}$, which is compact.
+    Since $\norm v_g$ is continuous and strictly positive on $L$, there are positive constants $c,C$ such that $c\leq\norm v_g\leq C$ ($\norm v_g$
+    obtains its maximum and minimum on a compact set) for all $(x,v)\in L$.
+    If $x\in K$ and $v\in T_x\bR^n$ is nonzero, let $\lambda=\norm v_{\bar g}$ so that $(x,\lambda^{-1}v)\in L$ so
+    $$ \norm v_g = \lambda\norm{\lambda^{-1}v}_g \leq \lambda C = C\norm v_{\bar g}, $$
+    and similar for $c$.
+    \qed
+
+\eproof
+
+\bthrm
+
+    The Riemannian distance function on a connected Riemannian manifold $(M,g)$ is a metric in the usual sense.
+    It induces the same topology on $M$ as its manifold topology.
+
+\ethrm
+
+\bproof
+
+    All of the conditions for $d_g$ being a metric are clear, other than positivity.
+    Note that the triangle inequality is because if $\gamma$ connects $a$ to $b$, and $\tilde\gamma$ connects $b$ to $c$, then we can concatenate the curves
+    to get a curve from $a$ to $c$ whose length is the sum of the curves.
+
+    Now we need to show that $d_g(p,q)\neq0$ when $p\neq q$.
+    Let $U$ be a chart containing $p$ but not $q$.
+    We use the coordinate map to identify $U$ with a an open subset of $\bR^n$, and let $\bar g$ be the Euclidean metric in these coordinates.
+    Let $V$ be a regular coordinate ball of radius $\epsilon$ centered at $p$ such that $\cl V\subseteq U$.
+    Then the above lemma shows that there are constants $c,C>0$ such that $c\norm v_{\bar g}\leq\norm v_g\leq C\norm v_{\bar g}$ for all $v\in T_xM$ when $x\in\cl V$.
+    Then for any smooth curve $\gamma$ lying in $\cl V$, $cL_{\bar g}(\gamma)\leq L_g(\gamma)\leq CL_{\bar g}(\gamma)$.
+
+    Now suppose $\gamma\colon[a,b]\to M$ is piecewise smooth from $p$ to $q$.
+    Let $t_0$ be the infimum of all $t$ such that $\gamma(t)\notin\cl V$.
+    By continuity, $\gamma(t_0)\in\partial V$ and so $\gamma(t)\in\cl V$ for $a\leq t\leq t_0$.
+    Thus
+    $$ L_g(\gamma) \geq L_g(\gamma|_{[a,t_0]}) \geq cL_{\bar g}(\gamma|_{[a,t_0]}) \geq cd_{\bar g}(p,\gamma(t_0)) = c\epsilon . $$
+    The final inequality is because $d_{\bar g}$ agrees with normal Euclidean distance, and $\norm{p-\gamma(t_0)}=\epsilon$ since $\gamma(t_0)\in\partial V$.
+    Thus we conclude that $d_g(p,q)\geq c\epsilon>0$ as desired.
+
+    Finally to show that the two topologies coincide, we show that open sets in one are open in the other and vice versa.
+    Suppose that $U\subseteq M$ is open, and let $p\in U$, and let $V$ be a regular coordinate ball of radius $\epsilon$ around $p$ such that $\cl V\subseteq U$.
+    We have that $d_g(p,q)\geq c\epsilon$ when $q\notin\cl V$, and thus if $d_g(p,q)<c\epsilon$ then $q\in\cl V\subseteq U$.
+    So the open ball of radius $c\epsilon$ centered around $p$ is contained in $U$, since $p$ was arbitrary this means $U$ is open.
+
+    Conversely if $W$ is open in the metric topology, let $p\in W$.
+    Let $V$ be a regular coordinate ball around $p$ of radius $r$, and let $\bar g$ be the Euclidean metric on $\cl V$.
+    Then we have positive constants $c,C>0$ bounding the metric of $d_g$ by $d_{\bar g}$ as before.
+    Let $\epsilon<r$ be small enough such that the metric ball around $p$ of radius $C\epsilon$ is contained in $W$, and let $V_\epsilon$ be the set of points of $\cl V$
+    whose Euclidean distance from $p$ is less than $\epsilon$.
+    If $q\in V_\epsilon$ let $\gamma$ be the straight line segment from $p$ to $q$, then
+    $$ d_g(p,q) \leq L_g(\gamma) \leq CL_{\bar g}(\gamma) < C\epsilon . $$
+    Thus $V_\epsilon$ is contained in the metric ball of radius $C\epsilon$ around $p$, and thus in $W$.
+    $V_\epsilon$ is open in the manifold topology (since it is an open set under the coordinate chart of $\cl V$), and $p\in V_\epsilon$, we see that $W$ is open in the
+    manifold topology.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A Riemannian manifold $(M,g)$ is {\emphcolor complete}, and $g$ is a {\emphcolor complete Riemannian metric}, if $(M,d_g)$ is a complete metric space.
+    A subset $B\subseteq M$ is {\emphcolor bounded} if it is bounded in the metric space.
+
+\edefn
+
+\bcoro
+
+    Every smooth manifold is metrizable.
+
+\ecoro
+
+\bproof
+
+    If $M$ is a manifold without boundary, then choose a Riemannian metric $g$ on $M$.
+    If $M$ is connected, then the above proposition shows that it is metrizable by $d_g$.
+    Otherwise, let $\set{M_i}$ be the components of $M$, each of which is metrizable by $d_g|_{M_i}$.
+    The disjoint union of metrizable spaces is metrizable: let $p_i\in M_i$ and define
+    $$ d_g(x,y) = d_g(x,p_i) + 1 + d_g(p_j,y), $$
+    when $x,y$ are not in the same component.
+
+    If $M$ has boundary, it can be embedded into a manifold without boundary (its double), which is metrizable.
+    Subspaces of metrizable spaces are metrizable.
+    \qed
+
+\eproof
+
+\subsection{The tangent-cotangent isomorphism}
+
+If $V$ is a finite-dimensional inner product space, there is a natural isomorphism $V\to V^*$ given by $v\mapsto\iprod{v,\bul}$.
+This is clearly linear and injective, since if $\iprod{v,\bul}=0$ then $\iprod{v,v}=0$ so $v=0$.
+We can also compute its inverse: let $e_i$ be an orthonormal basis of $V$, then for $\phi\in V^*$ define $v=\sum_i\phi(e_i)e_i$.
+
+In our case, if $(M,g)$ is a Riemannian manifold, we define $\hat g\colon TM\to T^*M$ where for $v\in T_pM$ we define $\hat g(v)\in T^*_pM$ by
+$$ \hat g(v)(u) = g_p(v,u) . $$
+Its action on smooth vector fields is then
+$$ \hat g(X)(Y) = g(X,Y) ,\qquad X,Y\in\X(M) . $$
+Now, $\hat g(X)(\bul)$ is $C^\infty(M)$-linear, and thus $\hat g(X)$ is a smooth covector field.
+And $\hat g(\bul)$ is $C^\infty(M)$-linear and thus a bundle morphism as desired.
+As we explained, $\hat g$ is bijective, and thus a bundle isomorphism.
+
+In smooth coordinates $(x^i)$, we have $g=g_{ij}dx^idx^j$.
+Thus if $X,Y$ are smooth vector fields,
+$$ \hat g(X)(Y) = g_{ij}X^iXY^j, $$
+so that the covector field $\hat g(X)$ has coordinates
+$$ \hat g(X) = g_{ij}X^idx^j . $$
+So $\hat g$ is the bundle homomorphism whose matrix with respect to coordinate frames for $TM$ and $T^*M$ is the same as $g$'s matrix.
+
+It is customary to write
+$$ \hat g(X) = X_jdx^j,\qquad \hbox{where } X_j=g_{ij}X^j , $$
+so we say that $\hat g(X)$ is obtained by ``lowering an index''.
+The notation $X^\flat$ is often used for $\hat g(X)$ because of this; $\flat$ is musical notation for lowering a tone.
+The inverse map $\hat g^{-1}\colon T^*M\to TM$'s matrix is the inverse of $(g_{ij})$, which we denote $(g^{ij})$.
+That is,
+$$ g_{ij}g^{jk} = g^{ij}g_{jk} = \delta_{ik}. $$
+The inverse of a symmetric matrix is symmetric, and so for $\omega\in\X^*(M)$, the vector field $\hat g^{-1}(\omega)$ has coordinate representation
+$$ \hat g^{-1}(\omega) = \omega^i\pdv{x^i},\qquad \hbox{where } \omega^i=g^{ij}\omega_j . $$
+And so $\hat g^{-1}(\omega)$ is obtained by ``raising an index'', and so we denote $\hat g^{-1}(\omega)$ also by $\omega^\sharp$ (raising a tone).
+
+$\hat g$ and its inverse $\hat g^{-1}$ are thus called {\emphcolor musical isomorphisms}.
+Note that by definition, $\omega^\sharp=\hat g^{-1}(\omega)$ is the unique vector field such that for $X\in\X(M)$,
+$$ \omega(X) = \iprod{\omega^\sharp,X}_g . $$
+
+Under the musical isomorphisms, we can define the {\emphcolor gradient} of a function $f\in C^\infty(M)$ by
+$$ \grad f = (df)^\sharp = \hat g^{-1}(df) . $$
+So $\grad f$ is the unique vector field such that
+$$ \iprod{\grad f,X}_g = df(X) = Xf . $$
+Equivalently,
+$$ \iprod{\grad f,\bul} = df . $$
+Since $df=\ipdvof{f}{x^i}dx^i$, we get that
+$$ \grad f = g^{ij}\pdvof f{x^i}\pdv{x^j} . $$
+In particular, with the Euclidean metric on $\bR^n$ we see that
+$$ \grad f = \delta^{ij}\pdvof f{x^i}\pdv{x^j} = \sum_i \pdvof f{x^i}\pdv{x^i} , $$
+which is just the usual gradient of a real-valued function.
+
