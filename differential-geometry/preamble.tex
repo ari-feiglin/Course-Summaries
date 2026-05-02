@@ -178,6 +178,7 @@
 \def\F{{\c F}}
 \def\G{{\c G}}
 \def\T{{\c T}}
+\def\L{{\c L}}
 \def\X{{\frak X}}
 \def\g{{\f g}}
 \def\h{{\f h}}
@@ -237,8 +238,47 @@
 
 \def\TODO#1{\centerline{\color{red}\setscale{30pt}{\bf TODO:} #1}}
 
+\def\@true{\@true}
+\def\@false{\@false}
+
+\def\@mathify@col#1#2{%
+    \relax\xdef#1{%
+        #1%
+        \ifx\@mathifyfstcol\@false%
+            &%
+        \fi%
+        $#2$%
+    }%
+    \ifx\@mathifyfstcol\@true%
+        \global\let\@mathifyfstcol\@false%
+    \fi%
+}
+
+\def\@mathify@row#1{%
+    \noalign{\xdef#1{%
+        #1%
+        \ifx\@mathifyfstrow\@false%
+            \noexpand\cr%
+        \fi%
+    }%
+    \ifx\@mathifyfstrow\@true%
+        \global\let\@mathifyfstrow\@false%
+    \fi%
+    \global\let\@mathifyfstcol\@true}%
+}
+
+\def\mathify#1#2{%
+    \def#1{}%
+    \let\@mathifyfstrow\@true%
+    \let\@mathifyfstcol\@true%
+    \vbox{\everycr={\@mathify@row{#1}}\halign{&\@mathify@col{#1}{##}\cr
+        #2\cr
+    }}%
+}
+
 \def\commsq#1#2#3#4#5{%
-    \centerline{\drawdiagram{#1}{%
+    \mathify\@csq{#1}%
+    \centerline{\expandafter\drawdiagram\expanded{{\@csq}}{%
         \diagarrow{from={1,1}, to={1,2}, text={$#2$}, y distance=-.25cm}%
         \diagarrow{from={2,1}, to={2,2}, text={$#3$}, y distance=.25cm}%
         \diagarrow{from={1,1}, to={2,1}, text={$#4$}, x distance=-.25cm}%

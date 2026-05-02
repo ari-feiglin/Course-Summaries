@@ -1,0 +1,733 @@
+\section{Integral Curves and Flows}
+
+\subsection{Integral curves}
+
+\bdefn
+
+    Let $V$ be a vector field on a smooth manifold $M$.
+    An {\emphcolor integral curve} for $V$ is a smooth curve $\gamma\colon J\to M$ (with $J$ an interval in the real line)
+    such that $\gamma'(t)=V_{\gamma(t)}$.
+    If $0\in J$, then $\gamma(0)$ is called the {\emphcolor starting point} of $\gamma$.
+
+\edefn
+
+Recall that $\gamma'(t)\in T_{\gamma(t)}M$ is viewed as the derivation
+$$ \gamma'(t)f = (f\circ\gamma)'(t) . $$
+Equivalently, the differential $d\gamma_t$ is a map $\bR\cong T_tJ\to T_{\gamma(t)}M$, and then $\gamma'(t)f=d\gamma_t(1)(f)$, where $1\in\bR$
+corresponds to the directional derivative in the direction of $1$ (the usual $1$-dimensional derivative).
+
+\bnote
+
+    In this section we will use the notation $\dot\gamma(t)$ for the derivative of a curve with respect to $t$.
+    This is because often, the superscript is already being used as an index.
+
+\enote
+
+\bexam
+
+    Consider $\bR^2$ and let $V=\ipdv x$ be the first-coordinate vector field.
+    A curve $\gamma(t)=(\gamma^1(t),\gamma^2(t))$ has derivative $\gamma'(t)=\dot\gamma^1(t)\ipdv x+\dot\gamma^2(t)\ipdv y$.
+    Then $\gamma$ is an integral curve of $V$ when it is of the form $\gamma(t)=(a+t,b)$.
+
+\eexam
+
+Finding integral curves boils down to solving ODEs.
+For a vector field $V$, let $\gamma\colon J\to M$ be a smooth curve.
+On a coordinate domain $U\subseteq M$ we can write $\gamma$ in local coordinates $\gamma(t)=(\gamma^1(t),\dots,\gamma^n(t))$ as well as
+$V$ as $V^i(p)\evpdv{x^i}_p$.
+Then the requirement that $\gamma'(t)=V_{\gamma(t)}$ is just
+$$ \dot\gamma^i(t)\evpdv{x^i}_{\gamma(t)} = V^i(\gamma(t))\evpdv{x^i}_{\gamma(t)} , $$
+which is just the system of ODEs:
+$$ \eqalign{
+    \dot\gamma^1(t) &= V^1(\gamma^1(t),\dots,\gamma^n(t))\cr
+    &\vdots\cr
+    \dot\gamma^n(t) &= V^1(\gamma^1(t),\dots,\gamma^n(t))\cr
+} $$
+
+Recall the existence and uniqueness of a solution to ODEs.
+Since everything here is smooth, so we can derive the following simple consequence.
+
+\bprop
+
+    Let $V$ be a smooth vector field on $M$.
+    Then for every $p\in M$ there exists an $\epsilon>0$ and a unique smooth curve $\gamma\colon(-\epsilon,\epsilon)\to M$ that is an integral
+    curve of $V$ starting at $p$.
+
+\eprop
+
+\blemm
+
+    Let $V$ be a smooth vector field on $M$, $J\subseteq\bR$ an interval, and $\gamma\colon J\to\bR$ an integral curve of $V$.
+    For any $a\in\bR$, the curve $\tilde\gamma\colon a^{-1}J\to M$ defined by $\tilde\gamma(t)=\gamma(at)$ is an integral curve of $aV$.
+
+    Similarly $\hat\gamma\colon J-a\to M$ defined by $\hat\gamma(t)=\gamma(t+a)$ is an integral curve of $V$.
+
+\elemm
+
+\bproof
+
+    We look at how $\tilde\gamma$ acts on $C^\infty$ functions defined in a neighborhood of $t_0$.
+    $$ \tilde\gamma'(t_0)f = \evdrv t_{t_0}(f\circ\tilde\gamma)(t) = \evdrv t_{t_0}(f\circ\gamma)(at) , $$
+    which by the chain rule is just
+    $$ = a(f\circ\gamma)'(at_0) = a\gamma'(at_0)f = aV_{\gamma(at_0)}f = aV_{\tilde\gamma(t_0)}f . $$
+    The translation $\hat\gamma$ is proven similarly.
+
+\eproof
+
+\bprop
+
+    If $F\colon M\to N$ is smooth, then $X\in\X(M),Y\in\X(N)$ are $F$-related iff $F$ takes integral curves of $X$ to integral curves of $Y$.
+    Meaning if $\gamma$ is integral for $X$, then $F\circ\gamma$ is integral for $Y$.
+
+\eprop
+
+\bproof
+
+    If $X$ and $Y$ are $F$-related, let $\gamma\colon J\to M$ be integral for $X$, and define $\sigma\colon J\to N$ by $\sigma=F\circ\gamma$.
+    Then
+    $$ \sigma'(t) = (F\circ\gamma)'(t) = dF_{\gamma(t)}(\gamma'(t)) = dF_{\gamma(t)}(V_{\gamma(t)}) = Y_{F\circ\gamma(t)} = Y_{\sigma(t)}, $$
+    as desired.
+
+    Conversely suppose $F$ maps integral curves of $X$ to integral curves of $Y$.
+    Let $p\in M$ and let $\gamma\colon J\to M$ be an integral curve of $X$ starting at $p$.
+    Then $\sigma=F\circ\gamma$ is integral for $Y$ so
+    $$ Y_{F(p)} = (F\circ\gamma)'(0) = dF_{\gamma(0)}(\gamma'(0)) = dF_p(X_p), $$
+    meaning $X$ and $Y$ are $F$-related.
+    \qed
+
+\eproof
+
+\subsection{Flows}
+
+Let $M$ be a smooth manifold and $V\in\X(M)$.
+Now suppose that for every $p\in M$, $V$ has a unique integral curve starting at $p$ which is defined for all $t\in\bR$ (this is a big assumption,
+but will suffice for the explanation), denoted by $\theta^{(p)}\colon\bR\to M$.
+Now for each $t\in\bR$ we define $\theta_t\colon M\to M$ by mapping $p\in M$ to $\theta^{(p)}(t)$.
+In other words we have
+$$ \theta\colon\bR\times M\to M . $$
+Translation implies that $t\mapsto\theta^{(p)}(s+t)$ is an integral curve for $V$ starting at $q=\theta^{(p)}(s)$.
+Uniqueness implies that $\theta^{(q)}(t)=\theta^{(p)}(t+s)$, so that
+$$ \theta_t\circ\theta_s(p) = \theta_t(\theta^{(p)}(s)) = \theta^{(q)}(t) = \theta_{s+t}(p) . $$
+Since $\theta_0(p)=\theta^{(p)}(0)=p$, we see that $\theta\colon\bR\times M\to M$ is an action of the additive group $\bR$ on $M$.
+
+This motivates the following definition.
+
+\bdefn
+
+    A {\emphcolor global flow} on $M$ is a continuous left action of $\bR$ on $M$.
+    In other words, a continuous map
+    $$ \theta\colon\bR\times M\to M $$
+    satisfying
+    $$ \theta(0,p) = p,\qquad \theta(t+s,p) = \theta(t,\theta(s,p)) . $$
+
+\edefn
+
+\bnote
+
+    Global flows are also called {\emphcolor one-parameter group actions}.
+
+\enote
+
+Given a global flow $\theta$ on $M$ we define
+$$ \theta_t\colon M\to M,\ \theta_t(p)=\theta(t,p),\qquad \theta^{(p)}\colon\bR\to M,\ \theta^{(p)}(t)=\theta(t,p) , $$
+as with Lie group actions.
+The image of the curve $\theta^{(p)}$ is the orbit of $p$ under the action $\theta$.
+And the requirement that $\theta$ be an action is equivalent to requiring
+$$ \theta_{t+s} = \theta_t\circ\theta_s . $$
+
+If $\theta\colon\bR\times M\to M$ is a global flow, define a tangent vector $V_p\in T_pM$ by
+$$ V_p = {\theta^{(p)}}'(0) . $$
+The assignment $p\mapsto V_p$ is a rough vector field on $M$, called the {\emphcolor infinitesimal generator} of $\theta$.
+
+\bprop
+
+    Let $\theta$ be a smooth global flow on $M$.
+    Its infinitesimal generator $V$ is then a smooth vector field on $M$, and each $\theta^{(p)}$ is an integral curve of $V$ starting at $p$.
+
+\eprop
+
+\bproof
+
+    To show that $V$ is smooth, it is sufficient to show that $Vf$ is smooth for all $f\in C^\infty(M)$.
+    Now, for $p\in M$,
+    $$ Vf(p) = V_pf = {\theta^{(p)}}'(0)f = \evdrv t_0f(\theta^{(p)}(t)) = \evpdv t_{(0,p)}f(\theta(t,p)) . $$
+    Since $f\circ\theta\colon\bR\times M\to\bR$ is smooth by assumption, its partial derivatives are smooth as well.
+    Thus $Vf$ is smooth, as desired.
+
+    Now we need to show that $\theta^{(p)}$ is an integral curve of $V$.
+    For $t\in\bR$, let $q=\theta^{(p)}(t)=\theta(t,p)$ so that
+    $$ V_{\theta^{(p)}(t)} = V_q = {\theta^{(q)}}'(0) . $$
+    We want to show that this is equal to ${\theta^{(p)}}'(t)$.
+    Now,
+    $$ \theta^{(q)}(s) = \theta(s,q) = \theta(s,\theta(t,p)) = \theta(t+s,p) = \theta^{(p)}(t+s) . $$
+    And so we have that
+    $$ {\theta^{(q)}}'(0) = {\theta^{(p)}}'(t), $$
+    as desired.
+    \qed
+
+\eproof
+
+While every global flow gives rise to a vector field, its infinitesimal generator, the converse is not true in general.
+The issue is the globalness: a vector field's integral curve does not in general need to be defined at every point on the real line.
+
+\bexam
+
+    Let $M=\bR^2-0$, and $V=\ipdv x$.
+    The unique integral curve starting at $(-1,0)$ is $\gamma(t)=(-1+t,0)$.
+    But $\gamma$ then cannot be defined at $t=1$, as this is a removable singularity and defining it at $t=1$ would require defining it to be equal to $0\notin M$.
+
+    Another example is $M=\bR^2$ and $V=x^2\ipdv x$.
+    An integral curve $\gamma(t)=(\gamma^1(t),b)$ must satisfy $\dot\gamma^1(t)=\gamma^1(t)^2$ and thus has the solution $\gamma^1(t)=1/(a-t)$.
+    If we require it to start at $(1,0)$, then we have
+    $$ \gamma(t) = \parens{\frac1{1-t},0} . $$
+    This also cannot be defined at $t=1$.
+
+\eexam
+
+Thus we must somehow localize the idea of a global flow.
+
+\bdefn
+
+    Let $M$ be a smooth manifold.
+    A {\emphcolor flow domain} for $M$ is an open subset $\D\subseteq\bR\times M$ with the property that for every $p\in M$, the set $\D^{(p)}=\set{t\in\bR}[(t,p)\in\D]$
+    is an open interval containing $0$.
+
+    A {\emphcolor (local) flow} on $M$ is a continuous map $\theta\colon\D\to M$ where $\D\subseteq\bR\times M$ is a flow domain, which satisfies the usual group action laws
+    when defined.
+    Explicitly, for all $p\in M$, $\theta(0,p)=p$ and
+    $$ \theta(t,\theta(s,p)) = \theta(t+s,p) , $$
+    for all $s\in\D^{(p)}$, and $t\in\D^{(\theta(s,p))}$ such that $s+t\in\D^{(p)}$.
+
+    As with global flows, we define $\theta_t(p)=\theta^{(p)}(t)=\theta(t,p)$ when $(t,p)\in\D$.
+    For $t\in\bR$ we define
+    $$ M_t = \set{p\in M}[(t,p)\in\D] $$
+    so that $p\in M_t$ iff $t\in\D^{(p)}$ iff $(t,p)\in\D$, and $\theta^{(p)}\colon\D^{(p)}\to M$, $\theta_t\colon M_t\to M$.
+
+    If $\theta$ is smooth, its {\emphcolor infinitesimal generator} is defined by $V_p={\theta^{(p)}}'(0)$.
+
+\edefn
+
+\bnote
+
+    The term {\emphcolor local one-parameter group action} is also used for local flows.
+
+\enote
+
+\bprop
+
+    The infinitesimal generator of a flow is a smooth vector field, and $\theta^{(p)}$ is an integral curve for $V$ for each $p\in M$.
+
+\eprop
+
+\bproof
+
+    The proof is the same as in the global case.
+    Just verify that all terms are defined locally (in close enough neighborhoods).
+    \qed
+
+\eproof
+
+\bdefn
+
+    A {\emphcolor maximal integral curve} is an integral curve which cannot be extended to a larger interval.
+    A {\emphcolor maximal flow} is a flow that cannot be extended to a larger flow domain.
+
+\edefn
+
+\bthrm[title=Fundamental theorem on flows]
+
+    Let $V$ be a smooth vector field on $M$.
+    Then there is a unique maximal flow $\theta\colon\D\to M$ whose infinitesimal generator is $V$.
+    The flow has the following properties:
+    \benum
+        \item For each $p\in M$, the curve $\theta^{(p)}\colon\D^{(p)}\to M$ is the unique maximal integral curve of $V$ starting at $p$.
+        \item If $s\in\D^{(p)}$ then $\D^{(\theta(s,p))}$ is the interval $\D^{(p)}-s=\set{t-s}[t\in\D^{(p)}]$.
+        \item For each $t\in\bR$, $M_t$ is open in $M$ and $\theta_t\colon M_t\to M_{-t}$ is a diffeomorphism with inverse $\theta_{-t}$.
+    \eenum
+
+\ethrm
+
+\bproof
+
+    Suppose that $\gamma,\tilde\gamma\colon J\to M$ are two integral curves of $V$ defined on the same interval such that they agree at some point $t_0\in J$.
+    Then let $\c S=\set{t\in J}[\gamma(t)=\tilde\gamma(t)]$.
+    This is nonempty since $t_0\in\c S$ by assumption, and it is closed by continuity (for $t\notin\c S$ then by Hausdorff there are open sets around
+    $\gamma(t),\tilde\gamma(t)$ which don't intersect, their preimages under $\gamma,\tilde\gamma$ are open and the intersection doesn't intersect $\c S$).
+    But $\c S$ is also open: for $t_1\in\c S$, $\gamma,\tilde\gamma$ are both solutions to the same ODE with the initial condition $\gamma(t_1)=\tilde\gamma(t_1)$,
+    and thus agree in a neighborhood of $t_1$.
+    Since $J$ is connected, $\c S$ must be equal to $J$.
+
+    Thus any two integral curves defined on the same interval must be equal.
+    So let us define $\D^{(p)}$ to be the union of all open intervals $J$ with $0\in J$ such that there is an integral curve of $V$ starting at $p$ defined on $J$.
+    Then for $t\in\D^{(p)}$, define $\theta^{(p)}(t)=\gamma(t)$ where $\gamma$ is an integral curve of $V$ starting at $p$ defined at $t$.
+    This is well-defined by our above argument, and clearly the unique maximal integral curve starting at $p$.
+
+    Now let $\D=\set{(t,p)\in\bR\times M}[t\in\D^{(p)}]$, and define $\theta\colon\D\to M$ by $\theta(t,p)=\theta^{(p)}(t)$.
+    $\theta$ satisfies the first point in our theorem statement.
+    Now we need to verify that it satisfies the group laws.
+    Clearly $\theta(0,p)=p$.
+    For $p\in M$ and $s\in\D^{(p)}$ let $q=\theta(s,p)$, then the curve $\gamma\colon\D^{(p)}-s\to M$ defined by $\gamma(t)=\theta^{(p)}(t+s)$ starts at $q$
+    and is also integral (by translation).
+    By uniqueness, $\gamma$ and $\theta^{(q)}$ agree on the intersection of their domains, which is equivalent to the second group law:
+    $$ \theta^{(p)}(t+s) = \theta^{(q)}(t) \iff \theta(t+s,p) = \theta(t,\theta(s,p)) . $$
+
+    The maximality of $\theta^{(q)}$ further implies that $\gamma$'s domain is contained in $\D^{(q)}$.
+    That is, $\D^{(p)}-s\subseteq\D^{(q)}$.
+    Since $0\in\D^{(p)}$ this implies $-s\in\D^{(q)}$ and $\theta^{(q)}(-s)=\theta(-s,\theta(s,p))=p$.
+    So if we repeat the above argument with $p=\theta(-s,q)$, we see that $\D^{(q)}+s\subseteq\D^{(p)}$ so that $\D^{(q)}-s=\D^{(p)}$, proving the second point.
+
+    Now we show that $\D\subseteq\bR\times M$ is open, so that it is a flow domain, and that $\theta\colon\bR\times M\to M$ is smooth.
+    Define $W\subseteq\D$ to be the set of all $(t,p)\in\D$ where $\theta$ is smooth on a product neighborhood of $(t,p)$ of the form $J\times U\subseteq\D$
+    where $0\in J$ is a neighborhood and $U\subseteq M$ is a neighborhood of $p$.
+    Then $W$ is an open subset of $\bR\times M$ and $\theta$ is smooth on $W$, so it is sufficient to show that $W=\D$.
+
+    Suppose not, so there is a $(\tau,p_0)\in\D-W$.
+    We assume that $\tau>0$, the proof for negative $\tau$ is similar.
+    Define $t_0=\inf\set{t\in\bR}[(t,p_0)\notin W]$.
+    Taking a coordinate domain around $p_0$, we see that by uniqueness of ODE solutions, $\theta$ is smooth in a product neighborhood around $(0,p_0)$, so $t_0>0$.
+    Since $t_0\leq\tau$ and $\D^{(p_0)}$ is an open interval containing $0$, we have that $t_0\in\D^{(p_0)}$.
+    Let $q_0=\theta^{(p_0)}(t_0)$, and then again by ODE uniqueness, there is an $\epsilon>0$ and a neighborhood $U_0$ of $q_0$ such that $(-\epsilon,\epsilon)\times U_0\subseteq W$.
+    We will show that using the group action, we can extend $\theta$ smoothly to a neighborhood of $(t_0,p_0)$.
+    By maximality of $\theta$, this implies $(t_0,p_0)\in W$, but $W$ is open and thus this is a contradiction (since then a sequence of points outside of $W$ converge to a point in $W$).
+
+    Choose $t_1<t_0$ such that $t_1+\epsilon>t_0$ and $\theta^{(p_0)}(t_1)\in U_0$ (which exists because $\theta^{(p_0)}$ is continuous).
+    Since $t_1<t_0$, we have that $(t_1,p_0)\in W$ and so there is a product neighborhood $(t_1-\delta,t_1+\delta)\times U_1\subseteq W$.
+    This implies that $\theta$ is defined and smooth on $[0,t_1+\delta)\times U_1$, by definition of $W$.
+    Because $\theta(t_1,p_0)\in U_0$, we can choose $U_1$ small enough so that $\theta$ maps $\set{t_1}\times U_1$ into $U_0$.
+    Define $\tilde\theta\colon[0,t_1+\epsilon)\times U_1\to M$ by
+    $$ \tilde\theta(t,p) = \cases{\theta_t(p) & $0\leq t<t_1$\cr \theta_{t-t_1}\circ\theta_{t_1}(p) & $t_1-\epsilon<t<t_1+\epsilon$} . $$
+    The group action laws show that the two definitions agree where they overlap, and our choices of $U_1,t_1,\epsilon$ ensure that this is a smooth map.
+
+    Thus $t\mapsto\tilde\theta(t,p)$ is an integral curve of $V$ for each $p\in U_1$, so $\tilde\theta$ is a smooth extension of $\theta$ to a neighborhood of $(t_0,p_0)$.
+    This is a contradiction, so $W=\D$.
+    Thus $\theta$ is the unique maximal flow with infinitesimal generator $V$.
+
+    We now show that $M_t$ is open.
+    Recall that
+    $$ M_t = \set{p\in M}[(t,p)\in\D] , $$
+    so clearly $M_t$ is open since $\D$ is (it is the preimage of $\D$ under the map $p\mapsto(t,p)$).
+    We also have
+    $$ p\in M_t \implies t\in\D^{(p)} \implies \D^{(\theta_t(p))} = \D^{(p)} - t \implies -t \in \D^{(\theta_t(p))} \implies \theta_t(p) \in M_{-t} . $$
+    Thus $\theta_t$ is a map $M_t\to M_{-t}$, and smooth since $\theta$ is.
+    The group laws show $\theta_t\circ\theta_{-t}$ is the identity, so that $\theta_t$ is then a diffeomorphism $M_t\to M_{-t}$ as desired.
+    \qed
+
+\eproof
+
+\bdefn
+
+    The unique maximal flow with infinitesimal generator $V$, whose existence and uniqueness was proven above, is called the {\emphcolor flow generated by $V$},
+    or just the {\emphcolor flow of $V$}.
+
+\edefn
+
+\bprop
+
+    Suppose $F\colon M\to N$ is smooth, $X\in\X(M)$ and $Y\in\X(N)$.
+    Let $\theta$ be the flow of $X$ and $\eta$ the flow of $Y$.
+    If $X$ and $Y$ are $F$-related then for each $t\in\bR$, $F(M_t)\subseteq N_t$ and $\eta_t\circ F=F\circ\theta_t$ on $M_t$:
+
+    \commsq{M_t&N_t\cr M_{-t}&N_{-t}}
+        {F}{F}{\theta_t}{\eta_t}
+
+\eprop
+
+\bproof
+
+    For any $p\in M$, $F\circ\theta^{(p)}$ is an integral curve of $Y$ starting at $F(p)$.
+    By uniqueness of integral curves, the maximal integral curve $\eta^{(F(p))}$ must be defined at least on $\D^{(p)}$ and $F\circ\theta^{(p)}=\eta^{(F(p)}$
+    on $\D^{(p)}$.
+    This means that
+    $$ p\in M_t \implies t \in \D^{(p)} \implies t\in\D^{(F(p))} \implies F(p) \in N_t , $$
+    so $F(M_t)\subseteq N_t$.
+    And also
+    $$ F\circ\theta^{(p)}(t) = \eta^{(F(p))}(t) \implies F\circ\theta_t(p) = \eta_t(F(p)) = \eta_t\circ F(p) $$
+    for all $p\in M_t$.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Let $F\colon M\to N$ be a diffeomorphism.
+    If $X\in\X(M)$ has flow $\theta$, then the flow of $F_*X$ is $\eta_t=F\circ\theta_t\circ F^{-1}$ with domain $N_t=F(M_t)$.
+
+\ecoro
+
+\bproof
+
+    By the above proposition, and going in reverse as $F_*X$ and $X$ are $F^{-1}$-related.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A vector field is {\emphcolor complete} if its flow is global.
+    Equivalently if for every $p\in M$, it has an integral curve starting at $p$ defined on all of $\bR$.
+
+\edefn
+
+\blemm[title=Uniform time lemma]
+
+    Let $V\in\X(M)$ with flow $\theta$.
+    Suppose there is an $\epsilon>0$ such that for every $p\in M$, the domain of $\theta^{(p)}$ contains $(-\epsilon,\epsilon)$.
+    Then $V$ is complete.
+
+\elemm
+
+\bproof
+
+    Suppose $V$ is not complete, so for some $p\in M$ we have that $\D^{(p)}$ is not all of $\bR$.
+    Without loss of generality, we assume that $\D^{(p)}$ is bounded above, let $b$ be its supremum.
+    Then let $t_0\in\D^{(p)}$ such that $b-\epsilon<t_0<b$, and let $q\in\theta^{(p)}(t_0)$.
+    They hypothesis implies that $\theta^{(q)}(t)$ is defined at least for $t\in(-\epsilon,\epsilon)$, so define $\gamma\colon(-\epsilon,t+\epsilon)\to M$ by
+    $$ \gamma(t) = \cases{\theta^{(p)}(t) & $-\epsilon<t<b$\cr \theta^{(q)}(t-t_0) & $t_0-\epsilon<t<t_0+\epsilon$} . $$
+    By the group action laws, the two definitions agree on their overlap: $\theta^{(q)}(t-t_0)=\theta(t-t_0,\theta(t_0,p))=\theta(t,p)$.
+    By the translation law, $\gamma$ is an integral curve for $V$ starting at $p$.
+    But since $t_0+\epsilon>b$, this is a contradiction.
+    \qed
+
+\eproof
+
+\bthrm
+
+    Every compactly supported smooth vector field is complete.
+
+\ethrm
+
+\bproof
+
+    Let $V$ be compactly supported on $M$, and let $K=\supp V$ be its support.
+    For $p\in K$ there is a neighborhood $U_p$ of $p$ and a positive number $\epsilon_p$ such that the flow of $V$ is defined on at least $(-\epsilon_p,\epsilon_p)\times U_p$,
+    since the flow domain is open.
+    By compactness, finitely many $U_p$ cover $K$: say $U_{p_1},\dots,U_{p_n}$ cover $K$.
+    Let $\epsilon$ be the minimum of $\epsilon_{p_1},\dots,\epsilon_{p_n}$, so that the flow is defined on $(-\epsilon,\epsilon)\times K$.
+    Since $V$ is zero outside of $K$, every integral curve starting outside of $K$ is constant and thus can be defined on all of $\bR$.
+    Thus by the above lemma, $V$ is complete.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Every vector field defined on a compact manifold is complete.
+
+\ecoro
+
+\bthrm
+
+    Every left-invariant vector field on a Lie group is complete.
+
+\ethrm
+
+\bproof
+
+    Let $G$ be a Lie group and $X\in\lie(G)$ with flow $\theta$.
+    There is some $\epsilon>0$ such that $\theta^{(e)}$ is defined on $(-\epsilon,\epsilon)$.
+    Let $g\in G$ so that $X$ is $L_g$-related to itself, so $L_g\circ\theta^{(e)}$ is an integral curve of $g$ defined on $(-\epsilon,\epsilon)$.
+    Thus $\theta^{(g)}$ is defined on at least $(-\epsilon,\epsilon)$ for all $g\in G$, thus $X$ is complete by the uniform time lemma.
+    \qed
+
+\eproof
+
+\subsection{Flowouts}
+
+Recall that for an immersed submanifold $S\subseteq M$, $X\in\X(M)$ is {\emphcolor tangent to $S$} if $X_p\in T_pS\subseteq T_pM$ for all $p\in S$.
+Equivalently, iff it is $\iota$-related to a smooth vector field on $U$ denoted $X|_S\in\X(S)$.
+
+\bdefn
+
+    For an immersed submanifold $S\subseteq M$ and $X\in\X(M)$, we say that $X$ is {\emphcolor nowhere tangent to $S$} if
+    $X_p\notin T_pS$ for all $p\in S$.
+
+\edefn
+
+\bthrm[title=Flowout theorem]
+
+    Let $M$ be a smooth manifold, $S\subseteq M$ be an embedded $k$-dimensional submanifold, and $V\in\X(M)$ nowhere tangent to $S$.
+    Let $\theta\colon\D\to M$ be $V$'s flow, let $\O=(\bR\times S)\cap\D$, and $\Phi=\theta|_\O$.
+    Then:
+    \benum
+        \item $\Phi\colon\O\to M$ is an immersion,
+        \item $\ipdv t\in\X(O)$ is $\Phi$-related to $V$,
+        \item There exists a smooth positive function $\delta\colon S\to\bR$ such that the restriction of $\Phi$ to $\O_\delta$ is injective, where
+        $$ \O_\delta = \set{(t,p)\in\O}[\abs t<\delta(p)] \subseteq \O $$
+        is a flow domain.
+        Thus $\Phi(\O_\delta)$ is an immersed submanifold of $M$ containing $S$, and $V$ is tangent to this submanifold.
+        \item If $S$ has codimension $1$, then $\Phi|_{\O_\delta}$ is a diffeomorphism onto an open submanifold of $M$.
+    \eenum
+
+\ethrm
+
+\bnote
+
+    The submanifold $\Phi(\O_\delta)\subseteq M$ is called a {\emphcolor flowout from $S$ along $V$}.
+
+\enote
+
+\bproof
+
+    First we prove (2).
+    Fix $p\in S$ and let $\sigma\colon\D^{(p)}\to\bR\times S$ be the curve $\sigma(t)=(t,p)$.
+    Then $\Phi\circ\sigma(t)=\theta(t,p)$ is an integral curve of $V$, so for any $t_0\in\D^{(p)}$ we have that
+    $$ d\Phi_{(t_0,p)}\parens{\evpdv t_{(t_0,p)}} = (\Phi\circ\sigma)'(t_0) = V_{(t_0,p)} , $$
+    as desired.
+
+    Now we prove (1).
+    The restriction of $\Phi$ to $\set0\times S$ is the restriction of the diffeomorphism $\set0\times S\cong S$ with the embedding $S\inj M$
+    (since it is the map $\Phi(0,p)=\theta(0,p)=p$), and thus an embedding.
+    So the restriction of $d\Phi_{(0,p)}$ to $T_pS$ (viewed as a subspace of $T_{(0,p)}\O\cong T_0\bR\oplus T_pS$) is the inclusion $T_pS\inj T_pM$.
+    Then $d\Phi_{(0,p)}$ maps the basis of $T_{(0,p)}\O$, $(\ievpdv t_{(0,p)},E_1,\dots,E_k)$ with $E_1,\dots,E_k\in T_pS$, to $(V_p,E_1,\dots,E_k)$.
+    Since $V$ is nowhere tangent to $S$, $V_p$ is not in the span of $E_1,\dots,E_k$ and thus this remains linearly independent.
+    Thus $d\Phi_{(0,p)}$ is an injection.
+
+    To show that $d\Phi$ is injective elsewhere, let $(t_0,s_0)\in\O$ and let $\tau_{t_0}\colon\O\to\bR\times S$ be the translation $\tau_{t_0}(t,p)=(t+t_0,p)$.
+    By the group law for $\theta$, the following diagram commutes (the horizontal maps may only be defined in a neighborhood of $(0,p_0)$ and $p_0$ respectively):
+
+    \commsq{\O&\O\cr M&M}
+        {\tau_{t_0}}{\theta_{t_0}}{\Phi}{\Phi}
+
+    Indeed, $\theta_{t_0}\circ\Phi(t,p)=\theta_{t+t_0}(p)=\Phi\circ\tau_{t_0}(t,p)$.
+    The horizontal maps are local diffeomorphisms ($\tau_{t_0}$ clearly is, $\theta_t$ is by the flow theorem), and thus the induced commutative square
+
+    \commsq{T_{(0,p_0)}\O&T_{(t_0,p_0)}\O\cr T_{p_0}M&T_{\Phi(t_0,p_0)}M}
+        {d(\tau_{t_0})_{(0,p_0)}}{d(\theta_{t_0})_{p_0}}{d\Phi_{(0,p_0)}}{d\Phi_{(t_0,p_0)}}
+
+    has invertible horizontal maps.
+    Thus the two vertical maps have the same rank, and so $\Phi$ has constant rank.
+    Since it has full rank at $(0,p_0)$, it has full rank everywhere and is thus an immersion.
+
+    Now we prove (3).
+    Let $p_0\in S$ and let $(U,(x^i))$ be a chart for $S$ centered at $p_0$, so that $U\cap S$ is the set $x^{k+1}=\cdots=x^n=0$.
+    Because $V$ is not tangent to $S$, one of the $n-k$ last components of $V_{p_0}$ is nonzero, say $V^j_{p_0}$.
+    Shrinking $U$ if necessary, we may assume that $\abs{V^j(p)}\geq c$ for all $p\in U$.
+
+    Now $\Phi^{-1}U$ is open in $\bR\times S$, so we may choose $\epsilon_{p_0}>0$ and a neighborhood $W_{p_0}$ of $p_0$ such that
+    $(-\epsilon_{p_0},\epsilon_{p_0})\times W_{p_0}\subseteq\O$ and $\Phi((-\epsilon_{p_0},\epsilon_{p_0})\times W_{p_0})\subseteq U$.
+    Let us write $\Phi$ in these local coordinates as
+    $$ \Phi(t,p) = (\Phi^1(t,p),\dots,\Phi^n(t,p)) . $$
+    Because $\Phi$ is the restriction of a flow, we have that $\Phi'(t,p)=V(\Phi(t,p))$, so in particular
+    $$ \pdvof{\Phi^j}t(t,p) = V^j(\Phi(t,p)), $$
+    and thus by the fundamental theorem of calculus, $\abs{\Phi^j(t,p)}\geq c\abs t$.
+    So for $(t,p)\in(-\epsilon_{p_0},\epsilon_{p_0})\times W_{p_0}$ we have that $\Phi(t,p)\in S$ iff $t=0$ (otherwise its $j$th component is nonzero).
+
+    Now let $\set{\psi_p}_{p\in S}$ be a partition of unity subordinate to $\set{W_p}_{p\in S}$ and define $f\colon S\to\bR$ by
+    $$ f(q) = \sum_{p\in S}\epsilon_p\psi_p(q) . $$
+    This is smooth and positive.
+    For $q\in S$ there are finitely many $p$ such that $\psi_p(q)>0$, and if we let $\epsilon_{p_0}$ is maximal among those $p$s then
+    $$ f(q) \leq \epsilon_{p_0}\sum_{p\in S}\psi_p(q) = \epsilon_{p_0} . $$
+    Thus if $(t,q)\in\O$ and $\abs t<f(q)$ then $(t,q)\in(-\epsilon_{p_0},\epsilon_{p_0})\times W_{p_0}$ so that $\Phi(t,q)\in S$ iff $t=0$.
+
+    So define $\delta=\frac12f$, and $\O_\delta$ as above:
+    $$ \O_\delta = \set{(t,p)\in\O}[\abs t<\delta(p)] . $$
+    We show that $\Phi$ is injective on $\O_\delta$ (and thus its image is an immersed submanifold).
+    Suppose $\Phi(t,q)=\Phi(t',q')$, and we can assume $f(q')\leq f(q)$.
+    Our assumption means that $\theta_t(q)=\theta_{t'}(q')$, and thus $\theta_{t-t'}(q)=q'\in S$ by the group laws.
+    Now we have
+    $$ \abs{t-t'} \leq \abs t + \abs{t'} \leq \frac12{f(q)+f(q')} \leq f(q) , $$
+    and thus as we showed this means $\theta_{t-t'}(q)=\Phi(t-t',q)\in S$ iff $t=t'$.
+    It then follows that $q=q'$ (because we can recover the initial point from an integral flow).
+
+    Finally for (4), if $S$ has codimension $1$ then $\Phi|_{\O_\delta}$ is an injective smooth immersion between manifolds of the same dimension, and thus an
+    embedding, and a diffeomorphism onto an open subset (the only submanifolds of codimension zero are open).
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $V\in\X(M)$, a {\emphcolor singular point} of $V$ is a point $p\in M$ such that $V_p=0$.
+    Otherwise $p\in M$ is a {\emphcolor regular point}.
+
+\edefn
+
+\bprop
+
+    Let $V\in\X(M)$, and $\theta\colon\D\to M$ be its flow.
+    If $p\in M$ is a singular point of $V$, then $\D^{(p)}=\bR$ and $\theta^{(p)}$ is the constant curve $\theta^{(p)}(t)=p$.
+    If $p$ is a regular point, then $\theta^{(p)}\colon\D^{(p)}\to M$ is a smooth immersion.
+
+\eprop
+
+\bproof
+
+    If $V_p=0$, then the constant curve $\gamma\colon\bR\to M$ given by $\gamma(t)=p$ is clearly integral.
+    By uniqueness and maximality, it must be equal to $\theta^{(p)}$.
+
+    Suppose that $\theta^{(p)}$ is not an immersion; we will show that $p$ is singular.
+    Since it is not an immersion, ${\theta^{(p)}}'(s)=0$ for some $s\in\D^{(p)}$.
+    Let $q=\theta^{(p)}(s)$ so that $V_q=0$ and $q$ is singular.
+    But then $\theta^{(q)}$ is constant, and
+    $$ \theta^{(p)}(t) = \theta(t,p) = \theta(t-s,\theta(s,p)) = \theta(t-s,q) = q, $$
+    so that $p=\theta^{(p)}(0)=q$ and so $p$ is singular.
+    \qed
+
+\eproof
+
+\bdefn
+
+    If $\theta\colon\D\to M$ is a flow, a point $p\in M$ is an {\emphcolor equilibrium point} of $\theta$ if $\theta(t,p)=p$ for all $t\in\D^{(p)}$.
+
+\edefn
+
+The above proposition shows that if $\theta$ is $V$'s flow, then $\theta$'s equilibrium points are precisely $V$'s singular points.
+
+\bthrm[title=Canonical form of flow]
+
+    Let $V\in\X(M)$ and $p\in M$ a regular point of $V$.
+    Then there exist smooth coordinates $(s^i)$ in a neighborhood of $p$ such that $V$ has the coordinate representation $\ipdv{s^1}$.
+    If $S\subseteq M$ is an embedded hypersurface (embedded submanifold of codimension $1$) with $p\in S$ and $V_p\notin T_pS$, then the coordinates can
+    be chosen so that $s^1$ is a local defining map for $S$.
+
+\ethrm
+
+\bnote
+
+    If $S\subseteq M$ is embedded, a {\emphcolor local defining map} for $S$ is a smooth map $\Phi\colon U\to N$ with $U\subseteq M$ open, such that
+    $S\cap U$ is a regular level set of $\Phi$.
+
+\enote
+
+\bproof
+
+    If no $S$ is given, let $(U,(x^i))$ be any smooth coordinates centered at $p$ and take $S\subseteq U$ to be the hypersurface defined by $x^j=0$
+    where $j$ is any index where $V^j(p)\neq0$.
+
+    Regardless, we now just assume we have an embedded hypersurface containing $p$ where $V_p\notin T_pS$.
+    We can potentially shrink $S$ so that $V$ is nowhere tangent to it.
+    The flowout theorem gives us a flow domain $\O_\delta\subseteq\bR\times S$ such that the flow of $V$ restricts to a diffeomorphism from $\O_\delta$
+    to an open subset $W\subseteq M$ containing $S$.
+    Take a product neighborhood $(0,p)\in(-\epsilon,\epsilon)\times W$ in $\O_\delta$, and choose a smooth local parameterization $X\colon\Omega\to S$
+    where $\Omega$ is an open subset of $\bR^{n-1}$ with coordinates denoted by $s^2,\dots,s^n$, and $X$'s image is contained in $W_0$.
+
+    Then define $\Psi\colon(-\epsilon,\epsilon)\times\Omega\to M$ by
+    $$ \Psi(t,s^2,\dots,s^n) = \Phi(t,X(s^2,\dots,s^n)) $$
+    is a diffeomorphism onto a neighborhood of $p$ in $M$.
+    Because $(t,s^2,\dots,s^n)\mapsto(t,X(s^2,\dots,s^n))$ pushes $\ipdv t$ forward to itself, and $\Phi_*(\ipdv t)=V$ (since by the flowout theorem,
+    $\ipdv t$ is $\Phi$-related to $V$), it follows that $\Psi_*(\ipdv t)=V$.
+
+    Thus $\Psi^{-1}$ is a smooth coordinate chart in which $V$ has coordinate representation $\ipdv t$.
+    Rename $t$ to $s^1$ to complete the proof: $s^1=0$ gives $W_0$, so it is a local defining map for $S$.
+    \qed
+
+\eproof
+
+\subsection{Lie derivatives}
+
+Tangent spaces allow us to make sense of directional derivatives of real-valued functions on manifolds; an element of $T_pM$ is viewed as a directional
+derivative at $p$.
+But what about the directional derivative of a vector field.
+In Euclidean space, if $W$ is a vector field on $\bR^n$ then we could define its directional derivative in the direction of $v\in T_p\bR^n$ to be
+$$ D_vW(p) = \evdrv t_0 W_{p+tv} = \lim_{t\to0}\frac{W_{p+tv}-W_p}t . $$
+It is easy to see that
+$$ D_vW(p) = D_vW^i(p)\evpdv{x^i}_p , $$
+where $W^i$ are the components of $W$ and $D_vW^i$ is the usual directional derivative.
+
+In smooth manifolds, $W_{p+tv}$ makes no sense, but we could instead replace $p+tv$ with a curve $\gamma$ starting at $p$ with initial velocity $v$.
+The issue is then that $W_{\gamma(t)}$ and $W_p$ lie in different tangent spaces, and thus there is no good way of combining them.
+
+Instead we can replace $v\in T_pM$ with a vector field $V\in\X(M)$, and so we can use the flow of $V$ to push values of $W$ back to $p$ and then differentiate.
+This motivates the following.
+
+\bdefn
+
+    Let $M$ be smooth and without boundary, $V\in\X(M)$ with flow $\theta$.
+    For any other smoot vector field $W$, define a rough vector field on $M$, denoted $\L_VW$ and called the {\emphcolor Lie derivative} of $W$ with respect to
+    $V$, to be
+    $$ (\L_VW)_p = \evdrv t_0 d(\theta_{-t})_{\theta_t(p)}(W_{\theta_t(p)}) = \lim_{t\to0}\frac{d(\theta_{-t})_{\theta_t(p)}(W_{\theta_t(p)})-W_p}t , $$
+    provided the derivative exists.
+    For small $t\neq0$, $\theta_t$ is defined in a neighborhood of $p$, and $\theta_{-t}$ is its inverse, so both $d(\theta_{-t})_{\theta_t(p)}(W_{\theta_t(p)})$
+    and $W_p$ are both elements of $T_pM$.
+
+\edefn
+
+Note that we are differentiating a function $\bR\to T_pM$ here.
+Since $T_pM$ is Euclidean, this is well-defined as any linear isomorphism from $\bR^n$ to it will give the same limit.
+
+\blemm
+
+    The Lie derivative of $W$ with respect to $V$ exists for all $p\in M$ and $\L_VW$ forms a smooth vector field.
+
+\elemm
+
+\bproof
+
+    Let $p\in M$ and $(U,(x^i))$ be a smooth chart containing $p$.
+    Choose an open interval $0\in J_0$, and an open set $U_0\subseteq U$ such that $\theta$ maps $J_0\times U_0$ into $U$.
+    For $(t,x)\in J_0\times U_0$, write the components of $\theta$ as $(\theta^1(t,x),\dots,\theta^n(t,x))$.
+    Then for any $(t,x)\in J_0\times U_0$, the matrix of $d(\theta_{-t})_{\theta_t(x)}\colon T_{\theta_t(x)}M\to T_xM$ is
+    $$ \parens{\pdvof{\theta^i}{x^j}(-t,\theta(t,x))} . $$
+
+    Thus
+    $$ d(\theta_{-t})_{\theta_t(x)}(W_{\theta_t(x)}) = \pdvof{\theta^i}{x^j}(-t,\theta(t,x))W^j(\theta(t,x))\evpdv{x^i}_x . $$
+    Because $\theta^i$ and $W^j$ are smooth, the coefficient of $\ievpdv{x^i}_x$ depends smoothly on $(t,x)$.
+    It then follows that $(\L_VW)_x$, which is obtained by differentiating this and setting $t=0$, exists for each $x\in U_0$ and depends smoothly
+    on $x$.
+    \qed
+
+\eproof
+
+\bexam
+
+    Let $v\in\bR^n$ and $W$ a smooth vector field on $\bR^n$.
+    Then $D_vW(p)$, which we defined above, is just $(\L_VW)_p$, where $V$ is the vector field $v^i\ievpdv{x^i}$ with constant coefficients.
+
+\eexam
+
+The definition of the Lie derivative is unwieldy for computations, but it turns out that it actually is just the Lie bracket in disguise.
+
+\bthrm
+
+    For $V,W\in\X(M)$, $\L_VW=[V,W]$.
+
+\ethrm
+
+\bproof
+
+    Let $\c R(V)\subseteq M$ be the set of regular points of $V$ (points $p$ where $V_p\neq0$).
+    By continuity, $\c R(V)$ is open in $M$, and its closure is $V$'s support.
+    We now show that $(\L_VW)_p=[V,W]_p$ for all $p\in M$ by considering three cases.
+
+    \benum
+        \item If $p\in\c R(V)$, then we can find a local chart $(U,(u^i))$ around $p$ where $V$ has the coordinate representation $V=\pdv{u^1}$.
+        In these coordinates, $V$'s flow is then $\theta_t(u)=(u^1+t,u^2,\dots,u^n)$ (this boils down to the Euclidean case discussed in above examples).
+        Then for each fixed $t$, the matrix $d(\theta_{-t})_{\theta_t(x)}$ in these coordinates is the identity.
+        Thus
+        $$ d(\theta_{-t})_{\theta_t(u)}(W_{\theta_t(u)}) = d(\theta_{-t})_{\theta_t(u)}\parens{W^j(u^1+t,u^2,\dots,u^n)\evpdv{u^j}_{\theta_t(u)}}
+        = W^j(u^1+t,u^2,\dots,u^n)\evpdv{u^j}_u . $$
+        And so by the definition of the Lie derivative,
+        $$ (\L_VW)_u = \evdrv t_0 W^j(u^1+t,u^2,\dots,u^n)\evpdv{u^j}_u = \pdvof{W^j}{u^1}(u^1,\dots,u^n)\evpdv{u^j}_u . $$
+        Conversely,
+        $$ [V,W] = \bracks{\pdv{u^1},W^j\pdv{u^j}} = \parens{V^i\pdv{W^j}{u^i} - W^i\pdv{V^j}{u^i}}\pdv{u^j} = \parens{W^j}{u^1}\pdv{u^j} , $$
+        since $V^1=1$ is constant and all other components are zero.
+
+        \item If $p\in\supp V$ then by continuity we have the desired result.
+
+        \item If $p\notin\supp V$ then $V=0$ on a neighborhood of $p$, and so $[V,W]_p=0$.
+        Then $\theta_t$ is the identity map in a neighborhood of $p$, so $d(\theta_{-t})_{\theta_t(p)}(W_{\theta_t(p)})=W_p$ and so $(\L_VW)_p=0$ as well.
+        \qed
+    \eenum
+
+\eproof
+
+Thus we can extend the notion of a Lie derivative to manifolds with boundary simply by $\L_VW=[V,W]$.
+This is equivalent to embedding $M$ into a smooth manifold without boundary $\tilde M$ (e.g.\ its double), extending $V$ and $W$ smoothly,
+and computing the Lie derivative there.
+By the above theorem, this just gives $[V,W]$, so is independent on the extension.
+
+This also gives a geometric interpretation of the Lie bracket as the Lie derivative, i.e.\ a directional derivative.
+
+\bcoro
+
+    Let $V,W,X\in\X(M)$, then
+    \benum
+        \item $\L_VW=-\L_WV$,
+        \item $\L_V[W,X]=[\L_VW,X]+[W,\L_VX]$,
+        \item $\L_{[V,W]}X=\L_V\L_WX-\L_W\L_VX$,
+        \item If $g\in C^\infty(M)$, then $\L_V(gW)=(Vg)W+g\L_VW$,
+        \item If $F\colon M\to N$ is a diffeomorphism, $F_*(\L_VW)=\L_{F_*V}F_*W$.
+    \eenum
+
+\ecoro
+
