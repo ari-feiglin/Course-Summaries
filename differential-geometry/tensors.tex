@@ -256,6 +256,17 @@ Rough sections of $T^{(k,\ell)}TM$ are maps $A\colon M\to T^{(k,\ell)}TM$ such t
 $$ A_p\in T^{(k,\ell)}T_pM = L(T_p^*M,\dots,T_p^*M,T_pM,\dots,T_pM;\ \bR) , $$
 so $A_p$ is a multlilinear functional from $k$-times $T_p^*M$ and $\ell$-times $T_pM$.
 
+\bnote
+
+    Note that a tensor of type $(k,\ell)$ is {\it contravariant\/} in its first $k$ arguments and {\it covariant\/} in its last $\ell$.
+    This may seem unnatural, and indeed some authors think so!
+    Some authors mean a tensor of type $(k,\ell)$ to mean it is {\it co}variant in the first $k$ arguments and {\it contra}variant in its last
+    $\ell$; $T^{(k,\ell)}$ may have opposite meanings for different authors!
+
+    The convention adopted here is from Lee, but the course at Hebrew University (2026) utilizes the opposite convention.
+
+\enote
+
 \bprop
 
     Let $M$ be a manifold, and $A\colon M\to T^{(k,\ell)}TM$ be a rough section.
@@ -343,6 +354,39 @@ This is a multilinear $C^\infty(M)$-module morphism, which can be verified coord
 
 Thus we can identify tensor fields with multilinear $C^\infty(M)$ morphisms.
 
+There is a natural isomorphism $\hom(V,W)\cong V^*\otimes W$ given by mapping $\phi\otimes w$ to the linear map
+$v\mapsto\phi(v)w$.
+To show that this is an isomorphism, note that the dimensions are equal, and that it maps a basis to a linearly independent
+set.
+In particular, this gives a natural isomorphism
+$$ L(V,\dots,V;V) \cong \hom(T^k(V),V) \cong T^k(V^*)\otimes V \cong T^{(1,k)}V . $$
+This extends to tensor fields: there is a natural isomorphism of mutlilinear maps $\X(M)^k\to\X(M)$ and multilinear maps
+$\X(M)^k\times\X(M)^*\to C^\infty(M)$.
+This is because given $\A\colon\X(M)^k\to\X(M)$ we define $\tilde\A\colon\X(M)^k\times\X(M)^*\to C^\infty(M)$ by
+$$ \tilde\A(X_1,\dots,X_n,\omega) = \omega(\A(X_1,\dots,X_n)) , $$
+recalling that cotangent fields act on vector fields smoothly.
+Conversely given $\tilde\A$ we define $\A$ by
+$$ \A(X_1,\dots,X_n)\omega = \tilde\A(X_1,\dots,X_n,\omega) $$
+recalling that by duality a vector field is just a mutlilinear map $X\colon\X(M)^*\to C^\infty(M)$.
+
+\bprop
+
+    $(1,k)$-tensor fields are naturally isomorphic to $C^\infty(M)$-multilinear maps
+    $$ \X(M)\times\cdots\times\X(M)\to\X(M) . $$
+    In general $(\ell+1,k)$-tensor fields are naturally isomorphic to $C^\infty(M)$-multilinear maps
+    $$ \X^*(M)^\ell\times\X(M)^k \to X(M) . $$
+
+\eprop
+
+This is an important basic result as many tensor fields are given in this manner.
+
+\bexam
+
+    The Lie bracket $[\bul,\bul]$ is a map $\X(M)\times\X(M)\to\X(M)$.
+    But it is not multilinear over $C^\infty(M)$, and thus is {\it not\/} a tensor.
+
+\eexam
+
 \bdefn
 
     A {\emphcolor symmetric tensor field} is a covariant tensor field whose image consists of symmetric tensors.
@@ -397,4 +441,103 @@ Thus we can identify tensor fields with multilinear $C^\infty(M)$ morphisms.
     \qed
 
 \eproof
+
+\subsection{Lie derivatives of tensor fields}
+
+Suppose $V\in\X(M)$ is a smooth vector field with flow $\theta$ with flow domain $\D$.
+Recall that for $t\in\bR$, $\theta_t\colon M_t\to M_{-t}$ is a diffeomorphism with inverse $\theta_{-t}$.
+For $p\in M$ and $t$ small enough we have that $(t,p)\in\D$, and thus $\theta_t$ is a diffeomorphism from an open neighborhood of $p$ to an
+open neighborhood of $\theta_t(p)$.
+So $d(\theta_t)_p^*$ pulls back tensors $T^k(T^*_{\theta(t,p)}M)$ to ones at $p$ by
+$$ d(\theta_t)^*_p(A_{\theta_t(p)})(v_1,\dots,v_k) = A_{\theta_t(p)}(d(\theta_t)_pv_1,\dots,d(\theta_t)_pv_n) . $$
+This is the value of the pullback tensor field $\theta_t^*A$ at $p$.
+
+\bdefn
+
+    If $V\in\X(M)$ is a smooth vector field, and $A$ a covariant tensor field on $M$, define its {\emphcolor Lie derivative} with respect to $V$
+    by
+    $$ (\L_VA)_p = \evdrv t_{t=0}(\theta_t^*A)_p = \lim_{t\to0}\frac{d(\theta_t)^*_p(A_{\theta(t,p)}) - A_p}t . $$
+
+\edefn
+
+\blemm
+
+    The Lie derivative exists for every $p$ and defines a covariant tensor field on $M$.
+
+\elemm
+
+\bproof
+
+    For $p\in M$ let $(U,(x^i))$ be a smooth chart containing $p$.
+    Choose an open interval $0\in J_0$ and an open set $U_0\subseteq U$ such that $\theta$ maps $J_0\times U_0$ into $U$.
+    For $(t,x)\in J_0\times U_0$ we can write $\theta$ relative to the coordinates by
+    $$ \theta(t,x) = (\theta^1(t,x),\dots,\theta^n(t,x)) . $$
+    Then $d(\theta_t)_x\colon T_xM\to T_{\theta(t,x)}$ has matrix representation
+    $$ \parens{\pdvof{\theta^i}{x^j}(t,x)} . $$
+
+    If $A$ has coordinate representation
+    $$ A = A_Jdx^J , $$
+    then
+    $$ d(\theta_t)^*_x(A_{\theta_t(p)})\parens{\evpdv{x^I}_x} =
+    A_{\theta_t(p)}\parens{\pdvof{\theta^{i_k}}{x^k}(t,x)\evpdv{x^{i_k}}_{\theta(t,x)}} =
+    \pdvof{\theta^{i_1}}{x^1}(t,x)\cdots\pdvof{\theta^{i_k}}{x^k}(t,x)\cdot A_{i_1,\dots,i_k} . $$
+    This is a smooth coordinate representation and thus has a smooth derivative.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $V\in\X(M)$ be smooth, $f\in C^\infty(M)$ (which can be regarded as $T^0TM$), and $A,B$ are smooth covariant tensor fields on $M$
+    (of potentially different type).
+    \benum
+        \item $\L_Vf=Vf$,
+        \item $\L_V(fA)=(\L_Vf)A+f(\L_VA)$,
+        \item $\L_V(A\otimes B)=(\L_VA)\otimes B+A\otimes(\L_VB)$,
+        \item if $X_1,\dots,X_k$ are smooth vector fields and $A$ has type $k$, then
+        $$ \L_V(A(X_1,\dots,X_k)) = (\L_VA)(X_1,\dots,X_k) + A(\L_VX_1,\dots,X_k) + \cdots + A(X_1,\dots,\L_VX_k) . $$
+        Since $\L_VX=[V,X]$ for vector fields $X$, we have (by the first point the left-hand side above is just $V$ on $A$'s value),
+        $$ (\L_VA)(X_1,\dots,X_n) = V(A(X_1,\dots,X_n)) - A([V,X_1],\dots,X_k) - \cdots - A(X_1,\dots,[V,X_k]) . $$
+    \eenum
+
+\eprop
+
+\bproof
+
+    Let $\theta$ be $V$'s flow, then
+    $$ \theta_t^*(f(p)) = f(\theta_t(p)) = f\circ\theta^{(p)}(t) . $$
+    So the Lie derivative $\L_Vf$ is the derivative of this:
+    $$ (\L_Vf)(p) = \evdrv t_{t=0}f\circ\theta^{(p)} = df_p({\theta^{(p)}}'(0)) = df_p(V_p) = Vf(p) . $$
+
+    For the other points, if $p$ is a regular point then we choose a coordinate domain where $V$ has representation $\ipdv{u^1}$.
+    Then $V$'s flow is just $\theta_t(u)=(u^1+t,u^2,\dots,u^n)$ and then in these coordinates if $A=A_Jdx^J$ we have that $\L_VA$'s coordinate
+    representation is just $A_J$'s partial derivatives with respect to $u^1$.
+    Then all the other points follow by the product rule.
+
+    Then for points in $V$s support it follows by continuity, and for points outside of the support everything becomes $0$.
+    \qed
+
+\eproof
+
+For $f\in C^\infty(M)$ we have the covariant $1$-tensor $df$ given by $df(X)=Xf$.
+Notice then that
+$$ (\L_Vdf)(X) = V(df(X)) - df([V,X]) = V(Xf) - [V,X]f = VXf - VXf + XVf = XVf , $$
+and this is just $df(XV)$ which is equal to $d(Vf)(X)$ and by above this is equal to $d(\L_Vf)(X)$.
+Thus we have
+$$ \L_Vdf = d(\L_Vf) , $$
+for all $f\in C^\infty(M)$.
+
+\bdefn
+
+    If $A$ is a covariant tensor field on $M$, and $\theta$ is a flow on $M$, then $A$ is {\emphcolor invariant under $\theta$} if for all
+    $(t,p)$ in $\theta$'s domain
+    $$ d(\theta_t)^*_p(A_{\theta_t(p)}) = A_p . $$
+
+\edefn
+
+\bthrm
+
+    $A$ is invariant under $V$'s flow iff $\L_VA=0$.
+
+\ethrm
 

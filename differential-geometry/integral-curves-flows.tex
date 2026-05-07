@@ -731,3 +731,156 @@ This also gives a geometric interpretation of the Lie bracket as the Lie derivat
 
 \ecoro
 
+\subsection{Commuting vector fields}
+
+\bdefn
+
+    Two vector fields $V,W\in\X(M)$ {\emphcolor commute} if $VWf=WVf$ for all $f\in C^\infty(M)$, or equivalently if
+    $[V,W]=0$.
+
+\edefn
+
+\bdefn
+
+    If $\theta$ is a smooth flow and $W\in\X(M)$, then $W$ is {\emphcolor invariant under $\theta$} if $W$ is
+    $\theta_t$-related to itself for all $t$.
+    More precisely, $W|_{M_t}$ is $\theta_t$-related to $W_{M_{-t}}$:
+    $$ d(\theta_t)_p(W_p) = W_{\theta(t,p)} $$
+    for all $(t,p)$ in the flow domain.
+
+\edefn
+
+\bthrm
+
+    For $V,W\in\X(M)$, the following are equivalent:
+    \benum
+        \item $V$ and $W$ commute,
+        \item $V$ is invariant under $W$'s flow,
+        \item $W$ is invariant under $V$'s flow.
+    \eenum
+
+\ethrm
+
+\bproof
+
+    Let $\theta$ denote $V$'s flow.
+    If $W$ is invariant under it, then we see that
+    $$ d(\theta_{-t})_{\theta(t,p)}(W_{\theta(t,p)}) = W_p , $$
+    and by the definition of the Lie derivative $\L_VW=0$ so $[V,W]=0$.
+
+    Now if $\L_V(W)=[V,W]=0$ then the derivative of $d(\theta_{-t}))_{\theta(t,p)}(W_{\theta(t,p)})$ is zero
+    and thus it is constant over $t$.
+    Plugging in $t=0$ we see that it is equal to $W_p$, and thus we have the desired result.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Every vector field is invariant under its own flow.
+
+\ecoro
+
+We would like to discuss what it means for two flows to commute.
+For global flows, we could just require that $\psi_s\circ\theta_t=\theta_t\circ\psi_s$, but for local flows this may not
+always be defined.
+But even if we require that this only hold when both sides are defined, commuting vector fields may not have commuting flows.
+The issue is that if $\theta_t\circ\psi_s(p)$ is defined for $t=t_0,s=s_0$, then it must be defined for all $t$ in some
+interval containing $0$ and $t_0$, but $\psi_s$ may not be defined all the way to $s=t_0$.
+
+\bdefn
+
+    If $\theta,\psi$ are smooth flows on $M$, then we say they {\emphcolor commute} if whenever $p\in M$ and
+    $J,K$ are open intervals containing $0$ such that one of $\theta_t\circ\psi_s(p),\psi_s\circ\theta_t(p)$ exist
+    for all $(t,s)\in J\times K$, then both exist and are equal.
+
+\edefn
+
+\bthrm
+
+    Smooth vector fields commute iff their flows commute.
+
+\ethrm
+
+\bproof
+
+    Let $V,W\in\X(M)$ and $\theta,\psi$ be their respective flows.
+    Suppose $V$ and $W$ commute and $J,K$ are intervals such that $\psi_s\circ\theta_t(p)$ is defined for all
+    $(t,s)\in J\times K$.
+    Since $V$ is invariant under $\psi$ by assumption, let $s\in K$ and consider the curve $\gamma\colon J\to M$
+    given by $\gamma(t)=\psi_s\circ\theta_t(p)$.
+    Then $\gamma(0)=\psi_s(p)$ and its velocity at $t\in J$ is
+    $$ \gamma'(t) = d(\psi_s)_{\theta(t,p)}({\theta^{(p)}}'(t)) = d(\psi_s)_{\theta(t,p)}(V_{\theta(t,p)})
+    = V_{\psi(s,\theta(t,p))} = V_{\gamma(t)} , $$
+    so that $\gamma(t)$ is integral for $V$.
+    Then
+    $$ \gamma(t) = \theta^{(\psi(s,p))}(t) = \theta_t(\psi_s(p)) , $$
+    so that $\theta,\psi$ commute.
+
+    Now if the flows commute, let $p\in M$ and $\epsilon>0$ small enough so that $\psi_s\circ\theta_t(p)=\theta_t\circ\psi_s(p)$
+    for $\abs t,\abs s<\epsilon$.
+    Now we have
+    $$ W_{\theta_t(p)} = \evdrv s_{s=0}\psi^{(\theta_t(p))}(s) = \evdrv s_{s=0}\theta_t(\psi^{(p)}(s))
+    = d(\theta_t)_p(W_p) . $$
+    Showing that $W$ is $\theta_t$-invariant, as desired.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A {\emphcolor commuting frame} for a smooth manifold $M$ is a local frame $(E_i)$ such that each $E_i,E_j$ commute.
+
+\edefn
+
+Note that coordinate frames $\ievpdv x_p$ are commuting, as shown in our discussion of Lie brackets.
+Thus if a frame doesn't commut, it cannot be a coordinate frame.
+
+\bthrm
+
+    Let $M$ be smooth and $(V_1,\dots,V_k)$ be linearly independent commuting local vector fields, defined on an open
+    subset $W$.
+    Then for every $p\in W$ there exists a smooth coordinate chart $(U,(s^i))$ centered at $p$ such that $V_i=\ipdv{s^i}$
+    for all $i=1,\dots,k$.
+
+    If $S\subseteq M$ is embedded and of codimension $k$ and $p\in S$ is such that $T_pS$ is complementary to the span
+    of $V_1|_p,\dots,V_k|_s$, then the coordinate chart can be chosen so that $S\cap U$ is the slice given by
+    $s^1=\cdots=s^k=0$.
+
+\ethrm
+
+\bproof
+
+    If no $S$ is given, we can find one via an appropriate coordinate slice.
+    Let $(U,(x^i))$ be the slice chart for $S$ centered at $p$, with $U\subseteq W$ and $S\cap U$ being given by
+    $x^1=\cdots=x^k=0$.
+    Our assumptions show that $V_1,\dots,V_k,\ipdv{x^{k+1}},\dots,\ipdv{x^n}$ form a local frame defined on $U$.
+    Since this theorem is local, we can assume $U\subseteq\bR^n$.
+
+    Let $\theta_i$ denote the flow of $V_i$.
+    Then since the vector fields commute, there is an $\epsilon>0$ such that
+    $(\theta_1)_{t_1}\circ\cdots\circ(\theta_k)_{t_k}$ is defined when $\abs{t_i}<\epsilon$ and on a neighborhood $Y$ of $p$.
+    Define $\Omega\subseteq\bR^{n-k}$ by
+    $$ \Omega = \set{(s^{k+1},\dots,s^n)}[(0,\dots,0,s^{k+1},\dots,s^n)\in Y] . $$
+    Define $\Phi\colon(-\epsilon,\epsilon)^k\times\Omega\to U$ by
+    $$ \Phi(s^1,\dots,s^k,s^{k+1},\dots,s^n) = (\theta_1)_{s^1}\circ\cdots\circ(\theta_k)_{s^k}(0,\dots,0,s^{k+1},\dots,s^n). $$
+    By construction $\Phi(\set 0\times\Omega)=S\cap Y$.
+    Now we will show that $\ipdv{s^i}$ is $\Phi$-related to $V_i$ for $i\leq k$.
+    For any $i\leq k$ and $s_0\in(-\epsilon,\epsilon)^k\times\Omega$, we have
+    $$ d\Phi_{s_0}\parens{\evpdv{s^i}_{s_0}}f = \evpdv{s^i}_{s_0}f(\Phi(s^1,\dots,s^n))
+    = \evpdv{s^i}_{s_0}f((\theta_1)_{s^1}\circ\cdots\circ(\theta_k)_{s^k}(0,\dots,0,s^{k+1},\dots,s^n)) . $$
+    Since the flows commute, we can reorder this composition to put $\theta_i$ first.
+    And $t\mapsto(\theta_i)_t(q)$ is integral for $V_i$ so this is equal to the derivative of $f$ composed with this
+    integral curve, equal to $V_i|_{\Phi(s_0)}f$ as desired.
+
+    Now we will show that $d\Phi_0$ is invertible.
+    Since $d\Phi_0(\ipdv{s^i}_0)=V_i|_p$ by our above computation, and $\Phi(0,\bar s)=(0,\bar s)$ we see that
+    $$ d\Phi_0\parens{\pdv{s^i}_0} = \pdv{s^i}_p,\qquad i>k . $$
+    Thus $d\Phi_0$'s image of the coordinate basis is itself a basis, so it is invertible.
+
+    So $\Phi$ is a diffeomorphism in a neighborhood of $0$, and $\phi=\Phi^{-1}$ is a smooth coordinate chart around $p$
+    where $V_i$'s coordinate representation is $\ipdv{s^i}$ and takes $S$ to the slice $s^1=\cdots=s^k=0$.
+    \qed
+
+\eproof
+
