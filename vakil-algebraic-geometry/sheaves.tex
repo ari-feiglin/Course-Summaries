@@ -1,0 +1,311 @@
+\section{Sheaves}
+
+\subsection{Sheaves}
+
+\bdefn
+
+    For a topological space $X$, its set of open subsets $\open(X)$ is partially ordered by inclusion, and thus forms a small category.
+    It is also a cofiltered category: for every $U,V\in\open(X)$ they have a lower bound $U\cap V$.
+
+\edefn
+
+\bdefn
+
+    Let $X$ be a topological space, and $\C$ a category.
+    A {\emphcolor $\C$-valued presheaf on $X$} is a contravariant functor $\F\colon\open(X)^\op\to\C$.
+    It is customary to denote $\F(U\subseteq V)\colon\F(V)\to\F(U)$ by $\res^V_U$.
+    When $\C$ is a concrete category (i.e.\ its objects are sets), elements of $\F(U)$ are called {\emphcolor sections of $\F$ over $U$},
+    and for a section $s\in\F(V)$ we write $s|_U$ for $\res^V_U(s)$.
+
+    A {\emphcolor morphism of presheaves} is a natural transformation.
+
+    Denote the category of $\C$-valued presheaves on $X$ by $\Psh_\C(X)$.
+
+\edefn
+
+\bexam
+
+    Let $E$ be a set (or a topological space, or any mathematical object which lies in the same category as $X$ and its open subsets).
+    We can then define the presheaf of functions on $E$ by $\F(U)=\hom(U,E)$: the set of all functions $U\to E$.
+    The restriction maps are very literally restriction: for $U\subseteq V$ and $f\colon V\to E$, we restrict $f$ to $U$ to obtain a function
+    $f|_U\colon U\to E$.
+
+\eexam
+
+\bdefn
+
+    Let $\F$ be a presheaf over $X$ valued in a category $\C$ with filtered colimits, and $p\in X$.
+    Then $\U(x)=\set{U\subseteq\hbox{ open}}[p\in U]$, the set of neighborhoods of $p$, is a cofiltered subcategory of $\open(X)$, and so $\F$
+    restricts to a functor from $\U(x)^\op$.
+    Define $\F$'s {\emphcolor stalk} at $p$ to be the filtered colimit
+    $$ \F_p = \colim_{U\in\U(p)}\F(U) \in \C . $$
+
+    For concrete categories, this is the set of {\emphcolor germs} of $\F$ at $p$:
+    $$ \F_p = \set{(U,s)}[U\in\U(p),\ s\in\F(U)] , $$
+    modulo the relation where we identify $(s,U)$ and $(t,V)$ if there is a subset $p\in W\subseteq U,V$ such that $s|_W=t|_W$.
+
+\edefn
+
+Taking colimits is functorial, so the correspondence $p\mapsto\F_p$ is functorial.
+Explicitly $\phi\colon\F\to\G$ is a morphism of sheaves over $X$ valued in a concrete category, and $p\in X$ we define $\phi_p\colon\F_p\to\G_p$
+by
+$$ \phi_p(U,s) = (U,\phi_U(s)) . $$
+
+\bdefn
+
+    A presheaf $\F$ on $X$ (valued in a concrete category) is a {\emphcolor sheaf} if it satisfies the {\emphcolor sheaf axiom}:
+    for every open subset $U\subseteq X$ and open cover $\set{U_i}$ of $U$ and sections $s_i\in\F(U_i)$, if $s_i|_{U_i\cap U_j}=s_j|_{U_i\cap U_j}$
+    for all $i,j$ then there exists a {\it unique\/} $s\in\F(U)$ such that $s|_{U_i}=s_i$ for all $i$.
+
+\edefn
+
+We can split the sheaf axiom in two:
+\benum
+    \item the {\emphcolor identity axiom}: if $\set{U_i}$ is an open cover of $U$, and $s_1,s_2\in\F(U)$ are such that $s_1|_{U_i}=s_2|_{U_i}$
+    for all $i$, then $s_1=s_2$.
+    \item the {\emphcolor gluability axiom}: the sheaf axiom without requiring uniqueness.
+\eenum
+
+We can also state the sheaf axiom categorically.
+For every open cover $\set{U_i}$ of $U$, we can consider the following diagram:
+$$ \F(U) \xto\res \prod_i\F(U_i) \xtto{\res_i}[\res_j] \prod_{i,j}\F(U_i\cap U_j) , $$
+where $\F(U)\xto\res\prod_i\F(U_i)$ is the map $s\mapsto(s|_{U_i})_i$, $\res_1$ and $\res_2$ are the maps
+$$ \res_1(s_i)_i = (s_i|_{U_i\cap U_j})_{i,j},\qquad \res_2(s_i)_i = (s_j|_{U_i\cap U_j})_{i,j} . $$
+Categorically, $\res_1$'s coordinate to $\F(U_i\cap U_j)$ composes the $i$th projection with $\res^{U_i}_{U_i\cap U_j}$, and $\res_2$'s
+coordinate composes the $j$th projection with $\res^{U_j}_{U_i\cap U_j}$.
+These maps are defined for any presheaf, and we can see that $\F$ is a presheaf iff this is an equalizer diagram.
+
+Indeed, the equalizer of $\res_1,\res_2$ are all $(s_i)_i$ such that $s_i|_{U_i\cap U_j}=s_j|_{U_i\cap U_j}$, i.e.\ a family of sections which
+agree on the overlaps.
+And there is an $s\in\F(U)$ whose projections $s|_{U_i}$ are $s_i$ when the gluing axiom is satisfied, and it is unique (so an embedding, and thus
+an equalizer) when the identity lemma is satisfied.
+
+This allows us to generalize sheaves to any category $\C$ with arbitrary products.
+
+The category of $\C$-valued sheaves on $X$ is denoted $\sh_\C(X)$, it is a full subcategory of $\Psh_\C(X)$; meaning sheaf morphisms are just
+presheaf morphisms between sheaves.
+The stalk of a sheaf at a point is just the stalk of it as a presheaf.
+
+\bexam
+
+    If $\F$ is a presheaf on $X$, and $U\subseteq X$ is open, we define $\F$'s {\emphcolor restriction} to $U$ to be the presheaf $\F|_U$
+    on $U$ defined for $V\subseteq U$ by $\F|_U(V)=\F(V)$ (it is just the restriction of the functor $\F$ to the subcategory $\open(U)$).
+    If $\F$ is a sheaf, its restriction is clearly a sheaf as well.
+
+\eexam
+
+\bexam
+
+    Let $X$ be a topological space, $p\in X$, and $S$ a set (or a group, module, etc.).
+    We define the {\emphcolor skyscraper sheaf} $p_*S$ by
+    $$ p_*S(U) = \cases{S & if $p\in U$\cr *& else}, $$
+    where $*$ is a single-point set; the restrictions are given by the identities or the unique morphism $S\to*$.
+    This is indeed a sheaf: if $p\in U$ and $\set{U_i}$ is a covering of $U$ with $s_i\in\F(U_i)$ such that $s_i|_{U_i\cap U_j}=s_j|_{U_i\cap U_j}$
+    then for every $p\in U_i$ we have a single value $s\in S$ which is equal to all $s_i\in\F(U_i)$, this is the glued section.
+    Otherwise $p\notin U$ and $s_i$ are all the unique element in $*$, so $s$ must be too.
+
+\eexam
+
+\bexam
+
+    Let $X$ be a topological space and $S$ a set.
+    The {\emphcolor constant presheaf} associated with $S$ is the presheaf $\ul S_\pre$ which maps all open sets $U$ to $S$.
+    This is a presheaf, but not a sheaf in general.
+    For example if $X=\set{p,q}$ is the two point space with the discrete topology then take $s_p\neq s_q$; they cannot be glued to a global section
+    on $X$.
+
+    If we instead define $\ul S(U)$ to be the set of locally constant functions $U\to S$, then this is a sheaf, called the {\emphcolor constant
+    sheaf}.
+    It is just the sheaf of continuous functions $\ul S(U)=C(U,S)$ with $S$ given the discrete topology.
+    The sheaf of continuous functions $C(\bul,Y)$ is a sheaf in general (by the gluing lemma from topology).
+
+\eexam
+
+\bexam
+
+    Let $\pi\colon X\to Y$ be a continuous map, and $\F$ a presheaf over $X$.
+    Define the {\emphcolor pushforward} (or {\emphcolor direct image}) presheaf $\pi_*\F$ by
+    $$ \pi_*\F(V) = \F(\pi^{-1}V), $$
+    for $V\subseteq Y$, and $\res^V_W=\res^{\pi^{-1}V}_{\pi^{-1}W}$.
+    This is clearly a presheaf; if $\F$ is a sheaf it is also a sheaf.
+    Indeed, if $V\subseteq Y$ is open and $\set{V_i}_i$ is a cover with $s_i\in\pi_*\F(V_i)=\F(\pi^{-1}V_i)$.
+    Then the glue of these is unique, because $\F$ is a sheaf.
+
+    The skyscraper sheaf $p_*S$ is the pushforward of the constant sheaf $\ul S$ by the inclusion $\set p\to X$.
+
+    An important property of the direct image sheaf is that it is functorial: if $\phi\colon\F\to\G$ is a morphism of presheaves over $X$,
+    then $\pi_*\phi\colon\pi_*\F\to\pi_*\G$ defined by $\pi_*\phi_V=\phi_{\pi^{-1}V}$ is a morphism of presheaves.
+
+\eexam
+
+Note that if $\pi\colon X\to Y$ is continuous, $\F$ is a sheaf over $X$, and $\pi(p)=q$, then there is a natural morphism of stalks
+$$ (\pi_*\F)_q \to \pi_p . $$
+Indeed, the left-hand side is
+$$ \colim_{q\in V}\F(\pi^{-1}V) = \colim_{p\in\pi^{-1}V}\F(\pi^{-1}V) . $$
+Now a cone under $\F$ defines a unique cone under $\pi_*\F$ simply by restricting, and since $\colim\pi_*\F$ is the initial cone under $\pi_*\F$
+there is a canonical map to this restricted cone, in particular for $\colim\F$.
+
+In more concrete terms, $(\pi_*\F)_q$ has elements $(s,V)$ for $s\in\F(\pi^{-1}V)$, which we then map to $(s,\pi^{-1}V)\in\F_p$.
+
+\bdefn
+
+    If $\O_X$ is a sheaf of rings over a topological space $X$ (i.e.\ a sheaf over $X$ valued in the category of rings), then the pair
+    $(X,\O_X)$ is called a {\emphcolor ringed space}; $\O_X$ is called the {\emphcolor structure sheaf}.
+    Sections of $\O_X$ over $U\subseteq X$ are called {\emphcolor functions} on $U$, global sections are caled {\emphcolor global functions}.
+
+\edefn
+
+\bdefn
+
+    If $\O_X$ is a ringed space, an {\emphcolor $\O_X$-module} is a sheaf of Abelian groups $\F$ over $X$ such that for each $U\subseteq X$,
+    $\F(U)$ is an $\O_X(U)$-module, and all of these modules are well-behaved in that when $U\subseteq V$, the following diagram commutes:
+
+    \commsq{\O_X(V)\times\F(V)&\F(V)\cr \O_X(U)\times\F(U)&\F(U)}
+        {{\rm mult}}{{\rm mult}}{\res_{V,U}\times\res_{V,U}}{\res_{V,U}}
+
+    The horizontal arrows are $\O_X(U)$'s action on $\F(U)$.
+
+\edefn
+
+The commutative diagram means that
+$$ (s\cdot x)|_U = (s|_U)\cdot(x|_U) , $$
+for $s\in\O_X(V),x\in\F(V)$.
+
+\bprop
+
+    If $\F$ is an $\O_X$-module, then for each $p\in X$, $\F_p$ is an $\O_{X,p}$-module.
+
+\eprop
+
+\bproof
+
+    The condition that $\F$ be an $\O_X$-module means that multiplication is a natural map $\O_X\times\F\to\F$.
+    Colimits are taken pointwise in functor categories (in particular for the product of functors), so this gives a natural map
+    $\O_{X,p}\times\F_p\to\F_p$.
+    The natural map is given by mapping $(s,U),(x,V)$ to $(sx,U\cap V)$, which is easily seen to give a module structure.
+    \qed
+
+\eproof
+
+\bexam
+
+    Consider a smooth manifold $X$; this defines a ringed space $(X,\O_X)$ where $\O_X$ is the sheaf of smooth real-valued functions:
+    $\O_X(U)=C^\infty(U)$.
+    These are all real algebras, so we could view this as an $\bR$-ringed space.
+
+    If $\pi\colon V\to X$ is a vector bundle over $X$, then consider the sheaf of smooth local sections of $\pi$:
+    $$ \Gamma(U) = \set{\sigma\colon U\to V\hbox{ smooth}}[\pi\circ\sigma=\id_U] . $$
+    Then $\Gamma$ is an $\O_X$-module: it is a classical result that a local section defined on $U$ can be multiplied by a smooth real-valued
+    function defined on $U$.
+
+\eexam
+
+\bnote
+
+    Instead of $\sh_\C(X)$ to denote the category of $\C$-valued sheaves on $X$, we will denote the category by $\C_X$.
+    And the category of presheaves by $\C_X^\pre$.
+
+\enote
+
+Note that if $\F,G\in\C_X$ are sheaves (or presheaves), then the hom-set of sheaf morphisms $\F\to\G$ is indeed a set, since $X$ as a category
+is small (functor categories under small categories are locally small).
+Furthermore, if $\C$ is enriched over some monoidal category (in our case, usually $\Ab$) so is $\C_X$.
+This is because it is true in general for functor categories over enriched categories.
+
+\bdefn
+
+    Let $\F,\G$ be $\C$-valued sheaves defined on $X$.
+    Define their {\emphcolor sheaf-hom} to be the sheaf whose sections are sheaf morphisms,
+    $$ \shom(\F,\G)(U) = \hom_{\C_X}(\F|_U,\G|_U) . $$
+    As discussed, if $\C$ is enriched over a monoidal category $V$ then so is $\C_X$, and so $\shom(\F,\G)$ takes values in $V$.
+    In particular, if $\F,\G$ are sheaves of Abelian groups, then so is their sheaf-hom.
+
+\edefn
+
+\bprop
+
+    The sheaf-hom is indeed a sheaf.
+
+\eprop
+
+\bproof
+
+    We first show it is a sheaf: if $U\subseteq V$ then a sheaf morphism $\F|_V\to\G|_V$ restricts to a sheaf morphism
+    $\F|_U\to\G|_U$ in the obvious way: its components are the same but only taken on subsets of $U$.
+    This is clearly a presheaf.
+
+    To show that it is a sheaf, let $\set{U_i}$ be an open cover for $U\susbeteq X$, and $\alpha_i\colon\F|_{U_i}\to\G|_{U_i}$ be sheaf morphisms
+    such that $\alpha_i|_{U_i\cap U_j}=\alpha_j|_{U_i\cap U_j}$ for all $i,j$.
+    In order to glue them together for a sheaf morphism $\alpha\colon\F_U\to\G_U$ we need to define $\alpha_W$ for all $W\subseteq U$.
+    For $s\in\F(W)$ consider $s_i=s|_{U_i}\in U_i\cap W$, and its image under $\alpha_i$ to $\G(U_i\cap W)$, call it $t_i$.
+    Then since $U_i\cap W$ cover $W$ and since $\alpha$ is a morphism as well as $\G$ being a sheaf, we can uniquely glue $t_i$ together to
+    get a $t\in\G(W)$; this will be the image of $s$.
+
+    It is not hard to see that this is the unique gluing of $\alpha_i$, and is itself a sheaf morphism.
+    \qed
+
+\eproof
+
+\bnote
+
+    In the above proof we needed only for $\G$ to be a sheaf, $\F$ can be a presheaf.
+
+    Furthermore $\shom$ forms a bifunctor
+    $$ \shom\colon\C_X^\op\times\C_X \to \Set_X , $$
+    or $V_X$ instead of $\Set_X$ when $\C$ is enriched over $V$.
+
+\enote
+
+Note that if $\O_X$ is a ringed space, it is also a module over itself.
+Thus if $\F$ is an $\O_X$ module, we can form its {\emphcolor dual}:
+$$ \F^\vee = \shom_{\Mod_{\O_X}}(\F,\O_X) . $$
+
+\subsection{Sheafification}
+
+There is a natural map
+$$ \F(U) \to \F_p , $$
+for every $p\in U$ given by mapping $s\in\F(U)$ to $(U,s)\in\F_p$.
+Together these assimilate into a map
+$$ \F(U) \to \prod_{p\in U}\F_p . $$
+
+\bprop
+
+    The natural map above is injective when $\F$ is a sheaf.
+
+\eprop
+
+\bproof
+
+    Suppose that $s,t\in\F(U)$ such that $(U,s)=(U,t)$ in $\F_p$.
+    Then there exists a neighborhood $p\in W_p\subseteq U$ such that $s|_{W_p}=t|_{W_p}$.
+    If this is true for all $p$, then $W_p$ form an open cover of $U$ and by the identity axiom, $s=t$.
+    \qed
+
+\eproof
+
+\bdefn
+
+    An element $(s_p)_p\in\prod_{p\in U}\F_p$ consists of {\emphcolor compatible germs} if for all $p\in U$, $s_p$ has a representative
+    $\tilde s_p\in\F(U_p)$ for $p\in U_p\subseteq U$ such that the germ of $\tilde s_p$ at $q\in U_p$ is $s_q$ for all $q\in U_p$.
+
+\edefn
+
+Equivalently, this says that there is an open cover $\set{U_i}$ of $U$ and sections $f_i\in\F(U_i)$ such that if $p\in U_i$ then $s_p$ is the germ
+of $f_i$ at $p$.
+If $s$ is a section of $\F$ over $U$, then $(s)_p$ consists of compatible germs.
+
+\bprop
+
+    The natural map $\F(U)\to\prod_{p\in U}\F_p$'s image is precisely the compatible germs.
+
+\eprop
+
+\bproof
+
+    We already showed that every tuple in its image consists of compatible germs, now we show the converse.
+    Suppose $(s_p)_p$ consists of compatible germs, so let $\tilde s_p\in\F(U_p)$ be a representation as in the definition.
+    Then $U_p$ cover $U$, and $\tilde s_p|_{U_p\cap U_q}$'s germ at $q$ is $s_q$ so that $\tilde s_p,\tilde s_q$ agree on a neighborhood of $q$
+    and by symmetry in a neighborhood of $p$ and $q$.
+
+\eproof
+
