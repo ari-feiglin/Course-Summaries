@@ -326,6 +326,10 @@ The expressions for the covariant derivative given in the proof/proposition abov
 
 \TODO{Above.}
 
+\subsection{Metric connections}
+
+\TODO{Here.}
+
 \subsection{Vector and tensor fields along maps}
 
 \bdefn
@@ -415,6 +419,8 @@ satisfying the conditions of a connection.
 
 \eproof
 
+If $F$ is not clear from context, we also may denote the pullback of a connection $\nabla$ by $\nabla^F$.
+
 A specific case of interest are pullbacks of the tangent bundle, i.e.\ $F^*TN$.
 
 \bdefn
@@ -426,4 +432,65 @@ A specific case of interest are pullbacks of the tangent bundle, i.e.\ $F^*TN$.
 \edefn
 
 As we saw, a vector field along $F$ amounts to a map $X\colon M\to TN$ such that $X_p\in T_{Fp}N$ for all $p\in M$.
+
+\subsection{Parallel transport}
+
+\bdefn
+
+    Let $\nabla$ be a connection on $M$, and $F\colon A\to M$ a smooth
+    map from a submanifold $A\subseteq\bR^n$ to $M$.
+    For a vector field $X\in\X(F)$, we define its {\emphcolor covariant derivatives} to be the vector fields along $F$
+    given by
+    $$ \frac{DX}{\partial t^i} = \nabla^F_{\ipdv{t^i}}X,\qquad i=1,\dots,n . $$
+
+    In particular, for $n=1$, $F=\gamma$ is a curve (when $A$ is connected), and the covariant derivative along $\gamma$
+    is denoted by $\frac{DX}{dt}$ or $D_tX$.
+
+\edefn
+
+\bthrm[title=Existence and uniqueness of parallel transport]
+
+    Let $\gamma\colon[a,b]\to M$ be a curve, $t_0\in[a,b]$, and $v\in T_{\gamma(t_0)}M$.
+    Then there is a unique vector field $X\in\X(\gamma)$ along $\gamma$ such that $X(t_0)=v$ and $D_tX=0$.
+
+\ethrm
+
+\bproof
+
+    We assume that $\alpha([a,b])$ is contained in a coordinate domain $(U,\phi)$.
+    Otherwise can cover $[a,b]$ with subintervals which $\gamma$ maps into coordinate domains of $M$, and which intersect
+    locally finitely.
+    By uniqueness, the vector fields in the subintervals agree on their intersections, and thus we can glue them together
+    to get the desired vector field $X$.
+
+    For $X\in\X(\gamma)$, consider its representation relative to local the local frame $\partial_i\circ\gamma$
+    ($\partial_i=\ipdv{x^i}$), $X=X^i(\partial_i\circ\gamma)$.
+    Then
+    $$ D_tX = \nabla^\gamma_{dt}(X^i(\partial_i\circ\gamma)) = dX^i\parens{\drv t}\partial_i +
+    X^i\nabla_{d\gamma(d/dt)}\partial_i . $$
+    If $\gamma$'s local representation is $(\gamma^1(t),\dots,\gamma^n(t))$ then
+    $$ d\gamma(d/dt) = \dot\gamma(t) = \dot\gamma^i(t)(\partial_i\circ\gamma) . $$
+    Thus
+    $$ D_tX = \pdvof{X^i}t\partial_i + X^i\dot\gamma^j\nabla_{\partial_j}\partial_i =
+    \pdvof{X^i}t\partial_i + X^i\dot\gamma^j\Gamma_{ij}^k(\alpha(t))\partial_k . $$
+    So $D_tX=0$ iff
+    $$ \pdvof{X^i}t(t) + X^i(t)\dot\gamma^j(t)\Gamma_{ij}^k(\alpha(t)) = 0,\qquad \hbox{for $k=1,\dots,n$} . $$
+    This is a linear ODE in $X$, and thus has a unique solution given any initial value.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A vector field $X\in\X(\gamma)$ is called {\emphcolor parallel along $\gamma$} if $D_tX=0$.
+    By the above theorem, for any initial value $v$, there is a unique vector field parallel along $\gamma$ starting
+    at $v$.
+
+    For $t_0,t_1\in I$ define
+    $$ P^\gamma_{t_0,t_1}\colon T_{\gamma(t_0)}M\to T_{\gamma(t_1)}M $$
+    to map $v\in T_{\gamma(t_0)}M$ to $X(t_1)$ where $X$ is the unique vector field parallel along $\gamma$
+    with $X(t_0)=v$.
+    This is called the {\emphcolor parallel transport map}.
+
+\edefn
 

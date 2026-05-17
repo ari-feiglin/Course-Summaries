@@ -546,6 +546,68 @@ $$ d\iota_pv(f) = v(f\circ\iota) = v(f|_S) . $$
 
 \bdefn
 
+    Let $U\subseteq\bR^n$ be open, then a {\emphcolor $k$-slice} of $U$ is a subset of the form
+    $$ S = \set{(x^1,\dots,x^n)\in U}[x^{k+1}=c^{k+1},\dots,x^n=c^n] $$
+    for constants $c^{k+1},\dots,c^n$.
+    Note that a $k$-slice is homeomorphic to an open subset of $\bR^k$ (by projecting onto the first $k$ coordinates).
+
+    In more generality, if $M$ is a smooth manifold with chart $(U,\phi)$, a subset $S\subseteq U$ is a {\emphcolor $k$-slice}
+    of $U$ if $\phi(S)$ is a $k$-slice of $\phi(U)$.
+
+    A subset $S\subseteq M$ satisfies the {\emphcolor local $k$-slice condition} if each point of $S$ is contained in
+    a chart $U$ of $M$ for which $S\cap U$ is a $k$-slice of $U$.
+    Such a chart is called a {\emphcolor slice chart} for $S$ in $M$ and the corresponding coordinates are {\emphcolor slice
+    coordinates}.
+
+\edefn
+
+\bthrm[title=Local slice criterion]
+
+    Let $M$ be a smooth $n$-manifold and $S\subseteq M$ a subset endowed with the subspace topology.
+    Then $S$ is an embedded $k$-submanifold of $M$ iff it satisfies the local $k$-slice condition.
+
+\ethrm
+
+\bproof
+
+    If $S$ is an embedded $k$-submanifold, then the inclusion $S\inj M$ is an immersion and thus for any $p\in S$
+    there are smooth charts $(U,\phi)$ for $S$ and $(V,\psi)$ for $M$ such that the inclusion $\iota|_U\colon U\to V$
+    has coordinate representation $(x^1,\dots,x^k)\mapsto(x^1,\dots,x^k,0,\dots,0)$.
+
+    Let $\epsilon>0$ small enough so that both $U$ and $V$ contain a coordinate ball around $p$ of radius $\epsilon$,
+    denoted $U_0\subseteq U$ and $V_0\subseteq V$.
+    It follows that $U_0=\iota(U_0)$ is a slice of $V_0$, since $\psi\iota(U_0)=\psi\iota\phi^{-1}(\phi(U_0))$ is
+    the projection of the $k$-dimensional coordinate ball $B^k_\epsilon(p)$ into $n$-dimensional Euclidean space.
+    This is a $k$-slice of $B_\epsilon^n(p)=\psi(V_0)$.
+
+    Since $S$ has the subspace topology, $U_0=S\cap W$ for some open $W\subseteq M$.
+    Let $V_1=V_0\cap W$, so $(V_1,\psi|_{V_1})$ is a smooth chart for $M$ containing $p$ such that
+    $V_1\cap S=V_0\cap W\cap S=V_0\cap U_0=U_0$, which is a $k$-slice of $V_0$ and thus $V_1$.
+    So $S$ satisfies the local slice condition.
+
+    Conversely, if a subspace $S$ satisfies the local $k$-slice condition, we construct a smooth atlas.
+    Let $\pi\colon\bR^n\to\bR^k$ denote the projection onto the first $k$ coordinates.
+    Let $(U,\phi)$ be a slice chart for $S$ in $M$, and define
+    $$ V = U\cap S,\qquad \hat V = \pi\circ\phi(V),\qquad \psi=\phi\circ\phi|_V\colon V\to\hat V . $$
+    Since $U$ is a slice chart, $\phi(V)$ is a $k$-slice of $\phi(U)$, and thus $\pi$ is a homeomorphism from
+    $\phi(V)$ onto its image in $\bR^k$.
+    Thus $(V,\psi)$ is a chart for $S$; it is a topological $k$-manifold.
+
+    We show that this atlas is smooth: let $(U,\phi),(U',\phi')$ be two slice charts for $S$, and let $(V,\psi),(V',\psi')$
+    be the corresponding charts for $S$.
+    Then
+    $$ \psi'\circ\psi^{-1} = \pi\circ\phi'\circ\phi^{-1}\circ j, $$
+    where $j$ is the map $\bR^k\to\bR^n$ obtained by appending $c^{k+1},\dots,c^n$, which is smooth.
+    Thus $\psi'\circ\psi^{-1}$ is smooth, as desired.
+
+    The inclusion is an immersion, since its local representation with respect to $(U,\phi)$ and $(V,\psi)$ is
+    just appending $c^{k+1},\dots,c^n$, which is clearly an immersion.
+    \qed
+
+\eproof
+
+\bdefn
+
     Let $\Phi\colon M\to N$ be any map and $c\in N$.
     Then $\Phi$'s preimage on $c$, $\Phi^{-1}c$, is called a {\emphcolor level set} of $\Phi$.
 
@@ -617,6 +679,42 @@ We can then improve the above corollary.
     \qed
 
 \eproof
+
+\bprop
+
+    Let $S\subseteq M$ be a subset of the $m$-dimensional manifold $M$.
+    Then $S$ is an embedded $k$-submanifold iff every point of $S$ lies in a neighborhood $U$ of $M$ such that
+    $U\cap S$ is a level set of a smooth submersion $\Phi\colon U\to\bR^{m-k}$.
+
+\eprop
+
+\bproof
+
+    If $S$ is an embedded $k$-submanifold and $x\in S$, let $(x^1,\dots,x^k)$ be slice coordinates for $S$ in an
+    open neighborhood $x\in U\subseteq M$.
+    Define $\Phi\colon U\to\bR^{m-k}$ by $\Phi(x^1,\dots,x^m)=(x^{k+1},\dots,x^m)$, which is clearly a smooth submersion.
+    Then $\Phi^{-1}0=\set{(x^1,\dots,x^m)}[x^1=\cdots=x^k=0]=S\cap U$ as desired.
+
+    Conversely if $\Phi\colon U\to\bR^{m-k}$ is a submersion, then its level sets are embedded submanifolds of $M$.
+    So $S\cap U$ is an embedded submanifold of $M$, and thus satisfies the local slice condition, so it is an
+    embedded submanifold of $M$.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Suppose $S\subseteq M$ is an embedded submanifold.
+    If $U\subseteq M$ is an open subset and $\Phi\colon U\to N$ is a smooth map such that $S\cap U$ is a regular level set of
+    $\Phi$, then $\Phi$ is called a {\emphcolor local defining map for $S$}.
+
+\edefn
+
+\bcoro
+
+    Every embedded submanifold admits a local defining map in a neighborhood of each of its points.
+
+\ecoro
 
 \subsection{Submersions}
 
