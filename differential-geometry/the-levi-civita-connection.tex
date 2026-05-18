@@ -1,0 +1,196 @@
+\section{The Levi Civita Connection}
+
+\subsection{Metric connections}
+
+In this section we are concerned with connections on Riemannian manifolds.
+Recall that the Euclidean connection on $\bR^n$ is defined by
+$$ \bar\nabla_XY = X(Y^i)\pdv{x^i},\qquad \Gamma^k_{ij} = 0 . $$
+This interacts nicely with the euclidean metric:
+$$ \bar\nabla_X\iprod{Y,Z} = \iprod{\bar\nabla_XY,Z} + \iprod{Y,\bar\nabla_XZ} . $$
+This can be verified easily:
+$$ \bar\nabla_X\iprod{Y,Z} = \bar\nabla_X(\sum_i Y^iZ^i) = \sum_i X(Y^iZ^i) = \sum_i X(Y^i)Z^i + Y^iX(Z^i) , $$
+while
+$$ \iprod{\bar\nabla_XY,Z} = \iprod{X(Y^i)\pdv{x^i},Z} = \sum_i X(Y^i)Z^i $$
+so the identity is easily seen to be true.
+
+\bdefn
+
+    Let $(M,g)$ be a Riemannian manifold, and $\nabla$ a connection on $M$.
+    Then $\nabla$ is said to be {\emphcolor compatible} with $g$, or a {\emphcolor metric connection} if it satisfies
+    $$ \nabla_X\iprod{Y,Z} = \iprod{\nabla_XY,Z} + \iprod{Y,\nabla_XZ} $$
+    for all vector fields $X,Y,Z\in\X(M)$.
+
+\edefn
+
+\bprop
+
+    Let $(M,g)$ be a Riemannian manifold, and $\nabla$ a connection on $M$.
+    The following are equivalent:
+    \benum
+        \item $\nabla$ is compatible with $g$.
+        \item $g$ is parallel with respect to $\nabla$: $\nabla g$.
+        \item If $(E_i)$ is a smooth local frame, then the connection coefficients of $\nabla$ satisfy
+        $$ \Gamma^\ell_{ki}g_{\ell j} + \Gamma^\ell_{kj}g_{i\ell} = E_k(g_{ij}) . $$
+        \item If $V$ and $W$ are smooth vector fields along a curve $\gamma$, then
+        $$ \drv t\iprod{V,W} = \iprod{D_tV,W} + \iprod{V,D_tW} . $$
+        \item If $V,W$ are parallel vector fields along a curve $\gamma$, then $\iprod{V,W}$ is constant along $\gamma$.
+        \item Given any smooth curve $\gamma$, every parallel transport map along $\gamma$ is a linear isometry.
+        \item Given any smooth curve $\gamma$, every orthonormal basis at a point of $\gamma$ can be extended to a parallel
+        orthonormal frame along $\gamma$.
+    \eenum
+
+\eprop
+
+\bproof
+
+    First we prove the equivalence of the first two points.
+    Recall that
+    $$ (\nabla g)(Y,Z,X) = (\nabla_Xg)(Y,Z) = X(g(Y,Z)) - g(\nabla_XY,Z) - g(Y,\nabla_XZ) =
+    \nabla_X\iprod{Y,Z} - \iprod{\nabla_XY,Z} - \iprod{Y,\nabla_XZ} . $$
+    Thus $\nabla g$ is zero iff $\nabla$ is compatible with $g$, as desired.
+
+    Now we prove the equivalence of (2) and (3).
+    Recall that $\nabla g$'s components are given by
+    $$ g_{ij;k} = E_k(g_{ij}) - \Gamma^\ell_{ki}g_{ij} - \Gamma^\ell_{kj}g_{i\ell} , $$
+    so $\nabla g$ is zero iff the identity holds.
+
+    We prove now the equivalence of (1) and (4).
+    If $\nabla$ is compatible with $g$, let $V,W$ be smooth vector fields along $\gamma\colon I\to M$.
+    Let $t_0\in I$ and choose coordinates $(x^i)$ of a neighborhood of $\gamma(t_0)$, with $V=V^i\partial_i,W=W^j\partial_j$
+    in a neighborhood of $t_0$.
+    Then
+    $$ \drv t\iprod{V,W} = \drv t(V^iW^j\iprod{\partial_i,\partial_j}) = (\dot V^iW^j + V^i\dot W^j)\iprod{\partial_i,\partial_j}
+    + V^iW^j\drv t\iprod{\partial_i,\partial_j} . $$
+    Note that for extendible $X\circ\gamma,Y\circ\gamma$,
+    $$ \drv t\iprod{X\circ\gamma,Y\circ\gamma} = \drv t\parens{\iprod{X,Y}\circ\gamma} = d_{\gamma(t)}\iprod{X,Y}\circ\gamma'(t) . $$
+    And since $\nabla$ is $g$-compatible:
+    $$ d_{\gamma(t)}\iprod{X,Y} = \nabla\iprod{X,Y}|_{\gamma(t)} = (\iprod{\nabla X,Y} + \iprod{X,\nabla Y})|_{\gamma(t)} , $$
+    since $df=\nabla f$ for all real-valued $f$, so this is equal to
+    $$ \drv t\iprod{X\circ\gamma,Y\circ\gamma} = \iprod{\nabla_{\gamma'(t)}X|_{\gamma(t)},Y|_{\gamma(t)}} +
+    \iprod{X|_{\gamma(t)},\nabla_{\gamma'(t)}Y|_{\gamma(t)}} . $$
+    Taking $X=\partial_i$ and $Y=\nabla_j$ we have our desired result.
+
+    Conversely if (4) holds, then it holds for extendible vector fields and so if $V,W$ are vector fields on $M$, we get the result
+    by considering $V\circ\gamma,W\circ\gamma$ and recalling that
+    $$ D_t(V\circ\gamma)(t) = \nabla_{\gamma'(t)}V . $$
+
+    Now we prove (4) implies (5) implies (6) implies (7) implies (4).
+    If $V,W$ are parallel along $\gamma$ then $D_tV=D_tW=0$ so $\iprod{V,W}$ has zero derivative and is thus constant.
+    So (4) implies (5).
+
+    Now assume (5), let $v_0,w_0\in T_{\gamma(t_0)}M$ and let $V,W$ be their parallel transports along $\gamma$, so $V(t_0)=v_0$
+    and $W(t_0)=w_0$, $P^\gamma_{t_0t_1}v_0=V(t_1),P^\gamma_{t_0t_1}w_0=W(t_1)$.
+    Because $V,W$ are parallel along $\gamma$, $\iprod{V,W}$ is constant so
+    $$ \iprod{P^\gamma_{t_0t_1}v_0,P^\gamma_{t_0t_1}w_0} = \iprod{V(t_1),W(t_1)} = \iprod{V(t_0),W(t_0)} = \iprod{v_0,w_0}, $$
+    so parallel transport is indeed an isometry.
+
+    Now if $(b_i)$ is an orthonormal basis of $T_{\gamma(t)}M$, then extend $b_i$ via its parallel transport.
+    Since parallel transport is an isometry, this remains an orthonormal basis.
+
+    Finally assume (7), we will show (4).
+    Let $V,W$ be smooth vector fields along $\gamma$, and let $(E_i)$ be an orthonormal frame parallel along $\gamma$ which exists by (7).
+    Write $V=V^iE_i,W=W^jE_j$.
+    Now $D_tV=\dot V^iE_i$ since $E_i$ is parallel, and thus
+    $$ \iprod{D_tV,W} = \dot V^iW^j\iprod{E_i,E_j} = \sum_i \dot V^iW^i . $$
+    And
+    $$ \iprod{V,W} = \sum_i V^iW^i \implies \drv t\iprod{V,W} = \sum_i \dot V^iW^i + V^i\dot W^i = \iprod{D_tV,W} + \iprod{V,D_tW} $$
+    as desired.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Let $(M,g)$ be a Riemannian manifold, $\nabla$ a metric connection, and $\gamma\colon I\to M$ a curve.
+    \benum
+        \item $\norm{\gamma'(t)}$ is constant iff $D_t\gamma'(t)$ is orthogonal to $\gamma'(t)$ for all $t\in I$.
+        \item If $\gamma$ is a geodesic, then $\norm{\gamma'(t)}$ is constant.
+    \eenum
+
+\ecoro
+
+\bproof
+
+    By the above proposition
+    $$ \drv t\iprod{\gamma'(t),\gamma'(t)} = 2\iprod{\gamma'(t),D_t\gamma'(t)} , $$
+    and the result follows.
+    \qed
+
+\eproof
+
+We now turn to another nice property of the Euclidean connection.
+Notice that for two vector fields $X,Y$ on Euclidean space
+$$ [X,Y] = X(Y^i)\pdv{x^i} - Y(X^i)\pdv{x^i} = \bar\nabla_XY - \bar\nabla_YX . $$
+This is a nice property, so we give it a name.
+
+\bdefn
+
+    A connection $\nabla$ on a manifold $M$ is {\emphcolor symmetric} if
+    $$ \nabla_XY - \nabla_YX = [X,Y] $$
+    for all vector fields $X,Y\in\X(M)$.
+
+\edefn
+
+Note that for a connection $\nabla$ we can define a tensor, the {\emphcolor torsion tensor}, $\tau\colon\X(M)\times\X(M)\to\X(M)$ by
+$$ \tau(X,Y) = \nabla_XY - \nabla_YX - [X,Y] . $$
+This is easily seen to be $C^\infty(M)$-multilinear, and thus a $(1,2)$-tensor field.
+So $\nabla$ is symmetric iff its torsion is identically zero.
+
+Notice relative to a coordinate frame $\partial_i$,
+$$ \tau(\partial_i,\partial_j) = \Gamma^k_{ij}E_k - \Gamma^k_{ji}E_k $$
+and thus $\tau$ vanishes iff $\Gamma^k_{ij}=\Gamma^k_{ji}$ for all $i,j,k$.
+So $\nabla$ is symmetric iff $\Gamma^k_{ij}=\Gamma^k_{ji}$ relative to every coordinate frame (not necessarily every local frame).
+
+\bthrm[title=Fundamental theorem of Riemannian geometry]
+
+    On a Riemannian manifold $(M,g)$ there exists a unique symmetric metric connection $\nabla$.
+    This connection is called the {\emphcolor Levi-Civita connection} (or {\emphcolor Riemannian connection}).
+
+\ethrm
+
+\bproof
+
+    We show uniqueness first.
+    If $\nabla$ is symmetric and metric, then
+    $$ \eqalign{
+        X\iprod{Y,Z} &= \iprod{\nabla_XY,Z} + \iprod{Y,\nabla_XZ},\cr
+        Y\iprod{Z,X} &= \iprod{\nabla_YZ,X} + \iprod{Z,\nabla_YX},\cr
+        Z\iprod{X,Y} &= \iprod{\nabla_ZX,Y} + \iprod{X,\nabla_ZY}.\cr
+    } $$
+    By symmetry we get
+    $$ \eqalign{
+        X\iprod{Y,Z} &= \iprod{\nabla_XY,Z} + \iprod{Y,\nabla_ZX} - \iprod{Y,[X,Z]},\cr
+        Y\iprod{Z,X} &= \iprod{\nabla_YZ,X} + \iprod{Z,\nabla_XY} - \iprod{Z,[Y,X]},\cr
+        Z\iprod{X,Y} &= \iprod{\nabla_ZX,Y} + \iprod{X,\nabla_YZ} - \iprod{X,[Z,Y]}.\cr
+    } $$
+    Adding the first two and subtracting the third yields
+    $$ X\iprod{Y,Z} + Y\iprod{Z,X} - Z\iprod{X,Y} = 2\iprod{\nabla_XY,Z} + \iprod{Y,[X,Z]} + \iprod{Z,[Y,X]} - \iprod{X,[Z,Y]} . $$
+    Solving for $\iprod{\nabla_XY,Z}$ yields
+    $$ \iprod{\nabla_XY,Z} = \frac12\bigl(X\iprod{Y,Z} + Y\iprod{Z,X} - Z\iprod{X,Y} - \iprod{Y,[X,Z]} - \iprod{Z,[Y,X]} + \iprod{X,[Z,Y]}\bigr) . $$
+    This uniquely defines $\nabla$.
+
+    We can then use this formula to prove that the resulting connection is indeed a connection.
+    By the formula above, if $(U,(x^i))$ is a coordinate chart then
+    $$ \iprod{\nabla_{\partial_i}\partial_j,\partial_\ell} =
+    \frac12\parens{\partial_i\iprod{\partial_j,\partial_\ell} + \partial_j\iprod{\partial_\ell,\partial_i}
+    - \partial_\ell\iprod{\partial_i,\partial_j}} . $$
+    Recall that $g_{ij}=\iprod{\partial_i,\partial_j}$ and $\nabla_{\partial_i}\partial_j=\Gamma^k_{ij}\partial_k$.
+    So
+    $$ \Gamma^k_{ij}g_{k\ell} = \frac12\parens{\partial_ig_{j\ell} + \partial_ig_{i\ell} - g_\ell g_{ij}} . $$
+    Multiplying by $g$'s inverse, we see
+    $$ \Gamma^k_{ij} = \frac12g^{k\ell}\parens{\partial_ig_{j\ell} + \partial_ig_{i\ell} - g_\ell g_{ij}} . $$
+    This defines a connection in each chart, and by uniqueness the connections from different charts agree on their overlaps.
+    Thus $\nabla$ is a well-defined connection.
+
+    By symmetry of $g_{ij}$, we see $\Gamma^k_{ij}=\Gamma^k_{ji}$ in every coordinate domain, so $\nabla$ is symmetric.
+
+    To show compatibility, we just show $\Gamma^\ell_{ki}g_{\ell j}+\Gamma^\ell_{kj}g_{i\ell}=\partial_k(g_{ij})$.
+    This is just a direct computation.
+    \qed
+
+\eproof
+
+The proof of the theorem gave us an explicit formula for the Levi-Civita connection, as well as explicit formulas for its
+connection coefficients.
+The connection coefficients of the Levi-Civita connection of $(M,g)$ are called the {\emphcolor Christoffel symbols} of $g$.
+

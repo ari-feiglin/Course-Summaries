@@ -318,19 +318,121 @@ The expressions for the covariant derivative given in the proof/proposition abov
     the connection coefficients of $\nabla$ with respect to $(E_i)$.
     Let $X=X^iE_i$ be a local vector field.
     \benum
-        \item The covariant derivative of $\omega=\omega_i\epsilon^i$ is given by
+        \item The covariant derivative of $\omega=\omega_i\epsilon^i$ is given locally by
         $$ \nabla_X\omega = (X(\omega_k)-X^j\omega_i\Gamma^i_{jk})\epsilon^k . $$
+        \item If $F\in\Gamma(T^{(k,\ell)}TM)$ is a smooth tensor field with local representation
+        $$ F = F^I_JE_I\otimes\epsilon^J , $$
+        then its covariant derivative is
+        $$ \nabla_XF = \parens{X(F^I_J) + \sum_{s=1}^kX^mF^{I^p_{\hat s}}_J\Gamma^{i_s}_{mp} - \sum_{s=1}^\ell X^mF^I_{J^p_{\hat s}}\Gamma^p_{mj_s}}
+        E_I\otimes\epsilon^J , $$
+        where $I^p_{\hat s}=(i_1,\dots,i_{s-1},p,i_{s+1},\dots,i_k)$.
     \eenum
 
 \eprop
 
-\TODO{Above.}
+\bproof
 
-\subsection{Metric connections}
+    We know that
+    $$ (\nabla_X\omega)(Y) = \nabla_X(\omega(Y)) - \omega(\nabla_XY) . $$
+    And
+    $$ \nabla_X\omega = (\nabla_X\omega)(E_i)\epsilon^i  = \parens{\nabla_X(\omega(E_i)) - \omega(\nabla_XE_i)}\epsilon^i . $$
+    Since $\omega(E_i)=\omega_i$ and $\nabla_X$ of a map is just its derivative relative to $X$, and by expanding $\nabla_X$ by linearity,
+    we get that this is equal to
+    $$ = \parens{\nabla_X(\omega_i) - \omega(X^j\Gamma^k_{ij}E_k)}\epsilon^i = \parens{X(\omega_i) - X^j\omega_k\Gamma^k_{ij}}\epsilon^i . $$
 
-\TODO{Here.}
+    The second formula is by considering $(\nabla_XF)(\epsilon^I,E_J)$ via the formula in the theorem above.
+    \qed
 
-\subsection{Vector and tensor fields along maps}
+\eproof
+
+Note that $\nabla_\bul F$ is $C^\infty(M)$-linear for any $F$, and thus defines a tensor:
+
+\bprop
+
+    Let $\nabla$ be a connection on $M$, and $F\in\Gamma(T^{(k,\ell)}TM)$ a tensor field.
+    Define
+    $$ \nabla F\colon\X^*(M)^k \times \X(M)^\ell \times \X(M) \to C^\infty(M) $$
+    by
+    $$ \nabla F(\omega^I,Y_J,X) = (\nabla_X F)(\omega^I,Y_J) . $$
+    This defines a smooth $(k,\ell+1)$-tensor field on $M$ called the {\emphcolor total covariant derivative} of $F$.
+
+\eprop
+
+\bproof
+
+    $\nabla_XF$ is a tensor field and thus is $C^\infty(M)$-multilinear.
+    Since $\nabla$ is a connection, $\nabla_\bul F$ is $C^\infty(M)$-linear.
+    Thus in total $\nabla F$ is $C^\infty(M)$-multilinear and thus defines a tensor field.
+    \qed
+
+\eproof
+
+When representing the total covariant derivative in a local coordinate frame, we have
+$$ \nabla F = \nabla F(\epsilon^I,E_J,E_j)E_I\otimes\epsilon^J\otimes\epsilon^j =
+(\nabla_{E_j}F)(\epsilon^I,E_J)E_I\otimes\epsilon^J\otimes\epsilon_j . $$
+It is customary to denote the components by
+$$ F^I_{J;j} = \nabla F(\epsilon^I,E_J,E_j) , $$
+since the final index ($j$) has different significance than the rest.
+
+So for example, if $Y$ is a vector field $Y=Y^iE_i$ then
+$$ \nabla Y = Y^i_{;j}E_i\otimes\epsilon^j,\qquad Y^i_{;j} = \nabla_{E_j} Y(\epsilon^i) = E_jY^i + Y^k\Gamma^i_{jk} . $$
+And similarly for covector field $\omega=\omega_i\epsilon^i$,
+$$ \nabla\omega = \omega_{i;j}\epsilon^i\otimes\epsilon^j,\qquad \omega_{i;j} = E_j\omega_i - \omega_k\Gamma^k_{ij} . $$
+
+In general we have
+$$ F^I_{J;m} = \nabla_{E_m}F(\epsilon^I,E_J) $$
+and we know the coordinate representation of $\nabla_{E_j}F$, giving us
+$$ F^I_{J;j} = E_m(E^I_J) + \sum_{s=1}^k F^{I^p_{\hat s}}_J\Gamma^{i_s}_{mp} - \sum_{s=1}^\ell F^I_{J^p_{\hat s}}\Gamma^p_{mj_s} . $$
+
+Since $\nabla F$ is itself a tensor field, we can take its own total covariant derivative: $\nabla^2 F=\nabla\nabla F$,
+which is a $(k,\ell+2)$-tensor field.
+Define for $X,Y\in\X(M)$,
+$$ \nabla^2_{X,Y}F(\bul) = \nabla^2 F(\bul,Y,X) . $$
+The reason for swapping order of $X,Y$ is because $\nabla^2_{X,Y}$ should be read inside-out: first we differentiate with respect to $Y$
+and then $X$.
+
+Note that $\nabla^2_{X,Y}F$ does not equal $\nabla_X(\nabla_YF)$.
+This can be seen because the former is $C^\infty(M)$-linear in $Y$ but the latter is not.
+
+\bprop
+
+    $$ \nabla^2_{X,Y}F = \nabla_X(\nabla_YF) - \nabla_{\nabla_XY}F . $$
+
+\eprop
+
+\bproof
+
+    Note that
+    $$ \nabla_YF = \tr(\nabla F\otimes Y) , $$
+    where the trace is on its final two indices.
+    This can be checked directly by considering the representations of each by the coordinate bases (both give $F^I_{J;m}Y^m$).
+    Similarly one can check that
+    $$ \nabla^2_{X,Y}F = \tr(\tr(\nabla^2F\otimes X)\otimes Y) , $$
+    the inner trace being on the last index of $\nabla^2F$ with $X$'s, and the outer trace the last free index (the second-to-last
+    in $\nabla^2F$) with $Y$'s.
+
+    Thus
+    $$ \nabla_X\nabla_YF = \nabla_X(\tr(\nabla F\otimes Y)) = \tr\nabla_X(\nabla F\otimes Y) =
+    \tr(\nabla_X(\nabla F)\otimes Y + \nabla F\otimes\nabla_XY), $$
+    applying the same idea again gives
+    $$ = \tr(\tr(\nabla^2F\otimes X))+\tr(\nabla F\otimes\nabla_XY)) . $$
+    The first term is $\nabla^2_{X,Y}F$, the second is $\nabla_{\nabla_XY}F$, as desired.
+    \qed
+
+\eproof
+
+\bexam
+
+    Let $u\in C^\infty(M)$ be a smooth function.
+    Then $\nabla u\in\X^*(M)$ is just $du$; they both act on vector fields the same way: $\nabla_Xu=Xu=du(X)$.
+
+    The $2$-tensor $\nabla^2u=\nabla(du)$ is called the {\emphcolor covariant Hessian} of $u$.
+    By the above proposition:
+    $$ \nabla^2 u(Y,X) = \nabla^2_{X,Y}u = \nabla_X(\nabla_Y u) - \nabla_{\nabla_XY}u = X(Yu) - (\nabla_XY)u . $$
+
+\eexam
+
+\subsection{Pullbacks of vector bundles and connections}
 
 \bdefn
 
@@ -366,6 +468,127 @@ whose second component is $\proj_2\Phi|_{E_{Fp}}$ which is a linear isomorphism 
 If $\Psi$ is another local trivialization, then
 $$ \Phi^*\circ(\Psi^*)^{-1}(p,v) = \Phi^*(p,\Psi^{-1}(Fp,v)) = (p,\proj_2\Phi\Psi^{-1}(Fp,v)) , $$
 and the second coordinate is linear, it is equal to $\tau(Fp)v$ where $\tau$ is the transition function between $\Phi,\Psi$.
+
+Thus $\pi^*\colon F^*E\to M$ is a vector bundle over $M$.
+Moreover, $f$ is a bundle morphism over $F$.
+Indeed,
+$$ f|_{F^*E_p}\colon F^*E_p \to E_{Fp} $$
+is the map from $F^*E_p=\set{(p,e)\in F^*E}$ to $E_{Fp}$ by mapping $(p,e)\mapsto e$.
+This is clearly linear.
+
+The pullback bundle is precisely a categorical pullback.
+That is, it satisfies a certain universal property.
+Specifically, if $\tau\colon X\to M$ is any other vector bundle over $M$ and $g\colon X\to E$ is a vector bundle morphism over $F$
+then there is a unique vector bundle morphism $h\colon X\to F^*E$ over $M$ commuting everything.
+This is summarized in the following diagram:
+
+\bigskip
+\centerline{\drawdiagram{
+    $X$\cr
+    &$F^*E$&$E$\cr
+    &$M$&$N$
+}{
+    \diagarrow{from={1,1}, to={2,3}, curve=1cm, text=$g$, y distance=.75cm}
+    \diagarrow{from={1,1}, to={3,2}, curve=-1cm, text=$\tau$, x distance=-.75cm}
+    \diagarrow{from={1,1}, to={2,2}, dashed, text=$\exists!h$, y distance=.25cm}
+    \diagarrow{from={2,2}, to={2,3}, text=$f$, y distance=.25cm}
+    \diagarrow{from={3,2}, to={3,3}, text=$F$, y distance=-.25cm}
+    \diagarrow{from={2,2}, to={3,2}, text=$\pi^*$, x distance=-.25cm}
+    \diagarrow{from={2,3}, to={3,3}, text=$\pi$, x distance=.25cm}
+}}
+
+The map $h$ is given explicitly by $h(x) = (\tau(x),g(x))$.
+
+Taking the pullback is functorial.
+To formalize this we construct a category whose objects are pairs $(F\colon M\to N,\pi\colon E\to N)$ where $F$ is smooth and $\pi$ is a
+vector bundle.
+A morphism $(F\colon M\to N,\pi\colon E\to N)\to(F'\colon M'\to N',\pi'\colon E'\to N')$ is then a triplet of maps
+$(f_M\colon M\to M',f_N\colon N\to N',f_E\colon E\to E')$ such that the obvious diagram commutes:
+$$ f_N\circ F = F'\circ f_M,\qquad \pi'\circ f_E = f_N\circ\pi , $$
+and furthermore that $f_E$ forms a vector bundle morphism, so is linear over $\pi$'s fibers.
+This is just a subcategory of a functor category (of shape $\bul\to\bul\ot\bul$).
+Then the pullback is then just the restriction of the pullback (as a limit) to this subcategory.
+
+Since taking limits is functorial, given such a morphism in this category there is a unique map $G\colon F^*E\to(F')^*E'$ which commutes
+with everything.
+Explicitly it is given by
+$$ G(p,e) = (f_Mp,f_Ee) . $$
+Then $G$ forms a bundle morphism over $f_M$.
+
+More useful is another form of functorality.
+Suppose we have the following diagram:
+
+\centerline{\drawdiagram{
+    &&$E$\cr
+    $M$&$N$&$P$
+}{
+    \diagarrow{from={1,3}, to={2,3}, text=$\pi$, x distance=.25cm}
+    \diagarrow{from={2,1}, to={2,2}, text=$F$, y distance=.25cm}
+    \diagarrow{from={2,2}, to={2,3}, text=$G$, y distance=.25cm}
+}}
+
+We can fill this in by taking the pullback twice:
+
+\centerline{\drawdiagram{
+    $F^*(G^*E)$&$G^*E$&$E$\cr
+    $M$&$N$&$P$
+}{
+    \diagarrow{from={1,1}, to={2,1}, text=$\pi^{**}$, x distance=.25cm}
+    \diagarrow{from={1,2}, to={2,2}, text=$\pi^*$, x distance=.25cm}
+    \diagarrow{from={1,3}, to={2,3}, text=$\pi$, x distance=.25cm}
+    \diagarrow{from={1,1}, to={1,2}, text=$f$, y distance=-.25cm}
+    \diagarrow{from={1,2}, to={1,3}, text=$g$, y distance=-.25cm}
+    \diagarrow{from={2,1}, to={2,2}, text=$F$, y distance=.25cm}
+    \diagarrow{from={2,2}, to={2,3}, text=$G$, y distance=.25cm}
+}}
+
+But we can also pull back $E$ through $G\circ F$ directly:
+
+\bigskip
+\centerline{\drawdiagram{
+    $(G\circ F)^*E$\cr
+    &$F^*(G^*E)$&$G^*E$&$E$\cr
+    &$M$&$N$&$P$
+}{
+    \diagarrow{from={1,1}, to={3,2}, text=$\tau$, curve=-1cm, x distance=-.75cm}
+    \diagarrow{from={1,1}, to={2,4}, text=$h$, curve=1cm, y distance=.75cm}
+    \diagarrow{from={2,2}, to={3,2}, text=$\pi^{**}$, x distance=.25cm}
+    \diagarrow{from={2,3}, to={3,3}, text=$\pi^*$, x distance=.25cm}
+    \diagarrow{from={2,4}, to={3,4}, text=$\pi$, x distance=.25cm}
+    \diagarrow{from={2,2}, to={2,3}, text=$f$, y distance=-.25cm}
+    \diagarrow{from={2,3}, to={2,4}, text=$g$, y distance=-.25cm}
+    \diagarrow{from={3,2}, to={3,3}, text=$F$, y distance=.25cm}
+    \diagarrow{from={3,3}, to={3,4}, text=$G$, y distance=.25cm}
+}}
+
+By the universal property of the pullback, we see that there are unique maps between $(G\circ F)^*E$ and $F^*(G^*E)$, and their composition must
+then by the identity.
+So we see that $(G\circ F)^*E$ and $F^*G^*E$ are naturally isomorphic.
+
+Since $\id^*E$ is naturally isomorphic to $E$ (showing this explicitly is easy, but we can also appeal to the universal property).
+Thus the pullback is functorial in the sense that
+$$ (G\circ F)^*E = F^*G^*E,\qquad \id^*E = E $$
+up to natural isomorphism.
+
+In particular we see that if $F$ is a diffeomorphism, $F^*E$ is naturally isomorphic to $E$.
+
+\bprop
+
+    If $f\colon E\to E'$ is a vector bundle isomorphism over $M$, then we can push forward a connection on $E$ to $E'$.
+    Explicitly, let $\nabla$ be a connection on $E$, then there is a unique connection $\tilde\nabla$ on $E'$ such that
+    $$ \tilde\nabla_XY = f\circ\nabla_Xf^{-1}Y $$
+    for all $X\in\X(M)$ and $Y\in\Gamma(E')$.
+
+\eprop
+
+\bproof
+
+    Since $f$ is a bundle isomorphism, $f^{-1}Y$ is a section of $E$ for $Y\in\Gamma(E')$.
+    Then $\nabla_Xf^{-1}Y$ is a section of $E$, and $f\circ\nabla_Xf^{-1}Y$ is a section of $E'$.
+    Seeing that this is a connection is simple.
+    \qed
+
+\eproof
 
 \bprop
 
@@ -409,6 +632,13 @@ satisfying the conditions of a connection.
 
 \eprop
 
+\bnote
+
+    Vector fields along $F$ of the form $Y\circ F$ where $Y$ is a vector field on a neighborhood of $\im F$ are called
+    {\emphcolor extendible}.
+
+\enote
+
 \bproof
 
     To show uniqueness, let $p\in M$ and let $(E_i)$ be a local frame of $F(p)\in U\subseteq N$ and consider its pullback frame $(E_i^*)$ of
@@ -421,6 +651,11 @@ satisfying the conditions of a connection.
 
 If $F$ is not clear from context, we also may denote the pullback of a connection $\nabla$ by $\nabla^F$.
 
+While in general we cannot push a connection {\it forward}, we can pull back a connection via a diffeomorphism.
+In particular if $F\colon M\to N$ is a diffeomorphism and $\nabla$ is a connection on $E\to M$, then we can pull back $\nabla$
+via $F^{-1}\colon N\to M$.
+That is, we have a connection $\nabla^{F^{-1}}$ on $(F^{-1})^*E$ given by the above proposition.
+
 A specific case of interest are pullbacks of the tangent bundle, i.e.\ $F^*TN$.
 
 \bdefn
@@ -428,38 +663,70 @@ A specific case of interest are pullbacks of the tangent bundle, i.e.\ $F^*TN$.
     Let $F\colon M\to N$ be smooth, then sections of the pullback $F^*TN$ are called {\emphcolor vector fields along $F$}, and the space of sections
     is denoted
     $$ \Gamma(F^*TN) = \X(F) . $$
+    More generally the sections of the pullback $F^*T^{(k,\ell)}TN$ are called {\emphcolor tensor fields along $F$}.
 
 \edefn
 
 As we saw, a vector field along $F$ amounts to a map $X\colon M\to TN$ such that $X_p\in T_{Fp}N$ for all $p\in M$.
+Similarly a tensor field along $F$ amounts to a map $X\colon M\to T^{(k,\ell)}TN$ such that $X_p\in T^{(k,\ell)}T_{Fp}N$ for all $p\in M$.
+The case of most importance is when $F=\gamma$ is a curve.
+
+When $F\colon M\to N$ is a diffeomorphism, we know that $TM$ and $TN$ are isomorphic vector bundles, and thus $TM$ is isomorphic to the pullback
+$F^*TN$.
+Explicitly the isomorphism is $h\colon F^*TN\to TM$ by
+$$ h(p,u) = (p,(dF^{-1})_{Fp}u),\qquad p\in M,u\in T_{Fp}N . $$
+If $\nabla$ is a connection on $N$, then pulling it back gives a connection on $F^*TN$.
+Since $F^*TN$ and $TM$ are isomorphic vector bundles over $M$, this defines a connection on $TM$ via $h$.
+Explicitly this connection is given by
+$$ \tilde\nabla_XY = h\circ\nabla^F_Xh^{-1}Y . $$
+Evaluating at $p$ gives
+$$ \tilde\nabla_XY|_p = h\nabla_{dF_p(X_p)}(h^{-1}\circ Y\circ F^{-1}) . $$
+Note that $h^{-1}YF^{-1}$ is just $dF_{F^{-1}p}Y_{F^{-1}p}$, i.e.\ $(F_*Y)_p$.
+So this is equal to
+$$ \tilde\nabla_XY|_p = (dF^{-1})_{Fp}\nabla_{dF_p(X_p)}(F_*Y)_p , $$
+and thus
+$$ \tilde\nabla_XY = (F^{-1})_*\nabla_{F_*X}(F_*Y) . $$
+
+\bprop
+
+    If $F\colon M\to N$ is a diffeomorphism, and $\nabla$ a connection on $N$, then we define a connection $F^*\nabla$ on $M$ by
+    $$ (F^*\nabla)_XY = (F^{-1})_*\nabla_{F_*X}(F_*Y) . $$
+    This is called the {\emphcolor pullback} of $\nabla$.
+
+\eprop
+
+Note then that there are two notions of a pullback.
+The one just introduced is a special case of the one obtained by pulling back to a pullback bundle.
 
 \subsection{Parallel transport}
 
 \bdefn
 
-    Let $\nabla$ be a connection on $M$, and $F\colon A\to M$ a smooth
-    map from a submanifold $A\subseteq\bR^n$ to $M$.
-    For a vector field $X\in\X(F)$, we define its {\emphcolor covariant derivatives} to be the vector fields along $F$
-    given by
-    $$ \frac{DX}{\partial t^i} = \nabla^F_{\ipdv{t^i}}X,\qquad i=1,\dots,n . $$
-
-    In particular, for $n=1$, $F=\gamma$ is a curve (when $A$ is connected), and the covariant derivative along $\gamma$
-    is denoted by $\frac{DX}{dt}$ or $D_tX$.
+    Let $\nabla$ be a connection on $M$, and $F\colon A\to M$ a smooth map from an open subset $A\subseteq\bR^n$ to $M$.
+    We define the operator
+    $$ \frac D{\partial t_i} \colon \Gamma(F^*T^{(k,\ell)}TM) \to \Gamma(F^*T^{(k,\ell)}TM) $$
+    by
+    $$ \frac D{\partial t_i}X = \nabla^F_{\ipdv{t_i}}X , $$
+    the {\emphcolor covariant derivative along $F$}.
 
 \edefn
 
+The case we are most interested is when $n=1$ and $F=\gamma$ is a curve.
+In such a case we write $D_t$ for $D/{\partial t}$.
+
 \bthrm[title=Existence and uniqueness of parallel transport]
 
-    Let $\gamma\colon[a,b]\to M$ be a curve, $t_0\in[a,b]$, and $v\in T_{\gamma(t_0)}M$.
-    Then there is a unique vector field $X\in\X(\gamma)$ along $\gamma$ such that $X(t_0)=v$ and $D_tX=0$.
+    Let $\gamma\colon(a,b)=I\to M$ be a curve, $t_0\in(a,b)$, and $v\in T^{(k,\ell)}T_{\gamma(t_0)}M$.
+    Then there is a unique tensor field $X$ along $\gamma$ such that $X(t_0)=v$ and $D_tX=0$.
 
 \ethrm
 
 \bproof
 
-    We assume that $\alpha([a,b])$ is contained in a coordinate domain $(U,\phi)$.
-    Otherwise can cover $[a,b]$ with subintervals which $\gamma$ maps into coordinate domains of $M$, and which intersect
-    locally finitely.
+    We prove this for when $X$ is a vector field; the proof for tensor fields is similar but more index-heavy.
+
+    We assume that $\alpha(a,b)$ is contained in a coordinate domain $(U,\phi)$.
+    Otherwise can cover $(a,b)$ with subintervals which $\gamma$ maps into coordinate domains of $M$.
     By uniqueness, the vector fields in the subintervals agree on their intersections, and thus we can glue them together
     to get the desired vector field $X$.
 
@@ -493,4 +760,207 @@ As we saw, a vector field along $F$ amounts to a map $X\colon M\to TN$ such that
     This is called the {\emphcolor parallel transport map}.
 
 \edefn
+
+\subsection{Geodesics}
+
+\bdefn
+
+    Let $\nabla$ be a connection on $M$, and $\gamma\colon I\to M$ a smooth curve.
+    Its {\emphcolor acceleration} is defined to be the vector field $D_t\gamma'(t)$.
+    $\gamma$ is a {\emphcolor geodesic} if its acceleration is zero: $D_t\gamma'(t)=0$.
+
+\edefn
+
+Note that $\gamma$ is a geodesic iff its derivative is parallel along $\gamma$.
+
+In local coordinates if $\gamma(t)=(x^1(t),\dots,x^n(t))$ then
+$$ D_t\gamma' = D_t\parens{\dot x^i(t)\partial_i} = \ddot x^i\partial_i + \dot x^i\dot x^j\Gamma^k_{ij}(\gamma(t))\partial_k , $$
+so $\gamma$ is a geodesic iff this is zero.
+
+\bthrm[title=Existence and uniqueness of geodesics]
+
+    Let $\nabla$ be a connection on $M$.
+    Then for every $p\in M$, $w\in T_pM$, and $t_0\in\bR$, there is an open interval $t_0\in I\subseteq\bR$ and a geodesic $\gamma\colon I\to M$
+    where $\gamma(t_0)=p$ and $\gamma'(t_0)=w$.
+    Any two such geodesics are equal on their common domain.
+
+\ethrm
+
+\bproof
+
+    Our ODE above is second-order, so we introduce auxillary variables $v^i=\dot x^i$.
+    Then our geodesic equation becomes
+    $$ \dot x^k(t) = v^k(t),\qquad \dot v^k(t) = -v^i(t)v^j(t)\Gamma^k_{ij}(x(t)) . $$
+    Consider $(x^1,\dots,x^n,v^1,\dots,v^n)$ as coordinates on $U\times\bR^n$, then the equation above is just the flow equation
+    of the vector field $G\in\X(U\times\bR^n)$ given by
+    $$ G_{(x,v)} = v^k\evpdv{x^k}_{(x,v)} - v^iv^j\Gamma^k_{ij}\evpdv{v^k}_{(x,v)} . $$
+    By the fundamental theorem on flows, for every $(p,w)\in U\times\bR^n$, $G$ has a unique integral curve $\zeta\colon I\to U\times\bR^n$ where
+    $\zeta(t_0)=(p,w)$.
+    If we write $\zeta(t)=(x^1(t),\dots,x^n(t),v^1(t),\dots,v^n(t))$ then we see $\gamma(t)=(x^1(t),\dots,x^n(t))$ satisfies the existence.
+
+    Uniqueness follows because any other geodesic $\tilde\gamma$ satisfying the properties defines an integral curve of $G$ by
+    $\tilde\zeta(t)=(\gamma(t),\dot\gamma(t))$, and thus must be equal to $\zeta$ on their common domain by uniqueness of flows.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A {\emphcolor maximal} geodesic is one whose domain cannot be extended.
+
+\edefn
+
+\bcoro
+
+    For any initial condition $\gamma(0)=p,\gamma'(0)=w\in T_pM$, there is a unique maximal geodesic satisfying these conditions.
+
+\ecoro
+
+\bproof
+
+    Let $I$ be the union of all the open intervals containing $0$ on which the initial conditions are satisfied (there is a geodesic).
+    All the geodesics on these intervals agree on their intersections, and thus gluing them together yields a geodesic from $I$ which is
+    clearly maximal.
+    \qed
+
+\eproof
+
+\bdefn
+
+    The unique maximal geodesic $\gamma$ with $\gamma(0)=p,\gamma'(0)=v$ is called simpy the {\emphcolor geodesic with initial point $p$
+    and initial velocity $v$}, and is denoted simply by $\gamma_v$ ($p$ can be recovered by $p=\pi(v)$).
+
+\edefn
+
+Note our vector field $G$ defined in our proof above.
+We claim that this vector field actually extends to a global vector field on the tangent bundle: $G\in\X(TM)$.
+For any coordinate domain $U\subseteq M$ with coordinates $(x^i)$ then let $(x^i,v^i)$ denote the local coordinates for $\pi^{-1}U\subseteq TM$
+so that in these coordinates $G$ is given by the formula above:
+$$ G_{(x,v)} = v^k\evpdv{x^k}_{(x,v)} - v^iv^j\Gamma^k_{ij}\evpdv{v^k}_{(x,v)} . $$
+To show that $G$ defines a global vector field, we need to show that the definition above agrees on the intersection of coordinate domains.
+Instead of doing this forcefully, we instead will show that $G$ acts on a smooth function $f\in C^\infty(TM)$ by
+$$ Gf(p,v) = \evdrv t_{t=0}f(\gamma_v(t),\gamma'_v(t)) . $$
+Since this is independent on the coordinates, we see that $G$ is well-defined on all of $TM$.
+
+Let $\gamma_v=(x^1,\dots,x^n)$ and $\gamma'_v=(v^1,\dots,v^n)$, so $\dot x^i=v^i$.
+Then the right-hand side is
+$$ \evdrv t_{t=0}f(x^1(t),\dots,x^n(t),v^1(t),\dots,v^n(t)) =
+\parens{\pdvof f{x^k}(x(t),v(t))\dot x^k(t) + \pdvof f{v^k}(x(t),v(t))\dot v^k}_{t=0} . $$
+By the geodesic equations we know $\dot x^k=v^k$ and $\dot v^k=-v^iv^j\Gamma^k_{ij}(x)$, and $x(0)=p,v(0)=v$, so this is equal to
+$$ = \pdvof f{x^k}(p,v)v^k - \pdvof f{v^k}(p,v)v^iv^j\Gamma^k_{ij}(p) . $$
+Which is precisely $Gf(p,v)$, as desired.
+
+\bdefn
+
+    The vector field $G\in\X(TM)$ defined above is called the {\emphcolor geodesic vector field}.
+    $\gamma$ is a geodesic iff $(\gamma,\gamma')$ is an integral curve of $G$ iff there is an integral curve $\zeta$ of $G$ whose projection
+    onto $M$ is $\gamma$.
+
+\edefn
+
+\subsection{The exponential map}
+
+\blemm[title=Rescaling lemma]
+
+    For every $p\in M,v\in T_pM,c,t\in\bR$, 
+    $$ \gamma_{cv}(t) = \gamma_v(ct) , $$
+    whenever either side is defined (i.e.\ they are defined on the same interval and are equal).
+
+\elemm
+
+\bproof
+
+    If $c=0$ then both sides are just $p$ for all $t\in\bR$.
+    Assume $c\neq0$, then it is sufficient to assume $\gamma_v(ct)$ is defined and to show $\gamma_{cv}(t)$ is and is equal to it.
+    The other direction is due to setting $v=v/c$ and $t=t/c$.
+
+    Suppose $\gamma=\gamma_v$'s domain is $I\subseteq\bR$, and define $\tilde\gamma\colon c^{-1}I\to M$ by $\tilde\gamma(t)=\gamma(ct)$.
+    We show that $\tilde\gamma$ is a geodesic with initial point $p$ and initial velocity $cv$, then by uniqueness and maximality
+    $\tilde\gamma=\gamma_{cv}$.
+    It is immediate that $\tilde\gamma(0)=\gamma(0)=p$.
+    Furthermore,
+    $$ \tilde\gamma'(t) = c\gamma'(ct) \implies \tilde\gamma'(0) = c\gamma'(0) = cv $$
+    as desired.
+    Now we need to show that $\tilde\gamma$ is a geodesic.
+
+    Let $D_t$ and $\tilde D_t$ denote the differentiation operators along $\gamma,\tilde\gamma$ respectively.
+    Then in local coordinates
+    $$ \tilde D_t\tilde\gamma'(t) = \parens{\drv t\dtilde\gamma^k + \Gamma^k_{ij}(\tilde\gamma(t))\dtilde\gamma^i\dtilde\gamma^j}\partial_k , $$
+    by the chain rule,
+    $$ = \parens{c^2\ddot\gamma^k(ct) + c^2\Gamma^k_{ij}(\gamma(ct))\dot\gamma^i(ct)\dot\gamma^j(ct)}\partial_k = c^2D_t\gamma'(ct) = 0 , $$
+    so $\tilde\gamma$ is indeed a geodesic, as desired.
+    \qed
+
+\eproof
+
+
+Let $\E\subseteq TM$ be the subset
+$$ \E  = \set{v\in TM}[\hbox{$\gamma_v$ is defined on an interval containing $[0,1]$}] . $$
+Then define the {\emphcolor exponential map}
+$$ \exp\colon\E\to M,\qquad \exp(v) = \gamma_v(1) . $$
+We also define, for $p\in M$, $\E_p=\E\cap T_pM$ and the {\emphcolor restricted exponential map} $\exp_p\colon\E_p\to M$ to be just the
+restriction of the exponential to $\E_p$.
+
+\bnote
+
+    The exponential map here is not in general related to the exponential of a Lie group.
+    They are related closely for bi-invariant metrics, but otherwise they may be different.
+    We will thus make it clear which exponential map we are dealing with.
+
+\enote
+
+\bdefn
+
+    A subset $S$ of a vector space $V$ is {\emphcolor star-shaped} with respect to $x\in S$ if for every $y\in S$, the line connecting $x$ and
+    $y$ is contained in $S$.
+
+\edefn
+
+\bprop
+
+    \benum
+        \item For every $p\in M$, $\E$ is an open subset of $TM$ containing every zero vector (i.e.\ for $0\in\E_p$ for all $p$),
+        and each $\E_p$ is star-shaped with respect to $0$.
+        \item The exponential map is smooth.
+        \item For each $v\in TM$ the geodesic $\gamma_v$ is given by
+        $$ \gamma_v(t) = \exp(tv) , $$
+        when either side is defined.
+        \item For each $p\in M$, $d(\exp_p)_0\colon T_pM\cong T_0(T_pM)\to T_pM$ is the identity map of $T_pM$, under the usual identification of
+        $T_0(T_pM)$ with $T_pM$.
+    \eenum
+
+\eprop
+
+\bproof
+
+    Let $n=\dim M$.
+    The rescaling lemma says that
+    $$ \exp(cv) = \gamma_{cv}(1) = \gamma_v(c) $$
+    whenever either side is defined, giving us (3).
+
+    When $v\in\E_p$ then $\gamma_v$ is defined on at least $[0,1]$, thus for $t\in[0,1]$ the rescaling lemma gives us
+    $$ \exp_p(tv) = \gamma_{tv}(1) = \gamma_v(t) , $$
+    so $\gamma_{tv}$ is defined on at least $[0,1]$ as well; $tv\in\E_p$, so $\E_p$ is star shaped with respect to $0$.
+
+    Now we show that $\E$ is open and $\exp$ is smooth.
+    Let $G$ be the geodesic vector field, so by the fundamental theorem of flows there is an open subset $\D\subseteq\bR\times TM$
+    containing $\set 0\times TM$ and a smooth map $\theta\colon\D\to TM$ such that $\theta^{(p,v)}(t)=\theta(t,(p,v))$ is the unique
+    maximal integral curve of $G$ starting at $(p,v)$.
+
+    If $(p,v)\in\E$ then $\gamma_v$ is defined on at least $[0,1]$, and thus so is the integral curve of $G$ starting at $(p,v)\in TM$.
+    So $(1,(p,v))\in\D$, and thus there is a neighborhood of $(1,(p,v))$ in $\bR\times TM$ contained in $\D$.
+    In particular there is an open neighborhood $U$ of $(p,v)$ such that $\set1\times U\subseteq\D$.
+    This means that $U\subseteq\E$ and so $\E$ is open.
+
+    Geodesics are the projections of integral curves of $G$, so
+    $$ \exp(v) = \gamma_v(1) = \pi\circ\theta(1,(p,v)) , $$
+    which is smooth.
+
+    To compute $d(\exp_p)_0(v)$, let $\tau$ be a curve in $T_pM$ starting at $0$ whose initial velocity is $v$.
+    Take $\tau(t)=tv$, and thus
+    $$ d(\exp_p)_0(v) = \evdrv t_{t=0}(\exp_p\circ\tau)(t) = \evdrv t_{t=0}\exp_p(tv) = \evdrv t_{t=0}\gamma_v(t) = v , $$
+    as desired.
+    \qed
+
+\eproof
 
