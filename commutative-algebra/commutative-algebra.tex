@@ -1763,3 +1763,740 @@ The main result we want is the following.
 
 \eproof
 
+\subsection{Noetherian rings and modules}
+
+\blemm
+
+    Let $\Sigma$ be a poset, then the following conditions are equivalent:
+    \benum
+        \item every nonempty subset of $\Sigma$ has a maximal element,
+        \item every increasing chain $x_1\leq x_2\leq\cdots$ in $\Sigma$ eventually stabilizes: at some point $x_n=x_{n+1}$ (equivalently, there are no infinite strictly
+        increasing chains).
+    \eenum
+    A poset satisfying these equivalent conditions is said to have the {\emphcolor ascending chain condition} ({\emphcolor ACC}).
+
+\elemm
+
+\bproof
+
+    The first implies the second as we can consider the subset $\set{x_i}$.
+    The second implies the first since if $\Sigma'\subseteq\Sigma$ doesn't have a maximal element we can form a strictly increasing chain inductively.
+    \qed
+
+\eproof
+
+\bdefn
+
+    An $A$-module $M$ is {\emphcolor Noetherian} if its poset of $A$-submodules has the ACC.
+    A ring $A$ is {\emphcolor Noetherian} if it is Noetherian as a module over itself (equivalently its ideals satisfy the ACC).
+
+\edefn
+
+\bexam
+
+    Any field is a Noetherian ring, since it only has two ideals.
+
+    $\bQ$ is not a Noetherian $\bZ$-module, since $\frac1{n!}\bZ$ does not stabilize (the reason for the factorial is so that it forms an increasing chain).
+
+    The ring $k[x_1,x_2,\dots]$ with infinitely many indeterminants is not Noetherian, since $(x_1)\subsetneq(x_1,x_2)\subsetneq(x_1,x_2,x_3)\subsetneq\cdots$ forms a strictly increasing chain.
+
+\eexam
+
+\bprop
+
+    An $A$-module is Noetherian iff every submodule is finitely generated.
+    Thus a ring is Noetherian iff every ideal is finitely generated.
+
+\eprop
+
+\bproof
+
+    If $M$ is Noetherian and $N\subseteq M$ is a submodule, suppose it is not finitely generated.
+    Then inductively we will form an infinitely increasing sequence of submodules.
+    Let $x_1\in N$ arbitrary, then since $N$ is not finitely generated $x_1,\dots,x_n$ does not generate $N$ so that there is an $x_{n+1}\in N-\gen{x_1,\dots,x_n}$.
+    Then $N_n=\gen{x_1,\dots,x_n}$ is a strictly increasing infinite chain of submodules of $M$, a contradiction.
+
+    Conversely if every submodule of $M$ is finitely generated, then $M$ is Noetherian.
+    Otherwise, let $M_1\subsetneq M_2\subseteq\cdots$ be an increasing chain of submodules.
+    Let $N=\bigcup_nM_n$ be their union, which is also a submodule of $M$, and thus is finitely generated.
+    Suppose $x_1,\dots,x_n\in N$ generate $N$, and since $M_i$ form a chain there is an $m$ such that $x_1,\dots,x_n\in M_m$ and thus $M_m=N$ so that $M_i$ eventually stabilizes to $M_m$.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Every PID is Noetherian.
+
+\ecoro
+
+\blemm
+
+    Let $0\to M'\xto fM\xto gM''\to0$ be a short exact sequence of $A$-modules.
+    Then $M$ is Noetherian iff $M',M''$ are.
+
+    Equivalently, if $M$ is an $A$-module and $N\subseteq M$ a submodule, $M$ is Noetherian iff $N$ and $M/N$ are.
+
+\elemm
+
+\bproof
+
+    If $M$ is Notherian, let $M'_n\subseteq M',M''_n\subseteq M''$ be increasing sequences of submodules.
+    Then $f(M'_n)$ and $g^{-1}(M''_n)$ are submodules of $M$ and thus stabilize: $f(M'_n)=f(M'_{n+1})$ and $g^{-1}(M'_n)=g^{-1}(M'_{n+1})$ eventually.
+    By the injectivity of $f$ and surjectivity of $g$, this means $M'_n$ and $M''_n$ both eventually stabilize.
+
+    Conversely if $M',M''$ are Noetherian, let $M_n\subseteq M$ be an increasing sequence of submodules.
+    Then $f^{-1}(M_n)=M_n\cap M'$ and $g(M_n)\subseteq M''_n$ are increasing sequences of submodules of $M',M''$ respectively.
+    Thus eventually they stabilize: $f^{-1}(M_n)=f^{-1}(M_{n+1})$ and $g(M_n)=g(M_{n+1})$ eventually.
+    We claim that this means $M_n=M_{n+1}$.
+
+    Indeed, for $x\in M_{n+1}$ consider $g(x)\in g(M_{n+1})$ so there is a $y\in M_n$ such that $g(x)=g(y)$.
+    Then $x-y\in\ker g=\im f$ so that $x-y=f(z)$ for $z\in M'$, and $x-y\in M_{n+1}$ so that $z\in f^{-1}(M_{n+1})$ and thus $z\in f^{-1}(M_n)$.
+    This means that $x-y\in M_n$ and thus $x\in M_n$ as desired.
+    \qed
+
+\eproof
+
+\bcoro
+
+    \benum
+        \item The finite direct sums of Noetherian modules is Noetherian.
+        \item If $A$ is a Noetherian ring and $M$ is a fg $A$-module, then $M$ is a Notherian module.
+        \item If $A$ is a Notherian ring and $B$ a finite $A$-algebra, then $B$ is a Noetherian ring.
+        In particular, $A/I$ is Notherian for any ideal $I\leq A$.
+    \eenum
+
+\ecoro
+
+\bproof
+
+    For the first point it is sufficient to show this for binary direct sums.
+    If $M,N$ are Noetherian, then $0\to M\to M\oplus N\to N\to0$ is a short exact sequence and thus $M\oplus N$ is Notherian by above.
+
+    Since $M$ is fg, $M\cong A^n/N$ for some submodule $N\leq A^n$ (consider the surjection $A^n\to M$ mapping to generators).
+    By the first point, $A^n$ is Noetherian and thus $M$ is as well.
+
+    $B$ is a fg $A$-module, and thus a Noetherian $A$-module.
+    Since ideals of $B$ are $A$-submodules, the ACC on $A$-submodules implies ACC on $B$'s ideals.
+    \qed
+
+\eproof
+
+\blemm
+
+    Let $A$ be a Noetherian ring, then all of its localizations are Noetherian rings as well.
+
+\elemm
+
+\bproof
+
+    Let $S\subseteq A$ be multiplicative, and consider an increasing sequence of ideals $\tilde I_1\subseteq\tilde I_2\subseteq\cdots$ in $S^{-1}A$.
+    Then $I_n=\iota^{-1}(\tilde I_n)$ forms an increasing sequence of ideals of $A$, and thus stabilizes.
+    Since $\tilde I_n=S^{-1}I_n$, we get that $\tilde I_n$ stabilizes.
+    \qed
+
+\eproof
+
+\bthrm[title=Hilbert basis theorem]
+
+    If $A$ is Noetherian, then $A[x]$ is a Noetherian ring.
+
+\ethrm
+
+\bproof
+
+    Let $I\subseteq A[x]$ be an ideal, we wish to show it is finitely generated.
+    Let us adopt the notation that for $f\in A[x]$, $a_f\in A$ denotes the leading term of $f$ (and $a_f=0$ only when $f=0$).
+
+    We claim that $J=\set{a_f}[f\in I]$ is an ideal in $A$.
+    If $f\in I$ and $b\in A$ then either $ba_f=0$ or $ba_f=a_{bf}$; in both cases $ba_f\in J$.
+    Now if $f,g\neq0$ are in $I$ then $a_f+a_g$ is either zero or the leading term of $x^{\deg g}f+x^{\deg f}g\in J$ and thus $a_f+a_g\in J$.
+
+    Since $J$ is Noetherian, there are $f_1,\dots,f_n\in I$ such that $J=(a_{f_1},\dots,a_{f_n})$.
+    Let $d_i=\deg f_i$, and $d$ be the maximum $d_i$.
+    Consider the fg $A$-submodule
+    $$ M = \sum_{i=0}^{d-1}Ax^i \subseteq A[x] . $$
+    Then $M\cap I$ is an $A$-submodule of $M$, which is Noetherian (since $M$ is fg and $A$ is Noetherian so $M$ is Noetherian, and thus its submodules are Noetherian).
+
+    Now define $I'=(f_1,\dots,f_n)\subseteq I$.
+    We claim that
+    $$ I = I' + (M\cap I)\hbox{ as $A$-submodules} . $$
+    Let $f\in I$, then we claim there is an $f'\in I'$ such that $\deg(f-f')<d$ and thus $f-f'\in M\cap I$.
+    If $\deg f<d$ then we are done, so assume $\deg f\geq d$.
+    By induction, it is sufficient to show that there is an $f'\in I'$ such that $\deg(f-f')<\deg f$.
+
+    Now, $a_f\in J=(a_{f_1},\dots,a_{f_n})$ so that $a_f=\sum_ib_ia_{f_i}$ for $b_i\in A$.
+    Then define
+    $$ f' = \sum_{i=1}^n b_ix^{(\deg f)-d_i}f_i \in I' . $$
+    By assumption, $\deg f\geq d\geq d_i$ so that $\deg(x^{(\deg f)-d_i}f_i)=d_i$, and so $\deg f'\leq\deg f$.
+    Moreover, the leading coefficient of $f'$ is
+    $$ a_{f'} = \sum_{i=1}^n b_ia_{f_i} = a_f, $$
+    so that $\deg(f-f')<\deg f$ as desired.
+
+    Now since $I=I'+(M\cap I)$, $I'$ is a fg ideal and $M\cap I$ is a fg $A$-module (and thus fg by $A[x]$), we have that $I$ is a fg ideal, as desired.
+    \qed
+
+\eproof
+
+\bcoro
+
+    \benum
+        \item If $A$ is a Noetherian ring, so is $A[x_1,\dots,x_n]$.
+        \item If $A$ is a Noetherian ring, and $B$ is a fg $A$-algebra, $B$ is Noetherian.
+        \item Any fg algebra over a field is Noetherian.
+        \item Any fg algebra over a PID (in particular $\bZ$) is Noetherian.
+    \eenum
+
+\ecoro
+
+\bproof
+
+    The first point follows by induction and Hilbert's basis theorem.
+    The second point is because if $B$ is a fg $A$-algebra, it is isomorphic to $A[x_1,\dots,x_n]/I$ for some ideal $I\leq A[x_1,\dots,x_n]$, and is thus Noetherian.
+    The last two points are due to the second (fields and PIDs are Noetherian).
+    \qed
+
+\eproof
+
+We now utilize these results to reprove a lemma we showed above.
+
+\blemm
+
+    Let $A$ be a ring and $T\in M_n(A)$ a matrix.
+    Then there are $a_1,\dots,a_n\in A$ such that
+    $$ T^n + a_1T^{n-1} + \cdots + a_m = 0 . $$
+
+\elemm
+
+\bproof
+
+    Denote $T=(a_{ij})$, and consider the subalgebra $A'=\bZ[\set{a_{ij}}]\subseteq A$.
+    This is a fg $\bZ$-algebra and thus Noetherian.
+    Since $T\in M_n(A')$, we can assume from the getgo that $A$ is Noetherian.
+
+    Since $M_n(A)\cong A^{n^2}$ as $A$-modules, $M_n(A)$ is a Noetherian $A$-module.
+    Thus the increasing sequence of $A$-modules
+    $$ N_m = \gen{1,T,\dots,T^m} \subseteq M_n(A) $$
+    stabilizes, so eventually $N_n=N_{n-1}$ so that $T^n\in N_{n-1}$ and we get the desired result.
+    \qed
+
+\eproof
+
+\blemm
+
+    If $M$ is a fg $A$-module, then for $\phi\in\endo_A(M)$, there are $a_1,\dots,a_n\in A$ such that
+    $$ \phi^n + a_1\phi^{n-1} + \cdots + a_n = 0 . $$
+
+\elemm
+
+\bproof
+
+    When $M=A^n$ there is a natural isomorphism of $A$-algebras $M_n(A)\cong\endo_A(M)$, so the result follow from the above lemma.
+    Otherwise, consider a surjective map $\pi\colon A^n\to M$, then we claim there is a $\tilde\phi\colon A^n\to A^n$ such that the below diagram commutes
+
+    \commsq{A^n&A^n\cr M&M}
+        {\tilde\phi}{\phi}{\pi}{\pi}
+
+    Meaning $\pi\circ\tilde\phi=\phi\circ\pi$.
+    For every $i$ choose a preimage $V_i\in\pi^{-1}(\phi(\pi(e_i)))\in A^n$ and define
+    $$ \tilde\phi(x_1,\dots,x_n) = \sum_{i=1}^n x_iv_i . $$
+    This satisfies the condition.
+
+    Now there is a monic polynomial $f\in A[x]$ such that $f(\tilde\phi)=0$ by the $M=A^n$ case.
+    Then
+    $$ f(\phi)\circ\pi = \pi\circ f(\tilde\phi) = 0, $$
+    which implies $f(\phi)=0$ because $\pi$ is surjective.
+    \qed
+
+\eproof
+
+\subsection{Simple modules and length}
+
+\bdefn
+
+    A poset $\Sigma$ has the {\emphcolor descending chain condition} ({\emphcolor DCC}) if it satisfies the dual of the ACC (equivalently, $\Sigma^\op$ has ACC).
+    This means that every subset has a minimal element, or every descending chain stabilizes.
+
+\edefn
+
+\bdefn
+
+    An $A$-module is {\emphcolor Artinian} if it has DCC on its submodules.
+    A ring $A$ is {\emphcolor Artinian} if it is Artinian as a module over itself, equivalently it has DCC on its ideals.
+
+\edefn
+
+Note that the short exact sequence result on Noetherian rings holds for Artinian rings as well.
+Thus finite direct sums of Artinian modules are Artinian, fg modules over Artinian rings are Artinian, and thus finite algebras over Artinian rings are Artinian.
+
+Note that it is not the case that a module is Artinian iff its submodules are all fg.
+That is, Artinian is not equivalent to Noetherian (and for modules they are distinct conditions, for rings we will see that Artinian implies Noetherian).
+
+\bexam
+
+    $\bZ$ is a Noetherian but not an Artinian ring.
+    It is not Artinian because $\bZ\supsetneq(n)\supsetneq(n^2)\supsetneq(n^3)\supsetneq\cdots$ is an infinite decreasing sequence of ideals.
+
+    Similarly $k[x]$ is Noetherian but not Artinian: $(x^k)$ forms a descending sequence of ideals.
+
+\eexam
+
+\bdefn
+
+    A nonzero module $M$ is {\emphcolor simple} if it has no non-trivial submodules.
+
+\edefn
+
+\blemm
+
+    An $A$-module $M$ is simple iff it is isomorphic (as $A$-modules) to $A/\m$ for a maximal ideal $\m\leq A$.
+
+\elemm
+
+\bproof
+
+    If $M$ is simple, then for $0\neq m\in M$ the submodule $\gen m\subseteq M$ is isomorphic to $A/\ann(m)$ (the map $a\mapsto am$ has kernel $\ann(m)$).
+    Since $M$ is simple, $\gen m=M$ and so $A/\ann(m)\cong M$.
+    There is then a bijection between submodules of $M$ and ideals of $A$ containing $\ann(m)$.
+    Since $M$ is simple, there cannot be any nontrivial such ideals, so $\ann(m)$ is maximal.
+
+    And if $M\cong A/\m$ then again there is a bijection between submodules of $M$ and ideals containing $\m$.
+    So $M$ is simple, as $\m$ is maximal.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A {\emphcolor composition series} of $M$ is a chain of submodules
+    $$ 0 = M_0 \subsetneq M_1 \subsetneq M_2 \subsetneq \cdots \subsetneq M_n = M $$
+    which is maximal.
+    This is equivalent to $M_{i+1}/M_i$ being simple for all $i$ (no modules between $M_i$ and $M_{i+1}$).
+    The {\emphcolor length} of such a series is $n$ (not $n+1$).
+
+    Denote by $\ell_A(M)$ the minimal length of a composition series of $M$ (or infinity if no composition series exists).
+
+\edefn
+
+\blemm
+
+    If $M$ has finite length $\ell(M)=n$, then all of its composition series have the same length $n$, and every chain of submodules can be extended to a composition series.
+
+\elemm
+
+\bproof
+
+    First we claim that if $N\subsetneq M$ is a submodule, then $\ell(N)<\ell(M)$.
+    Indeed, if $\set{M_i}$ is a composition series for $N$, then $N_i=M_i\cap N$ is a sequence of submodules of $N$.
+    Then $N_i=N_{i+1}\cap M_i$ so
+    $$ N_{i+1}/N_i = N_{i+1}/(N_{i+1}\cap M_i) \cong (N_{i+1}+M_i)/M_i \subseteq M_{i+1}/M_i $$
+    which is either simple or zero.
+    Thus removing repeated values, we have formed a composition series for $N$ of shorter length, so $\ell(N)\leq\ell(M)$.
+
+    Now if $\ell(N)=\ell(M)$ then $N_{i+1}+M_i=M_{i+1}$ for all $i$, and thus we claim $N_i=M_i$ for all $i$ so that $N=M$.
+    This is by induction, since $M_0=N_0=0$, and $N_{i+1}=N_{i+1}+N_i=N_{i+1}+M_i=M_{i+1}$, as desired.
+
+    Now if $\set{M_i}_0^n$ is any chain in $M$, then
+    $$ \ell(M) = \ell(M_n) > \ell(M_{n-1}) > \cdots > \ell(M_0) = 0, $$
+    so $\ell(M)\geq n$.
+
+    Now if $\set{M_i}$ is any composition series of $M$ of length $n$, then $\ell(M)\geq n$ by what we just showed.
+    But by definition $\ell(M)\leq n$ so that $\ell(M)=n$ and thus all composition series have length $\ell(M)$.
+
+    And for any general chain of submodules of $M$, if it is not a composition series then new terms can be inserted.
+    This process can be repeated, and must terminate (since once it reaches a length of $\ell(M)$ it must be a composition series).
+    \qed
+
+\eproof
+
+\bnote
+
+    Note that we can prove something stronger, the {\emphcolor Jordan-Holder theorem}: for any two composition series $M_i,N_j$ there is a permutation $\sigma$ between $i$ and $j$
+    such that $M_{i+1}/M_i\cong N_{\sigma(i)+1}/N_{\sigma(i)}$.
+    A proof of this can be found in my representation theory homework somewhere.
+
+\enote
+
+\blemm
+
+    An $A$-module $M$ has finite length iff it is both Noetherian and Artinian.
+
+\elemm
+
+\bproof
+
+    If $M$ has finite length, then any increasing/decreasing sequence has length bound by $\ell(M)$ so that $M$ is both Noetherian and Artinian.
+
+    Conversley if $M$ is Artinian and Noetherian, then consider the set of submodules $N\subseteq M$ of finite length.
+    It is nonempty since it contains $0$, and because $M$ is Noetherian contains a maximal element $M'$.
+    If $M=M'$ then we are done.
+    Otherwise, the set of submodules $M'\subsetneq N\subseteq M$ is nonempty (containing $M$) and has a minimal element $N$ since $M$ is Artinian.
+    But then $N/M'$ is simple, and so composing a composition series of $M'$ with $\subsetneq N$ forms a composition series of $N$, so $N$ has finite length, contradicting $M'$'s maximality.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $M$ be fg over a Notherian ring $A$.
+    \benum
+        \item If $M\neq0$, then $M$ has a submodules $N\subseteq M$ such that $N\cong A/\p$ for some prime $\p\leq A$.
+        \item There exists a chain $0=M_0\subsetneq M_1\subsetneq\cdots\subsetneq M_n=M$ of submodules such that for each $i$, there is an isomorphism of $A$-modules
+        $M_{i+1}/M_i\cong A/\p_i$ for prime ideals $\p_i\leq A$.
+        \item The chain in the previous point is not necessarily unique, but
+        \benum
+            \item for a prime ideal $\p\leq A$ we have $\ann M\subseteq\p$ iff $\p_i\subseteq\p$ for some $i$.
+            In particular, $\ann M\subseteq\p_i$ for all $i$, and the minimal ideals between $\p_1,\dots,\p_n$ are precisely minimal prime ideals $\ann(M)\subseteq\p$.
+            \item for every minimal prime ideal $\ann(M)\subseteq\p$, the $\A_\p$ module $M_\p$ has finite length equal to the number of times $\p$ occurs in $\set{\p_1,\dots,\p_n}$.
+        \eenum
+    \eenum
+
+\eprop
+
+\bproof
+
+    Let $\Theta$ be the set of all ideal $I\leq A$ of the form $I=\ann(m)$ for $0\neq m\in M$.
+    Since $A$ is Noetherian, there is an $m$ such that $\ann(m)$ is maximal.
+    Since $\gen m\subseteq M$ is isomorphic to $A/\ann(m)$, it is sufficient to show $\ann(m)$ is prime.
+    So suppose $a,b\notin\ann(m)$, then $bm\neq0$ and $\ann(m)\subseteq\ann(bm)$.
+    Thus by maximality $\ann(m)=\ann(bm)$ and then $a\notin\ann(bm)$ so $abm\neq0$ meaning $ab\notin\ann(m)$, showing it is prime.
+    This proves the first point.
+
+    Let $\Sigma$ be the set of all submodules of $M$ which possess such a chain.
+    It is nonempty since the zero module is in it.
+    Since $M$ is Noetherian, let $M'$ be a maximal element of $\Sigma$.
+
+    Now consider $M''=M/M'$; if $M''=0$ we are finished.
+    Otherwise by the first point it has a submodule $N''=N'/M'$ isomorphic to $A/\p$.
+    But then composing the chain of $M'$ with $\subsetneq N'$ gives such a chain, contradicting $M'$'s maximality.
+
+    For the final point, notice that for $M'\subsetneq M$,
+    $$ \ann(M')\cdot\ann(M/M') \subseteq \ann(M) \subseteq \ann(M')\cap\ann(M/M') . $$
+    The second inclusion is clear, the first is because for $a\in\ann(M')$ and $b\in\ann(M/M')$ and $m\in M$ then $bm\in M'$ and $abm\in aM'=0$.
+    Thus for a prime ideal $\p\leq A$, $\ann(M)\subseteq\p$ iff $\ann(M')\subseteq\p$ or $\ann(M/M')\subseteq\p$.
+    Thus by induction $\ann(M)\subseteq\p$ iff $\ann(M_{i+1}/M_i)\subseteq\p$ for some $i$.
+    Since $\ann(A/\p_i)=\p_i$, the first point follows.
+
+    For the second point, the chain $\set{M_i}$ gives the chain $\set{S^{-1}M_i}$ and
+    $$ S^{-1}M_{i+1}/S^{-1}M_i \cong S^{-1}(M_{i+1}/M_i) \cong S^{-1}(A/\p_i) \cong S^{-1}A/S^{-1}\p_i . $$
+    Moreover $S^{-1}\p_i=S^{-1}A$ iff $S\cap\p_i\neq\emptyset$, and otherwise is a prime ideal.
+    For $S=A-\p$ for a minimal prime ideal $\ann(M)\subseteq\p$, then $S^{-1}\p_i=A_\p$ if $\p\neq\p_i$ and otherwise $S^{-1}\p_i=\p A_\p$ is a maximal ideal.
+    Thus the sequence $(M_i)_\p$ forms a composition series after deleting the repeated entries (when $\p\neq\p_i$), and we are left with a composition series (since the quotients are
+    quotients by a maximal ideal) whose length is equal to the number of $\p_i$ equal to $\p$.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A minimal prime ideal is a prime ideal not containing any other prime ideal.
+
+\edefn
+
+\blemm
+
+    A Noetherian ring $A$ has finitely many minimal prime ideals.
+
+\elemm
+
+\bproof
+
+    The minimal prime ideals of $A$ are the minimal primes containing $\ann(A)=0$.
+    Then for any chain as in the above lemma (whose components are $A/\p$ for some prime), the minimal prime ideals are the minimal primes from $\set{\p_1,\dots,\p_n}$ which is finite.
+    \qed
+
+\eproof
+
+\bprop
+
+    A ring is Artinian iff it is Noetherian and every prime ideal is maximal.
+
+\eprop
+
+\bproof
+
+    If $A$ is Noetherian and every prime ideal is maximal, then every prime ideal is also minimal.
+    Thus $A$ has finitely many prime/maximal ideals, $\m_1,\dots,\m_k$.
+    Then their product $I=\m_1\cdots\m_k$ is contained in the intersection of all prime ideals, $\nil(A)$.
+    Because $A$ is Noetherian $I$ is finitely generated, so $I^n=0$ for some $n$ (since every element of $I$ is nilpotent, and it is finitely generated).
+
+    We have a chain of submodules
+    $$ 0 = M_0 \subseteq M_1 \subseteq \cdots \subseteq M_k = A , $$
+    where $M_{i+1}/M_i\cong A/\m_i$ for some $i$ (by the above proposition).
+    As a subquotient, $M_{i+1}/M_i$ is a Noetherian $A$-module, and thus a Notherian module over the field $K=A/\m_i$.
+    A Noetherian vector space is finite-dimensional (it is fg), so that $M_{i+1}/M_i$ is of finite length over $K$ (its length is equal to its dimension).
+    Then $M_{i+1}/M_i$ has finite length over $A$ as well, and then inductively we see that each $M_i$ has finite length, and in particular $A$ is Artinian.
+
+    Conversely if $A$ is Artinian, then all of its prime ideals are maximal (homework), so we need only show it is Noetherian.
+    If $\m_1,\dots,\m_{n+1}$ are distinct maximal ideals then $\m_1\cdots\m_n\supset\m_1\cdots\m_{n+1}$ is strict, so by Artinian-ness there must be finitely many maximal ideals.
+    If the inclusion were not strict then $\m_1\cdots\m_n\subseteq\m_{n+1}$, and then by $\m_{n+1}$'s primality, $\m_i\subseteq\m_{n+1}$ for some $i$.
+    But then $\m_i=\m_{n+1}$ by maximality, a contradiction to distinctness.
+
+    So let $I=\m_1\cdots\m_n$ be the product of all $A$'s prime/maximal ideals.
+    Consider the descending chain $I\supseteq I^2\supseteq I^3\supseteq\cdots$ which must terminate, so $I^k=I^{k+1}$ eventually.
+    We claim that $I^k=0$.
+
+    If not, let $x_1,\dots,x_{k+1}\in I$ such that $x_1\cdots x_{k+1}\neq 0$.
+    Because $I^k=I^{k+1}$, $\prod_{i=2}^{k+1}x_i=\sum_\alpha y_{\alpha,1}\cdots y_{\alpha,k+1}$ where the sum is over a finite set and each $y_{\alpha,i}\in I$.
+    Thus $x_1y_{\alpha_0,1}\cdots y_{\alpha_0,k+1}\neq0$ for some $\alpha_0$.
+    Then from the original tuple $x_1,\dots,x_{k+1}\in I$ we obtain a new tuple $x'_1=x_1,x'_2,\dots,x'_{k+2}$ ($x'_i=y_{\alpha_0,i-1}$) with nonzero product, and the first element unchanged.
+
+    We similarly may write the product of the final $k$ elements $x'_3\cdots x'_{k+2}$ as an element of $I^{k+1}$ and obtain $x_1,x'_2,x'_3,x''_4,\dots,x''_{k+3}$ with nonzero product.
+    Continuing this inductively, we produce an infinite sequence $y_1,y_2,\dots$ such that $y_1\cdots y_m\neq0$ for all $m>0$.
+    Now consider the descending chain $(y_1)\supseteq(y_1y_2)\supseteq\cdots$, which stabilizes since $A$ is Artinian.
+    Thus for some $m>0$ and $a\in A$,
+    $$ \prod_{i=1}^my_i = a\prod_{i=1}^{m+1}y_i \implies \parens{\prod_{i=1}^my_i}(1-ay_{m+1}) = 0 . $$
+    Since $y_{m+1}\in I$ and thus $ay_{m+1}\in I$ is in the Jacobson radical ($I$ is the product of all maximal ideals, and thus contained in their intersection), we have that $1-ay_{m+1}\in A^\times$.
+    Thus $\prod_{i=1}^my_i=0$, a contradiction.
+
+    So $I^k=0$, and so there is a chain (taking $M_j=\m_1\cdots\m_{n-j}$),
+    $$ 0 = M_0 \subseteq M_1 \subseteq \cdots \subseteq M_m = A $$
+    where $M_{i+1}/M_i$ is annihlated by some $\m_i$, and thus is Artinian over the field $K=A/\m_i$ so finite-dimensional over $A$.
+    Thus $M_{i+1}/M_i$ has finite length over $A/\m_i$, and thus over $A$, and then by induction we see that each $M_i$ has finite length, in particular so does $A$ and thus is Noetherian.
+    \qed
+
+\eproof
+
+\bnote
+
+    Recall that $\bZ$ is Notherian but not Artinian.
+    This is because while all of its non-zero prime ideals are maximal, $(0)$ is a prime ideal which is not maximal.
+    We see that in general an integral domain which is not a field cannot be Artinian.
+
+\enote
+
+\subsection{Tensor products}
+
+I assume some familiarity with the tensor product (see e.g.\ my summary on representation theory otherwise).
+The tensor product is a bifunctor
+$$ \bul\otimes_B\bul\colon {}_A\Mod_B\times{}_B\Mod_C \to {}_A\Mod_C , $$
+with the universal property that it represents the balanced map functor:
+$$ \hom(M\otimes_BN,P) \cong {\rm Bal}(M,N;\,P) . $$
+Balanced maps are maps $M\times N\to P$ which are additive and multiplicative in each coordinate, and $f(mb,n)=f(m,bn)$ for all $b\in B$.
+
+The tensor product also has a right-adjoint.
+For an $(A,B)$-bimodule $M$, $\bul\otimes_AM$ is a functor $\Mod_A\to\Mod_B$ with right adjoint $\hom_B(M,\bul)$.
+
+In the case of commutative rings (this course), all modules are bimodules, so the tensor product is a bifunctor
+$$ \bul\otimes_A\bul\colon \Mod_A\to\Mod_A, $$
+which represents the bilinear map functor (bilinear in the usual sense).
+
+Note still that we use tensor products between module categories.
+In particular if $B$ is an $A$-algebra, then $B\otimes_AM$ is a $B$-module ($b(c\otimes m)=(bc)\otimes m$).
+This defines a map $\Mod_A\to\Mod_B$, and its right-adjoint is the restriction map (restrict a $B$-module to an $A$-module).
+Note that this is a special case of the tensor-hom adjunction: $\bul\otimes_AB$ is left-adjoint to $\hom_B(B,\bul)\cong B$.
+
+So we have a natural isomorphism
+$$ \hom_B(B\otimes_AM,P) \cong \hom_A(M,P|_A),\qquad M\in\Mod_A, P\in\Mod_B . $$
+The correspondence is given by mapping $f\colon B\otimes_AM\to P$ to $\tilde f\colon M\to P$ by $\tilde f(m)=f(1\otimes m)$.
+And $g\colon M\to P|_A$ to $\hat g\colon B\otimes_AM\to P$ by $\hat g(1\otimes m)=g(m)$.
+
+\bprop
+
+    Let $M$ be an $A$-module.
+    \benum
+        \item For a multiplicative set $S\subseteq A$, $S^{-1}A\otimes_AM$ is naturally isomorphic to $S^{-1}M$.
+        \item For an ideal $I\leq A$, $A/I\otimes_AM$ is naturally isomorphic to $M/IM$.
+    \eenum
+
+\eprop
+
+\bproof
+
+    The canonical map $M\to S^{-1}M$ mapping $m\mapsto m/1$ defines a map $f\colon S^{-1}A\otimes_AM\to S^{-1}M$ by
+    $f(1\otimes m)=m/1$.
+    Then
+    $$ f(a/s\otimes m) = a/sf(1\otimes m) = am/s . $$
+    We define its inverse $g\colon S^{-1}M\to S^{-1}A\otimes_AM$ by
+    $$ g(m/s) = 1/s\otimes m . $$
+    We claim this is well-defined: if $m/s=m'/s'$ then $1/s\otimes m=1/s'\otimes m'$.
+    If $t(ms'-m's)$ then
+    $$ \frac1s\otimes m = \frac{ts'}{ts's}\otimes m = \frac1{ts's}\otimes ts'm = \frac1{ts's}\otimes tsm' = \frac1{s'}\otimes m' $$
+    as desired, and clearly $g$ is a module morphism.
+    $f$ and $g$ are also clearly morphisms.
+
+    The proof for the second point is similar: projection $M\to M/IM$ is an $A$-module morphism.
+    Thus this gives rise to an $A/IA$-module morphism $f\colon(A/IA)\otimes_AM\to M/IM$ by $f(1\otimes m)=\bar m$.
+    Then
+    $$ f(\bar a\otimes m) = af(1\otimes m) = a\bar m = \bar{am} . $$
+    Its inverse is $g\colon M/IM\to(A/IA)\otimes_AM$ given by $g(\bar m)=1\otimes m$; this is easily seen to be well-defined and an inverse.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Let $B$ be an $A$-algebra and $M$ a $B$-module.
+    Then there is a natural map
+    $$ B\otimes_A M|_A \to M,\qquad b\otimes m\to bm . $$
+    In particular this is a natural map $m_B\colon B\otimes_AB\to B$ by $b\otimes b'\mapsto bb'$.
+
+\ecoro
+
+\bproof
+
+    This map is the map corresponding to the identity of $\hom_A(M|_A,M|_A)$.
+    The second point is for $M=B$.
+    \qed
+
+\eproof
+
+\blemm
+
+    If $B,C$ are $A$-algebras, then their tensor product $B\otimes_AC$ is naturally an $A$-algebra and their coproduct in the category of
+    $A$-algebras.
+
+\elemm
+
+\bproof
+
+    Let $D=B\otimes_AC$.
+    The natural algebra structure is given by $(b\otimes c)(b'\otimes c')=(bb')\otimes(cc')$, and $A\to D$ by $a\mapsto a(1\otimes 1)$.
+    This is the composition of
+    $$ D\times D\to D\otimes_AD,\qquad (d,d')\mapsto d\otimes d', $$
+    and
+    $$ D\otimes_AD = (B\otimes_AC)\otimes_A(B\otimes_AC) \cong (B\otimes_AB)\otimes_A(C\otimes_AC) \to B\otimes_AC $$
+    where the final map is the tensor of $m_B\otimes m_C$.
+
+    The inclusion maps $i_B\colon B\to D$ and $i_C\colon C\to D$ are given by $b\mapsto b\otimes1$ and $c\mapsto1\otimes c$.
+
+    Now if $E$ is another $A$-algebra and there are maps $f\colon B\to E,g\colon C\to E$, then if $h\colon D\to E$ commutes with the
+    rest of the diagram, i.e.
+    $$ g = h\circ i_C,\qquad f = h\circ i_B, $$
+    then we must have
+    $$ h(b\otimes c) = h((b\otimes1)(1\otimes c)) = h(b\otimes1)h(1\otimes c) = hi_B(b)hi_C(c) = f(b)g(c) . $$
+    Thus $h$ is unique, and this is well-defined (it is bilinear).
+    \qed
+
+\eproof
+
+Recall the notion of left- and right-exact functors (preserving finite limits and colimits respectively).
+Tensor products are left-adjoints and thus right-exact:
+
+\bprop
+
+    If $M'\to M\to M''\to0$ is an exact sequence of $A$-modules, then for any $A$-module $N$, the induced sequence
+    $$ M'\otimes_AN \to M\otimes_AN \to M''\otimes_AN \to 0 $$
+    is exact.
+
+\eprop
+
+\bnote
+
+    Tensor products are not exact; they do not preserve injections.
+    Indeed, if $f\colon A\to A$ is the map $f(x)=ax$ for $a\in A$, then $f\otimes M=f\otimes\id_M$ is the endomorphism of
+    $A\otimes_AM\cong M$ which maps $m\mapsto am$.
+    When $a$ is not a zero divisor (e.g.\ $A$ is a domain), $f$ is injective, but $f\otimes M$ need not be (e.g.\ $M=A/(a)$).
+
+\enote
+
+Since $\hom_A(M,\bul)$ is right-adjoint, it is left exact so it preserves finite limits.
+It is not hard to show that $\hom_A(\bul,M)$ is left-exact as well (but contravariantly).
+Furthermore the Yoneda embedding reflects exactness:
+
+\bprop
+
+    A sequence of $A$-modules $M_\bul=M'\to M\to M''\to0$ is exact iff
+    $$ \hom(M_\bul,N) = 0 \to \hom(M'',N) \to \hom(M,N) \to \hom(M',N) $$
+    is exact for all $N\in\Mod_A$.
+    Similarly $N_\bul=0\to N'\to N\to N''$ is exact iff
+    $$ \hom(M,N_\bul) = 0 \to \hom(M,N') \to \hom(M,N) \to \hom(M,N'') $$
+    is exact for all $M$.
+
+\eprop
+
+\bproof
+
+    The ``only if'' part is due to left exactness.
+    The converse (second point) is done by choosing $M=N'$ and looking at where $\id$ goes (this shows that the composition of maps
+    is zero), then $M$ to be the kernel of the second map, and showing that this implies exactness at $M$, and then you just need to
+    show the first map is injective.
+    \qed
+
+\eproof
+
+While not all tensor products are exact, some are.
+We give this case a special term.
+
+\bdefn
+
+    An $A$-module $M$ is {\emphcolor flat} if the functor $\bul\otimes_AM$ is exact.
+
+\edefn
+
+\bnote
+
+    Recall that a functor is exact iff it preserves finite limits and colimits iff it preserves short exact sequences iff it preserves
+    arbitrary exact sequences.
+
+    Since $\bul\otimes_AM$ is right-exact for any module $M$, $M$ is flat iff $\bul\otimes_AM$ preserves injections.
+
+\enote
+
+\bexam
+
+    If $S\subseteq A$ is multiplicative, then $\bul\otimes_AS^{-1}A$ is naturally isomorphic to $S^{-1}\bul$, which is exact.
+    Thus $S^{-1}A$ is a flat $A$-module.
+
+    If $M$ is free, so $M\cong A^{\oplus I}$, then
+    $$ \bul\otimes_AM \cong \bul\otimes_AA^{\oplus I} (\bul\otimes_AA)^{\oplus I} \cong \bul^{\oplus I} . $$
+    The second isomorphism is due to left adjoints preserving colimits.
+    And $\bul^{\oplus I}$ is exact (it maps injective maps to injective maps, more generally direct sums in module categories are exact,
+    satisfying Grothendieck's axiom (AB4)).
+
+\eexam
+
+\blemm
+
+    Let $M$ be an $A$-module and $S\subseteq A$ a multiplicative set.
+    \benum
+        \item If $N$ is an $S^{-1}A$-module, it is an $A$-module via the canonical map $A\to S^{-1}A$, and there is a natural isomorphism
+        $$ M\otimes_AN \to S^{-1}M\otimes_{S^{-1}A}N,\qquad m\otimes n\mapsto m/1\otimes n . $$
+        \item For an $A$-module $N$, there is a natural isomorphism
+        $$ S^{-1}M\otimes_{S^{-1}A}S^{-1}N \to S^{-1}(M\otimes_AN),\qquad \frac ms\otimes\frac nt \mapsto \frac{m\otimes n}{st} . $$
+        In particular for every prime $\p\leq A$, there is a natural isomorphism
+        $$ M_\p \otimes_{A_\p} N_\p \cong (M\otimes_AN)_\p . $$
+    \eenum
+
+\elemm
+
+\bproof
+
+    There is a natural isomorphism (by associativity of the tensor)
+    $$ S^{-1}M\otimes_{S^{-1}A}N \cong (M\otimes_AS^{-1}A)\otimes_{S^{-1}A}N \cong M\otimes_AN $$
+    which maps $m/s\otimes n$ to $m\otimes 1/s\otimes n$ to $m\otimes n/s$.
+    So in reverse it maps $m\otimes n$ to $m/1\otimes n$ as desired.
+
+    There is a natural isomorphism
+    $$ S^{-1}M\otimes_{S^{-1}A}S^{-1}N \cong M\otimes_AS^{-1}N \cong M\otimes_A(N\otimes_AS^{-1}A) \cong (M\otimes_AN)\otimes_A S^{-1}A , $$
+    and this is naturally isomorphic to $S^{-1}(M\otimes_AN)$.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Flatnes is local, i.e.\ the following are equivalent:
+    \benum
+        \item $M$ is a flat $A$-module,
+        \item $S^{-1}M$ is a flat $S^{-1}A$-module for all multiplicative $S\subseteq A$,
+        \item $M_\p$ is a flat $A_\p$-module for all prime $\p\leq A$,
+        \item $M_\m$ is a flat $A_\m$-module for all maximal $\m\leq A$.
+    \eenum
+
+\ecoro
+
+\bproof
+
+    If $M$ is flat then by the above lemma
+    $$ \bul\otimes_{S^{-1}A}S^{-1}M \cong S^{-1}(\bul\otimes_AM) , $$
+    which is a composition of exact functors and thus exact.
+
+    Now if $M_\m$ is flat for all maximal $\m\leq A$, we show $M$ is flat.
+    Recall we need only show that $\bul\otimes_AM$ preserves injectives.
+    Recall that $f$ is injective iff $f_\m$ is injective for all maximal $\m\leq A$.
+    Now, $f_\m$ is isomorphic to $f\otimes M_\m$, which is injective since $M_\m$ is flat, we see $f_\m$ is injective for all $\m$ as desired.
+    \qed
+
+\eproof
+

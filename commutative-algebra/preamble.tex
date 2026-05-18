@@ -87,6 +87,7 @@
 
 \def\bnote{%
     \bppbox{rgb{1 1 .7}}{rgb{.5 .4 0}}{rgb{.3 .2 0}}
+    \def\curremphcolor{rgb{.5 .4 0}}%
     \noindent{\setfont{bf}Note:} %
 }
 \let\enote=\eppbox
@@ -153,13 +154,97 @@
     \expandafter\def\csname #1\endcsname##1{\@ifnextchar[ {\csname @#1\endcsname{##1}}{\csname @@#1\endcsname{##1}}}%
 }
 
+\def\TODO#1{\centerline{\color{red}\setscale{30pt}{\bf TODO:} #1}}
+
+\def\@true{\@true}
+\def\@false{\@false}
+
+\def\@mathify@col#1#2{%
+    \relax\xdef#1{%
+        #1%
+        \ifx\@mathifyfstcol\@false%
+            &%
+        \fi%
+        $#2$%
+    }%
+    \ifx\@mathifyfstcol\@true%
+        \global\let\@mathifyfstcol\@false%
+    \fi%
+}
+
+\def\@mathify@row#1{%
+    \noalign{\xdef#1{%
+        #1%
+        \ifx\@mathifyfstrow\@false%
+            \noexpand\cr%
+        \fi%
+    }%
+    \ifx\@mathifyfstrow\@true%
+        \global\let\@mathifyfstrow\@false%
+    \fi%
+    \global\let\@mathifyfstcol\@true}%
+}
+
+\def\mathify#1#2{%
+    \def#1{}%
+    \let\@mathifyfstrow\@true%
+    \let\@mathifyfstcol\@true%
+    \vbox{\everycr={\@mathify@row{#1}}\halign{&\@mathify@col{#1}{##}\cr
+        #2\cr
+    }}%
+}
+
+\def\commsq#1#2#3#4#5{%
+    \mathify\@csq{#1}%
+    \centerline{\expandafter\drawdiagram\expanded{{\@csq}}{%
+        \diagarrow{from={1,1}, to={1,2}, text={$#2$}, y distance=-.25cm}%
+        \diagarrow{from={2,1}, to={2,2}, text={$#3$}, y distance=.25cm}%
+        \diagarrow{from={1,1}, to={2,1}, text={$#4$}, x distance=-.25cm}%
+        \diagarrow{from={1,2}, to={2,2}, text={$#5$}, x distance=-.25cm}%
+    }}%
+}
+
+\def\@multline#1{%
+\hbox to\dimexpr\displaywidth-1cm\relax{%
+    \ifx\@nfirst\space%
+        $\displaystyle#1$\hfill%
+        \global\let\@nfirst\undefined%
+    \else%
+        \hfill$\displaystyle#1$%
+    \fi%
+}}
+
+\def\multline#1{%
+    \let\@nfirst\space%
+    \vcenter{\halign{\@multline{##}\crcr
+        #1\crcr%
+    }}%
+}
+
+\mathchardef\supsetneq="3529
 \mathchardef\subsetneq="3528
 \mathchardef\rtimes="256F
+\mathchardef\nmid="352D
+
+\let\epsilon\varepsilon
+\let\phi\varphi
+
+\addfont{stmary}{
+    default=stmary10,
+    10pt=stmary10
+}
+
+\setfontfamily{13}{stmary}
+
+\def\llbrack{\delimiter"4D4AD71\relax}
+\def\rrbrack{\delimiter"5D4BD79\relax}
 
 \newmathtype{set}\{\vert\}
 \newmathtype{gen}<\vert>
 \newmathtype{norm}|{}|
 \def\parens#1{\mathopen{}\mathclose{\left(#1\right)}}
+\def\bracks#1{\mathopen{}\mathclose{\left[#1\right]}}
+\def\bbracks#1{\mathop{}\mathclose{\left\llbrack#1\right\rrbrack}}
 \def\abs#1{\mathopen{}\mathclose{\left|#1\right|}}
 \def\ccoloneqq{\mathrel{{\mathop:}{\mathop:}{=}}}
 
@@ -180,6 +265,7 @@
 \def\m{{\f m}}
 
 \def\bV{{\bf V}}
+\def\bA{{\bb A}}
 \def\bC{{\bb C}}
 \def\bR{{\bb R}}
 \def\bF{{\bb F}}
@@ -238,6 +324,7 @@
 \def\mat{{\rm Mat}}
 \def\Mod{{\rm Mod}}
 \def\Ab{{\rm Ab}}
+\def\Set{{\rm Set}}
 \def\sgn{{\rm sgn}}
 \def\id{{\rm id}}
 \def\Ch{{\sf Ch}}
@@ -255,7 +342,15 @@
 \def\ev{{\rm ev}}
 \def\nil{{\rm nil}}
 \def\spec{{\rm Spec}}
+\def\specm{{\rm Specm}}
 \def\chr{{\rm char}}
 \def\cl#1{{\overline{#1}}}
+\def\bar#1{{\overline{#1}}}
 \def\Gal{{\rm Gal}}
+\def\Frac{{\rm Frac}}
+\def\pow{{\cal P}}
+\def\jac{{\rm Jac}}
+\def\ideal{{\cal I}}
+\def\gl{{\rm GL}}
+\def\fun{{\rm Fun}}
 
