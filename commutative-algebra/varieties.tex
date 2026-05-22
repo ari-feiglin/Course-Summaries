@@ -147,3 +147,369 @@ and as we showed (for zero sets, thus for open sets) $D(\set{f_i})$ is the finit
 
 \enote
 
+\bexam
+
+    Every closed subset of $\bA^1$ is either $\bA^1$ or finite.
+    Since $k$ is infinite, $\bA^1$'s irreducible closed subsets are its closed points.
+
+\eexam
+
+\bcoro
+
+    A closed subset $Y\subseteq\bA^n$ is irreducible iff the ideal $\I(Y)\subseteq k[\bA^n]$ is either prime or all $k[\bA^n]$.
+
+\ecoro
+
+\bproof
+
+    If $Y\subseteq\bA^n$ is irreducible and $fg\in\I(Y)$, then we want to show either $f\in\I(Y)$ or $g\in\I(Y)$.
+    Notice that since $fg\in\I(Y)$, we have $Y=\cl Y=Z(\I(Y))\subseteq Z(fg)=Z(f)\cup Z(g)$.
+    Since $Y$ is irreducible either $Y\subseteq Z(f)$ or $Y\subseteq Z(g)$, meaning $f\in\I(Y)$ or $g\in\I(Y)$ as desired.
+
+    If $\I(Y)$ is prime or all $k[\bA^n]$, suppose $Y=Y_1\cup Y_2$ where $Y_1,Y_2\subseteq Y$ are closed.
+    Then
+    $$ \I(Y_1)\I(Y_2) \subseteq \I(Y_1)\cap\I(Y_2) = \I(Y) . $$
+    Thus either $\I(Y_1)$ or $\I(Y_2)$ is contained in $\I(Y)$.
+    Suppose $\I(Y_1)\subseteq\I(Y)$, then applying $Z$ gives $Y_1\supseteq Y$ (since they are closed), so $Y=Y_1$ as desired.
+    \qed
+
+\eproof
+
+\bexam
+
+    $\bA^n$ is irreducible since $\I(\bA^n)=(0)$ is prime.
+
+    If $f\in k[\bA^n]$ is irreducible, then $Z(f)$ is irreducible in $\bA^n$.
+    This is because $\I(Z(f))=\sqrt{(f)}=(f)$ is prime.
+
+\eexam
+
+\subsubsection*{Proof of the Nullstellensatz}
+
+\blemm
+
+    Let $f\in k[x_1,\dots,x_n]$ be nonconstant and $A=k[x_1,\dots,x_n]/(f)$.
+    Then there exist integers $k_1,\dots,k_{n-1}>0$ such that the $k$-algebra homomorphism
+    $$ \phi\colon k[y_1,\dots,y_{n-1}] \to A,\qquad y_i\mapsto x_i-x_n^{k_i} $$
+    is injective and finite.
+
+\elemm
+
+\bproof
+
+    For an $n$-tuple $I=(d_1,\dots,d_n)$ let $x^I=x_1^{d_1}\cdots x_n^{d_n}$ and call $I$ the {\emphcolor multidegree} of $x^I$.
+    We define $k_j$ for $1\leq j\leq n$ by descending recursion and setting $k_n=1$, and letting
+    $$ k_j = 1 + \max_I\set{\sum_{i=j+1}^nk_id_i} , $$
+    where $I=(d_1,\dots,d_n)$ ranges over all the multidegrees in $f$ with nonzero coefficient.
+    We claim that $k_j$ satisfy the claim.
+
+    Let $y_i=x_i-x_n^{k_i}$ for $1\leq i\leq n-1$, and order the multidegrees in $f$ lexicographically.
+    That is, $(d_1,\dots,d_n)>(d'_1,\dots,d'_n)$ iff $d_j>d'_j$ for some index $j$ and $d_i=d'_i$ for all $i<j$.
+    This is a total order, and so $f$ has a maximum multidegree $I_f=(D_1,\dots,D_n)$.
+
+    Now define $N=\sum_{i=1}^nk_iD_i$.
+    Then we claim that $f$ is a polynomial in $B[x_n]$ of degree $N>0$ in $x_n$, whose leading coefficient is in $k^\times$, where
+    $B=k[y_1,\dots,y_{n-1}]\subseteq k[x_1,\dots,x_n]$.
+
+    Let $m=x^I$ be a monomial with $I=(d_1,\dots,d_n)$.
+    Substitute $x_i=y_i+x_n^{k_i}$, which shows that $m$ is a monic polynomial in $B[x_n]$ of $x_n$-degree $\sum_{i=1}^nk_id_i$.
+    We claim that under this substitution, the $x_n$-degree of $x^{I_f}$ is greater than $x^I$'s for any other multidegree $I$ in $f$.
+    That is,
+    $$ \sum_{i=1}^n k_iD_i > \sum_{i=1}^n k_id_i $$
+    for all other multidegrees $I$.
+    This will then imply the claim regarding $f$, as it is of the form
+    $$ f = \sum_I a_Ix^I = \sum_I a_I(y_I-x_n^{k_I})^I , $$
+    and considering the combination of monomials.
+
+    So let $I=(d_1,\dots,d_n)$ be another multidegree of $f$.
+    By $I_f$'s maximality there is a $j$ such that $D_j\geq d_j+1$ and $D_i=d_i$ for $i<j$.
+    Then
+    $$ \sum_{i=1}^nk_iD_i \geq \sum_{i=1}^jk_iD_i \geq \sum_{i=1}^{j-1}k_id_i + k_j(d_j+1) = \sum_{i=1}^jk_id_i + k_j . $$
+    By definition of $k_j$,
+    $$ > \sum_{i=1}^jk_id_i + \sum_{i=j+1}^nk_id_i = \sum_{i=1}^nk_id_i $$
+    as desired.
+
+    Now we need to show that these $k_i$ actually prove the lemma.
+    First we show that $\phi$ is integral; let $C=k[y_1,\dots,y_{n-1}]$ be $\phi$'s domain.
+    Let $c\in k^\times$ be $f$'s leading coefficient as a polynomial in $B[x_n]$, then $c^{-1}f$ vanishes in $A$.
+    Since $c^{-1}f$ is a monic polynomial in $B[x_n]$ which is zero, so $\bar x_n\in A$ is integral over $C$, as desired.
+    Since $\bar x_i=\bar y_i+\bar x_n^{k_i}$, $\bar x_i\in A$ is also integral over $C$, and thus $A$ is integral over $C$ via $\phi$.
+    Furthermore, $A$ is fg over $C$ and thus finite.
+
+    Note that $x_n\mapsto x_n$, $x_i\mapsto y_i=x_i-x_n^{k_i}$ is invertible, and thus $k[x_1,\dots,x_n]=k[y_1,\dots,y_{n-1}][x_n]$,
+    and $y_1,\dots,y_{n-1},x_n$ are algebraically independent.
+    Now suppose $\phi(g)=0$ for some $g\in C=k[t_1,\dots,t_{n-1}]$.
+    That is, $g(\bar y_1,\dots,\bar y_{n-1})=0\in A$ so $g(y_1,\dots,y_{n-1})=hf$ for some $h\in k[y_1,\dots,y_{n-1}][x_n]$.
+    Since $g$ has zero in $x_n$, but $f$ has positive degree, we must have that $g=0$.
+    So $\phi$ is injective.
+    \qed
+
+\eproof
+
+\bthrm[title=Noether normalization lemma]
+
+    Let $A\neq0$ be a fg algebra over a field $k$.
+    Then there exists a $k$-subalgebra $B\subseteq A$ such that $B$ is isomorphic as a $k$-algebra to a polynomial algebra $k[y_1,\dots,y_m]$
+    and $A$ is a finite $B$-algebra.
+
+\ethrm
+
+\bproof
+
+    Since $A$ is fg, $A\cong k[x_1,\dots,x_n]/I$ for some ideal $I$.
+    If $I=0$, then take $B=A$.
+    Otherwise there is a nonconstant $f\in I$ (since otherwise $I$ is the whole polynomial ring and $A=0$).
+    By the previous lemma, there is a subalgebra $B'\subseteq A'=k[x_1,\dots,x_n]/(f)$ such that $B'\cong k[x'_1,\dots,x'_{n-1}]$
+    and $A'$ is finite over $B'$.
+
+    Let $I'=I/(f)\subseteq A'$ and $J=I'\cap B'$ be ideals.
+    Then $B'/J\cong k[x'_1,\dots,x'_{n-1}]/J$ is a finite subalgebra over $A'/I'=A$.
+    By induction on the number of generators, the claim holds for $B'/J$, so there is a subalgebra $B\subseteq B'/J\subseteq A$ such that
+    $B$ is a polynomial ring $k[y_1,\dots,y_m]$ and $B'/J$ is a finite $B$-algebra.
+    Since being a finite algebra is transitive, $A$ is a finite $B$-algebra, as desired.
+    \qed
+
+\eproof
+
+The Noether normalization lemma then implies the following result, which can be seen to be a sort of generalization of Nullstellensatz.
+
+\bprop
+
+    Let $L/k$ be a field extension such that $L$ is a fg $k$-algebra.
+    Then $L$ is a finite extension of $k$ (i.e.\ it is a finite $k$-algebra).
+
+\eprop
+
+\bproof
+
+    By Noether, $L$ contains a polynomial subalgebra over which it is finite, and thus integral.
+    Let $B=k[x_1,\dots,x_n]\subseteq L$ be this algebra.
+    Since $L$ is integral over $B$, $B$ must be a field (if $A\subseteq B$ is integral, $A$ is a field iff $B$ is a field), and so $n$ must be
+    zero.
+    Thus $k\subseteq L$ is finite, as desired.
+    \qed
+
+\eproof
+
+\bcoro[title=Weak Nullstellensatz]
+
+    Let $A\neq0$ be a fg algebra over an algebraically closed field $k$.
+    Then for any maximal ideal $\m\leq A$, $A/\m\cong k$ as $k$-algebras.
+
+\ecoro
+
+\bproof
+
+    Let $L=A/\m$, which is a fg $k$-algebra, so by the above proposition it must be a finite.
+    Algebraically closed fields admit no proper extensions, so $A/\m\cong k$.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Let $A\neq0$ be a fg algebra over an algebraically closed field $k$.
+    Then there exists a $k$-algebra homomorphism $\psi\colon A\to k$.
+
+\ecoro
+
+\bproof
+
+    Choose a maximal ideal $\m\leq A$, and consider $\psi\colon A\to A/\m\cong k$.
+    \qed
+
+\eproof
+
+Recall that the preimage of a prime ideal is always prime, but the preimage of a maximal ideal need not be maximal.
+For example under the inclusion $\bZ\inj\bQ$, consider the preimage of the maximal ideal $(0)\leq\bQ$, which is $(0)\leq\bZ$; not maximal.
+
+\bprop
+
+    Let $A,B$ be fg $k$-algebras, and $f\colon A\to B$ a $k$-algebra morphism.
+    Then for any maximal ideal $\m\leq B$, $\m_A=f^{-1}\m\leq A$ is maximal.
+
+\eprop
+
+\bproof
+
+    The map $f$ induces an injective $k$-algebra morphism $A/\m_A\inj B/\m$.
+    The latter is a field and a fg $k$-algebra, hence a finite $k$-algebra and in particular integral.
+    Thus $A/\m_A$ is an integral $k$-algebra as well, and since it is a domain ($\m_A$ is prime), it must then be a field.
+    So $\m_A$ is maximal.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A ring $A$ is {\emphcolor Jacobson} when $\jac(A)=\nil(A)$.
+
+\edefn
+
+In general we have $\nil(A)\subseteq\jac(A)$, since $\nil(A)$ is the intersection of all prime and $\jac(A)$ all maximal ideals.
+
+\bprop
+
+    Every fg algebra over a field $k$ is Jacobson.
+
+\eprop
+
+\bproof
+
+    Let $A$ be a fg algebra over $k$, and $f\notin\nil(A)$.
+    We then claim $A$ has a maximal ideal not containing $f$.
+    Since $f\notin\nil(A)$, $A_f\neq0$ as the localizing set does not contain zero, and thus contains a maximal ideal $\m$.
+    Recall that $A_f\cong A[x]/(fx-1)$, so $A_f$ is a fg $k$-algebra.
+    Let $\iota\colon A\to A_f$ be the canonical map, then $\iota^{-1}\m$ is maximal in $A$.
+    Since $\iota f\in A_f^\times$, $f$ is not in $\iota^{-1}\m$ as desired.
+    \qed
+
+\eproof
+
+\bcoro
+
+    If $A$ is a fg algebra over a field $k$, then for every ideal $I\leq A$,
+    $$ \sqrt I = \jac_A(I) , $$
+    where $\jac_A(I)$ is the Jacobson radical of $I$, the intersection of all maximal ideals containing $I$.
+    In particular for a prime $\p\leq A$,
+    $$ \p = \bigcap_{\p\leq\m<A}\m . $$
+
+\ecoro
+
+\bproof
+
+    This amounts to saying that $A/I$ is a Jacobson ring, since pulling back $\nil(A/I)$ and $\jac(A/I)$ give $\sqrt I,\jac_A(I)$ respectively.
+    Since $A$ is a fg algebra over $k$, so is $A/I$ and the result follows the above proposition.
+    \qed
+
+\eproof
+
+\bnote
+
+    Some authors define a Jacobson ring to be one where $\sqrt I=\jac_A(I)$ for all ideals, or $\p=\jac_A(\p)$ for all prime ideals (these are equivalent).
+    Note that this definition is more useful, but not how it was defined in this course.
+    The above corollary shows that a fg algebra over a field is Jacobson in this regard as well.
+
+\enote
+
+Note that trhere is a natural bijection between $\bA^n$ and $k$-algebra morphisms $\phi\colon k[\bA^n]\to k$.
+\benum
+    \item For every $P=(a_1,\dots,a_n)\in\bA^n$ define $\phi$ by $\phi(x_i)=a_i$.
+    That is, $\phi$ is the evaluation map $\ev_P$ given by $\ev_P(f)=f(P)$.
+    In particular,
+    $$ \ker\ev_P = \I(P) . $$
+    \item Conversely for $\phi\colon k[\bA^n]\to k$, let $P=(a_1,\dots,a_n)$ by $a_i=\phi(x_i)$.
+    Then $\phi=\ev_P$, so these are inverses.
+\eenum
+
+Let $J\leq k[\bA^n]$ be an ideal, then for every $P\in\bA^n$, we have $P\in Z(J)$ iff $J\leq\I(P)=\ker\ev_P$ iff
+$\ev_P$ quotients over $J$: it induces $\bar\ev_P\colon k[\bA^n]/J\to k$ where $\bar\ev_P(f+J)=f(P)$.
+
+\bprop
+
+    For $P=(a_1,\dots,a_n)\in\bA^n$ we have
+    $$ \ker\ev_P = (x_1-a_1,\dots,x_n-a_n) , $$
+    which is a maximal ideal.
+
+\eprop
+
+\bproof
+
+    Since $\ev_P(x_i-a_i)=0$ we have inclusion $\supseteq$.
+    Since $k[\bA^n]/\ker\ev_P\cong\im\ev_P\cong k$, $\ker\ev_P$ is maximal, it is sufficient to show $k[\bA^n]/(x_1-a_1,\dots,x_n-a_n)\cong k$.
+    Equivalently, the natural map $\iota\colon k\to k[\bA^n]/(x_1-a_1,\dots,x_n-a_n)$ is surjective.
+
+    The projection $k[\bA^n]\to k[\bA^n]/(x_1-a_1,\dots,x_n-a_n)$ maps $x_i$ to $\bar x_i=\iota(a_i)$.
+    Thus $\iota$ must be surjective as the projection is.
+    \qed
+
+\eproof
+
+The following is another version of the Nullstellensatz:
+
+\bprop
+
+    Let $k$ be algebraically closed.
+    Then the maximal ideals of $k[\bA^n]$ are precisely the ideals $\ker\ev_P$ for $P\in\bA^n$.
+
+\eprop
+
+\bproof
+
+    We saw that $\ker\ev_P$ are maximal, so let $\m$ be maximal.
+    By the weak Nullstellensatz, $k[\bA^n]/k\cong k$, which gives a projection $f\colon k[\bA^n]\to k[\bA^n]/\m\cong k$ with
+    $\ker f=\m$.
+    But $k$-algebra morphisms $k[\bA^n]\to k$ are all of the form $\ev_P$ for some $P$, so $f=\ev_P$ and thus $\m=\ker\ev_P$.
+    \qed
+
+\eproof
+
+Now we can finally prove Nullsellensatz itself.
+
+\bproof[Nullstellensatz]
+
+    We already showed $\sqrt J\leq\I(Z(J))$, we now show the other direction.
+    Let $f\in\I(Z(J))$, and consider $A=k[\bA^n]/J$.
+    By the above proposition, the maximal ideals of $A$ are the ideals of the form $\ker\ev_P$ containing $J$, so $\ker\ev_P$ with $P\in Z(J)$.
+    Because $f\in\I(Z(J))$, $f$ vanishes at every point $P\in Z(J)$, so $f\in\ker\ev_P$ for every $P\in Z(J)$.
+    Thus $f$ is in every maximal ideal of $A$, so $\bar f\in\jac(A)$.
+    $A$ is a fg $k$-algebra it is Jacobson, so $\bar f\in\jac(A)=\nil(A)=\sqrt J/J$, thus $f\in\sqrt J$ as desired.
+    \qed
+
+\eproof
+
+Let us summarize the following formulations of Nullstellensatz:
+
+\bthrm[title=Equivalent formulations of Nullstellensatz]
+
+    The following are all equivalent formulations of Nullstellensatz, and all are true.
+    \benum
+        \item Nullstellensatz: $\I(Z(J))=\sqrt J$,
+        \item If $J\neq(1)$ then $Z(J)\neq\emptyset$,
+        \item Weak Nullstellensatz: if $A$ is fg, $A/\m\cong k$,
+        \item If $A\neq0$ is fg, then there is a $\phi\colon A\to k$,
+        \item Every maximal ideal of $k[\bA^n]$ of the form $(x_1-a_1,\dots,x_n-a_n)$.
+    \eenum
+
+\ethrm
+
+\bdefn
+
+    For a topological space $X$, let $\abs X$ denote the subspace of closed points.
+
+\edefn
+
+Recall that for an affine scheme $\spec(A)$, a closed point is just a maximal ideal, so $\abs X\cong\specm(A)$.
+
+\bcoro
+
+    Let $k$ be algebraically closed, and $I\leq k[\bA^n]$ an ideal.
+    Then there is a bijection between the closed points of $\spec(k[\bA^n]/I)$ and $Z(I)$:
+    $$ \abs{\spec(k[\bA^n]/I)} \cong Z(I) . $$
+
+\ecoro
+
+\bproof
+
+    The closed points of the spectrum of $k[\bA^n]/I$ are in bijection with the maximal ideals of $k[\bA^n]$ containing $I$.
+    These are of the form $(x_1-a_1,\dots,x_n-a_n)$, and if it contains $I$ then for $f\in I$ we must have that $f(a_1,\dots,a_n)=0$.
+    So mapping $(x_1-a_1,\dots,x_n-a_n)$ to $(a_1,\dots,a_n)\in Z(I)$ is well-defined and clearly injective.
+    Furthermore it is clearly surjective.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Let $A,B$ be fg $k$-algebras for some field $k$, and let $\phi\colon A\to B$ be a $k$-algebra morphism.
+    Then $\phi^*\colon\spec(B)\to\spec(A)$ restricts to a morphism of closed points $\abs{\phi^*}\colon\abs{\spec(B)}\to\abs{\spec(A)}$.
+
+\ecoro
+
+\bproof
+
+    This is just a restatement of the preimage of a maximal ideal being maximal.
+    \qed
+
+\eproof
+

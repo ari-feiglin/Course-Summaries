@@ -571,4 +571,83 @@ The converse is not true in general (take the axes of $\bR^2$).
 
 \eexam
 
+\subsection{Categorical constructions}
+
+In this section we consider the category of affine schemes, i.e.\ spectrums of rings.
+A morphism of affine schemes $\spec(R)\to\spec(S)$ corresponds to a ring morphism $S\to R$.
+
+Recall the following case of a categorical limit.
+
+\bdefn
+
+    A {\emphcolor pullback} (or {\emphcolor fiber product}) is the limit of a diagram of shape $\bul\to\bul\ot\bul$ (if one exists).
+    Explicitly, given two morphisms $A\xto fC\xot gB$, their fiber product is an object $A\times_CB$ along with morphisms $A\xot iA\times_CB\xto jB$ such that the following
+    diagram commutes and is universal (in the sense that it is the terminal such diagram which commutes):
+
+    \commsq{A\times_CB&A\cr B&C}
+        {i}{g}{j}{f}
+
+\edefn
+
+Finite products and equalizers can be written as pullbacks with a terminal object.
+In particular if $1$ is a terminal object, then the pullback of $A\xto!1\xot!B$, where $!$ denotes the unique morphism, is the product of $A$ and $B$.
+And if $f,g\colon A\tto B$ are parallel morphisms, the pullback of $A\xto{(f,g)}B\times B\xot{\Delta}B$, where $\Delta$ is the diagonal morphism, is the equalizer of $f,g$.
+
+Thus any category with pullbacks and a terminal object has all finite limits.
+We use this to demonstrate now that the category of affine schemes has all finite limits.
+
+\bprop
+
+    Let $X=\spec(A),Y=\spec(B),Z=\spec(R)$ be affine schemes, along with morphisms $X\to Z\ot Y$, then this diagram has a pullback.
+    Explicitly, its pullback is $X\times_ZY=\spec(A\otimes_RB)$.
+
+\eprop
+
+\bproof
+
+    The morphisms $X\to Z\ot Y$ are induced by morphisms $A\ot R\to B$, so $A,B$ are $R$-algebras.
+    Thus $A\otimes_RB$ is an $R$-algebra as well, and the obvious maps $A,B\to A\otimes_RB$ given by $a\mapsto a\otimes1,b\mapsto1\otimes b$ give us the cone
+    $X\times_ZY\to X,Y$.
+    We need to show that this is indeed a limit cone, i.e.\ that it is terminal.
+
+    We need to show that if $W=\spec(C)$ is any other affine scheme with morphisms $W\to X,Y$ commuting with $X\to Z,Y\to Z$ then there is a unique morphism fro $W$
+    to $X\times_ZY=\spec(A\otimes_RB)$.
+    Translating this to the category of rings: if there are morphisms $A\xto\phi C\xot\psi B$ which commute with $R\to A,B$, then there is a unique morphism $A\otimes_RB\to C$
+    making the diagram commute
+
+    \bigskip
+    \centerline{\drawdiagram{
+        $C$\cr
+        &$A\otimes_RB$&$A$\cr
+        &$B$&$R$
+    }{
+        \diagarrow{to={1,1}, from={2,3}, curve=-1cm, text=$\phi$, y distance=.75cm, y off=.1cm}
+        \diagarrow{to={1,1}, from={3,2}, curve=1cm, text=$\psi$, x distance=-.75cm, y off=-.1cm}
+        \diagarrow{to={1,1}, from={2,2}, dashed, text=$\exists!$, y distance=.25cm}
+        \diagarrow{to={2,2}, from={2,3}}
+        \diagarrow{to={3,2}, from={3,3}}
+        \diagarrow{to={2,2}, from={3,2}}
+        \diagarrow{to={2,3}, from={3,3}}
+    }}
+
+    Such a map must map $a\otimes b$ to $\phi(a)\otimes\psi(b)$.
+    This map is $R$-bilinear (because $\phi,\psi$ commute with the maps $R\to A,B$), and thus is well-defined, as desired.
+    \qed
+
+\eproof
+
+\bcoro
+
+    The category of affine schemes has all finite limits.
+
+\ecoro
+
+\bproof
+
+    The ring $\bZ$ is initial: there is a unique ring morphism $\bZ\to A$ for all rings $A$.
+    Thus its spectrum is terminal, so the category of affine schemes has a terminal object.
+    The previous proposition showed the category has all pullbacks, so it has all finite limits.
+    \qed
+
+\eproof
 
