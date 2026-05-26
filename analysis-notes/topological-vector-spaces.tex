@@ -1,0 +1,505 @@
+\section{Topological Vector Spaces}
+\rightline{\it Real Analysis, Gerald Folland}
+
+\subsection{Some topology}
+
+This section is concerned with some topological results which even a reader with some topological background may not be familiar with.
+
+We begin by discussing the concept of a topological net.
+For nice enough spaces, we can learn a great deal about the topology of the space by studying sequences.
+Specifically this holds in first-countable spaces: spaces such that every point has a countable local basis.
+But in general this is not sufficient and leads to the generalization of a sequence to a {\it net}.
+
+\bdefn
+
+    A {\emphcolor directed set} is a preorder (transitive and reflexive, not necessarily anti-symmetric) such that for every two elements $\alpha,\beta$,
+    there is a $\gamma$ bounding them: $\alpha,\beta\leq\gamma$.
+    A {\emphcolor net} on a topological space $X$ is a (set-theoretic) map from a directed set $I$ to $X$.
+
+\edefn
+
+For example, $\bN$ is a directed set and usual sequences from $\bN$ are thus nets.
+Another important example is the set of neighborhoods of a point or subset of a topological space.
+That is, for a topological space $X$ and a subset $S\subseteq X$, the set of all open subsets of $X$ which contain $S$ form a directed set, ordered by {\it inverse\/} inclusion.
+Inverse inclusion here is important, because usually we want $i\leq j$ when $j$ in a sense ``refines'' $i$.
+We denote this directed set by $\N_S$, or $\N_x$ when $S$ is the singleton $\set x$.
+
+The product of directed sets is a directed set: if $I,J$ are directed, then define a preorder on $I\times J$ by $(i,j)\leq(i',j')$ iff $i\leq i'$ and $j\leq j'$.
+
+Note that a directed set is equivalent to a preorder which is filtered as a category.
+Then the product of directed sets just coincides with the product category of the two directed sets.
+
+\bdefn
+
+    Let $(x_i)_{i\in I}$ be a net $I\to X$.
+    Then for $S\subseteq X$, we say it is {\emphcolor eventually in $S$} if there is a $j_0\in I$ such that $x_i\in S$ for all $i\geq j_0$.
+    And it is {\emphcolor frequently in $S$} if for all $j\in I$ there is an $i\geq j$ such that $x_i\in S$.
+    Clearly ``eventually in $S$'' implies ``frequently in $S$''.
+
+    We say $x_i$ {\emphcolor converges} to $x$, written $x_i\to x$, if $x_i$ is eventually in every neighborhood of $x$.
+    $x$ is called a {\emphcolor limit} of $x_i$.
+    It is a {\emphcolor cluster point} of $x_i$ if $x_i$ is frequently in every neighborhood of $x$.
+
+\edefn
+
+\bprop
+
+    $x\in X$ is a limit point of $S\subseteq X$ iff there is a net in $S-x$ that converges to $x$.
+    And $x$ is in $S$'s closure iff there is a net in $S$ that converges to $x$.
+
+\eprop
+
+\bproof
+
+    If $x$ is a limit point of $S$, then let $\N$ be the directed set of neighborhoods of $x$, ordered by reverse inclusion.
+    Then for $U\in\N$, choose $x_\U\in\U\cap(S-x)$ to form a net.
+    Then $x_\bul$ converges to $x$: if $\U$ is a neighborhood of $x$ then for every $\V\in\N$ which is a subset of $\U$ we have
+    $$ x_\V \in \V\cap(S-x) \subseteq \U , $$
+    so that $x_\bul$ is eventually in $\U$, and thus $x_\bul\to x$.
+
+    Conversely if $x_\bul$ is a net in $S-x$ converging to $x$, then for every neighborhood $x\in U$ there must be some $i$ such that $x_i\in U$
+    and thus $x$ is a limit point of $S$ by definition.
+
+    Similar for the closure.
+    \qed
+
+\eproof
+
+\bprop
+
+    A map between topological spaces $f\colon X\to Y$ is continuous at $x\in X$ iff for every net $x_\bul$ converging to $x$, $f(x_\bul)$ converges to $f(x)$.
+
+\eprop
+
+\bproof
+
+    If $f$ is continuous at $x$, then let $V$ be a neighborhood of $f(x)$, so $f^{-1}V$ contains a neighborhood of $x$: $x\in U\subseteq f^{-1}V$.
+    So if $x_\bul\to x$, then $x_\bul$ is eventually in $U$ and thus $f(x_\bul)$ is eventually in $V$, so $f(x_\bul)\to f(x)$ as desired.
+
+    Now if $f$ is not continuous at $x$, there is a neighborhood $f(x)\in V$ such that $f^{-1}V$ is not a neighborhood of $x$ (neighborhood meaning it contains an open
+    neighborhood).
+    That is, $x\notin f^{-1}V^\circ$, so equivalently $x\in\cl{f^{-1}V^c}$.
+    By the previous proposition, there is a net $x_\bul$ in $f^{-1}V^c$ that converges to $x$.
+    Then $f(x_\bul)$ is in $V^c$ and thus not eventually in $f(x)\in V$, so it doesn't converge to $f(x)$.
+    \qed
+
+\eproof
+
+Another nice property of nets is that convergence of nets categorize Hausdorff spaces.
+
+\bprop
+
+    A topological space $X$ is Hausdorff iff all nets over $X$ converge to at most a single point.
+
+\eprop
+
+\bproof
+
+    If $X$ is Hausdorff, then for $x\neq y$ there are disjoint open neighborhoods $x\in U,y\in V$.
+    Then a net cannot be eventually in both $U$ and $V$, by virtue of being directed (it would require an element in both $U$ and $V$).
+
+    And conversely suppose $X$ is not Hausdorff so there are $x\neq y$ without disjoint neighborhoods.
+    Let $\N_x,\N_y$ be the directed sets of open neighborhoods of $x,y$ respectively, and consider their product.
+    We define a net on the product by choosing $x_{U,V}\in U\cap V$ for $U\in\N_x,V\in\N_y$.
+    Then $x_{U,V}$ is easily seen to converge to both $x$ and $y$.
+    \qed
+
+\eproof
+
+We now discuss the concept of subnets, which is not as obvious a definition as it may seem.
+
+\bdefn
+
+    A subset $J$ of a preorder $I$ is {\emphcolor cofinal} if for every $x\in I$ there is a $y\in J$ such that $x\leq y$.
+
+    Let $(x_i)_{i\in I}$ and $(y_j)_{j\in J}$ be nets to $X$ over potentially different directed sets.
+    Then $x_\bul$ is a {\emphcolor subnet} of $y_\bul$ if there is a monotone (order-preserving) map $f\colon I\to J$ whose image is cofinal in $J$,
+    such that $x_i=y_{f(i)}$ for all $i\in I$.
+
+\edefn
+
+Note that there is no requirement on $f$ to be injective, so $I$ could potentially be larger than $J$.
+Thus subsequences are subnets, but a subnet of a sequence need not be a subsequence!
+
+A nice property, whose proof we omit due to disinterest (and not complexity!), is the following.
+
+\bprop
+
+    A topological space $X$ is compact iff every net has a convergent subnet.
+
+\eprop
+
+This echoes the simpler result for metric spaces: a metric space is compact iff every sequence has a convergent subsequence (compactness is equivalent to sequential
+compactness).
+This is of course not true for general topological spaces, but it is when you swap sequences with nets.
+
+\blemm
+
+    If $x_\bul$ is a net $I\to X$, and $J\subseteq I$ is a cofinal subset, then the restriction of $x_\bul$ to $J$ is a subnet with precisely
+    the same limits.
+
+\elemm
+
+\bproof
+
+    Pretty clear.
+    \qed
+
+\eproof
+
+\bprop
+
+    $x\in X$ is a cluster point of a net $x_\bul$ iff $x_\bul$ has a subnet converging to $x$.
+
+\eprop
+
+\bproof
+
+    If $x\in X$ is a cluster point of $x_\bul$, then consider the directed set $\N_x\times I$.
+    Then for $(U,i)\in\N_x\times I$ there is an $x_j\in U$ for $j\geq i$; define $y_{(U,i)}=x_j$ and $f(U,i)=j$.
+    Note that $f$ is cofinal and $y_{U,i}$ converges to $x$.
+    $f$ is not necessarily monotone, but we can remove elements from our directed set to obtain the desired subnet
+    (take a maximal subset for which $f$ is monotone, and is easily seen to be cofinal).
+
+    The converse is easily seen.
+    \qed
+
+\eproof
+
+\bcoro
+
+    A topological space $X$ is compact iff every net has a cluster point.
+
+\ecoro
+
+\bdefn
+
+    Let $\F$ be a collection of (set-theoretic) functions $X\to Y_i$, where $Y_i$ are all topological spaces.
+    Then the {\emphcolor initial} (or {\emphcolor weak}) topology on $X$ is the coarsest topology (minimal with respect to inclusion) making each map $f\in\F$
+    continuous.
+
+    Dually if $\F$ is a collection of functions $X_i\to Y$ where each $X_i$ is a topological space, the {\emphcolor final} topology on $Y$ is the finest (maximal)
+    topology making each $f\in\F$ continuous.
+
+\edefn
+
+For $f\in\F$ to be continuous, then $f^{-1}U$ must be open for every open $U\subseteq Y_i$.
+Then the initial topology on $X$ is just the topology generated by $f^{-1}U$ as $f$ ranges over $\F$ and $U$ over open subsets of $Y_i$.
+And the final topology on $Y$ is given by requiring that $U\subseteq Y$ be open iff $f^{-1}U$ is open in $X_i$ for each $f\in\F$.
+
+For example, the topology on $\prod_iX_i$ is the initial topology on $\prod_iX_i$ given by the set of projections $\prod_iX_i\to X_i$.
+And the topology on $\coprod_iX_i$ is the final topology given by the set of inclusions $X_i\to\coprod_iX_i$.
+The quotient topology of a surjection $f\colon X\to Y$ is the final topology on the collection $\set f$.
+
+\bprop
+
+    If $X$ has the initial topology induced by $\F$, then a net $x_\bul$ converges to $x\in X$ iff $f(x_\bul)$ converges to $f(x)$ for all $f\in\F$.
+
+\eprop
+
+\bproof
+
+    Since each $f\in\F$ is continuous, the ``only if'' part is clear.
+    Now if $f(x_\bul)\to f(x)$ for all $f\in\F$, then let $U$ be an open neighborhood of $x$.
+    Since finite intersections of sets of the form $f_i^{-1}U_i$ for $f_i\in\F,U_i\subseteq X_i$ form a basis for $X$, we can assume $U=\bigcap_{i=1}^nf_i^{-1}U_i$,
+    where $U_i$ is an open neighborhood of $f(x)$ in $X_i$.
+    Then there is some $\alpha_0\in I$ such that for all $\alpha\geq\alpha_0$, $f_i(x_\alpha)\in U_i$ for all $i=1,\dots,n$ (since there are finitely many $i$, we can bound
+    the $\alpha_0$s chosen for $f_i(x_\bul)\to f(x)$).
+    Then $x_\alpha\in U$, so $x_\bul$ is eventually in $U$ as desired.
+    \qed
+
+\eproof
+
+Nets provide a clean proof of Tychonoff's theorem.
+We introduce some notation to ease the proof.
+If $\set{X_\alpha}_{\alpha\in A}$ is a collection of spaces, and $B\subseteq A$ a subset, we define
+$$ \pi_B\colon\prod_{\alpha\in A}X_\alpha \to \prod_{\beta\in B}X_\beta , $$
+by mapping $x\in\prod_\alpha X_\alpha$ to the restriction of $x$ to $B$ (viewing the product as a certain set of maps $A\to\coprod_{\alpha\in A}X_\alpha$).
+In particular, when $B$ is a singleton $\pi_B$ is essentially the same as projection onto $X_\beta$.
+For $p\in\prod_{\beta\in B}X_\beta$ and $q\in\prod_{\gamma\in C}X_\gamma$, we say $p\leq q$ if $B\subseteq C$ and $p$ is the restriction of $q$ to $B$ ($\pi_B(q)=p$).
+We also say that $q$ {\it extends\/} $p$ (since it does as a function).
+
+\bthrm[title=Tychonoff]
+
+    The product of an arbitrary collection of compact spaces is compact.
+
+\ethrm
+
+\bproof
+
+    Let $\set{X_\alpha}_{\alpha\in A}$ be compact, and let $X=\prod_\alpha X_\alpha$.
+    We want to say that $X$ is compact.
+    We do this by showing any net $(x_i)_{i\in I}$ has a cluster point.
+
+    Define
+    $$ P = \bigcup_{B\subseteq A}\set{p\in\prod_{\beta\in B}X_\beta}[\hbox{$p$ is a cluster point of $(\pi_B(x_i))_i$}] . $$
+    This is non-empty since when $B$ is a singleton, $(\pi_B(x_i))$ has a cluster point as each $X_\alpha$ is compact.
+    And $P$ is ordered by extension as above.
+
+    We now show that $P$ satisfies the condition for Zorn's lemma and thus has a maximal element.
+    Indeed, let $\set{p_\ell}_{\ell\in L}\subseteq P$ be a chain.
+    Suppose $p_\ell\in\prod_{\alpha\in B_\ell}X_\alpha$.
+
+    Define $B^*=\bigcup_{\ell\in L}B_\ell$, and define $p^*\in\prod_{\alpha\in B^*}X_\alpha$ by $p^*(\alpha)=p_\ell(\alpha)$ when $\alpha\in B_\ell$.
+    This is well-defined since if $\alpha\in B_\ell\cap B_{\ell'}$ then $p_\ell(\alpha)=p_{\ell'}(\alpha)$ since by linearity we can assume $p_\ell\leq p_{\ell'}$,
+    and thus $p_\ell=p_{\ell'}|_{B_\ell}$.
+    Clearly $p_\ell\leq p^*$ for all $\ell\in L$, so it is an upper bound if we can show it is in $P$.
+
+    So we need to show that $p^*$ is a cluster point for $\pi_{B^*}(x_\bul)$.
+    Let $U$ be a neighborhood of $p^*$, we can assume it is a basis set, so $U=\prod_{\alpha\in B^*}U_\alpha$ where all but finitely many $U_\alpha$ are equal to $X_\alpha$.
+    Let $\alpha_1,\dots,\alpha_n$ enumerate the indices where $U_{\alpha_i}\neq X_{\alpha_i}$.
+    Since $\set{p_\ell}$ and thus $B_\ell$ are linearly ordered, these $\alpha_i$s are all contained in some $B_\ell$.
+    Then $\pi_{B_\ell}(x_\bul)$ is frequently in $\pi_{B_\ell}(U)$ as it is a neighborhood of $p_\ell\in P$.
+    Since all the other $\alpha$s have $U_\alpha=X_\alpha$, clearly $\pi_{B^*}(x_\bul)$ is in $U$ when $\pi_{B_\ell}(x_\bul)$ is in $\pi_{B_\ell}(U)$,
+    so $\pi_{B^*}(x_\bul)$ is frequently in $U$.
+    Thus $p^*$ is a cluster point of $\pi_{B^*}(x_\bul)$, so $p^*\in P$ and thus is an upper bound for $\set{p_\ell}$.
+
+    Thus by Zorn, $P$ has a maximal element $p\in\prod_{\beta\in B}X_\beta$.
+    We claim that $B=A$, so that $x_\bul$ has a cluster point and we will finish.
+    If not, then let $\gamma\in A-B$, and let $\pi_B(x_{i(j)})_{j\in J}$ be a subnet of $\pi_B(x_i)_{i\in I}$ converging to $p$.
+    By compactness, there is a subnet $\pi_\gamma(x_{i(j(k))})_{k\in K}$ of $\pi_\gamma(x_{i(j)})$ converging to some $p_\gamma\in X_\gamma$.
+
+    Then there is a unique element $q\in\prod_{\alpha\in B,\gamma}X_\alpha$ extending $p_\gamma,p$.
+    The net $\pi_{B\cup\gamma}(x_{i(j(k))})_{k\in K}$ converges to $q$, and thus $q$ is a cluster point of $\pi_{B\cup\gamma}(x_i)$, which contradicts $p$'s maximality.
+    \qed
+
+\eproof
+
+\bdefn
+
+    If $X$ is a topological space, let $C(X)$ denote the set of continuous complex-valued maps $X\to\bC$ (sometimes this will be used for real-valued functions, too).
+    Note that $C(X)$ is a complex algebra under pointwise addition and multiplication.
+    If $X$ is compact, we define a norm on $C(X)$, the {\emphcolor uniform norm} by
+    $$ \norm f_u = \sup_{x\in X}\abs{f(x)} . $$
+    This is well-defined (not infinite) because $\abs{f(x)}$ is a continuous map from a compact space to the reals and thus is bound.
+
+\edefn
+
+The uniform norm is easily seen to be norm, and thus turns $C(X)$ into a topological complex algebra.
+Furthermore, $C(X)$ is complete.
+
+\bdefn
+
+    A subset $\F\subseteq C(X)$ is {\emphcolor equicontinuous at $x\in X$} if for every $\epsilon>0$ there is a neighborhood $x\in U$
+    such that $\abs{f(x)-f(y)}<\epsilon$ for all $f\in\F,y\in U$.
+    It is {\emphcolor equicontinuous} if it is equicontinuous at every point in $X$.
+
+    We also say that $\F$ is {\emphcolor pointwise bounded} if $\set{f(x)}[x\in X,f\in\F]$ is a bounded complex set.
+
+\edefn
+
+We state the following theorems without proof (again out of disinterest),
+
+\bthrm[title={Arzela-Ascoli, I}]
+
+    Let $X$ be a compact Hausdorff space, and $\F\subseteq C(X)$ an equicontinuous pointwise-bounded set.
+    Then $\F$ is totally bounded in the uniform metric, and $\F$'s closure in $C(X)$ is compact.
+
+\ethrm
+
+\bdefn
+
+    A topological space is said to be {\emphcolor $\sigma$-compact} if it is the union of countably many compact subsets.
+    It is {\emphcolor locally compact} if every point has a compact neighborhood (is contained in an open neighborhood contained in a compact set).
+
+\edefn
+
+\bthrm[title={Arzela-Ascoli, II}]
+
+    Let $X$ be a $\sigma$-compact locally compact Hausdorff space.
+    If $\set{f_n}$ is equicontinuous and pointwise bounded in $C(X)$, there there is an $f\in C(X)$ and a subsequence of $f_n$ which converges uniformly
+    to $f$ on compact sets.
+
+\ethrm
+
+We also state the following without proof (see e.g.\ Folland for a complete proof, this one is a little tedious).
+
+\bdefn
+
+    A subset $\A\subseteq C(X,Y)$ {\emphcolor separates points} if for all $x\neq y$ in $X$, there is an $f\in\A$ such that $f(x)\neq f(y)$.
+
+\edefn
+
+\bthrm[title=Stone-Weierstrass]
+
+    Let $X$ be compact Hausdorff.
+    If $\A$ is a closed subalgebra of $C(X,\bR)$ which separates points, then either $\A=C(X,\bR)$ or $\A=\set{f\in C(X,\bR)}[f(x_0)=0]$ for some $x_0\in X$.
+    The first case holds iff $\A$ contains the constant functions.
+
+\ethrm
+
+\bcoro[title=Weierstrass approximation theorem]
+
+    Let $X$ be a compact subset of $\bR^n$, then the set of polynomials on $\bR^n$ (meaning the polynomial algebra $\bR[x_1,\dots,x_n]$) is dense in $C(X,\bR)$.
+
+\ecoro
+
+\bproof
+
+    Let $\A=\bR[\bar x]$.
+    Then $\A$ is a subalgebra of $C(X,\bR)$ which separates points and contains the constant functions.
+    Its closure is also a subalgebra (by continuity of multiplication and addition), and thus by Stone-Weierstrass is $C(X,\bR)$, as desired.
+    \qed
+
+\eproof
+
+For the complex case we must also have that $\A$ is closed under complex conjugation.
+
+\bthrm[title={Stone-Weierstrass, complex case}]
+
+    Let $X$ be compact Hausdorff.
+    If $\A$ is a closed subalgebra of $C(X)$ which separates points and is closed under complex conjugation, then either $\A=C(X)$ or $\A=\set{f\in C(X)}[f(x_0)=0]$
+    for some $x_0\in X$.
+
+\ethrm
+
+\bproof
+
+    Since $\Re f=(f+\bar f)/2$ and $\Im f=(f-\bar f)/2i$, the set $\A_\bR$ of real and imaginary parts of functions from $\A$ satisfies the conditions
+    of the real Stone-Weierstrass theorem, thus $\A_\bR$ is either $C(X,\bR)$ or $\set{f\in C(X,\bR)}[f(x_0)=0]$.
+    Since $\A=\set{f+ig}[f,g\in\A_\bR]$ the result follows.
+    \qed
+
+\eproof
+
+\subsection{Normed vector spaces}
+
+In this section $K$ denotes a field, either $\bR$ or $\bC$.
+
+\bdefn
+
+    Let $X$ be a vector space over $K$.
+    A {\emphcolor seminorm} on $X$ is a function $\norm\bul\colon X\to\bR_{\geq0}$ that is
+    \benum
+        \item {\emphcolor subadditive}: $\norm{x+y}\leq\norm x+\norm y$ (also called the {\emphcolor triangle inequality}),
+        \item $\norm{\lambda x}=\abs\lambda\norm x$ for all $\lambda\in K$.
+    \eenum
+    A {\emphcolor norm} is a seminorm which is zero only at $0\in X$.
+
+\edefn
+
+Norms define metrics via $(x,y)\mapsto\norm{x-y}$ and thus topologies.
+A normed vector space which is complete with respect to this metric is called a {\emphcolor Banach space}.
+
+A series $\sum_nx_n$ with $x_n\in X$ is said to be {\emphcolor absolutely convergent} if $\sum_n\norm{x_n}$ converges.
+
+\bthrm
+
+    $X$ is complete iff every absolutely convergent series converges.
+
+\ethrm
+
+\bproof
+
+    If $\sum_nx_n$ is absolutely convergent then its partial sums are Cauchy:
+    $$ \norm{\sum^N x_n - \sum^M x_n} = \norm{\sum_{M+1}^Nx_n} \leq \sum_{M+1}^N\norm{x_n} \to 0\hbox{ as $M,N\to\infty$} . $$
+    Thus $\sum x_n$ is convergent.
+
+    Conversely if absolutely convergent series converge, then let $\set{x_n}$ be Cauchy.
+    Then let $n_1<n_2<\cdots$ be such that $\norm{x_n-x_m}<2^{-j}$ when $n,m\geq n_j$.
+    Define $y_j=x_{n_j}-x_{n_{j-1}}$ and $y_1=x_{n_1}$ so that $\sum_1^ky_j=x_{n_k}$, and
+    $$ \sum\norm{y_j} \leq \norm{y_1} + \sum 2^{j-1} < \infty $$
+    so that $\sum y_j$ is absolutely convergent and thus convergent.
+    Since $\sum^ky_j=x_{n_k}$, $x_{n_k}$ is convergent, and thus $x_n$ is as well (a Cauchy sequence with a convergent subsequence is convergent).
+    \qed
+
+\eproof
+
+Examples of Banach spaces include $L^p$ spaces over arbitrary measure spaces.
+
+The product of normed vector spaces is normed: $\norm{(x,y)}=\max\set{\norm x,\norm y}$.
+And the quotient of a normed vector space has a natural seminorm: define the quotient norm on $X/Y$ by $\norm{x+Y}=\inf_{y\in Y}\norm{x+y}$.
+This is a norm precisely when $Y\subseteq X$ is closed (since $\inf_{y\in Y}\norm{x+y}=0$ means that there is a sequence of vectors from $Y$ converging to $x$).
+
+A linear map between normed spaces $T\colon X\to Y$ is {\emphcolor bounded} if there is a $C\geq0$ such that
+$$ \norm{Tx} \leq C\norm x,\qquad \hbox{for all $x\in X$}. $$
+
+\bprop
+
+    If $T\colon X\to Y$ is a map between normed vector spaces, the following are equivalent:
+    \benum
+        \item $T$ is Lipschitz-continuous,
+        \item $T$ is continuous,
+        \item $T$ is continuous at $0$,
+        \item $T$ is bounded.
+    \eenum
+
+\eprop
+
+\bproof
+
+    If $T$ is continuous at $0$, then it must map an open ball around $0$, say $B_\epsilon(0)$, to the open ball $B_1(0)$ (the former in $X$, the latter in $Y$).
+    Then $\norm{Tx}\leq1$ when $\norm x<\epsilon$.
+    Then if $\norm x<a\epsilon$ we have that $\norm{Tx}=a\norm{T(x/a)}<a\epsilon$.
+    Thus
+    $$ \norm{Tx} \leq \epsilon^{-1}\norm x , $$
+    so $T$ is bounded.
+
+    And if $T$ is bounded, say by $C$, then $\norm{Tx_1-Tx_2}\leq C\norm{x_1-x_2}$ so it is Lipschitz-continuous.
+    \qed
+
+\eproof
+
+Define $L(X,Y)$ to be the vector space of all bounded linear maps $X\to Y$.
+We define a norm on it, the {\emphcolor operator norm} by
+$$ \norm T = \sup\set{\norm{Tx}}[\norm x=1] = \sup\set{\frac{\norm{Tx}}{\norm x}}[x\neq0] = \inf\set{C}[\norm{Tx}\leq C\norm x\hbox{ for all $x$}] . $$
+Notice that between finite-dimensional spaces all linear maps are bounded.
+
+\bprop
+
+    If $Y$ is complete, so is $L(X,Y)$.
+
+\eprop
+
+\bproof
+
+    Let $\set{T_n}$ be Cauchy in $L(X,Y)$, then for $x\in X$ we have
+    $$ \norm{T_nx-T_mx} \leq \norm{T_n-T_m}\norm x, $$
+    so that $T_nx$ is Cauchy in $Y$ and thus converges to some $Tx\in Y$.
+    $T$ is then linear (by linearity of limits), $\norm{T_n-T}\to0$, and $\norm T=\lim\norm{T_n}<\infty$ so $T\in L(X,Y)$.
+    \qed
+
+\eproof
+
+Notice that if $T\in L(X,Y),S\in L(Y,Z)$ then
+$$ \norm{STx} \leq \norm S\norm{Tx} \leq \norm S\norm T\norm x , $$
+so that $\norm{ST}\leq\norm S\norm T$.
+Thus we can form a category of normed vector spaces with bounded linear maps between them as morphisms.
+In particular, $L(X,X)$ is an algebra.
+
+An isomorphism in this category is a bijective linear map $T\colon X\to Y$ such that both $T$ and $T^{-1}$ are bounded.
+This means that $\norm{Tx}\leq C\norm x$ for some $C>0$ and also $\norm{Tx}\geq D\norm x$ for some $D>0$.
+
+\subsection{Linear functionals}
+
+For a complex number $z\in\bC$ we define $\sgn z=z/\abs z$, so that $\abs z=\conj{\sgn z}z$.
+
+\bdefn
+
+    Let $X$ be a normed vector space over $K$.
+    Define its {\emphcolor dual space} by $X^*=L(X,K)$, the space of bounded linear functionals.
+
+\edefn
+
+\bprop
+
+    Let $X$ be a complex vector space, and $f$ a complex linear functional on $X$.
+    Let $u=\Re f$, then $u$ is a real linear functional on $X$ and $f(x)=u(x)-iu(ix)$.
+    Conversely if $u$ is a real linear functional on $X$, then $f(x)=u(x)-iu(ix)$ is a complex linear functional.
+    Furthermore $\norm u=\norm x$.
+
+\eprop
+
+\bproof
+
+    Since $\Im f(x)=-\Re(if(x))=-\Re(f(ix))=-u(ix)$ we see that $f(x)=u(x)-iu(ix)$ as desired.
+    The rest is easily verified.
+    And since $\abs{u(x)}=\abs{\Re f(x)}\leq\abs{f(x)}$ we see that $\norm u\leq\norm f$.
+    Let $\alpha=\conj{\sgn f(x)}$, so $\abs{f(x)}=\alpha f(x)=f(\alpha x)=u(\alpha x)$ (since $f(\alpha x)$ is real).
+    Thus
+    $$ \abs{f(x)} \leq \norm u\norm{\alpha x} = \norm u\norm x \implies \norm f \leq \norm u . \qed $$
+
+\eproof
+
+
+
