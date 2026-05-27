@@ -7,6 +7,19 @@
 \def\_centerline{\hfil\egroup}
 \def\centerline{\hbox to\hsize\bgroup\hfil\bgroup\aftergroup\_centerline\let\@@}
 
+\def\part#1{%
+    \par%
+    \advancecounter{part}{1}%
+    \def\currpart{#1}%
+    \gdef\currsection{#1}%
+    \gdef\currsubsection{#1}%
+    \gdef\currsubsubsection{#1}%
+    \bigskip%
+    \leftline{\setfontandscale{sc}{30pt}{\upperroman{\the\counter{part}}. #1}}
+    \addtoccontent{\the\counter{part}}{#1}{\the\pageno}{0}{part@\the\counter{part}}%
+    \par%
+}
+
 \createcounter{eqn counter}[subsection]
 
 \def\@eqcnt[#1]{%
@@ -30,6 +43,8 @@
 }
 
 \def\printmcount{\the\counter{section}.\the\counter{subsection}.\the\counter{math counter}}
+\newif\ifdomcount
+\domcounttrue
 
 \def\createmathbox#1#2#3#4#5{%
     \_xp\def\csname _b#1\endcsname[##1]{
@@ -44,19 +59,21 @@
             }%
         }{##1}%
         \bppbox{#3}{#4}{#5}%
-        {\globalsetters\advancecounter{math counter}{1}\localsetters}%
+        \ifdomcount{\globalsetters\advancecounter{math counter}{1}\localsetters}\fi%
         \def\curremphcolor{#5}%
         \hbox to\hsize{%
-            \emphcolor\printmcount{} #2%
+            \emphcolor\ifdomcount\printmcount{} \fi#2%
             \unless\ifx\_title\novalue%
                 \ (\_title)%
             \fi%
-            \unless\ifx\_name\novalue%
-                \_xp\anchor\_xp{\_name}%
-                \_xp\xdef\csname math@\_name\endcsname{\printmcount}%
-                \unless\ifx\_title\novalue%
-                    \_xp\xdef\csname math@\_name\endcsname{\_title}%
-                    \addthreedepth{\_title}{\_name}%
+            \ifdomcount%
+                \unless\ifx\_name\novalue%
+                    \_xp\anchor\_xp{\_name}%
+                    \_xp\xdef\csname math@\_name\endcsname{\printmcount}%
+                    \unless\ifx\_title\novalue%
+                        \_xp\xdef\csname math@\_name\endcsname{\_title}%
+                        \addthreedepth{\_title}{\_name}%
+                    \fi%
                 \fi%
             \fi%
         \hfil}%
@@ -287,6 +304,7 @@
 \let\inj=\varuphookrightarrow
 \let\ot=\varleftarrow
 \let\xot=\xvarleftarrow
+\let\xmapsto=\xvarmapsto
 \let\bul=\bullet
 \let\down=\downarrow
 

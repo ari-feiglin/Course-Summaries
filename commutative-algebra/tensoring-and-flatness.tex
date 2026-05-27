@@ -1,0 +1,688 @@
+\section{Tensoring and Flatness}
+
+\subsection{Tensor products}
+
+I assume some familiarity with the tensor product (see e.g.\ my summary on representation theory otherwise).
+The tensor product is a bifunctor
+$$ \bul\otimes_B\bul\colon {}_A\Mod_B\times{}_B\Mod_C \to {}_A\Mod_C , $$
+with the universal property that it represents the balanced map functor:
+$$ \hom(M\otimes_BN,P) \cong {\rm Bal}(M,N;\,P) . $$
+Balanced maps are maps $M\times N\to P$ which are additive and multiplicative in each coordinate, and $f(mb,n)=f(m,bn)$ for all $b\in B$.
+
+The tensor product also has a right-adjoint.
+For an $(A,B)$-bimodule $M$, $\bul\otimes_AM$ is a functor $\Mod_A\to\Mod_B$ with right adjoint $\hom_B(M,\bul)$.
+
+In the case of commutative rings (this course), all modules are bimodules, so the tensor product is a bifunctor
+$$ \bul\otimes_A\bul\colon \Mod_A\to\Mod_A, $$
+which represents the bilinear map functor (bilinear in the usual sense).
+
+Note still that we use tensor products between module categories.
+In particular if $B$ is an $A$-algebra, then $B\otimes_AM$ is a $B$-module ($b(c\otimes m)=(bc)\otimes m$).
+This defines a map $\Mod_A\to\Mod_B$, and its right-adjoint is the restriction map (restrict a $B$-module to an $A$-module).
+Note that this is a special case of the tensor-hom adjunction: $\bul\otimes_AB$ is left-adjoint to $\hom_B(B,\bul)\cong B$.
+
+So we have a natural isomorphism
+$$ \hom_B(B\otimes_AM,P) \cong \hom_A(M,P|_A),\qquad M\in\Mod_A, P\in\Mod_B . $$
+The correspondence is given by mapping $f\colon B\otimes_AM\to P$ to $\tilde f\colon M\to P$ by $\tilde f(m)=f(1\otimes m)$.
+And $g\colon M\to P|_A$ to $\hat g\colon B\otimes_AM\to P$ by $\hat g(1\otimes m)=g(m)$.
+
+\bprop
+
+    Let $M$ be an $A$-module.
+    \benum
+        \item For a multiplicative set $S\subseteq A$, $S^{-1}A\otimes_AM$ is naturally isomorphic to $S^{-1}M$.
+        \item For an ideal $I\leq A$, $A/I\otimes_AM$ is naturally isomorphic to $M/IM$.
+    \eenum
+
+\eprop
+
+\bproof
+
+    The canonical map $M\to S^{-1}M$ mapping $m\mapsto m/1$ defines a map $f\colon S^{-1}A\otimes_AM\to S^{-1}M$ by
+    $f(1\otimes m)=m/1$.
+    Then
+    $$ f(a/s\otimes m) = a/sf(1\otimes m) = am/s . $$
+    We define its inverse $g\colon S^{-1}M\to S^{-1}A\otimes_AM$ by
+    $$ g(m/s) = 1/s\otimes m . $$
+    We claim this is well-defined: if $m/s=m'/s'$ then $1/s\otimes m=1/s'\otimes m'$.
+    If $t(ms'-m's)$ then
+    $$ \frac1s\otimes m = \frac{ts'}{ts's}\otimes m = \frac1{ts's}\otimes ts'm = \frac1{ts's}\otimes tsm' = \frac1{s'}\otimes m' $$
+    as desired, and clearly $g$ is a module morphism.
+    $f$ and $g$ are also clearly morphisms.
+
+    The proof for the second point is similar: projection $M\to M/IM$ is an $A$-module morphism.
+    Thus this gives rise to an $A/IA$-module morphism $f\colon(A/IA)\otimes_AM\to M/IM$ by $f(1\otimes m)=\bar m$.
+    Then
+    $$ f(\bar a\otimes m) = af(1\otimes m) = a\bar m = \bar{am} . $$
+    Its inverse is $g\colon M/IM\to(A/IA)\otimes_AM$ given by $g(\bar m)=1\otimes m$; this is easily seen to be well-defined and an inverse.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Let $B$ be an $A$-algebra and $M$ a $B$-module.
+    Then there is a natural map
+    $$ B\otimes_A M|_A \to M,\qquad b\otimes m\to bm . $$
+    In particular this is a natural map $m_B\colon B\otimes_AB\to B$ by $b\otimes b'\mapsto bb'$.
+
+\ecoro
+
+\bproof
+
+    This map is the map corresponding to the identity of $\hom_A(M|_A,M|_A)$.
+    The second point is for $M=B$.
+    \qed
+
+\eproof
+
+\blemm
+
+    If $B,C$ are $A$-algebras, then their tensor product $B\otimes_AC$ is naturally an $A$-algebra and their coproduct in the category of
+    $A$-algebras.
+
+\elemm
+
+\bproof
+
+    Let $D=B\otimes_AC$.
+    The natural algebra structure is given by $(b\otimes c)(b'\otimes c')=(bb')\otimes(cc')$, and $A\to D$ by $a\mapsto a(1\otimes 1)$.
+    This is the composition of
+    $$ D\times D\to D\otimes_AD,\qquad (d,d')\mapsto d\otimes d', $$
+    and
+    $$ D\otimes_AD = (B\otimes_AC)\otimes_A(B\otimes_AC) \cong (B\otimes_AB)\otimes_A(C\otimes_AC) \to B\otimes_AC $$
+    where the final map is the tensor of $m_B\otimes m_C$.
+
+    The inclusion maps $i_B\colon B\to D$ and $i_C\colon C\to D$ are given by $b\mapsto b\otimes1$ and $c\mapsto1\otimes c$.
+
+    Now if $E$ is another $A$-algebra and there are maps $f\colon B\to E,g\colon C\to E$, then if $h\colon D\to E$ commutes with the
+    rest of the diagram, i.e.
+    $$ g = h\circ i_C,\qquad f = h\circ i_B, $$
+    then we must have
+    $$ h(b\otimes c) = h((b\otimes1)(1\otimes c)) = h(b\otimes1)h(1\otimes c) = hi_B(b)hi_C(c) = f(b)g(c) . $$
+    Thus $h$ is unique, and this is well-defined (it is bilinear).
+    \qed
+
+\eproof
+
+\subsection{Flatness}
+
+\bdefn
+
+    A functor is {\emphcolor left-exact} if it preserves all finite limits, and is {\emphcolor right-exact} if it preserves all finite colimits.
+    A functor is {\emphcolor exact} if it is both left- and right-exact (preserves all finite limits and colimits).
+
+\edefn
+
+Clearly the composition of (left/right-) exact functors are (left/right-) exact.
+
+We quickly note a few equivalences which are useful to keep in mind.
+The proof provided is not complete, but is not too complicated to complete.
+
+\bprop
+
+    For an additive functor $F$ between Abelian categories (in particular between module categories), the following are equivalent:
+    \benum
+        \item $F$ is left-exact,
+        \item If $0\to A\to B\to C$ is an exact sequence, then the induced sequence $0\to FA\to FB\to FC$ is exact as well,
+        \item If $0\to A\to B\to C\to0$ is a short exact sequence, then the induced sequence $0\to FA\to FB\to FC$ is exact.
+    \eenum
+    In particular from (2) we see that left-exact functors preserve injections.
+
+    Similarly, the following are equivalent:
+    \benum
+        \item $F$ is right-exact,
+        \item If $A\to B\to C\to0$ is an exact sequence, then the induced sequence $FA\to FB\to FC\to0$ is exact as well,
+        \item If $0\to A\to B\to C\to0$ is a short exact sequence, then the induced sequence $FA\to FB\to FC\to0$ is exact.
+    \eenum
+    In particular right-exact functors preserve surjections.
+
+    Consequently, the following are equivalent:
+    \benum
+        \item $F$ is exact,
+        \item $F$ preserves short exact sequences,
+        \item $F$ preserves long exact sequences,
+        \item $F$ is left-exact and preserves surjections,
+        \item $F$ is right-exact and preserves injections.
+    \eenum
+
+\eprop
+
+\bproof
+
+    First we note that an additive functor immediately preserves all finite biproducts.
+    And $0\to A\to B\to C$ being exact is equivalent to it being a kernel diagram.
+    Thus $F$ is left-exact iff it preserves it.
+    And $F$ preserves left-exact sequences (i.e.\ ones in point (2)) iff it maps short exact sequences to left-exact ones.
+    Clearly if it preserves left-exact sequences it maps short exact ones to left-exact ones (SES are in particular left-exact),
+    and the converse is shown by restricting the rightmost map to its image.
+
+    Since all injections are kernels, we see that left-exact functors preserve injections.
+
+    Similarly we show the equivalences for right-exact functors.
+
+    By the previous two equivalences, we see $F$ being exact is equivalent to preserving SES sequences.
+    And preserving long-exact sequences is done by properly restricting and quotienting.
+    If $F$ is left-exact and preserves surjections, then if $0\to A\to B\to C\to0$ is exact, we know that $0\to FA\to FB\to FC$ is exact,
+    and $FB\to FC\to0$ is exact (as it preserves surjections).
+    Putting this together, if $F$ is left-exact and preserves surjections it is exact.
+    \qed
+
+\eproof
+
+\bprop
+
+    Left-adjoint functors are right-exact, and right-adjoint functors are left-exact.
+
+\eprop
+
+\bproof
+
+    Left-adjoint functors preserve {\it all\/} colimits, and are thus in particular right-exact.
+    Similar for right-adjoint functors.
+    \qed
+
+\eproof
+
+Tensor products are left-adjoints and thus right-exact:
+
+\bprop
+
+    If $M'\to M\to M''\to0$ is an exact sequence of $A$-modules, then for any $A$-module $N$, the induced sequence
+    $$ M'\otimes_AN \to M\otimes_AN \to M''\otimes_AN \to 0 $$
+    is exact.
+
+\eprop
+
+\bnote
+
+    Tensor products are not exact; they do not preserve injections.
+    Indeed, if $f\colon A\to A$ is the map $f(x)=ax$ for $a\in A$, then $f\otimes M=f\otimes\id_M$ is the endomorphism of
+    $A\otimes_AM\cong M$ which maps $m\mapsto am$.
+    When $a$ is not a zero divisor (e.g.\ $A$ is a domain), $f$ is injective, but $f\otimes M$ need not be (e.g.\ $M=A/(a)$).
+
+\enote
+
+Since $\hom_A(M,\bul)$ is right-adjoint, it is left exact so it preserves finite limits.
+It is not hard to show that $\hom_A(\bul,M)$ is left-exact as well (but contravariantly).
+Furthermore the Yoneda embedding reflects exactness:
+
+\bprop
+
+    A sequence of $A$-modules $M_\bul=M'\to M\to M''\to0$ is exact iff
+    $$ \hom(M_\bul,N) = 0 \to \hom(M'',N) \to \hom(M,N) \to \hom(M',N) $$
+    is exact for all $N\in\Mod_A$.
+    Similarly $N_\bul=0\to N'\to N\to N''$ is exact iff
+    $$ \hom(M,N_\bul) = 0 \to \hom(M,N') \to \hom(M,N) \to \hom(M,N'') $$
+    is exact for all $M$.
+
+\eprop
+
+\bproof
+
+    The ``only if'' part is due to left exactness.
+    The converse (second point) is done by choosing $M=N'$ and looking at where $\id$ goes (this shows that the composition of maps
+    is zero), then $M$ to be the kernel of the second map, and showing that this implies exactness at $M$, and then you just need to
+    show the first map is injective.
+    \qed
+
+\eproof
+
+While not all tensor products are exact, some are.
+We give this case a special term.
+
+\bdefn
+
+    An $A$-module $M$ is {\emphcolor flat} if the functor $\bul\otimes_AM$ is exact.
+
+\edefn
+
+\bnote
+
+    Since $\bul\otimes_AM$ is right-exact for any module $M$, $M$ is flat iff $\bul\otimes_AM$ preserves injections.
+
+\enote
+
+\bexam
+
+    If $S\subseteq A$ is multiplicative, then $\bul\otimes_AS^{-1}A$ is naturally isomorphic to $S^{-1}\bul$, which is exact.
+    Thus $S^{-1}A$ is a flat $A$-module.
+
+    If $M$ is free, so $M\cong A^{\oplus I}$, then
+    $$ \bul\otimes_AM \cong \bul\otimes_AA^{\oplus I} (\bul\otimes_AA)^{\oplus I} \cong \bul^{\oplus I} . $$
+    The second isomorphism is due to left adjoints preserving colimits.
+    And $\bul^{\oplus I}$ is exact (it maps injective maps to injective maps, more generally direct sums in module categories are exact,
+    satisfying Grothendieck's axiom (AB4)).
+
+\eexam
+
+\blemm
+
+    Let $M$ be an $A$-module and $S\subseteq A$ a multiplicative set.
+    \benum
+        \item If $N$ is an $S^{-1}A$-module, it is an $A$-module via the canonical map $A\to S^{-1}A$, and there is a natural isomorphism
+        $$ M\otimes_AN \to S^{-1}M\otimes_{S^{-1}A}N,\qquad m\otimes n\mapsto m/1\otimes n . $$
+        \item For an $A$-module $N$, there is a natural isomorphism
+        $$ S^{-1}M\otimes_{S^{-1}A}S^{-1}N \to S^{-1}(M\otimes_AN),\qquad \frac ms\otimes\frac nt \mapsto \frac{m\otimes n}{st} . $$
+        In particular for every prime $\p\leq A$, there is a natural isomorphism
+        $$ M_\p \otimes_{A_\p} N_\p \cong (M\otimes_AN)_\p . $$
+    \eenum
+
+\elemm
+
+\bproof
+
+    There is a natural isomorphism (by associativity of the tensor)
+    $$ S^{-1}M\otimes_{S^{-1}A}N \cong (M\otimes_AS^{-1}A)\otimes_{S^{-1}A}N \cong M\otimes_AN $$
+    which maps $m/s\otimes n$ to $m\otimes 1/s\otimes n$ to $m\otimes n/s$.
+    So in reverse it maps $m\otimes n$ to $m/1\otimes n$ as desired.
+
+    There is a natural isomorphism
+    $$ S^{-1}M\otimes_{S^{-1}A}S^{-1}N \cong M\otimes_AS^{-1}N \cong M\otimes_A(N\otimes_AS^{-1}A) \cong (M\otimes_AN)\otimes_A S^{-1}A , $$
+    and this is naturally isomorphic to $S^{-1}(M\otimes_AN)$.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Flatnes is local, i.e.\ the following are equivalent:
+    \benum
+        \item $M$ is a flat $A$-module,
+        \item $S^{-1}M$ is a flat $S^{-1}A$-module for all multiplicative $S\subseteq A$,
+        \item $M_\p$ is a flat $A_\p$-module for all prime $\p\leq A$,
+        \item $M_\m$ is a flat $A_\m$-module for all maximal $\m\leq A$.
+    \eenum
+
+\ecoro
+
+\bproof
+
+    If $M$ is flat then by the above lemma
+    $$ \bul\otimes_{S^{-1}A}S^{-1}M \cong S^{-1}(\bul\otimes_AM) , $$
+    which is a composition of exact functors and thus exact.
+
+    Now if $M_\m$ is flat for all maximal $\m\leq A$, we show $M$ is flat.
+    Recall we need only show that $\bul\otimes_AM$ preserves injectives.
+    Recall that $f$ is injective iff $f_\m$ is injective for all maximal $\m\leq A$.
+    Now, $f_\m$ is isomorphic to $f\otimes M_\m$, which is injective since $M_\m$ is flat, we see $f_\m$ is injective for all $\m$ as desired.
+    \qed
+
+\eproof
+
+\subsection{The Tor functor}
+
+We now quickly state a few definitions and results from homological algebra.
+
+\bdefn
+
+    Let $\A,\B$ be Abelian categories (e.g.\ module categories).
+    Then a {\emphcolor (homological) $\delta$-functor} is a collection of functors $\set{F_n\colon\A\to\B}_{n\geq0}$ satisfying the following two properties:
+    \benum
+        \item If $0\to A\to B\to C\to0$ is an SES in $\A$, then there exist maps $\delta_n\colon F_nC\to F_{n-1}A$ inducing a long exact sequence:
+        $$ \cdots\to F_{n+1}C \xtos\delta F_nA \to F_nB \to F_nC \xtos\delta F_{n-1}A \to \cdots . $$
+        \item The maps $\delta$ are natural: if we have a map of SES $0\to A\to B\to C\to0$ to $0\to A'\to B'\to C'\to0$, the following diagram commutes:
+
+        \commsq{F_nC&F_{n-1}A\cr F_nC'&F_{n-1}A'}
+            {\delta}{\delta}{}{}
+    \eenum
+    The functor $F_0$ is called the {\emphcolor base} of the $\delta$-functor.
+    Cohomological $\delta$-functors are defined similarly but with the arrows inverted.
+
+    If $F$ and $G$ are $\delta$-functors, then a morphism of $\delta$-functors is a sequence of natural transformations $f_n\colon F_n\To G_n$ which commute
+    with the $\delta$-maps.
+
+    A {\emphcolor universal} $\delta$-functor is a $\delta$-functor $F$ such that for any other $\delta$-functor $G$ and a natural transformation $f_0\colon G_0\to T_0$,
+    $f_0$ extends uniquely to a morphism of $\delta$-functors $G\to T$.
+
+\edefn
+
+Clearly universal $\delta$-functors are unique up to isomorphism.
+A functor $F$ is called {\emphcolor coeffaceable} if for every object $A$ there is a surjective $g\colon B\to A$ such that $F(g)=0$.
+A $\delta$-functor $F$ is {\emphcolor coeffaceable} if every $F_n$ is coeffaceable for $n\geq1$.
+An important due to Grothendieck is that a coeffaceable $\delta$-functor is universal.
+
+Notice that if $F$ is a $\delta$-functor then its base $F_0$ is right-exact.
+This is because if $0\to A\to B\to C\to0$ is exact, then the end of the long exact sequence induced by $F$ is
+$$ \cdots\to F_0A \to F_0B \to F_0C \to 0 . $$
+Another result, due to Grothendieck again, is that every right-exact functor is the base of a (necessarily unique up to isomorphism) universal $\delta$-functor (under some
+basic assumptions on the underlying category).
+This is called the {\emphcolor derived functor}.
+
+In particular, $\bul\otimes_AM$ is right-exact for any $A$-module $M$.
+Thus it has a derived functor, called the {\emphcolor Tor-functor}, denoted by $\tor_n^A(\bul,M)$.
+We can also compute the derived functor of $N\otimes_A\bul$ giving us another functor $\tor_n^A(N,\bul)$, and a non-trivial result tells us that these are two
+parts of the same bifunctor $\tor_n^A(\bul,\bul)\colon\Mod_A\times\Mod_A\to\Mod_A$.
+
+Since the tensor product is commutative (up to isomorphism), the derived functors $\tor_n^A(M,\bul)$ and $\tor_n^A(\bul,M)$ are isomorphic (by uniqueness of
+universal $\delta$-functors).
+
+We summarize these results in the following theorem:
+
+\bthrm[title=The Tor functor]
+
+    There is a unique (up to unique isomorphism) collection of additive bi-functors $\tor_n^A\colon\Mod_A\times\Mod_A\to\Mod_A$ such that
+    \benum
+        \item $\tor_0^A=\bul\otimes_A\bul$,
+        \item $\tor_n^A(\bul,M)$ is a $\delta$-functor for each $A$-module $M$.
+        \item $\tor_n^A(N,M)\cong\tor_n^A(M,N)$ for all $A$-modules $N,M$ and all $n\geq0$.
+    \eenum
+
+\ethrm
+
+The construction of derived functors is relatively straight-forward, but proving that they are (1) functors, (2) $\delta$-functors, (3) universal $\delta$-functors
+is less trivial.
+(1) and (2) is done pretty much directly as follows.
+Suppose $F$ is right-exact, and let $A$ be an object (a module in our case).
+Then we define a {\emphcolor projective resolution} of $A$ to be a long exact sequence
+$$ P_\bul\to A = \cdots \xtos{d_1} P_1 \xtos{d_0} P_0 \to A \to 0 , $$
+where each $P_n$ is a {\emphcolor projective object}.
+In category of modules, free modules are a type of projective object (but not in general the only type), so we can instead consider only resolutions by free modules.
+
+We then consider the induced chain complex
+$$ F(P_\bul) = \cdots \xtos{Fd_2} F(P_2) \xtos{Fd_1} F(P_1) \xtos{Fd_0} F(P_0) \to 0 . $$
+And then we define $F_n$ to be the $n$th homology modules of this sequence:
+$$ F_n(A) = H_n(F(P_\bul)) = \frac{\ker Fd_n}{\im Fd_{n+1}} . $$
+It can be shown that any map $f\colon A\to B$ there is a unique lift of $f$ to a sequence of maps between projective resolutions of $A$ and $B$ (unique up to homotopy),
+and we define $F_n(f)$ to be the induced map on the homology modules.
+
+It can be shown that this construction is not dependent on the choice of projective resolution: all projective resolutions give naturally isomorphic functors.
+Furthermore, this is a $\delta$-functor.
+And it is not hard to see that $F_0\cong F$.
+
+Now notice that if $P$ is a projective object (whatever that means), certainly $0\to P\to P\to0$ is a projective resolution (the non-trivial map is the identity).
+Thus $F_\bul$ are the homology modules of the chain complex $0\to FP\to0$, which vanish for $n\geq1$.
+In particular, as we said that free modules are projective, if $N$ is a free $A$-module then $\tor_n^A(N,M)=0$ for all $M\in\Mod_A$.
+
+Now we call an object $P$ {\emphcolor $F$-acylic} if $F_nP=0$ for all $n\geq1$, so clearly projectives are $F$-acylic for any $F$.
+A simple result is that derived functors can be computed using $F$-acylic resolutions.
+That is, if $P_\bul\to A\to0$ is a resolution of $A$ using $F$-acylic objects, then $F_n(A)\cong H_n(F(P))$.
+Of course to know what objects are $F$-acylic we need to compute $F_n$ via usual projective resolutions.
+
+But in our case, if $N\in\Mod_A$ is flat, then it is $\bul\otimes_AM$-acylic for all $M\in\Mod_A$ and vice versa.
+
+\bprop
+
+    Let $N\in\Mod_A$, then the following are equivalent:
+    \benum
+        \item $N$ is flat,
+        \item $\tor^A_n(N,M)=0$ for all $M\in\Mod_A$ and all $n\geq1$,
+        \item $\tor^A_1(N,M)=0$ for all $M\in\Mod_A$
+    \eenum
+    In particular free modules are flat.
+
+\eprop
+
+\bproof
+
+    Consider a projective resolution of $M$, $P_\bul\to M\to0$.
+    Then $\tor^A_n(N,M)$ are the homology modules of the chain complex
+    $$ \cdots\to P_1\otimes_AN \to P_0\otimes_AN \to 0 . $$
+    But $N$ is flat, and thus tensoring with it is exact so it preserves exact sequences.
+    So the above chain complex is exact at every index $n\geq1$ (at $n=0$ we have taken away $M\otimes_AN$ so it is no longer exact, this is because we want $\tor^A_0\cong\bul\otimes_A\bul$).
+    Thus the homology modules are all trivial, so $\tor^A_n(N,M)=0$ for all $n\geq1$; so we have shown that (1) implies (2).
+
+    And (2) clearly implies (3).
+
+    Now suppose (3) then let $0\to X\to Y\to Z\to0$ be an SES.
+    Then by $\delta$-functorality there is a long exact sequence
+    $$ \cdots \to \tor^A_1(N,Z) \to N\otimes_AX \to N\otimes_AY \to N\otimes_AZ \to 0 . $$
+    Since $\tor^A_1(N,Z)=0$ by assumption, this shows that
+    $$ 0 \to N\otimes_AX \to N\otimes_AY \to N\otimes_AZ \to 0 $$
+    is exact, and thus $N$ is flat.
+
+    And as explained, $\tor^A_n(P,\bul)=0$ for any projective, and thus free, module $P$.
+    So by the equivalence, free modules are flat.
+    \qed
+
+\eproof
+
+Notice that free modules are flat for a simpler reason, which we show in the following lemma.
+
+\blemm
+
+    The direct sums and filtered colimits of flat modules are flat.
+
+\elemm
+
+\bproof
+
+    Since the tensor product is a left-adjoint it commutes with (preserves) colimits.
+    That is,
+    $$ \bul\otimes_A\bigoplus_iM_i \cong \bigoplus_i\bul\otimes_AM_i,\qquad \bul\otimes_A\coflim M_i \cong \coflim(\bul\otimes_AM_i) . $$
+    Since direct sums and filtered colimits are exact (Grothendieck's axioms (AB4) and (AB5)), if each $M_i$ is flat and thus $\bul\otimes_AM_i$ are all exact,
+    then the above are exact as well.
+    \qed
+
+\eproof
+
+Since $A$ is a flat $A$-module (since $\bul\otimes_AA$ is isomorphic to the identity functor), direct sums of $A$ are flat.
+Direct sums of $A$ are just free modules.
+
+\blemm
+
+    Homology commutes with exact functors: if $C_\bul$ is a chain complex and $F$ an exact functor, then
+    $$ H_n(F(C_\bul)) \cong F(H_n(C_\bul)) \hbox{ for all $n$} . $$
+
+\elemm
+
+\bproof
+
+    Notice that a quotient $M/N$ is the cokernel of the inclusion $N\inj M$, and the image of $f$ is just $\im f=\ker\coker f$.
+    Since $F$ is exact, it preserves injections and cokernels, so $F(N)$ remains a subobject of $F(M)$ and $F(M)/F(N)\cong F(M/N)$ since $F$ preserves cokernels.
+    And it preserves images as well since $F\im f=F\ker\coker f\cong\ker\coker Ff=\im Ff$.
+
+    In particular,
+    $$ F(H_n(C_\bul)) = F(\ker f_n/\im f_{n+1}) \cong (F\ker f_n)/(F\im f_{n+1}) \cong (\ker Ff_n)/(\im Ff_{n+1}) = H_n(F(C_\bul)) $$
+    as desired.
+    \qed
+
+\eproof
+
+\bthrm
+
+    The Tor functors commute with direct sums and filtered colimits:
+    $$ \tor^A_n\parens{N,\bigoplus_iM_i} \cong \bigoplus_i\tor^A_n(N,M_i),\qquad \tor^A_n(N,\coflim M_i) \cong \coflim\tor^A_n(N,M_i) . $$
+
+\ethrm
+
+\bproof
+
+    We explained that Tor can be computed via acylic resolutions, and that flat modules are acylic.
+    So if
+    $$ P^i_\bul \to M_i \to 0 $$
+    are flat resolutions of $M_i$ for each $i$, then by exactness of direct sums and filtered colimits,
+    $$ \bigoplus_i P^i_\bul \to \bigoplus_iM_i \to 0,\qquad \coflim P^i_\bul \to \coflim M_i \to 0 $$
+    are exact sequences.
+    Furthermore we just showed that these are flat, and thus Tor can be computed using their homology.
+    And again since direct sums and filtered colimits are exact, homology commutes with them.
+    Putting everything together,
+    $$ \eqalign{
+        \tor^A_n\parens{N,\bigoplus_iM_i} &= H_n\parens{\bigoplus_iP^i_\bul} = \bigoplus_iH_n(P^i_\bul) = \bigoplus_i\tor^A_n(M_i),\cr
+        \tor^A_n\parens{N,\coflim M_i} &= H_n\parens{\coflim P^i_\bul} = \coflim H_n(P^i_\bul) = \coflim \tor^A_n(M_i).
+    } $$
+    \qed
+
+\eproof
+
+Now that we have the basic properties of the Tor functor down, we will use it to prove properties about flatness.
+
+\blemm
+
+    An $A$-module $M$ is flat iff $\tor^A_1(M,A/I)=0$ for all ideals $I\leq A$.
+
+\elemm
+
+\bproof
+
+    The ``only if'' case is clear, as the first torsion module of a flat module with any other module is zero.
+    Conversely, we need to show that $\tor^A_1(M,N)=0$ for any $N\in\Mod_A$.
+
+    First suppose that $N$ is fg, and we induct on the number of generators $a_1,\dots,a_n$.
+    For $n=0$ it is clear since then $N=0$.
+    And for $n=1$ we have that $N=(a_1)\cong A/\ann(a_1)$ and thus the result follows from the assumption.
+    Now inductively consider the SES
+    $$ 0 \to (a_n) \to N \to N/(a_n) \to 0 . $$
+    Thus we have an exact sequence
+    $$ \cdots \to \tor^A_1(M,(a_n)) \to \tor^A_1(M,N) \to \tor^A_1(M,N/(a_n)) \to \cdots . $$
+    Now $N/(a_n)$ is generated by $n-1$ elements, and thus $\tor^A_1(M,N/(a_n))=0$ by induction, and by our base case $\tor^A_1(M,(a_n))=0$.
+    Thus $\tor^A_1(M,N)=0$ by exactness.
+
+    And if $N$ is not fg, then $N=\coflim N_i$ where $N_i$ ranges over all the fg submodules of $N$.
+    Since $\tor$ commutes with filtered colimits, we have
+    $$ \tor^A_1(M,\coflim N_i) \cong \coflim\tor^A_1(M,N_i) = \coflim 0 = 0 , $$
+    as desired.
+    \qed
+
+\eproof
+
+\bthrm
+
+    An $A$-module $M$ is flat iff for every ideal $I\leq A$, the map $I\otimes_AM\to IM$ given by $a\otimes m\mapsto am$ is an isomorphism.
+
+\ethrm
+
+\bproof
+
+    First note that the given map is induced by an $A$-bilinear map and is thus well-defined.
+
+    If $M$ is flat and $I\leq A$ is an ideal, then we have a short exact sequence
+    $$ 0 \to I \to A \to A/I \to 0 , $$
+    where the first map is given by inclusion and the second by projection.
+    By flatness, this induces an SES, recalling that $A\otimes_AM\cong M$,
+    $$ 0 \to I\otimes_AM \to M \to M\otimes_A(A/I) \to 0 . $$
+    The first map is then the map $M\otimes_AI\to M$ given by $m\otimes a\mapsto am$, the map we are investigating, which is injective by exactness.
+
+    Recall that $M\otimes_A(A/I)\cong M/IM$ by $m\otimes(a+I)\mapsto am+IM$.
+    Thus the second map corresponds to the map $M\to M/IM$ given by projection.
+    By exactness, the image of the first map is the kernel of the second, which is $IM$.
+    So we have that our map is injective onto its image, $IM$, and thus is an isomorphism $I\otimes_AM\to IM$ as desired.
+
+    Conversely by the above lemma, it is sufficient to show that $\tor^A_1(M,R/I)=0$.
+    From the SES $0\to I\to A\to A/I\to0$, we have an exact sequence
+    $$ \tor^A_1(M,I) \to \tor^A_1(M,A) \to \tor^A_1(M,A/I) \to M\otimes_A I \to M \to M\otimes_A(A/I) \to 0 . $$
+    Since $A$ is free, $\tor^A_1(M,A)=0$.
+    And the map $M\otimes_AI\to M$ is precisely the map $m\otimes a\mapsto am$, which is injective by assumption.
+    So we have an exact sequence
+    $$ 0 \to \tor^A_1(M,A/I) \to M\otimes_AI \xtos f M , $$
+    where $f$ is injective.
+    This requires that $\tor^A_1(M,A/I)=0$ as desired.
+    \qed
+
+\eproof
+
+\bexam
+
+    Let $R=\bC[x]$ and $M$ be the complex algebra of functions $\bC\to\bC$.
+    Then we define $R\to M$ by mapping $x$ to the zero map.
+    This turns $M$ into an $R$-algebra, where $p\in R$ is mapped to $p(0)$.
+
+    We claim that $M$ is not a flat $R$-module.
+    Indeed, let $I=(x)$ so that $IM=0$.
+    But $I\cong R$ as $R$-modules (since they are both free $R$-modules on a single generator), so $I\otimes_RM\cong M\neq0$.
+    Thus $IM$ and $I\otimes_RM$ are not isomorphic and in particular $M$ is not flat.
+
+\eexam
+
+While free modules are always flat, the converse is not always true.
+But it is in an important special case, whose proof is homework.
+
+\bprop
+
+    Suppose $A$ is a local ring and $M$ a fg $A$-module.
+    Then $M$ is free iff it is flat.
+
+\eprop
+
+\bcoro
+
+    Let $M$ be an $A$-module, then the following are equivalent:
+    \benum
+        \item $M$ is flat,
+        \item $M_\p$ is a free $A_\p$-module for all prime $\p\leq M$,
+        \item $M_\m$ is a free $A_\m$-module for all maximal $\m\leq M$.
+    \eenum
+
+\ecoro
+
+\bproof
+
+    Flatness is local: $M$ is flat iff $M_\p$ is a flat $A_\p$-module for all prime $\p\leq M$ or equivalently all maximal $\m\leq M$.
+    And $A_\p$ is a local ring, so by the previous proposition this is iff $M_\p$ is free.
+    \qed
+
+\eproof
+
+We can also give a nicer criteria in the case that our ring is a domain.
+
+\blemm
+
+    Let $A$ be a local domain with maximal ideal $\m$, and let $k=A/\m$ be its residue field and $K=\Frac(A)$ its field of fractions.
+    Let $M$ be a fg $A$-module, and suppose $\dim_k(k\otimes_AM)=\dim_K(K\otimes_AM)=n$.
+    Then $M$ is free of rank $n$.
+
+\elemm
+
+\bproof
+
+    Nakayama's lemma implies that there is a generating set $x_1,\dots,x_n\in M$ such that their projections form a basis in $k\otimes_AM\cong M/\m M$
+    (the final formulation of Nakayama's lemma).
+    Define $\phi\colon A^n\to M$ which maps the standard basis vectors $e_i$ to $x_i$.
+    This gives an SES
+    $$ 0 \to \ker\phi \to A^n \to M \to 0 . $$
+    Recall that localization of flat modules are flat, and since $K$ is the localization of $A$ by $A-0$, it is a flat $A$-module.
+    Thus tensoring with $K$ preserves the SES,
+    $$ 0 \to K\otimes_A\ker\phi \to K\otimes_AA^n \to K\otimes_AM \to 0 . $$
+    Recall that tensoring commutes with direct sums, so this is isomorphic to
+    $$ 0 \to K\otimes_A\ker\phi \to K^n \to K\otimes_AM \to 0 . $$
+    By assumption $K\otimes_AM$ has dimension $n$ over $K$, and since the final map is a surjection it must be an isomorphism by considering dimensions.
+    Thus $K\otimes_A\ker\phi=0$, and since localization commutes with tensoring,
+    $$ 0 = K\otimes_A\ker\phi \cong \ker\phi_{A-0} . $$
+    So for every $x\in\ker\phi$ we must have that $x/1=0$, i.e.\ there is an $a\in A-0$ such that $ax=0$, so $\ker\phi$ is a torsion module.
+    But $\ker\phi\subseteq A^n$ which is not torsion as $A$ is a domain, so $\ker\phi=0$ and thus $\phi$ is an isomorphism and $M\cong A^n$ as desired.
+    \qed
+
+\eproof
+
+\bthrm[title=Fiber dimension criterion for flatness]
+
+    Let $A$ be a domain, and $M$ a fg $A$-module.
+    Let $S=\spec(A)$, then $M$ is flat iff the map $S\to\bN$ given by $\p\mapsto\dim_{k(\p)}(k(\p)\otimes_AM)$ is constant.
+
+\ethrm
+
+\bproof
+
+    As we showed by locality of flatness, $M$ is flat iff $M_\p$ is a free $A_\p$-module for all prime $\p\leq A$.
+    So first suppose $M_\p$ is free for all prime $\p\leq A$, say $M_\p\cong A_\p^{n_\p}$ ($n_\p$ is finite since $M$ is fg).
+    Then
+    $$ k(\p) \otimes_A M = (A_\p/\p A_\p) \otimes_A M \cong M_\p/\p M_\p \cong A_\p^{n_\p}/(\p A_\p^{n_\p}) \cong k(\p)^{n_\p} , $$
+    so $\dim_{k(\p)}(k(\p)\otimes_AM)=n_\p$.
+    
+    Now in general notice that if $\p\leq\q\leq A$ are prime, and $M$ is an $A$-module, then $M_\q$ remains an $A$-module and we can localize it by $\p$.
+    It is easy to see that
+    $$ (M_\q)_\p \cong M_\p . $$
+    Thus,
+    $$ M_{(0)} \cong (M_\p)_(0) \cong (A_\p^{n_\p})_{(0)} \cong (A_\p)_{(0)}^{n_\p} \cong A_{(0)}^{n_\p} = \Frac(A)^{n_\p} . $$
+    And so we have that
+    $$ \Frac(A)^{n_\p} \cong M_{(0)} \cong \Frac(A)\otimes_AM . $$
+    The right-hand side is independent of $\p$, and thus $n_\p$ must be constant.
+    Thus we see that $\p\mapsto n_\p=\dim_{k(\p)}(k(\p)\otimes_AM)$ is constant, as desired.
+
+    Conversely suppose the map is constant, let its value be $n$.
+    In particular we have that, for $K=\Frac(A)=A_{(0)}$,
+    $$ n = \dim_{k(\p)}(k(\p)\otimes_AM) = \dim_K(K\otimes_AM) . $$
+    We also have that
+    $$ k(\p)\otimes_AM \cong (k(\p)\otimes_{A_\p}A_\p)\otimes_AM \cong k(\p) \otimes_{A_\p} (A_\p\otimes_AM) \cong k(\p) \otimes_{A_\p} M_\p . $$
+    Thus we have
+    $$ \dim_{k(\p)}(k(\p)\otimes_{A_\p}M_\p) = \dim_{k(\p)}(k(\p)\otimes_AM) = \dim_K(K\otimes_AM) . $$
+
+    Now also we know
+    $$ K\otimes_{A_\p}M_\p = (A_\p)_{(0)} \otimes_{A_\p} M_\p \cong (A_\p\otimes_{A_\p}M_\p)_{(0)} \cong (M_\p)_{(0)} \cong M_{(0)} \cong K\otimes_AM . $$
+    Thus $\dim_K(K\otimes_AM)=\dim_K(K\otimes_{A_\p}M_\p)$, and so
+    $$ \dim_{k(\p)}(k(\p)\otimes_{A_\p}M_\p) = \dim_K(K\otimes_{A_\p}M_\p) . $$
+    By the previous lemma, $M_\p$ is free.
+    \qed
+
+\eproof
+

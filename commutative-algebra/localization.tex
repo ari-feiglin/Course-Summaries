@@ -1,0 +1,553 @@
+\section{Localization}
+
+\subsection{Localization of rings}
+
+Consider the following problem: for a ring $A$ and a subset $S\subseteq A$, we want a ring $S^{-1}A$ and a morphism $\iota\colon A\to S^{-1}A$
+such that any morphism $f\colon A\to B$ such that $f(S)\subseteq B^\times$, $f$ factors uniquely through $\iota$.
+That is, there is a unique $\hat f\colon S^{-1}A\to B$ such that $f=\hat f\circ\iota$:
+
+\centerline{\drawdiagram{
+    $A$&$S^{-1}A$\cr
+    &$B$
+}{
+    \diagarrow{from={1,1}, to={1,2}, text=$\iota$, y distance=-.25cm}
+    \diagarrow{from={1,1}, to={2,2}, text=$f$, y distance=-.25cm}
+    \diagarrow{from={1,2}, to={2,2}, text=$\exists!$, x distance=.25cm, dashed}
+}}
+
+This is a universal property, and as such any solution is unique up to unique isomorphism.
+In this section we will investigate the construction of such a solution.
+
+\bdefn
+
+    A subset $S\subseteq A$ is {\emphcolor multiplicatively closed} if $1\in S$ and for $a,b\in S$ we have $ab\in S$.
+
+\edefn
+
+It is sufficient to consider only the case that $S$ is multiplicatively closed.
+Otherwise, let $\hat S$ be $S$'s multiplicative closure: the set of all finite products of elements from $S$.
+Then $\hat S^{-1}R$ is a solution to the problem for $S$.
+Indeed, if $f(S)\subseteq B^\times$, then $f(\hat S)\subseteq B^\times$ as well, as the product of units.
+Then there is a unique factoring through $\hat S$'s $\iota$.
+
+\bdefn
+
+    For $S\subseteq A$ multiplicatively closed, define an equivalence on $A\times S$ by $(a,s)\sim(b,t)$ iff there is a
+    $u\in S$ such that $u(at-bs)=0$, in which case we write $(a,s)\sim_u(b,t)$.
+
+\edefn
+
+\blemm
+
+    This is indeed an equivalence relation.
+
+\elemm
+
+\bproof
+
+    The subrelations $\sim_u$ are all clearly reflexive and symmetric, thus their union $\sim$ is as well.
+    Now if $(a,s)\sim_\alpha(b,t)\sim_\beta(c,v)$ then $\alpha at=\alpha sb$ and $\beta bv=\beta ct$.
+    So then $\alpha t\beta av=\alpha sb\beta v=\alpha\beta tcs$ so that $(a,s)\sim_{\alpha t\beta}(c,v)$.
+    \qed
+
+\eproof
+
+\bexam
+
+    A more naive equivalence would be $\sim_1$, i.e.\ $(a,s)\sim(b,t)$ iff $at-bs=0$.
+    This corresponds to $\sim$ when $A$ is an integral domain, but is not generally an equivalence.
+
+\eexam
+
+\bdefn
+
+    For $S\subseteq A$ multiplicatively closed, define $S^{-1}A$ to be the quotient of $A\times S$ by $\sim$.
+    Write the equivalence class of $(a,s)$ by $a/s$.
+    We give this a ring structure by
+    $$ 0 = 0/1,\qquad 1 = 1/1,\qquad a/s + b/t = (at+bs)/st,\qquad a/s \cdot b/t = (ab)/(st) . $$
+    Define $\iota\colon A\to S^{-1}A$ by $\iota(a)=a/1$.
+
+\edefn
+
+\bprop
+
+    $S^{-1}A$ is indeed a ring, and $\iota$ is a ring morphism.
+
+\eprop
+
+\bproof
+
+    We need to show that addition and multiplication are well-defined.
+    Indeed, if $(a,s)\sim_u(a',s')$ and $(b,t)\sim_v(b',t')$ then $(at+bs,st)\sim_{uv}(a't'+b's',s't')$ which can be verified.
+    And similarly $(ab,st)\sim_{uv}(a'b',s't')$.
+    From well-definedness it is easy to see that addition and multiplication define a ring structure and $\iota$ is a ring morphism.
+    \qed
+
+\eproof
+
+A few properties are immediate:
+\benum
+    \item For $s\in S$, $\iota(s)=1/s$ has an inverse $s/1$, so that $\iota(S)\subseteq(S^{-1}R)^\times$;
+    \item We have that $a/s=0/1$ iff there is a $t\in S$ such that $at=0$.
+    In particular, $\iota(a)=0$ iff there is a $t\in S$ such that $ta=0$.
+    \item Every element of $S^{-1}A$ is of the form
+    $$ a/s = a/1\cdot1/s = \iota(a)\cdot\iota(s)^{-1} . $$
+\eenum
+
+\bthrm
+
+    This construction solves the above universal property.
+
+\ethrm
+
+\bproof
+
+    Let $f\colon A\to B$ be such that $f(S)\subseteq B^\times$: we need to show that there is a unique map $g\colon S^{-1}A\to B$
+    such that $f=g\circ\iota$.
+    Indeed, we must define
+    $$ g(a/s) = g(\iota(a)\iota(s)^{-1}) = (g\circ\iota(a))\cdot(g\circ\iota(s))^{-1} = f(a)f(s)^{-1} . $$
+    This shows that $g$ is unique, if it exists.
+    We need to show that this map is well-defined and a ring morphism.
+
+    If $a/s=b/t$ then we must have that $f(a)f(s)^{-1}=f(b)f(t)^{-1}$ so that $g$ is well-defined.
+    Indeed, if $u(at-bv)=0$ for $u\in S$, we have
+    $$ f(u)\cdot(f(at)-f(bv)) = 0 $$
+    and since $f(S)\subseteq B^\times$ we have that $f(u)$ is a unit so that $f(at)-f(bv)$, meaning this is well-defined.
+    And this is a ring morphism, as can be checked easily.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Let $f\colon A\to B$ be a ring morphism such that
+    \benum
+        \item $f(S)\subseteq B^\times$,
+        \item if $f(a)=0$ then $ta=0$ for some $t\in S$,
+        \item every element of $B$ is of the form $f(a)f(s)^{-1}$ for $a\in A$ and $s\in S$.
+    \eenum
+    Then there is a unique isomorphism $g\colon S^{-1}A\to B$ such that $g\circ\iota=f$.
+
+\ecoro
+
+\bproof
+
+    $f$ solves the universal problem above for $S$ as well.
+    If $h\colon A\to C$ is a map where $h(S)\subseteq C^\times$, then we need to define $\hat h\colon B\to C$ by
+    $$ \hat h(f(a)f(s)^{-1}) = h(a)h(s)^{-1} , $$
+    which is well-defined and a ring morphism for similar reasons as above.
+    Since universal properties are unique up to unique isomorphism, the result follows.
+
+    Alternatively we can prove this directly: let $g\colon S^{-1}A\to B$ be the unique map where $g\circ\iota=f$ by the universal property.
+    By definition $g(a/s)=f(a)f(s^{-1})$.
+    By the third point $g$ is surjective, and it is injective since if $g(a/s)=0$ we have $f(a)=0$ so that $ta=0$, which means that $a/s=0$.
+    \qed
+
+\eproof
+
+\bexam
+
+    If $A$ is an integral domain, then $S=A-0$ is multiplicatively closed, and $S^{-1}A$ is the field of fractions of $A$.
+
+\eexam
+
+\bprop
+
+    For $A\neq0$, then $S^{-1}A=0$ iff $0\in S$.
+
+\eprop
+
+\bproof
+
+    We have that $S^{-1}A=0$ iff $1/1=0/1$ iff there is a $s\in S$ such that $s\cdot1=0$.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $\p\subseteq A$ be prime.
+    Then $S=A-\p$ is multiplicatively closed, and we denote its localization by $A_\p=S^{-1}A$.
+
+    For $a\in A$, $S=\set{1,a,a^2,\dots}$ is multiplicatively closed, and we denote its localization by $A_a=S^{-1}A$.
+
+\edefn
+
+For $a\in A$ not nilpotent (so $A_a\neq0$) define a map
+$$ \phi\colon A[x] \to A_a,\qquad x\mapsto 1/a . $$
+This map is clearly surjective, and $p(x)=\sum_k^nb_kx^k\in A[x]$ is mapped to zero iff
+$$ \sum_{k=0}^nb_k\frac1{a^k} = \frac{\sum_kb_ka^{n-k}}{a^n} = 0 . $$
+This is iff there is a $t$ such that
+$$ a^t\sum_kb_ka^{n-k} = 0 . $$
+Defining $c_k$ recursively by $c_0=-b_0$ and $c_k=ac_{k-1}-b_k$ gives a polynomial such that $p(x)=(ax-1)q(x)$, so $p\in(ax-1)$
+(the equality above ensures the recursion terminates).
+Thus $\ker\phi=(ax-1)$ and thus
+$$ A_f \cong \frac{A[x]}{(ax-1)} . $$
+
+\bnote
+
+    Note that we have two distinct localizations here, which have similar names in some cases.
+    If $A$ is a PID and $p\in A$ is irreducible, then $A_{(p)}$ is localization by $A-(p)$, which $A_p$ is localization by $\set{p^n}_{n<\omega}$.
+    Elements of the former are of the form $a/s$ where $p$ does not divide $s$, while elements of the former are of the form $a/s$ where $s=p^n$.
+    Quite different!
+
+\enote
+
+\bdefn
+
+    For a ring morphism $f\colon A\to B$ and an ideal $I\subseteq A$, define the ideal $IB=(f(I))$ of $B$.
+    Explicitly, $IB$ is the set of all finite sums $\sum_if(a_i)b_i$ for $a_i\in I$.
+
+\edefn
+
+In general we have $f^{-1}(f(I))\supseteq I$ and $f(f^{-1}(J))\subseteq J$.
+These imply $f^{-1}(IB)\supseteq I$ and $f^{-1}(J)B\subseteq J$.
+
+\bdefn
+
+    For two ideals $I,J$, define $(I:J)=\set{x\in A}[xJ\subseteq I]$.
+    This is an ideal containing $I$.
+    For $a\in A$, define $(I:a)=(I:(a))=\set{x\in A}[xa\subseteq I]$.
+
+    For $S\subseteq R$ multiplicatively closed, define the ideal $S^{-1}I=IS^{-1}A\subseteq S^{-1}A$.
+    This is the ideal generated by $\iota(I)$.
+
+\edefn
+
+So we have two maps: $S^{-1}\bul$ mapping ideals of $A$ to ideals of $S^{-1}A$, and $\iota^{-1}$ mapping ideals of $S^{-1}A$ to $A$:
+$$ \set{\hbox{Ideals of $A$}} \xtof{\quad S^{-1}\quad}[\quad\iota^{-1}\quad] \set{\hbox{Ideals of $S^{-1}A$}} . $$
+We wish to relate the two.
+
+\bprop
+
+    \benum
+        \item For an ideal $I\subseteq A$, $S^{-1}I=\set{a/s}[a\in I,s\in S]$.
+        \item For an ideal $J\subseteq S^{-1}A$, we have $S^{-1}\iota^{-1}J=J$.
+        \item For an ideal $I\subseteq A$, we have $\iota^{-1}S^{-1}I=\bigcup_{s\in S}(I:s)$.
+        \item We have $S^{-1}I=S^{-1}A$ iff $I\cap S\neq\emptyset$.
+        \item For $\p\subseteq A$ prime, if $I\cap S\neq\emptyset$ then $S^{-1}\p\subseteq S^{-1}A$ is prime (otherwise it is all of $S^{-1}A$).
+        \item The correspondence $\q\mapsto\iota^{-1}\q$ is a bijection between prime ideals of $S^{-1}A$ and prime ideals of $A$ not intersecting $S$.
+        Its inverse is $S^{-1}$.
+        That is, we have a one-to-one correspondence:
+        $$ \set{\hbox{Prime ideals of $A$ not intersecting $S$}} \xtof{\quad S^{-1}\quad}[\quad\iota^{-1}\quad] \set{\hbox{Prime ideals of $S^{-1}A$}} . $$
+    \eenum
+
+\eprop
+
+\bproof
+
+    \benum
+        \item $\set{a/s}[a\in I,s\in S]$ is an ideal and contains $\iota(I)$.
+        It is clearly closed under multiplication by $S^{-1}A$ and for $a/s+b/t=(at+bs)/(st)$, notice that $at+bs\in I$.
+        By definition $S^{-1}I$ is the smallest ideal containing $\iota(I)$, and it consists of finite sums $\sum_i\iota(a_i)x_i/s_i$.
+        This clearly contains $a/s$, and thus they must be equal.
+
+        \item As explained before, in general we have $S^{-1}\iota^{-1}J=\iota^{-1}(J)S^{-1}A\subseteq J$, we must prove the opposite inclusion.
+        As above, we have $S^{-1}\iota^{-1}J=\set{a/s}[\iota(a)\in J,s\in S]$.
+        For $x/s\in J$, we have that $\iota(x)=x/1\in J$ and so $x/s\in S^{-1}\iota^{-1}J$ as desired.
+
+        \item If $a\in\iota^{-1}S^{-1}I$ then $\iota(a)\in S^{-1}I$ so by the first point $a/1=b/s$ for $b\in I$.
+        Then $asu=bu$ for some $u\in S$ and since $bu\in J$ this means that $a\in(I:su)$.
+        Conversely if $a\in(I:s)$ for $s\in S$ then $as\in I$ and so $\iota(a)=a/1=(as)/s\in S^{-1}I$.
+
+        \item If $S^{-1}I=S^{-1}A$ then $1/s=a/t$ for $a\in I$, so $as=t$ meaning $as\in I\cap S$.
+        Conversely if $a\in I\cap S$ then $1/1=a/a\in S^{-1}I$.
+
+        \item If $S\cap\p=\emptyset$ then we need to show that $S^{-1}\p$ is prime.
+        If $a_1/s_1,a_2/s_2\notin S^{-1}\p$ we want to show $(a_1a_2)/(s_1s_2)\notin S^{-1}\p$.
+        By assumption $a_1,a_2\notin\p$.
+
+        Now we claim that if $a\notin\p$, $a/s\notin S^{-1}\p$, which would complete the proof.
+        Assume the contrary: $a/s=b/t$ for $b\in\p$ then there is a $u\in S$ such that $atu=bsu$.
+        Then $atu\in\p$, but $a\notin\p$ and $t,u\in S$ and thus also are not in $\p$, a contradiction to $\p$'s primality.
+
+        \item Preimages of prime ideals are prime, so $\iota^{-1}$ maps prime ideals to prime ideals.
+        By the second point $S^{-1}\iota^{-1}\q=\q$ for all prime ideals $\q\subseteq S^{-1}A$.
+        It remains to show that $\iota^{-1}S^{-1}\p=\p$ for all prime $\p\subseteq A$ which don't intersect $S$.
+        We know that $\p\subseteq\iota^{-1}S^{-1}\p$ as is true in general, so we want to show that $\iota^{-1}S^{-1}\p=\bigcup_{s\in S}(\p:s)$ is contained in $\p$.
+        Indeed, if $a\in(\p:s)$ then $as\in\p$ and since $s\notin\p$ we have that $a\in\p$ as desired.
+        \qed
+    \eenum
+
+\eproof
+
+\bcoro
+
+    Let $\p\subseteq A$ be prime, and consider its localization $A_\p$.
+    Then $A_\p$ is a local ring with maximal ideal $\p A_\p$.
+    Moreover, the correspondence $\q\to\q A_\p$ is a bijection between prime ideals of $A_\p$ and prime ideals $\q\subseteq\p$.
+
+\ecoro
+
+\bproof
+
+    Let $S=A-\p$, so that $A_\p=S^{-1}A$, and $\p A_\p=S^{-1}\p$.
+    The last point is clear: $\q\cap S=\emptyset$ iff $\q\subseteq\p$.
+    $A_\p$ being local is also clear: $S^{-1}\bul$ is order-preserving, so $S^{-1}\q\subseteq S^{-1}\p$ for all prime ideals $\q$.
+    Thus $S^{-1}\p$ is maximal.
+    \qed
+
+\eproof
+
+\bcoro
+
+    If $a\in A$ is not nilpotent, then there is a prime ideal $\p\subseteq A$ such that $a\notin\p$.
+
+\ecoro
+
+\bproof
+
+    As before, consider the multiplicative set $S=\set{a^n}_{n<\omega}$, and $A_a=S^{-1}A$.
+    Since $a$ is not nilpotent, $0\notin S$, so that $A_a\neq0$.
+    So take a prime ideal $\p\subseteq A_a$, and then $\iota^{-1}\p$ is a prime ideal of $A$ not intersecting $S$, thus not containing $a$.
+    \qed
+
+\eproof
+
+\bnote
+
+    This completes the proof before that
+    $$ \nil(A) = \bigcap_\p\p $$
+    but without appealing to Zorn, and thus not relying on the Axiom of Choice.
+
+\enote
+
+\subsection{Localization of modules}
+
+\bdefn
+
+    Let $S\subseteq A$ be multiplicatively closed and $M$ an $A$-module.
+    Define an equivalence on $M\times S$ by $(m,s)\sim(m',s')$ iff there is a $t\in S$ such that $t(s'm-sm')=0$.
+    This is an equivalence relation and we denote the equivalence class of $(m,s)$ by $m/s$.
+    The quotient $S^{-1}M$ forms an $A$-module by
+    $$ m/s + m'/s' = (s'm+sm')/(ss'),\qquad a\cdot(m/s) = (am)/s . $$
+
+\edefn
+
+Note that localization at $S$ forms an additive functor $S^{-1}\colon\Mod_A\to\Mod_{S^{-1}A}$.
+Indeed, $S^{-1}M$ is an $S^{-1}A$ module by
+$$ a/s\cdot m/s' = (am)/(ss') . $$
+And if $f\colon M\to N$ is an $A$-module morphism, then define
+$$ S^{-1}f\colon S^{-1}M\to S^{-1}N,\qquad S^{-1}f(m/s) = f(m)/s . $$
+It is not hard to see that this is functorial and additive.
+
+There is the canonical morphism $\iota\colon A\to S^{-1}A$ and as such it lifts to a ``forgetful'' functor $\Mod_{S^{-1}A}\to\Mod_A$,
+where for $M\in\Mod_{S^{-1}A}$ we view it as an $A$-module by $a\cdot M=\iota(a)\cdot M$.
+
+\bprop
+
+    The functor $S^{-1}\colon\Mod_A\to\Mod_{S^{-1}A}$ is left adjoint to the forgetful functor $\Mod_{S^{-1}A}\to\Mod_A$.
+
+\eprop
+
+\bproof
+
+    We need to show that there is a canonical bijection
+    $$ \hom_{S^{-1}A}(S^{-1}M,N) \cong \hom_A(M,N) , $$
+    for all $A$-modules $M$ and $S^{-1}A$-modules $N$.
+    For $f\colon M\to N$ map it to $\hat f\colon S^{-1}M\to N$ by $\hat f(m/s)=1/s\cdot f(m)$.
+    And for $g\colon S^{-1}M\to N$ map it to $\tilde g\colon M\to N$ by $\tilde g(m)=g(m/1)$.
+    \qed
+
+\eproof
+
+\bdefn
+
+    An additive functor $F\colon\Mod_A\to\Mod_B$ is
+    \benum
+        \item {\emphcolor left exact} if it preserves left-exact sequences: if
+        $$ 0 \to M \xtos f N \xtos g P $$
+        is exact, then so is
+        $$ 0 \to FM \xtos{Ff} FN \xtos{Fg} FP . $$
+        \item {\emphcolor right exact} if it preserves right-exact sequences: if
+        $$ M \xtos f N \xtos g P \to 0 $$
+        is exact, then so is
+        $$ FM \xtos{Ff} FN \xtos{Fg} FP\to 0. $$
+        \item {\emphcolor exact} if it is both left and right exact.
+    \eenum
+
+\edefn
+
+\bprop
+
+    An additive functor is
+    \benum
+        \item left exact iff it preserves kernels iff it preserves finite limits iff it preserves the left side of a short exact sequence.
+        \item right exact iff it preserves cokernels iff it preserves finite colimits iff it preserves the right side of a short exact sequence.
+        \item exact iff it preserves finite limits and colimits iff it preserves short exact sequences iff it preserves all exact sequences.
+    \eenum
+
+\eprop
+
+\bproof
+
+    Left-exact sequences are kernel diagrams, and right-exact sequences are cokernel diagrams.
+    So by definition, left exact functors are those which preserve kernels, and right exact functors are those which preserve cokernels.
+    Since additive functors preserve finite biproducts, left/right exact functors preserve limits/colimits.
+
+    Clearly left-exact functors preserve the left side of a short exact sequence (similarly for right-exact functors).
+    To show the converse, if left-exact sequences can be quotiented to give an appropriate short exact sequence, similar for right-exact
+    sequences.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Left adjoints are right exact, and right adjoints are left exact.
+
+\ecoro
+
+\bproof
+
+    Left adjoints preserve all colimits, and right adjoints all limits.
+    \qed
+
+\eproof
+
+\bcoro
+
+    $S^{-1}$ is an exact functor.
+
+\ecoro
+
+\bproof
+
+    By the above corollary, it is right-exact.
+    To show that it is exact, it is sufficient to show that it preserves injections.
+    If $f\colon M\to N$ is injective then $m/s\in\ker S^{-1}f$ iff $f(m)/s=0/1$, so that $tf(m)=0$ for some $t\in S$.
+    But then $tf(m)=f(tm)$ so $tm\in\ker\phi$, so $tm=0$, which means $m/s=0/1$ as desired.
+    \qed
+
+\eproof
+
+In general if $U\colon\Mod_A\to\Mod_B$ is a restriction functor corresponding to a morphism $\iota\colon B\to A$, then it has a left adjoint
+via the tensor product.
+In particular, viewing $A$ as a $(A,B)$-module, then $A\otimes_BM$ has an $A$-module structure (given by $a(a'\otimes m)=(aa')\otimes m$).
+$U$'s left adjoint is then $A\otimes_BM$.
+
+Since left adjoints are unique up to natural isomorphism,
+$$ S^{-1}M \cong S^{-1}A\otimes_AM . $$
+Thus $S^{-1}A\otimes_A\bul$ is an exact functor, which means that $S^{-1}A$ is a {\emphcolor flat} $A$-module.
+This can also be shown directly: $S^{-1}A$ is the filtered colimit of free $A$-modules, and is thus flat.
+
+\bcoro
+
+    $S^{-1}$ preserves arbitrary coproducts:
+    $$ S^{-1}\bigoplus_\alpha M_\alpha \cong \bigoplus_\alpha S^{-1}M_\alpha $$
+    naturally.
+
+\ecoro
+
+\bproof
+
+    Left adjoints preserve arbitrary colimits.
+    \qed
+
+\eproof
+
+\bnote
+
+    While $S^{-1}$ is exact, it is not {\emphcolor continuous}: it does not preserve arbitrary limits (equivalently it does not preserve
+    arbitrary products).
+    That is, we do {\it not\/} have that
+    $$ S^{-1}\prod_\alpha M_\alpha \cong \prod_\alpha S^{-1}M_\alpha . $$
+    This is of course true when the index set is finite, since then it is just a biproduct.
+
+\enote
+
+\bcoro
+
+    \benum
+        \item If $N\subseteq M$ is a submodule, $S^{-1}N$ can be naturally embedded in $S^{-1}M$.
+        \item There is a natural isomorphism $S^{-1}(M/N)\cong (S^{-1}M)/(S^{-1}N)$.
+        \item For $f\colon M\to N$ of $A$-modules, we have natural isomorphisms
+        $$ \ker S^{-1}f \cong S^{-1}\ker f,\qquad \im S^{-1}f \cong S^{-1}\im f,\qquad S^{-1}\coker f\cong\coker S^{-1}f . $$
+        \item For every two submodules $M_1,M_2\subseteq M$ under the natural embeddings,
+        $$ S^{-1}(M_1\cap M_2) = S^{-1}M_1\cap S^{-1}M_2 \subseteq S^{-1}M . $$
+    \eenum
+
+\ecoro
+
+\bproof
+
+    The first point is due to $S^{-1}$ being exact and thus preserving injections.
+    The second point is because $S^{-1}$ preserves the short exact sequence $0\to N\to M\to M/N\to0$.
+    The third point is clear as well, with only $\im$ not being immediately obvious.
+    $\im f$ can be characterized as $\im f=\ker\coker f$, so it follows.
+
+    For the last point, note that $M_1\cap M_2$ is the kernel of $M_1\oplus M_2\to M$ by $(x,y)\mapsto x-y$
+    (via the diagonal embedding), and so this follows from $S^{-1}$'s exactness.
+    \qed
+
+\eproof
+
+\bdefn
+
+    For a prime ideal $\p\leq A$ and an $A$-module $M$, denote by $M_\p$ the localization of $M$ by $S=A-\p$.
+
+\edefn
+
+\blemm
+
+    For an $A$-module $M$, consider the natural map
+    $$ \phi\colon M\to\prod_\m M_\m,\qquad m\mapsto (m/1)_\m , $$
+    where the product is over all maximal ideals of $A$.
+    Then $\phi$ is injective.
+
+\elemm
+
+\bproof
+
+    Assume there is an $0\neq x\in M$ such that $\phi(x)=0$.
+    Then define
+    $$ I = \ann_A(x) = \set{a\in A}[ax=0] . $$
+    $I$ is a proper ideal of $A$, and thus is contained in a maximal ideal $\m$.
+    Then for every $s\in A-\m$ we have that $s\notin I$ and so $sx\neq0$, and thus $m/1$ is not zero in $M_\m$, a contradiction.
+    \qed
+
+\eproof
+
+\bcoro
+
+    For an $A$-module $M$, the following are equivalent:
+    \benum
+        \item $M=0$,
+        \item $S^{-1}M=0$ for every multiplicative set $S\subseteq A$,
+        \item $M_\p=0$ for every prime ideal $\p\leq A$,
+        \item $M_\m=0$ for every maximal ideal $\m\leq A$.
+    \eenum
+
+\ecoro
+
+\bproof
+
+    Clearly each point implies the next.
+    By above $M$ embeds into $\prod_\m M_\m$, so if $M_\m=0$ for all $\m$ then $M=0$; the last point implies the first.
+    \qed
+
+\eproof
+
+\bcoro
+
+    For a morphism of $A$-modules $f\colon M\to N$, the following are equivalent:
+    \benum
+        \item $f$ is injective/surjective/an isomorphism,
+        \item $S^{-1}f$ is injective/surjective/an isomorphism for every multiplicative $S\subseteq A$,
+        \item $f_\p$ is injective/surjective/an isomorphism for every prime $\p\leq A$,
+        \item $f_\m$ is injective/surjective/an isomorphism for every maximal $\m\leq A$.
+    \eenum
+
+\ecoro
+
+\bproof
+
+    By $S^{-1}$'s exactness, the first point implies the second, and clearly all the other points imply the next.
+    To show the last implies the first, let $K=\ker f$ so that $0\to K\to M\xto fN$ is exact.
+    Then $0\to K_\m\to M_\m\xto{f_\m}N_\m$ is exact, and so $K_\m=\ker f_\m=0$ for all $\m$.
+    By above this means $K=0$ so that $f$ is injective.
+    Similar for surjectivity.
+    \qed
+
+\eproof
+
