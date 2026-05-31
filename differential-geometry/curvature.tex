@@ -1,0 +1,460 @@
+\section{Curvature}
+
+\subsection{Families of curves}
+
+\bdefn
+
+    Given intervals $I,J\subseteq\bR$, a continuous map $\Gamma\colon J\times I\to M$ is called a {\emphcolor one-parameter
+    family of curves}.
+    This defines two collections of curves:
+    \benum
+        \item the {\emphcolor main curves}: for each $s\in J$ the curve $\Gamma_s\colon I\to M$ by $\Gamma_s(t)=\Gamma(s,t)$.
+        \item the {\emphcolor transverse curves}: for $t\in I$, the curve $\Gamma^{(t)}\colon J\to M$ by
+        $\Gamma^{(t)}(s)=\Gamma(s,t)$.
+    \eenum
+
+\edefn
+
+If $\Gamma$ is smooth, then denote the velocity vectors of the main and transverse curves by
+$$ \partial_t\Gamma(s,t) = (\Gamma_s)'(t),\qquad \partial_s\Gamma(s,t) = (\Gamma^{(t)})'(s) , $$
+both of which lie in $T_{\Gamma(s,t)}M$.
+These are vector fields along $\Gamma$ (smooth when $\Gamma$ is smooth).
+
+\bdefn
+
+    A curve $\gamma\colon I\to M$ is {\emphcolor regular} if $\gamma'$ is nonzero.
+    A curve $\gamma\colon[a,b]\to M$ is {\emphcolor admissible} if there is a partition $a_0<\cdots<a_k$ of $[a,b]$
+    such that $\gamma|_{[a_i,a_{i+1}]}$ is regular for all $i$.
+
+    A one-parameter family of curves $\Gamma$ is called {\emphcolor admissible} if its domain is of the form
+    $J\times[a,b]$ for some open interval $J$, and there is a partition $a_0<\cdots<a_k$ of $[a,b]$ such that
+    $\Gamma$ is smooth on each rectangle $J\times[a_i,a_{i+1}]$, and finally $\Gamma_s$ is an admissible curve.
+
+\edefn
+
+For an admissible family $\Gamma$, the transverse curves $\Gamma^{(t)}$ are smooth (as $\Gamma$ is smooth on
+$J\times\set t$), but the main curves are only piecewise regular.
+Thus $\partial_s\Gamma,\partial_t\Gamma$ are smooth on the rectangles $J\times[a_i,a_{i+1}]$ but not necessarily on the whole
+domain.
+
+If $\Gamma$ is an admissible family, then $\partial_s\Gamma$ is a piecewise smooth vector field along $\Gamma$.
+This means it is continuous, and its restriction to each $J\times[a_i,a_{i+1}]$ is smooth.
+As explained its restrictions are smooth, and we explain why it is continuous.
+
+Note that for each $i$, $\partial_s\Gamma$'s values on $J\times\set{a_i}$ depend only on the values of $\Gamma$
+on that set, since the derivative is taken with respect to $s$.
+And $\partial_s\Gamma$ is smooth on $J\times[a_{i-1},a_i]$ and $J\times[a_i,a_{i+1}]$, and their values must agree on their
+overlap (taking the limit as $t$ goes to $a_i$).
+
+Conversely, $\partial_t\Gamma$ is not in general continuous at $t=a_i$.
+
+\bdefn
+
+    If $\gamma\colon[a,b]\to M$ is an admissible curve, a {\emphcolor variation} of $\gamma$ is an admissible family
+    of curves $\Gamma\colon J\times[a,b]\to M$ such that $J$ is an open interval containing $0$ and $\Gamma_0=\gamma$.
+
+    It is a {\emphcolor proper variation} if in addition all the main curves have the same endpoints:
+    $\Gamma_s(a)=\gamma(a)$ and $\Gamma_s(b)=\gamma(b)$ for all $s\in J$.
+
+    If $\Gamma$ is a variation of $\gamma$, then the {\emphcolor variation field} of $\Gamma$ is the smooth vector
+    field $V(t)=\partial_s\Gamma(0,t)$ along $\gamma$.
+    We say that a vector field $V$ along $\gamma$ is {\emphcolor proper} if $V(a)$ and $V(b)$ are both zero.
+
+\edefn
+
+\blemm
+
+    If $\gamma$ is an admissible curve and $V$ a piecewise smooth vector field along $\gamma$, then $V$ is the
+    variation field of some variation of $\gamma$.
+    If $V$ is proper, the variation can be taken to be proper as well.
+
+\elemm
+
+\bproof
+
+    Let $\Gamma(s,t)=\exp_{\gamma(t)}(sV(t))$.
+    By compactness of $[a,b]$ there is some $\epsilon>0$ such that $\Gamma$ is defined on
+    $(-\epsilon,\epsilon)\times[a,b]$.
+    Then $\Gamma$ is smooth on each $(-\epsilon,\epsilon)\times[a_i,a_{i+1}]$ when $V$ is smooth on $[a_i,a_{i+1}]$,
+    and it is continuous on its whole domain.
+
+    The variation field of $\Gamma$ is $V$:
+    $$ \partial_s\Gamma(0,t) = \partial_s|_{s=0}\exp_{\gamma(t)}(sV(t)) = V(t) $$
+    because $\exp_p(sv)$ is the geodesic with initial velocity $v$.
+
+    Furthermore if $V$ is proper, so $V(a),V(b)$ are zero, then
+    $$ \Gamma(s,a) = \exp_{\gamma(a)}(0) = \gamma(a) $$
+    and similar for $b$, so $\Gamma$ is proper.
+    \qed
+
+\eproof
+
+\blemm
+
+    Let $\Gamma\colon J\times[a,b]\to M$ be an admissible family of curves.
+    Then on every rectangle $J\times[a_i,a_{i+1}]$ where $\Gamma$ is smooth,
+    $$ D_s\partial_t\Gamma = D_t\partial_s\Gamma . $$
+
+\elemm
+
+\bproof
+
+    This is local so we compute in local coordinates $(x^i)$ around a point $\Gamma(s_0,t_0)$.
+    Writing
+    $$ \Gamma(s,t) = (x^1(s,t),\dots,x^n(s,t)) , $$
+    we have
+    $$ \partial_t\Gamma = \pdvof{x^k}t\partial_k,\qquad \partial_s\Gamma = \pdvof{x^k}s\partial_k . $$
+    Then using the formula for the covariant derivative,
+    $$ \eqalign{
+        D_s\partial_t\Gamma &= \parens{\pdvof{^2x^k}{st}+\pdvof{x^i}t\pdvof{x^j}s\Gamma^k_{ji}}\partial_k,\cr
+        D_t\partial_s\Gamma &= \parens{\pdvof{^2x^k}{ts}+\pdvof{x^i}s\pdvof{x^j}t\Gamma^k_{ji}}\partial_k.
+    } $$
+    By symmetry of the second partial derivative and the connection, we see that these are equal.
+    \qed
+
+\eproof
+
+\subsection{The curvature tensor}
+
+Let $\bar\nabla$ be the standard connection on $\bR^n$, then a direct computation shows
+$$ \bar\nabla_X\bar\nabla_YZ - \bar\nabla_Y\bar\nabla_XZ = \bar\nabla_{[X,Y]}Z . $$
+This can be shown to be tensorial (which we will do), and thus we need only verify this for coordinate frames.
+And since $\bar\nabla_{\partial_i}\partial_j=0$ this is clear.
+
+This means that any Riemannian manifold which is flat, meaning locally isometric to $\bR^n$, must satisfy the above
+identity with its own Levi-Civita connection.
+
+\bdefn
+
+    Let $(M,g)$ be Riemannian, then define a map $R\colon\X(M)\times\X(M)\times\X(M)\to\X(M)$ by
+    $$ R(X,Y)Z = \nabla_X\nabla_YZ - \nabla_Y\nabla_XZ - \nabla_{[X,Y]}Z . $$
+
+\edefn
+
+\bprop
+
+    $R$ is multilinear over $C^\infty(M)$ and thus defines a $(1,3)$-tensor field on $M$.
+
+\eprop
+
+\bproof
+
+    Linearity in $Z$ is clear, and multilinearity over $\bR$ is as well.
+    We show linearity in $Y$:
+    $$ \eqalign{
+        R(X,fY)Z &= \nabla_X\nabla_{fY}Z - \nabla_{fY}\nabla_XZ - \nabla_{[X,fY]}Z\cr
+            &= \nabla_X(f\nabla_YZ) - f\nabla_Y\nabla_XZ - \nabla_{f[X,Y]+(Xf)Y}Z\cr
+            &= (Xf)\nabla_YZ + f\nabla_X\nabla_YZ - f\nabla_Y\nabla_XZ - f\nabla_{[X,Y]}Z - (Xf)\nabla_YZ\cr
+            &= fR(X,Y)Z .
+    } $$
+    Linearity in $X$ is done similarly.
+    \qed
+
+\eproof
+
+We adopt the convention that the last index in $R$ is its contravariant (upper) one.
+So in terms of a coordinate frame,
+$$ R = R_{ijk}^\ell dx^i\otimes dx^j\otimes dx^k\otimes\partial_\ell,\qquad
+R(\partial_i,\partial_j)\partial_k = R_{ijk}^\ell\partial_\ell . $$
+
+\bprop
+
+    The components of $R$ in any coordinate frame are given by
+    $$ R_{ijk}^\ell = \partial_i\Gamma^\ell_{jk} - \partial_j\Gamma^\ell_{ik} + \Gamma^m_{jk}\Gamma^\ell_{im}
+    - \Gamma^m_{ik}\Gamma^\ell_{jm} . $$
+
+\eprop
+
+\bproof
+
+    A standard computation.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $\Gamma$ be a smooth one-parameter family of curves $J\times I\to M$.
+    Then for every vector field $V$ along $\Gamma$,
+    $$ D_sD_tV - D_tD_sV = R(\partial_s\Gamma,\partial_t\Gamma)V . $$
+
+\eprop
+
+\bproof
+
+    Locally write
+    $$ \Gamma(s,t) = (\gamma^1(s,t),\dots,\gamma^n(s,t)),\qquad V(s,t) = V^j(s,t)\partial_j|_{\Gamma(s,t)} . $$
+    Then
+    $$ D_tV = \pdvof{V^i}t\partial_i + V^iD_t\partial_i , $$
+    and so
+    $$ D_sD_tV = \pdvof{^2V^i}{st}\partial_i + \pdvof{V^i}tD_s\partial_i + \pdvof{V^i}sD_t\partial_i + V^iD_sD_t\partial_i . $$
+    Thus we get
+    $$ D_sD_tV - D_tD_sV = V^i(D_sD_t\partial_i - D_tD_s\partial_i) . $$
+
+    Now we need to compute the commutator.
+    Let us write
+    $$ S = \partial_s\Gamma = \pdvof{\gamma^k}s\partial_k,\qquad T = \partial_t\Gamma = \pdvof{\gamma^j}t\partial_j . $$
+    Because $\partial_i$ is extendible,
+    $$ D_t\partial_i = \nabla_T\partial_i = \pdvof{\gamma^j}{\partial t}\nabla_{\partial_j}\partial_i . $$
+    Since $\nabla_{\partial_j}\partial_i$ is also extendible,
+    $$ \eqalign{
+        D_sD_t\partial_i &= 
+            \pdvof{^2\gamma^j}{st}\nabla_{\partial_j}\partial_i + \pdvof{\gamma^j}t\nabla_S(\nabla_{\partial_j}\partial_i)\cr
+            &= \pdvof{^2\gamma^j}{st}\nabla_{\partial_j}\partial_i + \pdvof{\gamma^j}t\pdvof{\gamma^k}s\nabla_{\partial_k}
+                \nabla_{\partial_j}\partial_i .
+    } $$
+    We then see that
+    $$ D_sD_t\partial_i - D_tD_s\partial_i =
+    \pdvof{\gamma^j}t\pdvof{\gamma^k}s(\nabla_{\partial_k}\nabla_{\partial_j}\partial_i -
+        \nabla_{\partial_j}\nabla_{\partial_k}\partial_i) = \pdvof{\gamma^j}t\pdvof{\gamma^k}sR(\partial_k,\partial_j)
+        = R(S,T)\partial_i . $$
+    Thus
+    $$ D_sD_tV - D_tD_sV = V^iR(S,T)\partial_i = R(S,T)V $$
+    as desired.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $(M,g)$ be a Riemannian manifold.
+    Define its {\emphcolor Riemannian curvature tensor} to be the tensor obtained by lowering $R$'s index:
+    $\Rm=R^\flat$.
+    Explicitly, it is a $(0,4)$-tensor field given by
+    $$ \Rm(X,Y,Z,W) = \iprod{R(X,Y)Z,W} . $$
+
+\edefn
+
+In terms of local coordinates,
+$$ \Rm = R_{ijk\ell}dx^i\otimes dx^j\otimes dx^k\otimes dx^\ell,\qquad R_{ijk\ell} = g_{\ell m}R_{ijk}^m . $$
+Thus
+$$ R_{ijk\ell} = g_{\ell m}(\partial_i\Gamma^m_{jk} - \partial_j\Gamma^m_{ik} + \Gamma^p_{jk}\Gamma^m_{ip} -
+\Gamma^p_{ik}\Gamma^m_{jp}) . $$
+
+Riemannian curvature is preserved by local isometries.
+
+\bprop
+
+    If $\phi\colon M\to\tilde M$ is a local isometry, let $\Rm,\tilde\Rm$ be the Riemannian curvature tensors of $M,\tilde M$
+    respectively.
+    Then $\phi^*\tilde\Rm=\Rm$.
+
+\eprop
+
+\bproof
+
+    We have
+    $$ \phi^*\tilde\Rm(X,Y,Z,W)_p = \tilde\Rm_{\phi p}(d\phi_pX,d\phi_pY,d\phi_pZ,d\phi_pW)
+    = \iprod{R_{\phi p}(d\phi_pX,d\phi_pY)d\phi_pZ,d\phi_pW} . $$
+    Then using the definition of the curvature tensor and the naturality of Levi-Civita, we get the desired result.
+    \qed
+
+\eproof
+
+\bprop
+
+    The following identities hold for the Riemannian curvature tensor:
+    \benum
+        \item $\Rm(W,X,Y,Z)=-\Rm(X,W,Y,Z)$,
+        \item $\Rm(W,X,Y,Z)=-\Rm(W,X,Z,Y)$,
+        \item $\Rm(W,X,Y,Z)=\Rm(Y,Z,W,X)$,
+        \item $\Rm(W,X,Y,Z)+\Rm(X,Y,W,Z)+\Rm(Y,W,X,Z)=0$.
+    \eenum
+
+\eprop
+
+\bproof
+
+    The first is immediate because $R(W,X)Y=-R(X,W)Y$.
+    To prove $Y$ it is sufficient to show that $\Rm(W,X,Y,Y)=0$ for all $Y$ (equivalence of antisymmetric multilinear
+    maps).
+    This follows from expanding $WX\norm Y^2,XW\norm Y^2,[W,X]\norm Y^2$ and equating them.
+
+    To prove the fourth, it is sufficient to show
+    $$ R(W,X)Y + R(X,Y)W + R(Y,W)X = 0 , $$
+    which can be shown via a tedious computation.
+
+    Then the third follows from the others, by a tedious expansion.
+    \qed
+
+\eproof
+
+\subsection{Minimizing curves}
+
+\bdefn
+
+    If $I,K\subseteq\bR$ are intervals, $\gamma\colon I\to M$ a geodesic, and $\Gamma\colon K\times I\to M$ a variation of $\gamma$.
+    It is called a {\emphcolor variation through geodesics} if its main curves $\Gamma_s(t)=\Gamma(s,t)$ are all geodesics
+    (requiring $\Gamma$ be smooth).
+
+\edefn
+
+\bthrm[title=Jacobi equation]
+
+    Let $\gamma$ be a geodesic in $M$ and $J$ a vector field along $\gamma$.
+    If $J$ is the variation field of a variation through geodesics, then $J$ satisfies the {\emphcolor Jacobi equation}:
+    $$ D_t^2J + R(J,\gamma')\gamma' = 0 . $$
+
+\ethrm
+
+\bproof
+
+    Let $\Gamma$ be a variation through geodesics of $\gamma$ such that $J$ is its variation field, meaning $J(t)=S(0,t)$.
+    Let $T=\partial_t\Gamma(s,t)$ and $S=\partial_s\Gamma(s,t)$ so $T$ is a geodesic.
+    Then $D_tT=0$ identically.
+
+    Then if we take the covariant derivative with respect to $s$ we get $D_sD_tT=0$.
+    Recall curvature measures the non-commutativity of covariant derivatives, so
+    $$ 0 = D_sD_tT = D_tD_sT + R(S,T)T = D_tD_tS + R(S,T)T , $$
+    where the last equality is due to symmetry.
+    Evaluating at $s$ gives us
+    $$ D_t^2J + R(J,\gamma')\gamma' $$
+    since $\gamma'=T(0,t)$.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A smooth vector field along a geodesic satisfying the Jacobi equation is called a {\emphcolor Jacobi field}.
+
+\edefn
+
+\blemm
+
+    If $\gamma\colon I\to M$ is geodesic, starting at $v$ and $J\in\X(\gamma)$ a Jacobi field, then
+    $$ \iprod{\gamma',J} = \iprod{v,J(0)} + \iprod{v,J'(0)}t . $$
+
+\elemm
+
+\bproof
+
+    Differentiating
+    $$ \drv t\iprod{\gamma',J} = \iprod{D_t\gamma',J} + \iprod{\gamma',D_tJ} = \iprod{\gamma',J'} . $$
+    And
+    $$ \drv t\iprod{\gamma',J'} = \iprod{\gamma',J''} = - \iprod{\gamma',R(\gamma',J)\gamma'} , $$
+    where last equality is due to Jacobi equation.
+    $$ = \Rm(\gamma',J,\gamma',\gamma') = 0 , $$
+    by symmetry of the Riemannian curvature tensor.
+    Thus $\iprod{\gamma',J}=a+bt$.
+    Evaluating the function and its derivative at $0$ gives us
+    $$ a = \iprod{\gamma'(0),J(0)},\qquad b = \iprod{\gamma'(0),J'(0)} , $$
+    as desired.
+    \qed
+
+\eproof
+
+\blemm[title=Gauss]
+
+    Let $p\in(M,g)$, and $w,v\in T_pM$, then
+    $$ \iprod{d(\exp_p)_v(v),d(\exp_p)_v(w)}_{\exp_p(v)} = \iprod{v,w}_p . $$
+    Where $d(\exp_p)_v\colon T_vT_pM\cong T_pM\to T_{\exp_p(v)}M$ under the natural identification $T_vT_pM\cong T_pM$.
+
+\elemm
+
+\bproof
+
+    Define
+    $$ f\colon(-\epsilon,\epsilon)\times[0,1] \to M,\qquad (s,t)\mapsto\exp_p(t(v+sw)) . $$
+    So $f(s,1)=\exp_p(v+sw)$ and $t\mapsto f(t,s)$ is a geodesic for every $s$, and thus it is a variation through geodesics.
+    Thus $J=\partial_sf(0,t)$ is a Jacobi field along $\gamma(t)=\exp_p(tv)$.
+    Then
+    $$ J(1) = \pdvof fs(0,1) = \drv s\exp_p(v+sw)|_{s=0} = d(\exp_p)_v(w) , $$
+    and
+    $$ \gamma'(1) = d(\exp_p)_v(v) . $$
+    Thus by the above lemma
+    $$ \iprod{d(\exp_p)_v(v),d(\exp_p)_v(w)} = \iprod{\gamma',J}(1) = \iprod{v,J(0)} + \iprod{v,J'(0)} . $$
+    So we compute $J,J'$ at zero.
+    $$ J(0) = \pdvof fs(0,0) = \drv s\exp_p(0)|_{s=0} = 0 , $$
+    since $\exp_p(0)=p$ is constant.
+    And
+    $$ J'(0) = \frac D{\partial t}\pdvof fs(0,0) = \eval{\frac D{\partial s}}_{s=0}(\evpdv t_{t=0}f) . $$
+    $\exp_p(t(v+sw))$ is a geodesic starting at $v+sw$, so its derivative with respect to $t$ at zero is $v+sw$, so this
+    is equal to
+    $$ J'(0) = \eval{\frac D{\partial s}}_{s=0}(v+sw) = w . $$
+    Thus
+    $$ \iprod{d(\exp_p)_v(v),d(\exp_p)_v(w)} = \iprod{v,w} $$
+    as desired.
+    \qed
+
+\eproof
+
+\bthrm
+
+    Let $B\subseteq M$ be a normal ball around $p\in M$, and let $\gamma\colon I\to B$ be a geodesic starting at $p$.
+    Let $c\colon I\to M$ be a piecewise smooth curve such that $c(0)=p,c(1)=\gamma(1)$.
+
+    Then $L_g(\gamma)\leq L_g(c)$, and if there is equality then $c$ is a reparameterization of $\gamma$, i.e.\ there is a
+    non-decreasing $\phi\colon I\to I$ such that $c=\gamma\circ\phi$.
+
+\ethrm
+
+\bproof
+
+    We assume $c(t)\in B$ for all $t$, and $c(t)\neq p$ for all $t\in(0,1]$.
+    If $c(t)=p$, then we can consider $c|_{[t,1]}$.
+    Then we have since $c(t)\in B$ and $\exp_p\colon B_\epsilon(0)\to B$ is a diffeomorphism,
+    $$ c(t) = \exp_p(w(t)),\qquad w(t)\in T_pM $$
+    for a smooth $w\colon I\to B_\epsilon(0)$.
+    Since $c(t)\neq p$ we have $w(t)\neq0$ for $t>0$.
+    Then define smooth maps
+    $$ r(t) = \norm{w(t)},\qquad v(t) = \frac{w(t)}{r(t)} . $$
+    Now define
+    $$ f\colon[0,\epsilon)\times[0,1]\to M,\qquad f(r,t) = \exp_p(rv(t)) . $$
+    Then
+    $$ c(t) = f(r(t),t) , $$
+    so
+    $$ c'(t) = \pdvof fr\cdot r' + \pdvof ft , $$
+    and thus
+    $$ \norm{c'(t)}^2 = \norm{\pdvof fr}^2\abs{r'}^2 + \norm{\pdvof ft}^2 + 2r'\iprod{\pdvof fr,\pdvof ft} . $$
+    Notice that
+    $$ \eqalign{
+        \iprod{\pdvof fr,\pdvof ft} &= \iprod{\drv r\exp(rv(t)),\drv t\exp(rv(t))}\cr
+            &= \iprod{d(\exp)_{rv(t)}(v(t)),d(\exp)_{rv(t)}(rv'(t))}\cr
+            &= r\iprod{v(t),v'(t)}_p
+    } $$
+    where the last equality is due to Gauss' lemma.
+    This is equal to
+    $$ = \frac r2\drv t\iprod{v(t),v(t)} = 0 , $$
+    since $\norm{v(t)}=0$ and thus its derivative is zero.
+
+    Thus we have
+    $$ \norm{c'(t)}^2 = \norm{\pdvof fr}^2\abs{r'}^2 + \norm{\pdvof ft}^2 \geq \norm{\pdvof fr}^2\abs{r'}^2 . $$
+    Furthermore, let $\beta(r)=\exp(rv(t))$ so it is a geodesic with initial velocity $v(t)$, and
+    $$ \pdvof fr = \evpdv r_{(r,t)}\exp(rv(t)) = \beta'(r) . $$
+    Since geodesics have constant speed,
+    $$ \norm{\pdvof fr} = \norm{\beta'(r)} = \norm{\beta'(0)} = \norm{v(t)} = 1 . $$
+    Thus
+    $$ \norm{c'(t)} \geq \abs{r'} . $$
+
+    Furthermore we have
+    $$ \gamma(1) = c(1) = \exp_p(r(1)v(1)) , $$
+    and since $\gamma$ is a geodesic we must then have
+    $$ \gamma(t) = \exp_p(tr(1)v(1)) \implies \norm{\gamma'(t)} = \norm{\gamma'(0)} = r(1)v(1) . $$
+    Thus we have
+    $$ L_g(\gamma) = \int_0^1\norm{r(1)v(1)} = \abs{r(1)} = r(1) . $$
+    And (recall that the following is an improper integral)
+    $$ L_g(c) = \int_0^1\norm{c'(t)} \geq \int_0^1 \abs{r'} \geq \int_0^1 r' = r(1) - \lim_{t\to0}r(t) = r(1) . $$
+    So we have the desired inequality.
+
+    If we have equality then we must have that $\norm{\pdvof ft}=0$ so $\pdvof ft=0$.
+    That is
+    $$ 0 = \pdvof ft = d\exp_p(rv'(t)) $$
+    which implies, because $\exp_p$ is a diffeomorphism, that $v'(t)=0$.
+    Thus $v(t)=v(1)$ is constant.
+    Furthermore, we must have (by considering our inequalities above) that $\abs{r'}=r'$ so we must have $r'\geq0$.
+    So
+    $$ c(t) = \exp_p(r(t)v(1)) . $$
+    And since $\gamma(t)=\exp_p(tr(1)v(1))$ this implies $c(t)=\gamma(r(t)/r(1))$ and $r(t)/r(1)$ has nonnegative
+    derivative and thus is nondecreasing, as desired.
+
+    Finally in the case that $c$ leaves the ball $B$, let $t_1\in[0,1]$ be the first value such that $c(t)\in\cl B-B$
+    (by compactness one exists).
+    Thus $L_g(c|_{[0,t_1)})$ is greater than the length of the radial geodesic from $p$ to $c(t_1)$ by our above
+    proof.
+    This has length equal to the radius of $B$ (as it is radial), and since $\gamma$ lies within $B$,
+    its length is less than the radius.
+    \qed
+
+\eproof
+

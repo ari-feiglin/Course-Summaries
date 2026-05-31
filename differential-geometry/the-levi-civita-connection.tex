@@ -194,3 +194,232 @@ The proof of the theorem gave us an explicit formula for the Levi-Civita connect
 connection coefficients.
 The connection coefficients of the Levi-Civita connection of $(M,g)$ are called the {\emphcolor Christoffel symbols} of $g$.
 
+\bprop
+
+    The Levi-Civita connection is natural: if $\phi\colon(M,g)\to(\tilde M,\tilde g)$ be an isometry of Riemannian manifolds.
+    Let $\tilde\nabla$ be the Levi-Civita connection on $\tilde M$, then $\nabla=\phi^*\tilde\nabla$ is the Levi-Civita
+    connection on $M$.
+
+\eprop
+
+\bproof
+
+    It is sufficient to show that the pullback is symetric and metric.
+    $\phi$ being an isometry means
+    $$ \iprod{Y_p,Z_p} = \iprod{d\phi_pY_p,d\phi_pZ_p} = \iprod{(\phi_*Y)_{\phi(p)},(\phi_*Z)_{\phi(p)}} . $$
+    Meaning $\iprod{Y,Z}=\iprod{\phi_*Y,\phi_*Z}\circ\phi$.
+    Thus
+    $$ \eqalign{
+        X\iprod{Y,Z} &= X(\iprod{\phi_*Y,\phi_*Z}\circ\phi)\cr
+            &= (\phi_*X\iprod{\phi_*Y,\phi_*Z})\circ\phi\cr
+            &= (\iprod{\tilde\nabla_{\phi_*X}(\phi_*Y),\phi_*Z} + \iprod{\phi_*Y,\tilde\nabla_{\phi_*X}\phi_*Z})\circ\phi.
+    } $$
+    Since $\phi^{-1}$ is an isometry, by the same reason we have
+    $$ \iprod{\tilde\nabla_{\phi_*X}(\phi_*Y),\phi_*Z}\circ\phi = \iprod{d\phi^{-1}_*\tilde\nabla_{\phi_*X}(\phi_*Y),Z} $$
+    which is just $\iprod{\nabla_XY,Z}$ by definition, so we have the desired equality for a metric connection.
+
+    Symmetry is due to pullbacks commuting with Lie brackets:
+    $$ \eqalign{
+        \nabla_XY - \nabla_YX &= \phi^{-1}_*(\tilde\nabla_{\phi_*X}(\phi_*Y) - \tilde\nabla_{\phi_*Y}(\phi_*X))\cr
+            &= \phi^{-1}_*[\phi_*X,\phi_*Y]\cr
+            &= [X,Y].
+    } $$
+    As desired.
+    \qed
+
+\eproof
+
+\bcoro
+
+    An isometry maps geodesics to geodesics.
+
+\ecoro
+
+\bproof
+
+    If $\phi$ is an isometry, recall that as a diffeomorphism it maps $\phi^*\nabla$-geodesics to $\nabla$-geodesics.
+    Since these are the Levi-Civita connections of their respective manifolds, the result follows.
+
+\eproof
+
+\bcoro[title=Naturality of the exponential map]
+
+    If $\phi\colon(M,g)\to(\tilde M,\tilde g)$ is an isometry of Riemannian manifolds with Levi-Civita connections
+    $\nabla,\tilde\nabla$, then for every $p\in M$ the following diagram commutes:
+
+    \commsq{\E_p&\tilde E_{\phi p}\cr M&\tilde M}
+        {d\phi_p}{\phi}{\exp_p}{\exp_{\phi(p)}}
+
+    Where $\E_p$ is the domain of the restricted exponential $\exp_p$.
+
+\ecoro
+
+\bproof
+
+    $\phi$ maps geodesics of $M$ to geodesics of $\tilde M$.
+    So if $\gamma$ is a geodesic starting at $p$ with initial velocity $v\in T_pM$, then $\phi\circ\gamma$ is a geodesic
+    starting at $\phi(p)$ with initial velocity $d\phi_pv$.
+    Thus
+    $$ \exp_{\phi p}(d\phi_pv) = \phi\circ\gamma(1) = \phi\circ\exp_p(v) $$
+    as desired.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $(M,g)$ be Riemannian.
+    Then the Levi-Civita connection $\nabla$ induces a connection on the tensor bundles compatible with the metric in the
+    sense that
+    $$ X\iprod{F,G} = \iprod{\nabla_XF,G} + \iprod{F,\nabla_XG} $$
+    for every $X\in\X(M)$ and $F,G\in\Gamma(T^{(k,\ell)}TM)$.
+
+\eprop
+
+\bproof
+
+    It is sufficient to prove this for tensor fields which are the tensors of vector and covector fields,
+    $\alpha_1\otimes\cdots\alpha_{k+\ell}$.
+    In such a case the result follows from the formula for the inner product of tensors and the connection on tensors.
+    \qed
+
+\eproof
+
+\bprop
+
+    The musical isomorphisms commute with the Levi-Civita connection.
+    That is, if $F$ is a tensor field with contravariant index $i$ and $\flat$ represents lowering the index, then
+    $$ \nabla(F^\flat) = (\nabla F)^\flat , $$
+    and if $G$ has covariant index $i$ and $\sharp$ denotes raising the $i$th index then
+    $$ \nabla(G^\sharp) = (\nabla G)^\sharp . $$
+
+\eprop
+
+\bproof
+
+    Recall that $F^\flat=\tr(F\otimes g)$ where the trace is taken on the $i$th and last index of $F\otimes g$.
+    Since $g$ is parallel $\nabla(F\otimes g)=\nabla(F)\otimes g+F\otimes\nabla(g)=\nabla(F)\otimes g$.
+    Thus
+    $$ \nabla(F^\flat) = \nabla(\tr(F\otimes g)) = \tr(\nabla(F\otimes g)) = \tr(\nabla F\otimes g) = (\nabla F)^\flat . $$
+    Similar for sharp.
+    \qed
+
+\eproof
+
+\subsection{Normal neighborhoods}
+
+Let $(M,g)$ be a Riemannian manifold.
+Recall that for $p\in M$ the restricted exponential map $\exp_p\colon\E_p\to M$ is defined on an open subset
+$\E_p\subseteq T_pM$, and its differential at zero is invertible.
+Thus there is an open neighborhood $V$ of the origin of $T_pM$ such that $U=\exp_p(V)$ is open and $\exp_p\colon V\to U$
+is a diffeomorphism.
+
+\bdefn
+
+    If $U$ is a neighborhood of $p\in M$ which is the diffeomorphic image under $\exp_p$ of a {\it star-shaped\/} neighborhood
+    of $0\in T_pM$ then $U$ is called a {\emphcolor normal neighborhood} of $p$.
+
+    If $U$ is a neighborhood of $p\in M$ diffeomorphic under $\exp_p$ to an open $0\in V\subseteq T_pM$, then
+    consider an open ball $B_\epsilon(0)\subseteq V$ (with respect to the Riemannian metric).
+    Then $\exp_p(B_\epsilon(0))$ is a normal neighborhood of $p$, called a {\emphcolor normal ball}.
+    If $\cl B_\epsilon(0)\subseteq V$, then $\exp_p(S_\epsilon(0))$, where $S_\epsilon(0)=\partial B_\epsilon(0)$,
+    is called the {\emphcolor normal sphere} around $p$.
+
+\edefn
+
+Now if we have an orthonormal basis $(b_i)$ for $T_pM$, consider the basis isomorphism $B\colon T_pM\to\bR^n$
+which maps $x^ib_i\mapsto(x^1,\dots,x^n)$.
+If $U=\exp_p(V)$ is a normal neighborhood of $p$, consider the smooth coordinate map
+$\phi=B^{-1}\circ(\exp_p|_V)^{-1}\colon U\to\bR^n$.
+This coordinate chart $(U,\phi)$ is called the {\emphcolor Riemannian normal coordinate chart} centered at $p$,
+its coordinates are the {\emphcolor Riemannian normal coordinates}.
+
+Riemannian normal coordinates are unique in the following sense.
+
+\bprop
+
+    Let $(M,g)$ be a Riemannian manifold, $p\in M$, and $U$ a normal neighborhood of $p$.
+    For every normal coordinate chart on $U$ centered at $p$, the coordinate basis is orthonormal at $p$;
+    and for every orthonormal basis $(b_i)$ for $T_pM$ there is a unique normal coordinate chart $(x^i)$ on $U$
+    such that $\partial_i|_p=b_i$ for all $i$.
+
+    Any two normal coordinate charts $(x^i),(\tilde x^j)$ are related by
+    $$ \tilde x^j = A^j_ix^i, $$
+    for some constant matrix $(A^j_i)\in\orth(n)$.
+    (This is not true for pseudo-Riemannian manifolds.)
+
+\eprop
+
+\bproof
+
+    Let $\phi$ be a normal coordinate chart on $U$ centered at $p$ with coordinates $(x^i)$.
+    This means that $\phi=B^{-1}\circ\exp_p^{-1}$ where $B\colon\bR^n\to T_pM$ is the basis isomorphism determined by
+    an orthonormal basis $(b_i)$ for $T_pM$.
+
+    Note that $d\phi^{-1}_p=d(\exp_p)_0\circ dB_0=B$ since $d(\exp_p)_0$ is the identity and $B$ is linear.
+    Thus
+    $$ \partial_i|_p = d\phi^{-1}_p\partial_i|_0 = B(\partial_i|_0) = b_i $$
+    showing that $\partial_i|_p=b_i$ is indeed orthonormal.
+
+    Conversely any orthonormal basis $(b_i)$ yields a normal coordinate chart $\phi$ given by $B^{-1}\circ\exp_p^{-1}$
+    where $B$ is $(b_i)$'s basis isomorphism.
+    The computation shows that $\partial_i|_p=b_i$.
+
+    If $\tilde\phi=\tilde B^{-1}\circ\exp_p^{-1}$ is another such chart then
+    $$ \tilde\phi\circ\phi^{-1} = \tilde B^{-1}\circ\exp_p^{-1}\circ\exp_p\circ B = \tilde B^{-1}\circ B , $$
+    which is a linear isometry of $\bR^n$ (since $B$ maps an orthonormal basis to an orthonormal basis).
+    Letting $A=\tilde B^{-1}\circ B$ we have the desired result.
+
+    Notice then that two normal coordinates $(x^i)$ and $(\tilde x^i)$ are equal iff $A$ is the identity
+    which is iff $\tilde\phi=\phi$.
+    Thus a normal coordinate chart and normal coordinates uniquely determine one another.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $(M,g)$ be Riemannian, and $(U,(x^i))$ a normal coordinate chart centered at $p\in M$.
+    Then,
+    \benum
+        \item The coordinates of $p$ are $(0,\dots,0)$,
+        \item The components of the metric at $p$ are $g_{ij}=\delta_{ij}$ (or $\pm\delta_{ij}$ in the pseudo-Riemannian case),
+        \item For every $v=v^i\partial_i|_p\in T_pM$, the geodesic $\gamma_v$ starting at $p$ with initial velocity $v$
+        is represented in normal coordinates by the line
+        $$ \gamma_v(t) = (tv^1,\dots,tv^n) , $$
+        as long as $t$ is in some interval such that $\gamma_v(I)\subseteq U$.
+        \item The Christoffel symbols in these coordinates vanish at $p$.
+        \item All the first partial derivatives of $g_{ij}$ in these coordinates vanish at $p$.
+    \eenum
+
+\eprop
+
+\bproof
+
+    Point 1 is clear, point 2 is because $\partial_i|_p$ are orthonormal as per the previous proposition.
+    Point 3 is because $\gamma_v(t)=\exp_p(tv)$ which in these coordinates is
+    $$ \phi\circ\gamma_v(t) = \phi\circ\exp_p(tv) = B^{-1}(tv) = (tv^1,\dots,tv^n) $$
+    as desired.
+
+    Now for point 4, let $v=v^i\partial_i|_p\in T_pM$.
+    Then the geodesic equation for $\gamma_v(t)=(tv^1,\dots,tv^n)$ simplifies to
+    $$ \Gamma^k_{ij}(tv)v^iv^j = 0 . $$
+    Evaluating at zero shows that $\Gamma^k_{ij}(0)v^iv^j=0$ for every $k$ and every $v\in T_pM$.
+    In particular if we choose $v=\partial_\ell$ for some $\ell$ we see that $\Gamma^k_{\ell\ell}(0)=0$ for each $k,\ell$.
+    Then choosing $v=\partial_a+\partial_b$ and $v=\partial_a-\partial_b$ we get the desired result.
+
+    And for point 5, we have that
+    $$ \Gamma^\ell_{ki}g_{\ell j} + \Gamma^\ell_{kj}g_{i\ell} = \partial_k(g_{ij}) , $$
+    and the left-hand side is zero.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Geodesics starting at $p$ and lying in a normal neighborhood of $p$ are called {\emphcolor radial geodesics},
+    and the above proposition shows that in terms of normal coordinates such geodesics have the representation
+    $$ \gamma_v(t) = (tv^1,\dots,tv^n) . $$
+
+\edefn
+

@@ -757,9 +757,46 @@ In such a case we write $D_t$ for $D/{\partial t}$.
     $$ P^\gamma_{t_0,t_1}\colon T_{\gamma(t_0)}M\to T_{\gamma(t_1)}M $$
     to map $v\in T_{\gamma(t_0)}M$ to $X(t_1)$ where $X$ is the unique vector field parallel along $\gamma$
     with $X(t_0)=v$.
-    This is called the {\emphcolor parallel transport map}.
+    This is called the {\emphcolor parallel transport map}, $X$ is also called the {\emphcolor parallel transport} of $v$
+    along $\gamma$.
 
 \edefn
+
+\bprop
+
+    Parallel transport is a linear isomorphism $P^\gamma_{t_0,t_1}\colon T_{\gamma(t_0)}M\to T_{\gamma(t_1)}M$.
+
+\eprop
+
+\bproof
+
+    It is easy to verify that if $X,Y$ are the parallel transports of $v,u\in T_{\gamma(t_0)}M$ along $\gamma$,
+    then $X+Y$ is the parallel transport of $v+u$.
+    Similarly $cX$ is the parallel transport of $cv$, proving linearity.
+
+    Furthermore if $X$ is the parallel transport of $v$, then $X$ is also the parallel transport of $u=X(t_1)$.
+    So the parallel transport map maps $u$ to $X(t_0)=v$, showing that $P^\gamma_{t_0,t_1}$ and $P^\gamma_{t_1,t_0}$
+    are inverses.
+    \qed
+
+\eproof
+
+\bcoro
+
+    For any curve $\gamma\colon I\to M$ there exists a global frame of $\gamma^*TM$ consisting of parallel vector fields
+    along $\gamma$.
+
+\ecoro
+
+\bproof
+
+    Choose any $t_0\in I$ and a basis $v_1,\dots,v_n$ of $T_{\gamma(t_0)}M$.
+    Then the above proposition shows that parallel transporting $v_i$ keeps it a basis (as it is an isomorphism).
+    That is if we let $X_i$ be the parallel transport of $v_i$, then $X_i$ forms a global frame (in the pullback),
+    and by definition each $X_i$ is parallel.
+    \qed
+
+\eproof
 
 \subsection{Geodesics}
 
@@ -857,6 +894,44 @@ Which is precisely $Gf(p,v)$, as desired.
     onto $M$ is $\gamma$.
 
 \edefn
+
+\bprop
+
+    Let $M,\tilde M$ be smooth manifolds, $\tilde\nabla$ a connection on $\tilde M$, and $\phi\colon M\to\tilde M$
+    a diffeomorphism.
+    Let $\nabla=\phi^*\tilde\nabla$ be the pullback connection on $M$, and let $\gamma\colon I\to M$ be a smooth curve.
+    \benum
+        \item $\phi$ commutes with covariant derivatives:
+        $$ d\phi\circ D_tV = \tilde D_t(d\phi\circ V), $$
+        where $D_t$ is the covariant derivative along $\gamma$ with respect to $\nabla$, $\tilde D_t$ along $\phi\circ\gamma$
+        with respect to $\tilde\nabla$, and $V\in\X(\gamma)$.
+        \item $\phi$ maps geodesics to geodesics: if $\gamma$ is a $\nabla$-geodesic, then $\phi\circ\gamma$ is a
+        $\tilde\nabla$-geodesic.
+        \item $\phi$ commutes with parallel transport:
+        $$ d\phi_{\gamma(t_1)}\circ P^\gamma_{t_0t_1} = P^{\phi\circ\gamma}_{t_0t_1}\circ d\phi_{\gamma(t_0)} . $$
+    \eenum
+
+\eprop
+
+\bproof
+
+    Recall that
+    $$ \nabla_XY = \phi^{-1}_*\tilde\nabla_{\phi_*X}(\phi_*Y) . $$
+    Thus for extendible $V\circ\gamma$,
+    $$ D_t(V\circ\gamma) = \nabla_{\ipdv t}V = \phi^{-1}_*\tilde\nabla_{\phi_*\ipdv t}(\phi_*V) . $$
+    And from this we get the desired result, recalling that
+    $$ \phi_*X|_p = d\phi_{\phi^{-1}p}(X_{\phi^{-1}p}) . $$
+
+    The second point follows from the first, since if $D_t\gamma'=0$ then
+    $$ \tilde D_t((\phi\circ\gamma)') = \tilde D_t(d\phi\circ\gamma') = d\phi\circ D_t\gamma' = 0 . $$
+    So $\phi\circ\gamma$ is a geodesic.
+
+    And if $X$ is the parallel transport of $v\in T_{\gamma(t_0)}M$ then $d\phi\circ X$ is the parallel transport
+    of $d\phi_{\gamma(t_0)}v$ since $\tilde D_t(d\phi\circ X)=0$ by the first point.
+    The result follows.
+    \qed
+
+\eproof
 
 \subsection{The exponential map}
 
