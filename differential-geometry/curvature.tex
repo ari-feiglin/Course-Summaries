@@ -381,7 +381,7 @@ Riemannian curvature is preserved by local isometries.
 
 \bthrm
 
-    Let $B\subseteq M$ be a normal ball around $p\in M$, and let $\gamma\colon I\to B$ be a geodesic starting at $p$.
+    Let $B\subseteq M$ be a geodesic ball around $p\in M$, and let $\gamma\colon I\to B$ be a geodesic starting at $p$.
     Let $c\colon I\to M$ be a piecewise smooth curve such that $c(0)=p,c(1)=\gamma(1)$.
 
     Then $L_g(\gamma)\leq L_g(c)$, and if there is equality then $c$ is a reparameterization of $\gamma$, i.e.\ there is a
@@ -455,6 +455,180 @@ Riemannian curvature is preserved by local isometries.
     This has length equal to the radius of $B$ (as it is radial), and since $\gamma$ lies within $B$,
     its length is less than the radius.
     \qed
+
+\eproof
+
+Notice that this gives another proof of the Riemannian distance being a metric.
+Because if $p\neq q$ then any curve connection $p$ and $q$ has curve length greater than a geodesic defined in a geodesic ball around $p$,
+which is nonzero.
+
+Recall that the topology on $M$ is equivalent to the metric topology induced by the metric $d_g$.
+Thus $d_g$ is a continuous map $M\times M\to\bR$.
+
+\bcoro
+
+    If $B$ is a geodesic ball around $p$, then for every $q\in B$ the unique minimizing curve (up to reparameterization) from $p$ to $q$ is given by
+    the radial geodesic from $p$ to $q$.
+
+\ecoro
+
+\bnote
+
+    Since $q\in B$ we have that $q=\exp_p(w)$ for some $w\in B_\epsilon(0)$ (the ball mapped to $B$ diffeomorphically by $\exp_p$).
+    The {\emphcolor radial geodesic} from $p$ to $q$ is the geodesic $\gamma\colon[0,1]\to M$ given by $t\mapsto\exp_p(tw)$.
+
+\enote
+
+
+\bdefn
+
+    A {\emphcolor uniformly normal neighborhood} of $p\in M$ is an open neighborhood $p\in W$ such that there is a $\delta>0$ such that for
+    all $q\in W$, $W\subseteq\exp_q(B_\delta(0))$.
+
+\edefn
+
+\blemm
+
+    Every point in $M$ has a uniformly normal neighborhood.
+
+\elemm
+
+\bproof
+
+    For $p\in M$, an open neighborhood $p\in V$, and $\epsilon>0$ define
+    $$ U_{V,\epsilon} = \set{(q,v)}[q\in V,v\in T_qM,\norm v<\epsilon] \subseteq TM|_V . $$
+    For small enough $\epsilon$, $\exp$ is defined on all of $U_{V,\epsilon}$.
+    So the following map is smooth
+    $$ F\colon U_{V,\epsilon} \to M\times M,\qquad (q,v)\mapsto(q,\exp_q(v)) . $$
+    Let $\phi\colon U\to M$ be a coordinate chart which we identify with its coordinate chart $\phi\colon U\times\bR^n\to TM$
+    of $TM$:
+    $$ \phi(u,v) = (\phi(u),v^i\partial_i|_u) . $$
+    Then
+    $$ F\circ\phi(u,v) = (\phi(u),\exp_{\phi(u)}(v^i\partial_i|_u)) . $$
+    Thus
+    $$ d(F\circ\phi)_0 = \pmatrix{d\phi_0 & 0\cr d\phi_0 & d\phi_0} , $$
+    which is invertible, and thus by the inverse function theorem there is a neighborhood of $(p,0)$ such that $F$ is a diffeomorphism
+    onto its image.
+
+    Since $U_{V,\epsilon}$ form a local basis around $(p,0)\in TM$, we can choose this neighborhood to be $U_{V,\delta}$.
+    So $F(U_{V,\delta})$ is open in $M\times M$, there is an open neighborhood $p\in W$ such that $W\times W\subseteq F(U_{V,\delta})$.
+    So for every $q\in W$ we have that
+    $$ \set q\times W\subseteq F(U_{V,\delta})\cap(\set q\times M) = \set q\times\exp_q(B_\delta(0)) . $$
+    Thus $W\subseteq\exp_q(B_\delta(0))$ as desired.
+    \qed
+
+\eproof
+
+\bdefn
+
+    An admissible curve $\gamma$ is {\emphcolor minimizing} if $L_g(\gamma)\leq L_g(\tilde\gamma)$ for every other admissible curve $\tilde\gamma$
+    with the same endpoints.
+
+    And $\gamma\colon I\to M$ is {\emphcolor locally minimizing} if for every $t_0\in I$ there is a neighborhood $t_0\in I_0\subseteq I$
+    such that whenever $a<b$ are in $I_0$ then $\gamma|_{[a,b]}$ is minimizing.
+
+\edefn
+
+Note that $\gamma\colon[a,b]\to M$ is minimizing iff $d_g(\gamma(a),\gamma(b))=L_g(\gamma)$ by definition of $d_g$.
+
+\blemm
+
+    Let $p\in M$ and $B$ be a geodesic ball around $p$.
+    Then for every $q\in B$, the radial geodesic from $p$ to $q$ is the unique minimizing curve from $p$ to $q$.
+
+\elemm
+
+\bproof
+
+    Suppose $q=\exp_p(cv)$ for $v\in T_pM$ a unit vector.
+    Then $\gamma\colon[0,c]\to M$ given by $\gamma(t)=\exp_p(tv)$ is the radial geodesic from $p$ to $q$ and it has arc length $c$.
+
+    Now let $\sigma\colon[0,b]\to M$ be admissible from $p$ to $q$ which we can assume is parameterized by arc length.
+    Let $a_0\in[0,b]$ be the last time $\sigma(t)=p$, and $b_0\in[0,b]$ the first time after $a_0$ that $\sigma(t)$ meets the geodesic
+    sphere $S_c$ of radius $c$ around $p$.
+    Then 
+
+\eproof
+
+\bthrm
+
+    Every geodesic is locally minimizing.
+    Conversely, every admissible minimizing curve is a geodesic (in particular it is smooth).
+
+\ethrm
+
+\bproof
+
+    Let $\gamma\colon I\to M$ be a geodesic, which we take to be defined on an open interval.
+    Let $t_0\in I$ and let $W$ be a uniformly normal neighborhood of $\gamma(t_0)$.
+    And let $I_0\subseteq I$ be the connected component of $\gamma^{-1}W$ containing $t_0$.
+    If $a<b$ are in $I_0$ then the definition of a uniformly normal neighborhood implies $\gamma(b)$ is contained in a geodesic ball
+    centered at $\gamma(a)$.
+    Thus there is a unique minimizing curve from $\gamma(a)$ to $\gamma(b)$ given by a radial geodesic.
+    Since $\gamma|_{[a,b]}$ is also a geodesic segment from $\gamma(a)$ to $\gamma(b)$ lying in the same geodesic ball, it must coincide
+    with this radial geodesic.
+    So $\gamma|_{[a,b]}$ is minimizing for all $a<b$ in $I_0$, and thus $\gamma$ is locally minimizing.
+
+    Conversely suppose $\gamma\colon I=[a,b]\to M$ is a minimizing admissible curve.
+    Then for every $t_0\in I$ as before we can find a connected neighborhood $I_0$ of $t_0$ such that $\gamma(I_0)$ is contained
+    in a uniformly normal neighborhood $W$.
+    Then for every $a_0,b_0\in I_0$, the unique minimizing curve $\gamma(a_0)$ to $\gamma(b_0)$ is a radial geodesic.
+    Since $\gamma|_{[a_0,b_0]}$ is minimizing, it must coincide with this radial geodesic.
+    So $\gamma$ is a geodesic in a neighborhood of $t_0$ for all $t_0\in I$, since being a geodesic is a local property, $\gamma$ is a geodesic.
+    \qed
+
+\eproof
+
+Note that there does not need to exist an admissible minimizing curve between two points, even if the manifold is connected.
+
+\subsection{Sectional curvature}
+
+\blemm
+
+    Let $p\in M$ and $\sigma\subseteq T_pM$ be a two-dimensional subspace.
+    Then for every basis $x,y$ of $\sigma$, define
+    $$ K(x,y) = \frac{\Rm(x,y,x,y)}{\iprod{x,x}\iprod{y,y}-\iprod{x,y}^2} . $$
+    This is a constant, independent of choice of basis.
+
+\elemm
+
+\bproof
+
+    Every basis of $\sigma$ can be obtained from $x,y$ by elementary operations:
+    $$ x,y\mapsto y,x,\qquad x,y\mapsto x,y\mapsto x,\lambda y,\qquad x,y\mapsto x+\lambda y,y . $$
+    Since $\Rm$ is antisymmetric in both its first two and last two coordinates, $K$ is invariant under the first elementary operation
+    (swapping).
+    And by multilinearity it is routine to check that it is invariant under the second two elementary operations.
+    Thus $K$ is constant.
+    \qed
+
+\eproof
+
+Note that $\iprod{x,x}\iprod{y,y}-\iprod{x,y}^2$ is the square of the area of parallelogram spanned by $x,y$ and is nonzero when $x,y$ are
+linearly independent.
+
+\bdefn
+
+    For a Riemannian manifold $(M,g)$, we define its {\emphcolor sectional curvature} at $(p,\sigma)$ for $\sigma\subseteq T_pM$
+    a two dimensional subspace by
+    $$ K_p(\sigma) = K(x,y)\qquad\hbox{for any basis $x,y\in\sigma$} . $$
+
+\edefn
+
+\blemm
+
+    Let $V$ be a finite-dimensional vector space and $F,G\colon V^4\to\bR$ multilinear functionals.
+    Further suppose that $F,G$ satisfy the symmetries of Riemannian curvature.
+    If $F(x,y,x,y)=G(x,y,x,y)$ for all $x,y\in V$ then $F=G$.
+
+\elemm
+
+\bproof
+
+    Substitute $y+z$ for $y$ in $F(x,y,x,y)=G(x,y,x,y)$ and use the symmetries to obtain
+    $$ F(x,y,x,z) = G(x,y,x,z) . $$
+    Then substitute $x+w$ for $x$ to obtain
+    $$ F(x,y,w,z) = G(x,y,w,z) . \qed $$
 
 \eproof
 
