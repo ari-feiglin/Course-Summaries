@@ -1,0 +1,1079 @@
+\section{Constructions on Vector Bundles}
+
+\subsection{Review of tensor products}
+
+This section will be rather short, assuming a basic familiarity with tensor products.
+The following definition is a brief overview of notation.
+
+\bdefn
+
+    We denote the tensor product of modules by $A\otimes B$.
+    We denote the dual of an $R$-module $A$ by $A^*=\hom_R(A,R)$.
+
+\edefn
+
+\bnote
+
+    Primitive elements of the tensor product $A\otimes B$ are written $a\otimes b$; all other elements are sums of these.
+
+    The tensor product is associative (in a natural way), and we denote the tensor of $n$ modules without parentheses.
+    In an $n$-fold tensor product, we write the primitive elements without parentheses.
+
+    If $B_i=(b^i_1,\dots,b^i_{n_i})$ is a basis for each $V_1$, then
+    $$ B = \set{b^1_{j_1}\otimes b^n_{j_n}}[b^i_{j_i}\in B_i] \subseteq V_1\otimes\cdots\otimes V_n $$
+    is a basis for the tensor product.
+    In particular the dimension of a tensor product of vector spaces is the product of the dimensions of the vector spaces.
+
+    If $A$ is an $R$-module, then $A\otimes R\cong A$ naturally.
+    This natural isomorphism is given by mapping $a\otimes r\mapsto ra$.
+
+    The tensor product is functorial: if $F_i\colon A_i\to B_i$ are maps for $i=1,2$ then define
+    $F_1\otimes F_2\colon A_1\otimes A_2\to B_1\otimes B_2$ by
+    $$ (F_1\otimes F_2)(a_1\otimes a_2) = (F_1(a_1))\otimes(F_2(a_2)) $$
+    and extending by linearity.
+    This is well-defined.
+
+    In the case of linear functionals $\phi_i\colon A_i\to\bR$ we have that $\bR\otimes\bR\cong\bR$, and this map is naturally isomorphic to
+    $$ (\phi_1\otimes\phi_2)(a_1\otimes a_2) = \phi_1(a_1)\phi_2(a_2) . $$
+
+    The universal property of the tensor product is that
+    $$ \hom(V_1\otimes\cdots\otimes V_n,A) \cong L(V_1,\dots,V_n;A) $$
+    naturally, where the right side is the space of multilinear maps $V_1\otimes\cdots\otimes V_n\to A$.
+
+\enote
+
+\bnote
+
+    For a field $k$ and a finite-dimensional $k$-linear space $V$, we know that $\dim V^*=\dim V$.
+    For a basis $B=(v_1,\dots,v_n)$ we define its {\emphcolor dual basis} $B^*=(v_1^*,\dots,v_n^*)$ in $V^*$ as the linear functionals
+    defined by
+    $$ v_i^*(v_j) = \delta_{ij} , $$
+    and extending by linearity.
+    These are linearly independent, and thus must be a basis considering dimensions.
+
+    There is a natural map from a space to its double dual, $V\to V^{**}$.
+    For $v\in V$ define $\hat v\in V^{**}$ by $\hat v(\phi)=\phi(v)$ for all $\phi\in V^*$.
+    This is injective, and considering dimensions is an isomorphism.
+    It is natural, and thus for finite-dimensional spaces $V$ and $V^{**}$ are naturally isomorphic.
+
+    For infinite-dimensional spaces, $\dim V^*$ is strictly greater than $\dim V$, so in particular $V$ is naturally a proper subspace of
+    $V^{**}$, but they are not isomorphic.
+
+\enote
+
+\bprop
+
+    Let $V_1,\dots,V_n$ be vector spaces, then there is a natural isomorphism
+    $$ (V_1\otimes\cdots\otimes V_n)^* \cong V_1^*\otimes\cdots\otimes V_n^* . $$
+
+\eprop
+
+\bproof
+
+    They have the same dimension, and thus we need only find an injective map.
+    We define a map $V_1^*\otimes\cdots\otimes V_n^*$ to the dual space on the left by mapping $\phi_1\otimes\cdots\otimes\phi_n$ to the
+    literal tensor product of maps:
+    $$ (\phi_1\otimes\cdots\otimes\phi_n)(a_1,\dots,a_n) = \phi_1(a_1)\cdots\phi_n(a_n) . $$
+    If we choose a dual basis for each $V_i^*$, we see that it maps to a linearly independent set, and thus this is injective.
+    \qed
+
+\eproof
+
+In particular, we then have the natural isomorphisms
+$$ V_1\otimes\cdots\otimes V_n \cong (V_1\otimes\cdots\otimes V_n)^{**} \cong (V_1^*\otimes\cdots\otimes V_n^*)^* . $$
+Thus,
+$$ V_1\otimes\cdots\otimes V_n \cong \hom(V_1^*\otimes\cdots\otimes V_n,\bR) \cong L(V_1^*,\dots,V_n^*,\bR) . $$
+So we can identify the tensor product $V_1\otimes\cdots\otimes V_n$ with multilinear maps $V_1^*\times\cdots\times V_n^*\to\bR$ naturally.
+Similarly, $V_1^*\otimes\cdots\otimes V_n^*$ can naturally be identified with multilinear maps $V_1\times\cdots\times V_n\to\bR$.
+
+\bdefn
+
+    For a space $A$, denote by $T^k(A)$ the $k$-fold tensor product of $A$ with itself:
+    $$ T^k(A) = A\otimes\cdots\otimes A . $$
+    The empty tensor product is taken to be the ambient ring, so $T^0(A)=R$.
+
+\edefn
+
+\bdefn
+
+    Let $V$ be a finite-dimensional real vector space.
+    A {\emphcolor covariant $k$-tensor} for $k>0$ is an element of $V^*\otimes\cdots\otimes V^*$.
+    Equivalently, it is a multilinear map $V\times\cdots\times V\to\bR$.
+    If $\alpha$ is a covariant $k$-tensor for some $k$, it is called a {\emphcolor covariant tensor} and its {\emphcolor rank} is $k$.
+    The space of covariant $k$-tensors is $T^k(V^*)$.
+
+    A {\emphcolor contravariant $k$-tensor} for $k>0$ is an element of $V\otimes\cdots\otimes V=T^k(V)$.
+    Equivalently, a multilinear map $V^*\times\cdots\times V^*\to\bR$.
+    The rank is defined similarly.
+
+    For $k,\ell\neq0$ nonnegative, we define a {\emphcolor tensor of type $(k,\ell)$} to be an element of
+    $$ T^{(k,\ell)}(V) = V\otimes\cdots\otimes V\otimes V^*\otimes\cdots\otimes V^* = T^k(V) \otimes T^\ell(V^*) . $$
+
+\edefn
+
+Note that
+$$ T^{(0,k)}(V) = T^k(V^*),\qquad T^{(\ell,0)}(V) = T^\ell(V) . $$
+
+\bdefn
+
+    We define an action of $S_k$ on $T^k(V)$, viewed as multilinear maps, by
+    $$ {}^\sigma\alpha(v_1,\dots,v_n) = \alpha(v_{\sigma(1)},\dots,v_{\sigma(n)}) $$
+    for $\sigma\in S_k,\alpha\in T^k(V)$.
+    This is indeed a group action, moreover it preserves the linear structure of $T^k(V)$ in that
+    $$ {}^\sigma(\alpha+\beta) = {}^\sigma\alpha + {}^\sigma\beta,\qquad {}^\sigma(c\alpha) = c{}^\sigma\alpha . $$
+
+\edefn
+
+Viewing $T^k(V)$ as the $k$-fold tensor product of $V^*$, ${}^\sigma$ acts on primitive elements by
+$$ \sigma(v_1\otimes\cdots\otimes v_k) = v_{\sigma^{-1}(1)}\otimes\cdots\otimes v_{\sigma^{-1}(k)} , $$
+and extending by linearity.
+
+\bdefn
+
+    A covariant $k$-tensor $\alpha\in T^k(V^*)$ is {\emphcolor symmetric} if swapping its inputs does not change its value.
+    Equivalently it has a trivial orbit under the above action: ${}^\sigma\alpha=\alpha$ for all $\sigma\in S_k$ (since transpositions
+    generate $S_k$).
+    Denote the space of symmetric covariant $k$-tensors by $\Sigma^k(V^*)\subseteq T^k(V^*)$.
+
+    Similarly a covariant $k$-tensor $\alpha\in T^k(V^*)$ is {\emphcolor antisymmetric} if swapping its inputs swaps the sign of its value.
+    Equivalently if ${}^\sigma\alpha=\sgn\sigma\alpha$ for all $\sigma\in S_k$.
+    Denote the space of alternating covariant $k$-tensors by $\Lambda^k(V^*)\subseteq T^k(V^*)$.
+    Antisymmetric tensors are also called {\emphcolor exterior forms} or {\emphcolor multi-covectors}.
+
+\edefn
+
+Define the map $\sym\colon T^k(V^*)\to\Sigma^k(V^*)$ by
+$$ \sym\alpha = \frac1{k!}\sum_{\sigma\in S_k}{}^\sigma\alpha . $$
+This map is called {\emphcolor symmetrization}, and it is a projection onto $\Sigma^k(V^*)$.
+Indeed,
+$$ {}^\tau\sym\alpha = \frac1{k!}\sum_{\sigma\in S_k}{}^{\tau\sigma}\alpha = \sym\alpha $$
+so that $\sym$ is well-defined, and $\sym\alpha=\alpha$ iff $\alpha$ is symmetric.
+Clearly the equality implies $\alpha$'s symmetry since $\sym\alpha$ is symmetric, and if $\alpha$ is symmetric then
+$$ \sym\alpha = \frac1{k!}\sum_{\sigma\in S_k}\alpha = \alpha . $$
+
+\bdefn
+
+    If $\alpha\in\Sigma^k(V^*)$ and $\beta\in\Sigma^\ell(V^*)$ are symmetric, then their tensor $\alpha\otimes\beta$ is not symmetric in general.
+    Define their {\emphcolor symmetric product} to be the symmetrification of their tensor product:
+    $$ \alpha\beta = \sym(\alpha\otimes\beta) . $$
+    Explicitly,
+    $$ \alpha\beta(v_1,\dots,v_{k+\ell}) =
+    \frac1{(k+\ell)!}\sum_{\sigma\in S_{k+\ell}}\alpha(v_{\sigma1},\dots,v_{\sigma k})\beta(v_{\sigma(k+1)},\dots,v_{\sigma\ell}) . $$
+
+\edefn
+
+\bprop
+
+    The symmetric product satisfies the following:
+    \benum
+        \item it is bilinear,
+        \item it is commutative,
+        \item it is associative.
+    \eenum
+
+\eprop
+
+We will not prove this.
+
+We can also define the {\emphcolor alternation} of a tensor by
+$$ \alt\alpha = \frac1{k!}\sum_{\sigma\in S_k}\sgn\sigma{}^\sigma\alpha . $$
+This is indeed antisymmetric,
+$$ {}^\tau\alt\alpha = \frac1{k!}\sum_\sigma\sgn\sigma{}^{\tau\sigma}\alpha = \sgn\tau\alt\alpha . $$
+If $\alpha$ is already antisymmetric then
+$$ \alt\alpha = \frac1{k!}\sum_\sigma\sgn\sigma{}^\sigma\alpha = \frac1{k!}\sum_\sigma(\sgn\sigma)^2\alpha = \alpha $$
+so this is also a projection.
+
+Notice that $\sym\alpha=0$ for antisymmetric tensors of dimension $>1$ and similarly $\alt\alpha=0$ for symmetric tensors of dimension $>1$.
+
+\subsection{Tensor fields}
+
+\bdefn
+
+    Let $M$ be a smooth manifold.
+    Define its {\emphcolor bundle of covariant $k$-tensors} by
+    $$ T^kT^*M = \coprod_{p\in M}T^k(T^*_pM) $$
+    where $T_p^*M$ is the dual space of $T_pM$.
+    Similarly the {\emphcolor bundle of contravariant $k$-tensors} by
+    $$ T^kTM = \coprod_{p\in M}T^k(T_pM) , $$
+    and in general the {\emphcolor bundle of $(k,\ell)$-tensors} by
+    $$ T^{(k,\ell)}TM = \coprod_{p\in M}T^{(k,\ell)}(T_pM) . $$
+
+\edefn
+
+To show that $T^{(k,\ell)}TM$ has the unique structure of a vector bundle over $M$, we prove that in general the tensor of two vector bundles is a vector bundle.
+
+\bdefn
+
+    Let $\pi'\colon E'\to M$ and $\pi''\colon E''\to M$ be vector bundles over $M$.
+    Define their {\emphcolor tensor} to be $E=\coprod_{p\in M}E'_p\otimes E''_p$ with the obvious projection $\pi\colon E\to M$.
+
+\edefn
+
+Let $(\sigma_i)$ and $(\tilde\sigma_i)$ be local frames defined in an open set $U$, and let $\Phi,\tilde\Phi$ be their local trivializations.
+Meaning
+$$ \Phi(a^i\sigma_i|_p) = (p,\bar a), $$
+and by assumption there is a smooth transition function $\tau\colon U\to\gl_n(\bR)$ such that
+$$ \tilde\Phi\circ\Phi^{-1}(p,\bar a) = (p,\tau(p)\bar a) . $$
+Then if $X=a^i\sigma_i=\tilde a^i\tilde\sigma_i$, we have
+$$ \tilde\Phi\circ\Phi^{-1}(p,\bar a) = \tilde\Phi^{-1}(X_p) = (p,\tilde a), $$
+so that $\tilde a=\tau(p)\bar a$, i.e.\ $\tilde a^i=\tau(p)^i\bar a$ where $\bul^i$ is the $i$th row.
+
+In particular, $\sigma_i=\tau(p)^j_i\tilde\sigma_j$.
+
+\bprop
+
+    The tensor of two vector bundles has a unique smooth structure making it a vector bundle over $M$ whose fibers are the tensors of the fibers of the original
+    vector bundles.
+
+\eprop
+
+\bproof
+
+    Suppose $E',E''$ have rank $k',k''$ respectively.
+    Let $(\sigma_i)$ and $(\tau_j)$ be local frames of $E',E''$ respectively over an open subset $U\subseteq M$.
+    Then define $\Phi\colon\pi^{-1}U\to U\times\bR^{k'k''}$ by
+    $$ \Phi(v^{ij}\sigma_i|_p\otimes\tau_j|_p) = (p,v^{ij}) . $$
+    Then for another trivialization $\tilde\Phi$ associated with $(\tilde\sigma_i)$ and $(\tilde\tau_j)$ we have that ($T',T''$ being the transition functions),
+    $$ \sigma_i\otimes\tau_j = ((T')^k_i\tilde\sigma_k)\otimes((T'')^\ell_j\tilde\tau_\ell) = (T')^k_i(T'')^\ell_j(\tilde\sigma_k\otimes\tilde\tau_\ell) . $$
+    So the transition function is $T^i_j=\sum_{k,\ell}(T')^k_i\cdot(T'')^\ell_j$, which is smooth (as the sum and product of smooth functions) and invertible
+    (since $\sigma_i\otimes\tau_j$ and $\tilde\sigma_i\otimes\tilde\tau_j$ form bases).
+    \qed
+
+\eproof
+
+We have that
+$$ T^{(k,\ell)}TM = \coprod_{p\in M}T^{(k,\ell)}(T_pM) $$
+is just the tensor of $TM$ tensored with itself $k$ times and $T^*M$ with itself $\ell$ times, and is thus a vector bundle.
+
+The local frames of $E\otimes E'$ are of the form $(\sigma_i\otimes\tau_j)$ for local frames $\sigma_i$ of $E$ and $\tau_j$ of $E'$.
+Thus the local frames of $T^{(k,\ell)}TM$ give representations of the form
+$$ A^{i_1\dots i_k}_{j_1\dots j_\ell}\pdv{x^{i_1}}\otimes\pdv{x^{i_k}}\otimes dx^{j_1}\otimes dx^{j_\ell} , $$
+and $A^{i_1\dots i_k}_{j_1\dots j_\ell}$ are called the {\emphcolor components} of the local frame, we denote them also by $A^I_J$ if the tuples $I,J$ are understood.
+
+We adopt the notation for the sections of the tensor bundles:
+$$ \T^k(M) = \Gamma(T^kT^*M),\qquad \T^{(k,\ell)}(M) = \Gamma(T^{(k,\ell)}TM) . $$
+We do not give special notation to $\Gamma(T^kTM)$, as it is not as important to us.
+Sections of $T^kT^*M$ are called {\emphcolor covariant $k$-tensor fields}.
+Rough sections of $T^{(k,\ell)}TM$ are maps $A\colon M\to T^{(k,\ell)}TM$ such that for every $p\in M$,
+$$ A_p\in T^{(k,\ell)}T_pM = L(T_p^*M,\dots,T_p^*M,T_pM,\dots,T_pM;\ \bR) , $$
+so $A_p$ is a multlilinear functional from $k$-times $T_p^*M$ and $\ell$-times $T_pM$.
+
+\bnote
+
+    Note that a tensor of type $(k,\ell)$ is {\it contravariant\/} in its first $k$ arguments and {\it covariant\/} in its last $\ell$.
+    This may seem unnatural, and indeed some authors think so!
+    Some authors mean a tensor of type $(k,\ell)$ to mean it is {\it co}variant in the first $k$ arguments and {\it contra}variant in its last
+    $\ell$; $T^{(k,\ell)}$ may have opposite meanings for different authors!
+
+    The convention adopted here is from Lee, but the course at Hebrew University (2026) utilizes the opposite convention.
+
+\enote
+
+\bprop
+
+    Let $M$ be a manifold, and $A\colon M\to T^{(k,\ell)}TM$ be a rough section.
+    Then the following are equivalent:
+    \benum
+        \item $A$ is smooth,
+        \item In every coordinate chart $A$'s components are smooth,
+        \item Each point in $M$ is contained in a chart where $A$'s components are smooth,
+        \item If $X_1,\dots,X_\ell\in\X(M)$ and $\omega_1,\dots,\omega_k\in\X^*(M)$, the function $A(\bar\omega,\bar X)\colon M\to\bR$ defined by
+        $$ A(\bar\omega,\bar X)(p) = A_p(\bar\omega|_p,\bar X|_p) $$
+        is smooth.
+        \item Whenever $\bar X,\bar\omega$ are smooth vector and covector fields defined in some open subset $U\subseteq M$, $A(\bar\omega,\bar X)$ is smooth on $U$.
+    \eenum
+
+\eprop
+
+\bproof
+    
+    The first three points are clearly equivalent, as they are for general vector bundles.
+    We note that if $A=A^I_J\ipdv{x^I}\otimes dx^J$, then
+    $$ A\parens{dx^{j_1},\dots,dx^{j_k},\pdv{x^{i_1}},\dots,\pdv{x^{i_\ell}}} = A^I_J , $$
+    so that the last point implies the first.
+    And if $A$ is smooth, then in terms of local coordinates we have that if $X_i=X_i^j\ipdv{x^j}$ and $\omega^i=\omega^i_jdx^j$ then
+    $$ A(\bar\omega,\bar X) = A^I_J\ipdv{x^I}\otimes dx^J(\bar\omega,\bar X) = A^I_J\omega_IX^J, $$
+    where $X^J=X_1^{j_1}\cdots X_k^{j_k}$ and similar for $\omega_I$.
+    This is smooth, as desired.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $M$ be a manifold, $A\in\T^{(k,\ell)}(M)$, $B\in\T^{(k',\ell')}(M)$, and $f\in C^\infty(M)$.
+    Then $A\otimes B$ is a smooth tensor field in $\T^{(k+k',\ell+\ell')}$, and $fA\in\T^{(k,\ell)}$.
+
+\eprop
+
+\bproof
+
+    It is not hard to see that if $A$ has local coordinates $A^I_J$, $B$ has $B^{I'}_{J'}$ then $A\otimes B$ has coordinates
+    $$ (A\otimes B)^{II'}_{JJ'} = A^I_JB^{I'}_{J'} , $$
+    where we split the tuples $II',JJ'$.
+    And similarly
+    $$ (fA)^I_J = f\cdot A^I_J. $$
+    These are all smooth, as desired.
+    \qed
+
+\eproof
+
+Our above proposition showed that a tensor field $A\in\T^{(k,\ell)}(M)$ induces a map
+$$ \X^*(M)\times\cdots\times\X^*(M)\times\X(M)\times\cdots\times\X(M)\to C^\infty(M) . $$
+This is a multilinear $C^\infty(M)$-module morphism, which can be verified coordinate-wise.
+
+\blemm
+
+    Multilinear $C^\infty(M)$ maps $\X^*(M)^k\times\X(M)^\ell\to C^\infty(M)$ are precisely those induced by $(k,\ell)$-tensor fields.
+
+\elemm
+
+\bproof
+
+    We prove this for $(0,k)$-tensor fields, so $C^\infty(M)$-maps $\X(M)^k\to C^\infty(M)$; the general case is similar, but messier.
+    Let $\c A$ be a $C^\infty(M)$-multilinear map.
+    We first show that $\c A$ acts locally, so if $X_i$ vanishes in a neighborhood $U$ of $p$ then $0=\c A(\bar X)$.
+    Again, let $\psi$ be a bump function supported in $U$ such that $\psi(p)=1$, so that $\psi X_i=0$.
+    Then
+    $$ 0 = \c A(X_1,\dots,\psi X_i,\dots,X_n)(p) = \psi(p)\c A(\bar X)(p) = \c A(\bar X)(p) $$
+    meaning $\c A(\bar X)$ vanishes on $U$.
+
+    Now we show that if $X_i|_p=0$ then $\c A(\bar X)(p)=0$ so that $\c A(\bar X)(p)$ is dependent only on $\bar X$'s values at $p$.
+    Let $X_i=X^j_i\ipdv{x^j}$ in a neighborhood of $p$, so the two vector fields agree in a neighborhood and thus we can replace $X$ with this coordinate
+    representation and not change $\c A$'s value.
+    Then
+    $$ \c A(X_1,\dots,X_i,\dots,X_n)(p) = X^j_i(p)\c A(X_1,\dots,\ipdv{x^j},\dots,X_n) = 0 , $$
+    as desired.
+    Note that we need to extend $X^j_i\ipdv{x^j}$ to a global tensor field, which can be done by the extension lemma.
+
+    Now define $A\colon M\to T^kT^*M$ by
+    $$ A_p(v_1,\dots,v_k)(p) = \c A(V_1,\dots,V_k)(p) $$
+    where $V_i$ are any vector fields with $V_i(p)=v_i$.
+    This is independent of choice of $V_i$, as we showed, and gives the desired tensor field (it is smooth since it induces $\A$ which is smooth).
+    \qed
+
+\eproof
+
+Thus we can identify tensor fields with multilinear $C^\infty(M)$ morphisms.
+
+There is a natural isomorphism $\hom(V,W)\cong V^*\otimes W$ given by mapping $\phi\otimes w$ to the linear map
+$v\mapsto\phi(v)w$.
+To show that this is an isomorphism, note that the dimensions are equal, and that it maps a basis to a linearly independent
+set.
+In particular, this gives a natural isomorphism
+$$ L(V,\dots,V;V) \cong \hom(T^k(V),V) \cong T^k(V^*)\otimes V \cong T^{(1,k)}V . $$
+This extends to tensor fields: there is a natural isomorphism of mutlilinear maps $\X(M)^k\to\X(M)$ and multilinear maps
+$\X(M)^k\times\X(M)^*\to C^\infty(M)$.
+This is because given $\A\colon\X(M)^k\to\X(M)$ we define $\tilde\A\colon\X(M)^k\times\X(M)^*\to C^\infty(M)$ by
+$$ \tilde\A(X_1,\dots,X_n,\omega) = \omega(\A(X_1,\dots,X_n)) , $$
+recalling that cotangent fields act on vector fields smoothly.
+Conversely given $\tilde\A$ we define $\A$ by
+$$ \A(X_1,\dots,X_n)\omega = \tilde\A(X_1,\dots,X_n,\omega) $$
+recalling that by duality a vector field is just a mutlilinear map $X\colon\X(M)^*\to C^\infty(M)$.
+
+\bprop
+
+    $(1,k)$-tensor fields are naturally isomorphic to $C^\infty(M)$-multilinear maps
+    $$ \X(M)\times\cdots\times\X(M)\to\X(M) . $$
+    In general $(\ell+1,k)$-tensor fields are naturally isomorphic to $C^\infty(M)$-multilinear maps
+    $$ \X^*(M)^\ell\times\X(M)^k \to X(M) . $$
+
+\eprop
+
+This is an important basic result as many tensor fields are given in this manner.
+
+\bexam
+
+    The Lie bracket $[\bul,\bul]$ is a map $\X(M)\times\X(M)\to\X(M)$.
+    But it is not multilinear over $C^\infty(M)$, and thus is {\it not\/} a tensor.
+
+\eexam
+
+\bdefn
+
+    A {\emphcolor symmetric tensor field} is a covariant tensor field whose image consists of symmetric tensors.
+
+\edefn
+
+\bdefn
+
+    Let $F\colon M\to N$ be smooth, then at any $p\in M$ and any $k$-tensor $\alpha\in T^k(T^*_{Fp}N)$ we define $dF^*_p(\alpha)\in T^k(T^*_pM)$ by
+    $$ dF^*_p(\alpha)(v_1,\dots,v_n) = \alpha(dF_p(v_1),\dots,dF_p(v_n)) . $$
+    This is the {\emphcolor pullback of $F$ at $p$}.
+    Then for a covariant $k$-tensor field $A$ on $N$, we define the {\emphcolor pullback of $A$ by $F$} to be the rough $k$-tensor field on $M$ given by
+    $$ (F^*A)_p = dF^*_p(A_{Fp}) . $$
+    This acts on vectors $v_1,\dots,v_k\in T_pM$ by
+    $$ (F^*A)_p(v_1,\dots,v_k) = A_{Fp}(dF_p(v_1),\dots,dF_p(v_k)) . $$
+
+\edefn
+
+\bprop
+
+    For $F\colon M\to N$ and $G\colon N\to P$ smooth, $A,B$ covariant $k$-tensor fields on $N$, and $f\in C^\infty(N)$,
+    \benum
+        \item $F^*(fB)=(f\circ F)F^*B$,
+        \item $F^*(df)=d(f\circ F)$,
+        \item $F^*(A\otimes B)=F^*A\otimes F^*B$,
+        \item $F^*(A+B)=F^*A+F^*B$,
+        \item $F^*B$ is continuous, and smooth if $B$ is smooth,
+        \item $(G\circ F)^*B=F^*(G^*B)$,
+        \item $(\id_N)^*B=B$.
+    \eenum
+
+\eprop
+
+\bproof
+
+    Similar to before, by definitions.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Let $F\colon M\to N$ be smooth, and $B\in\T^k(N)$.
+    If $p\in M$ and $(y^i)$ are smooth coordinates for $N$ in a neighborhood of $F(p)$, then $F^*B$ has the representation in a neighborhood of $p$:
+    $$ F^*(B_Idy^I) = (B_I\circ F)d(y^{i_1}\circ F)\otimes\cdots\otimes d(y^{i_k}\circ F) . $$
+
+\ecoro
+
+\bproof
+
+    Immediate from the above proposition.
+    \qed
+
+\eproof
+
+\subsection{Lie derivatives of tensor fields}
+
+Suppose $V\in\X(M)$ is a smooth vector field with flow $\theta$ with flow domain $\D$.
+Recall that for $t\in\bR$, $\theta_t\colon M_t\to M_{-t}$ is a diffeomorphism with inverse $\theta_{-t}$.
+For $p\in M$ and $t$ small enough we have that $(t,p)\in\D$, and thus $\theta_t$ is a diffeomorphism from an open neighborhood of $p$ to an
+open neighborhood of $\theta_t(p)$.
+So $d(\theta_t)_p^*$ pulls back tensors $T^k(T^*_{\theta(t,p)}M)$ to ones at $p$ by
+$$ d(\theta_t)^*_p(A_{\theta_t(p)})(v_1,\dots,v_k) = A_{\theta_t(p)}(d(\theta_t)_pv_1,\dots,d(\theta_t)_pv_n) . $$
+This is the value of the pullback tensor field $\theta_t^*A$ at $p$.
+
+\bdefn
+
+    If $V\in\X(M)$ is a smooth vector field, and $A$ a covariant tensor field on $M$, define its {\emphcolor Lie derivative} with respect to $V$
+    by
+    $$ (\L_VA)_p = \evdrv t_{t=0}(\theta_t^*A)_p = \lim_{t\to0}\frac{d(\theta_t)^*_p(A_{\theta(t,p)}) - A_p}t . $$
+
+\edefn
+
+\blemm
+
+    The Lie derivative exists for every $p$ and defines a covariant tensor field on $M$.
+
+\elemm
+
+\bproof
+
+    For $p\in M$ let $(U,(x^i))$ be a smooth chart containing $p$.
+    Choose an open interval $0\in J_0$ and an open set $U_0\subseteq U$ such that $\theta$ maps $J_0\times U_0$ into $U$.
+    For $(t,x)\in J_0\times U_0$ we can write $\theta$ relative to the coordinates by
+    $$ \theta(t,x) = (\theta^1(t,x),\dots,\theta^n(t,x)) . $$
+    Then $d(\theta_t)_x\colon T_xM\to T_{\theta(t,x)}$ has matrix representation
+    $$ \parens{\pdvof{\theta^i}{x^j}(t,x)} . $$
+
+    If $A$ has coordinate representation
+    $$ A = A_Jdx^J , $$
+    then
+    $$ d(\theta_t)^*_x(A_{\theta_t(p)})\parens{\evpdv{x^I}_x} =
+    A_{\theta_t(p)}\parens{\pdvof{\theta^{i_k}}{x^k}(t,x)\evpdv{x^{i_k}}_{\theta(t,x)}} =
+    \pdvof{\theta^{i_1}}{x^1}(t,x)\cdots\pdvof{\theta^{i_k}}{x^k}(t,x)\cdot A_{i_1,\dots,i_k} . $$
+    This is a smooth coordinate representation and thus has a smooth derivative.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $V\in\X(M)$ be smooth, $f\in C^\infty(M)$ (which can be regarded as $T^0TM$), and $A,B$ are smooth covariant tensor fields on $M$
+    (of potentially different type).
+    \benum
+        \item $\L_Vf=Vf$,
+        \item $\L_V(fA)=(\L_Vf)A+f(\L_VA)$,
+        \item $\L_V(A\otimes B)=(\L_VA)\otimes B+A\otimes(\L_VB)$,
+        \item if $X_1,\dots,X_k$ are smooth vector fields and $A$ has type $k$, then
+        $$ \L_V(A(X_1,\dots,X_k)) = (\L_VA)(X_1,\dots,X_k) + A(\L_VX_1,\dots,X_k) + \cdots + A(X_1,\dots,\L_VX_k) . $$
+        Since $\L_VX=[V,X]$ for vector fields $X$, we have (by the first point the left-hand side above is just $V$ on $A$'s value),
+        $$ (\L_VA)(X_1,\dots,X_n) = V(A(X_1,\dots,X_n)) - A([V,X_1],\dots,X_k) - \cdots - A(X_1,\dots,[V,X_k]) . $$
+    \eenum
+
+\eprop
+
+\bproof
+
+    Let $\theta$ be $V$'s flow, then
+    $$ \theta_t^*(f(p)) = f(\theta_t(p)) = f\circ\theta^{(p)}(t) . $$
+    So the Lie derivative $\L_Vf$ is the derivative of this:
+    $$ (\L_Vf)(p) = \evdrv t_{t=0}f\circ\theta^{(p)} = df_p({\theta^{(p)}}'(0)) = df_p(V_p) = Vf(p) . $$
+
+    For the other points, if $p$ is a regular point then we choose a coordinate domain where $V$ has representation $\ipdv{u^1}$.
+    Then $V$'s flow is just $\theta_t(u)=(u^1+t,u^2,\dots,u^n)$ and then in these coordinates if $A=A_Jdx^J$ we have that $\L_VA$'s coordinate
+    representation is just $A_J$'s partial derivatives with respect to $u^1$.
+    Then all the other points follow by the product rule.
+
+    Then for points in $V$s support it follows by continuity, and for points outside of the support everything becomes $0$.
+    \qed
+
+\eproof
+
+For $f\in C^\infty(M)$ we have the covariant $1$-tensor $df$ given by $df(X)=Xf$.
+Notice then that
+$$ (\L_Vdf)(X) = V(df(X)) - df([V,X]) = V(Xf) - [V,X]f = VXf - VXf + XVf = XVf , $$
+and this is just $df(XV)$ which is equal to $d(Vf)(X)$ and by above this is equal to $d(\L_Vf)(X)$.
+Thus we have
+$$ \L_Vdf = d(\L_Vf) , $$
+for all $f\in C^\infty(M)$.
+
+\bdefn
+
+    If $A$ is a covariant tensor field on $M$, and $\theta$ is a flow on $M$, then $A$ is {\emphcolor invariant under $\theta$} if for all
+    $(t,p)$ in $\theta$'s domain
+    $$ d(\theta_t)^*_p(A_{\theta_t(p)}) = A_p . $$
+
+\edefn
+
+\bthrm
+
+    $A$ is invariant under $V$'s flow iff $\L_VA=0$.
+
+\ethrm
+
+\subsection{The Serre-Swan theorem}
+
+In this section we investigate the category of vector bundles over a smooth manifold $M$.
+Recall the strong connection between the $C^\infty(M)$-module of sections of a vector bundle and the vector bundle itself.
+In particular we recall the following result we proved earlier.
+
+\bthrm
+
+    Let $E\to M,F\to M$ be vector bundles over $M$.
+    There is a natural correspondence between vector bundle morphisms $E\to F$ over $M$ and $C^\infty(M)$-module morphisms $\Gamma(E)\to\Gamma(F)$.
+
+\ethrm
+
+\bproof
+
+    We have already proven this, but we restate the construction of the bijections.
+    Given a vector bundle morphism $\phi\colon E\to F$, we define $\tilde\phi\colon\Gamma(E)\to\Gamma(F)$ by $s\mapsto\phi\circ s$.
+    Conversely given an module morphism $\psi\colon\Gamma(E)\to\Gamma(F)$ define $\hat\psi\colon E\to F$ by $\hat\psi(v_p)=\psi(\hat v)_p$ where $\hat v$ is any
+    section whose value at $p$ is $v$.
+
+    Standard arguments are used to show that $\hat\psi$ is well-defined: first one shows $\psi$ acts locally, so sections agreeing on an open neighborhood
+    have the same value under $\psi$ in that neighborhood, then one shows that sections agreeing at a point agree at that point under $\psi$.
+    Then $\hat\psi$ is shown to be smooth by considering its representation under local trivializations.
+
+    It is clear that $\tilde\bul$ and $\hat\bul$ are inverses.
+    \qed
+
+\eproof
+
+Let us denote by $\VBun_M$ the category of vector bundles over $M$.
+Then we have a functor
+$$ \Gamma\colon \VBun_M \to \Mod_{C^\infty(M)},\qquad E\mapsto\Gamma(E) , $$
+whose actions on vector bundle morphisms is described in the above theorem: $\Gamma(\phi)(s)=\phi\circ s$.
+The theorem says that $\Gamma$ is fully faithful, and so we lose no information identifying $\phi$ and $\Gamma(\phi)$.
+
+Because $\Gamma$ is fully faithful, it is an equivalence onto its essential image.
+As we will show later, its essential image is the collection of {\it projective\/} $C^\infty(M)$-modules.
+
+\bprop
+
+    A vector bundle $E$ is trivial iff $E$ has a global frame iff $\Gamma(E)$ is free.
+
+    Conversely any free $C^\infty(M)$-module of finite rank is isomorphic to the sections of some trivial vector bundle.
+
+\eprop
+
+\bproof
+
+    The first equivalence was already shown, as the local trivialization related to a global frame is an isomorphism to a trivial bundle.
+    And a basis for $\Gamma(E)$ is precisely a global frame for $E$.
+
+    Suppose $F$ is a free $C^\infty(M)$-module, generated by $f_1,\dots,f_n$.
+    Then $\Gamma(M\times\bR^n)$ is free of rank $n$ by the previous paragraph, and thus isomorphic to $F$.
+    \qed
+
+\eproof
+
+For a bundle morphism $\phi\colon E\to F$ and $p\in M$ let us denote by $\phi_p=\phi|_{E_p}\colon E_p\to F_p$, which is linear by definition.
+
+Now recall the following result we proved as well.
+
+\bprop
+
+    A morphism of vector bundles over $M$ is an isomorphism iff it is bijective.
+
+\eprop
+
+\bproof
+
+    Suppose $\pi\colon E\to M$ and $\pi'\colon F\to M$ are vector bundles and $\phi\colon E\to F$ is a bijective vector bundle morphism.
+    Since $\phi_p\colon E_p\to F_p$ is then a linear isomorphism, $E$ and $F$ have the same rank and thus dimension.
+    Since $\phi$ is by assumption bijective, it is sufficient to show that it is a local diffeomorphism, and for that it is sufficient to show that it is
+    an immersion.
+
+    Now, we have
+    $$ \pi = \pi'\circ\phi, $$
+    so for all $v\in E$, say $v\in E_p$, we have
+    $$ d\pi_v = d\pi'_{\phi(v)}\circ d\phi_v . $$
+    Let $x\in T_vE$ such that $d\phi_v(x)=0$ and thus $d\pi_v(x)=0$.
+
+    Recall that for a submersion $\pi$, $v\in\pi^{-1}p$, we have that $\ker d\pi_v=T_v\pi^{-1}p$ (considering dimensions they are equal, and $\pi$ is constant
+    on $\pi^{-1}p$ so its differential is zero).
+    Thus $x\in T_vE_p$, but $\phi_p$ is an isomorphism $E_p\to F_p$ and thus $d\phi$ is an isomorphism on $T_vE_p$, so $x=0$.
+    Thus $d\phi_v$ is an injection, so $\phi$ is a diffeomorphism.
+    \qed
+
+\eproof
+
+Another way we could phrase this is that vector bundles are isomorphisms iff their actions on fibers are.
+
+Recall the following result which we proved.
+
+\blemm
+
+    For a vector bundle morphism $\phi\colon E\to F$, the following are equivalent:
+    \benum
+        \item $\phi_p$ has constant rank for all $p\in M$,
+        \item $\ker\phi$ is a subbundle of $E$,
+        \item $\im\phi$ is a subbundle of $F$.
+    \eenum
+
+\elemm
+
+For a point $p\in M$ let us consider the map $\ev_p\colon C^\infty(M)\to\bR$ which evaluates a smooth function at $p$.
+This map is clearly surjective (considering constant functions), and thus its kernel is a maximal ideal.
+We denote its kernel by
+$$ \mu_p = \ker\ev_p = \set{f\in C^\infty(M)}[f(p)=0] . $$
+
+\blemm
+
+    For $s\in\Gamma(E)$, if $s(p)=0$ then there are $f_i\in\mu_p$ and $s_i\in\Gamma(E)$ such that $s=\sum_if_is_i$.
+    In other words, if $s(p)=0$ then $s\in\mu_p\Gamma(E)$ (the product of a module and an ideal).
+
+    Therefore, for all $p\in M$ the following sequence splits
+    $$ 0 \to \mu_p\Gamma(E) \to \Gamma(E) \to E_p \to 0 , $$
+    where the first map is inclusion, and the second is evaluating a section at $p$.
+    Thus we have
+    $$ E_p \cong \frac{\Gamma(E)}{\mu_p\Gamma(E)} . $$
+
+\elemm
+
+\bproof
+
+    Let $U$ be a neighborhood of $p$ over which we have a local frame $e_1,\dots,e_n$.
+    So there are smooth functions $f_i\in C^\infty(U)$ such that
+    $$ s = \sum_i f_ie_i $$
+    over $U$, and in particular we have $f_i(p)=0$.
+    Now let $\psi$ be a bump function centered at $p$ supported in $U$, so $\psi(p)=1$ and $\supp\psi\subseteq U$.
+    Then we have
+    $$ \psi^2 s = \sum_i\psi^2 f_ie_i = \sum_i(\psi f_i)(\psi e_i) . $$
+    Note that $\psi f_i$ and $\psi e_i$ can be extended smoothly over all of $M$ by setting them to be zero outside of $U$.
+    Then this equation holds over all of $M$, and we have
+    $$ s = (1-\psi^2)s + \sum_i(\psi f_i)\psi e_i . $$
+    And clearly $1-\psi^2,\psi f_i\in\mu_p$ as desired.
+
+    The map $\Gamma(E)\to E_p$ is surjective as for every $v\in E_p$ there is a global section whose value at $p$ is $v$ (which we proved earlier).
+    The kernel of the map $\Gamma(E)\to E_p$ is the set of all sections $s\in\Gamma(E)$ whose value at $p$ is zero.
+    We showed that this is equal to $\mu_p\Gamma(E)$, showing exactness.
+    \qed
+
+\eproof
+
+\blemm
+
+    Let $E,F$ be vector bundles over $M$.
+    Then $\Gamma(E\oplus F)\cong\Gamma(E)\oplus\Gamma(F)$.
+
+\elemm
+
+\bproof
+
+    If $s\in\Gamma(E)$ and $t\in\Gamma(F)$ then $s\oplus t\in\Gamma(E\oplus F)$ where $(s\oplus t)|_p=s|_p\oplus t|_p$.
+    It is easily seen via local frames that $s\oplus t$ is smooth, and that this map is an injective morphism.
+    Similarly for $s\in\Gamma(E\oplus F)$ we map it to $s_0\oplus s_1\in\Gamma(E)\oplus\Gamma(F)$ where $s_0|_p$ is the projection of $s|_p$ onto $E_p$
+    and similar for $s_1$.
+    Again this is smooth, and these define inverse morphisms.
+    \qed
+
+\eproof
+
+Now we state the following result, which will not be proven.
+
+\blemm
+
+    For any vector bundle $E$, $\Gamma(E)$ is a finitely generated $C^\infty(M)$-module.
+
+\elemm
+
+\blemm
+
+    For any vector bundle $E$, $E$ is a direct summand of a trivial vector bundle.
+
+\elemm
+
+\bproof
+
+    Since $\Gamma(E)$ is fg, let $s_1,\dots,s_n\in\Gamma(E)$ generate it.
+    Let $Q$ be the free rank-$n$ $C^\infty(M)$-module, and define the surjection $\phi\colon Q\to\Gamma(E)$ by mapping $Q$'s basis to the $s_i$.
+    Since $Q$ is free, it is isomorphic to $\Gamma(F)$ where $F$ is a free vector bundle, $F=M\times\bR^n$.
+    Thus $\phi\colon\Gamma(F)\to\Gamma(E)$ is a morphism, and thus can be identified with a bundle morphism $\phi\colon F\to E$.
+
+    Since $\Gamma(\phi)$ is surjective, $\phi_p$ is surjective for all $p$.
+    This is because we have the following commutative diagram
+
+    \commsq{\Gamma(E)&E_p\cr \Gamma(F)&F_p}
+        {}{}{\Gamma(\phi)}{\phi_p}
+
+    and all the arrows other than $\phi_p$ are surjective, implying $\phi_p$ is surjective.
+    Thus $\phi$ has constant rank, and $\ker\phi\subseteq F$ is a subbundle.
+
+    Now we claim that $\ker\phi$ is a direct summand of $F$.
+    Let $F=M\times\bR^n$, then let $\ker\phi^\perp$ be the subbundle of $F$ whose fiber at $p\in M$ is the orthogonal complement of $\ker\phi_p$ in $\bR^n$
+    under the Euclidean product.
+
+    Now the Euclidean product of sections of $F$, which defines a function $\iprod{s,t}_p=\iprod{s(p),t(p)}$, is smooth.
+    This is because the Euclidean product of the standard global frames $e_i$ are constant, and the Euclidean product is tensorial, so smoothness follows from linearity.
+    If we have a local frame for $\ker\phi$ then extending it to a local frame for $F$ and then applying Gram-Schmidt at each point gives us a local frame for $\ker\phi^\perp$.
+    This is because Gram-Schmidt is obtained via the Euclidean product which is smooth.
+    Thus $\ker\phi^\perp$ is a subbundle, and clearly $F=\ker\phi\oplus\ker\phi^\perp$.
+
+    Now we claim that the surjection $\phi\colon F\to E$ induces an isomorphism $\phi\colon\ker\phi^\perp\to E$.
+    This is because at each $p\in M$, $\phi_p$'s kernel is $\ker\phi_p=(\ker\phi)_p$ and thus forms an isomorphism $\ker\phi^\perp_p\to E_p$.
+    So $\phi\colon\ker\phi^\perp\to E$ is an isomorphism on the fibers, and thus an isomorphism of vector bundles, as desired.
+    \qed
+
+\eproof
+
+\bcoro
+
+    For a vector bundle $E$, $\Gamma(E)$ is a projective $C^\infty(M)$-module.
+
+\ecoro
+
+\bproof
+
+    $E$ is a direct summand of a trivial vector bundle, so $E\oplus F$ is trivial for some vector bundle $F$.
+    Then we have that $\Gamma(E\oplus F)\cong\Gamma(E)\oplus\Gamma(F)$ is free, so $\Gamma(E)$ is projective.
+    \qed
+
+\eproof
+
+\bthrm[title=Serre-Swan]
+
+    Let $M$ be a connected manifold.
+    If $P$ is a finitely-generated projective $C^\infty(M)$-module, it is isomorphic to the space of sections for some vector bundle $E$.
+
+    Thus $\Gamma$ forms an equivalence of categories from $\VBun_M$ to the full subcategory of finitely-generated projective $C^\infty(M)$-modules.
+
+\ethrm
+
+\bproof
+
+    Since $P$ is projective, it is the direct summand of some finite-rank (since it is finitely-generated) free module.
+    So we have $\Gamma(F)=P'\oplus Q$ where $P',Q$ are modules and $P'\cong P$.
+    We identify $P$ with $P'$, and thus we can view $P'$ as a set of sections of $F$.
+
+    For $x\in M$ let us define
+    $$ P_x = \set{p(x)}[p\in P] \subseteq F_x . $$
+    This is a subspace of $F_x$, and similarly we define $Q_x$.
+    Now we claim $F_x=P_x\oplus Q_x$.
+
+    For $v\in F_x$ there is a $s\in\Gamma(F)$ such that $s(x)=v$.
+    Writing $s=p+q$ for $p\in P,q\in Q$, we have $v=p(x)+q(x)$, showing $P_x+Q_x=F_x$.
+    Now if $p(x)=q(x)$ for $p\in P$ and $q\in Q$, then $(p-q)(x)=0$ so $p-q\in\mu_x\Gamma(F)$ and thus
+    $$ p-q = \sum_if_is_i = \sum_if_ip_i + \sum_if_iq_i, $$
+    where $f_i\in\mu_x$ and $s_i\in\Gamma(F)$ equal to $s_i=p_i+q_i$ for $p_i\in P,q_i\in Q$.
+    But then $\sum_if_ip_i\in P$ and so we have $p=\sum_if_ip_i$ and $q=-\sum_if_iq_i$.
+    Thus $p(x)=\sum_if_i(x)p_i(x)=0$ and similarly $q(x)=0$, so $v=0$.
+    So we have shown $F_x=P_x\oplus Q_x$ as desired.
+
+    Now we want to show that the union of $P_x$ forms a subbundle of $F$, and that $P$ gives its space of sections.
+    Notice that $\dim P_x$ is independent of $x$.
+    This is because if we take a basis for $P_x$ of $p_1(x),\dots,p_n(x)$, then by continuity $p_1(y),\dots,p_n(y)$ remains linearly independent
+    in a neighborhood of $x$.
+    Thus $\dim P_y\geq\dim P_x$ in a neighborhood of $x$.
+    Similarly we see $\dim Q_y\geq\dim Q_y$, and since $Q_x\oplus P_x=F_x$ whose dimension is constant, we see $\dim P_y$'s is constant in this neighborhood.
+    Because $M$ is connected, $\dim P_x$ must be constant over all of $M$.
+
+    If we choose any basis of $P_x$ by $p_1(x),\dots,p_n(x)$, then by continuity $p_1,\dots,p_n$ are linearly independent in a neighborhood of $x$.
+    Since we just showed that $\dim P_x$ is constant, this means $p_1,\dots,p_n$ forms a local frame of $P$ in a neighborhood of $x$.
+    This means that $\bar P=\coprod_xP_x$ is indeed a subbundle of $F$.
+
+    Now we want to show that $P=\Gamma(\bar P)$.
+    Clearly $P\subseteq\Gamma(\bar P)$ since $P$ consists of sections of $F$ falling into $\bar P$.
+    And conversely for $s\in\Gamma(\bar P)\subseteq\Gamma(F)$ we have $s=p+q$ for $p\in P$ and $q\in Q$.
+    Now $s(x)=p(x)+q(x)$ and since $s(x)\in P_x$, we must have $q(x)=0$.
+    So $s=p\in P$ as desired.
+
+    Since $\Gamma$ is fully faithful, it is an equivalence onto its essential image.
+    The previous corollary showed that $\Gamma$'s essential image is contained in the subcategory of projective modules, and this one showed that it is in fact
+    equal to it.
+    \qed
+
+\eproof
+
+\subsection{Functorial constructions on vector bundles}
+
+Thus far we have introduced some methods of constructing vector bundles from old ones.
+For example the Whitney sum, the dual bundle, and the tensor product of bundles.
+These are all liftings of constructions on vector spaces (direct sums, dual spaces, and tensor products respectively).
+In fact, we can generalize this as follows.
+
+\bdefn
+
+    Let $\Vec=\Vec_\bR^{\rm fd}$ denote the category of finite-dimensional vector spaces over $\bR$.
+    Then a single-variable covariant {\emphcolor $C^\infty$ functor} is a functor $\F\colon\Vec\to\Vec$ such that the maps $\hom_\bR(V,W)\to\hom_\bR(\F(V),\F(W))$ are smooth
+    (both sides are vector spaces).
+    Contravariant $C^\infty$ functors are defined similarly, and we can extend this to multivariate functors of mixed variance.
+
+\edefn
+
+A multivariate $C^\infty$ functor $\F(x_1,\dots,x_n)$ is smooth iff $\F(V_1,\dots,x_i,\dots,V_n)$ is a single-variable $C^\infty$ functor.
+
+Examples of $C^\infty$ functors are direct sums, taking the dual, and tensor products, as their actions on the hom-sets are linear and thus smooth.
+Then the construction on vector bundles done thus far is a special case of the following theorem.
+
+Recall that a local trivialization is a diffeomorphism $\Phi\colon\pi^{-1}U\to U\times\bR^n$ for an open subset $U\subseteq M$
+such that projecting onto $U$ gives $\pi$.
+So we can write $\Phi$ by $(\pi,\Phi_0)$, and $\Phi_0$ restricts to linear isomorphisms $E_p\to\bR^n$ on each $E_p$.
+In the following theorem we will identify a local trivialization with its second component ($\Phi_0$), as no information is lost.
+
+\bthrm
+
+    Let $\F$ be a $C^\infty$ functor.
+    For vector bundles $E_1,\dots,E_n\to M$ we define the vector bundle $\F(E_1,\dots,E_n)$ by
+    $$ \F(E_1,\dots,E_n) = \coprod_{p\in M}\F(E_1|_p,\dots,E_n|_p) , $$
+    with the obvious projection, and this is indeed a vector bundle over $M$.
+    Furthermore this construction is functorial.
+
+\ethrm
+
+\bproof
+
+    Suppose $\F$ is covariant in the first $n$ variables and contravariant in the last $m$.
+    Let us denote by $E_1,\dots,E_n$ its first $n$ inputs and $F_1,\dots,F_m$ its last $m$.
+    If we have local trivializations $\Phi_i$ of the $E_i$ and $\Psi_i$ of the $F_i$ all defined on the same open subset (by potentially shrinking it), we define
+    a local trivialization $\Theta$ of $\F(\bar E,\bar F)$ as
+    $$ \Theta_p = \F(\Phi_1|_p,\dots,\Phi_n|_p,\Psi_1|_p^{-1},\dots,\Psi_m|_p^{-1}) . $$
+    That is, this is the definition of $\Theta$ on the fiber of $p$.
+    Since $\F$ is contravariant in its last $m$ arguments, this defines a map from $\F(\bar E_p,\bar F_p)$ to $V=\F(\bR^{N_1},\dots,\bR^{N_n},\bR^{M_1},\dots,\bR^{M_m})$.
+    Furthermore it is an isomorphism as functors preserve isomorphisms.
+
+    Now we must just show that different $\Theta$s are compatible.
+    So suppose we have other local trivializations $\Phi_i'$ and $\Psi'_i$ giving us $\Theta'$.
+    Then
+    $$ \Theta'\circ\Theta^{-1}|_p = \Theta'|_p\circ\Theta|_p^{-1} = \F(\bar\Phi'|_p,(\bar\Psi')|_p^{-1})\circ\F(\bar\Phi|_p,\bar\Psi|_p^{-1})^{-1}
+    = \F(\bar{\Phi'\circ\Phi^{-1}}|_p,\bar{\Psi\circ(\Psi')^{-1}}|_p) . $$
+    In the final equality we swap the order of $\Psi$ and $\Psi'$ due to contravariance.
+    So if we let $\tau_i$ be the transition map from $\Phi_i$ to $\Phi'_i$, and $\sigma_i$ the transition from $\Psi'_i$ to $\Psi_i$, we see that the transition map
+    $\theta$ from $\Theta$ to $\Theta'$ is given by
+    $$ \theta(p) = \F(\bar\tau(p),\bar\sigma(p)) . $$
+    Since $\F$ is smooth, we see that $\theta$ is smooth as desired.
+
+    Now suppose we have vector bundle morphisms $\phi_i\colon E_i\to E_i'$ and $\psi_i\colon F'_i\to F_i$.
+    Then define $\chi\colon\F(\bar E,\bar F)\to\F(\bar E',\bar F')$ defined on fibers by
+    $$ \chi_p = \F(\bar\phi_p,\bar\psi_p) . $$
+    If we let $\Theta$ be a trivialization of $\F(\bar E,\bar F)$ and $\Theta'$ a trivialization of $\F(\bar E',\bar F')$ we see that
+    $$ \Theta'\circ\chi\Theta^{-1}|_p = \F(\bar\Phi'\circ\bar\phi\circ\bar\Phi^{-1}|_p,\ \bar\Psi\circ\bar\psi\circ(\bar\Psi')^{-1}|_p) . $$
+    Since $\phi_i,\psi_i$ are smooth, the arguments of $\F$ on the right are smooth in $p$ and thus the left is smooth in $p$ as well.
+    Thus $\chi=\F(\bar\phi,\bar\psi)$ is smooth.
+    This is clearly functorial.
+    \qed
+
+\eproof
+
+So for every $C^\infty$ functor we associate a functor of vector bundles.
+This association itself is functorial: natural transformations of $C^\infty$ functors map to natural transformations of functors of vector bundles functorally.
+In particular this means that isomorphic $C^\infty$ functors give isomorphic vector bundle functors.
+This allows us to prove easily that the double dual of any vector bundle is naturally isomorphic to the original vector bundle for example.
+
+Or consider the hom functor, $\hom_\bR\colon\Vec^\op\times\Vec\to\Vec$.
+This is a linear functor (as in its actions on morphisms is linear) and thus smooth.
+Thus it defines a hom functor on vector bundles: for two vector bundles $E,F$ we have a vector bundle $\hom(E,F)$ whose fibers are $\hom_\bR(E_p,F_p)$.
+Since we have a natural isomorphism
+$$ \hom_\bR(V,U) \cong V^*\otimes U, $$
+this lifts to a natural isomorphism
+$$ \hom(E,F) \cong E^*\otimes F . $$
+
+Now it is natural to ask what we can say about the space of sections of a functorial construction such as this.
+For example, we already know $\Gamma(E\oplus F)\cong\Gamma(E)\oplus\Gamma(F)$.
+It is not hard to see that $\Gamma(E^*)\cong\Gamma(E)^*$, where the latter dual is the dual over $C^\infty(M)$: $\Gamma(E)^*=\hom(\Gamma(E),C^\infty(M))$.
+
+To do this we will first prove a few facts about projective modules.
+
+\blemm
+
+    Let $A$ be a commutative ring, and $P,Q$ be finitely generated projective $A$-modules.
+    Then
+    \benum
+        \item $P\oplus Q$ is projective and $(P\oplus Q)^*\cong P^*\oplus Q^*$.
+        \item $P$ is {\emphcolor reflexive}: $P^{**}\cong P$.
+        \item $P\otimes Q$ is projective.
+        \item $P^*\otimes Q\cong\hom_A(P,Q)$ and $(P\otimes Q)^*\cong P^*\otimes Q^*$.
+        \item $\hom_A(P,Q)$ is projective, in particular $P^*$ is.
+    \eenum
+
+\elemm
+
+\bproof
+
+    \benum
+        \item $P\oplus Q$ is clearly projective.
+        We have
+        $$ (P\oplus Q)^* = \hom_A(P\oplus Q,A) \cong \hom_A(P,A) \oplus \hom_A(Q,A) = P^* \cong Q^* , $$
+        as desired and this holds for arbitrary modules.
+
+        \item There is a natural map $P\to P^{**}$ which maps $x\in P$ to $\bar x\in P^{**}$ which maps $\phi\in P^*$ to $\phi(x)$.
+        For fg free $F$ this map is an isomorphism, as $F^*$ has the same rank as $F$ and it is easy to see that this map maps a basis of $F$ to a linearly independent set of $F^*$.
+        So if $P\oplus Q$ is free, then we have an isomorphism $P\oplus Q\to P^{**}\oplus Q^{**}$.
+        It is easy to see that this isomorphism is the direct sum of the maps $P\to P^{**}$ and $Q\to Q^{**}$, so they must be isomorphisms.
+
+        \item The tensor of two free modules is free, so if $P\oplus P',Q\oplus Q'$ are free then so is
+        $$ (P\oplus P')\otimes(Q\oplus Q') \cong P\otimes Q \oplus \dots . $$
+        So $P\otimes Q$ is projective.
+
+        \item There is a natural map $P^*\otimes Q\to\hom_A(P,Q)$ and this is an isomorphism when $P$ is fg projective (independent of $Q$).
+        The map is given by mapping $\phi\otimes y$ to $x\mapsto \phi(x)y$.
+        For finite free $P$ this is an isomorphism: take $x_1,\dots,x_n$ a basis then every $f\colon P\to Q$ is determined by $f(x_1),\dots,f(x_n)$ and we have a dual basis
+        $\phi_1,\dots,\phi_n$ in $P^*$ given by $\phi_i(x_j)=\delta_{ij}$.
+        Then $\sum_i\phi_i\otimes f(x_i)$ maps to $f$.
+
+        Now if $P\oplus P'$ is free then we have an isomorphism
+        $$ (P^*\otimes Q) \oplus ((P')^*\otimes Q) \to \hom_A(P,Q) \oplus \hom_A(P',Q) $$
+        and as before it is easy to see that this is the direct sum of the maps $P^*\otimes Q\to\hom_A(P,Q)$ so they must be isomorphisms.
+
+        \item Suppose $P\oplus P'$ and $Q\oplus Q'$ are free of finite rank.
+        Then
+        $$ \hom_A(P\oplus P',Q\oplus Q') \cong \hom_A(P,Q) \oplus \hom_A(P,Q') \oplus \hom_A(P',Q) \oplus \hom_A(P',Q') . $$
+        And the left-hand side is free, since finite biproducts commute with $\hom$, so $\hom_A(P,Q)$ is a direct summand of a free module and thus projective.
+
+        Since $P^*=\hom_A(P,A)$ and $A$ is free and thus projective, clearly $P^*$ is projective.
+        \qed
+    \eenum
+
+\eproof
+
+\bprop
+
+    For a vector bundle $E$, $\Gamma(E^*)\cong\Gamma(E)^*$.
+
+\eprop
+
+\bproof
+
+    Define $\phi\colon\Gamma(E^*)\to\Gamma(E)^*$ by $\phi(\bar s)(t)=\bar s(t)$, where $\bar s(t)\in C^\infty(M)$ is given by $\bar s(t)(p)=\bar s_p(t_p)$.
+    It is easily seen that $\bar s(t)$ is smooth by considering trivializations.
+
+    For trivial $P$, global sections of $P$ yield global sections of $P^*$, so $P^*$ is trivial as well and so we have an isomorphism $\Gamma(P^*)\cong\Gamma(P)\cong\Gamma(P)^*$
+    of free modules, obtained by mapping the dual global sections of $\Gamma(P^*)$ to $\Gamma(P)$ and then mapping to $\Gamma(P)^*$ (the last isomorphism is due to it being
+    fg free).
+    This is just $\phi$, so in the case that $P$ is free we have that $\phi$ is an isomorphism.
+
+    For general $E$, by Serre-Swan there is an $F$ such that $E\oplus F\cong P$ trivial so we have $P^*\cong(E\oplus F)^*\cong E^*\oplus F^*$ where the last isomorphism is due to the
+    lifting of the natural isomorphism of vector spaces.
+    Thus we have an isomorphism (the first isomorphism is due to the above lemma)
+    $$ \Gamma(E)^*\oplus\Gamma(F)^* \cong \Gamma(P)^* \cong \Gamma(P^*) \cong \Gamma(E^*\oplus F^*) \cong \Gamma(E^*)\oplus\Gamma(F^*) $$
+    Then we have a commutative diagram
+
+    \commsq{\Gamma(E^*)&\Gamma(E^*)\oplus(F^*)\cr \Gamma(E)^*&\Gamma(E)^*\oplus\Gamma(F)^*}
+        {}{}{\phi}{\cong}
+
+    where the horizontal arrows are inclusions.
+    This shows that $\phi$ is injective, and reversing the horizontal arrows to give projections shows $\phi$ is surjective.
+    Note that this is the same as saying the map between free modules is the direct sum of the maps between projective modules.
+    \qed
+
+\eproof
+
+We can also find $\phi$'s inverse explicitly.
+Let $\psi\colon\Gamma(E)^*\to\Gamma(E^*)$ by mapping $f\colon\Gamma(E)\to C^\infty(M)$ to $\psi(f)\in\Gamma(E^*)$ given by $\psi(f)_p\in E^*_p$
+which maps $v\in E_p$ to $f(\bar v)(p)$ where $\bar v$ is a global section extending $v$, then $\psi=\phi^{-1}$.
+The above proof though generalizes nicely to prove a similar result for tensor products.
+
+\bprop
+
+    For vector bundles $E,F$,
+    $$ \Gamma(E\otimes F)\cong\Gamma(E)\otimes\Gamma(F), $$
+    where the latter tensor product is taken over $C^\infty(M)$.
+
+\eprop
+
+\bproof
+
+    There is a natural map $\Gamma(E)\otimes\Gamma(F)\to\Gamma(E\otimes F)$ given by mapping $s\otimes t$ to $s\otimes t\in\Gamma(E\otimes F)$ defined by
+    $(s\otimes t)|_p=s|_p\otimes t|_p$.
+    This is easily shown to be an isomorphism when $E,F$ are trivial this is an isomorphism.
+    Then in the general case we write $E,F$ as direct summands of trivial bundles and use a similar argument as above to show that this map is an isomorphism
+    in general.
+    \qed
+
+\eproof
+
+\bcoro
+
+    There is a natural isomorphism of vector bundles $(E\otimes F)^*\cong E^*\otimes F^*$.
+
+\ecoro
+
+\bproof
+
+    There is an isomorphism
+    $$ \Gamma((E\otimes F)^*) \cong \Gamma(E\otimes F)^* \cong \Gamma(E^*)\otimes\Gamma(F^*) \cong \Gamma(E^*\otimes F^*) , $$
+    and by Serre-Swan since $\Gamma$ is an equivalence we have $(E\otimes F)^*\cong E^*\otimes F^*$.
+    \qed
+
+\eproof
+
+\bcoro
+
+    For vector bundles $E,F$,
+    $$ \Gamma(\hom(E,F)) \cong \hom_{C^\infty(M)}(\Gamma(E),\Gamma(F)) \cong \hom_{\VBun_M}(E,F) . $$
+    Furthermore, for any vector bundle $E$, there is an adjunction $\bul\otimes E\dashv\hom(E,\bul)$.
+
+\ecoro
+
+\bproof
+
+    There is a natural isomorphism $\hom(E,F)\cong E^*\otimes F$, thus
+    $$ \Gamma(\hom(E,F)) \cong \Gamma(E^*\otimes F) \cong \Gamma(E)^*\otimes\Gamma(F) \cong \hom_{C^\infty(M)}(\Gamma(E),\Gamma(F)) , $$
+    where the final isomorphism is due to the space of sections being fg projective.
+    And since $\Gamma$ is fully faithful we have the final isomorphism to vector bundle morphisms.
+
+    The tensor-hom adjunction for vector spaces gives an isomorphism
+    $$ \hom(\bul\otimes E,\bul) \cong \hom(\bul,\hom(E,\bul)) . $$
+    Then applying $\Gamma$ and appealing to what we just proved, this gives an isomorphism
+    $$ \hom_{\VBun_M}(\bul\otimes E,\bul) \cong \hom_{\VBun_M}(\bul,\hom(E,\bul)) , $$
+    demonstrating the desired adjunction.
+    \qed
+
+\eproof
+
+Recall that we categorized tensor fields as multilinear maps out of $\X^*(M)^k\times\X(M)^\ell$.
+We can generalize this easily.
+
+\bthrm
+
+    There is a natural isomorphism between sections of $E\otimes F$ and $C^\infty(M)$-bilinear maps $\Gamma(E)^*\times\Gamma(F)^*\to C^\infty(M)$.
+    Inductively, there is a natural isomorphism
+    $$ \Gamma(E_1\otimes\cdots\otimes E_n) \cong {\rm MultLin}(\Gamma(E_1)^*,\dots,\Gamma(E_n)^*;\ C^\infty(M)) . $$
+    And in particular,
+    $$ \Gamma(E^{\otimes k}\otimes (E^*)^{\otimes\ell}) \cong {\rm MultLin}(\Gamma(E^*)^k\times\Gamma(E)^\ell;\ C^\infty(M)) . $$
+
+\ethrm
+
+\bproof
+
+    Since fg projective modules are reflective, there is a natural isomorphism
+    $$ \Gamma(E\otimes F) \cong \Gamma(E\otimes F)^{**} \cong \Gamma(E)^*\otimes\Gamma(F)^* = \hom_{C^\infty(M)}(\Gamma(E)^*\otimes\Gamma(F)^*,C^\infty(M)) , $$
+    and by the universal property of tensor products this is isomorphic to the space of bilinear maps $\Gamma(E)^*\times\Gamma(F)^*\to C^\infty(M)$.
+    The inductive case is then clear, and for the final isomorphism we just utilize the reflexivity of vector bundles: $E^{**}\cong E$.
+    \qed
+
+\eproof
+

@@ -172,6 +172,15 @@ R(\partial_i,\partial_j)\partial_k = R_{ijk}^\ell\partial_\ell . $$
 
 \eproof
 
+\bnote
+
+    Curvature in the one-dimensional case is uninteresting.
+    This is because $R(X,Y)=-R(Y,X)$, and in the one-dimensional case this clearly implies $R=0$.
+    In particular if we consider the image of a curve to be a one-dimensional manifold (when the curve is not self-intersecting), then its curvature
+    is zero.
+
+\enote
+
 \bprop
 
     Let $\Gamma$ be a smooth one-parameter family of curves $J\times I\to M$.
@@ -629,6 +638,111 @@ linearly independent.
     $$ F(x,y,x,z) = G(x,y,x,z) . $$
     Then substitute $x+w$ for $x$ to obtain
     $$ F(x,y,w,z) = G(x,y,w,z) . \qed $$
+
+\eproof
+
+In particular this means that sectional curvature determines Riemannian curvature.
+That is, if we are given a Riemannian manifold, it is enough to know either the Riemannian or sectional curvature to obtain the other.
+
+\bcoro
+
+    Let $M$ be a Riemannian manifold, then define a $4$-tensor on $M$ by
+    $$ \Rm'(X,Y,Z,W) = \iprod{X,W}\iprod{Y,Z} - \iprod{Y,W}\iprod{X,Z} . $$
+    Then $M$ has constant sectional curvature $K_0$ at $p$ iff $\Rm=K_0\Rm'$ at $p$.
+
+\ecoro
+
+\bproof
+
+    Note that $\Rm'$ satisfies the symmetries of Riemannian curvature, then $\Rm(X,Y,X,Y)=K_0\Rm'(X,Y,X,Y)$ by definition.
+    By the above lemma this means $\Rm=K_0\Rm'$ as desired, and the converse is immediate.
+    \qed
+
+\eproof
+
+\subsection{Jacobi fields}
+
+Recall that a {\emphcolor Jacobi field} is a vector field $J$ along a geodesic $\gamma$ satisfying the {\emphcolor Jacobi equation}:
+$$ D_t^2J + R(J,\gamma')\gamma' = 0 . $$
+
+\bprop
+
+    Let $\gamma\colon I\to M$ be a geodesic on a Riemannian manifold $M$.
+    Let $t_0\in I$ and $p=\gamma(t_0)$, then for every $v,w\in T_pM$ there is a unique Jacobi field $J$ along $\gamma$ such that
+    $$ J(a) = v,\qquad D_tJ(a) = w . $$
+
+\eprop
+
+\bproof
+
+    Take a parallel orthonormal frame $(E_i)$ along $\gamma$ (obtained by parallel transport of an orthonormal basis), and write
+    $v=v^iE_i(a)$ and $w=w^iE_i(a)$, and $\gamma'=y^iE_i$.
+    Then $J\in\X(\gamma)$ can be written as $J=J^jE_j$, so that $D_t^2J=\ddot J^jE_j$ since the $E_j$ are paralell.
+    The Jacobi equation becomes
+    $$ 0 = \ddot J^iE_i + R(J^jE_j,y^kE_k)(y^\ell E_\ell) = \ddot J^iE_i + J^jy^ky^\ell R_{jk\ell}^i(\gamma(t))E_i , $$
+    where $R_{jk\ell}^i(\gamma)$ are the components of $R$ in the frame $E_i$.
+    This is zero iff for all $i$,
+    $$ 0 = \ddot J^i + J^jy^ky^\ell R_{jk\ell}^i(\gamma) , $$
+    Notice that this is all smooth, and thus a smooth second-order linear ODE, which has a unique solution along all of $I$.
+    \qed
+
+\eproof
+
+Notice that for a geodesic $\gamma$, $\dot\gamma$ itself is a Jacobi field along $\gamma$.
+Indeed, $\dot\gamma$ is the variation field of $\Gamma(s,t)=\gamma(s)$, and variation fields of variations through geodesics are Jacobi.
+
+Further note that the collection of Jacobi fields along $\gamma$ form a subspace of $\X(\gamma)$, by the linearity of the Jacobi field
+equation.
+
+\bcoro
+
+    Let $(M,g)$ be a Riemannian manifold of dimension $n$, and $\gamma$ a geodesic on $M$.
+    The set of Jacobi fields along $\gamma$ form a $2n$-dimensional subspace of $\X(\gamma)$.
+
+\ecoro
+
+\bproof
+
+    For any $a\in I$, let $p=\gamma(a)$, and consider the map from Jacobi fields along $\gamma$ to $T_pM\oplus T_pM$ given by
+    $J\mapsto(J(a),D_tJ(a))$.
+    The above proposition shows that this is a bijection.
+    \qed
+
+\eproof
+
+We consider the case of a Riemannian manifold with constant sectional curvature.
+For $K\in\bR$ let $s_K\colon\bR\to\bR$ be defined by
+$$ s_K(t) = \cases{t&if $K=0$\cr\noalign{\kern2pt} R\sin t/R&if $K=1/R^2>0$\cr\noalign{\kern2pt} R\sinh t/R&if $K=-1/R^2<0$.} $$
+
+\blemm
+
+    Suppose $(M,g)$ is a Riemannian manifold with constant sectional curvature $K$.
+    Let $\gamma$ be a unit-speed geodesic in $M$.
+    Then the Jacobi fields $J$ orthogonal to $\dot\gamma$ which vanish at $t=0$ are given by
+    $$ J(t) = c\cdot s_K(t)E(t) , $$
+    where $c$ is an arbitrary constant, and $E\in\X(\gamma)$ is any vector field parallel along $\gamma$ and orthogonal to $\dot\gamma$.
+
+\elemm
+
+\bproof
+
+    Since $M$ has constant curvature, we have that
+    $$ \Rm(X,Y,Z,W) = K(\iprod{X,W}\iprod{Y,Z} - \iprod{Y,W}\iprod{X,Z}) . $$
+    So we have
+    $$ R(X,Y)Z = K(\iprod{Y,Z}X - \iprod{X,Z}Y) . $$
+    Substituting into the Jacobi equation we get
+    $$ 0 = D_t^2J + K(\iprod{\gamma',\gamma'}J - \iprod{J,\gamma'}\gamma') = D_t^2J + KJ . $$
+    Choosing $J(t)=u(t)E(t)$, the ODE becomes
+    $$ u''(t) + Ku(t) = 0 , $$
+    whose solutions given $u(0)=0$ are multiples of $s_K$.
+    Thus all fields of the form in the lemma are Jacobi fields.
+
+    Now, the dimension of the space of Jacobi fields vanishing at $0$ orthogonal to $\gamma'$ is $n-1$ (the space of vanishing Jacobi fields has
+    dimension $n$, by considering the isomorphism $J\mapsto(J(0),D_tJ(0))$, and we reduce the dimension by one by considering the orthogonal subspace
+    to $\gamma'$).
+    The space of vector fields parallel along $\gamma$ orthogonal to $\dot\gamma$ also has dimension $n-1$ (mapping $E$ to $E(0)\in T_pM$),
+    so this gives all such Jacobi fields.
+    \qed
 
 \eproof
 
