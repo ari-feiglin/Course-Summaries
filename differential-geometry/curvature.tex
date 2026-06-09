@@ -746,3 +746,273 @@ $$ s_K(t) = \cases{t&if $K=0$\cr\noalign{\kern2pt} R\sin t/R&if $K=1/R^2>0$\cr\n
 
 \eproof
 
+\subsection{Curvature on vector bundles}
+
+\bdefn
+
+    The {\emphcolor curvature} of a vector bundle $E\to M$ with connection $\nabla$ is the section
+    $$ R\in\Gamma\parens{\Lambda^2T^*M\otimes\endo(E)} $$
+    given by
+    $$ R(X,Y)s = \nabla_X\nabla_Ys - \nabla_Y\nabla_Xs - \nabla_{[X,Y]}s,\qquad X,Y\in\X(M),\ s\in\Gamma(E) . $$
+
+\edefn
+
+The curvature is seen to be a section because the formula is easily seen to be $C^\infty(M)$-multilinear and alternating.
+
+Suppose we have a smooth map $f\colon M\to N$ and a connection $\nabla\colon\X(N)\times\Gamma(E)\to\Gamma(E)$.
+Then $f$ pulls back the connection to a connection $f^*\nabla=\nabla^*\colon\X(M)\times\Gamma(f^*E)\to\Gamma(f^*E)$.
+Let $R$ be the curvature of $\nabla$ and $R^*$ be $\nabla^*$'s.
+Then we see for $s\in\Gamma(E)$,
+$$ \eqalign{
+    R^*(X,Y)(s\circ f) &= \nabla^*_X\nabla^*_Y(s\circ f) - \nabla^*_Y\nabla^*_X(s\circ f) - \nabla^*_{[X,Y]}(s\circ f)\cr
+        &= \nabla^*_X(\nabla_{df(Y)}s)\circ f - \nabla^*_Y(\nabla_{df(X)}s)\circ f - \nabla_{df[X,Y]}s\circ f\cr
+        &= \parens{\nabla_{df(X)}\nabla_{df(Y)}s - \nabla_{df(Y)}\nabla_{df(X)}s - \nabla_{[df(X),df(Y)]}s}\circ f\cr
+        &= (R(df\circ X,df\circ Y)s)\circ f .
+} $$
+We summarize this in the following lemma.
+
+\blemm
+
+    Let $f\colon M\to N$ be smooth and $\nabla$ a connection on $E\to N$.
+    Define $\nabla^*$ to be the pullback of $\nabla$ along $f$, and let $R$ and $R^*$ be the curvatures of $\nabla$ and $\nabla^*$
+    respectively.
+    Then for every $X,Y\in\X(M)$ and $s\in\Gamma(E)$ we have
+    $$ R^*(X,Y)(s\circ f) = (R(df\circ X,df\circ Y)s)\circ f . $$
+    Explicitly for a point $p\in M$ we have
+    $$ R^*(X,Y)(s\circ f)|_p = R(df_p(X_p),df_p(Y_p))s_{fp} . $$
+
+\elemm
+
+\bdefn
+
+    A {\emphcolor metric} on a vector bundle $E\to M$ is a section
+    $$ h \in \Gamma(E^*\otimes E^*) , $$
+    such that $h(s,t)=h(t,s)$ for all $s,t\in\Gamma(E)$, and $h(s,s)_p>0$ if $s_p\neq0$.
+    Equivalently it is a section in $\Gamma(\sym^2E^*)$ which is positive definite on each fiber.
+
+    A {\emphcolor metric connection} relative to $h$ is a connection $\nabla$ such that
+    $$ d(h(s,t)) = h(\nabla s,t) + h(s,\nabla t) $$
+    for all sections $s,t$, that is to say for all $X\in\X(M)$,
+    $$ X(h(s,t)) = h(\nabla_Xs,t) + h(s,\nabla_Xt) . $$
+
+    If $\nabla$ is a metric connection with respect to $h$, we define its {\emphcolor Riemannian curvature} to be
+    $$ \Rm(X,Y,s,t) = h(R(X,Y)s,t) . $$
+    Riemannian curvature is a section $\Rm\in\Gamma(T^*M\otimes T^*M\otimes E^*\otimes E^*)$.
+
+\edefn
+
+If $S\subseteq E$ is a subvector bundle and $h$ is a metric on $E$, then define $S^\perp\subseteq E$ to be the subvector bundle whose fibers are
+$$ (S^\perp)_p = (S_p)^\perp . $$
+If $\bar\nabla$ is a metric connection on $E$, let $P\colon E\to S$ and $P^\perp\colon E\to S^\perp$ be orthogonal projections (on each fiber),
+which are vector bundle morphisms.
+Then we have $E=P\oplus P^\perp$, and we define connections $\nabla$ on $S$ and $\nabla^\perp$ on $S^\perp$ by
+$$ \nabla s = P(\bar\nabla s) \hbox{ for $s\in\Gamma(S)$},\qquad \nabla^\perp s = P^\perp(\bar\nabla s)\hbox{ for $s\in\Gamma(S^\perp)$} . $$
+Note that $\bar\nabla s$ is defined at a point $p$ to be $\bar\nabla\tilde s$ where $\tilde s$ is an extension of $s$ in a neighborhood of
+$p$ to a section $\Gamma(E)$.
+So we get connections
+$$ \nabla\colon\Gamma(S)\to\Gamma(T^*M\otimes S),\qquad \nabla^\perp\colon\Gamma(S^\perp)\to\Gamma(T^*M\otimes S^\perp) . $$
+
+\bdefn
+
+    Let $E\to M$ be a vector bundle equipped with a metric $h$ and metric connection $\bar\nabla$
+    For a subvector bundle $S\subseteq M$, consider the orthogonal projection of the connection to $\nabla$ as above.
+    Then the {\emphcolor second fundamental form} of $S$ is the map
+    $$ \sff\colon \X(M)\otimes\Gamma(S)\to\Gamma(S^\perp),\qquad \sff(X\otimes s) = \bar\nabla_Xs - \nabla_Xs . $$
+    We also write $\sff(X)s$ instead of $\sff(X\otimes s)$.
+
+\edefn
+
+\blemm
+
+    The second fundamental form is $C^\infty(M)$-linear, and thus defines a morphism of vector bundles
+    $$ \sff\colon TM\otimes S\to S^\perp . $$
+
+\elemm
+
+\bproof
+
+    It is sufficient to show that the map $(X,s)\mapsto\bar\nabla_Xs-\nabla_Xs$ is $C^\infty(M)$-bilinear.
+    This is clearly additive and $C^\infty(M)$-linear over $X$.
+    For $f\in C^\infty(M)$ we have
+    $$ \sff(X\otimes fs) = \bar\nabla_X(fs) - \nabla_X(fs) = f\bar\nabla_Xs + (Xf)s - f\nabla_Xs - (Xf)s = f(\bar\nabla_Xs - \nabla_Xs)
+    = f\sff(X\otimes s) $$
+    as desired.
+    \qed
+
+\eproof
+
+Since $P+P^\perp=\id$ we have that $\id-P=P^\perp$ so $\sff(X)s=P^\perp\circ\bar\nabla_Xs$.
+
+The second fundamental form of $S^\perp$ is denoted by $\sff^\perp$, and is equal to
+$$ \sff^\perp(X)s = \bar\nabla_Xs - \nabla_X^\perp s = P\circ\bar\nabla_Xs . $$
+So we have $\sff+\sff^\perp=\bar\nabla$.
+
+Let us denote by $\bar R$ the curvature relative to $\bar\nabla$ on $E$, $R$ relative to $\nabla$, and $R^\perp$ relative to $\nabla^\perp$.
+And $\bar\Rm,\Rm,\Rm^\perp$ similarly for Riemannian curvature.
+
+\bthrm[title=Gauss]
+
+    For all $X,Y\in\X(M)$ and $s\in\Gamma(S)$ we have the following equality
+    $$ P\circ\bar R(X,Y)s = R(X,Y)s + \sff^\perp(X)\circ\sff(Y)s - \sff^\perp(Y)\circ\sff(X)s . $$
+
+\ethrm
+
+\bproof
+
+    We have by definition
+    $$ \bar\nabla_Xs = \nabla_Xs + \sff(X)s , $$
+    and thus
+    $$ \bar\nabla_Y\bar\nabla_Xs = \bar\nabla_Y\nabla_Xs + \bar\nabla_Y\sff(X)s . $$
+    Now $\nabla_Xs$ is a section of $S$, while $\sff(X)s$ is a section of $S^\perp$, so we get
+    $$ = \nabla_Y\nabla_Xs + \sff(Y)\nabla_Xs + \nabla_Y^\perp\sff(X)s + \sff^\perp(Y)\sff(X)s . $$
+    The first and last terms are sections of $S$, while the middle terms are sections of $S^\perp$.
+    The projecting them orthogonally via $P$ yields
+    $$ P\circ\bar\nabla_Y\bar\nabla_Xs = \nabla_Y\nabla_Sx + \sff^\perp(Y)\sff(X)s . $$
+    Similarly we get
+    $$ P\circ\bar\nabla_X\bar\nabla_Ys = \nabla_X\nabla_Ys + \sff^\perp(X)\sff(Y)s , $$
+    and by definition we have
+    $$ P\circ\bar\nabla_{[X,Y]}s = \nabla_{[X,Y]}s . $$
+    Putting this all together we get the desired result.
+
+\eproof
+
+\bnote
+
+    Some authors have the convention that curvature is given by the opposite sign:
+    $$ R(X,Y)s = \nabla_Y\nabla_Xs - \nabla_X\nabla_Ys + \nabla_{[X,Y]}s . $$
+    In this case Gauss's formula gives
+    $$ P\circ\bar R(X,Y)s = R(X,Y)s + \sff^\perp(Y)\circ\sff(X)s - \sff^\perp(X)\circ\sff(Y)s . $$
+
+\enote
+
+\blemm
+
+    For a vector field $X\in\X(M)$ and sections $s\in\Gamma(S)$ and $t\in\Gamma(S^\perp)$ then
+    $$ h(\sff(X)s,t) = -h(s,\sff^\perp(X)t) . $$
+
+\elemm
+
+\bproof
+
+    We know $h(s,t)=0$ and since $\bar\nabla$ is metric,
+    $$ 0 = X(h(s,t)) = h(\bar\nabla_Xs,t) + h(s,\bar\nabla_Xt) . $$
+    Since $P,P^\perp$ are orthogonal projections they don't affect the metric when one of the inputs are in $S,S^\perp$ respectively.
+    Thus this is equal to
+    $$ = h(P^\perp\bar\nabla_Xs,t) + h(s,P\bar\nabla_Xt) = h(\sff(X)s,t) + h(s,\sff^\perp(X)t) , $$
+    so we get the desired result.
+    \qed
+
+\eproof
+
+\bcoro
+
+    For $X,Y\in\X(M)$, $s,t\in\Gamma(S)$,
+    $$ \bar\Rm(X,Y,s,t) = \Rm(X,Y,s,t) + h(\sff(X)s,\sff(Y)t) - h(\sff(Y)s,\sff(X)t) . $$
+
+\ecoro
+
+\bproof
+
+    We have
+    $$ \bar\Rm(X,Y,s,t) = h(\bar R(X,Y)s,t) = h(P\circ\bar R(X,Y)s,t) , $$
+    where the last equality is due to $t$ being a section of $s$.
+    By Gauss's theorem, this is equal to
+    $$ = h(R(X,Y)s,t) + h(\sff^\perp(X)\circ\sff(Y)s,t) - h(\sff^\perp(Y)\circ\sff(X)s,t) , $$
+    and by the lemma above this is equal to
+    $$ = \Rm(X,Y,s,t) + h(\sff(Y)s,\sff(X)t) - h(\sff(X)s,\sff(Y)t) . \qed $$
+
+\eproof
+
+\bnote
+
+    For the opposite sign convention, we get
+    $$ \bar\Rm(X,Y,s,t) = \Rm(X,Y,s,t) - h(\sff(X)s,\sff(Y)t) + h(\sff(Y)s,\sff(X)t) . $$
+
+\enote
+
+If $f\colon(M,g)\to(\bar M,\bar g)$ is a Riemannian embedding then let $\nabla,\bar\nabla$ be their respective Levi-Civita connections.
+Now we consider the vector bundle $T\bar M|_M$ on $M$, which splits as
+$$ T\bar M|_M = TM \oplus \nu_M , $$
+where $\nu_M$ is the orthogonal complement of $TM$, and we identify $TM$ with $df(TM)\subseteq T\bar M|_M$.
+
+Now let $\nabla^*=f^*\bar\nabla$ be the pullback connection along $f$, so $\nabla^*$ is a connection on
+$\X(f)=\Gamma(f^*T\bar M)\cong\Gamma(T\bar M|_M)$,
+$$ \nabla^*\colon \X(M) \times \Gamma(T\bar M|_M) \to \Gamma(T\bar M|_M) . $$
+If we consider $P\circ \nabla^*\colon\X(M)\times\X(M)\to\X(M)$, we see that this is a symmetric metric connection, and thus equal to $\nabla$.
+Recall though that we are identifying $df(TM)$ with $TM$.
+
+Let $R,\bar R,R^*$ be the curvatures of $\nabla,\bar\nabla,\nabla^*$ respectively.
+Then we have for $X,Y\in\X(M)$ and $Z\in\X(\bar M)$,
+$$ R^*(X,Y)(Z\circ f) = (\bar R(df(X),df(Y))Z)\circ f . $$
+In particular if we consider $Z=\partial_i$, then for $Z\in\X(M)$ we see that
+$$ R^*(X,Y)(df(Z)) = Z^i\pdvof{f^j}{_i}R^*(X,Y)(\partial_j\circ f) = \bar R(df(X),df(Y))(df(Z)) . $$
+If we let $\Rm,\bar\Rm,\Rm^*$ be the Riemannian curvatures, then we see
+$$ \eqalign{
+    \Rm^*(X,Y,Z\circ f,W\circ f) &= \iprod{R^*(X,Y)(Z\circ f),W\circ f}_{\bar M}\cr
+        &= \iprod{\bar R(df(X),df(Y))Z,W}_{\bar M}\circ f\cr
+        &= \bar\Rm(df(X),df(Y),Z,W)\circ f ,
+} $$
+and again
+$$ \Rm^*(X,Y,df(Z),df(W)) = \bar\Rm(df(X),df(Y),df(Z),df(W)) $$
+when $X,Y,Z,W\in\X(M)$.
+
+Now let us assume that $f$ is simply the inclusion, so we are viewing $M$ as a submanifold of $\bar M$.
+So we have a literal equality $P\circ\nabla^*=\nabla$, and the formulas above give
+$$ \Rm^*(X,Y,Z,W) = \bar\Rm(X,Y,Z,W),\qquad X,Y,Z,W\in\X(M) . $$
+Let $\sff$ be $TM$'s second fundamental form relative to $T\bar M|_M$ with connection $\nabla^*$.
+So a bundle morphism $\sff\colon TM\otimes TM\to\nu_M$.
+Then the above results give us for $X,Y,Z,W\in\X(M)$,
+$$ \Rm^*(X,Y,Z,W) = \Rm(X,Y,Z,W) + \iprod{\sff(X)Z,\sff(Y)W} - \iprod{\sff(Y)W,\sff(X)Z} , $$
+the metric being $\bar M$'s.
+
+We summarize this,
+
+\bcoro
+
+    If $M$ is a Riemannian submanifold of $\bar M$, then
+    $$ \bar\Rm(X,Y,Z,W) = \Rm(X,Y,Z,W) + \iprod{\sff(X)Z,\sff(Y)W} - \iprod{\sff(Y)Z,\sff(X)W} . $$
+
+\ecoro
+
+We continue this special case where we have a Riemannian embedding of our manifold into a larger one.
+For the second fundamental form of $M\subseteq\bar M$ let us write $\sff(X,Y)$ instead of $\sff(X)Y$.
+
+\blemm
+
+    The second fundamental form is symmetric.
+
+\elemm
+
+\bproof
+
+    Let $\hat X,\hat Y$ be extensions of $X,Y$ in a common neighborhood.
+    So by definition
+    $$ \sff(X,Y) = \nabla^*_X\hat Y - \nabla_XY , $$
+    and around a point this is equal to
+    $$ = \bar\nabla_{\hat X}\hat Y - \nabla_XY $$
+    by the definition of the pullback connection.
+    By symmetry,
+    $$ = \bar\nabla_{\hat Y}\hat X + [\hat X,\hat Y] - \nabla_YX - [X,Y] , $$
+    since $\hat X,\hat Y$ are extensions of $X,Y$ in a neighborhood of our point in $M$, their commutators agree on this point so this is
+    equal to
+    $$ = \bar\nabla_{\hat Y}\hat X - \nabla_YX = \sff(Y,X) $$
+    as desired.
+    \qed
+
+\eproof
+
+\bcoro
+
+    If $M\subseteq\bar M$ is embedded, then for $p\in M$ and $\sigma\subseteq T_pM\subseteq T_p\bar M$ with orthonormal basis $v,w$
+    we have
+    $$ \bar K_p(\sigma) = K_p(\sigma) + \iprod{\sff(v,v),\sff(w,w)} - \iprod{\sff(v,w),\sff(v,w)} . $$
+
+\ecoro
+
+\bproof
+
+    When $v,w$ are orthonormal $\bar K_p(\sigma)=\bar\Rm(v,w,v,w)$ and the result follows from the previous corollary.
+    \qed
+
+\eproof
+
