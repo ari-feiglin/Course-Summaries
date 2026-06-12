@@ -795,4 +795,186 @@ This immediately shows the following two corollaries.
 
 \eexam
 
+\subsubsection*{Some notes on the category $\SWF_k$}
+
+There is a clear forgetful functor from $\SWF_k$ to the category of topological spaces, $U\colon\SWF_k\to\Top$, which maps $(X,\O_X)$ to its underlying topological space $X$
+and a morphism $\phi\colon(X,\O_X)\to(Y,\O_Y)$ to its underlying continuous map $\phi$.
+This functor is faithful, but not full (it is easy to construct a continuous map which is not a morphism of SWFs).
+Though it is a left-adjoint, as we will show.
+
+\bdefn
+
+    For a topological space $X$ and an arbitrary set $S$, a function $f\colon X\to S$ is {\emphcolor locally constant} if for every $p\in X$ there is a neighborhood
+    $p\in U\subseteq X$ such that $f|_U$ is constant.
+
+\edefn
+
+Note that $f\colon X\to S$ being locally constant is the same as it being continuous when $S$ is endowed with the discrete topology.
+Indeed, if $f$ is locally constant then for every $p\in f^{-1}\set x$ there is an open neighborhood of $p$ contained in $f^{-1}\set x$ by definition, so $f^{-1}\set x$ is open.
+Thus $f$ is continuous to discrete $S$.
+Conversely, $f$ being continuous to discrete $S$ means that $f^{-1}\set x$ is open and so for every $p\in X$ we take the neighborhood $U=f^{-1}(fp)$ to see it is locally constant.
+
+\blemm
+
+    For an SWF $(X,\O_X)$, $\O_X(U)$ contains all locally constant functions $U\to k$.
+
+\elemm
+
+\bproof
+
+    Let $f\colon U\to k$ be locally constant, so there is an open cover $U_i$ of $U$ on which $f|_{U_i}$ is constant.
+    Since $\O_X(U_i)$ is a $k$-algebra, it must contain all constant functions (since it contains the unit and all of its multiples), so $f|_{U_i}\in\O_X(U_i)$.
+    By gluing, this means $f\in\O_X(U)$ as desired.
+    \qed
+
+\eproof
+
+\bprop
+
+    The forgetful functor $U\colon\SWF_k\to\Top$ is a left-adjoint.
+
+\eprop
+
+\bproof
+
+    Forgetful functors are in general ``the most general'' object, so in our case in lieu of the previous lemma it seems that the following construction is a good contender.
+    For open $U\subseteq X$ define $\O_X(U)$ to be the collection of locally constant $U\to k$.
+    Thus $\O_X$ is just the sheaf of continuous maps into $k$, which is always a sheaf.
+
+    For locality, let $f\in\O_X(U)$ then its preimage on all subsets of $k$ is open, in particular $D_U(f)$.
+    And if $f$ is locally constant, so too is $1/f$ ($f$ and $1/f$ are constant on the same open subsets).
+    Thus $(X,\O_X)$ is an SWF which is denoted $\ul X$.
+
+    We claim that $U\dashv\ul\bul$.
+    This amounts to constructing a natural isomorphism
+    $$ \hom_\Top(U(X,\O_X),Y) \cong \hom_\SWF((X,\O_X),\ul Y) . $$
+    $U$ defines an injective map from the right to the left, so we just need to show that it is surjective.
+    That is, for $\phi\colon X\to Y$ continuous, $\phi$ lifts to a morphism of SWFs $(X,\O_X)\to\ul Y$.
+    So for $U\subseteq Y$ open we need to show $\phi^*$ maps $\O_Y(U)\to\O_X(\phi^{-1}U)$.
+
+    For $f\colon U\to k$ locally constant, then $f\circ\phi\colon\phi^{-1}U\to k$ is locally constant as well, as the composition of continuous maps.
+    Thus $\phi^*(f)\in\O_X(\phi^{-1}U)$ by the previous lemma.
+    \qed
+
+\eproof
+
+In particular $U$ preserves colimits.
+The following is a technical definition and lemma which we will not prove in full here (see homework).
+
+\bdefn
+
+    Let $\c B$ be a basis for a topology, then a {\emphcolor B-SWF} over $k$ is a presheaf $\O\colon\c B^\op\to\Alg_k$ satisfying the following axioms:
+    \benum
+        \item $\O$ is a subpresheaf of the function sheaf, $\fun(\bul,k)$.
+        \item {\emphcolor B-sheaf axiom}: for any basic set $B\in\c B$ and cover of basic sets $B=\bigcup_iB_i$, if $f\colon B\to k$ is a function such that $f|_{B_i}\in\O(B_i)$
+        for all $i$, then $f\in\O(B)$.
+        \item {\emphcolor locality}: for any $B\in\c B$ and $f\in\O(B)$, $D_B(f)$ is open (i.e.\ the union of basic sets) and for every basic cover $B_i$ of $D_B(f)$, we have that
+        $1/f|_{B_i}\in\O(B_i)$.
+    \eenum
+
+\edefn
+
+\bprop
+
+    For every B-SWF $(\c B,\O)$ where $\c B$ is a basis of the topology on $X$, there is a unique SWF $(X,\O_X)$ extending it, meaning $\O_X(B)=\O(B)$ for all $B\in\c B$.
+
+\eprop
+
+\bproof
+
+    The construction is as follows: for every $U\subseteq X$ open and $\set{B_i}\subseteq\c B$ covering $U$, define
+    $$ \O_X(U) = \set{f\colon U\to k}[f|_{B_i}\in\O(B_i)\hbox{ for all $i$}] . $$
+    Then one can show without much difficulty that $\O_X(U)$ is independent on the choice of basic covering.
+    In particular this means that $\O_X(B)=\O(B)$ for all $B\in\c B$ by choosing the covering $\set B$.
+
+    It is then easy to show that this is a sheaf, and locality follows easily from locality of $(\c B,\O)$.
+    \qed
+
+\eproof
+
+Now we will show that $\SWF_k$ is cocomplete.
+Since $U$ preserves colimits, we already know what the underlying topological spaces of the colimits are.
+
+\blemm
+
+    Let $\pi\colon X\to Y$ be a quotient map, and suppose there is an SWF structure $(X,\O_X)$ on $X$.
+    Then there is a unique SWF structure $(Y,\O_Y)$ given by the following universal property: $\phi\colon(Y,\O_Y)\to(Z,\O_Z)$ is a morphism of SWFs iff $\phi\circ\pi\colon(X,\O_X)\to(Z,\O_Z)$
+    is a morphism of SWFs.
+
+\elemm
+
+\bproof
+
+    This is a universal property and thus a solution is unique up to unique isomorphism.
+    Define
+    $$ \O_Y(U) = \set{f\colon U\to k}[\pi^*(f)\in\O_X(\pi^{-1}(U)] . $$
+    It is not hard to show that this satisfies the universal property.
+    \qed
+
+
+\eproof
+
+\bthrm
+
+    The category $\SWF_k$ is cocomplete.
+
+\ethrm
+
+\bproof
+
+    We just need to show that $\SWF_k$ has coproducts and coequalizers.
+    For coproducts, let $\set{X_i}_i$ be a collection of SWFs and let $X=\coprod_iX_i$.
+    It has a basis of open subsets given by the union of all open subsets of $X_i$.
+    Then define $\O_X$ on $X$ as a B-SWF where for $U\subseteq X_i$ open we define
+    $$ \O_X(U) = \O_{X_i}(U) . $$
+    It is easy to see that this is a B-SWF, and thus defines an SWF on $X$.
+    It is also not hard to see that this has the universal property of a coproduct.
+
+    For coequalizers, let $\phi,\psi\colon X\tto Y$ be parallel morphisms of SWFs.
+    The underlying space of their coequalizer will be $Y/{\sim}$ where $\sim$ is the equivalence relation generated by $\phi(x)\sim\psi(x)$ for all $x\in X$.
+    This is a quotient space, so we just give it the quotient space SWF structure from the previous lemma.
+    This clearly satisfies the universal property of coequalizers as a direct result from the universal property of quotients.
+    \qed
+
+\eproof
+
+\bnote
+
+    While the colimit of SWFs is an SWF, the colimit of algebraic varieties need not be a variety!
+
+\enote
+
+\bcoro
+
+    The global sections functor $\Gamma$ contravariantly preserves colimits.
+
+\ecoro
+
+\bproof
+
+    Since $\Gamma$ is contravariant, preserving colimits means mapping colimiting cones to limit cones.
+    So it is sufficient to show that
+    $$ \Gamma\parens{\coprod_i(X_i,\O_{X_i})} \cong \prod_i\Gamma(X_i,\O_{X_i}),\qquad \Gamma(\coeq(\phi,\psi)) \cong \eq(\Gamma(\phi),\Gamma(\psi)) , $$
+    in a way which maps the colimit cone to the limit cone, which we leave as an exercise.
+
+    For coproducts, by the above construction we see that for $X=\coprod_iX_i$,
+    $$ \Gamma\parens{\coprod_i(X_i,\O_{X_i})} = \set{f\colon X\to k}[f|_{X_i}\in\O_{X_i}(X_i)] , $$
+    so the map $\Gamma(X)\to\prod_i\Gamma(X_i)$ given by $f\mapsto(f|_{X_i})$ is a natural isomorphism.
+
+    For a quotient map $\pi\colon X\to Y$, we have
+    $$ \Gamma(Y) = \set{f\colon Y\to k}[f\circ\pi\in\O_X(X)] , $$
+    meaning $\pi^*\colon\Gamma(Y)\to\Gamma(X)$ is an injection (by $\pi$'s surjectivity), meaning $\Gamma(Y)\cong\im\pi^*$.
+    So letting $Z=\coeq(\phi,\psi)$ we have
+    $$ \Gamma(\coeq(\phi,\psi)) = \set{f\colon Z\to k}[f\circ\pi\in\O_Y(Y)] \cong \im\pi^* . $$
+    We know that
+    $$ \eq(\Gamma\phi,\Gamma\psi) = \ker(\phi^*-\psi^*) . $$
+    So we want to show that
+    $$ \im\pi^* = \ker(\phi^*-\psi^*) . $$
+    Firstly, we have $\pi\circ\phi=\pi\circ\psi$ by definition so $\phi^*\circ\pi^*=\psi^*\circ\pi^*$ and thus $(\phi^*-\psi^*)\circ\pi^*=0$.
+    So we have left-to-right inclusion.
+    Now suppose that $f\circ\phi=f\circ\psi$ for $f\in\Gamma(Y)$, then by the equivalence on $Z$ this means $f$ lifts to a map $g\colon Z\to k$, i.e.\ $f=g\circ\pi$.
+    So by definition $g\in\Gamma(Z)$ since $f\in\Gamma(Y)$, and this shows that $f\in\im\pi^*$ as desired.
+    \qed
+
+\eproof
 
