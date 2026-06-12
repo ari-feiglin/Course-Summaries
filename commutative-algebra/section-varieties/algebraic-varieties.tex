@@ -1,0 +1,798 @@
+\subsection{Algebraic varieties}
+
+\bdefn
+
+    Let $k$ be a field, then denote by $\fun(U,k)$ the $k$-algebra of set-theoretic functions $U\to k$.
+
+    A {\emphcolor space with functions} ({\emphcolor SWF}) over $k$ is a pair $(X,\O_X)$ where $X$ is a topological space and
+    for every $U\subseteq X$ open, $\O_X(U)$ is a subset of $\fun(U,k)$.
+    Furthermore it must satisfy:
+    \benum
+        \item {\emphcolor presheaf condition}: if $f\in\O_X(U)$ and $V\subseteq U$ then the restriction of $f$ to $V$, $f|_V$, is in $\O_X(V)$.
+        \item {\emphcolor sheaf condition}: if $U_i$ is an open covering of $U\subseteq X$, and $f\colon U\to k$ is a function such that
+        $f|_{U_i}\in\O_X(U_i)$ for all $i$, then $f\in\O_X(U)$.
+        \item {\emphcolor local condition}: for every $f\in\O_X(U)$, the subset $D_U(f)=\set{x\in U}[f(x)\neq0]$ is open, and the function
+        $1/f\colon D_U(f)\to k$ is in $\O_X(D_U(f))$.
+    \eenum
+    $\O_X$ is called the {\emphcolor structure sheaf} of the SWF.
+
+\edefn
+
+\bnote
+
+    In general a {\emphcolor presheaf} valued in a category $\C$ over a topological space $X$ is a contravariant functor
+    $$ \O\colon\Op(X)^\op \to \C , $$
+    where $\Op(X)$ is the category of open sets of $X$ (viewed as a preorder, ordered by inclusion).
+    For $U\subseteq V$ open we denote the map $\O(V)\to\O(U)$ by $\res^V_U$, if $\C$ is a concrete category (its objects are sets) then
+    we write $\res^V_U(f)=f|_U$ for $f\in\O(V)$.
+
+    The objects $\O_X(U)$ are called {\emphcolor sections} of the presheaf.
+
+    If $\C$ is complete (has all limits), then a presheaf $\O$ is a {\emphcolor sheaf} if for every open cover $U_i$ of $U$, the following
+    is an equalizer diagram:
+    $$ \O(U) \xtos{\res_0} \prod_i\O(U_i) \xtto{\res_1}[\res_2] \prod_{i,j}\O(U_i\cap U_j) , $$
+    where $\res_0$ is the map $f\mapsto(f|_{U_i})$ (i.e.\ its component $\O(U)\to\O(U_i)$ is $\res^U_{U_i}$).
+    The map $\res_1$ is the map $(f_i)\mapsto(f_i|_{U_i\cap U_j})$ and $\res_2$ is the map $(f_i)\mapsto(f_j|_{U_i\cap U_j})$.
+    That is, their components $\prod_i\O(U_i)\to\O(U_i\cap U_j)$ are $\res^{U_i}_{U_i\cap U_j}\circ\proj_i$ and $\res^{U_j}_{U_i\cap U_j}\circ\proj_j$
+    respectively.
+
+    For a concrete category $\C$ being a sheaf means that if $f_i\in\O_X(U_i)$ are sections such that $f_i|_{U_i\cap U_j}=f_j|_{U_i\cap U_j}$ for all
+    $i,j$, then there exists a unique $f\in\O_X(U)$ such that $f|_{U_i}=f_i$ for all $i$.
+
+    Now a {\emphcolor subsheaf} of a sheaf $\O$ is another sheaf $\O'$ (on the same category) such that $\O'(U)$ is a subobject of $\O(U)$
+    for all open $U$.
+    Under sufficiently weak conditions (e.g.\ $\C$ being finitely complete) this is equivalent to $\O'$ being a subfunctor of $\O$
+    (i.e.\ there being a monic natural transformation $\O'\To\O$).
+    Conditions (1) and (2) above are equivalent to saying that $\O$ is a subsheaf of $\fun(\bul,k)$ (defined in the obvious way).
+
+    A pair $(X,\O_X)$ where $\O_X$ is a sheaf on $X$ valued in the category of rings (resp.\ $k$-algebras) is called a {\emphcolor ringed
+    space} (resp.\ a $k$-ringed space).
+
+    Condition (3) is a replacement for the requirement that $(X,\O_X)$ be a {\emphcolor locally ringed space}.
+    This condition says that the stalks of $\O_X$ (the ring of germs of a point $p\in X$, not defined here) is a local ring.
+
+\enote
+
+\bdefn
+
+    A morphism of SWFs $(X,\O_X)\to(Y,\O_Y)$ is a continuous map $\phi\colon X\to Y$ such that for every open $V\subseteq Y$ and every
+    $f\in\O_Y(V)$, the pullback $\phi^*(f)=f\circ\phi\colon\phi^{-1}V\to V\to k$ belongs to $\O_X(\phi^{-1}V)$.
+
+\edefn
+
+The identity is a morphism of SWFs because $\id^*f=f$.
+And the composition of morphisms of SWFs is a morphism of SWFs clearly as well, thus SWFs form a category.
+
+\bexam
+
+    Let $k$ be a Hausdorff topological field, and $X$ a topological space.
+    Define $(X,\O_{\it cont})$ to be the SWF where $\O_{\it cont}(U)$ is the set of continuous functions $U\to k$.
+    This is easily seen to be a SWF.
+
+    If $X$ is a real manifold, then we have SWFs $(X,\O_{C^n})$, $(X,\O_{C^\infty})$, and $(X,\O_{\it anal})$ which map an open set
+    to the algebra of real valued $C^n$-, $C^\infty$-, or analytic maps respectively.
+    These are SWFs and the identity maps
+    $$ (X,\O_{C^n}) \xtos\id (X,\O_{C^\infty}) \xtos\id (X,\O_{\it anal}) $$
+    are morphisms of SWFs.
+
+    For a complex manifold we can define the SWF of holomorphic functions on an open subset.
+
+\eexam
+
+\bdefn
+
+    If $(X,\O)$ is a space with functions and $Y\subseteq X$ is {\it open}, we can restrict $\O$ to open subsets of $Y$ to obtain another
+    SWF.
+    That is, define $(Y,\O|_Y)$ to be the SWF defined by $\O|_Y(U)=\O(U)$ for every open $U\subseteq Y\subseteq X$.
+
+    In general if $Y\subseteq X$ is a subspace, we define the {\emphcolor induced space} $(Y,\O|_Y)$ as follows.
+    For $V\subseteq Y$ open, let $\O|_Y(V)$ be the set of functions $f\colon V\to k$ such that there is an open cover $U_i\subseteq X$ of
+    $V$ (so $V=\bigcup U_i\cap V$) and $g_i\in\O(U_i)$ such that $f|_{V\cap U_i}=g|_{V\cap U_i}$ for all $i$.
+
+\edefn
+
+Equivalently $f\in\O|_Y(V)$ iff for every $y\in V$ there is a neighborhood $W$ of $y$ in $X$ and a function $g\in\O_X(W)$ such that
+$g|_{W\cap V}=f|_{W\cap V}$.
+If we think of $\O_X$ as locally smooth maps, then this says that a map is smooth on a subspace if it can be extended locally.
+
+\bprop
+
+    The pair $(Y,\O|_Y)$ is an SWF and inclusion $\iota\colon X\inj Y$ is a morphism $(Y,\O|_Y)\to(X,\O_X)$.
+
+    Furthermore if $(Z,\O_Z)$ is another SWF and $\phi\colon Z\to Y$ a set-theoretic map, then $\phi$ is a morphism of SWFs
+    $(Z,\O_Z)\to(Y,\O|_Y)$ iff $\iota\circ\phi\colon(Z,\O_Z)\to(X,\O_X)$ is a morphism of SWFs.
+
+\eprop
+
+\bproof
+
+    Let $V\subseteq V'\subseteq Y$ be open subsets, and $f\in\O|_Y(V')$.
+    Then there is an open cover of $V'$ in $X$, $V'=\bigcup_iU_i\cap V'$ and $g_i\in\O_X(U_i)$ which restrict to $f$ on $U_i\cap V'$.
+    These $U_i$ cover $V$ as well then, and $g_i$ restrict to $f|_V$ on $U_i\cap V$, so $f|_V\in\O|_Y(V)$, so it satisfies the presheaf
+    condition.
+
+    Let $V\subseteq Y$ be open and $f\in\fun(V,k)$ such that there is an open cover $V=\bigcup_iV_i$ with $f|_{V_i}\in\O_Y(V_i)$.
+    Then we cover each $V_i$ by $U^j_i$ such that there are $g^j_i\in\O_X(U^j_i)$ with $g^j_i|_{U^j_i\cap V_i}=f|_{V_i\cap U^j_i}$.
+    But then the collection of all $U^j_i$ as $i,j$ ranges and $g^j_i$ show that $f\in\O|_Y(V)$.
+    So $\O|_Y$ is a sheaf.
+
+    Now we need to show the locality axiom.
+    Let $V\subseteq Y$ be open and $f\in\O|_Y(V)$ so there are $U_i\subseteq X$ open covering $V$ such that $f|_{U_i\cap V}=g_i|_{U_i\cap V}$
+    for $g_i\in\O_X(U_i)$.
+    Then
+    $$ D_V(f) = \set{x\in V}[f(x)\neq0] = \bigcup_i\set{x\in V\cap U_i}[f(x)\neq0] = \bigcup_i D_{U_i}(g_i)\cap V , $$
+    which is relatively open in $V$.
+    And we see the $D_{U_i}(g_i)$ cover $D_V(f)$ and $1/f$ restricts to $1/g_i\in\O_X(D_{U_i}(g_i))$ their common domain, so $1/f\in\O|_Y(D_U(f))$.
+    Thus $\O|_Y$ is indeed a SWF.
+
+    The inclusion is continuous by virtue of the subspace topology.
+    Let $U\subseteq X$ open so $\iota^{-1}U=U\cap Y$, and let $f\in\O_X(U)$ then $\iota^*(f)=f\circ\iota=f|_{U\cap V}$.
+    This is in $\O|_Y(U\cap Y)$ by considering the open cover $U$ and $f\in\O_X(U)$.
+
+    The composition of morphisms of SWFs is a morphism of SWFs, so if $\phi$ is a morphism so is $\iota\circ\phi$.
+    Conversely if $\iota\circ\phi$ is continuous, then so is $\phi$ by virtue of the subspace topology.
+    And if $f\in\O|_Y(V)$ for $V\subseteq Y$ open, then let $g_i\in\O_X(U_i)$ such that $g_i|_{U_i\cap V}=f|_{U_i\cap V}$ with $U_i$ covering
+    $V$.
+    Then
+    $$ (\iota\circ\phi)^*(g_i)=g_i\circ\iota\circ\phi=g_i|_{U_i\cap V}\circ\phi=f|_{U_i\cap V}\circ\phi=f\circ\phi|_{W_i} $$
+    is in $\O_X(W_i)$ with $W_i=(\iota\circ\phi)^{-1}(U_i)$.
+    These $W_i$ cover $\phi^{-1}V$ and thus by definition $f\circ\phi\in\O|_Y(\phi^{-1}V)$, showing $\phi$ is a morphism of SWFs.
+    \qed
+
+\eproof
+
+\bexam
+
+    Let $B^n\subseteq\bR^n$ or $\bC^n$ be the open unit ball.
+    Then the above proposition gives us SWFs
+    $$ (B^n,\O_{\it cont}),(B^n,\O_{C^k}),(B^n,\O_{C^\infty}),(B^n,\O_{\it anal}),(B^n,\O_{\it holo}) . $$
+    We can then define a real/complex topological/$C^k$/$C^\infty$/analytic manifold as a SWF $(X,\O)$ such that $X$ is Hausdorff and second
+    countable and there is an open cover $X=\bigcup_iU_i$ such that there is a single SWF from one of the above ($(B_n,\O_\bul)$) such that
+    each $i$ $(U_i,\O|_{U_i})$ is isomorphic to it.
+
+    This is an equivalent definition to the standard definition of a manifold via charts.
+    Then a smooth map between manifolds is just a morphism of SWFs.
+
+\eexam
+
+We use this example to define general algebraic varieties.
+We will define affine algebraic varieties as a special family of SWFs, and then a general algebraic variety will be a SWF locally isomorphic
+to an affine algebraic variety.
+
+\bdefn
+
+    Let $Y\subseteq\bA^n$ be a subspace.
+    A function $f\colon Y\to k$ is {\emphcolor regular} when it is locally rational (the product of polynomials).
+    That is, for every $P\in Y$ there is a neighborhood $U_P\subseteq Y$ of $Y$ and polynomials $g_P,h_P\in k[\bA^n]$ such that
+    $h_P(Q)\neq0$ for $Q\in U_P$ and $f(Q)=g_P(Q)/h_P(Q)$ for all $Q\in U_P$.
+
+    Denote the set of regular functions $Y\to k$ by $\O_\reg(Y)$.
+
+\edefn
+
+\blemm
+
+    The pair $(Y,\O_\reg)$ is a SWF for every $Y\subseteq\bA^n$.
+
+\elemm
+
+\bproof
+
+    It is easy to see that $\O_\reg(U)\subseteq\fun(U,k)$ is a subalgebra; i.e.\ that it is closed under addition and multiplication,
+    and contains the unit (and thus all constants).
+    Furthermore since being regular is a local condition, it is again easy to see that $\O_\reg$ is a sheaf.
+
+    We just need to show locality.
+    Let $f\in\O_\reg(U)$ then for $P\in U$ there is an open $P\in U_P\subseteq U$ such that $f=g_P/h_P$ for polynomials $g_P,h_P$
+    in $U_P$.
+    Then
+    $$ D_U(f) = \set{x\in U}[f(x)\neq0] = \bigcup_{P\in U}\set{x\in U_P}[g_P(x)\neq0] = \bigcup_{P\in U_P}D_{U_P}(g_P) $$
+    is open since each $g_P$ is continuous.
+    And on $D_{U_P}(g_P)$ we have $1/f=h_P/g_P$, so $1/f$ is regular on $D_U(f)$ as desired.
+    \qed
+
+\eproof
+
+\bnote
+
+    It is easy to see that $\O_\reg$ is the smallest SWF containing all the polynomial functions in $k[\bA^n]$.
+    Such a SWF must contain regular functions because of locality.
+
+\enote
+
+\blemm
+
+    Let $U\subseteq\bA^n$ be open, and $f\in\O_\reg(U)$ a regular function.
+    Then $f$ is rational: there are $g,h\in k[\bA^n]$ such that $h\neq0$ on $U$ and $f=g/h$.
+
+\elemm
+
+\bproof
+
+    By definition there is an open covering $U=\bigcup_iU_i$ and polynomials $g_i,h_i$ such that $h_i\neq0$ on $U_i$
+    and $f|_{U_i}=g_i/h_i$ on $U_i$.
+    Further we can assume that $g_i,h_i$ are relatively prime and $U_i$ are nonempty.
+
+    We claim that for any $i$, $h_i$ is nonzero on all of $U$, and $f=g_i/h_i$ on all of $U$.
+    Let $P\in U_j$, so we have
+    $$ \lbar{\frac{g_i}{h_i}}_{U_i\cap U_j} = f|_{U_i\cap U_j} = \lbar{\frac{g_j}{h_j}}_{U_i\cap U_j} . $$
+    Thus $g_ih_j-g_jh_i=0$ on $U_i\cap U_j$.
+    Since $\bA^n$ is irreducible, any nonempty open subset is dense (this is equivalent) and so the intersection of nonempty open subsets
+    is then dense (as each is dense and thus their intersection is nonempty, and thus a nonempty open subset, so dense).
+    Thus $g_ih_j$ and $g_jh_i$ agree on a dense set, so they are equal (two maps into a Hausdorff space agreeing on a dense set are equal).
+
+    Since $k[\bA^n]$ is a UFD and $\set{g_i,h_i}$ are all relatively prime, we must have $h_i=ch_j$ and $g_i=cg_j$ for some
+    $c\in k[\bA^n]^\times$ (which is $k^\times$).
+    Thus we have $h_i(P)=c(P)h_j(P)\neq0$ for all $P\in U_j$, so $h_i$ is nonzero on all of $U$.
+    And so for $P\in U_j$,
+    $$ \frac{g_i(P)}{h_i(P)} = \frac{g_j(P)}{h_j(P)} = f(P) , $$
+    so that $f=g_i/h_i$ on all of $U$ as desired.
+    \qed
+
+\eproof
+
+So $(\bA^n,\O_\reg)$ is a much simpler object than the general case.
+
+\bdefn
+
+    An {\emphcolor affine algebraic variety} (or {\emphcolor affine variety}) is a SWF $(X,\O_X)$ which is isomorphic to a SWF
+    $(Y,\O_\reg)$ where $Y\subseteq\bA^n$ is closed.
+
+    An {\emphcolor algebraic variety} is a SWF $(X,\O_X)$ which has a finite local covering $X=\bigcup_{i=1}^nU_i$ such that each
+    $(U_i,\O_X|_{U_i})$ is an affine variety.
+    Elements of a section of an algebraic variety (elements of $\O_X(U)$) are called {\emphcolor regular functions}.
+
+    A morphism of algebraic varieties is just a morphism of SWFs.
+
+\edefn
+
+\blemm
+
+    Every algebraic variety is Noetherian (as a topological space).
+
+\elemm
+
+\bproof
+
+    First we show that $\bA^n$ is Noethrian.
+    Indeed, if $\set{Z_i}_i$ is a collection of closed subsets of $\bA^n$ then $\set{\I(Z_i)}_i\subseteq k[\bA^n]$ has a maximal element
+    since $k[\bA^n]$ is Noetherian.
+    Since $Z\circ\I$ is the identity on closed sets, this means there is a maximal $Z_i$, and thus $\bA^n$ is Noetherian.
+
+    An affine variety is homeomorphic to a closed subset of $\bA^n$ which is Noetherian.
+
+    Thus an algebraic variety is locally Noetherian, i.e.\ there is a finite open covering $\bigcup_{i=1}^nU_i$ where each $U_i$ is Noetherian.
+    Then $X$ is Noetherian.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Every algebraic variety is quasicompact.
+
+\ecoro
+
+\bdefn
+
+    Let $Y\subseteq\bA^n$ be closed, then define $k[Y]=k[\bA^n]/\I(Y)$.
+    Then there is a natural homomorphism
+    $$ \ev_Y \colon k[\bA^n] \xtos\ev \fun(\bA^n,k) \xtos\res \fun(Y,k) . $$
+    By definition the kernel of this is $\I(Y)$, and so $\ev_Y$ induces an injection $k[Y]\inj\fun(Y,k)$.
+
+\edefn
+
+This notation is compatible with our previous definition of $k[\bA^n]$.
+This is because $\I(\bA^n)=0$ so $k[\bA^n]/\I(\bA^n)=k[\bA^n]$.
+
+Note that $k[Y]$ is a fg $k$-algebra.
+Furthermore it is reduced, as it can be embedded into $\fun(Y,k)$ which is reduced as $k$ is (also because $\I(Y)$ is a radical ideal).
+Furthermore, $k[Y]$ is a domain iff $\I(Y)$ is prime iff $Y$ is irreducible.
+
+If $B$ is a reduced fg $k$-algebra, then $B\cong k[Y]$ for some closed $Y\subseteq\bA^n$.
+Indeed, $B\cong k[\bA^n]/I$ for some ideal $I$, and since $B$ is reduced $I$ is a radical ideal and thus equal to $\I(Y)$ for $Y=Z(\I)$,
+so $B\cong k[Y]$.
+
+For $f\in k[\bA^n]$ let $\bar f=f+\I(Y)\in k[Y]$ denote its projection.
+Then viewed as functions $\bA^n\to k$ and $Y\to k$ respectively, we have the equality
+$$ D_Y(\bar f) = Y\cap D(f) . $$
+Since the $D(f)$ form a base of open subsets of $k[\bA^n]$, we then see that $\set{D_Y(\bar f)}_{\bar f\in k[Y]}$ is a basis of $Y$.
+
+\blemm
+
+    For every collection $\set{\bar f_i}_i\subseteq k[Y]$, $\set{D_Y(\bar f_i)}_i$ form an open cover of $Y$ iff the ideal $(\set{f_i}_i)$
+    is $k[Y]$.
+
+\elemm
+
+\bproof
+
+    We have that $D_Y(\bar f_i)$ cover $Y$ iff $D(f_i)$ cover $Y$.
+    Since $D(f_i)=Z(f_i)^c$, this is iff $\bigcap_iZ(f_i)\cap Y=\emptyset$, equivalently $Z((f_i)_i)\cap Y$ is empty.
+    But
+    $$ Z((f_i)_i) \cap Y = Z((f_i)_i) \cap Z(\I(Y)) = Z((f_i)_i + \I(Y)) , $$
+    and this is empty iff $Z((f_i)_i)+\I(Y)$ is all of $k[\bA^n]$ (by Nullstellensatz).
+    Quotienting by $\I(Y)$ this is equivalent to $Z((\bar f_i)_i)=k[Y]$.
+    \qed
+
+\eproof
+
+Recall that $f\in\O_\reg(Y)$ iff there is an open cover $Y=\bigcup_iU_i$ such that $f|_{U_i}$ is rational for each $i$.
+Since $Y$ is quasicompact, we can assume this covering is finite, and taking basic open sets, that $U_i=D_Y(t_i)$ for $t_i\in k[Y]$.
+So $f=g_i/h_i$ for $g_i,h_i\in k[\bA^n]$ and $h_i$ nonzero.
+Equivalently, $f=\bar g_i/\bar h_i$ (as $\bar g$ agrees with $g$ on $Y$).
+
+\bthrm[title=Serre]
+
+    For every closed $Y\subseteq\bA^n$ there is an equality $k[Y]=\O_\reg(Y)$ (viewing $k[Y]$ as a subalgebra of $\fun(Y,k)$).
+
+\ethrm
+
+\bproof
+
+    Since $\O_\reg(Y)$ consists of all polynomial functions, clearly $k[Y]\subseteq\O_\reg(Y)$.
+    By the above if $f\in\O_\reg(Y)$ then there is a finite set of triples $\set{t_i,g_i,h_i}$ of polynomials in $k[Y]$ such that
+    $D_Y(t_i)$ cover $Y$ and $f_i=g_i/h_i$ on $D_Y(t_i)$ and $h_i\neq0$ on $D_Y(t_i)$.
+
+    By assumption we have that $D_Y(t_i)\subseteq D_Y(h_i)$, and so $D_Y(t_i)=D_Y(t_i)\cap D_Y(h_i)=D_Y(t_ih_i)$.
+    Since $g_i/h_i=t_ig_i/t_ih_i$, we can replace our collection with $\set{t_ih_i,t_ig_i,t_ih_i}_i$.
+    In particular we can assume that $t_i=h_i$.
+
+    Now we want to show that $f\in k[Y]$.
+    We first give a short, but tricky, proof and afterward we will give a more insightful one.
+    Notice that for every $i$ we have
+    $$ fh_i^2 = g_ih_i \in \fun(Y,k), $$
+    so $(fh_i-g_i)h_i=0$.
+    This is true in $D_Y(h_i)$ clearly, and for $P\in Y-D_Y(h_i)$ we have that $h_i(P)=0$ so the equality holds trivially.
+
+    Now since $Y=\bigcup_iD_Y(h_i)=\bigcup_iD_Y(h_i^2)$ we conclude that $(h_i^2)=k[Y]$ as per the previous lemma.
+    So there are $r_i\in k[Y]$ such that
+    $$ \sum_i r_ih_i^2 = 1 . $$
+    (The algebraic analogue of a partition of unity.)
+    Thus
+    $$ f = f\sum_i r_ih_i^2 = \sum_i r_ifh_i^2 = \sum_i r_ig_ih_i \in k[Y] $$
+    as desired.
+    \qed
+
+\eproof
+
+We now give a more insightful proof of Serre's theorem.
+
+\blemm
+
+    Let $A$ be a ring and suppose $f_1,\dots,f_n$ generate the unit ideal.
+    Then
+    $$ 0 \to A \xtos\phi \prod_i A_{f_i} \xtos\psi \prod_{i,j}A_{f_if_j} , $$
+    is exact, where $\phi(a)=(a/1)_i$ and $\psi((a_i)_i)=(a_i-a_j)_{ij}$.
+
+\elemm
+
+\bproof
+
+    First we show that the sequence is exact at $A$, meaning $\phi$ is injective.
+    If $a/1=0$ for all $i$, then there are $n_i$ such that $f_i^{n_i}a=0$ for each $i$.
+    But
+    $$ f_i \in \sqrt{(f_i^{n_i})} , $$
+    and so $\sqrt{(f_i^{n_i})}$ is equal to the unit ideal.
+    But this means that $(f_i^{n_i})$ is equal to the unit ideal, and thus $a=0$.
+
+    Now we show that $\im\phi=\ker\psi$.
+    Firstly,
+    $$ \psi\circ\phi(a) = \psi((a/1)_i) = (a/1-a/1)_{i,j} = 0 , $$
+    so the sequence is a chain complex.
+    We now need only show that $\ker\psi\subseteq\im\phi$.
+    So let $(a_i/f_i^{n_i})_i$ lie in $\ker\psi$.
+    Since $a_if^{r_i}/f_i^{n_i+r_i}=a_i/f^{n_i}_i$, we may enlarge the $n_i$ so that they are equal.
+
+    So
+    $$ 0 = \psi(a_i/f_i^n) = (a_i/f_i^n - a_j/f_j^n)_{i,j} . $$
+    This means that $a_i/f_i^n=a_j/f_j^n$ in $A_{f_if_j}$ for all $i,j$ and thus there is an $M_{ij}$ such that
+    $(f_if_j)^{M_{ij}}(f_j^na_i-f_i^na_j)=0$.
+    Again by potentially enlarging the $M_{ij}$ we can assume they are all equal to $M$.
+    So we have that for all $i,j$,
+    $$ (f_if_j)^M(f_j^na_i - f_i^na_j) = 0 . $$
+    As before $f_j^{M+n}$ generate the unit ideal so there are $b_j\in A$ such that
+    $$ \sum_j b_jf_j^{M+n} = 1 , $$
+    and so if we define $a=\sum_jb_jf_j^Ma_j$, then
+    $$ f_i^{M+r}a = \sum_j b_jf_j^Mf_i^{M+r}a_j = \sum_j b_jf_i^Mf_j^{M+r}a_i = f_i^Ma_i\sum_jb_jf_j^{M+r} = f_i^Ma_i . $$
+    Thus $a/1=a_i/f_i^n$, and so $\phi(a)=(a_i/f_i^n)_i$ as desired.
+    \qed
+
+\eproof
+
+Now in the proof of Serre's theorem, since $(h_i)_i=k[Y]$ we have the exact sequence
+$$ 0 \to k[Y] \xtos\phi \prod_ik[Y]_{h_i} \xtos\psi \prod_{i,j}k[Y]_{h_ih_j} . $$
+Now consider $\bar f=(g_i/h_i)\in\prod_ik[Y]_{h_i}$, then $g_i/h_i-g_j/h_j=0$ in $k[Y]_{h_ih_j}$ because as we will show,
+$$ (g_ih_j - g_jh_i)h_ih_j = 0 \hbox{ in $k[Y]$}. $$
+Since $k[Y]\subseteq\fun(Y,k)$ we can show that the above expression vanishes for every $P\in Y$, and this is sufficient.
+If $P\in D_Y(h_i)\cap D_Y(h_j)$ then
+$$ (g_i/h_i)(P) = (g_j/h_j)(P) = f(P) , $$
+and the equality follows.
+For all other $P$ either $h_i(P)$ or $h_j(P)$ is zero, and the equality follows trivially.
+
+Thus by exactness there is a $\tilde f\in k[Y]$ such that $\phi(\tilde f)=\bar f$, meaning $\tilde f/1=g_i/h_i\in k[Y]_{h_i}$ for all $i$.
+So for some $n$, $h_i^n(h_i\tilde f-g_i)=0$
+In particular for $P\in D_Y(h_i)$ since $h_i(P)\neq0$ we have that $h_i(P)\tilde f(P)=g_i(P)$ so
+$$ \tilde f(P) = g_i(P)/h_i(P) = f(P) . $$
+Thus $f=\tilde f\in k[Y]$ as desired, showing that $\O_\reg(Y)=k[Y]$ as desired.
+
+\bnote
+
+    Abusing terminology, for {\it any\/} SWF $(X,\O_X)$ we call elements of $\O_X(U)$ {\emphcolor regular functions} on $U$.
+
+\enote
+
+
+\bthrm
+
+    Let $(X,\O_X)$ be a SWF and $Y\subseteq\bA^n$ a subset.
+    Let $\psi\colon X\to Y$ be a map of sets, and set $\psi_i=\proj_i\circ\psi\in\fun(X,k)$ to be the projections of $\psi$.
+    Then $\psi$ is a morphism of SWFs $(X,\O_X)\to(Y,\O_\reg)$ iff $\psi_i\in\O_X(X)$ for all $i$.
+    Equivalently, $\psi^*\colon\fun(Y,k)\to\fun(X,k)$ maps $\O_Y(Y)$ into $\O_X(X)$.
+
+\ethrm
+
+\bnote
+
+    Equivalently, $\psi=(\psi_1,\dots,\psi_n)\colon X\to Y$ is a morphism iff each $\psi_i$ is regular.
+
+\enote
+
+\bproof
+
+    Notice that $\proj_i\colon\bA^n\to k$ is given by a regular function $x_i$ on $\bA^n$.
+    So if $\psi$ is a morphism, then every $\psi_i=\psi^*(x_i)$ is a regular function on $X$.
+
+    Conversely assume $\psi_i\in\O_X(X)$ for all $i$.
+    So we want to show that $\psi$ is continuous, and for every $f\in\O_Y(U)$ we have $\psi^*(f)\in\O_X(\psi^{-1}U)$ for all $U\subseteq Y$
+    open.
+
+    First we show that for every $f\in k[\bA^n]$ we have $\psi^*(f)\in\O_X(X)$.
+    Notice that $\psi^*\colon\fun(\bA^n,k)\to\fun(X,k)$ is a $k$-algebra morphism, while $f$ belongds to the $k$-subalgebra
+    generated by the $x_i$.
+    Thus $\psi^*f$ belongds to the $k$-algebra generated by the $\psi^*(x_i)=\psi_i$.
+    Since $\psi_i\in\O_X(X)$ by assumption, this means $\psi^*f\in\O_X(X)$ as desired (since it is a subalgebra).
+
+    Now we show that $\psi$ is continuous.
+    The basic open sets of $Y$ are $D_Y(f)$ with $f\in k[\bA^n]$, and so it is sufficient to show $\psi^{-1}D_Y(f)$ is open in $X$.
+    Notice that
+    $$ \psi^{-1}D_Y(f) = \set{x\in X}[f(\psi x)=0] = D_X(\psi^*f) . $$
+    And since $\psi^*f\in\O_X(X)$ by locality of SWFs we have that $D_X(\psi^*f)$ is open as desired.
+
+    Now we need to show that for every open $U\subseteq Y$ and $f\in\O_Y(U)$ we have $\psi^*f\in\O_X(\psi^{-1}U)$.
+    Replacing $Y$ by $U$ and $X$ by $\psi^{-1}U$, we can assume $U=Y$.
+
+    First assume that $f$ is rational, so $f=g/h$ on $Y$ with $g,h\in k[\bA^n]$ and $h$ nonzero.
+    Then $\psi^*f=\psi^*g/\psi^*h$ and $\psi^*h(x)\neq0$ for every $x\in X$.
+    By locality $1/\psi^*h$ is in $\O_X(X)$ and thus $\psi^*f$ is in $\O_X(X)$ as it is a $k$-algebra, as desired.
+
+    Now in general, locally $f\in\O_Y(Y)$ has the form $g/h|_Y$, the general case follows from the rational case and
+    the sheaf axioms.
+
+    And the final equivalence is because if $\psi^*$ maps $\O_Y(Y)$ into $\O_X(X)$ then it maps $x_i\in\O_Y(Y)$ to $\psi^*(x_i)=\psi_i$
+    into $\O_X(X)$.
+    \qed
+
+\eproof
+
+\bcoro
+
+    For every SWF $X=(X,\O_X)$ there is a natural bijection
+    $$ \hom_\SWF(X,\bA^n) \xtos\sim \O_X(X)^n,\qquad \psi\mapsto(\proj_1\circ\psi,\dots,\proj_n\circ\psi) . $$
+    In particular there is a natural identification $\hom_\SWF(X,\bA^1)\cong\O_X(X)$.
+
+    Furthermore, for $X=(X,\O_X)$ and a subset $Y\subseteq\bA^n$, a set-theoretic map $\psi\colon X\to Y$ is a morphism of SWFs
+    $(X,\O_X)\to(Y,\O_\reg)$ iff the composition $X\xtos\psi Y\inj\bA^n$ is a morphism of SWFs.
+
+\ecoro
+
+\bproof
+
+    The first point folows from the above theorem with $Y=\bA^n$.
+    The second follows from the theorem as well, since $\psi=(\psi_1,\dots,\psi_n)$ being a morphism is equivalent to all
+    $\psi_i$ being regular which is equivalent to the composition of $\psi$ with the inclusion being a morphism.
+    \qed
+
+\eproof
+
+\bnote
+
+    The second point follows directly from the fact that $(Y,\O_\reg)$ is the restriction of $(\bA^n,\O_\reg)$ to $Y$.
+
+\enote
+
+Because for an affine scheme $(X,\O_X)$ by Serre we have an identifcation $\O_X(X)\cong k[X]$, the following is immediate.
+
+\bcoro
+
+    If $(X,\O_X)$ and $(Y,\O_Y)$ are affine varities, then $\psi\colon X\to Y$ is a morphism of SWFs iff it maps $k[Y]$ to $k[X]$.
+
+\ecoro
+
+There is an obvious functor $\SWF_k^\op\to\Alg_k$ given by mapping $(X,\O_X)$ to $\O_X(X)$ and $\phi\colon X\to Y$ to $\phi^*\colon\O_Y(Y)\to\O_X(X)$.
+This is called the {\emphcolor global sections} functor, as it takes global sections.
+It is denoted by $\Gamma$, so $\Gamma(X,\O_X)$ for objects (we may omit one of the two inputs when the other is obvious), and $\Gamma(\phi)=\phi^*$ on morphisms.
+
+\blemm
+
+    A morphism of SWFs $\psi\colon X\to\bA^n$ satisfies $\phi(X)\subseteq Y$ for closed $Y\subseteq\bA^n$ iff $\psi^*\colon k[\bA^n]\to\O_X(X)$ satisfies $\I(Y)\subseteq\ker\psi^*$.
+
+\elemm
+
+\bproof
+
+    We have $\psi(X)\subseteq Y$ iff $\psi(x)\in Z(\I(Y))$ for all $x\in X$ and $f\in\I(Y)$, which is iff $f(\psi(x))=\psi^*(f)(x)=0$.
+    So $\psi(X)\subseteq Y$ iff $\psi^*(f)=0$ for all $f\in\I(Y)$, i.e.\ iff $\I(Y)\subseteq\ker\psi^*$.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $(X,\O_X)$ be an SWF and $(Y,\O_Y)$ be an affine variety.
+    Then $\Gamma$ is bijective
+    $$ \Gamma\colon\hom_\SWF(X,Y)\to\hom_\Alg(\O_Y(Y),\O_X(X)) . $$
+
+\eprop
+
+\bproof
+
+    First take $Y=\bA^n$, so $\O_Y(Y)=k[\bA^n]$, the free $k$-algebra on $n$ generators.
+    Thus there is a natural bijection
+    $$ \nat\colon\hom_\Alg(k[\bA^n],\O_X(X)) \to \O_X(X)^n,\qquad \phi\mapsto(\phi(x_1),\dots,\phi(x_n)) . $$
+    Now, the composition
+    $$ \hom_\SWF(X,\bA^n) \xtos\Gamma \hom_\Alg(k[\bA^n],\O_X(X)) \xtos\nat \O_X(X)^n $$
+    maps $\phi$ to $(\phi^*(x_1),\dots,\phi^*(x_n))$, and as we showed above this is a bijection.
+    Thus $\Gamma$ must be a bijection, as desired.
+
+    Now let $Y\subseteq\bA^n$ be an arbitrary affine variety, so $\O_Y(Y)=k[Y]=k[\bA^n]/\I(Y)$.
+    Recall that $(Y,\O_Y)$ is induced from $(\bA^n,\O_\reg)$ so SWF morphisms into $Y$ are the same as SWF morphisms into $\bA^n$ landing in $Y$.
+    Thus by the previous lemma
+    $$ \hom_\SWF(X,Y) \cong \set{\phi\in\hom_\SWF(X,\bA^n)}[\phi(X)\subseteq Y] = \set{\phi\in\hom_\SWF(X,\bA^n)}[\I(Y)\subseteq\ker\psi^*] , $$
+    and as we just showed, this is bijective to
+    $$ \cong \set{\phi^*\in\hom_\Alg(k[\bA^n],\O_X(X))}[\I(Y)\subseteq\ker\psi^*] , $$
+    and these are precisely the maps which quotient to $k[Y]=k[\bA^n]/\I(Y)\to\O_X(X)$, i.e.\ this forms a bijection
+    $$ \cong \hom_\Alg(k[Y],\O_X(X)) . $$
+    Now it is easy to see that the composition of these isomorphisms is $\Gamma$.
+    \qed
+
+\eproof
+
+\bcoro
+
+    A SWF $Y$ is an affine variety iff the $k$-algebra $\O_Y(Y)$ is fg and for every SWF $X$, $\Gamma$ is bijective from $\hom_\SWF(X,Y)$.
+
+\ecoro
+
+\bproof
+
+    We just showed for an affine variety, the property holds.
+    Conversely, if $\O_Y(Y)$ is fg then it is equal to $\O_{Y'}(Y')$ for some affine variety $Y'$ (we showed that reduced fg $k$-algebras $B$ are all of the form $k[Y']$ for an
+    affine $Y'$, and $\O_Y(Y)\subseteq\fun(Y,k)$ is reduced always).
+    Thus there is an isomorphism
+    $$ \hom_\SWF(X,Y') \cong \hom_\Alg(\O_{Y'}(Y'),\O_X(X)) = \hom_\Alg(\O_Y(Y),\O_X(X)) \cong \hom_\SWF(X,Y) , $$
+    where the final isomorphism is given by $\Gamma$.
+    Thus $\hom(\bul,Y')\cong\hom(\bul,Y)$ naturally, so by Yoneda $Y'\cong Y$.
+    \qed
+
+\eproof
+
+\bcoro
+
+    $\Gamma$ forms an anti-equivalence of categories from affine varieties to fg reduced $k$-algebras: $\AVar_k\to\Alg_k^{\fg,\red}$.
+
+    In particular $\Gamma$ reflects isomorphisms, so $X\cong Y$ iff $\O_X(X)\cong\O_Y(Y)$ for affine $X,Y$.
+
+\ecoro
+
+\bproof
+
+    We showed that $\Gamma$ is fully faithful on affine varieties, and so it is an equivalence to its essential image.
+    Its essential image are the fg reduced $k$-algebras.
+
+    We can explicitly construct its inverse: for a fg reduced $k$-algebra $A$, then we map it to $\specm(A)$, and maps $\phi\colon A\to B$ are mapped to $\abs{\phi^*}$.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Let $X\subseteq\bA^n$ and $Y\subseteq\bA^m$ be affine varieties.
+    A map $\phi\colon X\to Y$ is a morphism of varieties iff $\phi=(f_1,\dots,f_m)$ for some $f_i\in k[\bA^n]$.
+
+\ecoro
+
+\bproof
+
+    $\phi$ is a morphism iff it is a morphism into $\bA^m$, which is iff $\phi$'s projections are in $\O_X(X)=k[X]$, which are just the restriction of polynomial functions to $X$.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $X$ be a topological space.
+    A subset $Y\subseteq X$ is {\emphcolor locally closed} iff $Y=U\cap F$ for open $U\subseteq X$ and closed $F\subseteq X$.
+
+\edefn
+
+The following lemma better explains the reasoning for the terminology of ``locally closed''.
+
+\blemm
+
+    For $Y\subseteq X$ a subspace, the following are equivalent:
+    \benum
+        \item $Y$ is locally closed,
+        \item $Y$ is an open subset of a closed subset,
+        \item $Y$ is a closed subset of an open subset,
+        \item for every $y\in Y$, there is a neighborhood $U$ of $y$ in $X$ such that $Y\cap U$ is closed in $U$.
+    \eenum
+
+\elemm
+
+\bproof
+
+    Recall that open (resp.\ closed) subsets of a subspace $S$ are of the form $S\cap U$ for $U$ open (resp.\ $S\cap F$ for $F$ closed).
+    So an open subset of a closed subset $F$ are the sets of the form $U\cap F$ for $U$ open, and similarly for closed subsets of open subsets.
+    Thus we see the equivalence of (1), (2), and (3).
+
+    Now if $Y$ is locally closed, then it is the closed subset of an open subset $U$.
+    Thus every $y\in Y$ has neighborhood $U$ in which $Y$ is closed, showing (4).
+    Conversely, for each $y\in Y$ let $y\in U_y$ be a neighborhood where $Y\cap U_y$ is closed in $U_y$.
+    Let $U=\bigcup_yU_y$, so
+    $$ U - Y = \bigcup_y(U_y-Y) , $$
+    and since $Y\cap U_y$ is closed in $U_y$, we have $U_y-Y=U_y-Y\cap U_y$ is open, so $U-Y$ is open and thus $Y$ is closed in $U$.
+    \qed
+
+\eproof
+
+\bcoro
+
+    A locally closed subset of a locally closed subset is locally closed.
+
+\ecoro
+
+\bproof
+
+    So suppose $Z\subseteq Y\subseteq X$ is a chain of inclusions, where each subset is locally closed in the next.
+    It is sufficient to show that an open/closed subset of $Y$ is locally closed in $X$, since if $Z=U\cap F$ in $Y$, then $U,F$ are locally closed in $X$ and then clearly
+    their intersection is too.
+    But clearly by (2) an open subset of $Y$ is locally closed, and by (3) the same for a closed subset.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $X\subseteq\bA^n$ be an affine variety, and let $f\in k[\bA^n]$.
+    Then $(D_X(f),\O_\reg)$ is an affine variety isomorphic to $(Y,\O_\reg)$ where $Y\subseteq\bA^{n+1}$ is the closed subset $Z(\I(X)\cup\set{fx_{n+1}-1})$.
+
+\eprop
+
+\bproof
+
+    We construct explicit inverse morphisms $\phi\colon D_X(f)\to Y\colon\psi$.
+    Define $\phi$ by mapping $(x_1,\dots,x_n)\in X\subseteq\bA^n$ to
+    $$ \phi(x_1,\dots,x_n) = \parens{x_1,\dots,x_n,\frac1{f(x_1,\dots,x_n)}} . $$
+    Its image lies in $Y$ clearly, and its components are rational functions on $D_X(f)$ so it forms a morphism into $\bA^n$, thus into $Y$.
+    Similarly define $\psi$ by mapping $(x_1,\dots,x_{n+1})\in Y$ to
+    $$ \psi(x_1,\dots,x_{n+1}) = (x_1,\dots,x_n) . $$
+    Its image lies in $X$ since $f(x_1,\dots,x_n)x_{n+1}=1$ so $f(x_1,\dots,x_n)\neq0$, and it is a morphism into $\bA^n$ and thus into $X$.
+    Clearly $\psi\circ\phi=\id$ and for $(x_1,\dots,x_{n+1})\in Y$ we must have $x_{n+1}=1/f(x_1,\dots,x_n)$ by definition so $\phi\circ\psi=\id$.
+    \qed
+
+\eproof
+
+\bexam
+
+    The SWF $(D_{\bA^1}(x),\O_\reg)$ is isomorphic to the hyperbola $Z(xy-1)\subseteq\bA^2$.
+
+\eexam
+
+We can also prove the above proposition via Yoneda.
+Define $B=k[X]_f$.
+Now we know that $\Gamma$ defines a bijection $\hom_\SWF(Z,X)\to\hom_\Alg(k[X],\O_Z(Z))$ for any SWF $Z$.
+Furthermore, the universal property of localization says that a morphism $\zeta\colon k[x]\to\O_Z(Z)$ factors through $B$ iff $\zeta(f)\in\O_Z(Z)^\times$, and such a factorization is unique.
+And by locality, $\O_Z(Z)^\times$ are just the nowhere vanishing functions in $\O_Z(Z)$.
+Thus $\Gamma$ restricts to a bijection
+$$ \hom_\Alg(k[X]_f,\O_Z(Z)) \cong \set{\phi\in\hom_\SWF(Z,X)}[\phi^*(f)(z)\neq0\hbox{ for all $z\in Z$}] . $$
+And we know
+$$ \phi^*(f)(z) = f(\phi(z)) , $$
+so $\phi^*(f)(z)\neq0$ iff $\phi(z)\in D_X(f)$, thus
+$$ \hom_\Alg(k[X]_f,\O_Z(Z)) \cong \set{\phi\in\hom_\SWF(Z,X)}[\phi(Z)\subseteq D_X(f)] . $$
+And since $D_X(f)\subseteq X$ has the induced SWF structure (as they are both induced from $\bA^n$), this means $\Gamma$ defines a natural isomorphism
+$$ \hom_\Alg(k[X]_f,\O_Z(Z)) \cong \hom_\SWF(Z,D_X(f)) . $$
+Now $k[X]_f$ is a reduced fg $k$-algebra, and thus it is equivalent to some affine variety $Y$ under $\Gamma$ (so $\O_Y(Y)=k[X]_f$), so we have natural isomorphisms
+$$ \hom_\SWF(Z,Y) \cong \hom_\Alg(k[X]_f,\O_Z(Z)) \cong \hom_\SWF(Z,D_X(f)) , $$
+and by Yoneda $Y\cong D_X(f)$ as desired.
+
+Notice that this means $k[D_X(f)]\cong k[X]_f$ (the left-hand side is $\O_\reg(D_X(f))$ which are rational functions on $D_X(f)$).
+Explicitly this isomorphism is given by the universal property of localization applied to the restriction $k[X]\to k[D_X(f)]$.
+
+This immediately shows the following two corollaries.
+
+\bcoro
+
+    For $X\subseteq\bA^n$ affine and $f\in k[\bA^n]$, we have
+    $$ \O_\reg(D_X(f)) = k[\bA^n]|_{D_X(f)}[1/f] \subseteq \fun(D_X(f),k) , $$
+    i.e.\ regular functions on $D_X(f)$ are of the form $p/f$ for $p\in k[\bA^n]$.
+
+\ecoro
+
+\bcoro
+
+    If $(X,\O_X)$ is an affine variety, then for every $f\in\O_X(X)$, the SWF $(D_X(f),\O_X|_{D_X(f)})$ is affine.
+    Furthermore, the restriction map $\O_X(X)\to\O_X(D_X(f))$ induces an isomorphism of $k$-algebras
+    $$ \O_X(X)_f \xtos\sim \O_X(D_X(f)) . $$
+
+\ecoro
+
+\bnote
+
+    Since $D_X(f)\subseteq X$ is open, the restriction of $\O_X$ to $D_X(f)$ is equal to $\O_X$ but on the subposet of open subsets of $D_X(f)$.
+
+\enote
+
+\bcoro
+
+    An affine variety has a basis consisting of affine varieties.
+
+\ecoro
+
+\bproof
+
+    The $D_X(f)$ form an open basis for $X$ (since they do for $\bA^n$, and $X$ is a subspace and $D_X(f)=D_{\bA^n}(f)\cap X$), and they are affine.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $X=(X,\O_X)$ be an algebraic variety.
+    A {\emphcolor closed/open/locally closed subvariety} of $X$ is an SWF $(Y,\O_X|_Y)$ where $Y\subseteq X$ is closed/open/locally closed.
+    A {\emphcolor quasi-affine variety} is an open subvariety of an affine variety.
+
+\edefn
+
+\bcoro
+
+    A closed/open/locally closed subvariety of an algebraic variety is an algebraic variety.
+
+\ecoro
+
+\bproof
+
+    Let $X_i$ be a finite subcovering of $X$ of affine varieties.
+    Then $Y=\bigcup_i(Y\cap X_i)$, and to show that $Y$ is an algebraic variety it is sufficient to show that $Y\cap X_i$ is.
+    So replacing $X$ by $X_i$ and $Y$ by $Y\cap X_i$, we assume $X$ is affine.
+
+    We consider the cases when $Y$ is open and closed, and this gives us the case when $Y$ is locally closed, since if $Y$ is open in a closed subset
+    then it is an open subset of an algebraic variety which is then an algebraic variety.
+
+    If $Y$ is closed, then $(Y,\O_X|_Y)$ is affine since following the isomorphism to a closed subset of $\bA^n$ we see that $Y$ is a closed subset of $\bA^n$
+    and thus an affine variety.
+
+    Now if $Y\subseteq X$ is open, then $\set{D_X(f)}_{f\in\O_X(X)}$ is a basis of $X$, and since $X$ is Noetherian, $Y$ is quasi-compact, so it is the finite
+    union of $D_X(f)$s.
+    Each of these are affine varieties, so $Y$ is an algebraic variety by definition.
+    \qed
+
+\eproof
+
+\bexam
+
+    We have shown some quasi-affine varieties are affine, like $D_X(f)$.
+    But not all!
+
+    For example let $X=\bA^2-0$, which is quasi affine as it is equal to $D_{\bA^2}(x_1)\cup D_{\bA^2}(x_2)$.
+    The inclusion $X\inj\bA^2$ is not an isomorphism, as it is not a homeomorphism, but the induced map $\res\colon k[\bA^2]\to\O_X(X)$ is an isomorphism.
+    This cannot happen for affine varieties ($\Gamma$ reflects isomorphisms).
+
+    We see that $X$ is the pushout of $D(x_1),D(x_2)$ along their intersection.
+    Thus $\O_X(X)$ is the pullback of $k[x_1,x_2]_{x_1},k[x_1,x_2]_{x_2}$ along $k[x_1,x_2]_{x_1x_2}$.
+    That is, $\O_X(X)$ consists of pairs $f_i\in k[x_1,x_2]_{x_i}$ such that $f_1=f_2$ in $k[x_1,x_2]_{x_1x_2}$.
+    But a rational function whose denominator is both a power of $x_1$ and a power of $x_2$ must be a polynomial, so $\O_X(X)=k[\bA^2]$.
+
+\eexam
+
+
