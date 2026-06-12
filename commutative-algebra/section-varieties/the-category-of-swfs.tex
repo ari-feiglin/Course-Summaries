@@ -1,0 +1,505 @@
+\subsection{The category of SWFs}
+
+In this section we discuss some categorical constructions and results on $\SWF_k$.
+
+There is a clear forgetful functor from $\SWF_k$ to the category of topological spaces, $U\colon\SWF_k\to\Top$, which maps $(X,\O_X)$ to its underlying topological space $X$
+and a morphism $\phi\colon(X,\O_X)\to(Y,\O_Y)$ to its underlying continuous map $\phi$.
+This functor is faithful, but not full (it is easy to construct a continuous map which is not a morphism of SWFs).
+Though it is a left-adjoint, as we will show.
+
+\bdefn
+
+    For a topological space $X$ and an arbitrary set $S$, a function $f\colon X\to S$ is {\emphcolor locally constant} if for every $p\in X$ there is a neighborhood
+    $p\in U\subseteq X$ such that $f|_U$ is constant.
+
+\edefn
+
+Note that $f\colon X\to S$ being locally constant is the same as it being continuous when $S$ is endowed with the discrete topology.
+Indeed, if $f$ is locally constant then for every $p\in f^{-1}\set x$ there is an open neighborhood of $p$ contained in $f^{-1}\set x$ by definition, so $f^{-1}\set x$ is open.
+Thus $f$ is continuous to discrete $S$.
+Conversely, $f$ being continuous to discrete $S$ means that $f^{-1}\set x$ is open and so for every $p\in X$ we take the neighborhood $U=f^{-1}(fp)$ to see it is locally constant.
+
+\blemm
+
+    For an SWF $(X,\O_X)$, $\O_X(U)$ contains all locally constant functions $U\to k$.
+
+\elemm
+
+\bproof
+
+    Let $f\colon U\to k$ be locally constant, so there is an open cover $U_i$ of $U$ on which $f|_{U_i}$ is constant.
+    Since $\O_X(U_i)$ is a $k$-algebra, it must contain all constant functions (since it contains the unit and all of its multiples), so $f|_{U_i}\in\O_X(U_i)$.
+    By gluing, this means $f\in\O_X(U)$ as desired.
+    \qed
+
+\eproof
+
+\bprop
+
+    The forgetful functor $U\colon\SWF_k\to\Top$ is a left-adjoint.
+
+\eprop
+
+\bproof
+
+    Forgetful functors are in general ``the most general'' object, so in our case in lieu of the previous lemma it seems that the following construction is a good contender.
+    For open $U\subseteq X$ define $\O_X(U)$ to be the collection of locally constant $U\to k$.
+    Thus $\O_X$ is just the sheaf of continuous maps into $k$, which is always a sheaf.
+
+    For locality, let $f\in\O_X(U)$ then its preimage on all subsets of $k$ is open, in particular $D_U(f)$.
+    And if $f$ is locally constant, so too is $1/f$ ($f$ and $1/f$ are constant on the same open subsets).
+    Thus $(X,\O_X)$ is an SWF which is denoted $\ul X$.
+
+    We claim that $U\dashv\ul\bul$.
+    This amounts to constructing a natural isomorphism
+    $$ \hom_\Top(U(X,\O_X),Y) \cong \hom_\SWF((X,\O_X),\ul Y) . $$
+    $U$ defines an injective map from the right to the left, so we just need to show that it is surjective.
+    That is, for $\phi\colon X\to Y$ continuous, $\phi$ lifts to a morphism of SWFs $(X,\O_X)\to\ul Y$.
+    So for $U\subseteq Y$ open we need to show $\phi^*$ maps $\O_Y(U)\to\O_X(\phi^{-1}U)$.
+
+    For $f\colon U\to k$ locally constant, then $f\circ\phi\colon\phi^{-1}U\to k$ is locally constant as well, as the composition of continuous maps.
+    Thus $\phi^*(f)\in\O_X(\phi^{-1}U)$ by the previous lemma.
+    \qed
+
+\eproof
+
+In particular $U$ preserves colimits.
+The following is a technical definition and lemma which we will not prove in full here (see homework).
+
+\bdefn
+
+    Let $\c B$ be a basis for a topology, then a {\emphcolor B-SWF} over $k$ is a presheaf $\O\colon\c B^\op\to\Alg_k$ satisfying the following axioms:
+    \benum
+        \item $\O$ is a subpresheaf of the function sheaf, $\fun(\bul,k)$.
+        \item {\emphcolor B-sheaf axiom}: for any basic set $B\in\c B$ and cover of basic sets $B=\bigcup_iB_i$, if $f\colon B\to k$ is a function such that $f|_{B_i}\in\O(B_i)$
+        for all $i$, then $f\in\O(B)$.
+        \item {\emphcolor locality}: for any $B\in\c B$ and $f\in\O(B)$, $D_B(f)$ is open (i.e.\ the union of basic sets) and for every basic cover $B_i$ of $D_B(f)$, we have that
+        $1/f|_{B_i}\in\O(B_i)$.
+    \eenum
+
+\edefn
+
+\bprop
+
+    For every B-SWF $(\c B,\O)$ where $\c B$ is a basis of the topology on $X$, there is a unique SWF $(X,\O_X)$ extending it, meaning $\O_X(B)=\O(B)$ for all $B\in\c B$.
+
+\eprop
+
+\bproof
+
+    The construction is as follows: for every $U\subseteq X$ open and $\set{B_i}\subseteq\c B$ covering $U$, define
+    $$ \O_X(U) = \set{f\colon U\to k}[f|_{B_i}\in\O(B_i)\hbox{ for all $i$}] . $$
+    Then one can show without much difficulty that $\O_X(U)$ is independent on the choice of basic covering.
+    In particular this means that $\O_X(B)=\O(B)$ for all $B\in\c B$ by choosing the covering $\set B$.
+
+    It is then easy to show that this is a sheaf, and locality follows easily from locality of $(\c B,\O)$.
+    \qed
+
+\eproof
+
+Now we will show that $\SWF_k$ is cocomplete.
+Since $U$ preserves colimits, we already know what the underlying topological spaces of the colimits are.
+
+\blemm
+
+    Let $\pi\colon X\to Y$ be a quotient map, and suppose there is an SWF structure $(X,\O_X)$ on $X$.
+    Then there is a unique SWF structure $(Y,\O_Y)$ given by the following universal property: $\phi\colon(Y,\O_Y)\to(Z,\O_Z)$ is a morphism of SWFs iff $\phi\circ\pi\colon(X,\O_X)\to(Z,\O_Z)$
+    is a morphism of SWFs.
+
+\elemm
+
+\bproof
+
+    This is a universal property and thus a solution is unique up to unique isomorphism.
+    Define
+    $$ \O_Y(U) = \set{f\colon U\to k}[\pi^*(f)\in\O_X(\pi^{-1}(U)] . $$
+    It is not hard to show that this satisfies the universal property.
+    \qed
+
+
+\eproof
+
+\bthrm
+
+    The category $\SWF_k$ is cocomplete.
+
+\ethrm
+
+\bproof
+
+    We just need to show that $\SWF_k$ has coproducts and coequalizers.
+    For coproducts, let $\set{X_i}_i$ be a collection of SWFs and let $X=\coprod_iX_i$.
+    It has a basis of open subsets given by the union of all open subsets of $X_i$.
+    Then define $\O_X$ on $X$ as a B-SWF where for $U\subseteq X_i$ open we define
+    $$ \O_X(U) = \O_{X_i}(U) . $$
+    It is easy to see that this is a B-SWF, and thus defines an SWF on $X$.
+    It is also not hard to see that this has the universal property of a coproduct.
+
+    For coequalizers, let $\phi,\psi\colon X\tto Y$ be parallel morphisms of SWFs.
+    The underlying space of their coequalizer will be $Y/{\sim}$ where $\sim$ is the equivalence relation generated by $\phi(x)\sim\psi(x)$ for all $x\in X$.
+    This is a quotient space, so we just give it the quotient space SWF structure from the previous lemma.
+    This clearly satisfies the universal property of coequalizers as a direct result from the universal property of quotients.
+    \qed
+
+\eproof
+
+\bnote
+
+    While the colimit of SWFs is an SWF, the colimit of algebraic varieties need not be a variety!
+
+\enote
+
+\bcoro
+
+    The global sections functor $\Gamma$ contravariantly preserves colimits.
+
+\ecoro
+
+\bproof
+
+    Since $\Gamma$ is contravariant, preserving colimits means mapping colimiting cones to limit cones.
+    So it is sufficient to show that
+    $$ \Gamma\parens{\coprod_i(X_i,\O_{X_i})} \cong \prod_i\Gamma(X_i,\O_{X_i}),\qquad \Gamma(\coeq(\phi,\psi)) \cong \eq(\Gamma(\phi),\Gamma(\psi)) , $$
+    in a way which maps the colimit cone to the limit cone, which we leave as an exercise.
+
+    For coproducts, by the above construction we see that for $X=\coprod_iX_i$,
+    $$ \Gamma\parens{\coprod_i(X_i,\O_{X_i})} = \set{f\colon X\to k}[f|_{X_i}\in\O_{X_i}(X_i)] , $$
+    so the map $\Gamma(X)\to\prod_i\Gamma(X_i)$ given by $f\mapsto(f|_{X_i})$ is a natural isomorphism.
+
+    For a quotient map $\pi\colon X\to Y$, we have
+    $$ \Gamma(Y) = \set{f\colon Y\to k}[f\circ\pi\in\O_X(X)] , $$
+    meaning $\pi^*\colon\Gamma(Y)\to\Gamma(X)$ is an injection (by $\pi$'s surjectivity), meaning $\Gamma(Y)\cong\im\pi^*$.
+    So letting $Z=\coeq(\phi,\psi)$ we have
+    $$ \Gamma(\coeq(\phi,\psi)) = \set{f\colon Z\to k}[f\circ\pi\in\O_Y(Y)] \cong \im\pi^* . $$
+    We know that
+    $$ \eq(\Gamma\phi,\Gamma\psi) = \ker(\phi^*-\psi^*) . $$
+    So we want to show that
+    $$ \im\pi^* = \ker(\phi^*-\psi^*) . $$
+    Firstly, we have $\pi\circ\phi=\pi\circ\psi$ by definition so $\phi^*\circ\pi^*=\psi^*\circ\pi^*$ and thus $(\phi^*-\psi^*)\circ\pi^*=0$.
+    So we have left-to-right inclusion.
+    Now suppose that $f\circ\phi=f\circ\psi$ for $f\in\Gamma(Y)$, then by the equivalence on $Z$ this means $f$ lifts to a map $g\colon Z\to k$, i.e.\ $f=g\circ\pi$.
+    So by definition $g\in\Gamma(Z)$ since $f\in\Gamma(Y)$, and this shows that $f\in\im\pi^*$ as desired.
+    \qed
+
+\eproof
+
+Let us consider a specific type of colimit.
+Recall that a pushout is a colimit diagram of the form
+
+\centerline{\drawdiagram{
+    $A$&$B$\cr
+    $C$&$X$
+}{
+    \diagarrow{from={1,1}, to={1,2}}
+    \diagarrow{from={1,1}, to={2,1}}
+    \diagarrow{from={2,1}, to={2,2}, dashed}
+    \diagarrow{from={1,2}, to={2,2}, dashed}
+}}
+
+For sets, and by extension topological spaces, $X$ is the quotient of $B\amalg C$ obtained by identifying the images of an element from $A$ in $B$ and $C$.
+The topology is given by the quotient topology.
+This kind of colimit is called a {\emphcolor pushout}, it is dual to the {\emphcolor pullback} (also called the {\emphcolor fiber product}).
+It is the colimit of a functor on the diagram $\bul\ot\bul\to\bul$.
+
+If our category is $\Top$, then the pushout can be viewed geometrically as gluing together $B$ and $C$ along their ``intersection'' $A$.
+
+When we are dealing with topological spaces though (and in our case SWFs), often times we would like to glue together a family of spaces and not just two.
+We can generalize the pushout to account for this.
+
+\bdefn
+
+    Let $I$ be an indexing set, then the {\emphcolor gluing category} over $I$ is the category $\glue_I$ whose objects are $I\sqcup\binom I2$ (i.e.\ $I$ and the set of all two-element
+    subsets of $I$).
+    For every $\set{i,j}\in\binom I2$, $\glue_I$ has unique morphisms from $\set{i,j}$ to $i$ and to $j$.
+
+\edefn
+
+For example, if $I={1,2,3}$ then $\glue_I$ looks like
+
+\bigskip
+\centerline{\drawdiagram{
+    &$\set{1,3}$\cr
+    $\set{1,2}$&&$\set{2,3}$\cr
+    $1$&$2$&$3$\cr
+}{
+    \diagarrow{from={1,2}, to={3,1}, curve=-2.5cm, dest orient={left, top}}
+    \diagarrow{from={1,2}, to={3,3}, curve=2.5cm, dest orient={right, top}}
+    \diagarrow{from={2,1}, to={3,1}}
+    \diagarrow{from={2,1}, to={3,2}}
+    \diagarrow{from={2,3}, to={3,2}}
+    \diagarrow{from={2,3}, to={3,3}}
+}}
+
+And when $I$ has two elements then $\glue_I$ is just the pushout category $\bul\ot\bul\to\bul$.
+
+A {\emphcolor gluing datum} is a functor whose domain is a gluing category, i.e.\ a functor $X\colon\glue_I\to\C$.
+Equivalently it is given by a collection of objects $X_i\in\C$ and $X_{ij}\in\C$ for $i,j\in\C$ ($X_{ij}$ is unordered), as well as morphisms $f_{ij}\colon X_{ij}\to X_i$ and $f_{ji}\colon X_{ij}\to X_j$.
+A {\emphcolor gluing} is the colimit of a gluing datum.
+Geometrically, for a gluing datum $X\colon\glue_I\to\C$, we interpret $X_i$ as the spaces we want to glue, and $X_{ij}$ as the common subspace over which we want to glue.
+
+We know that $\SWF_k$ is cocomplete so it has all gluings.
+Our main concern regarding gluings is that we can view an SWF as the gluing of an open cover of induced SWFs.
+
+Denote the inclusion (canonical) map $X_i\to\coprod_iX_i$ by $\inc_i$.
+
+\blemm
+
+    For a gluing datum $X\colon\glue_I\to\C$, its gluing is the coequalizer of the diagram (where $X_{ij}=X_{ji}=X_{\set{i,j}}$)
+    $$ \coprod_{i\neq j}X_{ij} \xtto\phi[\psi] \coprod_iX_i \to \colim X . $$
+    Where $\phi$ is the map whose component on $X_{ij}$ is $f_{ij}$ composed with inclusion $X_i\to\coprod_iX_i$.
+    Similarly $\psi$ is the map whose component on $X_{ij}$ is $f_{ji}$ composed with inclusion $X_j\to\coprod_iX_i$.
+
+\elemm
+
+\bproof
+
+    Cones under $X$ are equivalent (classically) to cones under the coequalizer diagram
+    $$ \coprod_{\set{i,j}\to i}X_{ij} \xtto\alpha[\beta] \coprod_iX_i\amalg\coprod_{\set{i,j}}X_{ij}, $$
+    where $\alpha$'s component on $X_{ij}$ for $\set{i,j}\to i$ is $f_{ij}$ composed with inclusion into the large coproduct (on the right).
+    And $\beta$'s component on $X_{ij}$ is just the inclusion into the large coproduct.
+
+    Explicitly this means that
+    $$ \alpha\circ\inc_{ij\to i} = \inc_i\circ f_{ij},\qquad \beta\circ\inc_{ij\to i} = \inc_{\set{i,j}},\qquad \phi\circ\inc_{ij} = \inc_i\circ f_{ij},\qquad \psi\circ\inc_{ij} = \inc_j\circ f_{ji} . $$
+
+    Cones under this are maps $f$ from the large coproduct to an object $Y$ such that $f\circ\alpha=f\circ\beta$.
+    We claim that restricting $f$ to $\coprod_iX_i$ gives a cone under the diagram in the lemma.
+    We have that
+    $$ f\circ\alpha\circ\inc_{ij\to i} = f\circ\beta\circ\inc_{ij\to i} $$
+    which is equivalent to
+    $$ f\circ\inc_i\circ f_{ij} = f\circ\inc_{\set{i,j}} . $$
+    Thus we see that this is also equal to $f\circ\inc_j\circ f_{ji}$.
+
+    A cone under the diagram in the lemma is a map $f$ such that
+    $$ f\circ\phi\circ\inc_{ij} = f\circ\psi\circ\inc_{ij} \iff f\circ\inc_i\circ f_{ij} = f\circ\inc_j\circ f_{ji} $$
+    for all $i,j$.
+    So we have shown that a cone under the classical coequalizer diagram restricts to one of the one in the lemma.
+
+    Conversely if we have $f\circ\inc_i\circ f_{ij}=f\circ\inc_j\circ f_{ji}$ for $f\colon\coprod_iX_i\to Y$, then this uniquely extends to a cone over the classical diagram.
+    This is because we must have
+    $$ f\circ\inc_i\circ f_{ij} = f\circ\inc_{\set{i,j}} . $$
+    Thus we can just define $f$'s component on $X_{ij}$ to be $f\circ\inc_i\circ f_{ij}$, and by the identity for $f\circ\phi=f\circ\psi$ this is well-defined (symmetric in $i$ and $j$).
+
+    So there is an isomorphism between the cones under the classical and the diagram in the lemma, so they define the same coequalizers.
+    \qed
+
+\eproof
+
+\blemm
+
+    Let $X\colon\glue_I\to\Top$ be a gluing datum.
+    Then its gluing is
+    $$ \colim X = \coprod_{i\in I}X_i/{\sim} , $$
+    where $\sim$ is the equivalence induced by $f_{ij}(x)\sim f_{ji}(x)$ for all $x\in X_{ij}$.
+
+\elemm
+
+\bproof
+
+    Consider the coequalizer diagram in the previous diagram
+    $$ \coprod_{i\neq j}X_{ij} \xtto\phi[\psi] \coprod_iX_i \to \colim X . $$
+    The coequalizer is just the quotient of $\coprod_iX_i$ by identifying the images of $\phi$ and $\psi$ of the same element.
+    $\phi$ on $X_{ij}$ is just $f_{ij}$ and $\psi$ is $f_{ji}$, so this is just the equivalence $f_{ij}(x)\sim f_{ji}(x)$ for $x\in X_{ij}$ as desired.
+    \qed
+
+\eproof
+
+Since we know what the coproduct of SWFs and the quotient of an SWF is, we can then determine the SWF obtained by gluing.
+
+Let $X\colon\glue_I\to\SWF_k$ be a gluing datum.
+Write $X_i=(X_i,\O_i)$, $X_{ij}=(X_{ij},\O_{ij})$, and $\phi_{ij}=X(\set{i,j}\to i)$ for the data.
+Let us write $\hat X=\coprod_iX_i$.
+Then its gluing is the SWF $(X,\O_X)$ where $X=\hat X/{\sim}$ where $\phi_{ij}(x_{ij})\sim\phi_{ji}(x_{ij})$.
+Let us denote by $\pi\colon\hat X\to X$ the projection.
+
+For $U\subseteq X$ open, then $\pi^{-1}U\subseteq\hat X$ is open and thus has the form $\pi^{-1}U=\bigcup_iU_i$ where $U_i=X_i\cap\pi^{-1}U$ are open.
+Then by our construction of quotient and coproduct SWFs,
+$$ \O_X(U) = \set{f\colon U\to k}[f\circ\pi\in\O_{\hat X}(\pi^{-1}U)] = \set{f\colon U\to k}[(f\circ\pi)|_{U_i}\in\O_i(U_i)\hbox{ for all $i$}] . $$
+
+We can now prove our goal regarding gluing.
+
+\bthrm
+
+    Let $(X,\O_X)$ be an SWF and $X=\bigcup_iU_i$ an open cover.
+    Then $(X,\O_X)$ is isomorphic to the gluing of $(U_i,\O_X|_{U_i})$ along their intersections.
+
+\ethrm
+
+\bproof
+
+    This is a rather lengthy proof.
+    It is entirely technical, and just ensures that everything behaves as it should.
+
+    Let us write $\O_i$ for $\O_X|_{U_i}$ and $\O_{ij}$ for $\O_X|_{U_i\cap U_j}$.
+    Define $(Y,\O_Y)$ to be the gluing of the $U_i$ along their intersections.
+    Let $\hat Y=\coprod_iU_i$, so as a topological space $Y=\hat Y/{\sim}$ where we identify elements of $U_i,U_j$ if they lie in the intersection.
+    For an element $x\in U_i$ let $x_i\in\hat Y$ denote its copy in $\hat Y$.
+    Then our equivalence is induced by $x_i\sim x_j$ for $x\in U_i\cap U_j$.
+    Furthermore for $x\in\hat Y$ let $\pi(x)=[x]\in Y$ denote its equivalence class, and for $x\in U_i\subseteq X$ we define $[x]=[x_i]$.
+
+    There is a clear map $\hat\phi\colon\hat Y\to X$ which maps an element of $\hat Y$ to its corresponding element in $X$, i.e.\ $x_i\mapsto x$.
+    This is a continuous map, since for $U\subseteq X$ open we have $\hat\phi^{-1}(U)=\coprod_i(U_i\cap U)$ open.
+    Furthermore it respects the equivalence $\sim$, since if $x\in U_i\cap U_j$ then $x_i$ and $x_j$ are both mapped to $x$.
+    So by the universal property of quotients, this defines a map $\phi\colon Y\to X$ given by $\phi[x]=x$ (so we have shown that such a map is well-defined and continuous).
+    Clearly $\phi$ has an inverse given by $x\mapsto[x]$, so it is bijective.
+
+    Now we claim that $\hat\phi$ is an open map.
+    This is clear since it maps basic open sets $U\subseteq U_i$ to $U\subseteq X$ which are open (since $U_i$ is open in $X$).
+    So we have a commutative diagram
+
+    \bigskip
+    \centerline{\drawdiagram{
+        $\hat Y$&&$X$\cr
+        &$Y$
+    }{
+        \diagarrow{from={1,1}, to={1,3}, text=$\hat\phi$, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,2}, text=$\pi$, x distance=-.25cm}
+        \diagarrow{from={2,2}, to={1,3}, text=$\phi$, y distance=-.25cm}
+    }}
+
+    Every open set of $Y$ is of the form $\pi(\hat U)$ for open $\hat U\subseteq\hat Y$ (since $U\subseteq Y$ is open iff $\pi^{-1}U\subseteq\hat Y$ is open, and $U=\pi(\pi^{-1}U)$ by surjectivity).
+    And we see $\phi(\pi(\hat U))=\hat\phi(\hat U)$ is open.
+    So $\phi$ is a bijective open continuous map, thus a homeomorphism.
+
+    Now we need to show that for all $V\subseteq X$ open, $\phi^*$ defines an isomorphism $\O_X(V)\to\O_Y(\phi^{-1}V)$.
+    As we saw with B-SWFs, it is sufficient to restrict our attention to basic open sets.
+    We take as a basis for $X$ the open subsets of $U_i$, as $i$ ranges.
+    These define a basis of open subsets of $\hat Y$, and thus projecting them via $\pi$ defines a basis of $Y$.
+
+    For $V\subseteq U_i$ we have that restricting $\hat\phi$ to $V\subseteq\hat Y$ gives the identity $V\to V\subseteq X$.
+    That is
+    $$ V = \hat\phi(V) = \phi\circ\pi(V) \implies \phi^{-1}(V) = \pi(V) . $$
+    So if we show that $\phi^*$ is an isomorphism $\O_X(V)\to\O_Y(\phi^{-1}V)=\O_Y(\pi(V))$ then we will have finished, as we have exhausted both the basic open sets of $X$ as well as $Y$'s.
+
+    By above we know for $U\subseteq Y$ open we have
+    $$ \O_Y(U) = \set{f\colon U\to k}[(f\circ\pi)|_{\hat U_i}\in\O_i(\hat U_i)\hbox{ for all $i$}] , $$
+    where $\hat U_i=\pi^{-1}(U)\cap U_i$.
+    In our case, for $V\subseteq U_i$ basic we are concerned with $U=\pi(V)$.
+    Then $\hat U_j=\pi^{-1}(\pi(V))\cap U_j$ which are all $x\in U_j$ such that $x$ is identified with an element of $V\subseteq U_i$.
+    So we see $\hat U_j=V\cap U_j$ and so
+    $$ \O_Y(\pi(V)) = \set{f\colon\pi(V)\to k}[(f\circ\pi)|_{V\cap U_j}\in\O_j(V\cap U_j)\hbox{ for all $j$}] . $$
+    Since $V\cap U_j$ form an open cover of $V$, this is just equal to
+    $$ \O_Y(\pi(V)) = \set{f\colon\pi(V)\to k}[(f\circ\pi)|_V\in\O_X(V)] . $$
+
+    We know that on $V$, $\hat\phi$ is just the identity so $\phi\circ\pi=\id$ and since $\phi$ is bijective, $\phi$ and $\pi$ are inverses.
+    So for $f\in\O_X(V)$ we have $\phi^*(f)\circ\pi=f\circ\phi\circ\pi=f$ thus $\phi^*(f)\in\O_Y(\pi(V))$.
+    So $\phi$ is indeed a morphism of SWFs.
+
+    And $\phi^*$ is bijective, as we can map $f\in\O_Y(\pi(V))$ to $f\circ\pi\in\O_X(V)$.
+    Then $\phi^*(f\circ\pi)=f\circ\pi\circ\phi=f$ as they are inverses on $V$, and $\phi^*(f)\circ\pi=f\circ\phi\circ\pi=f$.
+    Thus $\phi$ is an isomorphism as desired.
+    \qed
+
+\eproof
+
+Our main interest in the above theorem is due to algebraic varieties.
+By definition, algebraic varieties are SWFs $X$ with an affine cover $U_i$.
+This theorem says we can view $X$ as a certain colimit of the $U_i$ with $U_i\cap U_j$.
+In particular we can use the fact that $\Gamma$ preserves colimits to compute the global sections of $X$ as a certain limit of $\Gamma(U_i)$ and $\Gamma(U_i\cap U_j)$.
+
+And if $Y\subseteq X$ is a subspace, then by the above theorem $Y$ is the gluing of $Y\cap U_i$ along their intersections $Y\cap U_i\cap U_j$.
+Thus global sections of $Y$, which are just sections of $Y$, are a certain limit of $\Gamma(Y\cap U_i)$ and $\Gamma(Y\cap U_i\cap U_j)$.
+In particular for $V\subseteq X$ open, $\O_X(U)$ is a certain limit of $\O_X(U\cap U_i)$ and $\O_X(U\cap U_i\cap U_j)$.
+
+So if we know $U_i$ and the intersections $U_i\cap U_j$ well, we can deduce properties of $X$.
+
+We now consider another functorial construction on $\SWF_k$.
+
+\bdefn
+
+    Let $(X,\O_X)$ be an SWF and $p\in X$ a point.
+    Define its {\emphcolor stalk} at $p$ to be
+    $$ \O_{X,p} = \colim_{x\in U}\O_X(U) , $$
+    where the colimit is taken of the functor $\O_X$ restricted to the subposet $\N(p)\subseteq\Op(X)$ of open neighborhoods of $p$.
+    Explicitly, this is
+    $$ \O_{X,p} = \left.\coprod_{x\in U}\O_X(U)\middle/{\sim}\right. , $$
+    where $\sim$ is the equivalence identifying $f\in\O_X(U)$ and $g\in\O_X(V)$ if there is an open subset $x\in W\subseteq U,V$ such that $f|_W=g|_W$ (i.e.\ $f$ and $g$ are equal
+    locally around $p$).
+    Such equivalence classes are called {\emphcolor germs}.
+
+\edefn
+
+Since the colimit of $k$-algebras is a $k$-algebra, the stalk of an SWF is a $k$-algebra.
+
+We sometimes write $(f,U)$ to mean $f\in\O_X(U)$ or to mean its germ in $\O_{X,p}$.
+Notice that for a germ $(f,U)$ of $p$, the value $f(p)$ makes sense, as all functions in the same germ must have the same value at $p$.
+
+Consider the category of {\emphcolor pointed spaces of functions}: $\SWF_k^*$, whose objects are SWFs with a distinguished point: $(X,\O_X,p)$ for $p\in X$,
+and a morphism of pointed SWFs is a morphism of SWFs which preserve the distinguished points: $\phi\colon(X,\O_X,p)\to(Y,\O_Y,q)$ is a morphism of SWFs such that $\phi(p)=q$.
+
+Then taking stalks ({\emphcolor stalkification}) is functorial $(\SWF_k^*)^\op\to\Alg_k$.
+This is because a morphism of pointed SWFs $\phi\colon(X,\O_X,p)\to(Y,\O_Y,q)$ induces a morphism of functors $\phi^*\colon\O_Y\to\O_X$ as well as a functor $\phi^{-1}\colon\N(q)\to\N(p)$ via
+mapping $q\in V$ to $\phi^{-1}V$.
+Thus it forms a morphism of functors $\O_Y|_{\N(q)}\to\O_X|_{\N(p)}$ and since taking colimits is itself functorial, we get a morphism $\O_{Y,q}\to\O_{X,p}$.
+
+Explicitly $\phi$ induces the map $\phi^*\colon\O_{Y,q}\to\O_{X,p}$ on germs by mapping $(f,U)\in\O_{Y,q}$ to $(\phi^*(f),\phi^{-1}U)\in\O_{X,p}$.
+
+Further notice that if $p\in U\subseteq X$ is a neighborhood of $p$ then the stalks of $\O_X|_U$ and $\O_X$ at $p$ are isomorphic.
+This can be shown by the germ definition, or by noting that the stalk is a filtered colimit, and $\N(p,U)^\op$ is a cofinal subset of $\N(p,X)^\op$, and filtered colimits over the restriction
+of a functor to a cofinal subcategory is isomorphic to the colimit over the whole subcategory.
+
+\blemm
+
+    Let $Y$ be an affine variety and $P\in Y$.
+    Then under the isomorphism $Y\cong\specm(k[Y])$, $P$ corresponds to the maximal ideal $\m_P\leq k[Y]$ given by
+    $$ \m_P = \set{f\in k[Y]}[f(P)=0] . $$
+
+\elemm
+
+\bproof
+
+    As $Y$ is affine, it is of the form $Z_{\bA^n}(I)$ for some ideal $I\leq k[\bA^n]$, $\I(Y)=I$.
+    The isomorphism $Z_{\bA^n}(I)\cong\specm(k[Y])$ is given by mapping $P=(a_1,\dots,a_n)$ to $\m_P=(x_1-a_1,\dots,x_n-a_n)$, quotiented by $I$.
+    Clearly $\m_P\subseteq\set{f\in k[Y]}[f(P)=0]$, and the right-hand side is a proper ideal so there is equality.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Let $(X,\O_X)$ be an algebraic variety, $P\in X$, and $P\in U$ an affine neighborhood.
+    Then $\O_{X,P}\cong k[U]_{\m_P}$ where $\m_P\leq k[U]$ is the ideal corresponding to $P$ as in the above lemma.
+
+\ecoro
+
+\bproof
+
+    As explained, taking the filtered colimit over a cofinal subsets doesn't affect the result, and so we can assume $X=U$ is affine.
+    Furthermore, $\set{D(f)}_{f\in\O_X(X)}$ is a cofinal subset because it is a basis.
+    Thus we can take the colimit over $D(f)$ where $f(P)\neq0$, i.e.
+    $$ \O_{X,P} \cong \colim_{f\in k[X],f(P)\neq0}\O_X(D(f)) \cong \colim_{f(P)\neq0}k[X]_f . $$
+    For $f(P)\neq0$ we have $f\notin\m_P$ and so it is in the localizing set of $k[X]_{\m_p}$.
+    In particular, we have natural maps $k[X]_f\to k[X]_{\m_p}$ for all $f$.
+    We now show that $k[X]_{\m_p}$ satisfies the universal property of the colimit.
+
+    Suppose that we have maps $k[X]_f\to A$ for all $f$ commuting with restrictions.
+    In particular these each give maps $k[X]\to A$ which map $f$ to a unit.
+    Since the maps $k[X]_f\to A$ commute with restrictions, we see that this is a single map $k[X]\to A$ mapping every $f(P)\neq0$, so $f\notin\m_P$, to a unit.
+    By the universal property of localization this induces a map $k[X]_{\m_P}\to A$.
+    Thus $k[X]_{\m_P}$ is the colimit, as desired.
+    \qed
+
+\eproof
+
+\bnote
+
+    Notice that this shows that $\O_{X,P}$ is a local ring for an algebraic variety $X$.
+    This is true in general for an SWF: let $p\in X$ arbitrary then let $\m\leq\O_{X,p}$ be the set of all germs $(U,f)$ such that $f(p)=0$.
+    This is clearly an ideal of $\O_{X,p}$, and it is proper as it doesn't contain the unit.
+    Now for $(U,f)\notin\m$ we know that $p\in D_U(f)$ and thus $(D_U(f),1/f)$ is a germ in $\O_{X,p}$ and a multiplicative inverse for $(U,f)$.
+    So $O_{X,p}-\m=\O_{X,p}^\times$ so $(\O_{X,p},\m)$ is a local ring.
+
+    This lends to a generalization of SWFs.
+    As discussed in the definition of SWFs, the sheaf condition generalizes naturally to give a structure called a sheaf.
+    These are presheaves valued in the category of rings (or $R$-algebras) satisfying the sheaf condition (a certain diagram is an equalizer diagram).
+
+    But this does not explain how to generalize the locality condition.
+    Utilizing stalks, we can.
+    Call a pair $(X,\O_X)$ where $X$ is a topological space and $\O_X$ a sheaf valued in the category of rings (resp.\ $\Alg_R$) a {\emphcolor ringed space} (resp.\ {\emphcolor $R$-ringed space}).
+    This generalizes the sheaf condition.
+
+    Now a ($R$-) ringed space $(X,\O_X)$ is called a {\emphcolor locally ringed space} if all of its stalks $\O_{X,p}$ are local rings (resp.\ local $R$-algebras).
+    This generalizes the locality condition.
+
+\enote
+
+
