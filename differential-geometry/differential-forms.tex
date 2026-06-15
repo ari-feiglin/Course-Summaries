@@ -1,8 +1,641 @@
 \section{Differential Forms}
 
+\subsection{Alternating covectors}
+
 Recall that a covariant $k$-tensor $\alpha\in T^k(V^*)$ is {\emphcolor alternating} if ${}^\sigma\alpha=\sgn\sigma\alpha$ for all
 $\sigma\in S_k$.
+This is equivalent to $\alpha$ being zero when any of its inputs are repeated.
 We denote the subspace of alternating covariant tensors by $\Lambda^k(V^*)$.
 We have a projection $\alt\colon T^k(V^*)\to\Lambda^k(V^*)$ by
-$$ \Alt\alpha = \frac1{k!}\sum_{\sigma\in S_k}(\sgn\sigma)({}^\sigma\alpha) . $$
+$$ \alt\alpha = \frac1{k!}\sum_{\sigma\in S_k}(\sgn\sigma)({}^\sigma\alpha) . $$
+
+\bdefn
+
+    A covariant $k$-tensor $\alpha\in\Lambda^k(V^*)$ is called a {\emphcolor $k$-covector}.
+
+\edefn
+
+\bdefn
+
+    Let $I=(i_1,\dots,i_k)$ be a multi-index, so a tuple of length $k$ of indices.
+    For $\sigma\in S_k$ define
+    $$ I_\sigma = (i_{\sigma(1)},\dots,i_{\sigma(k)}) , $$
+    so that $I_{\sigma\tau}=(I_\sigma)_\tau$.
+
+    For a multi-index $I$ and a list of vectors $(v_1,\dots,v_k)$ we write $v_I=(v_{i_1},\dots,v_{i_k})$.
+    For a dual basis $(\epsilon^1,\dots,\epsilon^n)$ for $V^*$, define $\epsilon^I$ by
+    $$ \epsilon^I(v_1,\dots,v_k) = \det(\epsilon^{i_k}(v_j))^k_j . $$
+    This is called an {\emphcolor elementary $k$-covector}.
+
+\edefn
+
+Indeed, $\epsilon^I$ is a covector since it is multilinear by multilinearity of the determinant and the $\epsilon^i$s, and if any of its inputs are repeated
+then the determinant is zero.
+
+For multi-indices $I,J$ of length $k$ we define
+$$ \delta^I_J = \det(\delta^{i_k}_{j_\ell})^k_\ell = \cases{\sgn\sigma&if neither $I$ nor $J$ have repeated indices and $J=I_\sigma$\cr0&else} . $$
+
+\bprop
+
+    Let $(E_i)$ be a basis for $V$ and $(\epsilon^i)$ its dual basis in $V^*$, and let $I$ be a multi-index of length $k$.
+    \benum
+        \item If $I$ has a repeated index $\epsilon^I=0$,
+        \item If $J=I_\sigma$ then $\epsilon^I=(\sgn\sigma)\epsilon^J$,
+        \item We have the identity $\epsilon^I(E_J)=\delta^I_J$.
+    \eenum
+
+\eprop
+
+\bproof
+
+    Everything here is a standard computation.
+    \qed
+
+\eproof
+
+Call a multi-index $I=(i_1,\dots,i_k)$ {\emphcolor increasing} if $i_1<\cdots<i_k$.
+
+\bprop
+
+    Let $V$ be an $n$-dimensional vector space, then for any basis $(\epsilon^i)$ for $V^*$ and any $k\leq n$,
+    $$ \c E = \set{\epsilon^I}[\hbox{$I$ is an increasing multi-index of length $k$}] $$
+    forms a basis for $\Lambda^k(V^*)$ and thus
+    $$ \dim\Lambda^k(V^*) = \binom nk . $$
+    If $k>n$ then $\Lambda^k(V^*)=0$.
+
+\eprop
+
+\bproof
+
+    Clearly if $k>n$ then any covector is zero, since any of its inputs must be linearly dependent and thus give a value of zero.
+    Let $(E_i)$ be dual to $(\epsilon^i)$, and let $\alpha\in\Lambda^k(V^*)$ then write $\alpha_I=\alpha(E_I)$.
+    Now, for the following sum over increasing indices and an arbitrary multi-index $J$ we have
+    $$ \sum_I\alpha_I\epsilon^I(E_J) = \sum_I\alpha_I\delta^I_J . $$
+    If $J$ has a repeated index this is zero, as $\delta^I_J=0$ for all $I$, and this is equal to $\alpha_J$.
+    Otherwise there is a $\sigma$ such that $J_\sigma=I$ is increasing (order by increasing value), then this is equal to
+    $$ = (\sgn\sigma)\alpha_I = \alpha_J . $$
+    So we see that
+    $$ \sum_I\alpha_I\epsilon^I = \alpha $$
+    and thus $\c E$ spans $\Lambda^k(V^*)$.
+
+    Now suppose there are $\alpha_I$ such that $\sum_I\alpha_I\epsilon^I=0$.
+    Then for an increasing index $J$, we see that $\epsilon^I(E_J)=\delta^I_J$ and thus
+    $$ 0 = \sum_I\alpha_I\delta^I_J = \alpha_J $$
+    for all $J$ so that $\c E$ is linearly independent.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $V$ be $n$-dimensional, $T\colon V\to V$ a linear operator, and $\omega\in\Lambda^n(V^*)$.
+    Then for all $v_1,\dots,v_n\in V$ we have
+    $$ \omega(Tv_1,\dots,Tv_n) = \det(T)\omega(v_1,\dots,v_n) . $$
+
+\eprop
+
+\bproof
+
+    Choose a basis $(E_i)$ for $V$ with dual basis $(\epsilon^i)$.
+    Let $(T^j_i)$ represent $T$ with respect to this basis, and let $T_i=TE_i=T^j_iE_j$.
+    By the above proposition $\omega=c\epsilon^{1\dots n}$ for some number $c$.
+
+    Since both sides of the identity are multilinear and alternating, it is sufficient to check this when $v_i=E_i$.
+    Then
+    $$ \multline{
+        \omega(TE_1,\dots,TE_n) = \omega(T_1,\dots,T_n) = c\epsilon^{1\dots n}(T_1,\dots,T_n) = c\det(\epsilon^i(T_j))\cr
+            = c\det(T^i_j) = c\det T = \det T\omega(E_1,\dots,E_n) .
+    } $$
+    As desired.
+    \qed
+
+\eproof
+
+\bdefn
+
+    For $\omega\in\Lambda^k(V^*)$ and $\eta\in\Lambda^\ell(V^*)$ define their {\emphcolor wedge product} to be the $(k+\ell)$-covector:
+    $$ \omega\wedge\eta = \frac{(k+\ell)!}{k!\ell!}\alt(\omega\otimes\eta) . $$
+
+\edefn
+
+The coefficient in the above definition is to normalize it so that it behaves nicely.
+
+\blemm
+
+    For a basis $(\epsilon^i)$ of $V^*$ and multi-indices $I,J$, we have
+    $$ \epsilon^I\wedge\epsilon^J = \epsilon^{IJ} , $$
+    where $IJ$ denotes their concatenation.
+
+\elemm
+
+\bproof
+
+    Some tedious computations and a case analysis.
+    \qed
+
+\eproof
+
+\bprop
+
+    For multicovectors $\omega,\omega',\eta,\eta',\xi$ over $V$, then the wedge product has the following properties:
+    \benum
+        \item Bilinearity,
+        \item Associativity,
+        \item Anticommutativity: if $\omega\in\Lambda^k(V^*)$ and $\eta\in\Lambda^\ell(V^*)$ then
+        $$ \omega\wedge\eta = (-1)^{k\ell}\eta\wedge\omega . $$
+        \item If $(\epsilon^i)$ is any basis for $V^*$ and $I$ is any multi-index,
+        $$ \epsilon^{i_1}\wedge\cdots\wedge\epsilon^{i_k} = \epsilon^I . $$
+        \item For any $1$-covectors $\omega^1,\dots,\omega^k$ and $v_1,\dots,v_k$,
+        $$ \omega^1\wedge\cdots\wedge\omega^k(v_1,\dots,v_n) = \det(\omega^j(v_i)) . $$
+    \eenum
+
+\eprop
+
+\bproof
+
+    Bilinearity follows from the definition since the tensor and $\alt$ are bilinear.
+    The rest of the cases follow from analysis on elementary multicovectors by bilinearity.
+
+    Associativity follows from the above lemma, as does anticommutativity since $IJ=(JI)_\sigma$ where $\sigma$ swaps the first $\ell$ and last $k$ indices.
+    This can be written as $k\ell$ transposition so it has sign $(-1)^{k\ell}$.
+    (4) is a direct result of the above lemma via induction.
+    Then (5) is clear by reducing it to the case of $\omega^j=\epsilon^{i_j}$.
+    \qed
+
+\eproof
+
+A $k$-covector $\eta$ is {\emphcolor decomposable} if it can be written $\eta=\omega^1\wedge\cdots\wedge\omega^k$ for $1$-covectors $\omega^i$.
+By the above proposition, $\epsilon^I$ are decomposable and thus every $k$-covector can be written as the linear combination of decomposable $k$-covectors.
+It is easy to show that the wedge product is the unique map satisfying the above properties.
+
+\bdefn
+
+    For an $n$-dimensional vector space $V$, define its {\emphcolor exterior algebra}
+    $$ \Lambda(V^*) = \bigoplus_{k=0}^n\Lambda^k(V^*) . $$
+    This is a real vector space of dimension $2^n$, and has a graded algebra structure given by the wedge product.
+
+\edefn
+
+\bdefn
+
+    For a vector $v\in V$ define a map $i_v\colon\Lambda^k(V^*)\to\Lambda^{k-1}(V^*)$ called {\emphcolor interior multiplication} by $v$ as
+    $$ i_v\omega(w_1,\dots,w_{n-1}) = \omega(v,w_1,\dots,w_{m-1}),\qquad \omega\in\Lambda^k(V^*),\ w_i\in V . $$
+    We also write
+    $$ v\imult\omega = i_v\omega . $$
+
+\edefn
+
+\blemm
+
+    For $v\in V$, $i_v\circ i_v=0$ and
+    $$ i_v(\omega\wedge\eta) = (i_v\omega)\wedge\eta + (-1)^k\omega\wedge(i_v\eta) . $$
+
+\elemm
+
+\bproof
+
+    Clearly $i_v\circ i_v=0$ since this inserts $v$ twice to an alternating tensor.
+    For the other claim, it is sufficient to prove this for decomposable covectors.
+    In general we can show
+    $$ v\imult(\omega^1\wedge\cdots\wedge\omega^k) = \sum_{i=1}^k(-1)^{i-1}\omega^i(v)\omega^1\wedge\cdots\wedge\hat\omega^i\wedge\cdots\wedge\omega^k . $$
+    Indeed, writing $v=v_1$ and applying $v_2,\dots,v_k$ to both sides gives
+    $$ \omega^1\wedge\cdots\wedge\omega^k(v_1,\dots,v_k) = \sum_{i=1}^k(-1)^{i-1}\omega^i(v_1)(\omega^1\wedge\cdots\wedge\hat\omega^i\wedge\cdots\wedge\omega^k(v_2,\dots,v_k) . $$
+    It is easy to see that the right-hand side is the expansion of the determinant of $\omega^i(v_j)$ along the $i$th row, and the left-hand side is this determinant as well.
+    \qed
+
+\eproof
+
+\subsection{Differential forms}
+
+It is easy to see that $V\to\Lambda^kV^*$ is smoothly tensorial, and as discussed this means that $E\mapsto\Lambda^KE^*$ is tensorial for vector bundles over a smooth manifold $M$.
+This is the vector bundle with fibers $\Lambda^kE^*_p$.
+By considering the trivializations we constructed over smooth tensorial constructions, we can see that for any local frame $(s_i)$ of $E$ with dual frame $(\epsilon^i)$ in $E^*$,
+then
+$$ \tuple{\epsilon^I}[\hbox{$I$ is a multi-index of length $k$}] $$
+forms a local frame of $\Lambda^kE^*$; where $\epsilon^I$ on the fiber of $p$ is given by $\epsilon^I_p=\epsilon^{i_1}_p\wedge\cdots\wedge\epsilon^{i_k}_p$.
+
+Similarly we have the vector bundle $\Lambda(E^*)=\bigoplus_{k=0}^m\Lambda^k(E^*)$ where $m$ is $E$'s rank.
+Then we have the isomorphism of $C^\infty(M)$-modules
+$$ \Gamma(\Lambda(E^*)) \cong \bigoplus_{k=0}^m\Gamma(\Lambda^k(E^*)) . $$
+This is then a graded $C^\infty(M)$-algebra with multiplication given by the wedge product.
+Explicitly for $\omega\in\Gamma(\Lambda^k(E^*))$ and $\eta\in\Gamma(\Lambda^\ell(E^*))$, then we define $\omega\wedge\eta\in\Gamma(\Lambda^{k+\ell}(E^*))$ pointwise by
+$$ (\omega\wedge\eta)_p = \omega_p\wedge\eta_p . $$
+Then the $\epsilon^I$ above is just $\epsilon^{i_1}\wedge\cdots\wedge\epsilon^{i_k}$.
+
+Our main concern is when $E=TM$.
+
+\bdefn
+
+    A {\emphcolor differential $k$-form} of a smooth manifold is a section of $\Lambda^kT^*M$.
+    Define
+    $$ \Omega^k(M) = \Gamma(\Lambda^kT^*M) $$
+    to be the space of differential $k$-forms.
+    And we define the graded algebra of differential forms
+    $$ \Omega^*(M) = \Gamma(\Lambda(T^*M)) \cong \bigoplus_{k=0}^n\Omega^k(M) . $$
+
+\edefn
+
+So for any chart $(x^i)$ of $M$ there is a local frame of $\Omega^k(M)$ given by $(dx^I)_I$ where $dx^I=dx^{i_1}\wedge\cdots\wedge dx^{i_k}$ ranges over increasing multi-indices $I$.
+
+Recall that any smooth map $F\colon M\to N$ pulls back covariant tensor fields: for $A\in\T^k(T^*N)$ we define $F^*A\in\T^k(T^*M)$ by
+$$ (F^*A)_p(v_1,\dots,v_k) = A_{Fp}(dF_p(v_1),\dots,dF_p(v_n)) . $$
+Clearly we see that if $A=\omega$ is a differential $k$-form, then $F^*\omega$ is as well.
+So $F$ defines a map $F^*\colon\Omega^k(N)\to\Omega^k(M)$ for all $k$.
+
+\blemm
+
+    Let $F\colon M\to N$ be smooth.
+    \benum
+        \item $F^*\colon\Omega^k(N)\to\Omega^k(M)$ is $\bR$-linear.
+        \item $F^*(\omega\wedge\eta)=(F^*\omega)\wedge(F^*\eta)$.
+        \item In any smooth chart,
+        $$ F^*\parens{\sum_I\omega_Idy^I} = \sum_I(\omega_I\circ F)d(y^{i_1}\circ F)\wedge\cdots\wedge d(y^{i_k}\circ F) . $$
+    \eenum
+
+\elemm
+
+\bproof
+
+    (1) is clear as it is true for general covariant vector fields that $F^*$ is additive and $F^*(fA)=(f\circ F)F^*(A)$.
+    (2) is due to linearity and a computation showing it is true for $\omega=dx^I$ and $\eta=dx^J$.
+    Then (3) follows from (1) and (2) since $F^*(df)=d(f\circ F)$.
+    \qed
+
+\eproof
+
+\blemm
+
+    Let $F\colon M\to N$ be smooth mapping between $n$-manifolds which maps a local chart $(U,(x^i))$ into $(V,(y^j))$.
+    Let $u$ be a continuous real-valued function on $V$.
+    Then
+    $$ F^*(udy^1\wedge\cdots\wedge dy^n) = (u\circ F)(\det DF)dx^1\wedge\cdots\wedge dx^n , $$
+    where $DF$ is the Jacobian of $F$ in these coordinates.
+
+\elemm
+
+\bproof
+
+    Since the fiber of $\Lambda^nT^*M$ is spanned by $dx^1\wedge\cdots\wedge dx^n$ at each point, we just need to evaluate both sides at $\ipdv{x^i}$.
+    By the previous lemma,
+    $$ F^*(udy^1\wedge\cdots\wedge dy^n) = (u\circ F)d(F^1)\wedge\cdots\wedge d(F^n) , $$
+    where $F^i$ is $y_i\circ F$, the projection of $F$ relative to the chart.
+    Evaluating at $\ipdv{x^1},\dots,\ipdv{x^n}$ shows
+    $$ dF^1\wedge\cdots\wedge dF^n\parens{\pdv{x^1},\dots,\pdv{x^n}} = \det\parens{dF^j\parens{\pdv{x^i}}} = \det\parens{\pdvof{F^j}{x^i}} = \det(DF) . $$
+    This gives us the desired result.
+    \qed
+
+\eproof
+
+\bcoro
+
+    If $(U,(x^i))$ and $(\tilde U,(\tilde x^j))$ are overlapping coordinate charts, then
+    $$ d\tilde x^1\wedge\cdots\wedge d\tilde x^n = \det\parens{\pdvof{\tilde x^j}{x^i}}dx^1\wedge\cdots\wedge dx^n . $$
+
+\ecoro
+
+\bproof
+
+    Apply the previous lemma to $F=\id$.
+    \qed
+
+\eproof
+
+Interior multiplication acts on differential forms.
+
+\bdefn
+
+    Let $U\subseteq\bR^n$ or $\bH^n$ be open.
+    For $X\in\X(U)$ and $\omega\in\Omega^k(U)$, define the $k-1$-differential form $i_X\omega=X\imult\omega\in\Omega^{k-1}(M)$ by
+    $$ (X\imult\omega)_p = X_p\imult\omega_p . $$
+    By considering local charts, this is smooth.
+
+\edefn
+
+\subsection{Exterior derivatives}
+
+\bdefn
+
+    We define the {\emphcolor exterior derivative} on $\bR^n$ to be the operator $d$ which maps $k$-forms to $(k+1)$-forms in the following way.
+    For $\omega=\sum_I\omega_Idx^I$ (sum over $I$ increasing) define
+    $$ d\omega = d\sum_I\omega_Idx^I = \sum_Id\omega_I\wedge dx^I , $$
+    where $dx^I\in\Omega^1(\bR^n)$ is the differential of the smooth real-valued $\omega_I$, and the sum is over increasing $I$.
+
+\edefn
+
+Since
+$$ df = \sum_i\pdvof f{x^i}dx^i, $$
+we see that we can write the exterior derivative as
+$$ d\omega = \sum_I\sum_i\pdvof{\omega_I}{dx^i}dx^i\wedge dx^I . $$
+For example, for a $1$-form this is
+$$ d(\omega_jdx^j) = d\omega_j\wedge dx^j = \sum_{i,j}\pdvof{\omega_j}{x^i}dx^i\wedge dx^j = \sum_{i<j}\pdvof{\omega_j}{x^i}dx^i\wedge dx^j + \sum_{i>j}\pdvof{\omega_j}{x^i}dx^i\wedge dx^j , $$
+by swapping $i$ and $j$ in the second sum and by anticommutativity, this is equal to
+$$ d(\omega_jdx^j) = \sum_{i<j}\parens{\pdvof{\omega_j}{x^i} - \pdvof{\omega_i}{x^j}}dx^i\wedge dx^j . $$
+
+\bprop
+
+    \benum
+        \item $d$ is $\bR$-linear.
+        \item If $\omega$ is a smooth $k$-form and $\eta$ a smooth $\ell$-form over an open subset $U\subseteq\bR^n$ or $\bH^n$, then
+        $$ d(\omega\wedge\eta) = (d\omega)\wedge\eta + (-1)^k\omega\wedge(d\eta) . $$
+        \item $d\circ d=0$.
+        \item $d$ commutes with pullbacks: if $F\colon U\to V$ is a smooth map between open subsets of Euclidean or Euclidean half-space, then
+        $$ F^*(d\omega) = d(F^*\omega) $$
+        for all $\omega\in\Omega^k(V)$.
+    \eenum
+
+\eprop
+
+\bproof
+
+    (1) is clear, and (2) follows from the case $\omega=udx^I$ and $\eta=vdx^J$.
+    But first we claim $d(udx^I)=du\wedge dx^I$ even if $I$ is not increasing.
+    Let $J=I_\sigma$ be increasing (if $I$ has repeated indices then both sides are zero), then $udx^I=(\sgn\sigma)udx^J$ then
+    $$ d(udx^I) = (\sgn\sigma)du\wedge dx^J = du\wedge dx^I $$
+    as desired.
+    Thus
+    $$ \multline{
+        d(u\d x^I\wedge v\d x^J) = d(uv\d x^I\wedge\d x^J) = \d(uv)\wedge \d x^I\wedge\d x^J = (v\d u+u\d v)\wedge\d x^I\wedge\d x^J\cr
+            = v\d u\wedge\d x^I\wedge\d x^J + u\d v\wedge\d x^I\wedge\d x^J .
+    } $$
+    The first term is equal to $\d(u\d x^I)\wedge(v\d x^J)$, and the second is equal to $(-1)^k(u\d x^I)\wedge\d(v\d x^J)$ by anticommutativity, as desired.
+
+    First we show (3) for a $0$-form, i.e.\ a smooth function $u\in C^\infty(M)$.
+    Here,
+    $$ \d(\d u) = d\parens{\pdvof u{x^j}\d x^j} = \pdvof{^2u}{x^ix^j}\d x^i\wedge\d x^j = \sum_{i<j}\parens{\pdvof{^2u}{x^ix^j} - \pdvof{^2u}{x^jx^i}}\d x^i\wedge\d x^j = 0 . $$
+    Now, in the general case we use (2) and the case of $k=0$,
+    $$ \d(\d\omega) = \d\sum_I\d\omega_I\wedge\d x^I = \sum_I\d(\d\omega_I)\wedge\d x^I - \sum_I\d\omega_I\wedge\d(\d x^I) . $$
+    The first sum is zero since $\d(\d\omega_I)=0$ by the $k=0$ case.
+    The second sum is zero as well, as again by (2) we can write it as the sum of terms of the form $\d\omega_I\wedge\d x^{i_1}\wedge\cdots\wedge\d(\d x^{i_j})\wedge\cdots\wedge\d x^{i_k}=0$.
+
+    For (4) we need only consider $\omega=u\d x^I$.
+    The left-hand side is
+    $$ F^*(\d(u\d x^I)) = F^*(\d u\wedge\d x^I) = F^*(\d u)\wedge F^*(\d x^I) , $$
+    we know that $F^*(\d u)=\d(u\circ F)$ and it is easy to see $F^*(\d x^I)=\d(x^I\circ F)$, so this is equal to
+    $$ F^*(\d(u\d x^I)) = \d(u\circ F)\wedge\d(x^I\circ F) . $$
+    While
+    $$ \d(F^*(u\d x^I)) = \d((u\circ F)\d(x^I\circ F)) = \d(u\circ F)\wedge(x^I\circ F) $$
+    as well.
+    \qed
+
+\eproof
+
+This allows us to define the exterior derivative on arbitrary smooth manifolds.
+
+\bthrm
+
+    Let $M$ be a smooth manifold with or without boundary.
+    Then there are unique operators $d\colon\Omega^k(M)\to\Omega^{k+1}(M)$ called {\emphcolor exterior differentiation}, such that
+    \benum
+        \item $d$ is linear over $\bR$.
+        \item For $\omega\in\Omega^k(M)$ and $\eta\in\Omega^\ell(M)$, then
+        $$ \d(\omega\wedge\eta) = d\omega\wedge\eta + (-1)^k\omega\wedge\d\eta . $$
+        \item $d\circ d=0$.
+        \item For $f\in\Omega^0(M)=C^\infty(M)$, $df$ is the differential of $f$.
+    \eenum
+
+\ethrm
+
+\bproof
+
+    First we prove existence.
+    For $\omega\in\Omega^k(M)$ we define $\d\omega$ using the exterior derivative of Euclidean space.
+    That is, for a chart $(U,\phi)$ define
+    $$ \d\omega = \phi^*\d((\phi^{-1})^*\omega) . $$
+    We want to show that this is well-defined: for any other chart $(V,\psi)$ then $\phi\circ\psi^{-1}$ is a diffeomorphism of Euclidean space, so by above
+    $$ (\phi\circ\psi^{-1})^*\d((\phi^{-1})^*\omega) = \d((\phi\circ\psi^{-1})^*(\phi^{-1})^*\omega) = \d((\psi^{-1})^*\omega) . $$
+    Thus
+    $$ \phi^*\d((\phi^{-1})^*\omega) = \psi^*\circ(\phi\circ\psi^{-1})^*\d((\phi^{-1})^*\omega) = \psi^*\d((\psi^{-1})^*\omega) . $$
+    Then the properties (1) through (4) are satisfied as they are satisfied in Euclidean space.
+
+    Now we show uniqueness.
+    If $d$ is an operator satisfying the conditions, we will show that it is the exterior derivative already given.
+    For a $k$-form $\omega$, we show that $d\omega$ is determined locally.
+    It is sufficient to show that if $\omega$ is zero in a neighborhood of $p$, then $d\omega$ is zero in that neighborhood, say $U$.
+    Let $\psi\in C^\infty(M)$ be a bump function equal to $1$ in a neighborhood of $p$ and supported in $U$.
+    So $\psi\omega$ is identically zero, and by linearity $d(\psi\omega)=0$.
+    But $\psi\omega=\psi\wedge\omega$, and so by the properties,
+    $$ 0 = d(\psi\omega) = d\psi\wedge\omega + \psi d\omega . $$
+    Then at $p$ we have $d\psi_p=0$ (since it is constant in a neighborhood of $p$) and $\psi(p)=1$ so
+    $$ 0 = d\omega|_p , $$
+    as desired.
+
+    So now for $\omega\in\Omega^k(M)$, let $(U,\phi)$ be a coordinate chart of $M$.
+    Write $\omega=\sum_I\omega_Idx^I$ in this coordinate chart.
+    We can extend $\omega_I$ and $dx^i$ globally by means of a bump function identically $1$ in $U$ without loss of generality, and the exterior derivative will be independent of such an extension.
+    Then by the properties,
+    $$ d\omega = \sum_Id\omega_I\wedge dx^I , $$
+    showing uniqueness.
+    \qed
+
+\eproof
+
+\bnote
+
+    For a graded algebra $A=\bigoplus_kA^k$, an endomorphism $T\colon A\to A$ is said to have {\emphcolor degree $m$} if it maps $A^k$ into $A^{k+m}$ for all $k$.
+    And it is an {\emphcolor antiderivation} if
+    $$ T(xy) = (Tx)y + (-1)^kx(Ty) $$
+    for all $x\in A^k,y\in A^\ell$.
+    The previous theorem can be summarized as saying there is a unique extension of the differential $\Omega^0(M)\to\Omega^0(M)$ to an antiderivation of $\Omega^*(M)$ of degree $+1$ whose square is zero.
+
+\enote
+
+\bprop
+
+    If $F\colon M\to N$ is smooth, then the pullback $F^*\colon\Omega^k(N)\to\Omega^k(M)$ commutes with exterior differentiation for all $k$:
+    $$ F^*(\d\omega) = \d(F^*\omega),\qquad \omega\in\Omega^k(N) . $$
+
+\eprop
+
+\bproof
+
+    Let $(U,\phi)$ and $(V,\psi)$ be coordinate charts for $M,N$ respectively.
+    Then locally
+    $$ F^*(\d\omega) = F^*\psi^*\d((\psi^{-1})^*\omega) = \phi^*\circ(\psi\circ F\circ\phi^{-1})^*\d((\psi^{-1})^*\omega) , $$
+    and since $\psi\circ F\circ\phi^{-1}$ is a smooth Euclidean map and the Euclidean exterior derivative commutes with smooth maps,
+    $$ F^*(\d\omega) = \phi^*\d((\psi\circ F\circ\phi^{-1})^*(\psi^{-1})^*\omega) = \phi^*\d((\phi^{-1})^*F^*\omega) = \d(F^*\omega) . \qed $$
+
+\eproof
+
+\bdefn
+
+    A smooth differential form $\omega\in\Omega^k(M)$ is {\emphcolor closed} if $\d\omega=0$ and {\emphcolor exact} if there is a smooth $(k-1)$-differential form
+    $\eta\in\Omega^{k-1}(M)$ such that $\omega=\d\eta$.
+    Since $\d\circ\d=0$ all exact forms are closed.
+
+\edefn
+
+\bnote
+
+    By $\bR$-linearity of $\d$ and $\d\circ\d=0$, the $\Omega^k(M)$ form a {\emphcolor cochain complex}:
+    $$ 0 \to \Omega^0(M) \xtos\d \Omega^1(M) \xtos\d \cdots \xtos\d \Omega^{n-1}(M) \xtos\d \Omega^n(M) \to 0 . $$
+    This is called the {\emphcolor De Rham complex} of $M$.
+    The cycles of this complex are by definition the closed forms, and the boundaries are the exact forms.
+    The cohomology of this complex (the {\emphcolor De Rham cohomology}) is of much importance, and we will discuss it later.
+
+\enote
+
+\bprop
+
+    For a one-form $\omega\in\Omega^1(M)$ and $X,Y\in\X(M)$,
+    $$ \d\omega(X,Y) = X(\omega(Y)) - Y(\omega(X)) - \omega([X,Y]) . $$
+
+\eprop
+
+\bproof
+
+    Both sides are additive, so it is sufficient to consider the case $\omega=u\d v$ for $u,v$ smooth.
+    Then by the formula for wedge products of $1$-forms,
+    $$ \d(u\d v)(X,Y) = \d u\wedge\d v(X,Y) = \d u(X)\d v(Y) - \d v(X)\d u(Y) = X(u)Y(v) - X(v)Y(u) . $$
+    The right-hand side is
+    $$ \eqalign{
+        X(u\d v(Y)) - Y(u\d v(X)) - u\d v([X,Y]) &= X(uY(v)) - Y(uX(v)) - u[X,Y]v\cr
+            &= X(u)Y(v) + uXY(v) - Y(u)X(v) - uYX(v) - u[X,Y]v\cr
+            &= X(u)Y(v) - Y(u)X(v).
+    } $$
+    So we have equality.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Let $M$ be a smooth $n$-manifold, with a local frame $(E_i)$ and dual frame $(\epsilon^i)$.
+    Let $b^i_{jk}$ be the components of the exterior derivative of $\epsilon^i$ in this frame, and let $c^i_{jk}$ be the components of $[E_j,E_k]$:
+    $$ \d\epsilon^i = \sum_{j<k}b^i_{jk}\epsilon^j\wedge\epsilon^k,\qquad [E_j,E_k] = c^i_{jk}E_i . $$
+    Then $b^i_{jk}=-c^i_{jk}$.
+
+\ecoro
+
+\bproof
+
+    By the previous proposition, for $j<k$,
+    $$ \d\epsilon^i(E_j,E_k) = E_j(\epsilon^i(E_k)) - E_k(\epsilon^i(E_j)) - \epsilon^i([E_j,E_k]) . $$
+    Since $\epsilon^i(E_j)$ is constant, the first two terms are zero.
+    The last term is equal to $\epsilon^i(c^\ell_{jk}E_\ell)=c^i_{jk}$.
+    So $\d\epsilon^i(E_j,E_k)=-c^i_{jk}$, and we also see it is equal to $b^i_{jk}$ since $\epsilon^\ell\wedge\epsilon^s(E_j,E_k)=1$ iff $\ell=j$ and $s=k$.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $\omega\in\Omega^k(M)$ and $X_1,\dots,X_{k+1}\in\X(M)$.
+    Then
+    $$ \multline{
+        \d\omega(X_1,\dots,X_{k+1}) = \sum_i(-1)^{i-1}X_i(\omega(X_1,\dots,\hat X_i,\dots,X_{k+1}))\cr
+            + \sum_{i<j}(-1)^{i+j}\omega([X_i,X_j],X_1,\dots,\hat X_i,\dots,\hat X_j,\dots,X_{k+1}) .
+    } $$
+
+\eprop
+
+\bproof
+
+    Let the right-hand side be $D\omega(X_1,\dots,X_{k+1})$, and the two sums by $A(X_1,\dots,X_{k+1})$ and $B(X_1,\dots,X_{k+1})$.
+    $D\omega$ is clearly multilinear over $\bR$; and we show it is multilinear over $C^\infty(M)$.
+    Let $f\in C^\infty(M)$, we consider $A(X_1,\dots,fX_p,\dots,X_{k+1})$ and $B(X_1,\dots,fX_p,\dots,X_{k+1})$.
+
+    For $A$, clearly $f$ factors out of the $p$th term in the sum.
+    For the other terms,
+    $$ \sum_{i\neq p}(-1)^{i-1}X_i(f\omega(X_1,\dots,\hat X_i,\dots,X_{k+1})) = \sum_{i\neq p}(-1)^{i-1}\bigl(fX_i(\omega(\dots,\hat X_i,\dots)) + (X_if)\omega(\dots,\hat X_i,\dots)\bigr) . $$
+    Thus
+    $$ A(\dots fX_p\dots) = fA(\dots X_p\dots) + \sum_{i\neq p}(-1)^{i-1}(X_if)\omega(\dots,\hat X_i,\dots) . $$
+
+    Now consider $B$.
+    When $i\neq p$ and $j\neq p$ clearly $f$ factors out.
+    We know
+    $$ [fX_p,X_j] = f[X_p,X_j] - (X_if)X_p,\qquad [X_i,fX_p] = f[X_i,X_p] + (X_if)X_p , $$
+    and so
+    $$ \multline{
+        B(\dots fX_p\dots) = fB(\dots X_p\dots) + \sum_{p<j}(-1)^{p+j+1}(X_jf)\omega(X_p,\dots,\hat X_p,\dots,\hat X_j,\dots)\cr
+        + \sum_{i<p}(-1)^{i+p}(X_if)\omega(X_p,\dots,\hat X_i,\dots,\hat X_p,\dots) .
+    } $$
+    Rearranging the order of $X_p$ in each of the last two sums to place $X_p$ in the $p$th index gives the sums of $(-1)^{j+1}(X_jf)\omega(\dots\hat X_j\dots)$ and $(-1)^{i-1}(X_if)\omega(\dots\hat X_i\dots)$.
+    These cancel out the additional sum from $A$, so we see that $D\omega(\dots fX_p\dots)=fD\omega(\dots X_p\dots)$ as desired.
+
+    Now that we know both $D\omega,\d\omega$ are multilinear, we can restrict our attention to vector fields from any local frame.
+    So take a chart $(U,(x^i))$, and by the obvious $\bR$-linearity of $D$ and $\d$ in $\omega$, we can assume $\omega=u\d x^I$ for $I$ increasing.
+    Then
+    $$ \d\omega = \d u\wedge\d x^I = \sum_m\pdvof u{x^m}\d x^m\wedge\d x^I . $$
+    For any multi-index $J=(j_1,\dots,j_{k+1})$ we have
+    $$ \d\omega(\partial_J) = \sum_m\pdvof u{x^m}\delta^{mI}_J . $$
+    The only non-zero terms are when $m$ is equal to one of the indices from $J$, say $m=j_p$.
+    In such a case $\delta^{mI}_J=(-1)^{p-1}\delta^I_{\hat J_p}$ where $\hat J_p=(j_1,\dots,\hat j_p,\dots,j_{k+1})$.
+    Thus
+    $$ \d\omega(\partial_J) = \sum_p(-1)^{p-1}\pdvof u{x^{j_p}}\delta^I_{\hat J_p} . $$
+    On the other hand, the Lie brackets are zero so
+    $$ D\omega(\partial_J) = \sum_p(-1)^{p-1}\pdv{x^{j_p}}\parens{u\d x^I\parens{\pdv{x^{j_1}},\dots,\hat{\pdv{x^{j_p}}},\dots,\pdv{x^{j_{k+1}}}}} . $$
+    The innermost application of $\d x^I$ is just $\delta^I_{\hat J_p}$, and so this is equal to
+    $$ = \sum_p(-1)^{p-1}\pdvof u{x^{j_p}}\delta^I_{\hat J_p} = \d\omega(\partial_J) $$
+    as desired.
+    \qed
+
+\eproof
+
+Since $k$-forms are $k$-tensors, we can take their Lie derivatives.
+By the formula
+$$ (\L_V\omega)(X_1,\dots,X_k) = V(\omega(X_1,\dots,X_k)) - \sum_i\omega(X_1,\dots,[V,X_i],\dots,X_k) , $$
+we see that the Lie derivative of a $k$-form is a $k$-form.
+
+\bprop
+
+    The Lie derivative commutes with wedge products as follows: for $\omega,\eta\in\Omega^*(M)$ and $V\in\X(M)$,
+    $$ \L_V(\omega\wedge\eta) = (\L_V\omega)\wedge\eta + \omega\wedge(\L_V\eta) . $$
+
+\eprop
+
+\bproof
+
+    This follows from the general properties of lie derivatives: it is $\bR$-linear, $\L_V(A\otimes B)=(\L_VA)\otimes B+A\otimes(\L_VB)$, and ${}^\sigma\L_V(A)=\L_V({}^\sigma A)$.
+    \qed
+
+\eproof
+
+\bthrm[title={Cartan's magic formula}]
+
+    Let $\omega\in\Omega^k(M)$ and $V\in\X(M)$, then
+    $$ \L_V\omega = V\imult(\d\omega) + \d(V\imult\omega) . $$
+
+\ethrm
+
+\bproof
+
+    We induct on $k$.
+    For $f\in\Omega^0(M)$, we have
+    $$ V\imult(df) + d(V\imult f) = V\imult df = df(V) = V(f) = \L_Vf . $$
+    Now let $k\geq1$ and write $\omega=\omega_I\d x^I$ relative to a chart.
+    Writing $u=x^{i_1}$ and $\beta=\omega_i\d x^{i_2}\wedge\cdots\wedge\d x^{i_k}$, every term in the sum can be written as $\d u\wedge\beta$ for $u\in C^\infty(M)$ and $\beta\in\Omega^{k-1}(M)$.
+    By linearity of $\L_V$ it is sufficient to consider only this case.
+
+    We know that $\L_V(\d u)=\d(\L_Vu)=\d(Vu)$.
+    Then by the above proposition and induction,
+    $$ \L_V(\d u\wedge\beta) = \L_V(\d u)\wedge\beta + \d u\wedge\L_V(\beta) = \d(Vu)\wedge\beta + \d u(V\imult\d\beta + \d(V\imult\beta)) . $$
+    Since both $\d$ and interior multiplication by $V$ are antiderivations, and $V\imult\d u=\d u(V)=Vu$, we see
+    $$ \eqalign{
+        V\imult \d(\d u\wedge\beta) + \d(V\imult(\d u\wedge\beta)) &= V\imult(-\d u\wedge\d\beta) + \d((Vu)\beta - \d u\wedge(V\imult\beta))\cr
+            &= -(Vu)\d\beta + \d u\wedge(V\imult\d\beta) + \d(Vu)\wedge\beta + (Vu)\d\beta + \d u\wedge\d(V\imult\beta).
+    } $$
+    Which gives us the expression computed for $\L_V(\d u\wedge\beta)$.
+    \qed
+
+\eproof
+
+\bcoro
+
+    The Lie derivative commutes with exterior derivatives:
+    $$ \L_V(\d\omega) = \d(\L_V\omega) $$
+    for all $V\in\X(M)$ and $\omega\in\Omega^*(M)$.
+
+\ecoro
+
+\bproof
+
+    From Cartan's formula,
+    $$ \eqalign{
+        \L_V(\d\omega) &= V\imult\d(\d\omega) + \d(V\imult\d\omega) = \d(V\imult\d\omega)\cr
+        \d\L_V(\omega) &= \d(V\imult\d\omega + \d(V\imult\omega)) = \d(V\imult\d\omega).
+    } $$
+    These are equal.
+    \qed
+
+\eproof
 
