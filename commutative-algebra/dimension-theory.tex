@@ -10,7 +10,7 @@
 
 \bdefn
 
-    A morphism $f\colon X\to Y$ of affine varieties is
+    A morphism $f\colon X\to Y$ of algebraic varieties is
     \benum
         \item {\emphcolor affine} if there is an open affine covering $Y=\bigcup_iU_i$ such that $f^{-1}(U_i)\subseteq X$ is affine for all $i$,
         \item {\emphcolor finite} if there is an open affine covering $Y=\bigcup_iU_i$ such that $f^{-1}(U_i)\subseteq X$ is affine, and $k[f^{-1}U_i]$ is a finite $k[U_i]$-algebra for all $i$.
@@ -29,9 +29,580 @@ So in the definition of a finite morphism, we mean that $f^*$ is finite for each
 
 \elemm
 
+From this lemma it is clear that the composition of affine/finite morphisms is affine/finite.
+
+\bdefn
+
+    A property $P$ of morphisms is {\emphcolor local on the target} if for any morphism $f\colon X\to Y$ and an open cover $\set{U_i}$ of $Y$,
+    $f$ satisfies $P$ iff restricting $f$ to $f^{-1}U_i\to U_i$ satisfies $P$.
+
+\edefn
+
+We then see that being affine/finite is local on the target.
+
+We state a few properties of morphisms of affine varieties which are proven in homework (they can be proven directly or by translating to the case of affine schemes).
+
+\bprop
+
+    Let $f\colon X\to Y$ be a morphism of affine varieties, with induced morphism $f^*\colon k[Y]\to k[X]$.
+    \benum
+        \item A closed subset $Z\subseteq X$ is irreducible iff $\I(Z)\subseteq k[X]$ is prime, and it is a point iff $\I(Z)$ is a point.
+        \item For every $T\subseteq X$, $(f^*)^{-1}(\I_X(T))=\I_Y(f(T))$.
+        \item For every closed $S\subseteq Y$, $\I_X(f^{-1}S)=\gen{f^*\I_Y(S)}$.
+        \item $f^*$ is injective iff $f$ is {\emphcolor dominant}, i.e.\ $f(X)\subseteq Y$ is dense.
+        \item $f^*$ is surjective iff $f$ is a closed embedding, i.e.\ its image is closed and it forms an isomorphism $X\cong f(X)$.
+    \eenum
+
+\eprop
+
+\bcoro
+
+    Let $f\colon X\to Y$ be a morphism of affine varieties which induces $f^*\colon k[Y]\to k[X]$.
+    \benum
+        \item If a prime ideal $\p\leq k[X]$ corresponds to the closed irreducible subset $Z\subseteq X$, then $(f^*)^{-1}\p\subseteq k[Y]$ corresponds to the
+        closure $\cl{f(Z)}\subseteq Y$.
+        \item If a closed subset $Z\subseteq Y$ corresponds to the radical ideal $I\leq k[Y]$, then the irreducible components $Z_i$ of $f^{-1}Z$ correspond
+        to minimal prime ideals $\p_i\leq k[X]$ such that $(f^*)^{-1}\p_i\supseteq I$.
+    \eenum
+
+\ecoro
+
 \bproof
 
-    The right-to-left direction is clear.
+    \benum
+        \item From the above proposition,
+        $$ (f^*)^{-1}\I_X(Z) = \I_Y(f(Z)) = \I_Y(\cl{f(Z)}) , $$
+        so it corresponds to $\cl{f(Z)}$.
+        \item $Z_i$ is the maximal closed irreducible subset of $X$ such that $f(Z_i)\subseteq Z$, equivalently $\cl{f(Z_i)}\subseteq Z$.
+        From (1) this corresponds to $(f^*)^{-1}\p_i$ for prime $\p_i$ containing $\I_Y(Z)=I$.
+        \qed
+    \eenum
 
 \eproof
+
+\bcoro
+
+    \benum
+        \item For an affine variety $X$, the correspondence $x\mapsto\I_X(x)$ is a bijection between points of $X$ and maximal ideals of $k[X]$.
+        \item For a morphism $f\colon X\to Y$ inducing $f^*\colon k[Y]\to k[X]$, then for every maximal $\m\leq k[X]$, $(f^*)^{-1}\m\leq k[Y]$
+        is maximal.
+        Furthermore, under the correspondence of (1), the map $x\mapsto f(x)$ corresponds to $\m\mapsto(f^*)^{-1}\m$.
+    \eenum
+
+\ecoro
+
+\bproof
+
+    Immediate.
+    \qed
+
+\eproof
+
+\blemm
+
+    For algebraic varieties, the following hold.
+    \benum
+        \item If $\iota\colon Z\inj X$ is a closed embedding, it is finite.
+        \item For every $f\in k[X]$, the inclusion $j\colon D_X(f)\inj X$ is affine.
+    \eenum
+
+\elemm
+
+\bproof
+
+    For (1) we may assume $Z\subseteq X$ is a closed subset.
+    Then for every affine $U\subseteq X$, $\iota^{-1}U=U\cap Z\subseteq U$ is a closed subspace of an affine variety, thus it itself is affine.
+    So $\iota\colon\iota^{-1}U\to U$ is a closed embedding and thus $\iota^*\colon k[U]\to k[\iota^{-1}U]$ is surjective, and in particular
+    finite (since a surjective map of rings is finite).
+
+    For (2), for $U\subseteq X$ affine, $j^{-1}U=D_U(f)$ is affine.
+    \qed
+
+\eproof
+
+\blemm
+
+    Let $f\colon X\to Y$ be a finite morphism, then for every closed $Z\subseteq X$ and every closed $f(Z)\subseteq W$, $f|_Z\colon Z\to W$
+    is finite.
+
+\elemm
+
+\bproof
+
+    If $X,Y$ are affine, then $k[X]$ is a finite $k[Y]$-algebra.
+    For a closed $Z\subseteq X$, by the above lemma $k[Z]$ is a finite $k[X]$-algebra and thus a finite $k[Y]$-algebra.
+    Since $Z\to Y$ factors as $Z\to W\to Y$, $k[Y]\to k[Z]$ factors as $k[Y]\to k[W]\to k[Z]$, and since $k[Y]\to k[W]$ is finite as well, we see that
+    $k[W]\to k[Z]$ must be finite.
+
+    In general, let $Y=\bigcup_iU_i$ be an affine covering such that $f^{-1}U_i\subseteq X$ is affine and $k[f^{-1}U_i]$ is a finite $k[U_i]$-algebra.
+    Then $W=\bigcup_iW\cap U_i$ is an open affine covering of $W$, and $f|_Z^{-1}(U_i\cap W)=f^{-1}(U_i)\cap Z$ is closed inside $f^{-1}U_i$, thus affine.
+    So from the previous paragraph, $k[f|_Z^{-1}(U_i\cap W)]$ is a finite $k[U_i\cap W]$-algebra, showing that $f|_Z$ is finite.
+    \qed
+
+\eproof
+
+We recall the following results, proven in our section on integral and finite algebras.
+
+\blemm
+
+    Let $\phi\colon A\to B$ be an integral (in particular finite) morphism of rings.
+    \benum
+        \item A prime ideal $\q\leq B$ is maximal iff $\phi^{-1}\q\leq A$ is maximal.
+        \item If $\q_1\subsetneq\q_2\leq B$ are prime, then $\phi^{-1}\q_1\subsetneq\phi^{-1}\q_2$.
+        \item If $\phi$ is injective, then $\phi^*\colon\spec(B)\to\spec(A)$ is surjective: for every prime $\p\leq A$ there is a prime $\q\leq B$ such that
+        $\phi^{-1}\q=\p$.
+    \eenum
+
+\elemm
+
+\bprop
+
+    Let $f\colon X\to Y$ be a finite morphism, then
+    \benum
+        \item $f$ is a closed map, meaning it maps closed subsets of $X$ to closed subsets of $Y$.
+        \item if $Z_1\subsetneq Z_2\subseteq X$ are closed irreducible, then $f(Z_1)\subsetneq f(Z_2)$.
+    \eenum
+
+\eprop
+
+\bproof
+
+    First we show (1) and (2) in the case that $X,Y$ are affine.
+
+    The induced morphism $f|_Z\colon Z\to\cl{f(Z)}$ is finite as well, from an above proposition, and dominant by definition.
+    So replacing $f$ with $f|_Z$, it is sufficient to show that dominant finite morphisms are surjective.
+
+    The map $x\mapsto f(x)$ corresponds to $\m\mapsto(f^*)^{-1}\m$, so we show the second is surjective.
+    Let $\m\leq k[Y]$ be maximal, then since $f$ is dominant $f^*$ is injective and finite, and by the above lemma this means there is a prime $\p\leq k[X]$
+    such that $(f^*)^{-1}\p=\m$.
+    And by the same lemma, this means $\p$ is maximal, so $(f^*)^{-1}$ is indeed surjective.
+
+    Since $Z_1\subsetneq Z_2$ are closed irreducible, $\I_X(Z_1)\supsetneq\I_X(Z_2)$ are prime (the inequality is due to $\I_X$ being a bijection on closed subsets).
+    Since $k[X]$ is a finite $k[Y]$-algebra, by the above lemma
+    $$ \I_Y(f(Z_1)) = (f^*)^{-1}\I_X(Z_1) \supsetneq (f^*)^{-1}\I_X(Z_2) = \I_Y(f(Z_2)) , $$
+    and thus $f(Z_1)\subsetneq f(Z_2)$.
+
+    Now in general take $Y=\bigcup_iU_i$ an affine covering such that $f^{-1}U_i\subseteq X$ is affine and $k[f^{-1}U_i]$ is a finite $k[U_i]$-algebra.
+    Since $Z\subseteq X$ is closed, $Z\cap f^{-1}U_i\subseteq f^{-1}U_i$ is closed.
+    Then as in the affine case, $f(Z\cap f^{-1}U_i)\subseteq f(U_i)$ is closed.
+    Since $f(Z\cap f^{-1}U_i)=f(Z)\cap U_i$, we see that $f(Z)$ is closed as desired.
+
+    This is because being closed is ``local'': if $Z\cap U_i$ is closed for all $i$ in an open covering then $Z$ is closed.
+    And this is because if we let $W=Y-Z$, we see $W\cap U_i$ is open for all $i$ and thus $W$ is open and so $Z$ is closed.
+
+    For (2), let $i$ be such that $f(Z_2)\cap U_i\neq\emptyset$.
+    Then $Z_1\cap f^{-1}U_i\subseteq Z_2\cap f^{-1}U_i$ are closed in $f^{-1}U_i$.
+    And $Z_2\cap f^{-1}U_i\subseteq Z_2$ is open and nonempty, thus dense.
+    Since $Z_1\cap f^{-1}U_i\subseteq Z_1\subsetneq Z_2$, it is not dense in $Z_2$, so $Z_1\cap f^{-1}U_i\subsetneq Z_2\cap f^{-1}U_i$.
+    These are closed irreducible subsets of an affine variety, so $f(Z_1\cap f^{-1}U_i)\subsetneq f(Z_2\cap f^{-1}U_i)$,
+    and thus we must have $f(Z_1)\subsetneq f(Z_2)$.
+    \qed
+
+\eproof
+
+\bcoro
+
+    If $X$ is an algebraic variety, its points are all closed.
+
+\ecoro
+
+\bproof
+
+    For $x\in X$, $x$ is a point of an affine variety and thus itself an affine variety.
+    Its ideal is maximal, which means $k[\set x]=k$ and so $\set x\inj X$ is finite as $k$ is a finite $k[X]$-algebra.
+    So by the above proposition the inclusion is a closed map, and thus $x$ is closed in $X$.
+
+    Alternatively if we choose an affine cover $U_i$ of $X$, then $\set x\cap U_i$ is either empty or $\set x\subseteq U_i$.
+    In each case it is closed, and thus $\set x$ is closed.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A morphism of varieties $f\colon X\to Y$ is {\emphcolor quasi-finite} if it has finite fibers: $f^{-1}y$ is a finite set for all $y\in Y$.
+
+\edefn
+
+\bcoro
+
+    Every finite morphism of varieties is quasi-finite.
+
+\ecoro
+
+\bproof
+
+    Let $f\colon X\to Y$ be finite, and $y\in Y$.
+    It is sufficient to show that every irreducible component of $f^{-1}y$ is a point, as varieties have finitely many irreducible components.
+    Let $Z$ be an irreducible component, and let $x\in Z$, then $\set x\subseteq Z$ are closed irreducible sets and $f(Z)=f(\set x)=y$.
+    By the proposition, we must have $\set x=Z$.
+    \qed
+
+\eproof
+
+\bcoro
+
+    \benum
+        \item For every affine variety $X$ there is a finite surjective morphism $X\to\bA^n$ such that $k[X]$ is a finite $k[\bA^n]$-algebra.
+        \item For every non-constant function $f\in k[\bA^n]-k$, there is a finite surjective morphism $Z(f)\to\bA^{n-1}$ such that $k[Z(f)]$ is a finite
+        $k[\bA^{n-1}]$-algebra.
+    \eenum
+
+\ecoro
+
+\bproof
+
+    By the Noether normalization lemma, since $k[X]$ is fg there is a finite embedding $k[\bA^n]\inj k[X]$ for some $n$.
+    Thus $X\to\bA^n$ is finite and dominant.
+    It is then closed, and since it is dominant it is surjective.
+
+    For (2), we have $k[Z(f)]=k[\bA^n]/(f)$.
+    Then in Noether normalization our injective embedding was $k[\bA^{n-1}]\to k[bA^n]/(f)$.
+    \qed
+
+\eproof
+
+\subsection{Dimension theory}
+
+\bdefn
+
+    Let $X$ be a topological space.
+    A {\emphcolor chain of irreducible subsets} is a sequence $\emptyset\neq Z_0\subsetneq Z_1\subsetneq\cdots\subsetneq Z_n\subseteq X$
+    where each $Z_i$ is irreducible.
+    The length of such a chain is $n$.
+
+    Then we define the {\emphcolor (Krull) dimension} of $X$ to be the supremum of the lengths of all chains of irreducible subsets.
+    It is denoted $\dim X$.
+    For $X=\emptyset$ we set $\dim X=-1$.
+
+\edefn
+
+\bnote
+
+    For Hausdorff $X$, the only irreducible subsets are the points, and so $\dim X=0$.
+    We will thus consider only Noetherian topological spaces.
+
+    The Krull dimension of a Noetherian topological space may be infinite.
+    While each chain is finite (and can only be extended finitely), there need not be a bound on the length of all chains.
+    We will nevertheless show that for algebraic varieties the dimension is finite.
+
+\enote
+
+\blemm
+
+    If $Y$ is irreducible and $X\subseteq Y$ is closed with $\dim X=\dim Y<\infty$, then $X=Y$.
+
+\elemm
+
+\bproof
+
+    We show that if $\dim X=n$ and $X\subsetneq Y$ then $\dim Y\geq n+1$.
+    By definition, there is a chain of irreducible subsets of $X$ of length $n$: $\emptyset\neq X_0\subsetneq\cdots\subsetneq X_n$.
+    These are then closed irreducible in $Y$, and we can append $Y$ to this chain to obtain a chain of length $n+1$.
+    \qed
+
+\eproof
+
+\blemm
+
+    Let $X$ be an arbitrary topological space.
+    \benum
+        \item If $Y\subseteq X$ is a subspace, $\dim Y\leq\dim X$.
+        \item If $X=\bigcup_iX_i$ is a finite union of closed subsets, then $\dim X=\max_i\dim X_i$.
+        \item If $X=\bigcup_iU_i$ is an open covering, then $\dim X=\sup_i\dim U_i$.
+    \eenum
+
+\elemm
+
+\bproof
+
+    For (1), we note that if $Y_n\subseteq Y$ is closed irreducible then $Y_n=Y\cap X_n$ for $X_n\subseteq X$ irreducible.
+    Indeed, $Y_n=Y\cap X_n$ for $X_n$ closed.
+    Then $X_n$ is the union of its irreducible components, and then $Y_n$ is the union of the intersection of $Y$ with these irreducible components.
+    There are all closed in $Y_n$, and thus this union cannot be proper, so $Y_n$ is equal to the intersection of $Y$ with one of these irreducible components.
+
+    So every chain in $Y$ gives rise to a chain in $X$, showing $\dim Y\leq\dim X$.
+
+    For (2) and (3), by (1) we have that $\max_i\dim X_i,\sup_i\dim U_i\leq\dim X$.
+    Conversely let $\emptyset\neq Z_0\subsetneq\cdots\subsetneq Z_n$ be a chain of irreducible subsets of $X$.
+    Then for each $j$,
+    $$ Z_j = \bigcup_iZ_j\cap X_i . $$
+    Since $Z_j$ is irreducible and this is a finite union of closed subsets, this means there is an $i$ where $Z_j=Z_j\cap X_i$ and so $Z_j\subseteq X_i$.
+    For $j=n$ this shows that this chain is contained in some $X_i$ so $\dim X\leq\max_i\dim X_i$.
+
+    For (3) we note that open subsets of irreducible subsets are irreducible (since irreducibility is equivalent to open subsets having nonempty intersection).
+    Since $Z_0$ is nonempty there is some $U_i$ where $Z_0\cap U_i\subseteq U_i$ is nonempty.
+    In such a case we also have $Z_j\cap U_i\subsetneq Z_{j+1}\cap U_i$ since $Z_{j+1}\cap U_i$ is dense in $Z_{j+1}$ while $Z_j$ is not.
+    So we get an irreducible chain $\emptyset\neq Z_0\cap U_i\subsetneq\cdots\subsetneq Z_n\cap U_i$ of $U_i$, so $\sup_i\dim U_i\geq\dim X$.
+    \qed
+
+\eproof
+
+\blemm
+
+    If $f\colon X\to Y$ is a finite surjective morphism of algebraic varieties.
+    Then $\dim X=\dim Y$.
+
+\elemm
+
+\bproof
+
+    If $\emptyset\neq X_0\subsetneq\cdots\subsetneq X_n$ is a chain of closed irreducible subsets of $X$, then by our previous results
+    $\emptyset\neq f(X_0)\subsetneq\cdots\subsetneq f(X_n)$ is a chain of closed irreducible subsets of $Y$, so $\dim Y\geq\dim X$.
+
+    Conversely let $\emptyset\neq Y_0\subsetneq\cdots\subsetneq Y_n$ be a chain of closed irreducible subsets of $Y$.
+    We claim that there is a chain $\emptyset\neq X_0\subsetneq\cdots\subsetneq X_n$ of closed irreducible subsets of $X$ such that $f(X_i)=Y_i$ for all $i$.
+
+    Write $f^{-1}Y_n$ as a union of its irreducible components, $f^{-1}Y_n=\bigcup_jK_j$.
+    Since $f$ is surjective, $Y_n=\bigcup f(K_j)$ and $f$ is a closed map so $f(K_j)\subseteq Y$ is closed.
+    Thus $f(K_j)=Y_n$ for some $j$; let $X_n=K_j$.
+
+    The restriction $f|_{X_n}\colon X_n\to Y_n$ is finite surjective, so inducting on $n$ we construct $\emptyset\neq X_0\subsetneq\cdots\subsetneq X_n$
+    as desired.
+    \qed
+
+\eproof
+
+\bnote
+
+    Later we will be able to show that for a morphism of varieties $f\colon X\to Y$,
+    \benum
+        \item if $f$ is dominant, then $\dim X\geq\dim Y$,
+        \item if $f$ is quasi-finite, then $\dim X\leq\dim Y$.
+    \eenum
+    So if $f$ is dominant and quasi-finite (e.g.\ surjective and finite) then $\dim X=\dim Y$.
+
+\enote
+
+\bthrm
+
+    \benum
+        \item For $n\geq0$, $\dim\bA^n=n$.
+        \item For $n>0$ and $f\in k[\bA^n]-k$, $\dim Z(f)=n-1$.
+    \eenum
+
+\ethrm
+
+\bproof
+
+    We prove both points by induction on $n$.
+    For $n=0$ point (2) holds vaccuously and point (1) holds trivially since $\bA^0$ is a single point.
+    So assume $n>0$.
+
+    For point (2), there is a finite surjective morphism $Z(f)\to\bA^{n-1}$ so by the above lemma, $\dim Z(f)=\dim\bA^{n-1}$ which is $n-1$ by induction.
+    For (1), consider the chain $X_0\subsetneq X_1\subsetneq\cdots\subsetneq X_n$ of $\bA^n$ where
+    $$ X_i = Z(x_{i+1},\dots,x_n) . $$
+    These are all irreducible as $(x_{i+1},\dots,x_n)$ is prime and the strict inclusion is clear.
+    So $\dim\bA^n\geq n$.
+
+    Conversely let $X_0\subsetneq\cdots\subsetneq X_m$ be a chain of closed irreducible subsets of $\bA^n$.
+    Now we have that $\dim X_{m-1}\geq m-1$, since this chain gives a chain of length $m-1$ of $X_{m-1}$, and $X_{m-1}\subsetneq\bA^n$.
+    Thus there is a $f\in k[\bA^n]-0$ such that $X_{m-1}\subseteq Z(f)$ (because $\I(X_{m-1})\neq0$), and thus we have $f\notin k$.
+    So inductively $\dim Z(f)=n-1$ and thus
+    $$ m - 1 \leq \dim X_{m-1} \leq \dim Z(f) = n - 1 \implies m\leq n $$
+    as desired.
+    \qed
+
+\eproof
+
+\bcoro
+
+    The dimension of any algebraic variety is finite.
+
+\ecoro
+
+\bproof
+
+    The dimension of any affine variety is finite, as a subspace of $\bA^n$.
+    If $X$ is an algebraic variety, it has a finite cover by open affine subvarieties.
+    Thus $X$'s dimension is the maximum of these dimensions, which is finite.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $L/K$ be a field extension.
+    \benum
+        \item A subset $S\subseteq L$ is {\emphcolor algebraically independent} over $K$ if for every $s_1,\dots,s_n\in S$ and $0\neq f\in K[x_1,\dots,x_n]$
+        we have $f(s_1,\dots,s_n)\neq0$.
+        \item A subset $S\subseteq L$ is a {\emphcolor transcendence basis} of $L/K$ if it is algebraically independent over $K$ and $L$ is an algebraic extension
+        of $K(S)$.
+        \item It can be shown that every field extension has a transcendence basis, and they all have the same cardinality.
+        The cardinality of a transcendence basis is called the {\emphcolor transcendence degree} of the extension, and is denoted $\trdeg(L/K)$ or $\trdeg_K(L)$.
+    \eenum
+
+\edefn
+
+\bnote
+
+    To prove the existence of a transcendence basis, and the uniqueness of its cardinality, we can use the concept of a {\emphcolor pregeometry}.
+    A {\emphcolor pregeometry} is a pair $(S,\cll)$ where $\cll\colon\P(S)\to\P(S)$ is a {\emphcolor closure operation} satisfying the following axioms:
+    \benum
+        \item {\emphcolor monotonicity}: $\cll$ is monotone increasing and dominates: if $A\subseteq B$ then $A\subseteq\cll(A)\subseteq\cll(B)$.
+        \item {\emphcolor idempotent}: $\cll$ is idempotent: $\cll(\cll(A))=\cll(A)$.
+        \item {\emphcolor finite character}: for each $a\in\cll(A)$ there is some finite $F\subseteq A$ with $a\in\cll(F)$.
+        \item {\emphcolor exchange}: if $b\in\cll(A\cup\set c)-\cll(A)$, then $c\in\cll(A\cup\set b)$.
+    \eenum
+
+    For a pregeometry $(S,\cll)$, a subset $D\subseteq S$ is {\emphcolor independent} if $d\notin\cll(D-d)$ for all $d\in D$.
+    A {\emphcolor basis} for $S$ is an independent set $D$ such that $\cll(D)=S$.
+    Equivalently this is a maximally independent set; and thus it can be shown easily via Zorn that a basis must exist.
+
+    Then we can show that if $A$ is independent and $B$ generates $S$ (meaning $\cll(B)=S$), then $\abs A\leq\abs B$.
+    Clearly this implies two bases have the same cardinality.
+    We omit the details of the proofs here, they can be found in most standard texts on model theory for example (or my final assignment in model theory).
+
+    Pregeometries are also called {\emphcolor matroids} outside of model theory.
+    They generalize the concept of independence found in linear algebra and are used to prove important results in model theory.
+    Our main concern here is their use for algebraic independence.
+
+    Given a field extension $L/K$, we define a pregeometry on $L$ by
+    $$ \cll(S) = \set{a\in L}[\hbox{$a$ is algebraic over $K(S)$}] . $$
+    This is clearly monotonic and dominates, idempotence is easily seen as well.
+    Finite character is easy to see as well: if $a$ is algebraic over $S$ then it is the root of some polynomial in $K(S)[x]$.
+    Any such polynomial must use finitely many elements from $S$.
+    If $a$ is algebraic over $K(S\cup b)$ but not $K(S)$, then there is a polynomial in $K(S\cup b)[x]$ with root $a$, and it must have some coefficient with $b$.
+    Then viewing $b$ as the variable and not $a$, we see $b\in\cll(A\cup a)$, so this satisfies exchange.
+
+    If $S$ generates $L$ then every $a\in L=\cll(S)$ is algebraic over $K(S)$, so $L/K(S)$ is algebraic.
+    And if $S$ is independent, then let $s_1,\dots,s_n\in S$ and suppose $f(s_1,\dots,s_n)=0$ for $0\neq f\in K[x_1,\dots,x_n]$.
+    Take $n$ minimal, so each $x_i$ has nonzero coefficient.
+    This shows that $s_1$ is algebraic over $K(s_2,\dots,s_n)$, which contradicts independence.
+    So if $S$ is independent in the pregeometry, then it is algebraically independent over $K$ (the converse is readily shown as well).
+
+    Thus a basis of the pregeometry is the same as a transcendence basis of the field extension, and we have proven the result.
+
+\enote
+
+If we have field extensions $M/L/K$, then let $S_0$ be a transcendence basis of $M/L$, and $S_1$ a transcendence basis of $L/K$.
+These are disjoint as $S_0\subseteq M-L$, and their union forms a transcendence basis of $M/K$.
+So
+$$ \trdeg(M/K) = \trdeg(M/L) + \trdeg(L/K) . $$
+
+If $L/K$ is finitely generated, so $L=K(y_1,\dots,y_n)$, then any maximal algebraically independent subset of $y_1,\dots,y_n$ over $K$ is a transcendence basis.
+Thus $\trdeg(L/K)\leq n$.
+
+\bdefn
+
+    Let $X$ be an algebraic variety.
+    We define $k(X)$ to be the colimit of sections of dense open subsets:
+    $$ k(X) = \colim_{U\subseteq X\hbox{ dense}}\O_X(U) . $$
+    Explicitly, we can write $k(X)$ in terms of equivalence classes.
+    We identify two pairs $(U,f)$ and $(V,g)$ where $f\in\O_X(U),g\in\O_X(V)$ if there is a dense open subset $W\subseteq U\cap V$ such that $f|_W=g|_W$.
+    Then $k(X)$ is the quotient
+    $$ k(X) = \coprod_{U\subseteq X\hbox{ dense}}\O_X(U)/{\sim} . $$
+
+    A {\emphcolor rational function} is an element of $k(X)$, so an equivalence class.
+
+\edefn
+
+\blemm
+
+    \benum
+        \item $k(X)$ has a natural $k$-algebra structure.
+        \item For any dense open subset $U\subseteq X$, restriction induces a $k$-algebra isomorphism $k(X)\cong k(U)$.
+        \item If $X=\bigcup_{i=1}^nZ_i$ is the decomposition of $X$ into irreducible components, then $k(X)\cong\prod_ik(Z_i)$ where the components of the map
+        are restrictions.
+        \item If $X$ is irreducible, $k(X)$ is a field.
+        \item If $X$ is affine and irreducible, then $k(X)$ is the fraction field of $k[X]$.
+        More precisely the map $k[X]\to k(X)$ given by $f\mapsto(X,f)$ factors through an isomorphism $\Frac(k[X])\cong k(X)$.
+    \eenum
+
+\elemm
+
+\bproof
+
+    Point (1) is clear as a colimit of $k$-algebras is a $k$-algebra.
+    Point (2) is clear since dense open subsets of $U$ are dense in $X$, and form a cofinal subcategory of dense open subsets of $X$.
+    This is because $U$ is dense, so for every $W\subseteq X$ open dense we have $W\cap U\subseteq U$ is open dense.
+
+    For (3), define $U_i=Z_i-\bigcup_{j\neq i}Z_j$.
+    Since $Z_i$ are irreducible, $U_i\neq\emptyset$, and since $U_i=X-\bigcup_{j\neq i}Z_j$, $U_i$ is open.
+    And the $U_i$ are all disjoint.
+    Define $U=\bigcup_iU_i$, then we claim $U$ is dense in $X$.
+
+    Indeed, let $V\subseteq X$ be nonempty open.
+    Then $V\cap Z_i\neq\emptyset$ for some $i$, so $V\cap Z_i$ is nonempty open in $Z_i$ and thus dense.
+    So $V\cap Z_i\cap U_i\neq\emptyset$, and so $V\cap U\neq\emptyset$ meaning $U$ is indeed dense.
+
+    But $U=\bigsqcup_iU_i$ is a disjoint union of irreducible $U_i$, so a dense open subset of $U$ is the same as a disjoint union $W=\bigsqcup_iW_i$
+    for $W_i\subseteq U_i$ dense open.
+    By the sheaf condition, $k[W]=\prod_ik[W_i]$.
+    This says that the functor $W\mapsto\O_X(W)$ is the same as a the product functor $(W_i)\mapsto\prod_ik[W_i]$.
+    Colimits and limits commute, so we see
+    $$ k(U) \cong \prod_ik(U_i) . $$
+    Now, $U\subseteq X$ is dense and $U_i\subseteq Z_i$ is dense, so by (2) this forms an isomorphism
+    $$ k(X) \cong \prod_ik(Z_i) . $$
+
+    For (4), note that all nonempty open $U\subseteq X$ are dense.
+    For nonzero $f\in k[U]$, $D_U(f)\subseteq X$ is nonempty open and thus dense.
+    So $(D_U(f),1/f)\in k(X)$ is a multiplicative inverse for $(U,f)$.
+
+    For (5), since $k[X]\subseteq k(X)$ and $k(X)$ is a field, it remains to show that every element of $k(X)$ can be written as $g/h$ for $g/h\in k[X]$.
+    Indeed, the basic open subsets $D_X(h)$ form a basis of $X$, so every $f\in k(X)$ has representative in $k[D_X(h)]=k[X]_h$.
+    Such an $f$ is of the form $g/h^k$ for $g\in k[X]$ as desired.
+    \qed
+
+\eproof
+
+\bcoro
+
+    If $X$ is a nonempty irreducible affine variety, $\dim X=\trdeg_k(k(X))$.
+
+\ecoro
+
+\bproof
+
+    There is a finite surjective morphism $X\to\bA^n$, so $\dim X=\dim\bA^n=n$.
+    Since $k[\bA^n]\subseteq k[X]$ and $k[X]$ is a finite $k[\bA^n]$-algebra, we have that $k(X)$ is a finite extension of $k(\bA^n)=k(x_1,\dots,x_n)$
+    (as it is the fraction field of $k[x_1,\dots,x_n]$).
+    Since $x_1,\dots,x_n$ are algebraically independent over $k$ and $k(X)/k(x_1,\dots,x_n)$ is finite and thus algebraic, we see that $\trdeg_k(k(X))=n$.
+    \qed
+
+\eproof
+
+\bcoro
+
+    If $X$ is an algebraic variety and $U\subseteq X$ is open dense, then $\dim U=\dim X$.
+
+\ecoro
+
+\bproof
+
+    If $X$ is affine and irreducible, then there is a $f\in k[X]$ such that $D_X(f)\subseteq U\subseteq X$.
+    Thus $\dim D_X(f)\leq\dim U\leq\dim X$.
+    On the other hand $k[D_X(f)] = k[X]_f$, and since $X$ is irreducible so is $D_X(f)$ and thus $k(D_X(f))$ is the fraction field of $k[X]_f$,
+    which is just $k(X)$.
+    Thus $\dim D_X(f)=\dim X=\trdeg_k(k(X))$ so $\dim U=\dim X$.
+
+    Now suppose $X$ is just affine, and let $X_1,\dots,X_n$ be the irreducible components of $X$.
+    Since $U\subseteq X$ is open dense, $U\cap X_i\subseteq X_i$ is open dense and $X_i$ is affine so $\dim(U\cap X_i)=\dim X_i$.
+    Then $U$ is the finite union of the closed $U\cap X_i$, so $\dim U=\max_i\dim X_i=\dim X$ (the last equality is because $X_i$ form a finite closed cover of $X$).
+
+    In the general case, choose an open affine covering $X=\bigcup_iX_i$, then $U\cap X_i\subseteq X_i$ is open dense so $\dim(U\cap X_i)=\dim X_i$.
+    So
+    $$ \dim U = \max_i\dim(U\cap X_i) = \max_i\dim X_i = \dim X , $$
+    as desired.
+    \qed
+
+\eproof
+
+\bcoro
+
+    If $X$ is a nonempty irreducible variety, then $\dim X=\trdeg_k(k(X))$.
+
+\ecoro
+
+\bproof
+
+    Choose an open affine neighborhood $U\subseteq X$.
+    Since $X$ is irreducible, $U$ is open dense.
+    Then $k(X)\cong k(U)$ and $\dim U=\dim X$.
+    Since $\dim U=\trdeg_k(k(U))$ we are finished.
+    \qed
+
+\eproof
+
+If we define $\trdeg_k(0)=-1$ for the zero ring, then the previous corollary holds for the empty variety.
 
