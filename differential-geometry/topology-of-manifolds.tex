@@ -1,0 +1,360 @@
+\section{The Topology of Smooth Manifolds}
+
+\subsection{Completeness}
+
+\bdefn
+
+    A Riemannian manifold $M$ is {\emphcolor geodesically complete} iff every maximal geodesic on it is defined over all of $\bR$.
+
+\edefn
+
+Recall that a smooth manifold is metrizable, so we can talk about bounded sets, and also {\emphcolor metrically complete} manifolds which are of
+course smooth manifolds which are complete metric spaces.
+
+\blemm
+
+    Let $(M,g)$ be a connected Riemannian manifold such that there is a $p\in M$ for which $\exp_p$ is defined on all of $T_pM$.
+    Then for every $q\in M$ there is a minimizing geodesic from $p$ to $q$.
+
+\elemm
+
+\bproof
+
+    Consider the geoedesic sphere $S_\delta(p)$ about $p$ of radius $\delta$.
+    This is the image of a compact subset of $T_pM$ under $\exp_p$ and is thus compact.
+    Thus $d(\bul,q)$ must attain a minimum on $S_\delta(p)$, let it be at $x_0$.
+
+    Let $v\in T_pM$ of norm $1$ be such that $\exp_p(\delta v)=x$.
+    Then define the geodesic $\gamma(t)=\exp(tv)$, and we claim that $\gamma_v$ is a minimizing geodesic from $p$ to $q$.
+
+    We prove this as follows: let $r=d(p,q)$ then we claim that $\gamma(r)=q$.
+    Let
+    $$ A = \set{s\in[0,r]}[d(\gamma(s),q)=r-s] . $$
+    This is nonempty as it contains $0$.
+    Furthermore, $A$ is closed as it is the set of points where two continuous maps (to a Hausdorff space) agree.
+    We want to show that $r\in A$ since then $d(\gamma(r),q)=0$ and thus $r=q$.
+
+    We now claim that for every $s\in A$ less than $r$, there is an $\epsilon>0$ such that $s+\epsilon\in A$.
+    This is sufficient: let $s=\sup A$ and since $A$ is closed necessarily $s\in A$.
+    If $s$ were not $r$, then there is some $s+\epsilon\in A$, contradicting $s$'s maximality.
+
+    Now we know that for $s\in A$,
+    $$ d(\gamma(s),q) = r - s = d(p,q) - s \implies s = d(\gamma(s),q) - d(p,q) \leq d(p,\gamma(s)) , $$
+    where the final inequality is due to the triangle inequality.
+    And since $\gamma$ forms a curve of arclength $s_0$ between $p$ and $s_0$, we see that $d(p,\gamma(s))=s$ for all $s\in A$ so $\gamma$
+    is minimizing in $A$.
+
+    So let $s_0\in A$, and form a geodesic sphere $S_{\delta'}(\gamma(s_0))$.
+    As before let $x_0'\in S_{\delta'}(\gamma(s_0))$ be such that $d(x_0',q)$ is minimal.
+    Now,
+    $$ d(\gamma(s_0),q) = r - s_0 = d(p,q) - d(p,\gamma(s_0)) . $$
+    And
+    $$ d(\gamma(s_0),q) = d(\gamma(s_0),x_0') + d(x_0',q) , $$
+    as every curve from $\gamma(s_0)$ to $q$ has to interset $S_{\delta'}(\gamma(s_0))$ and $x_0'$ has minimal distance to $q$.
+    Thus we see
+    $$ d(x_0',q) = r - s_0 - \delta' . $$
+    Now we claim that $\gamma(s_0+\delta')=x_0$ and this will complete the proof (of $(*)$) since this implies
+    $d(\gamma(s_0+\delta'),q)=r-(s_0+\delta')$ and so $s_0+\delta'\in A$ as desired.
+
+    So we want to show $\gamma(s_0+\delta')=x_0'$.
+    Notice that by the triangle inequality,
+    $$ d(p,x_0') + d(x_0',q) \geq d(p,q) = r \implies d(p,x_0') \geq r - d(x_0',q) = s_0 + \delta' . $$
+    Let $\beta$ be the piecewise smooth curve obtained from $\gamma|_{[0,s_0]}$ and the radial geodesic from $\gamma(s_0)$ to $x_0'$.
+    Then we know as $s_0\in A$,
+    $$ L_g(\beta) = L_g(\gamma|_{[0,s_0]}) + \delta' = s_0 + \delta' \leq d(p,x_0') . $$
+    So there must be equality, and thus it is a minimizing curve, thus a geodesic and by uniqueness $\beta=\gamma|_{[0,s_0+\delta']}$.
+    And thus $\gamma(s_0+\delta')=x_0$.
+    \qed
+
+\eproof
+
+\bthrm[title={Hopf-Rinow}]
+
+    Let $(M,g)$ be a connected Riemannian manifold.
+    Then the following are equivalent:
+    \benum
+        \item There is a point $p\in M$ for which $\exp_p$ is defined on all of $T_pM$,
+        \item (Heine-Borel) if $K\subseteq M$ is closed and bounded (relative to the metric), then it is compact,
+        \item $M$ is metrically complete,
+        \item $M$ is geodesically complete.
+    \eenum
+
+\ethrm
+
+\bproof
+
+    Suppose (1) and $K\subseteq M$ be closed and bounded, so $K\subseteq B_r(p)$ for some $r>0$ in the metric.
+    For $x\in K$ we can connect it to $p$ via a minimizing geodesic $\exp_p(tv)$.
+    Thus $x=\exp_p(v)$ for $v\in T_pM$ and since this geodesic is minimizing $\norm v=d(x,p)<r$.
+    Thus $K$ is contained in $\exp_p(\cl B_r(0))$ and $\cl B_r(0)\subseteq T_pM$ is compact so its image is compact, and since $K$ is closed
+    it is compact.
+    So we have shown Heine-Borel.
+
+    (2) implies (3) is standard for metric spaces.
+    Let $\set{p_n}$ be a Cauchy sequence in $M$, then it is bound so $\cl{\set{p_n}}$ is closed and bound and thus compact by (2).
+    Since compact metric spaces are sequentially compact, $p_n$ has a convergent subsequence.
+    Cauchy sequences with convergent subsequences converge, so we see that $M$ is metrically complete.
+
+    Now suppose $M$ is metrically complete and let $\gamma$ be a maximal geodesic.
+    If it is not defined on all of $\bR$, suppose its domain is bound from above by $s_0\in\bR$.
+    Let $s_i$ increase to $s_0$, and let $x_i=\gamma(s_i)$, then $d(x_i,x_j)\leq L_g(\gamma|_{[s_i,s_j]})=\norm{\gamma'}\abs{s_i-s_j}$.
+    Since $s_i$ is convergent, it is Cauchy, and thus so is $x_i$.
+    By metric completeness, $x_i$ converges to some $p_0\in M$.
+
+    Let $W$ be a uniformly normal neighborhood of $p_0$ for parameter $\delta>0$.
+    Take $j$ large enough so that $s_j>s_0-\delta$ and $x_j\in W$.
+    So $B_\delta(x_j)$ is a geodesic ball, so let $\sigma(t)=\exp_{x_j}(t\gamma'(s_j))$, i.e.\ it is the radial geodesic with initial
+    velocity $\gamma'(s_j)$ starting at $x_j$.
+    As it lies in $B_\delta(x_j)$ it is defined for $t\in(-\delta,\delta)$.
+
+    By uniqueness of geodesics, $\gamma(t+s_j)=\sigma(t)$ where defined.
+    Thus
+    $$ \tilde\gamma(t) = \cases{\gamma(t)&$t<s_0$\cr \sigma(t-s_j)&$t\in(s_j-\delta,s_j+\delta)$} $$
+    is smooth, and a geodesic.
+    So it extends $\gamma$ to $s_j+\delta>s_0$, contradicting $\gamma$'s maximality.
+    Thus $M$ is geodesically complete.
+    
+    Clearly (4) implies (1).
+    \qed
+
+\eproof
+
+\bnote
+
+    We say that a manifold $M$ is {\emphcolor complete} to mean it is geodesically complete.
+    If $M$ is connected, then this equivalent to being metrically complete.
+    Otherwise this is equivalent to $M$ being metrically complete on each of its connected components, as completeness is equivalent to
+    completeness on each of its components.
+
+\enote
+
+\bcoro
+
+    A complete manifold has minimizing geodesics between any two points.
+
+\ecoro
+
+\bcoro
+
+    Compact manifolds are complete.
+
+\ecoro
+
+\bproof
+
+    We can assume the manifold is connected, in which case this follows from Heine-Borel which is trivially satisfied as every closed subset
+    of the manifold is compact.
+    \qed
+
+\eproof
+
+\subsection{The Hadamard theorem}
+
+\bdefn
+
+    A surjective continuous map between topological spaces $\pi\colon\tilde X\to X$ is a {\emphcolor covering map} if for every $p\in X$ there is a neighborhood $p\in U$
+    such that $\pi^{-1}U=\bigsqcup_i\tilde U_i$ for $\tilde U_i\subseteq\tilde X$ open, and $\pi|_{\tilde U_i}\colon\tilde U_i\to U$ is a homeomorphism for all $i$.
+    The $\tilde U_i$ are called {\emphcolor sheets}.
+
+    A {\emphcolor smooth covering map} is a covering map between smooth manifolds which is smooth, and the homeomorphisms from the sheets are diffeomorphisms.
+    A smooth covering map is a {\emphcolor Riemannian covering map} if it is between Riemannian manifolds and also a local isometry.
+
+\edefn
+
+It can be shown that if $X$ is connected, then the number of sheets over a neighborhood of $p\in X$ is constant for all $p\in X$, call this the {\emphcolor degree} of the covering.
+A classic result regarding covering maps is the following.
+
+\bthrm
+
+    If $\pi\colon\tilde X\to X$ is a covering map and $X$ is simply connected (i.e.\ has trivial fundamental group), then $\pi$ has degree $1$.
+    Then $\pi$ is a homeomorphism, and a diffeomorphism if $\pi$ is smooth.
+
+\ethrm
+
+\bthrm
+
+    Suppose $(\tilde M,\tilde g)$ and $(M,g)$ are connected Riemannian manifolds with $\tilde M$ complete, and $\pi\colon\tilde M\to M$ is a local isometry.
+    Then $M$ is complete and $\pi$ is a Riemannian covering map.
+
+\ethrm
+
+\bproof
+
+    Recall the path-lifting property of covering spaces: for a continuous path $\gamma\colon I\to M$, there is a lift to $\tilde\gamma\colon I\to\tilde M$ such
+    that $\pi\circ\tilde\gamma=\gamma$.
+    We first show that $\pi$ has the path lifting property for geodesics: for $\pi(\tilde p)=p$ and $\gamma\colon I\to M$ is a geodesic starting at $p$, we can
+    lift $\gamma$ uniquely to a geodesic $\tilde\gamma\colon I\to\tilde M$ starting at $\tilde p$.
+
+    Let $v=\gamma'(0)$ and $\tilde v=d\pi_{\tilde p}^{-1}v\in T_{\tilde p}\tilde M$.
+    This is well-defined since $\pi$ is a diffeomorphism in a neighborhood of $\tilde p$ and so $d\pi_{\tilde p}$ is an isomorphism.
+    Let $\tilde\gamma$ be the geodesic in $\tilde M$ starting at $\tilde p$ with initial velocity $\tilde v$.
+    If a lift exists, this must be our lift since
+    $$ d\pi_{\tilde p}\circ\tilde\gamma'(0) = \gamma'(0) = v . $$
+    Because $\tilde M$ is complete, $\tilde\gamma$ is defined on all of $\bR$, and since $\pi$ is a local isometry $\pi\circ\tilde\gamma$ is a geodesic.
+    It has the same starting point and velocity as $\gamma$, so they are equal as desired.
+
+    Now to show that $M$ is complete, let $p$ be a point in $\pi$'s image.
+    If $\gamma\colon I\to M$ is any geodesic starting at $p$, then lift $\gamma$ to $\tilde\gamma$, which has an extension to all of $\bR$ as $\tilde M$ is complete.
+    Then $\pi\circ\tilde\gamma$ is an extension of $\gamma$ to all of $\bR$.
+    By Hopf-Rinow this means $M$ is complete (since $\exp_p$ is defined on all of $T_pM$).
+
+    Now we show $\pi$ is surjective.
+    Let $\tilde p\in\tilde M$ and let $p=\pi(\tilde p)$ and let $q\in M$ be arbitrary.
+    Since $M$ is complete and connected, there is a unique minimizing unit-speed geodesic $\gamma$ from $p$ to $q$.
+    Lift this to a geodesic $\tilde\gamma$ starting at $\tilde p$, and let $r=d_g(p,q)$.
+    Then $\pi(\tilde\gamma(r))=\gamma(r)=q$ so $\pi$ is surjective.
+
+    Let $p\in M$ and $U=B_\epsilon(p)$ be the geodesic ball centered at $p$.
+    Write $\pi^{-1}p=\set{\tilde p_i}_{i\in A}$, and for each $i$ let $\tilde U_i$ denote the metric ball of radius $\epsilon$ around $\tilde p_i$.
+    We claim that $\tilde U_i$ are disjoint.
+    For $i\neq j$ let $\tilde\gamma$ be a unit-speed minimizing geodesic from $\tilde p_i$ to $\tilde p_j$.
+    Then $\gamma=\pi\circ\tilde\gamma$ is a geodesic starting and ending at $p$ whose length is the same as $\tilde\gamma$'s.
+    Since $U$ is a geodesic ball, $\gamma$ must leave and reenter it, as all geodesics lying in $U$ are radial and thus injective.
+    So its length must be at least $2\epsilon$, and so $\tilde\gamma$'s length is at least $2\epsilon$ so the distance between $\tilde p_i$ and $\tilde p_j$
+    is at least $2\epsilon$, so $\tilde U_i,\tilde U_j$ are disjoint.
+
+    Now we claim $\pi^{-1}U=\bigsqcup_i\tilde U_i$.
+    If $\tilde q\in\tilde U_i$ then there is a geodesic of length $<\epsilon$ from $\tilde p_i$ to $\tilde q$, and $\gamma=\pi\circ\tilde\gamma$ is a geodesic of the
+    same length from $p$ to $\pi(\tilde q)$, which shows that $\pi(\tilde q)\in U$.
+    Thus $\bigsqcup_i\tilde U_i$ is contained in $\pi^{-1}U$.
+
+    Conversely if $q=\pi(\tilde q)\in U$, let $\gamma$ be a minimizing geodesic from $q$ to $p$ which is of length $r<\epsilon$.
+    Lift $\gamma$ to $\tilde\gamma$ starting at $\tilde q$, then $\pi(\tilde\gamma(r))=\gamma(r)=p$ so that $\tilde\gamma(r)=\tilde p_i$ for some $i$.
+    Then $\tilde q\in\tilde U_i$ as desired.
+
+    Now we claim $\pi|_{\tilde U_i}\colon\tilde U_i\to U$ is a diffeomorphism.
+    Since $\pi$ is a local diffeomorphism, clearly this restriction is.
+    It is also bijective: for $q\in U$ consider the radial geodesic $p$ to $q$, lift it to $\tilde M$ and map $q$ to its endpoint.
+    Since the length of this geodesic is $d_g(p,q)<\epsilon$, this is well-defined and a clear inverse.
+    As a bijective local diffeomorphism, the restriction is a diffeomorphism.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Suppose $\tilde M,M$ are connected Riemannian manifolds with $\pi\colon\tilde M\to M$ a Riemannian covering map.
+    Then $M$ is complete iff $\tilde M$ is.
+
+\ecoro
+
+\bproof
+
+    If $\tilde M$ is complete then by the above theorem so is $M$.
+    Conversely if $M$ is complete, let $\tilde p\in\tilde M$ and $\tilde v\in T_p\tilde M$ be arbitrary.
+    Let $p=\pi(\tilde p)$ and $v=d\pi_{\tilde p}(\tilde v)$, then the geodesic $\gamma$ starting at $p$ with initial velocity $v$ is defined over all $\bR$.
+    Its lift to $\tilde M$ is also a geodesic defined over all $\bR$, and it starts at $\tilde p$ with initial velocity $\tilde v$.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $\gamma$ be a geodesic segment from $p$ to $q$ in $M$, say $\gamma(a)=p$ and $\gamma(b)=q$.
+    We say that $p$ and $q$ are {\emphcolor conjugate} along $\gamma$ if there is a nonzero Jacobi field along $\gamma$ which vanishes at $t=a$ and $t=b$.
+
+\edefn
+
+\bprop
+
+    Let $p\in M$ and $v\in T_pM$ be in the domain of $\exp_p$, and let $q=\exp_p(v)$.
+    Then $v$ is a critical point of $\exp_p$ iff $q$ and $p$ are conjugate along $\gamma=\gamma_v$.
+
+\eprop
+
+\bproof
+
+    If $v$ is a critical point of $\exp_p$, then there is a nonzero $w\in T_v(T_pM)$ such that $d(\exp_p)_v(w)=0$.
+    Identifying, as usual, $T_v(T_pM)\cong T_pM$, we take $w\in T_pM$.
+    Let $\Gamma$ be the variation of $\gamma$ defined by
+    $$ \Gamma(s,t) = \exp_p(t(v+sw)) , $$
+    and $J(t)=\partial_s\Gamma(0,t)$ be its variation field.
+    As $\Gamma$ is a variation through geodesics, $J$ is a Jacobi field.
+    And,
+    $$ J(1) = \partial_s\Gamma(0,1) = \evpdv s_{s=0}\exp_p(v+sw) = d(\exp_p)_v(w) = 0 . $$
+    So $J$ is a non-trivial Jacobi field along $\gamma$ vanishing at $0$ and $1$, so $p$ and $q$ are conjugate.
+
+    Conversely if $p$ and $q$ are conjugate, then let $J$ be a nonzero Jacobi field along $\gamma$ with $J(0)=0$ and $J(1)=0$.
+    We showed (see homework) that $J$ is a variation field of a variation of $\gamma$ through geodesics,
+    $$ \Gamma(s,t) = \exp_{\sigma(s)}(tV(s)), $$
+    for $\sigma(s)$ a smooth curve and $V(s)$ a vector field along $\sigma$, where $\sigma(0)=p$ and $\sigma'(0)=J(0)=0$,
+    $V(0)=\gamma'(0)=v$ and $D_sV(0)=D_tJ(0)=w$.
+    We can then take $\sigma(s)=p$ and $V(s)=v+sw\in T_pM$ so
+    $$ \Gamma(s,t) = \exp_p(t(v+sw)) . $$
+    Since $J(t)=\partial_s\Gamma(0,t)$, we have that $w\neq0$ as otherwise $J$ would be zero.
+    Then by the same computation as before, $0=J(1)=d(\exp_p)_v(w)$, so $v$ is a critical point of $\exp_p$.
+    \qed
+
+\eproof
+
+\blemm
+
+    Suppose $M$ is a Riemannian manifold with nonpositive sectional curvature.
+    Then no two points of $M$ are conjugate along any geodesic.
+
+\elemm
+
+\bproof
+
+    Let $\gamma$ be a geodesic segment from $p$ to $q$ in $M$, say $\gamma(0)=p$ and $\gamma(a)=q$.
+    Let $J$ be a nonzero Jacobi field along $\gamma$ with $J(0)=0$.
+    By the Jacobi equation,
+    $$ D_t^2J = -R(J,\dot\gamma)\dot\gamma . $$
+    Consider then the sectional curvature in the direction of $J$ and $\dot\gamma$ for any $t$, this is nonpositive by assumption so
+    $$ \iprod{D_t^2J,J} = -\iprod{R(J,\dot\gamma)\dot\gamma,J} = -\Rm(J,\dot\gamma,J,\dot\gamma) \geq 0 . $$
+    Now consider the smooth map $j\colon [0,a]\to\bR$ given by $j=\iprod{J,J}$.
+    Then $j(0)=0$ and
+    $$ j' = 2\iprod{D_tJ,J} , j'' = 2\iprod{D_t^2J,J} + 2\iprod{D_tJ,D_tJ} > 0 . $$
+    So $j'(0)=0$ and since $j''>0$ we see that $j'$ is increasing and thus always positive.
+    Thus $j$ is strictly increasing, which means that since $j(t)>0$ for all $t>0$, in particular $J(t)\neq0$ for all $t>0$.
+    \qed
+
+\eproof
+
+\bthrm[title=Hadamard]
+
+    If $(M,g)$ is a complete connected Riemannian manifold with nonpositive sectional curvature, then for every $p\in M$, the map
+    $\exp_p\colon T_pM\to M$ is a smooth covering map.
+    Thus if $M$ is simply connected it is diffeomorphic to $\bR^n$.
+
+\ethrm
+
+\bproof
+
+    Combining the previous two results, $\exp_p$ has no critical points and is thus an immersion.
+    Since the dimension of $T_pM$ and $M$ are the same, this means $\exp_p$ is a local diffeomorphism.
+    If we pull back the metric of $M$ to $T_pM$, this gives a metric to $T_pM$ for which $\exp_p$ is a local isometry.
+
+    The straight lines $t\mapsto tv$ in $T_pM$ are geodesics, which means that $T_pM$ is complete.
+    This is because for any $w\in T_pM$ and $v\in T_pM\cong T_wT_pM$, the geodesic $tv$ is defined for all $t\in\bR$, so the restricted exponential
+    is defined on all of $T_wT_pM$.
+
+    So $T_pM$ is complete, $\exp_p\colon T_pM\to M$ is a local isometry, and thus it is a Riemannian covering map.
+    If $M$ is simply connected, then covering maps are diffeomorphisms so $M\cong T_pM\cong\bR^n$.
+    \qed
+
+\eproof
+
+\bcoro
+
+    The higher homotopy groups of a complete connected Riemannian manifold are trivial.
+
+\ecoro
+
+\bproof
+
+    As $\exp_p\colon T_pM\to M$ is a covering map, it induces an isomorphism on higher homotopy groups.
+    The homotopy groups of $T_pM\cong\bR^n$ are all trivial as $\bR^n$ is contractible.
+    \qed
+
+\eproof
+
+\bnote
+
+    A topological space $X$ such that $\pi_n(X)=G$ and $\pi_k(X)=0$ for all $k\neq n$ is called a $K(G,n)$-space, or an {\emphcolor Eilenberg-MacLane space}.
+    Eilenberg-MacLane spaces always exist (if $G$ is Abelian for $n>1$), and are unique up to homotopy equivalence.
+
+    We have thus shown that complete connected Riemannian manifolds are Eilenberg-MacLane spaces for $n=1$.
+
+\enote
+
