@@ -639,3 +639,419 @@ we see that the Lie derivative of a $k$-form is a $k$-form.
 
 \eproof
 
+\subsection{Orientations}
+
+\bdefn
+
+    Two bases $(E_1,\dots,E_n)$ and $(\tilde E_1,\dots,\tilde E_n)$ of a vector space $V$ are {\emphcolor consistently oriented} if their transformation matrix has
+    positive determinant.
+    That is, the matrix $(B^j_i)$ given by $E_i=B^j_i\tilde E_j$ has positive determinant.
+    This is clearly an equivalence relation with two equivalence classes.
+
+    An {\emphcolor orientation} for $V$ is a choice of one of these equivalence classes.
+    For a basis $(E_1,\dots,E_n)$, denote by $[E_1,\dots,E_n]$ its equivalence class and $-[E_1,\dots,E_n]=[-E_1,\dots,E_n]$ the other equivalence class.
+    Any basis in this orientation is said to be {\emphcolor positively oriented}, or just {\emphcolor oriented}, and all others are {\emphcolor negatively oriented}.
+
+    An orientation of the zero-dimensional space is a choice of one of $\pm1$.
+
+\edefn
+
+\bexam
+
+    The {\emphcolor standard orientiation} of $\bR^n$ is $[e_1,\dots,e_n]$.
+
+\eexam
+
+\bprop
+
+    Let $V$ be an $n$-dimensional vector space.
+    Then every nonzero $\omega\in\Lambda^n(V^*)$ determines an orientation $\O_\omega$ of $V$, where $(E_1,\dots,E_n)$ is oriented iff $\omega(E_1,\dots,E_n)>0$.
+    Two nonzero $n$-covectors determine the same orientation iff they are positive multiples of one another.
+
+\eprop
+
+\bproof
+
+    The zero-dimensional case is immediate since $\Lambda^0(V^*)\cong\bR$.
+    Otherwise let $\omega\in\Lambda^n(V^*)$, and $(E_i)$ and $(\tilde E_i)$ be bases.
+    We claim that they are consistently oriented iff $\omega(E_1,\dots,E_n)$ and $\omega(\tilde E_1,\dots,\tilde E_n)$ have the same sign.
+    Let $B=(B^j_i)$ be their transition matrix so
+    $$ \omega(\tilde E_1,\dots,\tilde E_n) = \omega(BE_1,\dots,BE_n) = \det(B)\omega(E_1,\dots,E_n) . $$
+    So they have the same sign iff $\det(B)>0$, meaning the bases are consistently ordered as desired.
+    The last claim is clear.
+    \qed
+
+\eproof
+
+We say that a covector $\omega\in\Lambda^n(V^*)$ which determines the orientation of $V$ is an {\emphcolor (positively) oriented covector}.
+For example, $e_1\wedge\cdots\wedge e_n$ is a positively oriented covector for the standard orientation of $\bR^n$.
+
+Now we can discuss orientations of manifolds.
+
+\bdefn
+
+    A {\emphcolor (pointwise) orientation} of a smooth manifold is a choice of orientation of $T_pM$ for each $p\in M$.
+    If $M$ is endowed with a pointwise orientation, a local frame $(E_i)$ is {\emphcolor (positively) oriented} if $(E_i|_p)$
+    is a positively oriented basis for each $p$ in the frame's domain.
+    We similarly define a negatively oriented frame.
+
+    A pointwise orientation is {\emphcolor continuous} if every point of $M$ is in the domain of an oriented local frame.
+    An {\emphcolor orientation} of $M$ is a continuous pointwise orientation.
+    A manifold is said to be {\emphcolor orientable} if it possesses a continuous pointwise orientation, otherwise it is
+    {\emphcolor nonorientable}.
+
+    An {\emphcolor oriented manifold} is a pair $(M,\O)$ where $\O$ is an orientation on $M$.
+    Denote the orientation of $T_pM$ by $\O_p$.
+
+\edefn
+
+This definition is valid for manifolds with boundary.
+For a zero-dimensional manifold, a pointwise orientation is a choice of $\pm1$ for every point $p\in M$.
+In the zero-dimensional case every pointwise orientation is continuous.
+
+Note that if $M$ is oriented, any local frame defined on a connected domain is either positively or negatively oriented.
+Let $(E_i)$ be a local frame on a connected domain $U$, then define $U\to\bR$ by mapping $p\in U$ to $+1$ if $(E_i|_p)$ is
+positively oriented and $-1$ otherwise.
+Then this is locally constant: for $p\in U$ take a positively oriented frame $(F_i)$ defined in a neighborhood of $p$,
+which we can restrict to a connected open subset of $U$.
+Let $B$ be the transition map between $E$ and $F$, then $E_p$ is positively oriented iff $\det(B_p)>0$, so in this open
+subset the map is equal to $\sgn\det(B)$.
+Since $\det(B)$ is nonzero, continuous, and the domain is connected, we have that its sign is constant.
+So the map is locally constant, and since the domain is connected it must be constant.
+
+\bprop
+
+    Let $M$ be a smooth $n$-manifold, then any nonvanishing $n$-form $\omega$ on $M$ determines a unique orientation for
+    which $\omega$ is positively oriented at each point.
+    Conversely if $M$ is given an orientation, there is a smooth nonvanishing $n$-form on $M$ that is positively oriented
+    at each point.
+
+\eprop
+
+\bproof
+
+    Let $\omega\in\Omega^n(M)$ be nonvanishing.
+    Then $\omega_p$ defines an orientation on $T_pM$ for all $p\in M$, we check that this orientation is continuous.
+    This is trivial for $n=0$, so we assume $n\geq1$.
+
+    By the above discussion, every local frame on a connected neighborhood should be positively or negatively oriented.
+    So let $p\in M$ and take a local frame on a connected neighborhood $U$ of $p$, call it $(E_i)$ with dual coframe
+    $(\epsilon^j)$.
+    Write $\omega=f\epsilon^1\wedge\cdots\wedge\epsilon^n$, and since $\omega$ is nonvanishing $f$ is nonzero over all of $U$
+    so
+    $$ \omega(E_1,\dots,E_n) = f \neq 0 . $$
+    Since $U$ is connected, $f$ is either always positive or always negative.
+    If $f$ is always positive then $(E_i)$ is positively oriented and we have finished.
+    Otherwise $f$ is always negative so $\omega(-E_1,E_2,\dots,E_n)=-f$ is always positive and we take the local frame
+    $(-E_1,E_2,\dots,E_n)$ and we have finished.
+
+    For $p\in M$ we take a connected neighborhood $U_p$ with positively oriented frame $(E_i^p)$.
+    Let $(\epsilon^j_p)$ be its dual coframe and define the local $n$-form $\omega^p=\epsilon^1_p\wedge\cdots\epsilon^n_p$.
+    Then let $\psi_p$ be a partition of unity subordinate to $\set{U_p}_p$ and define
+    $$ \omega = \sum_p\psi_p\omega^p . $$
+    This is nonvanishing since for any $(E_i^p)$, $\omega^q(E_i^p)\geq0$ for all $q$ since it is positively oriented.
+    Since $\psi_p(p)=1$ this implies $\omega(E_i^p)>0$.
+    And since $\omega$ is a positive linear combination of positively oriented $n$-forms at each point it is positively
+    oriented at each point.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A nowhere-vanishing $n$-form on $M$ is called an {\emphcolor orientation form}.
+    If $M$ is oriented, an $n$-form giving its orientation is called {\emphcolor (positively) oriented}.
+
+\edefn
+
+Two orientation forms $\omega,\tilde\omega$ are easily seen to give the same orientation iff $\omega=f\tilde\omega$ for some
+positive smooth real-valued $f$.
+
+\bdefn
+
+    A smooth coordinate chart is {\emphcolor (positively) oriented} if its coordinate frame $(\ipdv{x^i})$ is positively
+    oriented, and {\emphcolor negatively oriented} if it the coordinate frame is negatively oriented.
+
+    An atlas $\set{(U_i,\phi_i)}_i$ is {\emphcolor consistently oriented} iff the transition maps $\phi_j\circ\phi_i^{-1}$
+    have positive determinant for all $i,j$.
+
+\edefn
+
+\bprop
+
+    Let $M$ be a smooth positive-dimensional manifold.
+    Any consistently oriented smooth atlas for $M$ uniquely determines an orientation for which the charts are
+    all positively oriented.
+
+    Conversely if $M$ is oriented, and either $\partial M=\emptyset$ or $\dim M>1$, then the collection of all oriented smooth
+    charts is a consistently oriented atlas for $M$.
+
+\eprop
+
+\bproof
+
+    Let $(U_i,\phi_i)$ be a consistently oriented smooth atlas.
+    Then each chart determines a pointwise orientation of its domain, and consistency proves that these pointwise orientations
+    agree on their intersections.
+    Since the chart covers the manifold, this is a continuous orientation.
+
+    If $M$ is oriented and $\partial M=\emptyset$ or $\dim M>1$, each point in $M$ is in the domain of a connected smooth chart.
+    If the domain is negatively oriented, we swap $x^1$ with $-x^1$ to obtain a positively oriented chart.
+    As they are all positively oriented, their transition functions must have positive Jacobian.
+
+    For a boundary chart, it maps into $\bH^n$ so the last coordinate must be positive.
+    For $\dim M=1$ this is the only coordinate so we cannot swap its sign.
+    \qed
+
+\eproof
+
+The following proposition is easily seen.
+
+\bprop
+
+    If $M_1,\dots,M_k$ are orientable smooth manifolds, then there is a unique orientation on $M=\prod_iM_i$
+    called the {\emphcolor product orientation}, such that if $\omega_i$ is an orientation form for $M_i$
+    then $\pi_1^*\omega_1\wedge\cdots\wedge\pi_n^*\omega_k$ is an orientation form for the product orientation.
+
+\eprop
+
+\bdefn
+
+    Let $M,N$ be oriented smooth manifolds with positive dimension.
+    A local diffeomorphism $F\colon M\to N$ is {\emphcolor orientation preserving} if for each $p\in M$ its differential
+    $dF_p$ maps oriented bases of $T_pM$ to oriented bases of $T_{Fp}N$.
+    Similarly it is {\emphcolor orientation reversing} if it maps negatively oriented bases to oriented bases.
+
+    For zero-dimensional manifolds, $F$ is orientation preserving if for every $p\in M$, both $p$ and $F(p)$ have the same
+    orientation (choice of $\pm1$).
+
+\edefn
+
+It is easy to see that $F$ is orientation preserving iff its Jacobian with respect to any two oriented bases has positive
+determinant, iff it pulls back positively oriented $n$-forms to positively oriented $n$-forms.
+
+\bprop
+
+    Let $F\colon M\to N$ be a local diffeomorphism with $N$ oriented.
+    Then there is a unique orientation on $M$ making $F$ orientation preserving.
+    This is called the {\emphcolor pullback orientation}.
+
+\eprop
+
+\bproof
+
+    Let $\omega$ be a positively oriented $n$-form on $N$.
+    Then for $F$ to be orientation preserving, $F^*\omega$ must be positively-oriented.
+    So we just need to show that $F^*\omega$ is nonvanishing and thus defines a continuous orientation on $M$.
+    And indeed, if $(E_i)$ is a local frame of $M$ then
+    $$ F^*\omega(E)_p = \omega_{Fp}(dF_pE) , $$
+    and since $dF_pE$ is a basis, $\omega$ does not vanish on it.
+    Thus $F^*\omega$ is non-vanishing.
+    \qed
+
+\eproof
+
+Pulling back orientations is functorial.
+If we denote the pullback orientation by $F^*\O$ then $(G\circ F)^*\O=F^*(G^*\O)$.
+This is because pulling back the orientation $n$-form is functorial.
+
+\bprop
+
+    Every parallelizable smooth manifold is orientable.
+
+\eprop
+
+\bproof
+
+    If $M$ is parallelizable, let $(E_i)$ be a global frame.
+    Then define a pointwise orientation on $M$ by making $(E_i|_p)$ positively oriented for all $p\in M$.
+    This is then trivially continuous.
+    \qed
+
+\eproof
+
+\bexam
+
+    $S^1$ is parallelizable, as we can define a global vector field $V$ to be the unit tangent (say in the clockwise direction).
+    Thus $S^1$ is orientable.
+    Then as the product of $S^1$s, $T^n$ is also parallelizable and thus orientable.
+
+    $S^n$ is parallelizable for $n=1,3,7$, and thus also orientable in those cases.
+    We will see that $S^n$ is orientable for all $n$.
+
+    Note that Lie groups are parallelizable too, as any basis for their identity's tangent space extends to a global frame.
+
+\eexam
+
+\bprop
+
+    Suppose $M$ is an oriented $n$-manifold, and $S$ is an immersed hypersurface in $M$ (i.e.\ of codimension one).
+    Suppose further there is a vector field along $S$ that is nowhere tangent to $S$, call it $N$.
+
+    Then $S$ has a unique orientation such that for every $p\in S$ if $E_1,\dots,E_{n-1}$ is an oriented basis for $T_pS$
+    iff $N_p,E_1,\dots,E_{n-1}$ is an oriented basis for $T_pM$.
+    If $\omega$ is an orientation form for $M$, then $\iota^*_S(N\imult\omega)$ is an orientation form for $S$ relative
+    to this orientation.
+
+\eprop
+
+\bproof
+
+    Define $\sigma=\iota_S^*(N\imult\omega)$, we claim this is non-vanishing.
+    Let $E_1,\dots,E_{n-1}$ be a basis for $T_pS$ then since $N$ is nowhere tangent to $S$ means that it is not in the
+    span of the $E_i$ so $N_p,E_1,\dots,E_{n-1}$ is a basis for $T_pM$.
+    Then
+    $$ \sigma_p(E_1,\dots,E_{n-1}) = \omega_p(N_p,E_1,\dots,E_{n-1}) \neq 0 , $$
+    as $\omega$ is non-vanishing.
+    Since $\sigma_p(E_1,\dots,E_{n-1})>0$ iff $\omega_p(N_p,E_1,\dots,E_{n-1})>0$, this is the desired orientation.
+    It is continuous as it is given by a smooth $n$-form.
+    Uniqueness is obvious since the condition uniquely defines the pointwise orientation.
+    \qed
+
+\eproof
+
+\bexam
+
+    $S^n$ is an embedded hypersurface of $\bR^{n+1}$, and $N=x^i\partial_i$ is nowhere tangent to it.
+    Thus it induces an orientation on $S^n$, this is the {\emphcolor standard orientation} on $S^n$.
+
+\eexam
+
+\bcoro
+
+    Every regular level set of a smooth real-valued function is orientable.
+
+\ecoro
+
+\bproof
+
+    Let $f\colon M\to\bR$ be smooth, and $S$ be a regular level set of $f$.
+    Endow $M$ with a Riemannian metric, and let $N=\grad f|_S$.
+    Then $N$ is nowhere tangent to $S$ as it is nonzero for points on $S$ (as it is regular there), and
+    $\iprod{\grad f_p,v}=df_p(v)=0$ for $v\in T_pS$, so $\grad f_p\notin T_pS$.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $M$ be a smooth $n$-manifold with boundary.
+    For a point $p\in\partial M$, a tangent vector $v\in T_pM-T_p\partial M$ is {\emphcolor inward pointing}
+    if there is a smooth curve $\gamma\colon[0,\epsilon)\to M$ with $\gamma(0)=p$ and $\gamma'(0)=v$.
+    If there is a smooth curve $\gamma\colon(-\epsilon,0]\to M$ similarly, $v$ is {\emphcolor outward pointing}.
+
+\edefn
+
+\bprop
+
+    Let $p\in\partial M$ and $(U,(x^i))$ a boundary chart centered at $p$, and let $v\in T_pM$.
+    Write $v=a^i\partial_i$, then
+    \benum
+        \item $v\in T_p\partial M$ iff $a^n=0$,
+        \item $v$ is inward-pointing iff $a^n>0$.
+        \item $v$ is outward-pointing iff $a^n<0$.
+    \eenum
+    In particular $v$ is inward-pointing iff $-v$ is outward-pointing, and all tangent vectors at a boundary point are either
+    in the tangent space of the boundary, or inward or outward-pointing.
+
+\eprop
+
+\bproof
+
+    The boundary points of $M$ lying in $U$ are precisely those where $x^n=0$.
+    So $\partial M\cap U$ is the level set of $0$ under $x^n$.
+    So $T_p\partial M$ are those $v\in T_pM$ where $d(x^n)_pv=0$, which occurs iff $a^n=0$.
+
+    If $v$ is inward-pointing, let $\gamma\colon[0,\epsilon)\to M$ be smooth with $\gamma'(0)=v$.
+    Let $(U,(x^i))$ be any chart centered at $p$, write $\gamma=(\gamma^1,\dots,\gamma^n)$.
+    We then have $\gamma^n\geq0$ and so it is locally non-decreasing (since it cannot go below $0$).
+    Then
+    $$ \gamma'(0) = \dot\gamma^i(0)\partial_i = v , $$
+    so $a^n=\dot\gamma^n(0)\geq0$ as it is locally non-decreasing, and since $v\notin T_p\partial M$ we see that
+    $a^n>0$ as desired.
+
+    Conversely if $a^n>0$ in $(U,(x^i))$ then we want $\dot\gamma^i(0)=a^i$ and $\gamma^i(0)=0$.
+    This ODE has a solution $\gamma$ defined in some $(-\epsilon,\epsilon)$.
+    As $\dot\gamma^n(0)>0$, it is increasing and thus restricted to $[0,\delta)$ for some $\delta\leq\epsilon$
+    we have $\gamma^n(t)\geq0$.
+    This then defines a smooth curve $\gamma\colon[0,\delta)\to M$ with $\gamma'(0)=v$.
+    \qed
+
+\eproof
+
+\blemm
+
+    Let $M$ be smooth with boundary, then there exists a smooth vector field on $M$ whose restriction to $\partial M$
+    is everywhere inward-pointing.
+    Similarly we can make it outward pointing.
+
+\elemm
+
+\bproof
+
+    If $X$ is inward-pointing, then $-X$ is outward pointing, so it is sufficient to prove it for inward-pointing.
+    Cover $\partial M$ with boundary charts, and for each boundary chart $U_i$ define $X_i$ to be $\partial_n$.
+    Define $X_0$ to be the zero vector field on the interior of $M$.
+    Let $\psi_i$ be a partition of unity subordinate to $U_i,\Int M$ and define
+    $$ X = \sum_i\psi_iX_i . $$
+
+    Since $X_i(p)=\partial_n$ has positive coefficient, it is inward pointing and thus has positive coefficient relative
+    to all coordinate charts.
+    Then relative to $U_j$ we see that the coefficients of $\psi_(p)X_i(p)$ are all positive and thus $X(p)$ is positive.
+    It is smooth, and thus an inward pointing vector field.
+    \qed
+
+\eproof
+
+Notice that by definition an inward/outward pointing vector field is nowhere tangent to the boundary of the manifold
+and since $\partial M$ is embedded it induces an orientation.
+
+\bprop
+
+    Let $M$ be an oriented $n$-manifold with $n\geq1$.
+    Then $\partial M$ is orientable, and all outward pointing vector fields induce the same orientation on it.
+
+\eprop
+
+\bproof
+
+    Let $\omega$ be an orientation form for $M$, and let $N$ be a smooth outward-pointing vector field on $M$.
+    Then as we showed $\sigma=\iota^*_{\partial M}(N\imult\omega)$ is an orientation form on the boundary.
+
+    If $\tilde N$ is another outward-pointing vector field, then it is sufficient to show that for any boundary
+    chart $(U,(x^i))$, $N_p,\partial_1,\dots,\partial_{n-1}$ is oriented iff $\tilde N_p,\partial_1,\dots,\partial_{n-1}$
+    is.
+    Since $N_p,\tilde N_p$ have coefficient in $\partial_n$ both negative, the transition matrix has determinant
+    $N^n_p/\tilde N^n_p>0$, so one is oriented iff the other is.
+    \qed
+
+\eproof
+
+\bexam
+
+    $S^n$ is the boundary $\partial B^{n+1}$, showing that it is oriented again.
+
+\eexam
+
+\bprop
+
+    Let $(M,g)$ be an oriented Riemannian $n$-manifold, with $n\geq1$.
+    Then there is a unique smooth orientation form $\omega_g\in\Omega^n(M)$ satisfying both of the equivalent properties:
+    \benum
+        \item $\omega_g(E_1,\dots,E_n)=1$ for every local oriented orthonormal frame $(E_i)$.
+        \item $\omega_g=\sqrt{\det(g_{ij})}\d x^1\wedge\cdots\wedge\d x^n$ for every oriented local chart $(U,(x^i))$.
+    \eenum
+    $\omega_g$ is called the {\emphcolor Riemannian volume form}.
+
+\eprop
+
+\bproof
+
+    Either point clearly uniquely determines $\omega_g$, showing equivalence is done by representing $\partial_i$
+    with respect to $E_j$ and recalling that the determinant of the transition must be positive.
+    Then (1) defines $\omega_g$ locally as $\epsilon^1\wedge\cdots\wedge\epsilon^n$ where $\epsilon^i$ is the dual
+    coframe of $E_i$, and this is well-defined as is readily shown.
+    \qed
+
+\eproof
+
