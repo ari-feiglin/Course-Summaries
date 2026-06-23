@@ -1,0 +1,265 @@
+\section{Integration}
+
+\subsection{Integration of differential forms}
+
+When we think of integration, usually our theories are built on the integration of real-valued functions.
+This is not suitable in the context of manifolds in general.
+At least not in a way that would behave nicely.
+We would want our integrals to be independent of choice of coordinates, but this is easily seen to be impossible.
+
+Take for example a closed ball $C\subseteq\bR^n$ and the constant function $f\colon C\to\bR^n$ given by $f(x)=1$.
+Any sensible theory of integration would mandate that the integral of $f$ is equal to the volume of $C$:
+$$ \int_Cf = {\rm Vol}(C) . $$
+But this is clearly not coordinate-independent, as $C$ is diffeomorphic to a larger closed ball with a larger volume say.
+
+As we will see, we can solve this via differential forms.
+
+\bdefn
+
+    A {\emphcolor domain of integration} in $\bR^n$ is a bounded subset with measure zero boundary.
+    For a domain of integration $D\subseteq\bR^n$, let $\omega$ be a continuous $n$-form on $\cl D$.
+    Such an $n$-form can be written $\omega=f\d x^1\wedge\cdots\wedge\d x^n$ for a continuous $f\colon\cl D\to\bR$.
+
+    Then we define $\omega$'s {\emphcolor integral} over $D$ as
+    $$ \int_D\omega = \int_Df\d V, $$
+    where $\d V$ denotes integration relative to the Lebesgue measure of $\bR^n$.
+    We can write this more clearly as
+    $$ \int_Df\d x^1\wedge\cdots\wedge\d x^n = \int_Df\d x^1\cdots\d x^n . $$
+    So we can view integration as ``removing the wedges''.
+
+    More generally, let $U$ be an open subset of $\bR^n$ or $\bH^n$ and $\omega$ is a compactly supported $n$-form
+    on $U$, then define
+    $$ \int_U\omega = \int_D\omega $$
+    where $D\subseteq\bR^n$ or $\bH^n$ is any domain of integration (e.g.\ a rectangle) containing $\supp\omega$
+    where we potentially extend $\omega$ to be zero outside of $U$.
+
+\edefn
+
+This definition does not depend on choice of domain of integration.
+This is because for any two domains of integration, $\omega$ is zero outside of their intersection.
+
+\bprop
+
+    Suppose $D,E$ are open domains of integration in $\bR^n$ or $\bH^n$, and $G\colon\cl D\to\cl E$ is a smooth map which
+    restricts to an orientation-preserving or orientation-reversing diffeomorphism from $D$ to $E$.
+    Then for an $n$-form $\omega$ on $\cl E$, we have
+    $$ \int_DG^*\omega = \pm\int_E\omega , $$
+    where the sign is flipped when $G$ is orientation-reversing.
+
+\eprop
+
+\bproof
+
+    Denote the standard coordinates of $E$ by $(y^i)$ and those of $D$ by $(x^i)$.
+    If $G$ is orientation preserving, let $\omega=f\d y^1\wedge\cdots\wedge\d y^n$, then we have
+    $$ \multline{
+        \int_E\omega = \int_Ef\d V = \int_D(f\circ G)\abs{\det DG}\d V = \int_D(f\circ G)\det(DG)\d V\cr
+        = \int_D(f\circ G)\det(DG)\d x^1\wedge\cdots\wedge\d x^n = \int_DG^*\omega .
+    } $$
+    If $G$ is orientation-reversing $\abs{\det DG}=-\det(DG)$ and the sign flips.
+    \qed
+
+\eproof
+
+\blemm
+
+    Suppose $U$ is an open subset of $\bR^n$ or $\bH^n$, and $K$ is a compact subset of $U$.
+    Then there is an open domain of integration $D$ such that $K\subseteq D\subseteq\cl D\subseteq U$.
+
+\elemm
+
+\bproof
+
+    For each $p\in K$ take a open ball or half-open ball whose closure is contained in $U$.
+    As $K$ is compact, this has a finite subcovering of balls; let $D$ be their union.
+    $D$ is then bound, and its boundary is contained in the union of the boundaries of the balls.
+    As a finite union of measure zero sets, the boundary of $D$ has measure zero.
+    \qed
+
+\eproof
+
+So we can now generalize our above proposition to compactly supported differential $n$-forms defined on any open subset,
+not just a domain of integration.
+
+\bprop
+
+    If $U,V$ are open subsets of $\bR^n$ or $\bH^n$ and $G\colon U\to V$ is an orientation-preserving or reversing
+    diffeomorphism, for any compactly supported $n$-form $\omega$ on $V$,
+    $$ \int_V\omega = \pm\int_UG^*\omega . $$
+    The sign depends on if $G$ preserves or reverses orientation (positive and negative respectively).
+
+\eprop
+
+\bproof
+
+    Take an open domain of integration $E\subseteq V$ such that $\supp\omega\subseteq E$.
+    Then $D=G^{-1}E$ is open, and since diffeomorphisms preserve measure-zero-ness and boundaries, we see that
+    $D$ is a domain of integration.
+    Then we have by the previous proposition,
+    $$ \int_V\omega = \int_E\omega = \pm\int_DG^*\omega = \pm\int_UG^*\omega . \qed $$
+
+\eproof
+
+We now extend these definitions to arbitrary oriented smooth manifolds.
+
+Let $M$ be an oriented smooth $n$-manifold, and $\omega$ an $n$-form on $M$.
+First suppose that $\omega$ is compactly supported in the domain of a single smooth chart $(U,\phi)$.
+Such a chart is either positively or negatively oriented (if connected, otherwise require it to have a consistent orientation),
+then we define
+$$ \int_M\omega = \pm\int_{\phi(U)}(\phi^{-1})^*\omega, $$
+where the right integral is done in Euclidean (half) space, and the sign depends on the orientation of the chart
+(positive when oriented, negative when negatively oriented).
+
+\blemm
+
+    The above definition is independent on choice of smooth chart containing $\supp\omega$.
+
+\elemm
+
+\bproof
+
+    If $(U,\phi)$ and $(\tilde U,\tilde\phi)$ both contain $\supp\omega$ then $\tilde\phi\circ\phi^{-1}$
+    is a diffeomorphism $\phi(U\cap\tilde U)$ to $\tilde\phi(U\cap\tilde U)$.
+    It is orientation-preserving when both are consistently oriented, and negatively oriented otherwise.
+
+    If they are consistently oriented, then
+    $$ \multline{
+        \int_{\tilde\phi(U)}(\tilde\phi^{-1})^*\omega = \int_{\tilde\phi(U\cap\tilde U)}(\tilde\phi^{-1})^*\omega
+        = \int_{\phi(U\cap\tilde U)}(\tilde\phi\circ\phi^{-1})^*\circ(\tilde\phi^{-1})^*\omega\cr
+        = \int_{\phi(U\cap\tilde U)}(\phi^{-1})^*\omega = \int_{\phi(U)}(\phi^{-1})^*\omega .
+    } $$
+    If they have different orientations then the above computation swaps signs, which is what we need by definition.
+    \qed
+
+\eproof
+
+Now suppose that $\omega$ is a compactly supported $n$-form on all of $M$.
+Let $U_i$ be a finite cover of $\supp\omega$, and let $\psi_i$ be a partition of unity subordinate to it.
+Define $\omega$'s integral as
+$$ \int_M\omega = \sum_i\int_M\psi_i\omega . $$
+Since $\psi_i\omega$ is compactly supported (as both $\omega$ and $\psi_i$ are), this is well-defined, but it is not
+immediately clear why this would be independent on choice of partition of unity.
+
+\bnote
+
+    One may ask why we even allow for negatively oriented charts, and instead just use positively oriented charts.
+    The reason is that for a one-dimensional manifold with boundary, we cannot ensure the existence of positively
+    oriented boundary charts.
+
+\enote
+
+\bprop
+
+    The definition of $\int_M\omega$ does not depend on choice of open cover or partition of unity.
+
+\eprop
+
+\bproof
+
+    Suppose $\tilde U_i$ is another finite open cover of $\supp\omega$ with $\tilde\psi_j$ a subordinate partition
+    of unity.
+    Then we have for each $i$,
+    $$ \int_M\psi_i\omega = \int_M\parens{\sum_j\tilde\psi_j}\psi_i\omega = \sum_j\int_M\tilde\psi_j\psi_i\omega . $$
+    Summing over $i$ we see
+    $$ \sum_i\int_M\psi_i\omega = \sum_{i,j}\int_M\tilde\psi_j\psi_i\omega . $$
+    Each term in the sum is compactly supported in a single smooth chart (e.g.\ $U_i$), so each term is uniquely defined.
+    The same process shows
+    $$ \sum_j\int_M\tilde\psi_j\omega = \sum_{i,j}\int_M\tilde\psi_j\psi_i\omega , $$
+    proving equality.
+    \qed
+
+\eproof
+
+For the zero-dimensional case, a compactly supported $0$-form is just a real valued function $f\colon M\to\bR$
+which is nonzero on finitely many points.
+So we define
+$$ \int_Mf = \sum_{p\in M}\pm f(p), $$
+where the sign is determined by choice of orientation at $p$.
+
+If $S\subseteq M$ is an immersed oriented $k$-submanifold (with induced orientation), and $\omega$ is a $k$-form
+on $M$ whose restriction to $S$ is compactly supported, we define
+$$ \int_S\omega = \int_S\iota^*_S\omega, $$
+where $\iota^*_S$ is inclusion.
+In particular for compact oriented $M$, and an $(n-1)$-form $\omega$ on $M$,
+$$ \int_{\partial M}\omega = \int_{\partial M}\iota^*_{\partial M}\omega , $$
+where $\partial M$ has the induced (Stokes) orientation.
+
+\bnote
+
+    It is possible to extend integration to non-compactly-supported forms, but this introduces issues of convergence.
+    Such definitions are useful, but unnecessary for our purposes.
+
+\enote
+
+\bprop
+
+    Suppose $M,N$ are non-empty oriented smooth $n$-manifolds, $\omega,\eta$ are compactly supported $n$-forms on $M$.
+    The integral has the following properties.
+
+    \benum
+        \item {\emphcolor Linearity}: for $a,b\in\bR$:
+        $$ \int_M a\omega+b\eta = a\int_M\omega + b\int_M\eta . $$
+        \item {\emphcolor Orientation reversal}: if $-M$ denotes $M$ with the opposite orientation, then
+        $$ \int_{-M}\omega = -\int_M\omega . $$
+        \item {\emphcolor Positivity}: if $\omega$ is a positively oriented orientation form, $\int_M\omega>0$.
+        \item {\emphcolor Diffeomorphism invariance}: if $F\colon N\to M$ is a orientation-preserving
+        or reversing diffeomorphism,
+        $$ \int_M\omega = \pm\int_NF^*\omega , $$
+        with positive sign when $F$ preserves orientation, and negative sign when it reverses it.
+    \eenum
+
+\eprop
+
+\bproof
+
+    (1) is clear at each step in the definition (in Euclidean space, then this implies it for forms supported in a single
+    chart, and this implies it in general).
+    (2) is an immediate consequence of (4) via $F=\id_M$ as it reverses orientation.
+
+    For (3) if $\omega$ is positively oriented and $(U,\phi)$ is a positively oriented smooth chart, $(\phi^{-1})^*\omega$
+    is a positive form on $\phi(U)$, so $f\d x^1\wedge\cdots\wedge\d x^n$ for $f$ positive.
+    Then its integral over $U$ is positive.
+    For negatively oriented charts, $f$ is negative, but we swap signs so the integral remains positive.
+    Then for a partition of unity, each term in the sum is nonnegative, and there must be at least one strictly positive term.
+
+    For (4) it is sufficient to prove this for $\omega$ supported in a single chart, since a partition of unity
+    in $M$ maps to a partition of unity of $N$ via $F$.
+    So suppose $(U,\phi)$ is positively oriented with $\supp\omega\subseteq U$.
+    If $F$ is positively oriented, $(F^{-1}U,\phi\circ F)$ is an oriented smooth atlas for $N$ whose domain
+    contains $\supp F^*\omega$.
+    The result then follows from diffeomorphism invariance of the Euclidean integral.
+    The other cases are handled similarly.
+    \qed
+
+\eproof
+
+\subsection{Stoke's theorem}
+
+\bthrm
+
+    Let $M$ be an oriented $n$-manifold with boundary, and $\omega$ a compactly supported smooth $(n-1)$-form on $M$.
+    Then
+    $$ \int_M\d\omega = \int_{\partial M}\omega, $$
+    where $\partial M$ is understood to have the Stokes orientation.
+
+\ethrm
+
+\bproof
+
+    First we consider the case that $M=\bH^n$.
+    Since $\omega$ is compactly supported, its support is contained within a rectangle $A=[-R,R]^{n-1}\times[0,R]$.
+    Writing $\omega$ in terms of the standard coordinates,
+    $$ \omega = \sum_{i=1}^n\omega_i\d x^1\wedge\cdots\wedge\hat{\d x^i}\wedge\cdots\wedge\d x^n . $$
+    Thus,
+    $$ \d\omega = \sum_{i=1}^n\d\omega_i\wedge\d x^1\wedge\cdots\wedge\hat{\d x^i}\wedge\cdots\wedge\d x^n =
+    \sum_{i,j}\pdvof{\omega_i}{x^j}\d x^j\wedge\d x^1\wedge\cdots\wedge\hat{\d x^i}\wedge\cdots\wedge\d x^n =
+    \sum_i(-1)^{i-1}\pdvof{\omega_i}{x^i}\d x^1\wedge\cdots\wedge\d x^i\wedge\cdots\wedge\d x^n . $$
+    Then we compute,
+    $$ \int_{\bH^n}\d\omega =
+    \sum_{i=1}^n(-1)^{i-1}\int_A\pdvof{\omega_i}{x^i}\d x^1\wedge\cdots\wedge\d x^i\wedge\cdots\wedge\d x^n =
+    \sum_{i=1}^n(-1)^{i-1}\int_0^R\int_0^R\cdots\int_0^R\pdvof{\omega_i}{x^i}\d x^1\cdots\d x^n . $$
+    By Fubini we can change the order of integration as to integrate the $i$th term first.
+    When $i\neq n$
+
+\eproof
+

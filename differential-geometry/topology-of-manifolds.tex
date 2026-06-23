@@ -148,7 +148,7 @@ course smooth manifolds which are complete metric spaces.
 
 \eproof
 
-\subsection{The Hadamard theorem}
+\subsection{Smooth covering maps}
 
 \bdefn
 
@@ -170,6 +170,53 @@ A classic result regarding covering maps is the following.
     Then $\pi$ is a homeomorphism, and a diffeomorphism if $\pi$ is smooth.
 
 \ethrm
+
+\bprop
+
+    \benum
+        \item Every smooth covering map is a local diffeomorphism, and a quotient map.
+        \item Every smooth covering map is a surjective submersion.
+        \item An injective smooth covering map is a diffeomorphism.
+    \eenum
+
+\eprop
+
+\bproof
+
+    (2) and (3) follow clearly from (1).
+    We note that in general covering maps are open: let $U\subseteq\tilde X$ be open and let $p\in\pi(U)$.
+    Take a neighborhood $p\in V$ such that $\pi^{-1}V=\bigsqcup_i\tilde V_i$.
+    Consider then $\bigsqcup_i\tilde V_i\cap U$ which is open, and since restricting $\pi$ to $\tilde V_i$ is a
+    homeomorphism, $\pi(\tilde V_i\cap U)$ is open.
+    Now, as $\pi$ is bijective on $\tilde V_i$,
+    $$ \pi\parens{\bigsqcup_i\tilde V_i\cap U} = \bigcup\pi(\tilde V_i\cap U) = \bigcup\pi(\tilde V_i)\cap\pi(U)
+    = V\cap\pi(U) $$
+    is open, and it is a neighborhood of $p$ in $\pi(U)$ so that $\pi(U)$ is open.
+    As covering maps are surjective, they are quotient maps.
+
+    Let $q\in\tilde M$ and $p=\pi(q)$.
+    Take a neighborhood $V$ of $p$ where $\pi^{-1}V=\bigsqcup_i\tilde V_i$.
+    Then $q\in\tilde V_i$ for some $i$, and $\pi$ is a diffeomorphism $\tilde V_i\to U$, showing it is a local diffeomorphism.
+    \qed
+
+\eproof
+
+\bprop
+
+    Suppose $M$ is a connected smooth $n$-manifold, and $\pi\colon E\to M$ is a topological covering map.
+    Then $E$ is a topological $n$-manifold, and there is a unique smooth structure on it making $\pi$ a smooth
+    covering map.
+
+\eprop
+
+\bproof
+
+    Because $\pi$ is a local homeomorphism
+    \TODO{This}
+
+\eproof
+
+\subsection{The Hadamard theorem}
 
 \bthrm
 
@@ -357,4 +404,250 @@ A classic result regarding covering maps is the following.
     We have thus shown that complete connected Riemannian manifolds are Eilenberg-MacLane spaces for $n=1$.
 
 \enote
+
+\subsection{Bonnet-Myers and Synge-Weinstein}
+
+\bnote
+
+    We use opposite sign convention.
+
+    \TODO{FIX FIX FIX}
+
+\enote
+
+\bdefn
+
+    We define the {\emphcolor Ricci curvature} of a Riemannian $n$-manifold $M$ to be the covariant $2$-tensor
+    $$ \Rc(X,Y) = \frac1{n-1}\tr(Z\mapsto R(X,Z)Y) . $$
+
+\edefn
+
+In terms of a local frame, the components of $\Rc$ are denoted $R_{ij}$ and satisfy
+$$ R_{ij} = \frac1{n-1}R_{ikj}^k = \frac1{n-1}g^{km}R_{ikjm} . $$
+In terms of an orthonormal frame $(E_i)$, we see that
+$$ \Rc(X,Y) = \frac1{n-1}\sum_{i=1}^n\iprod{R(X,E_i)Y,E_i} . $$
+We also define $\Rc(X)=\Rc(X,X)$, so that if $E_1,\dots,E_{n-1}$ are orthonormal and orthogonal to $X$ then
+$$ \Rc(X) = \frac1{n-1}\sum_{i=1}^n\iprod{R(X,E_i)X,E_i} = \frac1{n-1}\sum_{i=1}^{n-1}\iprod{R(X,E_i)X,E_i} . $$
+since $X=cE_n$ and $R(E_n,E_n)E_n=0$ by anti-symmetry.
+We see that this is equal to
+$$ \Rc(X) = \frac1{n-1}\sum_{i=1}^nK(X,E_i) $$
+where $K$ is the sectional curvature.
+
+\bdefn
+
+    We define the {\emphcolor scalar curvature} of a Riemannian $n$-manifold $M$ as the smooth map
+    $$ K = \frac1n\tr\Rc^\sharp . $$
+    More explicitly, $\Rc$ is a map $\X(M)\to\X^*(M)$, then we raise an index via the musical isomorphism to get
+    a map $\X(M)\to\X(M)$, and at each point this gives an endomorphism of $T_pM$ of which we take its trace.
+
+\edefn
+
+In terms of a local frame, the scalar curvature is equal to
+$$ K = R^i_i = g^{ij}R_{ij} . $$
+
+\bnote
+
+    As a rule of thumb, Ricci curvature controls the growth of the volume of metric balls.
+    More explicitly, consider the unit tangent $N\colon\partial B_r(p)\to TM|_{\partial B_r(p)}$ then
+    $$ \drv r{\rm Vol}(B_r(p)) \sim \int\Rc(N) . $$
+    We will not prove this.
+
+\enote
+
+\bthrm[title={Bonnet-Myers}]
+
+    Let $(M,g)$ be a complete connected Riemannian manifold such that for every point $p\in M$ and tangent vector $v\in T_pM$
+    $$ \frac{\norm v^2}{r^2} \leq \Rc_p(v) $$
+    for some $r>0$ constant.
+    Then $M$ is compact and satisfies ${\rm diam}(M)\leq\pi r$.
+
+\ethrm
+
+\bproof
+
+    Note that $M$'s diameter being bounded implies compactness by Hopf-Rinow: $M$ is then closed and bounded and thus
+    compact.
+    So for $p,q\in M$ we want to show that $d(p,q)\leq\pi r$ and this is sufficient.
+
+    Take $\gamma\colon[0,1]\to M$ a minimizing geodesic segment from $p$ to $q$.
+    We construct orthonormal vector fields $e_1,\dots,e_{n-1}$ along $\gamma$ which are orthogonal to $\dot\gamma$
+    and satisfy $D_te_i=0$.
+    This is done by taking such vectors at $T_pM$ and taking their parallel transport along $\gamma$.
+    Let $\ell=\norm{\dot\gamma}$, which is constant and equal to $\gamma$'s length.
+    Define $e_n=\gamma/\ell$ so we have an orthonormal frame along $\gamma$.
+
+    Define
+    $$ V_i(t) = \sin(\pi t)e_i(t) , $$
+    and since $D_te_i(t)=0$ this has second derivative
+    $$ V''_i(t) = -\pi^2\sin(\pi t)e_i(t) . $$
+    Furthermore, $V_i(0)$ and $V_i(1)$ are both zero, so $V_i$ is a proper vector field along $\gamma$ so there is a proper
+    variation $\Gamma_i$ of $\gamma$ with variation field $V_i$.
+    Denote by $E_i$ the energy of $\Gamma_i$:
+    $$ E_i(s) = E_{\Gamma_i}(s) = E_i((\Gamma_i)_s) . $$
+    Since $\gamma$ is a minimizing geodesic and $(\Gamma_i)_0=\gamma$, $E(\gamma)$ has minimal energy so
+    $E''_i(0)>0$ as $E_i(0)$ is a minimum (since $\Gamma_i$ is proper, so each $(\Gamma_i)_s$ is a curve with the same
+    endpoints as $\gamma$).
+
+    By the formula for the second derivative of energy, since $V_i$ is smooth and proper,
+    $$ \frac12E''_i(0) = -\int_0^1\iprod{V_i,V_i''+R(\dot\gamma,V_i)\dot\gamma}\d t . $$
+    We have that $\dot\gamma=\ell e_n$ and $V_i$ is a multiple of $e_i$ so this is equal to
+    $$ = -\int_0^1\sin^2(\pi t)(\pi^2-\ell^2\iprod{R(e_n,e_i)e_n,e_i}) . $$
+    Summing over $i$ shows that
+    $$ 0 < (n-1)\int_0^1\sin^2(\pi t)(\pi^2-\ell^2\Rc(e_n)) \leq (n-1)\parens{\pi^2-\frac{\ell^2}r^2}\int_0^1\sin^2(\pi t) , $$
+    and since the integral of $\sin^2$ is positive, we see that
+    $$ 0 \leq \pi^2 - \frac{\ell^2}{r^2} \implies \ell \leq \pi r . $$
+    Since $\ell=d(p,q)$ we are finished.
+    \qed
+
+\eproof
+
+\bcoro
+
+    If $(M,g)$ is complete, connected, and $\Rc\geq1/r^2$ for some $r>0$, then $M$'s fundamental group is finite.
+
+\ecoro
+
+\bproof
+
+    Let $\pi\colon\tilde M\to M$ be the universal covering of $M$.
+    Then $\tilde M$ is a smooth manifold and $\pi$ a local diffeomorphism.
+    Pulling back $g$ to $\tilde M$ via $\pi$, $\tilde g=\pi^*g$, we see that $(\tilde M,\tilde g)$ is complete and
+    $\Rc_{\tilde M}\geq1/r^2$ since $\pi$ is a local isometry.
+    By Bonnet-Myers, $\tilde M$ is compact.
+
+    For every $p\in M$, since $\tilde M$ is a cover, $\pi^{-1}p$ is discrete, and by compactness this means $\pi^{-1}p$
+    is finite (it is compact as a closed subset of compact space, and discrete compact spaces are finite).
+    But we know that $\pi^{-1}p$ and $\pi_1(M)$ have the same cardinality, so we are finished.
+    \qed
+
+\eproof
+
+\TODO{Universal covers, fundamental group}
+
+\blemm
+
+    Suppose $A\colon\bR^{n-1}\to\bR^{n-1}$ is an orthogonal matrix with determinant $\det(A)=(-1)^n$.
+    Then $A$ has a nonzero fixed point.
+
+\elemm
+
+\bproof
+
+    Since $A$ is real, its complex eigenvalues come in pairs with their conjugate, and all of its eigenvalues have
+    modulus $1$ (by orthogonality).
+    If $n$ is even, then $n-1$ is odd and so there must be at least one real eigenvalue.
+    Let $\sigma(A)$ denote $A$'s spectrum, repeated with multiplicity, so
+    $$ 1 = \det(A) = \prod_{\lambda\in\sigma(A)}\lambda . $$
+    Complex eigenvalues cancel out with their conjugates, so
+    $$ 1 = \prod_{\lambda\in\sigma(A)\cap\bR}\lambda . $$
+    These real eigenvalues are all $\pm1$, and since there is an even number of complex eigenvalues there is an odd
+    number of real ones and thus at least one must be $1$ (otherwise the product is $-1$).
+
+    If $n$ is odd, then there is an even number of real eigenvalues and
+    $$ -1 = \prod_{\lambda\in\sigma(A)\cap\bR}\lambda . $$
+    So at least one must be $1$.
+    \qed
+
+\eproof
+
+\bthrm[title={Synge-Weinstein}]
+
+    Let $(M,g)$ be a complete oriented Riemannian $n$-manifold such that its sectional curvature is bounded below
+    by some positive $\epsilon>0$ (e.g.\ when $M$ is compact with strictly positive sectional curvature).
+
+    Let $\phi\colon M\to M$ be an isometry which reverses orientation if $n$ is odd, and preserves it when $n$ is even.
+    Then $\phi$ has a fixed point.
+
+\ethrm
+
+\bproof
+
+    If sectional curvature is bound, then so is Ricci curvature.
+    So by Bonnet-Myers, $M$ is compact.
+    So there is a $p\in M$ such that $d(p,\phi(p))$ is minimal; assume it is nonzero.
+
+    Then by Hopf-Rinow let us take $\gamma\colon[0,\ell]\to M$ a minimizing geodesic with unit velocity from $p$
+    to $\phi(p)$.
+    Let $p'=\gamma(t')$ for $t'\in(0,\ell)$, then
+    $$ d(p',\phi(p')) \leq d(p',\phi(p)) + d(\phi(p),\phi(p')) = d(p',\phi(p)) + d(p,p') . $$
+    Since $\gamma$ mninimizes length, and all these points lie on it, this is equal to $d(p,\phi(p))$.
+    Because $p$ was chosen minimally this means that these must all be equalities
+    $$ d(p',\phi(p')) = d(p',\phi(p)) + d(\phi(p),\phi(p')) = d(p,\phi(p)) . $$
+
+    $\phi\circ\gamma|_{[0,t']}$ is a minimizing geodesic from $\phi(p)$ to $\phi(p')$.
+    Thus concatenating $\phi\circ\gamma|_{[0,t']}$ and $\gamma|_{[t',\ell]}$ gives a curve from $p'$
+    to $\phi(p')$, of length $d(p',\phi(p))+d(\phi(p),\phi(p'))=d(p',\phi(p'))$.
+    So it is minimizing and thus it must be a smooth geodesic.
+    By uniqueness of geodesics, $\phi\circ\gamma$ must be a shift of $\gamma$ by $\ell$, so
+    $$ d\phi(\dot\gamma(0)) = (\phi\circ\gamma)'(0) = \dot\gamma(\ell) . $$
+
+    Let $P\colon T_{\phi(p)}\to T_pM$ be the parallel transport along $\gamma$ (or rather its inverse).
+    Consider then the endomorphism of $T_pM$, $P\circ d\phi_p$.
+    We have, since $\dot\gamma$ is parallel,
+    $$ P^{-1}\dot\gamma(0) = \dot\gamma(\ell) \implies \dot\gamma(0) = P\dot\gamma(\ell) . $$
+    $P$ is an orthogonal map, $d\phi_p$ is an orthogonal map since $\phi$ is an isometry, and so $P\circ d\phi_p$
+    restricts to an orthogonal endomorphism of $\dot\gamma(0)^\perp\cong\bR^{n-1}$, call it $A$.
+
+    The assumption on $\phi$ regarding preserving/reversing orientation dependent on $n$ implies $\det(A)=(-1)^n$.
+    So there is an $e_1\in\dot\gamma(0)^\perp$ such that $Ae_1=e_1$ by the above lemma.
+    Via parallel transport extend $e_1$ to a parallel vector field $e_1(t)$ along $\gamma$.
+
+    As $Ae_1=e_1$ we have
+    $$ Pd\phi_p(e_1) = e_1 \implies d\phi_p(e_1) = P^{-1}e_1 = e_1(\ell) , $$
+    as $P^{-1}$ is parallel transport to $\ell$ along $\gamma$.
+
+    Now let $\Gamma$ be the variation of $\gamma$ given by
+    $$ \Gamma(s,t) = \exp_{\gamma(t)}(se_1(t)) . $$
+    Then $\beta(s)=\Gamma(s,0)=\exp_p(se_1)$ is the geodesic starting at $p$ with initial velocity $e_1$.
+    And $\Gamma(s,\ell)=\exp_{\phi(p)}(sd\phi_p(e_1))$ is the geodesic starting at $\phi(p)$ with initial velocity
+    $d\phi_p(e_1)=d\phi_p(\beta(0))$.
+    So
+    $$ \Gamma(s,\ell) = \phi\circ\beta(s) . $$
+    Let $E(s)=E_\Gamma(s)$, then
+    $$ \frac12E''(0) = -\int_0^\ell\iprod{e_1,e_1''+R(\dot\gamma,e_1)\dot\gamma} , $$
+    and since $e_1$ is parallel, $e_1''=0$.
+    Furthermore, $\norm{e_1}=\norm{\dot\gamma}=1$ so
+    $$ \frac12E''(0) = -\int_0^\ell\Rm(\dot\gamma,e_1,\dot\gamma,e_1) = -\int_0^\ell K(e_1,\dot\gamma) $$
+    which is then negative, as the sectional curvature is bounded below.
+
+    So there is an $s$ with $E(s)<E(0)$, then
+    $$ \ell L(\Gamma_{s'}) \leq E(\Gamma_{s'}) < E(\Gamma_0) E(\gamma) = \ell L(\gamma) , $$
+    showing $L(\Gamma_{s'})<L(\gamma)$.
+    But $\Gamma_{s'}$ is a map curve from $\beta(s')$ to $\phi\circ\beta(s')$ so this implies
+    $$ d(\beta(s'),\phi\circ\beta(s')) < d(p,\phi(p)) , $$
+    contradicting $p$'s minimality.
+    \qed
+
+\eproof
+
+The following is the classic formulation of the Synge-Weinstein theorem.
+
+\bcoro
+
+    Suppose $(M,g)$ is a complete Riemannian $n$-manifold with sectional curvature bounded below by some positive constant.
+    \benum
+        \item If $n$ is even and $M$ is orientable, then $M$ is simply connected.
+        \item If $n$ is odd, then $M$ is orientable.
+    \eenum
+
+\ecoro
+
+\bproof
+
+    For $n$ even we proceed as follows.
+    Let $\pi\colon\tilde M\to M$ be the universal covering, $\tilde g=\pi^*g$ so that $\tilde M$ becomes a complete
+    Riemannian $n$-manifold with positively-bounded sectional curvature.
+    We also pull back $M$'s orientation, as $\pi$ is a local diffeomorphism.
+    Furthermore $\pi_1(M)$ acts freely on $\tilde M$ by isometries which preserve orientation.
+    Since it acts freely, the only isometry in $\pi_1(M)$ with fixed points is the identity.
+    By Synge-Weinstein, this can be the only isometry, so $\pi_1(M)$ is trivial.
+
+    Now suppose $n$ is odd, and consider the oriented double cover $\pi\colon\bar M\to M$.
+    Then $\bar M$ is orientable, $\bZ/2\bZ$ acts freely on $\bar M$ by isometries of $\pi^*g$.
+    Then by Synge-Weinstein, the non-trivial isometry of $\bZ/2\bZ$ cannot reverse orientation so it must preserve
+    orientation.
+    Now, $M\cong\bar M/(\bZ/2\bZ)$ and thus it is orientable.
+    \qed
+
+\eproof
 
