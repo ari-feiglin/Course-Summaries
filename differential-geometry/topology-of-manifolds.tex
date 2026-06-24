@@ -148,33 +148,53 @@ course smooth manifolds which are complete metric spaces.
 
 \eproof
 
-\subsection{Smooth covering maps}
+\subsection{Smooth covering maps and orientability}
 
 \bdefn
 
-    A surjective continuous map between topological spaces $\pi\colon\tilde X\to X$ is a {\emphcolor covering map} if for every $p\in X$ there is a neighborhood $p\in U$
-    such that $\pi^{-1}U=\bigsqcup_i\tilde U_i$ for $\tilde U_i\subseteq\tilde X$ open, and $\pi|_{\tilde U_i}\colon\tilde U_i\to U$ is a homeomorphism for all $i$.
+    A surjective continuous map between topological spaces $\pi\colon\tilde X\to X$ is a {\emphcolor covering map} if for every $p\in X$ there is a neighborhood $p\in U$,
+    called an {\emphcolor evenly covered neighborhood}, such that $\pi^{-1}U=\bigsqcup_i\tilde U_i$ for $\tilde U_i\subseteq\tilde X$ open, and
+    $\pi|_{\tilde U_i}\colon\tilde U_i\to U$ is a homeomorphism for all $i$.
     The $\tilde U_i$ are called {\emphcolor sheets}.
 
     A {\emphcolor smooth covering map} is a covering map between smooth manifolds which is smooth, and the homeomorphisms from the sheets are diffeomorphisms.
-    A smooth covering map is a {\emphcolor Riemannian covering map} if it is between Riemannian manifolds and also a local isometry.
 
 \edefn
 
-It can be shown that if $X$ is connected, then the number of sheets over a neighborhood of $p\in X$ is constant for all $p\in X$, call this the {\emphcolor degree} of the covering.
-A classic result regarding covering maps is the following.
+\bprop
 
-\bthrm
+    Let $\pi\colon\tilde X\to X$ be a topological covering.
+    \benum
+        \item For any evenly covered neighborhood $U$ of $p\in X$, the number of sheets of $U$ is uniquely determined and is equal to the cardinality of the fiber $\pi^{-1}p$.
+        \item If $X$ is connected, then the fibers of $\pi$ all have the same cardinality.
+        Thus the number of sheets of any evenly covered neighborhood is a constant, equal to the cardinality of the fibers of $\pi$.
+        This cardinality is called the {\emphcolor degree} of $\pi$.
+    \eenum
 
-    If $\pi\colon\tilde X\to X$ is a covering map and $X$ is simply connected (i.e.\ has trivial fundamental group), then $\pi$ has degree $1$.
-    Then $\pi$ is a homeomorphism, and a diffeomorphism if $\pi$ is smooth.
+\eprop
 
-\ethrm
+\bproof
+
+    Let $\pi^{-1}U=\bigsqcup_i\tilde U_i$ be the sheets of $U$.
+    Then every sheet $\tilde U_i$ contains a single element of $\pi^{-1}p$.
+    Indeed, $\pi|_{\tilde U_i}$ is a homeomorphism to $U$, so $p\in U$ has a unique preimage in $\tilde U_i$.
+    And since $\pi^{-1}p\subseteq\pi^{-1}U$, this gives a one-to-one correspondence between sheets of $U$ and $\pi^{-1}p$, showing (1).
+
+    For (2), we note that the map which maps $p\in X$ to the cardinality of the fiber $\pi^{-1}p$ is locally constant.
+    Indeed for $U$ evenly covered, by (1) for every $p\in U$ the cardinality of $\pi^{-1}p$ is equal to the number of sheets of $U$ (which is then uniquely determined).
+    Thus the cardinality of fibers is constant on $U$, and since the evenly covered neighborhoods cover $X$, this shows the map is locally constant.
+
+    If $X$ is connected, then locally constant maps out of $X$ are constant.
+    So $p\mapsto\abs{\pi^{-1}p}$ is constant, as desired.
+    \qed
+
+\eproof
 
 \bprop
 
     \benum
-        \item Every smooth covering map is a local diffeomorphism, and a quotient map.
+        \item Every topological covering map is a local homeomorphism, and a quotient map.
+        A smooth covering map is a local diffeomorphism.
         \item Every smooth covering map is a surjective submersion.
         \item An injective smooth covering map is a diffeomorphism.
     \eenum
@@ -196,10 +216,23 @@ A classic result regarding covering maps is the following.
 
     Let $q\in\tilde M$ and $p=\pi(q)$.
     Take a neighborhood $V$ of $p$ where $\pi^{-1}V=\bigsqcup_i\tilde V_i$.
-    Then $q\in\tilde V_i$ for some $i$, and $\pi$ is a diffeomorphism $\tilde V_i\to U$, showing it is a local diffeomorphism.
+    Then $q\in\tilde V_i$ for some $i$, and $\pi$ is a homeo/diffeomorphism $\tilde V_i\to U$, showing it is a local homeo/diffeomorphism.
     \qed
 
 \eproof
+
+Thus an injective covering map is a homeomorphism (or diffeomorphism in the smooth case), as bijective local homeomorphisms (diffeomorphisms) are
+globally so.
+A covering map is injective iff it has degree $1$ when the target is connected.
+
+A classic result regarding covering maps is the following.
+
+\bthrm
+
+    If $\pi\colon\tilde X\to X$ is a covering map and $X$ is simply connected (i.e.\ has trivial fundamental group), then $\pi$ has degree $1$.
+    Thus $\pi$ is a homeomorphism, and a diffeomorphism if $\pi$ is smooth.
+
+\ethrm
 
 \bprop
 
@@ -211,12 +244,420 @@ A classic result regarding covering maps is the following.
 
 \bproof
 
-    Because $\pi$ is a local homeomorphism
-    \TODO{This}
+    Because $\pi$ is a local homeomorphism, $E$ is locally Euclidean.
+    We show it is Hausdorff: for $p_1\neq p_2\in E$, if $\pi(p_1)=\pi(p_2)$ then they are either in the same sheet
+    which is Hausdorff (as it is homeomorphic to a subset of $M$) or in different sheets which are disjoint.
+    If $\pi(p_1)\neq\pi(p_2)$ then since $M$ is Hausdorff they have disjoint neighborhoods, and their preimages
+    are disjoint neighborhoods of $p_1,p_2$.
+
+    Now we claim that each fiber of $\pi$ is countable.
+    Let $q\in M$ and $p_0\in\pi^{-1}q$, we construct a surjective $\beta\colon\pi_1(M,q)\to\pi^{-1}q$.
+    Since the fundamental group of a manifold is countable, this is sufficient.
+    For every $[\gamma]\in\pi_1(M,q)$ we can lift $\gamma$ to $\tilde\gamma\colon[0,1]\to E$, and the endpoint of $\tilde\gamma$
+    is independent on choice of homotopy representative.
+    So map $\beta[\gamma]=\tilde\gamma(1)$, and this is surjective: for $\pi(p)=q$ take a path $\tilde\gamma$ from $p_0$ to $p$
+    then $\pi\circ\tilde\gamma$ lifts to $\tilde\gamma$ and is then mapped to $p$.
+
+    The collection of all evenly covered open subsets (subsets whose preimage decomposes to sheets) cover $M$, and
+    by second countability of $M$ has a countable subcover $\set{U_i}$.
+    For any $i$, each sheet of $\pi^{-1}U_i$ has a single element from each fiber over $U_i$, so there can be only
+    be countably many sheets.
+    Each sheet is second countable, and thus we cover $E$ with countably many second countable subsets and thus is
+    second countable itself.
+
+    To form a smooth structure, let $p\in E$ and $U$ an evenly covered neighborhood of $\pi(p)$.
+    After shrinking it potentially, we may assume that $U$ is in the domain of a coordinate map $\phi\colon U\to\bR^n$.
+    Then the sheets of $U$ form coordinate charts via $\phi\circ\pi$.
+    The transition functions of these coordinate charts are just the transition functions of the coordinate maps of $M$
+    which are diffeomorphisms, so this is smooth.
+
+    And $\pi$ is a smooth covering map because its coordinate representation relative to these constructed coordinate maps
+    is just the identity.
+    \qed
 
 \eproof
 
+Since manifolds are locally simply connected, they admit an {\emphcolor universal covering}.
+This is a simply connected covering space $\pi\colon\tilde M\to M$.
+It is unique as for any other simply connected covering $\pi'\colon E\to M$, there is a homeomorphism $\Phi\colon\tilde M\to E$
+such that $\pi'\circ\Phi=\pi$.
+
+In lieu of the above proposition, $\tilde M,E$ can be made into smooth manifolds.
+Then $\Phi$ is a homeomorphism and $\pi'\circ\Phi=\pi$, since $\pi',\pi$ are local diffeomorphisms this means $\Phi$
+is smooth.
+As $\pi\circ\Phi^{-1}=\pi'$, so is $\Phi^{-1}$ so it is a diffeomorphism.
+
+$\tilde M$ is called the {\emphcolor universal covering manifold} of $M$.
+
+\bcoro
+
+    If $M$ is a connected smooth manifold, then there exists a simply connected smooth manifold $\tilde M$, the
+    {\emphcolor universal covering manifold} of $M$, with smooth covering $\pi\colon\tilde M\to M$.
+    The universal covering map is unique as for any other smooth covering $\pi'\colon\tilde M'\to M$ there is a unique
+    diffeomorphism $\Phi\colon\tilde M\to\tilde M'$ such that $\pi'\circ\Phi=\pi$.
+
+\ecoro
+
+\bdefn
+
+    Let $\pi\colon E\to X$ be a topological covering map, then an {\emphcolor automorphism} of $\pi$
+    is a homeomorphism $\phi\colon E\to E$ such that $\pi\circ\phi=\pi$.
+    The automorphisms of $\pi$ form a group, the {\emphcolor automorphism group} of $\pi$ denoted $\aut_\pi(E)$.
+
+    A covering map $\pi$ is {\emphcolor normal} if $\aut_\pi(E)$ acts transitively on each of $\pi$'s fibers.
+    This can be shown to be equivalent to $\pi_*(\pi_1(E,q))$ being a normal subgroup of $\pi_1(M,\pi(q))$ for all
+    $q\in E$.
+
+\edefn
+
+If $\pi\colon E\to M$ is a smooth covering map then its automorphisms are smooth.
+Indeed, if $\phi\colon E\to E$ is an automorphism of $\pi$, then $\pi\circ\phi=\pi$ implies $\phi$ is smooth as $\pi$
+is a local diffeomorphism.
+Thus $\aut_\pi(E)$ acts smoothly on $E$.
+
+\blemm
+
+    If $\pi\colon E\to M$ is a smooth covering map, then $\aut_\pi(E)$ is a zero-dimensional Lie group acting smoothly
+    and freely on $E$.
+
+\elemm
+
+\bproof
+
+    Suppose $\phi\in\aut_\pi(E)$ fixes some $p\in E$.
+    Now, $\pi\circ\phi=\pi$ meaning that $\phi$ can be viewed as a lift of $\pi$.
+    The identity is another lift of $\pi$ which agrees with $\phi$ at $p$, and by uniqueness we have that $\phi=\id$.
+    So the action is free, and we already showed it is smooth.
+
+    To show that $\aut_\pi(E)$ is a Lie group, we just need to show it is countable.
+    Let $q\in E$ and $p=\pi(q)\in M$, and let $p\in U$ be an evenly covered neighborhood of $p$.
+    Because $E$ is second countable, $\pi^{-1}U$ has countably many sheets, and thus $\pi^{-1}p$ is countable.
+    Let $\theta^{(p)}\colon\aut_\pi(E)\to E$ be given by $\theta^{(q)}(\phi)=\phi(q)$.
+    This maps $\aut_\pi(E)$ into $\pi^{-1}p$ and since the action is free this is an injection.
+    So $\aut_\pi(E)$ is indeed countable.
+    \qed
+
+\eproof
+
+Now we claim that the action of $\aut_\pi(E)$ on $E$ is in fact proper as well, which allows us to quotient $E$ by $\aut_\pi(E)$.
+This would then allow us to quotient $E$ by the automorphism group, which we could naturally compare to $M$.
+
+\blemm
+
+    Suppose a discrete Lie group $\Gamma$ acts continuously and freely on a manifold $E$.
+    Then the action is proper iff the following conditions hold:
+    \benum
+        \item Every point $p\in E$ has a neighborhood $U$ such that for all $g\in\Gamma$, $(gU)\cap U=\emptyset$ unless $g=e$.
+        \item If $p,p'\in E$ are not in the same $\Gamma$-orbit, there exist neighborhoods $p\in V$ and $p'\in V'$ such that
+        $(gV)\cap V'=\emptyset$ for all $g\in\Gamma$.
+    \eenum
+
+\elemm
+
+\bproof
+
+    First assume the action is free and proper, then consider the quotient map $\pi\colon E\to E/\Gamma$.
+    If $p,p'\in E$ are not in the same orbit their images under $\pi$ are different.
+    Since $E/\Gamma$ is Hausdorff, there are neighborhoods $\pi(p)\in W,\pi(p')\in W'$ such that $W\cap W'=\emptyset$.
+    Then let $V=\pi^{-1}W$ and $V'=\pi^{-1}W'$; we see that if $p\in V$ such that $gp\in V'$ we have $\pi(gp)=\pi(p)\in W\cap W'$ a contradiction.
+    This shows (2).
+
+    For (1), let $p\in E$ and let $V$ be a precompact neighborhood of $p$.
+    Then $\Gamma_{\cl V}=\set{g\in\Gamma}[(g\cl V)\cap\cl V\neq\emptyset]$ is compact (since an action on $G$ is proper iff $G_K$ is compact for all $K$ compact).
+    Since $\Gamma$ is discrete, $\Gamma_{\cl V}$ is then finite, so w write $\Gamma_{\cl V}=\set{e,g_1,\dots,g_n}$.
+    By potentially shrinking $V$ we may assume that $g_i^{-1}p\notin\cl V$ for all $i$.
+    Let
+    $$ U = V - (g_1\cl V\cup\cdots\cup g_n\cl V ) . $$
+    This is an open neighborhood of $p$ and for $e\neq g\in\Gamma$ we have that either $g=g_i$, in which case $g_iU\subseteq g_i\cl V$ does not intersect $U$.
+    Otherwise $g\notin\Gamma_{\cl V}$ so $(gU)\cap U\subseteq(g\cl V)\cap\cl V=\emptyset$.
+    Thus $U$ satisfies (1).
+
+    Conversely suppose (1) and (2) hold.
+    Let $(p_i)$ be a sequence in $M$ and $(g_i)$ be a sequence in $\Gamma$ such that $(p_i)$ and $(g_ip_i)$ both converge.
+    We want to show that a subsequence of $(g_i)$ converges.
+
+    Suppose $p_i\to p$ and $g_ip_i\to p'$.
+    If $p,p'$ lie in different orbits, then there are $V,V'$ as in (2).
+    For large enough $i$ we have $p_i\in V$ and $g_ip_i\in V'$, which contradicts $(g_iV)\cap V'=\emptyset$.
+    So $p,p'$ lie in the same orbit, so $gp=p'$ for some $g\in\Gamma$, and so $g^{-1}g_ip_i\to p$.
+
+    Choose a neighborhood $U$ of $p$ as in (1), and let $i$ be large enough such that $g^{-1}g_ip_i\in U$ and $p_i\in U$.
+    This means that $(g^{-1}g_iU)\cap U\neq\emptyset$, which implies $g=g_i$, so eventually $g_i$ is constant and thus convergent.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $\pi\colon E\to M$ be a smooth covering map.
+    Then $\aut_\pi(E)$ acts smoothly, freely, and properly on $E$.
+
+\eprop
+
+\bproof
+
+    We just need to show properness, for which we use the previous lemma.
+    For $p\in E$, choose $W\subseteq M$ an even covering of $\pi(p)$.
+    Then take the sheet of $p$ in $\pi^{-1}W$, call it $U$.
+    Then for an automorphism $\phi$, if $\phi(q)\in U$ for $q\in U$ then we have $\pi\circ\phi(q)=\pi(q)$.
+    But $\pi$ is a diffeomorphism from $U$, so $\phi(q)=q$.
+    As $\pi\circ\phi=\pi$, $\phi$ is a lift of $\pi$ which agrees with $\id$ on $q$; since lifts by a covering map are unique, $\phi=\id$.
+    Thus $\phi(U)\cap U=\emptyset$ for $\phi\neq\id$, so $\aut_\pi(E)$ satisfies the first condition in the above lemma.
+
+    If $p,p'\in E$ are in different orbits, take disjoint neighborhoods $\pi(p)\in W,\pi(p')\in W'$.
+    Then their preimages satisfy the second condition.
+    \qed
+
+\eproof
+
+\bthrm
+
+    Let $\pi\colon E\to M$ be a smooth normal covering map, and let $\Gamma=\aut_\pi(E)$.
+    Then the quotient manifold $E/\Gamma$ is diffeomorphic to $M$.
+
+\ethrm
+
+\bproof
+
+    The quotient exists by the previous proposition and the quotient manifold theorem.
+    Let $\Pi\colon E\to E/\Gamma$ be the quotient map, which is a smooth submersion.
+    Now there is an obvious map $\Phi\colon E/\Gamma\to M$ given by $\Phi(\Gamma p)=\pi(p)$.
+    This is well-defined as if $\Gamma p=\Gamma q$ for $p,q\in E$ then $q=\phi(p)$ for some automorphism $\phi$.
+    Then
+    $$ \Phi(\Gamma q) = \pi(q) = \pi\circ\phi(p) = \pi(p) = \Phi(\Gamma p) , $$
+    so this is well-defined.
+    Thus $\pi=\Phi\circ\Pi$, and since $\Pi$ is a smooth submersion and $\pi$ is smooth, $\Phi$ is smooth.
+
+    Since $\pi$ is surjective, so too is $\Phi$.
+    It is also injective, since if $\pi(p)=\pi(q)$ then since $\pi$ is normal, there is an automorphism $\phi$ mapping $p$ to $q$,
+    so $\Gamma p=\Gamma q$.
+    So $\Phi$ is invertible and its inverse satisfies $\Phi^{-1}\circ\pi=\Pi$.
+    As $\pi$ is a local diffeomorphism, $\Phi^{-1}$ is also smooth, so $\Phi$ is a diffeomorphism as desired.
+    \qed
+
+\eproof
+
+We are also interested in how covering maps interplay with orientation.
+
+\bprop
+
+    If $\pi\colon E\to M$ is a smooth covering map and $M$ is orientable, then so is $E$.
+
+\eprop
+
+\bproof
+
+    As $\pi$ is a local diffeomorphism, this is immediate.
+    \qed
+
+\eproof
+
+\bdefn
+
+    If $G$ is a Lie group acting smoothly on a smooth oriented manifold $M$, we say that action is
+    {\emphcolor orientation-preserving} if each $p\mapsto gp$ is orientation-preserving.
+
+\edefn
+
+\bthrm
+
+    Suppose $E$ is a connected, oriented, smooth manifold with or without boundary, and $\pi\colon E\to M$ is a smooth
+    normal covering map, with $M$ connected.
+    Then $M$ is orientable iff the action of $\aut_\pi(E)$ on $E$ is orientation-preserving.
+
+\ethrm
+
+\bproof
+
+    Denote the orientation of $E$ by $\O_E$.
+    Note that as $M,E$ are connected, they only have two potential orientations.
+    This is because for any two orientation forms, they are multiples of one another by a non-zero smooth function.
+    By connectivity, this function is either always positive or always negative.
+
+    Now let $q\in E$ be arbitrary, then one of the orientations makes $d\pi_q\colon T_qE\to T_{\pi q}M$ orientation-preserving.
+    Then $\O_E$ and $\pi^*\O_M$ are both orientations of $E$ agreeing at $q$, so they must be the same orientation.
+    Now suppose $\phi\in\aut_\pi(E)$ then $\pi\circ\phi=\pi$ so
+    $$ \phi^*\O_E = \phi^*(\pi^*\O_M) = (\pi\circ\phi)^*\O_M = \pi^*\O_M = \O_E $$
+    so that $\phi$ is orientation-preserving as desired.
+
+    Conversely suppose $\aut_\pi(E)$ is orientation-preserving, and let $p\in M$.
+    If $U\subseteq M$ is an evenly covered neighborhood of $p$, take a section $\sigma\colon U\to E$ (the inverse of one
+    of the restrictions of $\pi$ to a sheet).
+    This then induces an orientation $\sigma^*\O_E$ on $U$.
+
+    Now let $\sigma_1\colon U\to E$ be another section.
+    Since $\pi$ is normal, $\aut_\pi(E)$ acts transitively on the fiber $\pi^{-1}p$, so there is an automorphism $\phi$ such
+    that $\sigma_1(p)=\phi(\sigma(p))$.
+    So $\phi\circ\sigma$ is a local section of $\pi$ which agrees with $\sigma_1$ at $p$, and since sections are
+    inverses of restrictions of $\pi$, it follows that $\phi\circ\sigma=\sigma_1$.
+    Thus since $\phi$ is orientation-preserving
+    $$ \sigma_1^*\O_E = (\phi\circ\sigma)^*\O_E = \sigma^*(\phi^*\O_E) = \sigma^*\O_E , $$
+    so all sections generate the same orientation.
+
+    So at every point $p\in M$ we can uniquely define an orientation in a neighborhood around $p$.
+    By uniqueness, these orientations must agree on their overlaps and thus form an orientation of $M$.
+    \qed
+
+\eproof
+
+This theorem allows us to show that certain manifolds are not orientable.
+
+\bexam
+
+    For $n\geq1$, consider the smooth covering $\pi\colon S^n\to\RP^n$ (which maps a point in $S^n\subseteq\bR^{n+1}-0$
+    to its equivalence class).
+    This is a bijection and thus normal.
+    The only non-trivial automorphism of $\pi$ is the antipodal map $\alpha(x)=-x$.
+    It can be shown that this is orientation-preserving iff $n$ is odd (see homework).
+
+    Thus $\RP^n$ is orientable iff $n$ is odd.
+
+\eexam
+
+\bdefn
+
+    Let $M$ be a connected, smooth, positive-dimensional manifold (with or without boundary).
+    Define $\hat M$ to be the set of all orientations of the tangent spaces of $M$:
+    $$ \hat M = \set{(p,\O_p)}[\hbox{$p\in M$ and $\O_p$ is an orientation of $T_pM$}] . $$
+    There is an obvious projection $\hat\pi\colon\hat M\to M$ mapping $(p,\O_p)\mapsto p$.
+    Since every tangent space has two orientations, the fibers of $\hat\pi$ all have cardinality $2$.
+
+    We call $\hat\pi\colon\hat M\to M$ is the {\emphcolor orientation covering} of $M$.
+
+\edefn
+
+\blemm
+
+    If $\pi\colon X\to Y$ is a topological covering map with $Y$ connected, then $\pi$ restricts to a covering map
+    on each of $X$'s connected components.
+
+\elemm
+
+\bproof
+
+    This is clear.
+    \qed
+
+\eproof
+
+\bprop
+
+    Suppose $M$ is a connected, smooth, positive-dimensional manifold.
+    Let $\hat\pi\colon\hat M\to M$ be its orientation covering.
+    Then $\hat M$ can be given the structure of a smooth, oriented manifold without boundary, such that:
+    \benum
+        \item $\hat\pi$ is a normal covering map,
+        \item A connected open subset $U\subseteq M$ is evenly covered by $\hat\pi$ iff $U$ is oriented,
+        \item If $U\subseteq M$ is evenly covered, then every orientation of $U$ is the pullback orientation induced
+        by a local section of $\hat\pi$ over $U$.
+    \eenum
+
+\eprop
+
+\bproof
+
+    We first topologize $\hat M$.
+    For each pair $(U,\O)$ where $U$ is an open subset of $M$ and $\O$ an orientation of $U$, define
+    $\hat U_\O\subseteq\hat M$ as
+    $$ \hat U_\O = \set{(p,\O_p)\in\hat M}[\hbox{$p\in U$ and $\O_p$ is the orientation of $T_pM$ determined by $\O$}] . $$
+    We claim that this forms a basis of a topology on $\hat M$.
+
+    Let $(p,\O_p)\in\hat M$, we can take an orientable neighborhood $U$ of $p$ (e.g.\ a Euclidean neighborhood).
+    Then $\O_p$ must be determined by some orientation $\O$ of $U$ (if $\O$ doesn't determine $\O_p$, then $-\O$ does).
+    So $(p,\O_p)\in\hat U_\O$, so these cover $\hat M$.
+
+    Now suppose $(p,\O_p)$ is in both $\hat U_\O$ and $\hat U'_{\O'}$.
+    So $p\in U\cap U'$ and $\O_p$ is determined by both $\O$ and $\O'$.
+    Take a connected neighborhood $p\in V\subseteq U\cap U'$, then $\O,\O'$ both restrict to orientations of $V$,
+    and since $V$ is connected and they agree at $p$, they give the same orientation of $V$.
+    So $\hat V_\O=\hat V_{\O'}\subseteq\hat U_\O\cap\hat U'_{\O'}$, meaning these $\hat U_\O$ do indeed form a topological
+    basis.
+
+    Note that $\hat\pi$ maps $\hat U_\O$ bijectively onto $U$, so it is an open map.
+    This is continuous, as for $V\subseteq U$ open, its preimage is $\hat V_{\O|_V}$ open.
+    Thus its restriction to $\hat U_\O$ is a homeomorphism into $U$, meaning $\hat\pi$ is a local homeomorphism.
+
+    Now we show that $\hat\pi$ is a covering map.
+    Suppose that $U\subseteq M$ is open conencted and orientable with orientation $\O$.
+    Then $\hat\pi^{-1}U$ is the disjoint union of $\hat U_\O$ and $\hat U_{-\O}$, and $\hat\pi$ restricts to a homeomorphism
+    on both of them.
+    So $\hat\pi$ is indeed a covering map.
+
+    Thus it restricts to a covering map from $\hat M$'s connected components to $M$, and thus each connected component
+    has a unique smooth structure making $\hat\pi$ a smooth covering map.
+    This defines a smooth structure on $\hat M$ making $\hat\pi$ a smooth covering map.
+
+    We also show it is normal.
+    Let us define $\alpha\colon\hat M\to\hat M$ which maps $(p,\O_p)$ to $(p,-\O_p)$.
+    Clearly we have $\hat\pi\circ\alpha=\hat\pi$, and since $\alpha$ is its own inverse, to show it is an automorphism it is sufficient to
+    show that $\alpha$ is open.
+    For basic open $\hat U_\O$, we see that $\alpha(\hat U_\O)=\hat U_{-\O}$, so it is indeed open.
+    For $p\in M$, its fiber consists of just $(p,\O_p)$ and $(p,-\O_p)$, and $\alpha$ brings one to the other, showing that $\aut_\pi(\hat M)$ acts transitively
+    on all the fibers of $\hat\pi$.
+    Thus $\hat\pi$ is a normal smooth cover, showing (1).
+
+    Now we orient $\hat M$.
+    Let $\hat p=(p,\O_p)$, then $\O_p$ is an orientation of $T_pM$.
+    So give $T_{\hat p}\hat M$ the unique orientation making $d\pi_{\hat p}$ orientation-preserving.
+    This defines a pointwise orientation $\hat\O$ of $\hat M$.
+    On a basic open subset $\hat U_\O$, $\hat\O$ agrees with the pullback orientation given by $\hat\pi$ on $(U,\O)$
+    so it is continuous.
+
+    For point (2), we already showed that if $U\subseteq M$ is oriented then it is evenly covered.
+    If $U\subseteq M$ is evenly covered, then take a smooth local section $\sigma\colon U\to\hat M$ of $\hat\pi$.
+    This pulls back an orientation to $U$.
+
+    Now if $U$ is evenly covered and $\O$ an orientation of $U$, define a section $\sigma\colon U\to\hat M$ by
+    $\sigma(p)=(p,\O_p)$.
+    This is continuous, as if $\hat U'_{\O'}$ is basic open of $\hat M$, then for each component $V$ of $U\cap U'$,
+    the restrictions of $\O|_V$ and $\O|_{V'}$ must either agree or be opposites.
+    Then $\sigma^{-1}\hat U_{\O'}$ is the union of the components $V$ where $\O$ and $\O'$ agree, and thus is open.
+    And $\sigma$ induces the orientation $\O$.
+    \qed
+
+\eproof
+
+\bthrm
+
+    Suppose $M$ is connected, and let $\hat\pi\colon\hat M\to M$ be its orientation covering.
+    \benum
+        \item If $M$ is orientable, then $\hat M$ has two components.
+        The restriction of $\hat\pi$ to each component is a diffeomorphism.
+        \item If $M$ is non-orientable, then $\hat M$ is connected, and $\hat\pi$ is a two-sheet normal covering map.
+    \eenum
+
+\ethrm
+
+\bproof
+
+    If $M$ is orientable, then by the previous proposition, $M$ is evenly covered.
+    Then it has two sheets, $\hat M_\O,\hat M_{-\O}$, which by definition map diffeomorphically to $M$.
+    They are connected as $M$ is, so $\hat M$ has two components.
+
+    Now if $M$ is non-orientable, we show $\hat M$ is connected.
+    Let $W$ be a component of $\hat M$, so $\hat\pi$ restricts to a covering $W\to M$.
+    Its fibers then all have the same cardinality.
+    We showed above that $\hat\pi^{-1}p$ has cardinality $2$, so the fibers in $W$ have cardinality $1$ or $2$.
+    If $2$, then $W=\hat M$ and we are finished.
+    Otherwise $\hat\pi$ is an injection, and an injective smooth covering map is a diffeomorphism, and its inverse
+    would then induce an orientation on $M$, a contradiction.
+
+    So $\hat M$ is connected, and thus the number of sheets is constant, and so must be two.
+    \qed
+
+\eproof
+
+The orientation covering is unique in that if $\tilde\pi\colon\tilde M\to M$ is any other two-sheeted smooth covering
+map with $\tilde M$ oriented, then there is a unique orientation-preserving diffeomorphism $\phi\colon\tilde M\to\hat M$
+such that $\hat\pi\circ\phi=\tilde\pi$.
+
 \subsection{The Hadamard theorem}
+
+\bdefn
+
+    A smooth covering map is a {\emphcolor Riemannian covering map} if it is between Riemannian manifolds and also a local isometry.
+
+\edefn
 
 \bthrm
 
@@ -522,8 +963,6 @@ $$ K = R^i_i = g^{ij}R_{ij} . $$
 
 \eproof
 
-\TODO{Universal covers, fundamental group}
-
 \blemm
 
     Suppose $A\colon\bR^{n-1}\to\bR^{n-1}$ is an orthogonal matrix with determinant $\det(A)=(-1)^n$.
@@ -642,11 +1081,16 @@ The following is the classic formulation of the Synge-Weinstein theorem.
     Since it acts freely, the only isometry in $\pi_1(M)$ with fixed points is the identity.
     By Synge-Weinstein, this can be the only isometry, so $\pi_1(M)$ is trivial.
 
-    Now suppose $n$ is odd, and consider the oriented double cover $\pi\colon\bar M\to M$.
-    Then $\bar M$ is orientable, $\bZ/2\bZ$ acts freely on $\bar M$ by isometries of $\pi^*g$.
-    Then by Synge-Weinstein, the non-trivial isometry of $\bZ/2\bZ$ cannot reverse orientation so it must preserve
-    orientation.
-    Now, $M\cong\bar M/(\bZ/2\bZ)$ and thus it is orientable.
+    Now suppose $n$ is odd, and consider the oriented cover $\pi\colon\hat M\to M$.
+    Suppose that $M$ is not orientable, so that $\hat M$ is connected.
+    Let $\phi\in\aut_\pi(\hat M)$ be an automorphism, then
+    $$ \phi^*(\pi^*g) = (\pi\circ\phi)^*g = \pi^*g , $$
+    so automorphisms are isometries of $\pi^*g$.
+    Since $\aut_\pi(\hat M)$ acts freely on $\hat M$, no non-trivial automorphisms can have fixed points.
+    Furthermore $\hat M$ is oriented, so by Synge-Weinstein the non-trivial automorphisms cannot reverse orientation.
+    Since $\hat M$ is connected, this means they all preserve orientation.
+
+    Thus $\hat M\to M$ is an orientation-preserving normal smooth covering, which implies $M$ is orientable (a contradiction).
     \qed
 
 \eproof
