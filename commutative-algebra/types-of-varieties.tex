@@ -1,0 +1,465 @@
+\section{Types of Varieties}
+
+\subsection{Products of varieties}
+
+The goal of this section is to construct the categorical product of varieties.
+First we will construct the product of SWFs.
+
+Recall that when constructing the colimits of SWFs we knew that the underlying topological space was the colimit of the spaces.
+This is not true for limits; but we will see that the underlying set is the limit, but endowed with a different topology.
+
+Let $(X,\O_X)$ and $(Y,\O_Y)$ be SWFs, then we construct a topology on $Z=X\times Y$ as follows.
+For $U\subseteq X$ and $V\subseteq Y$ open, and $f\colon U\times V\to k$ of the form $f(x,y)=\sum_ig_i(x)h_i(y)$ for $g_i\in k[U]$
+and $h_i\in k[V]$, define
+$$ D_{U\times V}(f) = \set{(x,y)\in U\times V}[f(x,y)\neq0] . $$
+This collection of $D_{U\times V}(f)$ forms a basis for our topology on $Z$.
+Call such $f$ {\emphcolor basic regular} relative to $U,V$.
+
+This allows us to define a structure sheaf on $Z$.
+For $W\subseteq Z$ open, let $\O_Z(W)$ be the set of functions $\phi\colon W\to k$ such that there is a basic open cover
+$W\subseteq\bigcup_iD_{U_i\times V_i}(f_i)$ and restricting $\phi$ to $W\cap D_{U_i\times V_i}(f_i)$ is of the form $\phi_i/f_i$
+where $\phi_i$ is basic regular relative to $U,V$.
+
+Notice that the projections $\pi_X\colon Z\to X$ and $\pi_Y\colon Z\to Y$ are morphisms of SWFs.
+Indeed, $\pi_X^{-1}(D_U(f))=D_U(f)\times Y=D_{U\times Y}(f\cdot1)$ is open.
+Since $D_U(f)$ forms a basis of open sets of $X$, we see that $\pi_X$ is continuous.
+And for $f\colon U\to k$ regular, $\pi^*_X(f)(x,y)=f(x)$ is regular as well since $1\in k[Y]$.
+
+Let us denote $(Z,\O_Z)$ by $(X,\O_X)\times(Y,\O_Y)$, or just $X\times Y$.
+
+\blemm
+
+    $(Z,\O_Z)$ is the categorical product of $(X,\O_X)$ and $(Y,\O_Y)$ in $\SWF_k$.
+
+\elemm
+
+\bproof
+
+    For $\phi_X\colon T\to X$ and $\phi_Y\colon T\to Y$, in order for this to factor through $\phi\colon T\to Z$ we must have that
+    $\phi=(\phi_X,\phi_Y)$ (since $Z$ is the product of sets).
+    It remains to show that $\phi$ is a morphism.
+
+    For every open $U\subseteq X,V\subseteq Y$, we have $\phi^{-1}(U\times V)=\phi_X^{-1}(U)\cap\phi^{-1}_Y(V)$ is open.
+    And for every $f\colon U\times V\to k$ basic regular of the form $f(x,y)=\sum_ig_i(x)h_i(y)$, we have
+    $$ \phi^*(f) = \sum_i\phi^*_X(g_i)\phi^*_Y(h_i) \colon \phi^{-1}(U\times V) \to k $$
+    which is regular as $\phi_X,\phi_Y$ are morphisms and $k[\phi^{-1}(U\times V)]$ is an algebra.
+
+    Thus we have that
+    $$ \phi^{-1}(D_{U\times V}(f)) = D_{\phi^{-1}(U\times V)}(\phi^*(f)) \subseteq T $$
+    is open, so $\phi$ is continuous.
+
+    Now we need to show that $\phi^*$ induces a map of $k$-algebras.
+    But this is immediate, as it maps basic regular maps to regular maps, and thus quotients of basic regular to regular maps.
+    And the rest follows by the sheaf condition.
+    \qed
+
+\eproof
+
+Since limits are functorial, if we have morphisms $f_i\colon X_i\to Y_i$ for $i=1,2$, the product $f_1\times f_2\colon X_1\times X_2\to Y_1\times Y_2$
+is a morphism as well.
+
+\blemm
+
+    Let $(X,\O_X)$ and $(Y,\O_Y)$ be SWFs and $X'\subseteq X,Y'\subseteq Y$ be subsets.
+    Then the following two SWFs on $X'\times Y'$ are the same
+    $$ (X',\O_X|_{X'}) \times (Y',\O_Y|_{Y'}) = \bigl((X,\O_X)\times(Y,\O_Y)\bigr)|_{X'\times Y'} . $$
+
+\elemm
+
+\bproof
+
+    Let $Z_1,Z_2$ denote the SWFs; we want to show $Z_1=Z_2$.
+    We do this by showing that the identity of $X'\times Y'$ gives a morphism in both directions.
+
+    In one direction, $\id\colon Z_1\to Z_2$ is a morphism since it is the restriction of the embedding $X'\times Y'\inj X\times Y$.
+    This is just the product of the inclusions $(X',\O_X|_{X'})\to(X,\O_X)$ with the same one for $Y$, which is a morphism.
+
+    Conversely we show by the universal property that $(X\times Y)|_{X'\times Y'}\to X$ obtained by projecting is a morphism.
+    But this is just the restriction of the projection $X\times Y\to X$, which is a morphism.
+    \qed
+
+\eproof
+
+\blemm
+
+    For every two sets $X,Y$, there is a natural injective homomorphism
+    $$ \mu\colon \fun(X,k) \otimes_k \fun(Y,k) \to \fun(X\times Y,k),\qquad \mu(f\otimes g)\colon(x,y)\mapsto f(x)g(y) . $$
+
+\elemm
+
+\bproof
+
+    $\mu$ is clearly bilinear, so it is well-defined.
+    Since $\fun(X,k),\fun(Y,k)$ are $k$-vector spaces, to show injectivity it is sufficient to show that $\mu$ maps a basis to a linearly
+    independent set.
+    Take a basis $\set{f_i}_{i\in I}$ of $\fun(X,k)$ and a basis $\set{g_j}_{j\in J}$ of $\fun(Y,k)$.
+    Then $\set{f_i\otimes g_j}_{i\in I,j\in J}$ is a basis for their tensor product, and $\mu$ maps this to $f_ig_j$.
+    Suppose we have a finite zeroing sum
+    $$ \sum_{i,j}\alpha_{ij}f_ig_j = 0 . $$
+    Then for every $y\in Y$ we have the zeroing sum
+    $$ \sum_i\sum_j\alpha_{ij}g_j(y)f_i = 0 , $$
+    which means that for all $i$, $\sum_j\alpha_{ij}g_j(y)=0$ by linear independence.
+    Since this is true for all $y$ this means $\sum_j\alpha_{ij}g_j=0$, and thus $\alpha_{ij}=0$.
+    \qed
+
+\eproof
+
+\bthrm
+
+    If $X,Y$ are affine varieties, then $X\times Y$ is an affine variety.
+    Furthermore, the natural map $k[X]\otimes_kk[Y]\to k[X\times Y]$, $f\otimes g\mapsto\pi_X^*(f)\cdot\pi_Y^*(g)$ is an isomorphism.
+
+    If $X,Y$ are algebraic varieties, then so is $X\times Y$.
+
+\ethrm
+
+\bproof
+
+    We first prove the first point, where $X,Y$ are affine.
+    Since $k[X],k[Y]$ are fg $k$-algebras, so is $k[X]\otimes_kk[Y]$.
+    Furthermore, $k[X]\subseteq\fun(X,k)$ and $k[Y]\subseteq\fun(Y,k)$, and as $k$ is a field all $k$-modules are free and thus flat so tensoring
+    preserves subobjects, thus $k[X]\otimes_kk[Y]\subseteq\fun(X,k)\otimes_k\fun(Y,k)$.
+    By the previous lemma this is a subalgebra of $\fun(X\times Y,k)$ which is reduced.
+    Thus $k[X]\otimes_kk[Y]$ is a reduced fg $k$-algebra.
+
+    This means there is an affine $k$-variety $Z$ such that $k[Z]=k[X]\otimes_kk[Y]$.
+    Given any other SWF, we have natural bijections
+    $$ \eqalign{
+        \hom_\SWF(W,Z) &\cong \hom_\alg(k[Z],\O_W(W))\cr
+            &\cong \hom_\alg(k[X]\otimes_kk[Y],\O_W(W))\cr
+            &\cong \hom_\alg(k[X],\O_W(W)) \times \hom_\alg(k[Y],\O_W(W))\cr
+            &\cong \hom_\SWF(W,X) \times \hom_\SWF(W,Y)
+    } $$
+    where the first is due to a result we showed in general: the global sections functor $\Gamma$ is a natural isomorphism for $Z$ affine.
+    The third is because tensoring over $k$ is the coproduct of $k$-algebras.
+    Thus $Z$ satisfies the universal property of products, so $Z\cong X\times Y$ is affine.
+
+    Alternatively, we could note that $\bA^n\times\bA^m\cong\bA^{n+m}$ via the identity.
+    Then for $X\subseteq\bA^n,Y\subseteq\bA^m$, $X\times Y\subseteq\bA^{n+m}$ is closed as it is equal to $Z(\I(X)\cup\I(Y))$.
+    Thus it is affine.
+
+    Now in general, let $X=\bigcup_iX_i$ and $Y=\bigcup_jY_j$ be open affine coverings.
+    Then $X\times Y=\bigcup_{i,j}X_i\times Y_j$ is an open affine cover by the first point, so $X\times Y$ is algebraic.
+    \qed
+
+\eproof
+
+Note that since $A\otimes_kk[x_1,\dots,x_n]\cong A[x_1,\dots,x_n]$ naturally, we see that
+$$ k[X\times\bA^n] \cong k[X]\otimes_kk[\bA^n] \cong k[X][x_1,\dots,x_n] $$
+for $X$ affine.
+
+\bcoro
+
+    Let $X,Y$ be algebraic varieties, $X'\subseteq X,Y'\subseteq Y$ be open/closed subvarieties.
+    Then $X'\times Y'\subseteq X\times Y$ is an open/closed subvariety.
+
+\ecoro
+
+\bproof
+
+    $X'\times Y'$ is open/closed in $X\times Y$ and $X'\times Y'$ is a variety.
+    Furthermore we showed that the induced SWF structure on $X'\times Y'$ from $X\times Y$ is the same as the product of induced structures
+    from $X,Y$.
+    Thus $X'\times Y'$ is a subvariety of $X\times Y$.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $X,Y$ be algebraic varieties, then
+    \benum
+        \item $\dim(X\times Y)=\dim X+\dim Y$,
+        \item If $X$ and $Y$ are irrreducible, so is $X\times Y$.
+    \eenum
+
+\eprop
+
+\bproof
+
+    First we show (2): if $X,Y$ are irreducible varieties, then so is $X\times Y$.
+    Suppose $X\times Y=Z_1\cup Z_2$ for $Z_i$ closed, then define
+    $$ X_i = \set{x\in X}[x\times Y\subseteq Z_i] = \bigcap_{y\in Y}\set{x\in X}[(x,y)\in Z_i]. $$
+    Notice that $X=X_1\cup X_2$, and $X_i$ are closed as each $\set{x\in X}[(x,y)\in Z_i]$ is closed as the preimage of $Z_i$
+    under $x\mapsto(x,y)$.
+    Thus $X=X_i$ for some $i$, thus $X\times Y\subseteq Z_i$ and we have the desired result.
+
+    Note that the map $x\mapsto(x,y)$ is continuous as its components are the identity and the constant map, both of which are continuous.
+    So it is even a morphism of SWFs.
+
+    Now we claim that if $X,Y$ are affine then $\dim(X\times Y)=\dim X+\dim Y$.
+    Let $\dim X=n,\dim Y=m$, then there are finite surjective maps $X\to\bA^n,Y\to\bA^m$.
+    The product map $X\times Y\to\bA^{n+m}$ is then finite surjective, and thus $\dim(X\times Y)=\dim(\bA^{n+m})=n+m$ as desired.
+
+    Then in general for $X=\bigcup_iX_i,Y=\bigcup_jY_j$ open affine covers, $X\times Y=\bigcup_{i,j}X_i\times Y_j$.
+    Then we have
+    $$ \dim(X\times Y) = \max_{i,j}\dim(X_i\times Y_j) = \max_{i,j}(\dim X_i+\dim Y_j) = \max_i\dim X_i + \max_j\dim Y_j = \dim X + \dim Y $$
+    as desired.
+    \qed
+
+\eproof
+
+\bthrm
+
+    The product $\bP^n\times\bP^m$ is projective.
+
+\ethrm
+
+\bproof
+
+    Define
+    $$ S\colon\bP^n\times\bP^m\to\bP^{(n+1)(m+1)-1},\qquad (\ell_1,\ell_2)\mapsto\ell_1\otimes\ell_2 . $$
+    Explicitly, this maps lines $\ell_1\subseteq k^{n+1}$ and $\ell_2\subseteq k^{m+1}$ to $\ell_1\otimes_k\ell_2\subseteq k^{(n+1)(m+1)}$
+    which we then project down to $\bP^{(n+1)(m+1)-1}$.
+    Alternatively $S$ maps $[x_0:\cdots:x_n]$ and $[y_0:\cdots:y_m]$ to
+    $$ [z_{ij}]_{0\leq i\leq n,0\leq j\leq m},\qquad z_{ij} = x_i\cdot y_j . $$
+
+    We claim that $S$ is a closed embedding, so $\im S$ is closed and $S$ induces an isomorphism $S\colon\bP^n\times\bP^m\xto\sim\im S$.
+    Being a morphism, and even a closed embedding, is local on the target.
+
+    So take the standard affine open covering $D(Z_{ij})\subseteq\bP^{(n+1)(m+1)-1}$, then
+    $$ S^{-1}D(Z_{ij}) = \set{(X,Y)}[X_iY_j\neq0] = D(X_i) \times D(Y_j) \subseteq \bP^n \times \bP^m . $$
+    So we need to show that $D(X_i)\times D(Y_j)\to D(Z_{ij})$ is a closed embedding.
+
+    Both the source and target are affine varieties, so this is a closed embedding iff $S^*$ is a surjective morphism of coordinate rings.
+    Identifying $D(X_i)\cong\bA^n$ by $[X_0:\cdots:X_n]\mapsto(X_0/X_i,\dots,X_n/X_i)$.
+    Let $z_{rs}=Z_{rs}/Z_{ij}$, $x_r=X_r/X_i$, and $y_s=Y_s/y_j$, so $k[D_{ij}]\cong k[z_{rs}]_{r,s}$.
+    Then
+    $$ S^*\colon k[\bA^{(n+1)(m+1)-1}] \to k[\bA^n] \otimes_k k[\bA^m] \cong k[x_0,\dots,x_n,y_0,\dots,y_m] $$
+    is given by mapping $z_{rs}=Z_{rs}/Z_{ij}$ to $X_rY_s/X_iY_j=x_ry_s$.
+    In particular $S^*(z_{rj})=x_ry_j=x_r$, and similar for $y$, so that $S^*$ is indeed surjective.
+    \qed
+
+\eproof
+
+\bdefn
+
+    The closed embedding $S$ in the above proof is called the {\emphcolor Segre embedding}.
+
+\edefn
+
+\bcoro
+
+    The product of projective varieties is projective, and the product of quasi-projective/quasi-affine varieties is quasi-projective/quasi-affine.
+
+\ecoro
+
+\bproof
+
+    For $X\subseteq\bP^n,Y\subseteq\bP^m$ closed, then $X\times Y$ is a closed subvariety of $\bP^n\times\bP^m$, and thus projective.
+    The rest follows.
+    \qed
+
+\eproof
+
+\subsection{Applications to dimension theory}
+
+\bdefn
+
+    For a variety $X$, consider the morphism $\Delta_X\colon X\to X\times X$ given by $\Delta_X(x)=(x,x)$.
+    This is a morphism since its components are the identity; it is called the {\emphcolor diagonal morphism}.
+
+\edefn
+
+Note that the image $\Delta_X(X)=\set{(x,x)}[x\in X]$ is isomorphic to $X$ via $\Delta_X$.
+Indeed, its inverse is the composition
+$$ \Delta_X(X) \inj X\times X \xtos{\proj_1} X . $$
+Thus for every $Y_1,Y_2\subseteq X$, the diagonal morphism forms an isomorphism
+$$ Y_1\cap Y_2 \xtos\sim \Delta_X(Y_1\cap Y_2) = \Delta_X(X) \cap (Y_1\times Y_2) . $$
+The left-hand side has structure induced from $X$, while the right-hand side's structure is induced from $X\times X$.
+
+\bexam
+
+    Let $X=\bA^n$, then $X\times X=\bA^{2n}$ and $\Delta(\bA^n)\subseteq\bA^{2n}$ is given by $Z(x_1-y_1,\dots,x_n-y_n)$.
+
+\eexam
+
+\bdefn
+
+    A subset $C\subseteq\bA^{n+1}$ is called a {\emphcolor cone} if it is $k^\times$-invariant and $0\in C$.
+
+\edefn
+
+If we let $\pi\colon\bA^{n+1}-0\to\bP^n$ be the projection, we see that $C$ is a cone iff $C=\pi^{-1}(\pi(C-0))\cup0$.
+In particular the maps $C\mapsto[C]=\pi(C-0)$ and $X\mapsto C(X)=\pi^{-1}(X)\cup0$ define a bijection between cones $C\subseteq\bA^{n+1}$
+and subsets of $\bP^n$.
+
+\blemm
+
+    \benum
+        \item For every closed $X\subseteq\bP^n$, its cone $C(X)\subseteq\bA^{n+1}$ is closed.
+        \item If $X$ is irreducible, then so is $C(X)$.
+        \item $\dim C(X)=\dim X+1$.
+    \eenum
+
+\elemm
+
+\bproof
+
+    For $X\subseteq\bP^n$ closed, $X=Z_{\bP^n}(f_1,\dots,f_m)$ for homogeneous $f_i$.
+    Then $C(X)=Z_{\bA^{n+1}}(f_1,\dots,f_m)$ is closed.
+
+    For (2), if $X=Z_{\bP^n}(f_1,\dots,f_m)$ is irreducible, then $(f_1,\dots,f_m)$ is prime and thus $C(X)=Z_{\bA^{n+1}}(f_1,\dots,f_m)$
+    is irreducible.
+
+    If $X=\bigcup_iX_i$ is a union of closed irreducible subsets, then $C(X)=\bigcup_iC(X_i)$ is a union of closed irreducible subsets.
+    Then $\dim C(X)=\max\dim C(X_i)$, so we can assume that $X$ is closed irreducible.
+    Since $\pi^{-1}X=C(X)-0$ is open dense in $C(X)$, it is sufficient to show that $\dim\pi^{-1}X=\dim X+1$.
+
+    Consider the standard open affine covering $\bP^n=\bigcup_iU_i$, then $X=\bigcup_iX\cap U_i$ and $\pi^{-1}X=\bigcup\pi^{-1}(X\cap U_i)$.
+    So it is sufficient to show
+    $$ \dim\pi^{-1}(X\cap U_i) = \dim(X\cap U_i) + 1 . $$
+    Notice that $\pi^{-1}U_i=D(x_i)$, and the map
+    $$ (\pi,\proj_i)\colon\pi^{-1}U_i \to U_i\times(\bA^1-0) $$
+    Is an isomorphism with inverse
+    $$ s\colon([x_0:\cdots:x_n],t) \mapsto \parens{\frac{x_0}{x_i}t,\dots,\frac{x_n}{x_i}t} . $$
+    These are both clearly inverses, and morphisms.
+
+    Thus
+    $$ \pi^{-1}U_i \cong U_i\times(\bA^1-0) , $$
+    and this induces an isomorphism
+    $$ \pi^{-1}(U_i\cap X) \cong (U_i\cap X)\times(\bA^1-0) . $$
+    This has dimension $\dim(U_i\cap X)+1$ as desired.
+    \qed
+
+\eproof
+
+\bthrm
+
+    \benum
+        \item Let $X,Y\subseteq\bA^n$ be closed irreducible subvarieties.
+        Then every irreducible component of $X\cap Y$ has dimension at least $\dim X+\dim Y-n$.
+        In particular if $X\cap Y$ is nonempty, then $\dim(X\cap Y)\geq\dim X+\dim Y-n$.
+
+        \item Let $X,Y\subseteq\bP^n$ be closed irreducible subvarieties such that $\dim X+\dim Y\geq n$.
+        Then $X\cap Y$ is nonempty and every irreducible component of $X\cap Y$ is of dimension at least $\dim X+\dim Y-n$.
+    \eenum
+
+\ethrm
+
+\bproof
+
+    For (1), there is an isomorphism
+    $$ X\cap Y \xtos\sim (X\times Y)\cap\Delta(\bA^n) \subseteq \bA^{2n} . $$
+    Since $X$ and $Y$ are irreducible, so is $X\times Y$ and $\dim(X\times Y)=\dim X+\dim Y$.
+    Furthermore,
+    $$ (X\times Y)\cap\Delta(\bA^n) = Z_{X\times Y}(x_1-y_1,\dots,x_n-y_n) \subseteq X\times Y $$
+    is the zeroset of $n$ regular functions and thus the dimension of its irreducible components are each at least
+    $\dim(X\times Y)-n=\dim X+\dim Y-n$.
+
+    For (2), we know that $C(X),C(Y)$ are closed irreducible subsets of $\bA^{n+1}$.
+    Moreover, $0\in C(X)\cap C(Y)$ so they have nonempty intersection.
+    Thus from (1)
+    $$ \multline{
+        \dim C(X)\cap C(Y) \geq \dim C(X) + \dim C(Y) - (n+1) = (\dim X + 1) + (\dim Y + 1) - (n+1) =\cr
+            \dim X + \dim Y - n + 1 \geq 1 .
+    } $$
+    In particular $C(X)\cap C(Y)$ is not finite, so there is an $x\in C(X)\cap C(Y)-0$ so $\pi(x)\in X\cap Y$, meaning $X\cap Y$
+    is nonempty.
+
+    Let $Z\subseteq X\cap Y$ be an irreducible component, then choose $U_i$ such that $Z\cap U_i\neq\emptyset$.
+    Then $X\cap U_i,Y\cap U_i$ are closed irreducible subsets of $U_i\cong\bA^n$ and $Z\cap U_i$ is an irreducible component
+    of their intersection.
+    The result then follows from (1),
+    $$ \dim Z = \dim(Z\cap U_i) \geq \dim(X\cap U_i) + \dim(Y\cap U_i) - n = \dim X + \dim Y - n . \qed $$
+
+\eproof
+
+\bcoro
+
+    Let $f_1,\dots,f_m$ be homogeneous non-scalar polynomials in $k[x_0,\dots,x_n]$, with $m\leq n$.
+    Then the closed set $Z=Z_{\bP^n}(f_1,\dots,f_m)$ is nonempty, and the dimension of each irreducible component of $Z$ is at least $n-m$.
+
+\ecoro
+
+\bproof
+
+    We induct on $m$, for $m=1$ this is clear.
+    Let $Z_m=Z_{\bP^n}(f_1,\dots,f_m)$ then inductively we have
+    $$ Z_{m+1} = Z_m\cap Z_{\bP^n}(f_{m+1}) $$
+    and $\dim Z_m+\dim Z_{\bP^n}(f_{m+1})\geq n-m+(n-1)=n+(n-(m+1))\geq n$ since $m+1\leq n$.
+    Thus $Z_{m+1}$ is nonempty by the above theorem.
+    And an irreducible component of $Z_{m+1}$ has dimension at least $\dim Z_m+\dim Z_{\bP^n}(f_{m+1})-n\geq n-(m+1)$ as desired.
+    \qed
+
+\eproof
+
+\blemm
+
+    Let $\phi\colon X\to Y$ be a dominant morphism of affine irreducible varieties.
+    Then there exists an open dense subset $U\subseteq Y$ such that $\phi|_{\phi^{-1}U}\colon\phi^{-1}U\to U$ decomposes as
+    $$ \phi = \phi^{-1}U \xtos g U\times\bA^n \xtos{\proj_U} U $$
+    where $g$ is a finite surjective morphism.
+
+\elemm
+
+\bproof
+
+    Since $\phi$ is dominant, $\phi^*\colon k[Y]\to k[X]$ is injective.
+    Since $k[X]$ is a fg $k$-algebra, it is a fg $k[Y]$-algebra.
+    Both $X,Y$ are irreducible and thus $k[X],k[Y]$ are domains so we can consider their fraction fields.
+    Let $\p=0\subseteq k[Y]$, then the localization $k[X]_\p$ is a fg $k[Y]_\p$-algebra.
+
+    By Noether normalization, there are $y_1,\dots,y_n\in k[X]_\p$ which are algebraically independent over $k(Y)$ and
+    $k[X]_\p$ is finite over $k(Y)[y_1,\dots,y_n]$.
+
+    We claim there is an $f\in k[Y]$ such that $y_1,\dots,y_n\in k[X]_f$ and $k[X]_f$ is a finite $k[Y]_f[y_1,\dots,y_n]$-algebra.
+
+    Since $y_1,\dots,y_n\in k[X]_\p$ there is an $f'\in k[Y]$ such that $y_1,\dots,y_n\in k[X]_{f'}$ (take the product of the denominators
+    of the $y_i$s).
+    Let $a_1,\dots,a_r$ generate $k[X]$ as a $k[Y]$-algebra.
+    Then $a_1,\dots,a_r$ are integral over $k(Y)[y_1,\dots,y_n]$ as $k[X]$ is finite over it, and thus integral over $k[Y]_{f''}[y_1,\dots,y_n]$
+    for some $f''\in k[Y]$ as we can take common denominators.
+    Then $f=f'f''$ does the job.
+
+    With this in mind, the embeddings
+    $$ k[Y]_f \inj k[Y]_f[y_1,\dots,y_n] \inj k[X]_f $$
+    define morphisms $D_X(f)\xtos gD_Y(f)\times\bA^n\xtos\proj D_Y(f)$ of affine varieties.
+    This is because these are all affine and
+    $$ k[D_Y(f)\times\bA^n]\cong k[D_Y(f)]\otimes_kk[\bA^n]\cong k[Y]_f\otimes_kk[\bA^n] \cong k[Y]_f[y_1,\dots,y_n] . $$
+    Since $k[Y]_f[y_1,\dots,y_n]\inj k[X]_f$ is injective and finite, $g$ is surjective and finite.
+    \qed
+
+\eproof
+
+\bthrm
+
+    Let $\phi\colon X\to Y$ be a dominant morphism of irreducible varieties.
+    Then $f(X)$ contains a dense open subset $U\subseteq Y$ such that for every $y\in U$, $\phi^{-1}y$ is nonempty and each
+    irreducible component of $\phi^{-1}y\subseteq X$ is of dimension $\dim X-\dim Y$.
+
+\ethrm
+
+\bnote
+
+    Previously we showed that for any morphism of irreducible varieties, the fibers have dimension $\geq\dim X-\dim Y$.
+    This theorem strengthens this for dominant morphisms.
+
+\enote
+
+\bproof
+
+    For $X$ and $Y$ affine, then by the previous lemma there is a dense open $U\subseteq Y$ such that $\phi$ factors as
+    $$ \phi^{-1}U \xtos g U\times\bA^n \xtos\proj U $$
+    where $g$ is finite surjective.
+    Since $U\subseteq Y$ and $\phi^{-1}U\subseteq X$ are open dense,
+    $$ \dim X = \dim\phi^{-1}U = \dim U\times\bA^n = \dim U + n = \dim Y + n . $$
+    So $n=\dim X-\dim Y$.
+
+    And for $y\in U$, $g\colon\phi^{-1}U\to U\times\bA^n$ induces a finite surjective morphism $g\colon\phi^{-1}y\to\bA^n$.
+    Thus $\dim\phi^{-1}y=n$, so $\phi^{-1}y\neq\emptyset$ and each irreducible component has dimension $\leq n=\dim X-\dim Y$.
+    We know in general the dimension is at least $\dim X-\dim Y$ so we have equality.
+
+    In general, we can replace $Y$ with a dense open affine subset $U\subseteq Y$ and $X$ by $\phi^{-1}U$.
+    So we can assume that $Y$ is affine.
+    Then choose an affine covering $X=\bigcup_iX_i$, then $\phi|_{X_i}\colon X_i\to Y$ is a dominant morphism of affine varieties
+    (since $X_i$ is dense, $\phi(X_i)$ is dense in $\phi(X)$ which is then dense in $Y$).
+    Thus each $\phi(X_i)$ contains an open dense $U_i$ such that for $y\in U_i$, the irreducible components of
+    $\phi|_{X_i}^{-1}y=\phi^{-1}y\cap X_i$ all have dimension $\dim X_i-\dim Y=\dim X-\dim Y$.
+
+    Let $U=\bigcap_iU_i$, then for each $y\in U$, $\phi^{-1}y=\bigcup_i\phi^{-1}y\cap X_i$ is an open cover.
+    Since the irreducible components of $\phi^{-1}y\cap X_i$ have dimension $\dim X-\dim Y$, the same is true for $\phi^{-1}y$.
+    \qed
+
+\eproof
+
