@@ -251,15 +251,135 @@ where $\partial M$ has the induced (Stokes) orientation.
     Writing $\omega$ in terms of the standard coordinates,
     $$ \omega = \sum_{i=1}^n\omega_i\d x^1\wedge\cdots\wedge\hat{\d x^i}\wedge\cdots\wedge\d x^n . $$
     Thus,
-    $$ \d\omega = \sum_{i=1}^n\d\omega_i\wedge\d x^1\wedge\cdots\wedge\hat{\d x^i}\wedge\cdots\wedge\d x^n =
-    \sum_{i,j}\pdvof{\omega_i}{x^j}\d x^j\wedge\d x^1\wedge\cdots\wedge\hat{\d x^i}\wedge\cdots\wedge\d x^n =
-    \sum_i(-1)^{i-1}\pdvof{\omega_i}{x^i}\d x^1\wedge\cdots\wedge\d x^i\wedge\cdots\wedge\d x^n . $$
+    $$ \multline{
+        \d\omega = \sum_{i=1}^n\d\omega_i\wedge\d x^1\wedge\cdots\wedge\hat{\d x^i}\wedge\cdots\wedge\d x^n =
+        \sum_{i,j}\pdvof{\omega_i}{x^j}\d x^j\wedge\d x^1\wedge\cdots\wedge\hat{\d x^i}\wedge\cdots\wedge\d x^n =\cr
+        \sum_i(-1)^{i-1}\pdvof{\omega_i}{x^i}\d x^1\wedge\cdots\wedge\d x^i\wedge\cdots\wedge\d x^n .
+    } $$
     Then we compute,
     $$ \int_{\bH^n}\d\omega =
     \sum_{i=1}^n(-1)^{i-1}\int_A\pdvof{\omega_i}{x^i}\d x^1\wedge\cdots\wedge\d x^i\wedge\cdots\wedge\d x^n =
     \sum_{i=1}^n(-1)^{i-1}\int_0^R\int_0^R\cdots\int_0^R\pdvof{\omega_i}{x^i}\d x^1\cdots\d x^n . $$
     By Fubini we can change the order of integration as to integrate the $i$th term first.
-    When $i\neq n$
+    When $i\neq n$ this sum becomes, by the fundamental theorem of calculus,
+    $$ \sum_{i=1}^{n-1}(-1)^{i-1}\int_0^R\int_{-R}^R\cdots\int_{-R}^R\pdvof{\omega_i}{x^i}\d x^1\cdots\d x^n
+        = \sum_{i=1}^{n-1}(-1)^{i-1}\int_0^R\int_{-R}^R\cdots\int_{-R}^R\bigl[\omega_i(x)\bigr]^{x^i=R}_{x^i=-R}
+            \d x^1\wedge\cdots\wedge\hat{\d x^i}\wedge\cdots\wedge\d x^n.
+    $$
+    Each term here is zero, since we chose $R$ so that $\omega=0$ when $x^i=\pm R$.
+    Thus
+    $$ \int_{\bH^n}\d\omega = (-1)^{n-1}\int_{-R}^R\cdots\int_{-R}^R\int_0^R\pdvof{\omega_n}{x^n}\d x^n\d x^1\cdots\d x^{n-1}
+        = (-1)^n\int_{-R}^R\cdots\int_{-R}^R\omega_n(x^1,\dots,x^{n-1},0)\d x^1\cdots\d x^{n-1} . $$
+
+    Now we compute the other term, keeping in mind that $x^n$ vanishes on $\partial\bH^n$,
+    $$ \int_{\partial\bH^n}\omega = \sum_i\int_{A\cap\partial\bH^n}\omega_i(x^1,\dots,x^{n-1},0)
+        \d x^1\wedge\cdots\wedge\hat{\d x^i}\wedge\cdots\wedge\d x^n . $$
+    Because $x^n$ vanishes on $\partial\bH^n$, the pullback of $\d x^n$ to the boundary is zero.
+    Thus all terms for $i\neq n$ are zero, so
+    $$ \int_{\partial\bH^n}\omega = \int_{A\cap\partial\bH^n}\omega_i(x^1,\dots,x^{n-1},0)\d x^1\wedge\cdots\wedge\d x^{n-1} . $$
+    Since $(x^1,\dots,x^{n-1})$ is positively oriented for $\partial\bH^n$ when $n$ is even and negatively oriented when $n$ is odd,
+    this is equal to the previous term.
+    So
+    $$ \int_{\bH^n}\d\omega = \int_{\partial\bH^n}\omega $$
+    as desired.
+
+    For $M=\bR^n$, the support of $\omega$ is contained in $A=[-R,R]^n$.
+    In this case, the computations show that all the terms in the integral of $\omega$ over $A$ are zero (the same computations as above).
+    Since $\partial\bR^n=\emptyset$, both integrals are equal to zero.
+
+    Now for $M$ be a smooth manifold with boundary, and $\omega$ an $(n-1)$-form compactly supported in the domain of a single
+    positively or negatively oriented chart $(U,\phi)$.
+    If $\phi$ is positively oriented,
+    $$ \int_M\d\omega = \int_{\bH^n}(\phi^{-1})^*\d\omega = \int_{\bH^n}\d((\phi^{-1})^*\omega) , $$
+    which is then equal to, as we showed,
+    $$ = \int_{\partial\bH^n}(\phi^{-1})^*\omega . $$
+    Since $d\phi$ takes outward-pointing vectors to outward-pointing vectors, it follows that $\phi|_{U\cap\partial M}$ is orientation-preserving,
+    and so this is equal to
+    $$ = \int_{\partial M}\omega $$
+    as desired.
+    For $\phi$ negatively oriented, we get a similar result.
+    For an interior chart, the same result follows with $\bR^n$ instead of $\bH^n$.
+
+    Finally for $\omega$ compactly supported, let $\psi_i$ be a partition of unity subordinate to an open cover $U_i$ of $\supp\omega$.
+    Then
+    $$ \multline{
+        \int_{\partial M}\omega = \sum_i\int_{\partial M}\psi_i\omega = \sum_i\int_Md(\psi_i\omega) =
+            \sum_i\int_M\d\psi_i\wedge\omega + \psi\d\omega =\cr
+            \int_Md\parens{\sum_i\psi_i}\wedge\omega + \int_M\parens{\sum_i\psi_i}\omega = 0 + \int_M\omega .
+    } $$
+    The final equality is because $\sum_i\psi_i=1$ is constant and thus its derivative is zero.
+    \qed
+
+\eproof
+
+\bexam
+
+    Let $\gamma\colon[a,b]\to M$ be a smooth embedding, so that $S=\gamma([a,b])$ is an embedded $1$-submanifold with boundary in $M$.
+    If we orient $S$ in such a way as to make $S$ orientation-preserving, then for any $f\in C^\infty(M)$,
+    $$ \int_{[a,b]}\gamma^*\d f = \int_S\d f = \int_{\partial S}f = f(\gamma(b)) - f(\gamma(a)) . $$
+    We define the {\emphcolor line integral} of a one-form $\omega\in\Omega^1(M)$ along $\gamma$ to be
+    $$ \int_\gamma\omega = \int_{[a,b]}\gamma^*\omega . $$
+    This shows that
+    $$ \int_\gamma\d f = f(\gamma(b)) - f(\gamma(a)) . $$
+    This is called the {\emphcolor fundamental theorem of line integrals}.
+
+    Note that for $\gamma\colon[a,b]\inj\bR$ the inclusion, this is just the fundamental theorem of calculus.
+    So Stoke's is a proper strengthening of the fundamental theorem of calculus.
+
+\eexam
+
+The following corollaries are immediate from Stoke's, but important enough to state explicitly.
+
+\bcoro
+
+    If $M$ is a compact oriented smooth manifold without boundary, the integral of every exact form over $M$ is zero:
+    $$ \int_M\d\omega = 0 ,\qquad \hbox{if $\partial M=\emptyset$} . $$
+
+\ecoro
+
+\bcoro
+
+    Suppose $M$ is a compact oriented smooth manifold with boundary.
+    The integral of any closed form over $\partial M$ is zero:
+    $$ \int_{\partial M}\omega = 0,\qquad \hbox{if $\d\omega=0$} . $$
+
+\ecoro
+
+\bcoro
+
+    Suppose $M$ is a smooth manifold with or without boundary, and $S\subseteq M$ is an oriented compact smooth $k$-dimensional submanifold
+    without boundary.
+    Let $\omega$ be a closed $k$-form on $M$.
+    If $\int_S\omega\neq0$ then the following are both true:
+    \benum
+        \item $\omega$ is not exact,
+        \item $S$ is not the boundary of an oriented compact smooth submanifold with boundary in $M$.
+    \eenum
+
+\ecoro
+
+\bexam
+
+    Consider the $1$-form $\omega=(x\d y-y\d x)/(x^2+y^2)$.
+    This is a closed $1$-form, and if we let $\gamma\colon[0,2\pi]\to M$ be given by $\gamma(t)=(\cos t,\sin t)$ then
+    $$ \int_{S^1}\omega = \int_{[0,2\pi]}\gamma^*\omega = \int_0^{2\pi}\frac{\cos t(\cos t\d t) - \sin t(-\sin t\d t)}{\sin^2t+\cos^2t} =
+        \int_0^{2\pi}\d t = 2\pi . $$
+    Thus $\omega$ is not exact, and furthermore $S^1$ is not the boundary of a compact submanifold of $\bR^2-0$.
+
+\eexam
+
+\bthrm[title={Green's theorem}]
+
+    Suppose $D$ is a compact regular domain in $\bR^2$, and $P,Q$ are smooth real-valued functions on $D$.
+    Then
+    $$ \int_D\parens{\pdvof Qx-\pdvof Py}\d x\d y = \int_{\partial D}P\d x + Q\d y . $$
+
+\ethrm
+
+\bproof
+
+    This is just Stoke's on $P\d x+Q\d y$.
+    \qed
 
 \eproof
 
