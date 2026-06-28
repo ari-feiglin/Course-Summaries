@@ -1,5 +1,286 @@
 \section{The Topology of Smooth Manifolds}
 
+\subsection{Calculus of variations}
+
+In this section we discuss the calculus of variations, which doesn't quite align with the implied purpose of this section, the topology
+of smooth manifolds, but it does provide a powerful tool which will be of much help.
+
+Recall the following definition.
+
+\bdefn
+
+    A family of curves $\Gamma\colon J\times[a,b]\to M$ is {\emphcolor piecewise smooth} if
+    $J$ is an open interval, and there is a partition $a=t_0<t_1<\cdots<t_k=b$ such that $\Gamma$ is smooth on
+    $J\times[t_i,t_{i+1}]$ for all $i$, and $\Gamma(0,t)=\gamma(t)$.
+
+    Let $\gamma\colon[a,b]\to M$ be piecewise smooth.
+    Then a {\emphcolor variation} of $\gamma$ is a piecewise smooth family of curves $\Gamma$ such that $\gamma(t)=\Gamma(a,t)$.
+
+\edefn
+
+\bnote
+
+    We will sometimes introduce a piecewise smooth family of curves, or curve, along with ``its'' partition to mean that the
+    given partition partitions the interval into rectangles (resp.\ intervals) over which the family (resp.\ curve) is smooth.
+
+\enote
+
+Given a piecewise smooth family of curves $\Gamma\colon J\times[a,b]\to M$ we define curves
+$$ \Gamma_s\colon[a,b]\to M,\qquad \Gamma^{(t)}\colon J\to M,\qquad \Gamma_s(t) = \Gamma^{(t)}(s) = \Gamma(s,t) . $$
+These are called the {\emphcolor main} and {\emphcolor transverse} curves, respectively.
+By assumption, the transverse curves are smooth.
+
+\bdefn
+
+    Let $\Gamma$ be piecewise smooth.
+    Then we define vector fields along curves
+    $$ \partial_t\Gamma(s,t) = (\Gamma_s)'(t) \in T_{\Gamma(s,t)}M,\qquad \partial_s\Gamma(s,t) =
+    (\Gamma^{(t)})'(s) \in T_{\Gamma(s,t)}M . $$
+    The $\partial_t\Gamma$ is defined on the entire interval only when $\Gamma$ is smooth.
+
+\edefn
+
+Henceforth, we will assume that our piecewise smooth curves $\gamma$ start at $0$ for simplicity.
+
+\bdefn
+
+    Let $\Gamma$ be a variation of $\gamma$.
+    Its {\emphcolor variation field} is the smooth vector field $V\in\X(\gamma)$ given by
+    $$ V(t) = \partial_s\Gamma(0,t) . $$
+
+\edefn
+
+Recall we proved the following.
+
+\blemm
+
+    If $\gamma$ is piecewise smooth, and $V$ is a piecewise smooth vector field along $\gamma$, then $V$ is the variation
+    field of some variation of $\gamma$.
+
+\elemm
+
+\bproof
+
+    We showed that $\Gamma(s,t)=\exp_{\gamma(t)}(sV(t))$ is defined on $(-\epsilon,\epsilon)\times[a,b]$ for some $\epsilon>0$
+    by compactness of $[a,b]$, and it is piecewise smooth for the same partition of $\gamma$.
+    It is a variation of $\gamma$, and its variation is $V$.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $\gamma\colon[0,a]\to M$ be piecewise smooth, with $M$ Riemannian.
+    Define its {\emphcolor length} and {\emphcolor energy}, respectively, as
+    $$ L(\gamma) = \int_0^a\norm{\drv\gamma t}\d t,\qquad E(\gamma) = \int_0^a\norm{\drv\gamma t}^2\d t . $$
+
+\edefn
+
+\bnote
+
+    $L(\gamma)$ has previously been defined, as $L_g(\gamma)$.
+
+\enote
+
+\blemm
+
+    For any piecewise smooth $\gamma$,
+    $$ L(\gamma)^2 \leq aE(\gamma) . $$
+    There is equality iff $\norm{\drv\gamma t}$ is constant.
+
+\elemm
+
+\bproof
+
+    Cauchy-Schwarz tells us
+    $$ \parens{\int fg}^2 \leq \parens{\int f}^2\parens{\int g}^2 $$
+    with equality iff $f,g$ are linearly dependent.
+    Taking $f=1$ and $g=\norm{\drv\gamma t}$, we get the desired result.
+    \qed
+
+\eproof
+
+\blemm
+
+    Let $\gamma\colon[0,a]\to M$ be a minimizing geodesic.
+    Then $E(\gamma)\leq E(c)$ for all piecewise smooth $c\colon[0,a]\to M$ whose endpoints are the same as $\gamma$.
+    There is equality iff $c$ is also a minimizing geodesic.
+
+\elemm
+
+\bproof
+
+    By the above lemma,
+    $$ aE(\gamma) = L(\gamma)^2 \leq L(c)^2 \leq aE(c) , $$
+    where the first inequality is because $\gamma$ is minimizing.
+    There is equality iff $L(\gamma)=L(c)$, which means $c$ is minimizing and thus $c$ is a geodesic.
+    \qed
+
+\eproof
+
+Given a piecewise smooth family $\Gamma\colon J\times[0,a]$, define
+$$ E_\Gamma(s) = E(\Gamma_s) \colon J \to \bR . $$
+When $\Gamma$ is understood, we may omit the subscript.
+
+\blemm
+
+    Let $\Gamma\colon J\times[0,a]$ be piecewise smooth, with partition $0=t_0<\cdots<t_{k+1}=a$.
+    $$ \frac12E'(s) = \sum_{i=0}^{k+1}\eval{\iprod{\partial_s\Gamma(s,t),\partial_t\Gamma(s,t)}}^{t_{i+1}}_{t_i}
+    - \int_0^a\iprod{\partial_s\Gamma,D_t\partial_t\Gamma}\d t . $$
+    If $V$ is a variation field of $\Gamma$, letting $\gamma=\Gamma_0$, then in particular
+    $$ \frac12E'(0) = -\sum_{i=1}^k\iprod{V(t_i),\drvof\gamma t(t_i^+)-\drvof\gamma t(t_i^-)}
+    + \iprod{V(a),\drvof\gamma t(a)} - \iprod{V(0),\drvof\gamma t(0)} - \int_0^a\iprod{V,D_t\drvof\gamma t}\,dt . $$
+    Where $\drvof\gamma t(x^\pm)$ denote one-sided derivatives.
+    The integrals are summed over the intervals $[t_i,t_{i+1}]$.
+
+\elemm
+
+\bproof
+
+    By definition
+    $$ E(s) = \int_0^a\iprod{\partial_t\Gamma(s,t),\partial_t\Gamma(s,t)}\d t , $$
+    and then we can swap the integral and derivative to get for $s\in[t_i,t_{i+1}]$ (potentially taking a one-sided
+    derivative),
+    $$ E'(s) = \partial_s E(s) = \int_{t_i}^{t_{i+1}}2\iprod{D_s\partial_t\Gamma,\partial_t\Gamma} . $$
+    Recall by symmetry $D_s\partial_t\Gamma=D_t\partial_s\Gamma$ so this is equal to
+    $$ \frac12E'(s) = \int_{t_i}^{t_{i+1}}\iprod{D_t\partial_s\Gamma,\partial_t\Gamma} . $$
+    Now,
+    $$ \pdv t\iprod{\partial_s\Gamma,\partial_t\Gamma} = \iprod{D_t\partial_s\Gamma,\partial_t\Gamma}
+    + \iprod{\partial_s\Gamma,D_t\partial_t\Gamma} . $$
+    Thus
+    $$ \frac12E'(s) = \int_{t_i}^{t_{i+1}}\partial_t\iprod{\partial_s\Gamma,\partial_t\Gamma}
+    - \int_{t_i}^{t_{i+1}}\iprod{\partial_s\Gamma,D_t\partial_t\Gamma} . $$
+    Then the claim follows by the fundamental theorem of calculus.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A {\emphcolor proper variation} of a piecewise smooth $\gamma$ is a variation $\Gamma$ of $\gamma$ such that
+    $\Gamma(s,0)=\gamma(0)$ and $\Gamma(s,a)=\gamma(a)$ for all $s$.
+
+    A vector field $V$ along $\gamma$ is {\emphcolor proper} if $V(0)$ and $V(a)$ are zero.
+
+\edefn
+
+If $V$ is a proper vector field along $\gamma$, it is the variation field of a proper variation of $\gamma$.
+This is because in our construction above,
+$$ \Gamma(s,t) = \exp_{\gamma(t)}(sV(t)) $$
+$\Gamma$ is proper:
+$$ \Gamma(s,0) = \exp_{\gamma(0)}(0) = \gamma(0),\qquad \Gamma(s,a) = \exp_{\gamma(a)}(0) = \gamma(a) . $$
+Conversely if $\Gamma$ is proper, then its variation field is proper:
+$$ V(0) = \partial_s\Gamma(0,0) = \partial_s\gamma(0) = 0, $$
+similarly for $a$.
+
+\blemm
+
+    A piecewise smooth $\gamma\colon[0,a]\to M$ is a geodesic iff $E_\Gamma'(0)=0$ for all proper variations of $\gamma$.
+
+\elemm
+
+\bproof
+
+    Suppopse $\gamma$ is a geodesic.
+    If $V$ is a variation field of a proper $\Gamma$ it is proper itself.
+    Since $\gamma$ is smooth, $\drvof\gamma t(t_i^+)=\drvof\gamma t(t_i^-)$, and $V$ is proper so $V(a),V(0)$ are zero.
+    Since $\gamma$ is a geodesic $D_t\drvof\gamma=0$.
+    Thus all the terms in the formula in the above lemma are zero, so $E'(0)=0$.
+
+    Conversely, let $g\colon[0,a]\to M$ be such that $g(t)>0$ for $t\neq t_i$ and $g(t)=0$ when $t=t_i$.
+    This can be constructed explicitly.
+    Then define
+    $$ V(t) = g(t)D_t\drvof\gamma t. $$
+    This is proper, since $g(0)=g(a)=0$, so let $\Gamma$ be a proper variation of $\gamma$ whose variation field is $V$.
+    Then by the previous lemma since $V(t_i)=0$ for all $i$,
+    $$ 0 = \frac12E'(0) = -\sum_{i=0}^k\int_{t_i}^{t_{i+1}}g(t)\iprod{D_t\drvof\gamma t,D_t\drvof\gamma t} . $$
+    These are integrals of nonnegative continuous maps, so it is zero iff $D_t\drvof\gamma t=0$ over $[t_i,t_{i+1}]$
+    for all $i$.
+    So $\gamma|_{[t_i,t_{i+1}]}$ are geodesic segments.
+
+    We just need to show that $\gamma$ is smooth.
+    Let $\bar V\in\X(\gamma)$ be such that $\bar V(0),\bar V(a)$ are both zero and
+    $\bar V(t_i)=\pdvof\gamma t(t_i^+)-\pdvof\gamma t(t_i^-)$ for all other $i$.
+    Let $\bar\Gamma$ be a proper variation of $\gamma$ with variation field $\bar V$.
+    Then
+    $$ 0 = \frac12E'(0) = -\sum\norm{\drvof\gamma t(t_i^+) - \drvof\gamma t(t_i^-)}^2 . $$
+    Thus $\drvof\gamma t(t_i^+)=\drvof\gamma t(t_i^-)$ for all $i$, so it is differentiable at these points.
+    So it is continuously differentiable over $[0,a]$.
+
+    We further know that $D_t\drvof\gamma t=0$ in $[t_i,t_{i+1}]$ and by continuity of the second derivatives in $(t_i,t_{i+1})$
+    we see that these second derivatives are defined at the $t_i$.
+    So $\gamma$ is continuously twice differentiable in $[0,a]$ and satisfies the ODE $D_t\drvof\gamma t=0$.
+    By uniqueness of solutions, it is smooth.
+    \qed
+
+\eproof
+
+\bnote
+
+    In the following we use the opposite sign convention.
+
+    \TODO{Fix sign conventions}
+
+\enote
+
+\blemm
+
+    Let $\Gamma$ be a variation of a geodesic $\gamma$, with energy $E(s)$.
+    Then
+    $$ \eqalign{
+        \frac12E''(0) &= \iprod{D_s\partial_s\Gamma(a),\dot\gamma(a)} - \iprod{D_s\partial_s\Gamma(0),\dot\gamma(0)}\cr
+            &\hphantom{{}={}}+ \iprod{V(a),D_tV(a)} - \iprod{V(0),D_tV(0)}
+                + \sum_{i=1}^k\iprod{V(a),D_tV(t_i^+)-D_tV(t_i^-)}\cr
+            &\hphantom{{}={}}- \sum_{i=0}^k\iprod{V(t_i),D_tV(t_i^+)-D_tV(t_i^-)} -
+                \int_0^a\iprod{V(t),V''+R(\dot\gamma(t),V(t))\dot\gamma(t)}\d t .
+    } $$
+
+\elemm
+
+\bproof
+
+    Previously we showed
+    $$ \frac12E'(s) = \sum_{i=0}^k\eval{\iprod{\partial_s\Gamma,\partial_t\Gamma}}_{t_i}^{t_{i+1}}
+    - \sum_{i=0}^k\int_{t_i}^{t_{i+1}}\iprod{\partial_s\Gamma,D_t\partial_t\Gamma}\d t . $$
+    Then we have
+    $$ \eqalign{
+        \frac12E''(0) &= \sum_{i=0}^k\eval{\iprod{D_s\partial_s\Gamma,\partial_t\Gamma} +
+            \iprod{\partial_s\Gamma,D_s\partial_t\Gamma}}_{t_i}^{t_{i+1}} -\cr
+            &\hphantom{{}={}}\sum_{i=0}^k\int_{t_i}^{t_{i+1}}\iprod{D_s\partial_s\Gamma,D_t\partial_t\Gamma}
+            + \iprod{\partial_s\Gamma,D_sD_t\partial_t\Gamma}\d t .
+    } $$
+    The first term is
+    $$ \multline{
+        \sum_{i=0}^k\eval{\iprod{D_s\partial_s\Gamma,\partial_t\Gamma}}^{t_{i+1}}_{t_i}(0) =
+            \iprod{D_s\partial_s\Gamma(a),\pdvof\gamma t(a)} - \iprod{D_s\partial_s\Gamma(0),\pdvof\gamma t(0)}\cr
+            - \sum_{i=1}^k\iprod{D_s\partial_s\Gamma(t_i),\pdvof\gamma t(t_i^+)-\pdvof\gamma t(t_i^-)} .
+    } $$
+    The last sum is zero since $\gamma$ is smooth and thus its partial derivatives are continuous.
+
+    The second term is
+    $$ \eqalign{
+        \sum_{i=0}^k\eval{\iprod{\partial_s\Gamma,D_s\partial_t\Gamma}}^{t_{i+1}}_{t_i}(0) &=
+            \sum_{i=0}^k\eval{\iprod{\partial_s\Gamma,\partial_sD_t\Gamma}}^{t_{i+1}}_{t_i}(0)\cr
+            &= \iprod{V(a),D_tV(a)} - \iprod{V(0),D_tV(0)}
+                + \sum_{i=1}^k\iprod{V(a),D_tV(t_i^+)-D_tV(t_i^-)} .
+    } $$
+
+    Since $\partial_t\Gamma=\gamma$, $D_t\partial_t\Gamma=0$ so the third term is zero.
+
+    Recall that $D_sD_t\partial_t\Gamma-D_tD_s\partial_t\Gamma=R(\partial_t\Gamma,\partial_s\Gamma)\partial_t\Gamma$.
+    With this in mind, the fourth term is
+    $$ \eqalign{
+        \sum_{i=0}^k\int_{t_i}^{t_{i+1}}\iprod{\partial_s\Gamma,D_sD_t\partial_t\Gamma}(0) &=
+            \sum\int\iprod{V,D_tD_s\partial_t\Gamma+R(\dot\gamma,V)\dot\gamma}\cr
+            &= \sum\int\iprod{V,V''+R(\dot\gamma,V)\dot\gamma} .
+    } $$
+    And we are finished.
+    \qed
+
+\eproof
+
+
+
 \subsection{Completeness}
 
 \bdefn
@@ -1094,4 +1375,19 @@ The following is the classic formulation of the Synge-Weinstein theorem.
     \qed
 
 \eproof
+
+\subsection{Chern-Gauss-Bonnet}
+
+There is a classical result in differential geometry is the {\emphcolor Gauss-Bonnet theorem}, as follows.
+
+\bthrm[title={Gauss-Bonnet}]
+
+    Let $M$ be a compact $2$-dimensional Riemannian manifold without boundary, with scalar curvature $K$.
+    Then
+    $$ \int_M K\d V = 4\pi\chi(M) $$
+    where $\chi(M)$ is the {\emphcolor Euler characteristic} of $M$.
+
+\ethrm
+
+\TODO{This}
 
