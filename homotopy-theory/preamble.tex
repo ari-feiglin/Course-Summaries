@@ -1,4 +1,6 @@
+\input pdfToolbox
 \input setup/document-structure
+\input setup/drawings
 \input pdfmsym
 
 \pdfmsymsetscalefactor{10}
@@ -20,15 +22,82 @@
     \expandafter\def\csname #1\endcsname##1{\@ifnextchar[ {\csname @#1\endcsname{##1}}{\csname @@#1\endcsname{##1}}}%
 }
 
-\mathchardef\subsetneq="3528
-\mathchardef\rtimes="256F
-
 \newmathtype{set}\{\vert\}
 \newmathtype{gen}<\vert>
 \newmathtype{norm}|{}|
 \def\parens#1{\mathopen{}\mathclose{\left(#1\right)}}
 \def\abs#1{\mathopen{}\mathclose{\left|#1\right|}}
 \def\ccoloneqq{\mathrel{{\mathop:}{\mathop:}{=}}}
+
+\def\@true{\@true}
+\def\@false{\@false}
+
+\def\@mathify@col#1#2{%
+    \relax\xdef#1{%
+        #1%
+        \ifx\@mathifyfstcol\@false%
+            &%
+        \fi%
+        $#2$%
+    }%
+    \ifx\@mathifyfstcol\@true%
+        \global\let\@mathifyfstcol\@false%
+    \fi%
+}
+
+\def\@mathify@row#1{%
+    \noalign{\xdef#1{%
+        #1%
+        \ifx\@mathifyfstrow\@false%
+            \noexpand\cr%
+        \fi%
+    }%
+    \ifx\@mathifyfstrow\@true%
+        \global\let\@mathifyfstrow\@false%
+    \fi%
+    \global\let\@mathifyfstcol\@true}%
+}
+
+\def\mathify#1#2{%
+    \def#1{}%
+    \let\@mathifyfstrow\@true%
+    \let\@mathifyfstcol\@true%
+    \vbox{\everycr={\@mathify@row{#1}}\halign{&\@mathify@col{#1}{##}\cr
+        #2\cr
+    }}%
+}
+
+\def\commsq#1#2#3#4#5{%
+    \mathify\@csq{#1}%
+    \centerline{\expandafter\drawdiagram\expanded{{\@csq}}{%
+        \diagarrow{from={1,1}, to={1,2}, text={$#2$}, y distance=-.25cm}%
+        \diagarrow{from={2,1}, to={2,2}, text={$#3$}, y distance=.25cm}%
+        \diagarrow{from={1,1}, to={2,1}, text={$#4$}, x distance=-.25cm}%
+        \diagarrow{from={1,2}, to={2,2}, text={$#5$}, x distance=-.25cm}%
+    }}%
+}
+
+\def\@multline#1{%
+\hbox to\dimexpr\displaywidth-1cm\relax{%
+    \ifx\@nfirst\space%
+        $\displaystyle#1$\hfill%
+        \global\let\@nfirst\undefined%
+    \else%
+        \hfill$\displaystyle#1$%
+    \fi%
+}}
+
+\def\multline#1{%
+    \let\@nfirst\space%
+    \vcenter{\halign{\@multline{##}\crcr
+        #1\crcr%
+    }}%
+}
+
+\mathchardef\supsetneq="3529
+\mathchardef\subsetneq="3528
+\mathchardef\rtimes="256F
+\mathchardef\nmid="352D
 
 \let\epsilon=\varepsilon
 \let\phi=\varphi
@@ -87,10 +156,20 @@
 \let\bul=\bullet
 \let\ls=\setminus
 
-\def\op{{\sf op}}
-\def\id{{\rm id}}
+\def\mathopfont{\rm}
+
+\def\@@makemathop#1#2{\def#1{\mathop{\mathopfont #2}\nolimits}}
+\def\@makemathop#1#2{\def#1{\mathop{\mathopfont #2}}}
+\def\makemathop{\@ifstar \@makemathop\@@makemathop}
 
 \def\Set{{\sf Set}}
 \def\sSet{{\sf sSet}}
 \def\Top{{\sf Top}}
+
+\def\op{{\sf op}}
+%\def\id{{\rm id}}
+%\def\sk{{\rm sk}}
+%\def\proj{{\rm proj}}
+\def\@mmop#1{\expandafter\makemathop\csname #1\endcsname{#1}}
+\commap\@mmop{id,sk,proj}
 
