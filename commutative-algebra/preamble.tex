@@ -4,6 +4,27 @@
 \catcode`_=11\relax
 \catcode`@=11\relax
 
+\def\@darrow@wd{2pt}
+
+\def\@@@darrow@type#1#2#3#4#5#6{\mathrel{\arrow@skip%
+    \vcenter{\hbox{$\m@th#6%
+        #1{\vecc@w}{\vecc@hw}[#4][#5]%
+        \xleaders\hbox to1.5\dimexpr\@darrow@wd{\vrule width\dimexpr\@darrow@wd * \@font@scale\relax height \dimexpr \vecc@w pt * #4 * \@font@scale\relax depth 0pt\hfil}\hskip\dimexpr #3pt * #4 * \@font@scale\relax%
+        #2{\vecc@w}{\vecc@hw}[#4][#5]%
+    $}}\arrow@skip%
+}}
+
+\def\@@darrow@type#1#2{\@@@darrow@type#2{\csname vecc@\m@strip#1@sf\endcsname}{\csname vecc@\m@strip#1@s\endcsname}{#1}}
+
+\def\@darrow@type#1#2#3{\mathpalette\@@darrow@type{{#1}{#2}{#3}}}
+
+\def\@darrow@def#1#2#3{%
+    \expandafter\def\csname #1\endcsname{\@darrow@type{#2}{#3}{\arrow@len}}%
+    \expandafter\def\csname long#1\endcsname{\@darrow@type{#2}{#3}{\long@arrow@len}}%
+}
+
+\@darrow@def{ratto}\@linecap\@rarrow
+
 \def\_centerline{\hfil\egroup}
 \def\centerline{\hbox to\hsize\bgroup\hfil\bgroup\aftergroup\_centerline\let\@@}
 
@@ -171,7 +192,7 @@
     \expandafter\def\csname #1\endcsname##1{\@ifnextchar[ {\csname @#1\endcsname{##1}}{\csname @@#1\endcsname{##1}}}%
 }
 
-\def\TODO#1{\centerline{\color{red}\setscale{30pt}{\bf TODO:} #1}}
+\def\TODO#1{\par\centerline{\color{red}\setscale{30pt}{\bf TODO:} #1}}
 
 \def\@true{\@true}
 \def\@false{\@false}
@@ -222,7 +243,7 @@
 }
 
 \def\@multline#1{%
-\hbox to\dimexpr\displaywidth-1cm\relax{%
+\hbox to\dimexpr\displaywidth-\leftskip-1cm\relax{%
     \ifx\@nfirst\space%
         $\displaystyle#1$\hfill%
         \global\let\@nfirst\undefined%
@@ -233,7 +254,7 @@
 
 \def\multline#1{%
     \let\@nfirst\space%
-    \vcenter{\halign{\@multline{##}\crcr
+    \kern\leftskip\vcenter{\halign{\@multline{##}\crcr
         #1\crcr%
     }}%
 }
@@ -330,6 +351,10 @@
 \let\bul=\bullet
 \let\ls=\setminus
 
+\def\pdv#1{\frac{}{\partial#1}}
+\def\pdvof#1#2{\frac{\partial#1}{\partial#2}}
+\def\ipdvof#1#2{{\partial#1}/{\partial#2}}
+
 \def\St{{\sf Set}}
 \def\stab{{\rm Stab}}
 \def\orb{{\rm Orb}}
@@ -352,8 +377,11 @@
 \def\Alg{{\sf Alg}}
 \def\Top{{\sf Top}}
 \def\SWF{{\sf SWF}}
+\def\Var{{\sf Var}}
 \def\AVar{{\sf AffVar}}
 \def\glue{{\sf Glue}}
+\def\RatVar{{\sf RatVar}}
+\def\irr{{\sf irr}}
 \def\sgn{{\rm sgn}}
 \def\id{{\rm id}}
 \def\Ch{{\sf Ch}}
@@ -398,4 +426,8 @@
 \def\inc{{\rm inc}}
 \def\trdeg{{\mathop{\rm trdeg}}}
 \def\pt{{\rm pt}}
+\def\rat{{\rm rat}}
+\def\dom{{\sf dom}}
+\def\corank{{\rm corank}}
+\def\rank{{\rm rank}}
 
