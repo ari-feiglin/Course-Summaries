@@ -6,6 +6,7 @@
 \pdfmsymsetscalefactor{10}
 
 \let\CITE\relax
+\def\TODO#1{\par\centerline{\setfontandscale{bf}{20pt}\color{red}TODO: #1}}
 
 \def\frac#1#2{{{#1}\over{#2}}}
 \def\dfrac#1#2{{\displaystyle{{\displaystyle#1}\over{\displaystyle#2}}}}
@@ -118,6 +119,8 @@
 \def\m{{\f m}}
 
 \def\bV{{\bf V}}
+\def\bB{{\bf B}}
+
 \def\bC{{\bb C}}
 \def\bR{{\bb R}}
 \def\bF{{\bb F}}
@@ -139,10 +142,12 @@
 \let\bul=\bullet
 \let\down=\downarrow
 
+\def\y{{\sf y}}
 \def\colim{\mathop{\rm colim}\nolimits}
 \def\lim{\mathop{\rm lim}\nolimits}
 \def\ilim{\underlvecc\lim}
 \def\coflim{\undervecc\colim}
+\def\ihom{\mathop{\bf Hom}\nolimits}
 
 \def\mathrm#1{{\rm#1}}
 \def\xtos#1{\xto{\ #1\ }}
@@ -156,20 +161,27 @@
 \let\bul=\bullet
 \let\ls=\setminus
 
+\def\mathnamefont{\sf}
+
+\def\@@makemathname#1#2{\def#1{{\mathnamefont #2}}}
+\def\@makemathname#1#2{\def#1{{\mathnamefont #2}}}
+\def\makemathname{\@ifstar \@makemathname\@@makemathname}
+
+\def\@mmname#1{\expandafter\makemathname\csname #1\endcsname{#1}}
+\commap\@mmname{Set,sSet,Top,Grp}
+
+\def\op{{\sf op}}
+\def\hrel#1{\allowbreak\mkern18mu({\rm rel}\,\,#1)}
+
 \def\mathopfont{\rm}
 
 \def\@@makemathop#1#2{\def#1{\mathop{\mathopfont #2}\nolimits}}
 \def\@makemathop#1#2{\def#1{\mathop{\mathopfont #2}}}
 \def\makemathop{\@ifstar \@makemathop\@@makemathop}
 
-\def\Set{{\sf Set}}
-\def\sSet{{\sf sSet}}
-\def\Top{{\sf Top}}
-
-\def\op{{\sf op}}
 %\def\id{{\rm id}}
 %\def\sk{{\rm sk}}
 %\def\proj{{\rm proj}}
 \def\@mmop#1{\expandafter\makemathop\csname #1\endcsname{#1}}
-\commap\@mmop{id,sk,proj}
+\commap\@mmop{id,sk,proj,Nat,inc,ev}
 
