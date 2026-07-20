@@ -362,55 +362,152 @@ $$ L_{g_N}(F\circ\gamma) = \int_a^b\norm{(F\circ\gamma)'(t)} = \int_a^b\norm{dF_
 
 \eproof
 
-\subsection{The tangent-cotangent isomorphism}
+\subsection{The musical isomorphisms}
 
 If $V$ is a finite-dimensional inner product space, there is a natural isomorphism $V\to V^*$ given by $v\mapsto\iprod{v,\bul}$.
 This is clearly linear and injective, since if $\iprod{v,\bul}=0$ then $\iprod{v,v}=0$ so $v=0$.
 We can also compute its inverse: let $e_i$ be an orthonormal basis of $V$, then for $\phi\in V^*$ define $v=\sum_i\phi(e_i)e_i$.
 
-In our case, if $(M,g)$ is a Riemannian manifold, we define $\hat g\colon TM\to T^*M$ where for $v\in T_pM$ we define $\hat g(v)\in T^*_pM$ by
-$$ \hat g(v)(u) = g_p(v,u) . $$
-Its action on smooth vector fields is then
-$$ \hat g(X)(Y) = g(X,Y) ,\qquad X,Y\in\X(M) . $$
-Now, $\hat g(X)(\bul)$ is $C^\infty(M)$-linear, and thus $\hat g(X)$ is a smooth covector field.
-And $\hat g(\bul)$ is $C^\infty(M)$-linear and thus a bundle morphism as desired.
-As we explained, $\hat g$ is bijective, and thus a bundle isomorphism.
+Thus have a bundle isomorphism
+$$ \hat g\colon TM\to T^*M,\qquad \hat g(v)(w) = g(v,w) . $$
+This is a bundle isomorphism since it corresponds to the morphism of sections $\hat g\colon\X(M)\to\X^*(M)$, $\hat g(X)(Y)=g(X,Y)$.
+Indeed, $\hat g(X)$ is a smooth covector field because its action on vector fields is smooth.
+And clearly $\hat g$ is $C^\infty(M)$-linear.
+Furthermore, $\hat g$ is bijective on the fibers, so that $\hat g$ is a bijective bundle morphism over $M$ and thus an isomorphism.
 
-In smooth coordinates $(x^i)$, we have $g=g_{ij}dx^idx^j$.
-Thus if $X,Y$ are smooth vector fields,
-$$ \hat g(X)(Y) = g_{ij}X^iXY^j, $$
-so that the covector field $\hat g(X)$ has coordinates
-$$ \hat g(X) = g_{ij}X^idx^j . $$
-So $\hat g$ is the bundle homomorphism whose matrix with respect to coordinate frames for $TM$ and $T^*M$ is the same as $g$'s matrix.
+If $(E_i)$ is a local frame with dual coframe $(\epsilon^i)$, let $g=g_{ij}\epsilon^i\epsilon^j$ be the representation of the metric with respect to this frame.
+Suppose $X\in\X(M)$ is a vector field with representation $X=X^iE_i$, then
+$$ \hat g(X)(E_j) = g(X^iE_i,E_j) = X^ig_{ij} $$
+so that
+$$ \hat g(X) = (X^ig_{ij})\epsilon^j . $$
+It is customary to write the components of $\hat g(X)$ as $X_j$, so that $X_j=X^ig_{ij}$.
+Due to this notational convention, the action of $\hat g$ on vector fields is called ``lowering an index'', and we write $X^\flat$ for $\hat g(X)$.
+The symbol $\flat$ is a musical symbol called the {\emphcolor flat} which denotes the lowering of a tone, and thus $X^\flat$ is called $X$-flat.
 
-It is customary to write
-$$ \hat g(X) = X_jdx^j,\qquad \hbox{where } X_j=g_{ij}X^j , $$
-so we say that $\hat g(X)$ is obtained by ``lowering an index''.
-The notation $X^\flat$ is often used for $\hat g(X)$ because of this; $\flat$ is musical notation for lowering a tone.
-The inverse map $\hat g^{-1}\colon T^*M\to TM$'s matrix is the inverse of $(g_{ij})$, which we denote $(g^{ij})$.
-That is,
-$$ g_{ij}g^{jk} = g^{ij}g_{jk} = \delta_{ik}. $$
-The inverse of a symmetric matrix is symmetric, and so for $\omega\in\X^*(M)$, the vector field $\hat g^{-1}(\omega)$ has coordinate representation
-$$ \hat g^{-1}(\omega) = \omega^i\pdv{x^i},\qquad \hbox{where } \omega^i=g^{ij}\omega_j . $$
-And so $\hat g^{-1}(\omega)$ is obtained by ``raising an index'', and so we denote $\hat g^{-1}(\omega)$ also by $\omega^\sharp$ (raising a tone).
+The inverse $\hat g^{-1}$ acts on covector fields $\omega=\omega_j\epsilon^j$ and maps them to vector fields
+$$ \hat g^{-1}(\omega) = \omega^iE_i,\qquad \omega^i = g^{ij}\omega_j , $$
+where $(g^{ij})$ is the inverse matrix of $(g_{ij})$.
+This is called ``raising an index'', and we write $\omega^\sharp$ for $\hat g^{-1}(\omega)$; borrowing the musical symbol for raising a tone.
 
-$\hat g$ and its inverse $\hat g^{-1}$ are thus called {\emphcolor musical isomorphisms}.
-Note that by definition, $\omega^\sharp=\hat g^{-1}(\omega)$ is the unique vector field such that for $X\in\X(M)$,
-$$ \omega(X) = \iprod{\omega^\sharp,X}_g . $$
+Thus we have bijective correspondences
 
-Under the musical isomorphisms, we can define the {\emphcolor gradient} of a function $f\in C^\infty(M)$ by
-$$ \grad f = (df)^\sharp = \hat g^{-1}(df) . $$
-So $\grad f$ is the unique vector field such that
-$$ \iprod{\grad f,X}_g = df(X) = Xf . $$
-Equivalently,
-$$ \iprod{\grad f,\bul} = df . $$
-Since $df=\ipdvof{f}{x^i}dx^i$, we get that
-$$ \grad f = g^{ij}\pdvof f{x^i}\pdv{x^j} . $$
-In particular, with the Euclidean metric on $\bR^n$ we see that
-$$ \grad f = \delta^{ij}\pdvof f{x^i}\pdv{x^j} = \sum_i \pdvof f{x^i}\pdv{x^i} , $$
-which is just the usual gradient of a real-valued function.
+\medskip
+\centerline{\vbox{\openup2\jot\halign{\hfil$#$&\hfil$#$\hfil&$#$,\hfil\tabskip=1cm&$#$\hfil\cr
+    \X(M)&{}\xtof{\quad\bul^\flat\quad}[\quad\bul^\sharp\quad]{}&\X^*(M)\cr
+    X^iE_i&\xmapsto{\qquad}&X_i\epsilon^i&X_i=g_{ij}X^j\cr
+    \omega^iE_i&\xmapsfrom{\qquad}&\omega_i\epsilon^i&\omega^i=g^{ij}\omega_j.\cr
+}}}
+\medskip
 
-\subsection{The Riemannian metric on tensors}
+These correspondences are called the {\emphcolor musical isomorphisms}.
+Note that we can raise and lower the indices of non-smooth vector and covector fields in the same way.
 
-\TODO{This}
+\subsubsection*{The gradient}
+
+One application of the musical isomorphisms is to recover the notion of the gradient of a real-valued function.
+Recall that if $f\colon\bR^n\to\bR$ is a smooth function, its gradient $\grad f$ is the vector of its partial derivatives.
+It is the vector with the unique property that
+$$ \grad f|_p\cdot v = D_vf , $$
+where $D_vf$ is the directional derivative of $f$ in the direction of $v$.
+
+In the case of Riemannian manifolds, $D_vf$ is replaced with $df(v)$ for $v\in T_pM$ so that this becomes
+$$ \iprod{\grad f,v}_p = df_p(v) , $$
+which is to say that $\grad f=(df)^\sharp$.
+Thus in any local frame $(E_i)$ with dual frame $(\epsilon^i)$, we have that $df=(E_if)\epsilon^i$ and so
+$$ \grad f = (g^{ij}E_if)E_j . $$
+So if $(E_i)$ is an orthonormal frame, the components of $\grad f$ are the same as the components of $df$; but this is not true in general.
+In the case of $\bR^n$ we see that $\grad f=\ipdvof f{x_i}\ipdv{x_i}$.
+
+\subsubsection*{The musical isomorphisms on tensors}
+
+Now we can generalize the musical isomorphisms to any tensor.
+If $F$ is a $(k,\ell)$-tensor, then it corresponds to a map
+$$ F\colon\X^*(M)^{\otimes k}\otimes\X(M)^{\otimes\ell} \to C^\infty(M) , $$
+and we can use the musical isomorphisms on any index $i\in\set{1,\dots,k+\ell}$ to change a $\X(M)$ to a $\X^*(M)$ or vice versa.
+That is, if $i$ is a covariant index, meaning its input is a vector, then we obtain $F^\sharp$ by making that index contravariant.
+Explicitly, $F^\sharp$ is a $(k+1,\ell-1)$-tensor obtained by
+$$ F^\sharp(\alpha_1,\dots,\alpha_{k+\ell}) = F(\alpha_1,\dots,\alpha_i^\sharp,\dots,\alpha_{k+\ell}) . $$
+Similarly if $i$ is a contravariant index, then $F^\flat$ is obtained by making that index covariant:
+$$ F^\flat(\alpha_1,\dots,\alpha_{k+\ell}) = F(\alpha_1,\dots,\alpha_i^\flat,\dots,\alpha_{k+\ell}) . $$
+In this way $F^\flat$ is a $(k-1,\ell+1)$-tensor.
+
+Note that $X\in\X(M)$ is a $(1,0)$-tensor and this definition makes $X^\flat$ a $(0,1)$-tensor (covector field) by
+$$ X^\flat(Y) = X(Y^\flat) = Y^\flat(X) = \hat g(Y)(X) = g(X,Y) $$
+which is the same as our previous definition of $X^\flat$.
+
+In terms of a local frame, $F^\sharp$ is obtained by multiplying the components of $F$ with $g^{pq}$ where we set either $p$ or $q$ to be the index
+of $F$ which we raise.
+Similar for $F^\flat$.
+For example, if we have a mixed $3$-tensor
+$$ A = {{A_i}^j}_k\epsilon^i\otimes E_j\otimes\epsilon^k , $$
+and we want to lower the middle index to obtain a covariant $3$-tensor $A^\flat$, we get
+$$ A^\flat = A_{ijk}\epsilon^i\otimes\epsilon^j\otimes\epsilon^k,\qquad A_{ijk} = g_{j\ell}{{A_i}^\ell}_k . $$
+
+While just writing $F^\sharp,F^\flat$ is ambiguous, as we have not specified which index to raise/lower, we will often omit the index from our notation and instead
+specify it in words when necessary.
+
+\subsubsection*{The trace of a tensor}
+
+We turn to another application of the musical isomorphisms.
+Recall that $T^{(1,1)}V=V\otimes V^*\cong\hom(V,V)$, so that we can unambiguously take the trace of a $(1,1)$-tensor.
+Explicitly, if $F=F^i_jE_i\otimes\epsilon^j$ is a $(1,1)$-tensor, then its trace is the sum
+$$ \tr(F) = F^i_i . $$
+We can extend this to mixed tensors: if $F$ is a mixed $(k+1,\ell+1)$-tensor, for any choice of a covariant index and contravariant index we can form $F$'s trace.
+We can assume that the choice of indices are the last ones; then for covectors $\omega^1,\dots,\omega^k$ and vectors $v_1,\dots,v_\ell$, we have a $(1,1)$-tensor
+$$ F(\omega^1,\dots,\omega^k,\bul,v_1,\dots,v_\ell,\bul) \in T^{(1,1)}V . $$
+Thus we can define $\tr(F)(\bar\omega,\bar v)$ to be the trace of this tensor.
+This defines a $(k,\ell)$-tensor.
+If $F$ has components $F^{I,i}_{J,j}$, then $\tr(F)$'s components are the sums $F^{I,m}_{J,m}$.
+
+So $\tr$ defines a bundle morphism
+$$ \tr\colon T^{(k+1,\ell+1)}TM \to T^{(k,\ell)}TM . $$
+
+Thus far we have not had to use the musical morphisms.
+But if we have a covariant $k$-tensor $h$ with $k\geq2$, then $h^\sharp$ is a $(1,k-1)$-tensor for any choice of index to raise.
+We can then take its trace, resulting in a covariant $(k-2)$-tensor,
+$$ \tr_gh = \tr(h^\sharp) . $$
+If $h$'s components are $h=h_I\epsilon^I$, then $h^\sharp=g^{ij}h_{i_1,\dots,i_{k-1},i}E_j\otimes\epsilon^{i_1}\otimes\cdots\otimes\epsilon^{i_{k-1}}$.
+Thus $\tr_gh$ has components
+$$ (\tr_gh)_{i_1,\dots,i_{k-2}} = (h^\sharp)_{i_1,\dots,i_{k-2},j}^j = g^{ij}h_{i_1,\dots,i_{k-2},j} . $$
+
+For example if $h$ is a $2$-covector field, so $h=h_{i,j}\epsilon^i\otimes\epsilon^j$ then $h^\sharp=g^{i\ell}h_{\ell,j}E_i\otimes\epsilon^j$ so that
+$$ \tr_gh = g^{i\ell}h_{\ell i} $$
+is a smooth function.
+
+Note that we can take the trace of all sorts of tensors.
+For example, a tensor valued in another manifold.
+We will revisit this when necessary, e.g.\ with mean curvature.
+
+\subsubsection*{Metrics on tensors}
+
+We can also use the musical isomorphisms to define the inner product of tensors.
+If $M$ is Riemannian, then we can define an inner product on the cotangent space $T_p^*M$ for $p\in M$ by
+$$ \iprod{\omega,\eta}_g = \iprod{\omega^\sharp,\eta^\sharp}_g . $$
+Note that applying this inner product on smooth covector fields results in a smooth real-valued function (by smoothness of $g$).
+
+In terms of a local frame $(E_i)$ with dual coframe $(\epsilon^j)$, if $\omega=\omega_i\epsilon^i$ and $\eta=\eta_j\epsilon^j$, then
+$$ \iprod{\omega,\eta}_g = \iprod{g^{ik}\omega_k E_i,g^{j\ell}\eta_\ell E_j} = g^{ik}g^{j\ell}\omega_k\eta_\ell g_{ij} = g^{ij}\omega_i\eta_j $$
+where the last equality is because $g^{ik},g_{ij}$ are inverses.
+Using our convention for raising indices, where $\omega^i=g^{ij}\omega_j$, we see that
+$$ \iprod{\omega,\eta} = \omega^i\eta_i = \omega_i\eta^i . $$
+
+Note that it is not the case in general that $(\epsilon^i)^\sharp=E_i$.
+This is true iff $(E_i)$, equivalently $(\epsilon^i)$, is orthonormal.
+Indeed, $(\epsilon^i)^\sharp=g^{ij}E_j$ is equal to $E_i$ iff $g^{ij}$ is the identity, iff $g_{ij}$ is, which means $(E_i)$ is orthonormal.
+
+We can naturally define a metric on a vector bundle $E\to M$ to be a metric on each fiber $E_p$ which varies smoothly as $p$ does, in the sense that for any local
+sections $\sigma,\tau$, $\iprod{\sigma,\tau}$ is a smooth function.
+Equivalently, this is just a section of $\Gamma(E^*\otimes E^*)$ which is symmetric and positive-definite on each fiber.
+
+If $E_1,E_2\to M$ are vector bundles over $M$ with smooth metrics, we can define a smooth metric on $E_1\otimes E_2$ by
+$$ \iprod{\alpha\otimes\beta,\alpha'\otimes\beta'} = \iprod{\alpha,\alpha'}\cdot\iprod{\beta,\beta'},\qquad \alpha,\alpha'\in\Gamma(E_1),\quad \beta,\beta'\in\Gamma(E_2) . $$
+This can be viewed as being obtained via the isomorphism
+$$ \Gamma((E_1\otimes E_2)^*\otimes(E_1\otimes E_2)^*) \cong \Gamma(E_1^*\otimes E_1^*)\otimes\Gamma(E_2^*\otimes E_2^*) . $$
+
+Since we have metrics on $TM,T^*M$, by this result we can define a unique inner product on the tensor bundles $T^{(k,\ell)}M$.
+It is given uniquely by
+$$ \iprod{\alpha_1\otimes\cdots\otimes\alpha_{k+\ell},\beta_1\otimes\cdots\otimes\beta_{k+\ell}} = \iprod{\alpha_1,\beta_1}\cdots\iprod{\alpha_{k+\ell},\beta_{k+\ell}} $$
+where $\alpha_i,\beta_i$ are vector or covector fields, where appropriate.
+We see that if $F,G$ are $(k,\ell)$-tensors with components $F^I_J,G^I_J$, then
+$$ \iprod{F,G} = g_{i_1,r_1}\cdots g_{i_k,r_k}g^{j_1,s_1}\cdots g^{j_\ell,s_\ell}F^{i_1,\dots,i_k}_{j_1,\dots,j_\ell}G^{r_1,\dots,r_k}_{s_1,\dots,s_\ell} . $$
 
