@@ -127,9 +127,18 @@ identity with its own Levi-Civita connection.
 \bdefn
 
     Let $(M,g)$ be Riemannian, then define a map $R\colon\X(M)\times\X(M)\times\X(M)\to\X(M)$ by
-    $$ R(X,Y)Z = \nabla_X\nabla_YZ - \nabla_Y\nabla_XZ - \nabla_{[X,Y]}Z . $$
+    $$ R(X,Y)Z = \nabla_Y\nabla_XZ - \nabla_X\nabla_YZ + \nabla_{[X,Y]}Z . $$
 
 \edefn
+
+\bnote
+
+    Conventions vary on the sign of $R$.
+    Some authors (e.g.\ Lee) define the curvature tensor with the opposite sign to ours:
+    $$ R(X,Y)Z = \nabla_X\nabla_YZ - \nabla_Y\nabla_XZ - \nabla_{[X,Y]}Z . $$
+    In this course $R$ was defined as in the previous definition.
+
+\enote
 
 \bprop
 
@@ -142,9 +151,9 @@ identity with its own Levi-Civita connection.
     Linearity in $Z$ is clear, and multilinearity over $\bR$ is as well.
     We show linearity in $Y$:
     $$ \eqalign{
-        R(X,fY)Z &= \nabla_X\nabla_{fY}Z - \nabla_{fY}\nabla_XZ - \nabla_{[X,fY]}Z\cr
-            &= \nabla_X(f\nabla_YZ) - f\nabla_Y\nabla_XZ - \nabla_{f[X,Y]+(Xf)Y}Z\cr
-            &= (Xf)\nabla_YZ + f\nabla_X\nabla_YZ - f\nabla_Y\nabla_XZ - f\nabla_{[X,Y]}Z - (Xf)\nabla_YZ\cr
+        R(X,fY)Z &= -\nabla_X\nabla_{fY}Z + \nabla_{fY}\nabla_XZ + \nabla_{[X,fY]}Z\cr
+            &= -\nabla_X(f\nabla_YZ) + f\nabla_Y\nabla_XZ + \nabla_{f[X,Y]+(Xf)Y}Z\cr
+            &= -(Xf)\nabla_YZ - f\nabla_X\nabla_YZ + f\nabla_Y\nabla_XZ + f\nabla_{[X,Y]}Z + (Xf)\nabla_YZ\cr
             &= fR(X,Y)Z .
     } $$
     Linearity in $X$ is done similarly.
@@ -160,8 +169,8 @@ R(\partial_i,\partial_j)\partial_k = R_{ijk}^\ell\partial_\ell . $$
 \bprop
 
     The components of $R$ in any coordinate frame are given by
-    $$ R_{ijk}^\ell = \partial_i\Gamma^\ell_{jk} - \partial_j\Gamma^\ell_{ik} + \Gamma^m_{jk}\Gamma^\ell_{im}
-    - \Gamma^m_{ik}\Gamma^\ell_{jm} . $$
+    $$ R_{ijk}^\ell = -\partial_i\Gamma^\ell_{jk} + \partial_j\Gamma^\ell_{ik} - \Gamma^m_{jk}\Gamma^\ell_{im}
+    + \Gamma^m_{ik}\Gamma^\ell_{jm} . $$
 
 \eprop
 
@@ -185,7 +194,7 @@ R(\partial_i,\partial_j)\partial_k = R_{ijk}^\ell\partial_\ell . $$
 
     Let $\Gamma$ be a smooth one-parameter family of curves $J\times I\to M$.
     Then for every vector field $V$ along $\Gamma$,
-    $$ D_sD_tV - D_tD_sV = R(\partial_s\Gamma,\partial_t\Gamma)V . $$
+    $$ D_sD_tV - D_tD_sV = R(\partial_t\Gamma,\partial_s\Gamma)V . $$
 
 \eprop
 
@@ -215,10 +224,10 @@ R(\partial_i,\partial_j)\partial_k = R_{ijk}^\ell\partial_\ell . $$
     We then see that
     $$ D_sD_t\partial_i - D_tD_s\partial_i =
     \pdvof{\gamma^j}t\pdvof{\gamma^k}s(\nabla_{\partial_k}\nabla_{\partial_j}\partial_i -
-        \nabla_{\partial_j}\nabla_{\partial_k}\partial_i) = \pdvof{\gamma^j}t\pdvof{\gamma^k}sR(\partial_k,\partial_j)
-        = R(S,T)\partial_i . $$
+        \nabla_{\partial_j}\nabla_{\partial_k}\partial_i) = \pdvof{\gamma^j}t\pdvof{\gamma^k}sR(\partial_j,\partial_k)
+        = R(T,S)\partial_i . $$
     Thus
-    $$ D_sD_tV - D_tD_sV = V^iR(S,T)\partial_i = R(S,T)V $$
+    $$ D_sD_tV - D_tD_sV = V^iR(T,S)\partial_i = R(T,S)V $$
     as desired.
     \qed
 
@@ -237,7 +246,7 @@ R(\partial_i,\partial_j)\partial_k = R_{ijk}^\ell\partial_\ell . $$
 In terms of local coordinates,
 $$ \Rm = R_{ijk\ell}dx^i\otimes dx^j\otimes dx^k\otimes dx^\ell,\qquad R_{ijk\ell} = g_{\ell m}R_{ijk}^m . $$
 Thus
-$$ R_{ijk\ell} = g_{\ell m}(\partial_i\Gamma^m_{jk} - \partial_j\Gamma^m_{ik} + \Gamma^p_{jk}\Gamma^m_{ip} -
+$$ R_{ijk\ell} = g_{\ell m}(-\partial_i\Gamma^m_{jk} + \partial_j\Gamma^m_{ik} - \Gamma^p_{jk}\Gamma^m_{ip} +
 \Gamma^p_{ik}\Gamma^m_{jp}) . $$
 
 Riemannian curvature is preserved by local isometries.
@@ -302,7 +311,7 @@ Riemannian curvature is preserved by local isometries.
 
     Let $\gamma$ be a geodesic in $M$ and $J$ a vector field along $\gamma$.
     If $J$ is the variation field of a variation through geodesics, then $J$ satisfies the {\emphcolor Jacobi equation}:
-    $$ D_t^2J + R(J,\gamma')\gamma' = 0 . $$
+    $$ D_t^2J + R(\gamma',J)\gamma' = 0 . $$
 
 \ethrm
 
@@ -314,11 +323,11 @@ Riemannian curvature is preserved by local isometries.
 
     Then if we take the covariant derivative with respect to $s$ we get $D_sD_tT=0$.
     Recall curvature measures the non-commutativity of covariant derivatives, so
-    $$ 0 = D_sD_tT = D_tD_sT + R(S,T)T = D_tD_tS + R(S,T)T , $$
+    $$ 0 = D_sD_tT = D_tD_sT + R(T,S)T = D_tD_tS + R(T,S)T , $$
     where the last equality is due to symmetry.
-    Evaluating at $s$ gives us
-    $$ D_t^2J + R(J,\gamma')\gamma' $$
-    since $\gamma'=T(0,t)$.
+    Evaluating at $s=0$ gives us
+    $$ D_t^2J + R(\gamma',J)\gamma' $$
+    since $\gamma'=T(0,t)$ and $S(0,t)=J(t)$.
     \qed
 
 \eproof
@@ -343,7 +352,7 @@ Riemannian curvature is preserved by local isometries.
     And
     $$ \drv t\iprod{\gamma',J'} = \iprod{\gamma',J''} = - \iprod{\gamma',R(\gamma',J)\gamma'} , $$
     where last equality is due to Jacobi equation.
-    $$ = \Rm(\gamma',J,\gamma',\gamma') = 0 , $$
+    $$ = -\Rm(\gamma',J,\gamma',\gamma') = 0 , $$
     by symmetry of the Riemannian curvature tensor.
     Thus $\iprod{\gamma',J}=a+bt$.
     Evaluating the function and its derivative at $0$ gives us
@@ -624,6 +633,16 @@ linearly independent.
 
 \edefn
 
+\bnote
+
+    While sign conventions for $R$ (and thus for $\Rm$) vary, sign conventions for $K$ do not.
+    If $R$ is defined with the opposite sign convention, then we could define $K$ by
+    $$ K_p(\sigma) = \frac{\Rm(x,y,y,x)}{\iprod{x,x}\iprod{y,y}-\iprod{x,y}^2} , $$
+    see e.g.\ Lee.
+    Sectional curvature is a generalization of Gaussian curvature, so its sign is kept constant with Gaussian curvature.
+
+\enote
+
 \blemm
 
     Let $V$ be a finite-dimensional vector space and $F,G\colon V^4\to\bR$ multilinear functionals.
@@ -663,7 +682,7 @@ That is, if we are given a Riemannian manifold, it is enough to know either the 
 \subsection{Jacobi fields}
 
 Recall that a {\emphcolor Jacobi field} is a vector field $J$ along a geodesic $\gamma$ satisfying the {\emphcolor Jacobi equation}:
-$$ D_t^2J + R(J,\gamma')\gamma' = 0 . $$
+$$ D_t^2J + R(\gamma',J)\gamma' = 0 . $$
 
 \bprop
 
@@ -753,7 +772,7 @@ $$ s_K(t) = \cases{t&if $K=0$\cr\noalign{\kern2pt} R\sin t/R&if $K=1/R^2>0$\cr\n
     The {\emphcolor curvature} of a vector bundle $E\to M$ with connection $\nabla$ is the section
     $$ R\in\Gamma\parens{\Lambda^2T^*M\otimes\endo(E)} $$
     given by
-    $$ R(X,Y)s = \nabla_X\nabla_Ys - \nabla_Y\nabla_Xs - \nabla_{[X,Y]}s,\qquad X,Y\in\X(M),\ s\in\Gamma(E) . $$
+    $$ R(X,Y)s = -\nabla_X\nabla_Ys + \nabla_Y\nabla_Xs + \nabla_{[X,Y]}s,\qquad X,Y\in\X(M),\ s\in\Gamma(E) . $$
 
 \edefn
 
@@ -764,9 +783,9 @@ Then $f$ pulls back the connection to a connection $f^*\nabla=\nabla^*\colon\X(M
 Let $R$ be the curvature of $\nabla$ and $R^*$ be $\nabla^*$'s.
 Then we see for $s\in\Gamma(E)$,
 $$ \eqalign{
-    R^*(X,Y)(s\circ f) &= \nabla^*_X\nabla^*_Y(s\circ f) - \nabla^*_Y\nabla^*_X(s\circ f) - \nabla^*_{[X,Y]}(s\circ f)\cr
-        &= \nabla^*_X(\nabla_{df(Y)}s)\circ f - \nabla^*_Y(\nabla_{df(X)}s)\circ f - \nabla_{df[X,Y]}s\circ f\cr
-        &= \parens{\nabla_{df(X)}\nabla_{df(Y)}s - \nabla_{df(Y)}\nabla_{df(X)}s - \nabla_{[df(X),df(Y)]}s}\circ f\cr
+    R^*(X,Y)(s\circ f) &= -\nabla^*_X\nabla^*_Y(s\circ f) + \nabla^*_Y\nabla^*_X(s\circ f) + \nabla^*_{[X,Y]}(s\circ f)\cr
+        &= -\nabla^*_X(\nabla_{df(Y)}s)\circ f + \nabla^*_Y(\nabla_{df(X)}s)\circ f + \nabla_{df[X,Y]}s\circ f\cr
+        &= \parens{-\nabla_{df(X)}\nabla_{df(Y)}s + \nabla_{df(Y)}\nabla_{df(X)}s + \nabla_{[df(X),df(Y)]}s}\circ f\cr
         &= (R(df\circ X,df\circ Y)s)\circ f .
 } $$
 We summarize this in the following lemma.
@@ -853,7 +872,7 @@ And $\bar\Rm,\Rm,\Rm^\perp$ similarly for Riemannian curvature.
 \bthrm[title=Gauss]
 
     For all $X,Y\in\X(M)$ and $s\in\Gamma(S)$ we have the following equality
-    $$ P\circ\bar R(X,Y)s = R(X,Y)s + \sff^\perp(X)\circ\sff(Y)s - \sff^\perp(Y)\circ\sff(X)s . $$
+    $$ P\circ\bar R(X,Y)s = R(X,Y)s - \sff^\perp(X)\circ\sff(Y)s + \sff^\perp(Y)\circ\sff(X)s . $$
 
 \ethrm
 
@@ -878,10 +897,8 @@ And $\bar\Rm,\Rm,\Rm^\perp$ similarly for Riemannian curvature.
 
 \bnote
 
-    Some authors have the convention that curvature is given by the opposite sign:
-    $$ R(X,Y)s = \nabla_Y\nabla_Xs - \nabla_X\nabla_Ys + \nabla_{[X,Y]}s . $$
-    In this case Gauss's formula gives
-    $$ P\circ\bar R(X,Y)s = R(X,Y)s + \sff^\perp(Y)\circ\sff(X)s - \sff^\perp(X)\circ\sff(Y)s . $$
+    If curvature is defined with the opposite sign convention, then this result is
+    $$ P\circ\bar R(X,Y)s = R(X,Y)s - \sff^\perp(Y)\circ\sff(X)s + \sff^\perp(X)\circ\sff(Y)s . $$
 
 \enote
 
@@ -907,7 +924,7 @@ And $\bar\Rm,\Rm,\Rm^\perp$ similarly for Riemannian curvature.
 \bcoro
 
     For $X,Y\in\X(M)$, $s,t\in\Gamma(S)$,
-    $$ \bar\Rm(X,Y,s,t) = \Rm(X,Y,s,t) + h(\sff(X)s,\sff(Y)t) - h(\sff(Y)s,\sff(X)t) . $$
+    $$ \bar\Rm(X,Y,s,t) = \Rm(X,Y,s,t) - h(\sff(X)s,\sff(Y)t) + h(\sff(Y)s,\sff(X)t) . $$
 
 \ecoro
 
@@ -917,16 +934,16 @@ And $\bar\Rm,\Rm,\Rm^\perp$ similarly for Riemannian curvature.
     $$ \bar\Rm(X,Y,s,t) = h(\bar R(X,Y)s,t) = h(P\circ\bar R(X,Y)s,t) , $$
     where the last equality is due to $t$ being a section of $s$.
     By Gauss's theorem, this is equal to
-    $$ = h(R(X,Y)s,t) + h(\sff^\perp(X)\circ\sff(Y)s,t) - h(\sff^\perp(Y)\circ\sff(X)s,t) , $$
+    $$ = h(R(X,Y)s,t) - h(\sff^\perp(X)\circ\sff(Y)s,t) + h(\sff^\perp(Y)\circ\sff(X)s,t) , $$
     and by the lemma above this is equal to
-    $$ = \Rm(X,Y,s,t) + h(\sff(Y)s,\sff(X)t) - h(\sff(X)s,\sff(Y)t) . \qed $$
+    $$ = \Rm(X,Y,s,t) - h(\sff(Y)s,\sff(X)t) + h(\sff(X)s,\sff(Y)t) . \qed $$
 
 \eproof
 
 \bnote
 
     For the opposite sign convention, we get
-    $$ \bar\Rm(X,Y,s,t) = \Rm(X,Y,s,t) - h(\sff(X)s,\sff(Y)t) + h(\sff(Y)s,\sff(X)t) . $$
+    $$ \bar\Rm(X,Y,s,t) = \Rm(X,Y,s,t) + h(\sff(X)s,\sff(Y)t) - h(\sff(Y)s,\sff(X)t) . $$
 
 \enote
 
@@ -970,7 +987,7 @@ We summarize this,
 \bcoro
 
     If $M$ is a Riemannian submanifold of $\bar M$, then
-    $$ \bar\Rm(X,Y,Z,W) = \Rm(X,Y,Z,W) + \iprod{\sff(X)Z,\sff(Y)W} - \iprod{\sff(Y)Z,\sff(X)W} . $$
+    $$ \bar\Rm(X,Y,Z,W) = \Rm(X,Y,Z,W) - \iprod{\sff(X)Z,\sff(Y)W} + \iprod{\sff(Y)Z,\sff(X)W} . $$
 
 \ecoro
 
@@ -1005,7 +1022,7 @@ For the second fundamental form of $M\subseteq\bar M$ let us write $\sff(X,Y)$ i
 
     If $M\subseteq\bar M$ is embedded, then for $p\in M$ and $\sigma\subseteq T_pM\subseteq T_p\bar M$ with orthonormal basis $v,w$
     we have
-    $$ \bar K_p(\sigma) = K_p(\sigma) + \iprod{\sff(v,v),\sff(w,w)} - \iprod{\sff(v,w),\sff(v,w)} . $$
+    $$ \bar K_p(\sigma) = K_p(\sigma) - \iprod{\sff(v,v),\sff(w,w)} + \iprod{\sff(v,w),\sff(v,w)} . $$
 
 \ecoro
 
@@ -1076,7 +1093,7 @@ This gives us:
 
 \elemm
 
-\benum
+\bproof
 
     We can assume that $M\subseteq\bar M$ is an embedded submanifold and $f=\id$.
     Then $\bar X$ is just the same as $X$.
@@ -1086,7 +1103,7 @@ This gives us:
     On the other hand, $[\tilde X,\tilde Y]$ is a local extension of $[X,Y]$ so we have the desired result.
     \qed
 
-\eenum
+\eproof
 
 \bcoro
 
