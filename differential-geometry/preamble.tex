@@ -1,8 +1,36 @@
-\def\date{July, 2025}
+\newif\iftesttime
+%\testtimetrue
+
+\iftesttime
+\def\pagedecor{\pageborder{rgb{1 1 1}}{rgb{0 0 0}}{5}}
+\def\setboxshadow{}
+\def\contentbox{\bppbox{rgb{1 1 1}}{rgb{0 0 0}}{rgb{0 0 0}}}
+\else
+\def\pagedecor{\pageborder{rgb{.8 1 .8}}{rgb{0 .3 0}}{5}}
+\def\setboxshadow{\def\boxshadowcolor{rgb{.6 .8 .6}}}
+\def\contentbox{\bppbox{rgb{.8 1 .8}}{rgb{0 .3 0}}{rgb{0 .4 0}}}
+\fi
+
+\def\date{July, 2026}
 
 \edef\uscorecat{\the\catcode`_}
 \catcode`_=11\relax
 \catcode`@=11\relax
+
+\let\prepeat=\_prepeat
+
+\def\part#1{%
+    \par%
+    \advancecounter{part}{1}%
+    \def\currpart{#1}%
+    \gdef\currsection{#1}%
+    \gdef\currsubsection{#1}%
+    \gdef\currsubsubsection{#1}%
+    \bigskip%
+    \leftline{\setfontandscale{sc}{30pt}{\upperroman{\the\counter{part}}. #1}}
+    \addtoccontent{\the\counter{part}}{#1}{\the\pageno}{0}{part@\the\counter{part}}%
+    \par%
+}
 
 \def\_centerline{\hfil\egroup}
 \def\centerline{\hbox to\hsize\bgroup\hfil\bgroup\aftergroup\_centerline\let\@@}
@@ -29,9 +57,11 @@
 \gdef\emphcolor{\expanded{\noexpand\_setcolor{}{\curremphcolor}}\setfont{bf}}
 }
 
+\def\emphasize#1{{\emphcolor#1}}
+
 \def\printmcount{\the\counter{section}.\the\counter{subsection}.\the\counter{math counter}}
 
-\def\createmathbox#1#2#3#4#5{%
+\def\_createmathbox#1#2#3#4#5[#6]{%
     \_xp\def\csname _b#1\endcsname[##1]{
         \mapkeys{%
             title={%
@@ -43,7 +73,7 @@
                 default=\novalue%
             }%
         }{##1}%
-        \bppbox{#3}{#4}{#5}%
+        \csname b#6\endcsname{#3}{#4}{#5}%
         {\globalsetters\advancecounter{math counter}{1}\localsetters}%
         \def\curremphcolor{#5}%
         \hbox to\hsize{%
@@ -64,8 +94,12 @@
         \medskip%
     }%
     \_xp\edef\csname b#1\endcsname{\medskip\noexpand\_ifnextchar[ {\_xp\noexpand\csname _b#1\endcsname}{\_xp\noexpand\csname _b#1\endcsname[]}}%
-    \_xp\def\csname e#1\endcsname{\eppbox\medskip}%
+    \_xp\def\csname e#1\endcsname{\csname e#6\endcsname\medskip}%
 }
+
+\def\createmathbox#1#2#3#4#5{\_ifnextchar[ {\_createmathbox{#1}{#2}{#3}{#4}{#5}}{\_createmathbox{#1}{#2}{#3}{#4}{#5}[ppbox]}}
+
+\iftesttime
 
 \def\@bproof[#1]{%
     \blinedppbox{rgb{1 1 1}}{rgb{0 0 0}}{rgb{0 0 0}}
@@ -86,11 +120,53 @@
 \let\eblankpp=\elinedppbox
 
 \def\bnote{%
-    \bppbox{rgb{1 1 .7}}{rgb{.5 .4 0}}{rgb{.3 .2 0}}
+    \blinedppbox{rgb{1 1 1}}{rgb{.3 .3 .3}}{rgb{0 0 0}}
+    \def\curremphcolor{rgb{.5 .5 .5}}%
+    \noindent{\setfont{bf}Note:} %
+}
+\let\enote=\elinedppbox
+
+\def\__refmath#1{\gotoanchor{#1}{\csname math@#1\endcsname}}
+\def\_refmath[#1]#2{\gotoanchor{#2}{#1 \csname math@#2\endcsname}}
+\def\refmath{\_ifnextchar[ {\_refmath}{\__refmath}}
+\catcode`_=8
+
+\createmathbox{defn}{Definition}{rgb{1 1 1}}{rgb{0 0 0}}{rgb{0 0 0}}
+\createmathbox{prob}{Problem}{rgb{.9 .9 .9}}{rgb{0 0 0}}{rgb{0 0 0}}
+\createmathbox{thrm}{Theorem}{rgb{.9 .9 .9}}{rgb{0 0 0}}{rgb{0 0 0}}
+\createmathbox{coro}{Corollary}{rgb{.9 .9 .9}}{rgb{0 0 0}}{rgb{0 0 0}}
+\createmathbox{lemm}{Lemma}{rgb{.9 .9 .9}}{rgb{0 0 0}}{rgb{0 0 0}}
+\createmathbox{prop}{Proposition}{rgb{.9 .9 .9}}{rgb{0 0 0}}{rgb{0 0 0}}
+\createmathbox{prin}{Principle}{rgb{1 1 1}}{rgb{0 0 0}}{rgb{0 0 0}}
+\createmathbox{exam}{Example}{rgb{.95 .95 .95}}{rgb{.5 .5 .5}}{rgb{0 0 0}}[linedppbox]
+\createmathbox{exerc}{Exercise}{rgb{.9 1 .9}}{rgb{.3 .8 .3}}{rgb{.1 .65 .1}}
+
+\else
+
+\def\@bproof[#1]{%
+    \blinedppbox{rgb{1 1 1}}{rgb{0 0 0}}{rgb{0 0 0}}
+    \hbox to \hsize{\setfont{bf}Proof (#1)\hfil}
+    \medskip
+}
+\def\@@bproof{%
+    \blinedppbox{rgb{1 1 1}}{rgb{0 0 0}}{rgb{0 0 0}}
+    \hbox to \hsize{\setfont{bf}Proof\hfil}
+    \medskip
+}
+\def\bproof{\@ifnextchar[ \@bproof\@@bproof}
+\let\eproof=\elinedppbox
+
+\def\blankpp{%
+    \blinedppbox{rgb{1 1 1}}{rgb{0 0 0}}{rgb{0 0 0}}
+}
+\let\eblankpp=\elinedppbox
+
+\def\bnote{%
+    \blinedppbox{rgb{1 1 .7}}{rgb{.5 .4 0}}{rgb{.3 .2 0}}
     \def\curremphcolor{rgb{.5 .4 0}}%
     \noindent{\setfont{bf}Note:} %
 }
-\let\enote=\eppbox
+\let\enote=\elinedppbox
 
 \def\__refmath#1{\gotoanchor{#1}{\csname math@#1\endcsname}}
 \def\_refmath[#1]#2{\gotoanchor{#2}{#1 \csname math@#2\endcsname}}
@@ -106,6 +182,8 @@
 \createmathbox{prin}{Principle}{rgb{1 1 .5}}{rgb{.5 .3 0}}{rgb{.5 .3 0}}
 \createmathbox{exam}{Example}{rgb{.9 1 .9}}{rgb{.3 .8 .3}}{rgb{.1 .65 .1}}
 \createmathbox{exerc}{Exercise}{rgb{.9 1 .9}}{rgb{.3 .8 .3}}{rgb{.1 .65 .1}}
+
+\fi
 
 \def\qed{%
     \ifmmode \eqno\mathchar"404%
@@ -255,7 +333,11 @@
 \def\drv#1{\drvof{}{#1}}
 \def\evdrv#1{\eval{\drv{#1}}}
 
+\iftesttime
+\def\TODO#1{\par\blinedppbox{rgb{.9 .9 .9}}{rgb{0 0 0}}{rgb{0 0 0}}\centerline{\setscale{30pt}{\bf TODO:} #1}\elinedppbox}
+\else
 \def\TODO#1{\centerline{\color{red}\setscale{30pt}{\bf TODO:} #1}}
+\fi
 
 \def\@true{\@true}
 \def\@false{\@false}
@@ -402,4 +484,5 @@
 \def\d{\mathop{}\!d}
 \def\fix{{\rm Fix}}
 \def\div{{\rm Div}}
+\def\hess{\mathop{\rm hess}\nolimits}
 

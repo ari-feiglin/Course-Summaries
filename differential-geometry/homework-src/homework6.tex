@@ -1,0 +1,480 @@
+\bprob
+
+    Define $f\colon\bR^2\to\bR^2$ by
+    $$ (y_1,y_2) = f(x_1,x_2) = (x_1^3+x_1x_2,x_2) . $$
+    \benum
+        \item Graph $y_1$ as a function of $x_1$ and $x_2$.
+        \item What are the critical points of $f$?
+        \item What are the critical values of $f$?
+        \item A line in $\bR^2$ is a submanifold $\ell\subseteq\bR^2$ determined by an equation of the form
+        $$ ay_1 + by_2 = c $$
+        for constants $a,b,c\in\bR$.
+        Which lines are transverse to $f$?
+        \item Draw $f^{-1}\ell$ and determine whether it is a submanifold of $\bR^2$ for the values
+        $$ (a,b,c) = (1,0,-1),\ (1,0,0),\ (1,0,1),\ (1,-1,1) . $$
+    \eenum
+
+\eprob
+
+\benum
+    \item If we keep $x_2$ constant, the map $y_1=x_1^3+x_1x_2$ has derivative $3x_1^2+x_2$, which can be zero only when $x_2<0$.
+    So the graph of $f$ at $x_2$ is $x_1^3+x_1x_2$, which is just $x_1^3$ when $x_2=0$, and then as $x_2$ gets more negative it becomes a more and
+    more extreme N shape, and as $x_2$ gets more positive it becomes closer to a line.
+    I have no artistic skills, and was not able to draw the graph in any comprehensible way.
+
+    \item We compute $f$'s Jacobian: let $p=(x_1,x_2)$ then
+    $$ df_p = \pmatrix{3x_1^2+x_2 & x_1\cr 0 & 1} . $$
+    Since the domain and codomain of $f$ have the same dimension, $df_p$ is surjective iff it is injective iff it is bijective, which is equivalent to
+    $df_p$ having nonzero determinant.
+    The determinant of $df_p$ is easy to compute:
+    $$ \det(df_p) = 3x_1^2 + x_2 . $$
+    Now $p$ is a critical point iff $df_p$ is not surjective, so iff this determinant is zero.
+    That is,
+    $$ \hbox{$p$ is critical} \iff 3x_1^2 + x_2 = 0 . $$
+    So $f$'s critical points are of the form $(t,-3t^2)$ for $t\in\bR$.
+
+    \item $f$'s critical values are just the values it takes on its critical points.
+    For a crtical point $p=(t,-3t^2)$,
+    $$ f(p) = (t^3 - 3t^3, -3t^2) = (-2t^3,-3t^2) . $$
+    So this is the set of $f$'s critical values: all points in $\bR^2$ of the form $(2t^3,3t^2)$.
+
+    \item Recall that $f\colon N\to M$ is transverse to $S\subseteq M$ iff $df_p(T_pN)+T_{fp}S=T_{fp}M$ for all $p\in f^{-1}S$.
+    If $p$ is a regular point of $f$, this obviously holds.
+    So we are interested in lines which contain a critical value of $f$.
+
+    First let us compute $T_q\ell$.
+    Note that $\ell$ is the preimage of $c$ under the smooth map
+    $$ g\colon\bR^2\to\bR,\qquad g(y_1,y_2) = ay_1 + by_2 . $$
+    Thus $T_q\ell\subseteq T_q\bR^2=\bR^2$ is just the kernel of $dg_q$.
+    $g$'s differential is
+    $$ dg = (a,b) , $$
+    whose kernel is then
+    $$ \ker dg = \ker(a,b) = \lspan(b,-a)^\top . $$
+    Thus for $q\in\ell$,
+    $$ T_q\ell = \lspan(b,-a) \subseteq \bR^2 . $$
+
+    Now recall that we are interested only in points of the form $q=fp$ where $p=(x_1,x_2)$ is a critical point of $f$.
+    Let $p=(t,-3t^2)$ be a critical point of $f$, then
+    $$ df_p(T_p\bR^2) = \im\pmatrix{0 & t\cr 0 & 1} = \lspan(t,1)^\top . $$
+
+    So we want to now find for which lines $\ell$ we have that for all $p$ critical and $fp\in\ell$, $df_p(T_p\bR^2)+T_{fp}\ell=T_{fp}\bR^2=\bR^2$.
+    Let $p=(t,-3t^2)$, then $fp=(-2t^3,-3t^2)$ is in $\ell$ when
+    $$ -2at^3 - 3bt^2 = c . $$
+    And in such a case, $df_p(\bR^2)+T_{fp}\ell=\bR^2$ iff $(b,-a)$ and $(t,1)$ together span $\bR^2$, which is iff they form a basis iff
+    $$ \det\pmatrix{t & b\cr 1 & -a} = -at - b \neq 0 . $$
+
+    So $f$ is not transverse to $\ell$ if there is a $t\in\bR$ such that
+    $$ -2at^3 - 3bt^2 = c,\qquad at + b = 0 . $$
+    If $a\neq0$ then we must have $t=-b/a$ and
+    $$ 2at^3 + 3bt^2 = 2a\parens{-\frac ba}^3 + 3b\parens{-\frac ba}^2 = \frac{b^3}{a^2} , $$
+    and thus $c=-b^3/a^2$.
+
+    If $a=0$ then we must have $b=0$, in which case either $c=0$ so $\ell=\bR^2$ to which $f$ is clearly transverse, or $c\neq0$ so $\ell=\emptyset$ which again
+    $f$ is also transverse (vaccuously; its preimage is empty).
+
+    So $f$ is not transverse to lines of the form
+    $$ ay_1 + by_2 = -\frac{b^3}{a^2} . $$
+
+    \item If $f$ is transverse to $S$, then $f^{-1}S$ is a submanifold.
+    For $(a,b,c)=(1,0,-1),(1,0,1)$, $f$ is transverse to $\ell$ so $f^{-1}\ell$ is a submanifold.
+    We also compute what $f^{-1}\ell$ is in both of these cases.
+
+    For $(a,b,c)=(1,0,-1)$, $f(x_1,x_2)\in\ell$ iff $x_1^3+x_1x_2=-1$.
+    Since $x_1=0$ gives no solutions, this is iff
+    $$ x_2 = -\frac{x_1^3+1}{x_1} , $$
+    so $f^{-1}\ell$ is the set of all points of the form $\parens{t,-\frac{t^3+1}t}$, i.e.\ it is the graph of $-\frac{t^3+1}t$.
+
+    Similarly for $(a,b,c)=(1,0,1)$, $f(x_1,x_2)\in\ell$ iff $x_1^3+x_1x_2=1$ iff $x_2=\frac{1-x_1^3}{x_1}$.
+    So $f^{-1}\ell$ is the graph of $\frac{1-t^3}t$.
+
+    For $(a,b,c)=(1,0,0)$ we showed that $f$ is not transverse to $\ell$.
+    Note that $f(x_1,x_2)\in\ell$ iff $x_1^3+x_1x_2=0$, and the set of such points does not form a submanifold.
+    Indeed,
+    $$ x_1^3 + x_1x_2 = 0 \iff x_1 = 0 \hbox{ or } x_2 = -x_1^2 , $$
+    so $f^{-1}\ell$ is just the union of the parabola $y=-x^2$ with the $y$-axis $x=0$.
+    This is not even a topological manifold, since it is not locally Euclidean around the origin: removing it creates $4$ disconnected components, but removing a single
+    point from one-dimensional Euclidean space creates only two.
+    So $f^{-1}\ell$ is not a submanifold.
+
+    For $(a,b,c)=(1,-1,1)$ we have that $f(x_1,x_2)\in\ell$ iff $x_1^3+x_1x_2-x_2=1$, and since (by polynomial division)
+    $$ x_1^3 + x_1x_2 - x_2 - 1 = (x_1-1)(x_1^2 + x_1 + x_2 + 1) , $$
+    $f^{-1}\ell$ is the union of the parabola $y=-x^2-x-1$ with the line $x=1$; this is not a manifold for the same reason as before.
+\eenum
+
+\bprob
+
+    Show that the Levi-Civita connection on a pseudo-Riemannian manifold exists and is unique.
+    Provide a full proof.
+
+\eprob
+
+The derivation of Koszul's formula done in class does not change: the Levi-Civita connection must satisfy
+$$ \iprod{\nabla_XY,Z} = \frac12\parens{X\iprod{Y,Z} + Y\iprod{Z,X} - Z\iprod{X,Y}
+- \iprod{Y,[X,Z]} - \iprod{Z,[Y,X]} + \iprod{X,[Z,Y]}} . $$
+A pseudo-Riemannian metric is nondegenerate, so this uniquely defined $\nabla_XY$.
+To show that this defines a symmetric metric connection, we focus on a coordinate frame given by a chart $(U,(x^i))$.
+The Gram matrix of a nondegenerate bilinear form is invertible, so the formula for the connection coefficients derived in class
+remains valid:
+$$ \Gamma^k_{ij} = \frac12g^{k\ell}(\partial_ig_{j\ell} + \partial_jg_{i\ell} - \partial_\ell g_{ij}) , $$
+where $\partial_i=\ipdv{x^i}$.
+Note then that this defines a connection on $U\subseteq M$: the connection coefficients on a local frame define a connection.
+That is,
+$$ \nabla_XY = (X(Y^k) + X^iY^j\Gamma^k_{ij})\partial_k $$
+defines a connection on $U$.
+
+We will show that this connection is symmetric and metric on $U$, and thus by uniqueness these definitions must coincide on the
+intersections of any charts, and thus gluing them together gives the desired Levi-Civita connection.
+
+Notice that by $g$'s symmetry, $\Gamma^k_{ij}=\Gamma^k_{ji}$.
+Thus $\nabla$ is symmetric, since
+$$ \nabla_{\partial_i}\partial_j = \Gamma^k_{ij}\partial_k = \Gamma^k_{ji}\partial_k = \nabla_{\partial_j}\partial_i . $$
+Then since the torsion tensor
+$$ \tau(X,Y) = \nabla_XY - \nabla_YX - [X,Y] $$
+is indeed a tensor, by linearity we see that since $\tau(\partial_i,\partial_j)=0$ for all $i,j$, $\tau$ is identically zero.
+Thus $\nabla$ is symmetric.
+
+Now,
+$$ \nabla g(Y,Z,X) = X(g(Y,Z)) - g(\nabla_XY,Z) - g(Y,\nabla_XZ) $$
+is a tensor.
+Additivity in each component is easily seen, as well as multiplicativity in $X$.
+Multiplicativity in e.g.\ $Y$ is easily shown,
+$$ \eqalign{
+    \nabla g(fY,Z,X) &= X(g(fY,Z)) - g(\nabla_XfY,Z) - g(fY,\nabla_XZ)\cr
+        &= (Xf)g(Y,Z) + fX(g(Y,Z)) - g((Xf)Y,Z) - fg(\nabla_XY,Z) - fg(Y,\nabla_XZ)\cr
+        &= fX(g(Y,Z)) - fg(\nabla_XY,Z) - fg(Y,\nabla_XZ)\cr
+        &= f\nabla g(Y,Z,X).
+} $$
+Showing $\nabla$ is compatible with $g$ is the same as showing $\nabla g=0$, and since this is a tensor it is sufficient to show this in
+our coordinate frame.
+
+We have
+$$ g(\nabla_{\partial_i}\partial_j,\partial_k) = g(\Gamma^\ell_{ij}\partial_\ell,\partial_k) = \Gamma^\ell_{ij}g_{\ell k} . $$
+By our formula for $\Gamma^k_{ij}$ in this coordinate frame, this is equal to
+$$ = \frac12(\partial_ig_{jk} + \partial_jg_{ik} - \partial_kg_{ij}) . $$
+Thus
+$$ \eqalign{
+    g(\nabla_{\partial_i}\partial_j,\partial_k) + g(\partial_j,\nabla_{\partial_i}\partial_k) &=
+    \frac12(\partial_ig_{jk} + \partial_jg_{ik} - \partial_kg_{ij} + \partial_ig_{kj} + \partial_kg_{ij} - \partial_jg_{ik})\cr
+    &= \partial_ig_{jk} = \partial_ig(\partial_j,\partial_k) .
+} $$
+Showing that $\nabla$ is indeed compatible with $g$.
+
+As explained, our formula for $\nabla$ defines a unique symmetric metric connection on each coordinate frame.
+Because it is unique, the formulas must agree where the coordinate frames intersect, thus allowing us to glue them together to give a global symmetric metric
+connection.
+
+\bprob
+
+    Let $(M,g),(N,h)$ be Riemannian manifolds, and $\alpha\colon M\to N$ an isometric immersion.
+    Let $\bar\nabla$ be the Levi-Civita connection on $N$, and $\tilde\nabla$ be its pullback along $\alpha$.
+    Consider the orthogonal projection $\Pi_q\colon T_{\alpha q}N\to d\alpha_q(T_qM)$ for $q\in M$, and let
+    $P_q\colon T_{\alpha q}N\to T_qM$ denote its composition with the isomorphism $d\alpha_q(T_qM)\cong T_qM$.
+
+    For $X\in\X(M)$ define $\hat X\in\X(\alpha)$ by $\hat X_q=d\alpha_q(X_q)$.
+    \benum
+        \item Show there exists a unique $C^\infty(M)$-linear map $P\colon\X(\alpha)\to\X(M)$ such that
+        $$ P(X)_q = P_q(X_q) $$
+        for all $q\in M,X\in\X(\alpha)$.
+        \item Define a connection $\nabla$ on $M$ by $\nabla X=P\circ\tilde\nabla\hat X$.
+        Prove that $\nabla$ is the Levi-Civita connection on $M$.
+    \eenum
+
+\eprob
+
+\benum
+    \item Uniqueness is clear as the formula given defines $P$.
+    For $f^1,f^2\in C^\infty(M)$ and $X_1,X_2\in\X(\alpha)$ we have, by linearity of $P_q$,
+    $$ P(f^iX_i)_q = P_q(f^i(q)X_i(q)) = f^i(q)P_q(X_i(q)) = (f^iP(X_i))_q , $$
+    so $P(f^iX_i)=f^iP(X_i)$ as desired.
+
+    Now we show that $P$ maps into $\X(M)$.
+    By linearity it is sufficient to show this for local frames.
+    Since $\alpha$ is an immersion, locally it has a coordinate representation $\bar x\mapsto(\bar x,\bar0)$.
+    Let $x^1,\dots,x^m$ be local coordinates for $M$ around $q$ and $y^1,\dots,y^n$ be local coordinates for $N$
+    around $\alpha(q)$ giving this representation.
+
+    Then
+    $$ d\alpha_q\parens{\evpdv{x^i}_q} = \pdvof{\alpha^j}{x^i}(q)\evpdv{y^j}_{\alpha(q)} , $$
+    and since under these coordinates $\alpha$ is the map $\bar x\mapsto(\bar x,\bar0)$, its Jacobian is jus
+    $\ipdvof{\alpha^j}{x^i}=\delta_{ij}$.
+    Thus
+    $$ d\alpha_q\parens{\evpdv{x^i}_q} = \evpdv{y^i}_{\alpha q} . $$
+    And so $d\alpha_q(T_qM)$ is spanned by $\ievpdv{y^i}_{\alpha q}$ for $1\leq i\leq m$.
+    Let $\Pi^N_p$ denote the orthogonal projection of $T_pN$ onto the subspace spanned by $\ievpdv{y^i}_p$ for $1\leq i\leq m$.
+    This is a smooth map, as projecting is just the application of Gram-Schmidt which is smooth, and $\Pi_q=\Pi^N_{\alpha q}$.
+    Thus
+    $$ P(X)_q = P_q(X_q) = (d\alpha_q)^{-1}\parens{\Pi^N_{\alpha q}X_q} , $$
+    which is smooth in $q$ as a composition of smooth maps.
+    Thus $P(X)$ is a smooth vector field, as desired.
+
+    \item Recall that $\tilde\nabla$ is given by
+    $$ \tilde\nabla_X(Y\circ\alpha)|_q = \bar\nabla_{\hat X_q}Y|_{\alpha q} $$
+    for $X\in\X(M)$, $Y\in\X(N)$, $q\in M$.
+
+    We first show that $\nabla$ is indeed a connection; we utilize the fact that $\tilde\nabla$ is a connection itself.
+    For $C^\infty(M)$-linearity in the first argument we have
+    $$ \nabla_{f^iX_i}Y = P(\tilde\nabla_{f^iX_i}\hat Y) = P(f^i\tilde\nabla_{X_i}\hat Y) = f^iP(\tilde\nabla_{X_i}\hat Y)
+    = f^i\nabla_{X_i}Y , $$
+    where the second-to-last equality is due to $P$ being $C^\infty(M)$-linear.
+    Now notice that $\hat\bul$ is also $C^\infty(M)$-linear:
+    $$ \hat{f^iX_i}_q = d\alpha_q(f^i(q)X_i|_q) = f^i(q)d\alpha_q(X_i|_q) = (f^i\hat X_i)_q . $$
+    This allows us to show the rest of the properties of connections.
+    For $\bR$-linearity in the second argument we have
+    $$ \nabla_Xc^iY_i = P(\tilde\nabla_Xc^i\hat Y_i) = c^iP(\tilde\nabla_X\hat Y_i) = c^i\nabla_XY_i . $$
+    And for Leibniz,
+    $$ \nabla_XfY = P(\tilde\nabla_Xf\hat Y) = P((Xf)\hat Y + f\tilde\nabla_X\hat Y) = (Xf)P(\hat Y) + f\nabla_XY . $$
+    Now $P(\hat Y)=Y$, since $P(\hat Y)_q=P_q(\hat Y_q)=P_q(d\alpha_q(Y_q))$, since $d\alpha_q(Y_q)$ is already in
+    $d\alpha_q(T_qM)$ the orthogonal projection does not affect it, so this is just mapped to $Y_q$.
+    Thus
+    $$ \nabla_XfY = (Xf)Y + f\nabla_XY $$
+    as desired.
+
+    Now we show that $\nabla$ is symmetric.
+    It is sufficient to show this for local frames of our choice since the torsion tensor ($\nabla_XY-\nabla_YX-[X,Y]$)
+    is a tensor, and thus linear.
+    In particular we will use the coordinate frame $\ievpdv{x_i}_q$ from the first point, so
+    $$ \hat{\pdv{x^i}}_q  = d\alpha_q\parens{\evpdv{x^i}_q} = \evpdv{y^i}_{\alpha(q)}, $$
+    meaning
+    $$ \hat{\pdv{x^i}} = \pdv{y^i}\circ\alpha . $$
+
+    Then
+    $$ \eval{\nabla_{\ipdv{x^i}}\pdv{x^j}}_q = P_q\parens{\eval{\tilde\nabla_{\ipdv{x^i}}\hat{\pdv{x^j}}}_q} . $$
+    Recall that $\hat{\ipdv{x^i}}=\ipdv{y^i}\circ\alpha$, we have that
+    $$ \eval{\tilde\nabla_{\ipdv{x^i}}\pdv{y^j}\circ\alpha}_q =
+    \eval{\bar\nabla_{\ievpdv{y^i}_{\alpha q}}\pdv{y^j}}_{\alpha q} = \eval{\bar\nabla_{\ipdv{y^i}}\pdv{y^j}}_{\alpha q} . $$
+    If we let $\Gamma^k_{ij}$ be the Christoffel symbols of $(N,h)$, then
+    $$ \eval{\nabla_{\ipdv{x^i}}\pdv{x^j}}_q = P_q\parens{\Gamma^k_{ij}(\alpha q)\evpdv{y^k}_{\alpha q}}
+    = \Gamma^k_{ij}(\alpha q)P_q\parens{\evpdv{y^k}_{\alpha q}} . $$
+    All in all this means that
+    $$ \nabla_{\pdv{x^i}}\pdv{x^j} = (\Gamma^k_{ij}\circ\alpha)P\parens{\pdv{y^k}\circ\alpha} . $$
+    Since $\bar\nabla$ is symmetric, $\Gamma^k_{ij}=\Gamma^k_{ji}$, and thus this shows
+    $$ \nabla_{\pdv{x^i}}\pdv{x^j} = \nabla_{\pdv{x^j}}\pdv{x^i} . $$
+    Since the Lie bracket of coordinate vector fields is zero, this gives the desired result: $\nabla$ is symmetric.
+
+    Finally we must show that $\nabla$ is a compatible with $M$'s metric.
+    Again this can be checked locally on a local frame of our choice (since $\nabla g$ is a tensor, as shown in our previous solution).
+    We remain with our local coordinate frame as before, so we need to show
+    $$ \pdv{x^i}\iprod{\pdv{x^j},\pdv{x^k}}_g = \iprod{\nabla_{\pdv{x^i}}\pdv{x^j},\pdv{x^k}}_g +
+    \iprod{\pdv{x^j},\nabla_{\pdv{x^i}}\pdv{x^k}}_g, $$
+    where $\iprod{\bul,\bul}_g$ is just $g(\bul,\bul)$.
+
+    We first focus on the left-hand side.
+    Notice that for $i,j,k\leq m$,
+    $$ \eval{\pdv{y^i}\iprod{\pdv{y^j},\pdv{y^k}}_h}_{\alpha q} =
+    \evpdv{y^i}_{\alpha q}\iprod{\pdv{y^j},\pdv{y^k}}_h = d\alpha_q\parens{\evpdv{x^i}_q}\iprod{\pdv{y^j},\pdv{y^k}}_h . $$
+    By definition this is just
+    $$ = \evpdv{x^i}_q\parens{\iprod{\pdv{y^j},\pdv{y^k}}_h\circ\alpha} . $$
+    Recall that $\ipdv{y^i}\circ\alpha=d\alpha\ipdv{x^i}$, so this is equal to
+    $$ = \evpdv{x^i}_q\iprod{d\alpha\pdv{x^j},d\alpha\pdv{x^k}}_h , $$
+    and since $\alpha$ is an isometry, this is equal to
+    $$ = \evpdv{x^i}_q\iprod{\pdv{x^j},\pdv{x^k}}_g . $$
+    Thus we have shown
+    $$ \pdv{x^i}\iprod{\pdv{x^j},\pdv{x^k}} = \pdv{y^i}\iprod{\pdv{y^j},\pdv{y^k}}\circ\alpha . $$
+
+    Now we consider the right-hand side.
+    Recall that we already computed $\nabla_{\ipdv{x^i}}\ipdv{x^j}$, and we apply that here:
+    $$ \iprod{\nabla_{\pdv{x^i}}\pdv{x^j},\pdv{x^k}}_g =
+    \iprod{(\Gamma^\ell_{ij}\circ\alpha)P\parens{\pdv{y^\ell}\circ\alpha},\pdv{x^k}}_g
+    = (\Gamma^\ell_{ij}\circ\alpha)\iprod{P\parens{\pdv{y^\ell}\circ\alpha},\pdv{x^k}}_g . $$
+    Since $\alpha$ is an isometry, we have
+    $$ \iprod{P\parens{\pdv{y^\ell}\circ\alpha},\pdv{x^k}}_g =
+    \iprod{d\alpha P\parens{\pdv{y^\ell}\circ\alpha},\pdv{y^k}\circ\alpha}_h . $$
+    By definition of $P$ this is equal to
+    $$ = \iprod{\Pi\parens{\pdv{y^\ell}\circ\alpha},\pdv{y^k}\circ\alpha}_h . $$
+    Now $\Pi$ is the orthogonal projection onto the subspace spanned by $\ipdv{y^\ell}$ for $1\leq\ell\leq m$, and thus
+    does not affect this inner product:
+    $$ = \iprod{\pdv{y^\ell}\circ\alpha,\pdv{y^k}\circ\alpha}_h = \iprod{\pdv{y^\ell},\pdv{y^k}}_h\circ\alpha . $$
+    All in all we have
+    $$ \iprod{\nabla_{\ipdv{x^i}}\pdv{x^j},\pdv{x^k}}_g =
+    \parens{\Gamma^\ell_{ij}\iprod{\pdv{y^\ell},\pdv{y^k}}_h}\circ\alpha
+    = \iprod{\nabla_{\ipdv{y^i}}\pdv{y^j},\pdv{y^k}}\circ\alpha . $$
+
+    Putting all this together, $\nabla$'s compatibility with $M$'s metric follows from $\bar\nabla$'s:
+    $$ \eqalign{
+        \iprod{\nabla_{\pdv{x^i}}\pdv{x^j},\pdv{x^k}}_g + \iprod{\pdv{x^j},\nabla_{\pdv{x^i}}\pdv{x^k}}_g
+        &= \parens{\iprod{\nabla_{\ipdv{y^i}}\pdv{y^j},\pdv{y^k}}_h
+        + \iprod{\pdv{y^j},\nabla_{\ipdv{y^i}}\pdv{y^k}}_h}\circ\alpha\cr
+        &= \parens{\pdv{y^i}\iprod{\pdv{y^j},\pdv{y^k}}_h}\circ\alpha\cr
+        &= \pdv{x^i}\parens{\pdv{x^j},\pdv{x^k}} .
+    } $$
+    Since the Levi-Civita connection is unique, $\nabla$ must be $M$'s.
+\eenum
+
+\bprob
+
+    \benum
+        \item Do Carmo Riemannian Geometry, page 180 problem 3a, 3b.
+        Consider $\bR^{n+1}$ with the symmetric nondegenerate quadratic form
+        $$ Q(x_0,\dots,x_n) = -x_0^2 + \sum_{i=1}^n x_i^2 . $$
+        This induces a pseudo-Riemannian metric on $\bR^{n+1}$, call the resulting pseudo-Riemannian manifold $L^{n+1}$.
+        For $r>0$, let $k=-1/r^2$, and define by $H^n_k$ the embedded submanifold of $L^{n+1}$ given by
+        $$ H^n_k = \set{\bar x\in L^{n+1}}[x_0>0,Q(\bar x)=-r^2] . $$
+
+        Show that for $x\in H^n_k$, the vector $\eta=x/r$ is normal to the tangent space $T_xH^n_k$.
+        Further show that $(\eta,\eta)=-1$ and it is possible to extend it to a basis $\eta,b_1,\dots,b_{n+1}$ of $L^{n+1}$
+        such that $(b_i,b_j)=\delta_{ij}$ and $(b_i,b_0)=0$.
+        Deduce that the restriction of $L^{n+1}$'s metric to $H^n_k$ is positive definite, and thus forms a Riemannian manifold.
+
+        \item Do Carmo Riemannian Geometry, page 184 problem 7a, 7b.
+        Define a map $f\colon H^n_{-1}\to D^n$, where
+        $$ D^n = \set{\bar x\in\bR^n}[x_0=0,\sum_{i=1}^nx_i^2<1] , $$
+        as follows.
+        For $p\in H^n_{-1}\subseteq L^{n+1}$, form a line from $p$ to $p_0=(-1,0,\dots,0)$, and let $f(p)$ be the intersection of this line
+        with $D^n$.
+        Let $f(\bar x)=(0,\bar u)$, and show
+        $$ \eqalign{
+            x_i &= \frac{2u_i}{1-\sum_ju_j^2},\qquad i=1,\dots,n,\cr
+            x_0 &= \frac2{1-\sum_ju_j^2} - 1.
+        } $$
+
+        Now show that
+        $$ -(dx_0)^2 + \sum_{i=1}^n(dx_i)^2 = \frac{4\sum_{i=1}^n(du_i)^2}{\parens{1-\sum_ju_j^2}^2} . $$
+        Conclude that $f^{-1}$ induces a Riemannian metric on $D^n$ by
+        $$ g_{ij} = \frac{4\delta_{ij}}{\parens{1-\sum_ju_j^2}^2} . $$
+
+        \item Let
+        $$ \bR^n_+ = \set{\bar x\in\bR^n}[x_n>0] , $$
+        and define a metric on it by
+        $$ g_{ij}(\bar x) = \frac{\delta_{ij}}{x_n^2} . $$
+        Let $p_0=(0,\dots,-1)\in\bR^n$ and define $f\colon D^n\to\bR^n_+$ by
+        $$ f(p) = 2\frac{p-p_0}{\norm{p-p_0}^2} + p_0 . $$
+        Show that if we equip $D$ with the metric from the previous point, $f$ forms an isometry.
+
+        \item Equip $D^n$ with a metric given by
+        $$ g_{ij}(\bar y) = \frac{\delta_{ij}}{1-\norm y^2} + \frac{y_iy_j}{(1-\norm y^2)^2} . $$
+        Define $h\colon H^n_{-1}\to D^n$ by $y_i=x_i/x_0$.
+        Show that $h$ is an isometry.
+    \eenum
+
+\eprob
+
+\benum
+    \item So $H^n_k$ is the level set of $-r^2$ under $Q$ (in the open subset $x_0>0$), which is embedded.
+    Then for $x\in Q$, we know $T_xH^n_k\subseteq T_xL^{n+1}=L^{n+1}$ is the kernel of $dQ_x$.
+    We compute $Q$'s differential:
+    $$ dQ_x = (-2x_0,2x_1,\dots,2x_n) , $$
+    so
+    $$ T_xH^n_k = \ker dQ_x = (-x_0,x_1,\dots,x_n)^\perp , $$
+    where $\bul^\perp$ is the orthogonal complement relative to the usual Euclidean metric.
+    Notice though that
+    $$ (-x_0,x_1,\dots,x_n)\cdot(y_0,\dots,y_n) = -x_0y_0 + \sum_{i>0}x_iy_i = Q(x,y) . $$
+    Thus
+    $$ \ker dQ_x = \set{y\in L^{n+1}}[(x,y)=0] , $$
+    and since $\eta=x/r$, $(x,y)=0$ iff $(\eta,y)=0$.
+    Thus $\eta$ indeed is normal to $T_xH^n_k$.
+
+    Further notice that
+    $$ (\eta,\eta) = \frac1{r^2}Q(x) = -1 . $$
+    If we extend $\eta$ to an orthogonal basis of $(\bul,\bul)$ we obtain new vectors $b_1,\dots,b_n$ such that $(\eta,b_i)=0$, and
+    $(b_i,b_j)$ is diagonal.
+    Since the signature of a bilinear form is invariant, we must have that $(b_i,b_j)=\delta_{ij}$ as desired.
+    Then $b_1,\dots,b_n$ forms a basis for $T_xH^n_k$ as they are orthogonal to $\eta$, and then $(\bul,\bul)$ on $T_xH^n_K$ must be positive
+    definite, by linearity ($b_i$ form a positive orthogonal basis).
+    Thus $Q$ forms a Riemannian metric on $H^n_k$ as desired.
+
+    \item The line between $p\in H^n_{-1}$ and $p_0$ is given by $tp+(1-t)p_0$, which intersects $D^n$ when
+    $$ tx_0 + (t-1) = 0 \iff t = \frac1{1+x_0} . $$
+    Thus
+    $$ u_k = \frac{x_k}{1+x_0} . $$
+    For $(0,u_1,\dots,u_n)\in D^n$, let $U=\sum_iu_i^2$.
+    In our case
+    $$ U = \sum_i \frac{x_i^2}{(1+x_0)^2} = \frac1{(1+x_0)^2}\sum_ix_i^2 , $$
+    and since $x\in H^n_{-1}$, $\sum_ix_i^2=x_0^2-1$ so
+    $$ U = \frac{x_0^2-1}{(1+x_0)^2} = \frac{x_0-1}{x_0+1} ,\qquad 1 - U = \frac2{1+x_0} . $$
+    And then
+    $$ \frac{2u_k}{1-U} = \frac{\frac{2x_k}{1+x_0}}{\frac2{1+x_0}} = x_k $$
+    and
+    $$ \frac2{1-U} - 1 = \frac2{\frac2{1+x_0}} - 1 = x_0 $$
+    as desired.
+
+    Now for $X^i\ipdv{x^i}\in TH^n_k$, recall from the previous point that we have $Q(X,x)=0$, so
+    $$ X^ix_i = X^0x_0 . $$
+    Now we show that for $X^i\ipdv{x^i},Y^i\pdv{x^i}\in TH^n_k\subseteq TL^{n+1}$,
+    $$ g\parens{df\parens{X^i\pdv{x^i}},df\parens{Y^j\pdv{x^j}}} = \parens{X^i\pdv{x^i},Y^j\pdv{x^j}} , $$
+    i.e.\ that $f$ is an isometry.
+    Since $f$ can be extended to an open subset of $L^{n+1}$ to map to $L^{n+1}$, we use linearity to compute $df(X^i\ipdv{x^i})$:
+    $$ df\parens{\pdv{x^i}} = \pdvof{u^j}{x^i}\pdv{u^j} . $$
+    Now,
+    $$ \eqalign{
+        \pdvof{u^j}{x^j} &= \frac1{x_0+1},\cr
+        \pdvof{u^j}{x^i} &= 0,\qquad\hbox{for $i\neq j,0$},\cr
+        \pdvof{u^j}{x^0} &= -\frac{x_i}{(x_0+1)^2} .
+    } $$
+    Thus
+    $$ \eqalign{
+        df\pdv{x^i} &= \frac1{x_0+1}\pdv{u^i},\qquad\hbox{for $i\neq0$},\cr
+        df\pdv{x^0} &= -\frac{x_i}{(x_0+1)^2}\pdv{u^i}.
+    } $$
+    So
+    $$ \eqalign{
+        g\parens{df\pdv{x^i},df\pdv{x^j}} &= \frac1{(1+x_0)^2}g_{ij} = \delta_{ij}\frac1{(1+x_0)^2}\frac4{(1-U)^2} = \delta_{ij},\cr
+        g\parens{df\pdv{x^i},df\pdv{x^0}} &= -\frac{x_i}{(1+x_0)^3}g_{ii} = -\frac{x_i}{(1+x_0)^3}\frac4{(1-U)^2} = -\frac{x_i}{1+x_0},\cr
+        g\parens{df\pdv{x^0},df\pdv{x^0}} &= \frac{x_i^2}{(1+x_0)^4}g_{ii} = \frac{x_i^2}{(1+x_0)^4}\frac4{(1-U)^2} = \frac{x_0-1}{x_0+1}.
+    } $$
+    And finally we get
+    $$ \multline{
+        g\parens{X^idf\pdv{x^i},Y^jdf\pdv{x^j}} = X^iY^jg\parens{df\pdv{x^i},df\pdv{x^j}} =\cr
+        \sum_{i\geq1}X^iY^i - \sum_{j\geq1}\frac{x_j}{1+x_0}X^0Y^j - \sum_{i\geq1}\frac{x_i}{1+x_0}X^iY^0 + X^0Y^0\frac{x_0-1}{x_0+1}
+    } $$
+
+    Since
+    $$ \parens{X^i\pdv{x^i},Y^j\pdv{x^j}} = -X^0Y^0 + \sum_iX^iY^i , $$
+    we want to show that
+    $$ X^0Y^0 = X^0\sum_j\frac{x_j}{1+x_0}Y^j + Y^0\sum_i\frac{x_i}{1+x_0}X^i - X^0Y^0\frac{x_0-1}{x_0+1} . $$
+    Recall that $X^ix_i=X^0x_0$, and thus the right-hand side is equal to
+    $$ 2X^0Y^0\frac{x_0}{x_0+1} - X^0Y^0\frac{x_0-1}{x_0+1} = X^0Y^0 $$
+    as desired.
+
+    \item \def\bg{\bar g}
+    Let $\bg$ denote the metric on $D^n$, so $\bg_{ij}=4\frac{\delta_{ij}}{(1-U)^2}$.
+    The idea here is the same as the other points: compute the Jacobian of $f$, and show that it maps isometrically.
+    Here we can focus only on the coordinate frame $\ipdv{u^i}$ since $D^n$ is open, and thus the coordinate frame spans its tangent space.
+    Let $f(u_1,\dots,u_n)=(x_1,\dots,x_n)$, then we have
+    $$ df\pdv{u^i} = \pdvof{x^j}{u^i}\pdv{x^j}, $$
+    and we want to show that
+    $$ \bg_{ij} = g\parens{df\pdv{u^i},df\pdv{u^j}} = \pdvof{x^k}{u^i}\pdvof{x^\ell}{u^j}g\parens{\pdv{x^k},\pdv{x^\ell}} =
+    \sum_k\pdvof{x^k}{u^i}\pdvof{x^k}{u^j}\frac1{x_n^2} . $$
+
+    The computations here became too messy for me to do, but that's the idea.
+
+    \item \def\bg{\bar g}
+    Let $\bg$ denote the metric on $H^n_{-1}$, so we want to show that for $X=X^i\ipdv{x^i},Y=Y^j\ipdv{x^j}\in T_xH^n_k$,
+    $$ -X^0Y^0 + \sum_iX^iY^i = \bg(X,Y) = g(dh(X),dh(Y)) . $$
+    Of course we need to compute $dh\pdv{x^i}$,
+    $$ dh\pdv{x^i} = \pdvof{y^j}{x^i}\pdv{y^j} , $$
+    so
+    $$ \eqalign{
+        dh\pdv{x^i} &= \frac1{x_0}\pdv{y^i}\cr
+        dh\pdv{x^0} &= -\sum_i\frac{x_i}{x_0^2}\pdv{y^i} .
+    } $$
+    And so
+    $$ \eqalign{
+        g\parens{dh\pdv{x^i},dh\pdv{x^j}} &= \frac1{x_0^2}g_{ij},\cr
+        g\parens{dh\pdv{x^i},dh\pdv{x^0}} &= -\sum_j\frac{x_j}{x_0^3}g_{ij},\cr
+        g\parens{dh\pdv{x^0},dh\pdv{x^0}} &= \sum_{i,j}\frac{x_ix_j}{x_0^4}g_{ij}.
+    } $$
+    And thus
+    $$ g(dhX,dhY) = X^iY^jg\parens{dh\pdv{x^i},dh\pdv{x^j}} =
+        X^iY^j\frac1{x_0^2}g_{ij} - X^0Y^i\frac{x_j}{x_0^3}g_{ij} - Y^0X^i\frac{x_i}{x_0^3}g_{ij}
+        + X^0Y^0\frac{x_ix_j}{x_0^4}g_{ij} . $$
+
+    Note that since $x\in H^n_k$,
+    $$ \norm y^2 = \sum_iy_i^2 = \sum_i\frac{x_i^2}{x_0^2} = \frac{x_0^2-1}{x_0^2} \implies 1-\norm y^2 = \frac1{x_0^2} . $$
+    Thus
+    $$ g_{ij} = \delta_{ij}x_0^2 + x_ix_jx_0^2 . $$
+    And so
+    $$ g(dhX,dhY) = (\delta_{ij}+x_ix_j)\parens{X^iY^j - X^0Y^i\frac{x_j}{x_0} - Y^0X^i\frac{x_j}{x_0} + X^0Y^0\frac{x_ix_j}{x_0^2}} . $$
+    So we want to show that
+    $$ \multline{
+        -X^0Y^0 = -X^0\sum_iY^i\frac{x_i}{x_0} - Y^0\sum_iX^i\frac{x_i}{x_0} + X^0Y^0\sum_i\frac{x_i^2}{x_0^2}\cr
+        + \sum_{i,j}x_ix_j\parens{X^iY^j - X^0Y^i\frac{x_j}{x_0} - Y^0X^i\frac{x_j}{x_0} + X^0Y^0\frac{x_ix_j}{x_0^2}} .
+    } \leqno{(*)} $$
+    Note that
+    $$ \sum_{i,j}Y^ix_ix_j^2 = Y^0x_0\sum_jx_j^2 = Y^0x_0(x_0^2-1) . $$
+    Thus the right-hand side of $(*)$ is equal to
+    $$ -X^0Y^0 - X^0Y^0 + X^0Y^0\frac{x_0^2-1}{x_0^2} + x_0^2X^0Y^0 - (x_0^2-1)X^0Y^0 - (x_0^2-1)X^0Y^0 + X^0Y^0\frac{(x_0^2-1)^2}{x_0^2} . $$
+    All this just simplifies to give $-X^0Y^0$, as desired.
+\eenum
+
+
+

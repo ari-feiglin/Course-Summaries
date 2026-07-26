@@ -1,0 +1,357 @@
+\def\bK{{\bb K}}
+
+\bprob
+
+    Let $M$ be a set and $\A=\set{(\x_\alpha,U_\alpha)}_\alpha$ an atlas on $M$.
+    For $\alpha,\beta$ define the map
+    $$ \x_{\alpha\beta}\colon\x^{-1}_\alpha(\x_\beta(U_\beta)) \to U_\alpha\times U_\beta,\qquad x_{\alpha\beta}(u) = (u,\x_\beta^{-1}\circ\x_\alpha(u)) . $$
+    \benum
+        \item Show that if $\x_{\alpha\beta}$ is always proper, then the induced topology on $M$ is Hausdorff.
+        \item Show that for $\B K=\bR,\bC$, $\KP^n$ is Hausdorff.
+    \eenum
+
+\eprob
+
+\benum
+    \def\y{{\bf y}}
+    \item We can view $M$ as the quotient manifold of $\coprod_\alpha U_\alpha$ under the equivalence that $p\in U_\alpha$ and $q\in U_\beta$ are identified
+    when $\x_\alpha(p)=\x_\beta(q)$.
+    If we are given two distinct points $p\in U_\alpha,q\in U_\beta$ then $(p,q)$ cannot be in the image of $\x_{\alpha\beta}$ as that would imply that
+    $\x_\beta^{-1}\circ\x_\alpha(p)=q$, i.e.\ that $\x_\beta(q)=\x_\alpha(p)$, a contradiction.
+
+    $\x_{\alpha\beta}$ is proper and thus closed (since all spaces in question are locally compact Hausdorff), and so its image is closed in $U_\alpha\times U_\beta$.
+    Thus there exist open sets $p\in V_\alpha\subseteq U_\alpha$ and $q\in V_\beta\subseteq U_\beta$ which don't intersect $\x_{\alpha\beta}$'s image.
+    These are open in $M$, and they must be disjoint: if $r\in V_\alpha,r'\in V_\beta$ are such that $\x_\alpha(r)=\x_\beta(r')$ then $r$ is in $\x_{\alpha\beta}$'s domain
+    and
+    $$ \x_{\alpha\beta}(r) = (r,\x_\beta^{-1}\circ\x_\alpha(r)) = (r,r') \in V_\alpha\times V_\beta, $$
+    a contradiction to $V_\alpha\times V_\beta$ not intersecting $\x_{\alpha\beta}$'s image.
+
+    \item The charts of $\KP^n$ are given by $\x_i\colon\bK^n\to\KP^n$ where $\x_i(v)$ inserts $1$ at the $i$th index of $v$ (and takes the equivalence).
+    Its image is the set of classes of the form $[v]$ where $v_i\neq0$, let this be $U_i$.
+    Its inverse is $\x_i^{-1}\colon U_i\to\bK^n$ given by $\x_i^{-1}([v])=1/v^i\hat v^i$ where $\hat v^i$ denotes the removal of the $i$th index.
+
+    The maps $\x_{ij}$ then are
+    $$ \x_{ij}\colon\x^{-1}_i(U_j) \to U_i\times U_j,\qquad v \mapsto (v,\x_j^{-1}\circ\x_i(v)) . $$
+    $\x_j^{-1}\circ\x_i(v)$ is equal to $1/v^j(v_1,\dots,\hat v_j,\dots,v_{i-1},1,v_i,\dots,v_n)$ when $j<i$ (for $j>i$ the indices are ordered a bit differently; $\hat v_j$ denotes
+    the removal of $v_j$).
+    Now, $\x^{-1}_i(U_j)$ is the set of all $v\in\bK^n$ such that $\x_i(v)$'s $j$th index is nonzero, this is just the set of vectors in $\bK^n$ whose $j$th index is nonzero.
+    So $\x_{ij}$'s image is all $(v,u)$ such that $\x_i(v)=\x_j(u)$.
+    This occurs iff $(v_1,\dots,1,\dots,v_n)$ and $(u_1,\dots,1,\dots,u_n)$ are linearly dependent: $\lambda(v_1,\dots,1,\dots,v_n)=(u_1,\dots,1,\dots,u_n)$ for some $\lambda$.
+
+    Let us denote insertion of $1$ at index $i$ of $\y_i$, so $\x_{ij}$'s image is
+    $$ \im\x_{ij} = \set{(v,u)\in U_i\times U_j}[\lambda\y_i(v)=\y_j(u)\hbox{ for some $\lambda\in\bK$}] . $$
+    If $i<j$ then $\lambda$ must be $u_i$ so that the image is
+    $$ \set{(v,u)}[u_i\y_i(v)=\y_j(u)] $$
+    which is the preimage of zero of the continuous map $(v,u)\mapsto u_i\y_i(v)-\y_j(u)$.
+    Thus the image is closed.
+    Similar for $i>j$, and when $i=j$ the image is just the diagonal which is again closed.
+
+    We showed above that $\x_{\alpha\beta}$'s image being closed is enough to ensure the manifold being Hausdorff.
+\eenum
+
+\def\herm{{\rm Herm}}
+\bprob
+
+    Let $\mat_n(\bC)$ denote the space of $n\times n$ complex matrices.
+    Denote by $M^\dagger$ the conjugate transpose of $M\in\mat_n(\bC)$.
+    A matrix $M$ is {\emphcolor unitary} if $M^\dagger M=I$, and the group of unitary matrices is denoted $U_n$.
+    A matrix $M$ is {\emphcolor skew-Hermitian} if $M^\dagger=-M$, and denote by $\u_n$ the space of skew-Hermitian matrices.
+    We will show that $U_n$ is a Lie group and we can identify its Lie algebra with $\u_n$.
+
+    \benum
+        \item Let $\herm_n\subseteq\mat_n(\bC)$ be the space of Hermitian matrices $M=M^\dagger$.
+        Use the obvious maps $\bC^{n^2}\to\mat_n(\bC)$ and $\bC^{n(n-1)/2}\oplus\bR^n\to\herm_n$ to define smooth structures.
+        Define $F\colon\mat_n(\bC)\to\herm_n$ by $F(M)=M^\dagger M$.
+        Show that the identity $I$ is a regular point of $F$.
+
+        \item Use the invariance of $F$ under left multiplication by unitary matrices to show that all $U_n\subseteq\mat_n(\bC)$ are regular points
+        of $F$.
+
+        \item Conclude that $I\in\herm_n$ is a regular value of $F$, and thus $U_n$ is an embedded submanifold of $\mat_n(\bC)$ of dimension $n^2$.
+
+        \item Let $P\subseteq M$ and $Q\subseteq N$ be embedded submanifolds, and $F\colon M\to N$ smooth with $F(P)\subseteq Q$.
+        Show that $F|_P\colon P\to Q$ is smooth.
+
+        \item Show that multiplication $U_n\times U_n\to U_n$ and inversion $U_n\to U_n$ are smooth, and thus $U_n$ is a Lie group.
+
+        \item Let $\iota\colon U_n\to\bC^{n^2}$ be the inclusion map.
+        Show that the composition
+        $$ T_eU_n \xtos{d\iota_e} T_{\iota e}\bC^{n^2} \xtos\zeta \bC^{n^2} $$
+        induces an isomorphism of vector spaces between $T_eU_n$ and $\u_n$.
+    \eenum
+
+\eprob
+
+\benum
+    \item The map $\bC^{n(n-1)/2}\oplus\bR^n\to\herm_n$ is given by mapping $(z_i)\oplus(x_i)$ to the Hermitian matrix whose diagonal is given by the
+    $x_i$s, above the diagonal by $z_i$s, and below by $\conj z_i$s.
+    This is a real linear isomorphism, in particular a bijection, and thus induces a smooth structure.
+    Let $\Phi\colon\bC^{n^2}\to\mat_n(\bC)$ be the obvious isomorphism and $\Psi\colon\herm_n\to\bC^{n(n-1)/2}\oplus\bR^n$ the inverse of the above bijection.
+
+    Then the coordinate representation of $F$ maps $M\in\bC^{n^2}$ to the upper triangle of $M^\dagger M$ and its diagonal.
+    We have that
+    $$ (M^\dagger M)_{ij} = \sum_t\cong M_{ti}M_{tj} , $$
+    and each of these coordinates is smooth over $\bR$ (complex multiplication is smooth, and so is conjugation as it just the map $(x,y)\mapsto(x,-y)$).
+    Thus all of $F$'s coordinates are smooth, and so $F$ is.
+
+    \item For a unitary matrix $U$, we have that
+    $$ F(UM) = M^\dagger U^\dagger UM = M^\dagger M = F(M) , $$
+    and since the action of matrix multiplication in $\mat_n(\bC)$ is a smooth action by $\gl_n(\bC)$, we have that left multiplication by $U\in U_n\subseteq\gl_n(\bC)$
+    is a diffeomorphism of $\mat_n(\bC)$.
+    Thus (denoting left multiplication under $U$ by $U$), we have that for all $M\in\mat_n(\bC)$,
+    $$ d(F\circ U)_M = dF_{UM}\circ dU_M = dF_M . $$
+    Since $U$ is a diffeomorphism and thus of full rank, $dF_{UM}$ and $dF_M$ must have the same rank for all $U\in U_n,M\in\mat_n(\bC)$.
+    In particular if $U,Q$ are unitary then so is $UQ^{-1}$, and thus $dF_{UQ^{-1}Q}=dF_U$ and $dF_Q$ have the same rank.
+
+    In particular, $I$ is unitary and so for $U\in U_n$, $dF_U$ and $dF_I$ have the same rank, which we showed is full.
+    Thus every $U\in U_n$ is a regular point of $F$.
+
+    \item $I\in\herm_n$'s level set consists of all unitary matrices, which are all regular points.
+    Thus $I$ is a regular value, and its level set $U_n$ is an embedded submanifold of $\mat_n(\bC)$.
+    $F$'s rank at $U\in U_n$ is full, thus equal to $\dim\bC^{n(n-1)/2}\oplus\bR^n=n(n-1)+n=n^2$.
+    This means $U_n$'s codimension is $n^2$, and thus its dimension is $2n^2-n^2=n^2$.
+
+    \item Since $P\subseteq M$ is a submanifold, the inclusion $\iota_P\colon P\inj M$ is smooth.
+    $F|_P\colon P\to M$ is just $F\circ\iota_P$ and thus is smooth.
+
+    Now we want to show that we can restrict the codomain.
+    Let $F'$ denote the restriction on the codomain $F'=F|_P\colon P\to Q$; we note that it is still continuous.
+    Since $\iota_Q\colon Q\inj N$ is a smooth embedding, and $\iota_Q\circ F'=F$.
+    Since $\iota_Q$ is in particular a smooth immersion and thus of constant rank, at every point of $Q$ there is a chart $(U,\psi)$
+    and a chart $(V,\tilde\psi)$ of $N$ such that $U\subseteq V$, and the coordinate representation is of the form
+    $$ \tilde\psi^{-1}\circ\iota_Q\circ\psi\colon \bar x\mapsto(\bar x,0) . $$
+    If we denote by $\pi$ the projection $(\bar x,\bar y)\mapsto\bar x$ we see that
+    $$ \pi\circ\tilde\psi^{-1}\circ\iota_Q\circ\psi = \id \implies \psi^{-1} = \pi\circ\tilde\psi^{-1}\circ\iota_Q . $$
+
+    Then for $p\in P$ we can choose coordinate charts $\psi\subseteq Q$ and $\tilde\psi\subseteq N$ such that $F(p)$ is in $\psi$ (and thus $\tilde\psi$'s) domain.
+    We then choose a coordinate chart $\phi\subseteq P$ around $p$ which is mapped by $F'$ into $\psi$'s domain (since $F'$ is continuous, its preimage of $\psi$'s
+    domain is open).
+    Then $F'$'s coordinate representation is
+    $$ \psi^{-1}\circ F'\circ\phi = \pi\circ\tilde\psi^{-1}\circ\iota_Q\circ F'\circ\phi = \pi\circ(\tilde\psi^{-1}\circ F\circ\phi) . $$
+    Since $F$ is smooth, $\tilde\psi^{-1}\circ F\circ\phi$ is smooth, and the projection $\pi$ is smooth as well.
+    Thus $\psi^{-1}\circ F'\circ\phi$ is smooth, meaning $F'$ has a smooth coordinate representation in some neighborhood of any point $p\in P$, so $F'$ is smooth
+    as desired.
+
+    \item $\gl_n(\bC)\subseteq\mat_n(\bC)$ and $U_n\subseteq\mat_n(\bC)$ are embedded submanifolds.
+    This means that $U_n$ is an embedded submanifold of $\gl_n(\bC)$: its inclusion in $\mat_n(\bC)$ is the composition of inclusions $U_n\inj\gl_n(\bC)\inj\mat_n(\bC)$.
+    This composition is a smooth immersion, and thus the first inclusion $U_n\inj\gl_n(\bC)$ must be a smooth immersion as well; thus $U_n\subseteq\gl_n(\bC)$ is
+    embedded.
+    Thus we can restrict multiplication and inversion of $\gl_n(\bC)$ to give the multiplication and inversion of $U_n$, and these remain smooth.
+
+    \item The dimension of $\u_n$ is $n^2$, as a skew-Hermitian matrix is determined by the imaginary values on its diagonal, and its complex upper triangle.
+    That is, there is an obvious isomorphism between it and $\bC^{n(n-1)/2}\oplus(i\bR)^n$, which has dimension $n^2$.
+    Thus $T_eU_n$ and $\u_n\subseteq\bC^{n^2}$ have the same dimension.
+    Since $\iota\colon U_n\to\mat_n(\bC)$ is a smooth immersion, $d\iota_e$ is injective.
+    Thus we need only show that the composition lands in $\u_n$, as then we have an injective map $T_eU_n\to\u_n$ and since they are of the same dimension, it must be an isomorphism.
+
+    Let $\gamma\colon(-\epsilon,\epsilon)\to U_n$ be smooth and centered at $I$, then $\iota\circ\gamma$ is a smooth curve which lands in $U_n\subseteq\mat_n(\bC)$.
+    Identify $\gamma$ with $\iota\circ\gamma$; we want to show that if $\gamma(t)\in U_n$ for all $t$ then $\gamma'(0)\in\u_n$.
+    Notice that the Hermitian tranpose is smooth (over $\bR$) whose differential is itself.
+    Since $\gamma(t)\gamma(t)^\dagger=I$, differentiating both sides at zero gives
+    $$ 0 = \gamma(0)\gamma'(0)^\dagger + \gamma'(0)\gamma(0)^\dagger = \gamma'(0)^\dagger + \gamma'(0) , $$
+    meaning $\gamma'(0)$ is indeed skew-Hermitian, as desired.
+\eenum
+
+\bprob
+
+    For $M=\bR^n$, let $r\colon M\to M$ be a smooth retraction, meaning $r\circ r=r$.
+    \benum
+        \item Let $f\colon\bR^n\to\bR^n$ be smooth with a differential of constant rank $k$.
+        Show that there is a coordinate frame $0\in(U,\x)$ on $\bR^n$ such that
+        $$ f\circ\x(x_1,\dots,x_n) = f\circ\x(x_1,\dots,x_k,0,\dots,0) . $$
+
+        \item Let $T\subseteq\bR^n$ be connected and for $t\in T$ define $A(t)\colon\bR^n\to\bR^n$ so that $t\mapsto A(t)$ is continuous.
+        Further suppose that $A(t)$ is a projection for all $t$, $A(t)^2=A(t)$.
+        Show that the rank of the matrix $A(t)$ must be constant.
+
+        \item Show that there is a neighborhood $Q$ of $\im r$ such that $dr_q$ has constant rank for $q\in Q$.
+
+        \item Show that for each $q\in\im r$ there is a coordinate system $(U,\x)$ on $M$ centered at $q$ such that $r(\x(U))\subseteq\x(U)$ and
+        $$ r\circ\x(x_1,\dots,x_n) = r\circ\x(x_1,\dots,x_k,0,\dots,0) . $$
+
+        \item Show that $r(M)\cap\x(U)=r(\x(U))\cap\x(U)$
+
+        \item Show that $r(M)$ is an embedded submanifold.
+    \eenum
+
+\eprop
+
+\benum
+    \item This proof is essentially the same as that of the first part of the rank theorem.
+    Let us write $F(x,y)=(Q(x,y),R(x,y))$ for $Q\colon\bR^n\to\bR^k$ and $R\colon\bR^n\to\bR^{n-k}$.
+    Then $F$'s Jacobian is
+    $$ JF = \pmatrix{\pdvof{Q^i}{x^j} & \pdvof{Q^i}{y^j}\cr \pdvof{R^i}{x^j} & \pdvof{R^i}{y^j}} . $$
+    Since it has rank $k$, it has a $k\times k$ invertible submatrix, which we can assume without loss of generality is the upper left.
+    We can assume this via a change of coordinates, and noting that by continuity if a submatrix has nonzero determinant, it has nonzero determinant in an open
+    neighborhood of the point.
+
+    Let us then define $\phi\colon\bR^n\to\bR^n$ by $\phi(x,y)=(Q(x,y),y)$.
+    Its Jacobian is
+    $$ J\phi = \pmatrix{\pdvof{Q^i}{x^j}&\pdvof{Q^i}{y^j}\cr 0 & \delta_{ij}} , $$
+    which is invertible (in the appropriate neighborhood).
+    Thus by the inverse function theorem has an inverse $\phi^{-1}(x,y)=(\tilde Q(x,y),\tilde R(x,y))$, and we see then that comparing $\phi\circ\phi^{-1},\phi^{-1}\circ\phi$
+    with the identity, we have $\tilde R(x,y)=y$ and that $Q(\tilde Q(x,y),y)=x$ and $\tilde Q(Q(x,y),y)=x$.
+
+    Now consider $F\circ\phi^{-1}$, which is equal to
+    $$ F\circ\phi^{-1}(x,y) = (x,R(\tilde Q(x,y),y)) = (x,A(x,y)) $$
+    and has Jacobian
+    $$ J(F\circ\phi^{-1})(x,y) = \pmatrix{\delta_{ij} & 0 \cr \pdvof{A^i}{x^j} & \pdvof{A^i}{y^j}} . $$
+    $\phi^{-1}$ is a diffeomorphism and thus the rank of this Jacobian is still $k$.
+    Since the first $k$ columns are linearly independent, this means that the remaining $n-k$ must be $0$.
+    That is, each $A^i$ is independent of $y$, since its partial derivatives with respect to each $y^j$ is zero (in other words, $A(x,\bul)$ is constant).
+    So $A(x,y)=A(x,0)$ and thus
+    $$ F\circ\phi^{-1}(x,y) = (x,A(x,y)) = (x,A(x,0)) = F\circ\phi^{-1}(x,0) , $$
+    so $\phi^{-1}$ defines the desired chart.
+
+    \item Notice that for a projection $P$, its rank is just its trace.
+    This is because if it projects onto $V$ parallel to $W$, taking bases of $V$ and $W$, $P$'s representation relative to the union of this base
+    is $\diag(1,\dots,1,0,\dots,0)$, whose trace is its rank.
+    Trace is a continuous function $\mat_n(\bR)\to\bR$, and thus the rank of $A(t)$ depends continuously on $t$.
+    The set of ranks of $A(t)$ is a set of integers, which is disconnected when not a singleton.
+    The set of ranks is the continuous image of $T\to A(t)\to\trace A(t)$ and since $T$ is connected, so must the set of traces be, thus it is a singleton, as desired.
+
+    \item For $q\in\im r$, we have that since $r\circ r=r$,
+    $$ dr_q = d(r\circ r)_q = dr_{rq}\circ dr_q = dr_q\circ dr_q . $$
+    Thus $dr_q$ is a projection, and the map $q\to dr_q$ is continuous so that by above $dr_q$'s rank is constant (since $\im r$ is the continuous image of a connected space).
+    Let this constant rank be $k$, then note it is also $r$'s maximum rank: for all $q\in M$ we have that $dr_q=dr_{rq}\circ dr_q$, and since composition does not increase rank,
+    $dr_q$'s rank is bound by $dr_{rq}=k$.
+
+    Let $Q$ be the set of all points $q\in M$ where $dr_q$'s rank is equal to $k$.
+    This contains $\im r$ as already shown, but it is also open.
+    Indeed, for $q\in Q$, $dr_q$ has rank $k$ and in a suitable neighborhood of $q$ the rank of $r$ remains $k$.
+
+    This is because we can look at $dr$'s matrix representation relative to open charts around $q$ and $rq$ (i.e.\ the Jacobian of $r$'s coordinate representation).
+    Since $dr_q$ has rank $k$, the matrix has an invertible $k\times k$ submatrix.
+    Consider then the function which maps a point $p$ (which lies in the chart around $q$) to the determinant of this $k\times k$ submatrix of $dr_p$.
+    If a point $p$ is mapped to a nonzero value, then this $k\times k$ submatrix of $dr_p$ is invertible thus $dr$ has rank $\geq k$ at $p$; since $k$ is the maximal rank, $dr_p$'s
+    rank is equal to $k$.
+    So the preimage of the open set $\bR-0$ is a neighborhood of $p$ contained in $Q$, so $Q$ is open.
+
+    \item Our first point only required that $F$ have constant rank in a neighborhood, which is true here (the neighborhood is $Q$).
+    Thus there is $(\x,U)$ with the desired property, but not necessarily $r(\x(U))\subseteq\x(U)$.
+
+    We want $r(\x(u))\in\x(U)$ for all $u\in U$, i.e.\ that $u\in(r\circ\x)^{-1}(\x(U))$, which is open.
+    Thus intersecting $(r\circ\x)^{-1}(\x(U))$ with $U$ and restricting $\x$ gives us the property.
+    Indeed,
+    $$ r(\x((r\circ\x)^{-1}(\x(U))\cap U)) \subseteq r(\x(U))\cap\x(U) = \x((r\circ\x)^{-1}(\x(U))\cap U) . $$
+
+    \item Clearly we have that $r(M)\cap\x(U)\subseteq r(\x(U))\cap\x(U)$.
+    Conversely if $r(p)\in\x(U)$ then $r(p)=r(r(p))\in r(\x(U))$, as desired.
+    Since $r(\x(U))\subseteq\x(U)$, we have that $r(M)\cap\x(U)=r(\x(U))$ even.
+
+    \item Consider a chart $(U,\x)$ as above, then we can make $r(M)\cap\x(U)=r(\x(U))$ an embedded $k$-manifold.
+    Indeed, consider the projection $\pi\colon\bR^n\to\bR^k$ and inclusion by concatenating zeroes, $\iota\colon\bR^k\to\bR^n$.
+    So we have $r\circ\x=r\circ\x\circ\iota\circ\pi$ by assumption.
+    Define the chart $(U',\y)$ with $U'=\pi(U)\subseteq\bR^k$ by $\y=r\circ\x\circ\iota$, i.e.\ $\y(x)=r\circ\x(x,0)$.
+    This is surjective by construction.
+    Now, we know that from our first point, $r\circ\x(x,y)=(x,R(x))$ for some function $R\colon\bR^n\to\bR^{n-k}$.
+    Thus $\y$ has the form $x\mapsto(x,R(x))$ and is thus clearly injective.
+    Its inverse is $(x,y)\mapsto x$, which is clearly smooth thus $\y$ is a diffeomorphism.
+
+    It remains to show that $\y(U')$ is open in $r(M)$.
+    Notice that since $r\circ\x(x,0)=r\circ\x(x,y)$,
+    $$ \y(U') = \set{r\circ\x(x,0)}[x\in U'] = \set{r\circ\x(x,y)}[(x,y)\in U] = r(\x(U)) = r(M)\cap\x(U), $$
+    which is open in the subspace topology.
+    And for $\y_1$ and $\y_2$ corresponding to $\x_1,\x_2$, we note that $\y_1^{-1}\circ\y_2$ is just the identity.
+    As we said, $\y$ has the form $x\mapsto(x,R(x))$ with inverse $(x,y)\mapsto x$, so $\y_1^{-1}\circ\y_2$ maps $x$ to $x$, so this does define a smooth atlas on $r(M)$.
+
+    To show that $r(M)\subseteq M$ is a submanifold, we need to show that the inclusion is an immersion.
+    Let $\iota\colon r(M)\inj M$ be the inclusion, then relative to $(U,\x)$ and $(U',\y)$ (since $\y(U')\subseteq\x(U)$) it is equal to
+    $$ \x^{-1}\circ\iota\circ\y(x) = \x^{-1}\circ r\circ\x(x,0) , $$
+    which is smooth and has constant rank $k$ since $r$ is and does, and $U'$'s dimension is $k$ so this is indeed a smooth immersion.
+    Since $r(M)$ has the subspace topology, the inclusion is a smooth embedding, as desired.
+\eenum
+
+\bprob
+
+    Consider the unit sphere $S^n\subseteq\bR^{n+1}$.
+    Let $A\colon S^n\to S^n$ be the antipodal map $p\mapsto-p$.
+    Using any oriented atlas of $S^n$, show that $A$ is orientation preserving iff $n$ is odd.
+
+\eprob
+
+Consider the stereographic projections at $e_1$ and $-e_1$, denoted by $\phi_+$ and $\phi_-$, $S^n-\set{\pm e_1}\to\bR^n$.
+These map
+$$ \phi_+(x_0,\dots,x_n) = \frac1{1-x_0}(x_1,\dots,x_n),\qquad \phi_-(x_0,\dots,x_n) = \frac1{1+x_0}(x_1,\dots,x_n) . $$
+These are restrictions of the obviously smooth maps $\set{x\in\bR^{n+1}}[x_0\neq\pm1]\to\bR^n$, and since $S^n$ is a submanifold, the restrictions are smooth as well.
+For $(X_1,\dots,X_n)\in\bR^n$, let $N^2=\norm{\bar X}^2=\sum_iX_i^2$, then their inverses are given by
+$$ \phi_+^{-1}(X_1,\dots,X_n) = \frac1{N^2+1}(N^2-1,2X_1,\dots,2X_n),\qquad \phi_-^{-1}(X_1,\dots,X_n) = \frac1{N^2+1}(1-N^2,2X_1,\dots,2X_n) . $$
+These again are smooth, as the restrictions of the obviously smooth maps $\bR^n\to\bR^{n+1}$, and again we can restrict the codomain to $S^n$ since it is a submanifold.
+
+The transition map is
+$$ \phi_-\circ\phi_+^{-1}(X) = \frac{X}{\norm X^2} , $$
+and its Jacobian can be computed:
+$$ J_{ij} = \cases{-\frac{2X_ix_j}{\norm X^4} & $i\neq j$\cr \frac{\norm X^2-2X_i^2}{\norm X^4} & $i=j$} . $$
+This has negative determinant: for $X=(1,0,\dots,0)$ it is $\diag(-1,1,\dots,1)$.
+
+In lecture we showed that this means we can replace $\phi_-$ with $r\circ\phi_-$ where $r$ is the map which flips the sign of the first coordinate, and obtain an oriented
+atlas.
+For the antipodal map $A$, notice that $\phi_-=A\circ\phi_+\circ A$, and thus $A$'s coordinate representation is
+$$ r\circ\phi_-\circ A\circ\phi_+^{-1} = r\circ A\circ\phi_+\circ\phi_+^{-1} = r\circ A, $$
+since $A^2=\id$.
+This is the map $X\mapsto(X_1,-X_2,\dots,-X_n)$, whose Jacobian is $\diag(1,-1,\dots,-1)$ which has determinant $(-1)^{n-1}$.
+This is positive only when $n$ is odd, as desired.
+For $\phi_+\circ A\circ\phi_-^{-1}$ we get the same result by symmetry.
+
+\bprob
+
+    Let $S^{2n+1}$ be the unit sphere in $\bC^{n+1}$.
+    Define an action of $S^1$ on $S^{2n+1}$ by
+    $$ z(w^1,\dots,w^{n+1}) = (zw^1,\dots,zw^{n+1}) . $$
+    \benum
+        \item Show that this action is smooth.
+        \item Show that this action is free and proper, and that the orbit space $S^{2n+1}/S^1$ is diffeomorphic to $\CP^n$.
+    \eenum
+
+\eprob
+
+\benum
+    \item This action is just the restriction to $S^1\times S^{2n+1}\to S^{n+1}$ of the map $\bC\times\bC^{n+1}\to\bC^{n+1}$ given by scalar multiplication:
+    $$ z(w^1,\dots,w^{n+1}) = (zw^1,\dots,zw^{n+1}) . $$
+    This is a smooth map, and $S^1\subseteq\bC$ and $S^{2n+1}\subseteq\bC^{n+1}$ are embedded submanifolds, thus the restriction of scalar multiplication to
+    $S^1\times S^{2n+1}\to S^{2n+1}$ remains smooth, by our above proof.
+
+    \item The action is free since if $z(w^1,\dots,w^{n+1})=(w^1,\dots,w^{n+1})$ then since $w$ is a point in $S^{2n+1}$ it must have some nonzero coordinate, say
+    $w^i$.
+    Then $zw^i=w^i$ implies that $z=1$.
+
+    The action is proper since $S^1$ is compact.
+    Since if $(z_i)$ is any sequence in $S^1$, it has a convergent subsequence by virtue of $S^1$ being compact (without even considering a sequence $(w_i)$ of $S^{2n+1}$).
+
+    Consider the quotient map $\pi\colon\bC^{n+1}-0\to\CP^n$ mapping $w$ to the linear subspace spanned by it, $\pi(w)=[w]$.
+    Since $S^{2n+1}\subseteq\bC^{n+1}-0$ is an embedded submanifold, we can restrict this to $\pi\colon S^{2n+1}\to\CP^n$.
+    Define $S^1$ to act on $\CP^n$ trivially: $z[v]=[v]$ for all $[v]\in\CP^n$.
+    Then $\pi$ is $S^1$-equivariant, since $\pi(zw)=[zw]=[w]=z[w]$, and thus has constant rank.
+    Furthermore, $\pi$ is surjective (any vector can be normalized), and thus it must be a smooth submersion.
+    This is because locally $\pi$ has the coordinate representation $(x_1,\dots,x_n)\to(x_1,\dots,x_k,0,\dots,0)$ which is a surjection only when the rank $k$ is full.
+
+    And also because $\pi$ is $S^1$-equivariant, it quotients to $\pi/S^1\colon S^{2n+1}/S^1\to\CP^n$ given by $S^1\cdot w\mapsto\pi(w)$.
+    Notice that the following diagram commutes:
+
+    \centerline{\drawdiagram{
+        &$S^{2n+1}/S^1$\cr
+        $S^{2n+1}$&&$\CP^n$
+    }{
+        \diagarrow{from={2,1}, to={1,2}, text=$\pi_1$, x distance=-.3cm}
+        \diagarrow{from={2,1}, to={2,3}, text=$\pi$, y distance=.25cm}
+        \diagarrow{from={1,2}, to={2,3}, text=$\pi/S^1$, x distance=.6cm}
+    }}
+
+    where $\pi_1$ is the covering map of the quotient manifold.
+    Since $\pi=(\pi/S^1)\circ\pi_1$ is a submersion, we have that $\pi/S^1$ must be a submersion as well: for any $w\in S^{2n+1}$ we have that
+    $$ d\pi_w = d(\pi/S^1)_{\pi_1(w)}\circ d(\pi_1)_w $$
+    is surjective, and thus so too must $d(\pi/S^1)_{\pi_1(w)}$.
+    Since $\pi_1$ is surjective, this means $\pi/S^1$ is a submersion.
+
+    But $\pi/S^1$ is also bijective: as the quotient of the surjective $\pi$, it remains surjective.
+    And if $\pi(w)=\pi(u)$ then $w=zu$ for some $z\in\bC$, and since both $w,u$ have norm $1$ this means $z\in S^1$.
+    Thus $S^1\cdot w=S^1\cdot u$ so that $\pi/S^1$ is injective.
+    A bijective submersion is a diffeomorphism (it has the local representation $(x_1,\dots,x_n)\mapsto(x_1,\dots,x_k)$ and since it is bijective we must have that $n=k$, so that
+    it is a local diffeomorphism, and bijective local diffeomorphisms are global diffeomorphisms).
+
+    So we have shown that $\pi/S^1\colon S^{2n+1}/S^1\to\CP^n$ is a diffeomorphism, as desired.
+\eenum
+
+
+
+

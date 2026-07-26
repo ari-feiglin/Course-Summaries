@@ -1,0 +1,354 @@
+\bprob
+
+    Let $M=G_K(k,n)$ be the Grassmanian, and for $V\in G_K(k,n)$ and a chart $(U_{V,W},\x_{V,W})$ consider the induced
+    bijection $\bar\x_{V,W}\colon T_VM\to\bR^{k(n-k)}\cong\hom(V,W)$.
+    Consider the isomorphism $f_{V,W}\colon\hom(V,W)\to\hom(V,K^n/V)$, and the composition
+    $$ T_VM \xtos{\bar\x_{V,W}} \hom(V,W) \xtos{f_{V,W}} \hom(V,K^n/V) . $$
+    Show that this composition is independent of $W$, giving a canonical isomorphism $T_VM\cong\hom(V,K^n/V)$.
+
+\eprob
+
+Let $W,W'$ be two complementary subspaces of $V$.
+Then the projection $\pi_W\colon K^n\to W$ parallel to $V$ restricts to an isomorphism $\pi_W|_{W'}\colon W'\cong W$.
+Choose a basis $\set{w'_i}_i$ for $W'$, and then $w_i=\pi_W(w'_i)$ is a basis for $W$, and also choose a basis
+$\set{v_j}$ for $V$.
+Then we have bases $E_{ij},E'_{ij}$ for $\hom(V,W),\hom(V,W')$ respectively mapping $v_j$ to $w_i,w'_i$ respectively.
+
+Now let $\gamma_{ij},\gamma'_{ij}$ be the bases for $T_VM$ corresponding to $E_{ij},E'_{ij}$; i.e.\ the preimages
+of these under $\bar\x_{V,W}$ and $\bar\x_{V,W'}$.
+If we let $T=\x^{-1}_{V,W'}\circ\x_{V,W}$ be the transition function, we know that $\gamma_{ij},\gamma'_{ij}$ are
+related via the Jacobian of $T$:
+$$ \gamma'_{ij} = \sum_{t,\ell} \pdvof{T^{t,\ell}}{x^{i,j}}(0)\cdot\gamma_{t,\ell} . $$
+From our previous problem set, we know that relative to the bases chosen,
+$$ TX = (P^1_W + P^2_WX)\cdot(P^1_V + P^2_VX)^{-1} $$
+where
+$$ P^1_W = (\pi_W)^V_W = 0,\quad P^2_W = (\pi_W)^{W'}_W = I,\quad P^1_V = (\pi_V)^V_V = I,\quad P^2_V = (\pi_V)^{W'}_V = 0
+$$
+and so we have that
+$$ TX = X , $$
+meaning its Jacobian is the identity, so that
+$$ \gamma'_{ij} = \gamma_{ij} . $$
+
+Since the composition is linear, we need only check how it acts on the basis vectors $\gamma_{ij}$.
+By definition, we have that
+$$ f_{V,W}\circ\bar x_{V,W}(\gamma_{ij}) = \iota_W\circ E_{ij},\qquad f_{V,W'}\circ\bar x_{V,W'}(\gamma_{ij}) =
+\iota_{W'}\circ E'_{ij} , $$
+where $\iota_W\colon W\to K^n/V$ is the isomorphism $\iota_W(w)=w+V$.
+The lefthand side maps $v_i$ to $w_j+V$, and the righthand side maps $v_i$ to $w'_j+V$.
+These cosets are equal since $\pi_W(w_j-w'_j)=w_j-\pi_W(w'_j)=w_j-w_j=0$, and the kernel of $\pi_W$ is $V$.
+Thus the composition is indeed independent of choice of $W$.
+
+\bprob
+
+    Let $f\colon N\to M$ be smooth, and define the {\emphcolor global differential}
+    $$ df\colon TN\to TM , $$
+    whose component on $T_pN$ is $df_p\colon T_pN\to T_{fp}M\subseteq TM$.
+    Show that the global differential is smooth.
+
+\eprob
+
+Let $n=\dim N,m=\dim M$.
+We have smooth atlases of $TN$ by charts $(U\times\bR^n,\bar\phi)$ where $(U,\phi)$ is a chart for $N$ and
+$\bar\phi$ is defined via
+$$ \bar\phi(\bar x,\bar v) = \parens{\phi(\bar x),\ \hat\phi_{\bar x}(\bar v)} $$
+where $\hat\phi_{\bar x}(\bar v)$ is the curve $t\mapsto\phi(\bar x+t\bar v)$.
+Its inverse is the map
+$$ \bar\phi^{-1}(p,\gamma) = (\phi^{-1}(p),\tilde\phi_p(\gamma)) , $$
+where $\tilde\phi_p(\gamma)=(\phi^{-1}\circ\gamma)'(0)$.
+
+So for a chart $(U,\phi)$ of $N$ and $(V,\psi)$ of $M$, we have that the coordinate representation of $df$ is
+$$ \eqalign{
+    \bar\psi^{-1}\circ df\circ\bar\phi(\bar x,\bar v) &= \bar\psi^{-1}\circ df(\phi(\bar x),\hat\phi_{\bar x}(\bar v))\cr
+        &= \bar\psi^{-1}(f\phi(\bar x),f\circ\hat\phi_{\bar x}(\bar v))\cr
+        &= (\psi^{-1}\circ f\circ\phi(\bar x), \tilde\psi(f\circ\phi_{\bar x}(\bar v)))
+} $$
+The first coordinate is smooth, since $f$ is.
+The second coordinate is the map
+$$ (\bar x,\bar v) \mapsto (\psi^{-1}\circ f\circ\phi(\bar x+t\bar v))'(0) . $$
+If we let $\hat f=\psi^{-1}\circ f\circ\phi$ be $f$'s coordinate representation, then we can rewrite it as
+$$ (\bar x,\bar v) \mapsto (\hat f(\bar x+t\bar v))'(0) = J\hat f(\bar x)\bar v , $$
+which is smooth as well (since $\hat f$ is smooth, its Jacobian is).
+
+\bprob
+
+    Let $\RP^n$ be the real projective space.
+    \benum
+        \item Define $f\colon\RP^n\to\mat_{n+1}(\bR)$ by $f_{ij}(x)=x_ix_j/\sum_kx_k^2$.
+        Show that $f$ defines a smooth embedding, whose image is all symmetric matrices $A$ of trace $1$ where $A^2=A$.
+        \item Show that $\RP^n$ is compact.
+    \eenum
+
+\eprob
+
+\benum
+    \item We can write $f$ as $f(x)=xx^\top/x^\top x$; this is clearly well-defined.
+    We first demonstrate that $f$ is smooth: we consider the atlas of $\RP^n$ whose charts are
+    $(\bR^n-0,\phi_i\colon\bR^n\to U_i)$ where $U_i\subseteq\RP^n$ is the set of $[x]$ where $x_i\neq0$, and
+    $$ \phi_i(u) = [u_1,\dots,1,\dots,u_n],\qquad\hbox{$1$ is inserted in the $i$th index}, $$
+    with inverse
+    $$ \phi_i^{-1}(x) = 1/x_i(x_1,\dots,\hat x_i,\dots,x_n) . $$
+
+    Then $f$'s coordinate representation is $\hat f=f\circ\phi_i$:
+    $$ \hat f(u) = \frac{\phi_i(u)\cdot\phi_i(u)^\top}{u^\top u+1} , $$
+    viewing $\phi_i$ as the map $\bR^n\to\bR^{n+1}$ which inserts $1$ at the $i$th index.
+    This is smooth: $\phi_i$ is smooth, the inner product is smooth, and $u^\top u+1\neq0$.
+    Thus $f$ is smooth.
+
+    To show that $f$ is a smooth embedding, we need to show that $f$ is a smooth immersion, i.e.\ that its differential
+    has full rank.
+    By reordering indices, we can focus on $f$'s coordinate representation for $i=n+1$.
+    Then $\hat f^{ij}$ is the map $\hat f^{ij}\colon\bR^n\to\bR$ mapping $u$ to $u_iu_j/(u^\top u+1)$ where $u_{n+1}=1$.
+    Let us focus on when $j=n+1$, letting $\hat f^i=\hat f^{i,n+1}$, which maps
+    $$ \hat f^i(u) = \frac{u_i}{u^\top u+1} . $$
+    Its partial derivatives are
+    $$ \pdvof{\hat f^i}{x_i}(u) = \frac{u^\top u+1-2u_i^2}{(u^\top u+1)^2},\qquad
+    \pdvof{\hat f^i}{x_j}(u) = \frac{-2u_iu_j}{(u^\top u+1)^2} . $$
+    So the submatrix of the Jacobian corresponding to $\hat f^1,\dots,\hat f^n$ is
+    $$ \frac1{u^\top u+1}\parens{I - \frac2{u^\top u+1}U}, $$
+    where $U_{ij}=u_iu_j$.
+    This means that $v$ is in its nullspace iff $Uv=\frac{u^\top u+1}2v$.
+    Now, $U$ is symmetric and $U^2=\trace(U)U$, since $\trace(U)=u^\top u$, this means $U$ is unitarily diagonalizable
+    with eigenvalues $0,\trace(U)$.
+    This means that
+    $$ \trace(U) = \frac{\trace(U)+1}2 \implies \trace(U) = 1 , $$
+    so when $u^\top u\neq1$, this matrix is invertible and thus $f$ has full rank.
+
+    When $i=n+1$, we have the map $\hat f^{n+1}(u)=1/(u^\top u+1)$ whose derivatives are
+    $$ \pdvof{\hat f^{n+1}}{x_i}(u) = \frac{-2u_i}{u^\top u+1} . $$
+    In the problematic region of norm $1$, this is equal to $-u_i$.
+    Let $j$ be an index where $u_j\neq0$, and consider the minor of the Jacobian where we replace the $j$th column of the
+    matrix above ($1/2(I-U/2)$) with the gradient computed above, $-u$.
+    If this were singular then $u$ could be written as a linear span of the columns of $I-U/2$, without the $j$th, so
+    $$ u = \sum_{i\neq j}\alpha_ie_i-\frac{\alpha_iu_i}2u \implies
+    \parens{1+\sum_{i\neq j}\frac{\alpha_iu_i}2}u = \sum_{i\neq j}\alpha_ie_i . $$
+    But the $j$th component of the right-hand side is zero, and $u_j\neq0$, which means that both sides must be equal to zero.
+    Thus all $\alpha_i=0$ since the $e_i$s are linearly independent.
+    Thus the Jacobian is invertible, and $f$ is a smooth immersion.
+
+    We now show that $f$'s image consists of all symmetric involutions of trace $1$.
+    Firstly clearly $f$'s image is contained in this: $f(x)$ is clearly symmetric, and has trace $1$, and
+    $$ f(x)^2_{ij} = \sum_t f_{it}(x)f_{tj}(x) = \frac1{(x^\top x)^2}\sum_t x_ix_t^2x_j = f_{ij}(x) , $$
+    as desired.
+    Let $A$ be such a matrix, then since $A$ is symmetric, it is unitarily diagonalizable.
+    Furthermore since $A^2=A$, its eigenvalues are either $1$ or $0$; since its trace is $1$, the multiplicity of $1$ must
+    be one.
+    Thus its diagonal form is $\diag(1,0,\dots,0)$.
+    Thus there exists a unitary matrix $P$ such that
+    $$ P^\top AP = \pmatrix{1\cr &0\cr &&\ddots\cr &&&0} = f(e) , $$
+    where $e=(1,0,\dots,0)$ is the first standard basis vector.
+    Thus
+    $$ A = Pf(e)P^\top = \frac{Pee^\top P^\top}{e^\top e} = \frac{(Pe)(Pe)^\top}{(Pe)^\top(Pe)} = f(Pe) , $$
+    so that this is indeed $f$'s image.
+
+    $f$ is also injective.
+    We note that every class in $\RP^n$ has a representative of the form $Pe$ where $P$ is unitary and $e$ is the first
+    standard basis vector: this is simply because every nonzero vector of norm $1$ can be extended to an orthonormal basis,
+    and the matrix which represents this basis has the vector as its first column.
+    We showed above that when $f(Pe)=A$,
+    $$ P^\top AP = \diag(1,0,\dots,0) , $$
+    which means that $P$ is a matrix of eigenvectors of $A$, in particular $P$'s first column, $Pe$, is $A$'s eigenvector with
+    eigenvalue $1$.
+    So if $f(Pe)=f(Qe)=A$, then $Pe$ and $Qe$ are both eigenvectors with eigenvalue $1$ of $A$, and since this eigenspace has
+    dimension $1$, $Pe$ and $Qe$ span the same subspace, i.e.\ are equal in $\RP^n$.
+
+    Now for two matrices $A$ and $B$ in $\im f$, their distance squared is
+    $$ d(A,B)^2 = \norm{A-B}^2 = \trace((A-B)^\top(A-B)) = \trace((A-B)(A-B)) = \trace(A-AB-BA+B) = 2 - 2\trace(AB) . $$
+    If $A=f[x]$ and $B=f[y]$ where $x,y$ are representatives of norm $1$, then
+    $$ \norm{A-B}^2 = 2 - 2\trace(xx^\top yy^\top) = 2 - 2(x^\top y)\trace(xy^\top) = 2 - 2(x^\top y)^2 , $$
+    and the distance squared of $x$ and $y$ is
+    $$ d(x,y)^2 = \norm{x-y}^2 = (x-y)^\top(x-y) = 2 - 2x^\top y . $$
+    We want to show that $f$ is an open map onto its image: for $U\subseteq\RP^n$ open, $f(U)\subseteq\im f$ is open.
+    $U$ is open when $\pi^{-1}U\subseteq\bR^{n+1}-0$ is open where $\pi\colon\bR^{n+1}-0\to\RP^n$ is the projection map.
+    For $[x]\in U$ with $x$ of norm $1$, let $\epsilon>0$ be a radius such that $B_\epsilon(x)\subseteq\pi^{-1}U$.
+    Now for another $[y]\in\RP^n$, we have
+    $$ \norm{f[x] - f[y]}^2 = 2 - 2(x^\top y)^2 . $$
+    Potentially by changing signs, we can assume $x^\top y>0$ and so,
+    $$ d(f[x],f[y])^2 = 2 - 2(x^\top y)^2 = 2(1-x^\top y)(1+x^\top y) \geq 2(1-x^\top y) = d(x,y)^2 . $$
+    Thus if $d(f[x],f[y])<\epsilon$ then $d(x,y)<\epsilon$ as well, meaning $y\in B_\epsilon(x)$ so that $[y]\in U$.
+    Thus $B_\epsilon(f[x])\subseteq fU$, so that $fU$ is open.
+
+    Thus $f$ is an injective continuous open map onto its image, meaning it is a topological embedding.
+    Since it is also a smooth immersion, it is by definition a smooth embedding.
+
+    \item $f$ forms a homeomorphism $\RP^n\cong\im f$, which we showed is
+    $$ \im f = \set{A\in\mat_{n+1}(\bR)}[A^2=A,\ A^\top=A,\ \trace(A)=1] . $$
+    This is a bounded closed subset of Euclidean space, and thus compact.
+    It is bounded since the norm of $A$ is precisely its trace, which is $1$.
+    And it is closed since we can write it as the intersection of closed sets
+    $$ \im f = g_1^{-1}\set0 \cap g_2^{-1}\set0 \cap \trace^{-1}\set0 , $$
+    where $g_1(A)=A^2-A$ is continuous, and $g_2(A)=A^\top-A$ is as well, as is the trace.
+    Thus their preimages of closed sets are closed, so $\im f$ is.
+    So $\RP^n$ is homeomorphic to a compact space, and is thus compact.
+\eenum
+
+\def\m{{\frak m}}
+\def\n{{\frak n}}
+
+\bprob
+
+    Let $M$ be a smooth manifold and $p\in M$.
+    Let $T_pM$ denote the tangent space of $M$ at $p$; $D_pM$ the set of {\emphcolor derivations} at $p$ on $C^\infty(M)$,
+    i.e.\ linear maps $\xi\colon C^\infty(M)\to\bR$ satisfying $\xi(fg)=f(p)\xi(g)+g(p)\xi(f)$; and finally
+    $\m_p\subseteq C^\infty(M)$ the ideal of functions vanishing at $p$.
+    \benum
+        \item Show that $D_pM$ is a vector space, with pointwise addition and multiplication.
+
+        \item Let $\m_p^2$ be the product of $\m_p$ with itself; show that $\m_p/\m_p^2$ inherits the structure of a vector
+        space from $C^\infty(M)$.
+
+        \item Let $\psi\colon M\to N$ be smooth such that $\psi(p)=q$.
+        Let $(\m_p/\m_p^2)^\vee$ be the dual space of $\m_p/\m_p^2$.
+        Define
+        $$ T_p\psi \colon (\m_p/\m_p^2)^\vee \to (\n_q/\n_q^2)^\vee $$
+        by
+        $$ T_p\psi(\ell)([f]) = \ell([f\circ\psi]),\qquad \ell\in(\m_p/\m_p^2)^\vee,\quad f\in\n_p . $$
+        Show that $T_p\psi$ is well-defined and linear.
+
+        \item Show that if $\psi$ maps a neighborhood of $p$ diffeomorphically to a neighborhood of $q$, then
+        $T_p\psi$ is an isomorphism.
+
+        \item Define the map $I\colon T_pM\to D_p$ by
+        $$ I([\gamma])(f) = (f\circ\alpha)'(0) . $$
+        Show that $I$ is well-defined, linear, and injective.
+
+        \item Let $\xi\in D_pM$; show that $\xi|_{\m_p}$ defines a linear map $\hat\xi\colon\m_p/\m_p^2\to\bR$.
+
+        \item Define $J\colon D_pM\to(\m_p/\m_p^2)^\vee$ by $J(\xi)=\hat\xi$.
+        Show that $J$ is linear and injective.
+
+        \item Show that $\dim\m_p/\m_p^2=\dim M$.
+
+        \item Show that $I$ and $J$ are isomorphisms.
+    \eenum
+
+\eprob
+
+\benum
+    \item If $\xi,\xi'$ are derivations so are $\xi+\xi'$ and $c\xi$ for $c\in\bR$.
+    They are linear as the linear combinations of linear maps, and are derivations since
+    $$ (\xi+\xi')(fg) = \xi(fg) + \xi'(fg) = f(p)\xi(g) + g(p)\xi(f) + f(p)\xi'(f) + g(p)\xi'(f)
+    = f(p)(\xi+\xi')(g) + g(p)(\xi+\xi')(f) , $$
+    and
+    $$ (c\xi)(fg) = c\xi(fg) = c(f(p)\xi(g) + g(p)\xi(f)) = f(p)(c\xi)(g) + g(p)(c\xi)(f) . $$
+
+    \item If $A$ is an $R$-algebra, then its ideals are $R$-modules.
+    Indeed, if $I\leq A$ is an ideal, it is closed under addition and for $r\in R$ and $x\in I$, $rx=(r1)x\in I$.
+    In particular if $J\leq I\leq A$ are ideals of $A$, then they are $R$-modules and so $I/J$ is an $R$-module as a
+    quotient of $R$-modules.
+    Here $R=\bR$, $A=C^\infty(M)$, $I=\m_p$, and $J=\m_p^2$.
+
+    \item To show that $T_p\psi$ is well-defined, we show that $T_\psi(\ell)\colon\n_p\to\bR$ given by
+    $T_p\psi(\ell)(f)=\ell([f\circ\psi])$ is linear and $\n_p^2$ is contained in its kernel.
+    This map is well-defined: $f\circ\psi$ is smooth $M\to N\to\bR$ and $f\circ\psi(p)=f(q)=0$ so that
+    $\ell[f\circ\psi]$ is defined.
+    It is clearly linear, viewed as the composition of linear operators,
+    $$ T_p\psi(\ell)\colon \n_q\xto{\bul\circ\psi}\m_p\xto{[\bul]}\m_p/\m_p^2\xto{\ell}\bR . $$
+    If $f,g\in C^\infty(N)$ vanish at $q$ then $fg\circ\psi=(f\circ\psi)(g\circ\psi)\in\m_p^2$ so that
+    $\ell[fg\circ\psi]=0$, so that $T_p\psi(\ell)(fg)=0$.
+    Such products generate $\n_q^2$ so that its contained in the kernel, so we can quotient $T_p\psi(\ell)$ by
+    $\n_q^2$, so the given function is well-defined.
+
+    \item We make two claims: if $f\colon U\to\bR$ is a smooth map defined on an open subset of $M$, then for
+    $A\subseteq U$ closed there is a smooth map $\tilde f\colon M\to\bR$ whose restriction to $A$ is equal to $f$, 
+    and support is contained in $U$.
+    Indeed, $U,M-A$ is an open cover and thus has a partition of unity subordinate to it, $\phi_0,\phi_1$.
+    So define $\tilde f(x)=f(x)\phi_0(x)$, taken to be zero when $x\notin U$.
+    This is smooth on $M$, since $\supp\phi_0\subseteq U$, and for $x\in A$ we have that $\phi_1(x)=0$ and so $\phi_0(x)=1$,
+    meaning $\tilde f(x)=f(x)$.
+    Finally, $\tilde f$'s support is contained in $\phi_0$'s which is contained in $U$.
+
+    Secondly, if $f,g\in\m_p$ agree in a neighborhood of $p$, then $[f]=[g]$.
+    Equivalently if $f$ is zero in a neighborhood of $p$, then $f\in\m_p^2$.
+    Let this neighborhood be $U$, and consider the open cover $U,M-p$ and a partition of unity subordinate to it
+    $\phi_0,\phi_1$.
+    Then $f\psi_1$ is equal to $f$: for $x\in U$ we have that they are both zero, and for $x\notin U$ we have that
+    $\psi_1(x)=1$ since $\psi_0+\psi_1=1$.
+    Since $\psi_1(p)=0$, we have that $f=f\psi_1\in\m_p^2$.
+
+    If $\psi$ maps $p\in U$ diffeomorphically to $q\in V$, then suppose $T_p\psi(\ell)=0$, we want to show that
+    $\ell=0$.
+    Let $\tilde\psi=\psi|_U\colon U\to V$ be the diffeomorphism, and let $g\in\m_p$.
+    Then $g\circ\tilde\psi^{-1}\colon V\to\bR$ is zero at $q$, and for $B\subseteq V$ open with $\cl B\subseteq V$,
+    let $f\colon N\to\bR$ be a smooth map where $f(x)=g\circ\tilde\psi^{-1}(x)$ for $x\in\cl B$ and whose support is
+    contained in $V$, i.e.\ $f=g\circ\psi^{-1}$ in a neighborhood of $q$.
+    Then $f\circ\psi=g$ in a neighborhood of $p$, and as we showed this means that $[f\circ\psi]=[g]$.
+    So if $T_p\psi(\ell)=0$ then $\ell[g]=0$ for all $[g]\in\m_p/\m_p^2$, meaning $\ell=0$.
+    Thus $T_p\psi$ is injective.
+
+    Similarly let $\psi^{-1}\colon V\to U$ be its inverse diffeomorphism.
+    Then for $B\subseteq V$ open with $\cl B\subseteq V$, we can extend $\psi^{-1}$ to $\tilde\psi^{-1}\colon N\to M$
+    restricting to $\psi^{-1}$ on $B$.
+    Now,
+    $$ T_p\psi\circ T_q{\tilde\psi^{-1}}(\ell')[f] = T_q{\tilde\psi^{-1}}(\ell')[f\circ\psi] =
+    \ell'[f\circ\psi\circ\tilde\psi^{-1}] , $$
+    and since $f\circ\psi\circ\tilde\psi^{-1}=f$ in a neighborhood of $q$, this is equal to $\ell'[f]$.
+    Thus $T_p\psi\circ T_q\tilde\psi^{-1}={\rm id}$ and $T_p\psi$ is injective, thus $T_p\psi$ is an isomorphism, as desired.
+
+    \item By definition $[\gamma]=[\gamma']$ if $(f\circ\gamma)'(0)=(f\circ\gamma')'(0)$ for all $f\in C^\infty(M)$,
+    so that $I$ is well-defined as a map.
+    And its image is in $D_pM$; i.e.\ $I[\gamma]$ is a derivation.
+    It is clearly linear by linearity of the derivative.
+    And by the product rule,
+    $$ I[\gamma](fg) = ((fg)\circ\gamma)'(0) = ((f\circ\gamma)(g\circ\gamma))'(0) =
+    f(p)(g\circ\gamma)'(0) + g(p)(f\circ\gamma)'(0) = f(p)I[\gamma](g) + g(p)I[\gamma](f) , $$
+    so that $I[\gamma]$ maps tangent vectors to derivations.
+
+    It is also clearly injective: if $I[\gamma]=I[\gamma']$ then $(f\circ\gamma)'(0)=(f\circ\gamma')'(0)$ for all
+    $f\in C^\infty(M)$, which by definition means $[\gamma]=[\gamma']$.
+
+    Let $(U,\phi)$ be a chart centered at $p$, so that we have an isomorphism $\bR^n\to T_pM$ mapping
+    $v\mapsto\phi_v$ which maps $t$ to $\phi(tv)$.
+    To show that $I$ is linear, it is sufficient to show that precomposing with this isomorphism is linear.
+    This maps $v\in\bR^n$ to
+    $$ I[\phi_v](f) = (f\circ\phi_v)'(0) = (f\circ\phi\circ(tv))'(0) = \nabla(f\circ\gamma)|_0\cdot v , $$
+    where $\nabla$ is the gradient. 
+    This is clearly linear by linearity of inner products.
+
+    \item For $\xi\in D_pM$, it is linear and so its restriction to $\m_p$ is as well.
+    If $f,g\in\m_p$ then since $f(p)=g(p)=0$,
+    $$ \xi(fg) = f(p)\xi(g) + g(p)\xi(f) = 0 . $$
+    So $\ker\xi\subseteq\m_p^2$ (as elements of the form $fg$ generate it), and thus $\hat\xi\in(\m_p/\m_p^2)^\vee$ defined
+    by $\hat\xi[f]=\xi(f)$ is well-defined.
+
+    \item This is clearly linear as restriction of a function is linear.
+    If $J(\xi)=0$ then $\xi|_{\m_p}=0$, which in turn means $\xi=0$.
+    Indeed, for $f\in C^\infty(M)$ we have $f-f(p)\in\m_p$ and so $0=\xi(f-f(p))=\xi(f)-\xi(f(p))$.
+    But derivations of constants are zero: by linearity it is sufficient to prove this for $1$, and
+    $$ \xi(1) = \xi(1^2) = \xi(1) + \xi(1) \implies \xi(1) = 0 . $$
+    Thus $\xi(f)=0$, proving that $J$ is linear.
+
+    \item Let $(U,\phi)$ be a chart centered at $p$, so that $\phi^{-1}$ is a diffeomorphism from a neighborhood of $p$
+    to $U\subseteq\bR^n$.
+    As we showed, this means that for $\n_0\leq C^\infty(U)$, we have that
+    $$ (\m_p/\m_p^2)^\vee \cong (\n_0/\n_0^2)^\vee . $$
+    So if we let $n=\dim M$, it is sufficient to show that $\dim(\n_0/\n_0^2)=n$.
+    Let us define $D\colon\bR^n\to(\n_0/\n_0^2)^\vee$ by mapping $v\in\bR^n$ to the directional derivative evaluated at $0$:
+    $D_v|_0$.
+    $D_v|_0$ is a derivation (by the product rule), and as above we showed it descends to an element of $(\n_0/\n_0^2)^\vee$.
+
+    This is linear, since we can write $D_v|_0=v\cdot\nabla\bul$ (where $\nabla$ is the gradient), which is clearly linear
+    in $v$ by linearity of the dot product.
+    This map is injective, since if we denote by $x_i$ the $i$th projection we have that $x_i\in\n_0$ and $D_v|_0(x_i)=v_i$.
+    So if $D_v|_0=D_u|_0$ then $v_i=u_i$ for all $i$.
+
+    Conversely it is surjective: if $\xi\in(\n_0/\n_0^2)^\vee$ then for $f\colon U\to\bR$ we have by Taylor,
+    $$ f(x) = f(0) + \sum_i x_i\pdvof f{x_i}(0) + \sum_{i,j}x_ix_j\int_0^1(1-t)\pdvof{^2f}{x_ix_j}(tz)\,dt , $$
+    and since the right-most sum is a sum of elements in $\n_0^2$ (the integral is smooth, so these are $x_i$ and
+    $x_j$ times the integral), we have that if $f\in\n_0$, $f(0)=0$ and so
+    $$ [f(x)] = \sum_i\pdvof f{x_i}(0)[x_i] . $$
+    Thus
+    $$ \xi[f] = \sum_i\pdvof f{x_i}(0)\cdot\xi[x_i] . $$
+    So define $v_i=\xi[x_i]$ and we have that $D_v|_0[x_i]=v_i=\xi[x_i]$ and thus
+    $$ D_v|_0[f] = \sum_i\pdvof f{x_i}(0)D_v|_0[x_i] = \sum_i\pdvof f{x_i}(0)\xi[x_i] = \xi[f] , $$
+    so that $D_v|_0=\xi$, meaning this map is surjective.
+
+    So we have an isomorphism $\bR^n\cong(\n_0/\n_0^2)^\vee\cong(\m_p/\m_p^2)^\vee$.
+
+    \item Putting this all together, we have a sequence of injective morphisms
+    $$ \bR^n \cong T_pM \xtos{I} D_pM \xtos{J} (\m_p/\m_p^2)^\vee \cong \bR^n . $$
+    So $J\circ I$ is an injective map between two linear spaces of the same dimension, so it must be an isomorphism.
+    Since $J$ is injective, this means it must be an isomorphism, and thus so too must $I$ be.
+\eenum
+
+
+

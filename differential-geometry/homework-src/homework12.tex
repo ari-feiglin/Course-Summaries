@@ -1,0 +1,554 @@
+\bprob
+
+    Let $G$ be a Lie group equipped with a bi-invariant metric.
+    We show in this exercise that a $1$-parameter subgroups and geodesics coincide.
+    Let $\gamma\colon\bR\to G$ be a geodesic starting at $e$.
+    \benum
+        \item Let $B$ be a normal ball around $e$ of radius $\epsilon>0$.
+        Let $s$ be small enough so that $\gamma|_{[0,s]}\subseteq B$.
+        Let $\phi=L_{\gamma(s)}$ be the isometry given by left-multiplication by $\gamma(s)$.
+        Show that
+        $$ \evdrv t_{t=0}(\phi\circ\gamma) = \dot\gamma(s) . $$
+
+        \item Conclude that $\phi\circ\gamma(t)=\gamma(s+t)$ for all $t$.
+        Thus for $s$ sufficiently small and all $t$, $\gamma(s)\gamma(t)=\gamma(s+t)$.
+
+        \item Conclude $\gamma(s)\gamma(t)=\gamma(s+t)$ for all $s,t$.
+    \eenum
+
+\eprob
+
+\benum
+    \item Since $\gamma|_{[0,s]}$ is contained in a normal ball, it is a radial geodesic and thus minimizing.
+    Let $s'\in(0,s)$, then consider the curve $\alpha$ obtained by concatenating $\gamma|_{[s',s]}$ and $\phi\circ\gamma|_{[0,s']}$.
+    This is a curve $\gamma(s')$ to $\phi\circ\gamma(s')$.
+
+    Furthermore, since $\gamma|_{[s',s]}$ is minimizing and $\phi$ is an isometry, so is $\phi\circ\gamma|_{[0,s']}$.
+    Thus
+    $$ L(\alpha) = L(\gamma|_{[s',s]}) + L(\phi\circ\gamma|_{[0,s']}) = d(\gamma(s'),\gamma(s)) + d(\phi(e),\phi\circ\gamma(s')) =
+    d(\gamma(s'),\gamma(s)) + d(e,\gamma(s')) . $$
+    Since all these points, $e=\gamma(0),\gamma(s'),\gamma(s)$, lie on the minimizing $\gamma$ this is equal to $d(e,\gamma(s))$.
+    Since right-multiplication by $\gamma(s')$ is also an isometry,
+    $$ L(\alpha) = d(e,\gamma(s)) = d(e\cdot\gamma(s'),\gamma(s)\cdot\gamma(s')) = d(\gamma(s'),\phi\circ\gamma(s')) . $$
+
+    Thus $\alpha$ is minimizing and thus a geodesic.
+    Since $\alpha(t)=\gamma(t+s')$ for $t<s-s'$, by the uniqueness of geodesics we must have $\alpha(t)=\gamma(t+s')$ for all $t$.
+    In particular
+    $$ \gamma(s+t) = \alpha(s-s'+t) = \phi\circ\gamma(t) , $$
+    and thus differentiating both sides and evaluating at $t=0$ gives
+    $$ \evdrv t_{t=0}\phi\circ\gamma(t) = \dot\gamma(s) $$
+    as desired.
+
+    \item As $\phi$ is an isometry, $\phi\circ\gamma$ is a geodesic starting at $\phi(e)=\gamma(s)$ with initial velocity $\dot\gamma(s)$.
+    By uniqueness of geodesics, $\phi\circ\gamma(t)=\gamma(t+s)$ for all $t$, since $\gamma(t+s)$ is another geodesic with these same inital conditions.
+    By definition of $\phi$ this means $\gamma(s)\gamma(t)=\gamma(t+s)$ for all $t$.
+
+    \item Let $s$ be arbitrary, then there is some natural $n$ such that $s/n$ is small enough to apply the above point (i.e.\ $\gamma|_{[0,s/n]}$ is contained in $B$).
+    Then for all $t$ we have $\gamma(s/n+t)=\gamma(s/n)\gamma(t)$.
+
+    In particular,
+    $$ \gamma(s + t) = \gamma\parens{n\frac sn+t} = \gamma\parens{\frac sn}\gamma\parens{(n-1)\frac sn + t} , $$
+    and continuing this inductively,
+    $$ \gamma(s + t) = \gamma\parens{\frac sn}^n\gamma(t) . $$
+    In particular for $t=0$ we see that $\gamma(s)=\gamma(s/n)^n$, and so for arbitrary $t$ we have
+    $$ \gamma(s+t) = \gamma\parens{\frac sn}^n\gamma(t) = \gamma(s)\gamma(t) $$
+    as desired.
+\eenum
+
+\bprob
+
+    Let $M$ be an orientable Riemannian $n$-manifold with positive curvature and even dimension.
+    Let $\gamma$ be a closed geodesic in $M$, i.e.\ an immersion $S^1\to M$ which is a geodesic at all points.
+    Prove that $\gamma$ is homotopic to a closed curve whose length is strictly less than $\gamma$'s.
+
+\eprob
+
+Let $w=\dot\gamma(0)$, where $0$ denotes any distinguished point on $S^1$, we will also view $\gamma$ as a smooth geodesic $[0,1]\to M$.
+Let $e_1,\dots,e_{n-1}$ be an orthonormal basis for the orthogonal complement $w^\perp$.
+Now consider parallel transport $P^\gamma$; we claim there is a tangent vector $v\in w^\perp$ such that $P^\gamma v=v$.
+
+Firstly, $P^\gamma$ is an isometry because the connection is metric (since $\iprod{V,W}$ is constant when $V,W$ are parallel along $\gamma$).
+Thus $P^\gamma(e_i)$ forms an orthonormal basis, so there is an orthogonal matrix $A$ such that $P^\gamma(e_i)=A^j_ie_j$.
+Furthermore we know that $\dot\gamma$ is parallel along $\gamma$ as it is a geodesic, so $P^\gamma w=\dot\gamma(1)=\dot\gamma(0)=w$.
+
+Let $\omega$ be an orientation form for $M$.
+Let $V_i$ be the parallel transports of $e_i$, and $W=\dot\gamma$ is $w$'s; then $\omega(V_1(t),\dots,V_{n-1}(t),W(t)\neq0$ for all $t$ as $V_1(t),\dots,V_{n-1}(t),W(t)$
+forms a basis for $T_{\gamma(t)}M$ as parallel transport is a linear isomorphism.
+So $\omega(\bar V(t),W(t))$ is a continuous non-vanishing map, since its domain is connected this means $\omega(\bar V(1),W(1))=\omega(\bar V(1),w)$
+and $\omega(\bar V(0),W(0))=\omega(e_1,\dots,e_{n-1},w)$ have the same sign.
+
+Since
+$$ \omega(\bar V(1),w) = \omega(A\bar e,w) = \det(A\oplus(1))\omega(\bar e,w) = \det A\omega(\bar e,w) , $$
+this means that $\det A>0$.
+Thus $A$ is an orthogonal matrix with positive determinant of odd dimension ($n-1$); we showed in class that this means that it has a nonzero fixed point $(a^1,\dots,a^{n-1})$.
+Let $v=a^ie_i$, so that
+$$ P^\gamma(v) = a^iP^\gamma(e_i) = A^j_ia^ie_j = a^je_j = v . $$
+
+Let $V(t)$ be $v$'s parallel transport along $\gamma$.
+Since $V(1)=v=V(0)$, this means we can view $V$ as a smooth vector field $S^1\to M$ along $\gamma$.
+Let $\Gamma$ be a proper variation of $\gamma$ with variation field $V$, and let $E(s)=E(\Gamma_s)$.
+Since $\gamma$ is a geodesic $E'(0)=0$.
+Furthermore since $V$ is smooth and proper, and $\Gamma$ is smooth and proper as well (or at least can be taken to be so),
+$$ \frac12E''(0) = -\int_0^1\iprod{V(t),V''(t) + R(\dot\gamma(t),V(t))\dot\gamma(t)}\d t . $$
+Since $V$ is parallel along $\gamma$, $V'=0$ and thus $V''=0$.
+So this is equal to
+$$ \frac12E''(0) = -\int_0^1\iprod{V(t),R(\dot\gamma(t),V(t))\dot\gamma(t)}\d t = -\int_0^1\Rm(\dot\gamma(t),V(t),\dot\gamma(t),V(t))\d t . $$
+The integrand is a positive multiple of the sectional curvature (since $v=V(0)$ and $w=\dot\gamma(0)$ are linearly independent, $V(t),\dot\gamma(t)$ remain linearly independent),
+so this integral is positive.
+Thus $E''(0)$ is negative, and since $E'(0)=0$, this means $0$ is a local maximum of $E(s)$.
+
+Let $s>0$ be such that $E(s)<E(0)$.
+Then $\gamma_s(t)=\Gamma(s,t)$ is a smooth curve where
+$$ L(\gamma_s) \leq E(\gamma_s)^2 = E(s)^2 < E(0)^2 = E(\gamma)^2 = L(\gamma) , $$
+where the last equality is because $\gamma$ is a geodesic defined on $[0,1]$.
+And $\gamma,\gamma_s$ are homotopic, as $\Gamma$ forms a homotopy between them (since by definition $\gamma(t)=\Gamma(0,t)$ and $\gamma_s(t)=\Gamma(s,t)$).
+
+\bprob
+
+    Let $f\colon\bar M\to M$ be a Riemannian submersion, meaning it is a surjective submersion and it preserves the metric between vectors orthogonal to its fibers.
+
+    A vector $\bar x\in T_{\bar p}\bar M$ is {\emphcolor horizontal} if it is orthogonal to the fiber $f^{-1}p$ ($p=f\bar p$).
+    Similarly it is {\emphcolor vertical} if it is tangent to the fiber.
+    Thus there is a decomposition,
+    $$ T_{\bar p}\bar M = (T_{\bar p}\bar M)^h \oplus (T_{\bar p}\bar M)^v,\qquad (T_{\bar p}\bar M)^v = T_{\bar p}f^{-1}p,\quad (T_{\bar p}\bar M)^h = (T_{\bar p}\bar M^v)^\perp . $$
+
+    For $X\in\X(M)$, the {\emphcolor horizontal lift} of $\bar X$ of $X$ is the horizontal vector field defined by $df_{\bar p}(\bar X|_{\bar p})=X|_p$.
+    \benum
+        \item Show that $\bar X$ is differentiable.
+        \item Let $\nabla,\bar\nabla$ be the Riemannian connections of $M,\bar M$ respectively.
+        Show that
+        $$ \bar\nabla_{\bar X}\bar Y = \bar{\nabla_XY} + \frac12[\bar X,\bar Y]^v,\qquad X,Y\in\X(M) , $$
+        where $Z^v$ is the vertical component of $Z\in\X(\bar M)$.
+        \item Show that $[\bar X,\bar Y]_{\bar p}$ depends only on $\bar X|_{\bar p}$ and $\bar Y|_{\bar p}$.
+    \eenum
+
+\eprob
+
+\benum
+    \item Notice that $df_{\bar p}$ is an isomorphism $T_{\bar p}\bar M^h\to T_pM$, as $f$ is constant on its fibers and thus $df_p$ is zero on $T_{\bar p}\bar M^v$.
+    Since $df_p$ is surjective as $f$ is a submersion, and the dimensions of the horizontal part and $T_pM$ are equal, this means that this must be an isomorphism.
+    Thus $\bar X$ is uniquely determined; we need only show it is smooth.
+
+    Since $f$ is a submersion, there are local charts $\bar p\in(U,(\bar x,\bar y))$ and $p\in(V,(\tilde x))$ such that $f$ has the local representation $(\bar x,\bar y)\mapsto\tilde x$.
+    Thus $df(\ipdv{x^i})=\ipdv{\tilde x^i}\circ f$ and $df(\ipdv{y^j})=0$.
+    This means that the $\ipdv{y^j}$ span $T_{\bar p}\bar M^v$.
+    Applying Gram-Schmidt to $\ipdv{y^j},\ipdv{x^i}$ (in this order) gives a smooth local orthonormal frame $\bar F,\bar E$.
+    The span of $\bar F$ and $\ipdv{y^j}$ are the same, so $\bar F$ is an orthonormal frame of $T_{\bar p}\bar M^v$ and thus $\bar E$ is an orthonormal frame of $T_{\bar p}\bar M^h$.
+
+    Now, there are smooth $a^i\in C^\infty(V)$ such that locally $X=a^i\ipdv{\tilde x^i}$.
+    Define $\bar Y=(a^i\circ f)\ipdv{x^i}$, which is a local vector field of $\bar M$ and
+    $$ df\bar Y = (a^i\circ f)\pdv{\tilde x^i}\circ f = X\circ f . $$
+    We can project $\bar Y$ onto its $E_1,\dots,E_n$ components, which is smooth since $F_j,E_i$ form a local frame.
+    Since the other components $F_j$ are in $df$'s kernel, this does not affect the image.
+    That is to say, $\bar Y^h$ is smooth and $df\bar Y^h=df\bar Y=X\circ f$.
+
+    By uniqueness, $\bar Y^h=\bar X$ in this neighborhood.
+    Since $\bar Y^h$ is smooth, so too must $\bar X$ be in this neighborhood.
+    This neighborhood was chosen around an arbitrary point, so $\bar X$ is smooth.
+
+    \item Let $X,Y,Z\in\X(M)$ and $T\in\X(\bar M)$ be a vertical field.
+    Notice that every vector field of $\X(\bar M)$ has a horizontal and vertical component.
+    By the same argument as the previous point, the horizontal and vertical components of a vector field are smooth.
+    This is because we can find a local orthonormal frame $\bar F,\bar E$ for the vertical and horizontal tangent bundles and then the components of a vector field in $\X(\bar M)$
+    are just the projections onto $\bar F$ and $\bar E$ respectively, which is smooth.
+
+    Anyway, since $\bar X$ is horizontal and $T$ is vertical, $\iprod{\bar X,T}=0$ (at every point they are by definition orthogonal).
+    Since $\bar Y,\bar Z$ are horizontal, and $f$ is Riemannian and thus preserves the metric between them,
+    $$ \bar X\iprod{\bar Y,\bar Z} = \bar X\iprod{df\bar Y,df\bar Z} = \bar X(\iprod{Y,Z}\circ f) = df(\bar X)\iprod{Y,Z} = X\iprod{Y,Z} . $$
+    The second-to-last equality is because $df(v)(u)=v(u\circ f)$ for all smooth real-valued $u$ and derivations $v$.
+    Similarly,
+    $$ T\iprod{\bar X,\bar Y} = T(\iprod{X,Y}\circ f) = df(T)\iprod{X,Y} = 0 $$
+    for the same reason.
+
+    We also have $df[\bar X,T]=[df\bar X,df(T)]=[X,0]=0$.
+    And $df[\bar X,\bar Y]=[df\bar X,df\bar Y]=[X,Y]$.
+
+    Notice that for $V\in\X(\bar M)$ arbitrary, since $\bar X$ is horizontal
+    $$ \iprod{V,\bar X} = \iprod{V^h,\bar X} = \iprod{df(V^h),df\bar X} = \iprod{df(V),X} . $$
+    This is because projecting onto the horizontal component is an orthogonal projection, and $\bar X$ is already horizontal; and $df(V)=df(V^h)+df(V^v)=df(V^h)$
+    since $df$ is zero on vertical vectors.
+    Thus we have
+    $$ \iprod{[\bar X,\bar Y],\bar Z} = \iprod{df[\bar X,\bar Y],df\bar Z} = \iprod{[X,Y],Z} , $$
+    and
+    $$ \iprod{[\bar X,T],\bar Y} = \iprod{df[\bar X,T],\bar Y} = 0 . $$
+
+    By Koszul's formula,
+    $$ \iprod{\bar\nabla_{\bar X}\bar Y,\bar Z} = \frac12\bigl(\bar X\iprod{\bar Y,\bar Z} + \bar Y\iprod{\bar Z,\bar X} - \bar Z\iprod{\bar X,\bar Y}
+        - \iprod{\bar Y,[\bar X,\bar Z]} - \iprod{\bar Z,[\bar Y,\bar X]} + \iprod{\bar X,[\bar Z,\bar Y]}\bigr) . $$
+    Our computations showed that this is equal to the same expression but with $X,Y,Z$ instead of $\bar X,\bar Y,\bar Z$.
+    By Koszul's formula, this is just $\iprod{\nabla_XY,Z}$ so
+    $$ \iprod{\bar\nabla_{\bar X}\bar Y,\bar Z} = \iprod{\nabla_XY,Z} . $$
+
+    Again by Koszul,
+    $$ \iprod{\bar\nabla_{\bar X}\bar Y,T} = \frac12\bigl(\bar X\iprod{\bar Y,T} + \bar Y\iprod{T,\bar X} - T\iprod{\bar X,\bar Y}
+        - \iprod{\bar Y,[\bar X,T]} - \iprod{T,[\bar Y,\bar X]} + \iprod{\bar X,[T,\bar Y]}\bigr) . $$
+    As we showed, all of these terms are zero except for $-\iprod{T,[\bar Y,\bar X]}=\iprod{[\bar X,\bar Y],T}$.
+    Since $T$ is vertical, this is equal to $\iprod{[\bar X,\bar Y]^v,T}$.
+    Thus
+    $$ \iprod{\bar\nabla_{\bar X}\bar Y,T} = \frac12\iprod{[\bar X,\bar Y]^v,T} . $$
+
+    And so
+    $$ \iprod{\bar\nabla_{\bar X}\bar Y,\bar Z+T} = \iprod{\nabla_XY,Z} + \iprod{\frac12[\bar X,\bar Y]^v,T} . $$
+    Since $\iprod{X,Z}=\iprod{\bar X,\bar Z}$, we see (also because $\bar Z$ is horizontal and thus orthogonal to vertical vectors, and $T$ is orthogonal to horizontal vectors),
+    $$ = \iprod{\bar{\nabla_XY} + \frac12[\bar X,\bar Y]^v,\bar Z + T} . $$
+    If we evaluate at a specific point $\bar p$ where all tangent vectors can be decomposed to their vertical and horizontal components, and the horizontal component is the value of
+    a horizontal lift of some vector field of $M$, we get that at $\bar p$ for all $v\in T_{\bar p}\bar M$
+    $$ \iprod{\bar\nabla_{\bar X}\bar Y|_{\bar p},v} = \iprod{\bar{\nabla_XY}|_{\bar p} + \frac12[\bar X,\bar Y]^v_{\bar p},v} , $$
+    and thus we have equality
+    $$ \bar\nabla_{\bar X}\bar Y = \bar{\nabla_XY} + \frac12[\bar X,\bar Y]^v $$
+    at $\bar p$, and thus over all of $\bar M$ as $\bar p$ is arbitrary.
+
+    More explicitly, for tangent $v$, write $v=v^v+v^h$ and then let $Z\in\X(M)$ be such that $Z_p=df_{\bar p}(v^h)$ so that $\bar Z_{\bar p}=v^h$.
+    And extend $v^v$ to a vertical vector field $T$.
+    Then we get the desired result.
+
+    \item By additivity, it is sufficient to show that if $\bar X(\bar p)=0$ then $[\bar X,\bar Y]^v_{\bar p}=0$ (and similarly for $\bar Y$, but this is symmetrical).
+    To show that $[\bar X,\bar Y]^v=0$ it is sufficient to show that $\iprod{[\bar X,\bar Y]^v,V}=0$ for arbitrary $V\in\X(\bar M)$.
+    For horizontal $V$ this is clearly true, so it is sufficient to show this for $V=T$ vertical in which case
+    $$ \iprod{[\bar X,\bar Y]^v,T} = \iprod{[\bar X,\bar Y],T} = \iprod{\bar\nabla_{\bar X}\bar Y-\bar\nabla_{\bar Y}\bar X,T} . $$
+    (Everything here is being evaluated at $\bar p$).
+
+    Since $\bar\nabla\bar Y$ is tensorial, since $\bar X_{\bar p}=0$ we have $\bar\nabla_{\bar X}\bar Y=0$ at $\bar p$.
+    So we just need to show that $\bar\nabla_{\bar Y}\bar X$ is horizontal.
+    Let $(E_i)$ be a local horizontal frame around $\bar p$, so that $\bar X=u^iE_i$ for smooth real-valued $u^i$ (since $\bar X$ is horizontal it has a representation by $E_i$).
+    Since $X|_{\bar p}=0$ this means $u^i(\bar p)=0$ for all $i$.
+    Then
+    $$ \bar\nabla_{\bar Y}\bar X = \bar\nabla_{\bar Y}u^iE_i = u^i\bar\nabla_{\bar Y}E_i + (\bar Yu^i)E_i . $$
+    Evaluating at $\bar p$, the first term vanishes as $u^i(\bar p)=0$.
+    The second term is horizontal as the $E_i$ are.
+    Thus at $\bar p$, $\bar\nabla_{\bar Y}\bar X$ is horizontal and thus orthogonal to $T$.
+    So $[\bar X,\bar Y]^v$ is orthogonal to all vertical $T$, and thus is zero.
+
+    Thus we are done, but I spell out the end.
+    Firstly, clearly $\bar{X'-X}=\bar X-\bar X'$ as both are horizontal lifts of $X-X'$ by linearity of $df$; also projection $\bul^v$ is linear.
+    If $\bar X'_{\bar p}=\bar X_{\bar p}$ then at $\bar p$, $[\bar X,\bar Y]^v-[\bar X',\bar Y]^v=[\bar X-\bar X',\bar Y]^v=0$ as we just showed.
+    Thus $[\bar X,\bar Y]^v=[\bar X',\bar Y]^v$ at $\bar p$.
+
+    For $\bar Y$, if $\bar Y_{\bar p}=0$ then $[\bar Y,\bar X]^v=0$ at $\bar p$ and thus $[\bar X,\bar Y]^v=-[\bar Y,\bar X]^v=0$.
+    Thus we obtain the result for $\bar Y$.
+    So $[\bar X,\bar Y]^v$'s value at $\bar p$ is determined only by $\bar X$ and $\bar Y$'s.
+\eenum
+
+\def\bK{{\bb K}}
+\def\Fr{{\rm Fr}}
+\def\Or{{\rm Or}}
+\bprob
+
+    For $\bK=\bR$ or $\bC$, let $E\to M$ be a smooth $\bK$-vector bundle of rank $r$ over a smooth manifold $M$.
+    \benum
+        \item Consider the $r$-fold fiber product $E^r=E\times_M\cdots\times_ME\to M$, which is a smooth manifold.
+        By construction, its fibers over $p\in M$ are $E_p\oplus\cdots\oplus E_p$.
+        Let $\Fr(E)\subseteq E^r$ be the subset given by tuples $v_1,\dots,v_r\in E_p$ of bases, as $p$ ranges.
+        Show that $\Fr(E)$ is open and thus a submanifold.
+
+        \item Show that $\gl_r(\bK)$ acts properly, smoothly, and freely on $\Fr(E)$ by $(a^j_i)\cdot(p,(v_i))=(p,(a^j_iv_j))$.
+        In the case that $\bK=\bR$, show that this action restricts to a proper, smooth, free action by the subgroup $\gl_r^+(\bR)$ of matrices of positive
+        determinant.
+
+        \item Show that $\Fr(E)/\gl_r(\bK)$ is diffeomorphic to $M$.
+        When $\bK=\bR$, define the quotient $\Or(E)=\Fr(E)/\gl_r^+(\bR)$.
+        Show that $\Or(E)\to M$ is a two-fold cover of $M$.
+
+        We say that $E$ is {\emphcolor orientable} if there is a section of the covering $\Or(E)\to M$.
+        An {\emphcolor orientation} is a choice of a section.
+
+        \item Show that $M$ is orientable (as a smooth manifold) iff $TM$ is (as a vector bundle).
+
+        \item The Mobius band $M$ is the quotient of $S^1\times\bR$ by the action of $\bZ/2$ where the action by the non-trivial element is given by
+        $(\theta,x)\mapsto(\theta+\pi,-x)$.
+        Show that $M$ is not orientable by showing that $TM$ is not.
+
+        \item Let $\pi\colon\Or(E)\to M$ be the two-fold cover of $M$ from point (3).
+        Show that the pullback bundle $\pi^*E\to\Or(E)$ has a natural orientation.
+        Deduce that $\Or(TM)$ is orientable as a manifold.
+    \eenum
+
+\eprob
+
+\benum
+    \item Let $\pi_E\colon E\to M$ be the projection map.
+    Let $\Phi\colon\pi_E^{-1}U\to U\times\bK^r$ be a local trivialization, and define its $r$-fold product $\Phi^{\times r}\colon(\pi_E^{-1}U)^{\times r}\to U^{\times r}\times\bK^{r\times r}$.
+    Since $E^r$ is an embedded submanifold of $E^{\times r}$ (as shown during the construction of the fiber product), restricting $\Phi^{\times r}$ to $E^r$ remains smooth; call this restriction $\Phi^r$.
+    In fact as the fiber product of vector bundles, $\Phi^r$ is a local trivialization of $E^r$.
+    So we have in particular $(\pi_E^{-1}U)^{\times r}=\pi_{E^r}^{-1}U$.
+
+    Now consider the composition
+    $$ \tilde\Phi^r \colon \pi_{E^r}^{-1}U \xtos{\Phi^r} U^{\times r}\times\bK^{r\times r} \xtos\proj \bK^{r\times r} \xtos\det \bK . $$
+    This maps a tuple $(v_1,\dots,v_r)$ in $E^r$ to their representation by the local frame associated to $\Phi$, and then to the determinant of this matrix.
+    This tuple is linearly independent iff the representation by the local frame is, which is iff the representation matrix is invertible.
+    Thus
+    $$ \Fr(E)\cap(\pi_{E^r}^{-1}U = (\tilde\Phi^r)^{-1}(\bK-0) , $$
+    which is open as $\tilde\Phi^r$ is continuous.
+    Since the trivializations cover $E^r$, this means that $\Fr(E)$ is open as desired.
+
+    \item This is clearly a group action.
+    We consider the representation of the action in each local trivialization of $E^r$, under which $\Fr(E)$ has the image of $\gl_r(\bK)$.
+    In each local trivialization, this group action corresponds to multiplication $\gl_r(\bK)\times\gl_r(\bK)\to\gl_r(\bK)$ (this follows from the linearity of the trivializations on the fibers).
+    This is smooth in each local trivialization, and thus smooth on all of $\Fr(E)$.
+    The action of $\gl_r(\bK)$ on itself is free and proper as well, and thus so is this action.
+
+    Since the action of $\gl_r(\bR)$ is free and smooth, so is $\gl_r^+(\bR)$'s as an open subgroup.
+    And it is proper since $\gl_r^+(\bR)$ is a connected component of $\gl_r(\bR)$ and thus closed in $\gl_r(\bR)$.
+    In general if $H\subseteq G$ is a closed subgroup and $G$ acts properly on $M$, so does $H$: for $K\subseteq M$ compact, $H_K=G_K\cap H$.
+    Since $G_K$ is compact and $H$ is closed, $H_K$ is a closed subset of $G_K$ and thus compact.
+
+    \item The projection $\bar\pi\colon\Fr(E)/\gl_r(\bK)\to M$ is bijective.
+    This is because we can construct an inverse by mapping $p\in M$ to $(p,[e_1,\dots,e_r])$ where $e_1,\dots,e_r$ is any basis of $E_p$.
+    This is independent on choice of basis, as they can be mapped to one another via a transition matrix.
+
+    So we have the commutative diagram
+
+    \centerline{\drawdiagram{
+        $\Fr(E)$\cr
+        $\Fr(E)/\gl_r(\bK)$&$M$
+    }{
+        \diagarrow{from={1,1}, to={2,1}, text=$\pi_{\gl}$, x distance=-.5cm}
+        \diagarrow{from={1,1}, to={2,2}, text=$\pi_\Fr$, x distance=.25cm}
+        \diagarrow{from={2,1}, to={2,2}, text=$\bar\pi$, y distance=.25cm}
+    }}
+
+    The maps $\pi_{\gl}$ and $\pi_\Fr$ are submersions (the first because $E^r\to M$ is a vector bundle and $\Fr(E)\subseteq E^r$, the second because quotient maps are).
+    So
+    $$ \bar\pi \circ \pi_\gl = \pi_\Fr , $$
+    and thus $\bar\pi$ is smooth (because $\pi_\gl$ is a submersion, $\bar\pi$ is smooth iff $\bar\pi\circ\pi_{E^r}$ is).
+    And similarly
+    $$ \bar\pi^{-1}\circ\pi_\Fr = \pi_\gl $$
+    means that $\bar\pi^{-1}$ is smooth as well.
+    Thus $\bar\pi$ is a diffeomorphism $\Fr(E)/\gl_r(\bK)\cong M$.
+
+    Now consider projection $\pi\colon\Or(E)\to M$, so we have the commutative diagram
+
+    \centerline{\drawdiagram{
+        $\Fr(E)$\cr
+        $\Or(E)$&$M$
+    }{
+        \diagarrow{from={1,1}, to={2,1}, text=$\pi_\Or$, x distance=-.5cm}
+        \diagarrow{from={1,1}, to={2,2}, text=$\pi_\Fr$, x distance=.25cm}
+        \diagarrow{from={2,1}, to={2,2}, text=$\pi$, y distance=.25cm}
+    }}
+
+    For the same reason as before, $\pi$ is then smooth.
+
+    If we take a local trivialization $\Phi^r$ of $U\subseteq M$, then $\pi^{-1}U=\pi_\Or(\pi_\Fr^{-1}(U))$.
+    Under the trivialization $\Phi^r$, $\pi_\Fr^{-1}U$ corresponds to $U\times\gl_r(\bR)=(U\times\gl_r^+(\bR))\sqcup(U\times\gl_r^-(\bR))$.
+    And thus
+    $$ \pi^{-1}U = \pi_\Or(U\times\gl_r^+(\bR)) \sqcup \pi_\Or(U\times\gl_r^-(\bR)) , $$
+    the union is disjoint because $\gl_r^+(\bR)$'s action preserves the sign of the determinant.
+
+    $\pi$ is bijective on both of these components: its inverse for the first is given by mapping $p\in U$ to $(p,[e_1,\dots,e_r])$ where $e_1,\dots,e_r$
+    is the local frame associated with $\Phi^r$.
+    The inverse for the second is given by mapping $p\mapsto(p,[-e_1,e_2,\dots,e_r])$.
+
+    Both of these are smooth for the same reason as above: calling them $\pi_1^{-1},\pi_2^{-1}$ we have $\pi_\Or=\pi_i^{-1}\circ\pi_\Fr$, and since $\pi_\Or,\pi_\Fr$
+    are submersions this implies smoothness.
+    Thus $\pi$ is indeed a two-fold cover of $M$ as desired.
+
+    \item If $M$ is orientable, let $(U_i,(x^j_i))$ be a consistently oriented atlas for $M$.
+    Define $\psi_i\colon U_i\to\Fr(TM)$ by $\psi_i(p)=\parens{\ievpdv{x^1_i}_p,\dots,\ievpdv{x^n_i}_p}$.
+    This is smooth as $\Fr(TM)$ is a submanifold of $TM^{\times r}$, and this is a local section of $TM^r$ (if we take the local trivialization $\Phi$ associated with $\ievpdv{x^j_i}$,
+    this map under $\Phi^r$ corresponds to $p\mapsto(p,\id)$ which is smooth).
+    Thus this defines a map to the quotient $\bar\psi_i\colon U_i\to\Or(TM)$ which is a local section.
+
+    Since the atlases are consistently oriented, $\psi_j(p)=\parens{\ievpdv{x^1_j}_p,\dots,\ievpdv{x^n_j}_p}$'s transition matrix with $\psi_i(p)$ has positive determinant.
+    Thus $\pi_\Or(\psi_j(p))=\pi_\Or(\psi_i(p))$, which means $\bar\psi_i=\bar\psi_j$ along their intersections.
+    So we can glue these local sections together to get a global section, so $\Or(TM)$ is oriented as desired.
+
+    Conversely let $\sigma\colon M\to\Or(TM)$ be a global section of $\Or(TM)\to M$.
+    Then for each $p\in M$, given $T_pM$ the orientation determined by $\sigma(p)$.
+    That is, $e_1,\dots,e_n\in T_pM$ is positively oriented iff $[e_1,\dots,e_n]\in\sigma(p)$.
+    
+    We claim that this is a continuous orientation.
+    For $p\in M$ take a connected local chart $p\in(U,(x^i))$.
+    If $[\ievpdv{x^1}_p,\dots,\ievpdv{x^n}_p]\notin\sigma(p)$ then since the fibers of $\Or(TM)$ have cardinality $2$
+    this means that $[-\ievpdv{x^1}_p,\dots,\ievpdv{x^n}_p]\in\sigma(p)$, so we can swap $x^1$ with $-x^1$ to obtain a chart whose coordinates are in $\sigma(p)$.
+    Then define $\hat\sigma\colon U\to\Fr(E)$ by $\hat\sigma(q)=(\ievpdv{x^1}_q,\dots,\ievpdv{x^n}_q)$, so we have that $\pi_\Or\circ\hat\sigma(p)=\sigma(p)$; we claim this is true for all $q\in U$.
+
+    Now consider $\sgn\colon\Fr(TM)\to\set{\pm1}$ which maps $(e_1,\dots,e_n)\in E_q$ to $+1$ if $(e_1,\dots,e_n)$ and $\hat\sigma(q)$ are consistently oriented, and $-1$ otherwise.
+    This just maps $(e_1,\dots,e_n)$ to the sign of the determinant of its transition matrix with $\hat\sigma(q)$.
+    This is thus continuous, as taking the determinant and sign are.
+
+    Since $\sgn$ is invariant under $\gl_r^+(\bR)$'s action, it quotients to give a continuous map which we also denote by $\sgn\colon\Or(TM)\to\set{\pm1}$.
+    This is just the indicator for whether or not $\hat\sigma$ is an orientation: $\sgn(\O_q)=+1$ if $\hat\sigma(q)\in\O_q$ and $-1$ otherwise.
+    Now consider $\sgn\circ\sigma\colon U\to\set{\pm1}$: it maps $q$ to $+1$ if $\hat\sigma(q)\in\sigma(q)$ and $-1$ otherwise.
+    As a composition of continuous maps, it is continuous; since $\set{\pm1}$ is discrete it is locally constant.
+    Since $U$ is connected it is constant, and since $\hat\sigma(p)\in\sigma(p)$ it is identically $1$.
+
+    Thus $\ipdv{x^1},\dots,\ipdv{x^n}$ are in $\sigma$ for all points in $U$, meaning it is an oriented local coordinate frame of $M$.
+    So $(U,(x^i))$ is an oriented local coordinate chart.
+    Thus every point lies in an oriented local coordinate chart, and thus the orientation is continuous as desired.
+
+    \item Let $q\colon S^1\times\bR\to M$ be the quotient map, and let $\phi\in\bZ/2$ be the non-trivial element.
+    Since $q$ is a submersion between manifolds of the same dimension (since $\bZ/2$ is discrete), $dq_x$ is an isomorphism of tangent spaces for all $x$.
+
+    Suppose there is a global section $\sigma\colon M\to\Or(TM)$.
+    Since $dq_x$ is an isomorphism, for each $(\theta,x)\in S^1\times\bR$ let $\hat\sigma(\theta,x)=dq^{-1}_{\theta,x}(\sigma[\theta,x])$.
+    This maps a basis in $\sigma[\theta,x]$ to a basis of $T_{\theta,x}S^1\times\bR$, all the bases are consistently oriented.
+    This is because essentially we are mapping a basis $B$ to $AB$ (where $A=dq^{-1}$); if $C$ is another basis with $X$ the transition matrix, so $XB=C$,
+    then $Y=AXA^{-1}$ is the transition matrix from $AC$ to $AB$, and $\det Y=\det X$.
+
+    Now $q\circ\phi=q$ which means that
+    $$ \hat\sigma = dq^{-1}\circ\sigma = d(q\circ\phi)^{-1}\circ\sigma = d\phi^{-1}\circ dq^{-1}\circ\sigma = d\phi\circ dq^{-1}\circ\sigma . $$
+    But $d\phi$ has a representation $\diag(1,-1)$ which has determinant $-1$.
+    Thus $d\phi$ reverses orientation, so $d\phi^{-1}\circ dq^{-1}\circ\sigma$ would have orientation opposite to $dq^{-1}\circ\sigma$, a contradiction.
+
+    \item Let us write
+    $$ \Or(E) = \set{(p,\O_p)}[p\in M,\ \hbox{$\O_p$ is an orientation of $E_p$}] . $$
+    We have that
+    $$ \pi^*E = \set{(e,\O_p)}[e\in E_p,\ \O_p\in\Or(E)_p] , $$
+    The fibers of $\pi^*E$ over $\Or(E)$ are isomorphic to $E_p$.
+    Thus
+    $$ \Or(\pi^*E) = \set{(e,\O_p,\O'_p)}[e\in E_p,\ \hbox{$\O_p$ and $\O'_p$ are orientations of $E_p$}] , $$
+    since $\pi^*E_{(e,\O_p)}\cong E_p$ so orientations of the fibers of $\pi^*E$ are orientations of the fibers of $E$.
+
+    Now define $\sigma\colon\Or(E)\to\Or(\pi^*E)$ which maps $\O_p\in\Or(E)_p$ (an orientation of $E_p$) to $(0_p,\O_p,\O_p)$, where $0_p\in E_p$ is the zero vector.
+    This is a smooth section, meaning $\pi^*E\to\Or(E)$ is orientable as desired.
+
+    Now we claim that $\pi^*TM$ and $T\Or(TM)$ are isomorphic bundles.
+    Since $\pi^*TM$ is orientable, this would mean $T\Or(TM)$ is an orientable bundle and thus by (4), $\Or(TM)$ is an orientable manifold.
+    We have
+    $$ \displaylines{
+        \pi^*TM = \set{(v,\O_p)}[v\in T_pM,\ \O_p\in\Or(TM)_p],\cr
+        T\Or(TM) = \set{(\O_p,v)}[\O_p\in\Or(TM),\ v\in T_{\O_p}\Or(TM)] .
+    } $$
+    Now, since $\pi\colon\Or(TM)\to M$ is a two-fold cover, it is in particular a local diffeomorphism.
+    Thus $d\pi_{\O_p}\colon T_{\O_p}\Or(TM)\to T_pM$ is an isomorphism.
+
+    Consider the map
+    $$ \theta\colon T\Or(TM) \to TM\times\Or(TM),\qquad \theta(\O_p,v) = (d\pi_{\O_p}v,\O_p) . $$
+    This is smooth since its first component is just the differential $d\pi$, and the second is just a projection.
+    Furthermore it lands in $\pi^*TM=TM\times_M\Or(TM)$ since both coordinates map to $p$ by $\pi_{TM}$ and $\pi$.
+    Since $\pi^*TM\subseteq TM\times\Or(TM)$ is embedded, we can restrict $\theta$ to a smooth map
+    $$ \theta\colon T\Or(TM) \to \pi^*TM . $$
+    It is bijective: if $\theta(\O_p,v)=\theta(\O_q,u)$ then $\O_p=\O_q$ and since $d\pi_{\O_p}$ is an isomorphism, $v=u$.
+    And for $(w,\O_p)\in\pi^*TM$, $\theta(\O_p,d\pi_{\O_p}^{-1}w)=(w,\O_p)$.
+
+    It also clearly commutes with the projections $T\Or(TM)\to\Or(TM)$ and $\pi^*TM\to\Or(TM)$, and on the fibers it is linear: for $\O_p\in\Or(E)$
+    $\theta$ restricts to $d\pi_{\O_p}$ on the fiber of $\O_p$.
+    Thus $\theta$ is a bundle morphism, and as it is bijective, it is a bundle isomorphism.
+
+    So $\pi^*TM\cong T\Or(TM)$ and as the former is orientable, so too is the latter.
+    Then by (4) $\Or(TM)$ is orientable as desired.
+\eenum
+
+\let\i=\imath
+\bprob
+
+    Let $M$ be a smooth manifold.
+    Denote interior multiplication by $X\in\X(M)$ by $\iota_X$.
+    \benum
+        \item Prove {\emphcolor Cartan's formula}: for every $\omega\in\Omega^k(M)$ and $X\in\X(M)$,
+        $$ \L_X\omega = \d\iota_X\omega + \iota_X\d\omega . $$
+        \item Suppose $M$ is oriented with Riemannian metric $g$.
+        Give $\partial M$ its induced orientation, and let $\nu_{\partial M}\to\partial M$ be the normal bundle of $\partial M\subseteq M$.
+        Prove that there exists a unique section $N\in\Gamma(\nu_{\partial M})$ with norm $1$ such that for every $p\in\partial M$,
+        if $(e_1,\dots,e_{n-1})$ is an oriented basis of $T_p\partial M$, then $(N_p,e_1,\dots,e_{n-1})$ is an oriented basis for $T_pM$.
+        \item Let $\nu_g\in\Omega^n(M)$ be $M$'s volume form.
+        Let
+        $$ \nu_{\i^*g}\in\Omega^{n-1}(\partial M) $$
+        be $\partial M$'s volume form with respect to the metric $\i^*g$ induced from the inclusion $\i\colon\partial M\inj M$.
+        Prove that
+        $$ \nu_{\i^*g} = \i^*(\iota_N\nu_g) . $$
+        \item Since $\nu_g\in\Omega^n(M)$, for every $f\in C^\infty(M)$ the integral $\int_Mf\nu_g$ is defined.
+        Prove the {\emphcolor divergence theorem}: if $X\in\X(M)$ is compactly supported then
+        $$ \int_M\div X\nu_g = \int_{\partial M}\iprod{X,N}_g\nu_{\i^*g} . $$
+    \eenum
+
+\eprob
+
+\benum
+    \item For $Y_1,\dots,Y_k\in\X(M)$ we know
+    $$ \L_X\omega(Y_1,\dots,Y_n) = X(\omega(\bar Y)) - \sum_i\omega(Y_1,\dots,[X,Y_i],\dots,Y_k) . $$
+    Now we compute $\d\iota_X\omega(\bar Y)$ and $\iota_X\d\omega(\bar Y)$.
+    For an increasing multi-index $I$, let us denote by $\bar Y_{-I}$ the tuple obtained from removing the indices $I$ from $\bar Y$:
+    $$ \bar Y_{-i_1,\dots,i_\ell} = (Y_1,\dots,\hat Y_{i_1},\dots,\hat Y_{i_\ell},\dots,Y_k) . $$
+    From the previous homework,
+    $$ \eqalign{
+        \d\iota_X\omega(\bar Y) &= \sum_i(-1)^{i-1}Y_i(\iota_X\omega(\bar Y_{-i})) + \sum_{i<j}(-1)^{i+j}\iota_X\omega([Y_i,Y_j],\bar Y_{-i,j})\cr
+            &= \sum_i(-1)^{i-1}Y_i(\omega(X,\bar Y_{-i})) + \sum_{i<j}(-1)^{i+j}\omega(X,[Y_i,Y_j],\bar Y_{-i,j})\cr
+            &= \sum_i(-1)^{i-1}Y_i(\omega(X,\bar Y_{-i})) - \sum_{i<j}(-1)^{i+j}\omega([Y_i,Y_j],X,\bar Y_{-i,j}).\cr
+    } $$
+    The last equality is due to the antisymmetry of $\omega$.
+
+    For $\iota_X\d\omega(\bar Y)=\d\omega(X,\bar Y)$, we consider the removal of the first index and all other indices independently.
+    Notice that in the second sum in the exterior derivative (removing two indices), we consider two cases: when $i=1$ and $1<j\leq k+1$ (removing $X$ and $Y_{j-1}$ and
+    multiplying by $(-1)^{1+j}$), and when $1<i<j$ (removing $Y_{i-1}$ and $Y_{j-1}$ and multiplying by $(-1)^{i+j}$).
+    By permuting the summation index, in the first case we sum over all $j\leq k$, and multiply the term by $(-1)^j$.
+    In the second case, we sum over all $i<j\leq k$, and multiply the term by $(-1)^{(i+1)+(j+1)}=(-1)^{i+j}$.
+    Thus,
+    $$ \d\omega(X,\bar Y) = X(\omega(\bar Y)) + \sum_i(-1)^iY_i(\omega(X,\bar Y_{-i})) + \sum_{i<j}(-1)^{i+j}\omega([Y_i,Y_j],X,\bar Y_{-i,j}) + \sum_j(-1)^j\omega([X,Y_j],\bar Y_{-j}) . $$
+    By our previous computation, we see that this is equal to
+    $$ \d\omega(X,\bar Y) = X(\omega(\bar Y)) + \sum_j(-1)^j\omega([X,Y_j],\bar Y_{-j}) - \d\iota_X\omega(\bar Y) . $$
+    Furthermore, since $\omega([X,Y_j],\bar Y_{-j})=(-1)^{j-1}\omega(Y_1,\dots,[X,Y_j],\dots,Y_k)$ since we apply $j-1$ transpositions to move the first index to the $j$th, this is equal to
+    $$ \iota_X\d\omega(\bar Y) = X(\omega\bar Y) - \sum_j\omega(Y_1,\dots,[X,Y_j],\dots,Y_k) - \d\iota_X\omega(\bar Y) = \L_X\omega(\bar Y) - \d\iota_X\omega(\bar Y) $$
+    as desired.
+
+    \item Let $n=\dim M$.
+    Then since $\dim\partial M=n-1$, the dimension of the fibers of $\nu_{\partial M}$ are all $1$.
+    So there is are only two vectors in each fiber with norm $1$, each with opposite sign.
+    Since $v,e_1,\dots,e_{n-1}$ and $-v,e_1,\dots,e_{n-1}$ have opposite orientations, for each $p\in\partial M$ there is a unique choice for $N_p$.
+
+    Let $(U,(x^i))$ be a boundary chart for $M$.
+    The induced orientation of $\partial M$ is such that if $e_1,\dots,e_{n-1}$ is oriented for $\partial M$ then $-\partial_n,e_1,\dots,e_{n-1}$ is oriented.
+    Here we use the convention that Euclidean half-space is nonnegative in its last coordinate.
+    For $p\in U\cap\partial M$, let $v$ be the orthogonal projection of $-\partial_n|_p$ to $\nu_{\partial M}|_p$.
+
+    Since $\nu_{\partial M}$ is orthogonal to $e_1,\dots,e_{n-1}$, $v,e_1,\dots,e_{n-1}$ remains a basis.
+    Furthermore, since this is a projection orthogonal to the $e_i$ we have that $-\partial_n=v+b^ie_i$ for some coefficients $b^i$.
+    Thus the transition matrix between $-\partial_n,e_1,\dots,e_{n-1}$ and $v,e_1,\dots,e_{n-1}$ is of the form
+    $$ \pmatrix{1\cr\vert&1\cr*&&\ddots\cr\vert&&&1} , $$
+    which has determinant $1$.
+    Thus $-\partial_n,e_1,\dots,e_{n-1}$ and $v,e_1,\dots,e_{n-1}$ are consistently oriented, so the list $v,e_1,\dots,e_{n-1}$ is oriented for $M$.
+    Thus $N_p$ must be the normalization of $v$, i.e.\ $N_p=v/\norm v_g$, because $N_p$ is unique and this vector has the desired property (since $v$ does, and multiplying by a positive
+    constant does not affect orientation).
+    So locally in $U$, $N$ is the projection of $-\partial_n$ onto $\nu_{\partial M}$ and then normalization.
+    Both of these preserve smoothness (since $\nu_{\partial M}$ is a vector bundle), so $N$ is smooth in $U$.
+
+    By uniqueness, if $V$ is any other boundary chart, the $N$ we defined for $U$ and the $N$ we defined for $V$ must coincide by uniqueness of $N_p$ at all points $p$.
+    Since $N$ is smooth over all boundary charts, it is smooth over all $\partial M$.
+    It has the desired property in each $U$, and thus over all of $\partial M$.
+
+    \item Let $e_1,\dots,e_{n-1}$ be an oriented orthonormal basis in $T_p\partial M$.
+    Then
+    $$ \i^*(\iota_N\nu_g)(e_1,\dots,e_{n-1}) = \nu_g(N_p,e_1,\dots,e_{n-1}) . $$
+    By the previous point, $N_p,e_1,\dots,e_{n-1}$ is an oriented orthonormal basis of $T_pM$.
+    The characterizing property of $\nu_g$ is that it maps oriented orthonormal bases to $1$, so $\i^*(\iota_N\nu_g)(e_1,\dots,e_{n-1})=1$.
+
+    This is true for all oriented orthonormal bases, and thus by the characterizing property of the Riemannian volume form, $\i^*(\iota_N\nu_g)=\nu_{\iota^*g}$
+    as desired.
+
+    \item Since $X$ is compactly supported, so too is $\div X$.
+    This is because if $X=f^iE_i$ in a geodesic frame centered at $p$ then $\div X(p)=(E_if^i)(p)$.
+    So if $X(p)=0$ then $f^i=0$ and thus $\div X(p)=0$, meaning $\supp\div X\subseteq\supp X$ which is compact.
+    So integrating $\div X\nu_g$ makes sense.
+
+    Previously we showed that $\L_X\nu_g=(\div X)\nu_g$.
+    By Cartan's formula,
+    $$ (\div X)\nu_g = \L_X\nu_g = \d\iota_X\nu_g + \iota_X\d\nu_g . $$
+    Since $\nu_g$ is a top-form, its exterior derivative is zero (all $(n+1)$-forms are zero) and thus we can simplify
+    $$ (\div X)\nu_g = \d\iota_X\nu_g . $$
+    By Stokes' theorem,
+    $$ \int_M(\div X)\nu_g = \int_M\d\iota_X\nu_g = \int_{\partial M}\i^*(\iota_X\nu_g) . $$
+    Now we claim that $\i^*(\iota_X\nu_g)=\iprod{X,N}\nu_{\i^*g}$ on $\partial M$.
+
+    To show the equality of two top-forms, it is sufficient to show that at any point and for a single oriented basis they agree.
+    This is because top-forms are determined by their value at any oriented basis (by multi-linearity and antisymmetry).
+    So for $p\in\partial M$ let $e_1,\dots,e_{n-1}$ be an oriented orthonormal basis of $T_p\partial M$.
+    Then $N_p,e_1,\dots,e_{n-1}$ is an oriented orthonormal basis of $T_pM$ and so $X=\iprod{X,N}N+\sum_i\iprod{X,e_i}e_i$ and thus
+    $$ \multline{
+        \i^*(\iota_X\nu_g)(e_1,\dots,e_{n-1}) = \nu_g(X,e_1,\dots,e_{n-1}) =\cr
+        \iprod{X,N}\nu_g(N,e_1,\dots,e_{n-1}) + \sum_i\iprod{X,e_i}\nu_g(e_i,e_1,\dots,e_{n-1}) = \iprod{X,N}
+    } $$
+    where the last equality is because $N,e_1,\dots,e_{n-1}$ is an oriented orthonormal basis and thus, by the characterization of the Riemannian volume form, $\nu_g(N,e_1,\dots,e_{n-1})=1$; the other terms are
+    all zero by antisymmetry.
+
+    On the other hand, since $\nu_{\i^*g}(e_1,\dots,e_{n-1})=1$ we see that
+    $$ \iprod{X,N}\nu_{\i^*g}(e_1,\dots,e_{n-1}) = \iprod{X,N} = \i^*(\iota_X\nu_g)(e_1,\dots,e_{n-1}) $$
+    as desired.
+
+    All in all, we have shown $\i^*(\iota_X\nu_g)=\iprod{X,N}\nu_{\i^*g}$ and thus
+    $$ \int_M(\div X)\nu_g = \int_{\partial M}\i^*(\iota_X\nu_g) = \int_{\partial M}\iprod{X,N}\nu_{\i^*g} $$
+    as desired.
+\eenum
+
+
+

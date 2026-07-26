@@ -1,0 +1,443 @@
+\def\bK{{\bb K}}
+
+\bprob
+
+    Solve problem 6, page 78, of ``Foundations of Lie Groups and Differentiable Manifolds'', Warner.
+    Let $X,Y$ be vector fields on $M$, with $p\in M$.
+    Let $\theta,\psi$ be the flows of $X,Y$, and define
+    $$ \beta(t) = \psi_{-\sqrt t}\theta_{-\sqrt t}\psi_{\sqrt t}\theta_{\sqrt t}(p) $$
+    in a neighborhood of $0$, forming a curve.
+    Show that for $f\in C^\infty(M)$,
+    $$ [X,Y]_pf = \lim_{t\to0}\frac{f(\beta(t)) - f(\beta(0))}t . $$
+
+\eprob
+
+Since our limit is over $t>0$ (considering the domain of square roots), it is equal to
+$$ \lim_{t\to0}\frac{f(\beta(t^2)) - f(p)}{t^2} . $$
+Our goal is to use L'H\^opital's rule to compute this limit (by continuity the numerator tends to zero).
+Let us define
+$$ \gamma(x,y,z,w) = f(\psi_{-x}\theta_{-y}\psi_z\theta_w(p)), $$
+so that $f(\beta(t^2))=\gamma(t,t,t,t)$.
+So to compute the derivative of $f(\beta(t^2))$ we compute the partial derivatives of $\gamma$.
+
+We have the following situation: we want to differentiate a function of the form
+$$ h(t) = f\circ\theta_t\circ g(p) $$
+where $\theta_t$ is the flow of some vector field $X$ and $f$ is real-valued.
+Then
+$$ h'(t) = df_{\theta_t(gp)}(\theta^{gp})'(t) , $$
+and since $\theta$ is the flow of $X$, this is equal to
+$$ h'(t) = df_{\theta_t(gp)}X_{\theta_t(gp)} = X_{\theta_t(gp)}f . $$
+
+In our case, this gives us
+$$ \eqalign{
+    \pdvof\gamma x &= -Y_{\psi_{-x}\theta_{-y}\psi_z\theta_w(p)}f\cr
+    \pdvof\gamma y &= -X_{\theta_{-y}\psi_z\theta_w(p)}(f\circ\psi_{-x})\cr
+    \pdvof\gamma z &= Y_{\psi_z\theta_w(p)}(f\psi_{-x}\theta_{-y})\cr
+    \pdvof\gamma w &= X_{\theta_w(p)}(f\psi_{-x}\theta_{-y}\psi_z).
+} $$
+Thus
+$$ f(\beta(t^2))'(0) = \sum_i\pdvof\gamma{x_i}(0) = -Y_pf - X_pf + Y_pf + X_pf  = 0 , $$
+and so we can apply L'H\^opital again (the denominator is $2t$).
+But we need to differentiate these partial derivatives.
+These are functions of the form
+$$ k(t) = X_{h\circ\theta_t\circ f}g = (Xg)(h\circ\theta_t\circ f(p)) . $$
+where $X$ is a vector field and $\theta$ is the flow of some other vector field $Y$, $g$ some real-valued smooth function, and $f,h$ some smooth functions.
+Then
+$$ k'(t) = d(Xg)_{h\theta_tf(p)}dh_{\theta_tfp}(\theta^{fp})'(t) = d(Xg)_{h\theta_tfp}dh_{\theta_tfp}Y_{\theta_tfp} = Y((Xg)\circ h)_{\theta_tfp} . $$
+So we have (by symmetry of second-order partial derivatives):
+$$ \eqalign{
+    \pdvof\gamma{xx} &= Y(Yf)_{\psi_{-x}\theta_{-y}\psi_z\theta_w(p)}\cr
+    \pdvof\gamma{xy} &= X((Yf)\circ\psi_{-x})_{\theta_{-y}\psi_z\theta_w}\cr
+    \pdvof\gamma{xz} &= -Y((Yf)\psi_{-x}\theta_{-y})_{\psi_z\theta_w}\cr
+    \pdvof\gamma{xw} &= -X((Yf)\psi_{-x}\theta_{-y}\psi_z)_{\theta_w}\cr
+    \pdvof\gamma{yy} &= X(X(f\psi_{-x}))_{\theta_{-y}\psi_z\theta_w}\cr
+    \pdvof\gamma{yz} &= -Y(X(f\psi_{-x})\theta_{-y})_{\psi_z\theta_w}\cr
+    \pdvof\gamma{yw} &= -X(X(f\psi_{-x})\theta_{-y}\psi_z)_{\theta_w}\cr
+    \pdvof\gamma{zz} &= Y(Y(f\psi_{-x}\theta_{-y}))_{\psi_z\theta_w}\cr
+    \pdvof\gamma{zw} &= X(Y(f\psi_{-x}\theta_{-y})\psi_z)_{\theta_w}\cr
+    \pdvof\gamma{ww} &= X(X(f\psi_{-x}\theta_{-y}\psi_z))_{\theta_w}.
+} $$
+So
+$$ f(\beta(t^2))''(0) = \sum_{i,j}\pdvof\gamma{x_ix_j}(0), $$
+and evaluating the second order partial derivatives at $0$ gives results like $Y_pYf,X_pYf$, etc.
+Then dividing by $2$ (the denominator of the limit is $2$, the second derivative of $t^2$) gives that the limit is equal to
+$$ X_pYf - Y_pXf = [X,Y]_pf $$
+as desired.
+
+\bprob
+
+    Prove that there is a unique smooth structure on $\bR$ with its standard topology, up to diffeomorphism.
+
+\eprob
+
+Let $M$ be a smooth manifold over $\bR$ with the same topology.
+Suppose that there is a nowhere vanishing vector field on $M$, call it $X$, and let $\gamma\colon I\to M$ be a maximal integral curve starting at $0$.
+Then
+$$ \gamma'(t) = X_{\gamma(t)} \neq 0 $$
+means that $\gamma'(t)$ has full rank (one) always, and is thus a submersion and immersion.
+Furthermore integral curves are either periodic or injective; since $\gamma$ has nonzero derivative it cannot be periodic, so it is injective.
+
+Since $\gamma$ is a submersion, it is an open map, so $\gamma(I)\subseteq M$ is open and connected.
+If $\gamma$ is not surjective then $\gamma(I)$ is an open interval $(a,b)$ with one side finite, assume $b$ is.
+But then there is another integral curve of $X$ starting at $b$, call it $\delta$, and similarly its image in $M$ is an open interval and thus intersects $(a,b)$.
+Let $\delta(s)\in(a,b)$ so that $p=\gamma(t)=\delta(s)$ for some $t$, and then $\gamma(x+t)$ and $\delta(x+s)$ are both integral curves starting at $p$, so they agree
+in their common domain.
+But then we can extend $\gamma$ to part of $\delta$'s domain, including $b$.
+This contradicts $\gamma$'s maximality, so $\gamma$'s image must be all of $M$.
+
+Thus $\gamma$ is bijective, an immersion, and a submersion.
+Thus it is a diffeomorphism, and since $I\subseteq\bR$ is an open interval and thus diffeomorphic to $\bR$, $M$ and $\bR$ are diffeomorphic.
+
+Now we show that a nowhere vanishing $X$ exists.
+Let us cover $M$ by smooth charts on open intervals $(a_i,b_i)$, and by reordering and shrinking we can assume $a_i<b_{i-1}<a_{i+1}<b_i$ for all $i$ (so every
+point is contained in at most two open sets).
+Furthermore, we can assume that this atlas is oriented: we start at $i=0$ and work forward swapping orientation of the charts if they aren't compatible with the orientation
+of $(a_0,b_0)$'s chart.
+Similarly we work backward.
+
+Now define the vector field $X^i$ on $(a_i,b_i)$ to be given by $d/dt$ (relative to the chart).
+If we let $\tau^i$ be the transition function between $(a_i,b_i)$ and $(a_{i+1},b_{i+1})$, then $X^i_p$ relative to $(a_{i+1},b_{i+1})$ is $(\tau_i)'d/dt$.
+Since the atlas is oriented, $(\tau_i)'>0$.
+
+Now let $\lambda_i$ be a partition of unity subordinate to the open cover, and let
+$$ X = \sum_i\lambda_iX^i . $$
+This is smooth by localy finiteness, and thus forms a vector field.
+Furthermore for $p\in M$, it is contained in a single $(a_i,b_i)$ or two.
+If it is contained in a single one, then $X_p=\lambda_i(p)X^i_p=X^i_p$ (since the partition must sum to one), which is nonzero by definition.
+Otherwise,
+$$ X_p = \lambda_i(p)X^i_p + \lambda_{i+1}(p)X^{i+1}_p = \lambda_i(p)\evdrv t_p + (1-\lambda_i(p))\tau_i'(p)\evdrv t_p . $$
+This cannot be zero, if it were then
+$$ \lambda_i(p)(\tau'_i(p)-1) = \tau'_i(p) , $$
+But $\lambda_i(p)(\tau'_i(p)-1)\leq\tau'_i(p)-1<\tau'_i(p)$ a contradiction.
+
+\bprob
+
+    Let $G=\gl_n(\bC)$ be the Lie group of complex invertible $n\times n$ matrices.
+    Its lie group $\g\cong T_eG$ can be identified with $\mat_n(\bC)$.
+    \benum
+        \item Prove an explicit formula for left-invariant vector fields on $G$.
+        \item Prove an explicit formula for the exponential map $\exp\colon\g\to G$.
+        \item Let $X,Y\in\g$, show in two ways that $[X,Y]=XY-YX$.
+        \benum
+            \item Use part (1) and the definition of Lie brackets.
+            \item Prove an explicit formula for $\Ad\colon G\to\aut(\g)$, use the fact that $\ad=\Ad_*$ and $\ad_X(Y)=[X,Y]$, as well as
+            part (2).
+        \eenum
+    \eenum
+
+\eprob
+
+\def\i{{\rm i}}
+
+\benum
+    \item We know in general for $v\in T_eG$, it defines the left-invariant vector field $v^L\in\lie(G)$ given by
+    $$ v^L_g = d(L_g)_ev . $$
+    So we need to compute the differentials of left multiplication.
+    Recall the identification $\mat_n(\bC)\oto T_IG$ by mapping a matrix $(A^i_j)\in\mat_n(\bC)$ to
+    $$ (A^i_j) \oto A^{i,b}_j\pdv{x^{i,b}_j} $$
+    where $A^{i,0}_j=\Re(A^i_j)$ and $A^{i,1}_j=\Im(A^i_j)$.
+
+    For a matrix $A$ recall that
+    $$ d(L_A)_I\parens{\evpdv{x^{i,b}_j}_I} = \pdvof{(L_A)^{\ell,c}_k}{x^{i,b}_j}(A) \evpdv{x^{\ell,c}_k}_A , $$
+    so we compute the partial derivatives of $L_A$.
+    Let $(X^{i,b}_j)$ be a complex-valued matrix,
+    $$ (L_AX)^\ell_k = (AX)^\ell_k = A^\ell_t X^t_k , $$
+    And thus
+    $$ (L_AX)^{\ell,0}_k = \Re((AX)^\ell_k) = (A^{\ell,0}_tX^{t,0}_k) - (A^{\ell,1}_tX^{t,1}_k) $$
+    so that
+    $$ \pdvof{(L_A)^{\ell,0}_k}{x^{t,0}_k} = A^{\ell,0}_t,\qquad \pdvof{(L_A)^{\ell,0}_k}{x^{t,1}_k} = - A^{\ell,1}_t . $$
+    Similarly
+    $$ (L_AX)^{\ell,1}_k = A^{\ell,0}_tX^{t,1}_k + A^{\ell,1}_tX^{t,0}_k $$
+    so that
+    $$ \pdvof{(L_A)^{\ell,1}_k}{x^{t,0}_k} = A^{\ell,1}_t,\qquad \pdvof{(L_A)^{\ell,1}_k}{x^{t,1}_k} = A^{\ell,0}_t . $$
+    All other partial derivatives are zero.
+
+    So we have that
+    $$ d(L_A)_I\parens{\evpdv{x^{i,0}_j}_I} = A^{\ell,0}_i\evpdv{x^{\ell,0}_j}_A + A^{\ell,1}_i\evpdv{x^{\ell,1}_j}_A , $$
+    and
+    $$ d(L_A)_I\parens{\evpdv{x^{i,1}_j}_I} = -A^{\ell,0}_i\evpdv{x^{\ell,0}_j}_A + A^{\ell,0}_i\evpdv{x^{\ell,1}_j}_A . $$
+    Under the correspondence $\ievpdv{x^{i,0}_j}$ is the basis matrix $E_{ij}$, and $\ievpdv{x^{i,1}_j}=\i E_{ij}$ (multiplication by
+    the imaginary unit).
+    We see then that
+    $$ d(L_A)_I(E_{ij}) = AE_{ij},\qquad d(L_A)_I(\i E_{ij}) = A\i E_{ij} $$
+    under the natural correspondence.
+
+    By linearity we see that
+    $$ d(L_A)_I(B) = AB $$
+    for all matrices $B$.
+    Thus the left-invariant vector field corresponding to $B\in T_IG$ is
+    $$ B^L|_A = d(L_A)_I(B) = AB . $$
+
+    \item For a matrix $A$ define
+    $$ e^A = \sum_{k=0}^\infty \frac1{k!}A^k . $$
+    By submultiplicity of the Frobenius norm, this converges absolutely for all $A$ (as we can compare the series with $\norm A^k/k!$ which converges
+    to $e^{\norm A}$).
+    We claim that $\exp(A)=e^A$ for all matrices.
+
+    To do this, we need to show that for $A\in\g$, its one-parameter subgroup is given by $\gamma(t)=e^{tA}$.
+    We need to show that $\gamma(t)$ is invertible for all $t$ (so that it lands in $G$), $\gamma'(t)=A^L|_{\gamma(t)}$ for all $t$ (so it defines
+    the one-parameter subgroup), and $\gamma(0)=I$.
+    The last point is the easiest as it follows from the definition that $e^0=I$.
+
+    For the second point, we need to show
+    $$ \gamma'(t) = A^L|_{\gamma(t)} = \gamma(t)A $$
+    by our formula for left-invariant vector fields.
+    Note that
+    $$ \gamma(t) = \sum_{k=0}^\infty \frac{t^k}{k!}A^k $$
+    is a power series which converges uniformly in any closed interval, and thus we can differentiate it term by term:
+    $$ \gamma'(t) = \sum_{k=1}^\infty \frac{t^{k-1}}{(k-1)!}A^k = \parens{\sum_{k=0}^\infty\frac{t^k}{k!}A^k}A = \gamma(t)A $$
+    as desired.
+
+    Finally to show that $\gamma(t)$ is invertible, we will show that its inverse is $\gamma(-t)$ (not surprising by exponential laws).
+    So define $\sigma(t)=\gamma(t)\gamma(-t)$, we will show that it has zero derivative.
+    By the product rule and what we just showed,
+    $$ \sigma'(t) = \gamma'(t)\gamma(-t) + \gamma(t)\gamma'(-t) = \gamma(t)A\gamma(-t) - \gamma(t)A\gamma(-t) = 0 $$
+    so $\sigma(t)$ is constant.
+    Since $\sigma(0)=\gamma(0)\gamma(0)=I$, we see that $\sigma(t)=I$ for all $t$ and thus $\gamma(t)$ is invertible for all $t$.
+    Thus $\gamma(t)$ is $A^L$'s integral flow starting at $I$, thus the one-parameter subgroup generated by $A$.
+    Then by definition
+    $$ \exp(A) = \gamma(1) = e^A $$
+    as desired.
+
+    \item
+    \benum
+        \item We recall that
+        $$ [A,B] = [A^L,B^L]_I $$
+        and for vector fields,
+        $$ [A,B] = \parens{A^i\pdvof{B^j}{x^i} - B^i\pdvof{A^j}{x^i}}\pdv{x^j} . $$
+        In our case as we showed,
+        $$ A^L_X = XA = X^i_kA^k_j \pdv{x^i_j}, $$
+        where we split the real and imaginary parts.
+        Then
+        $$ (A^L)^i_j(X) = X^i_kA^k_j \implies \pdvof{(A^L)^i_j}{x^i_k} = A^k_j $$
+        thus
+        $$ [A^L,B^L]_I = \parens{(A^L)^i_j(I)B^j_k - (B^L)^i_j(I)A^j_k}\pdv{x^i_k} = (A^i_jB^j_k - B^i_jA^j_k)\pdv{x^i_k} $$
+        which is $AB-BA$ under the correspondence.
+
+        \item By naturality of $\exp$, the following diagram commutes
+
+        \commsq{\g&\endo(\g)\cr G&\aut(\g)}
+            {\Ad_*}{\Ad}{\exp}{\exp'}
+
+        Since $\aut(\g)$ is $\gl(\g)$, we already know that $\exp'$ is given by the exponential map defined above:
+        $$ \exp'(\Phi) = \sum_k\frac1{k!}\Phi^k,\qquad \Phi\in\endo(\g) , $$
+        so we write $\exp$ for $\exp'$ as well.
+        Since $\ad=\Ad_*$ we have
+        $$ \Ad(\exp(A)) = \exp(\ad(A)) . $$
+        By linearity, $\ad(A)$'s one-parameter subgroup is given by $\gamma(t)=\exp(t\ad(A))=\exp(\ad(tA))=\Ad(\exp(tA))$.
+        This means that $\gamma'(0)=\ad(A)=[A,\bul]$, so we want to differentiate $\Ad(\exp(tA))$.
+
+        Now we claim that $\Ad(A)B=ABA^{-1}$ for all $A\in G,B\in\g$.
+        Indeed,
+        $$ \Ad(A) = (R_{A^{-1}})_*\circ(L_A)_* $$
+        and we showed that $(L_A)_*=d(L_A)_I$ is left multiplication by $A$, dually $(R_A)_*$ is right multiplication by $A$.
+        Thus $\Ad(A)B=ABA^{-1}$ as desired.
+
+        We know that
+        $$ [A,B] = \ad(A)B = \parens{\evdrv t_{t=0}\Ad(\exp(tA))}B = \evdrv t_{t=0}(\Ad(\exp(tA))B) , $$
+        and since $\exp(A)^{-1}=\exp(-A)$,
+        $$ \Ad(\exp(tA))B = \exp(tA)B\exp(-tA) $$
+        so that 
+        $$ \eqalign{
+            \evdrv t_{t=0}\Ad(\exp(tA))B &= \parens{\evdrv t_{t=0}\exp(tA)}B\exp(0) + \exp(0)B\parens{\evdrv t_{t=0}\exp(-tA)}\cr
+            &= AB - BA,
+        } $$
+        where the last equality is because $\exp(tA)$ is the one-parameter subgroup generated by $A$.
+        So we have shown
+        $$ [A,B] = AB - BA $$
+        as desired.
+    \eenum
+\eenum
+
+\bprob
+
+    Consider the Lie group $G=U_n$ of complex unitary $n\times n$ matrices and its Lie algebra $\lu_n$.
+    In a previous homework we showed a natural identification $\lu_n\cong T_eU_n$ with the space of skew-Hermitian matrices ($M^\dagger=-M$).
+    \benum
+        \item Repeat the previous problem for $G$.
+        \item Define an inner product on $T_eU_n$ by
+        $$ g_e(X,Y) = \Re\tr(X^\dagger Y) . $$
+        Show that $g_e$ extends to a bi-invariant metric $g$ on $U_n$.
+        \item Verify that $g([X,Y],Z)=-g(Y,[X,Z])$ for $X,Y,Z\in\lu_n$.
+    \eenum
+
+\eprob
+
+\benum
+    \item $U_n$ is an embedded Lie subgroup of $\gl_n(\bC)$ as we showed in the previous homework.
+    Thus for $U\in U_n$, $L_U\colon U_n\to U_n$ is the restriction of $L_U\colon\gl_n(\bC)\to\gl_n(\bC)$ and thus $dL_U$ is given by the same
+    formula as for $\gl_n(\bC)$.
+    That is, left-multiplication by $U$.
+    So left-invariant vector fields are of the form
+    $$ M^L_U = UM,\qquad U\in U_n,M\in\lu_n . $$
+    Since $U_n$ is a Lie subgroup, its exponential is the restriction of that of $\gl_n(\bC)$ so it is given by the same formula (matrix
+    exponentiation), and the Lie bracket is as well.
+
+    \item If we have an inner product $g_e{\bul,\bul}$ on $\g$ then we showed it extends to a metric on $G$ by
+    $$ g(X,Y) = g_e(X_e,Y_e) . $$
+    This is right-invariant when it is invariant under $\Ad$.
+    This is because for $X\in\lu_n$ and $U\in U_n$ we have $\Ad(U)X=(R_{U^{-1}})_*(L_U)_*X=(R_{U^{-1}})X$ by left-invariance.
+    Thus for $X,Y\in\lu_n$,
+    $$ \multline{
+        ((R_{U^{-1}})^*g)_V(X_V,Y_V) = g_{VU^{-1}}\bigl(((R_{U^{-1}})_*X)_{VU^{-1}},((R_{U^{-1}})_*Y)_{VU^{-1}}\bigr)\cr
+        = g_{VU^{-1}}((\Ad(U)X)_{VU^{-1}},(\Ad(U)Y)_{VU^{-1}}) = g_I(\Ad(U)X,\Ad(V)Y) .
+    } $$
+    The last equality is due to how we extended $g_e$: $g_U(X_U,Y_U)=g_e(X_e,Y_e)$.
+    So if $g_e$ is $\Ad$-invariant then
+    $$ ((R_{U^{-1}})^*g)_V(X_V,Y_V) = g_I(X,Y) = g_V(X_V,Y_V) , $$
+    so that $g$ is right-invariant.
+
+    Again $\Ad$ on $U_n$ is the restriction of $\Ad$ on $\gl_n(\bC)$ so $\Ad(U)X=UXU^{-1}=UXU^\dagger$ since $U$ is unitary.
+    Thus
+    $$ g_I(\Ad(U)X,\Ad(U)Y) = g_I(UXU^\dagger,UYU^\dagger) = \Re\tr((UXU^\dagger)^\dagger(UYU^\dagger)) =
+    \Re\tr(UX^\dagger YU^\dagger). $$
+    Permuting the matrices in the trace, this is equal to
+    $$ = \Re\tr(U^\dagger UX^\dagger Y) = \Re\tr(X^\dagger Y) = g_I(X,Y) . $$
+    So $g_I$ is $\Ad$-invariant as desired.
+
+    For completeness, $g_I$ is an inner product because $(X,Y)\mapsto\tr(X^\dagger Y)$ is a complex inner product (the Frobenius inner
+    product), and taking the real part of a complex inner product is a real inner product.
+
+    \item We compute directly:
+    $$ g_I([X,Y],Z) = \Re\tr((XY-YX)^\dagger Z) = \Re\tr(Y^\dagger X^\dagger Z) - \Re\tr(X^\dagger Y^\dagger Z) , $$
+    since $X,Y$ are skew-Hermitian this is equal to
+    $$ g_I([X,Y],Z) = \Re\tr(YXZ) - \Re\tr(XYZ) . $$
+    And
+    $$ g_I(Y,[X,Z]) = \Re\tr(Y^\dagger(XZ-ZX)) = -\Re\tr(YXZ-YZX) = -(\Re\tr(YXZ) - \Re\tr(YZX)) $$
+    permuting cyclicly the product in the last trace gives us
+    $$ g_I(Y,[X,Z]) = -(\Re\tr(YXZ) - \Re\tr(XYZ)) = -g_I([X,Y],Z) $$
+    as desired.
+\eenum
+
+\bprob
+
+    Let $\Sl_n(\bR)$ denote the group of $n\times n$ real matrices with unit determinant.
+    We show that it is a Lie group of dimension $n^2-1$ with Lie algebra $\lsl_n$, $n\times n$ real matrices with zero trace.
+
+    We also define $\SU_n$ to be the group of $n\times n$ unitary matrices with unit determinant.
+    We show that it is a Lie group with Lie algebra $\lsu_n$, $n\times n$ skew-Hermitian matrices of trace $0$.
+    \benum
+        \item Let $F\colon\mat_n(\bR)\to\bR$ be given by taking the determinant.
+        Thus for $A\in\mat_n(\bR)$, its differential $dF_A\colon\mat_n(\bR)\to\bR$ is a linear map.
+        Show that
+        $$ dF_A(B) = \tr(\adj(A)B) $$
+        where $\adj(A)$ is the adjugate of $A$.
+
+        \item Use the previous point to show that $1$ is a regular value of $\det$.
+        Conclude that $\Sl_n(\bR)$ is a smooth manifold of dimension $n^2-1$ and $T_2\Sl_n(\bR)=\lsl_n(\bR)$.
+
+        \item Prove that group multiplication and inversion on $\Sl_n(\bR)$ are smooth, so that $\Sl_n(\bR)$ is a Lie group.
+
+        \item Identify $S^1$ with the unit circle in $\bC$, so a Lie group.
+        Define the group morphism $h\colon U_n\to S^1$ by $h(U)=\det U$.
+        Show that $h$ is smooth and $\id\in U_n$ is a regular point of $h$.
+
+        \item Use the fact that $h$ is a homomorphism to show that it is a submersion.
+
+        \item Conclude that $\SU_n$ is a Lie group.
+
+        \item Let $\iota\colon U_n\inj\mat_n(\bC)$ be the inclusion.
+        Show that the composition
+        $$ T_IU_n \xtos{d\iota_I} T_I\mat_n(\bC) \xtos{\zeta} \mat_n(\bC) $$
+        carries $T_I\SU_n\subseteq T_IU_n$ to $\lsu_n\subseteq\lu_n$, where $\zeta$ maps $[\gamma]$ to $\gamma'(0)$.
+    \eenum
+
+\eprob
+
+\benum
+    \item We know that
+    $$ dF_A\parens{\evpdv{x^i_j}_A} = \pdvof F{x^i_j}(A)\drv t . $$
+    $\ievpdv{x^i_j}_A$ corresponds to the standard basis matrix $E^i_j$ (zero except at the $(i,j)$ coordinate), so we want to show that
+    this is equal to
+    $$ dF_A(E^i_j) = \pdvof F{x^i_j}(A)\drv t = \tr(\adj(A)E^i_j)\drv t , $$
+    and then by linearity we get the result for all $B$, not just $E^i_j$.
+    So we want to show that
+    $$ \pdvof F{x^i_j}(A) = \tr(\adj(A)E^i_j) = (\adj(A)E^i_j)^k_k = \adj(A)^j_i = (-1)^{i+j}\det(A_{ij}) $$
+    where $A_{ij}$ is the minor obtained by removing the $i$th row and $j$th column of $A$.
+
+    For $X=(x^i_j)$,
+    $$ F(X) = \sum_{\sigma\in S_n}\sgn\sigma\prod_{i=1}^n x^i_{\sigma(i)} , $$
+    so
+    $$ \pdvof F{x^i_j} = \sum_{\sigma(i)=j}\sgn\sigma\prod_{k\neq i} x^k_{\sigma(k)} . $$
+    Notice that
+    $$ \pdvof F{x^i_j}(A) = \sum_{\sigma(i)=j}\sgn\sigma\prod_{k\neq i}a^k_{\sigma(k)} = (-1)^{i+j}\det(A_{ij}) $$
+    as desired, since the permutations run over $\sigma\in S_{n-1}$ (identified with the subset of $S_n$ where $\sigma(i)=j$, and this
+    identification changes the sign by $(1)^{i+j}$).
+
+    \item If $F(A)=1$, meaning $\det(A)=1$, then $A$ is invertible and $\adj(A)=A^{-1}$.
+    Thus
+    $$ dF_A(A) = \tr(\adj(A)A) = \tr(I) = n \neq 0 . $$
+    This means that $dF_A$ is a nonzero linear functional, and thus surjective as its codomain is one-dimensional.
+    In other words, $A$ is a regular point of $F$, so $1$ is a regular value.
+
+    Since $\Sl_n(\bR)=F^{-1}(1)$, by the regular level set theorem this means $\Sl_n(\bR)$ is an embedded smooth submanifold of
+    $\mat_n(\bR)$, whose codimension is $\dim\bR=1$.
+    Thus its dimension is $\dim\Sl_n(\bR)=\dim\mat_n(\bR)-1=n^2-1$.
+
+    Finally we also know that $T_I\Sl_n(\bR)=\ker dF_I$.
+    This is because for a regular level set $F^{-1}q$, its dimension equals $\ker dF_p$ (since $dF_p$ is surjective, the kernel has codimension
+    equal to the dimension of its codomain), and $F$ is constant on $F^{-1}q$ so $dF_p=0$ on the level set, so $T_pF^{-1}q$ is contained
+    in the kernel.
+    Their dimensions are equal, so they are equal.
+
+    Since $dF_I(B)=\tr(\adj(I)^{-1}B)=\tr(B)$, its kernel is all the matrices $B$ of zero trace.
+    Thus $T_I\Sl_n(\bR)=\sl_n(\bR)$ as desired.
+
+    \item $\Sl_n(\bR)$ is a subgroup of $\gl_n(\bR)$ and an embedded submanifold of $\mat_n(\bR)$.
+    Thus it is embedded in $\gl_n(\bR)$ as well, and multiplication and inversion in $\gl_n(\bR)$ restrict to $\Sl_n(\bR)$.
+    We showed in a previous homework that we can restrict both the domain and codomain of a smooth function to embedded submanifolds,
+    so doing this for multiplication and inversion (restricting the smooth maps of $\gl_n(\bR)$ to $\Sl_n(\bR)$) shows that
+    multiplication and inversion of $\Sl_n(\bR)$ is smooth.
+
+    \item $S^1$ is embedded in $\bC$, and $U_n$ in $\mat_n(\bC)$.
+    The map $\det\colon\mat_n(\bC)\to\bC$ is smooth, and we can restrict it to the embedded submanifolds (on both the domain and codomain)
+    $U_n\subseteq\mat_n(\bC)$ and $S^1\subseteq\bC$.
+    Thus $\det\colon U_n\to S^1$ is smooth.
+
+    A similar computation as in part (1) shows that
+    $$ dh_I(A) = \tr(\adj(I)^{-1}A) = \tr(A) . $$
+    Since $T_IU_n\cong\lu_n$, the space of matrices skew-Hermitian matrices, taking $A=iI$ we see that $dh_I(A)$ is nonzero.
+    Since $S^1$ is one-dimensional, this means that $dh_I$ has full-rank and thus $I$ is a regular point.
+
+    \item $h$ is a group homomorphism between Lie groups (by multiplicity of the determinant), and thus has constant rank.
+    Since $h$ has rank $1$ at $I$, it has rank $1$ everywhere.
+    Since $\dim S^1=1$, this means that $h$ is a submersion.
+
+    \item $\SU_n=h^{-1}(1)$ is a regular level set (since $h$ is a submersion, every level set is regular), and thus an embedded submanifold
+    of $U_n$.
+    It is also a subgroup of $U_n$, and since we can restrict smooth functions to embedded submanifolds, restricting multiplication and inversion
+    of $U_n$ to $\SU_n$ shows that they are smooth, so it is a Lie group.
+
+    \item $\SU_n$'s codimension is equal to the rank of $h$, so $1$.
+    Thus
+    $$ \dim\SU_n = \dim U_n - 1 = n^2 - 1. $$
+    The dimension of $\lsu_n$ is also $n^2-1$: a skew-Hermitian matrix is determined by its values on its upper triangle, with imaginary values
+    on its diagonal.
+    Requiring that its trace be zero gives us $n-1$ choices of the diagonal, so
+    $$ \dim\lsu_n = \frac{n^2-n}2 \cdot 2 + (n-1) = n^2-1 , $$
+    where we multiply the first term by $2$ since each element of the upper triangle is complex (real + imaginary parts).
+    Explicitly, a basis for $\lsu_n$ is given by
+    $$ \set{E^i_j - E^j_i, \i E^i_j + \i E^i_j}[i>j] \cup \set{\i E^i_i - \i E^n_n}[i<n] . $$
+
+    Since $\zeta\circ d\iota_I$ is a composition of injections, it is an injection ($d\iota_I$ is an injection since $U_n$ is embedded
+    and thus $\iota$ is an immersion).
+    So we need only show that it carries $T_I\SU_n$ into $\lsu_n$, and then considering dimensions this shows that the image of
+    $T_I\SU_n$ is equal to $\lsu_n$.
+
+    Let $\gamma\colon(-\epsilon,\epsilon)\to\SU_n$ be a curve starting at $I$.
+    Then
+    $$ \zeta\circ d\iota_I[\gamma] = \zeta[\iota\circ\gamma] = (\iota\circ\gamma)'(0) . $$
+    So we identify $\gamma$ with $\iota\circ\gamma$ and view it as a curve into $\mat_n(\bC)$ with values in $\SU_n$ (meaning $\gamma(t)$ is
+    unitary with unit determinant for all $t$).
+    We already showed that $\gamma'(0)\in\lu_n$ in a previous homework, so we need only show that $\tr\gamma'(0)=0$.
+
+    We know that $\det\gamma(t)=1$, and thus
+    $$ 0 = \evdrv t_{t=0}\det\gamma(t) = d\det_{\gamma(0)}\gamma'(0) = d\det_I(\gamma'(0)) . $$
+    We showed above that this is equal to
+    $$ = \tr(\adj(I)\gamma'(0)) = \tr(\gamma'(0)) , $$
+    so $\gamma'(0)$ has trace zero, as desired.
+
+\eenum
+
+
+

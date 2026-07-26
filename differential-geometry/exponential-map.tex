@@ -119,8 +119,9 @@ $$ \set{\hbox{one-parameter subgroups of $G$}} \oto \lie(G) \oto T_eG . $$
 \bprop
 
     Let $G$ be a Lie group with Lie algebra $\g$.
+    Because $\g\cong T_eG$ is Euclidean, it has a unique smooth structure.
     \benum
-        \item The exponential map is smooth ($\g$ is Euclidean).
+        \item The exponential map is smooth.
         \item For any $X\in\g$ and $s,t\in\bR$, $\exp(s+t)X=\exp(sX)\exp(tX)$.
         \item For any $X\in\g$, $(\exp X)^{-1}=\exp(-X)$.
         \item For any $X\in\g$ and $n\in\bZ$, $(\exp X)^n=\exp(nX)$.
@@ -401,13 +402,55 @@ That is, $g\mapsto g_e$ is a bijection.
 \blemm
 
     Let $V$ be a Euclidean space, and $H$ a subgroup of $\gl(V)$.
-    Then there is an $H$-invariant inner product on $V$ iff $H$ has compact closed in $\gl(V)$.
+    Then there is an $H$-invariant inner product on $V$ iff $H$ has compact closure in $\gl(V)$.
 
 \elemm
 
+In the following proof we integrate differential forms, see the later section on that for details.
+
 \bproof
 
-    Omitted.
+    First if there is an $H$-invariant inner product $\iprod{\bul,\bul}$ on $V$, then $H$ is contained in the subgroup
+    $\orth(V)\subseteq\gl(V)$ of linear automorphisms of $V$ which are orthogonal with respect to this inner product.
+    Choosing an orthonormal basis of $V$ yields a Lie group isomorphism $\orth(V)\cong\orth(n)\subseteq\gl_n(\bR)$.
+    Now $\orth(n)$ is compact in $\gl_n(\bR)$, because it is closed and bounded (the norm of an orthogonal matrix is
+    $\tr(A^\top A)=\tr(I)=n$) and closed bounded subspaces of Euclidean space are compact.
+    Thus $\orth(V)$ is compact, and so $H$'s closure is a closed subset of $\orth(V)$ and thus compact as well.
+
+    Conversely suppose $H$ has compact closure $K$ in $\gl(V)$.
+    Then $K$ is a subgroup of $\gl(V)$, as a simple limiting argument will show.
+    As it is a closed subset of $\gl(V)$ it is an embedded Lie subgroup.
+    Now let $\iprod{\bul,\bul}_0$ be an arbitrary inner product on $V$, and let $\omega$ be a right-invariant
+    non-vanishing top-form on $K$.
+
+    Such $\omega$ exists, as we can take $(E_i)$ to be a global frame of right-invariant vector fields on $K$, then
+    the dual coframe $(\epsilon^i)$ are right-invariant as well so that
+    $$ \omega = \epsilon^1\wedge\cdots\wedge\epsilon^n $$
+    is right-invariant and non-vanishing.
+    So take $\omega$ to also be the orientation form of $K$.
+
+    Now for $x,y\in V$ define $f_{x,y}\colon K\to\bR$ by $f_{x,y}(k)=\iprod{kx,ky}_0$.
+    Then define a new inner product on $V$ by
+    $$ \iprod{x,y} = \int_Kf_{x,y}\omega . $$
+    Note that this is well-defined since $K$ is compact.
+    Symmetry and bilinearity follow from definition.
+    For nonzero $x\in V$, $f_{x,x}>0$ on $K$ so that $\iprod{x,x}>0$.
+    Thus this is indeed an inner product.
+
+    It remains to show that this inner product is $H$-invariant.
+    Because $H\subseteq K$, we will show it is $K$-invariant.
+    For $k_0\in K$ and $x,y\in V$ and $k\in K$ we have
+    $$ f_{k_0x,k_0y}(k) = \iprod{kk_0x,kk_0y} = f_{x,y}\circ R_{k_0}(k) $$
+    where $R_{k_0}\colon K\to K$ is right-multiplication.
+
+    Now,
+    $$ \iprod{k_0x,k_0y} = \int_Kf_{k_0x,k_0y}\omega = \int_K(f_{x,y}\circ R_{k_0})\omega $$
+    and because $\omega$ is right-invariant,
+    $$ R^*_{k_0}(f_{x,y}\omega) = R^*_{k_0}(f_{x,y})R^*_{k_0}(\omega) = (f_{x,y}\circ R_{k_0})\omega $$
+    so that
+    $$ \iprod{k_0x,k_0y} = \int_KR_{k_0}^*(f_{x,y}\omega) = \int_Kf_{x,y}\omega = \iprod{x,y} . $$
+    The final equality is because $R_{k_0}$ is an orientation-preserving diffeomorphism: it is orientation-preserving because
+    $R_{k_0}^*\omega=\omega$ as it is right-invariant, and $\omega$ is the orientation form.
     \qed
 
 \eproof
@@ -419,6 +462,14 @@ The following is then an immediate result of this lemma and the above propositio
     A Lie group $G$ has a bi-invariant Riemannian metric iff $\Ad(G)$ has compact closure in $\gl(\g)$.
 
 \ethrm
+
+\bproof
+
+    By the above proposition, $G$ has a bi-invariant metric iff there is an $\Ad(G)$-invariant inner product on $\g$.
+    The above lemma shows that this is iff $\Ad(G)$ has compact closure in $\gl(\g)$, as desired.
+    \qed
+
+\eproof
 
 \bcoro
 

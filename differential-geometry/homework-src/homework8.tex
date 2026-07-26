@@ -1,0 +1,515 @@
+\bprob[title={DoCarmo, Riemannian Geometry, page 83 problem 7}]
+
+    Let $M$ be a Riemannian manifold, and $p\in M$.
+    Show that there is a neighborhood $U$ of $p$ in $M$ and vector fields $E_1,\dots,E_n\in\X(U)$ forming an orthonormal local frame such that
+    $\nabla_{E_i}E_j|_p=0$ for all $i,j$.
+    Such a frame is called a {\emphcolor local geodesic frame}.
+
+\eprob
+
+Let $B$ be a geodesic ball around $p$, so of the form $B=\exp_p(B_\epsilon(0))$ for an open ball $B_\epsilon(0)\subseteq T_pM$ contained in the domain of $\exp_p$.
+Furthermore let $v_1,\dots,v_n\in T_pM$ form an orthonormal basis.
+Now for every $q\in B$ consider the radial geodesic from $p$ to $q$, so if $q=\exp_p(w)$ for $w\in B_\epsilon(0)$ the radial geodesic is given by $\gamma_q\colon t\mapsto\exp_p(tw)$.
+Then define $E_i|_q$ to be the parallel transport of $v_i\in T_pM$ along $\gamma_q$:
+$$ E_i|_q = P^{\gamma_q}_{0,1}(v_i) . $$
+
+Parallel transport along a curve is a linear isometry.
+If $\gamma$ is a curve, $v,u\in T_pM$, and $X,Y$ are their parallel transports along $\gamma$, then by definition $P^\gamma_{0,1}(v)=X(1)$ so
+$$ \iprod{P^\gamma_{0,1}v,P^\gamma_{0,1}(u)} = \iprod{X(1),Y(1)} . $$
+On the other hand $\iprod{X(t),Y(t)}$ is constant along $\gamma$, since
+$$ \drv t\iprod{X(t),Y(t)} = \iprod{D_tX,Y} + \iprod{X,D_tY} = 0 . $$
+And so
+$$ \iprod{P^\gamma_{0,1}v,P^\gamma_{0,1}u} = \iprod{X(1),Y(1)} = \iprod{X(0),Y(0)} = \iprod{v,u} , $$
+as desired.
+Since $E_i|_q$ is the parallel transport of $v_i$ along $\gamma_q$, this means the $E_i|_q$ remain orthonormal.
+
+So we just need to show that the $E_i$ are smooth, and $\nabla_{E_i}E_j|_p=0$.
+Consider the definition of $E_i$: for $q\in B$ we compute $w=\exp_p^{-1}(q)$ and then the parallel transport of $v_i$ along $\gamma=\exp_p(tw)$.
+We will show that the parallel transport of $v=v_i$ along $\gamma$ is smooth in $w$.
+The parallel transport is given by $X(1)$ where $X$ solves the ODE
+$$ \pdvof{X^i}t(t) + X^i(t)\dot\gamma^j(t)\Gamma^k_{ij}(\gamma(t)) = 0 , $$
+since $\gamma$ depends smoothly on $w$, the solution to this ODE depends smoothly on $w$.
+And $w$ depends smoothly on $q$ since $\exp_p^{-1}$ is a diffeomorphism, so in total $X$ depends smoothly on $q$.
+And thus $E_i|_q=X(1)$ depends smoothly on $q$, so $E_i$ is smooth.
+
+To show that $\nabla_{E_i}E_j|_p=0$, we have that
+$$ \nabla_{E_i}E_j|_p = \nabla_{E_i(p)}E_j = \nabla_{v_i}E_j . $$
+Now let $\alpha_i$ be the geodesic starting at $p$ with initial velocity $v_i$, so $\alpha_i=\exp_p(tv_i)$.
+So this is equal to
+$$ = \nabla_{\alpha'_i(0)}E_j = D_t|_{t=0}(E_j\circ\alpha_i) , $$
+with the covariant derivative taken along $\alpha_i$.
+Now, $E_j(\alpha_i(t))$ is the parallel transport of $v_j$ along $\gamma_{\alpha_i(t)}=\alpha_i$, and thus it is by definition parallel along $\alpha_i$ and its covariant
+derivative is zero, as desired.
+
+\bprob
+
+    \benum
+        \item Let $O(1,n)$ denote the subgroup of linear transformations of $\bR^{n+1}$ which preserve the Lorentz bilinear form.
+        Let $O_+(1,n)$ denote the set of matrices $A^i_j$ in $O(1,n)$ with $A^0_0>0$.
+        Show that $O_+(1,n)$ is a subgroup of $O(1,n)$ and its transformations restrict to isometries of $H^n_k$.
+
+        \item Determine the geodesics in the hyperboloid model of hyperbolic space as follows.
+        Let $P$ be a two-dimensional linear subspace of $\bR^{n+1}$ containing the point $p\in H^n_k$.
+        Show that there is an element of $O_+(1,n)$ which fixes $P$ and acts non-trivially on $\bR^{n+1}-P$.
+        Conclude that all geodesics through $p$ can be obtained as intersections of $P\cap H^n_k$ for some $P$ as above.
+
+        \item Show that the geodesics of point (2) are sent by the isometry $h\colon H^n_1\to D^n$ (where $D^n$ is the Klein model of hyperbolic space) to straight lines.
+
+        \item Show that geodesics in the Poincar\'e model of hyperbolic space are circles perpendicular to the boundary of the disk.
+
+        \item Show by example that angles measured with respect to the Klein metric on the disk are not the same as with respect to the Euclidean metric on the disk.
+        On the other hand, show that angles on the Poincar\'e disk are the same as the Euclidean metric.
+    \eenum
+
+\eprob
+
+\benum
+    \item Let us denote by $Q=\diag(-1,1,\dots,1)$ the bilinear form, so $(x,y)=x^\top Qy$
+    If we write $x=(a,u)$ and $y=(b,v)$ then we see $(x,y)=-ab+\iprod{u,v}$ where $\iprod{\bul,\bul}$ denotes the Euclidean product on $\bR^n$.
+
+    Then $A\in O(1,n)$ iff
+    $$ (Ax,Ay) = x^\top A^\top QAy = x^\top Qy = (x,y) , $$
+    i.e.\ iff $A^\top QA=Q$.
+    Since $Q$ is its own inverse, clearly $O(1,n)$ consists of invertible matrices.
+    Clearly then $O(1,n)$ is closed under multiplication and contains the identity, and by multiplying $A^\top QA=Q$ by $(A^{-1})^\top$ and $A^{-1}$ we see it is closed under inversion, so it is a group.
+    Furthermore we see that $A\in O(1,n)$ iff
+    $$ A^{-1} = QA^\top Q . $$
+    Then by taking the transpose of both sides we see that this implies
+    $$ (A^\top)^{-1} = (A^{-1})^\top = QAQ , $$
+    so that $O(1,n)$ is further closed under transposition.
+
+    Now to show that $O_+(1,n)$ is a subgroup, we first note that it clearly contains the identity.
+    And if $A\in O_+(1,n)$ then since $A^{-1}=QA^\top Q$, we see that $(A^{-1})^0_0=A^0_0>0$ so $O_+(1,n)$ is closed under inversion.
+    And suppose that $A\in O(1,n)$ and let
+    $$ A = \pmatrix{a & u^\top\cr v & *} . $$
+    Then, letting $e_i$ be the standard basis vectors,
+    $$ -1 = (e_0,e_0) = (Ae_0,Ae_0) = ((a,v),(a,v)) = -a^2 + \norm v^2 \implies a^2 = \norm v^2 + 1 , $$
+    where the norm is the Euclidean norm.
+    In particular we have that $a>\norm v$.
+    Since $O(1,n)$ is closed under transposition, we see that $a^2=\norm u^2+1$ as well.
+    If $A\in O_+(1,n)$ so that $a>0$ we see that $a>\norm u,\norm v$.
+
+    Now suppose we have
+    $$ A = \pmatrix{a & u^\top\cr v & *}, B = \pmatrix{b & z^\top\cr w & *} \in O_+(1,n) , $$
+    we want to show that $AB\in O_+(1,n)$.
+    We have
+    $$ AB = \pmatrix{ab + u^\top w & *\cr * & *}, $$
+    so we want to show that $ab+u^\top w>0$.
+    By Cauchy-Schwarz we have
+    $$ ab + u^\top w \geq ab - \norm u\norm w > ab - ab  = 0, $$
+    where the final inequality is because we showed $a>\norm u$ and $b>\norm w$ above.
+    Thus $O_+(1,n)$ is indeed a subgroup.
+
+    By definition $O(1,n)$, and thus $O_+(1,n)$, are isometries of Lorentzian space.
+    Since $H^n_k$ is an embedded submanifold of Lorentzian space, if we can show that maps of $O_+(1,n)$ restrict to it then we will have finished.
+    We want to show that if $A\in O_+(1,n)$ and $x\in H^n_k$ then $Ax\in H^n_k$, so $(Ax)^0>0$ and $Q(Ax)=1/k$.
+    Since $A$ is an isometry, $Q(Ax) = Q(x) = 1/k$ so we need only show that $(Ax)^0>0$.
+
+    Since $x\in H^n_k$ we have that $x^0>0$ and $Q(x)<0$.
+    Let $x=(x_0,y)$ so $Q(x)=-x_0^2+\norm y^2<0$ meaning $x_0>\norm y$.
+    Now let
+    $$ A = \pmatrix{a & u^\top\cr v & *}, $$
+    then $(Ax)^0=ax_0+u^\top y$ and by Cauchy-Schwarz,
+    $$ (Ax)^0 = ax_0 + u^\top y \geq ax_0 - \norm u\norm y > ax_0 - ax_0 = 0 , $$
+    as desired.
+
+    \item First we claim that $A\in O(1,n)$ is in $O_+(1,n)$ iff it preserves the sign of the first compomnent of any vector $x$ with $(x)<0$.
+    If $A\in O_+(1,n)$ then in the previous point we showed that if $x^0>0$ and $(x)<0$ then $(Ax)^0>0$ as well.
+    And if $x^0<0$ and $(x)<0$ then $-x^0>0$ and $(-x)=(x)<0$ so $(-Ax)^0>0$ so $(Ax)^0<0$, so $A$ preserves the sign of the first component all such vectors.
+    And conversely if $A$ preserves the sign of all such vectors, then in particular it does for $e_0$, and $(Ae_0)^0=A^0_0>0$ so $A\in O_+(1,n)$.
+
+    We also claim that $A\in O_+(1,n)$ iff it preserves the sign of the first component of {\it a single\/} $x$ with $(x)<0$.
+    This is because if $A\notin O_+(1,n)$ then $-A\in O_+(1,n)$ (since $(Ae_0)=-1$ we must have $A^0_0\neq0$), so $-A$ must preserve the sign of $x$.
+    But $(-Ax)^0=-Ax^0$ which differs from the sign of $x$ since $A$ preserves it, a contradiction.
+
+    Let $P\leq\bR^{n+1}$ be two-dimensional containing $p$.
+    Letting $x_0$ be the normalization of $p$ we can extend $x_0$ to an orthonormal basis $x_0,x_1$ of $P$.
+    This in turn we extend to an orthonormal basis $x_0,\dots,x_n$ of $\bR^{n+1}$.
+    By Sylvester's law of inertia, $(x_i,x_j)=\pm\delta_{ij}$ with the negative sign occuring only when $i=j=0$.
+    Now restricting the bilinear form to $P^\perp=\lspan\set{x_2,\dots,x_n}$ makes it an inner product since $(x_i,x_j)=\delta_{ij}$ for $i,j\geq2$.
+    So define $A$ on $P^\perp$ to be a unitary transformation with no fixed points, and to be the identity on $P$.
+    This preserves the bilinear form, so it is in $O(1,n)$.
+    Furthermore it preserves the sign of $x_0$, and since $(x_0)<0$, by above this means $A\in O_+(1,n)$.
+
+    Thus by definition $A\in O_+(1,n)$ fixes $P$ and for every $x\in\bR^{n+1}-P$ we can write $x=x'+x''$ for $x'\in P,x''\in P^\perp$,
+    then $Ax=x'+Ax''\neq x'+x''$, so every point outside of $P$ is acted on non-trivially.
+
+    Now if $\gamma$ is a geodesic in $H^n_k$ passing through $p$ with velocity $v$ at $p$.
+    So $\gamma(t_0)=p$ and $\gamma'(t_0)=v\in T_pH^n_k$, which means that $(v,p)=0$.
+    Let $P$ be spanned by $p,v$ (since $(v,p)=0$ they are linearly independent so $P$ is two-dimensional).
+    Let $A\in O_+(1,n)$ be as above, so $Ap=p,Av=v$.
+    As $A$ is an isometry, $A\circ\gamma$ is a geodesic of $H^n_k$, and
+    $$ A\circ\gamma(t_0) = p,\qquad (A\circ\gamma)'(t_0) = dA_p\circ\gamma'(t_0) = v,  $$
+    since as a matrix, $A$'s differential can be identified with $A$.
+    So by uniqueness, $A\circ\gamma=\gamma$, and since $A$'s fixed points are $P$ this means that $\gamma$'s image lies in $P\cap H^n_k$.
+
+    Now, $P\cap H^n_k$ are vectors $\alpha p+\beta v$ such that
+    $$ (\alpha p+\beta v) = (\alpha p) + (\beta v) = -r^2\alpha^2 + \beta^2(v) = -r^2 , $$
+    where $r^2=-1/k$.
+    These are points along a hyperbola, and thus $\gamma$'s image is the image of an open interval in this hyperbola.
+    Its image must be the entire hyperbola, since otherwise by parameterizing the hyperbola ($\alpha(t)=\cosh(t)$ and $\beta(t)=r\sinh(t)/\sqrt{(v)}$ since $(v)>0$) we can take the
+    first $t$ not in $\gamma$'s image.
+    Letting $q=\alpha(t)p+\beta(t)v\in H^n_k\cap P$ not be in $\gamma$'s image, and suppose $\gamma$ is defined on $(a,b)$.
+    But then $\gamma(t)\to q$ as $t$ approaches the endpoint of $\gamma$'s domain, wlog $b$.
+
+    Let $W$ be a uniformly normal neighborhood of $q$, then eventually $\gamma(t)$ is in $W$.
+    So eventually $\gamma(t)$ is contained in $W$, let $t_0$ be such that $\gamma(t)\in W$ for $t\geq t_0$, and $s=\gamma(t_0)$.
+    Then $\gamma(t)=\exp_s(tw)$ for some $w\in T_sH^n_k$.
+    Since $\gamma(t)\to q$ this means that $\exp_s(tw)\to q$, and $q\in W$ so $q=\exp_s(u)$ for some tangent vector $u$ (since $W$ is uniformly normal).
+    Thus $tw\to u$, and thus $u=bw$, so we can extend $\gamma$ to its value at its endpoint to be $\gamma(b)=q$ and this remains smooth (since it is given by $\exp_s(tw)$).
+    This is a contradiction to $\gamma$'s maximality.
+    Thus $\gamma$'s image is the entirety of $P\cap H^n_k$.
+
+    \item We want to show that $h$ maps $P\cap H^n_{-1}$ to a straight line.
+    Elements of this intersection are vectors $(p_0,p)\in H^n_{-1}$ which are also in $P$.
+    Since a $k$-dimensional subspace of $n$-dimensional space can be written as the kernel of an $(n-k)\times n$ matrix, and thus can be written as solutions to a system of
+    $n-k$ homogeneous linear equations, elements of $P$ are solutions to a system of $n-1$ linear equations.
+    Now $(p_0,p)$ solves a linear equation $\alpha p_0+\beta^ip_i=0$ iff $h(p_0,p)=p/p_0=q$ solves $\beta^iq_i=-\alpha$.
+    These equations define an affine subspace of $\bR^n$, thus $h(P\cap H^n_{-1})=h(P)\cap D^n$ is the intersection of $D^n$ with an affine subspace of $\bR^n$.
+    Since $h(P\cap H^n_{-1})$ is the image of a geodesic and thus a curve, it is one-dimensional and thus must be the intersection of $D^n$ with a line, as desired.
+
+    \item First we consider the two-dimensional case, and we consider the stereographic projection $f\colon H^n_{-1}\to D^n$ given by
+    $$ f(p_0,p) = \frac p{1+p_0} . $$
+    This is an isometry, and thus maps geodesics to geodesics.
+    Since geodesics in $H^n_{-1}$ are the solutions to $n-1$ linear equations, we first restrict to the two-dimensional case, so geodesics are solutions
+    to a single linear equation $-\alpha p_0+\beta^ip_i=0$, rewriting it as $\alpha p_0=\iprod{\beta,p}$ where the inner product is Euclidean.
+    So given a geodesic parameterized by $p$, $u=f(p)$ is a geodesic.
+
+    If $\alpha=0$ then $\iprod{\beta,p}=0$ iff $\iprod{\beta,f(p_0,p)}=0$, so $f(p_0,p)$ forms a straight line orthogonal to $\beta$.
+    This is a straight line through the origin and thus orthogonal to the boundary of the disk.
+
+    If $\alpha\neq0$ then by normalizing $\alpha$ and $\beta$ we can assume $\alpha=1$ so our equation is $p_0=\iprod{\beta,p}$.
+    If we consider $f^{-1}$ given by
+    $$ f^{-1}(u) = \parens{\frac2{1-\norm u^2}-1,\ \frac{2u}{1-\norm u^2}} , $$
+    then points on the geodesic are the points $f^{-1}(u)$ where
+    $$ \frac2{1-\norm u^2}-1 = \iprod{\beta,\frac{2u}{1-\norm u^2}} \iff \norm u^2 - 2\iprod{\beta,u} + 1 = 0 . $$
+    This can be written as
+    $$ \norm{u-\beta}^2 = \norm\beta^2 - 1 . $$
+    If $\norm\beta^2\leq1$ then this has either no solution or the solution is $u=\beta$ when $\norm\beta=1$ in which case this lies on the boundary of the disk and not within the disk
+    itself.
+
+    Otherwise this defines a circle of radius $\sqrt{\norm\beta^2-1}$ with center $\beta$, so the geodesic is the intersection of that circle with $D^n$.
+    Now consider the intersection of this circle with the boundary of $D^n$, so the $u_0$s where $\norm{u_0-\beta}^2=\norm\beta^2-1$, $\norm{u_0}=1$.
+    To show that the geodesic is orthogonal to the disk, we show that $0,u_0,\beta$ form a right triangle, that is we want to show $\iprod{u_0,u_0-\beta}=0$.
+    We have that 
+    $$ \norm\beta^2 - 1 = \norm{u_0}^2 - 2\iprod{u_0,\beta} + \norm\beta^2 \implies \iprod{u_0,\beta} = 1 , $$
+    and thus
+    $$ \iprod{u_0,u_0-\beta} = \norm{u_0}^2 - \iprod{u_0,\beta} = 1 - \iprod{u_0,\beta} = 0 , $$
+    as desired.
+
+    In the higher-dimension case, a geodesic of $H^n_{-1}$ is determined by a hyperbola on a two-dimensional affine subspace, say $\alpha p+\beta q=v$.
+    Writing our coordinates as $(p_0,p_1,\dots,p_n)$, we can perform an orthogonal transformation on $p_1,\dots,p_n$ (which does not change the metric clearly) to map this
+    affine subspace down to one existing in the coordinates $(p_0,p_1,p_2,0,\dots,0)$.
+    Then we are in the same situation as the two-dimensional case.
+
+    \item To measure the angle between two geodesics $\gamma_1,\gamma_2$ intersecting at a point $p=\gamma_1(0)=\gamma_2(0)$, we compute the angle between
+    $\gamma'_1(0),\gamma'_2(0)\in T_pM$ using the Riemannian metric.
+    In the Klein model, to geodesic connecting any two points is the same as in Euclidean space.
+    Thus to measure the angle between any three points, we are measuring the angle between the same tangent vectors.
+
+    If we take an arbitrary point, $p\in D^n$ and two tangent vectors $v,u\in T_pD^n$ then the angle between them is given by
+    $$ \cos\theta = \frac{\iprod{u,v}}{\norm u\norm v} . $$
+    Let us take $p=(1/2,1/2)\in D^2$ and $u=e_1,v=e_2$ be the standard basis vectors.
+    Then in the Euclidean metric, $u$ and $v$ are orthogonal and thus $\cos\theta=0$.
+    But in the Klein metric,
+    $$ k_{12} = \frac{p_1p_2}{(1-\norm p^2)^2} \neq 0 , $$
+    and so $e_1,e_2$ are not orthogonal, so the angle between them is not $90^\circ$, different than in the Euclidean case.
+\eenum
+
+\bprob
+
+    Let $M\subseteq\bR^{n+1}$ be the graph of the smooth function $f\colon\bR^n\to\bR$,
+    $$ M = \set{(x_0,\bar x)}[x_0=f(\bar x)] . $$
+    Give $\bR^{n+1}$ either the Euclidean or Lorentzian metric, $G_{ij}=\pm\delta_{ij}$ where the negative sign occurs only potentially when $i=j=0$.
+    Let $g$ be the pullback of $G$ to $M$, and let $\x\colon\bR^n\to M$ be the coordinates
+    $$ \x(x_1,\dots,x_n) = (f(x_1,\dots,x_n),x_1,\dots,x_n) . $$
+    Write $f_i=\ipdv{x^i}f$.
+    \benum
+        \item Show that, with respect to $\x$, $g_{ij}=\delta_{ij}\pm f_if_j$.
+        Conclude that in a small enough neighborhood $U$ of a critical point of $x$, $g$ defines a Riemannian metric on $\x(U)$.
+        We implicitly make this restriction for the rest of the problem.
+
+        \item With respect to $\x$ show that $g$'s Christoffel symbols are
+        $$ \Gamma^k_{ij} = \pm f_{ij}f_\ell g^{\ell k} . $$
+
+        \item Show that for a critical point $x$ of $f$, we have
+        $$ R_{ijk\ell} = \pm(f_{ik}f_{j\ell} - f_{i\ell}f_{jk}) . $$
+    \eenum
+
+\eprob
+
+\benum
+    \item Let us denote by $\partial_i$ the coordinate frame of Euclidean space, then $M$'s coordinate frame with respect to $\x$ is given by $\tilde\partial_i=d\x(\partial_i)$.
+    As $M\subseteq\bR^{n+1}$ is embedded, we can compute this relative to the coordinate frame of $\bR^{n+1}$ (also denoted $\partial_i$),
+    $$ \tilde\partial_i = \pdvof{\x^j}{\partial_i}\partial_j = f_i\partial_0 + \partial_i . $$
+    Then since $g$ is the pullback of $G$, we can compute the inner product in Euclidean space, so we have
+    $$ g_{ij} = \iprod{\tilde\partial_i,\tilde\partial_j} = \iprod{f_i\partial_0 + \partial_i, f_j\partial_0 + \partial_j} = f_if_jG_{00} + G_{ij} = \delta_{ij} \pm f_if_j , $$
+    as desired.
+    A critical point $x$ of $f$ is one where $f_i(x)=0$ for all $i$, and by smoothness there is a neighborhood of $x$ where $\abs{f_if_j}<1$ for all $i,j$.
+    In such a neighborhood $g_{ij}>0$ and thus $g$ is Riemannian, as the pullback of $G$ it is already symmetric.
+
+    \item We recall
+    $$ \Gamma^k_{ij} = \frac12g^{k\ell}(\tilde\partial_ig_{j\ell} + \tilde\partial_jg_{i\ell} - \tilde\partial_\ell g_{ij}) . $$
+    And $\tilde\partial_i=d\x(\partial_i)$ acts on smooth functions by
+    $$ \tilde\partial_if = \partial_i(f\circ\x) , $$
+    thus
+    $$ \tilde\partial_ig_{j\ell} = \partial_i(\delta_{ij} \pm f_jf_\ell) = \pm f_{ij}f_\ell \pm f_jf_{i\ell} . $$
+    Plugging this in we see
+    $$ \Gamma^k_{ij} = \pm\frac12g^{k\ell}(f_{ij}f_\ell + f_jf_{i\ell} + f_{ij}f_\ell + f_if_{j\ell} - f_{i\ell}f_j - f_if_{j\ell}) = \pm f_{ij}f_\ell g^{k\ell} , $$
+    as desired ($g^{k\ell}$ is symmetric).
+
+    \item If $x$ is a critical point of $f$, then $f_i=0$ for all $i$.
+    Thus $\Gamma^k_{ij}=0$ and $g_{ij}=\delta_{ij}$ for all $i,j,k$.
+    We know the components of Riemannian curvature are given by
+    $$ R_{ijk\ell} = -g_{\ell m}(\tilde\partial_i\Gamma^m_{jk} - \tilde\partial_j\Gamma^m_{ik} + \Gamma^p_{jk}\Gamma^m_{ip} - \Gamma^p_{ik}\Gamma^m_{jp}) = \tilde\partial_j\Gamma^\ell_{ik} - \tilde\partial_i\Gamma^\ell_{jk} . $$
+    And
+    $$ \tilde\partial_i\Gamma^\ell_{jk} = \pm\partial_i(f_{jk}f_mg^{m\ell}) = \pm(f_{ijk}f_mg^{m\ell} + f_{jk}f_{im}g^{m\ell} + f_{jk}f_m\partial_ig^{m\ell}) = \pm f_{jk}f_{im}\delta_{m\ell} = \pm f_{jk}f_{i\ell} . $$
+    Thus plugging in we see
+    $$ R_{ijk\ell} = \pm(f_{ik}f_{j\ell} - f_{jk}f_{i\ell}) . $$
+\eenum
+
+\def\hol{{\rm Hol}}
+
+\bprob
+
+    Let $M$ be a Riemannian manifold, and $x,y\in T_pM$ tangent vectors.
+    Let $\gamma_t$ be the loop in $M$ based at $p$ obtained by applying $\gamma_t$ to the parallelogram in $T_pM$ spanned by $tX,tY$.
+    Parallel transport along a closed loop is called {\emphcolor holonomy}, and thus this defines an operator
+    $$ \hol_{\gamma_t}\colon T_pM\to T_pM . $$
+    Show that
+    $$ R(X,Y) = \evdrv t_{t=0}\hol_{\gamma_{\sqrt t}} . $$
+
+\eprob
+
+Let us define the smooth family of curves $\Gamma\colon I\times I\to M$ by $\Gamma(s,t)=\exp(sx+ty)$ for $I$ an open interval containing $0$ small enough so that this is defined.
+We have $\partial_s\Gamma(0,0)=x$ and $\partial_t\Gamma(0,0)=y$.
+The holonomy operator of $\gamma_a$ is obtained via parallel transport along $\Gamma(s,0)$ then $\Gamma(a,t)$ then $\Gamma(a-s,a)$ then $\Gamma(0,a-t)$.
+
+Now in general if we have a curve $\gamma\colon[0,a]\to M$, then we can define its reverse $-\gamma\colon[0,a]\to M$ by $t\mapsto\gamma(a-t)$.
+Then if $X$ is parallel along $\gamma$ then $X^-$ is parallel along $-\gamma$ where $X^-(t)=X(a-t)$.
+This is because for $X\circ\gamma$ extendible $(X\circ\gamma)^-=X\circ(-\gamma)$ and then
+$$ D_t^{-\gamma}(X\circ(-\gamma))|_t = \nabla_{-\gamma'(a-t)}X = -\nabla_{\gamma'(a-t)}X = -D^\gamma_t(X\circ\gamma)|_t . $$
+And so in general $D_t^{-\gamma}(X^-)=-D^\gamma_t(X)$ so clearly $X$ is parallel to $\gamma$ iff $X^-$ is parallel to $-\gamma$.
+
+Then we have that $P^\gamma_{a,0}=P^{-\gamma}_{0,a}$ since if $X$ is the parallel transport of $v\in T_{\gamma(a)}M=T_{-\gamma(0)}M$ along $\gamma$ then $X^-$ is its parallel
+transport along $-\gamma$ and $X(0)=X^-(a)$.
+Thus we have
+$$ (P^\gamma_{a,0})^{-1} = P^\gamma_{0,a} = P^{-\gamma}_{a,0} . $$
+So parallel transport along $\Gamma(a-s,a)$ is the inverse of parallel transport along $\Gamma(s,a)$, and parallel transport along $\Gamma(0,a-t)$ is the inverse of parallel
+transport along $\Gamma(0,t)$.
+
+Now let $v\in T_pM$, and let $V$ be the vector field along $\Gamma$ obtained by parallel transport of $v$ first along $s\mapsto\Gamma(s,0)$ and then along $t\mapsto\Gamma(s,t)$.
+Because parallel transport is the unique solution to a linear ODE and is thus smooth in its input, this is a smooth vector field along $\Gamma$.
+And we have $V(0,0)=v$, since $s\mapsto V(s,0)$ is parallel along $\Gamma(s,0)$ we have that $D_sV(s,0)=0$.
+And $t\mapsto V(s,t)$ is parallel along $t\mapsto\Gamma(s,t)$ so $D_tV(s,t)=0$ for all $s,t$.
+We also know that
+$$ R(x,y)v = (R(\partial_s\Gamma,\partial_t\Gamma)V)|_{(0,0)} = D_tD_sV(0,0) - D_sD_tV(0,0) = D_tD_sV(0,0) . $$
+So we just need to compute $D_tD_sV(0,0)$.
+
+Previously we showed that for a vector field $X$ along a curve $\gamma$,
+$$ D_tX|_0 = \evdrv t_{t=0}(P^\gamma_{0,t})^{-1}(X(t)) = \lim_{\epsilon\to0}\frac{P^{\gamma(\epsilon-t)}_{0,\epsilon}(X(\epsilon)) - X(0)}\epsilon . $$
+And so we have
+$$ D_sV(0,t) = \lim_{\epsilon\to0}\frac{P^{\Gamma(\epsilon-s,t)}_{0,\epsilon}(V(\epsilon,t)) - V(0,t)}{\epsilon} , $$
+and similarly
+$$ D_tD_sV(0,0) = \lim_{\delta\to0}\frac{P^{\Gamma(0,\delta-t)}_{0,\delta}(D_sV(0,\delta)) - D_sV(0,0)}{\delta} . $$
+Because linear maps are continuous, plugging in the expression for $D_sV(0,\delta)$ in the second expression gives
+$$ D_tD_sV(0,0) = \lim_{\epsilon,\delta\to0}\frac{P^{\Gamma(0,\delta-t)}_{0,\delta}\circ P^{\Gamma(\epsilon-s,\delta)}_{0,\epsilon}(V(\epsilon,\delta)) - P^{\Gamma(0,\delta-t)}_{0,\delta}(V(0,\delta)) - P^{\Gamma(\epsilon-s,0)}_{0,\epsilon}(V(\epsilon,0)) + V(0,0)}{\delta\epsilon} . $$
+Since by definition $s\mapsto V(s,t)$ and $t\mapsto V(t,0)$ are parallel we see that
+$$ \eqalign{
+    V(\epsilon,\delta)&=P^{\Gamma(\epsilon,t)}_{0,\delta}\circ P^{\Gamma(s,0)}_{0,\epsilon}v,\cr
+    P^{\Gamma(0,\delta-t)}_{0,\delta}V(0,\delta)&=V(0,0)=v,\cr
+    P^{\Gamma(\epsilon-s,0)}_{0,\epsilon}V(\epsilon,0)&=V(0,0)=v.
+} $$
+The first line is the definition, and the second two lines follow by $P^{-\gamma}$ and $P^\gamma$ being inverses.
+Thus we see
+$$ D_sD_tV(0,0) = \lim_{\epsilon,\delta\to0}\frac{P^{\Gamma(0,\delta-t)}_{0,\delta}\circ P^{\Gamma(\epsilon-s,\delta)}_{0,\epsilon}\circ P^{\Gamma(\epsilon,t)}_{0,\delta}\circ P^{\Gamma(s,0)}_{0,\epsilon}v- v}{\delta\epsilon} . $$
+Taking this limit over the path $\epsilon=\delta$ we see that the parallel transport is just holonomy about $\gamma_\epsilon$,
+$$ D_sD_tV(0,0) = \lim_{\epsilon\to0}\frac{\hol_{\gamma_\epsilon}v-v}{\epsilon^2} = \lim_{\epsilon\to0}\frac{\hol_{\gamma_{\sqrt\epsilon}}v-v}{\epsilon} = \evdrv t_{t=0}\hol_{\gamma_{\sqrt t}}(v) . $$
+
+So putting this together we see that for all $v\in T_pM$,
+$$ R(x,y)v = D_sD_tV(0,0) = \evdrv t_{t=0}\hol_{\gamma_{\sqrt t}}(v) $$
+as desired.
+
+\bprob
+
+    Let $\pi\colon E\to N$ be a smooth vector bundle of rank $r$, and let $f\colon M\to N$ be a smooth map.
+    Define
+    $$ f^*E = M\times_NE $$
+    to be the pullback, and let $\pi_f\colon f^*E\to M$ be given by projection onto $M$.
+    The previous homework showed that $f^*E$ is a smooth manifold.
+    \benum
+        \item Given a local trivialization of $E$,
+        $$ \Phi\colon \pi^{-1}U\to U\times\bR^r, $$
+        construct a local trivialization of $f^*E$,
+        $$ \tilde\Phi\colon \pi_f^{-1}(f^{-1}U) \to f^{-1}U \times\bR^r . $$
+
+        \item Show that if $g_{\alpha\beta}$ are the transition functions of $E$, then the transition functions of $f^*E$ are $g_{\alpha\beta}\circ f$.
+        Conclude that with these local trivializations and transition functions, $f^*E$ is a vector bundle of rank $r$ over $M$ with fibers
+        $$ (f^*E)_p \cong E_{fp} . $$
+        This is the {\emphcolor pullback bundle} of $E$.
+
+        \item Prove that there is a natural bijection
+        $$ \Gamma(f^*E) \cong \set{X\colon M \to E\hbox{ smooth}}[\pi\circ X=f] . $$
+        In particular there is a natural bijection between sections of $f^*TN$ and vector fields along $f$.
+
+        \item Let $f\colon M\to N$ be smooth.
+        Show that there is a vector bundle
+        $$ \hom(TM,f^*TN) \to M $$
+        whose fibers are given by $\hom(T_pM,T_{fp}N)$.
+        Then prove that $p\mapsto(p,df_p)$ defines a smooth section of $\hom(TM,f^*TN)$.
+    \eenum
+
+\eprob
+
+\benum
+    \item We have that
+    $$ \pi_f^{-1}(f^{-1}U) = \set{(p,e)\in f^*E}[fp=\pi e\in U] . $$
+    So we can define $\tilde\Phi\colon\pi_f^{-1}(f^{-1}U)\to f^{-1}U\times\bR^r$ by
+    $$ \tilde\Phi(p,e) = (p,\proj_2\circ\Phi(e)) . $$
+    We have that $\proj_1\circ\tilde\Phi=\pi_f$.
+    And the fiber along $p$ of $f^*E$ is
+    $$ (f^*E)_p = \set{(p,e)\in f^*E}[\pi e=fp] , $$
+    which is isomorphic to $E_{fp}$ via $(p,e)\mapsto e$.
+    For $p\in f^{-1}U$, restricting $\tilde\Phi$ to $f^*E_p$ gives us the map $(p,e)\mapsto(p,\proj_2\circ\Phi(e))$, and since $\proj_2\circ\Phi$ is a linear isomorphism of $E_{fp}$,
+    so is $\proj_2\circ\tilde\Phi$.
+
+    So we need only show that $\tilde\Phi$ is a diffeomorphism.
+    We will explicitly construct an inverse, so a map $\tilde\Psi\colon f^{-1}U\times\bR^r\to\pi_f^{-1}(f^{-1}U)\subseteq f^*E$.
+    To define a map into $f^*E$ it is sufficient to define maps into $E$ and $M$ which commute with $\pi$ and $f$.
+    We give these by
+    $$ \eqalign{
+        \psi_1\colon f^{-1}U\times\bR^r\to M,\quad&(p,v)\mapsto p,\cr
+        \psi_2\colon f^{-1}U\times\bR^r\to E,\quad&(p,v)\mapsto\Phi^{-1}(fp,v).
+    } $$
+    Note that $\psi_2$ is well-defined and smooth as the composition $(p,v)\mapsto(fp,v)\in U\times\bR^r\xmapsto{\Phi^{-1}}\psi_2(p,v)\in E$.
+    And we have
+    $$ \pi\circ\psi_2(p,v) = \pi\circ\Phi^{-1}(fp,v) = \proj_1(fp,v) = fp = f\circ\psi_1(p,v) , $$
+    so by the universal property we have a smooth map $\tilde\Psi\colon f^{-1}U\times\bR^r\to f^*E$ by
+    $$ \tilde\Psi(p,v) = (\psi_1(p,v),\psi_2(p,v)) = (p,\Phi^{-1}(fp,v)) . $$
+    Notice that $\tilde\Psi$ maps into $\pi_f^{-1}(f^{-1}U)$ since
+    $$ f\circ\pi_f\circ\tilde\Psi(p,v) = fp \in U , $$
+    and as an open submanifold we can restrict $\tilde\Psi$'s codomain to it.
+
+    Now we have that
+    $$ \tilde\Psi\circ\tilde\Phi(p,e) = \tilde\Psi(p,\proj_2\circ\Phi(e)) = (p,\Phi^{-1}(fp,\proj_2\circ\Phi(e))) . $$
+    And we have that since $\proj_1\circ\Phi=\pi$,
+    $$ \Phi(e) = (\pi(e),\proj_2\circ\Phi(e)) = (fp,\proj_2\circ\Phi(e)) , $$
+    we get
+    $$ \tilde\Psi\circ\tilde\Phi(p,e) = (p,\Phi^{-1}\circ\Phi(e)) = (p,e) . $$
+    And conversely
+    $$ \tilde\Phi\circ\tilde\Psi(p,v) = \tilde\Phi(p,\Phi^{-1}(fp,v)) = (p,\proj_2\circ\Phi\circ\Phi^{-1}(fp,v)) = (p,v) $$
+    as desired.
+
+    So $\tilde\Psi=\tilde\Phi^{-1}$, showing that $\tilde\Phi$ is indeed a diffeomorphism and thus a local trivialization.
+
+    \item Let $\Psi$ be another local trivialization of $E$ which gives us a local trivialization $\tilde\Psi$ of $f^*E$.
+    Suppose that $\tau$ is the transition function between $\Phi,\Psi$ so
+    $$ \Phi\circ\Psi^{-1}(q,v) = (q,\tau(q)v),\qquad q\in U,v\in\bR^r . $$
+    Then we get for $p\in f^{-1}U,v\in\bR^r$,
+    $$ \tilde\Phi\circ\tilde\Psi^{-1}(p,v) = \tilde\Phi(p,\Psi^{-1}(fp,v)) = (p,\proj_2\circ\Phi\circ\Psi^{-1}(fp,v)) = (p,\proj_2(q,\tau(fp)v)) = (p,\tau(fp)v) . $$
+    So we see that the transition function between $\tilde\Phi$ and $\tilde\Psi$ is $\tilde\tau=\tau\circ f$ as desired.
+    Thus $f^*E$ is indeed a vector bundle, and we showed before that its fibers are
+    $$ (f^*E)_p \cong E_{fp} . $$
+
+    \item By the universal property, a map $\sigma\colon M\to f^*E$ is the same as maps $\sigma_1\colon M\to E$ and $\sigma_2\colon M\to M$ such that $f\circ\sigma_2=\pi\circ\sigma_1$,
+    where $\sigma_1=\pi_f^E\circ\sigma$ and $\sigma_2=\pi_f\circ\sigma$ ($\pi_f^E\colon f^*E\to E$ is projection onto $E$).
+    In particular a section $\sigma\colon M\to f^*E$, so $\pi_f\circ\sigma=\id$, corresponds to just giving $\sigma_1=\pi_f^E\circ\sigma$.
+
+    In particular if we have a vector field along $f$, so $X\colon M\to E$ such that $\pi\circ X=f$, then by the universal property this gives rise to a unique map $\hat X\colon M\to f^*E$ such
+    that $X=\pi_f^E\circ\hat X$ and $\pi_f\circ\hat X=\id$.
+    So $\hat X\in\Gamma(f^*E)$.
+    This is summarized in the following diagram:
+
+    \bigskip
+    \centerline{\drawdiagram{
+        $M$\cr
+        &$F^*E$&$E$\cr
+        &$M$&$N$
+    }{
+        \diagarrow{from={1,1}, to={2,3}, curve=1cm, text=$X$, y distance=.75cm}
+        \diagarrow{from={1,1}, to={3,2}, curve=-1cm, text=$\id$, x distance=-.75cm}
+        \diagarrow{from={1,1}, to={2,2}, dashed, text=$\hat X$, y distance=.25cm}
+        \diagarrow{from={2,2}, to={2,3}, text=$\pi_f^E$, y distance=.25cm}
+        \diagarrow{from={3,2}, to={3,3}, text=$f$, y distance=-.25cm}
+        \diagarrow{from={2,2}, to={3,2}, text=$\pi_f$, x distance=-.25cm}
+        \diagarrow{from={2,3}, to={3,3}, text=$\pi$, x distance=.25cm}
+    }}
+
+    Conversely if we have a section $\sigma\colon M\to f^*E$, then let $\bar\sigma=\pi_f^E\circ\sigma\colon M\to E$.
+    This is a vector field along $f$ since
+    $$ \pi\circ\bar\sigma = \pi\circ\pi_f^E\circ\sigma = f\circ\pi_f\circ\sigma = f , $$
+    where the last equality is because $\sigma$ is a section.
+
+    These maps $\hat\bul$ and $\bar\bul$ are inverses, since for $X\colon M\to E$ a vector field along $f$,
+    $$ \bar{\hat X} = \pi_f^E\circ\hat X = X , $$
+    where the last equality was explained above, and is due to the universal property.
+    And if $\sigma\colon M\to f^*E$ is a section, then
+    $$ \hat{\bar\sigma} = \hat{\pi_f^E\circ\sigma} . $$
+    Since for any $X$, $\hat X$ is the unique map such that $X=\pi_f^E\circ\hat X$ and $\pi_f\circ\hat X=\id$, and since $\sigma$ satisfies these, we see that $\hat{\bar\sigma}=\sigma$
+    as desired.
+
+    Thus we have natural bijections
+    $$ \Gamma(f^*E) \xtof{\quad\bar\bul\quad}[\quad\hat\bul\quad] \set{X\colon M\to E\hbox{ smooth}}[\pi\circ X=f] , $$
+    as desired.
+    In particular a local frame of $f^*E$ corresponds to $X_1,\dots,X_n\colon M\to E$ smooth vector fields along $f$ such that $X_i|_p\in E_{fp}$ are linearly independent, by following the isomorphism
+    $f^*E_p\cong E_{fp}$ and $X_i\oto\hat X_i$.
+
+    \item As stated in the recitation, given vector bundles on $M$ $E\to M,F\to M$, we can construct dual vector bundles $E^*\to M$ and tensor product bundles $E\otimes F\to M$
+    whose fibers are $(E^*)_p=E^*_p$ and $(E\otimes F)_p=E_p\otimes F_p$ respectively.
+    Putting this together we can construct a vector bundle $E^*\otimes F\to M$ whose fibers are $E^*_p\otimes F_p$, which is naturally isomorphic to $\hom(E_p,F_p)$.
+    This gives a construction of $\hom(E,F)$ via the natural bijection
+    $$ \coprod_{p\in M}\hom(E_p,F_p) \cong \coprod_{p\in M}E_p^*\otimes F_p = E^*\otimes F . $$
+    In particular for $E=TM$ and $F=f^*TN$ the fibers are $\hom(E_p,F_p)=\hom(T_pM,T_{fp}N)$.
+ 
+    We will construct the dual bundle and show that if $\sigma_1,\dots,\sigma_n$ is a local frame for $E\to M$, then $\epsilon^1,\dots,\epsilon^n$ is a local frame for $E^*\to M$
+    where $\epsilon^1|_p,\dots,\epsilon^n|_p$ is the dual basis for $\sigma_1|_p,\dots,\sigma_n|_p$ relative to $E_p$.
+    Similarly if $(\sigma_i),(\tau_j)$ are local frames for $E\to M,F\to M$ respectively on a common open subset, then $(\sigma_i\otimes\tau_j)$ is a local frame for $E\otimes F\to M$
+    where $(\sigma_i\otimes\tau_j)|_p=\sigma_i|_p\otimes\tau_j|_p$ in $E_p\otimes F_p$.
+
+    Then consider the map $p\mapsto(p,df_p)$.
+    Since $f$ is smooth consider coordinates $(U,(x^i))$ of $M$ and coordinates $(V,(y^j))$ of $N$ such that $f(U)\subseteq V$.
+    Then $\ipdv{y^j}\circ f$ is a vector field $M\to TN$ along $f$ (as the composition of the vector field $\ipdv{y^j}$ with $f$ it is smooth).
+    This forms a local frame for $f^*TN$ considering dimensions.
+    And let $dx^i$ denote the dual frame for $\ipdv{x^i}$ in $U$.
+    Then $dx^i\otimes\ievpdv{y^j}_f$ forms a local frame for $T^*M\otimes f^*TN=\hom(TM,f^*TN)$.
+
+    Since $df_p$ is linear $T_pM\to T_{fp}N$, we can represent it relative to this local frame, so
+    $$ df = f^j_i\cdot dx^i\otimes\evpdv{y^j}_f . $$
+    Recall that the identitification $\hom(V,W)\cong V^*\otimes W$ is given by mapping $T\colon V\to W$ to $a^j_i\phi^i\otimes w_j$ (where $\phi^i$ is the dual basis for $(v_i)\in V$ and $(w_j)$ is a basis for $W$)
+    where $a^j_iw_j=T(v_i)$.
+    Thus for $p\in U$,
+    $$ f^j_i(p)\evpdv{y^j}_{fp} = df_p\parens{\evpdv{x^i}_p} = \pdvof{f^j}{x^i}(p)\cdot\evpdv{y^j}_{fp} , $$
+    thus $f^j_i(p)=\pdvof{f^j}{x^i}(p)$.
+
+    This means that $df$ has the local representation
+    $$ df = \pdvof{f^j}{x^i}\cdot dx^i\otimes\evpdv{y^j}_f , $$
+    and since its component functions $\ipdvof{f^j}{x^i}$ are smooth, this means that $df$ is a smooth section as desired.
+
+    Now we actually construct $E^*$.
+    Let $\pi_*\colon E^*\to M$ be the projection.
+    Now let $\sigma_1,\dots,\sigma_n$ be a local frame for $E$, then let $\epsilon^1,\dots,\epsilon^n\colon M\to E^*$ be defined by $\epsilon^i|_p$ forming the dual basis for $\sigma_i|_p$.
+    Now if we have another local frame $\tau_1,\dots,\tau_n$ for $E$ and $\delta^1,\dots,\delta^n$ be the dual local frame for $E^*$, we want to show $\epsilon^i,\delta^j$ are compatible.
+    Let us write $\delta^i$ in terms of $\epsilon^j$ and $\sigma_i$ in terms of $\tau_j$,
+    $$ \delta^i = a^i_j\epsilon^j,\qquad \sigma_i = b^j_i\tau_j . $$
+    Evaluating at $p$ and composing with $\sigma_j|_p$ on the left and $\delta^j|_p$ on the right shows
+    $$ a^i_j(p) = \delta^i|_p(\sigma_j|_p),\qquad b^j_i(p) = \delta^j|_p(\sigma_j|_p) . $$
+    Thus $a^i_j=b^j_i$, and since $\sigma_i,\tau_j$ are compatible this means that $b^j_i$ is invertible and smooth and thus so is $a^i_j$, so $\epsilon^i,\tau^j$ are compatible.
+    Since local frames for $E$ cover $M$, local dual frames for $E^*$ cover $M$, so $E^*$ is a smooth vector bundle of the same rank as $E$, and local frames of $E$ give rise to dual local frames of $E^*$.
+
+    Similarly we construct $E\otimes F$.
+    Let $\pi_\otimes\colon E\otimes F\to M$ be the projection.
+    Similar to before we take local frames $\sigma_i,\alpha_j$ for $E,F$ defined on a common open subset, and construct local frames $\sigma_i\otimes\alpha_j$ for $E\otimes F$ whose value at $p\in M$ is $(\sigma_i\otimes\alpha_j)|_p=\sigma_i|_p\otimes\alpha_j|_p$.
+    These are linearly independent at each point because the tensor of two bases form a basis for the tensor product.
+    If we have other local frames $\tau_i,\beta_j$ for $E,F$, then we show that $\tau_i\otimes\beta_j$ and $\sigma_i\otimes\alpha_j$ are compatible.
+    Suppose
+    $$ \tau_i = a^k_i\sigma_k,\qquad \beta_j = b^\ell_j\alpha_\ell $$
+    so that $a^k_i,b^\ell_j$ are the transition maps for the frames of $E$ and $F$ respectively, and are thus smooth.
+    Then by evaluating at each point we see
+    $$ \tau_i\otimes\beta_j = a^k_ib^\ell_j \sigma_k\otimes\alpha_\ell . $$
+    Thus the transition functions between $\tau_i\otimes\beta_j$ and $\sigma_k\otimes\alpha_\ell$ are given by $a^k_ib^\ell_j$.
+    As the product of smooth real-valued maps, each of these is smooth, and thus the frames are compatible.
+    Thus we have shown that $E\otimes F$ is a vector bundle, and the tensor of local frames of $E$ and $F$ gives a local frame of $E\otimes F$ as desired.
+\eenum
+
+
+

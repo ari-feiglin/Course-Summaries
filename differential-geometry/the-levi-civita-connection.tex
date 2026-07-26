@@ -28,7 +28,7 @@ so the identity is easily seen to be true.
     The following are equivalent:
     \benum
         \item $\nabla$ is compatible with $g$.
-        \item $g$ is parallel with respect to $\nabla$: $\nabla g$.
+        \item $g$ is parallel with respect to $\nabla$: $\nabla g=0$.
         \item If $(E_i)$ is a smooth local frame, then the connection coefficients of $\nabla$ satisfy
         $$ \Gamma^\ell_{ki}g_{\ell j} + \Gamma^\ell_{kj}g_{i\ell} = E_k(g_{ij}) . $$
         \item If $V$ and $W$ are smooth vector fields along a curve $\gamma$, then
@@ -176,7 +176,7 @@ So $\nabla$ is symmetric iff $\Gamma^k_{ij}=\Gamma^k_{ji}$ relative to every coo
     - \partial_\ell\iprod{\partial_i,\partial_j}} . $$
     Recall that $g_{ij}=\iprod{\partial_i,\partial_j}$ and $\nabla_{\partial_i}\partial_j=\Gamma^k_{ij}\partial_k$.
     So
-    $$ \Gamma^k_{ij}g_{k\ell} = \frac12\parens{\partial_ig_{j\ell} + \partial_ig_{i\ell} - g_\ell g_{ij}} . $$
+    $$ \Gamma^k_{ij}g_{k\ell} = \frac12\parens{\partial_ig_{j\ell} + \partial_jg_{i\ell} - g_\ell g_{ij}} . $$
     Multiplying by $g$'s inverse, we see
     $$ \Gamma^k_{ij} = \frac12g^{k\ell}\parens{\partial_ig_{j\ell} + \partial_ig_{i\ell} - g_\ell g_{ij}} . $$
     This defines a connection in each chart, and by uniqueness the connections from different charts agree on their overlaps.
@@ -194,11 +194,12 @@ The proof of the theorem gave us an explicit formula for the Levi-Civita connect
 connection coefficients.
 The connection coefficients of the Levi-Civita connection of $(M,g)$ are called the {\emphcolor Christoffel symbols} of $g$.
 
-\bprop
+\bprop[title={Naturality of the Levi-Civita connection}]
 
-    The Levi-Civita connection is natural: if $\phi\colon(M,g)\to(\tilde M,\tilde g)$ be an isometry of Riemannian manifolds.
-    Let $\tilde\nabla$ be the Levi-Civita connection on $\tilde M$, then $\nabla=\phi^*\tilde\nabla$ is the Levi-Civita
-    connection on $M$.
+    The Levi-Civita connection is natural.
+    Suppose $\phi\colon(M,g)\to(\tilde M,\tilde g)$ is an isometry of Riemannian manifolds, and let $\tilde\nabla$ be the
+    Levi-Civita connection on $\tilde M$.
+    Then $\nabla=\phi^*\tilde\nabla$ is the Levi-Civita connection on $M$.
 
 \eprop
 
@@ -207,12 +208,12 @@ The connection coefficients of the Levi-Civita connection of $(M,g)$ are called 
     It is sufficient to show that the pullback is symetric and metric.
     $\phi$ being an isometry means
     $$ \iprod{Y_p,Z_p} = \iprod{d\phi_pY_p,d\phi_pZ_p} = \iprod{(\phi_*Y)_{\phi(p)},(\phi_*Z)_{\phi(p)}} . $$
-    Meaning $\iprod{Y,Z}=\iprod{\phi_*Y,\phi_*Z}\circ\phi$.
+    Meaning $\iprod{Y,Z}=\iprod{\phi_*Y,\phi_*Z}\circ\phi$.   
     Thus
     $$ \eqalign{
         X\iprod{Y,Z} &= X(\iprod{\phi_*Y,\phi_*Z}\circ\phi)\cr
             &= (\phi_*X\iprod{\phi_*Y,\phi_*Z})\circ\phi\cr
-            &= (\iprod{\tilde\nabla_{\phi_*X}(\phi_*Y),\phi_*Z} + \iprod{\phi_*Y,\tilde\nabla_{\phi_*X}\phi_*Z})\circ\phi.
+            &= \bigl(\iprod{\tilde\nabla_{\phi_*X}(\phi_*Y),\phi_*Z} + \iprod{\phi_*Y,\tilde\nabla_{\phi_*X}\phi_*Z}\bigr)\circ\phi.
     } $$
     Since $\phi^{-1}$ is an isometry, by the same reason we have
     $$ \iprod{\tilde\nabla_{\phi_*X}(\phi_*Y),\phi_*Z}\circ\phi = \iprod{d\phi^{-1}_*\tilde\nabla_{\phi_*X}(\phi_*Y),Z} $$
@@ -305,6 +306,25 @@ The connection coefficients of the Levi-Civita connection of $(M,g)$ are called 
     \qed
 
 \eproof
+
+\bnote
+
+    For a real-valued smooth function $f\in C^\infty(M)$, recall we defined its covariant Hessian to be
+    $$ \hess f(Y,X) = \nabla^2f(Y,X) = \nabla^2_{Y,X}f = X(Yf) - (\nabla_XY)f . $$
+    Note that this is a symmetric tensor for all $f$ iff the connection is symmetric:
+    $$ \nabla^2f(Y,X) - \nabla^2f(X,Y) = X(Yf) - Y(Xf) - (\nabla_XY)f + (\nabla_YX)f = [X,Y]f - (\nabla_XY-\nabla_YX)f . $$
+
+    Now if $M$ is Riemannian and the connection is metric, then
+    $$ \hess f(Y,X) = \iprod{\nabla_X\grad f,Y} , $$
+    where $\grad f=(df)^\sharp$, i.e.\ it is the unique vector field where $\iprod{\grad f,Y}=df(Y)=Yf$.
+    Indeed, the right-hand side is
+    $$ \iprod{\nabla_X\grad f,Y} = X\iprod{\grad f,Y} - \iprod{\grad f,\nabla_XY} = X(Yf) - (\nabla_XY)f . $$
+
+    It is easy to see that in the case of $M=\bR^n$,
+    $$ \hess f(\partial_i,\partial_j) = f_{ij} = \pdvof{^2f}{x_i\partial x_j} . $$
+    So this is a generalization of the Hessian matrix, justifying the name.
+
+\enote
 
 \subsection{Normal neighborhoods}
 

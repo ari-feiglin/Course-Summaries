@@ -1,0 +1,395 @@
+\bprob[title={DoCarmo, Riemannian Geometry page 56 question 2}]
+
+    Let $X$ and $Y$ be vector fields on a manifold $M$ equipped with a connection $\nabla$.
+    Let $p\in M$ and $\gamma\colon I\to M$ an integral curve of $X$ through $p$, so $\gamma(t_0)=p$ and $\dot\gamma(t)=X_{\gamma(t)}$.
+    Denote the parallel transport map by $P^\gamma_{t_0t_1}$, show that
+    $$ \nabla_XY|_p = \evdrv t_{t=t_0}(P^\gamma_{t_0t})^{-1}(Y|_{\gamma(t)}) . $$
+
+\eprob
+
+First we prove a few basic claims regarding parallel transport (which I'm not sure were proven in class, I apologize).
+
+Firstly, $P^\gamma_{t_0t_1}\colon T_{\gamma(t_0)}M\to T_{\gamma(t_1)}M$ is linear.
+Indeed, if $v\in T_{\gamma(t_0)}M$ is a vector and $X\in\X(\gamma)$ is the vector field parallel along $\gamma$ such that $X(t_0)=v$, then for $c\in\bR$,
+$cX$ is parallel along $\gamma$ and $cX(t_0)=cv$.
+Indeed, since $D_t$ is $\bR$-linear we have $D_t(cX)=cD_tX=0$.
+Thus $P^\gamma_{t_0t_1}(cv)=(cX)(t_1)=cX(t_1)=cP^\gamma_{t_0t_1}(v)$.
+
+And similarly it is additive.
+If $v,u\in T_{\gamma(t_0)}M$ are vectors with respective parallel vector fields $X,Y\in\X(\gamma)$ starting at $v,u$ respectively, then $X+Y\in\X(\gamma)$
+is parallel along $\gamma$ since $D_t(X+Y)=D_tX+D_tY=0$, and $(X+Y)(t_0)=v+u$.
+Thus
+$$ P^\gamma_{t_0t_1}(v+u) = (X+Y)(t_1) = X(t_1) + Y(t_1) = P^\gamma_{t_0t_1}(v) + P^\gamma_{t_0t_1}(u) . $$
+
+Also $P^\gamma_{t_0t_1}$ is invertible with inverse $P^\gamma_{t_1t_0}$.
+Indeed if $u\in T_{\gamma(t_1)}M$ has vector field $X\in\X(\gamma)$ parallel such that $X(t_1)=u$, then $P^\gamma_{t_1t_0}(u)=X(t_0)=v$.
+Since $X$ is parallel along $\gamma$ and $X(t_0)=v$, we have $P^\gamma_{t_0t_1}(v)=X(t_1)=u$.
+Thus
+$$ P^\gamma_{t_0t_1} \circ P^\gamma_{t_1t_0} = \id , $$
+and by symmetry the swapped composition is the identity as well, so they are inverses.
+
+Now if $v\in T_{\gamma(t_0)}M$, let $X_v\in\X(\gamma)$ be the unique vector field parallel along $\gamma$ such that $X_v(t_0)=v$.
+That is, $X_v(t)=P^\gamma_{t_0t}(v)$ by definition of the parallel transport map.
+Now if $b_1,\dots,b_n\in T_{\gamma(t_0)M}$ form a basis, then $X_{b_1},\dots,X_{b_n}$ form a local frame of $\X(\gamma)$ of parallel vector fields.
+They are a local frame since $X_{b_i}|_t=P^\gamma_{t_0t}(b_i)$, and since $P^\gamma_{t_0t}$ is a linear isomorphism it maps bases to bases, so $X_{b_i}|_t$ is a basis for each $t$.
+In particular there exists a local frame of $\X(\gamma)$ of parallel vector fields.
+
+Now getting to the task at hand, notice that by definition of the pullback connection,
+$$ D_t(Y\circ\gamma)|_t = \nabla_{\dot\gamma(t)}Y|_{\gamma(t)} = \nabla_{X\circ\gamma(t)}Y|_{\gamma(t)} = \nabla_XY|_{\gamma(t)} . $$
+Thus since $p=\gamma(t_0)$,
+$$ \nabla_XY|_p = D_t(Y\circ\gamma)|_{t_0} . $$
+
+Let $E_1,\dots,E_n$ be a local frame of $\X(\gamma)$ of parallel vector fields (which exists as shown above).
+Since $Y\circ\gamma\in\X(\gamma)$, there are smooth $Y^1,\dots,Y^n\colon I\to\bR$ such that $Y\circ\gamma=Y^iE_i$.
+Then since $D_t(E_i)=0$ we have
+$$ D_t(Y\circ\gamma) = D_t(Y^iE_i) = \dot Y^iE_i + Y^iD_t(E_i) = \dot Y^iE_i . $$
+And since $E_i$ are parallel,
+$$ P^\gamma_{tt_0}(Y\circ\gamma(t)) = P^\gamma_{tt_0}(Y^i(t)E_i(t)) = Y^i(t)P^\gamma_{tt_0}(E_i(t)) = Y^i(t)E_i(t_0) $$
+Putting everything together we have
+$$ \evdrv t_{t=t_0}P^\gamma_{tt_0}(Y\circ\gamma(t)) = \evdrv t_{t=t_0}(Y^i(t)E_i(t_0)) = \dot Y^i(t_0)E_i(t_0) = D_t(Y\circ\gamma)|_{t_0} = \nabla_XY|_p . $$
+Keeping in mind that $(P^\gamma_{t_0t})^{-1}=P^\gamma_{tt_0}$, we have the desired result.
+
+\bprob
+
+    Let $(M,g)$ be a Riemannian manifold and $S\subseteq M$ a compact submanifold.
+    \benum
+        \item Define the {\emphcolor normal subbundle} $\nu_S$ by
+        $$ \nu_S = \bigsqcup_{p\in S}T_pS^\perp . $$
+        And denote $\pi\colon\nu_S\to S$ to be the obvious projection operator.
+        Show that $\nu_S$ is a submanifold of $TM$ and $\pi$ is smooth.
+
+        \item Define $\exp\colon\nu_S\to M$ to be the restriction of the exponential operator to $\nu_S$.
+        Show that there is an open subset $U\subseteq\nu_S$ with $S\cong\set{(p,0)\in\nu_S}[p\in S]\subseteq U$ such that $\exp(U)$ is open and
+        $\exp$ restricts to a diffeomorphism $U\to\exp(U)$.
+        Thus $T=\exp(U)\subseteq M$ is an open neighborhood of $S$, and we have a retract $r\colon T\to S$ given by $r=\pi\circ(\exp|_U)^{-1}$.
+        $T$ is called a {\emphcolor tubular neighborhood}.
+
+        \item Let $f\colon M\to N$ be a proper submersion.
+        Let $p\in N$ and $S=f^{-1}p$, so that $S\subseteq M$ is a compact submanifold since $f$ is a proper submersion.
+        Let $T,r$ be as in the previous point.
+        Show that there exists an open neighborhood $p\in V\subseteq N$ and $f^{-1}V\subseteq T$.
+        Define $g\colon f^{-1}V\to V\times S$ by $q\mapsto(f(q),r(q))$.
+        Show that after possibly shrinking $V$, $g$ is a diffeomorphism, and that $f$ is a locally trivial fibration.
+    \eenum
+
+\eprob
+
+\benum
+    \item The restriction of the tangent bundle $TM|_S=\bigsqcup_{p\in S}T_pM$ is a vector bundle over $S$, and $TS\subseteq TM|_S$ is a subbundle.
+    Let $p\in S$ and let $U$ be a neighborhood of $p$ in $S$ over which there is a local frame $E_1,\dots,E_k$ of $TS$.
+    By potentially shrinking $U$ we can extend this to a local frame $E_1,\dots,E_k,E_{k+1},\dots,E_n$ of $TM|_S$.
+    If we then apply the Gram-Schmidt process to the $E_i$s, they remain smooth (since the inner product of two vector fields is a smooth function), and we obtain
+    an orthonormal local frame $E'_1,\dots,E'_n$.
+    The Gram-Schmidt process doesn't change the linear span of $E'_1,\dots,E'_i$ for all $i$, so we see that $E'_1,\dots,E'_k$ form an orthonormal local
+    frame for $TS$ and $E'_{k+1},\dots,E'_n$ span $\nu_S$ (over $U$).
+
+    Thus in some neighborhood around every $p\in S$ there are local sections $E'_{k+1},\dots,E'_n$ which span $\nu_S$ at the points where they are defined.
+    And thus $\nu_S$ is a subbundle of $TM|_S$, and since $TM|_S$ is embedded in $TM$, we see that $\nu_S$ is embedded in $TM$ as well.
+
+    And the projection map $\pi\colon TM\to M$ restricts along its domain and codomain to $\pi\colon\nu_S\to S$.
+    Since these are both embedded submanifolds, $\pi$ remains smooth.
+
+    \item Let us denote by $\exp^M$ the exponential map (from a subset of) $TM\to M$, so $\exp$ is the restriction of $\exp^M$ to $\nu_S$.
+    And let $S_0=\set{(p,0)\in\nu_S}[p\in S]\subseteq\nu_S$.
+    Consider the zero section $\zeta\colon S\to\nu_S$ given by $p\mapsto 0\in T_pS^\perp$, whose image is $S_0$.
+    This is smooth as the restriction of the zero vector field $M\to TM$ along embedded submanifolds.
+    We have that $\pi\circ\zeta=\id$, so $\zeta$ is a topological embedding as $\pi|_{S_0}$ is its continuous inverse from its image.
+    And $d\pi_{(p,0)}\circ d\zeta_p=\id$ for all $p\in S$ so $d\zeta_p$ is injective, thus $\zeta$ is an immersion.
+    As an immersive topological embedding, it is a smooth embedding, and so its image, $S_0$, is an embedded submanifold of $S_0$.
+    Since $S$ is compact, so is $S_0$ and thus it is closed in $\nu_S$.
+
+    Let $p\in S$, we want to show that $d(\exp)_{p,0}\colon T_{(p,0)}\nu_S\to T_pM$ is surjective.
+    We consider $\exp$'s action on two embedded submanifolds of $\nu_S$: $S_0$ and $T_pS^\perp$ (the latter is embedded as it is the level set of $p$ under the submersion $\pi$).
+    Notice that on $S_0$, $\exp$ maps $(p,0)$ to $p$ and thus is the composition of the diffeomorphism $S_0\to S$ with the embedding $S\inj M$.
+    In particular, $d\exp_{(p,0)}$ maps $T_{(p,0)}S_0$ isomorphically to $T_pS\subseteq T_pM$.
+    And on $T_pS^\perp$, $\exp$ agrees with $\exp^M_p$ which is a diffeomorphism around $0$.
+    Thus $d\exp_{(p,0)}$ is equal to $d(\exp^M_p)_0$ and thus maps $T_{(p,0)}T_pS^\perp$ (viewed as a subspace of $T_0T_pM\cong T_pM$) isomorphically to $T_pS^\perp$ (since $d(\exp^M_p)_0$ is the identified
+    with the identity).
+    Since $T_pM=T_pS\oplus T_pS^\perp$, we see that $d\exp_{(p,0)}$ is indeed surjective.
+
+    Now, $\mu_S$ is a vector bundle over $S$ of rank $\dim M-\dim S$ (since this is the dimension of $T_pS^\perp$).
+    Thus its dimension is $\dim\mu_S=\dim M-\dim S+\dim S=\dim M$.
+    And so each $d\exp_{(p,0)}$ is an isomorphism as its domain and codomain have the same dimensions and it is surjective.
+    So by the inverse function theorem, $\exp$ is a diffeomorphism from a neighborhood of $(p,0)\in U_p\subseteq\nu_S$ to a neighborhood of $p\in V_p\subseteq M$.
+
+    By potentially shrinking them, we can assume each $U_p$ is a precompact coordinate ball.
+    And since $S$ is compact and the $U_p$ cover it, we take a finite subcover $U_{p_1},\dots,U_{p_n}$.
+    Let $U_0=\bigcup_iU_{p_i}$, which remains precompact as the finite union of precompact sets.
+    And $\exp$ is a local diffeomorphism $U_0\to\bigcup_pV_p=V_0$ which is open.
+
+    Now we make the following claim: if $A\subseteq X$ is closed in a compact Hausdorff space $X$, and $f\colon X\to Y$ is locally injective and injective on $A$,
+    then there is a neighborhood $U$ of $A$ such that $f$ is injective on $U$.
+    Suppose not, then for every neighborhood $U$ of $A$ there are $x_U\neq y_U$ such that $f(x_U)=f(y_U)$.
+    This forms two nets $x_\bul,y_\bul$, and since $X$ is compact they have convergent subnets, $x_{U_i}\to x$ and $y_{U_i}\to y$ (we can assume they are over the same directed set).
+    This means that for any neighborhood $x\in V$, eventually $x_{U_i}$ is in $V$ and in particular $V\cap U_i$ is non-empty for some $i$.
+    Since the $U_i$ are cofinal, this means that every neighborhood of $x$ intersects every neighborhood of $A$.
+    Since $X$ is compact Hausdorff and $A$ is closed, $A$ is compact, and in Hausdorff spaces disjoint compact sets have disjoint neighborhoods.
+    Thus $x$ must be in $A$, and similarly $y$ is in $A$.
+
+    Since $f$ is continuous, $f(x_{U_i})\to f(x)$ and $f(y_{U_i})\to f(y)$ and since $f(x_{U_i})=f(y_{U_i})$, we see that $f(x)=f(y)$ (by uniqueness of limits in a Hausdorff space).
+    By assumption $f$ is injective on $A$ so $x=y$.
+    And by local injectivity there is a neighborhood $U$ of $x=y$ on which $f$ is injective.
+    Eventually $x_{U_i},y_{U_i}$ are in this neighborhood and since $f(x_{U_i})=f(y_{U_i})$ we must have $x_{U_i}=y_{U_i}$, a contradiction.
+    (This argument can be done using second-countability or metrizability and sequences instead of nets.)
+
+    Going back to our problem, we invoke the above result with $X=\cl U_0$, $A=S_0$, and $\exp$.
+    So there is a neighborhood $U$ of $S_0$ on which $\exp$ is injective.
+    Thus $\exp\colon U\to\exp(U)$ is a bijective local diffeomorphism, and thus a diffeomorphism.
+    Since $\exp\colon U_0\to V_0$ is a local diffeomorphism to an open subset $V_0\subseteq M$, it is in particular an open map and thus $\exp(U)$ is open.
+
+    And $r=\pi\circ(\exp|_U)^{-1}$ is indeed a retract $T\to S$ since it is smooth as the composition of smooth maps, and for $p\in S$, $(\exp|_U)^{-1}(p)=(p,0)$ and
+    thus $r(p)=p$ as desired.
+
+    \item Let us define
+    $$ g\colon T \to N \times S,\qquad q\mapsto (f(q),r(q)) . $$
+    Then relative to a product chart of $N\times S$, $g$'s differential is given by
+    $$ dg_q = (df_q,dr_q) . $$
+    So $\ker dg_q=\ker df_q\cap\ker dr_q$.
+    And we know that since $S$ is $f$'s level set, $\ker df_q=T_qS$ for all $q\in S$.
+    And we have $r|_S=\id_S$, so $dr_q$ acts on $T_qS$ as the identity, thus $\ker df_q\cap\ker dr_q=0$.
+    So $dg_q$ is injective for all $q\in S$, and thus $g$ has full rank at $q$.
+
+    Furthermore, $\dim S=\dim M-\dim N$ and thus
+    $$ \dim(N\times S) = \dim N+\dim S = \dim M = \dim T , $$
+    so that $dg_q$ is an isomorphism for $q\in S$.
+    By the inverse function theorem there is an open neighborhood $q\in U_p\subseteq T$ such that $g$ restricts to a diffeomorphism onto its image on $U_p$.
+    By the same argument as above (when restricting $\exp$ to a diffeomorphism around $S_0$), $g$ restricts to a diffeomorphism on an open neighborhood $S\subseteq W\subseteq T$.
+
+    Now we claim that there is a neighborhood $p\in V$ such that $f^{-1}V\subseteq W$.
+    Suppose not, so focusing on a coordinate chart around $p$, let $B_{1/n}$ be a coordinate ball (in this coordinate chart) of radius $1/n$ around $p$.
+    Then $f^{-1}B_{1/n}$ is not a subset of $W$.
+    So let $x_n\in f^{-1}B_{1/n}-W$ for each $n$.
+    Since $x_n$ are all contained in the compact $\cl B_1$, there is a convergent subsequence $x_{m_n}\to x$.
+    By continuity, $f(x_{m_n})\to f(x)$ and since $f(x_{m_n})\in B_{1/m_n}$ which is decreasing, we see that $f(x)\in\bigcap_n B_{1/m_n}=\set p$ so that $f(x)=p$.
+    Thus $x\in S$, and since $W$ is a neighborhood of $S$ and $x_{m_n}\to x$, we must have that eventually $x_{m_n}$ is in $W$, contradicting our choice of $x_n$ to not be in $W$.
+
+    So letting $p\in V$ be a neighborhood such that $f^{-1}V\subseteq W$, we restrict $g$ to $f^{-1}V$.
+    Since $g$'s restriction to $W$ is a diffeomorphism onto its image, $g$'s restriction to $f^{-1}V$ is a diffeomorphism as well.
+    Furthermore since $g(f^{-1}V)=V\times S$, we have that $g\colon f^{-1}V\to V\times S$ is a diffeomorphism.
+
+    And since
+    $$ \proj_V\circ g(q) = \proj_V(f(q),r(q)) = f(q), $$
+    we have that with $F_p=S=f^{-1}p$ and the diffeomorphism given by $g$ for all $p\in N$, $f$ is a locally trivial fibration as desired.
+\eenum
+
+\bprob[title={DoCarmo, Riemannian Geometry page 80 question 3b}]
+
+    Let $G$ be a Lie group with Lie algebra $\g$ equipped with a bi-invariant metric $\iprod{\bul,\bul}$.
+    Show that $G$'s geodesics starting at the identity are precisely its one-parameter subgroups.
+
+\eprob
+
+Let $\gamma\colon\bR\to G$ be the one-parameter subgroup of a left-invariant vector field $Y\in\g$, so
+$\gamma'(t)=Y_{\gamma(t)}$.
+Then its acceleration is
+$$ D_t\gamma'|_t = \nabla_{\ipdv t}^\gamma(Y\circ\gamma)|_t = \nabla_{\gamma'(t)}(Y)|_{\gamma(t)}
+= \nabla_YY|_{\gamma(t)} . $$
+So it is sufficient to show that $\nabla_YY=0$ for all left-invariant vector fields $Y\in\g$.
+
+Koszul's formula gives
+$$ 2\iprod{X,\nabla_YY} = 2Y\iprod{X,Y} - X\iprod{Y,Y} + 2\iprod{Y,[X,Y]} - \iprod{X,[Y,Y]} . $$
+Since $\iprod{\bul,\bul}$ is left-invariant, $\iprod{X,Y},\iprod{Y,Y}$ are constant and thus $Y\iprod{X,Y}=X\iprod{Y,Y}=0$.
+Since $[Y,Y]=0$ as well, we have
+$$ \iprod{X,\nabla_YY} = \iprod{Y,[X,Y]} . $$
+Bi-invariance of the metric implies that for all left-invariant vector fields,
+$$ \iprod{[X,Y],Z} = -\iprod{X,[Z,Y]} . $$
+And in particular
+$$ \iprod{Y,[X,Y]} = -\iprod{[Y,Y],X} = 0 . $$
+So all in all we have that $\iprod{X,\nabla_YY}=0$ for all left-invariant $X$.
+The Levi-Civita connection is left-invariant, so $\nabla_YY\in\g$ and thus it must be zero.
+So we have shown that its one-parameter subgroup is a geodesic.
+
+If $\gamma$ is a geodesic starting at $e$, then $\gamma'(0)\in T_eG$ induces a left-invariant vector field $Y$.
+As shown above, $Y$'s one-parameter subgroup is a geodesic starting at $e$ with initial velocity $Y_e=\gamma'(0)$.
+By uniqueness of geodesics, $\gamma$ must be equal to $Y$'s one-parameter subgroup, as desired.
+
+\def\uk{\underline k}
+\bprob
+
+    Let $f\colon X\to Z$ and $g\colon Y\to Z$ be smooth maps.
+    We say that $f$ and $g$ are {\emphcolor transverse} to one another, and write $f\pitchfork g$, if for all
+    $x\in X$ and $y\in Y$ such that $f(x)=g(y)$ we have $df_x(T_xX)+dg_y(T_yY)=T_{fx}Z$.
+
+    \benum
+        \item If $f\pitchfork g$ are transverse to one another, show that they define a categorical pullback $X\times_ZY$
+        in the category of smooth manifolds.
+        \item Let $k=\bR,\bC$, and $\pi_V\colon V\to M$ be a smooth vector bundle over $k$.
+        Show that $\pi_V$ is a submersion.
+        \item Let $f\colon N\to M$ be a smooth map, show that $N\times_MV$ is a smooth manifold.
+        \item Show that there is a smooth map $V\times_MV\to V$ given by fiberwise addition.
+        \item Let $\uk\to M$ denote the trivial bundle $k\times M\to M$.
+        Show that there is a smooth map $\uk\times_MV\to V$ given by fiberwise scalar multiplication.
+    \eenum
+
+\eprob
+
+\benum
+    \item Let $\Delta\subseteq Z\times Z$ denote the diagonal.
+    This is an embedded submanifold as the image of the injective embedding $Z\to Z\times Z$, $z\mapsto(z,z)$.
+    This is clearly a topological embedding, and smooth, and it is an immersion since its differential is represented by
+    the matrix $(\id,\id)^\top$ in local coordinates (obtained by choosing a coordinate chart in $Z$, then the product
+    of that coordinate chart with itself is a coordinate chart of its image under the diagonal map, and this matrix is the
+    representation of the differential); which is of full rank.
+
+    So $\Delta$ is the injective image of a smooth embedding, and is thus an embedded submanifold of $Z\times Z$.
+
+    Let $f\times g\colon X\times Y\to Z\times Z$ be given coordinate-wise.
+    Notice that
+    $$ (f\times g)^{-1}\Delta = \set{(x,y)\in X\times Y}[(fx,gy)\in\Delta] = \set{(x,y)}[fx=gy] = X\times_ZY . $$
+    So to show that $X\times_ZY$ is an embedded submanifold of $X\times Y$ (and in particular a smooth manifold), it
+    is sufficient to show that $f\times g$ is transverse to $\Delta$.
+
+    Indeed, for $fx=gy$ we have, under the identification $T_{x,y}X\times Y\cong T_xX\times T_yY$,
+    $$ d(f\times g)_{x,y}(T_{x,y}X\times Y) \cong df_x(T_xX) \times dg_y(T_yY) . $$
+    Let $z=fx=gy$, and $T_{z,z}\Delta$ is then the diagonal of $T_{z,z}Z\times Z$.
+    This is because if we let $\iota_\Delta\colon Z\to Z\times Z$ be the diagonal map, then
+    $T_{z,z}\Delta=d(\iota_\Delta)_zT_zZ$.
+    As explained, $\iota_\Delta$'s differential is the matrix $(\id,\id)^\top$, which maps $v\in T_zZ$ to $(v,v)$.
+    Thus $d(\iota_\Delta)_zT_zZ$ is indeed the diagonal of $T_zZ\times T_zZ\cong T_{z,z}Z\times Z$.
+
+    In general if we have vector subspaces $U,W\subseteq V$ such that $U+W=V$, then $U\times W+\Delta=V\times V$,
+    where $\Delta\subseteq V\times V$ is the diagonal.
+    For $(x,y)\in V\times V$ we want $u\in U,w\in W,v\in V$ such that $(u+v,w+v)=(x,y)$.
+    This requires $u-w=x-y$; and since $U+W=V$, such $u,w$ exist.
+    Then let $v=x-u$ so $u+v=x$ and $w+v=u+y-x+x-u=y$ as desired.
+
+    In our case, $V=T_zZ$, $U=df_x(T_x)$, and $W=dg_y(T_y)$, so indeed we have that $f\times g$ is transverse to $\Delta$
+    and $X\times_ZY$ is an embedded submanifold of $X\times Y$.
+
+    Since it is an embedded submanifold, we can restrict the projection maps $X\times Y\to X,Y$ to it.
+    Thus the square
+
+    \commsq{X\times_ZY&Y\cr X&Z}
+        {p_Y}{f}{p_X}{g}
+
+    Indeed commutes since
+    $$ g\circ p_Y(x,y) = g(y) = f(x) = f\circ p_X(x,y) . $$
+    And this indeed is a pullback: if $U\xtos hX,U\xtos kY$ commute with $f,g$, to form $\ell\colon U\to X\times_ZY$ we must
+    have
+    $$ \ell(u) = (h(u),k(u)) . $$
+    (This can be shown directly, also because $X\times_ZY$ is the pullback in the category of topological spaces.)
+    This is smooth as a map to $X\times Y$, and since $X\times_ZY$ is an embedded submanifold, we can restrict it to its
+    image, which is $X\times_ZY$, and it remains smooth.
+    Thus $\ell$ is unique (since $X\times_ZY$ is the pullback in the category of topological spaces) and it satisfies the
+    property.
+
+    Since the pullback is a universal property; it is unique up to unique diffeomorphism.
+    In particular, if we had another smooth structure on $X\times_ZY$ which made it the pullback along with $p_X,p_Y$,
+    then the $\ell$ defined above would be a diffeomorphism.
+    But in this case
+    $$ \ell(x,y) = \ell(p_X(x,y),p_Y(x,y)) = (x,y) \implies \ell = \id . $$
+    So $\id$ would be a diffeomorphism, meaning they have the same smooth structure.
+
+    \item Let $\Phi\colon\pi_V^{-1}U\to U\times\bR^n$ be a local trivialization, where $U\subseteq M$ is open.
+    So it is a diffeomorphism and $\proj_1\circ\Phi=\pi_V$, where $\proj_1\colon U\times\bR^n\to U$ is the projection map
+    onto the first factor.
+    Thus for $v\in\pi_V^{-1}U$,
+    $$ d(\pi_V)_v = d(\proj_1)_{\Phi v}\circ d\Phi_v . $$
+    Since $\Phi$ is a diffeomorphism and $\proj_1$ a submersion, $d(pi_V)_v$ is surjective for all $v\in\pi_V^{-1}U$.
+
+    The local trivializations cover $V$ (for $v\in V$, $\pi_V(v)$ is contained in an open subset $U$ over which there is
+    a local trivialization, and $v\in\pi_V^{-1}U$), so $d(\pi_V)_v$ is surjective for all $v\in V$.
+    That means $\pi_V$ is a submersion.
+
+    \item Submersions are transverse to every map: $d(\pi_V)_v(T_vV)=T_{\pi_Vv}M$ since it is a submersion.
+    In particular $d(\pi_V)_v(T_vV)+df_q(T_qN)=T_{\pi_Vv}M$ whenever $fq=\pi_Vv$.
+    So $\pi_V\pitchfork f$, and we showed in the first point that this means $N\times_MV$ is a smooth manifold.
+
+    \item\def\add{{\sf add}}
+    Suppose $V$ has rank $n$.
+    That is, its local trivializations are maps of the form $\Phi\colon\pi_V^{-1}U\to U\times\bR^n$ and $V$ has dimension
+    $m+n$ where $m=\dim M$.
+
+    We know that $V\times_MV$'s codimension in $V\times V$ is equal to $\Delta$'s (the diagonal's) codimension in
+    $M\times M$ (by the first point).
+    Since $\dim\Delta=\dim M=m$ this tells us
+    $$ \dim(V\times V) - \dim(V\times_MV) = \dim(M\times M) - \dim\Delta \implies \dim(V\times_MV) = 2(m+n) - m = 2n+m . $$
+
+    And explicitly,
+    $$ V\times_MV = \set{(v,u)\in V\times V}[\pi_V(v)=\pi_V(u)] = \bigsqcup_{p\in M}V_p\times V_p , $$
+    where $V_p=\pi_V^{-1}p$.
+    We want to show that
+    $$ \add\colon V\times_MV\to V,\qquad (v,u)\mapsto v+u $$
+    is smooth.
+    It is well-defined since $V_p$ is a vector space by assumption, so we can add vectors in it.
+
+    Now, for $(v,u)\in V_p\times V_p$ they both lie in the domain of the same trivialization, say
+    $\Phi\colon\bar U\to U\times\bR^n$ where $\bar U=\pi_V^{-1}U$.
+    Let us denote by $\Phi_\ell\colon\bar U\to\bR^n$ $\Phi$'s projection onto the second factor.
+    Since $V\times_MV$ is embedded, $(\bar U\times\bar U)\cap(V\times_MV)$ is open in $V\times_MV$ (as it is the intersection
+    with an open set).
+    And define
+    $$ \Psi\colon(\bar U\times\bar U)\cap(V\times_MV) \to U\times k^n\times k^n,\qquad
+    (v,u)\mapsto(\pi_V(v),\Phi_\ell(v),\Phi_\ell(u)) . $$
+    This is a smooth map, as it is clearly smooth coming from the open set $(\bar U\times\bar U)\cap(V\times V)$ (as all
+    the coordinates are smooth), and restricting to $V\times_MV$ is restricting to an embedded submanifold, and thus remains
+    smooth.
+
+    $\Psi$ is also bijective.
+    It is injective since if $\Psi(v,u)=\Psi(v',u')$ then $\pi_V(v)=\pi_V(u)=\pi_V(v')=\pi_V(u')=p$.
+    Then $\Phi_\ell(v)=\Phi_\ell(v')$, but $\Phi_\ell|_{V_p}$ is a linear isomorphism and thus injective, so $v=v'$.
+    Similar for $u=u'$.
+    And it is surjective: for $(p,a,b)\in U\times k^n\times k^n$, since $\Phi_\ell|_{V_p}$ is a linear isomorphism and
+    thus surjective, there are $v,u\in V_p$ such that $\Phi_\ell(v)=a,\Phi_\ell(u)=u$.
+    Then
+    $$ \Psi(v,u) = (\pi_V(v),\Phi_\ell(v),\Phi_\ell(u)) = (p,a,b) $$
+    as desired.
+
+    Finally, notice that (choosing a product chart)
+    $$ d\Psi = (d\pi_V,d\Phi_\ell,d\Phi_\ell) . $$
+    Since $\Phi$ is a diffeomorphism and $\Phi_\ell$ is its projection onto the first factor, it is the composition of
+    submersions ($\Phi$ with projection), and thus a submersion.
+    So $\pi_V,\Phi_\ell$ are all submersions, and thus of ranks $m,n$ respectively.
+    Thus $d\Psi$ has rank $2m+n=\dim U\times k^{2n}$, so $\Psi$ is an immersion and submersion, thus a local diffeomorphism.
+    It is also bijective, and thus a diffeomorphism.
+
+    Now consider the composition
+    $$ U\times k^n\times k^n \xtos{\Psi^{-1}} V\times_M \xtos\add V \xtos\Phi U\times k^n,\qquad (p,a,b)\mapsto(p,a+b) . $$
+    This is clearly smooth (addition in $k^n$ is smooth).
+    Since $\Phi,\Psi$ are diffeomorphisms, this means that $\add$ is smooth when restricted to $\bar U\times\bar U$.
+    Since local trivializations cover $V$, such open sets $\bar U\times\bar U$ cover $V\times_MV$, and thus $\add$ is smooth
+    as desired.
+
+    \item \def\mult{{\sf mult}}
+    Explicitly we have
+    $$ \uk\times_MV = \set{(c,p,v)\in\uk\times V}[\pi_V(v)=p] . $$
+    And we want to show that
+    $$ \mult\colon\uk\times_MV \to V,\qquad (c,p,v)\mapsto cv $$
+    is smooth.
+
+    Notice that $\uk\times_MV$ is diffeomorphic to $k\times V$.
+    Define
+    $$ \eqalign{
+        F\colon\uk\times_MV\to k\times V,&\qquad (c,p,v)\mapsto(c,v),\cr
+        G\colon k\times V\to\uk\times_MV,&\qquad (c,v)\mapsto(c,\pi_V(v),v).
+    } $$
+    These are both smooth, since $F$ is the restriction of the obvious map $\uk\times V\to k\times V$ (given by the same
+    formula) which is smooth (as its coordinates are) to an embedded submanifold on its domain.
+    And $G$ is the restriction of the obvious map $k\times V\to\uk\times V$ (given by the same formula), which is smooth as
+    its coordinates are, to an embedded submanifold on its codomain.
+
+    And $F,G$ are inverses:
+    $$ F\circ G(c,v) = F(c,\pi_V(v),v) = (c,v),\qquad G\circ F(c,p,v) = G(c,v) = (c,\pi_V(v),v) = (c,p,v) . $$
+    Thus they form diffeomorphisms.
+
+    So to show $\mult$ is smooth it is sufficient to show $\mult\circ G\colon k\times V\to V$ is smooth.
+    We identify $\mult$ with $G\circ\mult$, so it is given by
+    $$ \mult(c,v) = cv . $$
+
+    Let $\Phi\colon\bar U\to U\times k^n$ be a local trivialization.
+    Then consider the composition
+    $$ k\times U\times k^n \xtos{\id\times\Phi^{-1}} k\times\bar U \xtos{\mult} \bar U \xtos\Phi U\times k^n . $$
+    (The target of $\mult$ remains $\bar U$ since for $v\in\bar U=\pi_V^{-1}U$ we have $\pi_V(cv)=\pi_V(v)=p\in U$ so
+    $cv\in\bar U$.)
+    This is given by
+    $$ (c,p,a) \mapsto (c,\Phi^{-1}(p,a)) \mapsto c\Phi^{-1}(p,a) \mapsto (p,ca) . $$
+    The final mapping is because $\Phi$ is a linear isomorphism on the fibers, so
+    $$ \Phi(c\Phi^{-1}(p,a)) = c(p,a) = (p,ca) . $$
+    Multiplication over $k$ is smooth, so this map is smooth.
+
+    Thus $\mult$ is smooth over $k\times\bar U$, and since local trivializations cover $V$, it is smooth over all of
+    $k\times V$.
+    And as explained, this means the original $\mult$, defined on $\uk\times_MV$, is smooth.
+\eenum
+
+

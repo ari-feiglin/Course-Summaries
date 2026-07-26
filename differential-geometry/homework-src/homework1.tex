@@ -1,0 +1,331 @@
+\bprob[title={Do Carmo, Riemannian Geometry, page 33 problem 11}]
+
+    Consider the two differentiable structures on $\bR$, given by the smooth global charts
+    $$ (\bR,\phi_1),(\bR,\phi_2),\qquad \phi_1(x)=x,\ \phi_2(x)=x^3 $$
+    \benum
+        \item Demonstrate that the identity $\id\colon(\bR,\phi_1)\to(\bR,\phi_2)$ is not a diffeomorphism,
+        and as such the two charts are not smoothly compatible (i.e.\ the smooth structures induced by
+        these charts are distinct).
+        \item Show that $f\colon(\bR,\phi_1)\to(\bR,\phi_2)$ given by $f(x)=x^3$ is a diffeomorphism.
+        Thus despite the smooth structures being distinct, the manifolds are diffeomorphic.
+    \eenum
+
+\eprob
+
+\benum
+    \item For $\id$ to be a diffeomorphism, it and its inverse (itself) must be smooth.
+    That is to say, $\phi_2^{-1}\circ\phi_1$ must be a diffeomorphism.
+    Note that this map is $x\mapsto x^{1/3}$, which is not differentiable at $x=0$ and thus cannot be smooth,
+    in particular it is not a diffeomorphism.
+
+    \item We must show that $\phi_2^{-1}\circ f\circ\phi_1$ and $\phi_1^{-1}\circ f^{-1}\circ\phi_2$ are
+    smooth.
+    Notice that $f=\phi_2$, so both of these maps are just the identity, which is obviously smooth.
+\eenum
+
+\bprob
+
+    In this exercise we demonstrate the existence of a smooth structure $\c S$ on the real line $\bR$
+    so that $f\colon\bR\to\bR$ given by $f(x)=x^3$ is a diffeomorphism.
+    \benum
+        \item Show that it is sufficient to find a homeomorphism $\psi\colon\bR\to\bR$ such that
+        $\psi\circ f\circ\psi^{-1}$ is a diffeomorphism with respect to the standard smooth structure on $\bR$.
+        \item Let $g,h\colon(0,1)\to(0,1)$ be homeomorphisms such that $g(x),h(x)>x$ for all $x\in(0,1)$.
+        Show that there exists a homeomorphism $\phi\colon(0,1)\to(0,1)$ such that $\phi\circ g=h\circ\phi$.
+        \item Construct a diffeomorphism (with respect to the standard structure) $k\colon\bR\to\bR$ such
+        that the following conditions hold:
+        \benum
+            \item for $x\in(0,1)$ we have $k(x)<x$,
+            \item for $x\in(1,\infty)$ we have $k(x)>x$,
+            \item for $x\in(-1,0)$ we have $k(x)>x$,
+            \item for $k\in(-\infty,-1)$ we have $k(x)<x$,
+            \item $k(0)=0,k(1)=1,k(-1)=-1$.
+        \eenum
+        \item Note that the above conditions are satisfied by $k=f$ (other than it being a diffeomorphism).
+        Apply point (2) repeatedly to construct the homeomorphism from point (1).
+    \eenum
+
+\eprob
+
+\benum
+    \item Given such a homeomorphism, the chart $(\bR,\psi^{-1})$ is clearly smoothly compatible with itself
+    and thus induced a smooth structure.
+    We want $f\colon(\bR,\psi^{-1})\to(\bR,\psi^{-1})$ to be a diffeomorphism, which requires that
+    $\psi\circ f\circ\psi^{-1}$ and $\psi\circ f^{-1}\circ\psi^{-1}$ be smooth (wrt the standard smooth
+    structure), as these are inverses this is the same as requiring $\psi\circ f\circ\psi^{-1}$ be a
+    diffeomorphism, as desired.
+
+    \item Note that $g,h$ must be monotonic as they are homeomorphisms.
+    In particular they must be increasing, as if say $g$ were decreasing let $x\in(0,1)$.
+    Then for every $z>x$ we have $x<z<g(z)$ and so $g$ maps $(x,1)$ into $(x,1)$.
+    But for $z<x$ we have $g(z)>g(x)>x$ and so $g$ maps $(0,x)$ into $(x,1)$ as well, meaning the image of
+    $g$ is contained in $(x,1)$, a contradiction.
+    And since $g,h$ are increasing so too must their inverses.
+
+    Furthermore we must have that their limits at $0$ and $1$ are $0$ and $1$ respectively.
+    For example, let $x_n\to0$ be decreasing then $g(x_n)$ is decreasing as well, and must have infimum
+    $0$ and thus the limit of $g(x_n)$ is zero as well.
+    Thus we can extend $g,h$ to homeomorphisms $[0,1]\to[0,1]$ by defining $g(0)=h(0)=0$ and $g(1)=h(1)=1$.
+
+    Now for $x\in(0,1)$ consider the sequence $x_n=g^n(x)$ for $n\in\bZ$.
+    This is an increasing sequence since $g(x)>x$, and its supremum is $1$.
+    Suppose otherwise and let $s=\sup x_n<1$, so that $g^n(x)\leq s$ for all $n$.
+    But then $g^n(x)\leq g^{-1}(s)<s$ for all $n$, a contradiction.
+    Similarly its infimum is $0$.
+    Thus the sets $[x_n,x_{n+1})$ cover $(0,1)$.
+
+    Now choose another $y\in(0,1)$ and form the same construction via $h$ to give $[y_n,y_{n+1})$ covering
+    $(0,1)$.
+    Take an increasing homeomorphism $\phi_0\colon[x_0,x_1)\to[y_0,y_1)$.
+    Now we define $\phi_n\colon[x_n,x_{n+1})\to[y_n,y_{n+1})$ as
+    $$ \phi_n = h^n\circ\phi_0\circ g^{-n} . $$
+    This is an increasing homeomorphism as a composition of increasing homeomorphisms.
+    Thus in addition we can extend $\phi_n$ to a homeomorphism $[x_n,x_{n+1}]\to[y_n,y_{n+1}]$ by
+    $\phi_n(x_{n+1})=y_{n+1}$ (as demonstrated before, this is true for increasing homeomorphisms).
+
+    So we have a collection of homeomorphisms $\phi_n$ defined on $[x_n,x_{n+1}]$ which all agree on the
+    endpoints (meaning $\phi_n(x_{n+1})=\phi_{n+1}(x_{n+1})$).
+    Thus by the pasting lemma, since the collection of these closed intervals is locally finite, we can
+    paste these together to form a homeomorphism $\phi\colon(0,1)\to(0,1)$ restricting to $\phi_n$ on the
+    relevant interval.
+
+    In particular for $x\in[x_n,x_{n+1})$ we have
+    $$ \phi\circ g(x) = \phi_{n+1} g(x) = h^{n+1}\circ\phi_0\circ g^{-n}(x) $$
+    and
+    $$ h\circ\phi(x) = h\circ\phi_n(x) = h^{n+1}\circ\phi_0\circ g^{-n}(x) $$
+    so that $h\circ\phi=\phi\circ g$ as desired.
+    Notice that defining $\phi(0)=0,\phi(1)=1$ extends this result to $[0,1]\to[0,1]$.
+
+    \item Consider the scalar multiple of $\sinh$,
+    $$ k(x) = \frac{e^x-e^{-x}}{e-e^{-1}} . $$
+    This is a smooth function as a linear combination of smooth real valued functions.
+    Its inverse is smooth as well; it is sufficient to show this regarding $\sinh$.
+    We can write the inverse of $\sinh$ as
+    $$ \sinh^{-1}(x) = \log(x+\sqrt{x^2+1}) $$
+    and thus compute its first two derivatives
+    $$ \frac1{\sqrt{x^2+1}},\qquad -\frac{2x}{x^2+1} $$
+    The second derivative is smooth, as the quotient of two smooth functions ($x^2+1$) has no zeroes.
+    Thus $\sinh^{-1}$ is, as desired.
+
+    $k(x)$ has the desired properties: these can be deduced by a routine analysis of $k(x)-x$.
+
+    \item We can dualize our conjugacy result above with the condition that $g(x),h(x)<x$.
+    The result holds also for intervals of the form $[a,\infty)$ by the same construction.
+    Thus we can define homeomorphisms
+    $$ \psi_{-\infty}\colon(-\infty,-1]\to(-\infty,-1],\quad\psi_-\colon[-1,0]\to[-1,0],\quad
+    \psi_+\colon[0,1]\to[0,1],\quad\psi_\infty\colon[1,\infty)\to[1,\infty) $$
+    such that $\psi_\bul\circ f=k\circ\psi_\bul$ for each $\psi_\bul$, and that $\psi_\bul$
+    agree on the endpoints of the intervals (e.g.\ $\psi_-(-1)=-1,\psi_-(0)=0$).
+    Thus we can paste them together to get a homeomorphism $\psi\colon\bR\to\bR$ satisfying
+    $$ \psi\circ f\circ\psi^{-1} = k $$
+    a diffeomorphism, as desired.
+\eenum
+
+\bprob
+
+    Let $K$ be a field, and define $G_K(k,n)$ to be the set of all $k$-dimensional subspaces of $K^n$.
+    We will define a smooth structure on $G_K(k,n)$.
+    Let $V\subseteq K^n$ be a linear subspace of dimension $k$ and let $W\subseteq K^n$ be any complementary
+    subspace, necessarily of dimension $n-k$.
+    Define
+    $$ U_{V,W} = \hom(V,W) \cong K^{k(n-k)} $$
+    Also define
+    $$ \x_{V,W}\colon U_{V,W}\to G_K(k,n) $$
+    which maps a linear map $\ell\in\hom(V,W)$ to its graph:
+    $\x_{V,W}(\ell)=\set{v+\ell(v)}[v\in V]\subseteq K^n$.
+    \benum
+        \item Show that $\x_{V,W}$ is injective.
+        \item Show that $\bigcup_{V,W}\x_{V,W}(U_{V,W})=G_K(k,n)$.
+        \item Show that for another pair $V',W'$, $\x^{-1}_{V,W}\circ\x_{V',W'}(U_{V',W'})$ is open in
+        $U_{V,W}$.
+        \item Show that $\x^{-1}_{V,W}\circ\x_{V',W'}$ is smooth.
+    \eenum
+
+\eprob
+
+\benum
+    \item Let $\ell,\ell'\colon V\to W$ such that $\x(\ell)=\x(\ell')$ ($\x=\x_{V,W}$).
+    This means that for every $v\in V$ there is a $u\in V$ such that $v+\ell(v)=u+\ell'(u)$.
+    Since $V$ and $W$ are complementary, any representation of a vector as a sum of one from $V$ and one from
+    $W$ is unique; thus $v=u$ and $\ell(v)=\ell'(u)=\ell'(v)$.
+    So we have shown that $\ell=\ell'$, meaning that $\x$ is injective as desired.
+
+    \item Let $V\in G_K(k,n)$ be a $k$-dimensional subspace of $K^n$ with complement $W$.
+    Consider then the zero morphism $0\in\hom(V,W)$, and we note that $\x_{V,W}(0)=V$.
+    Thus we have the desired result.
+
+    \item First we make the following claim:
+    $$ \x_{V,W}(U_{V,W}) = \set{V'\in G_K(n,k)}[V'\cap W=0] . $$
+    Indeed, one direction is clear: if $v+\ell(v)\in W$ then by uniqueness of $V\oplus W$, we must have that
+    $v=0$ and so $v+\ell(v)=0$, thus $\x_{V,W}(\ell)\cap W=0$.
+    Conversely consider the projection $\pi_V\colon K^n\to V$ parallel to $W$.
+    This map defines an isomorphism $\pi_V|_{V'}\colon V'\to V$, since the kernel of the projection is $W$
+    and thus the restriction is injective and thus an isomorphism by considering dimension.
+    We also can consider the projection $\pi_W\colon K^n\to W$ parallel to $V$ and define the composition
+    $$ \ell = V \xtos{\pi_V|_{V'}^{-1}} V' \xtos{\pi_W|_{V'}} W $$
+
+    Let us denote by $I_V\colon V\to K^n$ the inclusion of $V$ in $K^n$.
+    So for $\ell\in U_{V,W}$, $\x(\ell)$ is simply the image of $I_V+I_W\ell\colon V\to K^n$.
+    Since $\pi_V|_{V'}$ is an isomorphism $V'\to V$, the image of $I_V+I_W\ell$ and $I_V\pi_V|_{V'}+I_W\ell\pi_V|_{V'}$ are the same, and
+    $$ I_V\pi_V|_{V'} + I_W\ell\pi_V|_{V'} = I_V\pi_V|_{V'} + I_W\pi_W|_{V'} = \id_{V'} $$
+    since this is the restriction of $I_V\pi_V+I_W\pi_W=\id_{K^n}$.
+    In particular $\x(\ell)=\x(\id_{V'})=V'$ as desired.
+
+    Thus we have
+    $$ \x_{V',W'}^{-1}\circ\x_{V,W}(U_{V,W}) = \set{\ell'\in U_{V',W'}}[\x(\ell')\cap W=0] , $$
+    and we wish to show this is open.
+    The image of a linear map $T\colon V'\to K^n$ has trivial intersection with $W$ iff $\pi_V\circ T\colon V'\to V$ is injective, equivalently invertible.
+    Indeed, it is injective iff $T$'s image intersects non-trivially with $\pi_V$'s kernel, $W$.
+    Thus the set in question is
+    $$ \set{\ell'\in U_{V',W'}}[\pi_V\circ(I_{V'}+I_{W'}\ell)\hbox{ is invertible}] $$
+
+    Identifying the spaces of linear maps in question with spaces of matrices, that is choosing bases for $V,W,V',W'$, this set corresponds to the subset of
+    Euclidean space
+    $$ \set{L\in M_{(n-k)\times k}(K)}[P(I_1+I_2L)\hbox{ is invertible}] $$
+    where $I_1,I_2$ are the matrix representations of $I_{V'},I_{W'}$ and $P$ the matrix representation of $\pi_V$.
+    This is the preimage of the open set $K^\times$ under the function $L\mapsto\det(P(I_1+I_2\cdot L))$, which is a composition of continuous functions, so the set is
+    open, as desired.
+
+    \item Let $\ell'\in\x_{V',W'}^{-1}\circ\x_{V,W}(U_{V,W})$, we want to compute its image under $\x_{V,W}^{-1}\circ\x_{V',W'}$.
+    Recall that we showed $\x_{V,W}^{-1}(V')=\pi_V|_{V'}^{-1}\circ\pi_W|_{V'}$.
+    Thus
+    $$ \x^{-1}\circ\x(\ell') = \pi_W|_{\x(\ell')}\circ\pi_V|_{\x(\ell')}^{-1} . $$
+    Let us define $I_{\ell'}$ to be the inclusion $\x(\ell')=\im(I_V+I_W\ell)\to K^n$ so that $\pi|_{\x(\ell')}=\pi\circ I_{\ell'}$.
+    Then we have
+    $$ \x^{-1}\circ\x(\ell') = (\pi_W\circ I_{\ell'})\circ(\pi_V\circ I_{\ell'})^{-1} . $$
+    Let us choose bases for $V,W,V',W'$, then these give a basis $\set{v'_i+\ell'v'_i}_i$ for $\x(\ell')$.
+    Then relative to these bases, $\x^{-1}\circ\x(\ell')$ is represented by
+    $$ (\pi_W\circ I_{\ell'})^{\x(\ell')}_W \cdot {(\pi_V\circ I_{\ell'})^{\x(\ell')}_V}^{-1} . $$
+    The $i$th column in these matrices is ($\bul$ standing in place for $V$ or $W$),
+    $$ (\pi_\bul v'_i + \pi_\bul \ell'v'_i)_\bul  = (\pi_\bul v'_i)_\bul  + (\pi_\bul \ell'v'_i)_\bul  . $$
+    Thus the representation matrix of $\pi_\bul \circ I_{\ell'}$ is simply $P^1_\bul +P^2_\bul L$, where $P^1_\bul $ is the representation $(\pi_\bul )^{V'}_\bul $ and $P^2_\bul $ is the representation
+    $(\pi_\bul )^{W'}_\bul $, and $L$ is the representation $(\ell')^{V'}_{W'}$.
+
+    All in all, we see that $\x^{-1}\circ\x$ corresponds to the map of matrices
+    $$ \x^{-1}\circ\x(L) = (P^1_W+P^2_W\cdot L)\cdot(P^1_V+P^2_V\cdot L)^{-1} $$
+    Both of these maps $L\mapsto P^1_\bul+P^2_\bul\cdot L$ are smooth, as affine Euclidean maps.
+    And taking the inverse of $P^1_V+P^2_V\cdot L$ is smooth too: if $L\mapsto f(L)$ is a smooth function where $f(L)$ is always invertible, then $L\mapsto f(L)^{-1}$ is smooth as well.
+    This is because $f(L)^{-1}=1/\det(f(L))\cdot{\rm adj}(f(L))$ with ${\rm adj}$ being the adjugate matrix.
+    $\det$ is a smooth function, and thus $1/\det$ is smooth where defined (the multiplicative inverse of a real/complexp-valued smooth function is smooth, proven in a later answer).
+    ${\rm adj}$ is smooth as well: in each coordinate it is the composition of a projection onto a minor and $\det$, both of which are smooth.
+    Thus $L\mapsto f(L)^{-1}$ is smooth as claimed.
+
+    So we have shown $L\mapsto\x^{-1}\circ\x(L)$ is a smooth function, as desired.
+\eenum
+
+\bprob
+
+    An {\emphcolor exhaustion function} for a topological space $X$ is a continuous function
+    $f\colon X\to\bR$ such that $f^{-1}(-\infty,c]$ is compact for every $c\in\bR$.
+    \benum
+        \item Show that $x\mapsto\norm x^2$ is a smooth exhaustion function $\bR^n\to\bR$.
+        \item Show that $f\colon B_1(0)\to\bR$ defined by $f(x)=1/(1-\norm x^2)$ is a smooth exhaustion
+        function.
+        \item Prove that every manifold admits a smooth positive exhaustion function.
+    \eenum
+
+\eprob
+
+\benum
+    \item First of all, $f(x)=\norm x^2$ is smooth.
+    And $f(x)\leq c$ iff $x$ is in the closed ball centered at $0$ of radius $\sqrt c$, i.e.\ the preimage
+    $f^{-1}(-\infty,c]$ is $\cl B_{\sqrt c}(0)$ which is compact (for negative $c$ it is empty, still compact).
+
+    \item $f$ is smooth here as well (it is the quotient of two smooth functions, which is smooth as I show
+    in the next exercise).
+    And
+    $$ f(x) \leq c \iff \norm x^2 \leq 1-1/c , $$
+    meaning that $f^{-1}(-\infty,c]$ is $\cl B_{\sqrt{1-1/c}}(0)$ when defined (otherwise empty), which
+    is again compact.
+
+    \item Let $\set{U_n}_{n=1}^\infty$ be a countable cover of $M$ by precompact open sets (open sets whose
+    closure is compact).
+    Such a cover exists: take a chart $(U,\phi)$, then $\phi(U)$ has a countable open cover of proper
+    precompact sets (as a subspace of Euclidean space, e.g.\ open balls are open precompact), and lifting
+    these back to $U$ via the homeomorphism $\phi$ covers $U$ in open precompact sets.
+    $M$ is covered by the union of countable precompact open covers of a countable cover of coordinate charts.
+
+    In recitation we showed there exists a partition of unity subordinate to it, let it be
+    $\set{\psi_n}_{n=1}^\infty$.
+    Define the function
+    $$ f(p) = \sum_{n=1}^\infty n\psi_n(p) . $$
+    Since $\set{\psi_n}_n$ is a partition of unity, at each point this is only a finite sum and thus $f$ is
+    a well-defined function $M\to\bR$.
+    Moreso, for every $U_n$, $f|_{U_n}$ is smooth as a finite combination of smooth maps, and thus $f$ itself
+    is smooth ($U_n$ covers $f$).
+
+    Now, notice that if $p\notin\bigcup_{i=1}^N\cl{U_i}$ then in particular $p$ cannot be in the support of
+    $\psi_i$ for $1\leq i\leq N$ and so
+    $$ f(p) = \sum_{n=1}^\infty n\psi_n(p) = \sum_{n=N+1}^\infty n\psi_n(p) \geq (N+1)\sum_n\psi_n(p) = N+1 $$
+    Thus if $p\notin\bigcup_{i=1}^N\cl{U_i}$, $f(p)>N$.
+
+    Thus $f^{-1}(-\infty,N]$ is a closed subset of $\bigcup_{i=1}^N\cl{U_i}$, a compact set as the finite
+    union of compact sets.
+    $M$ is Hausdorff and so $f^{-1}(-\infty,N]$ is compact as a closed subset of a compact space.
+    For a real $c\in\bR$ we can take an integer $N>c$ and then we have that $f^{-1}(-\infty,c]$ is a closed
+    subset of the compact $f^{-1}(-\infty,N]$ and thus is compact.
+
+    $f$ is clearly positive, so we have constructed a positive smooth exhaustion function.
+\eenum
+
+\bprob
+
+    Let $C^\infty(M)$ denote the $\bR$-algebra of smooth functions $M\to\bR$ for a smooth manifold $M$.
+    Prove that every $\bR$-algebra morphism $\phi\colon C^\infty(M)\to\bR$ is given by evaluation at some
+    $p\in M$; i.e.\ $\phi(f)=f(p)$ for all $f\in C^\infty(M)$.
+
+\eprob
+
+Since ring morphisms preserve the multiplicative unit, $\ker\phi$ is a proper ideal.
+We will show this first for the case that $M$ is compact.
+
+Let $f\in\ker\phi$, then we claim that $f$ has a zero.
+Indeed, if $f$ has no zeroes then it has a multiplicative inverse $g(p)=1/f(p)$.
+To show that $g$ is smooth we must prove that for every chart $(U,\x\colon U\to\bR^n)$, $g\circ\x^{-1}$ is
+smooth.
+Indeed:
+$$ g\circ\x^{-1} = \frac1{f\circ\x^{-1}}, $$
+and $1$ over a never-zero smooth function is always smooth.
+Since $f$ has a multiplicative inverse, it cannot be contained in a non-trivial kernel and thus
+$f\notin\ker\phi$ when $f$ has no zeroes.
+
+For $f\in\ker\phi$ define $Z(f)=\set{p\in M}[f(p)=0]$ to be its set of zeroes, i.e.\ $Z(f)=f^{-1}\set0$
+(in particular $Z(f)$ is closed in $M$ as the preimage of a closed set).
+If $f,g\in\ker\phi$ are two functions in the kernel, then we claim $Z(f)\cap Z(g)$ is nonzero.
+Indeed, if the intersection were empty then $f^2+g^2$ would be a smooth function having no zeroes, but also
+in the kernel, a contradiction.
+
+Thus the finite intersection of zeroes of functions in the kernel is non-empty.
+By compactness, the intersection of the zeroes of all the functions in the kernel is non-empty.
+Indeed, if $\bigcap_{f\in\ker\phi}Z(f)=\emptyset$ then $\set{Z(f)^c}_{f\in\ker\phi}$ would be an open cover
+of $M$ and by compactness have a finite subcover.
+That is, $\bigcup_iZ(f_i)^c=M$ for finitely many $f_i\in\ker\phi$, meaning $\bigcap Z(f_i)=\emptyset$,
+which is a contradiction.
+
+So let $p\in\bigcap_{\ker\phi}Z(f)$; we must have that $\phi(f)=f(p)$ for all $f\in C^\infty(M)$.
+Indeed, for $f\in C^\infty(M)$ consider the constant function whose value is $\phi(f)$.
+As an $\bR$-algebra morphism, $\phi(f-\phi(f))=0$ so that $f-\phi(f)\in\ker\phi$.
+Thus $p$ is a zero of $f-\phi(f)$, i.e.\ $f(p)=\phi(f)$ as desired.
+
+In the general case when $M$ is not necessarily compact, let $u\colon M\to\bR$ be a smooth exhaustion function, and define $K$ to be the compact subset given by
+$u^{-1}(-\infty,\phi(u)]$.
+As before, if we can show that the intersection $Z(f)$ over all $f\in\ker\phi$ is nonempty, we are finished.
+So assume that the intersection is empty, then $\set{Z(f)^c}_{f\in\ker\phi}$ form an open cover of $M$,
+in particular $K$.
+By compactness there must be a finite subcover; let $f_1,\dots,f_n$ be these functions inducing one.
+That is to say,
+$$ K \subseteq \bigcup_{i=1}^n Z(f_i)^c, $$
+meaning every $x\in K$ is not the zero of some $f_i$.
+
+Now notice that if $u(x)=\phi(u)$, then $x$ must be in $K$ by definition.
+Thus $u-\phi(u)$ is a map in $\phi$'s kernel, all of whose zeroes lie within $K$.
+So we can define
+$$ g = (u-\phi(u))^2 + \sum_{i=1}^n f_i^2 . $$
+This map has no zeroes: if $g(x)=0$ then $x$ must be a zero of $u-\phi(u)$ and also of each $f_i$.
+But this cannot be: if $u(x)=\phi(u)$ then $x$ must be in $K$, which means it is not the zero of some $f_i$, a contradiction.
+
+So $g$ is non-zero and thus has a multiplicative inverse, but also $g\in\ker\phi$ since it is the sum and product of functions in the kernel, a contradiction.
+Thus $\bigcap_{f\in\ker\phi}Z(f)$ is non-empty, and any point $p$ in this intersection satisfies $\phi(f)=f(p)$ as before.
+
+
+

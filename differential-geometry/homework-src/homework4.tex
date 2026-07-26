@@ -1,0 +1,342 @@
+\def\bK{{\bb K}}
+
+\bprob
+
+    Let $G$ be a Lie group, and $H$ a closed embedded Lie subgroup.
+    Define actions of $G$ on itself by left and right multiplication:
+    $$ L,R\colon G\times G\to G,\qquad L(x,y)=xy,\quad R(x,y)=yx^{-1} . $$
+    \benum
+        \item Show that the action of $H$ on $G$ by $R$ is smooth, proper, and free.
+        \item By the above point, we can form the quotient space $G/H$ with respect to the action $R$; let the quotient map be
+        $\pi\colon G\to G/H$.
+        Show that there is a unique $G$-action $\bar L$ on $G/H$ such that the following diagram commutes
+
+        \commsq{G\times G&G\cr G\times G/H&G/H}
+            {L}{\bar L}{\id\times\pi}{\pi}
+    \eenum
+
+\eprob
+
+\benum
+    \item First of all since $H$ is embedded, we can restrict $R$ to $H\times G\to G$, as shown in the previous homework.
+    So the action is smooth.
+    Clearly the action is free: if $R(x,y)=y$ then $yx^{-1}=y$ so $y=e$.
+    To show that the action is proper, let $h_i\in H$ and $g_i\in G$ be sequences such that $g_i$ and $R(h_i,g_i)$ both converge; we need to show
+    that $h_i$ has a convergent subsequence.
+    Since $g_i$ and $R(h_i,g_i)=g_ih_i^{-1}$ converge, so does $R(h_i,g_i)^{-1}=h_ig_i^{-1}$ and thus $R(h_i,g_i)^{-1}g_i=h_i$ converges in $G$.
+    Since $H$ is closed, it contains all of its limit points, thus $h_i$ converges in $H$, as desired.
+
+    \item The orbit of $x\in G$ by $H$ under $R$ is
+    $$ H\cdot x = {R(h,x)}[h\in H] = \set{xh^{-1}}[h\in H] = xH . $$
+    If $\bar L$ exists it is unique, as it is given by
+    $$ \bar L(g,xH) = \pi\circ L(g,x) = gxH . $$
+    Note that this is well-defined: if $xH=yH$ then $gxH=gyH$.
+    It is also a group action, since $\bar L(e,xH)=xH$ and $\bar L(g_1g_2,xH)=g_1g_2xH=\bar L(g_1,\bar L(g_2,xH))$.
+    We need only show that it is smooth.
+
+    Note that since $\id,\pi$ are surjective submersions, so is $\id\times\pi$ (the rank of the product of two maps is the sum of their ranks).
+    Thus $\bar L$ is smooth if and only if $\bar L\circ(\id\times\pi)$ is.
+    This is because if $M\xto\pi N$ is a smooth submersion, then $N\xto FP$ is smooth iff $F\circ\pi$ is smooth: one direction is clear,
+    and the other follows by existence of local sections.
+    If $F\circ\pi$ is smooth, let $p\in N$ and $q\in M$ such that $\pi(q)=p$.
+    Then there is a local section $\sigma\colon U\to M$ with $q\in U$ and $\sigma(q)=p$, so
+    $$ F|_U = F|_U\circ\id_U = F|_U\circ(\pi\circ\sigma) = (F|_U\circ\pi)\circ\sigma, $$
+    which is smooth as the composition of smooth maps; so $F$ is smooth around every point in $N$, and thus smooth.
+
+    Since $\bar L\circ(\id\times\pi)=\pi\circ L$ is smooth, $\bar L$ is smooth as desired.
+\eenum
+
+\bprob
+
+    Let $G$ be a Lie group acting transitively on $M$.
+    \benum
+        \item Let $f\colon N\to Q$ be a smooth surjective map of constant rank.
+        Show that $f$ is a submersion.
+        \item For $p\in M$ show that $G_p\subseteq G$ is a closed embedded Lie subgroup.
+        Conclude that $G/G_p$ is a smooth manifold.
+        \item Let $\pi\colon G\to G/G_p$ be the quotient map, by the first question $G$ acts on $G/G_p$ by left multiplication.
+        Show there is a unique $G$-equivariant diffeomorphism $F\colon G/G_p\to M$ such that $F(\pi(e))=p$.
+        \item The unitary group $U(n)$ acts on $\bC^n$ by matrix multiplication, and thus it acts on the Grassmanian $G_\bC(k,n)$.
+        Show that this action is smooth and transitive.
+        Further show that the stabilizer of a point is the subgroup of block-diagonal matrices $U(k)\times U(n-k)$.
+        Conclude that $G_\bC(k,n)$ is diffeomorphic $U(n)/(U(k)\times U(n-k))$.
+    \eenum
+
+\eprob
+
+\benum
+    \item Suppose $f$ has rank $k$, and let $n=\dim N,q=\dim Q$; suppose that $f$ is not a submersion so $k<q$.
+    Then locally $f$ has the representation $\phi^{-1}\circ f\circ\psi\colon(x_1,\dots,x_n)\mapsto(x_1,\dots,x_k,0,\dots,0)$, where $\phi,\psi$ are coordinate charts
+    of $Q,N$ respectively.
+    This is a map between open subsets of Euclidean space, and since $f$ is surjective and $\phi,\psi$ are diffeomorphisms, it must be surjective.
+    But its image consists of vectors whose final $q-k>0$ coordinates are zero, and this cannot be open in $\bR^q$ (any open ball centered on one of these points has points whose
+    last coordinates are nonzero), a contradiction.
+    Thus $f$ must have rank $k=q$, and is thus a submersion.
+
+    \item Let $\theta\colon G\times M\to M$ be the group action, and define $\theta^p\colon G\to M$ by $\theta^p(g)=\theta(g,p)=gp$.
+    Since $G$ acts on $M$ transitively, it is surjective.
+    Furthermore it has constant rank since it is $G$-equivariant relative to $G$'s smooth action on itself by left multiplication:
+    $$ \theta^p(g'g) = g'gp = g'\theta^p(g) . $$
+    So by the previous point, it is a smooth submersion.
+
+    Thus its level sets are embedded submanifolds, in particular $G_p=(\theta^p)^{-1}(p)$ is.
+    It is also a subgroup of $G$, and since it is an embedded submanifold we can restrict the domains and codomains of multiplication and inversion to show that multiplication
+    and inversion on it are smooth (as per the previous homework again).
+    It is the preimage of a singleton under a continuous function, so it is closed as well, so is a closed embedded Lie subgroup.
+    By the previous question, $G/G_p$ exists.
+
+    \item If $F\colon G/G_p\to M$ is $G$-equivariant, it must satisfy
+    $$ F(gG_p) = gF(G_p) = gF(\pi(e)) = gp $$
+    for all $gG_p\in G/G_p$; so $F$ is unique if it exists.
+    It is surjective since $G$ acts transitively on $M$, and injective since if $gp=g'p$ then $g^{-1}g'p=p$ so $g^{-1}g'\in G_p$ and thus $gG_p=g'G_p$.
+    Now we need to show that it is smooth.
+
+    As we showed in the previous question, $F$ is smooth iff $F\circ\pi$ is, and $F\circ\pi$ is the map $g\mapsto gp$, which is smooth as $G$ acts smoothly on $M$.
+    Thus $F$ is a smooth $G$-equivariant bijection.
+    Since it is $G$-equivariant, it has constant rank, and thus is a smooth submersion by our first point.
+    Similarly it is an immersion: injective maps of constant rank are immersions by a similar argument to our first point (but even simpler, since $(x_1,\dots,x_n)\mapsto(x_1,\dots,x_k,0,\dots,0)$
+    is injective only when $k=n$, we don't need to even consider topology).
+    Also we could just note that $\dim G/G_p=\dim M$ so a smooth submersion is a smooth immersion.
+    Then $F$ is a local diffeomorphism, again by the constant rank theorem, and since it is bijective it must be a global diffeomorphism.
+
+    The first point that $F$ is a local diffeomorphism is because by the constant rank theorem it locally has the representation $\bar x\mapsto\bar x$, which is a diffeomorphism.
+    Since it is a bijection, $F^{-1}$ exists, and for every point in its domain there is a neighborhood in which $F$ is a diffeomorphism, so $F^{-1}$ is smooth; thus $F^{-1}$
+    is globally smooth.
+
+    \item The action of $U(n)$ on $G_\bC(k,n)$ is given by $(U,V)\mapsto UV=\set{Uv}[v\in V]$.
+    We will assume smoothness at first, and show it at the end.
+    This action is transitive since if $V,V'\in G_\bC(k,n)$ are both subspaces of dimension $k$ then we can take orthonormal bases of them and define $U$ to map between them.
+    Explicitly, let $B_0,B'_0$ be orthonormal bases of $V,V'$ respectively.
+    Extend these to $B,B'$ orthonormal bases of $\bC^n$ and define $U$ to map $B$ to $B'$.
+    This is a unitary matrix as it maps an orthonormal basis to an orthonormal basis, and since $UB_0=B'_0$, we have that $UV=V'$ as desired.
+
+    For $V\in G_\bC(k,n)$, its stabilizer under $U(n)$ are all unitary matrices which map $V$ to itself.
+    Such a unitary matrix must map $V^\perp$ to itself as well.
+    Thus if $U$ is in the stabilizer, since $V\oplus V^\perp=\bC^n$, $U=U|_V\oplus U|_{V^\perp}$, so that $U$ is a block-diagonal matrix (up to equivalence).
+    Since the restriction of $U$ to a $U$-invariant subspace remains unitary (it still maps orthonormal bases to orthonormal bases), $U|_V\in U(k)$ and $U|_{V^\perp}\in U(n-k)$
+    so that $U\in U(k)\times U(n-k)$ (where $U(k)$ are the unitary transformations of $V$, and $U(n-k)$ the unitary transformations of $V^\perp$).
+    Conversely any $(U_0,U_1)\in U(k)\times U(n-k)$ defines $U=U_0\oplus U_1$, a unitary matrix in $V$'s stabilizer.
+
+    Thus by the previous point,
+    $$ G_\bC(k,n) \cong U(n)/U(n)_V = U(n)/(U(k)\times U(n-k)) , $$
+    as desired.
+
+    Now to show that $U(n)$'s action on $G_\bC(k,n)$ is smooth, consider its charts $\Gamma_{V,W}\colon\hom(V,W)\to G_\bC(k,n)$ mapping $\ell$ to its graph.
+    Recall that $\Gamma(\hom(V,W))$ is the collection of $k$-dimensional subspaces with trivial intersection with $W$.
+    For $U\in U(n)$ and $\ell\in\hom(V,W)$, then
+    $$ U\cdot\Gamma_{V,W}(\ell) = \set{Uv+U\ell v}[v\in V] , $$
+    which has trivial intersection with $UW$, since $UV\oplus UW=\bC^n$, so it is in $\Gamma(\hom(UV,UW))$, and then
+    $$ \Gamma^{-1}_{UV,UW}\circ U\circ\Gamma_{V,W}(\ell) = U\circ\ell\circ U^{-1}, $$
+    since its graph is $\set{Uv+U\ell U^{-1}Uv}[v\in V]=\set{Uv+U\ell v}[v\in V]=U\Gamma(\ell)$.
+    This is a smooth map, since conjugation is smooth ($\gl_n(\bC)$, and thus $U(n)$ since it is embedded, acts smoothly on $\mat_n(\bC)$).
+
+    So each coordinate representation of the action is smooth, but we need to show that for each $(U,V)$, they lie in a neighborhood which is mapped into $\Gamma(\hom(UV,UW))$.
+    Consider the map $U(n)\times\hom(V,W)\to\hom(V,\bC^n)$ which maps $(A,\ell)\mapsto A\ell$.
+    This is smooth, as it is just matrix multiplication.
+    Since $V$ is just represented by $0\in\hom(V,W)$ (meaning $\Gamma_{V,W}(0)=V$), we want to show that the preimage of the maps whose graphs don't intersect $UW$ is open.
+    Now $\ell\in\hom(V,\bC^n)$'s graph doesn't intersect $UW$ if for a basis $v_1,\dots,v_k\in V$ and a basis $w_1,\dots,w_{n-k}\in W$, the collection $v_i+\ell v_i$ with $Uw_j$ remains
+    linearly independent.
+    That is, the determinant of $(\dots,v_i+\ell v_i,\dots,Uw_j,\dots)$ is nonzero.
+    This is an open set, since mapping $\ell$ to this matrix is linear and thus continuous, and the determinant is continuous.
+
+    If we let $O\subseteq U(n)\times\hom(V,W)$ be this open set, so consisting of pairs $(A,\ell)$ such that $\Gamma(A\ell)\cap W=0$, then through $\id\times\Gamma_{V,W}$ this gives an open
+    set $O$ in $G_\bC(k,n)$.
+    And since $0\in\hom(V,W)$ represents $V$, and $UV\cap UW=0$, this is an open neighborhood of $(U,V)$.
+    Thus for every $(U,V)\in U(n)\times G_\bC(k,n)$ there is an open neighborhood $O$ which is mapped into an open chart $UV\in\Gamma(\hom(UV,UW))$, and as we showed the coordinate
+    representation is smooth.
+    Thus $U(n)$'s action on $G_\bC(k,n)$ is smooth
+\eenum
+
+\bprob
+
+    Let $M$ be a smooth manifold, and $H$ a Lie group which acts on it smoothly, freely, and properly by $\phi\colon H\times M\to M$.
+    Let $g$ be an $H$-invariant metric on $M$, and denote by $\pi\colon M\to M/H$ the projection.
+    \benum
+        \item Prove there exists a unique metric $\bar g$ on $M/H$ such that $\pi$ is a Riemannian submersion.
+        \item Let $M=\bR^n$ and $H=\bZ^n$, and $\phi$ given by translation, so $M/H=T^n$.
+        Let $g=g_0$ be the Euclidean metric.
+        Construct an isometric embedding $(T^n,\bar g)\to(\bR^{2n},g_0)$.
+    \eenum
+
+\eprob
+
+\benum
+    \item For $p\in M$, we can write $d\phi_p$ by
+    $$ d\pi_p\colon T_p(Hp)\oplus T_p(Hp)^\perp = T_pM \to T_{Hp}(M/H) , $$
+    and since $T_pHp=\ker d\pi_p$ and $\pi$ is a submersion, we have that $d\pi_p$ forms an isomorphism $T_p(Hp)^\perp\to T_{Hp}(M/H)$, let us denote this by $d\hat\pi_p$.
+    In order for $\pi$ to be a Riemannian submersion, we must then define
+    $$ \bar g(v,u) = g(d\hat\pi_p^{-1}v,d\hat\pi_p^{-1}u),\qquad v,u\in T_{Hp}(M/H), $$
+    for $v,u\in T_{Hp}(M/H)$.
+    Thus $\bar g$ is unique if it exists.
+    Since $g$ is a Riemannian metric, this is a metric at each point (in general $\iprod{T\bul,T\bul}$ is an inner product when $T$ is invertible).
+
+    Note that this is not necessarily well-defined: if $Hp=Hq$ then this definition may give different values if $d\hat\pi_p$ or $d\hat\pi_q$ is used.
+    But since $g$ is $H$-invariant, if $Hp=Hq$ suppose $q=\phi_h(q)$ then since $\pi\circ\phi_h=\pi$ we have that $d\pi_{p}\circ d(\phi_h)_q=d\pi_q$ so by $H$-invariance,
+    $$ g(d\hat\pi_p^{-1}v,d\hat\pi_p^{-1}u) = g(d(\phi_{h^{-1}})d(\hat\pi_p)^{-1}v,d(\phi_{h^{-1}})d(\hat\pi_p)^{-1}u) = g(d\hat\pi_q^{-1}v,d\hat\pi_q^{-1}u) . $$
+
+    Now we want to show that $\bar g$ is smooth.
+    Notice that we can apply Gram-Schmidt to a smooth local coordinate frame to obtain a smooth orthonormal local coordinate frame (smoothness is due to $g$'s smoothness).
+    Then for $p\in M$ we can define $\Pi_p\colon T_pM\to T_pM$ which is the orthonormal projection onto $T_p(Hp)^\perp$.
+    Considering a smooth orthonormal coordinate frame, we see that this maps smooth vector fields to smooth vector fields, and furthermore it is clearly $C^\infty$-linear,
+    and thus $\Pi\colon\X(M)\to\X(M)$ forms a $(1,1)$-tensor.
+    Since $\pi$ is a submersion, it has local sections: there is a neighborhood $p\in U$ and a smooth local section $\sigma\colon\pi(U)\to M$ with $\sigma(Hp)=p$.
+    Now we claim that locally, $d\hat\pi^{-1}=\Pi\circ d\sigma$.
+    Since for $q\in U$, $\Pi\circ d\sigma$ maps into $T_q(Hq)^\perp$, we need only show that $d\hat\pi\circ\Pi\circ d\sigma=\id$.
+    Since $d\pi_q$ is linear and $T_q(Hq)$ is its kernel as well as the projection $\Pi_q$'s, we see that $d\hat\pi_q\circ\Pi=d\pi_q$, and so
+    $$ d\hat\pi_q\circ\Pi_q\circ d\sigma_{Hq} = d\pi_q\circ d\sigma_{Hq} = \id . $$
+    Thus $d\hat\pi^{-1}=\Pi\circ d\sigma$ on $\pi(U)$, and thus locally
+    $$ \bar g(v,u) = g(\Pi\circ d\sigma(v),\Pi\circ d\sigma(u)) , $$
+    and since both $\Pi,d\sigma$ are smooth, so is $\bar g$ (locally around every point, and thus globally).
+
+    \item For $n=1$, the obvious embedding $\bR/\bZ=T^1\to\bR^2$ is given by $\theta\mapsto(\cos(2\pi\theta),\sin(2\pi\theta))$, or under the natural identification $\bR^2\cong\bC$,
+    $\theta\mapsto\exp(2\pi i\theta)$.
+    This is smooth since precomposing it with the projection $\bR\to\bR/\bZ$ maps $x\in\bR$ to $\exp(2\pi ix)$ (since $\exp(2\pi ix)$ has a periodicity of $1$), which is smooth.
+    This extends to an obvious embedding $T^n\to\bR^{2n}\cong\bC^n$ by
+    $$ F\colon (\theta_1,\dots,\theta_n) \mapsto (\exp(2\pi i\theta_1),\dots,\exp(2\pi i\theta_n)) , $$
+    which is again smooth.
+
+    Note that $\pi\colon\bR^n\to T^n$ is a local diffeomorphism, as it is a submersion and $\dim T^n=\dim\bR^n=n$.
+    Thus let $\ipdv{\theta^i}$ be the pushforward of the coordinate vector fields $\ipdv{x^i}$, and since $x^i$ are orthonormal and $\pi$ is a local Riemannian diffeomorphism (by construction it is a
+    Riemannian submersion), $\theta^i$ are orthonormal as well.
+    Then for $\bar\theta=(\theta_1,\dots,\theta_n)\in T^n$, (using the Jacobian of $F$ by $x^i$),
+    $$ dF_{\bar\theta}\pdv{\theta^i} = -2\pi\sin(2\pi\theta_i)\pdv{x^i_1} + 2\pi\cos(2\pi\theta_i)\pdv{x^i_2} , $$
+    where the global coordinates of $\bR^{2n}$ are labeled $x^1_1,x^1_2,\dots,x^n_1,x^n_2$.
+    Then $dF_{\bar\theta}\ipdv{\theta^i}$ are orthogonal (since $\pdv{x^i_1},\pdv{x^i_2}$ are), and
+    $$ g_0\parens{dF_{\bar\theta}\pdv{\theta^i},dF_{\bar\theta}\pdv{\theta^i}} = 4\pi^2\sin(2\pi\theta_i)^2 + 4\pi^2\cos(2\pi\theta_i)^2 = 4\pi^2 . $$
+    So if we define $F'=F/2\pi$, the above computations normalize to give $1$.
+    So $dF'$ maps an orthonormal basis to an orthonormal set, and is thus a Riemannian embedding.
+\eenum
+
+\bprob
+
+    On $M=\bR^2$ consider the map
+    $$ \phi\colon(0,\infty)\times(0,2\pi)\to M,\qquad \phi(r,\theta) = (r\cos\theta,r\sin\theta) . $$
+    \benum
+        \item Show that $\phi$ is a coordinate chart for $M$.
+        \item Let $\set{\partial_r,\partial_\theta}$ denote the coordinate vector fields.
+        For $a,b,c,d\in\bR$ define the vector field $X$ on $\phi$'s coordinate domain:
+        $$ X = r(a\cos^2\theta+(b+c)\sin\theta\cos\theta+d\sin^2\theta)\partial_r + (c\cos^2\theta+(d-a)\sin\theta\cos\theta-b\sin^2\theta)\partial_\theta . $$
+        Show that $X$ extends smoothly to a vector field on all of $M$.
+        \item For any $p\in M$, calculate the integral curve of $X$ starting at $p$.
+        Show that $X$ admits global flow.
+        \item Draw the integral curves of $X$ for the following values of $a,b,c,d$.
+
+        \medskip
+        \centerline{\vbox{\halign{\strut\hfil#\hfil\kern.25cm\vrule\tabskip=.5cm&\hfil$#$&\hfil$#$&\hfil$#$&\hfil$#$\cr
+            Case&a&b&c&d\cr\noalign{\hrule}
+            Sink&-1&0&0&-2\cr
+            Source&1&0&0&2\cr
+            Saddle&1&0&0&-1\cr
+            Spiral sink&-1&-1&1&-1\cr
+            Spiral source&1&-1&1&1\cr
+            Center&0&-1&1&0\cr
+            Improper sink&-1&1&0&-1\cr
+            Improper source&1&1&0&1\cr
+        }}}
+    \eenum
+
+\eprob
+
+\def\atan{{\rm atan}}
+
+\benum
+    \item $\phi$'s image is the set of all points $(x,y)$ where either $y\neq0$ or $x<0$ ($\bR^2$ without $[0,\infty)\times\bR$), which is open.
+    It is smooth, as its components are smooth, and it is injective.
+    Furthermore, its Jacobian is
+    $$ J\phi = \pmatrix{\cos\theta&-r\sin\theta\cr \sin\theta&r\cos\theta} , $$
+    which has determinant $r\neq0$, so it is invertible everywhere.
+    Thus $\phi$ is a diffeomorphism onto its image, meaning it is a chart.
+
+    \item Let us write $X=X^r\partial_r+X^\theta\partial_\theta$.
+    We know that
+    $$ \eqalign{
+        \partial_r &= \pdvof xr\pdv x + \pdvof yr\pdv y = \cos\theta\pdv x + \sin\theta\pdv y\cr
+        \partial_\theta &= \pdv x\theta\pdv x + \pdvof y\theta\pdv y = -r\sin\theta\pdv x + r\cos\theta\pdv y .
+    } $$
+    Thus we see that $X=X^1\ipdv x+X^2\ipdv y$, where
+    $$ X^1 = X^r\cos\theta - rX^\theta\sin\theta,\qquad X^2 = X^r\sin\theta + rX^\theta\cos\theta . $$
+    We have that
+    $$ x = r\cos\theta,\quad y = r\sin\theta,\quad r^2 = x^2+y^2,\quad \cos^2\theta = \frac{x^2}{r^2},\quad \cos\theta\sin\theta = \frac{xy}{r^2},\quad \sin^2\theta = \frac{y^2}{r^2} . $$
+    Thus some tedious calculations yield
+    $$ X = (ax+by)\pdv x + (cx+dy)\pdv y . $$
+    This can be clearly extended smoothly to all of $M$.
+
+    \item Since $X$ has the form
+    $$ X(x,y) = \pmatrix{a&b\cr c&d}\pmatrix{x\cr y} = A \pmatrix{x\cr y}, $$
+    solving $\gamma'(t)=X(\gamma(t))$ boils down to the linear system of ODEs:
+    $$ \pmatrix{\gamma_1'(t)\cr \gamma_2'(t)} = A\pmatrix{\gamma_1(t)\cr\gamma_2(t)} . $$
+
+    Since $A$ is two-dimensional, it has a Jordan normal form which is diagonal, or is a $2\times2$ Jordan block.
+    Suppose that $P^{-1}AP=J$ is $A$'s Jordan form, then a solution to $\alpha'=J\alpha$ gives a solution $\gamma=P\alpha$ to $\gamma'=A\gamma$, since
+    $$ \gamma' = P\alpha' = PJ\alpha = AP\alpha = A\gamma , $$
+    and vice versa.
+    Note that $\alpha(0)=P^{-1}\gamma(0)=P^{-1}p$.
+
+    If $A$ is diagonalizable then say $J=\diag(\lambda_1,\lambda_2)$.
+    Solving for $\alpha$ is easy, as the ODE is $\alpha_i'=\lambda_i\alpha_i$ for $i=1,2$, and solving this gives $\alpha_i=c_i\exp(\lambda_it)$, where $c=P^{-1}p$.
+
+    Now if $A$'s Jordan form is a Jordan block $J=J_2(\lambda)$, then the ODE becomes mildly more difficult:
+    $$ \alpha_1' = \lambda\alpha_1 + \alpha'_2,\qquad \alpha_2' = \lambda\alpha_2 . $$
+    This gives us $\alpha_2=c_2\exp(\lambda t)$ as before, and then $\alpha_1=c_1\exp(\lambda t)+c_2t\exp(\lambda t)$ (using the usual method for solving a non-homogeneous linear ODE).
+
+    Note that $\lambda_1,\lambda_2,\lambda$ may be complex numbers.
+    In this case, the real and imaginary parts of the solution give valid solutions to the real linear system of ODEs.
+    For example, if $\lambda_1=\lambda_2=1+i$ then our solutions become
+    $$ \gamma_{1,2} = \exp((1+i)t) = p_{1,2}e^t(\cos t+i\sin t) , $$
+    and this gives us two solutions:
+    $$ \gamma_{1,2} = e^t\cos t,\quad\hbox{and}\quad \gamma_{1,2} = e^t\sin t . $$
+    Then the general solution is of the form
+    $$ \gamma_{1,2} = Ae^t\cos t+Be^t\sin t . $$
+
+    In either case $\alpha$, and thus $\gamma$, are defined on all of $\bR$ and thus $X$ has global flow.
+
+    \item
+    \benum
+        \item Sink: the matrix is already diagonal and the solution becomes
+        $$ \gamma(t) = \pmatrix{A\exp(-t)\cr B\exp(-2t)} . $$
+        Thus the flow in general is given by curves (parabolas) of the form $(s,as^2)$ (pointing toward the origin, as when $t\to\infty$, $\exp(-t)\to0$).
+
+        \item Source: the solution becomes $\gamma(t)=(A\exp(t),B\exp(t))$, and so the flow is given by curves of the form $(s,as^2)$ pointing away from the origin.
+
+        \item Saddle: the solution becomes $\gamma(t)=(A\exp(t),B\exp(-t))$, so the flow is given by curves of the form $(s,as^{-1})$ pointing away from the origin.
+
+        \item Spiral sink: the matrix is diagonalizable to $\diag(-1+i,-1-i)$ with eigenvectors $(1,-i)$ and $(1,i)$.
+        The solution to the diagonalized problem is $\alpha_1=A\exp((-1+i)t)$ and $\alpha_2=B\exp((-1-i)t)$.
+        But notice that since our ODE is a homogeneous linear system of order $2$, we need only find $2$ linearly independent solutions.
+        Furthermore, given a complex solution its real and imaginary parts are both solutions to the real problem.
+        Thus we can consider only $\alpha=(\exp(-1+i)t),0)$ (i.e.\ $A=1,B=0$), which gives us the complex solution
+        $$ \gamma(t) = P\alpha = \pmatrix{1&1\cr -i&i}\pmatrix{\exp((-1+i)t)\cr0} = \pmatrix{\exp((-1+i)t)\cr -i\exp((-1+i)t)} . $$
+        The real and complex parts of this are
+        $$ \gamma_1(t) = e^{-t}\pmatrix{\cos t\cr \sin t},\qquad \gamma_2(t) = e^{-t}\pmatrix{\sin t\cr -\cos t} . $$
+        So the general flow lines are given by
+        $$ \gamma(t) = A\gamma_1(t) + B\gamma_2(t) . $$
+        This forms a swirl with arrows pointing toward the origin (since as $t\to\infty$, the curve goes to $0$).
+
+        \item Spiral source: the matrix is diagonalizable to $\diag(1+i,1-i)$ with eigenvectors $(1,-i)$ and $(1,i)$.
+        As above, we have a complex solution
+        $$ \pmatrix{\exp((1+i)t)\cr -i\exp((1+i)t)} , $$
+        whose real and complex parts are
+        $$ \gamma_1(t) = e^t\pmatrix{\cos t\cr \sin t},\qquad \gamma_2(t) = e^t\pmatrix{\sin t\cr -\cos t} . $$
+        Thus the flow lines are just linear combinations of these, which look similar to the spiral sink but with arrows pointing out away from the origin.
+
+        \item Center: the matrix is diagonalizable to $\diag(i,-i)$ with eigenvectors $(1,-i)$ and $(1,i)$.
+        We have a complex solution
+        $$ \pmatrix{\exp(it)\cr -i\exp(it)} , $$
+        which has real and complex parts
+        $$ \gamma_1(t) = \pmatrix{\cos t\cr \sin t},\qquad \gamma_2(t) = \pmatrix{\sin t\cr -\cos t} . $$
+        The general flow lines are of the form
+        $$ \gamma(t) = \pmatrix{A\cos t + B\sin t\cr A\sin t - B\cos t} , $$
+        which are circles (with radius squared $A^2+B^2$, going counterclockwise.
+
+        \item Improper sink: this matrix is in Jordan form, and so the solution is (as proven before):
+        $$ \gamma(t) = e^{-t}\pmatrix{A + tB\cr B} . $$
+        These form lopsided spirals into the origin.
+
+        \item Improper source: this matrix is in Jordan form, and so the solution is:
+        $$ \gamma(t) = e^t\pmatrix{A + tB\cr B} . $$
+        This is similar to the improper sink, but the spirals go to infinity (and are mirrored along the $y$-axis).
+    \eenum
+\eenum
+
+
+

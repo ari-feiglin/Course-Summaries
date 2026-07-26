@@ -1,0 +1,536 @@
+\bprob
+
+    \benum
+        \item $f\colon M\to N$ be a local isometry, and denote the Riemannian curvature of $M,N$ by $\Rm_M,\Rm_N$.
+        For $p\in M$ and $X,Y,Z,W\in T_pM$ show that
+        $$ \Rm_M(X,Y,Z,W) = \Rm_N(df(X),df(Y),df(Z),df(W)) . $$
+        Equivalently, $\Rm_M=f^*\Rm_N$.
+
+        \item Let $M$ be either the $n$-sphere of radius $r$ or hyperbolic space $H^n_{-1/r^2}$.
+        Show that
+        $$ \Rm_M(X,Y,Z,W) = \pm\frac1{r^2}(\iprod{X,Z}\iprod{Y,W} - \iprod{X,W}\iprod{Y,Z}) , $$
+        and deduce that the sphere has positive sectional curvature $1/r^2$ and hyperbolic space has negative sectional curvature $-1/r^2$.
+
+        \item Show that $H^n_{-1/r^2}$ is geodesically complete.
+    \eenum
+
+\eprob
+
+\benum
+    \item Since Riemannian curvature is local we can assume that $f$ is a global isometry.
+    Otherwise, we restrict our attention to open subsets $p\in U\subseteq M$ and $V\subseteq N$ such that $f$ restricts to an isometry $U\to V$.
+
+    For an isometry, we know that the pullback of the Levi-Civita connection on $N$ is the Levi-Civita connection on $M$.
+    So if we let $\nabla^M,\nabla^N$ be the connections on $M,N$ then
+    $$ \nabla^M_XY = (f^{-1})_*\nabla^N_{f_*X}f_*Y . $$
+    So if we let $R_M,R_N$ be the curvature tensors of $M,N$ then for vector fields $X,Y,Z,W\in\X(M)$,
+    $$ \eqalign{
+        R_M(X,Y)Z &= \nabla^M_Y\nabla^M_XZ - \nabla^M_X\nabla^M_Y + \nabla^M_{[X,Y]}Z\cr
+            &=(f^{-1})_*\bigl(\nabla^N_{f_*Y}\nabla^N_{f_*X}f_*Z - \nabla^N_{f_*X}\nabla^N_{f_*Y}f_*Z + \nabla^N_{[f_*X,f_*Y]}f_*Z\bigr)\cr
+            &= (f^{-1})_*R_N(f_*X,f_*Y)f_*Z .
+    } $$
+    Thus
+    $$ \eqalign{
+        \Rm_M(X,Y,Z,W) = \iprod{R_M(X,Y)Z,W} &= \iprod{(f^{-1})_*R_N(f_*X,f_*Y)f_*Z,W}\cr
+        &= \iprod{R_N(f_*X,f_*Y)f_*Z,f_*W}\cr
+        &= \Rm_N(f_*X,f_*Y,f_*Z,f_*W) ,
+    } $$
+    and pointwise this means for tangent vectors $X,Y,Z,W\in T_pM$
+    $$ \Rm_M(X,Y,Z,W) = \Rm_N(df(X),df(Y),df(Z),df(W)) . $$
+
+    \item First we claim that it is sufficient to prove this identity at a single point $p\in M$.
+    We will show that isometries act transitively on $M$, so for any $p,q\in M$ there is an isometry $f$ of $M$ such that $f(p)=q$.
+    Since an isometry is in particular a diffeomorphism $df_p$ is an isomorphism from $T_pM$ to $T_qM$, so for any $X,Y,Z,W\in T_qM$ we have by the first point
+    $$ \Rm_M(X,Y,Z,W) = \Rm_M(df^{-1}X,df^{-1}Y,df^{-1}Z,df^{-1}W) , $$
+    which by assumption is equal to
+    $$ \multline{
+        \pm\frac1{r^2}\bigl(\iprod{df^{-1}X,df^{-1}Z}\iprod{df^{-1}Y,df^{-1}W} - \iprod{df^{-1}X,df^{-1}W}\iprod{df^{-1}Y,df^{-1}Z}\bigr)\cr
+        = \pm\frac1{r^2}(\iprod{X,Z}\iprod{Y,W} - \iprod{X,W}\iprod{Y,Z}) .
+    } $$
+    where the final equality is due to $f^{-1}$ being an isometry.
+
+    So we need to show two things: that isometries act transitively and that the identity holds at a single point of our choosing.
+    The isometries of $M$ contain either $O(n+1)$ (for the sphere) or $O_+(1,n)$ (for hyperbolic space).
+    $O(n+1)$ clearly acts transitively, as for any two points on the sphere we can normalize them and extend them to orthonormal bases of $\bR^{n+1}$ and define an orthogonal transformation from one base to the
+    other.
+    This maps our first vector to the other.
+
+    For hyperbolic space, we do essentially the same thing.
+    For $x,y\in H^n_{-1/r^2}$ normalize them to $\hat x=x/r$ and $\hat y=x/r$ so that $(\hat x,\hat x)=(\hat y,\hat y)=-1$.
+    Now extend $\hat x,\hat y$ to orthonormal bases $\hat x,\bar x$ and $\hat y,\bar y$ and define a linear transformation $\hat x\mapsto\hat y$ and $\bar x\mapsto\bar y$.
+    Since this is a linear map between orthonormal bases, it preserves the bilinear form and thus is in $O(1,n)$.
+    Furthermore it preserves the sign of the first component of $\hat x$, since $\hat x$ and $\hat y$'s first component is both positive, and as we showed in the previous homework this implies the map
+    is in $O_+(1,n)$.
+    By linearity it maps $x$ to $y$ as desired.
+    So we have shown isometries act transitively in both cases.
+
+    \def\grph{{\rm graph}}
+    Now consider the map $f\colon\bR^n\to\bR$ given by
+    $$ f(x) = \sqrt{r^2 \mp \norm x^2} , $$
+    where we potentially restrict the domain to the open subset ball of radius $r$ around $0$ so that this is smooth.
+    The graph of $f$ is the embedded submanifold of $\bR^{n+1}$ given by
+    $$ \grph(f) = \set{(\sqrt{r^2\mp\norm x^2},x)}[x\in\bR^n] . $$
+    This is contained in $M$ (when $M$ is the sphere we take $-$ in the definition of $f$ and $+$ for hyperbolic space) and is thus an embedded submanifold of $M$ (as both are embedded in $\bR^{n+1}$).
+    Let $f_i$ denote the $i$th partial derivative of $f$, so that
+    $$ f_i = \mp\frac{x_i}{\sqrt{r^2\mp\norm x^2}} . $$
+    So we see that $x=0$ is a critical point of $f$.
+
+    Let $G$ denote either the Euclidean metric (when $M$ is the sphere) or the Lorentzian metric (when $M$ is hyperbolic) of $\bR^{n+1}$.
+    The metric on $M$ is the pullback of $G$ along the inclusion, and let us denote by $g$ the pullback of this to $\grph(f)$, which is just the pullback of $G$.
+    We showed in the previous homework that in a small enough neighborhood of $0$, relative to the coordinates $\x(x)=(f(x),x)$,
+    $$ g_{ij} = \delta_{ij} \pm f_if_j, $$
+    and when $x=0$ we have
+    $$ R_{ijk\ell} = \pm(f_{ik}f_{j\ell} - f_{i\ell}f_{jk}) . $$
+
+    We are going to show that at $x=0$, so the point $p=(r,0)$ on $M$, the Riemannian curvature satisfies the given identity, and as explained this will be sufficient to conclude the identity for all of the points on $M$.
+    It is further sufficient to show this for a basis of $T_pM$ since $\Rm$ is tensorial and thus multilinear, and so is the right-hand side of the identity.
+    So we demonstrate the identity via the local coordinate frame given by $\x$, that is we want to show when $x=0$,
+    $$ R_{ijk\ell} = \pm\frac1{r^2}(g_{ik}g_{j\ell} - g_{i\ell}g_{jk}) . $$
+    Recalling that at $x=0$ we have $g_{ij}=\delta_{ij}$, to do this it is sufficient to show that
+    $$ f_{ij} = \mp\frac1r\delta_{ij} . $$
+
+    Indeed, for $i\neq j$ we have
+    $$ f_{ij} = \mp\frac{x_ix_j}{(r^2-\norm x^2)^{3/2}} , $$
+    which is zero when $x=0$.
+    And
+    $$ f_{ii} = \mp\frac{r^2-\norm x^2+x_i^2}{(r^2-\norm x^2)^{3/2}} , $$
+    which at $x=0$ is equal to $\mp 1/r$ as desired.
+
+    \item We claim that for any Riemannian manifold $M$ on which its isometries act transitively, $M$ is geodesically complete.
+    Let $p\in M$, then we know $\exp_p$ is defined at least on some ball $B_\epsilon(0)\subseteq T_pM$ of radius $\epsilon$ (taken relative to the Riemannian metric).
+    Meaning for $v\in B_\epsilon(0)$, $\gamma_v$ is defined on an open interval containing $0$ and $1$.
+    We claim that $\gamma_v$ is actually defined on all of $\bR$ for all $v\in B_\epsilon(0)$.
+    Assume not, so there is a geodesic whose domain is bound, we assume without loss of generality it is bound from above.
+    So let
+    $$ a = \inf\set{t\in\bR_{>0}}[\hbox{There is a $v\in B_\epsilon(0)$ such that $\gamma_v$ is not defined at $t$}] , $$
+    which is finite by assumption and at least $1$, so $a$ is positive.
+    So for all $v\in B_\epsilon(0)$ we have that $\gamma_v$ is defined on at least $[0,a)$.
+
+    For $v\in B_\epsilon(0)$, let $q=\gamma_v(a/2)$ and $w=\dot\gamma_v(a/2)$.
+    Since $\gamma_v$ is a geodesic,
+    $$ \norm w_g = \norm{\dot\gamma_v(a/2)}_g = \norm{\dot\gamma_v(0)} = \norm v_g < \epsilon . $$
+    Let $f$ be an isometry of $M$ such that $f(q)=p$, and let $u=df(w)$.
+    Since $f$ is an isometry, $\norm u=\norm w=\norm v<\epsilon$.
+    Thus $\gamma_u$ is defined on at least $[0,a)$.
+
+    Now consider $f^{-1}\circ\gamma_u$, which is a geodesic since $f$ is an isometry.
+    And
+    $$ f^{-1}\circ\gamma_u(0) = f^{-1}(p) = q,\qquad (f^{-1}\circ\gamma_u)'(0) = df^{-1}_q(u) = w . $$
+    By uniqueness, $f^{-1}\circ\gamma_u$ and $\gamma_w$ agree on their common domains.
+    Since $w=\dot\gamma_v(a/2)$ we have that again by uniqueness, $\gamma_w(t)=\gamma_v(t+a/2)$.
+    Thus
+    $$ f^{-1}\circ\gamma_u(t) = \gamma_v(t+a/2) $$
+    when both sides are defined, which contains $[0,a/2)$.
+    But then consider
+    $$ \alpha(t) = \cases{\gamma_v(t) &$t<a$\cr f^{-1}\circ\gamma_u(t-a/2)&$a/2<t<3a/2$} . $$
+    Since both definitions agree on the intersection of their domains, this is a smooth curve, and as both curves are geodesics it is a geodesic.
+    So $\alpha$ is the geodesic with initial velocity $v$, and since it is defined up until $3a/2$ we see that all geodesics with initial velocity in $B_\epsilon(0)$ are defined up
+    until $3a/2$, contradicting the definition of $a$.
+
+    Thus all geodesics in $B_\epsilon(0)$ are defined on all of $\bR$.
+    Now let $v\in T_pM$, then we know that for $c\in\bR$
+    $$ \gamma_{cv}(t) = \gamma_v(ct) $$
+    whenever either side is defined.
+    And in particular if $\gamma_{cv}$ is defined on all of $\bR$, so is $\gamma_v$.
+    There is a $c$ such that $cv\in B_\epsilon(0)$ (e.g.\ $c=\norm v_g+1$), and we just showed that $\gamma_{cv}$ is defined on all of $\bR$, so that means $\gamma_v$ is too.
+    Thus $M$ is geodesically complete.
+\eenum
+
+\bprob
+
+    Let $J$ be a Jacobi field along $\gamma$.
+    Show that there is a family of geodesics $\gamma_s$ such that $\gamma=\gamma_0$ and $J=\eval{\pdvof{\gamma_s}s}_{s=0}$.
+
+\eprob
+
+Any family of geodesics will be of the form
+$$ \gamma_s(t) = \exp_{\alpha(s)}(tX(s)) $$
+where $\alpha$ is a smooth curve and $X$ is a vector field along $\alpha$ (so $X(s)\in T_{\alpha(s)}M$ and this is defined).
+So let us define
+$$ \Gamma(s,t) = \exp_{\alpha(s)}(tX(s)) , $$
+and we will search for $\alpha,X$ that satisfy our conditions.
+First of all we have
+$$ \Gamma(0,t) = \exp_{\alpha(0)}(tX(0)) , $$
+so we know that we must have $\alpha(0)=\gamma(0)$ and $X(0)=\dot\gamma(0)$.
+
+Since $\Gamma$ is a smooth family of geodesics by construction, its variation field $V(t)=\partial_s\Gamma(0,t)$ is a Jacobi field along $\gamma$.
+We want to find suitable $\alpha,X$ such that $V=J$.
+By uniqueness of Jacobi fields it is sufficient to show $J(0)=V(0)$ and $D_tJ(0)=D_tV(0)$.
+
+Computing shows
+$$ \partial_s\Gamma(0,0) = \evpdv s_{s=0}\Gamma(s,0) = \evpdv s_{s=0}\exp_{\alpha(s)}(0) = \evpdv s_{s=0}\alpha(s) = \dot\alpha(0) . $$
+So we must have $\dot\alpha(0)=J(0)$.
+Now by symmetry
+$$ D_tV(0) = D_t\partial_s\Gamma(0,0) = D_s\partial_t\Gamma(0,0) . $$
+And
+$$ \partial_t\Gamma(s,0) = \partial_t\exp_{\alpha(s)}(tX(s)) = X(s) , $$
+so we want
+$$ D_tJ(0) = D_sX(0) . $$
+
+So our conditions are
+$$ \alpha(0) = \gamma(0),\qquad X(0) = \dot\gamma(0),\qquad \dot\alpha(0) = J(0),\qquad D_sX(0) = D_tJ(0) . $$
+If we take local coordinates around $p=\gamma(0)$ these become
+$$ \alpha(0) = 0, X^i(0) = \dot\gamma^i(0),\qquad \dot\alpha^i(0) = J^i(0),\qquad \dot X^i(0) + X^j(0)\dot\alpha^k(0)\Gamma^i_{kj}(p) = \dot J^i(0) + J^j(0)\dot\gamma^k(0)\Gamma^i_{kj}(p) . $$
+The final condition can be rewritten, by the previous conditions, as
+$$ \dot X^i(0) + \dot\gamma^j(0)J^k(0)\Gamma^i_{kj}(p) = \dot J^i(0) + J^j(0)\dot\gamma^k(0)\Gamma^i_{kj}(p) , $$
+and by symmetry, $\Gamma^i_{kj}=\Gamma^i_{jk}$ so that this is equivalent to
+$$ \dot X^i(0) = \dot J^i(0) . $$
+So we can define, in these coordinates,
+$$ \alpha(t) = (J^1(0)x_1,\dots,J^n(0)x_n),\qquad X(t) = (J^i(t) + \dot\gamma^i(0) - J^i(0))\partial_i|_\alpha . $$
+And these clearly satisfy the conditions.
+
+\bprob[title={DoCarmo, Riemannian Geometry, page 77 problem 1}]
+
+    Let $(u,v)$ denote the Cartesian coordinates of $\bR^2$.
+    Further let $f,g\colon (v_0,v_1)\to\bR$ be smooth functions defined on an open interval such that $f'(v)^2+g'(v)^2\neq0$ and $f(v)\neq0$.
+    Define
+    $$ U = \set{(u,v)\in\bR^2}[u_0<u<u_1,\ v_0<v<v_1],\qquad \phi\colon U\to\bR^3,\quad (u,v)\mapsto(f(v)\cos u,f(v)\sin u,g(v)) . $$
+    \benum
+        \item Show that $\phi$ is an immersion, and its image $\phi(U)$ is called a {\emphcolor surface of revolution} $S$.
+        The image under $\phi$ of the constant curves $u=c,v=c$ are called the {\emphcolor meridians} and {\emphcolor parallels} of $S$ respectively.
+
+        \item Show that the induced metric in the coordinates $(u,v)$ is given by
+        $$ g_{11} = f^2,\qquad g_{12} = 0 ,\qquad g_{22} = (f')^2 + (g')^2 . $$
+
+        \item Show that the geodesic equation becomes the system
+        $$ \displaylines{
+            \drvof{^2u}{t^2} + \frac{2ff'}{f^2}\drvof ut\drvof vt = 0\cr
+            \drvof{^2v}{t^2} - \frac{ff'}{(f')^2+(g')^2}\parens{\drvof ut}^2 + \frac{f'f''+g'g''}{(f')^2+(g')^2}\parens{\drvof vt}^2 = 0 .
+        } $$
+
+        \item Deduce the following geometric meaning of the geodesic equations above.
+        The second equation means that, except for meridians and parallels, that $\norm{\gamma'(t)}^2$ is constant along $\gamma(t)$.
+        The first equation means that if $\beta(t)<\pi$ is the angle obtained at the intersection of $\gamma$ with a parallel $P$ intersecting $\gamma$ at $\gamma(t)$,
+        then $r\cos\beta$ is constant, where $r$ is the radius of the parallel $P$.
+
+        The equation $r\cos\beta={\rm const}$ is called {\emphcolor Clairut's relation}.
+
+        \item Use Clairut's relation to show that a geodesic of the paraboloid, so $f(v)=v,g(v)=v^2$ with $0<v<\infty$ and $-\epsilon<u<2\pi+\epsilon$, which is not a meridian
+        must intersect itself an infinite number of times.
+    \eenum
+
+\eprob
+
+\benum
+    \item We compute the Jacobian of $\phi$:
+    $$ D\phi = \pmatrix{f'(v)\cos u & -f(v)\sin u\cr f'(v)\sin u & f(v)\cos u\cr g'(v) &0} . $$
+    Since $f(v)$ is nonzero, the right column is nonzero, so if $g'(v)\neq0$ then the two columns are linearly independent.
+    Otherwise $g'(v)=0$ so $f'(v)\neq0$ and the determinant of the upper square matrix is
+    $$ f'(v)f(v)\cos^2(u) + f'(v)f(v)\sin^2(u) = f'(v)f(v) , $$
+    which is nonzero.
+    So in all cases, $D\phi$ has rank $2$ and is thus an immersion.
+
+    \item If we let $\partial_i$ denote the global coordinate frame of $\bR^n$, then the coordinate frame of $S$ is given by $\tilde\partial_i=d\phi(\partial_i)$ which in terms of the $\partial_j$ of $\bR^3$ is
+    $$ \tilde\partial_i = \pdvof{\phi^j}{\partial_i}\partial_j , $$
+    so these are
+    $$ \eqalign{
+        \tilde\partial_v &= f'(v)\cos(u)\partial_1 + f'(v)\sin(u)\partial_2 + g'(v)\partial_3\cr
+        \tilde\partial_u &= -f(v)\sin(u)\partial_1 + f(v)\cos(u)\partial_2.
+    } $$
+    Then $\tilde g_{ij}=g(\tilde\partial_i,\tilde\partial_j)$ is given by
+    $$ \eqalign{
+        \tilde g_{vv} &= f'(v)^2\cos^2(u) + f'(v)^2\sin^2(u) + g'(v)^2 = f'(v)^2 + g'(v)^2\cr
+        \tilde g_{uv} &= -f'(v)f(v)\cos(u)\sin(u) + f'(v)f(v)\cos(u)\sin(u) = 0\cr
+        \tilde g_{uu} &= f(v)^2\sin^2(u) + f(v)^2\cos^2(u) = f(v)^2,
+    } $$
+    as desired.
+
+    \item Let us order the coordinate chart by $(u,v)$.
+    The Christoffel symbols are given by
+    $$ \Gamma^k_{ij} = \frac12g^{k\ell}(\tilde\partial_ig_{j\ell} + \tilde\partial_jg_{i\ell} - \tilde\partial_\ell g_{ij}) . $$
+    Since $g_{ij}$ is the diagonal matrix
+    $$ g = \pmatrix{f(v)^2\cr&f'(v)^2+g'(v)^2} \implies g^{-1} = \pmatrix{f(v)^{-2}\cr&\frac1{f'(v)^2+g'(v)^2}} , $$
+    we see that
+    $$ \Gamma^k_{ij} = \frac12g^{kk}(\tilde\partial_ig_{jk} + \tilde\partial_jg_{ik} - \tilde\partial_kg_{ij}) . $$
+    Now $g_{ij}$ is either zero, for $i\neq j$, or a function of $v$.
+    Thus $\partial_1g_{ij}$ will always be zero, and $\partial_kg_{ij}=0$ if $i\neq j$.
+    Now computing gives
+    $$ \eqalign{
+        \Gamma^1_{11} = \Gamma^1_{22} = \Gamma^2_{11} &= 0\cr
+        \Gamma^1_{12} &= \frac{f'}f\cr
+        \Gamma^2_{11} &= -\frac{f'f}{(f')^2+(g')^2}\cr
+        \Gamma^2_{22} &= \frac{f'f''+g'g''}{(f')^2+(g')^2}.
+    } $$
+    Plugging these into the geodesic equation $\ddot x^k+\dot x^i\dot x^j\Gamma^k_{ij}=0$ we get the two equations
+    $$ \displaylines{
+        \drvof{^2u}{t^2} + 2\drvof ut\cdot\drvof vt\cdot\frac{f'}f = 0\cr
+        \drvof{^2v}{t^2} - \frac{f'f}{(f')^2+(g')^2}\parens{\drvof ut}^2 + \frac{f'f''+g'g''}{(f')^2+(g')^2}\parens{\drvof vt}^2 = 0,
+    } $$
+    as desired.
+
+    \item The energy of a geodesic is given by
+    $$ \norm{\gamma'(t)}^2 = \norm{\dot u\tilde\partial_1 + \dot v\tilde\partial_2}^2 = f^2\dot u^2 + ((f')^2 + (g')^2)\dot v^2 . $$
+    Differentiating this gives (the derivative of $f=f(v(t))$ is $\dot vf'$),
+    $$ 2\bigl(f\dot vf'\dot u^2 + f^2\dot u\ddot u + (f'\dot vf'' + g'\dot vg'')\dot v^2 + ((f')^2 + (g')^2)\dot v\ddot v\bigr) . $$
+    We want to show that this is zero.
+    The second geodesic equation gives us, after multiplying by $\dot v((f')^2+(g')^2)$ that the above equation is equal to (after dividing by $2$)
+    $$ ff'\dot v\dot u^2 + f^2\dot u\ddot u + ff'\dot u^2\dot v . $$
+    We can divide by $f$, so we want to show
+    $$ f'\dot v\dot u^2 + f\dot u\ddot u + f'\dot u^2\dot v = 0 , $$
+    It is sufficient to show that
+    $$ f\ddot u + 2f'\dot v\dot u = 0 . $$
+    This is due to the first equation, and so the derivative of $\norm{\gamma'(t)}^2$ is zero and thus it is constant.
+
+    If $P=(\hat u,c)$ is a parallel which intersects $\gamma$ at $\gamma(t)$ then the cosine of the angle between them, $\beta(t)$, is given by
+    $$ \cos\beta(t) = \frac{\iprod{P',\gamma'}}{\norm{P'}\norm{\gamma'}} , $$
+    and since $P'=\hat u'\tilde\partial_1$ and $\gamma'=\dot u\tilde\partial_1+\dot v\tilde\partial_2$ we see that this is equal to
+    $$ \cos\beta(t) = \frac{\hat u'\dot u f^2}{\hat u'f\norm{\gamma'}} = \frac{f\dot u}{\norm{\gamma'}} . $$
+    The radius of $P$ is $f(c)=f(v)$, so Clairut's equation says that
+    $$ r\cos\beta(t) = \frac{f^2\dot u}{\norm{\gamma'}} $$
+    is constant.
+    Since $\norm{\gamma'}$ is constant as $\gamma'$ is a geodesic, we need to show $f^2\dot u$ is constant.
+    Differentiating gives (recall that the derivative of $f=f(v)$ is $\dot vf'$)
+    $$ (f^2\dot u)' = 2f'f\dot v\dot u + f^2\ddot u , $$
+    the first equation means $f^2\ddot=-2f'f\dot u\dot v$ so this is zero as desired.
+
+    \item Let $\gamma$ be a non-meridian geodesic on the parabaloid, so $r\cos\beta$ is constant by Clairut, and by above this means $f\dot u$ is constant.
+    Since $u$ is not constant, that $\dot u$ is not identically zero and thus $f\dot u$ is not identically zero, and since it is a constant this means that $f\dot u\neq0$
+    always so $\dot u\neq0$ always.
+    Thus $\dot u$ is either always positive or always negative, so by potentially reparameterizing we can assume $\dot u>0$.
+
+    Now in our case, $f(v)=v$ and $g(v)=v^2$ so
+    $$ g_{11} = v^2,\qquad g_{12} = 0,\qquad g_{22} = 1 + 4v^2 . $$
+    And Clairut's relation is
+    $$ v\cos\beta(t) = c , $$
+    since the radius is $f(v)=v$.
+    Let us reparameterize $\gamma$ so that it has unit speed: $\norm{\gamma'}=1$; this does not affect the claim.
+    We know that
+    $$ \cos\beta(t) = v\dot u , $$
+    so we get that
+    $$ \dot u = \frac c{v^2} . $$
+    Now,
+    $$ 1 = \norm{\gamma'}^2 = \dot u^2v^2 + \dot v^2(1+4v^2) \geq 4\dot v^2v^2 , $$
+    and so $2\dot vv=(v^2)'\leq1$.
+    Integrating shows that $v^2\leq t+v(0)^2$, and so
+    $$ \dot u \geq \frac c{t+v(0)^2} , $$
+    and integrating shows that $u$ approaches $\infty$ as $t\to\infty$, since the right-hand side's integral diverges to infinity.
+    Thus $u$ strictly increases to infinity as $t\to\infty$.
+
+    Now we want to show that $v\to\infty$ as $t\to\pm\infty$.
+    We have that $v=c/\cos\beta$ and so $v\geq\abs c$, and this is an equality iff $\cos\beta=\pm1$ iff $v\dot u=\pm1$ iff $v^2\dot u^2=1$.
+    Since $1=\dot u^2v^2+\dot v^2(1+4v^2)$, this occurs iff $\dot v=0$.
+
+    Now suppose $\dot v(t_1)=\dot v(t_2)=0$ with $t_1<t_2$, then $v(t_1)=v(t_2)=\abs c$, and if we consider the interval $[t_1,t_2]$ then $v$ must have zero derivative somewhere in it by Rolle's theorem.
+    But this means that there is a $t_0\in(t_1,t_2)$ such that $v(t_0)=\abs c$ since $\dot v(t_0)=0$.
+    So between every two points where $v(t_1)=v(t_2)=\abs c$, there is a third which satisfies this.
+    Since $v$ is smooth, this means that $v$ is identically equal to $\abs c$ on $[t_1,t_2]$.
+    But $v=\abs c$ implies that $\dot u=c/c^2=1/c$ is constant and thus $u=t/c$.
+    But this clearly doesn't satisfy the second geodesic equation, since $\dot u^2$ is nonzero but all the other terms are.
+
+    So $\dot v$ is only zero at most at a single point.
+    Suppose this point is $t_0$, so that $\dot v$ has the same sign on $(t_0,\infty)$ (if $t_0$ doesn't exist, take $t_0=-\infty$).
+    Now if $v(t)$ doesn't approach infinity, then since it is monotonic for $t>t_0$ this means it must converge to some value $\lim v(t)=L<\infty$ and $v(t)$ is bound.
+    We know
+    Since $v(t)$ converges to a finite value at infinity, $\lim_t\dot v$ must be zero.
+    The second geodesic equation gives
+    $$ \ddot v - \frac{v\dot u^2}{1+4v^2} + \frac{4v\dot v^2}{1+4v^2} = 0 , $$
+    which means
+    $$ \ddot v = \frac{c^2}{v^3(1+4v^2)} - \frac{4v\dot v^2}{1+4v^2} , $$
+    and as $t\to\infty$ this converges to $c^2/(L^3(1+4L^2))>0$ so $\ddot v$ is eventually greater than a positive constant.
+    Thus $\dot v$ must increase to infinity, which is a contradiction to it having limit zero at infinity.
+    
+    So $\lim v(t)=\infty$ and since $\dot v$ has the same sign, for $t>t_0$ this means that it must have positive sign, and thus $v$ increases to infinity as $t\to\infty$.
+    Thus $v(t)\to\infty$ as $t\to\infty$, and by reparameterizing $\gamma(-t)$ we see that $v(t)\to\infty$ as $t\to-\infty$, and this convergence is also monotone.
+    Note that this shows that this shows there must be some $t_0$ where $\dot v(t_0)=0$, as otherwise we would have to have $v(t)$ always increasing and then we couldn't have that $v(t)\to\infty$ as $t\to-\infty$.
+
+    Thus $v$ is increasing to infinity on $(t_0,\infty)$ and decreasing from infinity on $(-\infty,t_0)$.
+    In particular $v$ is a diffeomorphism from each interval to $(\abs c,\infty)$, and since $u$ also goes to infinity we can write $u$ in terms of $v$ on each interval.
+    That is, $u=u_1(v)$ for $t>t_0$ and $u=u_2(v)$ for $t<t_0$ (or for large/small enough $t$).
+    Since $u$ is increasing, and $v$ is decreasing on $(-\infty,t_0)$ we see that $u_2(v)$ is a decreasing function of $v$, and $u_2(v)$ is an increasing function.
+    Thus $u_1(v)-u_2(v)$ is increasing to infinity, and thus there must be infinitely many $v$ such that $u_1(v)-u_2(v)$ is a positive multiple of $2\pi$.
+    For each of those values of $v$ we have that $\cos u_1=\cos u_2$ and $\sin u_1=\sin u_2$, so $\gamma$ intersects itself at $(u_1,v)$ and $(u_2,v)$, and thus infinitely many times.
+\eenum
+
+\def\fix{{\rm Fix}}
+\bprob
+
+    \benum
+        \item Let $(M,g)$ be Riemannian, and let $f\colon M\to M$ be an isometry.
+        Show that
+        $$ \fix(f) = \set{p\in M}[f(p)=p] $$
+        is a submanifold of $M$.
+
+        \item Let $f\colon M\to M$ be a diffeomorphism of finite order, so $f^k=\id$ for some $k$.
+        Show that $\fix(f)$ is a submanifold.
+
+        \item Show that the previous point is not true if $f$ doesn't have finite order.
+    \eenum
+
+\eprob
+
+\benum
+    \item For $p\in\fix(f)$ there is an $r>0$ such that $\exp_p$ is a diffeomorphism from $B_r(0)\subseteq T_pM$.
+    Let $W\subseteq T_pM$ be the subspace fixed by $df_p$.
+    Then we claim that $\exp_p$ forms a diffeomorphism $W\cap B_r(0)\to\fix(f)\cap\exp_p(B_r(0))$.
+    Since $\exp_p$ is a diffeomorphism from $B_r(0)$ we need only show that it maps into $\fix(f)\cap\exp_p(B_r(0))$ and does so surjectively.
+
+    For $v\in W\cap B_r(0)$ we need to show that $\exp_p(v)$ is fixed by $f$.
+    Since $\exp_p(tv)$ is the unique geodesic starting at $p$ with initial velocity $v$, $f\circ\exp_p(tv)$ is a geodesic too as $f$ is an isometry.
+    It starts at $f(\exp_p(0))=f(p)=p$ with initial velocity
+    $$ (f\circ\exp_p(tv))'(0) = df_p(v) = v , $$
+    so by uniqueness $f\circ\exp_p(tv)=\exp_p(tv)$ and in particular for $t=1$ we see that $\exp_p(v)$ is fixed by $f$ as desired, meaning
+    $\exp_p$ does indeed map into $\fix(f)\cap\exp_p(B_r(0))$.
+
+    Conversely for $q=\exp_p(v)\in\fix(f)\cap\exp_p(B_r(0))$ we claim that $v\in B_r(0)$ is fixed by $df$.
+    As before, $f\circ\exp_p(tv)$ is a geodesic with initial point $p$ and initial velocity $df_p(v)$.
+    Since $f$ is an isometry it preserves the norm, so $df_p(v)\in B_r(0)$.
+    This means that $f\circ\exp_p(tv)=\exp_p(tdf_p(v))$ by uniqueness of geodesics, and it is defined at $t=1$ which gives
+    $$ \exp_p(df_p(v)) = f(\exp_p(v)) = \exp_p(v) , $$
+    and since $\exp_p$ is injective on $B_r(0)$ we get $df_p(v)=v$ so $v\in W$.
+    Thus $\exp_p$ is a bijection between Euclidean space $W\cap B_r(0)$ and $\fix(f)\cap\exp_p(B_r(0))$, we use these as charts for $\fix(p)$ (since $\exp_p(B_r(0))$
+    is open in $M$, $\fix(f)\cap\exp_p(B_r(0))$ is open in the subspace topology).
+
+    These charts are smoothly compatible, since $\exp_p$ and is a diffeomorphism onto its image in $M$.
+    Thus this makes $\fix(f)$ a submanifold of $M$.
+
+    \item Let $g_0$ be an arbitrary metric on $M$, define a new metric $g$ by
+    $$ g(X,Y) = \frac1k\sum_{i=0}^{k-1}g_0(df^i(X),df^i(Y)) . $$
+    Since $g_0,df$ are smooth, so too is $g$, so this defines a tensor field.
+    It is also positive definite at each point since $g_0(X,X)$ is nonnegative and $g(X,X)=0$ iff $g_0(df^i(X),df^i(X))=0$ for all $i$, iff $df^i(X)=0$ iff $X=0$.
+    And $f$ is an isometry since
+    $$ g(df(X),df(Y)) = \frac1k\sum_{i=0}^{k-1}g_0(df^{i+1}(X),df^{i+1}(Y)) , $$
+    and by reordering the indices since $df^k=d(f^k)=d\id=\id$, we see this is equal to $g(X,Y)$.
+
+    So $f$ is an isometry of $(M,g)$ and by the previous point $\fix(f)$ is a submanifold of $M$.
+
+    \item Consider the function
+    $$ h\colon\bR\to\bR,\qquad h(x) = \exp\parens{-\frac1{x^2}}\sin\parens{\frac1x} . $$
+    This is clearly smooth at points other than $0$, and computing its first derivative gives
+    $$ h'(x) = \exp\parens{-\frac1{x^2}}\parens{\frac2{x^3}\sin\parens{\frac1x}-\frac1{x^2}\cos\parens{\frac1x}} , $$
+    and inductively we see that
+    $$ h^{(n)}(x) = \exp\parens{-\frac1{x^2}}\parens{P_n(1/x)\sin(1/x) + Q_n(1/x)\cos(1/x)} , $$
+    for polynmials $P_n,Q_n$.
+    This converges to $0$ at $x=0$, so $h$ is smooth over all of $\bR$.
+    The inductive step is just a computation: $h^{(n+1)}(x)$ is equal to
+    $$ \qquad\eqalign{
+        &2x^{-3}\exp(-x^{-2})\cdot(P_n(1/x)\sin(1/x) + Q_n(1/x)\cos(1/x))\cr
+            &\hphantom{{}={}}- x^{-1}\exp(-x^{-2})(P'_n(1/x)\sin(1/x) + P_n(1/x)\cos(1/x) + Q'_n(1/x)\cos(1/x) - Q_n(1/x)\sin(1/x))\cr
+            &= \exp(-x^{-2})\cdot(P_{n+1}(1/x)\sin(1/x) + Q_{n+1}(1/x)\cos(1/x))
+    } $$
+    for
+    $$ P_{n+1}(x) = 2x^3P_n(x) - xP'_n(x) + xQ_n(x),\qquad Q_{n+1}(x) = 2x^3Q_n(x) - xP_n(x) + xQ'_n(x) . $$
+    Now consider the vector field given by $X=h(x)dx$, which is the same as $\nabla H$ where $H$ is an antiderivative of the smooth function $h$.
+
+    We claim that $X$ is a complete vector field.
+    Notice that $\abs{h(x)}$ is bound, e.g.\ by $1$.
+    So if $\gamma$ is any maximal integral curve of $X$, so $\gamma'(t)=h(\gamma(t))$ then
+    $$ \gamma(t) = \gamma(0) + \int_0^t\gamma'(s)\,ds = \gamma(0) + \int_0^th(\gamma(s))\,ds , $$
+    which implies that
+    $$ \abs{\gamma(t)} \leq \abs{\gamma(0)} + \int_0^t\abs{h(\gamma(s))}\,ds \leq \abs{\gamma(0)} + \abs t . $$
+    The escape lemma for integral curves says that if $\gamma$ is maximal whose domain is bounded by $b$, then $\gamma[t_0,b)$ is not contained in a compact subset of $M$, so in $\bR$'s case it is unbound.
+    But as we showed, $\gamma[t_0,b)$ is bound, so $\gamma$'s domain cannot be bounded, and thus it must be all of $\bR$.
+    So $X$ is complete, and so its flow $\theta$ is defined on all of $\bR\times M\to M$.
+
+    Finally, let $\Phi$ be $X$'s time-one flow, i.e.\ $\Phi(x)=\theta(1,x)$.
+    As flow is smooth, so is $\Phi$.
+    Furthermore, by the fundamental theorem of flows, $\Phi$ is a diffeomorphism $M\to M$ (since $X$ is complete).
+    But we claim that $\fix(\Phi)=Z(h)$, the set of $h$'s zeroes.
+
+    Indeed, if $h(x)\neq0$ then $\theta^{(x)}(t)=\theta(t,x)$ is an immersion and thus has nonzero derivative (integral curves starting at regular points of the field are immersions).
+    Since
+    $$ \dot\theta^{(x)}(t) = h(\theta^{(x)}(t)) , $$
+    this means that $h=H'$ is nonzero on the integral curve $\theta^{(x)}(t)$, and thus $H$ is injective on it.
+    If $\Phi(x)=x$ then this means $\theta^{(x)}(1)=\theta^{(x)}(0)$, and thus $H(\theta^{(x)}(1))=H(\theta^{(x)}(0))$ contradicting $h$'s injectivity on the integral curve.
+    For $h(x)=0$, the integral curve starting at $x$ is constant, $\theta^{(x)}(t)=x$, and in particular $\Phi(x)=x$.
+    So
+    $$ \fix(\Phi) = Z(h) . $$
+    But
+    $$ Z(h) = \set{\frac1{\pi k}}[k\in\bZ-0]\cup\set0 , $$
+    which is a countable non-discrete subspace of $\bR$ (since any neighborhood of $0$ contains some other zero of $h$), and thus cannot be a submanifold (since countable manifolds are discrete).
+\eenum
+
+\def\div{{\rm div}}
+\bprob
+
+    Let $M$ be a smooth manifold, and denote its space of differential $k$-forms by $\Omega^k(M)$, and let $n=\dim M$.
+    \benum
+        \item Let $g$ be a Riemannian metric on $M$.
+        Define an operator $\div_g\colon\X(M)\to C^\infty(M)$ pointwise by
+        $$ (\div_gX)(p) = \tr(\nabla X|_p) , $$
+        where $\nabla X|_p\colon T_pM\to T_pM$ is the linear operator $v\mapsto\nabla_vX|_p$.
+        Show that in a geodesic frame $(E_i)$ at $p$ and $X=f^iE_i$, one has
+        $$ (\div_gX)(p) = (E_if^i)(p) . $$
+
+        \item Suppose $M$ is orientable.
+        Show that there exists a unique $\nu_g\in\Omega^n(M)$ called the {\emphcolor volume form} induced by $g$ satisfying the equivalent conditions:
+        \benum
+            \item for every oriented local orthonormal frame $(E_i)$, $\nu_g(E_1,\dots,E_n)=1$,
+            \item in every oriented local coordinate coframe,
+            $$ \nu_g = \sqrt{\det(g_{ij})}dx^1\wedge\cdots\wedge dx^n . $$
+        \eenum
+
+        \item Given the volume form $\nu_g\in\Omega^n(M)$, let $\L_X\nu_g$ be its Lie derivative relative to a vector field $X$.
+        Show that
+        $$ \L_X\nu_g = (\div_gX)\nu_g . $$
+    \eenum
+
+\eprob
+
+\benum
+    \item Since $(E_i|_p)$ forms a basis of $T_pM$, we can compute the trace of $\nabla X|_p$ relative to $E_i|_p$.
+    We have that
+    $$ \nabla_{E_i|_p}X|_p = \nabla_{E_i}X|_p = \nabla_{E_i}f^jE_j|_p = (E_if^j)E_j|_p + f^j\nabla_{E_i}E_j|_p , $$
+    and since $E_i$ is a geodesic frame at $p$, this is equal to $(E_if^j)(p)E_j|_p$.
+    So relative to the basis $(E_i|_p)$, $\nabla X$ is represented by the matrix $A^i_j=E_if^j(p)$, and thus its trace is
+    $$ \div_gX(p) = \sum_i A^i_i = \sum_i E_if^i(p) , $$
+    as desired.
+
+    \item First we show the two conditions are equivalent.
+    Let $(E_i)$ be an oriented local orthonormal frame and $(x^i)$ an oriented chart which induces the oriented local coordinate frame $(\partial_i)$.
+    Let $A$ and $B$ be the transition functions between them, so
+    $$ E_i = A^j_i\partial_j,\qquad \partial_j = B^i_jE_i $$
+    meaning $A$ and $B$ are inverse matrices.
+    And we know for any $n$-form $\omega\in\Omega^n(M)$,
+    $$ \omega(E_1,\dots,E_n) = \det(A^j_i)\omega(\partial_1,\dots,\partial_n),\qquad \omega(\partial_1,\dots,\partial_n) = \det(B^i_j)\omega(E_1,\dots,E_n) . $$
+
+    We will show that $\det(B^i_j)=\sqrt{\det(g_{ij})}$, which shows that if $\nu_g(\bar E)=1$ then $\nu_g(\bar\partial)=\sqrt{\det(g_{ij})}$ and vice versa.
+    Since both frames are oriented, their transition maps $A,B$ have positive determinant, so it is sufficient to show $\det(B^i_j)^2=\det(g_{ij})$.
+    We know that
+    $$ g_{ij} = \iprod{\partial_i,\partial_j} = \iprod{B^k_iE_k,B^\ell_jE_\ell} = B^k_iB^\ell_j\delta_{k\ell} = \sum_k B^k_iB^k_j . $$
+    So we have that
+    $$ g_{ij} = (B^\top\cdot B)^i_j , $$
+    meaning $g=B^\top B$, so
+    $$ \det(g) = \det(B^\top B) = \det(B^\top)\det(B) = \det(B)^2 , $$
+    as desired.
+    Now, $\nu_g(\partial_1,\dots,\partial_n)=\sqrt{\det(g)}$ is equivalent to $\nu_g=\sqrt{\det(g)}dx^1\wedge\cdots\wedge dx^n$ because the coefficient of $dx^1\wedge\cdots\wedge dx^n$ in
+    the representation of $\nu_g$ is given by $\nu_g(\partial_1,\dots,\partial_n)$.
+    So we have shown the equivalence of the two conditions.
+
+    Either of the two points uniquely define $\nu_g$, since around any point we have a unique representation of $\nu_g$ in terms of a local coordinate coframe, or local orthonormal coframe.
+
+    Now we just need to show that $\nu_g$ is well-defined.
+    We take the first point as the definition, meaning in terms of any oriented local orthonormal frame $(E_i)$ with dual frame $(\epsilon^i)$ we define
+    $$ \nu_g = \epsilon^1\wedge\cdots\wedge\epsilon^n . $$
+    To show that this is well-defined, we take another oriented local orthonormal frame $(F_i)$ with dual frame $(\delta^i)$ and we want to show that
+    $$ \epsilon^1\wedge\cdots\wedge\epsilon^n = \delta^1\wedge\cdots\wedge\delta^n . $$
+    Let $A^i_j$ be the transition matrix, so $F_j=A^i_jE_i$ and thus $\epsilon^j=A^j_i\delta^i$ so
+    $$ \epsilon^1\wedge\cdots\wedge\epsilon^n = \det(A)\delta^1\wedge\cdots\wedge\delta^n . $$
+    Since $A$ is the transition map between orthonormal bases, it is unitary and thus $\abs{\det(A)}=1$, since further both $E_i,F_i$ are positively oriented, $A$ has positive
+    determinant and so $\det(A)=1$ giving us the desired result.
+    So $\nu_g$ is well-defined, as desired.
+
+    \item Let $(E_i)$ be an oriented geodesic frame at $p$, and write $X=f^iE_i$ locally.
+    Since the Lie derivative of a differential form is itself a differential form, it is sufficient to show that at $p$ we have
+    $$ \L_X(\nu_g)(E_1,\dots,E_n) = (\div_gX)\nu_g(E_1,\dots,E_n) , $$
+    then the result also follows for any permutation of $E_1,\dots,E_n$ (by antisymmetry of differential forms) so that we get the result for all vectors $X_1,\dots,X_n\in T_pM$.
+    This is true for all points $p$ so we get the result globally.
+
+    For the remainder of this solution, everything is being evaluated at the point $p$ implicitly.
+
+    The right-hand side is by definition just $\div_gX$.
+    The left-hand side is, by the formula for the Lie derivative of covariant tensors,
+    $$ \L_X(\nu_g)(E_1,\dots,E_n) = X(\nu_g(E_1,\dots,E_n)) - \sum_i\nu_g(E_1,\dots,[X,E_i],\dots,E_n) . $$
+    Since $\nu_g(E_1,\dots,E_n)=1$ is constant, the first term is zero.
+    By symmetry of the Levi-Civita connection,
+    $$ \nabla_XE_i - \nabla_{E_i}X = [X,E_i] , $$
+    The first term on the left is $f^j\nabla_{E_j}E_i=0$, so we see
+    $$ [X,E_i] = -\nabla_{E_i}X = -\nabla_{E_i}f^jE_i = -(E_if^j)E_j . $$
+    Thus
+    $$ \L_X(\nu_g)(E_1,\dots,E_n) = \sum_i\nu_g(E_1,\dots,(E_if^j)E_j,\dots,E_n) = \sum_i(E_if^j)\nu_g(E_1,\dots,E_j,\dots,E_n) . $$
+    Since $\nu_g$ is a differential form and thus zero when its arguments are repeated, when $i\neq j$ the term in the sum is zero, so this is equal to
+    $$ = \sum_i(E_if^i)\nu_g(E_1,\dots,E_n) = \sum_iE_if^i = \div_gX , $$
+    as desired.
+\eenum
+
+
+

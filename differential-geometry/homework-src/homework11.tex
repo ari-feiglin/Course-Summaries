@@ -1,0 +1,442 @@
+\def\iiprod#1{\left<\!\left<#1\right>\!\right>}
+
+\bprob[title={DoCarmo, Riemannian Geometry, page 46 question 7}]
+
+    Let $G$ be a compact connected Lie group of dimension $n$.
+    \benum
+        \item Show that if $\omega$ is a left-invariant $n$-form, then it is right-invariant.
+        \item Show that there exists a non-vanishing left-invariant $n$-form $\omega$ on $G$.
+        \item Let $\iprod{\bul,\bul}$ be a left invariant metric on $G$, and $\omega$ a positive
+        $n$-form on $G$ which is left-invariant.
+        Define a new Riemannian metric $\iiprod{\bul,\bul}$ on $G$ by
+        $$ \iiprod{u,v}_y = \int_G\iprod{(dR_x)_yu,(dR_x)_yv}_{yx}\omega_x,\qquad x,y\in G,\ u,v\in T_yG . $$
+        Show that this is a bi-invariant metric.
+    \eenum
+
+\eprob
+
+\benum
+    \item Let $a\in G$, then $R^*_a\omega$ is left-invariant as for $x\in G$ we have
+    $$ L^*_xR^*_a\omega = R^*_aL^*_x\omega = R^*_a\omega . $$
+    All left-invariant forms are determined by their values at the identity, and since $\Lambda^n T^*_eG$ is
+    one-dimensional, this means that all left-invariant $n$-forms are scalar multiples of one another.
+    Thus $R^*_a\omega=f(a)\omega$ for some $f(a)\in\bR-0$ (since $\omega$ is non-vanishing, so too is $R^*_a\omega$
+    since $R_a$ is a diffeomorphism).
+
+    Now,
+    $$ R^*_{ba}\omega = R^*_a(R^*_b\omega) = R^*_a(f(b)\omega) = f(b)R^*_a\omega = f(b)f(a)\omega , $$
+    which means that $f(ba)=f(b)f(a)$ so $f$ is a group morphism from $G$ to the multiplicative group of reals $\bR-0$.
+    Furthermore it is continuous, as we can compute $f(a)$ by taking a basis $v_1,\dots,v_n\in T_eG$ then
+    $$ f(a) = \frac{R^*_a\omega(v_1,\dots,v_n)}{\omega(v_1,\dots,v_n)} , $$
+    and $a\mapsto R^*_a\omega$ is smooth, so this is just scaling a smooth map.
+
+    Since $G$ is compact and connected, $f(G)\subseteq\bR-0$ is then a compact connected subgroup.
+    It is thus a closed interval $[c,d]$, which means $c^2\geq c,d^2\leq d$ which implies $d\leq1\leq c$ so
+    $f(G)=\set1$.
+    Thus $R^*_a\omega=\omega$ for all $a\in G$, and $\omega$ is right-invariant.
+
+    \item Let $(E_i)$ be a left-invariant global frame of $TG$, i.e.\ left-invariant vector fields obtained from a basis
+    of $T_eG$.
+    Take $(\epsilon^j)$ its dual global coframe, then define
+    $$ \omega = \epsilon^1\wedge\cdots\wedge\epsilon^n . $$
+    Then for $a\in G$ we have
+    $$ L^*_a\omega = (L^*_a\epsilon^1)\wedge\cdots\wedge(L^*_a\epsilon^n) . $$
+    Now we have
+    $$ L^*_a\epsilon^j(E_i) = \epsilon^j(L^*_aE_i) = \epsilon^j(E_i) = \delta^j_i , $$
+    which shows that $L^*_a\epsilon^j=\epsilon^j$, meaning $L^*_a\omega=\omega$, so $\omega$ is left-invariant and
+    non-vanishing.
+
+    \item Since all non-vanishing $n$-forms on a connected manifold are either positive or negative.
+    This is because if we take a positive $n$-form $\omega$, all $n$-forms are multiples of this by a smooth function
+    $u\omega$.
+    If they are nonvanishing, then $u$ is never zero.
+    If the manifold is connected, this means $u$ is either strictly positive or strictly negative.
+
+    So let $\omega$ be a nonvanishing left-invariant $n$-form.
+    By potentially multiplying by $-1$, we can assume it is positive.
+    Then we define $\iiprod{\bul,\bul}$ as in the question.
+
+    By linearity of the differential, it is immediate that $\iiprod{\bul,\bul}$ is bilinear.
+    It is also symmetric by symmetry of $\iprod{\bul,\bul}$.
+    Furthermore, $\iprod{(dR_x)_yu,(dR_x)_yu}_{yx}\omega$ is a positive $n$-form when $u\neq0$ (since the inner
+    product is positive), and thus its integral is positive.
+    Thus for $u\neq0$, $\iiprod{u,u}>0$.
+    For $u=0$, the integral is zero, so $\iiprod{u,u}=0$.
+
+    Now, we have
+    $$ \eqalign{
+        \iiprod{d(L_a)_yu,d(L_a)_yv}_{ay} &= \int_G\iprod{(dR_x)_{ay}d(L_a)_yu,(dR_x)_{ay}d(L_a)_yv}_{ayx}\omega\cr
+            &= \int_G\iprod{d(R_x\circ L_a)_yu,d(R_x\circ L_a)_yv}_{ayx}\omega\cr
+            &= \int_G\iprod{d(L_a\circ R_x)_yu,d(L_a\circ R_x)_yv}_{ayx}\omega\cr
+            &= \int_G\iprod{d(L_a)_{yx}d(R_x)_yu,d(L_a)_{yx}d(R_x)_yv}_{ayx}\omega\cr
+            &= \int_G\iprod{d(R_x)u,d(R_x)_yv}_{yx}\omega\cr
+            &= \iiprod{u,v}_y,
+    } $$
+    where the final equality is due to the left-invariance of $\iprod{\bul,\bul}$.
+    So we see that $\iiprod{\bul,\bul}$ remains left-invariant.
+
+    Now we claim right-invariance.
+    Let us write $f_{u,v}\colon G\to\bR$ for the map $f_{u,v}(x)=\iprod{(dR_x)_yu,(dR_x)_yv}$.
+    Thus
+    $$ \iiprod{u,v}_y = \int_Gf_{u,v}\omega . $$
+    And we have
+    $$ L_a^*(f_{u,v}\omega) = (f_{u,v}\circ L_a)(L_a^*\omega) = (f_{u,v}\circ L_a)\omega $$
+    since $\omega$ is left-invariant.
+    Furthermore, for all $a\in G$, $L_a$ is orientation-preserving.
+    This is because $L^*_a\omega=\omega$, and $\omega$ is the orientation form.
+
+    Thus we have
+    $$ \eqalign{
+        \iiprod{d(R_a)_yu,d(R_a)_yv}_{ya} &= \int_G\iprod{(dR_x)_{ya}d(R_a)_yu,(dR_x)_{ya}d(R_a)_yv}_{yax}\omega\cr
+            &= \int_G\iprod{d(R_x\circ R_a)_yu,d(R_x\circ R_a)_yv}_{yax}\omega\cr
+            &= \int_G\iprod{d(R_{ax})_yu,d(R_{ax})_yv}_{yax}\omega\cr
+            &= \int_G(f_{u,v}\circ L_a)\omega\cr
+            &= \int_GL_a^*(f_{u,v}\omega)\cr
+            &= \int_Gf_{u,v}\omega\cr
+            &= \iiprod{u,v}_y.
+    } $$
+    Showing right-invariance, as desired.
+    $G$ being compact is necessary for these integrals to be defined, as otherwise $\omega$ may not be compactly
+    supported.
+
+    Finally smoothness follows from left-invariance.
+    This is because for any vector fields $X,Y$, by left invariance
+    $$ \iiprod{X,Y}_a = \iiprod{X_a,Y_a}_a = \iiprod{d(L_{a^{-1}})X_a,d(L_{a^{-1}})Y_a}_e , $$
+    and $a\mapsto d(L_{a^{-1}})X_a$ is smooth as a composition of smooth functions.
+    Then inner product is taken in the identity which is smooth.
+    Thus we have constructed a bi-invariant Riemannian metric.
+\eenum
+
+\def\hess{{\rm Hess}}
+
+\bprob
+
+    Let $(M,g)$ be Riemannian.
+    For a smooth real-valued function $f\colon M\to\bR$ we define its {\emphcolor gradient} to be the unique vector field
+    $\nabla f$ which satisfies $g(\nabla f,X)=df(X)=Xf$ for all vector fields $X$.
+    The {\emphcolor Hessian} of $f$ is the covariant $2$-tensor defined by
+    $$ \hess f(X,Y) = g(\nabla_X\nabla f,Y) . $$
+    For $p\in M$ define $f_p\colon M\to\bR$ by $f_p(q)=\frac12d(p,q)^2$.
+    \benum
+        \item Show that for $f\colon M\to\bR$, $\hess f$ is symmetric.
+        \item Suppose there is a constant $c\geq0$ such that $\hess f(v,v)\geq cg(v,v)$ for all tangent vectors $v$.
+        Let $\gamma$ be a unit speed geodesic.
+        Show that
+        $$ \drvof{^2}{t^2}(f\circ\gamma) \geq c . $$
+        In particular $f\circ\gamma$ is convex, and strictly convex for $c>0$.
+        \item Let $B$ be a normal ball around $p$.
+        Show that $f_p$ is smooth on $B$.
+        Let $\gamma\colon[0,1]\to B$ be a geodesic such that $\gamma(0)=p$ and $\gamma(1)=q$.
+        Show that $\nabla f_p(q)=\dot\gamma(q)$.
+        \item Continuing with the case in the previous point, let $v,w\in T_pM$ be such that $\exp_p(v)=\gamma(1)$.
+        For sufficiently small $\epsilon>0$ and $(s,t)\in(-\epsilon,\epsilon)\times[0,1]$, let
+        $$ \bar\gamma(s,t) = \bar\gamma_s(t) = \exp_p(t(v+sw)) . $$
+        Then define
+        $$ J = \evdrv s_{s=0}\bar\gamma $$
+        to be the Jacobi field along $\gamma=\bar\gamma_0$ such that $J(0)=0$ and $J'(0)=w$.
+        Show that
+        $$ \hess f_p(J(1),J(1)) = g(J'(1),J(1)) . $$
+        \item Again we continue with the previous point.
+        Assume the sectional curvature satisfies $K\leq0$.
+        For $t>0$, let
+        $$ \lambda(t) = \frac{g(J'(t),J(t))}{\norm{J(t)}^2} . $$
+        Prove that $\lambda(t)$ is well-defined and strictly positive for $t>0$.
+        Prove that $\dot\lambda(t)\geq-\lambda^2$, and show this is strict when $K<0$ and $v,w$ are linearly independent.
+        \item Again we continue with the previous point.
+        Show that $\lambda(t)\to\infty$ as $t\to0$.
+        Using the previous point, show that $\frac{\dot\lambda}{\lambda^2}+1$ is well-defined and non-negative for $t>0$.
+        Integrate over $t\in[0,1]$ to obtain $\lambda(1)\geq1$.
+        \item Let $M$ have nonpositive sectional curvature and $B\subseteq M$ be a normal ball centered at $p$.
+        Conclude from the previous point that for all $q\in B$ and $v\in T_qM$, $\hess f_p(v,v)\geq g(v,v)$.
+        Show that if $K<0$ and $v,\nabla f_p(q)$ are linearly independent, then this inequality is strict.
+        \item Let $M$ be complete and simply connected, with $K\leq0$.
+        Show that $f_p$ is smooth on all of $M$.
+        \item Continuing the previous point, let $\phi\colon M\to M$ be an isometry of finite order $k$.
+        Show that $\phi$ has a fixed point as follows: for $p\in M$ let
+        $$ h = \sum_{i=0}^{k-1}f_{\phi^i(p)} . $$
+        Show that $h\circ\phi=h$, and then from point (7) conclude $\hess h>0$.
+        Using Hopf-Rinow and part (2), show that $h$ has a unique minimum, which must be a fixed point of $\phi$.
+        \item Continue with point (8).
+        Let $p\in M$ and $\gamma\colon[0,t]\to M$ be a geodesic.
+        Combining points (2) and (7), show that
+        $$ \drvof{^2}{t^2}(f_p\circ\gamma) \geq 1, $$
+        and integrating twice we obtain
+        $$ d(p,\gamma(t))^2 \geq d(p,\gamma(0))^2 + 2g(\nabla f_p(\gamma(0)),\dot\gamma(0))t + t^2 . $$
+        Using part (3), interpret this as a generalized law of cosines.
+        In particular for any geodesic triangle in $M$ with side lengths $a,b,c$, and angle $\alpha$ opposite
+        side $a$, we have
+        $$ a^2 \geq b^2 + c^2 - 2bc\cos\alpha . $$
+        Show that this inequality is strict for $K<0$ and a non-degenerate triangle.
+        \item Continue with part (10).
+        Show that the sum of angles in a geodesic triangle in $M$ is less than or equal to $\pi$.
+        Furthermore this inequality is strict for $K<0$ and a nondegenerate triangle.
+    \eenum
+
+\eprob
+
+\benum
+    \item We have by metric-compatibility
+    $$ \hess f(X,Y) = g(\nabla_X\nabla f,Y) = X(g(\nabla f,Y)) - g(\nabla f,\nabla_XY) = X(Yf) - \nabla_XY(f) . $$
+    And thus
+    $$ \hess f(Y,X) = Y(Xf) - \nabla_YX(f) . $$
+    Subtracting both sides gives
+    $$ \hess f(X,Y) - \hess f(Y,X) = X(Yf) - Y(Xf) - (\nabla_XY(f) - \nabla_YX(f)) , $$
+    and both terms are $[X,Y]f$: the first by definition and the second by symmetry of the connection.
+    Thus $\hess f(X,Y)=\hess f(Y,X)$ as desired.
+
+    \item For $t_0$ in $\gamma$'s domain, let $p=\gamma(t_0)$ and consider a geodesic frame centered at $p$, $(E_i)$.
+    Then $(E_i)$ are orthonormal, and so the components of $\nabla f$ with respect to this local frame are given by
+    $$ g(\nabla f,E_i) = df(E_i) = E_i(f) . $$
+    Thus
+    $$ \nabla f = \sum_i(E_if)E_i . $$
+    Let us also represent $\dot\gamma$ in terms of this geodesic frame: $\dot\gamma=a^i(t)E_i(\gamma(t))$.
+    Then we have
+    $$ \eqalign{
+        \hess f(\dot\gamma(t),\dot\gamma(t)) &= g\parens{\nabla_{a^iE_i(\gamma)}\sum_j(E_jf)E_j,a^kE_k(\gamma)}\cr
+            &= a^ia^kg\parens{\nabla_{E_i}\sum_j(E_jf)E_j,E_k}_\gamma\cr
+            &= \sum_ja^ia^kg\parens{E_i(E_jf)E_j+(E_jf)\nabla_{E_i}E_j,E_k} .
+    } $$
+    Evaluating at $t_0$, this becomes
+    $$ = \sum_ja^ia^kg\parens{E_i(E_jf)E_j,E_k} = a^i(t_0)a^j(t_0)E_i(E_jf)|_p . $$
+
+    On the other hand,
+    $$ \drv t(f\circ\gamma) = df(a^i(t)E_i(\gamma(t))) = a^i(t)(E_if)\circ\gamma . $$
+    Differentiating again gives
+    $$ \drvof{^2}{t^2}(f\circ\gamma) = \dot a^i(t)(E_if)\circ\gamma + a^i(t)d(E_if)(a^jE_j|_\gamma)
+    = \dot a^i(E_if)|_\gamma + a^ia^jE_j(E_if)|_\gamma . $$
+    Notice that the first term is just $D_t\dot\gamma=0$, so we see that
+    $$ \drvof{^2}{t^2}(f\circ\gamma) = a^ia^jE_i(E_jf)|_\gamma , $$
+    which is equal to $\hess f(\dot\gamma,\dot\gamma)$ at $t_0$.
+
+    This is true for all $t_0$, so we see that
+    $$ \drvof{^2}{t^2}(f\circ\gamma) = \hess f(\dot\gamma,\dot\gamma) \geq cg(\dot\gamma,\dot\gamma) = c\norm{\dot\gamma}^2
+    = c $$
+    as desired.
+
+    \item Let $\tilde B\subseteq T_pM$ be the tangent ball mapped diffeomorphically to $B$ by $\exp_p$.
+    Radial geodesics are minimizing, so for $v\in\tilde B$ we have $d(p,\exp_p(v))=\norm v$.
+    Thus
+    $$ f_p(\exp_p(v)) = \frac12\norm v^2 . $$
+    Thus $f_p\circ\exp_p$ is smooth, and since $\exp_p$ is a diffeomorphism $\tilde B\to B$, we see that $f_p$
+    is smooth on $B$.
+
+    Let $\bar g$ denote the Euclidean metric on $T_pM$, so $\exp_p\colon\tilde B\to B$ is an isometry.
+    In general if we have an isometry $\phi\colon(N,\tilde g)\to(M,g)$ and $f\colon M\to\bR$, then
+    $$ \tilde g(\nabla(f\circ\phi),X) = d(f\circ\phi)(X) = df(\phi_*X) = g(\nabla f,\phi_*X) . $$
+    Since $\phi_*$ is an isometry, this is equal to
+    $$ = \tilde g(\phi^{-1}_*\nabla f,X) . $$
+    This is true for all $X$, so
+    $$ \nabla(f\circ\phi) = \phi^{-1}_*\nabla f \implies \nabla f = \phi_*\nabla(f\circ\phi) . $$
+    In our case,
+    $$ \nabla f_p = (\exp_p)_*\nabla(f\circ\exp_p) , $$
+    and $f\circ\exp_p(v)=\norm v^2/2$ whose gradient is then just $v$ (gradients in the Euclidean case are computed
+    classically).
+    The geodesic connecting $p$ and $q$ has the form $\gamma(t)=\exp_p(tv)$ for $q=\exp_pv$, then
+    $$ \nabla f_p(q) = \nabla f_p(\exp_pv) = d(\exp_p)v = \dot\gamma(1) . $$
+
+    \item Notice that
+    $$ J'(1) = \partial_t\partial_s\bar\gamma(0,1) = \partial_s\partial_t\bar\gamma(0,1) =
+    \eval{\partial_s\dot{\bar\gamma}_s(1)}_{s=0} $$
+    where the final equality is due to symmetry.
+    By the previous point
+    $$ \nabla f_p(\bar\gamma_s(1)) = \dot{\bar\gamma}_s(1) . $$
+    And by definition we have
+    $$ \hess f_p(J(1),J(1)) = g(\nabla_{J(1)}\nabla f_p,J(1)) . $$
+    Consider the first term:
+    $$ \nabla_{J(1)}\nabla f_p = \nabla_{\partial_s\bar\gamma(0,1)}\nabla f_p , $$
+    which is equal to the covariant derivative of $\nabla f_p(\bar\gamma_s(1))$ with respect to $s$ taken along
+    $\bar\gamma_s(1)$, evaluated at $0$.
+    That is, it is equal to
+    $$ \eval{D_s\nabla f_p(\bar\gamma_s(1))}_{s=0} = \eval{D_s\dot{\bar\gamma}_s(1)}_{s=0} = J'(1) , $$
+    where the final equality is due to the first equation we showed.
+    Thus we have
+    $$ \hess f_p(J(1),J(1)) = g(J'(1),J(1)) $$
+    as desired.
+
+    \item Since $M$ has nonpositive sectional curvature, no two points are conjugate along any geodesic.
+    Since $J(0)=0$, this means that $J(t)\neq0$ for all $t\neq0$.
+    Thus $\lambda$ is well-defined.
+
+    Computing the derivative of $\lambda$, we get
+    $$ \dot\lambda = \frac{(g(J'',J) + g(J',J'))\norm J^2 - 2g(J',J)^2}{g(J,J)^2} , $$
+    and
+    $$ \lambda^2 = \frac{g(J',J)^2}{g(J,J)^2} . $$
+    So $\dot\lambda\geq-\lambda^2$ iff
+    $$ (g(J'',J) + \norm{J'}^2)\norm J^2 \geq g(J',J)^2 . $$
+    Cauchy-Schwarz gives us
+    $$ g(J',J) \leq \norm{J'}^2\norm J^2 $$
+    and so if we can show that $g(J'',J)$ is nonnegative we will have the inequality.
+
+    By the Jacobi equation
+    $$ g(J'',J) = g(-R(\dot\gamma,J)\dot\gamma,J) = -\Rm(\dot\gamma,J,\dot\gamma,J) . $$
+    If $\dot\gamma,J$ are linearly dependent this is zero and we are finished.
+    Otherwise this is just a negative multiple of the sectional curvature at $\dot\gamma,J$.
+    Since the sectional curvature is nonpositive, this is nonnegative and we are finished.
+
+    Notice that this also implies $\lambda(t)>0$.
+    This is because as we showed,
+    $$ g(J',J)' = \norm{J'}^2 + g(J'',J) \geq 0 . $$
+    Thus $g(J'(t),J(t))$ is nondecreasing, and at $t$ it is zero.
+    Thus it is nonnegative for $t>0$, and since at $t=0$ we have $\norm{J'}^2=\norm w^2>0$ it is strictly increasing
+    in a neighborhood of $0$, so $g(J',J)>0$ for $t>0$.
+    Thus $\lambda(t)>0$ for $t>0$ as desired.
+
+    Now if $K<0$ and $v,w$ are linearly independent, we want to show this inequality is strict.
+    In lieu of our previous analysis, it is sufficient to show that $\dot\gamma(t),J(t)$ is linearly independent.
+    We know that, since $J(0)=0$, $J'(0)=w$, and $\dot\gamma(0)=v$,
+    $$ g(J(t),\dot\gamma(t)) = g(J'(0),\dot\gamma(0))t + g(J(0),\dot\gamma(0)) = g(w,v)t . $$
+    If $J$ and $\dot\gamma$ were dependent, this would mean
+    $$ J = \frac{g(J,\dot\gamma)}{g(\dot\gamma,\dot\gamma)}\dot\gamma = \frac{g(w,v)t}{g(v,v)}\dot\gamma . $$
+    Let us denote the right-hand side by $\hat J$.
+    This is a Jacobi field because fields of the form $at\dot\gamma(t)$ are Jacobi fields: their first derivative
+    is $a\dot\gamma$, and so their second is zero.
+    Then $R(at\dot\gamma,\dot\gamma)\dot\gamma=0$, so they are Jacobi fields.
+
+    Since Jacobi fields form a vector space, this means $J-\hat J$ is a Jacobi field.
+    But $J(0)=\hat J(0)=0$ and they also agree at another point $t$.
+    But since $M$ has nonpositive sectional curvature, no two points are conjugate along any geodesic.
+    This means that $J-\hat J$ cannot be a nontrivial Jacobi field, as otherwise $\gamma(0),\gamma(t)$ would be
+    conjugate.
+    Thus $J=\hat J$, but since $v,w$ are linearly independent
+    $$ \hat J'(0) = \frac{g(w,v)}{g(v,v)}v \neq w = J'(0) . $$
+ 
+    \item We note that as $t\to0$, both the numerator and denominator approach $0$ since $J(t)$ is smooth and $J(0)=0$.
+    Thus by Lhopital, the limit is equal to
+    $$ \lim_{t\to0}\lambda(t) = \lim_{t\to0}\frac{g(J'',J) + g(J',J')}{2g(J',J)} . $$
+    The numerator of the limit approaches $g(J'(0),J'(0))>0$, while the denominator approaches $0$.
+    Thus the limit is infinite (everything in the limit is positive, so this converges to $+\infty$), as desired.
+
+    Since $\lambda(t)>0$ for $t>0$, $\dot\lambda/\lambda^2+1$ is well-defined for $t>0$.
+    Since $\dot\lambda\geq-\lambda^2$, we see that $\dot\lambda/\lambda^2\geq-1$ so this is nonnegative for $t>0$.
+    Integrating yields
+    $$ \int_0^1\frac{\dot\lambda}{\lambda^2} + 1\d t = \eval{-\frac1{\lambda}}^1_0 + 1 = -\frac1{\lambda(1)} + 1 , $$
+    as we showed the limit of $\lambda(t)$ as $t\to0$ is infinite, and thus $1/\lambda\to0$.
+    Since the integrand is nonnegative, we see
+    $$ -\frac1{\lambda(1)} + 1 \geq 0 \implies \frac1{\lambda(1)} \leq 1 \implies \lambda(1) \geq 1 $$
+    as desired.
+
+    Note that if $K<0$ and $v,w$ are linearly independent then the inequality $\dot\lambda>-\lambda^2$ is strict.
+    Thus the integrand is strictly positive and so we get that
+    $$ -\frac1{\lambda(1)} + 1 > 0 \implies \lambda(1) > 1 . $$
+
+    \item From (4) we have that
+    $$ \hess f_p(J(1),J(1)) = g(J'(1),J(1)) = \lambda(1)g(J(1),J(1)) \geq g(J(1),J(1)) . $$
+    For $q\in B$ and $v\in T_qM$, we want a Jacobi field $J$ such that $J(1)=v$.
+
+    Let us write $q=\exp_p(u)$, so we want $x,y\in T_pM$ such that $J=\partial_s\exp_p(t(x+sy))|_{s=0}$ maps $J(1)=v$.
+    Since
+    $$ J(1) = \evpdv s_{s=0}\exp_p(x+sy) = d(\exp_p)_x(y) , $$
+    we need $\exp_p(x)=q$, meaning we need $x=u$.
+    Then since $\exp_p$ is a diffeomorphism to $B$, there will exist a $y$ which satisfies this.
+    So this gives us a Jacobi field $J$ where $J(1)=v$, and thus
+    $$ \hess f_p(v,v) \geq g(v,v) . $$
+
+    This inequality is strict when $x,y$ are linearly independent, as then $\lambda(1)>1$.
+    Since $x=u$ and $y=d(\exp^{-1}_p)_u(v)$, this is iff $v=d\exp_p(y)$ and $d\exp_p(u)$ are linearly independent.
+    Now,
+    $$ \nabla f_p(q) = \dot\gamma(1) , $$
+    where $\gamma$ is the geodesic connecting $p$ and $q$, so $\gamma(t)=\exp_p(tu)$.
+    Then
+    $$ \nabla f_p(q) = d\exp_p(u) , $$
+    so $x,y$ are linearly independent iff $v,\nabla f_p(q)$ are linearly independent as desired.
+
+    \item By Hadamard, $\exp_p\colon T_pM\to M$ is a diffeomorphism.
+    This means that $M$ is itself a normal ball, and as we showed $f_p$ is smooth on normal balls.
+    Thus $f_p$ is smooth, as desired.
+
+    \item Notice that since $\phi$ is an isometry,
+    $$ f_{\phi^i(p)}\circ\phi(q) = \frac12d(\phi^i(p),\phi(q))^2 = \frac12d(\phi^{i-1}(p),q) = f_{\phi^{i-1}(p)}(q) . $$
+    Thus $f_{\phi^i(p)}\circ\phi=f_{\phi^{i-1}(p)}$ and so
+    $$ h\circ\phi = \sum_{i=0}^{k-1} f_{\phi^i(p)}\circ\phi = \sum_{i=0}^{k-1}f_{\phi^{i-1}(p)} = h . $$
+
+    Now notice that given two smooth real-valued functions $f,f'$, we have $\nabla(f+f')=\nabla f+\nabla f'$.
+    This is because $d(f+f')=df+df'$, and the musical isomorphisms being linear.
+    Thus
+    $$ \multline{
+        \hess(f+f')(X,Y) = g(\nabla_X\nabla(f+f'),Y) = g(\nabla_X(\nabla f+\nabla f'),Y) =\cr
+        g(\nabla_X\nabla f,Y) + g(\nabla_X\nabla f',Y) = \hess f(X,Y) + \hess f'(X,Y) .
+    } $$
+    Thus $\hess(f+f')=\hess f+\hess f'$.
+
+    And thus
+    $$ \hess h = \sum_{i=0}^{k-1}\hess(f_{\phi^i(p)}) . $$
+    Since $\hess f_p(v,v)\geq g(v,v)>0$ for all $p$, we see that $\hess h\geq kg(v,v)>0$ as desired.
+
+    Now suppose $h$ had two minima, $p\neq q$.
+    Since $M$ is complete, there is a minimizing unit geodesic $\gamma$ from $p$ to $q$, so $p=\gamma(0)$ and $q=\gamma(a)$
+    say.
+    Then from (2) we have
+    $$ \drvof{^2}{t^2}(h\circ\gamma) \geq k > 0 , $$
+    which means that $h\circ\gamma$ is strictly convex, and thus can only have a single minimum,
+    contradicting both $h\circ\gamma(0)$ and $h\circ\gamma(a)$ both being minima.
+
+    Now since $h(p)\geq0$, $h$'s image is bounded from below.
+    Let $c=\inf h(M)$, and let $x_n\in M$ be a sequence such that $h(x_n)\to c$.
+    For sufficiently large $n$, we then have $h(x_n)<c+1$, and since $d(p,x)^2\leq h(x)$ we have $d(p,x_n)\leq\sqrt{c+1}$.
+    Thus $x_n$ eventually lies within the closed metric ball around $p$ of radius $\sqrt{c+1}$.
+    This is bound and closed, so by Hopf-Rinow, compact.
+    Thus $x_n$ has a convergent subsequence $x_{m_n}$, say $x_{m_n}\to x_0$.
+
+    Since $h(x_n)\to c$, we have that $h(x_{m_n})\to c$ and by continuity $h(x_{m_n})\to h(x_0)$.
+    Thus $h(x_0)=c$, and since $c$ is the infimum of the image of $h$, $x_0$ is a minimum of $h$.
+    As we showed the minimum is unique, it is the only minimum.
+
+    Now, $h\circ\phi=h$ means that $h(\phi(x_0))=h(x_0)$ is minimal.
+    Since $h$ has a unique minimum, this means $\phi(x_0)=x_0$ so $x_0$ is a fixed point of $\phi$.
+
+    \item From (7) we have $\hess f_p(v,v)\geq g(v,v)$ which means by (2) that
+    $$ \drvof{^2}{t^2}(f_p\circ\gamma) \geq 1 $$
+    for all unit velocity geodesics $\gamma$.
+    Integrating once we see that
+    $$ \drv tf_p\circ\gamma(t) = \int_0^t\drvof{^2}{t^2}(f_p\circ\gamma) + \drv tf_p\circ\gamma(0) \geq t +
+    \drv tf_p\circ\gamma(0) . $$
+    Integrating again gives
+    $$ f_p\circ\gamma(t) \geq \frac{t^2}2 + t\drv tf_p\circ\gamma(0) + f_p\circ\gamma(0) . $$
+
+    Recall that
+    $$ g(\nabla f_p(\gamma(0)),\dot\gamma(0)) = df_p(\dot\gamma(0)) = \drv tf_p\circ\gamma(0) . $$
+    Thus multiplying the above inequality by two, we get the desired
+    $$ d(p,\gamma(t))^2 \geq d(p,\gamma(0))^2 + 2g(\nabla f_p(\gamma(0)),\dot\gamma(0))t + t^2 . $$
+ 
+    Consider the following geodesic triangle, where $\gamma$ is a minimizing unit-velocity geodesic
+
+    \pdfximage width 5cm{homework-src/geodesic-triangle.jpeg}
+    \centerline{\pdfrefximage\pdflastximage}
+
+    Then $a^2=d(p,\gamma(t))^2$, $b=d(p,\gamma(0))^2$, and $c=L(\gamma)^2=t^2$.
+    If we let $\beta$ be the geodesic from $\beta(0)=\gamma(0)$ to $\beta(1)=p$, then we know that
+    $\nabla f_p(\gamma(0))=-\dot\beta(0)$ (since $\beta(1-t)$ is the geodesic in the reverse direction).
+    Thus
+    $$ g(\nabla f_p(\gamma(0)),\dot\gamma(0)) = -g(\dot\beta(0),\dot\gamma(0)) . $$
+    The angle $\alpha$ is given by the angle between $\dot\beta(0)$ and $\dot\gamma(0)$, so
+    $$ \cos\alpha = \frac{g(\dot\beta(0),\dot\gamma(0)}{\norm{\dot\beta}} . $$
+    And since $\beta$ is a geodesic, $b=L(\beta)=\norm{\dot\beta}$.
+    Thus
+    $$ 2g(\nabla f_p(\gamma(0)),\dot\gamma(0))t = -2bt\cos\alpha . $$
+    Since $c=t$ we see that this is equal to $-2bc\cos\alpha$.
+
+    Thus we have
+    $$ a^2 \geq b^2 + c^2 - 2bc\cos\alpha $$
+    as desired.
+
+    This inequality is strict when $K<0$ and the triangle is non-degenerate because then the inequality
+    $\drvof{^2}{t^2}(f_p\circ\gamma)>1$ is strict.
+    Then integrating preserves this strict inequality.
+
+    \item Let $T$ be the triangle in $M$, with side lengths $a,b,c$ and associated angles $\alpha,\beta,\gamma$.
+    By the triangle inequality, $c\leq a+b$ so there exists a Euclidean triangle $T'$ with the same side lengths.
+    Let the associated angles be $\alpha',\beta',\gamma'$.
+    Then we have
+    $$ a^2 = b^2 + c^2 - 2bc\cos\alpha' \geq b^2 + c^2 - 2bc\cos\alpha . $$
+    This implies that $\cos\alpha\geq\cos\alpha'$.
+    Since in $[0,\pi]$ cosine is decreasing, this means that $\alpha'\geq\alpha$.
+    The same holds for $\beta,\gamma$.
+
+    Thus we have
+    $$ \alpha + \beta + \gamma \leq \alpha' + \beta' + \gamma' = \pi $$
+    as desired.
+    When $K<0$ and the triangle is non-degenerate, then the inequality above is strict: $\cos\alpha>\cos\alpha'$.
+    Thus $\alpha<\alpha'$ and the inequality of the sum is strict.
+\eenum
+
+

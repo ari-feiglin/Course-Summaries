@@ -72,7 +72,7 @@ Recall we proved the following.
 
     Let $\gamma\colon[0,a]\to M$ be piecewise smooth, with $M$ Riemannian.
     Define its {\emphcolor length} and {\emphcolor energy}, respectively, as
-    $$ L(\gamma) = \int_0^a\norm{\drv\gamma t}\d t,\qquad E(\gamma) = \int_0^a\norm{\drv\gamma t}^2\d t . $$
+    $$ L(\gamma) = \int_0^a\norm{\drvof\gamma t}\d t,\qquad E(\gamma) = \int_0^a\norm{\drvof\gamma t}^2\d t . $$
 
 \edefn
 
@@ -93,9 +93,9 @@ Recall we proved the following.
 \bproof
 
     Cauchy-Schwarz tells us
-    $$ \parens{\int fg}^2 \leq \parens{\int f}^2\parens{\int g}^2 $$
+    $$ \parens{\int fg}^2 \leq \parens{\int f^2}\parens{\int g^2} $$
     with equality iff $f,g$ are linearly dependent.
-    Taking $f=1$ and $g=\norm{\drv\gamma t}$, we get the desired result.
+    Taking $f=1$ and $g=\norm{\drvof\gamma t}$, we get the desired result.
     \qed
 
 \eproof
@@ -112,8 +112,11 @@ Recall we proved the following.
 
     By the above lemma,
     $$ aE(\gamma) = L(\gamma)^2 \leq L(c)^2 \leq aE(c) , $$
-    where the first inequality is because $\gamma$ is minimizing.
-    There is equality iff $L(\gamma)=L(c)$, which means $c$ is minimizing and thus $c$ is a geodesic.
+    where the first equality is because $\gamma$ is a geodesic and thus its derivative has constant norm; the first
+    inequality is because $\gamma$ is minimizing.
+
+    If $E(\gamma)=E(c)$ then $L(\gamma)=L(c)$ so that $c$ is minimizing and thus a geodesic.
+    Conversely if $c$ is a minimizing geodesic, then $L(\gamma)=L(c)$ and $L(c)^2=aE(c)$.
     \qed
 
 \eproof
@@ -1060,9 +1063,9 @@ such that $\hat\pi\circ\phi=\tilde\pi$.
     Let $\gamma$ be a geodesic segment from $p$ to $q$ in $M$, say $\gamma(0)=p$ and $\gamma(a)=q$.
     Let $J$ be a nonzero Jacobi field along $\gamma$ with $J(0)=0$.
     By the Jacobi equation,
-    $$ D_t^2J = -R(J,\dot\gamma)\dot\gamma . $$
+    $$ D_t^2J = -R(\dot\gamma,J)\dot\gamma . $$
     Consider then the sectional curvature in the direction of $J$ and $\dot\gamma$ for any $t$, this is nonpositive by assumption so
-    $$ \iprod{D_t^2J,J} = -\iprod{R(J,\dot\gamma)\dot\gamma,J} = -\Rm(J,\dot\gamma,J,\dot\gamma) \geq 0 . $$
+    $$ \iprod{D_t^2J,J} = -\iprod{R(\dot\gamma,J)\dot\gamma,J} = -\Rm(\dot\gamma,J,\dot\gamma,J) \geq 0 . $$
     Now consider the smooth map $j\colon [0,a]\to\bR$ given by $j=\iprod{J,J}$.
     Then $j(0)=0$ and
     $$ j' = 2\iprod{D_tJ,J} , j'' = 2\iprod{D_t^2J,J} + 2\iprod{D_tJ,D_tJ} > 0 . $$
@@ -1125,6 +1128,8 @@ such that $\hat\pi\circ\phi=\tilde\pi$.
 
     We define the {\emphcolor Ricci curvature} of a Riemannian $n$-manifold $M$ to be the covariant $2$-tensor
     $$ \Rc(X,Y) = \frac1{n-1}\tr(Z\mapsto R(X,Z)Y) . $$
+    For a single vector $X$, we define
+    $$ \Rc(X) = \Rc(X,X) . $$
 
 \edefn
 
@@ -1132,7 +1137,7 @@ In terms of a local frame, the components of $\Rc$ are denoted $R_{ij}$ and sati
 $$ R_{ij} = \frac1{n-1}R_{ikj}^k = \frac1{n-1}g^{km}R_{ikjm} . $$
 In terms of an orthonormal frame $(E_i)$, we see that
 $$ \Rc(X,Y) = \frac1{n-1}\sum_{i=1}^n\iprod{R(X,E_i)Y,E_i} . $$
-We also define $\Rc(X)=\Rc(X,X)$, so that if $E_1,\dots,E_{n-1}$ are orthonormal and orthogonal to $X$ then
+For $\Rc(X)=\Rc(X,X)$, if $E_1,\dots,E_{n-1}$ are orthonormal and orthogonal to $X$ then
 $$ \Rc(X) = \frac1{n-1}\sum_{i=1}^n\iprod{R(X,E_i)X,E_i} = \frac1{n-1}\sum_{i=1}^{n-1}\iprod{R(X,E_i)X,E_i} . $$
 since $X=cE_n$ and $R(E_n,E_n)E_n=0$ by anti-symmetry.
 We see that this is equal to

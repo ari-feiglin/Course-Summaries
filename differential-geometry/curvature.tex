@@ -284,7 +284,7 @@ Riemannian curvature is preserved by local isometries.
 \bproof
 
     The first is immediate because $R(W,X)Y=-R(X,W)Y$.
-    To prove $Y$ it is sufficient to show that $\Rm(W,X,Y,Y)=0$ for all $Y$ (equivalence of antisymmetric multilinear
+    To prove (2) it is sufficient to show that $\Rm(W,X,Y,Y)=0$ for all $Y$ (equivalence of antisymmetric multilinear
     maps).
     This follows from expanding $WX\norm Y^2,XW\norm Y^2,[W,X]\norm Y^2$ and equating them.
 
@@ -613,7 +613,7 @@ Note that there does not need to exist an admissible minimizing curve between tw
 \bproof
 
     Every basis of $\sigma$ can be obtained from $x,y$ by elementary operations:
-    $$ x,y\mapsto y,x,\qquad x,y\mapsto x,y\mapsto x,\lambda y,\qquad x,y\mapsto x+\lambda y,y . $$
+    $$ x,y\mapsto y,x,\qquad x,y\mapsto x,\lambda y,\qquad x,y\mapsto x+\lambda y,y . $$
     Since $\Rm$ is antisymmetric in both its first two and last two coordinates, $K$ is invariant under the first elementary operation
     (swapping).
     And by multilinearity it is routine to check that it is invariant under the second two elementary operations.
@@ -765,7 +765,7 @@ $$ s_K(t) = \cases{t&if $K=0$\cr\noalign{\kern2pt} R\sin t/R&if $K=1/R^2>0$\cr\n
 
 \eproof
 
-\subsection{Curvature on vector bundles; the second fundamental form}
+\subsection{The second fundamental form}
 
 \bdefn
 
@@ -1033,40 +1033,61 @@ For the second fundamental form of $M\subseteq\bar M$ let us write $\sff(X,Y)$ i
 
 \eproof
 
-Consider the special case that the ambient manifold has dimension one greater than the one of interest: $\dim\bar M=\dim M+1$.
-For example $\bar M=\bR^{n+1}$ and $M=S^n$.
+We now consider a special case of this analysis, when $M\subseteq\bar M$ is a hypersurface: $\dim\bar M=\dim M+1$.
+For example, $\bar M=\bR^{n+1}$ and $M=S^n$.
 Further suppose that there is a nonvanishing section $\eta\in\nu_M$, so we can normalize it and assume $\iprod{\eta,\eta}=1$.
+This section is called the {\emphcolor Gauss map}.
+Because $\dim\nu_M=1$, $\eta$ is unique up to sign.
 
 Define the $(0,2)$-tensor
 $$ b\colon\X(M)\times\X(M) \to C^\infty(M),\qquad b(X,Y) = \iprod{\sff(X,Y),\eta} . $$
 Then we see that as $\sff$ lies in $\nu_M$, it is a scalar multiple of $\eta$, meaning $\sff(X,Y)=\iprod{\sff(X,Y),\eta}\eta$.
 Thus we see
-$$ \bar K_p(\sigma) = K_p(\sigma) + b(v,v)b(w,w) - b(v,w)^2 . $$
+$$ \bar K_p(\sigma) = K_p(\sigma) - b(v,v)b(w,w) + b(v,w)^2 . $$
 
 Furthermore let us define $\beta=b^\flat$, so the map $\beta\colon TM\to TM$ characterized by
 $$ \iprod{\beta(X),Y} = b(X,Y) . $$
 Then
 $$ b(X,Y) = \iprod{\sff(X)Y,\eta} = -\iprod{Y,\sff^\perp(X)\eta} , $$
 thus $\iprod{\beta(X),Y}=-\iprod{\sff^\perp(X)\eta,Y}$ so that $\beta(X)=-\sff^\perp(X)\eta$.
-Furthermore $b(v,v)b(w,v)-b(v,w)^2$ is the determinant of $\beta|_\sigma$, so
-$$ \bar K_p(\sigma) = K_p(\sigma) - \det\beta|_\sigma . $$
 
-Further suppose that $\bar M$ has zero sectional curvature: $\bar K=0$.
-Then
-$$ \beta(x) = -\sff^\perp(X)\eta = -\bar\nabla_X\eta + \nabla^\perp_X\eta . $$
-The second term is zero, since the connection is metric so
+Now let $P_\sigma\colon T_pM\to\sigma$ be the orthogonal projection onto $\sigma$.
+Then $P_\sigma(x)=\iprod{x,v}v+\iprod{x,w}w$ and so
+$$ P_\sigma\circ\beta(x) = \iprod{\beta(x),v}v + \iprod{\beta(x),w}w = b(x,v)v + b(x,w)w . $$
+Thus
+$$ \det(P_\sigma\circ\beta|_\sigma) = b(v,v)b(w,w) - b(v,w)^2 , $$
+so that
+$$ \bar K_p(\sigma) = K_p(\sigma) - \det(P_\sigma\circ\beta|_\sigma) . $$
+
+We also have
+$$ \beta(X) = -\sff^\perp(X)\eta = -\bar\nabla_X\eta + \nabla^\perp_X\eta . $$
+Consider the second term: since the connection is metric so
 $$ 0 = X\iprod{\eta,\eta} = 2\iprod{\nabla^\perp_X\eta,\eta} , $$
 and $\eta$ spans the normal bundle so $\nabla^\perp_X\eta=0$.
-And from before we know
-$$ K_p(\sigma) = \det\beta|_\sigma . $$
+Thus
+$$ \beta(X) = -\bar\nabla_X\eta . $$
+Note that since $-\eta$ is also a unit tangent to $TM$, we get the same result with $\beta(X)=\bar\nabla_X\eta$.
+Indeed, because $\sigma$ is two-dimensional $\det(\beta|_\sigma)=\det(-\beta|_\sigma)$.
+Thus $\beta$ is the the covariant derivative of $\eta$: $\beta=\nabla\eta$.
 
-Note that $\eta$ is called the {\emphcolor Gauss map}, and $d\eta=\beta$.
+Further suppose that $\bar M$ has zero sectional curvature: $\bar K=0$.
+Thus we have that
+$$ K_p(\sigma) = \det(P_\sigma\circ\beta|_\sigma) , $$
+sometime people write $\beta|_\sigma$ as a shorthand for $P_\sigma\circ\beta|_\sigma$, so this identity is written as
+$K_p(\sigma)=\det\beta|_\sigma$.
 
-Take for example $M=S^n_r\subseteq\bR^{n+1}$ the sphere of radius $r$.
-Then $\eta\in\Gamma(\nu_M)$ is given by mapping $p\in S^n_r$ to $\frac1rp\in T_p\bR^{n+1}$, and this is orthogonal to the tangent space of the
-sphere.
-Then $\eta$ has differential $1/r$, which means that the $\beta(X)=1/rX$ and thus its determinant is $1/r^2$.
-So the sectional curvature of the sphere is $1/r^2$.
+\bexam
+
+    Take for example $M=S^n_r\subseteq\bR^{n+1}$ the sphere of radius $r$.
+    Then $\eta\in\Gamma(\nu_M)$ is given by mapping $p\in S^n_r$ to $\frac1rp\in T_p\bR^{n+1}$, and this is orthogonal to the
+    tangent space of the sphere.
+    Thus $\eta(x)=\frac1rx^i\partial_i$, so that its covariant derivative is
+    $$ \beta(\partial_j) = \nabla_{\partial_j}\eta(x) = \frac1r(\partial_jx^i)\partial_i = \frac1r\partial_j $$
+    so that $\beta(x)=\frac1rx$.
+    So $\beta=\frac1r\id$, and restricting this to any two-dimensional subspace has determinant $1/r^2$.
+    Thus the $n$-sphere of radius $r$ has constant sectional curvature of $1/r^2$.
+
+\eexam
 
 \subsection{Mean curvature}
 
@@ -1230,16 +1251,47 @@ Then as in the previous case, for a family of smooth embeddings $f_t$ we have me
 
 \eproof
 
-\bexam
+\bdefn
 
-    A submanifold $M\subseteq\bar M$ is {\emphcolor totally geodesic} if for every $p\in M$ and $v\in T_pM$, the restricted exponential
-    of $\bar M$ lies in $M$: $\exp_p(tv)\in M$ for all $t$.
+    A submanifold $M\subseteq\bar M$ is {\emphcolor totally geodesic} if the geodesics of $M$ are geodesics of $\bar M$.
 
-    If $M$ is totally geodesic, then its second fundamental form is zero $\sff=0$.
-    In particular it has zero mean curvature.
+\edefn
 
-    If $\phi$ is an order-two isometry of $\bar M$, and $M=\fix(\phi)$ is the set of fixed points (which we know is a submanifold, from homework).
-    Then $M$ is totally geodesic.
+\bprop
 
-\eexam
+    A submanifold $M\subseteq\bar M$ is totally geodesic iff its second fundamental form is zero.
+
+\eprop
+
+\bproof
+
+    Note that since $\sff$ is symmetric, it is zero iff it is also antisymmetric which is iff $\sff(x,x)=0$ for all
+    $x\in T_pM$.
+    Let $\gamma$ be the geodesic in $M$ with $\dot\gamma(0)=x$, and let $X$ be an extension of $x$ to a local vector field
+    of $M$.
+    Then by tensorality
+    $$ \sff(x,x) = P\circ\bar\nabla_XX = P\circ\bar\nabla_{\dot\gamma(0)}\dot\gamma(0) = \bar D_t\dot\gamma(0) . $$
+    If $M$ is totally geodesic then $\dot\gamma$ is a geodesic of $\bar M$, so this is zero.
+    Thus $\sff=0$ as desired.
+
+    Conversely if $\sff=0$ then as above
+    $$ \bar D_t\dot\gamma(t) = \sff(\dot\gamma(t),\dot\gamma(t)) = 0 . $$
+    Thus $\dot\gamma$ is a geodesic of $\bar M$ as desired.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A submanifold $M\subseteq\bar M$ is {\emphcolor minimal} if its mean curvature is zero.
+
+\edefn
+
+Because the mean curvature is the trace of the second fundamental form, if $\sff=0$ then $H=0$.
+
+\bcoro
+
+    A totally geodesic submanifold is minimal.
+
+\ecoro
 
