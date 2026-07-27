@@ -765,6 +765,92 @@ $$ s_K(t) = \cases{t&if $K=0$\cr\noalign{\kern2pt} R\sin t/R&if $K=1/R^2>0$\cr\n
 
 \eproof
 
+We now describe another way in which Jacobi fields may arise.
+
+\bdefn
+
+    Let $M$ be a Riemannian manifold.
+    A {\emphcolor Killing field} on $M$ is a vector field $X\in\X(M)$ such that its flow $\theta_t$ is an isometry for all
+    $t\in\bR$.
+
+\edefn
+
+\blemm
+
+    A vector field $X\in\X(M)$ is a Killing field iff it satisfies the following {\emphcolor Killing equation}:
+    $$ \iprod{\nabla_YX,Z} + \iprod{Y,\nabla_ZX} = 0 $$
+    for all $Y,Z\in\X(M)$.
+
+\elemm
+
+\bproof
+
+    Saying that $\theta_t$ is an isometry is the same as saying $(\theta_t)^*g=g$.
+    Thus $X$ is a Killing field iff the metric $g$ is invariant under its flow, equivalently that $\L_Xg=0$.
+    Now we may compute this Lie derivative using the symmetries of the Levi-Civita connection:
+    $$ \multline{
+        \L_Xg(Y,Z) = X(g(Y,Z)) - g([X,Y],Z) - g(Y,[X,Z])\cr
+        = g(\nabla_XY,Z) + g(Y,\nabla_XZ) - g([X,Y],Z) - g(Y,[X,Z]) = g(\nabla_YX,Z) + g(Y,\nabla_ZX) ,
+    } $$
+    giving us the desired result.
+    \qed
+
+\eproof
+
+Note that non-trivial Killing fields need not exist, not even locally.
+Though we will show that when they exist, they are unique (up to specification of their initial conditions).
+
+\bprop
+
+    If $X$ is a Killing field, then for any geodesic $\gamma$, $J(t)=X(\gamma(t))$ is a Jacobi field along $\gamma$.
+
+\eprop
+
+\bproof
+
+    Let $\theta$ be $X$'s flow, and consider the map $\Gamma(s,t)=\theta_s(\gamma(t))$.
+    Because $\Gamma(0,t)=\theta_0(\gamma(t))=\gamma(t)$, this is a smooth variation of $\gamma$.
+    And because the $\theta_s$ are all isometries, $\theta_s\circ\gamma$ is a geodesic for all $s$ so that
+    $\Gamma$ is a variation through geodesics.
+    Thus its variation field is Jacobi; we claim it is $J$.
+
+    Indeed,
+    $$ \partial_s\Gamma(0,t) = \partial_s|_{s=0}\theta_s(\gamma(t)) = \dot\theta^{(\gamma(t))}(0) =
+    X(\gamma(t)) = J(t) $$
+    because $\theta$ is $X$'s flow, so $\dot\theta^{(p)}(0)=X(p)$.
+    \qed
+
+\eproof
+
+\bcoro[title={Uniqueness of Killing fields}]
+
+    A Killing field on a connected manifold is uniquely determined by the pair $(X,\nabla X)$ evaluated at any point $p\in M$.
+    That is, if $Y$ is another Killing field with $X(p)=Y(p)$ and $\nabla X|_p=\nabla Y|_p$, then $X=Y$.
+
+\ecoro
+
+\bproof
+
+    Let $B$ be a normal neighborhood of $p$.
+    For $q\in B$, let $\gamma$ be a geodesic connecting $p$ to $q$.
+    Then $X(\gamma),Y(\gamma)$ are Jacobi fields along $\gamma$ with the same initial conditions:
+    $$ X(\gamma(0)) = X(p) = Y(p) = Y(\gamma(0)),\qquad
+    D_tX(\gamma)(0) = \nabla_{\dot\gamma(0)}X = \nabla_{\dot\gamma(0)}Y = D_tY(\gamma)(0) . $$
+    By the uniqueness of Jacobi fields, $X(\gamma)=Y(\gamma)$.
+    Thus $X(q)=Y(q)$ as $\gamma(1)=q$.
+
+    Now for any other $q\in M$, let $\alpha$ be a continuous path from $p$ to $q$.
+    As the image of the compact unit interval, $\alpha$'s image is compact.
+    Thus we can cover it with finitely many uniformly open neighborhoods $W_1,\dots,W_n$ centered at
+    $\alpha(t_1),\dots,\alpha(t_n)$ for $t_1<\cdots<t_n$.
+    Our previous paragraph showed that $X=Y$ in $W_1$.
+    There is a $p_1\in W_1\cap W_2$, so that $X,Y$ have the same initial conditions at $p_1$ in $W_2$.
+    As in the previous paragraph, this means $X=Y$ in $W_2$.
+    We then continue inductivelty to show that $X=Y$ over all of $\alpha$, thus $X=Y$ at $q$ as desired.
+    \qed
+
+\eproof
+
 \subsection{The second fundamental form}
 
 \bdefn
