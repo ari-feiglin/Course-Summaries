@@ -745,10 +745,10 @@ Now consider the following classes of monomorphisms.
 
 \eproof
 
-\bcoro
+\bcoro[name={prodanodyne}]
 
     If $i\colon K\inj L$ is an anodyne extension, and $Y\inj X$ is an arbitrary inclusion, then
-    $$ (K\times X)\cup(K\times Y) \to (L\times X) $$
+    $$ (K\times X)\cup(L\times Y) \to (L\times X) $$
     is an anodyne extension.
 
 \ecoro
@@ -773,6 +773,14 @@ Now consider the following classes of monomorphisms.
     \qed
 
 \eproof
+
+\bnote
+
+    In the above corollary, the simplicial set $(K\times X)\cup(L\times Y)$ is the union when viewing both terms as subsets
+    of $L\times X$.
+    Categorically, this is the simplicial set $(K\times X)\cup_{K\times Y}(L\times Y)$.
+
+\enote
 
 \subsection{Function complexes}
 
@@ -938,4 +946,470 @@ The function complex $\ihom$ is also called the {\emphcolor interior hom}.
     is a fibration.
 
 \eprop
+
+\bproof
+
+    Diagrams of the form
+
+    \centerline{\drawdiagram{
+        $\Lambda^n_k$&$\ihom(L,X)$\cr
+        $\Delta^n$&$\ihom(K,X)\times_{\ihom(K,Y)}\ihom(L,Y)$&$\ihom(K,X)$\cr
+        &$\ihom(L,Y)$&$\ihom(K,Y)$
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,2}, to={2,2}, text={$(i^*,p_*)$}, x distance=.5cm}
+        \diagarrow{from={1,1}, to={2,1}, left cap={(}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={2,2}, to={3,2}}
+        \diagarrow{from={2,3}, to={3,3}}
+        \diagarrow{from={3,2}, to={3,3}}
+    }}
+
+    correspond to, according to the exponential law, diagrams of the form
+
+    \centerline{\drawdiagram{
+        $\Lambda^n_k\times K$&$\Lambda^n_k\times L$\cr
+        $\Delta^n\times K$&$(\Lambda^n_k\times L)\cup_{\Lambda^n_k\times K}(\Delta^n\times K)$&$X$\cr
+        &$\Delta^n\times L$&$Y$
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,2}, to={2,2}}
+        \diagarrow{from={1,1}, to={2,1}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={2,2}, to={3,2}, left cap={(}, text=$j$, x distance=-.25cm}
+        \diagarrow{from={2,3}, to={3,3}, text=$p$, x distance=.25cm}
+        \diagarrow{from={3,2}, to={3,3}}
+    }}
+
+    By \refmath[corollary]{prodanodyne} $j$ is anodyne.
+    Since $p$ is fibrant, it has the right lifting property relative to $j$ and thus the desired lift exists in the lower
+    diagram; this corresponds to a lift in the original diagram.
+    \qed
+
+\eproof
+
+\bcoro
+
+    \benum
+        \item If $p\colon X\to Y$ is a fibration, so is $p_*\colon\ihom(K,X)\to\ihom(K,Y)$.
+        \item If $i\colon K\inj L$ is an inclusion and $X$ is fibrant, then $i^*\colon\ihom(L,X)\to\ihom(K,X)$ is a fibration.
+    \eenum
+
+\ecoro
+
+\bproof
+
+    \benum
+        \item Consider the inclusion $i\colon*\inj K$ and the isomorphism
+        $$ \ihom(K,Y) \cong *\times_*\ihom(K,Y) \cong \ihom(*,X) \times_{\ihom(*,Y)} \ihom(K,Y) . $$
+        Under this isomorphism, $p_*$ corresponds to $(i^*,p_*)$ which is fibrant by the above proposition.
+
+        \item Consider the map $p\colon X\to*$ which is fibrant by definition.
+        Then as in the previous point,
+        $$ \ihom(K,X) \cong \ihom(K,X)\times_{\ihom(K,*)}\ihom(L,*) $$
+        under which $i$ corresponds to $(i^*,p_*)$ which is fibrant by the above proposition.
+        \qed
+    \eenum
+
+\eproof
+
+\subsection{Simplicial homotopy}
+
+\bdefn
+
+    Let $f,g\colon K\to X$ be simplicial maps.
+    A {\emphcolor simplicial homotopy} from $f$ to $g$ is a map $h\colon K\times\Delta^1\to X$ such that the following diagram
+    commutes
+
+    \centerline{\drawdiagram{
+        $K\times\Delta^0=K$\cr
+        $K\times\Delta^1$&$X$\cr
+        $K\times\Delta^0=K$
+    }{
+        \diagarrow{from={1,1}, to={2,1}, text={$1\times\delta^1$}, x distance=-.5cm}
+        \diagarrow{from={3,1}, to={2,1}, text={$1\times\delta^0$}, x distance=-.5cm}
+        \diagarrow{from={1,1}, to={2,2}, text=$f$, x distance=.5cm}
+        \diagarrow{from={3,1}, to={2,2}, text=$g$, x distance=.25cm}
+        \diagarrow{from={2,1}, to={2,2}, text=$h$, y distance=.25cm}
+    }}
+
+    If there exists a simplicial homotopy from $f$ to $g$ we write $f\hto g$.
+
+\edefn
+
+Recall that a $k$-simplex in $\Delta^n$ is an increasing $f\colon[k]\to[n]$ which we can represent as $[f(0),\dots,f(k)]$.
+In particular its vertices can naturally be written as $0,\dots,n$ according to the image of $f\colon[0]\to[n]$.
+
+Note that $\delta^1\colon\Delta^0\to\Delta^1$ corresponds to the vertex of $\Delta^1$ given by $\delta^1\colon[0]\to[1]$,
+which by definition skips $1$; its image is $0$.
+Similarly $\delta^0$ corresponds to the vertex $1$.
+
+So a homotopy can equivlantely be given as a simplicial map $h\colon K\times\Delta^1\to X$ such that
+$$ h(x,0) = f(x),\qquad h(x,1) = g(x) $$
+for all $x\in K$ (where $0,1$ denote the degeneracies of the vertices $0,1$).
+
+\bdefn
+
+    Suppose $\iota\colon L\inj K$ is an inclusion of simplicial sets, and let $f,g\colon K\to X$ be simplicial maps.
+    Further suppose that $f|_L=g|_L$.
+    A homotopy from $f$ to $g$ {\emphcolor relative to $L$} is a homotopy $h\colon f\hto g$ such that the following diagram
+    commutes.
+
+    \bigskip
+    \centerline{\drawdiagram{
+        $K\times\Delta^1$&$X$\cr
+        $L\times\Delta^1$&$L$\cr
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=$h$, y distance=.25cm}
+        \diagarrow{from={2,1}, to={1,1}, text=$\iota\times\id$, x distance=-.5cm, left cap={(}}
+        \diagarrow{from={2,1}, to={2,2}, text=$\proj_L$, y distance=-.25cm}
+        \diagarrow{from={2,2}, to={1,2}, text={$f|_L=g|_L$}, x distance=.5cm}
+    }}
+
+\edefn
+
+This means that $h(x,t)=f(x)=g(x)$ for all $x\in L,t\in\Delta^1$.
+A homotopy of the form
+$$ L\times\Delta^1 \xtos{\proj_L} L \xtos\alpha X $$
+is called a constant homotopy: it is a homotopy from $\alpha$ to itself.
+
+\bnote
+
+    Homotopy is not in general an equivalence.
+    Consider the maps $\iota_0,\iota_1\colon\Delta^0\to\Delta^n$ classifying the vertices $0,1$ respectively.
+    A homotopy between them is a map $h\colon\Delta^1\to\Delta^n$ such that $h(0)=0$ and $h(1)=1$.
+    This corresponds to the $1$-simplex $[0,1]\in\Delta^n$.
+
+    But there is not a homotopy from $\iota_1$ to $\iota_0$ as this would correspond to a simplex $[1,0]$ which does not
+    exist.
+
+\enote
+
+For an $n$-simplex $\sigma\in X$, denote its {\emphcolor boundary} by
+$$ \partial\sigma = (d_0\sigma,\dots,d_n\sigma) . $$
+
+\blemm
+
+    Suppose that $X$ is a fibrant simplicial set.
+    Then the simplicial homotopy of vertices $x\colon\Delta^0\to X$ is an equivalence.
+
+\elemm
+
+\bproof
+
+    There is a homotopy $x\hto y$ iff there is a $1$-simplex $v\in X_1$ such that $d_1v=x$ and $d_0v=y$.
+    That is, iff there is a $1$-simplex $v$ with boundary $\partial v=(y,x$.
+    Note that $\partial(s_0x)=(x,x)$ gives reflexivity.
+
+    Now suppose $\partial v_2=(y,x)$ and $\partial v_0=(z,y)$ so that $d_0v_2=d_1v_0=y$.
+    Thus $v_2,v_0$ determine a map $(v_0,\ ,v_2)\colon\Lambda^2_1\to X$.
+    Because $X$ is fibrant, we can lift it,
+
+    \centerline{\drawdiagram{
+        $\Lambda^2_1$&$X$\cr
+        $\Delta^2$
+    }{
+        \diagarrow{from={1,1}, to={2,1}, left cap={(}}
+        \diagarrow{from={2,1}, to={1,2}, text=$\theta$, y distance=-.25cm}
+        \diagarrow{from={1,1}, to={1,2}, text={$(v_0,\ ,v_2)$}, y distance=.25cm}
+    }}
+
+    Then
+    $$ \partial(d_1\theta) = (d_0d_1\theta,d_1d_1\theta) = (d_0d_0\theta,d_1d_2\theta) , $$
+    and
+    $$ d_0\theta = \theta\circ\delta^0 = (v_0,\ ,v_2)\circ\delta^0 = v_0 $$
+    and similar for $d_2\theta$.
+    Thus
+    $$ \partial(d_1\theta) = (d_0v_0,d_1v_2) = (z,x) $$
+    so that $d_1\theta$ is a homotopy $x\hto z$; so homotopy is transitive.
+
+    For symmetry, suppose $\partial v_2=(y,x)$ and let $v_1=s_0x$.
+    Then $d_1v_1=d_1v_2=x$, so these define a map $(\ ,v_1,v_2)\colon\Lambda^2_0\to X$.
+    We extend this to $\theta'\colon\Delta^1\to X$ so that
+    $$ \partial(d_0\theta') = (d_0d_0\theta',d_1d_0\theta') = (d_0d_1\theta',d_0d_2\theta') = (x,y) . $$
+    Thus the relation is symmetric.
+    \qed
+
+\eproof
+
+\blemm
+
+    If $f\colon X\to Y$ is a fibration and $y\in Y$ is a vertex, then $f^{-1}y\subseteq X$ is a fibrant simplicial set.
+
+\elemm
+
+\bproof
+
+    Consider the diagram
+
+    \centerline{\drawdiagram{
+        $\Lambda^n_k$&$f^{-1}y$&$X$\cr
+        $\Delta^n$&$*$&$Y$\cr
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,1}, to={2,1}, left cap={(}}
+        \diagarrow{from={1,2}, to={2,2}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={1,2}, to={1,3}}
+        \diagarrow{from={1,3}, to={2,3}, text=$f$, x distance=.25cm}
+        \diagarrow{from={2,2}, to={2,3}}
+    }}
+
+    where $*\to Y$ chooses the vertex $y$.
+    Because $f$ is fibrant, there is a lifting $\theta\colon\Delta^n\to X$.
+    But the bottom arrow is the constant map to $y$, and so $f\circ\theta=y$ which means $\theta$ maps into $f^{-1}y$.
+    Thus $\theta$ is really a lift $\Delta^n\to f^{-1}y$, as desired.
+    \qed
+
+\eproof
+
+\bcoro
+
+    If $X$ is fibrant and $L\subseteq K$ is an inclusion, then
+    \benum
+        \item homotopy of maps $K\to X$ is an equivalence, and
+        \item homotopy of maps $K\to X\hrel L$ is an equivalence.
+    \eenum
+
+\ecoro
+
+\bproof
+
+    Clearly $(2)$ implies $(1)$ with $L=\emptyset$.
+    Now we know that $i^*\colon\ihom(L,X)\to\ihom(K,X)$ is a fibration, and the fiber of a vertex $\alpha\in\ihom(K,X)_0$
+    consists of all $f\in\ihom(L,X)$ such that $f|_L=\alpha$ (recall $\ihom(K,X)_0=\hom_\sSet(k,X)$).
+    These fibers are all fibrant by the above lemma.
+
+    Now we claim that $f\hto g\hrel L$ iff $f,g$ are homotopic as vertices of the fiber of $i^*$.
+    Let $\alpha=f|_L=g|_L$.
+    A homotopy $h\colon h\hto g\hrel L$ corresponds to a map $h\colon\Delta^1\times K\to X$, which by the \refmath{explaw}
+    corresponds to $\tilde h\colon\Delta^1\to\ihom(K,X)$.
+
+    Note that a homotopy diagram of the form
+
+    \centerline{\drawdiagram{
+        $K\times\Delta^0=K$\cr
+        $K\times\Delta^1$&$X$\cr
+        $K\times\Delta^0=K$
+    }{
+        \diagarrow{from={1,1}, to={2,1}, text={$1\times\delta^1$}, x distance=-.5cm}
+        \diagarrow{from={3,1}, to={2,1}, text={$1\times\delta^0$}, x distance=-.5cm}
+        \diagarrow{from={1,1}, to={2,2}, text=$f$, x distance=.5cm}
+        \diagarrow{from={3,1}, to={2,2}, text=$g$, x distance=.25cm}
+        \diagarrow{from={2,1}, to={2,2}, text=$h$, y distance=.25cm}
+    }}
+
+    Corresponds to a homotopy of vertices
+
+    \centerline{\drawdiagram{
+        $\Delta^0$\cr
+        $\Delta^1$&$\ihom(K,X)$\cr
+        $\Delta^0$
+    }{
+        \diagarrow{from={1,1}, to={2,1}, text={$\delta^1$}, x distance=-.5cm}
+        \diagarrow{from={3,1}, to={2,1}, text={$\delta^0$}, x distance=-.5cm}
+        \diagarrow{from={1,1}, to={2,2}, text=$\iota_f$, x distance=.5cm}
+        \diagarrow{from={3,1}, to={2,2}, text=$\iota_g$, x distance=.25cm}
+        \diagarrow{from={2,1}, to={2,2}, text=$\tilde h$, y distance=.25cm}
+    }}
+
+    and vice versa.
+
+    Homotopy relative to $L$ is the same as homotopy of vertices in the fibers of $i^*$, which are fibrant.
+    By the above lemma this is an equivalence.
+    \qed
+
+\eproof
+
+\subsection{Simplicial homotopy groups}
+
+\bdefn
+
+    Let $X$ be a fibrant simplicial set and $v\in X_0$ a vertex.
+    For $n\geq1$, define $\pi_n(X,v)$ to be the set of homotopy classes of maps
+    $\alpha\colon\Delta^n\to X\hrel{\partial\Delta^n}$ such that $\alpha$ fits into a diagram
+
+    \centerline{\drawdiagram{
+        $\Delta^n$&$X$\cr
+        $\partial\Delta^n$&$*$
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=$\alpha$, y distance=.25cm}
+        \diagarrow{from={2,1}, to={1,1}, left cap={(}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={1,2}, text=$v$, x distance=.25cm}
+    }}
+
+    Equivalently, $\alpha$ restricts to the constant map $v$ on $\partial\Delta^n$.
+
+    For $n=0$ define $\pi_0(X)$ to be the set of homotopy classes of vertices of $X$.
+    This is called the {\emphcolor path components} of $X$.
+    $X$ is said to be {\emphcolor connected} if $\pi_0(X)$ is trivial (a singleton).
+
+    We write $[\alpha]$ for the homotopy class of $\alpha$.
+
+\edefn
+
+Note that $\alpha$ restricting to $v$ on $\partial\Delta^n$ just means that $d_i\alpha=v$ for all $i$.
+Indeed, $d_i\alpha$ is just $\alpha\circ\delta^i$ and since $\delta^i$ is in $\partial\Delta^n$, this is mapped to $v$.
+
+Let $\alpha,\beta\colon\Delta^n\to X$ represent elements of $\pi_n(X,v)$.
+Then define the simplices
+$$ v_i=v\hbox{ for $0\leq i\leq n-2$},\qquad v_{n-1}=\alpha,\qquad v_{n+1}=\beta . $$
+Then $d_iv_j=d_{j-1}v_i$ for $i<j$ and $i,j\neq n$, as all the faces are just $v$.
+Thus the $v_i$ define a simplicial map $(v_0,\dots,v_{n-1},\ ,v_n)\colon\Lambda^{n+1}_n\to X$ and as $X$ is fibrant
+there is an extension
+
+\centerline{\drawdiagram{
+    $\Lambda^{n+1}_n$&$X$\cr
+    $\Delta^{n+1}$
+}{
+    \diagarrow{from={1,1}, to={1,2}, text={$(v_0,\dots,v_{n-1},\ ,v_{n+1})$}, y distance=.25cm}
+    \diagarrow{from={1,1}, to={2,1}, left cap={(}}
+    \diagarrow{from={2,1}, to={1,2}, text=$\omega$, y distance=-.25cm}
+}}
+
+Notice then that
+$$ \partial(d_n\omega) = (d_0d_n\omega,\dots,d_{n-1}d_n\omega,d_nd_n\omega) =
+(d_{n-1}d_0\omega,\dots,d_{n-1}d_{n-1}\omega,d_nd_{n+1}\omega) = (v,\dots,v) . $$
+Thus $d_n\omega$ represents an element of $\pi_n(X,v)$.
+
+\blemm
+
+    The homotopy class of $d_n\omega\hrel{\partial\Delta^n}$ is independent on choice of representatives of $[\alpha]$ and
+    $[\beta]$ and choice of extension $\omega$.
+
+\elemm
+
+\bproof
+
+    Suppose that $h_{n-1}\colon\alpha\hto\alpha'\hrel{\partial\Delta^n}$ and
+    $h_{n+1}\colon\beta\hto\beta'\hrel{\partial\Delta^n}$ are homotopies and
+    $$ \partial\omega = (v,\dots,v,\alpha,d_n\omega,\beta),\qquad \partial\omega' = (v,\dots,v,\alpha',d_n\omega',\beta') $$
+    are extensions.
+
+    There is a map
+    $$ (\Delta^{n+1}\times\partial\Delta^n)\cup(\Lambda^{n+1}_n\times\Delta^1)
+    \xtos{(\omega,\omega',(v,\dots,v,h_{n-1},\ ,h_{n+1}))} X $$
+    given by this data.
+    We can then extend this to $\theta\colon\Delta^{n+1}\times\Delta^1$.
+    The composite
+    $$ \Delta^n\times\Delta^1 \xtos{\delta^n\times1}\Delta^{n+1}\times\Delta^1 \xtos\theta X $$
+    is a homotopy $d_n\omega\hto d_n\omega'\hrel{\partial\Delta^n}$.
+    \qed
+
+    \TODO{What?}
+
+\eproof
+
+From this lemma, we can define multiplication on $\pi_n(X,v)$ by $[\alpha]\cdot[\beta]=[d_n\omega]$, where
+$\partial\omega=(v,\dots,v,\alpha,d_n\omega,\beta)$.
+Let $e\in\pi_n(X,v)$ denote the homotopy class of $v$, i.e.\ the constant map $\Delta^n\to*\xtos vX$.
+
+\bthrm
+
+    For a simplicial set $X$ and a vertex $v\in X_0$, $\pi_n(X,v)$ forms a group for all $n\geq1$.
+
+\ethrm
+
+\bproof
+
+    First we show that $\alpha\cdot e=\alpha$.
+    To do this, it is sufficient to find an $\omega\colon\Delta^{n+1}\to X$ such that $d_{n-1}\omega=d_n\omega=\alpha$
+    and $d_i\omega=v$ for all other $i$.
+    Then $\partial\omega=(v,\dots,v,\alpha,\alpha,v)$ showing $\alpha\cdot e=\alpha$.
+    We can take $\omega=s_{n-1}\alpha$ and this is sufficient.
+
+    Now we want to show that $\alpha$ has an inverse, so there is a $\beta$ where $\alpha\cdot\beta=e$.
+    We want an $\omega$ with $d_n\omega=v$, $d_{n-1}\omega=\alpha$, and $d_i\omega=v$ for all other $i$.
+    That is, we want to complete $(v,\dots,v,\alpha,v,\ )$.
+    This is possible as $X$ is fibrant.
+
+    Now we show associativity.
+    Let $\alpha,\beta,\gamma$ represent elements of $\pi_n(X,v)$.
+    Then we have $(n+1)$-simplices $\omega_{n-1},\omega_{n+1},\omega_{n+2}$ representing $\alpha\beta$, $(\alpha\beta)\gamma$,
+    and $\beta\gamma$ respectively.
+    That is,
+    $$ \eqalign{
+        \partial\omega_{n-1} &= (v,\dots,v,\alpha,d_n\omega_{n-1},\beta),\cr
+        \partial\omega_{n+1} &= (v,\dots,v,d_n\omega_{n-1},d_n\omega_{n+1},\gamma),\cr
+        \partial\omega_{n+2} &= (v,\dots,v,\beta,d_n\omega_{n+2},\gamma).
+    } $$
+    These form a map
+    $$ \Lambda^{n+2}_n \xtos{(v,\dots,v,\omega_{n-1},\ ,\omega_{n+1},\omega_{n+2})} X $$
+    which extends to a map $\theta\colon\Delta^{n+2}\to X$.
+    But then
+    $$ \partial(d_n\theta) = (v,\dots,v,\alpha,d_n\omega_{n+1},d_n\omega_{n+2}) $$
+    so that $\alpha\cdot d_n\omega_{n+2}=d_n\omega_{n+1}$.
+
+    Unrolling definitions, we have
+    $$ (\alpha\beta)\gamma = d_n\omega_{n-1}\cdot\gamma = d_n\omega_{n+1} = \alpha\cdot d_n\omega_{n+2}
+    = \alpha(\beta\gamma) $$
+    as desired.
+    \qed
+
+\eproof
+
+We will show that $\pi_n(X,v)$ is an Abelian group for $n\geq2$.
+To do this, we will construct the {\it loop space\/} $\Omega X$ where $\pi_n(X,v)\cong\pi_{n-1}(\Omega X,v)$ and show that
+$\pi_k(\Omega X,v)$ is Abelian for all $k\geq1$.
+
+\bnote
+
+    We digress a bit here for the sake of some background.
+    The constructions thus far all have a topological analogue, which you should be familiar with.
+    The loop space does as well, which we describe here.
+
+    First of all, let us construct the {\emphcolor function space} of topological spaces.
+    Let $X$ and $Y$ be topological spaces, then their function space is the space $C(X,Y)$ of continuous functions $X\to Y$.
+    We define a subbase as follows: for $K\subseteq X$ compact and $U\subseteq Y$ open, define
+    $$ V(K,U) = \set{f\in C(X,Y)}[f(K)\subseteq U] . $$
+    These define our subbase as $K,U$ range.
+    This is called the {\emphcolor compact-open topology}.
+
+    An important result is that, if $X$ is locally compact Hausdorff, then $C(X,Y)$ forms an internal hom.
+    That is, there is an adjunction $\bul\times X\dashv C(X,\bul)$.
+    The adjunction is given by currying: map $\alpha\colon Y\times X\to Z$ to $\tilde\alpha\colon Y\to C(X,Z)$ given by $\tilde\alpha(y)(x)=\alpha(y,x)$.
+    And similarly map $\beta\colon Y\to C(X,Z)$ to $\hat\beta\colon Y\times X\to Z$ by $\hat\beta(y,x)=\beta(y)(x)$.
+    It is standard to see that these are well-defined (i.e.\ $\tilde\alpha,\hat\beta$ are continuous); this is dependent on $X$ being locally compact Hausdorff.
+
+    The adjunction defines natural isomorphisms
+    $$ C(Y\times X,Z) \cong C(Y,C(X,Z)) , $$
+    and it is again standard to show that these isomorphisms are continuous.
+    Thus $C(Y\times X,Z)$ is homeomorphic to $C(Y,C(X,Z))$.
+    We have then enriched $\Top$ over itself, and shown that the internal hom is an internal hom in this enrichment.
+
+    We are a bit more concerned with $\Top_*$, the category of pointed topological spaces (i.e.\ topological spaces with a distinguished point).
+    If $X,Y$ are pointed topological spaces, then $C_*(X,Y)$ is the subspace of $C(X,Y)$ consisting of basepoint-preserving maps $X\to Y$.
+    On the other hand, $X\times Y$ has no natural basepoint: any choice of $X\times*$ or $*\times Y$ would be valid.
+    Thus we define their {\emphcolor smash product} to be $X\wedge Y=(X\times Y)/(X\times*\cup*\times Y)$.
+    It is then standard to show that the above adjunction restricts to
+    $$ C_*(Y\wedge X,Z) \cong C_*(Y,C_*(X,Z)) . $$
+
+    We now define the {\emphcolor loop space} of $X$ to be $\Omega X=C_*(S^1,X)$, for any choice of basepoint of $S^1$.
+    Similarly we define the {\emphcolor suspension} of $X$ to be $\Sigma X=X\wedge S^1$.
+    The adjunction then shows that
+    $$ C_*(\Sigma X,Y) \cong C_*(X,\Omega Y) . $$
+
+    Now we claim that
+    $$ \pi_0C(X,Y) \cong [X,Y] $$
+    where the right-hand side denotes the collection of maps $X\to Y$ quotiented by homotopy.
+    Indeed, a path $I\to C(X,Y)$ corresponds under the adjunction to a homotopy $I\times X\to Y$ and vice versa.
+    The endpoints of the path are the edges of the homotopy, giving the desired result.
+    Similarly if we let $[X,Y]_*$ denote the class of basepoint-preserving homotopies, i.e.\ maps $h\colon I\times X\to Y$ such that $h(t,*)=*$,
+    then
+    $$ \pi_0C_*(X,Y) \cong [X,Y]_* . $$
+
+    Now we know that by definition, $\pi_1X=[S^1,X]_*$.
+    Thus
+    $$ \pi_1X \cong \pi_0C_*(S^1,X) = \pi_0\Omega(X) , $$
+    as desired.
+    By induction this means that $\pi_0\Omega^n(X)\cong\pi_n(X)$, so $\pi_{n+1}X\cong\pi_n\Omega(X)$.
+
+    Further note that
+    $$ [\Sigma X,Y]_* \cong \pi_0C_*(\Sigma X,Y) \cong \pi_0C_*(X,\Omega Y) \cong [X,\Omega Y]_* . $$
+    This is called {\emphcolor Eckmann-Hilton duality}.
+
+\enote
 
