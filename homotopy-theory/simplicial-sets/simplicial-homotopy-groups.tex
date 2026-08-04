@@ -1,0 +1,603 @@
+\subsection{Simplicial homotopy groups}
+
+\bdefn
+
+    Let $X$ be a fibrant simplicial set and $v\in X_0$ a vertex.
+    For $n\geq1$, define $\pi_n(X,v)$ to be the set of homotopy classes of maps
+    $\alpha\colon\Delta^n\to X\hrel{\partial\Delta^n}$ such that $\alpha$ fits into a diagram
+
+    \centerline{\drawdiagram{
+        $\Delta^n$&$X$\cr
+        $\partial\Delta^n$&$*$
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=$\alpha$, y distance=.25cm}
+        \diagarrow{from={2,1}, to={1,1}, left cap={(}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={1,2}, text=$v$, x distance=.25cm}
+    }}
+
+    Equivalently, $\alpha$ restricts to the constant map $v$ on $\partial\Delta^n$.
+
+    For $n=0$ define $\pi_0(X)$ to be the set of homotopy classes of vertices of $X$.
+    This is called the {\emphcolor path components} of $X$.
+    $X$ is said to be {\emphcolor connected} if $\pi_0(X)$ is trivial (a singleton).
+
+    We write $[\alpha]$ for the homotopy class of $\alpha$.
+
+\edefn
+
+Note that $\alpha$ restricting to $v$ on $\partial\Delta^n$ just means that $d_i\alpha=v$ for all $i$.
+Indeed, $d_i\alpha$ is just $\alpha\circ\delta^i$ and since $\delta^i$ is in $\partial\Delta^n$, this is mapped to $v$.
+
+Let $\alpha,\beta\colon\Delta^n\to X$ represent elements of $\pi_n(X,v)$.
+Then define the simplices
+$$ v_i=v\hbox{ for $0\leq i\leq n-2$},\qquad v_{n-1}=\alpha,\qquad v_{n+1}=\beta . $$
+Then $d_iv_j=d_{j-1}v_i$ for $i<j$ and $i,j\neq n$, as all the faces are just $v$.
+Thus the $v_i$ define a simplicial map $(v_0,\dots,v_{n-1},\ ,v_n)\colon\Lambda^{n+1}_n\to X$ and as $X$ is fibrant
+there is an extension
+
+\centerline{\drawdiagram{
+    $\Lambda^{n+1}_n$&$X$\cr
+    $\Delta^{n+1}$
+}{
+    \diagarrow{from={1,1}, to={1,2}, text={$(v_0,\dots,v_{n-1},\ ,v_{n+1})$}, y distance=.25cm}
+    \diagarrow{from={1,1}, to={2,1}, left cap={(}}
+    \diagarrow{from={2,1}, to={1,2}, text=$\omega$, y distance=-.25cm}
+}}
+
+Notice then that
+$$ \partial(d_n\omega) = (d_0d_n\omega,\dots,d_{n-1}d_n\omega,d_nd_n\omega) =
+(d_{n-1}d_0\omega,\dots,d_{n-1}d_{n-1}\omega,d_nd_{n+1}\omega) = (v,\dots,v) . $$
+Thus $d_n\omega$ represents an element of $\pi_n(X,v)$.
+
+\blemm
+
+    The homotopy class of $d_n\omega\hrel{\partial\Delta^n}$ is independent on choice of representatives of $[\alpha]$ and
+    $[\beta]$ and choice of extension $\omega$.
+
+\elemm
+
+\bproof
+
+    Suppose that $h_{n-1}\colon\alpha\hto\alpha'\hrel{\partial\Delta^n}$ and
+    $h_{n+1}\colon\beta\hto\beta'\hrel{\partial\Delta^n}$ are homotopies and
+    $$ \partial\omega = (v,\dots,v,\alpha,d_n\omega,\beta),\qquad \partial\omega' = (v,\dots,v,\alpha',d_n\omega',\beta') $$
+    are extensions.
+
+    There is a map
+    $$ (\Delta^{n+1}\times\partial\Delta^n)\cup(\Lambda^{n+1}_n\times\Delta^1)
+    \xtos{(\omega,\omega',(v,\dots,v,h_{n-1},\ ,h_{n+1}))} X $$
+    given by this data.
+    We can then extend this to $\theta\colon\Delta^{n+1}\times\Delta^1$.
+    The composite
+    $$ \Delta^n\times\Delta^1 \xtos{\delta^n\times1}\Delta^{n+1}\times\Delta^1 \xtos\theta X $$
+    is a homotopy $d_n\omega\hto d_n\omega'\hrel{\partial\Delta^n}$.
+    \qed
+
+    \TODO{What?}
+
+\eproof
+
+From this lemma, we can define multiplication on $\pi_n(X,v)$ by $[\alpha]\cdot[\beta]=[d_n\omega]$, where
+$\partial\omega=(v,\dots,v,\alpha,d_n\omega,\beta)$.
+Let $e\in\pi_n(X,v)$ denote the homotopy class of $v$, i.e.\ the constant map $\Delta^n\to*\xtos vX$.
+
+\bthrm
+
+    For a simplicial set $X$ and a vertex $v\in X_0$, $\pi_n(X,v)$ forms a group for all $n\geq1$.
+
+\ethrm
+
+\bproof
+
+    First we show that $\alpha\cdot e=\alpha$.
+    To do this, it is sufficient to find an $\omega\colon\Delta^{n+1}\to X$ such that $d_{n-1}\omega=d_n\omega=\alpha$
+    and $d_i\omega=v$ for all other $i$.
+    Then $\partial\omega=(v,\dots,v,\alpha,\alpha,v)$ showing $\alpha\cdot e=\alpha$.
+    We can take $\omega=s_{n-1}\alpha$ and this is sufficient.
+
+    Now we want to show that $\alpha$ has an inverse, so there is a $\beta$ where $\alpha\cdot\beta=e$.
+    We want an $\omega$ with $d_n\omega=v$, $d_{n-1}\omega=\alpha$, and $d_i\omega=v$ for all other $i$.
+    That is, we want to complete $(v,\dots,v,\alpha,v,\ )$.
+    This is possible as $X$ is fibrant.
+
+    Now we show associativity.
+    Let $\alpha,\beta,\gamma$ represent elements of $\pi_n(X,v)$.
+    Then we have $(n+1)$-simplices $\omega_{n-1},\omega_{n+1},\omega_{n+2}$ representing $\alpha\beta$, $(\alpha\beta)\gamma$,
+    and $\beta\gamma$ respectively.
+    That is,
+    $$ \eqalign{
+        \partial\omega_{n-1} &= (v,\dots,v,\alpha,d_n\omega_{n-1},\beta),\cr
+        \partial\omega_{n+1} &= (v,\dots,v,d_n\omega_{n-1},d_n\omega_{n+1},\gamma),\cr
+        \partial\omega_{n+2} &= (v,\dots,v,\beta,d_n\omega_{n+2},\gamma).
+    } $$
+    These form a map
+    $$ \Lambda^{n+2}_n \xtos{(v,\dots,v,\omega_{n-1},\ ,\omega_{n+1},\omega_{n+2})} X $$
+    which extends to a map $\theta\colon\Delta^{n+2}\to X$.
+    But then
+    $$ \partial(d_n\theta) = (v,\dots,v,\alpha,d_n\omega_{n+1},d_n\omega_{n+2}) $$
+    so that $\alpha\cdot d_n\omega_{n+2}=d_n\omega_{n+1}$.
+
+    Unrolling definitions, we have
+    $$ (\alpha\beta)\gamma = d_n\omega_{n-1}\cdot\gamma = d_n\omega_{n+1} = \alpha\cdot d_n\omega_{n+2}
+    = \alpha(\beta\gamma) $$
+    as desired.
+    \qed
+
+\eproof
+
+We will show that $\pi_n(X,v)$ is an Abelian group for $n\geq2$.
+To do this, we will construct the {\it loop space\/} $\Omega X$ where $\pi_n(X,v)\cong\pi_{n-1}(\Omega X,v)$ and show that
+$\pi_k(\Omega X,v)$ is Abelian for all $k\geq1$.
+
+\bnote
+
+    We digress a bit here for the sake of some background.
+    The constructions thus far all have a topological analogue, which you should be familiar with.
+    The loop space does as well, which we describe here.
+
+    First of all, let us construct the {\emphcolor function space} of topological spaces.
+    Let $X$ and $Y$ be topological spaces, then their function space is the space $C(X,Y)$ of continuous functions $X\to Y$.
+    We define a subbase as follows: for $K\subseteq X$ compact and $U\subseteq Y$ open, define
+    $$ V(K,U) = \set{f\in C(X,Y)}[f(K)\subseteq U] . $$
+    These define our subbase as $K,U$ range.
+    This is called the {\emphcolor compact-open topology}.
+
+    An important result is that, if $X$ is locally compact Hausdorff, then $C(X,Y)$ forms an internal hom.
+    That is, there is an adjunction $\bul\times X\dashv C(X,\bul)$.
+    The adjunction is given by currying: map $\alpha\colon Y\times X\to Z$ to $\tilde\alpha\colon Y\to C(X,Z)$ given by $\tilde\alpha(y)(x)=\alpha(y,x)$.
+    And similarly map $\beta\colon Y\to C(X,Z)$ to $\hat\beta\colon Y\times X\to Z$ by $\hat\beta(y,x)=\beta(y)(x)$.
+    It is standard to see that these are well-defined (i.e.\ $\tilde\alpha,\hat\beta$ are continuous); this is dependent on $X$ being locally compact Hausdorff.
+
+    The adjunction defines natural isomorphisms
+    $$ C(Y\times X,Z) \cong C(Y,C(X,Z)) , $$
+    and it is again standard to show that these isomorphisms are continuous.
+    Thus $C(Y\times X,Z)$ is homeomorphic to $C(Y,C(X,Z))$.
+    We have then enriched $\Top$ over itself, and shown that the internal hom is an internal hom in this enrichment.
+
+    We are a bit more concerned with $\Top_*$, the category of pointed topological spaces (i.e.\ topological spaces with a distinguished point).
+    If $X,Y$ are pointed topological spaces, then $C_*(X,Y)$ is the subspace of $C(X,Y)$ consisting of basepoint-preserving maps $X\to Y$.
+    On the other hand, $X\times Y$ has no natural basepoint: any choice of $X\times*$ or $*\times Y$ would be valid.
+    Thus we define their {\emphcolor smash product} to be $X\wedge Y=(X\times Y)/(X\times*\cup*\times Y)$.
+    It is then standard to show that the above adjunction restricts to
+    $$ C_*(Y\wedge X,Z) \cong C_*(Y,C_*(X,Z)) . $$
+
+    We now define the {\emphcolor loop space} of $X$ to be $\Omega X=C_*(S^1,X)$, for any choice of basepoint of $S^1$.
+    Similarly we define the {\emphcolor suspension} of $X$ to be $\Sigma X=X\wedge S^1$.
+    The adjunction then shows that
+    $$ C_*(\Sigma X,Y) \cong C_*(X,\Omega Y) . $$
+
+    Now we claim that
+    $$ \pi_0C(X,Y) \cong [X,Y] $$
+    where the right-hand side denotes the collection of maps $X\to Y$ quotiented by homotopy.
+    Indeed, a path $I\to C(X,Y)$ corresponds under the adjunction to a homotopy $I\times X\to Y$ and vice versa.
+    The endpoints of the path are the edges of the homotopy, giving the desired result.
+    Similarly if we let $[X,Y]_*$ denote the class of basepoint-preserving homotopies, i.e.\ maps $h\colon I\times X\to Y$ such that $h(t,*)=*$,
+    then
+    $$ \pi_0C_*(X,Y) \cong [X,Y]_* . $$
+
+    Now we know that by definition, $\pi_nX=[S^n,X]_*$.
+    Thus
+    $$ \pi_1X \cong \pi_0C_*(S^1,X) = \pi_0\Omega(X) , $$
+    as desired.
+    It can be shown that $S^{n+m}\cong S^n\wedge S^m$, so that by induction $\pi_n\Omega(X)=\pi_{n+1}X$.
+
+    Further note that
+    $$ [\Sigma X,Y]_* \cong \pi_0C_*(\Sigma X,Y) \cong \pi_0C_*(X,\Omega Y) \cong [X,\Omega Y]_* . $$
+    This is called {\emphcolor Eckmann-Hilton duality}.
+
+\enote
+
+First we note that the homotopy groups are functorial.
+That is, for each $n\geq1$, $\pi_n$ is functorial $\sSet_*\to\Grp$ where $\sSet$ is the category of simplicial sets with a distinguished vertex.
+Indeed suppose $f\colon(X,v)\to(Y,fv)$ is a simplicial map, then we define $f_*\colon\pi_n(X,v)\to\pi_n(Y,v)$ by mapping $[\alpha]\in\pi_n(X,v)$ to $f\circ\alpha$.
+
+This being well-defined is due to the following result.
+
+\blemm
+
+    Suppose we have maps $f,g\colon K\to X$ and $f',g'\colon X\to Y$, and a simplicial subset $L\subseteq K$ such that $f\hto g\hrel L$ and $f'\hto g'\hrel{f(L)}$.
+    Then $f'\circ f\hto g'\circ f\hrel L$.
+
+\elemm
+
+\bproof
+
+    Let $h\colon f\hto g\hrel L$ and $h'\colon f'\hto g'\hrel{f(L)}$ be homotopies.
+    Then we can compose the homotopies as in the following diagram, which is easy to verify as commuting.
+
+    \bigskip
+    \centerline{\drawdiagram{
+        $K\times\Delta^0$&$X\times\Delta^0$\cr
+        $K\times\Delta^1$&$X\times\Delta^1$&$Y$\cr
+        $K\times\Delta^0$&$X\times\Delta^0$\cr
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=$f$, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,1}, text=$1\times\delta^1$, x distance=-.5cm}
+        \diagarrow{from={1,2}, to={2,2}, text=$1\times\delta^1$, x distance=-.5cm}
+        \diagarrow{from={3,1}, to={3,2}, text=$g$, y distance=-.25cm}
+        \diagarrow{from={3,1}, to={2,1}, text=$1\times\delta^0$, x distance=-.5cm}
+        \diagarrow{from={3,2}, to={2,2}, text=$1\times\delta^0$, x distance=-.5cm}
+        \diagarrow{from={2,1}, to={2,2}, text=${(h,1)}$, y distance=.25cm}
+        \diagarrow{from={2,2}, to={2,3}, text=$h'$, y distance=.25cm}
+        \diagarrow{from={1,2}, to={2,3}, text=$f'$, y distance=.25cm}
+        \diagarrow{from={3,2}, to={2,3}, text=$g'$, y distance=-.25cm}
+    }}
+    \medskip
+
+    So $h'\circ(h,1)$ defines a homotopy $f'\circ f\hto g'\circ g$ as desired.
+    It is clear that this is relative to $L$.
+    \qed
+
+\eproof
+
+Now that we have shown $f_*\colon\pi_n(X,v)\to\pi_n(Y,fv)$ is well-defined, we show that it is a group morphism.
+Suppose $\alpha,\beta\colon\Delta^n\to X$ are representatives of elements from $\pi_n(X,v)$, so that $\alpha\beta=\gamma$ and $\omega$ witnesses this:
+$\partial\omega=(v,\dots,v,\alpha,\gamma,\beta)$.
+Notice then that $f\circ\omega\colon\Delta^{n+1}\to Y$ has
+$$ d_k(f\circ\omega) = f(d_k\omega) \implies \partial(f\circ\omega) = (f(v),\dots,f(v),f\circ\alpha,f\circ\gamma,f\circ\beta) $$
+so that $[f\alpha][f\beta]=[f\gamma]$ as desired.
+
+Note that the above lemma also shows that $\pi_0\colon\sSet\to\Set$ is functorial.
+Indeed, if $f\colon X\to Y$ is a simplicial map, then we define $f_*\colon\pi_0X\to\pi_0Y$ by mapping the homotopy class of $[v]$ to $[fv]$.
+This corresponds to mapping $\iota_v\colon\Delta^0\to X$ to $f\circ\iota_v$.
+
+Thus we have a sequence of functors $\set{\pi_n}_{n\geq0}$.
+We would expect them to be related somehow, and indeed they are.
+But before we continue, we make the following observation.
+
+\blemm[name={trivsimplex}]
+
+    A simplex $\alpha\colon\Delta^n\to X$ represents the identity of $\pi_n(X,v)$ iff there is an $(n+1)$-simplex $\omega$ of $X$ such that $\partial\omega=(v,\dots,v,\alpha)$.
+
+\elemm
+
+\bproof
+
+    Note that such an $\omega$ exists iff $e\cdot\alpha=e$.
+    This is iff $\alpha=e$.
+    \qed
+
+\eproof
+
+Now suppose $p\colon X\to Y$ is a Kan fibration, and let $F$ be the fiber over a vertex $*\in Y$.
+By \refmath[lemma]{fibrantfibers} $F$ is fibrant.
+Now let $v\in F$ be a vertex, and suppose $\alpha\colon\Delta^n\to Y$ represents an element of $\pi_n(Y,*)$.
+Then in the following diagram, we have a lift $\theta$:
+
+\bigskip
+\centerline{\drawdiagram{
+    $\Lambda^n_0$&$X$\cr
+    $\Delta^n$&$Y$
+}{
+    \diagarrow{from={1,1}, to={1,2}, text={$(\ ,v,\dots,v)$}, y distance=.25cm}
+    \diagarrow{from={1,1}, to={2,1}, left cap={(}}
+    \diagarrow{from={2,1}, to={2,2}, text=$\alpha$, y distance=.25cm}
+    \diagarrow{from={1,2}, to={2,2}, text=$p$, x distance=.25cm}
+    \diagarrow{from={2,1}, to={1,2}, dashed, text=$\theta$, x distance=.25cm}
+}}
+
+Now, $[d_0\theta]\in\pi_{n-1}(F,v)$ is independent on choice of $\theta$ and representative of $\alpha$.
+Firstly, $p\circ(d_0\theta)=d_0(p\theta)=d_0\alpha=*$ (because $\alpha\in\pi_n(Y,*)$ meaning $\partial\alpha=(*,\dots,*)$) so that $d_0\theta\in F$.
+\TODO{Why}
+
+This then defines a function
+$$ \partial\colon\pi_n(Y,*) \to \pi_{n-1}(F,v) $$
+called the {\emphcolor boundary map}.
+
+\blemm
+
+    \benum
+        \item For $n>1$, the boundary map is a group morphism $\pi_n(Y,*)\to\pi_{n-1}(F,v)$.
+        \item The sequence
+        $$ \multline{
+            \cdots\to\pi_n(F,v) \xtos{i_*} \pi_n(X,v) \xtos{p_*} \pi_n(Y,*) \xtos\partial \pi_{n-1}(F,v) \to\cr
+                \to\cdots\xtos{p_*} \pi_1(Y,*) \xtos\partial \pi_0(F) \xtos{i_*} \pi_0(X) \xtos{p_*} \pi_0(Y)
+        } $$
+        is exact in the sense that the kernel equals the image everywhere (for $n=0$ this means e.g.\ that $\im i_*=(p_*)^{-1}*$).
+        Moreover, there is an action of $\pi_1(Y,*)$ on $\pi_0(F)$ such that two elements of $\pi_0(F)$ have the same image under $i_*$ iff they are in the same orbit for the $\pi_1(Y,*)$-action.
+    \eenum
+
+\elemm
+
+\bproof
+
+    First we show (1), that $\partial$ is a group morphism.
+    Suppose for $i=n-1,n,n+1$ we have diagrams
+
+    \bigskip
+    \centerline{\drawdiagram{
+        $\Lambda^n_0$&$X$\cr
+        $\Delta^n$&$Y$
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text={$(\ ,v,\dots,v)$}, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,1}, left cap={(}}
+        \diagarrow{from={2,1}, to={2,2}, text=$\alpha_i$, y distance=.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text=$p$, x distance=.25cm}
+        \diagarrow{from={2,1}, to={1,2}, dashed, text=$\theta_i$, x distance=.25cm}
+    }}
+
+    where $\alpha_i$ represent elements of $\pi_n(Y,*)$, as well as an $(n+1)$-simplex $\omega$ witnessing $[\alpha_{n-1}][\alpha_{n+1}]=[\alpha_n]$:
+    $$ \partial\omega = (*,\dots,*,\alpha_{n-1},\alpha_n,\alpha_{n+1}) . $$
+    This then defines a map
+    $$ \Lambda^{n+1}_0 \xtos{(\ ,v,\dots,v,\theta_{n-1},\theta_n,\theta_{n+1})} X $$
+    because $d_j\theta_i=v$ for $j>0$.
+    Furthermore it fits into the following diagram, which then lifts to give $\gamma$:
+
+    \bigskip
+    \centerline{\drawdiagram{
+        $\Lambda^n_0$&$X$\cr
+        $\Delta^n$&$Y$
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text={$(\ ,v,\dots,v,\theta_{n-1},\theta_n,\theta_{n+1})$}, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,1}, left cap={(}}
+        \diagarrow{from={2,1}, to={2,2}, text=$\omega$, y distance=.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text=$p$, x distance=.25cm}
+        \diagarrow{from={2,1}, to={1,2}, dashed, text=$\gamma$, x distance=.25cm}
+    }}
+
+    Then
+    $$ \multline{
+        \partial(d_0\gamma) = (d_0d_0\gamma,d_1d_0\gamma,\dots,d_nd_0\gamma) = (d_0d_1\gamma,d_0d_2\gamma,\dots,d_0d_{n-1}\gamma,d_0d_n\gamma,d_0d_{n+1}\gamma)\cr
+        = (v,\dots,v,d_0\theta_{n-1},d_0\theta_n,d_0\theta_{n+1}) .
+    } $$
+    Thus $d_0\gamma$ witnesses the fact that $[d_0\theta_{n-1}][d_0\theta_{n+1}]=[d_0\theta_n]$.
+    Because $\partial(\alpha_i)=[d_0\theta_i]$ this means that we have $\partial(\alpha_{n-1})\partial(\alpha_{n+1})=\partial(\alpha_n)$ as desired.
+
+    For (2), we first show that
+    $$ \pi_n(X,v) \xtos{p_*} \pi_n(Y,*) \xtos\partial \pi_{n-1}(F,v) $$
+    is exact.
+    The composition is trivial, as we consider the following diagram for $[\alpha]\in\pi_n(X,v)$:
+
+    \bigskip
+    \centerline{\drawdiagram{
+        $\Lambda^n_0$&$X$\cr
+        $\Delta^n$&$Y$
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text={$(\ ,v,\dots,v)$}, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,1}, left cap={(}}
+        \diagarrow{from={2,1}, to={2,2}, text=$p\alpha$, y distance=.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text=$p$, x distance=.25cm}
+        \diagarrow{from={2,1}, to={1,2}, dashed, text=$\alpha$, x distance=.25cm}
+    }}
+
+    So that $\partial\circ p(\alpha)=d_0\alpha=v$ and so $\im p_*\subseteq\ker\partial$.
+    Conversely suppose $\gamma\colon\Delta^n\to Y$ represents $[\gamma]\in\pi_n(Y,*)$ such that $\partial[\gamma]=e$.
+    Take a diagram
+
+    \bigskip
+    \centerline{\drawdiagram{
+        $\Lambda^n_0$&$X$\cr
+        $\Delta^n$&$Y$
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text={$(\ ,v,\dots,v)$}, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,1}, left cap={(}}
+        \diagarrow{from={2,1}, to={2,2}, text=$\gamma$, y distance=.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text=$p$, x distance=.25cm}
+        \diagarrow{from={2,1}, to={1,2}, dashed, text=$\theta$, x distance=.25cm}
+    }}
+
+    so that $[d_0\theta]=\partial[\gamma]=[e]$.
+    There is then a homotopy $h_0\colon\Delta^{n-1}\times\Delta^1\to F$ where $d_0\theta\cong v\hrel{\partial\Delta^n}$.
+    This defines a map
+    $$ (\Delta^n\times*)\cup(\partial\Delta^n\times\Delta^1) \xtos{(\theta,(h_0,v,\dots,v))} X $$
+    whose component on $\Delta^n\times*$ is $\theta$, and $(h_0,v,\dots,v)$ defines the map out of $\partial\Delta^n\times\Delta^1$ (which maps $(\delta^0,t)$ to $h_0(\id,t)$ and $(\delta^i,t)$ to $v$ for all other $i$).
+    On the common intersection $\partial\Delta^n\times*$, both of these maps agree as they are equal to $v$, so this map is well-defined.
+
+    Because $X$ is fibrant, it extends to $h\colon\Delta^n\times\Delta^1\to X$.
+    Then the homotopy $p\circ h$ is a homotopy $\gamma\cong v\hrel{\partial\Delta^n}$ as desired.
+
+    All other instances of exactness are proven similarly.
+    \qed
+
+\eproof
+
+Let $X$ be fibrant, and consider $\ihom(\Delta^1,X)$.
+We have the maps $(\delta^\epsilon)^*\colon\ihom(\Delta^1,X)\to\ihom(\Delta^0,X)\cong X$ which maps $f\colon\Delta^1\times\Delta^n\to X$ to $f(\neg\epsilon,\bul)$ (where $\neg0=1$ and $\neg1=0$).
+We can thus view these as the endpoints of $f$: if $n=0$ then these are just $f(0),f(1)$.
+
+Because $X$ is fibrant and $\delta^\epsilon$ are monic, by \refmath[corollary]{ihomfibrations} so are $(\delta^\epsilon)^*$.
+Thus their fibers are fibrant as well.
+So for a choice of vertex $*\in X$, define the {\emphcolor path space} of $X$ to be the fiber of $*$ under $(\delta^0)^*$.
+Denote it by $PX$.
+
+The path space can be viewed as the set of paths ending at $*\in X$.
+We define $\pi\colon PX\to X$ via the composite:
+$$ \pi = PX \inj \ihom(\Delta^1,X) \xtos{(\delta^1)^*} \ihom(\Delta^0,X) \cong X , $$
+which maps a path to its other endpoint.
+
+\blemm
+
+    Let $X$ be fibrant and $PX$ its path space.
+    Then for all vertices $v\in PX$ and $i\geq0$, $\pi_i(PX,v)$ is trivial.
+    Furthermore $\pi\colon PX\to X$ is a fibration.
+
+\elemm
+
+\bproof
+
+    By \refmath[lemma]{facemapsrlp} $(\delta^0)^*$ has the right-lifting property relative to all $\partial\Delta^n\subseteq\Delta^n$.
+    The following commutative diagram demonstrates that the restriction of $(\delta^0)^*$ to $PX$, which is just $PX\to*$ also has this right-lifting property.
+
+    \centerline{\drawdiagram{
+        $\partial\Delta^n$&$PX$&$\ihom(\Delta^1,X)$\cr
+        $\Delta^n$&$*$&$X$
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,2}, to={1,3}, left cap={(}}
+        \diagarrow{from={1,1}, to={2,1}, left cap={(}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={1,2}, to={2,2}}
+        \diagarrow{from={1,3}, to={2,3}, text=$(\delta^0)^*$, x distance=.25cm}
+        \diagarrow{from={2,1}, to={1,3}, dashed}
+    }}
+
+    Because this diagram commutes, composing the dashed arrow with $(\delta^0)^*$ is constant.
+    Thus the dashed arrow lies in $PX$, giving the desired lift.
+
+    If $v,u\in PX$ are vertices then $d_0v$ and $d_0u$ are both $*$ by definition of $PX$, and thus there is a map $(v,u)\colon\partial\Delta^1\to PX$.
+    By the above paragraph, this extends to $\omega\colon\Delta^1\to PX$ where $\partial\omega=(v,u)$ so that $v$ and $u$ are homotopic.
+    Thus $\pi_0(PX)$ is trivial.
+
+    Similarly if $\alpha\colon\Delta^n\to PX$ represents an element of $\pi_n(PX,v)$ then there is a lift
+
+    \bigskip
+    \centerline{\drawdiagram{
+        $\partial\Delta^{n+1}$&$PX$\cr
+        $\Delta^{n+1}$
+    }{
+        \diagarrow{from={1,1}, to={2,1}, left cap={(}}
+        \diagarrow{from={1,1}, to={1,2}, text={$(v,\dots,v,\alpha)$}, y distance=.25cm}
+        \diagarrow{from={2,1}, to={1,2}, dashed, text=$\omega$, x distance=.25cm}
+    }}
+
+    Thus $\partial\omega=(v,\dots,v,\alpha)$ which means by \refmath[lemma]{trivsimplex} $\alpha=[e]$.
+
+    To show that $\pi$ is fibrant, notice that we have a pullback
+
+    \centerline{\drawdiagram{
+        $PX$&$\ihom(\Delta^1,X)$\cr
+        $X$&$\ihom(\partial\Delta^1,X)\cong X\times X$
+    }{
+        \diagarrow{from={1,1}, to={1,2}, left cap={(}}
+        \diagarrow{from={1,1}, to={2,1}, text=$\pi$, x distance=-.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text=$i_*$, x distance=.25cm}
+        \diagarrow{from={2,1}, to={2,2}, text={$(*,1_X)$}, y distance=-.25cm}
+    }}
+    \medskip
+
+    Because $i_*$ is a fibration, and the pullback of fibrations are fibrations, $\pi$ is a fibrant.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $X$ be a fibrant simplicial set, with a distinguished vertex $*\in X$.
+    Let $PX$ be its path space relative to this vertex, and $\pi\colon PX\to X$ its endpoint map.
+    Define $X$'s {\emphcolor loop space}, $\Omega X$, to be the fiber of $*\in X$ under $\pi$.
+
+\edefn
+
+Because $\pi$ is a fibration, $\Omega X$ is fibrant.
+
+\blemm
+
+    $\pi_n(\Omega X,*)$ is Abelian for $n\geq1$.
+
+\elemm
+
+\bproof
+
+    By exponentaiation, as a set, $\pi_n(\Omega X,*)$ consists of homotopy classes of maps $\alpha$ fitting into diagrams of the form
+
+    \medskip
+    \centerline{\drawdiagram{
+        $\Delta^n\times\Delta^1$&$X$\cr
+        $(\partial\Delta^n\times\Delta^1)\cup(\Delta^n\times\partial\Delta^1)$
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=$\alpha$, y distance=.25cm}
+        \diagarrow{from={2,1}, to={1,1}, left cap={(}}
+        \diagarrow{from={2,1}, to={1,2}, text=$*$, x distance=.25cm}
+    }}
+
+    relative the boundary $(\partial\Delta^n\times\Delta^1)\cup(\Delta^n\times\partial\Delta^1)$.
+
+    We can define a second multiplication on $\pi_n(\Omega X,*)$ by multiplying $\alpha,\beta$ along $\alpha(x,\bul)$ and $\beta(x,\bul)$ (as $1$-simplices).
+    Denote this multiplication by $\star$.
+    It can then be shown that $[*]$ is the identity for $\star$, and this new multiplication and the usual multiplication on $\pi_n(\Omega X,*)$ satisfy the following identity:
+    $$ ([\alpha]\star[\beta])([\gamma]\star[\delta]) = ([\alpha][\gamma])\star([\beta][\delta]) . $$
+    By a standard argument (given below), this implies that $\star$ and the usual multiplication coincide and are Abelian.
+    \qed
+
+\eproof
+
+\bprop[title={Eckmann-Hilton}]
+
+    Let $X$ be a set equipped with two binary operators, $\ast$ and $\star$.
+    Further suppose that
+    \benum
+        \item Both $\ast$ and $\star$ have units, $1_\ast$ and $1_\star$ respectively.
+        \item The operators satisfy the following identity:
+        $$ (a\star b)\ast(c\star d) = (a\ast c)\star(b\ast d),\qquad \hbox{for all $a,b,c,d\in X$} . $$
+    \eenum
+    Then $\ast$ and $\star$ are the same operator, and are commutative and associative.
+
+\eprop
+
+\bproof
+
+    We give a visual proof, courtesy of Wikipedia.
+    Let us write ${a\atop b}$ for $a\ast b$ and $a\ b$ for $a\star b$.
+    Notice that (2) tells us that
+    $$ {(a\ b)\atop(c\ d)} = \left({a\atop c}\middle)\ \middle({b\atop d}\right) $$
+    so we can write
+    $$ \matrix{a&b\cr c&d} = {(a\ b)\atop(c\ d)} = \left({a\atop c}\middle)\ \middle({b\atop d}\right) $$
+    unambiguously.
+
+    Let us write $\bul,\circ$ for the identities of $\ast,\star$ respectively.
+    Then we have
+    $$ \bul = \matrix{\bul\cr\bul} = \matrix{\bul&\circ\cr\circ&\bul} = \matrix{\circ&\circ} = \circ $$
+    showing that both units are equal.
+
+    Now for $a,b\in X$,
+    $$ a\ b = \matrix{a&\bul\cr\bul&b} = \matrix{a\cr b} = \matrix{\bul&a\cr b&\bul} = b\ a = \matrix{b&\bul\cr\bul&a} = \matrix{b\cr a} $$
+    showing that horizontal and vertical composition ($\ast$ and $\star$) are the same, and commutative.
+
+    Finally for associativity, we have
+    $$ a\ (b\ c) = a\pmatrix{b\cr c} = \matrix{a&b\cr\bul&c} = {(a\ b)\atop c} = (a\ b)\ c . \qed $$
+
+\eproof
+
+\bnote
+
+    The Eckmann-Hilton argument is also called the ``sliding boxes argument'' in lieu of how the above proof relies on sliding around the elements.
+
+\enote
+
+Because we can show that $\pi_{n+1}(X,*)\cong\pi_n(\Omega X,*)$, it follows that $\pi_n(X,*)$ is Abelian for $n\geq2$.
+
+\bcoro
+
+    Let $X$ be fibrant.
+    Then for $n\geq2$, $\pi_n(X,*)$ is Abelian.
+
+\ecoro
+
+\bdefn
+
+    A simplicial map $f\colon X\to Y$ is a {\emphcolor weak equivalence} if it induces an isomorphism between all of the homotopy groups.
+    Explicitly,
+    \benum
+        \item $f_*\colon\pi_0X\to\pi_0Y$ is a bijection,
+        \item for all $x\in X$, $f_*\colon\pi_n(X,x)\to\pi_n(Y,fx)$ is an isomorphism.
+    \eenum
+
+\edefn
+
+\bthrm
+
+    A simplicial map $f\colon X\to Y$ is a fibration and a weak equivalence iff it has the right-lifting property with respect to all $\partial\Delta^n\subseteq\Delta^n$ for $n\geq0$.
+
+\ethrm
+
+\bproof
+
+    Tedious.\CITE
+
+\eproof
+
+\bexam
+
+    By the above theorem and \refmath[lemma]{facemapsrlp}, we see that $(\delta^k)^*$ is a weak equivalence between the internal-homs $\ihom(\Delta^n,X)\to\ihom(\Delta^{n-1},X)$.
+    Inductively, this shows that
+    $$ (\delta^{k_1})^*\circ\cdots\circ(\delta^{k_n})^* = (\delta^{k_n}\circ\cdots\circ\delta^{k_1})^* \colon \ihom(\Delta^n,X) \to \ihom(\Delta^0,X) \cong X $$
+    is a weak equivalence.
+    Note that $\delta=\delta^{k_n}\circ\cdots\circ\delta^{k_n}\colon\Delta^0\to\Delta^n$ just corresponds to a choice of vertex of $\Delta^n$, i.e.\ a number in $[n]$.
+    Then $\delta^*\colon\ihom(\Delta^n,X)\to X$ corresponds to evaluating $f\colon\Delta^n\times\Delta^k\to X$ at $f(\delta,1)$.
+
+    Regardless, this shows that the evaluation map is a weak equivalence and a fibration $\ihom(\Delta^n,X)\to X$.
+
+\eexam
+

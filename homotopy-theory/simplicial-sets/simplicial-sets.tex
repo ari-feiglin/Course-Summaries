@@ -1,0 +1,87 @@
+\subsection{Simplicial sets}
+
+Simplicial sets, like simplicial complexes, can be given a combinatorial definition.
+Unfortunately the combinatorial definition is lengthier and instead has a more concise category-theoretic definition.
+
+\bdefn[title={Simplicial sets}]
+
+    The {\emphcolor simplex category} $\Delta$ is the category whose objects are finite ordinals with order-preserving maps between them.
+    Explicitly, its objects are $[n]=\set{0,\dots,n}$ and a morphism $f\colon[n]\to[m]$ is a function which preserves order (not necessarily strictly).
+
+    A {\emphcolor simplicial set} is a functor $\Delta^\op\to\Set$.
+    Then the category of simplicial sets is the functor category $\sSet=[\Delta^\op,\Set]$.
+    Morphisms are natural transformations.
+
+\edefn
+
+Explicitly, a simplicial set $X$ is a collection of sets $X_n=X([n])$ along with functions $f\colon X_n\to X_m$ for every order-preserving $f\colon[m]\to[n]$.
+Elements of $X_0$ are called the {\emphcolor vertices} of the simplicial set.
+
+To understand simplicial sets, it is worthwhile to understand the simplex category in more depth.
+There are some obvious maps in the simplex category $\Delta$:
+\benum
+    \item The {\emphcolor coface map} $\delta^i\colon[n-1]\to[n]$ (for $i\leq n$) is the unique injection whose image leaves out only $i$.
+    Explicitly, $\delta^i(j)=j$ for $j<i$ and $\delta^i(j)=j+1$ for $j\geq i$.
+    \item The {\emphcolor codegeneracy map} $\sigma^i\colon[n+1]\to[n]$ (for $i\leq n$) is the unique surjection which picks out $i$ twice.
+    Explicitly, $\sigma^i(j)=j$ for $j\leq i$ and $\sigma^i(j)=j-1$ for $j>i$.
+\eenum
+The following identities are then easily verified:
+$$ \displaylines{
+    \delta^j\circ\delta^i = \delta^i\circ\delta^{j-1}\hbox{ for $i<j$},\cr
+    \sigma^j\circ\sigma^i = \sigma^i\circ\sigma^{j+1}\hbox{ for $i\leq j$},\cr
+    \sigma^j\circ\delta^i = \cases{\delta^i\circ\sigma^{j-1} & $i<j$\cr \id & $i=j$ or $j+1$\cr \delta^{i-1}\circ\sigma^j & $j+1<i$} .
+} $$
+
+Then if $X$ is a simplicial set, we write $X(\delta^i)=d_i\colon X_n\to X_{n-1}$ for the image of the coface maps, and $X(\sigma^j)=s_j\colon X_n\to X_{n+1}$ for the image of the codegeneracy maps under $X$.
+These are called the {\emphcolor face} and {\emphcolor degeneracy} maps.
+Note that due to the contravariance of $X$, the face maps ``shrink'' and the degeneracy maps ``grow'', while the reverse is true for the coface and codegeneracy maps.
+
+The identities in the simplex category then dualize to
+$$ \vcenter{\displaylines{
+    d_i d_j = d_{j-1} d_i\hbox{ for $i<j$},\cr
+    s_i s_j = s_{j+1} s_i\hbox{ for $i\leq j$},\cr
+    d_i s_j = \cases{s_{j-1} d_i & $i<j$\cr \id & $i=j$ or $j+1$\cr s_j d_{i-1} & $j+1<i$} .
+}} \eqcnt[simpid] $$
+Note that the first identity is the same as the one in \gotopasteqn{faceid}.
+
+It is not hard to see that every morphism in the simplex category can be written as a composition of face and degeneracy maps.
+Thus we can equivalently define a simplicial set to be any collection of sets with face and degeneracy maps satisfying the identities in \gotoleqn.
+And a morphism of simplicial sets $X\to Y$ is a sequence of functions $f_n\colon X_n\to Y_n$ which commute with the face and degeneracy maps: $d\circ f=f\circ d$ and $s\circ f=s\circ f$.
+
+If $K$ is a simplicial complex, then it defines a simplicial set $X$ where
+$$ \displaylines{
+    X_n = \set{[v_0,\dots,v_n]}[\hbox{The $v_i$ form a simplex in $K$ with $v_0\leq\cdots\leq v_n$}],\cr
+    d_i[v_0,\dots,v_n] = [v_0,\dots,\hat v_i,\dots,v_n],\cr
+    s_i[v_0,\dots,v_n] = [v_0,\dots,s_i,s_i,\dots,v_n].
+} $$
+Note that the elements of $X_n$ can be {\it degenerate\/} simplices.
+For example if $[0,1,2]$ is a simplex of $K$, then $[0,0,1,2,2,2]$ is a simplex of $X$.
+Essentially the simplicial set associated with a simplicial complex is obtained by adjoining all of these degenerate simplices.
+
+We can generalize what we mean by a degenerate simplex.
+
+\bdefn
+
+    Let $X$ be a simplicial set.
+    A {\emphcolor degenerate simplex} of $X$ is a simplex $x\in X$ which is in the image of some degeneracy map.
+
+\edefn
+
+The prototypical simplicial set is
+$$ \Delta^n = \hom_\Delta(\bul,[n]) . $$
+We can better characterize $\Delta^n$ as follows.
+Notice that an increasing map $f\colon[k]\to[n]$ can be represented as a (degenerate) $k$-simplex $[f(0),f(1),\dots,f(k)]$.
+Thus we see that this definition of $\Delta^n$ coincides with the one obtained from taking the simplicial complex defined by $\abs{\Delta^n}$ and adjoining degenerate simplicies.
+
+Notice by the Yoneda lemma, for a simplicial set $X$,
+$$ \hom_\sSet(\Delta^n,X) = \Nat(\hom_\Delta(\bul,[n]),X) \cong X([n]) = X_n $$
+where the isomorphism is obtained by mapping $f\colon\Delta^n\to X$ to $f(\id_n)$ where $\id_n\colon[n]\to[n]$ is the identity.
+
+\bdefn
+
+    For a simplicial set $X$ and an $n$-simplex $x\in X_n$, we define $\iota_x\colon\Delta^n\to X$ to be the unique
+    simplicial map where $\iota_x(\id_n)=x$.
+    This is called the {\emphcolor representing map} of $x$.
+
+\edefn
+

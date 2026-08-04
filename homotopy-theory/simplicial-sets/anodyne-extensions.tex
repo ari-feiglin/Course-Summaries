@@ -1,0 +1,211 @@
+\subsection{Anodyne extensions}
+
+The homotopy theory of simplicial sets revolves around fibrations.
+Originally this was developed in terms of the extension condition, which results in tedious combinatorial manipulations.
+Fortunately with a more modern viewpoint we can suppress most of these combinatorial arguments.
+
+\bdefn
+
+    A class $M$ of monomorphisms of $\sSet$ is called {\emphcolor saturated} if the following conditions are satisfied.
+    \benum
+        \item $M$ contains all isomorphisms.
+        \item $M$ is closed under pushouts in the sense that if
+
+        \commsq{A&C\cr B&B\cup_AC}
+            {}{}{i}{i_*}
+
+        is a pushout square and $i\in M$, then $i_*\in M$ as well.
+
+        \item Each retract of an element of $M$ is in $M$.
+        That is, given the following commutative diagram
+
+        \centerline{\drawdiagram{
+            $A'$&$A$&$A'$\cr
+            $B'$&$B$&$B'$\cr
+        }{
+            \diagarrow{from={1,1}, to={2,1}, text=$i'$, x distance=.25cm}
+            \diagarrow{from={1,2}, to={2,2}, text=$i$, x distance=.25cm}
+            \diagarrow{from={1,3}, to={2,3}, text=$i'$, x distance=.25cm}
+            \diagarrow{from={1,1}, to={1,2}}
+            \diagarrow{from={1,2}, to={1,3}}
+            \diagarrow{from={2,1}, to={2,2}}
+            \diagarrow{from={2,2}, to={2,3}}
+        }}
+
+        where the horizontal arrows compose to the identity.
+        If $i\in M$ then $i'\in M$.
+
+        \item $M$ is closed under countable many compositions and arbitrary direct sums.
+        This means that if there is a countable chain
+        $$ A_1 \xtos{i_1} A_2 \xtos{i_2} \cdots $$
+        with all $i_j\in M$, then the canonical map $A_1\to\colim A_i$ is in $M$.
+
+        Similarly if $i_j\colon A_j\to B_j$ for $j\in I$ are all $M$, then so is
+        $$ \coprod_ji_j\colon\coprod_{j\in I}A_j \to \coprod_{j\in I}B_j . $$
+    \eenum
+
+\edefn
+
+Note that the maps in (2), (3), (4) may not obviously be monic.
+But these are all easily checked to be so.
+We do this for (2), denote $f\colon A\to C$ so that $B\cup_AC$ is the disjoint union $B\amalg C$ where we identify
+$f(a)$ and $i(a)$.
+The map $i_*$ then maps $c\in C$ to its equivalence class $[c]$.
+Notice that because $i$ is monic, we cannot identify $f(a),f(a')$ as that would mean $i(a)=i(a')$ and thus $a=a'$.
+Thus no two distinct elements of $C$ are identified and thus $i_*$ is monic, as desired.
+
+\bdefn
+
+    A map $p\colon X\to Y$ is said to have the {\emphcolor right lifting property} ({\emphcolor RLP}) with respect to a class
+    of morphisms $M$ if in any solid arrow diagram
+
+    \centerline{\drawdiagram{
+        $A$&$X$\cr
+        $B$&$Y$
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,1}, to={2,1}, text=$i$, x distance=-.25cm}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={1,2}, to={2,2}, text=$p$, x distance=.25cm}
+        \diagarrow{from={2,1}, to={1,2}, dashed}
+    }}
+
+    where $i\in M$, a dashed arrow making the diagram commute exists.
+
+    Dually we define the {\emphcolor left lifting property}.
+
+\edefn
+
+\blemm
+
+    The class of monomorphisms $M_p$ having the left lifting property (LLP) with respect to a fixed map $p\colon X\to Y$
+    is saturated.
+
+\elemm
+
+\bproof
+
+    We prove condition (2).
+    Suppose we have a commutative diagram
+
+    \centerline{\drawdiagram{
+        $A$&$C$&$X$\cr
+        $B$&$B\cup_AC$&$Y$
+    }{
+        \diagarrow{from={1,1}, to={2,1}, text=$i$, x distance=.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text=$j$, x distance=.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text=$p$, x distance=.25cm}
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,2}, to={1,3}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,1}, to={2,3}}
+    }}
+
+    where the left square is a pushout and $i\in M_p$; we wish to show $j\in M_p$.
+    Because $i\in M_p$, there is a $\theta\colon B\to X$ so that
+
+    \centerline{\drawdiagram{
+        $A$&$X$\cr
+        $B$&$Y$
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,1}, to={2,1}, text=$i$, x distance=-.25cm}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={1,2}, to={2,2}, text=$p$, x distance=.25cm}
+        \diagarrow{from={2,1}, to={1,2}, text=$\theta$, x distance=-.25cm}
+    }}
+
+    commutes.
+    But then this defines maps $B\to X,C\to X$ which commute and thus a map $\theta_*\colon B\cup_AC\to X$ which
+    commutes with the necessary morphisms.
+    Thus $j\in M_p$ as desired.
+    \qed
+
+\eproof
+
+Clearly the intersection of saturated classes is saturated.
+Thus for any class of monomorphisms $B$, we have a saturated class $M_B$ of all saturated classes containing $B$.
+This is called the saturated class {\emphcolor generated} by $B$.
+Alternatively $M_B$ is called the {\emphcolor saturation} of $B$.
+
+Now consider the following classes of monomorphisms.
+\bitems{1cm}
+    \item{$\bB_1$} The set of all inclusions $\Lambda^n_k\subseteq\Delta^n$ for $0\leq k\leq n$, $n>0$.
+    \item{$\bB_2$} The set of all inclusions
+    $$ (\Delta^1\times\partial\Delta^n) \cup (\set e\times\Delta^n) \subseteq (\Delta^1\times\Delta^n),\qquad e=0,1 $$
+    where $\set e$ corresponds to the simplicial set consisting of the vertex $e$ and all of its degeneracies.
+    \item{$\bB_3$} The set of all inclusions
+    $$ (\Delta^1\times Y) \cup (\set e\times X) \subseteq (\Delta^1\times X),\qquad e=0,1 $$
+    where $Y\subseteq X$ is an inclusion.
+\eitems
+
+\bprop
+
+    The classes $\bB_1$, $\bB_2$, and $\bB_3$ have the same saturation.
+
+\eprop
+
+\bproof
+
+    Long and tedious.\CITE
+    \qed
+
+\eproof
+
+\bdefn
+
+    The saturation of $\bB_1$ (equivalently $\bB_2,\bB_3$) is called the class of {\emphcolor anodyne extensions}.
+
+\edefn
+
+\bcoro
+
+    A fibration is a map $p\colon X\to Y$ which has the right lifting property with respect to all anodyne extensions.
+
+\ecoro
+
+\bproof
+
+    Because the class of monics for which $p$ has the right lifting property is saturated, and contains
+    $\Lambda^n_k\subseteq\Delta^n$ by definition, we obtain the desired result.
+    \qed
+
+\eproof
+
+\bcoro[name={prodanodyne}]
+
+    If $i\colon K\inj L$ is an anodyne extension, and $Y\inj X$ is an arbitrary inclusion, then
+    $$ (K\times X)\cup(L\times Y) \to (L\times X) $$
+    is an anodyne extension.
+
+\ecoro
+
+\bproof
+
+    Consider the class of monics $K'\to L'$ such that
+    $$ (K'\times X)\cup(L'\times Y) \to (L'\times X) $$
+    is anodyne.
+    This is a saturated set.
+
+    Now consider the inclusion
+    $$ (\Delta^1\times Y')\cup(\set e\times X')\subseteq(\Delta^1\times X'),\qquad Y'\subseteq X' $$
+    We want to show that this is in the class, as it would imply all anodyne morphisms are.
+    It is in the class iff the following inclusion is anodyne:
+    $$ ((\Delta^1\times Y')\cup(\set e\times X'))\times X)\cup(\Delta^1\times X'\times Y) \to (\Delta^1\times X'\times X) $$
+    which is just isomorphic to
+    $$ (\Delta^1\times((Y'\times X)\cup(X'\times Y)))\cup(\set e\times X'\times X) \to \Delta^1\times X'\times X $$
+    which is anodyne as desired.
+
+    Thus all anodyne extensions are in the class, in particular $i$.
+    \qed
+
+\eproof
+
+\bnote
+
+    In the above corollary, the simplicial set $(K\times X)\cup(L\times Y)$ is the union when viewing both terms as subsets
+    of $L\times X$.
+    Categorically, this is the simplicial set $(K\times X)\cup_{K\times Y}(L\times Y)$.
+
+\enote
+

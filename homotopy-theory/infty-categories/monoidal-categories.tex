@@ -1,0 +1,84 @@
+\subsection{Monoidal categories}
+
+For a given commutative ring $R$, there is a functor $\otimes\colon\Mod_R\times\Mod_R\to\Mod_R$ (the tensor product) which maps $M,N$ to $M\otimes N$
+defined up to unique isomorphism as representing bilinear maps out of $M\times N$.
+That is,
+$$ \hom_R(M\otimes N,\bul) \cong \set{\hbox{bilinear maps $M\times N\to\bul$}} . $$
+The tensor product is of much importance in algebra, and we are concerned with it here for certain properties it exhibits.
+
+For one, $M\otimes R\cong R\otimes M\cong M$, so that $R$ acts as a sort of unit for the tensor.
+Furthermore $M\otimes(N\otimes W)\cong(M\otimes N)\otimes W$, so the tensor is sort of associative.
+By ``sort of'' we mean that $R$ is a unit and the tensor is associative, up to a natural isomorphism.
+
+We are interested in categories equipped with a similar structure.
+For the time being, we focus on the associativity of $\otimes$.
+
+The simplest such attempt of a generalization is a {\it strict monoidal category}, which we describe here.
+
+\bdefn[title={Strict nonunital monoidal categories}]
+
+    A {\emphcolor strict nonunital monoidal category} is a category $\C$ equipped with a bifunctor $\otimes\colon\C\times\C\to\C$
+    which is strictly associative in the following sense:
+    \benum
+        \item For all $X,Y,Z\in\C$ we have an {\it equality}:
+        $$ X\otimes(Y\otimes Z) = (X\otimes Y)\otimes Z . $$
+        \item For a triple of morphisms $f\colon X\to X'$, $g\colon Y\to Y'$, $h\colon Z\to Z'$, we have an {\it equality}:
+        $$ \matrix{f\otimes(g\otimes h)\cr =\cr(f\otimes g)\otimes h} \ :\ \matrix{X\otimes(Y\otimes Z)\cr=\cr(X\otimes Y)\otimes Z} \longto \matrix{X'\otimes(Y'\otimes Z')\cr=\cr(X'\otimes Y')\otimes Z'} . $$
+    \eenum
+
+\edefn
+
+Such a definition is neat and simple, but betrays one of the core tenets of category theory: things should be defined {\it up to isomorphism}, not up to equality.
+For example, $\Mod_R$ equipped with the tensor product is not a strict monoidal category.
+
+A simple example of a strict nonunital monoidal category are semigroups.
+Recall that a semigroup is a set $M$ equipped with an associative binary operation.
+A set $M$ can be viewed as a discrete category, and then any semigroup structure on $M$ corresponds to a strict nonunitarl monoidal category structure on $M$ and vice versa.
+
+A more involved example are endofunctor categories.
+If $\C$ is an (ordinary) category, then the functor category $\End(\C)=\Fun(\C,\C)$ is a strict monoidal category whose monoidal structure is given by composition:
+$$ \circ\colon\End(\C)\times\End(\C)\to\End(C),\qquad (F,G)\mapsto F\circ G . $$
+
+If we want to generalize the tensor product structure on $\Mod_R$ we need to encode information about the isomorphisms $X\otimes(Y\otimes Z)\xto\sim(X\otimes Y)\otimes Z$.
+
+\bdefn[title={Nonunital monoidal categories}]
+
+    A {\emphcolor nonunital monoidal category} is a category $\C$ equipped with the following:
+    \benum
+        \item a bifunctor $\otimes\colon\C\times\C\to\C$,
+        \item for every $X,Y,Z\in\C$ an isomorphism $\alpha_{X,Y,Z}\colon X\otimes(Y\otimes Z)\xto\sim(X\otimes Y)\otimes Z$, called the {\emphcolor associator}.
+    \eenum
+    We further require the following from the associators.
+    \benum
+        \item The associator forms a natural isomorphism between the following two functors:
+        $$ \displaylines{
+            \C\times\C\times\C \xtos{(X,Y,Z)\mapsto X\otimes(Y\otimes Z)} \C\cr
+            \C\times\C\times\C \xtos{(X,Y,Z)\mapsto (X\otimes Y)\otimes Z} \C.
+        } $$
+        Explicitly, this means that for all $f\colon X\to X'$, $g\colon Y\to Y'$, $h\colon Z\to Z'$, the following diagram commutes:
+
+        \commsq{
+            X\otimes(Y\otimes Z)&(X\otimes Y)\otimes Z\cr
+            X'\otimes(Y'\otimes Z')&(X'\otimes Y')\otimes Z'
+        }
+        {\alpha_{X,Y,Z}}{\alpha_{X',Y',Z'}}{f\otimes(g\otimes h)}{(f\otimes g)\otimes h}
+
+        \item The following {\emphcolor pentagon identity} is satisfied: for $W,X,Y,Z\in\C$ the following diagram of isomorphism commutes:
+
+        \bigskip
+        \centerline{\def\diagtxtwrap#1{\setscale{8pt}$#1$}%
+        \drawdiagram{
+            $W\otimes((X\otimes Y)\otimes Z)$&&$(W\otimes(X\otimes Y))\otimes Z$\cr
+            $W\otimes(X\otimes(Y\otimes Z))$&&$((W\otimes X)\otimes Y)\otimes Z$\cr
+            &$(W\otimes X)\otimes(Y\otimes Z)$
+        }{
+            \diagarrow{from={1,1}, to={1,3}, text={\alpha_{W,X\otimes Y,Z}}, y distance=.25cm}
+            \diagarrow{from={2,1}, to={1,1}, text={1_W\otimes\alpha_{X,Y,Z}}, x distance=-.75cm}
+            \diagarrow{from={1,3}, to={2,3}, text={\alpha_{W,X,Y}\otimes1_Z}, x distance=.75cm}
+            \diagarrow{from={2,1}, to={3,2}, text={\alpha_{W,X,Y\otimes Z}}, y distance=-.25cm}
+            \diagarrow{from={3,2}, to={2,3}, text={\alpha_{W\otimes X,Y,Z}}, y distance=-.25cm}
+        }}
+    \eenum
+
+\edefn
+

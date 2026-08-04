@@ -1,0 +1,261 @@
+\subsection{Function complexes}
+
+In this section we will discuss some constructions in $\sSet$.
+
+We first define quotient simplicial objects.
+First we define the quotient of a set by a subset: if $A\subseteq B$ is a subset, then $B/A=(B-A)\sqcup\set*$; we identify $A$ with a single point and all other elements
+of $B$ with themselves.
+We will also denote the additional point $*$ by $[A]$.
+
+Now if $Y\subseteq X$ is a simplicial subset, then we can form the {\emphcolor quotient} simplicial set $X/Y$ as follows.
+Then for $n<\omega$ define
+$$ (X/Y)_n = X_n/Y_n , $$
+and let $q_n\colon X_n\to X_n/Y_n$ be the quotient map.
+Then for an order-preserving $\phi\colon[n]\to[m]$ (which we identify with $X_m\to X_n$), there is a unique $\bar\phi\colon(X/Y)_m\to(X/Y)_n$ such that
+$$ \bar\phi\circ q_m = q_n\circ\phi $$
+which maps $x\in X_m-Y_m$ to $q_n\circ\phi(x)$ and $y\in Y_m$ to $[Y_n]$.
+Uniqueness implies that $\bar{\phi\circ\psi}=\bar\psi\circ\bar\phi$, so that this is a functor.
+Thus $X/Y$ is a simplicial set itself, and $q\colon X\to X/Y$ is a morphism.
+
+We can generalize this: let $R\subseteq X\times X$ be a simplicial subset such that $R_n\subseteq X_n\times X_n$ is an equivalence relation for all $n<\omega$.
+Then we can define the quotient $X/R$ where the set of $n$-simplicies is $(X/R)_n=X_n/R_n$ (quotient by an equivalence relation).
+As before if we let $q_n\colon X_n\to X_n/R_n$ be the quotient map, then for $\phi\colon[n]\to[m]$ there is a unique $\bar\phi\colon(X/R)_m\to(X/R)_m$ such that
+$$ \bar\phi\circ q_m = q_n\circ\phi . $$
+This is well-defined precisely because $R\subseteq X\times X$ so if $q_m(x)=q_m(y)$, meaning $(x,y)\in R_m$, then $(\phi(x),\phi(y))\in R_n$ and thus
+$\bar\phi\circ q_m(x)=q_n\circ\phi(x)$ is well-defined.
+Thus $X/R$ is a simplicial set and $q\colon X\to X/R$ is a morphism.
+
+The quotient $X/Y$ is a special case of quotienting by an equivalence.
+For each $n<\omega$, $Y_n$ defines an equivalence on $X_n\times X_n$ where $x_0\sim x_1$ iff they are equal or both in $Y_n$.
+It is readily checked that this equivalence is simplicial, and then $X/Y$ and $X/R$ are equal.
+
+A {\emphcolor pointed simplicial set} is a simplicial set $X$ with a distinguished vertex $*\in X_0$.
+We denote by $*$ also all of $*\in X_0$'s degeneracies.
+A morpism of pointed simplicial sets is a morphism of the underlying simplicial sets which preserves the base point.
+Note that it is sufficient to check that $*\in X_0$ is mapped to $*\in Y_0$, as then naturality implies $S*$ is mapped to $S*$.
+We denote the category of pointed simplicial sets by $\sSet_*$.
+
+For two pointed simplicial sets $X,Y$, we define their {\emphcolor wedge sum} $X\vee Y$ to be the simplicial subset of $X\times Y$
+consisting of all $(x,*)$ and $(*,y)$.
+This is clearly a simplicial subset, and we define the {\emphcolor smash product} of $X$ and $Y$ to be the quotient $X\wedge Y=X\times Y/X\vee Y$.
+It is easy to see that the wedge sum $X\vee Y$ is the pushout of the diagram $X\ot*\to Y$, so the quotient of $X\amalg Y$ by identifying $*\in X$ with $*\in Y$.
+
+If $f\colon X\to Y$ is a simplicial map and $K\subseteq Y$ is a simplicial subset, then $f^{-1}L\subseteq X$ defined to be
+all the simplices of $X$ which map to $K$ via $f$, is a simplicial subset.
+Indeed, if $\phi\colon[m]\to[n]$ is a morphism, and $x\in X_n$ maps to $f(x)\in K_n$ then $f(\phi_*x)=\phi_*f(x)\in K$ and so
+$\phi_*x\in f^{-1}L$ as desired.
+
+We can view this fiber as the following pullback
+
+\centerline{\drawdiagram{
+    $f^{-1}L$&$L$\cr
+    $X$&$Y$
+}{
+    \diagarrow{from={1,1}, to={1,2}}
+    \diagarrow{from={1,1}, to={2,1}}
+    \diagarrow{from={2,1}, to={2,2}, text=$f$, y distance=.25cm}
+    \diagarrow{from={1,2}, to={2,2}, left cap={(}}
+}}
+
+In particular for a vertex $*\in Y$, it generates the simplicial subset consisting of all its degeneracies, and the fiber of
+the vertex is $f^{-1}*$ (the preimage of this simplicial subset).
+
+Similarly we easily see that the image of a simplicial map is a simplicial subset of the codomain.
+
+Now we focus on function complexes.
+First, consider the following functor $\Delta^\bul\colon\Delta\to\sSet$ given by $[n]\mapsto\Delta^n$.
+This is just the Yoneda embedding; it maps $\phi\colon[n]\to[m]$ to postcomposition with $\phi$, which we identify with
+$\phi\colon\Delta^n\to\Delta^m$.
+Thus we can view $\Delta^\bul$ as a simplicial object in $\sSet$ (a simplicial simplicial set).
+Since taking products is also functorial, for any simplicial set $X\in\sSet$, this defines a functor
+$$ X\times\Delta^\bul,\quad [n]\mapsto X\times\Delta^n,\quad \phi\mapsto1\times\phi_* . $$
+
+For $Y\in\sSet$, we also have a functor $\hom_\sSet(\bul,Y)\colon\sSet^\op\to\Set$.
+Composing these functors we get a simplicial set $\hom_\sSet(X\times\Delta^\bul,Y)\colon\Delta^\op\to\Set$.
+
+We spell this construction out explicitly.
+
+\bdefn[title={function complex}]
+
+    Let $X$ and $Y$ be simplicial sets.
+    Their {\emphcolor function complex} $\ihom(X,Y)$ to be the simplicial set whose simplices are
+    $$ \ihom(X,Y)_n = \hom_\sSet(X\times\Delta^n,Y) $$
+    and for $\phi\colon[m]\to[n]$, it induces the map
+    $$ \phi^*\colon\ihom(X,Y)_n \to \ihom(X,Y)_m $$
+    defined by mapping $f\colon X\times\Delta^n\to Y$ to the composite
+    $$ X\times\Delta^m \xtos{1\times\phi} X\times\Delta^n \xtos f Y . $$
+
+\edefn
+
+The construction of the function complex is functorial in both $X$ and $Y$.
+That is the function complex is a functor
+$$ \ihom\colon\sSet^\op\times\sSet \to \sSet . $$
+A morphism $f\colon X\to X'$ defines $f^*\colon\ihom(X',Y)\to\ihom(X,Y)$ given by precomposition with $f\times\id$.
+That is, it maps $g\colon X'\times\Delta^n\to Y$ to
+$$ f^*(g) = X \times \Delta^n \xtos{f\times\id} X' \times \Delta \xtos g Y = g\circ(f\times\id) . $$
+Similarly $f\colon Y\to Y'$ defines $f_*\colon\ihom(X,Y)\to\ihom(X,Y')$ by postcomposition with $f$.
+So $g\colon X\times\Delta^n\to Y$ is mapped to $f\circ g$.
+
+There is a natural {\emphcolor evaluation map}
+$$ \ev\colon X\times\ihom(X,Y) \to Y,\qquad (x,f)\mapsto f(x,\id_n) $$
+where $x\in X_n$ and $f\colon X\times\Delta^n\to Y$.
+For a simplicial structure map $\phi\colon[m]\to[n]$ we have that
+$$ \ev(\phi(x,f)) = \ev(\phi x,\phi f) = \phi f(\phi x,\id_n) = f(\phi x,\phi(\id)) = \phi f(x,\id) = \phi \ev(x,f) . $$
+Thus $\ev$ is a simplicial map.
+
+\bprop[title={exponential law}, name={explaw}]
+
+    The function
+    $$ \ev_*\colon\hom_\sSet(K,\ihom(X,Y)) \to \hom_\sSet(X\times K,Y) $$
+    defined by mapping $g\colon K\to\ihom(X,Y)$ to the composite
+    $$ X\times K \xtos{1\times g} X\times\ihom(X,Y) \xtos\ev Y $$
+    is a bijection natural in $K,X,Y$.
+
+\eprop
+
+\bproof
+
+    The inverse of $\ev_*$ is the map
+    $$ \hom_\sSet(X\times K,Y) \to \hom_\sSet(K,\ihom(X,Y)) $$
+    obtained by mapping $g\colon X\times K\to Y$ to $g_*\colon K\to\ihom(X,Y)$ where for $x\in K_n$,
+    $$ g_*(x) = X\times\Delta^n \xtos{1\times\iota_x} X\times K \xtos g Y . $$
+
+    Indeed, $\ev_*(g_*)$ maps $(x,k)\in X_n\times K_n$ to
+    $$ (x,k) \mapsto \ev(x,g_*(k)) = g_*(k)(x,\id_n) = g(x,\iota_k\id_n) = g(x,k) $$
+    so that $\ev_*(g_*)=g$.
+    And for $g\colon K\to\ihom(X,Y)$, $\ev_*(g)_*$ maps $k\in K_n$ to $\ev_*(g)_*(k)\in\hom_\sSet(X\times\Delta^n,Y)$
+    defined by
+    $$ (x,\phi) \mapsto \ev_*(g)(x,\iota_k\phi) = \ev(x,g(\iota_k\phi)) = g(\iota_k\phi)(x,\id_n) $$
+    where $\phi\in\Delta^n$.
+    But $\iota_k(\phi)=\phi(k)$ and so this is equal to
+    $$ = g(\phi(k))(x,\id_n) = (\phi g(k))(x,\id_n) $$
+    and recall that in the definition of $\ihom(X,Y)$, $\phi$ acts on it by
+    $$ = g(k)(x,\phi(\id_n)) = g(k)(x,\phi) $$
+    so that $\ev_*(g)_*=g$ as desired.
+    \qed
+
+\eproof
+
+Thus $\sSet$ is {\emphcolor cartesian closed}: its product has a left adjoint.
+The function complex $\ihom$ is also called the {\emphcolor interior hom}.
+
+\bnote
+
+    In general for a category $\C$, its presheaf category $[\C^\op,\Set]$ is cartesian closed.
+    The internal hom of presheaves is given much like here.
+    For presheaves $F,G\colon\C^\op\to\Set$ we define the presheaf
+    $$ \ihom(F,G)\colon\C^\op\to\Set,\qquad\ihom(F,G)(c) = \Nat(F\times\y(c),G) $$
+    where $\y\colon\C\to[\C^\op,\Set]$ is the Yoneda embedding.
+
+\enote
+
+\bprop
+
+    If $i\colon K\inj L$ is an inclusion of simplicial sets and $p\colon X\to Y$ is a fibration, then the map
+    $$ \ihom(L,X) \xtos{(i^*,p_*)} \ihom(K,X) \times_{\ihom(K,Y)} \ihom(L,Y) $$
+    which is induced by the diagram
+
+    \commsq{\ihom(L,X)&\ihom(L,Y)\cr
+        \ihom(K,X)&\ihom(K,Y)}
+    {p_*}{p_*}{i^*}{i^*}
+
+    is a fibration.
+
+\eprop
+
+\bproof
+
+    Diagrams of the form
+
+    \centerline{\drawdiagram{
+        $\Lambda^n_k$&$\ihom(L,X)$\cr
+        $\Delta^n$&$\ihom(K,X)\times_{\ihom(K,Y)}\ihom(L,Y)$&$\ihom(K,X)$\cr
+        &$\ihom(L,Y)$&$\ihom(K,Y)$
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,2}, to={2,2}, text={$(i^*,p_*)$}, x distance=.5cm}
+        \diagarrow{from={1,1}, to={2,1}, left cap={(}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={2,2}, to={3,2}}
+        \diagarrow{from={2,3}, to={3,3}}
+        \diagarrow{from={3,2}, to={3,3}}
+    }}
+
+    correspond to, according to the exponential law, diagrams of the form
+
+    \centerline{\drawdiagram{
+        $\Lambda^n_k\times K$&$\Lambda^n_k\times L$\cr
+        $\Delta^n\times K$&$(\Lambda^n_k\times L)\cup_{\Lambda^n_k\times K}(\Delta^n\times K)$&$X$\cr
+        &$\Delta^n\times L$&$Y$
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,2}, to={2,2}}
+        \diagarrow{from={1,1}, to={2,1}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={2,2}, to={3,2}, left cap={(}, text=$j$, x distance=-.25cm}
+        \diagarrow{from={2,3}, to={3,3}, text=$p$, x distance=.25cm}
+        \diagarrow{from={3,2}, to={3,3}}
+    }}
+
+    By \refmath[corollary]{prodanodyne} $j$ is anodyne.
+    Since $p$ is fibrant, it has the right lifting property relative to $j$ and thus the desired lift exists in the lower
+    diagram; this corresponds to a lift in the original diagram.
+    \qed
+
+\eproof
+
+\bcoro[name={ihomfibrations}]
+
+    \benum
+        \item If $p\colon X\to Y$ is a fibration, so is $p_*\colon\ihom(K,X)\to\ihom(K,Y)$.
+        \item If $i\colon K\inj L$ is an inclusion and $X$ is fibrant, then $i^*\colon\ihom(L,X)\to\ihom(K,X)$ is a fibration.
+    \eenum
+
+\ecoro
+
+\bproof
+
+    \benum
+        \item Consider the inclusion $i\colon*\inj K$ and the isomorphism
+        $$ \ihom(K,Y) \cong *\times_*\ihom(K,Y) \cong \ihom(*,X) \times_{\ihom(*,Y)} \ihom(K,Y) . $$
+        Under this isomorphism, $p_*$ corresponds to $(i^*,p_*)$ which is fibrant by the above proposition.
+
+        \item Consider the map $p\colon X\to*$ which is fibrant by definition.
+        Then as in the previous point,
+        $$ \ihom(K,X) \cong \ihom(K,X)\times_{\ihom(K,*)}\ihom(L,*) $$
+        under which $i$ corresponds to $(i^*,p_*)$ which is fibrant by the above proposition.
+        \qed
+    \eenum
+
+\eproof
+
+\blemm[name={facemapsrlp}]
+
+    Let $X$ be fibrant, then $(\delta^k)^*\colon\ihom(\Delta^n,X)\to\ihom(\Delta^{n-1},X)$ has the right-lifting property relative to any inclusion $\partial\Delta^m\subseteq\Delta^m$.
+
+\elemm
+
+\bproof
+
+    A commutative square
+
+    \centerline{\drawdiagram{
+        $\partial\Delta^m$&$\ihom(\Delta^n,X)$\cr
+        $\Delta^m$&$\ihom(\Delta^{n-1},X)$\cr
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,1}, to={2,1}, left cap={(}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={1,2}, to={2,2}, text=$(\delta^k)^*$}
+    }}
+
+    corresponds to, under exponentiation, maps $\partial\Delta^m\times\Delta^n\to X$ and $\Delta^m\times\Delta^{n-1}\to X$ which agree on $\partial\Delta^m\times\Delta^{n-1}$.
+    Thus they define a map $(\partial\Delta^m\times\Delta^n)\cup(\Delta^m\times\Delta^{n-1})\to X$.
+    Because $X$ is fibrant and $(\partial\Delta^m\times\Delta^n)\cup(\Delta^m\times\Delta^{n-1})\subseteq\Delta^m\times\Delta^n$ is anodyne, this lifts to $\Delta^m\times\Delta^n\to X$.
+    Via exponentiation, this gives the desired extension $\Delta^m\to\ihom(\Delta^n,X)$.
+    \qed
+
+\eproof
+

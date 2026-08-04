@@ -1,0 +1,231 @@
+\subsection{Simplicial homotopy}
+
+\bdefn
+
+    Let $f,g\colon K\to X$ be simplicial maps.
+    A {\emphcolor simplicial homotopy} from $f$ to $g$ is a map $h\colon K\times\Delta^1\to X$ such that the following diagram
+    commutes
+
+    \centerline{\drawdiagram{
+        $K\times\Delta^0=K$\cr
+        $K\times\Delta^1$&$X$\cr
+        $K\times\Delta^0=K$
+    }{
+        \diagarrow{from={1,1}, to={2,1}, text={$1\times\delta^1$}, x distance=-.5cm}
+        \diagarrow{from={3,1}, to={2,1}, text={$1\times\delta^0$}, x distance=-.5cm}
+        \diagarrow{from={1,1}, to={2,2}, text=$f$, x distance=.5cm}
+        \diagarrow{from={3,1}, to={2,2}, text=$g$, x distance=.25cm}
+        \diagarrow{from={2,1}, to={2,2}, text=$h$, y distance=.25cm}
+    }}
+
+    If there exists a simplicial homotopy from $f$ to $g$ we write $f\hto g$.
+
+\edefn
+
+Recall that a $k$-simplex in $\Delta^n$ is an increasing $f\colon[k]\to[n]$ which we can represent as $[f(0),\dots,f(k)]$.
+In particular its vertices can naturally be written as $0,\dots,n$ according to the image of $f\colon[0]\to[n]$.
+
+Note that $\delta^1\colon\Delta^0\to\Delta^1$ corresponds to the vertex of $\Delta^1$ given by $\delta^1\colon[0]\to[1]$,
+which by definition skips $1$; its image is $0$.
+Similarly $\delta^0$ corresponds to the vertex $1$.
+
+So a homotopy can equivlantely be given as a simplicial map $h\colon K\times\Delta^1\to X$ such that
+$$ h(x,0) = f(x),\qquad h(x,1) = g(x) $$
+for all $x\in K$ (where $0,1$ denote the degeneracies of the vertices $0,1$).
+
+\bdefn
+
+    Suppose $\iota\colon L\inj K$ is an inclusion of simplicial sets, and let $f,g\colon K\to X$ be simplicial maps.
+    Further suppose that $f|_L=g|_L$.
+    A homotopy from $f$ to $g$ {\emphcolor relative to $L$} is a homotopy $h\colon f\hto g$ such that the following diagram
+    commutes.
+
+    \bigskip
+    \centerline{\drawdiagram{
+        $K\times\Delta^1$&$X$\cr
+        $L\times\Delta^1$&$L$\cr
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=$h$, y distance=.25cm}
+        \diagarrow{from={2,1}, to={1,1}, text=$\iota\times\id$, x distance=-.5cm, left cap={(}}
+        \diagarrow{from={2,1}, to={2,2}, text=$\proj_L$, y distance=-.25cm}
+        \diagarrow{from={2,2}, to={1,2}, text={$f|_L=g|_L$}, x distance=.5cm}
+    }}
+
+\edefn
+
+This means that $h(x,t)=f(x)=g(x)$ for all $x\in L,t\in\Delta^1$.
+A homotopy of the form
+$$ L\times\Delta^1 \xtos{\proj_L} L \xtos\alpha X $$
+is called a constant homotopy: it is a homotopy from $\alpha$ to itself.
+
+\bnote
+
+    Homotopy is not in general an equivalence.
+    Consider the maps $\iota_0,\iota_1\colon\Delta^0\to\Delta^n$ classifying the vertices $0,1$ respectively.
+    A homotopy between them is a map $h\colon\Delta^1\to\Delta^n$ such that $h(0)=0$ and $h(1)=1$.
+    This corresponds to the $1$-simplex $[0,1]\in\Delta^n$.
+
+    But there is not a homotopy from $\iota_1$ to $\iota_0$ as this would correspond to a simplex $[1,0]$ which does not
+    exist.
+
+\enote
+
+For an $n$-simplex $\sigma\in X$, denote its {\emphcolor boundary} by
+$$ \partial\sigma = (d_0\sigma,\dots,d_n\sigma) . $$
+
+\blemm
+
+    Suppose that $X$ is a fibrant simplicial set.
+    Then the simplicial homotopy of vertices $x\colon\Delta^0\to X$ is an equivalence.
+
+\elemm
+
+\bproof
+
+    There is a homotopy $x\hto y$ iff there is a $1$-simplex $v\in X_1$ such that $d_1v=x$ and $d_0v=y$.
+    That is, iff there is a $1$-simplex $v$ with boundary $\partial v=(y,x$.
+    Note that $\partial(s_0x)=(x,x)$ gives reflexivity.
+
+    Now suppose $\partial v_2=(y,x)$ and $\partial v_0=(z,y)$ so that $d_0v_2=d_1v_0=y$.
+    Thus $v_2,v_0$ determine a map $(v_0,\ ,v_2)\colon\Lambda^2_1\to X$.
+    Because $X$ is fibrant, we can lift it,
+
+    \centerline{\drawdiagram{
+        $\Lambda^2_1$&$X$\cr
+        $\Delta^2$
+    }{
+        \diagarrow{from={1,1}, to={2,1}, left cap={(}}
+        \diagarrow{from={2,1}, to={1,2}, text=$\theta$, y distance=-.25cm}
+        \diagarrow{from={1,1}, to={1,2}, text={$(v_0,\ ,v_2)$}, y distance=.25cm}
+    }}
+
+    Then
+    $$ \partial(d_1\theta) = (d_0d_1\theta,d_1d_1\theta) = (d_0d_0\theta,d_1d_2\theta) , $$
+    and
+    $$ d_0\theta = \theta\circ\delta^0 = (v_0,\ ,v_2)\circ\delta^0 = v_0 $$
+    and similar for $d_2\theta$.
+    Thus
+    $$ \partial(d_1\theta) = (d_0v_0,d_1v_2) = (z,x) $$
+    so that $d_1\theta$ is a homotopy $x\hto z$; so homotopy is transitive.
+
+    For symmetry, suppose $\partial v_2=(y,x)$ and let $v_1=s_0x$.
+    Then $d_1v_1=d_1v_2=x$, so these define a map $(\ ,v_1,v_2)\colon\Lambda^2_0\to X$.
+    We extend this to $\theta'\colon\Delta^1\to X$ so that
+    $$ \partial(d_0\theta') = (d_0d_0\theta',d_1d_0\theta') = (d_0d_1\theta',d_0d_2\theta') = (x,y) . $$
+    Thus the relation is symmetric.
+    \qed
+
+\eproof
+
+\blemm[name={fibrantfibers}]
+
+    The pullback of a fibration is a fibration.
+    Explicitly, suppose we have the following pullback square
+
+    \centerline{\drawdiagram{
+        $F$&$X$\cr
+        $W$&$Y$
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,1}, to={2,1}, text=$q$, x distance=-.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text=$p$, x distance=.25cm}
+        \diagarrow{from={2,1}, to={2,2}}
+    }}
+
+    If $p$ is a fibration, then so is $q$.
+
+    This implies that all the fibers of $p$ are fibrant simplicial sets.
+
+\elemm
+
+\bproof
+
+    Consider the diagram
+
+    \centerline{\drawdiagram{
+        $\Lambda^n_k$&$F$&$X$\cr
+        $\Delta^n$&$W$&$Y$\cr
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,1}, to={2,1}, left cap={(}}
+        \diagarrow{from={1,2}, to={2,2}, text=$q$, x distance=-.25cm}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={1,2}, to={1,3}}
+        \diagarrow{from={1,3}, to={2,3}, text=$p$, x distance=.25cm}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={2,1}, to={1,3}, dashed, text=$\theta$, x distance=.25cm}
+    }}
+
+    Because $p$ is fibrant, there is a lifting $\theta\colon\Delta^n\to X$.
+    So we have maps $\Delta^n\to X,W$ which commute with the pullback diagram, and thus define a unique map $\tilde\theta\colon\Delta^n\to F$.
+    This $\tilde\theta$ commutes with $F\xto qW$ and $\Delta^n\to W$ by definition.
+
+    It then follows that it commutes with $\Lambda^n_k\inj\Delta^n$ and $\Lambda^n_k\to F$ by the universal property of the pullback.
+    That is, it is easy to see that the composite $\Lambda^n_k\inj\Delta^n\xto{\tilde\theta}F$ composes with $F\to X$ and $F\to W$ the same way that $\Lambda^n_k\to F$
+    does.
+    Because $F$ is the pullback, this means that the composite is equal to $\Lambda^n_k\to F$ as desired.
+
+    The last part of the claim follows because the fibers of $p$ are the pullbacks along $*\to Y$, and then $q$ is the terminal map $F\to*$.
+    It being a fibration means that $F$ is fibrant.
+    \qed
+
+\eproof
+
+\bcoro
+
+    If $X$ is fibrant and $L\subseteq K$ is an inclusion, then
+    \benum
+        \item homotopy of maps $K\to X$ is an equivalence, and
+        \item homotopy of maps $K\to X\hrel L$ is an equivalence.
+    \eenum
+
+\ecoro
+
+\bproof
+
+    Clearly $(2)$ implies $(1)$ with $L=\emptyset$.
+    Now we know that $i^*\colon\ihom(L,X)\to\ihom(K,X)$ is a fibration, and the fiber of a vertex $\alpha\in\ihom(K,X)_0$
+    consists of all $f\in\ihom(L,X)$ such that $f|_L=\alpha$ (recall $\ihom(K,X)_0=\hom_\sSet(k,X)$).
+    These fibers are all fibrant by the above lemma.
+
+    Now we claim that $f\hto g\hrel L$ iff $f,g$ are homotopic as vertices of the fiber of $i^*$.
+    Let $\alpha=f|_L=g|_L$.
+    A homotopy $h\colon h\hto g\hrel L$ corresponds to a map $h\colon\Delta^1\times K\to X$, which by the \refmath{explaw}
+    corresponds to $\tilde h\colon\Delta^1\to\ihom(K,X)$.
+
+    Note that a homotopy diagram of the form
+
+    \centerline{\drawdiagram{
+        $K\times\Delta^0=K$\cr
+        $K\times\Delta^1$&$X$\cr
+        $K\times\Delta^0=K$
+    }{
+        \diagarrow{from={1,1}, to={2,1}, text={$1\times\delta^1$}, x distance=-.5cm}
+        \diagarrow{from={3,1}, to={2,1}, text={$1\times\delta^0$}, x distance=-.5cm}
+        \diagarrow{from={1,1}, to={2,2}, text=$f$, x distance=.5cm}
+        \diagarrow{from={3,1}, to={2,2}, text=$g$, x distance=.25cm}
+        \diagarrow{from={2,1}, to={2,2}, text=$h$, y distance=.25cm}
+    }}
+
+    Corresponds to a homotopy of vertices
+
+    \centerline{\drawdiagram{
+        $\Delta^0$\cr
+        $\Delta^1$&$\ihom(K,X)$\cr
+        $\Delta^0$
+    }{
+        \diagarrow{from={1,1}, to={2,1}, text={$\delta^1$}, x distance=-.5cm}
+        \diagarrow{from={3,1}, to={2,1}, text={$\delta^0$}, x distance=-.5cm}
+        \diagarrow{from={1,1}, to={2,2}, text=$\iota_f$, x distance=.5cm}
+        \diagarrow{from={3,1}, to={2,2}, text=$\iota_g$, x distance=.25cm}
+        \diagarrow{from={2,1}, to={2,2}, text=$\tilde h$, y distance=.25cm}
+    }}
+
+    and vice versa.
+
+    Homotopy relative to $L$ is the same as homotopy of vertices in the fibers of $i^*$, which are fibrant.
+    By the above lemma this is an equivalence.
+    \qed
+
+\eproof
+
