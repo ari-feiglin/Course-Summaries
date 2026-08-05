@@ -4,6 +4,7 @@
 \input pdfmsym
 
 \pdfmsymsetscalefactor{10}
+\def\diagtxtwrap#1{\setscale{8pt}$#1$}%
 
 \let\CITE\relax
 \def\TODO#1{\par\centerline{\setfontandscale{bf}{20pt}\color{red}TODO: #1}}
@@ -70,12 +71,21 @@
 
 \def\commsq#1#2#3#4#5{%
     \mathify\@csq{#1}%
+    \par\medskip%
     \centerline{\expandafter\drawdiagram\expanded{{\@csq}}{%
-        \diagarrow{from={1,1}, to={1,2}, text={$#2$}, y distance=-.25cm}%
-        \diagarrow{from={2,1}, to={2,2}, text={$#3$}, y distance=.25cm}%
-        \diagarrow{from={1,1}, to={2,1}, text={$#4$}, x distance=-.25cm}%
-        \diagarrow{from={1,2}, to={2,2}, text={$#5$}, x distance=-.25cm}%
+        \diagarrow{from={1,1}, to={1,2}, text={#2}, y distance=-.25cm}%
+        \diagarrow{from={2,1}, to={2,2}, text={#3}, y distance=.25cm}%
+        \diagarrow{from={1,1}, to={2,1}, text={#4}, x distance=-.25cm}%
+        \diagarrow{from={1,2}, to={2,2}, text={#5}, x distance=-.25cm}%
     }}%
+    \medskip%
+}
+
+\def\diagram#1#2{%
+    \mathify\@csq{#1}%
+    \par\medskip%
+    \centerline{\expandafter\drawdiagram\expanded{{\@csq}}{#2}}%
+    \medskip%
 }
 
 \def\@multline#1{%
@@ -130,6 +140,8 @@
 \def\bH{{\bb H}}
 
 \def\implies{\mathrel{\longvarRightarrow}}
+\let\to=\varrightarrow
+\let\longto=\longvarrightarrow
 \let\To=\varRightarrow
 \let\tof=\varrightleftarrows
 \let\xtof=\xvarrightleftarrows
@@ -161,18 +173,20 @@
 \let\bul=\bullet
 \let\ls=\setminus
 
-\def\mathnamefont{\sf}
-
-\def\@@makemathname#1#2{\def#1{{\mathnamefont #2}}}
-\def\@makemathname#1#2{\def#1{{\mathnamefont #2}}}
-\def\makemathname{\@ifstar \@makemathname\@@makemathname}
-
-\def\@mmname#1{\expandafter\makemathname\csname #1\endcsname{#1}}
-\commap\@mmname{Set,sSet,Top,Grp}
-
-\def\op{{\sf op}}
 \def\hrel#1{\allowbreak\mkern18mu({\rm rel}\,\,#1)}
 \def\hto{\xto\sim}
+\def\1{{\bf1}}
+
+\def\mathnotefont{\sf}
+
+\def\makemathnote#1#2{\def#1{{\mathnotefont #2}}}
+\def\@mmnote#1{\expandafter\makemathnote\csname #1\endcsname{#1}}
+\commap\@mmnote{op,rev,lax,nu}
+
+\def\mathnamefont{\sf}
+\def\makemathname#1#2{\def#1{{\mathnamefont #2}}}
+\def\@mmname#1{\expandafter\makemathname\csname #1\endcsname{#1}}
+\commap\@mmname{Set,sSet,Top,Grp,Cat,Mod}
 
 \def\mathopfont{\rm}
 
@@ -180,9 +194,6 @@
 \def\@makemathop#1#2{\def#1{\mathop{\mathopfont #2}}}
 \def\makemathop{\@ifstar \@makemathop\@@makemathop}
 
-%\def\id{{\rm id}}
-%\def\sk{{\rm sk}}
-%\def\proj{{\rm proj}}
 \def\@mmop#1{\expandafter\makemathop\csname #1\endcsname{#1}}
-\commap\@mmop{id,sk,proj,Nat,inc,ev,im}
+\commap\@mmop{id,sk,proj,Nat,inc,ev,im,Fun,End}
 

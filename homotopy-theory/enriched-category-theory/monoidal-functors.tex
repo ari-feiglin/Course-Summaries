@@ -1,0 +1,116 @@
+\subsection{Monoidal functors}
+
+Now that we have a notion of monoidal categories, it is natural to consider functors between them.
+We are of course interested in functors which preserve the monoidal structure, which not all functors will.
+A first approach is the following.
+
+\bdefn[title={Nonunital strict monoidal functors}]
+
+    Let $\C,\D$ be nonunital monoidal categories.
+    A {\emphcolor nonunital strict monoidal functor} from $\C$ to $\D$ is a functor $F\colon\C\to\D$ such that
+    \benum
+        \item The following diagram of functors commutes:
+        \commsq{\C\times\C&\C\cr\D\times\D&\D}
+            {\otimes}{\otimes}{F\times F}{F}
+        \item $F$ carries the associator of $\C$ to the associator of $\D$.
+        That is, $F(\alpha_{X,Y,Z})=\alpha_{FX,FY,FZ}$.
+        Alternatively we can write this as the whiskering: $F\alpha=\alpha_{F\times F\times F}$.
+    \eenum
+
+\edefn
+
+For example, the identity of $\C$ is a nonunital strict monoidal functor $\C\to\C$.
+
+But this approach is clearly too restrictive.
+Many constructions of a monoidal product are defined only up to isomorphism, so requiring a strict equality of $F(X\otimes Y)=F(X)\otimes F(Y)$ is too restrictive.
+For example, if $\C$ has finite products, then there are different ways of choosing $X\times Y$ although they are all uniquely isomorphic.
+Then the identity functor $1_\C$ will not be a strict monoidal functor from $\C$ equipped with one choice of products to another.
+
+Thus we will want some sort of isomorphism $\mu_{X,Y}\colon F(X)\otimes F(Y)\xtos\sim F(X\otimes Y)$.
+Of course we will want these $\mu$ to be natural.
+We start developing our theory by not requiring $\mu$ to be an isomorphism.
+
+\bdefn[title={Nonunital lax monoidal functors}]
+
+    Let $\C,\D$ be nonunital monoidal categories.
+    A {\emphcolor nonunital lax monoidal functor} from $\C$ to $\D$ is a functor $F\colon\C\to\D$ along with morphisms $\mu_{X,Y}\colon F(X)\otimes F(Y)\to F(X\otimes Y)$
+    for $X,Y\in\C$ such that
+    \benum
+        \item $\mu$ forms a natural transformation $\otimes\circ(F\times F)\To F\circ\otimes$:
+
+        \diagram{
+            \C\times\C&\C\cr
+            \D\times\D&\D
+        }{
+            \diagarrow{from={1,1}, to={1,2}, text=\otimes, y distance=.25cm}
+            \diagarrow{from={2,1}, to={2,2}, text=\otimes, y distance=-.25cm}
+            \diagarrow{from={1,1}, to={2,1}, text=F\times F, x distance=-.25cm}
+            \diagarrow{from={1,2}, to={2,2}, text=F, x distance=.25cm}
+            \diagarrow{from={2,1}, to={1,2}, text=\mu, y distance=-.25cm, x distance=.25cm, ds}
+        }
+
+        \item $\mu$ is compatible with the associators on $\C$ and $\D$: the following diagram commutes
+
+        \diagram{
+            F(X)\otimes(F(Y)\otimes F(Z))&(F(X)\otimes F(Y))\otimes F(Z)\cr
+            F(X)\otimes F(Y\otimes Z)&F(X\otimes Y)\otimes F(Z)\cr
+            F(X\otimes(Y\otimes Z))&F((X\otimes Y)\otimes Z)
+        }{
+            \diagarrow{from={1,1}, to={1,2}, text={\alpha_{FX,FY,FZ}}, y distance=.25cm}
+            \diagarrow{from={3,1}, to={3,2}, text={F\alpha_{X,Y,Z}}, y distance=-.25cm}
+            \diagarrow{from={1,1}, to={2,1}, text={\id_{FX}\otimes\mu_{Y,Z}}, x distance=-.75cm}
+            \diagarrow{from={2,1}, to={3,1}, text={\mu_{X,Y\otimes Z}}, x distance=-.75cm}
+            \diagarrow{from={1,2}, to={2,2}, text={\mu_{X,Y}\otimes\id_{FZ}}, x distance=.75cm}
+            \diagarrow{from={2,2}, to={3,2}, text={\mu_{X\otimes Y,Z}}, x distance=.75cm}
+        }
+    \eenum
+
+    We call $\mu$ the {\emphcolor tensoror} of $F$.
+
+\edefn
+
+\bdefn[title={Nonunital monoidal functors}]
+
+    A {\emphcolor nonunital monoidal functor} $F\colon\C\to\D$ is a nonunital lax monoidal functor whose tensoror $\mu$ is a natural isomorphism.
+
+\edefn
+
+Note that a nonunital strict monoidal functor is a nonunital monoidal functor whose tensoror $\mu$ is the identity.
+
+\bexam
+
+    The tensor $M\otimes_RN$ is characterized by an $R$-bilinear map $\mu_{X,Y}\colon M\times N\to M\otimes_RN$.
+    Then the forgetful functor $\Mod_R\to\Set$ is a nonunital lax monoidal functor whose tensoror is $\mu$.
+    Here $\Set$ is made into a monoidal category by direct products.
+
+    This functor is not monoidal, as $U(M\otimes N)$ is not isomorphic in general to $U(M)\times U(N)$ ($U$ denoting the forgetful functor).
+
+\eexam
+
+\bexam
+
+    Let $\C$ be a monoidal category, and endow $\End(\C)$ with the induced monoidal structure.
+    For $X\in\C$ define $\ell_X\colon\C\to\C$ by $\ell_X(Y)=X\otimes Y$ and $\ell_X(f)=\id_X\otimes f$.
+    This then defines a functor $\ell\colon\C\to\End(\C)$ (this is just the currying of $\otimes$).
+
+    For $X,Y\in\C$, there is a natural isomorphism $\mu_{X,Y}\cong\ell_X\circ\ell_Y\xtos\sim\ell_{X\otimes Y}$ whose value on $Z\in\C$ is the associator:
+    $$ (\ell_X\circ\ell_Y)(Z) = X\otimes(Y\otimes Z) \xtos{\alpha_{X,Y,Z}} (X\otimes Y)\otimes Z = \ell_{X\otimes Y}(Z) . $$
+    Then $(\ell,\mu)$ forms a nonunital monoidal functor $\C\to\End(\C)$.
+
+\eexam
+
+\bdefn[title={Nonunital monoidal natural transformations}]
+
+    Let $F,F'\colon\C\to\D$ be nonunital lax monoidal functors with tensorors $\mu,\mu'$ respectively.
+    A natural transformation $\gamma\colon F\To F'$ is {\emphcolor nonunital monoidal} if for all $X,Y\in\C$ the following diagram commutes:
+
+    \commsq{F(X)\otimes F(Y)&F(X\otimes Y)\cr
+        F'(X)\otimes F'(Y)&F'(X\otimes Y)}
+    {\mu_{X,Y}}{\mu'_{X,Y}}{\gamma_X\otimes\gamma_Y}{\gamma_{X\otimes Y}}
+
+    Define $\Fun^\lax_\nu(\C,\D)$ to be the category whose objects are nonunital lax monoidal functors $\C\to\D$ and whose morphisms are nonunital monoidal natural
+    transformations.
+    And let $\Fun^\otimes_\nu(\C,\D)$ be the full subcategory of $\Fun^\lax_\nu(\C,\D)$ whose objects are the nonunital monoidal functors $\C\to\D$.
+
+\edefn
+

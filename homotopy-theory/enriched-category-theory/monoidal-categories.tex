@@ -1,0 +1,308 @@
+\subsection{Monoidal categories}
+
+For a given commutative ring $R$, there is a functor $\otimes\colon\Mod_R\times\Mod_R\to\Mod_R$ (the tensor product) which maps $M,N$ to $M\otimes N$
+defined up to unique isomorphism as representing bilinear maps out of $M\times N$.
+That is,
+$$ \hom_R(M\otimes N,\bul) \cong \set{\hbox{bilinear maps $M\times N\to\bul$}} . $$
+The tensor product is of much importance in algebra, and we are concerned with it here for certain properties it exhibits.
+
+For one, $M\otimes R\cong R\otimes M\cong M$, so that $R$ acts as a sort of unit for the tensor.
+Furthermore $M\otimes(N\otimes W)\cong(M\otimes N)\otimes W$, so the tensor is sort of associative.
+By ``sort of'' we mean that $R$ is a unit and the tensor is associative, up to a natural isomorphism.
+
+We are interested in categories equipped with a similar structure.
+For the time being, we focus on the associativity of $\otimes$.
+
+The simplest such attempt of a generalization is a {\it strict monoidal category}, which we describe here.
+
+\bdefn[title={Strict nonunital monoidal categories}]
+
+    A {\emphcolor strict nonunital monoidal category} is a category $\C$ equipped with a bifunctor $\otimes\colon\C\times\C\to\C$
+    which is strictly associative in the following sense:
+    \benum
+        \item For all $X,Y,Z\in\C$ we have an {\it equality}:
+        $$ X\otimes(Y\otimes Z) = (X\otimes Y)\otimes Z . $$
+        \item For a triple of morphisms $f\colon X\to X'$, $g\colon Y\to Y'$, $h\colon Z\to Z'$, we have an {\it equality}:
+        $$ \matrix{f\otimes(g\otimes h)\cr =\cr(f\otimes g)\otimes h} \ :\ \matrix{X\otimes(Y\otimes Z)\cr=\cr(X\otimes Y)\otimes Z} \longto \matrix{X'\otimes(Y'\otimes Z')\cr=\cr(X'\otimes Y')\otimes Z'} . $$
+    \eenum
+
+\edefn
+
+Such a definition is neat and simple, but betrays one of the core tenets of category theory: things should be defined {\it up to isomorphism}, not up to equality.
+For example, $\Mod_R$ equipped with the tensor product is not a strict monoidal category.
+
+A simple example of a strict nonunital monoidal category are semigroups.
+Recall that a semigroup is a set $M$ equipped with an associative binary operation.
+A set $M$ can be viewed as a discrete category, and then any semigroup structure on $M$ corresponds to a strict nonunitarl monoidal category structure on $M$ and vice versa.
+
+A more involved example are endofunctor categories.
+If $\C$ is an (ordinary) category, then the functor category $\End(\C)=\Fun(\C,\C)$ is a strict monoidal category whose monoidal structure is given by composition:
+$$ \circ\colon\End(\C)\times\End(\C)\to\End(C),\qquad (F,G)\mapsto F\circ G . $$
+
+If we want to generalize the tensor product structure on $\Mod_R$ we need to encode information about the isomorphisms $X\otimes(Y\otimes Z)\xto\sim(X\otimes Y)\otimes Z$.
+
+\bdefn[title={Nonunital monoidal categories}]
+
+    A {\emphcolor nonunital monoidal category} is a category $\C$ equipped with the following:
+    \benum
+        \item a bifunctor $\otimes\colon\C\times\C\to\C$,
+        \item for every $X,Y,Z\in\C$ an isomorphism $\alpha_{X,Y,Z}\colon X\otimes(Y\otimes Z)\xto\sim(X\otimes Y)\otimes Z$, called the {\emphcolor associator}.
+    \eenum
+    We further require the following from the associators.
+    \benum
+        \item The associator forms a natural isomorphism between the following two functors:
+        $$ \displaylines{
+            \C\times\C\times\C \xtos{(X,Y,Z)\mapsto X\otimes(Y\otimes Z)} \C\cr
+            \C\times\C\times\C \xtos{(X,Y,Z)\mapsto (X\otimes Y)\otimes Z} \C.
+        } $$
+        Explicitly, this means that for all $f\colon X\to X'$, $g\colon Y\to Y'$, $h\colon Z\to Z'$, the following diagram commutes:
+
+        \commsq{
+            X\otimes(Y\otimes Z)&(X\otimes Y)\otimes Z\cr
+            X'\otimes(Y'\otimes Z')&(X'\otimes Y')\otimes Z'
+        }
+        {\alpha_{X,Y,Z}}{\alpha_{X',Y',Z'}}{f\otimes(g\otimes h)}{(f\otimes g)\otimes h}
+
+        \item The following {\emphcolor pentagon identity} is satisfied: for $W,X,Y,Z\in\C$ the following diagram of isomorphism commutes:
+
+        \bigskip
+        \centerline{%
+        \drawdiagram{
+            $W\otimes((X\otimes Y)\otimes Z)$&&$(W\otimes(X\otimes Y))\otimes Z$\cr
+            $W\otimes(X\otimes(Y\otimes Z))$&&$((W\otimes X)\otimes Y)\otimes Z$\cr
+            &$(W\otimes X)\otimes(Y\otimes Z)$
+        }{
+            \diagarrow{from={1,1}, to={1,3}, text={\alpha_{W,X\otimes Y,Z}}, y distance=.25cm}
+            \diagarrow{from={2,1}, to={1,1}, text={1_W\otimes\alpha_{X,Y,Z}}, x distance=-.75cm}
+            \diagarrow{from={1,3}, to={2,3}, text={\alpha_{W,X,Y}\otimes1_Z}, x distance=.75cm}
+            \diagarrow{from={2,1}, to={3,2}, text={\alpha_{W,X,Y\otimes Z}}, y distance=-.25cm}
+            \diagarrow{from={3,2}, to={2,3}, text={\alpha_{W\otimes X,Y,Z}}, y distance=-.25cm}
+        }}
+    \eenum
+
+\edefn
+
+If $(C,\otimes)$ is a strict nonunital monoidal category, then taking $\alpha=\id$ makes it into a (non-strict) nonunital monoidal category.
+So this definition is a generalization of the previous one.
+
+The tensor product on $\Mod_R$ is an example of a nonunital monoidal category.
+
+\bexam
+
+    If $\D$ is a nonunital monoidal category, then for any category $\C$ we can form $\Fun(\C,\D)$ into a nonunital monoidal category.
+    The monoidal product is given by postcomposition with $\otimes$ in the following
+    $$ \Fun(\C,\D) \times \Fun(\C,\D) \cong \Fun(\C,\D\times\D) \xtos{\otimes\circ-} \Fun(\C,\D) . $$
+    The associator for $F,G,H\colon\C\to\D$ is given by the natural isomorphism
+    $$ F\otimes(G\otimes H) \xtos\sim (F\otimes G)\otimes H,\qquad X\mapsto\alpha_{F(X),G(X),H(X)} . $$
+
+\eexam
+
+Now we extend our definitions to consider units.
+
+\bdefn[title={Strict monoidal categories}]
+
+    A {\emphcolor strict monoidal category} is a nonunital strict monoidal category $\C$ equipped with an object $\1\in\C$ (the unit) such that
+    \benum
+        \item $X\otimes\1=X=\1\otimes X$ for all objects $X\in\C$,
+        \item For every $f\colon X\to X'$, $f\otimes\id_\1=f=\id_\1\otimes f$.
+    \eenum
+
+\edefn
+
+For example for any category $\C$, $\End(\C)$ is a strict monoidal category whose unit is the identity functor $1_\C$.
+
+For a set $M$ viewed as a discrete category, strict monoidal structures on $M$ correspond to monoids defined on $M$.
+Recall that a monoid is a set equipped with a binary operator which is associative and unital.
+
+Note that the unit of a strict monoidal category is not invariant under isomorphism.
+Indeed, if $\1,\1'$ are two units then they must be equal: $\1\otimes\1'=\1$ because $\1'$ is the unit, but it is also equal to $\1'$ as $\1$ is the unit.
+
+\bdefn[title={Monoidal categories}]
+
+    A {\emphcolor monoidal category} is a nonunital monoidal category $\C$ equipped with a {\emphcolor unit}: a pair $(\1,v)$ where $\1\in\C$
+    is an object and $v\colon\1\otimes\1\xto\sim\1$ is an isomorphism.
+    We further require that the two functors
+    $$ \C\to\C,\qquad X\mapsto\1\otimes X,\qquad X\mapsto X\otimes\1 $$
+    are fully faithful.
+
+\edefn
+
+If $\C$ is a strict monoidal category, then $(\1,\id_\1)$ forms a unit of $\C$ (in the non-strict sense) so that $\C$ is also a non-strict monoidal category.
+
+It is not obvious a priori that the unit of a monoidal category is unique up to unique isomorphism, but we will show that it is.
+
+If $\C$ is a monoidal category, then we have an isomorphism
+$$ \1\otimes(\1\otimes X) \xtos{\alpha_{\1,\1,X}} (\1\otimes\1)\otimes X \xtos{v\otimes\id_X} \1\otimes X . $$
+Because $Y\mapsto\1\otimes Y$ is fully faithful, there is a unique isomorphism $\lambda_X\colon\1\otimes X\xtos\sim X$ making the following diagram commute:
+
+\diagram{
+    \1\otimes(\1\otimes X)&&(\1\otimes\1)\otimes X\cr
+    &\1\otimes X
+}{
+    \diagarrow{from={1,1}, to={1,3}, text={\alpha_{\1,\1,X}}, y distance=.25cm}
+    \diagarrow{from={1,1}, to={2,2}, text={\id_\1\otimes\lambda_X}, x distance=-.25cm}
+    \diagarrow{from={1,3}, to={2,2}, text={v\otimes\id_X}, x distance=.25cm}
+}
+
+We call $\lambda_X$ the {\emphcolor left unitor}.
+
+Similarly there is a unique isomorphism $\rho_X\colon X\otimes\1\xtos\sim X$ making the following diagram commute:
+
+\diagram{
+    X\otimes(\1\otimes\1)&&(X\otimes\1)\otimes\1\cr
+    &X\otimes\1
+}{
+    \diagarrow{from={1,1}, to={1,3}, text={\alpha_{X,\1,\1}}, y distance=.25cm}
+    \diagarrow{from={1,1}, to={2,2}, text={\id_\1\otimes v}, x distance=-.25cm}
+    \diagarrow{from={1,3}, to={2,2}, text={\rho_X\otimes\id_\1}, x distance=.25cm}
+}
+
+And $\rho_X$ is called the {\emphcolor right unitor}.
+
+By their uniqueness, it is easy to see that the unitors are natural.
+That is, $\lambda$ and $\rho$ form natural isomorphisms
+$$ \lambda\colon (X\mapsto\1\otimes X)\xtos\sim 1_\C,\qquad \rho\colon(X\mapsto X\otimes\1)\xtos\sim 1_\C . $$
+
+\bprop[title={The triangle identity}]
+
+    Let $\C$ be a monoidal category.
+    Then for any $X,Y\in\C$, the following diagram of isomorphisms commutes:
+
+    \diagram{
+        X\otimes(\1\otimes Y)&&(X\otimes\1)\otimes Y\cr
+        &X\otimes Y
+    }{
+        \diagarrow{from={1,1}, to={1,3}, text={\alpha_{X,\1,Y}}, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,2}, text={\id_X\otimes\lambda_Y}, x distance=-.25cm}
+        \diagarrow{from={1,3}, to={2,2}, text={\rho_X\otimes\id_Y}, x distance=.25cm}
+    }
+
+\eprop
+
+\bproof
+
+    This follows from the pentagram identity and the functorality of $\alpha,\lambda,\rho$.\CITE
+    \qed
+
+\eproof
+
+\bcoro
+
+    Let $\C$ be a monoidal category.
+    Then the left and right unitors $\lambda_\1,\rho_\1\colon\1\otimes\1\xtos\sim\1$ are equal to the unit constraint $v$.
+
+\ecoro
+
+\bproof
+
+    The left unitor is characterized by the following commutative diagram
+
+    \diagram{
+        \1\otimes(\1\otimes X)&&(\1\otimes\1)\otimes X\cr
+        &\1\otimes X
+    }{
+        \diagarrow{from={1,1}, to={1,3}, text={\alpha_{\1,\1,X}}, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,2}, text={\id_\1\otimes\lambda_X}, x distance=-.25cm}
+        \diagarrow{from={1,3}, to={2,2}, text={v\otimes\id_X}, x distance=.25cm}
+    }
+
+    so by the triangle identity we have that $v\otimes\id_X=\rho_\1\otimes\id_X$.
+    Because $Y\mapsto Y\otimes\1$ is fully faithful, this means that $v=\rho_\1$.
+    Similarly we have that $v=\lambda_\1$.
+    \qed
+
+\eproof
+
+\bnote
+
+    In lieu of this result, it should not be surprising that we can axiomatize monoidal categories in terms of the unitors $\lambda$ and $\rho$
+    instead of $v$.
+    To do so, we just require the pentagram identity and the triangle identity.
+
+\enote
+
+\bprop
+
+    If $\C$ is a nonunital monoidal category equipped with units $(\1,v)$ and $(\1',v')$, then there is a unique isomorphism $u\colon\1\xtos\sim\1'$
+    such that the following diagram commutes:
+    \commsq{
+        \1\otimes\1&\1\cr
+        \1'\otimes\1'&\1'
+    }{v}{v'}{u\otimes u}{u}
+
+\eprop
+
+\bproof
+
+    Let $\lambda,\rho$ be the unitors relative to $(\1,v)$.
+    Because $v=\lambda_\1$, this claim is equivalent to the outer rectangle in the below diagram commuting:
+
+    \diagram{
+        \1\otimes\1&\1\cr
+        \1\otimes\1'&\1'\cr
+        \1'\otimes\1'&\1'
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=\lambda_\1}
+        \diagarrow{from={2,1}, to={2,2}, text=\lambda_{\1'}}
+        \diagarrow{from={3,1}, to={3,2}, text=v'}
+        \diagarrow{from={1,1}, to={2,1}, text={\id_\1\otimes u}}
+        \diagarrow{from={1,2}, to={2,2}, text=u}
+        \diagarrow{from={2,1}, to={3,1}, text={u\otimes\id_{\1'}}}
+        \diagarrow{from={2,2}, to={3,2}, text={\id_{\1'}}}
+    }
+
+    The upper square commutes by naturality of $\lambda$.
+    So we want to show the existence and uniqueness of $u$ making the bottom square commute.
+    This follows immediately from $X\mapsto X\otimes\1'$ being fully faithful ($(v')^{-1}\circ\lambda_{\1'}$ has a unique origin).
+    \qed
+
+\eproof
+
+\bnote
+
+    The conditions for $\C$ being monoidal are actually quite strong.
+    A powerful theorem due to Mac Lane states that in a monoidal category, all diagrams whose vertices are obtained via tensoring with objects of $\C$ and $\1$
+    and whose edges are tensors of the associators, unitors, and identities, and their inverses, commutes.
+
+    This is called {\emphcolor Mac Lane's coherence theorem}.
+
+    Note that this result is restricted only to so-called ``formal diagrams'' whose vertices and edges are composed of data from the monoidal structure on $\C$.
+
+\enote
+
+\bexam
+
+    If $\C$ is a category admitting binary products, then it forms a nonunital monoidal category.
+    Indeed, $X\otimes(Y\otimes Z)$ and $(X\otimes Y)\otimes Z$ both satisfy the same universal properties, so there is a unique isomorphism between them.
+    A standard diagram chasing argument shows that these isomorphisms satisfy the pentagram identity.
+
+    If $\C$ has a terminal object $\1$, then there is a unique isomorphism $v\colon\1\times\1\cong\1$, and it is standard to see that this makes $\C$ into a monoidal category.
+
+\eexam
+
+\bexam
+
+    If $\C$ is a monoidal category, then there is a canonical way to turn its opposite category $\C^\op$ into one.
+    This follows from the commutativity of $\bul^\op$ with product categories, so
+    $$ \Fun(\C\times\C,\C)^\op \cong \Fun(\C^\op\times\C^\op,\C^\op) $$
+    meaning there is a canonical choice for $\otimes^\op\colon\C^\op\times\C^\op\to\C^\op$.
+
+    If we denote the associated object of $X\in\C$ in the opposite category by $X^\op\in\C^\op$, then the associator $\alpha_{X^\op,Y^\op,Z^\op}$ is defined to be
+    the inverse $\alpha_{X,Y,Z}^{-1}$.
+
+    And if $(\1,v)$ is the unit for $\C$, then $(\1^\op,v^{-1})$ is the unit for $\C^\op$.
+
+\eexam
+
+\bexam
+
+    If $\C$ is a monoidal category, we can ``reverse'' the monoidal product to give another monoidal structure on $\C$.
+    Denote the reverse monoidal category by $\C^\rev$.
+    Then $\otimes^\rev$ acts on objects and morphisms by
+    $$ X\otimes^\rev Y = Y\otimes X,\qquad f\otimes^\rev g = g\otimes^\rev f . $$
+    The associator is then
+    $$ \alpha^\rev_{X,Y,Z} = \alpha_{Z,Y,X}^{-1} $$
+    and the unit remains the same: $(\1^\rev,v^\rev)=(\1,v)$.
+
+\eexam
+
