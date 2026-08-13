@@ -69,22 +69,30 @@
     }}%
 }
 
-\def\commsq#1#2#3#4#5{%
+\def\commsqed#1#2#3#4#5{{%
     \mathify\@csq{#1}%
-    \par\medskip%
-    \centerline{\expandafter\drawdiagram\expanded{{\@csq}}{%
+    \expandafter\drawdiagram\expanded{{\@csq}}{%
         \diagarrow{from={1,1}, to={1,2}, text={#2}, y distance=-.25cm}%
         \diagarrow{from={2,1}, to={2,2}, text={#3}, y distance=.25cm}%
         \diagarrow{from={1,1}, to={2,1}, text={#4}, x distance=-.25cm}%
         \diagarrow{from={1,2}, to={2,2}, text={#5}, x distance=-.25cm}%
-    }}%
+    }%
+}}
+
+\def\commsq#1#2#3#4#5{%
+    \par\medskip%
+    \centerline{\commsqed{#1}{#2}{#3}{#4}{#5}}%
     \medskip%
 }
 
-\def\diagram#1#2{%
+\def\diagramed#1#2{{%
     \mathify\@csq{#1}%
+    \expandafter\drawdiagram\expanded{{\@csq}}{#2}%
+}}
+
+\def\diagram#1#2{%
     \par\medskip%
-    \centerline{\expandafter\drawdiagram\expanded{{\@csq}}{#2}}%
+    \centerline{\diagramed{#1}{#2}}%
     \medskip%
 }
 
@@ -121,6 +129,7 @@
 \def\B{{\c B}}
 \def\C{{\c C}}
 \def\D{{\c D}}
+\def\E{{\c E}}
 \def\S{{\c S}}
 \def\F{{\c F}}
 \def\G{{\c G}}
@@ -160,6 +169,7 @@
 \def\ilim{\underlvecc\lim}
 \def\coflim{\undervecc\colim}
 \def\ihom{\mathop{\bf Hom}\nolimits}
+\def\ehom{\mathop{\underline{\hom}}\nolimits}
 
 \def\mathrm#1{{\rm#1}}
 \def\xtos#1{\xto{\ #1\ }}
@@ -176,17 +186,23 @@
 \def\hrel#1{\allowbreak\mkern18mu({\rm rel}\,\,#1)}
 \def\hto{\xto\sim}
 \def\1{{\bf1}}
+\def\ortimes{\mathbin{\vecc\times}}
 
 \def\mathnotefont{\sf}
 
 \def\makemathnote#1#2{\def#1{{\mathnotefont #2}}}
 \def\@mmnote#1{\expandafter\makemathnote\csname #1\endcsname{#1}}
-\commap\@mmnote{op,rev,lax,nu}
+\commap\@mmnote{op,rev,lax}
+
+\def\makemathnote#1#2{\def#1{{\mathnotefont #2}}}
+\def\@@mmnote#1#2{\expandafter\makemathnote\csname #1\endcsname{#2}}
+\def\@mmnote#1{\@@mmnote#1}
+\commap\@mmnote{{nonu}{nu}}
 
 \def\mathnamefont{\sf}
 \def\makemathname#1#2{\def#1{{\mathnamefont #2}}}
 \def\@mmname#1{\expandafter\makemathname\csname #1\endcsname{#1}}
-\commap\@mmname{Set,sSet,Top,Grp,Cat,Mod}
+\commap\@mmname{Set,sSet,Top,Grp,Cat,Mod,Alg,Mon}
 
 \def\mathopfont{\rm}
 
@@ -195,5 +211,5 @@
 \def\makemathop{\@ifstar \@makemathop\@@makemathop}
 
 \def\@mmop#1{\expandafter\makemathop\csname #1\endcsname{#1}}
-\commap\@mmop{id,sk,proj,Nat,inc,ev,im,Fun,End}
+\commap\@mmop{id,sk,proj,Nat,inc,ev,im,Fun,End,Ob}
 

@@ -1,5 +1,7 @@
 \subsection{Monoidal functors}
 
+\subsubsection{Nonunital monoidal functors}
+
 Now that we have a notion of monoidal categories, it is natural to consider functors between them.
 We are of course interested in functors which preserve the monoidal structure, which not all functors will.
 A first approach is the following.
@@ -108,9 +110,805 @@ Note that a nonunital strict monoidal functor is a nonunital monoidal functor wh
         F'(X)\otimes F'(Y)&F'(X\otimes Y)}
     {\mu_{X,Y}}{\mu'_{X,Y}}{\gamma_X\otimes\gamma_Y}{\gamma_{X\otimes Y}}
 
-    Define $\Fun^\lax_\nu(\C,\D)$ to be the category whose objects are nonunital lax monoidal functors $\C\to\D$ and whose morphisms are nonunital monoidal natural
+    Define $\Fun^\lax_\nonu(\C,\D)$ to be the category whose objects are nonunital lax monoidal functors $\C\to\D$ and whose morphisms are nonunital monoidal natural
     transformations.
-    And let $\Fun^\otimes_\nu(\C,\D)$ be the full subcategory of $\Fun^\lax_\nu(\C,\D)$ whose objects are the nonunital monoidal functors $\C\to\D$.
+    And let $\Fun^\otimes_\nonu(\C,\D)$ be the full subcategory of $\Fun^\lax_\nonu(\C,\D)$ whose objects are the nonunital monoidal functors $\C\to\D$.
 
 \edefn
+
+\bexam
+
+    Let $\C$ be a nonunital monoidal category and $A\in\C$ an object.
+    A {\emphcolor nonunital monoid structure} on $A$ is a map $m\colon A\otimes A\to A$ (multiplication) which is associative in the sense that the following
+    diagram commutes
+
+    \diagram{
+        A\otimes(A\otimes A)&&(A\otimes A)\otimes A\cr
+        A\otimes A&&A\otimes A\cr
+        &A
+    }{
+        \diagarrow{from={1,1}, to={1,3}, text=\alpha, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,1}, text=\id\otimes m, x distance=-.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text=m\otimes\id, x distance=.25cm}
+        \diagarrow{from={2,1}, to={3,2}, text=m, x distance=-.25cm}
+        \diagarrow{from={2,3}, to={3,2}, text=m, x distance=.25cm}
+    }
+
+    Then $(A,m)$ is a {\emphcolor nonunital monoid object} of $\C$.
+    If $(A,m)$ and $(A',m')$ are nonunital monoid objects of $\C$, a {\emphcolor nonunital monoid homomorphism} is a morphism $f\colon A\to A'$ such that the following commutes
+
+    \commsq{
+        A\otimes A&A\cr
+        A'\otimes A'&A'
+    }{m}{m'}{f\otimes f}{f}
+
+    Let $\Mon^\nonu(\C)$ denote the category of nonunital monoid objects of $\C$ whose morphisms are nonunital monoid homomorphisms.
+    For example, if $\C=\Set$ with the cartesian product, then nonunital monoids in $\Set$ are simply ordinary nonunital monoids (semigroups).
+
+    Let $\set e$ be the trivial monoid, which can be regarded as a discrete (strict) monoidal category.
+    Objects of $\C$ can be identified with functors $F\colon\set e\to\C$ ($A$ is identified with $F(e)=A$).
+    Then nonunital lax monoidal structures on $F\colon\set e\to\C$ can be identified with nonunital monoid structures on $A=F(e)$.
+
+    Indeed the tensoror is a map $\mu\colon A\otimes A\to A$ (since $e\otimes e=e$), and compatibility with the associators means that it forms multiplication on $A$.
+    Naturality is trivially satisfied.
+
+    Thus there is an isomorphism of categories $\Fun^\lax_\nonu(\set e,\C)\cong\Mon^\nonu(\C)$.
+
+\eexam
+
+\bnote
+
+    The unit of a monoid object is unique.
+    That is, if $M\in\C$ is equipped with multiplication $m\colon M\otimes M\to M$, then any two units $\epsilon,\epsilon'\colon\1\to M$ must be
+    equal.
+
+    Indeed, consider the following diagram:
+
+    \diagram{
+        \1\otimes\1&\1\otimes M&M\otimes M\cr
+        \1&&M
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text={\id\otimes\epsilon}, y distance=.25cm}
+        \diagarrow{from={1,2}, to={1,3}, text={\epsilon'\otimes\id}, y distance=.25cm}
+        \diagarrow{from={2,1}, to={2,3}, text={\epsilon}, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,1}, text={v=\lambda_1}, x distance=-.5cm}
+        \diagarrow{from={1,2}, to={2,3}, text={\lambda}, x distance=-.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text={m}, x distance=.25cm}
+    }
+
+    Both regions of this diagram (the left due to $\lambda$'s naturality, the right by definition of units), so we have
+    $$ \epsilon\circ v = m\circ(\epsilon'\otimes\epsilon) . $$
+    A similar diagram with $\rho$ in place of $\lambda$ yields
+    $$ \epsilon\circ v = m\circ(\epsilon\otimes\epsilon') . $$
+    By symmetry we can swap $\epsilon,\epsilon'$ so that we get
+    $$ \epsilon\circ v = m\circ(\epsilon\otimes\epsilon') = m\circ(\epsilon'\otimes\epsilon) = \epsilon'\circ v $$
+    and since $v$ is an isomorphism, $\epsilon=\epsilon'$ as desired.
+
+\enote
+
+\bexam
+
+    Let $\C,\D$ be nonunital monoidal categories whose reverses are $\C^\rev,\D^\rev$.
+    Because $\C,\C^\rev$ have the same underlying categorical structure, a functor $F\colon\C\to\D$ determines a functor $F^\rev\colon\C^\rev\to\D^\rev$ and vice versa.
+    This bijection extends to nonunital lax monoidal functors: if $F\colon\C\to\D$ is a nonunital lax monoidal functor, then $F^\rev$ can be made into one with $\mu^\rev_{X,Y}=\mu_{Y,X}$.
+
+    Thus we have an isomorphism of categories $\Fun^\lax_\nonu(\C,\D)\cong\Fun^\lax_\nonu(\C^\rev,\D^\rev)$.
+    Clearly this restricts to an isomorphism of subcategories $\Fun^\otimes_\nonu(\C,\D)\cong\Fun^\otimes_\nonu(\C^\rev,\D^\rev)$.
+
+\eexam
+
+\bexam
+
+    The previous example then raises the question regarding the relation between lax monoidal functors $\C\to\D$ and lax monoidal functors $\C^\op\to\D^\op$.
+    Unwinding definitions, we see that the obvious bijection would require us defining $\mu^\op_{X,Y}=\mu_{X,Y}^{-1}$.
+    This defines an isomorphism $\Fun^\otimes_\nonu(\C,\D)^\op\cong\Fun^\otimes_\nonu(\C^\op,\D^\op)$.
+    But this does not extend to an isomorphism of {\it lax\/} monoidal functors!
+
+\eexam
+
+In lieu of this example, we give the following definition.
+
+\bdefn[title={Nonunital colax monoidal functors}]
+
+    Let $\C,\D$ be nonunital monoidal categories.
+    A {\emphcolor nonunital colax monoidal functor} is a functor $F\colon\C\to\D$ which forms a nonunital lax monoidal functor $F^\op\colon\C^\op\to\D^\op$.
+    Explicitly, it comes equipped with morphisms $\mu=\set{\mu_{X,Y}\colon F(X\otimes Y)\to F(X)\otimes F(Y)}_{X,Y\in\C}$ satisfying the following:
+
+    \benum
+        \item $\mu$ is a natural transformation $F\circ\otimes\To\otimes\circ(F\times F)$:
+        \diagram{
+            \C\times\C&\C\cr
+            \D\times\D&\D
+        }{
+            \diagarrow{from={1,1}, to={1,2}, text=\otimes, y distance=.25cm}
+            \diagarrow{from={2,1}, to={2,2}, text=\otimes, y distance=-.25cm}
+            \diagarrow{from={1,1}, to={2,1}, text=F\times F, x distance=-.25cm}
+            \diagarrow{from={1,2}, to={2,2}, text=F, x distance=.25cm}
+            \diagarrow{from={1,2}, to={2,1}, text=\mu, y distance=-.25cm, x distance=.25cm, ds}
+        }
+        Or explicitly, the following diagram commutes for all morphisms $f,g$ in $\C$:
+
+        \commsq{
+            F(X\otimes Y)&F(X)\otimes F(Y)\cr
+            F(X'\otimes Y')&F(X')\otimes F(Y')
+        }{\mu_{X,Y}}{\mu_{X',Y'}}{F(f\otimes g)}{F(f)\otimes F(g)}
+
+        \item For every $X,Y,Z\in\C$ the following diagram commutes:
+
+        \diagram{
+            F(X\otimes(Y\otimes Z))&F((X\otimes Y)\otimes Z)\cr
+            F(X)\otimes F(Y\otimes Z)&F(X\otimes Y)\otimes F(Z)\cr
+            F(X)\otimes(F(Y)\otimes F(Z))&(F(X)\otimes F(Y))\otimes F(Z)
+        }{
+            \diagarrow{from={3,1}, to={3,2}, text={\alpha_{FX,FY,FZ}}, y distance=.25cm}
+            \diagarrow{from={1,1}, to={1,2}, text={F\alpha_{X,Y,Z}}, y distance=-.25cm}
+            \diagarrow{from={3,1}, to={2,1}, text={\id_{FX}\otimes\mu_{Y,Z}}, x distance=-.75cm}
+            \diagarrow{from={2,1}, to={1,1}, text={\mu_{X,Y\otimes Z}}, x distance=-.75cm}
+            \diagarrow{from={3,2}, to={2,2}, text={\mu_{X,Y}\otimes\id_{FZ}}, x distance=.75cm}
+            \diagarrow{from={2,2}, to={1,2}, text={\mu_{X\otimes Y,Z}}, x distance=.75cm}
+        }
+    \eenum
+
+\edefn
+
+Suppose we have nonunital lax monoidal functors $F\colon\C\to\D$ and $G\colon\D\to\E$ with respective tensorors $\mu,\nu$.
+We want to then define a tensoror on $G\circ F$.
+We have the following situation:
+
+\diagram{
+    \C\times\C&\C\cr
+    \D\times\D&\D\cr
+    \E\times\E&\E
+}{
+    \diagarrow{from={1,1}, to={1,2}, text=\otimes, y distance=.25cm}
+    \diagarrow{from={2,1}, to={2,2}, text=\otimes, y distance=-.25cm}
+    \diagarrow{from={1,1}, to={2,1}, text=F\times F, x distance=-.25cm}
+    \diagarrow{from={1,2}, to={2,2}, text=F, x distance=.25cm}
+    \diagarrow{from={1,2}, to={2,1}, text=\mu, y distance=-.25cm, x distance=.25cm, ds}
+    \diagarrow{from={3,1}, to={3,2}, text=\otimes, y distance=-.25cm}
+    \diagarrow{from={2,1}, to={3,1}, text=G\times G, x distance=-.25cm}
+    \diagarrow{from={2,2}, to={3,2}, text=G, x distance=.25cm}
+    \diagarrow{from={2,2}, to={3,1}, text=\nu, y distance=-.25cm, x distance=.25cm, ds}
+}
+
+So we see that we can construct a natural transformation $\otimes\circ(G\times G)\circ(F\times F)\To G\circ F\circ\otimes$ as follows.
+First, $\nu_{F\times F}$ is a natural transformation $\otimes\circ(G\times G)\circ(F\times F)\To G\circ\otimes\circ(F\times F)$.
+Second, $G\mu$ is a natural transformation $G\circ\otimes\circ(F\times F)\To G\circ F\circ\otimes$.
+Thus composing them gives the desired natural transformation:
+$$ \multline{
+    G\mu\circ\nu_{F\times F}\colon \otimes\circ(G\times G)\circ(F\times F)\To G\circ F\circ\otimes,\cr
+    (G\circ F)(X)\otimes(G\circ F)(Y) \xtos{\nu_{FX,FY}} G(F(X)\otimes F(Y)) \xtos{G\mu_{X,Y}} G(F(X\otimes Y)) .
+} $$
+It is then routine to check that this is compatible with the associators of $\C$ and $\E$.
+
+Thus we can form a category of nonunital monoidal categories with nonunital lax monoidal functors as morphisms.
+It is also clear that in the above expression, if $\mu$ and $\nu$ are isomorphisms, so is their composition.
+Thus this restricts to the wide (meaning containing all objects) subcategory whose morphisms are nonunital monoidal functors.
+
+\bdefn[title={Oriented fiber products}]
+
+    Let $\C,\D,\E$ be categories along with functors $F\colon\C\to\E$ and $G\colon\D\to\E$.
+    Recall that $[n]$ is the poset $0<\cdots<n$ which we can view as a category.
+    The {\emphcolor oriented fiber product} is the iterated pullback
+    $$ \C\ortimes_\E\D = \C\times_{\Fun(\set0,\E)}\Fun([1],\E)\times_{\Fun(\set1,\E)}\D $$
+    where the functors $\C,\D\to\Fun(\set x,\E)$ are obtained via $F,G$ and the isomorphisms $\Fun(\set x,\E)\cong\E$.
+
+    We explicitly describe this category.
+    \benum
+        \item Objects of $\C\ortimes_\E\D$ are triples $(C,D,\eta)$ where $C\in\C$ and $D\in\D$ are objects and $\eta\colon F(C)\to G(D)$
+        is a morphism in $\E$.
+        \item If $(C,D,\eta)$ and $(C',D',\eta')$ are objects of $C\ortimes_\E\D$, a morphism $(C,D,\eta)\to(C',D',\eta')$ is a pair
+        $(u,v)$ where $u\colon C\to C'$ is a morphism in $\C$, $v\colon D\to D'$ a morphism in $\D$, and the following diagram commutes (in $\E$):
+
+        \commsq{FC&GD\cr FC'&GD'}
+            {\eta}{\eta'}{F(u)}{G(v)}
+    \eenum
+
+\edefn
+
+\bnote
+
+    The oriented fiber product is often called the {\emphcolor comma category} $F\downarrow G$.
+
+\enote
+
+\bprop
+
+    Let $\C,\D$ be nonunital monoidal categories and $G\colon\D\to\C$ a functor.
+    Let $\C\ortimes_\C\D$ be the oriented fiber product relative to $1_\C$ and $G$.
+    \benum
+        \item Let $\mu$ be a nonunital lax monoidal structure on $G$.
+        Then there is a unique nonunital monoidal structure $\otimes_\mu$ on $\C\ortimes_\C\D$ with the following properties:
+        \benum
+            \item The forgetful functor
+            $$ U\colon\C\ortimes_\C\D \to \C\times\D,\qquad (C,D,\eta) \mapsto (C,D) $$
+            is a strict monoidal functor.
+            \item On objects, the tensor product $\otimes_\mu$ is given by
+            $$ (C,D,\eta)\otimes_\mu(C',D',\eta') = (C\otimes C',D\otimes D',t(\eta,\eta')) $$
+            where $t(\eta,\eta')$ is the composition
+            $$ t(\eta,\eta') = C\otimes C' \xtos{\eta\otimes\eta'} G(D)\otimes G(D') \xtos{\mu_{D,D'}} G(D\otimes D') . $$
+        \eenum
+        \item Conversely every nonunital monoidal structure on $\C\ortimes_\C\D$ defines a nonunital lax monoidal structure on $G$
+        so that $\mu\mapsto\otimes_\mu$ is a bijection.
+    \eenum
+
+\eprop
+
+\bproof
+
+    For (1) clearly the two conditions uniquely determine $\otimes_\mu$.
+    Indeed, $U$ maps morphisms to themselves (the oriented fiber product is a subcategory of the direct product).
+    For $U$ to be strictly monoidal we must have that for morphisms $(u,v)$ and $(u',v')$ in the oriented fiber product,
+    $$ (u,v)\otimes_\mu(u',v') = U((u,v) \otimes_\mu (u',v')) = U((u,v)) \otimes U((u',v')) = (u,v) \otimes (u',v') = (u\otimes u,v\otimes v') . $$
+    The associators are uniquely determined again because $U$ is strictly monoidal: the isomorphism
+    $$ (C,D,\eta)\otimes_\mu((C',D',\eta')\otimes_\mu(C'',D'',\eta'')) \cong ((C,D,\eta)\otimes_\mu(C',D',\eta'))\otimes_\mu(C'',D'',\eta'') $$
+    maps to $(\alpha_{C,C',C''},\alpha_{D,D',D''})$ so this must the be associator in the oriented fiber product.
+
+    To show that this does form a well-defined monoidal structure on the oriented fiber product, we must show two things.
+    First we must show that $(u\otimes u',v\otimes v')$ is a morphism $(C,D,\eta)\otimes_\mu(C',D',\eta')\to(\bar C,\bar D,\bar\eta)\otimes_\mu(\bar C',\bar D',\bar\eta')$.
+    That is if the following diagrams commute:
+
+    \medskip
+    \hbox to\hsize{\hfil
+        \commsqed{C&G(D)\cr\bar C&G(\bar D)}{\eta}{\bar\eta}{u}{G(v)}\hfil
+        \commsqed{C'&G(D')\cr\bar C'&G(\bar D')}{\eta'}{\bar\eta'}{u'}{G(v')}\hfil
+    }
+
+    Then the following diagram commutes
+
+    \commsq{C\otimes C'&G(D\otimes D')\cr\bar C\otimes\bar C'&G(\bar D\otimes\bar D')}
+        {t(\eta,\eta')}{t(\bar\eta,\bar\eta')}{u\otimes u'}{G(v\otimes v')}
+
+    Now we must show that the associators are morphisms.
+    This is sufficient, because the naturality of the associator and it satisfying the pentagon identity follow from them doing so in $\C\times\D$.
+    To show that they are morphisms, we must have that the following diagram commutes
+
+    \commsq{C\otimes(C'\otimes C'')&(C\otimes C')\otimes C''\cr G(D\otimes(D'\otimes D''))&G((D\otimes D')\otimes D'')}
+        {\alpha_{C,C',C''}}{G(\alpha_{D,D',D''})}{t(\eta,t(\eta',\eta''))}{t(t(\eta,\eta'),\eta'')}
+
+    Conversely any structure satisfying these two conditions defines $\mu_{D,D'}$ by $\mu_{D,D'}=t(\id_{G(D)},\id_{G(D')})$.
+    Notice that if $(C,D,\eta)$ is an object in the oriented fiber product, then there is a morphism
+    $$ (\eta,\id_D) \colon (C,D,\eta) \to (G(D),D,\id_{G(D)}) . $$
+    Thus the first condition implies the following diagram commutes
+
+    \commsq{C\otimes C'&G(D\otimes D')\cr G(D)\otimes G(D')&G(D\otimes D')}
+        {t(\eta,\eta')}{t(\id,\id)}{\eta\otimes\eta'}{\id}
+
+    meaning that $t(\eta,\eta')=\mu_{D,D'}\circ(\eta\otimes\eta')$.
+    Thus $t$ can be recovered from $\mu$.
+
+    Thus it is sufficient for (1) and (2) to show that if $\mu=\set{\mu_{D,D'}}$ is any system of morphisms, it defines a nonunital lax monoidal structure on $G$
+    iff the two conditions above are satisfied.
+
+    The first condition requires that outer rectangle in the following diagram commutes:
+
+    \diagram{
+        C\otimes C'&G(D)\otimes G(D')&G(D\otimes D')\cr
+        \bar C\otimes\bar C'&G(\bar D)\otimes G(\bar D')&G(\bar D\otimes\bar D')
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=\eta\otimes\eta', y distance=.25cm}
+        \diagarrow{from={1,2}, to={1,3}, text=\mu_{D,D'}, y distance=.25cm}
+        \diagarrow{from={2,1}, to={2,2}, text=\bar\eta\otimes\bar\eta', y distance=-.25cm}
+        \diagarrow{from={2,2}, to={2,3}, text=\mu_{\bar D,\bar D'}, y distance=-.25cm}
+        \diagarrow{from={1,1}, to={2,1}, text=u\otimes u', x distance=-.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text=G(v)\otimes G(v'), x distance=-.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text=G(v\otimes v'), x distance=-.25cm}
+    }
+
+    The left square commutes automatically by functorality of $\otimes,G$.
+    This then commutes iff the right square commutes (taking the $\eta$ to be the identities for the converse).
+    Thus the first condition holds iff $\mu$ is natural.
+
+    The second condition requires that the outer rectangle in the following diagram commutes:
+
+    \diagram{
+        C\otimes(C'\otimes C'')&(C\otimes C')\otimes C''\cr
+        G(C)\otimes(G(C')\otimes G(C''))&(G(C)\otimes G(C'))\otimes G(C'')\cr
+        G(C)\otimes G(C'\otimes C'')&G(C\otimes C')\otimes G(C'')\cr
+        G(C\otimes(C'\otimes C''))&G((C\otimes C')\otimes C'')
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text={\alpha_{C,C',C''}}, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,1}, text={\eta\otimes(\eta'\otimes\eta'')}, x distance=-.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text={(\eta\otimes\eta')\otimes\eta''}, x distance=.25cm}
+        \diagarrow{from={2,1}, to={2,2}, text={\alpha_{GC,GC',GC''}}, y distance=.25cm}
+        \diagarrow{from={4,1}, to={4,2}, text={G\alpha_{C,C',C''}}, y distance=-.25cm}
+        \diagarrow{from={2,1}, to={3,1}, text={\id_{GC}\otimes\mu_{C',C''}}, x distance=-.75cm}
+        \diagarrow{from={3,1}, to={4,1}, text={\mu_{C,C'\otimes C''}}, x distance=-.75cm}
+        \diagarrow{from={2,2}, to={3,2}, text={\mu_{C,C'}\otimes\id_{GC''}}, x distance=.75cm}
+        \diagarrow{from={3,2}, to={4,2}, text={\mu_{C\otimes C',C''}}, x distance=.75cm}
+    }
+
+    The top square automatically commutes by naturality of the associators of $\C$.
+    Thus the outer rectangle commutes iff the lower rectangle does (for the converse, taking $\eta$ to be the identities).
+    And this is iff $\mu$ commutes with the associators of $\C,\D$, i.e.\ forms a lax monoidal structure on $G$.
+    \qed
+
+\eproof
+
+Note that a pair of functors $F\colon\C\tof\D\colon G$ form an adjoint pair $F\dashv G$ iff $1_\C\downarrow G$ and $F\downarrow 1_\D$ are isomorphic.
+Indeed, an object of the former is $(C,D,\eta)$ where $\eta\colon C\to G(D)$.
+Applying the adjunction gives $\eta^\sharp\colon F(C)\to D$, so that $(C,D,\eta^\sharp)$ is an object of the latter category.
+Naturality of the adjunction tells us this is functorial.
+And the inverse, $\eta\colon F(C)\to D$ mapping to $\eta^\flat\colon C\to G(D)$ is its inverse.
+
+Thus the following are equivalent:
+\benum
+    \item The datum of a nonunital lax monoidal structure on $G\colon\D\to\C$.
+    \item The datum of a nonunital colax monoidal structure on $F\colon\C\to\D$.
+    \item The datum of a nonunital monoidal structure on $\C\ortimes_\C\D\cong\C\ortimes_\D\D$ such that the forgetful functor to $\C\times\D$
+    is strict monoidal.
+\eenum
+The above proposition showed the equivalence of (1) and (3).
+Then (2) is equivalent to the datum of a nonunital lax monoidal structure on $F^\op$, equivalent to a nonunital monoidal structure on $1_{\D^\op}\downarrow F^\op$
+compatible with $\C^\op$ and $\D^\op$.
+Because this is the opposite category of $F\downarrow 1_\D\cong 1_\C\downarrow G$, this is then equivalent to (3).
+
+\subsubsection{Unital lax monoidal functors}
+
+We now consider monoidal functors between monoidal categories, that is we consider units.
+
+\bdefn
+
+    Let $\C,\D$ be monoidal categories with units $\1_\C,\1_\D$ respectively.
+    Let $F\colon\C\to\D$ be a nonunital lax monoidal functor with tensoror $\mu$.
+    A {\emphcolor left unit} for $F$ is a morphism $\epsilon\colon\1_\D\to F(\1_\C)$ in $\D$ such that $\D$'s left unitor $\lambda_{F(X)}\colon\1_\D\otimes F(X)\xtos\sim F(X)$
+    is equal to
+    $$ \lambda_{F(X)} = \1_\D\otimes F(X) \xtos{\epsilon\otimes\id_{F(X)}} F(\1_\C) \otimes F(X) \xtos{\mu_{\1_\C,X}} F(\1_\C\otimes X) \xtos{F(\lambda_X)} F(X) , $$
+    where $\lambda_X\colon\1_\C\otimes X\to X$ is the left unitor of $\C$.
+
+    Similarly $\epsilon$ is a {\emphcolor right unit} for $F$ if $\D$'s right unitor $\rho_{F(X)}\colon F(X)\otimes\1_\D\xtos\sim F(X)$ is the composition
+    $$ \rho_{F(X)} = F(X)\otimes\1_\D \xtos{\id_{F(X)}\otimes\epsilon} F(X)\otimes F(\1_\C) \xtos{\mu_{X,\1_\C}} F(X\otimes\1_\C) \xtos{F(\rho_X)} F(X) $$
+    where $\rho_X\colon X\otimes\1_\C\to X$ is the right unitor of $\C$.
+
+    If $\epsilon$ is both a left and right unit, it is just called a {\emphcolor unit}.
+
+\edefn
+
+It should not be surprising that the unit of a lax monoidal functor is unique.
+
+\bprop
+
+    Suppose that $F\colon\C\to\D$ is a nonunital lax monoidal functor with left unit $\epsilon_L$ and right unit $\epsilon_R$.
+    Then $\epsilon_L=\epsilon_R$.
+
+\eprop
+
+\bproof
+
+    Consider the following diagram
+
+    \diagram{
+        \1_\D\otimes\1_\D&\1_\D\otimes F(\1_\C)&F(\1_\C)\otimes F(\1_\C)\cr
+        &&F(\1_\C\otimes\1_\C)\cr
+        \1_\D&&F(\1_\C)
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text={\id\otimes\epsilon_R}, y distance=.25cm}
+        \diagarrow{from={1,2}, to={1,3}, text={\epsilon_L\otimes\id}, y distance=.25cm}
+        \diagarrow{from={3,1}, to={3,3}, text={\epsilon_R}, y distance=-.25cm}
+        \diagarrow{from={1,1}, to={3,1}, text={\lambda_{\1_\D}}, x distance=-.25cm}
+        \diagarrow{from={1,2}, to={3,3}, text={\lambda_{F(\1_\C)}}, x distance=-.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text={\mu_{\1_\C,\1_\C}}, x distance=.25cm}
+        \diagarrow{from={2,3}, to={3,3}, text={F(\lambda_{\1_\C})}, x distance=.25cm}
+    }
+
+    The left square commutes by naturality of the left unitor, while the right square commutes because $\epsilon_L$ is a left unit for $F$.
+    Recall that the units of $\C,\D$ are equal to $v_\C=\lambda_{\1_\C}$ and $v_\D=\lambda_{\1_\D}$ respectively.
+    Thus the above commutative diagram tells us that
+    $$ \epsilon_R\circ v_\D = \1_\D\otimes\1_\D \xtos{\epsilon_L\otimes\epsilon_R} F(\1_\C) \otimes F(\1_\C) \xtos{\mu_{\1_\C,\1_\C}} F(\1_\C\otimes\1_\C) \xtos{F(v_\C)} F(\1_\C) . $$
+    By symmetry, we see that $\epsilon_L\circ v_\D$ is equal to this as well.
+    Because $v_\D$ is an isomorphism, it follows that $\epsilon_L=\epsilon_R$.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Let $\C,\D$ be monoidal categories and $F\colon\C\to\D$ a nonunital lax monoidal functor.
+    Then $F$ admits a unit $\epsilon\colon\1_\D\to F(\1_\C)$ iff it has both a left and right unit, and in such a case the unit is unique.
+
+\ecoro
+
+\bprop
+
+    Let $\C,\D$ be monoidal categories with respective units $\1_\C,\1_\D$.
+    Let $G\colon\D\to\C$ be a functor with a nonunital lax monoidal structure, identified with a nonunital monoidal structure on the oriented fiber product $\C\ortimes_\C\D$.
+    Let $\epsilon\colon\1_\C\to G(\1_D)$ be a morphism in $\C$, and let $\1=(\1_C,\1_D,\epsilon)$ be an object of $\C\ortimes_\C\D$.
+    Then
+    \benum
+        \item $\epsilon$ is a left unit for $G$ iff for every object $(C,D,\eta)\in\C\ortimes_\C\D$, the left unitors $\lambda_C\colon\1_\C\otimes C\cong C$ and $\lambda_D\colon\1_D\otimes D\cong D$
+        determine an isomorphism $(\lambda_C,\lambda_D)\colon\1\otimes(C,D,\eta)\cong(C,D,\eta)$ in $\C\ortimes_\C\D$.
+        \item Dually, $\epsilon$ is a right unit for $G$ iff for every object $(C,D,\eta)\in\C\ortimes_\C\D$, the right unitors $\rho_C\colon\1_\C\otimes C\cong C$ and $\rho_D\colon\1_D\otimes D\cong D$
+        determine an isomorphism $(\rho_C,\rho_D)\colon\1\otimes(C,D,\eta)\cong(C,D,\eta)$ in $\C\ortimes_\C\D$.
+    \eenum
+
+\eprop
+
+\bproof
+
+    The proof of (2) is similar to the proof of (1).
+    Note that $(\lambda_C,\lambda_D)$ forms a morphism $\1\otimes(C,D,\eta)\to(C,D,\eta)$ iff the outer rectangle in the following diagram commutes
+
+    \diagram{
+        \1_\C\otimes C&C\cr
+        \1_\C\otimes G(D)&G(D)\cr
+        G(\1_\D)\otimes G(D)\cr
+        G(\1_\D\otimes D)&G(D)
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text={\lambda_C}, y distance=.25cm}
+        \diagarrow{from={2,1}, to={2,2}, text={\lambda_{GD}}, y distance=.25cm}
+        \diagarrow{from={4,1}, to={4,2}, text={G(\lambda_D)}, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,1}, text={\id\otimes\eta}, x distance=-.25cm}
+        \diagarrow{from={2,1}, to={3,1}, text={\epsilon\otimes\id}, x distance=-.25cm}
+        \diagarrow{from={3,1}, to={4,1}, text={\mu}, x distance=-.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text={\eta}, x distance=.25cm}
+        \diagarrow{from={2,2}, to={4,2}, text={\id}, x distance=.25cm}
+    }
+
+    In this diagram, the upper square commutes by $\lambda$'s naturality.
+    The lower rectangle commutes because $\epsilon$ is a left unit for $G$.
+
+    Conversely if this outer rectangle commutes then specializing to $C=G(D)$ and $\eta=\id$ shows that the lower rectangle commutes.
+    This is true for all $D$ so that $\epsilon$ is a left unit for $G$.
+
+    Note that $(\lambda_C,\lambda_D)$ is a morphism iff $(\lambda_C^{-1},\lambda_D^{-1})$ is, so that it is an isomorphism as desired.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Let $\C,\D$ be monoidal categories with respective units $(\1_\C,v_\C)$ and $(\1_\D,v_\D)$.
+    Let $G\colon\D\to\C$ be a nonunital lax monoidal functor and $\epsilon\colon\1_\C\to G(\1_\D)$ a morphism in $\C$.
+    Let $\1=(\1_\C,\1_\D,\epsilon)$ be an object of $\C\ortimes_\C\D$.
+    Then the following are equivalent:
+    \benum
+        \item $\epsilon$ is a unit for $G$,
+        \item The pair $v=(v_\C,v_\D)$ is a morphism $\1\otimes\1\to\1$ in $\C\ortimes_\C\D$, and $(\1,v)$ is a unit relative to $\otimes_\mu$.
+    \eenum
+
+\ecoro
+
+\bproof
+
+    Assume (1), then the previous proposition demonstrated that the functors
+    $$ \C\ortimes_\C\D\to\C\ortimes_\C\D,\qquad X\mapsto\1\otimes X,\quad X\mapsto X\otimes\1 $$
+    are naturally isomorphic to the identity (via the left and right unitors), and thus are fully faithful.
+    Thus to show (2) it is sufficient to show that $v=(v_\C,v_\D)$ is a morphism $\1\otimes\1\to\1$ (because then it is an isomorphism).
+    This is again due to the previous proposition as $v_\C=\lambda_{\1_\C}$ and $v_\D=\lambda_{\1_\D}$.
+
+    Now assume (2) so that $\C\ortimes_\C\D$ is a monoidal category with unit $(\1,v)$.
+    Because the forgetful functor $U\colon\C\ortimes_\C\D\to\C\times\D$ is strict monoidal, it carries the left and right unitors of the oriented fiber product
+    to the left and right unitors of $\C,\D$.
+    Indeed, this is immediate because $v=(v_\C,v_\D)$ is a unit for $\otimes_\mu$ and by the definition of the left/right unitors.
+
+    This means that $(\lambda_C,\lambda_D)$ and $(\rho_C,\rho_D)$ are isomorphisms between the necessary objects, so by the above proposition
+    $\epsilon$ is both a left and right unit for $G$.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $\C,\D$ be monoidal categories.
+    A {\emphcolor lax monoidal functor} $F\colon\C\to\D$ is a nonunital lax monoidal functor for which there exists a unit $\epsilon\colon\1_D\to F(\1_\C)$.
+
+\edefn
+
+\bcoro
+
+    Let $\C,\D$ be monoidal categories and $G\colon\D\to\C$ a functor.
+    Then there is a bijection between lax monoidal structures on $G$ and monoidal structures on $\C\ortimes_\C\D$ such that the forgetful functor is strictly monoidal.
+    This is given by $\mu\mapsto\otimes_\mu$.
+
+\ecoro
+
+\bdefn[title={Colax monoidal functors}]
+
+    Let $F\colon\C\to\D$ be a functor between monoidal categories.
+    It is a {\emphcolor colax monoidal functor} if its opposite $F^\op\colon\C^\op\to\D^\op$ is a lax monoidal functor.
+    That is $F$ is a nonunital colax monoidal functor with a {\emphcolor counit} $\epsilon\colon F(\1_\C)\to\1_\D$ such that the left and right unitors of $F(X)$ are
+    $$ \displaylines{
+        \lambda_{FX} = F(X) \xtos{F(\lambda_X)} F(\1_\C\otimes X) \xtos{\mu_{\1_\C,X}} F(\1_\C) \otimes F(X) \xtos{\epsilon\otimes\id} \1_\D\otimes F(X)\cr
+        \rho_{FX} = F(X) \xtos{F(\rho_X)} F(X\otimes\1_\C) \xtos{\mu_{X,\1_\C}} F(X) \otimes F(\1_\C) \xtos{\id\otimes\epsilon} F(X)\otimes \1_\D.
+    } $$
+
+\edefn
+
+\bcoro
+
+    Suppose that $\C,\D$ are monoidal categories and $F\colon\C\tof\D\colon G$ forms an adjunction, giving an isomorphism $\C\ortimes_\C\D\cong\C\ortimes_\D\D$.
+    Then the following are equivalent:
+    \benum
+        \item The datum of a lax monoidal structure on $G\colon\D\to\C$,
+        \item The datum of a colax monoidal structure on $F\colon\C\to\D$,
+        \item The datum of a monoidal structure on $\C\ortimes_\C\D\cong\C\ortimes_\D\D$ which is compatible with the monoidal structures of $\C,\D$.
+    \eenum
+
+\ecoro
+
+We can give a more direct equivalent characterization of the unit of a lax monoidal functor in terms of the units of $\C,\D$, instead of the left and right unitors.
+
+\bprop[name={unitoflmfunc}]
+
+    Let $F\colon\C\to\D$ be a nonunital lax monoidal functor between monoidal categories with units $\1_\C,\1_\D$, and let $\epsilon\colon\1_\D\to F(\1_\C)$ be a morphism in $\D$.
+    Then $\epsilon$ is a left unit for $F$ iff it satisfies the following two conditions:
+    \benum
+        \item The following diagram commutes in $\D$:
+        \diagram{
+            \1_\D\otimes\1_\D&F(\1_\C)\otimes F(\1_\C)\cr
+            &F(\1_\C\otimes\1_\C)\cr
+            \1_\D&F(\1_\C)
+        }{
+            \diagarrow{from={1,1}, to={1,2}, text={\epsilon\otimes\epsilon}, y distance=.25cm}
+            \diagarrow{from={3,1}, to={3,2}, text={\epsilon}, y distance=.25cm}
+            \diagarrow{from={1,1}, to={3,1}, text={v_\D}, x distance=-.25cm}
+            \diagarrow{from={1,2}, to={2,2}, text={\mu_{\1_\C,\1_\C}}, x distance=.25cm}
+            \diagarrow{from={2,2}, to={3,2}, text={F(v_\C)}, x distance=.25cm}
+        }
+
+        \item For all $X\in\C$ the following composite is a monomorphism in $\D$:
+        $$ \1_\D\otimes F(X) \xtos{\epsilon\otimes\id_{FX}} F(\1_C)\otimes F(X) \xtos{\mu_{\1_\C,X}} F(\1_\C\otimes X) . $$
+    \eenum
+    Moreover if these conditions are satisfied then the composite in (2) is an isomorphism.
+
+\eprop
+
+\bproof
+
+    Let us write $(\1,v)$ for the units of both $\C$ and $\D$, and $\lambda$ for the left unitor of both $\C$ and $\D$.
+    If $\epsilon$ is a left unit then consider the following diagram:
+
+    \diagram{
+        \1\otimes\1&\1\otimes F(\1)&F(\1)\otimes F(\1)\cr
+        &&F(\1\otimes\1)\cr
+        \1&&F(\1)
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text={\id\otimes\epsilon}, y distance=.25cm}
+        \diagarrow{from={1,2}, to={1,3}, text={\epsilon\otimes\id}, y distance=.25cm}
+        \diagarrow{from={3,1}, to={3,3}, text={\epsilon}, y distance=.25cm}
+        \diagarrow{from={1,1}, to={3,1}, text={\lambda_\1}, x distance=-.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text={\mu_{\1,\1}}, x distance=.25cm}
+        \diagarrow{from={2,3}, to={3,3}, text={F(v)}, x distance=.25cm}
+        \diagarrow{from={1,2}, to={3,3}, text={\lambda_{F\1}}, x distance=-.25cm}
+    }
+
+    This diagram commutes: the left square commutes by naturality of the left unitors, the right square commutes because $\epsilon$ is a left unit of $F$.
+    Thus the outer rectangle commutes showing (1).
+
+    Now for $X\in\C$, the left unitor $\lambda_{FX}$ is
+    $$ \lambda_{FX} = \1\otimes F(X)\xtos{\epsilon\otimes\id} F(\1) \otimes F(X) \xtos{\mu_{\1,X}} F(\1\otimes X) \xtos{F(\lambda_X)} F(X) . $$
+    This is an isomorphism and since $F(\lambda_X)$ is an isomorphism as well, so too is $\mu_{\1,X}\circ(\epsilon\otimes\id)$, showing (2).
+
+    Now suppose $\epsilon$ satisfies (1) and (2), we want to show that it is the left unit of $F$.
+    Let $f\colon\1\otimes F(X)\to F(X)$ be
+    $$ f = \1\otimes F(X)\xtos{\epsilon\otimes\id} F(\1) \otimes F(X) \xtos{\mu_{\1,X}} F(\1\otimes X) \xtos{F(\lambda_X)} F(X) , $$
+    we want to show that it is $\lambda_{FX}$.
+    By definition of the left unitor, this is equivalent to saying that $\id_\1\otimes f$ is equal to
+    $$ \id_\1\otimes f = \1\otimes(\1\otimes F(X)) \xtos{\alpha_{\1,\1,X}} (\1\otimes\1)\otimes F(X) \xtos{v\otimes\id} \1\otimes F(X) . $$
+    By virtue of (2), it is sufficient to show that both sides are equal after postcomposition with the monomorphism
+    $$ 1\otimes F(X) \xtos{\epsilon\otimes\id} F(\1)\otimes F(X) \xtos{\mu_{\1,X}} F(\1\otimes X) . $$
+    This can be shown by filling in the necessary commutative diagram.
+    \qed
+
+\eproof
+
+\bexam
+
+    When $\C=\set e$ is the trivial monoid, then we can identify nonunital lax monoidal functors $F\colon\C\to\D$ with a nonunital monoid object $A\in\D$.
+    Then the above proposition shows that $\epsilon\colon\1_\D\to A$ is a left unit iff the diagram
+
+    \diagram{
+        \1\otimes\1&A\otimes A\cr
+        \1&A
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text={\epsilon\otimes\epsilon}, y distance=.25cm}
+        \diagarrow{from={2,1}, to={2,2}, text={\epsilon}, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,1}, text={v}, x distance=-.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text={m}, x distance=.25cm}
+    }
+
+    is commutative (i.e.\ $\epsilon$ is idempotent) and the map
+    $$ \1\otimes A\xtos{\epsilon\otimes\id} A\otimes A\xtos m A $$
+    is monic (i.e.\ $\epsilon$ is left-cancelative).
+
+    If $\D$ is the category of sets, this means that if $M$ is a nonunital monoid (in the classical sense) then $e\in M$ is a left unit iff it is idempotent ($e^2=e$)
+    and left multiplication with $e$ is monic ($e\cdot x=e\cdot y$ implies $x=y$).
+
+\eexam
+
+\bexam
+
+    Let $\Mod_R$ be the category of $R$-modules for a commutative ring $R$.
+    Consider then the forgetful functor $U\colon\Mod_R\to\Set$ equipped with the nonunital lax monoidal structure given by the canonical maps $b_{M,N}\colon M\times N\to M\otimes N$.
+    The function $\epsilon\colon\set*\to U(R)$ mapping $*\mapsto1\in R$ is a unit for $U$.
+
+    This is clear from the above proposition.
+
+\eexam
+
+\bexam[name={laxcorepfunc}]
+
+    Let $\C$ be a monoidal category and let $h\colon\C\to\Set$ be the functor corepresented by $\1$: $h=\hom_\C(\1,\bul)$.
+    Then for every $X,Y\in\C$ we have a canonical map
+    $$ \mu_{X,Y}\colon h(X)\times h(Y) \to h(X\otimes Y) $$
+    which maps $x\in h(X)$ and $y\in h(Y)$ to the composite
+    $$ h(x,y) = \1 \xtos{v^{-1}} \1\otimes\1 \xtos{x\otimes y} X\otimes Y . $$
+    This defines a lax monoidal structure on $h$ with a unit given by
+    $$ \epsilon\colon\set*\to h(\1) = \hom_\C(\1,\1),\qquad \epsilon(*) = \id_\1 . $$
+
+\eexam
+
+\bdefn[title={Monoidal natural transformations}, name={monnattrans}]
+
+    Let $F,F'\colon\C\to\D$ be lax monoidal functors.
+    A natural transformation $\gamma\colon F\To F'$ is {\emphcolor monoidal} if it satisfies the following conditions:
+    \benum
+        \item It is monoidal in the sense of a nonunital lax monoidal functors.
+        Explicitly the following diagram commutes
+
+        \commsq{F(X)\otimes F(Y)&F(X\otimes Y)\cr
+            F'(X)\otimes F'(Y)&F'(X\otimes Y)
+        }{\mu_{X,Y}}{\mu'_{X,Y}}{\gamma_X\otimes\gamma_Y}{\gamma_{X\otimes Y}}
+
+        \item The unit of $F'$ is the composition
+        $$ \epsilon' = \1_\D \xtos{\epsilon} F(\1_\C) \xtos{\gamma_{\1_C}} F'(\1_\C) $$
+        where $\epsilon$ is $F$'s unit.
+    \eenum
+
+    Let $\Fun^\lax(\C,\D)$ be the category of lax monoidal functors $\C\to\D$ whose morphisms are monoidal natural transformations.
+    This is a (non-full) subcategory of $\Fun^\lax_\nonu(\C,\D)$.
+
+\edefn
+
+\bnote
+
+    Let $\C,\D$ be monoidal categories and $F\colon\C\to\D$ a functor.
+    Then $F$ is a lax monoidal functor iff $F^\rev$ is.
+    Similarly $\gamma$ is a monoidal natural transformation iff $\gamma^\rev$ is.
+    Thus we obtain an isomorphism of categories $\Fun^\lax(\C,\D)\cong\Fun^\lax(\C^\rev,\D^\rev)$.
+
+\enote
+
+Recall that we can compose nonunital lax monoidal functors.
+Explicitly if we have nonunital lax monoidal functors $\C\xtos F\D\xtos G\E$ with tensorors $\mu,\nu$, then their composition has a nonunital lax monoidal structure given by
+the whiskering $\xi=G\mu\circ\nu_{F\times F}$:
+$$ \xi_{X,Y} = (G\circ F)(X)\otimes(G\circ F)(Y) \xtos{\nu_{FX,FY}} G(F(X)\otimes F(Y)) \xtos{G\mu_{X,Y}} (G\circ F)(X\otimes Y) . $$
+If $F,G$ have units
+$$ \delta\colon\1_\D\to F(\1_\C),\qquad \epsilon\colon\1_\E\to G(\1_\D) $$
+then the composite
+$$ \1_\E \xtos\epsilon G(\1_\D) \xtos{G\delta} (G\circ F)(\1_\C) $$
+is a unit for $G\circ F$.
+
+Thus composition restricts to a functor
+$$ \circ\colon\Fun^\lax(\D,\E)\times\Fun^\lax(\C,\D) \to \Fun^\lax(\C,\E) . $$
+
+\bexam
+
+    Let $\C$ be a monoidal category.
+    A {\emphcolor monoid object} in $\C$ is an object $M\in\C$ equipped with {\it multiplication\/} $m\colon A\otimes A\to A$ and a {\it unit\/} $\epsilon\colon\1\to A$
+    such that the following diagrams commute
+
+    \medskip
+    \hbox to\hsize{\hfil%
+        \diagramed{
+            M\otimes(M\otimes M)&M\otimes M\cr
+            &M\cr
+            (M\otimes M)\otimes M&M\otimes M
+        }{
+            \diagarrow{from={1,1}, to={1,2}, text={\id\otimes m}, y distance=.25cm}
+            \diagarrow{from={3,1}, to={3,2}, text={m\otimes\id}, y distance=.25cm}
+            \diagarrow{from={1,1}, to={3,1}, text=\alpha, x distance=-.25cm}
+            \diagarrow{from={1,2}, to={2,2}, text=m, x distance=.25cm}
+            \diagarrow{from={3,2}, to={2,2}, text=m, x distance=.25cm}
+        }\hfil%
+        \diagramed{
+            \1\otimes M&M\otimes M&M\otimes\1\cr
+            &M
+        }{
+            \diagarrow{from={1,1}, to={1,2}, text={\epsilon\otimes\id}, y distance=.25cm}
+            \diagarrow{from={1,3}, to={1,2}, text={\id\otimes\epsilon}, y distance=.25cm}
+            \diagarrow{from={1,1}, to={2,2}, text=\lambda, x distance=-.25cm}
+            \diagarrow{from={1,2}, to={2,2}, text=m, x distance=-.25cm}
+            \diagarrow{from={1,3}, to={2,2}, text=\rho, x distance=.25cm}
+        }\hfil%
+    }
+
+    If $M,M'$ are monoid objects of $\C$ with multiplications $m,m'$ and units $\epsilon,\epsilon'$, then a morphism $f\colon M\to M'$ is a {\emphcolor monoid homomorphism}
+    if the following diagram commutes:
+
+    \commsq{M\otimes M&M\cr M'\otimes M'&M'}
+        {m}{m'}{f\otimes f}{f}
+
+    and $f$ carries the unit of $M$ to the unit of $M'$: $\epsilon'=f\circ\epsilon$.
+
+    It is clear that the monoid objects of $\C$ form a category, denoted $\Mon(\C)$ (this is a non-full subcategory of $\Mon^\nonu(\C)$).
+
+    If we let $\set e$ denote the trivial monoid, then monoid objects of $\C$ can be identitied with lax monoidal functors $\set e\to\C$.
+    Thus we obtain an isomorphism of categories $\Fun^\lax(\set e,\C)\cong\Mon(\C)$.
+
+\eexam
+
+\subsubsection{Unital monoidal functors}
+
+\bdefn[title={Monoidal functors}]
+
+    A functor $F\colon\C\to\D$ between monoidal categories is a {\emphcolor monoidal functor} if it is a lax monoidal functor and
+    \benum
+        \item its tensoror is an isomorphism: $\mu_{X,Y}\colon F(X)\otimes F(Y)\to F(X\otimes Y)$ is an isomorphism for all $X,Y$;
+        \item its unit $\epsilon\colon\1_\D\to F(\1_\C)$ is an isomorphism.
+    \eenum
+
+\edefn
+
+\bnote
+
+    Note that a monoidal functor is both a nonunital monoidal functor (i.e.\ $\mu$ is an isomorphism) and a lax monoidal functor (i.e.\ has a unit).
+    But the converse is not true: a functor which is both a nonunital monoidal functor and a lax monoidal functor is a monoidal functor iff its unit is an isomorphism.
+
+\enote
+
+\bnote
+
+    Let $F\colon\C\to\D$ be a nonunital monoidal functor and $\epsilon\colon\1_\D\to F(\1_\C)$ be an isomorphism in $\D$.
+    Then $\epsilon$ satisfies condition (2) in \refmath[proposition]{unitoflmfunc}: both the maps in
+    $$ \1_\D\otimes F(X) \xtos{\epsilon\otimes\id} F(\1_\C)\otimes F(X) \xtos{\mu} F(\1_\C\otimes X) $$
+    are isomorphisms.
+    Thus $\epsilon$ is a unit of $F$ iff condition (1) holds: the following diagram commutes
+
+    \diagram{
+        \1_\D\otimes\1_\D&F(\1_\C)\otimes F(\1_\C)\cr
+        &F(\1_\C\otimes\1_\C)\cr
+        \1_\D&F(\1_\C)
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text={\epsilon\otimes\epsilon}, y distance=.25cm}
+        \diagarrow{from={3,1}, to={3,2}, text={\epsilon}, y distance=.25cm}
+        \diagarrow{from={1,1}, to={3,1}, text={v_\D}, x distance=-.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text={\mu_{\1_\C,\1_\C}}, x distance=.25cm}
+        \diagarrow{from={2,2}, to={3,2}, text={F(v_\C)}, x distance=.25cm}
+    }
+
+    This is iff $(F(\1_\C),F(v_\C)\circ\mu_{\1_\C,\1_\C})$ is a unit of $\C$.
+    Thus a nonunital monoidal functor $F\colon\C\to\D$ is monoidal iff the functors
+    $$ \D\to\D,\qquad X\mapsto F(\1_\C)\otimes X,\quad X\mapsto X\otimes F(\1_\C) $$
+    are fully faithful (and then naturally isomorphic to the identitiy functor).
+
+\enote
+
+\bdefn
+
+    If $F,F'\colon\C\to\D$ are monoidal functors, a natural transformation $\gamma\colon F\To F'$ is {\emphcolor monoidal} if it is monoidal in the sense
+    of a monoidal natural transformation between unital lax monoidal functors (\refmath[definition]{monnattrans}).
+
+    For monoidal categories $\C,\D$ we let $\Fun^\otimes(\C,\D)$ be the full subcategory of $\Fun^\lax(\C,\D)$ consisting of monoidal functors $\C\to\D$
+    with monoidal natural transformations between them.
+
+\edefn
+
+\bexam
+
+    As before, we have isomorphisms
+    $$ \displaylines{
+        \Fun^\otimes(\C,\D) \cong \Fun^\otimes(\C^\rev,\D^\rev),\qquad F\mapsto F^\rev\cr
+        \Fun^\otimes(\C,\D)^\op \cong \Fun^\otimes(\C^\op,\D^\op),\qquad F\mapsto F^\op.
+    } $$
+    I.e.\ the opposite and reverse functors are monoidal iff $F$ is.
+
+\eexam
+
+\bexam
+
+    If $F,G$ are monoidal functors so too is their composite $G\circ F$.
+    This is because the tensoror $G\mu\circ\nu_{F\times F}$ is the composition of isomorphisms and thus an isomorphism, as is the unit $G(\delta)\circ\epsilon$.
+
+\eexam
+
+\bexam
+
+    Suppose $\C,\D$ are categories with finite products, which we view as a monoidal structure.
+    Any functor $F\colon\C\to\D$ is lax monoidal as there is a canonical map $F(X\times Y)\to F(X)\times F(Y)$ which forms its tensoror, and
+    there is as well a unique morphism $F(\1_\C)\to\1_\D$.
+    This is a monoidal functor iff $F$ preserves limits; this is the same as saying that the canonical maps $F(X\times Y)\to F(X)\times F(Y)$
+    and $F(\1_\C)\to\1_\D$ are isomorphisms.
+
+\eexam
 

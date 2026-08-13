@@ -1,0 +1,232 @@
+\subsection{Enriched categories}
+
+\bdefn[title={$\A$-enriched category}]
+
+    Let $\A$ be a monoidal category with unit $\1$.
+    An {\emphcolor $\A$-enriched category} $\C$ consists of the following data:
+    \benum
+        \item A collection $\Ob(\C)$, whose elements we refer to as {\emphcolor objects} of $\C$.
+        We abuse notation by writing $X\in\C$ instead of $X\in\Ob(\C)$.
+        \item For every $X,Y\in\C$ an object of $\A$, $\ehom_\C(X,Y)$.
+        \item For every $X,Y,Z\in\C$ an $\A$-morphism
+        $$ c_{Z,Y,X}\colon\ehom_\C(Y,Z)\otimes\ehom_\C(X,Y)\to\ehom_\C(X,Z) $$
+        which we call {\emphcolor composition}.
+        \item For every $X\in\C$ a morphism $e_X\colon\1\to\ehom_\C(X,X)$ called the {\emphcolor identity} of $X$.
+    \eenum
+    The data must satisfy the following conditions:
+    \benum
+        \item Associativity: for $W,X,Y,Z\in\C$:
+        \diagram{
+            \ehom(Y,Z)\otimes(\ehom(X,Y)\otimes\ehom(W,X))&\ehom(Y,Z)\otimes\ehom(W,Y)\cr
+            &\ehom(W,Z)\cr
+            (\ehom(Y,Z)\otimes\ehom(X,Y))\otimes\ehom(W,X)&\ehom(X,Z)\otimes\ehom(W,X)
+        }{
+            \diagarrow{from={1,1}, to={1,2}, text={\id\otimes c_{Y,X,W}}, y distance=.25cm}
+            \diagarrow{from={3,1}, to={3,2}, text={c_{Z,Y,X}\otimes\id}, y distance=-.25cm}
+            \diagarrow{from={1,1}, to={3,1}, text=\alpha, x distance=-.25cm}
+            \diagarrow{from={1,2}, to={2,2}, text={c_{Z,Y,W}}, x distance=.25cm}
+            \diagarrow{from={3,2}, to={2,2}, text={c_{Z,X,W}}, x distance=.25cm}
+        }
+        Here $\alpha$ is the associator of $\A$.
+
+        \item Unit: for every $X,Y\in\C$ the two diagrams below must commute:
+
+        \diagram{
+            \1\otimes\ehom(X,Y)&\ehom(Y,Y)\otimes\ehom(X,Y)\cr
+            &\ehom(X,Y)
+        }{
+            \diagarrow{from={1,1}, to={1,2}, text={e_Y\otimes\id}, y distance=.25cm}
+            \diagarrow{from={1,2}, to={2,2}, text={c_{Y,Y,X}}, x distance=.25cm}
+            \diagarrow{from={1,1}, to={2,2}, text=\lambda, x distance=-.25cm}
+        }
+        \diagram{
+            \ehom(X,Y)\otimes\1&\ehom(X,Y)\otimes\ehom(X,X)\cr
+            &\ehom(X,Y)
+        }{
+            \diagarrow{from={1,1}, to={1,2}, text={\id\otimes e_X}, y distance=.25cm}
+            \diagarrow{from={1,2}, to={2,2}, text={c_{Y,X,X}}, x distance=.25cm}
+            \diagarrow{from={1,1}, to={2,2}, text=\rho, x distance=-.25cm}
+        }
+
+        Here $\lambda,\rho$ are the unitors of $\A$.
+    \eenum
+
+\edefn
+
+\bexam
+
+    $\Set$-enriched categories are precisely the locally small categories.
+
+\eexam
+
+\bexam
+
+    Let $\A$ be a monoidal category and $\C$ an $\A$-enriched category.
+    For every object $X\in\C$, the composition law and unit
+    $$ c_{X,X,X} \colon \ehom(X,X)\otimes\ehom(X,X) \to \ehom(X,X),\qquad e_X\colon\1\to\ehom(X,X) $$
+    turn $\ehom(X,X)$ into a monoid object of $\A$.
+    This induces a bijection between $\Mon(\A)$ and $\A$-enriched categories with a single object.
+
+    Thus enriched category theory can be seen as a generalization of the theory of monoid objects.
+
+\eexam
+
+\bremark[title={Functorality}, name={funcencat}]
+
+    Let $\A,\A'$ be monoidal categories and $F\colon\A\to\A'$ a lax monoidal functor, with tensoror $\mu$ and unit $\epsilon$.
+    Then every $\A$-enriched category $\C$ defines an $\A'$-enriched category $\C'$ as follows:
+    \benum
+        \item The objects of $\C'$ are the same as those of $\C$'s: $\Ob(\C')=\Ob(\C)$.
+        \item For $X,Y\in\C'$ set $\ehom_{\C'}(X,Y)=F\ehom_\C(X,Y)$.
+        \item For $X,Y,Z\in\C'$ define the composition law $c'_{X,Y,Z}$ in $\C'$ as the composition
+        $$ \vbox{\halign{\hfil$#$\tabskip=.25cm&\hfil$#$\hfil&$#$\hfil\tabskip=0pt\cr
+            \ehom_{\C'}(Y,Z)\otimes\ehom_{\C'}(X,Y) &=& F(\ehom_\C(Y,Z))\otimes F(\ehom_\C(X,Y))\cr
+                &\xtos\mu& F(\ehom_\C(Y,Z)\otimes\ehom_\C(X,Y))\cr
+                &\xtos{Fc_{Z,Y,X}}& F(\ehom_\C(X,Z))\cr
+                &=&\ehom_{\C'}(X,Z)\cr
+        }} $$
+        \item For every $X\in\C'$ the identity $e'_X$ is the composition
+        $$ \1_{\A'} \xtos\epsilon F(\1_\A) \xtos{F(e_X)} F(\ehom_\C(X,X)) = \ehom_{\C'}(X,X) . $$
+    \eenum
+
+\eremark
+
+\bdefn[title={The underlying category}, name={underencat}]
+
+    Let $\A$ be a monoidal category and $\C$ an $\A$-enriched category.
+    Consider then the monoidal functor $F\colon\A\to\Set$ given by $F=\hom_\A(\1,\bul)$ (\refmath[example]{laxcorepfunc}).
+    By the above remark, this gives rise to a $\Set$-enriched category, which we can identify with an ordinary category.
+    We call this the {\emphcolor underlying category} of $\C$, and we abuse notation and denote it by $\C$.
+
+    Concretely, this category has the same objects as $\C$, and its morphisms are
+    $$ \hom_\C(X,Y) = \hom_\A(\1,\ehom_\C(X,Y)) . $$
+
+\edefn
+
+\bnote
+
+    Let $\A$ be a monoidal category and $\C$ an ordinary category.
+    An {\emphcolor $\A$-enrichment} of $\C$ is an $\A$-enriched category $\hat\C$ such that the underlying category of $\hat\C$ is isomorphic to
+    $\C$.
+
+\enote
+
+\bexam
+
+    Let $\Top$ denote the category of topological spaces, endowed with the monoidal structure given by the cartesian product.
+    A $\Top$-enriched category is called a {\emphcolor topologically enriched category}.
+    Note that the corepresentable functor $\hom_\Top(\1,\bul)$ (where $\1=\set*$ is the unit/terminal object of $\Top$) is naturally isomorphic
+    to the forgetful functor $\Top\to\Set$.
+
+    Thus is $\C$ is a topologically enriched category, its underlying category $\C_0$ can be described as follows:
+    \benum
+        \item Its objects are the same as the objects of $\C$.
+        \item For $X,Y\in\C_0$, morphisms $X\to Y$ in $\C_0$ are the same as points in the space $\ehom_\C(X,Y)$.
+        \item Given $f\colon X\to Y$ and $g\colon Y\to Z$ in $\C_0$, the composition $g\circ f$ is the image of $(g,f)$ under the continuous map
+        $$ c_{Z,Y,X}\colon\ehom_\C(Y,Z)\times\ehom_\C(X,Y) \to \ehom_\C(X,Z) . $$
+        \item For $X\in\C_0$, $\id_X$ is the image of $*\in\set*$ under $e_X\colon\set*\to\ehom_\C(X,X)$.
+    \eenum
+
+    Conversely, enriching an ordinary category $\C_0$ over $\Top$ is the same as endowing each hom-set $\hom_{\C_0}(X,Y)$ with a topology such that
+    composition is continuous $\hom_{\C_0}(Y,Z)\times\hom_{\C_0}(X,Y)\to\hom_{\C_0}(X,Z)$.
+
+\eexam
+
+\bnote
+
+    The identities of an enriched category are unique.
+    That is, if $\C,\C'$ are two $\A$-enriched categories with the same objects, morphisms, and compositions, then $e_X=e'_X$ for all $X\in\C$.
+    Indeed, $e_X$ is simply the unit of the $\A$-monoid $\ehom_\C(X,X)$ (with $c_{X,X,X}$ as multiplication) which we showed is unique.
+
+\enote
+
+\bdefn[title={Enriched functors}]
+
+    Let $\A$ be a monoidal category and $\C,\D$ be $\A$-enriched categories.
+    An $\A$-enriched functor $F\colon\C\to\D$ consists of the following data:
+    \benum
+        \item For every $X\in\C$ an associated object $F(X)\in\D$.
+        \item For every $X,Y\in\C$ a morphism in $\A$
+        $$ F_{X,Y}\colon\ehom_\C(X,Y) \to \ehom_\D(F(X),F(Y)) . $$
+    \eenum
+    This data is subject to the following conditions:
+    \benum
+        \item For every $X\in\C$, the morphism $e_{FX}\colon\1\to\ehom_\D(X,X)$ factors as
+        $$ \1 \xtos{e_X} \ehom_\C(X,X) \xtos{F_{X,X}} \ehom_\D(X,X) . $$
+        \item For every $X,Y,Z\in\C$ the following diagram commutes
+
+        \diagram{
+            \ehom_\C(Y,Z)\otimes\ehom_\C(X,Y)&\ehom_\C(X,Z)\cr
+            \ehom_\D(F(Y),F(Z))\otimes\ehom_\D(F(X),F(Y))&\ehom_\D(F(X),F(Z))
+        }{
+            \diagarrow{from={1,1}, to={1,2}, text={c_{Z,Y,X}}, y distance=.25cm}
+            \diagarrow{from={2,1}, to={2,2}, text={c_{FZ,FY,FX}}, y distance=-.25cm}
+            \diagarrow{from={1,1}, to={2,1}, text={F_{Y,Z}\otimes F_{X,Y}}, x distance=-.25cm}
+            \diagarrow{from={1,2}, to={2,2}, text={F_{X,Z}}, x distance=.25cm}
+        }
+    \eenum
+
+    If $\C\xtos F\D\xtos G\E$ are $\A$-enriched functors, then we can define their composition $G\circ F\colon\C\to\E$ by
+    $$ (G\circ F)(X) = G(F(X)),\ X\in\C,\qquad (G\circ F)_{X,Y} = G_{FX,FY}\circ F_{X,Y} . $$
+
+    Thus we can form the (ordinary) category $\Cat(\A)$ of small (meaning $\Ob(\C)$ is small) $\A$-enriched categories, whose morphisms
+    are $\A$-enriched functors.
+
+\edefn
+
+\bexam
+
+    A $\Set$-enriched functor is easily seen to be an ordinary functor.
+    Thus there is an isomorphism of categories $\Cat\cong\Cat(\Set)$.
+
+\eexam
+
+\bexam
+
+    If $F\colon\A\to\A'$ is a lax monoidal functor between monoidal categories, then we showed that it maps $\A$-enriched categories $\C$
+    to $\A'$-enriched categories $\C'$.
+    Similarly it maps an $\A$-enriched functor $f\colon\C\to\D$ to the $\A'$-enriched functor $f'\colon\C'\to\D'$ which acts on objects
+    as $f$ does, and $f'_{X,Y}=F(f_{X,Y})$.
+
+    This defines a functor of ordinary categories $\Cat(\A)\to\Cat(\A')$.
+    In particular for the functor $F=\ehom_\A(\1,\bul)$, we obtain a forgetful functor
+    $$ \Cat(\A) \to \Cat(\Set) \cong \Cat $$
+    which assigns to each (small) $\A$-enriched category its underlying ordinary category.
+
+\eexam
+
+We can also define enriched natural transformations.
+Recall that an ordinary natural transformation $\alpha\colon F\To G\colon\C\to\D$ is given by a $\C$-indexed family of $\D$-morphisms
+$\alpha_X\colon FX\to GX$ such that the usual diagram commutes.
+We can write this naturality condition as requiring that the following square commutes for all $X,Y\in\C$:
+
+\commsq{
+    \hom_\C(X,Y)&\hom_\D(FX,FY)\cr
+    \hom_\D(GX,GY)&\hom_\D(FX,GY)
+}{F}{\circ\alpha_X}{G}{\alpha_Y\circ}
+
+In enriched category theory in order to talk about ``picking out'' a morphism $\alpha_X$, we talk instead about a morphism
+$\alpha_X\colon\1\to\ehom_\D(FX,FY)$.
+This motivates the following.
+
+\bdefn[title={Enriched natural transformations}]
+
+    Let $F,G\colon\C\to\D$ be $\A$-enriched functors.
+    An {\emphcolor $\A$-enriched natural transformation} $\alpha\colon F\To G$ is an $\Ob(\C)$ indexed family of $\A$-morphisms
+    $\set{\alpha_X\colon\1\to\ehom_\D(FX,GX)}_{X\in\C}$ such that the following diagram commutes (in $\A$) for all $X,Y\in\C$:
+
+    \diagram{
+        \1\otimes\ehom_\C(X,Y)&\ehom_\D(FY,GY)\otimes\ehom_\D(FX,FY)\cr
+        \ehom_\C(X,Y)&\ehom_\D(FX,GY)\cr
+        \ehom_\C(X,Y)\otimes\1&\ehom_\D(GX,GY)\otimes\ehom_\D(FX,GX)
+    }{
+        \diagarrow{from={2,1}, to={1,1}, text={\lambda^{-1}}, x distance=-.25cm}
+        \diagarrow{from={2,1}, to={3,1}, text={\rho^{-1}}, x distance=-.25cm}
+        \diagarrow{from={1,1}, to={1,2}, text={\alpha_Y\otimes F}, y distance=.25cm}
+        \diagarrow{from={3,1}, to={3,2}, text={G\otimes\alpha_X}, y distance=-.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text=c, x distance=.25cm}
+        \diagarrow{from={3,2}, to={2,2}, text=c, x distance=.25cm}
+    }
+
+\edefn
+
