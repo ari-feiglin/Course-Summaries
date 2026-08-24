@@ -1,0 +1,153 @@
+\subsection{Closed monoidal categories}
+
+\bdefn
+
+    A monoidal category $\V$ is {\emphcolor left} (resp.\ {\emphcolor right}) {\emphcolor closed} if each functor
+    $Y\otimes\bul\colon\V\to\V$ (resp.\ $\bul\otimes Y\colon\V\to\V$) has a right adjoint $[Y,\bul]$.
+    If a monoidal category is both left and right closed, it is called {\emphcolor biclosed}.
+
+    When $\V$ is a symmetric monoidal category, there is no differentiation between being left or right closed, and we just
+    say that $\V$ is {\emphcolor closed}.
+
+\edefn
+
+Suppose $\V$ is right closed, then consider the unit and counit of the adjunction for each $Y$:
+$$ \coev\colon X\to[Y,X\otimes Y],\qquad \ev\colon[Y,X]\otimes Y\to X $$
+called {\emphcolor coevaluation} and {\emphcolor evaluation} respectively.
+
+It is a classical result that for a functor $F\colon\A\times\B\to\C$, if $F(\bul,B)$ has a right adjoint $G(B,\bul)$
+for all $B\in\B$, then $G$ assembles into a functor $G\colon\B^\op\times\C\to\A$.
+In this case we have a functor
+$$ [\bul,\bul]\colon\V^\op\times\V\to\V . $$
+
+Consider the adjunction:
+$$ \hom_\V(X\otimes Y,Z) \cong \hom_\V(X,[Y,Z]) , $$
+natural in all variables.
+Letting $X=\1$ we get
+$$ \hom_\V(Y,Z) \cong \hom_\V(\1\otimes Y,Z)\cong\hom_\V(\1,[Y,Z]) = \V_\1[Y,Z] $$
+where $\V_\1$ is the corepresentable functor $\V_\1=\hom_\V(\1,\bul)$.
+Due to this relation between $\hom_\V$ and $[\bul,\bul]$ (and a deeper relation we will see soon), $[\bul,\bul]$ is called the
+{\emphcolor internal hom} of $\V$.
+
+Consider the adjunction again, letting $Y=\1$ we get
+$$ \hom_\V(X,Z) \cong \hom_\V(X\otimes\1,Z) \cong \hom_\V(X,[\1,Z]) $$
+which by Yoneda means that there is an isomorphism $Z\cong[\1,Z]$.
+Again in the adjunction, replace $X$ by $W\otimes X$ so that we get
+$$ \hom_\V(W,[X,[Y,Z]]) \cong \hom_\V((W\otimes X)\otimes Y,Z) \cong \hom_\V(W\otimes(X\otimes Y),Z) \cong
+\hom_\V(W,[X\otimes Y,Z]) $$
+so that again by Yoneda, $[X,[Y,Z]]\cong[X\otimes Y,Z]$.
+
+Thus we see that the adjunction $\bul\otimes Y\dashv[Y,\bul]$ becomes {\it internal\/} to $\V$.
+That is, the natural isomorphism $[X,[Y,Z]]\cong[X\otimes Y,Z]$ gives rise to the usual isomorphism
+$\hom_\V(X\otimes Y,Z)\cong\hom_\V(X,[Y,Z])$ via $\V_\1$.
+
+\bnote
+
+    A cartesian monoidal category $\V$ (cartesian meaning its monoidal product is given by the direct product) is automatically
+    symmetric.
+    When it is closed we call it {\emphcolor cartesian closed}.
+
+    $\Set$ is an example of a cartesian closed category, its hom-sets are internal homs.
+
+\enote
+
+\bexam
+
+    The category $\Top$ of topological spaces is a cartesian monoidal category, but it is not cartesian closed.
+    This is because in general $\bul\times Y$ does not preserve equalizers.
+
+    But if we limit ourselves to $\CGHaus$, the full subcategory of $\Top$ consisting of compactly generated Hausdorff spaces, 
+    then $\CGHaus$ is cartesian closed.
+    A compactly generated Hausdorff space is a Hausdorff space $X$ where $U\subseteq X$ is open iff $U\cap K\subseteq K$ is open
+    for all $K\subseteq X$ compact.
+
+    We can give each hom-set $C(X,Y)$ a topology, called the {\emphcolor compact-open topology} consisting of a subbase
+    given by subsets of the form
+    $$ V(K,U) = \set{f\colon X\to Y}[f(K)\subseteq U],\qquad K\subseteq X\hbox{ compact},\quad U\subseteq Y\hbox{ open} . $$
+    It is then straightforward to verify that the obvious maps (currying)
+    $$ C(X\times Y,Z) \cong C(X,C(Y,Z)) $$
+    are well-defined and homeomorphisms.
+
+\eexam
+
+\bexam
+
+    An {\emphcolor lattice} is a poset for which every two elements $a,b$ has a {\emphcolor join} and {\emphcolor meet}:
+    $a\vee b=\sup\set{a,b}$ and $a\wedge b=\inf\set{a,b}$.
+    Viewing posets as categories, this is the same as requiring that the category have all finite limits and colimits,
+    as supremums and infimums are coproducts and products respectively in a poset category.
+
+    A lattice is then a cartesian monoidal category, and it is called a {\emphcolor Heyting algebra} if it is closed.
+
+\eexam
+
+The reason we care about symmetric closed monoidal categories is because the inner hom enriches the category over itself.
+That is, we can form a $\V$-category, which we will call $\V$ as well, such that its underlying category is isomorphic to
+the original ordinary monoidal category.
+
+The construction is straightforward: for $X,Y\in\V$ let the enriched hom be the internal hom $\ehom_\V(X,Y)=[X,Y]$.
+Then composition $c\colon [Y,Z]\otimes[X,Y]\to[X,Z]$ corresponds under the adjunction to the composite
+$$ ([Y,Z]\otimes[X,Y])\otimes X \xtos\alpha [Y,Z]\otimes([X,Y]\otimes X) \xtos{\id\otimes\ev} [Y,Z]\otimes Y\xtos\ev Z . $$
+That is, $c$ is the unique morphism satisfying
+$$ \ev\circ(\id\otimes c) = \ev\circ(\id\otimes\ev)\circ\alpha . \eqcnt[secmp] $$
+(Recall that if $\epsilon$ is the counit of an adjunction, the isomorphism $\hom(x,Gy)\to\hom(Fx,y)$ is given by
+$\epsilon\circ F(\bul)$.)
+
+The identity $e_X\colon\1\to[X,X]$ corresponds under the adjunction to $\lambda_X\colon\1\otimes X\to X$.
+That is, $e$ is the unique morphism satisfying
+$$ \ev\circ(\id\otimes e) = \lambda . \eqcnt $$
+With equations \gotoeqn{secmp} and \gotoleqn{} in mind, it is straightforward to verify that this forms a $\V$-category.
+
+It is furthermore straightforward (albeit tedious) to verify that the underlying category of this $\V$-category is $\V$ itself.
+This follows from the natural isomorphism
+$$ \V_\1[X,Y]\cong\hom_\V(X,Y) . $$
+
+\bnote
+
+    In lieu of this, and in order to distinguish (when necessary) between the ordinary category $\V$ and the self-enriched
+    category $\V$, we will denote the ordinary category by $\V_0$.
+    We will sometimes do this for monoidal categories which are not necessarily closed, or symmetric.
+
+\enote
+
+Now we note that if $\A$ is a $\V$-enriched category, then we can form a $\V$-enriched functor for each $A\in\A$,
+$$ \ehom_\A(A,\bul) \colon \A\to\V,\qquad B\mapsto\ehom_\A(A,B) $$
+and 
+$$ \ehom_\A(A,\bul)_{B,C}\colon\ehom_\A(B,C) \to [\ehom_\A(A,B),\ehom_\A(A,C)] $$
+corresponds under the adjunction to composition:
+$$ \ehom_\A(B,C)\otimes\ehom_\A(A,B) \xtos c \ehom_\A(A,C) . $$
+It is again straightforward to verify that this is indeed a $\V$-functor.
+Replacing $\A$ with $\A^\op$ we get the functor $\ehom_{\A^\op}(A,\bul)=\ehom_\A(\bul,A)\colon\A^\op\to\V$.
+These then form the partial functors of a functor
+$$ \ehom_\A \colon \A^\op\times\A \to \V . $$
+
+Now consider the ordinary functor
+$$ \hom_\A \colon \A_0^\op\times\A_0 \to (\A^\op\otimes\A)_0 \xtos{(\ehom_\A)_0} \V_0 . $$
+We know that the partial functors of $\hom_\A$ are the underlying ordinary functors of the partial functors of $\ehom_\A$.
+Thus for $g\colon B\to B'$ in $\A_0$ (corresponding to $\1\to\ehom_\A(B,B')$), $\hom_\A(A,g)$ is the composite
+$$ \hom_\A(A,g) = \ehom_\A(A,B) \xtos{\lambda^{-1}} \1\otimes\ehom_\A(A,B) \xtos{g\otimes\id}
+\ehom_\A(B,B')\otimes\ehom_\A(A,B) \xtos c \ehom_\A(A,B') . $$
+Similarly $\hom_\A(f,B)\colon\ehom_\A(A,B)\to\ehom_\A(A',B)$ is
+$$ \hom_\A(f,B) = \ehom_\A(A,B) \xtos{\rho^{-1}} \ehom_\A(A,B)\otimes\1 \xtos{\id\otimes f}
+\ehom_\A(A,B)\otimes\ehom_\A(A',A) \xtos c \ehom_\A(A',B) . $$
+Thus the following commutes
+
+\diagram{
+    \A_0^\op\times\A_0&\V_0\cr
+    &\Set
+}{
+    \diagarrow{from={1,1}, to={1,2}, text={\hom_\A}, y distance=.25cm}
+    \diagarrow{from={1,1}, to={2,2}, text={\hom_{\A_0}}, x distance=-.25cm}
+    \diagarrow{from={1,2}, to={2,2}, text={\A_\1}, x distance=.25cm}
+}
+
+When $\A=\V$ we see that $\hom_\V$ is just the functor $[\bul,\bul]$.
+
+Similarly we can make the monoidal product into an enriched functor $\ten\colon\V\otimes\V\to\V$ mapping
+$\ten(X,Y)=X\otimes Y$ and
+$$ \ten_{(X,Y),(X',Y')}\colon [X,X']\otimes[Y,Y'] \to [X\otimes Y,X'\otimes Y'] $$
+corresponds under the adjunction to
+$$ ([X,X']\otimes[Y,Y'])\otimes(X\otimes Y) \xtos\sim ([X,X']\otimes X)\otimes([Y,Y']\otimes Y)
+\xtos{\ev\otimes\ev} X'\otimes Y' . $$
+Its underlying ordinary functor is seen to be the monoidal product $\otimes$.
+

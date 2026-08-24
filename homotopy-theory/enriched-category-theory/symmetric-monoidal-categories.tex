@@ -1,0 +1,193 @@
+\subsection{Symmetric monoidal categories}
+
+In the sequel, monoidal categories will in general be denoted by $\V$ (instead of $\A,\B,\C$, etc.).
+
+\bdefn
+
+    Let $\V$ be a monoidal category.
+    A {\emphcolor braiding} for $\V$ is a natural isomorphism $\beta\colon\otimes\To\otimes^\rev$ which satisfies the following two coherence
+    conditions:
+
+    \diagram{
+        X\otimes(Y\otimes Z)&(X\otimes Y)\otimes Z&Z\otimes(X\otimes Y)\cr
+        X\otimes(Z\otimes Y)&(X\otimes Z)\otimes Y&(Z\otimes X)\otimes Y
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=\alpha, y distance=.25cm}
+        \diagarrow{from={1,2}, to={1,3}, text={\beta_{X\otimes Y,Z}}, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,1}, text={\id\otimes\beta_{Y,Z}}, x distance=-.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text=\alpha, x distance=.25cm}
+        \diagarrow{from={2,1}, to={2,2}, text=\alpha, y distance=-.25cm}
+        \diagarrow{from={2,2}, to={2,3}, text={\beta_{X,Z}\otimes\id}, y distance=-.25cm}
+    }
+
+    \diagram{
+        (X\otimes Y)\otimes Z&X\otimes (Y\otimes Z)&(Y\otimes Z)\otimes X\cr
+        (Y\otimes X)\otimes Z&Y\otimes(X\otimes Z)&Y\otimes(Z\otimes X)
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text={\alpha^{-1}}, y distance=.25cm}
+        \diagarrow{from={1,2}, to={1,3}, text={\beta_{X,Y\otimes Z}}, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,1}, text={\beta_{X,Y}\otimes\id}, x distance=-.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text={\alpha^{-1}}, x distance=.25cm}
+        \diagarrow{from={2,1}, to={2,2}, text={\alpha^{-1}}, y distance=-.25cm}
+        \diagarrow{from={2,2}, to={2,3}, text={\id\otimes\beta_{X,Z}}, y distance=-.25cm}
+    }
+
+    A monoidal category equipped with a braiding is called a {\emphcolor braided monoidal category}.
+
+\edefn
+
+It follows from the two coherence conditions above that in a braided monoidal category, the following diagram commutes
+
+\diagram{
+    \1\otimes X&&X\otimes\1\cr
+    &X
+}{
+    \diagarrow{from={1,1}, to={1,3}, text={\beta_{\1,X}}, y distance=.25cm}
+    \diagarrow{from={1,1}, to={2,2}, text=\lambda, x distance=-.25cm}
+    \diagarrow{from={1,3}, to={2,2}, text=\rho, x distance=.25cm}
+}
+
+\bdefn
+
+    A {\emphcolor symmetric monoidal category} is a braided monoidal category $\V$ such that $\beta_{Y,X}=\beta^{-1}_{X,Y}$ for all $X,Y$.
+
+\edefn
+
+That is, the braiding forms a natural isomorphism $X\otimes\bul\cong\bul\otimes X$.
+
+Symmetric monoidal categories are important because they allow us to extend many of the categorical constructions on ordinary categories to
+$\V$-enriched categories.
+
+\bexam
+
+    If $\C$ is a category with finite products, viewed as a monoidal category it is symmetric monoidal.
+    The braiding is given by the unique isomorphism $X\times Y\xto\sim Y\times X$ commuting with projections.
+
+    In particular $\Set$ and $\Cat$ are symmetric monoidal categories.
+
+\eexam
+
+\bexam
+
+    The tensor product turns $\Mod_R$ into a symmetric monoidal category.
+
+\eexam
+
+\bremark
+
+    Let $\V$ be a symmetric monoidal category, then we can form a $2$-functor
+    $$ \otimes\colon\Cat(\V)\times\Cat(\V)\to\Cat(\V) . $$
+    We define it on objects, functors, and natural transformations as follows.
+    \benum
+        \item For $\V$-categories $\A,\B$ we define the $\V$-category $\A\otimes\B$ whose objects are pairs $(A,B)$ for $A\in\A,B\in\B$.
+        And we define the hom-sets by
+        $$ \ehom_{\A\otimes\B}((A,B),(A',B')) = \ehom_\A(A,A')\otimes\ehom_\B(B,B') . $$
+        Composition is defined as
+        $$ \multline{
+            \bigl(\ehom_\A(A',A'')\otimes\ehom_\B(B',B'')\bigr)\otimes\bigl(\ehom_\A(A,A')\otimes\ehom_\B(B,B')\bigr)\cr
+            \xtos\sim \bigl(\ehom_\A(A',A'')\otimes\ehom_\A(A,A')\bigr)\otimes\bigl(\ehom_\B(B,B'')\otimes\ehom_\B(B,B')\bigr)\cr
+            \xtos{c\otimes c}\ehom_\A(A,A'')\otimes\ehom_\B(B,B'') .
+        } $$
+        The first isomorphism here is any composition of $\alpha,\beta$; the coherence conditions ensure that any composition will give
+        the same isomorphism.
+
+        The identity is the composite
+        $$ \1 \xtos{v^{-1}} \1\otimes\1 \xtos{e_A\otimes e_B} \ehom_\A(A,A)\otimes\ehom_\B(B,B) . $$
+        It is straightforward to check that $\A\otimes\B$ forms a $\V$-category.
+
+        \item Now for $F\colon\A\to\A'$ and $G\colon\B\to\B'$ we define $F\otimes G\colon\A\otimes\B\to\A'\otimes\B'$
+        which maps $(A,B)$ to $(FA,GB)$ and
+        $$ \multline{
+            (F\otimes G)_{(A,B),(A',B')}\cr
+            = \ehom_\A(A,A')\otimes\ehom_\B(B,B') \xtos{F_{A,A'}\otimes G_{B,B'}} \ehom_{\A'}(FA,FA')\otimes\ehom_{\B'}(FB,FB') .
+        } $$
+
+        \item And for $\alpha\colon F\To F'$ and $\beta\colon G\To G'$ we define $\alpha\otimes\beta\colon F\otimes G\To F'\otimes G'$
+        where
+        $$ (\alpha\otimes\beta)_{A,B} \colon \1\xtos{v^{-1}}\1\otimes\1\xtos{\alpha_A\otimes\beta_B}\ehom_{\A'}(FA,F'A)\otimes\ehom_{\B'}(GB,G'B) . $$
+    \eenum
+    It is straightforward to check that this is all well-defined.
+    Furthermore there are evident isomorphisms
+    $$ \A\otimes(\B\otimes\C) \cong (\A\otimes\B)\otimes C,\qquad \I\otimes\A\cong\A\otimes\A\otimes\I,\qquad \A\otimes\B\cong\B\otimes\A $$
+    where $\I$ is the unit $\V$-category (with a single object and $\I(*,*)=\1$).
+    It is again straightforward to check that these isomorphism satisfy the necessary coherence conditions to form $\Cat(\V)$ into a
+    {\emphcolor symmetric monoidal $2$-category}.
+
+\eremark
+
+\bremark[title={Opposite categories}]
+
+    We can also form the $2$-functor
+    $$ \bul^\op\colon\Cat(\V)\to\Cat(\V) $$
+    which maps a $\V$-category $\A$ to its {\emphcolor opposite}: $\A^\op$.
+    $\A^\op$ has the same objects as $\A$, and $\ehom_{\A^\op}(A,B)=\ehom_\A(B,A)$, with composition given by
+    $$ \ehom_\A(C,B)\otimes\ehom_\A(B,A) \xtos\beta \ehom_\A(B,A)\otimes\ehom_\A(C,B) \xtos c \ehom_\A(C,A) . $$
+    And the unit is just that of $\A$'s: $\1\to\ehom_{\A^\op}(A,A)=\ehom_\A(A,A)$.
+
+    A functor $F\colon\A\to\B$ is mapped to $F^\op\colon\A^\op\to\B^\op$ which acts as $F$ does on objects and
+    $$ F^\op_{A,B} = F_{B,A} \colon \ehom_\A(B,A) \to \ehom_\B(FB,FA) . $$
+    A natural transformation $\alpha\colon F\To G$ maps to $\alpha^\op\colon G^\op\To F^\op$ where
+    $$ \alpha^\op_A = \alpha_A\colon\1\to\ehom_{\B^\op}(GA,FA) = \ehom_\B(FA,GA) . $$
+    Enriched functors $\A^\op\to\B$ are called {\emphcolor contravariant functors} from $\A$ to $\B$.
+
+    It is easy to see that in terms of the underlying categories, we have
+    $$ (\A^\op)_0 = (\A_0)^\op,\qquad (F^\op)_0 = (F_0)^\op $$
+    for $\V$-categories $F$ and $\V$-functors $F$.
+
+\eremark
+
+\bremark[title={Two-variable functors}]
+
+    Enriched functors $\A\otimes\B\to\C$ can be viewed as two-variable functors.
+    A two-variable functor $F\colon\A\otimes\B\to\C$ gives rise two single-variable functors $F(A,\bul)\colon\B\to\C$ and $F(\bul,B)\colon\A\to\C$
+    for $A\in\A$ and $B\in\B$:
+    $$ F(A,\bul) = \B \cong \I\otimes\B \xtos{A\otimes\id} \A\otimes\B \xtos{F} \C,\qquad
+    F(\bul,B) = \A \cong \A\otimes\I \xtos{\id\otimes B} \A\otimes\B \xtos{F} \C . $$
+    Explicitly for $B,B'\in\B$ we have that
+    $$ \multline{
+        F(A,\bul)_{B,B'} = \ehom_\B(B,B') \xtos{\lambda} \1\otimes\ehom_\B(B,B') \xtos{e_A}
+        \ehom_\A(A,A)\otimes\ehom_\B(B,B')\cr
+        \xtos{F_{(A,B),(A,B')}} \ehom_\C(F(A,B),F(A,B'))
+    } $$
+    and similar for $F(\bul,B)$.
+    The functorality of these functors is due to the functorality of the composition of functors.
+
+    Conversely suppose we have two families of functors
+    $$ F(A,\bul)\colon\B\to\C,\qquad F(\bul,B)\colon\A\to\C $$
+    the first indexed by $\Ob(\A)$, the second by $\Ob(\B)$.
+    Further suppose that for all $A\in\A,B\in\B$ we have $F(A,\bul)B=F(B,\bul)A$, and let us denote this common object by $F(A,B)$.
+    Then there is a functor $F\colon\A\otimes\B\to\C$ for which these are its partial functors iff the following diagram commutes
+
+    {\def\diagcolwidth{0pt}\def\diagcolbuf{0pt}\diagram{
+        \ehom_\A(A,A')\otimes\ehom_\B(B,B')&\ehom_\C(F(A,B'),F(A',B'))\otimes\ehom_\C(F(A,B),F(A,B'))\cr
+        &\ehom_\C(F(A,B),F(A',B'))\cr
+        \ehom_\B(B,B')\otimes\ehom_\A(A,A')&\ehom_\C(F(A',B),F(A',B'))\otimes\ehom_\C(F(A,B),F(A',B))
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text={F(\bul,B')\otimes F(A,\bul)}, y distance=.25cm}
+        \diagarrow{from={3,1}, to={3,2}, text={F(A',\bul)\otimes F(\bul,B)}, y distance=.25cm}
+        \diagarrow{from={1,1}, to={3,1}, text=\beta, x distance=-.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text=c, x distance=.25cm}
+        \diagarrow{from={3,2}, to={2,2}, text=c, x distance=.25cm}
+    }}
+
+    Moreso such a functor $F$ is unique, and $F_{(A,B),(A',B')}$ is the diagonal of the above diagram.
+
+    Furthermore, if $F,G\colon\A\otimes\B\to\C$ are two functors, a family $\alpha_{A,B}\colon\1\to\ehom_\C(F(A,B),G(A,B))$
+    forms an enriched natural transformation iff for each fixed $A\in\A$, $\alpha_{A,\bul}$ forms a natural transformation
+    $F(A,\bul)\To G(A,\bul)$ and for each fixed $B\in\B$, $\alpha_{\bul,B}$ a natural transformation $F(\bul,B)\To G(\bul,B)$.
+    Thus naturality may be verified variable-by-variable.
+
+\eremark
+
+\bnote
+
+    In general it is not true that $(\A\otimes\B)_0$ is $\A_0\times\B_0$.
+    Their objects are the same, both being $\Ob(\A)\times\Ob(\B)$, but a morphism in the former is a morphism (in $\V$)
+    $\1\to\ehom_\A(A,A')\otimes\ehom_\B(B,B')$, while a morphism in the latter is a pair of morphisms $\1\to\ehom_\A(A,A')$ and
+    $\1\to\ehom_\B(B,B')$.
+    There is then a canonical functor $\A_0\times\B_0\to(A\otimes\B)_0$ which is the identity on objects and maps the pair
+    $f\colon\1\to\ehom_\A(A,A')$ and $g\colon\1\to\ehom_\B(B,B')$ to
+    $$ \1 \cong \1\otimes\1 \xtos{f\otimes g} \ehom_\A(A,A')\otimes\ehom_\B(B,B') . $$
+
+\enote
+
