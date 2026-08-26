@@ -1,0 +1,150 @@
+\subsection{Abelian categories of sheaves}
+
+Recall that for a sheaf of rings $\O_X$, an {\emphcolor $\O_X$-module} is a sheaf of Abelian groups $\F$ such that each
+$\F(U)$ is an $\O_X(U)$-module in a compatible way (\refmath[definition]{sheafmod}).
+A sheaf of Abelian groups is a $\ul\bZ$-module, so $\O_X$-modules generalize the concept of sheaves of Abelian groups much like
+how modules generalize the concept of Abelian groups.
+
+The goal of this section is to demonstrate that the category of $\O_X$-modules (and in particular sheaves of Abelian groups)
+forms an Abelian category.
+
+To do this we need to show that the category of $\O_X$-modules has kernels and cokernels, and that monics are kernels and
+epics are cokernels.
+Firstly let us consider $\Mod^\pre_{\O_X}$, the category of presheaf $\O_X$-modules.
+The definition here is the same as \refmath[definition]{sheafmod} except we require only that $\F$ be a presheaf.
+
+Now $\Mod^\pre_{\O_X}$ is complete and cocomplete.
+If $\Phi\colon I\to\Mod^\pre_{\O_X}$ is a diagram, then there is an obvious forgetful functor
+$\Mod^\pre_{\O_X}\to\Ab^\pre_X$.
+Composing this with $\Phi$ we can take the co/limit, and then there is an obvious $\O_X$-module structure on the resulting
+object (this is the same situation as with $\Mod_R\to\Ab$).
+
+Then sheafification lifts to $\Mod^\pre_{\O_X}\to\Mod_{\O_X}$.
+This is clear by considering $\F^\sh(U)$ explicitly.
+Thus $\Mod_{\O_X}$ is a reflective subcategory of $\Mod^\pre_{\O_X}$, and since the latter is co/complete so too is the former.
+
+In particular the kernel of a $\Mod_{\O_X}$-morphism is the kernel of it viewed as a morphism in $\Ab^\pre_X$,
+and its cokernel is the sheafification of this morphism.
+
+Recall that the stalk of a morphism in $\Mod_{\O_X}$ is an $\O_{X,p}$-module.
+Thus we view $\bul_p$ as a functor
+$$ \bul_p\colon \Mod_{\O_X} \to \Mod_{\O_{X,p}} . $$
+When $\O_X=\ul\bZ$ then $\Mod_{\O_X}$ is the same as $\Ab_X$, and $\O_{X,p}$ is the same as $\bZ$ so that
+$\Mod_{\O_{X,p}}\cong\Ab$.
+Thus all of the following results hold for sheaves of Abelian groups.
+
+\blemm[name={stalkco/ker}]
+
+    Taking stalks preserves kernels and cokernels: for $p\in X$ and a morphism $\phi\colon\F\to\G$ of $\O_X$-modules,
+    $$ (\ker\phi)_p \cong \ker(\phi_p),\qquad (\coker\phi)_p \cong \coker(\phi_p) . $$
+
+\elemm
+
+\bproof
+
+    This is clear for cokernels, as the stalk at $p$ amounts to taking a certain colimit, and colimits (such as cokernels)
+    commute with colimits.
+
+    For kernels we can show this directly.
+    We view both $(\ker\phi)_p$ and $\ker(\phi_p)$ canonically as subobjects of $\F_p$, in which case it is clear that
+    there is an equality.
+    \qed
+
+\eproof
+
+\blemm[name={monepionstalks}]
+
+    In $\Mod_{\O_X}$, a morphism $\phi\colon\F\to\G$ is monic iff its stalks are monic, epic iff its stalks are epic,
+    and an isomorphism iff its stalks are isomorphisms.
+
+\elemm
+
+\bnote
+
+    It doesn't matter if we view $\phi_p$ as existing in $\Mod_{\O_{X,p}}$ or $\Set$; a module morphism (in the ordinary
+    sense) is a monomorphism/epimorphism/isomorphism iff it is injective/surjective/bijective.
+
+    Note that in lieu of this, a $\Mod_{\O_X}$-morphism with any of the above properties has those properties in
+    $\Ab_X$ and $\Set_X$.
+
+\enote
+
+\bproof
+
+    First we note that stalks determine a morphism: if $\phi_p=\psi_p$ for all $p\in X$ then $\phi=\psi$.
+    This is because the forgetful functor $U\colon\Mod_{\O_X}\to\Set_X$ is faithful, and commutes with taking stalks.
+    So $U\phi_p=U\psi_p$, which implies $U\phi=U\psi$ by \refmath[proposition]{stalksdeterminemorphism}, and thus $\phi=\psi$.
+
+    Then the proofs of \refmath[proposition]{isoonstalks} and \refmath[proposition]{epionstalks} are valid here.
+    \qed
+
+\eproof
+
+This allows us to prove the desired result.
+
+\bthrm
+
+    $\Mod_{\O_X}$ is an Abelian category. 
+
+\ethrm
+
+\bproof
+
+    As already shown, $\Mod_{\O_X}$ is co/complete.
+    Furthermore it is clearly a pre-additive category.
+    We need only show that for a monic $\phi$ and an epic $\psi$,
+    $$ \phi = \ker\coker\phi,\qquad \psi = \coker\ker\psi . $$
+    But this is true only if for all $p\in X$,
+    $$ \phi_p = \ker\coker\phi_p,\qquad \psi_p = \coker\ker\psi_p \eqcnt $$
+    (parentheses on the left-hand sides of the equations here are unnecessary, as per \refmath[lemma]{stalkco/ker}).
+    By \refmath[lemma]{monepionstalks} $\phi_p,\psi_p$ are monic and epic respectively, so \gotoleqn{} holds as
+    $\Mod_{\O_{X,p}}$ is Abelian.
+    \qed
+
+\eproof
+
+\blemm
+
+    Let $\phi$ be a $\Mod_{\O_X}$-morphism, then $\im\phi$ is the sheafification of the image presheaf of $\phi$.
+    In particular $(\im\phi)_p=\im(\phi_p)$.
+
+\elemm
+
+\bproof
+
+    We know that $\im_\pre\phi=\ker_\pre\coker_\pre\phi$, while $\im\phi=\ker\coker\phi$.
+    Since $\coker=\coker_\pre^\sh$ and $\ker=\ker_\pre^\sh=\ker_\pre$ so
+    $$ \im\phi = \ker_\pre^\sh\coker_\pre^\sh\phi = (\ker_\pre\coker_\pre\phi)^\sh = (\im_\pre\phi)^\sh $$
+    as desired.
+
+    The second point follows from stalks commuting with kernels and cokernels.
+    \qed
+
+\eproof
+
+\bcoro
+
+    The following sequence of $\Mod_{\O_X}$-morphisms
+    $$ \F\xtos\alpha\G\xtos\beta\H $$
+    is exact iff
+    $$ \F_p\xtos{\alpha_p}\G_p\xtos{\beta_p}\H_p $$
+    is exact for all $p\in X$.
+
+\ecoro
+
+\bproof
+
+    The former is exact iff $\im\alpha=\ker\beta$ iff $(\im\alpha)_p=(\ker\beta)_p$ for all $p\in X$, which happens iff
+    $\im\alpha_p=\ker\beta_p$, i.e.\ if the latter sequence is exact.
+    \qed
+
+\eproof
+
+An immediate consequence of this corollary is the following.
+
+\bcoro
+
+    Taking stalks is an exact functor $\bul_p \colon \Mod_{\O_X} \to \Mod_{\O_{X,p}}$.
+
+\ecoro
+

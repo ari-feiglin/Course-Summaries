@@ -1,0 +1,298 @@
+\subsection{Sheafification}
+
+There is a natural map
+$$ \F(U) \to \F_p , $$
+for every $p\in U$ given by mapping $s\in\F(U)$ to $(U,s)\in\F_p$.
+Together these assimilate into a map
+$$ \F(U) \to \prod_{p\in U}\F_p . $$
+
+\bprop[name={inctostalk}]
+
+    The natural map above is injective when $\F$ is a sheaf.
+
+\eprop
+
+\bproof
+
+    Suppose that $s,t\in\F(U)$ such that $(U,s)=(U,t)$ in $\F_p$.
+    Then there exists a neighborhood $p\in W_p\subseteq U$ such that $s|_{W_p}=t|_{W_p}$.
+    If this is true for all $p$, then $W_p$ form an open cover of $U$ and by the identity axiom, $s=t$.
+    \qed
+
+\eproof
+
+\bdefn
+
+    An element $(s_p)_p\in\prod_{p\in U}\F_p$ consists of {\emphcolor compatible germs} if for all $p\in U$, $s_p$ has a representative
+    $\tilde s_p\in\F(U_p)$ for $p\in U_p\subseteq U$ such that the germ of $\tilde s_p$ at $q\in U_p$ is $s_q$ for all $q\in U_p$.
+
+\edefn
+
+Equivalently, this says that there is an open cover $\set{U_i}$ of $U$ and sections $f_i\in\F(U_i)$ such that if $p\in U_i$ then $s_p$ is the germ
+of $f_i$ at $p$.
+If $s$ is a section of $\F$ over $U$, then $(s)_p$ consists of compatible germs.
+
+\bprop[name={inctostalkim}]
+
+    The natural map $\F(U)\to\prod_{p\in U}\F_p$'s image is precisely the compatible germs.
+
+\eprop
+
+\bproof
+
+    We already showed that every tuple in its image consists of compatible germs, now we show the converse.
+    Suppose $(s_p)_p$ consists of compatible germs, so let $\tilde s_p\in\F(U_p)$ be a representation as in the definition.
+    Then $U_p$ cover $U$, and $\tilde s_p|_{U_p\cap U_q}$'s germ at $q$ is $s_q$ so that $\tilde s_p,\tilde s_q$ agree on a neighborhood of $q$
+    and by symmetry in a neighborhood of $p$ and $q$.
+    \qed
+
+\eproof
+
+\bprop[name={stalksdeterminemorphism}]
+
+    Suppose $\F$ is a presheaf of sets and $\G$ a sheaf of sets, and $\phi_1,\phi_2\colon\F\to\G$ are two morphisms.
+    Further suppose that $\phi_1,\phi_2$ induce the same map on each stalk; show that $\phi_1=\phi_2$.
+
+\eprop
+
+\bproof
+
+    Consider the following diagram for $U\subseteq X$ open,
+
+    \commsq{\F(U)&\G(U)\cr
+        \prod_{p\in U}\F_p&\prod_{p\in U}\G_p}
+        {\phi_i}{\prod\phi_{i,p}}{}{\iota}
+
+    for $i=1,2$.
+    It is easily seen that this diagram commutes, and because $\phi_{1,p}=\phi_{2,p}$ for all $p\in U$ it follows that
+    $$ \iota\circ\phi_1 = \iota\circ\phi_2 $$
+    and since $\iota$ is injective by \refmath[proposition]{inctostalk}, we get that $\phi_1=\phi_2$ as desired.
+    \qed
+
+\eproof
+
+\bprop[name={isoonstalks}]
+
+    A morphism of sheaves of sets is injective iff it induces an injection on all stalks.
+    Similarly it is an isomorphism iff it induces an isomorphism on all stalks.
+
+\eprop
+
+\bproof
+
+    If $\phi\colon\F\to\G$ is an isomorphism, then by functorality $\phi_p\colon\F_p\to\G_p$ is as well for all $p$.
+    Similarly if it is an injection then $\phi_p(s_p)=\phi_p(t_p)$ then $\phi(s)$ and $\phi(t)$ are equal in a subset $V\subseteq U$ so that
+    $\phi(s|_V)=\phi(t|_V)$ and by injectivity this means that $s|_V=t|_V$ and thus $s_p=t_p$.
+
+    Conversely consider the commutative diagram
+
+    \diagram{
+        \F(U)&\G(U)\cr
+        \prod_{p\in U}\F_p&\prod_{p\in U}\G_p
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=\phi, y distance=.25cm}
+        \diagarrow{from={2,1}, to={2,2}, text=\sim, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,1}, left cap={(}, text={\iota_\F}, x distance=-.25cm}
+        \diagarrow{from={1,2}, to={2,2}, left cap={(}, text={\iota_\G}, x distance=.25cm}
+    }
+
+    where the bottom horizontal arrow is the injection/isomorphism $\prod_{p\in U}\phi_p$.
+    Then $\iota_\G\circ\phi$ is injective, and so $\phi$ is.
+
+    Now to show that $\phi$ is surjective, let $s\in\G(U)$.
+    Then $\iota_\G(s)\in\prod_U\G_p$ consists of compatible germs, and mapping it back to $\prod_U\F_p$ we see that it still
+    consists of compatible germs.
+    Thus it lies in the image of $\iota_\F$ by \refmath[proposition]{inctostalkim}, and thus has a preimage in $\F(U)$.
+    Because all of the maps are injective, this is the preimage of $s$ in $\F(U)$ as desired.
+    \qed
+
+\eproof
+
+\bnote
+
+    It is not true that sheaves with isomorphic stalks are isomorphic: there may not be an isomorphism between the sheaves which induces these
+    isomorphisms.
+
+\enote
+
+\bthrm[title={Sheafification}, name={sheafification}]
+
+    The inclusion $\Set_X\inj\Set_X^\pre$ has a left adjoint, called {\emphcolor sheafification}: $\sh\colon\Set_X^\pre\to\Set_X$.
+
+\ethrm
+
+\bproof
+
+    We need to show for any presheaf $\F$ there exists a sheaf $\F^\sh$ and morphism $\sh\colon\F\to\F^\sh$ such that for every sheaf $\G$ and
+    morphism $g\colon\F\to\G$ there exists a unique morphism $f\colon\F^\sh\to\G$ such that the below diagram commutes:
+
+    \diagram{
+        \F&\F^\sh\cr
+        &\G
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=\sh, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,2}, text=g, x distance=-.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text={\exists!f}, x distance=.5cm}
+    }
+
+    We construct $\F^\sh$ explicitly.
+    For $U\subseteq X$ open, define
+    $$ \F^\sh(U) = \set{(f_p\in\F_p)_{p\in U}}[\mltext{for all $p\in U$ there exists a neighborhood $p\in V\subseteq U$ and $s\in\F(V)$\cr
+    such that $s_q=f_q$ for all $q\in V$}] , $$
+    where by $s_q$ we mean the germ of $s$ in $\F_q$.
+    For $U\subseteq V$ there is an obvious map $\F^\sh(V)\to\F^\sh(U)$ mapping $(f_p)_{p\in V}\mapsto(f_p)_{p\in U}$; it is easily seen that
+    $\F^\sh$ is a presheaf.
+
+    Note that the construction of $\F^\sh(U)$ is just the set of all families of compatible germs over $U$, which we discussed in the
+    previous few results.
+
+    Now let $U\subseteq X$ be open and $\set{U_i}_i$ an open cover of $U$.
+    Then if we have $(f^i_p)_{p\in U_i}\in\F^\sh(U_i)$ for all $i$ which are compatible, this means $f^i_p=f^j_p$ for all $p\in U_i\cap U_j$.
+    Then we must define $(f_p)_{p\in U}$ by $f_p=f^i_p$ for any $i\in U_i$ for which $p$ is a member of.
+    This is well-defined precisely by compatibility, and it is a member of $\F^\sh(U)$ because for $p\in U$ there is a $p\in U_i\subseteq U$
+    and then there is a $p\in V\subseteq U_i$ and $s\in\F(V)$ such that $s_q=f^i_q=f_q$ for all $q\in V$ as desired.
+    Thus $\F^\sh$ is a sheaf.
+
+    Now we must demonstrate that $\F^\sh$ satisfies the universal property of a left adjoint.
+    There is an obvious map $\sh\colon\F\to\F^\sh$ which maps $s\in\F(U)$ to $(s_p\in\F_p)_{p\in U}\in\F^\sh(U)$ (this is a section because
+    $s$ satisfies the condition for it to be in $\F^\sh(U)$).
+    Let $g\colon\F\to\G$ be a morphism, and for $U\subseteq X$ consider the following diagram
+
+    \diagram{
+        \F(U)&\F^\sh(U)&\prod_{p\in U}\F_p\cr
+        &\G(U)&\prod_{p\in U}\G_p
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=\sh, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,2}, text=g, x distance=-.25cm}
+        \diagarrow{from={1,2}, to={1,3}, text={\iota_\F}, y distance=.25cm, left cap={(}}
+        \diagarrow{from={2,2}, to={2,3}, text={\iota_\G}, y distance=-.25cm, left cap={(}}
+        \diagarrow{from={1,3}, to={2,3}, text={\prod_pg_p}, x distance=.25cm}
+    }
+
+    Note that the image of $\prod_pg_p\circ\iota_\F$ consists of compatible germs in $\prod_{p\in U}\G_p$ and so we can fill this diagram
+    in with a unique arrow $f\colon\F^\sh(U)\to\G(U)$.
+    It is easy to see by uniqueness that these $f$ assemble into a morphism $\F^\sh\to\G$.
+    \qed
+
+\eproof
+
+\bnote
+
+    In the language of category theory, this theorem says that $\Set_X\subseteq\Set_X^\pre$ is a {\emphcolor reflective subcategory}.
+    Note that this proof works for other concrete categories like $\Ab,\Grp,\Ring$, etc.
+    It can be shown that for sufficiently nice $\C$ (e.g.\ complete and cocomplete), sheafification exists for $\C_X\subseteq\C_X^\pre$.
+
+    This justifies the fact that inclusion $\C_X\subseteq\C_X^\pre$ preserves limits: it is a right adjoint.
+    This explains why the presheaf kernel of a sheaf morphism is a sheaf kernel for example.
+
+\enote
+
+\bprop
+
+    The canonical morphism $\F\to\F^\sh$ induces an isomorphism on stalks.
+
+\eprop
+
+\bproof
+
+    This is easily seen by an explicit description of $\F^\sh$'s stalks.
+    \qed
+
+\eproof
+
+\bremark[title={The space of sections of a presheaf}]
+
+    Suppose $\F$ is a presheaf of sets on $X$.
+    We will construct a topological space $F$ along with a continuous map $\pi\colon F\to X$ as follows.
+    As a set define $F$ to be the disjoint unions of $\F$'s stalks:
+    $$ F = \coprod_{p\in X}\F_p . $$
+    Now for $s\in\F(U)$ let $F_s=\set{(p,s_p)}[p\in U]\subseteq F$; then the collection of all $F_s$ where $s\in\F(U)$ for arbitrary $U\subseteq X$
+    forms a base for a topology on $F$.
+    Indeed, for $s\in\F(U)$ and $t\in\F(V)$ we see that $F_s\cap F_t$ is the union of all $F_r$ where $r=s|_W=t_W$ for all $W\subseteq U\cap V$
+    where $s|_W=t|_W$.
+
+    The map $\pi\colon F\to X$ is the obvious projection $(p,s_p)\mapsto p$.
+    For $U\subseteq X$ open we have that $\pi^{-1}U$ is the union of all $F_s$ where $s\in\F(U)$ so that $\pi$ is continuous.
+    Furthermore $\pi$ is an open map: for $s\in\F(U)$ it maps $F_s$ to $U$.
+    Moreso $\pi|_{F_s}$ is a bijection, so that $\pi$ is a local homeomorphism.
+
+    The space $F$ is called the {\emphcolor space of sections}, or {\emphcolor \'etal\'e space} of $\F$.
+
+    We can give an alternative construction for the sheafification of $\F$ as the sheaf of sections of $\pi\colon F\to X$
+    (that is for $U\subseteq X$ we define $\F^\sh(U)$ to be the set of continuous maps $\sigma\colon U\to F$ where $\pi\circ\sigma=\id_U$).
+    Let us denote by $\F^+$ this new construction.
+
+    For $U\subseteq X$ open we define $\phi\colon\F^\sh(U)\to\F^+(U)$ by mapping $(f_p)_{p\in U}$ to $\sigma\colon U\to F$, $p\mapsto f_p$.
+    Its inverse is given by mapping $\sigma$ to $(\sigma(p))_p$.
+
+\eremark
+
+\bexam
+
+    Let $S$ be a set and consider the constant presheaf $\ul S_\pre$.
+    Then its sheafification is the constant {\it sheaf\/}: $(\ul S_\pre)^\sh=\ul S$.
+
+    We can show this with the universal property: $\sh\colon\ul S_\pre\to\ul S$ is given by inclusion (constant maps are locally constant).
+    Then for a morphism $g\colon\ul S_\pre\to\F$ where $\F$ is a sheaf, we define $\bar g\colon\ul S\to\F$ by mapping a locally constant
+    $f\colon U\to S$ to the gluing of $(\bar g(f|_{U_i}))_i$ (where $U_i\subseteq U$ are its connected components so that $f|_{U_i}$ is a constant).
+
+\eexam
+
+Let $\phi\colon\F\to\G$ be a morphism of sheaves, then recall the following equivalences (see \refmath[remark]{sheafinclim} and
+\refmath[proposition]{isoonstalks}):
+\benum
+    \item $\phi$ is monic as a morphism of sheaves,
+    \item $\phi$ is monic as a morphism of presheaves,
+    \item $\phi(U)$ is monic for all $U\subseteq X$,
+    \item $\phi_p$ is monic for all $p\in X$.
+\eenum
+
+A similar equivalence does not hold true for epimorphisms.
+This boils down to the fact that inclusion $\C_X\subseteq\C_X^\pre$ does not necessarily preserve colimits, and thus not epimorphisms.
+So while a presheaf morphism is epic iff its components are, the same does not hold for sheaf morphisms.
+But it is true that epimorphisms are determined by stalks.
+
+\bprop[name={epionstalks}]
+
+    Let $\phi\colon\F\to\G$ be a morphism of sheaves.
+    Then it is an epimorphism (in the category of sheaves) iff $\phi_p\colon\F_p\to\G_p$ is an epimorphism for all $p\in X$.
+
+\eprop
+
+\bproof
+
+    If $\phi_p$ is epic for all $p$, then suppose we have two sheaf morphisms $\psi_1,\psi_2\colon\G\to\c H$ such that
+    $\psi_1\circ\phi=\psi_2\circ\phi$.
+    Then taking stalks we see that for all $p$, $(\psi_1)_p\circ\phi_p=(\psi_2)_p\circ\phi_p$.
+    Since $\phi_p$ is epic this means $(\psi_1)_p=(\psi_2)_p$ for all $p$ and by \refmath[proposition]{stalksdeterminemorphism} this means
+    $\psi_1=\psi_2$ so that $\phi$ is epic.
+
+    Conversely let $p\in X$ and suppose there are maps $f,g\colon\G_p\to X$ such that $f\circ\phi_p=g\circ\phi_p$.
+    We can define maps $\bar f,\bar g\colon\G\to p_*X$ by $\bar f_U(s)=f(s_p)$ for $p\in U$ and $\bar f_U=*$ otherwise.
+    It is easy to see that $\bar f\circ\phi=\bar g\circ\phi$ and so $\bar f=\bar g$ which can easily be shown to mean $f=g$.
+    \qed
+
+\eproof
+
+\bnote
+
+    We will show that there is an adjunction between taking stalks and the skyscraper sheaf: $\bul_p\dashv p_*\bul$.
+    This was used in the above proof, and it is easy to see then how to construct this.
+
+\enote
+
+\bexam
+
+    We will show that an epimorphism of sheaves need not be epic on each of its components.
+
+    Let $\O_\bC$ be the sheaf of holomorphic functions and $\O_\bC^*$ be the sheaf of invertible (nowhere zero) holomorphic functions.
+    These are sheaves of Abelian groups, and we then have maps of sheaves
+    $$ 0 \to \ul\bZ \xtos{\times2\pi i} \O_\bC \xtos{\exp} \O_\bC^* \to 1 . $$
+    We will soon show that this is an exact sequence of sheaves of Abelian groups.
+
+    In particular $\exp\colon\O_\bC\to\O_\bC^*$ is an epimorphism as we can show directly.
+    For any $z\in\C$ the morphism of stalks $\exp_z$ is surjective because every invertible holomorphic function locally has a logarithm.
+    But $\exp$ is not an epimorphism on each of its components, for example $\id\in\O_\bC^*(\bC-0)$ has no global logarithm.
+
+\eexam
+

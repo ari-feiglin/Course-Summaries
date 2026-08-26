@@ -1,0 +1,162 @@
+\subsection{The category of sheaves}
+
+As discussed, presheaves form a category for which sheaves form a full subcategory.
+We will denote the category of $\C$-valued presheaves over a space $X$ by $\C_X^\pre$ (instead of $\Psh_\C(X)$), and we will denote the full
+subcategory of sheaves by $\C_X\subseteq\C_X^\pre$.
+
+Note that if $\F,G\in\C_X$ are sheaves (or presheaves), then the hom-set of sheaf morphisms $\F\to\G$ is indeed a set, since $X$ as a category
+is small (functor categories under small categories are locally small).
+Furthermore, if $\C$ is enriched over some monoidal category (in our case, usually $\Ab$) so is $\C_X$.
+This is because it is true in general for functor categories over enriched categories.
+
+\bdefn
+
+    Let $\F,\G$ be $\C$-valued sheaves defined on $X$.
+    Define their {\emphcolor sheaf-hom} to be the sheaf whose sections are sheaf morphisms,
+    $$ \ihom(\F,\G)(U) = \hom_{\C_X}(\F|_U,\G|_U) . $$
+    As discussed, if $\C$ is enriched over a monoidal category $\V$ then so is $\C_X$, and so $\ihom(\F,\G)$ takes values in $\V$.
+    In particular, if $\F,\G$ are sheaves of Abelian groups, then so is their sheaf-hom.
+
+\edefn
+
+\bprop
+
+    The sheaf-hom is indeed a sheaf.
+
+\eprop
+
+\bproof
+
+    We first show it is a sheaf: if $U\subseteq V$ then a sheaf morphism $\F|_V\to\G|_V$ restricts to a sheaf morphism
+    $\F|_U\to\G|_U$ in the obvious way: its components are the same but only taken on subsets of $U$.
+    This is clearly a presheaf.
+
+    To show that it is a sheaf, let $\set{U_i}$ be an open cover for $U\subseteq X$, and $\alpha_i\colon\F|_{U_i}\to\G|_{U_i}$ be sheaf morphisms
+    such that $\alpha_i|_{U_i\cap U_j}=\alpha_j|_{U_i\cap U_j}$ for all $i,j$.
+    In order to glue them together for a sheaf morphism $\alpha\colon\F_U\to\G_U$ we need to define $\alpha_W$ for all $W\subseteq U$.
+    For $s\in\F(W)$ consider $s_i=s|_{U_i}\in U_i\cap W$, and its image under $\alpha_i$ to $\G(U_i\cap W)$, call it $t_i$.
+    Then since $U_i\cap W$ cover $W$ and since $\alpha$ is a morphism as well as $\G$ being a sheaf, we can uniquely glue $t_i$ together to
+    get a $t\in\G(W)$; this will be the image of $s$.
+
+    It is not hard to see that this is the unique gluing of $\alpha_i$, and is itself a sheaf morphism.
+    \qed
+
+\eproof
+
+\bnote
+
+    In the above proof we needed only for $\G$ to be a sheaf, $\F$ can be a presheaf.
+
+    Furthermore $\ihom$ forms a bifunctor
+    $$ \ihom\colon\C_X^\op\times\C_X \to \Set_X , $$
+    or $V_X$ instead of $\Set_X$ when $\C$ is enriched over $V$.
+
+\enote
+
+Note that if $\O_X$ is a ringed space, it is also a module over itself.
+Thus if $\F$ is an $\O_X$ module, we can form its {\emphcolor dual}:
+$$ \F^\vee = \ihom_{\Mod_{\O_X}}(\F,\O_X) . $$
+
+We now focus on sheaves of Abelian groups.
+It is a classical result that functor categories over Abelian categories are Abelian, thus $\Ab_X^\pre$ is an Abelian category.
+That is to say, the hom-sets (not hom-sheaves) have an Abelian group structure: for $\phi,\psi\colon\F\to\G$ we can define $\phi+\psi$
+and $-\phi$ by $(\phi+\psi)(U)=\phi(U)+\psi(U)$ and $(-\phi)(U)=-\phi(U)$).
+And we can form kernels and cokernels so that all monomorphisms are kernels and all epimorphisms are cokernels.
+
+As with all limits in functor categories, these are done coordinate-wise.
+That is to say, if we denote by $\ker_\pre$ and $\coker_\pre$ the kernel and cokernel of Abelian presheaf morphisms, we have
+$$ (\ker_\pre\phi)(U) = \ker(\phi(U)),\qquad (\coker_\pre\phi)(U) = \coker(\phi(U)) . $$
+
+\bremark[name={monepiccomp}]
+
+    Let $I$ be an indexing category and $\C$ be a category with arbitrary pullbacks.
+    It is easy to see that a $\C$-morphism $f\colon X\to Y$ is monic iff the following square is a pullback:
+
+    \commsq{X&X\cr X&Y}
+        {\id}{f}{\id}{f}
+
+    Because the functor category $[I,\C]$ also has arbitrary pullbacks, a natural transformation $\alpha\colon\F\To\G$ is monic iff
+    a similar diagram is a pullback.
+    Because limits in a functor category are taken coordinate-wise, this is iff $\alpha(i)$ is monic for all $i\in I$.
+
+    Thus a natural transformation is monic iff its coordinates are.
+
+    Similarly, if $\C$ has arbitrary pushouts, natural transformations in $[I,\C]$ are epic iff their coordinates are.
+
+\eremark
+
+In lieu of this note, we see that $\Ab^\pre_X$ forms an Abelian category.
+Indeed, if $\phi\colon\F\To\G$ is a monic morphism of presheaves, then $\phi(U)\colon\F(U)\To\G(U)$ is a monic morphism of Abelian groups
+for all $U\subseteq X$.
+Thus $\phi(U)=\ker\coker\phi(U)$ for all $U\subseteq X$ and thus $\phi=\ker\coker\phi$ as desired.
+Similar for epic morphisms.
+
+Many properties of $\Ab^\pre_X$ are seen to be pointwise.
+For one, if we set an open set $U\subseteq X$, the functor $\Ab^\pre_X\to\Ab$ mapping $\F\mapsto\F(U)$ is an exact functor.
+Indeed, it is additive and preserves kernels and cokernels because these are taken pointwise.
+
+Furthermore, a sequence of presheaves
+$$ \F_1\to\F_2\to\cdots\to\F_n $$
+is exact iff $\F_1(U)\to\cdots\to\F_n(U)$ is for all $U\subseteq X$.
+Again, this is an immediate consequence of kernels and cokernels (and thus images) being taken coordinate-wise.
+
+Everything we have said holds for presheaves valued in any Abelian category $\A$ (recall that Abelian categories have all finite limits and colimits).
+But we are more interested in the category of sheaves, in which case this is less obvious.
+
+Note that the constant presheaf $\ul0_\pre$ is a sheaf, so we can denote it by $\ul0$ without confusion.
+In order to show that $\A_X$ is an Abelian category, we must first show that kernels and cokernels exist in it.
+The following proposition shows that the kernel of a sheaf morphism is the same as the kernel of a presheaf morphism, and thus we get the existence
+of kernels for free.
+
+\bprop
+
+    If $\phi\colon\F\to\G$ is a morphism of sheaves, then $\ker_\pre\phi$ is a sheaf.
+    Thus $\ker\phi=\ker_\pre\phi$ forms a kernel in the category of sheaves.
+
+\eprop
+
+\bproof
+
+    We show this for $\A=\Ab$: if $\set{U_i}_i$ is an open cover of $U\subseteq X$ and $s_i\in\ker\phi(U_i)$ are such that
+    $s_i|_{U_i\cap U_j}=s_j|_{U_i\cap U_j}$ for all $i,j$, then by gluing they form a section $s\in\F(U)$.
+    And by naturality
+    $$ \phi(U)(s)|_{U_i}=\phi(U_i)(s|_{U_i})=\phi(U_i)(s_i) = 0 . $$
+    The unique gluing of $0\in\G(U_i)$ is $0\in\G(U)$, so that $\phi(U)(s)=0$, meaning $s\in\ker\phi(U)$ as desired.
+    \qed
+
+\eproof
+
+\bremark[name={sheafinclim}]
+
+    A generalization of the above proposition shows that limits taken in the category of presheaves of sheaves forms a sheaf.
+    That is, if $\Phi\colon I\to\C_X$ is a functor, then consider the inclusion $\iota\colon\C_X\inj\C_X^\pre$.
+    Then $\lim\iota\circ\Phi$ is a sheaf, so $\lim\Phi$ exists in $\C_X$.
+
+    Thus if $\C$ has arbitrary pullbacks, so too does $\C_X^\pre$ and thus so too does $\C_X$.
+    It then follows that a morphism of sheaves is monic iff its monic as a morphism of presheaves (considering the pullback condition
+    \refmath[remark]{monepiccomp}) iff each component is monic (again by \refmath[remark]{monepiccomp}).
+
+\eremark
+
+Unfortunately we now run in to our first hurdle: presheaf cokernels are not sheaves.
+
+\bexam
+
+    Consider $\bC$ with its usual topology, and let $\O_\bC$ be the sheaf of holomorphic functions.
+    Let $\F$ be the presheaf of functions admitting a holomorphic logarithm.
+    Consider the following exact sequence of presheaves
+    $$ 0 \to \ul\bZ \inj \O_\bC \xtos{\exp(2\pi i)} \F \to 0 , $$
+    where the second map is $f\mapsto\exp(2\pi if)$.
+    This is indeed an exact sequence of presheaves: the first morphism is an embedding, and the second is epic (if $f=\exp(g)$ then
+    $g/2\pi i\in\O_\bC$ is an origin for $f$).
+    The composition is zero, as $\exp(2\pi in)=0$, and if $\exp(2\pi if)=0$ then $f(x)\in\bZ$ for all $x\in\bC$.
+    Because $\bZ$ is discrete, this means $f\in\ul\bZ$ as desired.
+
+    This shows that $\F$ is the cokernel of $\ul\bZ\inj\O_\bC$: but it is not a sheaf!
+    Indeed $\id\colon\bC-0\to\bC$ has a local logarithm at every point in its domain, but no global logarithm.
+    Thus $\F$ fails the gluing axiom.
+
+\eexam
+
+Thus for now we must wait to demonstrate that $\A_X$ is an Abelian category.
+
