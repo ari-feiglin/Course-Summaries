@@ -1,0 +1,255 @@
+\subsection{Adjunctions of sheaves}
+
+In the following section, $\C$ is a complete and cocomplete category (or at least has all filtered colimits) for which
+sheafification exists.
+
+Recall that for a continuous map $\pi\colon X\to Y$ there is a functor $\pi_*\colon\C_X\to\C_Y$ mapping a sheaf $\F$ to
+the sheaf $(\pi_*\F)(V)=\F(\pi^{-1}V)$ for $V\subseteq Y$.
+It turns out that this functor has a left adjoint.
+
+\bthrm
+
+    The pushforward functor $\pi_*\colon\C_X\to\C_Y$ has a left adjoint, called the {\emphcolor inverse image functor},
+    $\pi^{-1}\colon\C_Y\to\C_X$.
+
+\ethrm
+
+\bproof
+
+    First we show that $\pi_*\colon\C_X^\pre\to\C_Y^\pre$ has a left adjoint.
+    For $U\subseteq X$ and $\G\in\C_Y^\pre$ define
+    $$ \pi^{-1}_\pre\G(U) = \colim_{V\supseteq\pi(U)}\G(V) . $$
+    This is clearly functorial in $U$ and thus defines a presheaf in $\C_X^\pre$.
+    Furthermore it is also clearly functorial in $\G$, defining a functor $\C_Y^\pre\to\C_X^\pre$.
+
+    To show the adjunction, consider we have a morphism $\phi\colon\pi^{-1}\G \to \F$, which has components
+    $$ \phi_U \colon \colim_{V\supseteq\pi(U)}\G(V) \to \F(U) . $$
+    Then define $\hat\phi\colon\G\to\pi_*\F$ whose component on $V\subseteq Y$ is
+    $$ \hat\phi_V = \G(V) \to \colim_{W\supseteq\pi(\pi^{-1}V)}\G(W) \xtos{\phi_{\pi^{-1}V}} \F(\pi^{-1}V) , $$
+    where the first morphism comes from the colimit cone.
+
+    Conversely given $\psi\colon\G\to\pi_*\F$ then for $U\subseteq X$ and $V\supseteq\pi U$ there is a morphism
+    $$ \G(V) \xtos{\psi_V} \F(\pi^{-1}V) \xtos\res \F(U) . $$
+    These assemble into a cone under $(V\supseteq\pi U)\mapsto\G(V)$, and thus defines a map
+    $\tilde\psi_U\colon\colim_{V\supseteq\pi U}\G(V)\to\F(U)$.
+    These assemble into a morphism $\tilde\psi\colon\pi^{-1}\G\to\F$.
+
+    Now for sheaves, we have adjunctions
+    $$ \C_Y^\pre\adjarrow{\pi^{-1}_\pre}{\pi_*}\C_X^\pre\adjarrow{\sh}{\inc}\C_X $$
+    so we define $\pi^{-1}=\sh\circ\pi^{-1}_\pre$ and this gives us the desired left adjoint.
+    \qed
+
+\eproof
+
+\bremark[name={stalkskyscraperadj}]
+
+    A point $p\in X$ may be equivalently viewed as a morphism from the one-point space $p\colon*\to X$ which picks out $p$.
+    Sheaves on $*$ amount to objects of $\C$ (because the sheaf condition implies $\F(\emptyset)$ is the terminal object),
+    so that the inverse image-pushforward amounts to an adjunction
+    $$ \C_X\adjarrow{p^{-1}}{p_*}\C . $$
+
+    When viewing $A\in\C$ as a sheaf over $*$, we get that $p_*A$ is the sheaf on $X$ where for $U\subseteq X$,
+    $$ (p_*A)(U) = A(p^{-1}U) = \cases{A&$p\in U$\cr *&else} , $$
+    as $A$ is the sheaf $A(*)=A$ and $A(\emptyset)=*$.
+    This is precisely the skyscraper sheaf (which justifies the notation $p_*A$).
+
+    On the other hand, $p^{-1}\F\in\C$ is the colimit
+    $$ \colim_{U\ni p}\F(U) = \F_p $$
+    so that $p^{-1}$ is the stalk functor at $p$.
+
+    So in this specific case, we have an adjunction $\bul_p\dashv p_*\bul$.
+
+\eremark
+
+\bprop
+
+    The construction $\pi\mapsto\pi_*$ is functorial, and $\pi\mapsto\pi^{-1}$ is contravariantly functorial.
+    That is, these form form functors
+    $$ \displaylines{
+        \Top\to\Cat,\qquad X\mapsto\C_X,\quad \pi\mapsto\pi_*\cr
+        \Top^\op\to\Cat,\qquad X\mapsto\C_X,\quad \pi\mapsto\pi^{-1}.
+    } $$
+
+\eprop
+
+\bproof
+
+    Because $\pi^{-1}$ is the left adjoint of $\pi_*$, it is sufficient to show that one construction is functorial to show that the second is.
+    We will show that if we have a composition of continuous maps $X\xtos\pi Y\xtos\tau Z$, then $(\tau\circ\pi)_*=\tau_*\circ\pi_*$.
+    Indeed,
+    $$ (\tau_*\circ\pi_*\F)(W) = \pi_*\F(\tau^{-1}W) = \F((\tau\circ\pi)^{-1}W) = (\tau\circ\pi)_*\F(W) . \qed $$
+
+\eproof
+
+\bnote
+
+    It should be made more clear what it is meant for $\pi\mapsto\pi^{-1}$ to be functorial.
+    Indeed, it is not strictly true that $(\tau\circ\pi)^{-1}=\pi^{-1}\circ\tau^{-1}$; this equality is not strict and is rather a natural isomorphism.
+    So $\pi\mapsto\pi^{-1}$ is not an ordinary functor, rather a $2$-functor.
+
+\enote
+
+\bcoro[name={stalkofinv}]
+
+    Let $\pi\colon X\to Y$ be continuous, and $\G\in\C_Y$.
+    Then for $p\in X$ there is a natural isomorphism $(\pi^{-1}\G)_p\cong\G_{\pi p}$.
+
+\ecoro
+
+\bproof
+
+    Note that $(\pi^{-1}\G)_p$ is the composition $p^{-1}\circ\pi^{-1}(\G)=(\pi\circ p)^{-1}\G$, with $p\colon*\to X$.
+    This is equal to $\pi(p)^{-1}(\G)=\G_{\pi p}$ as desired.
+    \qed
+
+\eproof
+
+\bprop
+
+    Suppose $U\subseteq X$ is an open subset and consider the inclusion $\iota\colon U\inj X$.
+    Then the functors $\iota^{-1}$ and $\bul|_U$ (restriction) are isomorphic.
+
+\eprop
+
+\bproof
+
+    We will show that $\bul|_U$ is a left adjoint to $\iota_*$.
+    A map $\phi\colon\F|_U\to\G$ defines $\hat\phi\colon\F\to\iota_*\G$ by
+    $$ \hat\phi_V = \F(V) \xtos\res \F(U\cap V) \xtos{\phi_{U\cap V}} \G(U\cap V) = \iota_*\G(V) . $$
+    Conversely $\psi\colon\F\to\iota_*\G$ defines $\tilde\psi\colon\F|_U\to\G$ by $\tilde\psi_V=\psi_V$ for $V\subseteq U$, as $\iota_*\G(V)=\G(V)$.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $\pi\colon X\to Y$ be continuous, then $\pi^{-1}\colon\Ab_Y\to\Ab_X$ is exact.
+
+\eprop
+
+\bproof
+
+    Exactness can be checked on the level of stalks by \refmath[corollary]{exactnessonstalks}.
+    Thus $\pi^{-1}$ is exact iff $p^{-1}\circ\pi^{-1}$ is exact for all $p\in X$ (where $p^{-1}$ denotes taking the stalk at $p$).
+    But this is isomorphic to $\pi(p)^{-1}=\bul_{\pi p}$ which is exact.
+    \qed
+
+\eproof
+
+Consider the following situation: we have a commutative square of continuous maps
+
+\commsq{W&X\cr Y&Z}
+    {\beta'}{\beta}{\alpha'}{\alpha}
+
+For a sheaf $\F$ on $X$ we can define the {\emphcolor push-pull map}
+$$ \beta^{-1}\circ\alpha_*\F\to\alpha_*'(\beta')^{-1}\F $$
+as follows.
+Consider the unit of $(\beta')^{-1}\dashv\beta_*'$, $\eta^{\beta'}\colon\F\to(\beta'_*)(\beta')^{-1}\F$.
+Then apply $\alpha_*$ to get $\alpha_*\F\to\alpha_*(\beta'_*)(\beta')^{-1}\F$.
+By commutativity this is equal to $\alpha_*\F\to(\beta_*)(\alpha'_*)(\beta')^{-1}\F$, and we can apply the adjunction $\beta^{-1}\dashv\beta$ to get
+$\beta^{-1}\alpha_*\F\to\alpha'_*(\beta')^{-1}\F$ as desired.
+
+Recall that given an adjunction $(\eta,\epsilon)\colon L\dashv R$, the isomorphism $\hom(c,Rd)\xto\sim\hom(Lc,d)$ is given $f\mapsto \epsilon\circ Lf$.
+Thus the push-pull map is given by
+$$ \epsilon^\beta_{\alpha'_*(\beta')^{-1}}\circ(\beta^{-1}\circ\alpha_*(\eta^{\beta'})) . $$
+
+But we could define this another way.
+Instead we start with the counit $\epsilon^\alpha\colon\alpha^{-1}\alpha_*\F\to\F$, apply $(\beta')^{-1}$: $(\beta')^{-1}\alpha^{-1}\alpha_*\F\to(\beta')^{-1}\F$,
+which is equivalent to $(\alpha')^{-1}\beta^{-1}\alpha_*\F\to(\beta')^{-1}\F$, then we apply the adjunction $(\alpha')^{-1}\dashv\alpha'_*$ to get the desired
+$\beta^{-1}\alpha_*\F\to\alpha'_*(\beta')^{-1}\F$.
+In this case the map becomes
+$$ (\alpha'_*\circ(\beta')^{-1})(\epsilon^\alpha)\circ\eta^{\alpha'} . $$
+
+These two definitions are equivalent.
+Indeed, we can view both of these maps as the $\F$-component of a certain natural transformation, given by the two paths in the following diagram (the whiskering in the diagram
+is left implicit):
+
+\diagram{
+    \beta^{-1}\alpha_*\beta'_*(\beta')^{-1}&\beta^{-1}\beta_*\alpha'_*(\beta')^{-1}\cr
+    \beta^{-1}\alpha_*&\alpha'_*(\beta')^{-1}\cr
+    \alpha'_*(\alpha')^{-1}\beta^{-1}\alpha_*&\alpha'_*(\beta')^{-1}\alpha^{-1}\alpha_*
+}{
+    \diagarrow{from={2,1}, to={1,1}, text={\eta^{\beta'}}, x distance=-.25cm}
+    \diagarrow{from={1,1}, to={1,2}, text=\sim, y distance=.25cm}
+    \diagarrow{from={1,2}, to={2,2}, text={\epsilon^\beta}, x distance=.25cm}
+    \diagarrow{from={2,1}, to={3,1}, text={\eta^{\alpha'}}, x distance=-.25cm}
+    \diagarrow{from={3,1}, to={3,2}, text=\sim, y distance=-.25cm}
+    \diagarrow{from={3,2}, to={2,2}, text={\epsilon^\alpha}, x distance=.25cm}
+}
+
+The claim is that this diagram commutes, and it can be proven by filling out the diagram using the naturality of the units, counits, and the triangle identities.
+
+The push-pull map is also called the {\emphcolor change of basis map}.
+
+\bdefn
+
+    Let $\F$ be a sheaf of Abelian groups on $X$, and $s\in\F(X)$ a global section.
+    Define its {\emphcolor support} to be
+    $$ \supp s = \set{p\in X}[s_p\neq0\hbox{ in $\F_p$}] . $$
+
+\edefn
+
+\bprop
+
+    The support of a global section $\supp s$ is a closed subset of $X$.
+
+\eprop
+
+\bproof
+
+    Note that $p\notin\supp s$ iff $s_p=0$ in $\F_p$ iff there is a neighborhood $p\in U$ such that $s|_U=0$ in $\F(U)$.
+    But then for all $q\in U$ one has $s_q=0$ for this reason, so $U\subseteq(\supp s)^c$; so $\supp s$ is closed.
+    \qed
+
+\eproof
+
+\bnote
+
+    The locus where a continuous function is nonzero is open, i.e.\ if $f$ is a continuous function to an Abelian group then $\set{p\in X}[f(p)\neq0]$ is open.
+    In contrast the previous proposition shows that the locus where the germ of a continuous function (i.e.\ the stalk of a sheaf of continuous functions) is nonzero is closed.
+    This is because the latter is the set of all points where $s$ is nonzero {\it near\/} (i.e.\ in a neighborhood around) $p$, while the former is the set of all points where $f$ is nonzero {\it at\/} $p$.
+
+\enote
+
+In the following sheaves are valued in a category with a terminal object (so not $\Ring$ for example).
+
+\bdefn
+
+    The {\emphcolor support} of a sheaf $\F\in\C_X$ is the set $\supp\F$ of $p\in X$ for which $\F_p$ is non-terminal in $\C$.
+
+\edefn
+
+If $\F$ is a sheaf of groups, then
+$$ \supp\F = \set{p\in X}[\F_p\neq0] = \bigcup_{s\in\Gamma(\F)}\supp s . $$
+
+\bprop
+
+    Let $Z\subseteq X$ be a closed subset, and denote by $\iota\colon Z\inj X$ the inclusion.
+    \benum
+        \item If $\F$ is a sheaf on $Z$ then for $q\in X$,
+        $$ (\iota_*\F)_q = \cases{\F_q&$q\in Z$\cr *&$q\notin Z$} $$
+        where $*\in\C$ is the terminal object.
+
+        \item If $\F$ is a sheaf on $X$ with $\supp\F\subseteq Z$ then the unit $\F\to\iota_*\iota^{-1}\F$ is an isomorphism.
+    \eenum
+
+\eprop
+
+\bproof
+
+    For (1) note that
+    $$ (\iota_*\F)_q = \colim_{q\in U}\F(U\cap Z) . $$
+    If $q\in Z$ then this is the colimit over all neighborhoods of $q$ in $Z$, so isomorphic to $\F_q$.
+    Otherwise there is a neighborhood of $q$ disjoint from $Z$ as it is closed, and $\F(\emptyset)=*$.
+
+    For (2), let $p\in X$.
+    If $p\in Z$ then by (1) and \refmath[corollary]{stalkofinv}
+    $$ (\iota_*\iota^{-1}\F)_p \cong (\iota^{-1}\F)_p \cong \F_p . $$
+    This isomorphism is the stalk of the unit.
+    And if $p\notin Z$ then $p\notin\supp\F$ so that $\F_p$ is terminal and so is $(\iota_*\iota^{-1}\F)_p$ by (1).
+
+    Thus the stalks of the unit are all isomorphisms, and thus the unit itself is an isomorphism.
+    \qed
+
+\eproof
+

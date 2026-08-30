@@ -103,6 +103,12 @@ This allows us to prove the desired result.
 
 \eproof
 
+\bnote
+
+    It is actually the case that if $\A$ is an arbitrary (complete) Abelian category, then $\A_X$ is Abelian as well.
+
+\enote
+
 \blemm
 
     Let $\phi$ be a $\Mod_{\O_X}$-morphism, then $\im\phi$ is the sheafification of the image presheaf of $\phi$.
@@ -122,7 +128,7 @@ This allows us to prove the desired result.
 
 \eproof
 
-\bcoro
+\bcoro[name={exactnessonstalks}]
 
     The following sequence of $\Mod_{\O_X}$-morphisms
     $$ \F\xtos\alpha\G\xtos\beta\H $$
@@ -147,4 +153,123 @@ An immediate consequence of this corollary is the following.
     Taking stalks is an exact functor $\bul_p \colon \Mod_{\O_X} \to \Mod_{\O_{X,p}}$.
 
 \ecoro
+
+\bexam
+
+    For $U\subseteq X$, there is a functor $\Gamma_U\colon\C_X\to\C$ mapping a sheaf $\F\mapsto\F(U)$.
+    It is easy to see that $\Gamma_U\colon\Mod_{\O_X}\to\Mod_{\O_X(U)}$ is a left-exact functor.
+    That is, it preserves kernels.
+    This is clear because the kernel of a morphism of sheaves $\F\to\G$ is just the presheaf kernel, which is taken
+    coordinate-wise.
+
+    When $U=X$ we denote this by just $\Gamma=\Gamma_X$, and it is called the {\emphcolor global sections functor}.
+    Note that there is an obvious restriction functor $\res\colon\C_X\to\C_U$ mapping a sheaf $\F$ to its restriction
+    $\F|_U$.
+    Then $\Gamma_U$ is equal to the composition
+    $$ \Gamma_U = \C_X \xtos\res \C_U \xtos\Gamma \C . $$
+    And it is easy to see that $\res$ is also exact.
+
+    It is not true that $\Gamma_U$ is exact though.
+    Consider the exact sequence sequence
+    $$ 0 \to \ul\bZ \xtos{\times2\pi i}\O_\bC\xtos\exp\O_\bC^*\to1 $$
+    of \refmath[example]{expsequence}.
+    As before, $\Gamma_U(\exp)$ is not surjective as not every nowhere zero holomorphic function has a global inverse.
+    Take for example $U=\bC-0$ and the function $\id$.
+
+\eexam
+
+\bnote
+
+    Note that the maps $\res\colon\C_V\to\C_U$ for $U\subseteq V$ forms a presheaf $\open(X)^\op\to\Cat$.
+    In fact it is a $\Cat$-valued sheaf.
+
+\enote
+
+\bnote
+
+    We will show soon that $\Gamma\colon\C_X\to\C$ is right-adjoint to the constant sheaf functor.
+    And as we will see $\res\colon\C_X\to\C_U$ is the inverse image sheaf of the inclusion $U\inj X$, which in general is
+    left-adjoint to the pushforward, but in the case of an open embedding it is a right-adjoint as well.
+    Thus $\Gamma_U=\Gamma\circ\res$ is a right-adjoint and thus preserves limits; in particular it is left-exact.
+
+\enote
+
+\bexam
+
+    As alluded to in the previous note, the pushforward functor $\pi_*\colon\C_X\to\C_Y$ associated to a continuous
+    map $\pi\colon X\to Y$ is a right-adjoint, and thus left-exact.
+    We can show left-exactness directly: for a morphism $\phi\colon\F\to\G$ in $\C_X$, the components of $\pi_*\phi$
+    are $(\pi_*\phi)_V=\phi_{f^{-1}V}$ for $V\subseteq Y$.
+    Because kernels are taken coordinate-wise:
+    $$ (\ker\pi_*\phi)_V = \ker(\pi_*\phi_V) = \ker\phi_{f^{-1}V} = (\ker\phi)_{f^{-1}V} = (\pi_*\ker\phi)_V $$
+    so that $\ker\pi_*\phi=\pi_*\ker\phi$ as desired.
+
+\eexam
+
+\bdefn
+
+    Let $\F,\G$ be $\O_X$-modules.
+    Then we form their {\emphcolor tensor product presheaf} to be the presheaf $\F\otimes^\pre_{\O_X}\G$ given by
+    $$ (\F\otimes^\pre_{\O_X}\G)(U) = \F(U)\otimes_{\O_X(U)}\G(U),\qquad \res_{V,U} = \res^\F_{V,U}\otimes\res^\G_{V,U} . $$
+    Their {\emphcolor tensor product} is the sheafification of the tensor product presheaf:
+    $$ \F\otimes_{\O_X}\G = (\F\otimes^\pre_{\O_X}\G)^\sh . $$
+
+\edefn
+
+\bprop
+
+    For a presheaf $\F$, $\bul\otimes^\pre\F$ is left adjoint to $\ihom(\F,\bul)$ as functors
+    $\Mod_{\O_X}^\pre\to\Mod_{\O_X}^\pre$.
+
+    If $\F$ is a sheaf then $\bul\otimes\F$ is left adjoint to $\ihom(\F,\bul)$ as functors
+    $\Mod_{\O_X}\to\Mod_{\O_X}$.
+
+    Furthermore, $\ihom(\bul,\F)$ is a self-adjoint functor.
+    That is, there is an adjunction $\ihom(\bul,\F)^\op\colon\Mod_{\O_X}^\op\tof\Mod_{\O_X}\colon\ihom(\bul,\F)$.
+
+\eprop
+
+\bproof
+
+    If $\phi\colon\G\otimes^\pre\F\to\H$ is a morphism, then for all $U\subseteq X$,
+    $\phi_U\colon\G(U)\otimes\F(U)\to\H(U)$ corresponds to a map $\psi_U\colon\G(U)\to\ihom_{\O_X(U)}(\F(U),\H(U))$.
+    This then defines a map $\hat\phi_U\colon\G(U)\to\ihom(\F,\H)(U)$ which maps $x\in\G(U)$ to
+    $\hat\phi_U(x)\colon\F|_U\to\H|_U$ whose components on $V\subseteq U$ are $\psi_V$.
+
+    Conversely for a map $\psi\colon\G\to\ihom(\F,\H)$, we get maps
+    $\G(U)\to\ihom(\F|_U,\H|_U)\xto\Gamma\ihom(\F(U),\H(U)$ which then gives us a map
+    $\tilde\psi_U\colon\G(U)\otimes\F(U)\to\H(U)$.
+    This assembles into the desired map $\tilde\psi\colon\G\otimes^\pre\F\to\H$.
+
+    Thus we have adjunctions
+    $$ \Mod_{\O_X}^\pre \adjarrow{\otimes^\pre\F}{\ihom(\F,\bul)} \Mod_{\O_X}^\pre \adjarrow{\sh}{\inc} \Mod_{\O_X} $$
+    so that $\bul\otimes\F$ is the left adjoint of $\ihom(\F,\bul)$ as desired.
+
+    For the final point we note that the adjunctions above are natural in all variables, so that
+    $$ \hom(\H,\ihom(\G,\F)) \cong \hom(\H\otimes\G,\F) \cong \hom(\H\otimes\G,\F) \cong \hom(\H,\ihom(\G,\F)) $$
+    as desired.
+    \qed
+
+\eproof
+
+\bcoro
+
+    For a sheaf $\F$, $\ihom(\F,\bul)$ is left-exact and $\ihom(\bul,\F)$ is contravariant left-exact.
+
+\ecoro
+
+\bprop
+
+    If $\F,\G$ are $\O_X$-modules then for $p\in X$,
+    $$ (\F\otimes\G)_p = \F_p\otimes\G_p . $$
+
+\eprop
+
+\bproof
+
+    Filtered colimits in module categories commute with tensor products so
+    $$ (\F\otimes\G)_p = \colim_{p\in U}(\F(U)\otimes\G(U)) = (\colim_U\F(U))\otimes(\colim_U\G(U))
+    = \F_p\otimes\G_p . \qed $$
+
+\eproof
 

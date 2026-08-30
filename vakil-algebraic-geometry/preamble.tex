@@ -1,13 +1,18 @@
 \input pdfToolbox
+\input pdfmsym
 \input setup/document-structure
 \input setup/drawings
-\input pdfmsym
 
 \pdfmsymsetscalefactor{10}
-\def\diagtxtwrap#1{\setscale{8pt}$#1$}%
 
 \let\CITE\relax
 \def\TODO#1{\par\centerline{\setfontandscale{bf}{20pt}\color{red}TODO: #1}}
+
+\def\pagedecor{\pageborder{rgb{1 .7 .7}}{rgb{.5 .2 .2}}{5}}
+\def\setboxshadow{\def\boxshadowcolor{rgb{.8 .6 .6}}}
+\def\contentbox{\bppbox{rgb{1 .8 .8}}{rgb{.5 .1 .1}}{rgb{.3 0 0}}}
+
+\def\diagtxtwrap#1{\setscale{8pt}$#1$}%
 
 \def\frac#1#2{{{#1}\over{#2}}}
 \def\dfrac#1#2{{\displaystyle{{\displaystyle#1}\over{\displaystyle#2}}}}
@@ -90,11 +95,13 @@
     \expandafter\drawdiagram\expanded{{\@csq}}{#2}%
 }}
 
-\def\diagram#1#2{%
+\def\@diagram#1#2#3{%
     \par\medskip%
-    \centerline{\diagramed{#1}{#2}}%
+    \centerline{\diagramed{#2}{#3}#1}%
     \medskip%
 }
+
+\def\diagram{\@ifstar {\@diagram{.}}{\@diagram{}}}
 
 \def\@multline#1{%
 \hbox to\dimexpr\displaywidth-\leftskip-1cm\relax{%
@@ -167,6 +174,8 @@
 \let\bul=\bullet
 \let\down=\downarrow
 
+\def\adjarrow#1#2{\mathrel{\putsym{\xvaradjarrow{#1}[{#2}]}{{\scriptstyle\perp}}}}
+
 \def\y{{\sf y}}
 \def\colim{\mathop{\rm colim}\nolimits}
 \def\lim{\mathop{\rm lim}\nolimits}
@@ -187,6 +196,9 @@
 \let\bul=\bullet
 \let\ls=\setminus
 \let\ul=\underline
+\let\bar=\overline
+\let\tilde=\widetilde
+\let\hat=\widehat
 
 \def\hrel#1{\allowbreak\mkern18mu({\rm rel}\,\,#1)}
 \def\hto{\xto\sim}
@@ -216,5 +228,5 @@
 \def\makemathop{\@ifstar \@makemathop\@@makemathop}
 
 \def\@mmop#1{\expandafter\makemathop\csname #1\endcsname{#1}}
-\commap\@mmop{id,sk,proj,Nat,inc,ev,im,Fun,End,Ob,open,res,inc,coker}
+\commap\@mmop{id,sk,proj,Nat,inc,ev,im,Fun,End,Ob,open,res,inc,coker,supp}
 
