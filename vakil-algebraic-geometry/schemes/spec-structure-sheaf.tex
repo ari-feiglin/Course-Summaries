@@ -1,0 +1,230 @@
+\subsection{The structure sheaf an affine scheme}
+
+\bdefn
+
+    Let $A$ be a ring, then we define a sheaf of rings $(\spec A,\O_{\spec A})$ as follows.
+    For a basic open set $\dof(f)$, define $\O_{\spec A}(\dof(f))$ to be the localization of $A$ at all functions which do not vanish outside of $\vof(f)$, i.e.\ all $g\in A$ such that
+    $\vof(g)\subseteq\vof(f)$.
+
+\edefn
+
+For $f\in A$ let $S=\set{g\in A}[\vof(g)\subseteq\vof(f)]=\set{g\in A}[\dof(f)\subseteq\dof(g)]$.
+Recall that $\vof(g)\subseteq\vof(f)$ iff $f^n\in(g)$ iff $g\in A_f$ is invertible.
+Thus $S$ is the saturation of $\set{f^n}_{n\geq0}$, so that $S^{-1}A=\O_{\spec A}(\dof(f))$ and $A_f$ are naturally isomorphic.
+
+If $\dof(f')\subseteq\dof(f)$ then there is an obvious map $\O_{\spec A}(\dof f)\to\O_{\spec A}(\dof f')$ as the right ring is a localization of the left.
+Taking these maps as the restriction maps, this makes $\O_{\spec A}$ into a presheaf of rings (or $A$-algebras).
+
+To show that $\O_{\spec A}$ is a sheaf, we will make use of the following lemmas.
+
+\blemm
+
+    Let $A$ be a ring and $f_1,\dots,f_n$ generate the unit ideal.
+    Then the following sequence of $A$-module maps is exact
+    $$ 0 \to A \xtos\phi \prod_iA_{f_i} \xtos\psi \prod_{i,j}A_{f_if_j} , $$
+    where $\phi(a)=(a)_i$ and $\psi(a_i)=(a_i-a_j)_{i,j}$.
+    (We write $a\in A_f$ for the localization $a=a/1$.)
+
+\elemm
+
+\bproof
+
+    First we show that $\phi$ is injective: if $a=0$ in all $A_{f_i}$ then there are $m_1,\dots,m_n$ such that $f_i^{m_i}a=0$ for all $i=1,\dots,n$.
+    But because $f_i\in\sqrt{(f_j^{m_j})_j}$ for all $i$ and $(f_1,\dots,f_n)=A$, we see that $(f_1^{m_1},\dots,f_n^{m_n})=A$ as well.
+    Thus there are $g_1,\dots,g_n\in A$ such that $g_1f_1^{m_1}+\cdots+g_nf_n^{m_n}=1$; multiplying by $a$ shows that $a=0$.
+
+    Next we show that $\psi\circ\phi=0$.
+    Indeed:
+    $$ \psi\circ\phi(a) = \psi(a)_i = (a-a)_{i,j} = 0 , $$
+    so that $\im\phi\subseteq\ker\psi$.
+    Now suppose that $(a_i/f_i^{m_i})_i\in\ker\psi$, then by multiplying both the numerator and denominator by $f_i$s, we can assume that all the $m_i$s are equal to some $m$.
+    Thus
+    $$ 0 = \psi(a_i/f_i^m)_i = (a_i/f_i^m - a_j/f_j^m)_{i,j} $$
+    so that there is an $M$ where $(f_if_j)^M(f_j^ma_i-f_i^ma_j)=0$ for all $i,j$.
+
+    As before, the $f_i^{M+m}$ generate the unit ideal, so there are $b_i\in A$ such that $\sum_ib_if_i^{M+m}=1$.
+    Then define $a=\sum_ib_if_i^{M}a_i$ so that
+    $$ f_j^{M+m}a = \sum_ib_i(f_if_j)^Mf_j^ma_i = \sum_ib_i(f_if_j)^Mf_i^ma_j = f_j^M\sum_ib_if_i^{M+m}a_j = f_j^Ma_j . $$
+    Thus in $A_{f_j}$, $a=a_j/f_j^m$, so that $\phi(a)=(a_i/f_i^m)_i$ as desired.
+    \qed
+
+\eproof
+
+We will say that a presheaf on $X$ {\emphcolor has the sheaf property at $U$} for an open $U\subseteq X$ if the sheaf axiom holds for all open covers of $U$.
+So a sheaf is a presheaf which has the sheaf property at every open subset of $X$.
+Furthermore we can say that a presheaf has the sheaf property at $U$ {\emphcolor relative to $\set{U_i}_i$} for a specified open cover $\set{U_i}_i$ of $U$
+if the sheaf condition holds specifically for $\set{U_i}_i$.
+
+\blemm
+
+    If $X$ is a quasicompact space, then a presheaf $\F$ has the sheaf property at $X$ iff it has the sheaf property at $X$ relative to all finite covers of $X$.
+
+\elemm
+
+\bproof
+
+    One direction is clear.
+    Conversely let $\F$ be a presheaf with the sheaf property at $X$ relative to all finite covers of $X$, and let $\U=\set{U_i}_{i\in I}$ be an open cover of $X$.
+    Then there is a finite subset $I_0\subseteq I$ such that $\U_0=\set{U_i}_{i\in I_0}$ covers $X$.
+    To show that $\F(U)\To\F|_\U$ is a limiting cone (see \refmath[remark]{sheafcondaslim}), we note that a cone over $\F|_U$ induces a cone over $\F|_{\U_0}$.
+    Because $\F(U)\To\F|_{\U_0}$ is limiting, any morphism of cones $(C\To\F|_\U)\to(\F(U)\To\F|_\U)$ must be unique.
+
+    To show existence, it is sufficient to show that a morphism of cones $(C\To\F|_{\U_0})\to(\F(U)\To\F|_{\U_0})$ is also a morphism of cones over $\F|_U$.
+    If not, then there is a finite diagram which doesn't commute: there is a $V\in\U$ such that $C\to\F(V)$ is not equal to $C\to\F(U)\to\F(V)$.
+    Adding $V$ to $\U_0$ yields a finite cover of $U$, and since $\F$ has the sheaf property relative to {\it all\/} finite covers of $X$, this is a contradiction.
+    \qed
+
+\eproof
+
+\bthrm
+
+    $\O_{\spec A}$ is a sheaf on the distinguished base, thus determines a unique sheaf on the topological space $\spec A$.
+
+\ethrm
+
+\bproof
+
+    We must show that if $\dof(f)=\bigcup_{i\in I}\dof(f_i)$ then the following sequence is exact
+    $$ 0 \to A_f \xtos\phi \prod_iA_{f_i} \xtos\psi \prod_{i,j}A_{f_if_j} $$
+    where $\phi,\psi$ are defined as above (recall that $\dof(f)\cap\dof(g)=\dof(fg)$).
+    For a finite $I$, this follows from the lemma before the previous with $A_f$ in place of $A$.
+    For general $I$ this follows from the above lemma, along with the fact that $\dof(f)\cong\spec(A_f)$ is quasicompact.
+    \qed
+
+\eproof
+
+\bnote
+
+    It is {\it not\/} the case that $\O_{\spec A}(U)$ is the localization of $A$ at all $f\in A$ not vanishing outside of $U$.
+
+\enote
+
+For a ring $A$, we can embed $\Mod_A$ fully faithfully into $\Mod_{\O_{\spec A}}$.
+For an $A$-module $M$, let $\tilde M\in\Mod_{\O_{\spec A}}$ be the presheaf where $\tilde M(\dof(f))$ is the localization of $M$ at all $g\in A$ which don't vanish outside
+of $\vof(f)$.
+For the same reason as before, $\tilde M(\dof(f))\cong M_f$.
+The restriction maps are similar to before, and the proof that $\tilde M$ is a B-sheaf, and thus determines a sheaf, is very similar to above.
+
+In particular, $\tilde A$ is just $\spec A$.
+
+\blemm
+
+    Let $A$ be a ring and $S\subseteq A$ a multiplicative set.
+    We can view $S$ as a preorder whose objects are the $f\in S$, and there is an arrow $f\to g$ iff $\dof(f)\subseteq\dof(g)$.
+    Then for an $A$-module $M$, $f\mapsto M_f$ forms a functor $S^\op\to\Mod_{S^{-1}A}$, and
+    $$ S^{-1}M \cong \colim_{f\in S^\op}M_f . $$
+
+\elemm
+
+\bproof
+
+    It is sufficient to prove this for $M=A$, as $S$ is a cofiltered category ($fg\to f,g$) so the colimit is filtered.
+    Because tensor products commute with filtered colimits,
+    $$ \colim M_f \cong \colim(A_f\otimes M) \cong (\colim A_f)\otimes M \cong S^{-1}A\otimes M \cong S^{-1}M . $$
+    The following proof works just as well for $M$, but is clearer with $A$.
+
+    Let $\phi\colon A\to B$ be a ring map such that $\phi(S)\subseteq B^\times$.
+    Then $\phi(f)\in B^\times$ so that this induces unique maps $\psi_f\colon A_f\to B$ for all $f\in S$ such that the following diagrams commute:
+
+    \diagram{
+        A&B\cr
+        &A_f
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=\phi, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,2}, text={\iota_f}, x distance=-.25cm}
+        \diagarrow{from={2,2}, to={1,2}, text={\psi_f}, x distance=.25cm}
+    }
+
+    By uniqueness this forms a cone $(f\mapsto A_f)\To B$, and thus a unique map $\colim A_f\to B$.
+    So we have a commutative diagram
+
+    \diagram{
+        A_\bul&B\cr
+        &\colim A_f
+    }{
+        \diagarrow{from={1,1}, to={1,2}, ds}
+        \diagarrow{from={1,1}, to={2,2}, ds}
+        \diagarrow{from={2,2}, to={1,2}}
+    }
+
+    Because $1\in S$ and $A=A_1$, this gives rise to the desired map.
+    This also shows uniqueness of the map: a map $\colim A_f\to B$ commuting with $\phi$ gives rise to maps $A_f\to B$ commuting with $A\to A_f$ (again because $A=A_1$),
+    and by the universal property of $A_f$, they are unique.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Let $M\in\Mod_A$ be an $A$-module and $\tilde M\in\Mod_{\O_{\spec A}}$ be the induced $\O_{\spec A}$-module.
+    Then for $[\p]\in\spec A$ there is a natural isomorphism between the stalk of $\tilde M$ at $[\p]$ and the localization $M_\p$:
+    $$ \tilde M_{[\p]} \cong M_\p . $$
+    In particular
+    $$ (\spec A)_{[\p]} \cong A_\p . $$
+
+\ecoro
+
+\bproof
+
+    The lefthand side is
+    $$ \tilde M_{[\p]} = \colim_{[\p]\in\dof(f)}\tilde M(\dof f) = \colim_{f\notin\p}M_f , $$
+    which is $(A-\p)^{-1}M=M_\p$ by the previous lemma.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $M$ be an $A$-module.
+    Then the natural map
+    $$ M \inj \prod_{\p\in\spec A}M_\p $$
+    is injective.
+
+\eprop
+
+\bproof
+
+    This map corresponds to the map
+    $$ M = \tilde M(\spec A) \inj \prod_{\p\in\spec A}\tilde M_p \cong \prod_{\p\in\spec A}M_\p $$
+    which is an injection by \refmath[proposition]{inctostalk}.
+    \qed
+
+\eproof
+
+\bnote
+
+    Alternatively we could prove this directly: if $m\in M$ is equal to zero in $M_\p$ for all $\p\in\spec A$.
+    Define the ideal
+    $$ I = {\rm ann}_A(m) = \set{a\in A}[am=0] \leq A . $$
+    If $m$ were nonzero, then $I$ is a proper ideal and thus contained in a prime ideal $\p$.
+    For $a\notin\p$ then $a\notin I$ so $am\neq0$, and thus $m\neq0$ in $M_\p$ a contradiction.
+
+\enote
+
+Note that $M\mapsto\tilde M$ is functorial.
+Indeed, an $A$-module map $\phi\colon M\to N$ defines maps
+$$ \phi_f \colon \tilde M(\dof f) = M_f \to N_f = \tilde N(\dof f) $$
+which assemble into a morphism $\tilde\phi\colon\tilde M\to\tilde N$.
+
+Note that this functor is fully faithful.
+It is faithful because $\tilde\phi_{\dof1}=\phi$.
+And it is full because if $\psi\colon\tilde M\to\tilde N$ is a morphism, then let $\phi=\psi_{\dof1}$, and then $\psi=\tilde\phi$.
+Indeed, by naturality we must have commutative squares for all $f\in A$:
+
+\commsq{M&N\cr M_f&N_f}
+    {\phi}{\psi_{\dof f}}{}{}
+
+By the universal property of localization we must have $\psi_{\dof f}=\phi_f$ as desired.
+Thus $M\mapsto\tilde M$ is indeed a fully faithful embedding $\Mod_A\to\Mod_{\spec A}$.
+
+\bdefn
+
+    Let $M$ be an $A$-module and $m\in M$.
+    Define its {\emphcolor support} to be
+    $$ \supp m = \set{[\p]\in\spec A}[m_\p\neq0] , $$
+    which is the support of $m$ viewed as a global section of $\tilde M$.
+    We similarly define
+    $$ \supp M = \supp\tilde M = \set{[\p]\in\spec A}[M_\p\neq0] . $$
+
+\edefn
+

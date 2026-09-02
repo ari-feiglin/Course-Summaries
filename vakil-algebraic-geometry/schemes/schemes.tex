@@ -1,0 +1,147 @@
+\subsection{Schemes}
+
+Note that when $\pi\colon X\to Y$ is a homeomorphism, there is an isomorphism of categories $\pi\colon\open(Y)\cong\open(X)$ mapping $V\mapsto\pi^{-1}V$.
+This lifts to an isomorphism of categories $\pi_*\colon\C_X^\pre\cong\C_Y^\pre$ mapping a presheaf $\F\in\C_X^\pre$ to precomposition with $\pi$: $\pi_*\F(V)=\F(\pi^{-1}V)$.
+This is the usual pushforward, and it then induces an isomorphism $\C_X\cong\C_Y$.
+
+Because $\pi^{-1}$ is its left adjoint, which is unique up to isomorphism, this means that $\pi^{-1},\pi_*$ form an adjoint equivalence.
+In particular, the adjunction preserves categorical properties of morphisms, e.g.\ a morphism $\F\to\pi_*\G$ is an isomorphism iff $\pi^{-1}\F\to\G$ is.
+
+\bdefn
+
+    Let $\C$ be a category (with enough limits and colimits).
+    A {\emphcolor $\C$-space} is a pair $(X,\O_X)$ where $X$ is a topological space and $\O_X$ is a $\C$-valued sheaf on $X$.
+    A morphism of $\C$-spaces $(X,\O_X)\to(Y,\O_Y)$ is a continuous map $\pi\colon X\to Y$ along with a map of sheaves $\phi\colon\O_Y\to\pi_*\O_X$.
+    Composition is given in the obvious manner: if $X\xtos\pi Y\xtos\tau Z$ are continuous, and $\phi\colon\O_Y\to\pi_*\O_X$ and $\psi\colon\O_Z\to\tau_*\O_Y$ are morphisms, then define
+    $$ (\tau,\psi)\circ(\pi,\phi) = \O_Z \xtos\psi \tau_*\O_Y \xtos{\tau_*\phi} (\tau\circ\pi)_*\O_X . $$
+    We denote the category of $\C$-spaces by $\Space_\C$.
+
+\edefn
+
+Note that composition is indeed associative.
+If we have maps
+$$ (X,\O_X) \xtos{(\pi,\phi)} (Y,\O_Y) \xtos{(\tau,\psi)} (Z,\O_Z) \xtos{(\sigma,\chi)} (W,\O_W) $$
+then we have compositions
+$$ \displaylines{
+    \bigl((\sigma,\chi)\circ(\tau,\psi)\bigr)\circ(\pi,\phi) = (\sigma\circ\tau,\sigma_*\psi\circ\chi)\circ(\pi,\phi) = (\sigma\circ\tau\circ\pi,(\sigma\circ\tau)_*\phi\circ\sigma_*\psi\circ\chi\cr
+    (\sigma,\chi)\circ\bigl((\tau,\psi)\circ(\pi,\phi)\bigr) = (\sigma,\chi)\circ(\tau\circ\pi,\tau_*\phi\circ\psi) = (\sigma\circ\tau\circ\pi,\sigma_*(\tau_*\phi\circ\psi)\circ\chi
+} $$
+which are equal.
+
+Note that by the adjunction $\pi^{-1}\dashv\pi_*$, to give a morphism $\O_Y\to\pi_*\O_X$ is to give a morphism $\pi^{-1}\O_Y\to\O_X$.
+In which case the composition of $\phi\colon\pi^{-1}\O_Y\to\O_X$ and $\psi\colon\tau^{-1}\O_Z\to\O_Y$ is
+$$ (\tau,\psi)\circ(\pi,\phi) \colon (\tau\circ\pi)^{-1}\O_Z \xtos{\pi^{-1}\psi} \pi^{-1}\O_Y \xtos\phi \O_X . $$
+
+\bdefn[title={Schemes}]
+
+    A {\emphcolor ringed space} is a $\Ring$-space; we write $\RS$ for $\Space_\Ring$.
+
+    An {\emphcolor affine scheme} is a ringed space which is isomorphic to $(\spec A,\O_{\spec A})$ for some ring $A$.
+    A {\emphcolor scheme} is a ringed space $(X,\O_X)$ which is locally affine: for every $p\in X$ there is an open neighborhood $p\in U$ such that $(U,\O_X|_U)$ is affine.
+    The topology of a scheme is called the {\emphcolor Zariski topology}.
+
+    Schemes form a full subcategory of $\RS$ denoted $\Sch$.
+
+\edefn
+
+We can define the {\emphcolor global sections functor}
+$$ \Gamma\colon\Space_\C^\op\to\C,\qquad \Gamma(X,\O_X)=\O_X(X) . $$
+A morphism $(\pi,\phi)\colon(X,\O_X)\to(Y,\O_Y)$ determines a map $\phi\colon\O_Y\to\pi_*\O_X$, which has component $\phi_Y\colon\O_Y(Y)\to\O_X(\pi^{-1}Y)=\O_X(X)$.
+Thus we define $\Gamma(\pi,\phi)=\phi_Y$, turning $\Gamma$ into a functor.
+
+If $X$ is a topological space and $U\subseteq X$ an open set, we may write $\Gamma(U,\O_X)$ instead of $\Gamma(U,\O_X|_U)$.
+In general we may write $(U,\O_X)$ instead of $(U,\O_X|_U)$.
+
+\bnote
+
+    Note that the global sections functor on sheaves is covariant, while the global sections functor on $\C$-spaces is contravariant.
+
+\enote
+
+\blemm
+
+    There is a natural isomorphism
+    $$ (\dof(f),\O_{\spec A}) \cong (\spec A_f,\O_{\spec A_f}) . $$
+
+\elemm
+
+\bproof
+
+    Consider the canonical map $\iota\colon A\to A_f$, which induces the continuous injective $\iota\colon\spec(A_f)\to\spec(A)$.
+    Its image consists of all prime ideals not intersecting $\set{f^k}_{k\geq0}$, equivalently not containing $f$, so $\dof(f)$.
+    It is also an open map: $\dof_{A_f}(g/f^n)$ contains all prime ideals of $A_f$ not containing $g/f^n$; since $f^n$ is a unit, this is just all prime ideals not containing $g$.
+    Thus $\iota\dof_{A_f}(g/f^n)=\dof(g)\cap\dof(f)=\dof(fg)$ which is open.
+    Thus $\iota$ forms a homeomorphism $\spec(A_f)\xtos\sim\dof(f)$.
+
+    Now we need to show that there is an isomorphism $\O_{\spec A}|_{\dof f}\cong\iota_*\O_{\spec A_f}$.
+    Note that for $\dof(g)\subseteq\dof(f)$ we have
+    $$ \O_{\spec A}(\dof g)=A_g,\qquad \iota_*\O_{\spec A_f}(\dof g)=\O_{\spec A_f}(\iota^{-1}\dof g)=\O_{\spec A_f}(\dof g) = (A_f)_g \cong A_g . $$
+    So there is indeed an isomorphism, as desired.
+    \qed
+
+\eproof
+
+\bcoro
+
+    If $(X,\O_X)$ is a scheme and $U\subseteq X$ is open, then $(U,\O_X|_U)$ is a scheme.
+
+\ecoro
+
+\bproof
+
+    For an affine scheme this is due to the previous lemma: because the $\dof(f)$ form a base, for any $p\in U$ there is an $f\in A$ such that $p\in\dof(f)\subseteq U$.
+    Then $(\dof(f),\O_X|_{\dof f})\subseteq(U,\O_X|_U)$ is an open affine subscheme.
+
+    In general let $p\in U$, then take $p\in V\subseteq X$ an affine neighborhood.
+    Then $p\in U\cap V\subseteq U$ is an open subset of an affine scheme and thus there is an affine neighborhood $p\in W\subseteq U\cap V$.
+    \qed
+
+\eproof
+
+\bdefn
+
+    If $(X,\O_X)$ is a scheme and $U\subseteq X$ open, then $(U,\O_X|_U)$ is called an {\emphcolor open subscheme} of $X$.
+    If $U$ is also an affine scheme, then $U$ is an {\emphcolor affine open subscheme} or an {\emphcolor affine open subset}.
+
+\edefn
+
+It is clear that for a scheme $X$, its affine open subsets form a base for the topology.
+
+\bdefn
+
+    Let $\C$ be a category, a subcategory $\C_0\subseteq\C$ is said to be {\emphcolor replete} if it is closed under isomorphisms: if $c\in\C_0$ and $f\colon c\xto\sim d$ is an isomorphism
+    then both $d$ and $f$ are in $\C_0$.
+
+    Let $\C_0\subseteq\C$ be a replete category.
+    A $(\C,\C_0)$-space is a $\C$-space $(X,\O_X)$ such that for every $p\in X$, the stalk $\O_{X,p}$ is in $\C_0$.
+    A morphism of $(\C,\C_0)$-spaces is a $\C$-space morphism $(\pi,\phi)\colon(X,\O_X)\to(Y,\O_Y)$ such that for every $p\in X$ the morphism of stalks $\phi_p\colon(\pi^{-1}\O_Y)_p\cong\O_{Y,\pi(p)}\to\O_{X,p}$
+    is in $\C_0$.
+
+\edefn
+
+\bnote
+
+    We can write $\phi_p\colon\O_{Y,\pi p}\to\O_{X,p}$ more explicitly.
+    For $\pi(p)\in V\subseteq Y$ open we have a map
+    $$ \phi_V\colon\O_Y(V)\to\O_X(\pi^{-1}V)\to\colim_{p\in U}\O_X(U) = \O_{X,p} . $$
+    These then assemble into a cone $\O_Y(\bul)\To\O_{X,p}$ which then limits to $\O_{Y,\pi(p)}\to\O_{X,p}$.
+
+\enote
+
+\bdefn
+
+    Define $\LocRing$ to be the category of local rings $(A,\m)$.
+    A morphism $\phi\colon(A,\m)\to(B,\n)$ is a ring morphism $A\to B$ such that $\phi(\m)\subseteq\n$.
+
+    A {\emphcolor locally ringed space} is a $(\Ring,\LocRing)$-space.
+    We denote the category of locally ringed spaces by $\LRS$.
+
+\edefn
+
+\bnote
+
+    Importantly, a locally ringed space is not a $\LocRing$-space.
+    In fact, generally a locally ringed space's sections will not be local rings.
+
+\enote
+

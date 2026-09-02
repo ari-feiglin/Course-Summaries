@@ -32,6 +32,8 @@
 \newmathtype{set}\{\vert\}
 \newmathtype{gen}<\vert>
 \newmathtype{norm}|{}|
+\newmathtype{ideal}(\vert)
+
 \def\parens#1{\mathopen{}\mathclose{\left(#1\right)}}
 \def\abs#1{\mathopen{}\mathclose{\left|#1\right|}}
 \def\ccoloneqq{\mathrel{{\mathop:}{\mathop:}{=}}}
@@ -130,33 +132,19 @@
 \let\epsilon=\varepsilon
 \let\phi=\varphi
 
-\def\U{{\c U}}
-\def\U{{\c U}}
-\def\V{{\c V}}
-\def\O{{\c O}}
-\def\A{{\c A}}
-\def\B{{\c B}}
-\def\C{{\c C}}
-\def\D{{\c D}}
-\def\E{{\c E}}
-\def\S{{\c S}}
-\def\F{{\c F}}
-\def\G{{\c G}}
-\def\H{{\c H}}
+\def\@makeletter#1#2#3{\expandafter\def\csname #2\endcsname{{#1#3}}}
 
-\def\p{{\f p}}
-\def\m{{\f m}}
+\def\@makecal#1{\@makeletter\c{#1}{#1}}
+\commap\@makecal{U,V,O,A,B,C,D,E,F,G,H,S}
 
-\def\bV{{\bf V}}
-\def\bB{{\bf B}}
+\def\@makefrak#1{\@makeletter\f{#1}{#1}}
+\commap\@makefrak{p,q,m,n}
 
-\def\bC{{\bb C}}
-\def\bR{{\bb R}}
-\def\bF{{\bb F}}
-\def\bZ{{\bb Z}}
-\def\bN{{\bb N}}
-\def\bQ{{\bb Q}}
-\def\bH{{\bb H}}
+\def\@makebb#1{\@makeletter\bb{b#1}{#1}}
+\commap\@makebb{N,Z,Q,R,C,F}
+
+\def\@makescr#1{\@makeletter\scr{s#1}{#1}}
+\commap\@makescr{F,G,H,O}
 
 \def\implies{\mathrel{\longvarRightarrow}}
 \let\to=\varrightarrow
@@ -175,6 +163,7 @@
 \let\down=\downarrow
 
 \def\adjarrow#1#2{\mathrel{\putsym{\xvaradjarrow{#1}[{#2}]}{{\scriptstyle\perp}}}}
+\def\simarrow#1#2{\mathrel{\putsym{\xvaradjarrow{#1}[{#2}]}{{\sim}}}}
 
 \def\y{{\sf y}}
 \def\colim{\mathop{\rm colim}\nolimits}
@@ -197,6 +186,7 @@
 \let\ls=\setminus
 \let\ul=\underline
 \let\bar=\overline
+\let\cl=\overline
 \let\tilde=\widetilde
 \let\hat=\widehat
 
@@ -219,14 +209,22 @@
 \def\mathnamefont{\sf}
 \def\makemathname#1#2{\def#1{{\mathnamefont #2}}}
 \def\@mmname#1{\expandafter\makemathname\csname #1\endcsname{#1}}
-\commap\@mmname{Set,sSet,Top,Grp,Ab,Cat,Mod,Alg,Mon,Psh,Sh,Ring}
+\commap\@mmname{Set,sSet,Top,Grp,Ab,Cat,Mod,Alg,Mon,Psh,Sh,Ring,Sch,Space,LocRing}
+
+\def\@@mmname#1#2{\expandafter\makemathname\csname #1\endcsname{#2}}
+\def\@mmname#1{\@@mmname#1}
+\commap\@mmname{{RS}{RSp},{LRS}{LocRSp}}
 
 \def\mathopfont{\rm}
 
-\def\@@makemathop#1#2{\def#1{\mathop{\mathopfont #2}\nolimits}}
-\def\@makemathop#1#2{\def#1{\mathop{\mathopfont #2}}}
+\def\@@makemathop#1#2{\def#1{\mathop{\null\mathopfont #2}\nolimits}}
+\def\@makemathop#1#2{\def#1{\mathop{\null\mathopfont #2}}}
 \def\makemathop{\@ifstar \@makemathop\@@makemathop}
 
 \def\@mmop#1{\expandafter\makemathop\csname #1\endcsname{#1}}
-\commap\@mmop{id,sk,proj,Nat,inc,ev,im,Fun,End,Ob,open,res,inc,coker,supp}
+\commap\@mmop{id,sk,proj,Nat,inc,ev,im,Fun,End,Ob,open,res,inc,coker,supp,nil}
+
+\def\@@mmop#1#2{\expandafter\makemathop\csname #1\endcsname{#2}}
+\def\@mmop#1{\@@mmop#1}
+\commap\@mmop{{idof}{I},{vof}{V},{dof}{D},{spec}{Spec}}
 
