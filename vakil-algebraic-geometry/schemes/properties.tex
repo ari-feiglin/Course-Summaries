@@ -85,7 +85,7 @@ So choose $i$ such that $Z\cap X_i\neq\emptyset$, then $p,q\in X_i$ and $\clos_{
 
 \eproof
 
-\bcoro
+\bcoro[name={noetherianschemecover}]
 
     If $X$ is a scheme with a finite cover $X=\bigcup_{i=1}^n\spec A_i$ where each $A_i$ is Noetherian, then $X$ is a Noetherian space.
 
@@ -281,7 +281,7 @@ Recall a ring $A$ is {\emphcolor reduced} if $\nil(A)=0$, i.e.\ it has no nonzer
 
 \edefn
 
-\bprop
+\bprop[name={intschemecond}]
 
     A scheme is integral iff it is irreducible and reduced.
 
@@ -361,4 +361,188 @@ Thus we have shown the following.
     Then the restriction maps are all injections, as well as the canonical maps $\O_X(U)\to K(X)$.
 
 \eprop
+
+\subsubsection{Affine-locality}
+
+\bprop
+
+    Suppose $\spec A,\spec B$ are affine neighborhoods of a scheme $X$.
+    Then $\spec A\cap\spec B$ is the union of all the open sets which are simultaneously distinguished open subschemes of $\spec A$ and $\spec B$.
+
+\eprop
+
+\bproof
+
+    We need to show that if $p\in\spec A\cap\spec B$, then there are $f\in A,g\in B$ such $p\in\dof_A(f)=\dof_B(g)$.
+
+    Let $f\in A$ be such that $\spec A_f$ is a distinguished neighborhood of $p$ in $\spec A\cap\spec B$.
+    And let $\spec B_g$ be a distinguished neighborhood of $\spec B$ in $\spec A_f$ containing $p$.
+    Then $g\in\Gamma(\spec B,\O_X)$ restricts to an element $g'\in\Gamma(\spec A_f,\O_X)=A_f$.
+    Now
+    $$ \spec B_g = \spec A_f - \set{\p}[g'\in\p] = \spec (A_f)_{g'} . $$
+    We can write $g'=g''/f^n$ for $g''\in A$ and then $\spec(A_f)_{g'}=\spec A_{fg''}$.
+    Thus
+    $$ \spec B_g = \spec A_{fg''} $$
+    is a neighborhood of $p$ which is distinguished both in $\spec A$ and $\spec B$.
+    \qed
+
+\eproof
+
+\blemm[title={Affine communication lemma}, name={affcomm}]
+
+    Let $P$ be some property satisfied by some affine open subsets of a scheme $X$, such that for any affine open subset $\spec A\inj X$,
+    \benum
+        \item if $\spec A\inj X$ has property $P$, then for any $f\in A$, $\spec A_f\inj X$ has $P$ as well;
+        \item if $(f_1,\dots,f_n)=A$, and $\spec A_{f_i}\inj X$ has $P$ for all $i$, then so does $\spec A\inj X$.
+    \eenum
+    Now suppose that $X=\bigcup_i\spec A_i$ and $\spec A_i$ all have property $P$.
+    Then {\it every\/} affine open subset of $X$ has $P$.
+
+\elemm
+
+\bproof
+
+    Let $\spec A\inj X$ be an affine open subscheme.
+    Then we can cover $\spec A$ with a finite number of distinguished open subsets $\spec A_{g_i}$, which are each distinguished in some $\spec A_i$.
+    This is possible by the previous proposition.
+    As these are all distinguished in $\spec A_i$ which as $P$, by (1) each $\spec A_{g_i}$ has $P$.
+    Then by (2) so too does $\spec A$.
+    \qed
+
+\eproof
+
+\bnote
+
+    An {\emphcolor affine local} property is a property which can be checked on any affine cover.
+    Thus a property which satisfies the above two conditions is affine local.
+    Note that if $U\subseteq X$ is an open subscheme, then $U$ inherits any affine local property $X$ has (because affine subschemes of $U$ are affine in $X$).
+
+    Furthermore note that any stalk local property (a scheme has $P$ iff every stalk has property $Q$) is affine local in the sense that the scheme has property $P$
+    iff an affine cover has property $R$ (the property $R$ being that the affine scheme has stalks satisfying $Q$).
+
+\enote
+
+\bdefn
+
+    A scheme $X$ is {\emphcolor locally Noetherian} if it can be covered by affine open sets $\spec A$ where $A$ is Noetherian.
+    And it is a {\emphcolor Noetherian scheme} if it is also quasicompact, or equivalently can be covered by finitely many affine open sets $\spec A$ where $A$ is Noetherian.
+
+\edefn
+
+By \refmath[corollary]{noetherianschemecover} a Noetherian scheme has an underlying Noetherian topological space.
+The converse is in general not true; it is possible for $\spec A$ to be a Noetherian space without $A$ itself being Noetherian.
+
+A locally Noetherian scheme $X$ is quasiseparated: take a cover by Noetherian affine schemes, then intersection of any two is then Noetherian (any subspace of a Noetherian space is Noetherian)
+and in particular quasicompact.
+Thus a Noetherian scheme is qcqs.
+
+A Noetherian space has a finite number of irreducible components by \refmath[proposition]{noetherianclosedirred}.
+Because every connected component is the union of irreducible components, a Noetherian space also has finitely many connected components each of which is a finite union of irreducible components.
+
+\blemm
+
+    For a scheme $X$, the minimal prime ideals of the stalk $\O_{X,p}$ are in bijection with the irreducible components of $X$ containing $p$.
+
+\elemm
+
+\bproof
+
+    We know this is true for affine schemes: irreducible subsets of $\spec A$ are the vanishing sets of prime ideals, and they are maximal precisely when the prime ideal is minimal.
+
+    Now if $U\subseteq X$ is open, then there is a bijection between irreducible components of $U$ containing $p$ and irreducible components of $X$ containing $p$.
+    Indeed if $p\in Z\subseteq U$ is an irreducible component, then $\cl Z=\clos_X(Z)$ is irreducible.
+    And if $p\in Y\subseteq X$ is an irreducible component then $Y\cap U\subseteq U$ is irreducible (open subsets of irreducible spaces are irreducible).
+
+    Note that $Y=\cl{Y\cap U}\cup(Y-U)$ are open; since $Y$ is irreducible one must be $Y$.
+    Since $p\notin Y-U$, we have that $\cl{Y\cap U}=Y$.
+    And $\cl Z\cap U=\clos_U(Z)=Z$ because $Z$ is closed; so these are mutual inverses between closed irreducible subsets of $U$ and of $X$ containing $p$.
+    These also preserve order, so they preserve maximal elements, i.e.\ irreducible components.
+
+    Thus for $p\in\spec A\subseteq X$, there is a bijection between irreducible components of $X$ containing $p$ and irreducible components of $\spec A$ containing $p$.
+    The latter is in bijection with minimal prime ideals of $\O_{X,p}$.
+    \qed
+
+\eproof
+
+\bprop
+
+    A nonempty Noetherian scheme $X$ is integral iff $X$ is connected and all of its stalks are integral.
+
+\eprop
+
+\bproof
+
+    In general an integral scheme $X$ is irreducible and thus connected.
+    Furthermore its stalks are all domains, as the direct colimit of domains is a domain: if $fg=0$ then $f|_Ug|_U=0$ in some neighborhood $U$, but then $\O_X(U)$ is a domain so
+    $f|_U$ or $g|_U$ is zero in $\O_X(U)$, so $f_p$ or $g_p$ is zero in $\O_{X,p}$.
+
+    Conversely suppose that $X$ is connected and all of its stalks are integral.
+    Then $X$ is reduced, so by \refmath[proposition]{intschemecond} we just need to show that $X$ is irreducible.
+    Now suppose that $X$ has two distinct irreducible components $Z,Z'$.
+    If $p\in Z\cap Z'$ then $\O_{X,p}$ is not a domain, as by the previous lemma $\O_{X,p}$ has multiple minimal prime ideals.
+    A domain has a unique minimal prime ideal, $0$.
+
+    Thus $X$ is the disjoint union of its irreducible components.
+    There are finitely many of these, and as they are all closed, they must then be open.
+    But a connected space has no non-trivial clopen subsets, so $X$ has a unique irreducible component and is therefore irreducible.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $A$ be a ring.
+    An {\emphcolor $A$-scheme} is a scheme $X$ whose sections are all $A$-algebras and its restriction maps are $A$-algebra morphisms.
+    That is, it is a $(\Alg_A,\LocAlg_A)$-space (where $\LocAlg_A$ obviously means local $A$-algebras).
+
+    If $X$ is an $A$-scheme which can be covered by affine open subschemes $\spec B_i$ where each $B_i$ is a finitely generated $A$-algebra,
+    then $X$ is {\emphcolor locally of finite type} over $A$, or a {\emphcolor locally finite type $A$-scheme}.
+    If $X$ is furthermore quasicompact, then $X$ is of {\emphcolor finite type} over $A$, or a {\emphcolor finite type $A$-scheme}.
+
+\edefn
+
+Recall that if $A$ is Noetherian and $B$ is a finitely generated $A$-algebra, then $B$ is Noetherian as well (by Hilbert's basis theorem).
+Thus if $X$ is a locally finite type $A$-scheme, then it is locally Noetherian.
+Similarly a finite type $A$-scheme is Noetherian.
+
+For example $\bP^n_A$ is a finite type $A$-scheme.
+
+\bdefn
+
+    An affine scheme which is reduced and of finite type over a field $k$ is said to be an {\emphcolor affine variety} over $k$.
+    A reduced (quasi)projective $k$-scheme is a {\emphcolor (quasi)projective variety} over $k$.
+
+\edefn
+
+\bprop
+
+    Suppose $A$ is a ring and $(f_1,\dots,f_n)=A$.
+    \benum
+        \item if $A$ is Noetherian, then so is $A_{f_i}$.
+        Conversely if each $A_{f_i}$ is Noetherian, so is $A$.
+        \item suppose $B$ is a ring and $A$ is a $B$-algebra.
+        Then $A$ is a finitely generated $B$-algebra iff each $A_{f_i}$ is.
+    \eenum
+
+\eprop
+
+\bproof
+
+    For (1) we first note that the localization of a Noetherian ring is Noetherian.
+    Recall that ideals of $S^{-1}A$ are all of the form $S^{-1}I$ for an ideal $I\leq A$.
+    Now if we have a collection $\Sigma$ of ideals of $S^{-1}A$, we can define $\Sigma'=\set{I\leq A}[S^{-1}I\in\Sigma]$.
+    Because $A$ is Noetherian, this has a maximum element $I$, and then $S^{-1}I\in\Sigma$ is a maximum element.
+
+    Conversely if $I_1\subseteq I_2\subseteq\cdots$ is an increasing chain of ideals in $A$, then let $I_{i,j}=(I_j)_{f_i}$.
+    Thus $I_{i,1}\subseteq I_{i,2}\subseteq\cdots$ is increasing in $A_{f_i}$ and thus must stabilize.
+    Now suppose that the $I_{i,j}$ all stabilize for $j\geq N$.
+    Define $M=I_{j+1}/I_j$ for $j\geq N$, then $M$ embeds in
+    $$ M \inj \prod_i M_{f_i} \cong \prod_i I_{i,j+1}/I_{i,j} \cong 0 $$
+    so that $I_j=I_{j+1}$ as desired.
+
+    For (2) note that $A_{f_i}$ is a finitely generated $A$ algebra (by $1/f_i$), so if $A$ is finitely generated then so is $A_{f_i}$.
+    Conversely if $r_{ij}/f_i^{k_j}$ generate $A_{f_i}$ for $r_{ij}\in A$, and $1=\sum_ic_if_i$, then $\set{f_i,c_i,r_{ij}}$ generate $A$.
+    \qed
+
+\eproof
 
