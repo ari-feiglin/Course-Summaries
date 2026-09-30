@@ -40,9 +40,11 @@ $$ (\tau,\psi)\circ(\pi,\phi) \colon (\tau\circ\pi)^{-1}\O_Z \xtos{\pi^{-1}\psi}
     A {\emphcolor scheme} is a ringed space $(X,\O_X)$ which is locally affine: for every $p\in X$ there is an open neighborhood $p\in U$ such that $(U,\O_X|_U)$ is affine.
     The topology of a scheme is called the {\emphcolor Zariski topology}.
 
-    Schemes form a full subcategory of $\RS$ denoted $\Sch$.
-
 \edefn
+
+Schemes are ringed spaces, but we will see that not all morphisms of ringed spaces should be considered morphisms of schemes.
+Though we will see that an isomorphism of schemes as ringed spaces gives an isomorphism of rings (when we define what
+morphisms of schemes are).
 
 We can define the {\emphcolor global sections functor}
 $$ \Gamma\colon\Space_\C^\op\to\C,\qquad \Gamma(X,\O_X)=\O_X(X) . $$
@@ -142,6 +144,269 @@ It is clear that for a scheme $X$, its affine open subsets form a base for the t
 
     Importantly, a locally ringed space is not a $\LocRing$-space.
     In fact, generally a locally ringed space's sections will not be local rings.
+
+\enote
+
+A scheme which is isomorphic to the spectrum of a ring is called an {\emphcolor affine scheme}.
+We denote the full subcategory of affine schemes by $\AffSch$.
+
+Schemes are locally ringed spaces: if $X$ is a scheme and $p\in X$ then $p$ has an affine neighborhood.
+Since stalks can be taken locally, it is sufficient to show that $\spec A$ is a locally ringed space for any ring $A$.
+And this is clear as the stalk of $\spec A$ at $[\p]\in\spec A$ is isomorphic to $A_\p$ which is local.
+
+\bdefn
+
+    The {\emphcolor category of schemes} is the full subcategory of $\LocRing$ whose objects are schemes; it is denoted by
+    $\Sch$.
+    The full subcategory of $\Sch$ consisting of affine schemes is denoted $\AffSch$.
+
+\edefn
+
+Note that if $X,Y$ are locally ringed space which are isomorphic as ringed spaces, then they are isomorphic as locally ringed
+spaces.
+Indeed in general if $X,Y$ are $(\C,\C_0)$-spaces which are isomorphic as $\C$-spaces, they are isomorphic as
+$(\C,\C_0)$-spaces.
+This is because $\C_0$ is replete (contains all isomorphisms).
+
+Note that $\spec$ forms a contravariant functor $\Ring^\op\to\AffSch$ which maps a ring $A$ to is spectrum.
+Then for a ring morphism $\phi\colon A\to B$ we have a continuous map $\phi^*\colon\spec B\to\spec A$ mapping $\q\leq B$
+to $\phi^{-1}\q$.
+And $\phi^\sharp\colon\spec A\to \phi^*_*\spec B$ which for $f\in A$ maps
+$\phi^\sharp_f\colon A_f\to\spec B((\phi^*)^{-1}\dof_B(f))=B_{\phi f}$.
+This is just the natural map induced from the universal $A\xtos\phi B\to B_{\phi f}$.
+
+This is clearly seen to be functorial.
+
+\bdefn
+
+    If $(X,\O_X)$ is a locally ringed space, then for $p\in X$ denote the maximal ideal of the stalk $\O_{X,p}$ by
+    $\m_{X,p}$ or $\m_p$.
+    The {\emphcolor residue field} is $\kappa(p)=\O_{X,p}/\m_p$.
+    For a function $f$ on an open subset $U\subseteq X$ has a value at every $p\in U$ denote by $f(p)$: it is the image of
+    the germ of $f$ at $p$ under the quotient $\O_{X,p}\to\kappa(p)$.
+    We say that $f$ {\emphcolor vanishes} at $p\in X$ if $f(p)=0$.
+
+\edefn
+
+\bprop[name={sectionvanishingset}]
+
+    If $f$ is a function on a locally ringed space $X$, then the subset of where $f$ vanishes is closed.
+    Conversely if $f$ vanishes nowhere then it is invertible.
+
+\eprop
+
+\bproof
+
+    Note that $X$ does not vanish at $p$ iff $f_p\notin\m_p$ iff $f_p$ is invertible in $\O_{X,p}$.
+    For a ringed space $X$ the subset of points where $f$ is invertible in the stalk is open.
+    Indeed, if $f$ is invertible in $\O_{X,p}$ then there is a $p\in U$ and a $g\in\O_X(U)$ such that $fg=1$ in $\O_{X,p}$
+    so that $fg=1$ in a neighborhood around $p$; so $f$ is invertible in that neighborhood.
+
+    Thus the set of points where $f$ is not invertible, for $X$ locally ringed $f(p)=0$, is closed.
+
+    For the second point, at every $p\in X$ there is an open $g_p\in U_p$ which is the inverse of $f$ in $U_p$.
+    Because inverses are unique, the $g_p$ agree on their overlaps, so we can glue them together to get a global inverse for
+    $f$.
+    \qed
+
+\eproof
+
+For an affine scheme $\spec A$ and a point $[\p]\in\spec A$, the stalk at $[\p]$ is isomorphic to $A_\p$.
+This is local with maximal ideal $\p A_p$, so that $\kappa(\p)=A_\p/\p A_\p$.
+Localization commutes with quotients, so this is isomorphic to the localization of $A/\p$ at the image of $\p$, which is the
+zero ideal.
+Thus
+$$ \kappa(\p) = \frac{A_\p}{\p A_\p} = \Frac\parens{A/\p} . $$
+
+\bexam
+
+    Consider the scheme $\bA^2_k=\spec k[x,y]$, where $k$ is a field of characteristic not $2$.
+    Then $(x^2+y^2)/x(y^2-x^5)$ is a function away from the $y$-axis and $y^2-x^5$ (i.e.\ it exists in $\dof(y,y^2-x^5)$).
+    Its value at $(2,4)$, meaning $(x-2,y-4)$ is
+    $$ \frac{x^2+y^2}{x(y^2-x^5)} \equiv \frac{2^2+4^2}{2(4^2-2^5)} . $$
+    Its value at $(y)$, the generic point of the $x$-axis, is
+    $$ \frac{x^2+y^2}{x(y^2-x^5)} \equiv \frac{x^2}{-x^6} = -\frac1{x^4} . $$
+
+\eexam
+
+\bremark
+
+    We can define manifolds of arbitrary flavor similar to schemes.
+    Instead of our base space being $\spec A$, we can choose different base spaces.
+    For instance a topological manifold is a ringed space $(X,\O_X)$ which is locally isomorphic to an open ball in $\bR^n$
+    with the sheaf of real-valued continuous functions on it.
+    Similarly a $C^k$-manifold is a ringed space which is locally isomorphic to an open in $\bR^n$ with the sheaf of real-valued
+    $C^k$ functions on it.
+    And a complex manifold is a ringed space locally isomorphic to an open ball in $\bC^n$ with the sheaf of holomorphic
+    complex-valued functions on it.
+
+    In each of these examples we must also require that $X$ be second-countable and Hausdorff.
+
+\eremark
+
+\bthrm[name={specsectionequiv}]
+
+    There is a contravariant equivalence of categories $\spec\colon\Ring^\op\to\AffSch\colon\Gamma$.
+
+\ethrm
+
+\bproof
+
+    Because
+    $$ \Gamma\spec A = \spec A(\dof 1) = A_1 = A $$
+    naturally, it is sufficient to show that $\spec$ is fully faithful (as it is by definition essentially surjective).
+    First we note that for a ring morphism $\phi\colon A\to B$, we can obtain $\phi$ from $\spec\phi\colon\spec B\to\spec A$
+    as $\phi=\Gamma\spec\phi$.
+    Indeed $\spec\phi$ acts on global sections by the canonical map $A=A_1\to B_{\phi1}=B$, which is $\phi$.
+    Thus $\spec$ is faithful.
+
+    Similarly if $\phi\colon\spec B\to\spec A$ is a morphism of schemes, then we claim $\phi=\spec\Gamma\phi$.
+    Indeed, let $\phi_1=\Gamma\phi\colon A\to B$ and $\psi=\spec\phi_1$; further let $\phi$ denote the underlying topological
+    map of $\phi$ and $\phi^\sharp\colon\O_{\spec A}\to\phi_*\O_{\spec B}$ be the sheaf morphism.
+    By definition for $\q\in\spec B$, $\phi^\sharp_\q\colon\O_{\spec A,\phi\q}\to\O_{\spec B,\q}$ is local; meaning
+    $$ (\phi^\sharp_\q)^{-1}(\m_\q) = \m_{\phi q} . $$
+    Recalling $\O_{\spec A,\p}\cong A_\p$, we have the following commutative square
+
+    \commsq{A&B\cr A_{\phi\q}&B_\q}
+        {\phi_1}{\phi^\sharp_\q}{}{}
+
+    The image of $a\in A$ in the diagonal is then $\phi^\sharp_\q(a/1)=\phi_1(a)/1$.
+    Thus $\phi^\sharp_\q(a/1)\in\m_\q$ iff $\phi_1(a)\in\q$.
+    The former occurs only if $a/1\in\m_{\phi\q}$ iff $a\in\phi\q$.
+    So $a\in\phi\q$ iff $\phi_1(a)\in\q$, so that $\phi_1^{-1}\q=\phi\q$; meaning $\phi_1^*=\phi$ as continuous maps.
+
+    Now we need to show that $\phi_1^\sharp=\phi^\sharp$ as sheaf maps.
+    We do this on the distinguished open subsets.
+    For $f\in A$ we have that
+    $$ \phi^{-1}\dof_A(f) = (\phi_1^*)^{-1}\dof_A(f) = \set{\q\leq B}[f\notin\phi_1^{-1}\q] = \dof_B(\phi_1f) . $$
+    And we want to show that
+    $$ \phi^\sharp_f \colon \O_{\spec A}(\dof f) = A_f \to \O_{\spec B}(\phi^{-1}\dof f) = B_{\phi_1f} $$
+    is equal to induced map $A_f\to B_{\phi_1f}$ given by $A\xtos{\phi_1}B\to B_{\phi_1f}$.
+    But this immediate from the naturality of $\phi$: the following diagram commutes
+
+    \commsq{A&B\cr A_f&B_{\phi_1f}}
+        {\phi_1}{\phi^\sharp_f}{}{}
+
+    Thus we get the desired result.
+    \qed
+
+\eproof
+
+\bexam
+
+    Let $A=k[x,y]$, so $\spec A=\bA^2_k$; define $U=\bA^2-\set{(0,0)}=\bA^2-\set{(x,y)}$.
+    Note that $U=\dof(x)\cup\dof(y)$, which forms an affine cover so that $U$ is a scheme.
+    We claim that $U$ is not affine; and thus not a distinguished open set.
+
+    Indeed, inclusion $U\inj\spec A$ induces a map $\Gamma U\to A$.
+    We claim it is an isomorphism: this is sufficient as the inclusion is not an isomorphism, and if $U$ were affine as $\Gamma$
+    is an equivalence this would imply it were.
+
+    Indeed, functions on $U$ are functions on $\dof(x)$ and $\dof(y)$ which agree on their intersection:
+    $\dof(x)\cap\dof(y)=\dof(xy)$.
+    I.e.\ rational maps in $A_x$ and $A_y$ which are in $A_{xy}$.
+    These are just the polynomials so $U=k[x,y]=A$.
+
+\eexam
+
+We can extend the result of \refmath[theorem]{specsectionequiv}; global sections is fully faithful $\LocRing^\op\to\Ring$.
+The proof is similar, and we rewrite it.
+
+\bthrm
+
+    The global sections functor $\Gamma\colon\LocRing^\op\to\Ring$ is fully faithful.
+
+\ethrm
+
+\bproof
+
+    Suppose we have two morphisms $\phi,\psi\colon X\to\spec A$ where $X$ is a locally ringed space, such that
+    $\Gamma\phi=\Gamma\psi$.
+    Let us write $\phi^\sharp$ for the sheaf morphism part of $\phi$, and similar for $\psi$; we use $\phi$ for the continuous
+    part.
+    Furthermore write $\phi_1$ for $\Gamma\phi$, similar for $\psi$.
+    Let $p\in X$: we want to show that $\phi(p)=\psi(p)$.
+
+    Let $\q_1=\phi(p)$ and $\q_2=\psi(p)$, and consider the following commutative square:
+
+    \commsq{A&\Gamma X\cr A_{\q_1}&\O_{X,p}}
+        {\phi_1}{\phi_p}{}\loc
+
+    Because $\phi_p$ is a local morphism we have that for $a\in A$, $a\in\q_1$ iff $\phi_p(a/1)\in\m_{X,p}$.
+    This is iff $\loc\circ\phi_1(a)\in\m_{X,p}$.
+    Because $\phi_1=\psi_1$, this means that $a\in\q_1$ iff $a\in\q_2$ so that $\phi(p)=\psi(p)$ as desired.
+
+    Now we want to show that $\phi^\sharp=\psi^\sharp$; we can do this on distinguished open sets.
+    For $f\in A$ we have the commutative square
+
+    \commsq{A&\O_X(X)\cr A_f&\O_X(\phi^{-1}\dof(f))}
+        {\phi_1}{\phi_f}{}{}
+
+    Note that by localization $\phi_f$ is the unique morphism making this square commute.
+    Since $\phi_1=\psi_1$ this implies $\phi_f=\psi_f$.
+    Thus $\Gamma$ is faithful.
+
+    For fullness, suppose $\sigma\colon A\to\Gamma X$ is a ring morphism.
+    For $p\in X$ let $\sigma_p\colon A\xtos\sigma\Gamma X\to\O_{X,p}$ be the composite and define
+    $\phi(p)=\sigma_p^{-1}(\m_{X,p})$.
+    The preimage of a maximal ideal is prime, so $\phi$ forms a map $X\to\spec A$.
+    It is continuous: for $f\in A$:
+    $$ \phi^{-1}\dof(f) = \set{p\in X}[\sigma_p(f)\notin\m_{X,p}] = \set{p\in X}[\sigma(f)(p)\neq0] , $$
+    where $\sigma(f)(p)$ is the value of the global section $\sigma(f)$ at $p$.
+    By \refmath[proposition]{sectionvanishingset} this is an open set.
+
+    Now we define $\phi^\sharp\colon\spec A\to\phi_*X$ again on the distinguished open sets.
+    For $f\in A$, $\sigma(f)$ vanishes nowhere in $\phi^{-1}\dof(f)$, so it is invertible in $\O_X(\phi^{-1}\dof f)$ again by
+    \refmath[proposition]{sectionvanishingset}.
+    Thus there is a unique map $\phi_f\colon A_f\to\O_X(\phi^{-1}\dof f)$ making the following square commute
+
+    \commsq{A&\O_X(X)\cr A_f&\O_X(\phi^{-1}\dof f)}
+        {\sigma}{\phi_f}{}{}
+
+    This forms a morphism of sheaves, and $(\phi,\phi^\sharp)$ is a morphism of locally ringed spaces.
+    For $p\in X$, let $\q=\phi(p)=\sigma_p^{-1}(\m_{X,p})$.
+    We want to show that $\phi_p(\q A_\q)\subseteq\m_{X,p}$.
+    By considering the following diagram
+
+    \vfill\break
+
+    \commsq{A&\O_X(X)\cr A_\q&\O_{X,p}}
+        {\sigma}{\phi_p}{}{\loc}
+
+    it is sufficient to show that $\loc\circ\sigma(\q)\subseteq\m_{X,p}$.
+    By definition this is just $\sigma_p(\q)\subseteq\m_{X,p}$, which is clear by definition of $\q$.
+    \qed
+
+\eproof
+
+\bcoro[name={specglobsectionadj}]
+
+    The functors $\spec\colon\Ring^\op\to\LocRing$ and $\Gamma\colon\LocRing^\op\to\Ring$ are mutually right adjoint.
+    That is, there is a natural isomorphism
+    $$ \LocRing(X,\spec A) \cong \Ring(A,\Gamma X),\qquad A\in\Ring,\ X\in\LocRing . $$
+    We can restrict this adjunction to $\Sch$ instead of $\LocRing$.
+
+\ecoro
+
+\bproof
+
+    By the previous theorem, $\LocRing(X,\spec A)\xtos\Gamma\Ring(A,\Gamma X)$ is a bijection, thus a natural isomorphism.
+    \qed
+
+\eproof
+
+An immediate corollary is the following.
+
+\bcoro[name={specsectlim}]
+
+    The global sections functor contravariantly preserves colimits, and $\spec$ contravariantly preserves limits.
+
+\ecoro
+
+\bnote
+
+    By {\it contravariantly\/} preserving (co)limits, we mean it maps limiting cones to colimiting cones or colimiting cones
+    to limiting cones.
 
 \enote
 
