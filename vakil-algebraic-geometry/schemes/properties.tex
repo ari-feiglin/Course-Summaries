@@ -464,7 +464,7 @@ Because every connected component is the union of irreducible components, a Noet
 
 \eproof
 
-\bprop
+\bprop[name={noetherianintegral}]
 
     A nonempty Noetherian scheme $X$ is integral iff $X$ is connected and all of its stalks are integral.
 
@@ -545,4 +545,175 @@ For example $\bP^n_A$ is a finite type $A$-scheme.
     \qed
 
 \eproof
+
+Combining (1) above with \refmath{affcomm} we get the following immediate corollary.
+
+\bcoro
+
+    A scheme $X$ is locally Noetherian iff for every affine subscheme $\spec A\subseteq X$, $A$ is Noetherian.
+
+    In particular, an affine scheme $\spec A$ is a Noetherian scheme iff $A$ is Noetherian.
+
+\ecoro
+
+\bremark
+
+    Recall that $\spec A$ and $\spec A/\nil(A)$ are homeomorphic as topological spaces.
+
+    Let $A=k[x_1,x_2,\dots]/(x_1^2,x_2^2,\dots)$.
+    Then $\nil(A)=(x_1,x_2,\dots)$ and $A/\nil(A)\cong k$ so that $\spec A\cong\spec k$ is a one-point space and thus Noetherian.
+    But $\nil(A)$ is not a finitely generated ideal, so that $A$ is not a Noetherian ring.
+
+    Thus $\spec A$ being a Noetherian space does not mean it is a Noetherian ring.
+    In particular a scheme which has an underlying Noetherian space is not necessarily a Noetherian scheme.
+
+\eremark
+
+\subsubsection{Normality and factorality}
+
+Recall that if $B$ is an $A$-algebra, then an element $b\in B$ is {\emphcolor integral} over $A$ if it is the root of some {\it monic\/} polynomial over $A$.
+It is a standard result that the set of all integral elements of $B$ forms an $A$-subalgebra.
+We say that $A$ is {\emphcolor integrally closed} in $B$ if this subalgebra is $A$ (more precisely, $A$'s image in $B$).
+That is, the only integral elements of $B$ are those which are already in $A$.
+
+An integral domain $A$ is {\emphcolor normal} (or {\emphcolor integrally closed}) if it is integrally closed in its field of fractions $A\subseteq K(A)$.
+
+\bdefn
+
+    A scheme $X$ is {\emphcolor normal} if its stalks are all normal.
+    That is, $\O_{X,p}$ is an integral domain and integrally closed in its fraction field.
+
+\edefn
+
+Thus normal schemes are reduced (but not necessarily integral, as that is not a stalk-local property).
+
+It is not hard to see that $A$ is normal iff $A_\p$ is for all prime $\p$.
+Indeed $K(A_\p)\cong K(A)$, and the intersection of the $A_\p$s in $K(A)$ is equal to $A$.
+In fact the intersection of the $A_\m$s in $K(A)$ is equal to $A$.
+Indeed, if $a/b\in K(A)$ is in $A_\m$ then $b\notin\m$, thus
+$$ \frac ab \in \bigcap_\m A_\m \iff b\notin\bigcup_\m\m \iff b\in A^\times , $$
+in which case $a/b\in A$.
+So if $f\in K(A)$ is integral over $A$, it is integral over each $A_\p$, thus in each $A_\p$ and so in $A$.
+Conversely the localization of a normal domain is normal.
+
+Because the stalks of $\spec A$ are $A_\p$, $\spec A$ is a normal scheme iff $A$ is normal.
+
+\bremark
+
+    Recall that stalk-local properties are affine-local.
+    Thus the following are equivalent:
+    \benum
+        \item $X$ is normal,
+        \item for every affine subscheme $\spec A\subseteq X$, $A$ is normal,
+        \item there exists an affine cover $X=\bigcup_i\spec A_i$ such that $A_i$ is normal for all $i$.
+    \eenum
+
+\eremark
+
+\bprop
+
+    A scheme $X$ is normal and Noetherian iff it is the finite disjoint union of integral Noetherian normal schemes.
+
+\eprop
+
+\bproof
+
+    Suppose $X$ is a normal Noetherian scheme.
+    Then let $X=\bigsqcup_{i=1}^nX_i$ be its connected components.
+    These are closed subsets of $X$, thus quasicompact, and because $X$ is locally Noetherian so too are the $X_i$.
+    Thus each $X_i$ is a connected Noetherian scheme.
+    Furthermore the stalks of $X_i$ are stalks of $X$, which are normal.
+    Thus by \refmath[proposition]{noetherianintegral}, each $X_i$ is integral.
+
+    Thus $X=\bigsqcup_{i=1}^nX_i$ is a finite disjoint union of integral Noetherian normal schemes, as desired.
+
+    Conversely if $X=\bigsqcup_{i=1}^nX_i$ is a finite disjoint union of integral Noetherian normal schemes, then $X$ is locally Noetherian by
+    covering each $X_i$ with a Noetherian affine cover.
+    Because the $X_i$ are all Noetherian, so too is $X$; thus $X$ is a Noetherian scheme.
+    The stalks of $X$ are stalks of $X_i$ which are all normal, so $X$ is a normal Noetherian scheme.
+    \qed
+
+\eproof
+
+Recall that an integral domain $A$ is a {\emphcolor unique factorization domain} ({\emphcolor UFD}) if every nonzero element $a\in A$ can be written uniquely
+as a product of irreducible elements $a=p_1\cdots p_n$.
+Recall that an irreducible element $p\in A$ is an element that cannot be written as a nontrivial product: if $p=ab$, then one of $a,b$ must be a unit.
+
+\bdefn
+
+    A scheme $X$ is {\emphcolor factorial} if all of its stalks are UFDs.
+
+\edefn
+
+A UFD is also normal.
+The proof follows essentially the same as the classical one for $\bZ$.
+If $p/q\in K(A)$ is integral over $A$, then suppose it is the root of $x^n+a_{n-1}x^{n-1}+\cdots+a_0$.
+We may assume, as $A$ is a UFD, that $p,q$ are coprime.
+Plugging in $x=p/q$ and multiplying by $q^n$ gives us
+$$ p^n + a_{n-1}p^{n-1}q + \cdots + a_0q^n = 0 $$
+which implies that $q$ divides $p$, which means that $q$ is a unit (as $p,q$ are coprime).
+Thus $p/q\in A$ as desired.
+
+Thus factorial schemes are also normal.
+
+\blemm
+
+    If $A$ is a UFD then so too are all of its localizations $S^{-1}A$.
+
+\elemm
+
+\bproof
+
+    Firstly, $S^{-1}A$ is an integral domain.
+
+    If $p\in A$ is irreducible, then it is irreducible in $S^{-1}A$.
+    Indeed, if $p=(ab)/s$ then $ps=ab$ and so $p$ divides $ab$.
+    Since $p$ is irreducible and $A$ is a UFD, it is prime, so suppose it then divides $a$.
+    Then it divides $a/s$, so $p$ is prime and thus irreducible in $S^{-1}A$.
+
+    Conversely if $p/s\in S^{-1}A$ is irreducible, then because $1/s$ is a unit, $p\in S^{-1}A$ is irreducible.
+    But since $A$ embeds in $S^{-1}A$, this means that $p\in A$ is irreducible.
+    Thus, up to multiplication by a unit, the irreducible elements of $S^{-1}A$ are those of $A$.
+
+    Then any $a\in A$ has a unique factorization in $S^{-1}A$ by irreducibles, and thus $a/s\in S^{-1}A$ does as well.
+    \qed
+
+\eproof
+
+In particular if $A$ is a UFD, $\spec A$ is factorial.
+
+\bnote
+
+    The converse is not true, though.
+    Even if $\spec A$ is factorial, $A$ need not be a UFD.
+
+\enote
+
+\bremark
+
+    UFDs can arise from some common constructions.
+    Firstly, every PID is a UFD.
+
+    Indeed if $A$ is a PID and $a\in A$ is nonzero, then if $a$ is not irreducible we have $a=a_{1,1}a_{1,2}$ for non-units.
+    If these are not irreducible, we can continue with $a=a_{2,1}a_{2,2}a_{2,3}a_{2,4}$.
+    And so on, we get an ascending chain of ideals
+    $$ (a) \subsetneq (a_{1,1},a_{1,2}) \subsetneq \cdots \subsetneq (a_{i,1},\dots,a_{i,2^i}) \subsetneq \cdots . $$
+    But $A$ is Noetherian, a contradiction.
+
+    And in a PID, irreducible elements are prime.
+    Indeed, if $p\in A$ is irreducible then $(p)\leq A$ is maximal.
+    Since if $(p)\subseteq(a)$ then $p=ab$ so either $a$ is a unit or $b$ is; so $(a)=A$ or $(p)=(a)$.
+    Thus $(p)$ is prime which means that if $p$ divides $ab$, $p$ divides either $a$ or $b$, meaning $p$ is prime.
+
+    Thus if $p_1\cdots p_n=q_1\cdots q_m$, then $p_1$ divides one of the $q_i$s, which means they are equal (up to unit), and so on.
+    Thus $A$ is a UFD.
+
+    Thus if $k$ is a field, $k[x]$ is a PID and thus a UFD.
+    In more generality it is true that if $A$ is a UFD then $A[x]$ is a UFD.
+
+\eremark
+
+Thus for example $\bA^n_k,\bP^n_k$ are factorial, as $\bA^n_k=\spec k[x_1,\dots,x_n]$ where the polynomial algebra is a UFD.
+And $\bP^n_k$ can be covered by $\bA^{n+1}_k$s.
+For the same reason, we can replace $k$ with any UFD $A$.
 
