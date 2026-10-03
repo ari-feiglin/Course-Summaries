@@ -1,0 +1,635 @@
+\subsection{Quasicoherent sheaves}
+
+\subsubsection{The category of quasicoherent sheaves}
+
+Recall that for a ringed space $\O_X$ we have an Abelian category $\Mod_{\O_X}$ of $\O_X$-modules.
+Unfortunately this category is often unwieldy, especially when $X$ is a scheme as we would like our modules to also locally look nice.
+Recall the embedding $\Mod_A\inj\Mod_{\spec A}$ which maps $M\mapsto\tilde M$, whose sections on the distinguished open sets are
+$$ \tilde M(\dof f) = M_f . $$
+
+\bdefn
+
+    If $X$ is a scheme, then an $\O_X$-module $\F$ is called a {\emphcolor quasicoherent sheaf} if for every affine $\spec A\subseteq X$,
+    $\F|_{\spec A}\cong\tilde M$ for some $A$-module.
+    The full subcategory of $\Mod_{\O_X}$ consisting of quasicoherent sheaves is denoted $\QCoh_X$.
+
+\edefn
+
+\bthrm
+
+    To check that an $\O_X$-module $\F$ is quasicoherent, it is sufficient to check that $\F$ restricts to an $A$-module on any affine cover of $X$.
+
+\ethrm
+
+\bproof
+
+    We will show that the property $\F|_{\spec A}\cong\tilde M$ satisfies the conditions of \refmath{affcomm}.
+    The first condition is easier, as if $\F|_{\spec A}\cong\tilde M$, then $\F|_{\spec A_f}\cong\tilde M_f$.
+
+    Now suppose $A=(f_1,\dots,f_n)$, $\F$ is an $\O_{\spec A}$-module such that $\F|_{\dof f_i}\cong\tilde M_i$ where $M_i$ are $A_{f_i}$-modules.
+    We want to show that there is an $A$-module $M$ such that $\F\cong\tilde M$.
+
+    Now consider the isomorphisms
+    \diagram{
+        &\F|_{\dof f_i\cap\dof f_j}\cr
+        \tilde M_i|_{\dof f_i\cap\dof f_j}&&\tilde M_j|_{\dof f_i\cap\dof f_j}
+    }{
+        \diagarrow{from={1,2}, to={2,1}}
+        \diagarrow{from={1,2}, to={2,3}}
+    }
+
+    By taking sections over $\dof f_i\cap\dof f_j$, this yields an isomorphism $\phi_{ij}\colon(M_i)_{f_j}\to(M_j)_{f_i}$ of $A_{f_if_j}$-modules.
+    Furthermore these $\phi_{ij}$ satisfy the cocycle conditions, as is easily verified.
+    Let $M_{ij}=(M_i)_{f_j}$ which we identify with $M_{ji}=(M_j)_{f_i}$ via $\phi_{ij}$.
+
+    Now define $M$ to be such that the following sequence is exact (i.e.\ $M=\ker\gamma$):
+    $$ 0 \to M \to \prod_{i=1}^n M_i \xtos\gamma \prod_{i<j}M_{ij},\qquad \gamma(m_i)_i = (m_i-m_j)_{i<j} . $$
+
+    Now we claim that $\tilde M_{\dof f_i}\cong\tilde M_i$, i.e.\ $M_{f_i}\cong M_i$.
+    Furthermore we claim that these isomorphisms fit into a commutative triangle
+
+    \diagram{
+        &M_{f_if_j}\cr
+        M_{ij}&M_{ji}
+    }{
+        \diagarrow{from={1,2}, to={2,1}}
+        \diagarrow{from={1,2}, to={2,3}}
+        \diagarrow{from={2,1}, to={2,3}, text={\phi_{ij}}, y distance=.25cm}
+    }
+
+    Let us assume that $i=1$, then because localization is exact, we have that $M_{f_1}=\ker\gamma_{f_1}$.
+    On the other hand the following sequence
+    $$ 0 \to M_1 \xtos\beta \prod_{i=1}^n(M_i)_{f_1} \xtos{\gamma_{f_1}} \prod_{i<j}(M_{ij})_{f_1},\qquad \beta(m)=(m_i)_i $$
+    is exact.
+    This is because we can rewrite it as
+    $$ 0 \to M_1 \to \prod_{i=1}^n(M_1)_{f_i} \to \prod_{i<j}(M_i)_{f_if_j} , $$
+    which is exact.
+    This gives us an isomorphism $M_1\cong M_{f_1}$ as desired.
+
+    Now it is straightforward to prove that these isomorphisms commute with $\phi_{ij}$.
+    Thus $\tilde M$ is isomorphic to the gluing of the $\tilde M_i$, but this gluing is $\F$, as desired.
+    \qed
+
+\eproof
+
+\bexam
+
+    Let $X=\spec k[t]$, and let $\F$ be the skyscraper sheaf supported at $[(t)]$ with group $k(t)$ and the usual $k[t]$-module structure.
+    Because $k(t)$ is the field of fractions of $k[t]$, it has a canonical $k[t]_f$-module structure for all $f\in k[t]$.
+    Thus $\F$ is an $\O_X$-module.
+
+    But it is not quasicoherent: if it were then $\F$ would be isomorphic to $\tilde{\Gamma(X,\F)}=\tilde{k(t)}$.
+    But this is not the case as $\F(\dof t)=0$ (since $(t)\notin\dof t$), while $k(t)_t\cong k(t)\neq0$.
+
+    In general if $X$ is an integral scheme with function field $K(X)$, then the skyscraper sheaf $p_*K(X)$ is a non-quasicoherent $\O_X$-scheme unless $p=\eta$ is generic.
+    We can restrict this to an affine subscheme containing $p$.
+    Then the above argument works as well, as there is an $f\in A$ such that $p\notin\dof f$ and so $p_*K(X)(\dof f)=0$ while $\tilde{K(X)}(\dof f)=K(X)_f\cong K(X)\neq0$.
+    Meanwhile if $p=\eta$ is generic then $\eta_*K(X)(\dof f)=K(X)$ for all $f\in A$ because $\eta$ lies in all of the open subsets of $X$.
+
+\eexam
+
+Recall that an $A$-module $M$ is {\emphcolor torsion-free} if $am=0$ implies that either $a$ is a zerodivisor or $m=0$.
+If $A$ is an integral domain this is equivalent to $a=0$ or $m=0$.
+An element $m\in M$ for which there exists a non-zerodivisor $a\in A$ with $am=0$ are called {\emphcolor torsion elements}.
+If $M$ is an $A$-module, define $M_\tor$ to be the set of all torsion elements in $M$.
+This is a submodule of $M$: if $am,bn=0$ for non-zerodivisors $a,b\in A$ then $ab\in A$ is also a non-zerodivisor and $(ab)(m+n)=0$ so that $m+n\in M_\tor$.
+Clearly $M_\tor$ is also closed under scalar multiplication.
+
+\bnote
+
+    In the case of $A$ being an integral domain, the definition of the torsion submodule becomes
+    $$ M_\tor = \set{m\in M}[am=0\hbox{ for some nonzero $a\in A$}] . $$
+    Sometimes this is taken as the general definition of the torsion subset, and this is not in general a submodule of $M$ as it is not necessarily closed under addition.
+
+    For example let $A=\bZ/\bZ_6$.
+    Then $2\cdot3=0$ so they are considered torsion (in this new definition).
+    But $2+3=5=-1$, which is not torsion.
+
+    We will basically only care about torsion when $A$ is an integral domain, so we don't need to worry.
+
+\enote
+
+A module is {\emphcolor torsion} if all of its elements are torsion, i.e.\ $M=M_\tor$.
+Over an integral domain this is equivalent to $M\otimes_AK(A)=0$.
+Indeed if $M$ is torsion, let $m\in M$ then there is a nonzero $a\in A$ such that $am=0$.
+Then for all nonzero $b\in A$,
+$$ \frac mb = \frac{am}{ab} = 0 $$
+so that $M=0$ (recall that $M\otimes_AK(A)\cong M_{(0)}$).
+Conversely if $m\in M$ is torsion-free then $m/1\in M\otimes_AK(A)$ is nonzero, as it is zero only when there is a nonzero $a\in A$ for which $am=0$.
+
+\bdefn
+
+    If $X$ is a scheme, an $\O_X$-module is {\emphcolor torsion-free} if $\F_p$ is a torsion-free $\O_{X,p}$-module for all $p\in X$.
+
+    If $X$ is reduced, then a quasicoherent sheaf $\F$ is {\emphcolor torsion} if its stalk at the generic point of every irreducible component is zero.
+
+\edefn
+
+If $X$ is integral then this is the same as saying $\F_p$ is a torsion $\O_{X,p}$-module for all $p\in X$.
+Indeed if this is true then $\F_\eta$ is a torsion $\O_{X,\eta}=K(X)$-module, and since $K(X)$ is a field its only torsion modules is the zero module.
+Conversely $\O_{X,\eta}$ is the field of fractions of $\O_{X,p}$ for all $p\in X$, and so $\F_\eta$ is the localization of $\F_p$, i.e.\ $\F_\eta=\F_p\otimes K(X)$.
+If this is zero then $\F_p$ is torsion.
+
+\bdefn
+
+    If $X$ is a scheme, then its {\emphcolor distinguished affine base} is the subcategory of $\open(X)$ whose objects are the distinguished open subsets of its open affine subsets.
+    Then for any $\spec A\subseteq X$ we add only the morphisms $\dof_A(f)\subseteq\dof_A(g)$.
+
+    In other words this category contains all of $X$'s affine open subsets, and for an inclusion $\spec B\subseteq\spec B'$, we add it as a morphism only if $\spec B=\spec A_f$ and $\spec B'=\spec A_g$
+    for some $\spec A\subseteq X$.
+
+    Let us denote this category of $\open_\aff(X)$.
+
+\edefn
+
+Note that $\open_\aff(X)^\op$ is a cofinal subposet of $\open(X)^\op$.
+If for $p\in X$ we denote by $\open_p(X)\subseteq\open(X)$ the set of neighborhoods of $p$, then $\open_{p,\aff}(X)^\op$ is cofinal in $\open(X)^\op$.
+
+\bremark
+
+    Note here that $\open_\aff(X)$ is not strictly a subposet of $\open(X)$, as it does not include all of its arrows.
+    Nevertheless, we can still formulate what it means for it to be cofinal.
+
+    If $\C,\D$ are two categories, a functor $F\colon\C\to\D$ is {\emphcolor final} if for all $d\in D$, the comma category $d/F$ is nonempty and {\emphcolor connected}: all objects can be
+    connected by a zig-zag of morphisms.
+    It can be shown that this is equivalent to precomposition with $F$ not changing colimits (i.e.\ the canonical $\colim G\circ F\to\colim G$ is an isomorphism).
+    For posets the term used is {\emphcolor cofinal} as opposed to final, for historic reasons (the dual of a final functor is {\emphcolor initial}).
+
+    If $\C,\D$ are posets then $d/F$ is the subcategory of $\C$ consisting of elements $c\in C$ such that $d\leq Fc$.
+    If $\C$ is filtered then if it is non-empty it is immediately connected.
+    And being nonempty just means that $F(\C)\subseteq\D$ is cofinal in the usual sense (every $d\in\D$ is bound by some $c\in\C$).
+
+    In our case $\open_\aff(X)$ and $\open_{p,\aff}(X)$ are both cofiltered.
+    If $p\in\spec A\cap\spec B$ then by \refmath[proposition]{affineinter}, $p$ is contained in a common affine neighborhood of $\spec A,\spec B$.
+    And clearly $\open_{p,\aff}(X)\subseteq\open_p(X)$ is cofinal, as the affine neighborhoods of $X$ form a base.
+
+\eremark
+
+Because cofinal subposets don't affect colimits, for any sheaf $\F$ on $X$, its stalks can be computed relative to the distinguished affine base:
+$$ \F_p \coloneqq \colim\F|_{\open_p(X)^\op} \cong \colim\F|_{\open_{p,\aff}(X)^\op} . $$
+
+Any sheaf on $X$ defines a sheaf on the distinguished affine base.
+But conversely any sheaf on $\open_\aff(X)^\op$ defines one on $X$.
+The construction is by taking the sheaf $\F^b$ and defining the sheaf $\F$ on an open $U\subseteq X$ by taking the collection of compatible germs:
+$$ \F(U) = \set{(f_p\in\F^b_p)_{p\in U}}[\mltext{for all $p\in U$ there is a $U_p\in\open_{p,\aff}(X)$ and a $s\in\F^b(U_p)$\cr such that $s_q=f_q$ for all $q\in U_p$}] . $$
+This defines an equivalence between sheaves on $X$ and those defined on the distinguished affine base.
+
+Suppose $\F$ is an $\O_X$-module, then for any distinguished $\spec A_f\inj\spec A$ we have the restriction map $\res\colon\Gamma(\spec A,\F)\to\Gamma(\spec A_f,\F)$.
+Because the domain is an $A$-module and the codomain an $A_f$-module, by the universal property of localization this factors through $\Gamma(\spec A,\F)_f$:
+
+\diagram{
+    \Gamma(\spec A,\F)&&\Gamma(\spec A_f,\F)\cr
+    &\Gamma(\spec A,\F)_f
+}{
+    \diagarrow{from={1,1}, to={1,3}, text=\res, y distance=.25cm}
+    \diagarrow{from={1,1}, to={2,2}}
+    \diagarrow{from={2,2}, to={1,3}, text=\alpha, x distance=.25cm}
+}
+
+Now $\F$ is quasicoherent iff this $\alpha$ is an isomorphism.
+Indeed if $\F$ is quasicoherent, say $\F|_{\spec A}\cong\tilde M$, then this diagram fits into a larger diagram
+
+\diagram{
+    \Gamma(\spec A,\F)&&\Gamma(\spec A_f,\F)\cr
+    &\Gamma(\spec A,\F)_f\cr
+    M&&M_f
+}{
+    \diagarrow{from={1,1}, to={1,3}, text=\res, y distance=.25cm}
+    \diagarrow{from={1,1}, to={2,2}}
+    \diagarrow{from={2,2}, to={1,3}, text=\alpha, x distance=.25cm}
+    \diagarrow{from={1,1}, to={3,1}, text=\sim, x distance=-.25cm}
+    \diagarrow{from={1,3}, to={3,3}, text=\sim, x distance=.25cm}
+    \diagarrow{from={3,1}, to={3,3}}
+    \diagarrow{from={3,1}, to={2,2}}
+    \diagarrow{from={2,2}, to={3,3}, text=\sim, x distance=.25cm}
+}
+
+Showing that $\alpha$ is an isomorphism.
+On the other hand if $\alpha$ is an isomorphism then it defines an isomorphism $\Gamma(\spec A_f,\F)\to M_f$ making the rightmost triangle commute.
+Thus the whole diagram above commutes, showing we have an isomorphism $\F\to\tilde M$.
+We summarize this in the following lemma.
+
+\blemm
+
+    An $\O_X$-module $\F$ is quasicoherent iff for every distinguished $\spec A_f\inj\spec A\subseteq X$ the canonical map $\alpha$ below is an isomorphism:
+
+    \diagram{
+        \Gamma(\spec A,\F)&&\Gamma(\spec A_f,\F)\cr
+        &\Gamma(\spec A,\F)_f
+    }{
+        \diagarrow{from={1,1}, to={1,3}, text=\res, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={1,3}, text=\alpha, x distance=.25cm}
+    }
+
+\elemm
+
+\bdefn
+
+    Let $(X,\O_X)$ be a ringed space.
+    Then we say that $f\in\O_X(U)$ is {\emphcolor locally nilpotent} if for every point $p\in U$ there is a neighborhood $p\in V\subseteq U$ such that $f|_V$ is nilpotent
+    in $\O_X(V)$.
+
+    We define $X$'s {\emphcolor sheaf of nilpotents} to be the sheaf $\nil(X)$ whose sections are given by
+    $$ \O_{\nil X}(U) = \set{f\in\O_X(U)}[\hbox{$f$ is locally nilpotent}] . $$
+
+\edefn
+
+Note that $f\in\O_X(U)$ is locally nilpotent iff for every $p\in U$, $f_p$ is in $\nil(\O_{X,p})$.
+This is because $f\in\nil(\O_{X,p})$ iff there is a neighborhood $p\in V$ such that $f|_V\in\nil(\O_X(V))$.
+This clearly shows that $\nil(X)$ is an $\O_X$-module, as $\nil(\O_{X,p})$ is an ideal for all $p$.
+
+\bnote
+
+    $\nil(X)$ is an example of an {\emphcolor ideal sheaf} (of $X$).
+    This is a subobject of $X$ in $\Mod_{\O_X}$.
+    Because $\Mod_{\O_X}$ is complete and its limits are taken pointwise, by an argument identical to that in \refmath[remark]{monepiccomp} a morphism of $\O_X$-modules
+    is monic iff each component is.
+    Thus an ideal sheaf of $X$ is just a subsheaf $I$ whose sections are all ideals of $X$'s sections: $\O_I(U)\leq\O_X(U)$.
+
+\enote
+
+Recall that the tensor product of $\O_X$-modules is defined as the sheafification of the presheaf whose sections are $\F(U)\otimes_{\O_X(U)}\G(U)$.
+We will show that when $\F,\G$ are quasicoherent sheaves on a scheme $X$, there is no need to sheafify.
+That is, the presheaf tensor is already a sheaf.
+
+For an affine $\spec A\subseteq X$ suppose $\Gamma(\spec A,\F)=M$ and $\Gamma(\spec A,\G)=N$.
+Then define $\Gamma(\spec A,\F\otimes\G)=M\otimes_AN$.
+And if $\spec A_f\inj\spec A$ is distinguished then the restriction map $\Gamma(\spec A,\F\otimes\G)\to\Gamma(\spec A_f,\F\otimes\G)$ corresponds to the localization map
+$M\otimes_A N\to M_f\otimes_{A_f} N_f\cong(M\otimes_AN)_f$.
+Thus $(\F\otimes\G)|_{\spec A}\cong\tilde{M\otimes_AN}$, so that $\F\otimes\G$ is a sheaf on all the open affine subsets of $X$.
+In particular $\F\otimes\G$ forms a sheaf on the distinguished affine base of $X$, and thus is itself a sheaf on $X$.
+
+\bnote
+
+    Here we used the fact that $M_f\otimes_{A_f}N_f\cong(M\otimes_AN)_f$.
+    In general we have
+    $$ S^{-1}M\otimes_{S^{-1}A}S^{-1}N \cong M\otimes_AS^{-1}A\otimes_{S^{-1}A}S^{-1}N \cong M\otimes_AN\otimes_AS^{-1}A \cong S^{-1}(M\otimes_AN) . $$
+
+\enote
+
+\bdefn
+
+    If $X$ is a scheme and $f\in\O_X(X)$ is a global section, let $X_f\subseteq X$ be the subset on which $f$ doesn't vanish.
+    This is an open subset and as such an open subscheme of $X$.
+
+\edefn
+
+Note that for $f\in A$, $(\spec A)_f$ and $\spec A_f=\dof f$ are equal.
+Indeed, $f$ doesn't vanish at $\p$ iff $f_\p\notin\m_\p=\p A_\p$, i.e.\ iff $f\notin\p$.
+
+\blemm[title={The Qcqs lemma}, name={qcqslemm}]
+
+    Suppose $X$ is a quasicompact quasiseparated scheme, $\F$ a quasicoherent sheaf on $X$, and $f\in X$.
+    Then the restriction map
+    $$ \res_{X_f\subseteq X} \colon \Gamma(X,\F) \to \Gamma(X_f,\F) $$
+    is precisely the localization by $f$ map.
+
+\elemm
+
+\bproof
+
+    Because $X$ is qcqs it is covered by finitely many affine subschemes, the pairwise intersections of which are covered by finitely many affine subschemes.
+    So suppose $X=\bigcup_iU_i$ is a finite affine covering, and $U_i\cap U_j=\bigcup_kU_{ijk}$ is a finite affine covering for all $i,j$.
+
+    The sheaf condition on $\F$ necessitates that the following sequence is exact (the arrows are the standard arrows):
+    $$ 0 \to \Gamma(X,\F) \to \bigoplus_i\Gamma(U_i,\F) \to \bigoplus_{i,j,k}\Gamma(U_{ijk},\F) . $$
+    This is because the direct sums are finite and thus are equivalently products.
+    Localization by $f$ is exact and commutes with direct sums, so the following sequence is also exact:
+    $$ 0 \to \Gamma(X,\F)_f \to \bigoplus_i\Gamma(U_i,\F)_f \to \bigoplus_{i,j,k}\Gamma(U_{ijk},\F)_f . $$
+
+    Now for an affine $\spec A\subseteq X$, $\F|_{\spec A}\cong\tilde M$ for some $A$-module $M$.
+    Then
+    $$ \Gamma((\spec A)_f,\F) = \Gamma(\spec A_f,\F) = M_f . $$
+    Thus we have an exact sequence
+    $$ 0 \to \Gamma(X,\F)_f \to \bigoplus_i\Gamma((U_i)_f,\F) \to \bigoplus_{i,j,k}\Gamma((U_{ijk})_f,\F) $$
+    and the last arrow is the usual one induced from restrictions.
+
+    But the kernel of this map is $\Gamma(X_f,\F)$ as per the sheaf axiom.
+    Thus we get the desired result.
+    \qed
+
+\eproof
+
+Our goal now is to show that $\QCoh_X\subseteq\Mod_{\O_X}$ is an Abelian category.
+In general if $\B\subseteq\A$ is a full subcategory of an Abelian category $\A$, then for $\B$ to be an Abelian category itself it is sufficient that
+\benum
+    \item $\B$ contain $\A$'s zero element,
+    \item $\B$ be closed under finite sums,
+    \item $\B$ be closed under kernels and cokernels.
+\eenum
+Indeed, if $\B$ is closed under colimits taken in $\A$, then those are $\B$'s colimits as well.
+Thus if $f$ is monic in $\B$, then $\ker f=0$ as the kernel of a monic is zero, and thus $f=\ker\coker f$ in $\A$ and thus in $\B$.
+Similar for epimorphisms.
+
+Clearly the zero $\O_X$-module is quasicoherent.
+And (2) follows from the fact that $\tilde M\oplus\tilde N\cong\tilde{M\oplus N}$, so the sum of quasicoherent sheaves is quasicoherent.
+For (3) if $\alpha\colon\F\to\G$ is a morphism of quasicoherent sheaves, then let $U\subseteq X$ be affine, and denote by $\beta\colon M\to N$ the induced morphism of $A$-modules.
+We then {\it define\/} $\ker\alpha(U)=\ker\beta$ and $\coker\alpha(U)=\coker\beta$.
+Because localization is exact, it commutes with kernels and cokernels, we see that on $U$, $\ker\alpha\cong\tilde{\ker\beta}$ and $\coker\alpha\cong\tilde{\coker\beta}$.
+This definition forms a sheaf on the distinguished affine base, so $\ker\alpha,\coker\alpha$ are quasicoherent sheaves.
+
+Recall that exactness can be checked stalk-locally.
+Thus it can be checked on an affine cover, which shows that
+$$ 0 \to \ker\alpha \to \F \xtos\alpha \G \to \coker\alpha \to 0 $$
+is exact, as it resorts to checking on affine subschemes, which just gives
+$$ 0 \to \ker\beta \to M \xtos\beta N \to \coker\beta \to 0 . $$
+
+So we have proven the following.
+
+\bthrm
+
+    $\QCoh_X$ is an Abelian subcategory of $\Mod_{\O_X}$.
+
+\ethrm
+
+For the last part of this section, we will show an alternative method of defining quasicoherent sheaves, such that the definition works for any ringed space.
+Because manifolds are also examples of ringed spaces, this allows us to define quasicoherent sheaves on a manifold.
+
+\bprop
+
+    Let $A$ be a ring, then there is an adjunction
+    $$ \Mod_A \adjarrow{\tilde\bul}{\Gamma} \Mod_{\O_{\spec A}} $$
+    between $M\mapsto\tilde M$ and global sections $\F\mapsto\Gamma(\spec A,\F)$.
+
+\eprop
+
+\bproof
+
+    This just amounts to showing that global sections
+    $$ \hom_{\spec A}(\tilde M,\F) \xtos\Gamma \hom_A(M,\Gamma\F) $$
+    is bijective.
+    This is clear because if $\phi\colon M\to\Gamma\F$ is a module map then for any $f\in A$ by localization there is a unique $\phi_f$ making the following diagram commute
+
+    \commsq{M&\Gamma(\spec A,\F)\cr M_f&\Gamma(\spec A_f,\F)}
+        {\phi}{\phi_f}{}{}
+
+    It is easy to see that the $\phi_f$ assemble into a $\O_{\spec A}$-module morphism.
+    Existence and uniqueness shows that $\Gamma$ is a bijection.
+    \qed
+
+\eproof
+
+In particular $M\mapsto\tilde M$ commutes with colimits.
+
+\bprop
+
+    Let $X$ be a scheme.
+    An $\O_X$-module is quasicoherent iff there exists an open cover $X=\bigcup_iU_i$ such that for all $i$, $\F|_{U_i}$ fits into an exact sequence
+    $$ \O_{U_i}^{\oplus I} \to \O_{U_i}^{\oplus J} \to \F|_{U_i} \to 0 . $$
+
+\eprop
+
+\bproof
+
+    If $\F$ is a quasicoherent sheaf take $U_i$ to be an affine open cover.
+    For an affine $\spec A\subseteq X$ we have that
+    $$ \O_{\spec A}^{\oplus I} \cong (\tilde A)^{\oplus I} \cong \tilde{A^{\oplus I}} . $$
+    Now if $\F|_{\spec A}\cong\tilde M$ then $M$ fits into an exact sequence
+    $$ A^{\oplus I} \to A^{\oplus J} \to M \to 0 . $$
+    Because $\tilde\bul$ is a left-adjoint and thus right-exact, we have that the following sequence
+    $$ \matrix{
+        \tilde{A^{\oplus I}} &\to& \tilde{A^{\oplus J}} &\to& \tilde M &\to& 0\cr
+        \cong && \cong && \cong\cr
+        \O_{\spec A}^{\oplus I} &\to& \O_{\spec A}^{\oplus J} &\to& \F|_{\spec A} &\to& 0
+    } $$
+    is exact, as desired.
+
+    Conversely if such an open cover exists, then we can refine it to be an affine cover.
+    Because restricting $\O_X\mapsto\O_U$ is exact, we can just assume the cover to be affine.
+    Thus we have for every $\spec A\subseteq X$ in the cover, an exact sequence
+    $$ \tilde{A^{\oplus I}} \to \tilde{A^{\oplus J}} \to \F|_{\spec A} \to 0 . $$
+    Let $M=\coker(A^{\oplus I}\to A^{\oplus J})$, so we have an exact sequence
+    $$ A^{\oplus I} \to A^{\oplus J} \to M \to 0 . $$
+    Applying $\tilde\bul$ then gives us the exact sequence
+    $$ \tilde{A^{\oplus I}} \to \tilde{A^{\oplus J}} \to \tilde M \to 0 , $$
+    and the first arrow is the same as the previous one because $\tilde\bul$ and global sections are inverses from $A$-modules.
+
+    Thus we must have that $\F|_{\spec A}\cong\tilde M$, meaning $\F$ is quasicoherent as desired.
+    \qed
+
+\eproof
+
+Thus for a general ringed space $(X,\O_X)$ we can take the condition in the above proposition as the definition of quasicoherence.
+
+\subsubsection{Finiteness of quasicoherent sheaves}
+
+For an $A$-module $M$, there are three finiteness conditions we care about:
+\benum
+    \item $M$ is {\emphcolor finitely generated}: it has a finite number of generators.
+    Equivalently there is a surjection $A^{\oplus n}\to M$ for a finite $n$.
+    \item $M$ is {\emphcolor finitely presented}: it has a finite number of generators and a finite number of relations.
+    Equivalently there is a {\emphcolor finite presentation}: an exact sequence
+    $$ A^{\oplus m} \to A^{\oplus n} \to M \to 0 . $$
+    \item $M$ is {\emphcolor coherent}: it is finitely generated, and for any (not necessarily surjective) map $A^{\oplus n}\to M$, its kernel is finitely generated.
+\eenum
+
+Note that being finitely presented is equivalent to there being a surjection $A^{\oplus n}\to M$ whose kernel is finitely generated.
+Indeed if $A^{\oplus m}\to A^{\oplus n}\to M\to0$ is exact, then the kernel of $A^{\oplus n}\to M$ is the image of a map from $A^{\oplus m}$, which is finitely generated.
+Conversely if $A^{\oplus n}\to M$ has finitely generated kernel $K$, take a surjection $A^{\oplus m}\to K$; the composition $A^{\oplus m}\to A^{\oplus n}\to M\to0$ is exact.
+
+Thus coherence implies finitely presented.
+Clearly finitely presented implies finitely generated.
+We will show that if $A$ is Noetherian, finitely generated implies coherence.
+
+\bprop
+
+    If $A$ is Noetherian, all three finiteness conditions above are equivalent.
+
+\eprop
+
+\bproof
+
+    Suppose $M$ is a finitely generated $A$-module, and take a map $\alpha\colon A^{\oplus m}\to M$.
+    Then $\ker\alpha$ is a submodule of $A^{\oplus m}$, which is Noetherian as the finite sum of Noetherian modules, and thus $\ker\alpha$ is Noetherian.
+    In particular $\ker\alpha$ is finitely generated.
+    \qed
+
+\eproof
+
+If $A$ is Noetherian, then the category of finitely generated $A$-modules is an Abelian subcategory of $\Mod_A$.
+Indeed, the zero module is finitely generated, and the sum of two finitely generated $A$-modules is finitely generated.
+We just need to show that the kernel and cokernel of a map between finitely generated $A$-modules is finitely generated.
+The cokernel is a quotient of its codomain and is thus finitely generated.
+The kernel is a submodule of the domain; since the domain is finitely generated, it is Noetherian so its submodules are finitely generated.
+
+In fact even when $A$ is not Noetherian, the category of coherent $A$-modules is an Abelian subcategory of $\Mod_A$.
+We ignore the proof.
+
+\bprop
+
+    The category of coherent $A$-modules is a full Abelian subcategory of $\Mod_A$.
+
+\eprop
+
+Note that the localization of finitely generated modules are finitely generated: if $M$ is a finitely generated $A$-module, then $S^{-1}M$ is a finitely generated $S^{-1}A$-module.
+Conversely if $A=(f_1,\dots,f_n)$ and $M_{f_i}$ is a finitely generated $A_{f_i}$-module, then $M$ is a finitely generated $A$-module.
+Suppose $m_{ij}\in M$ generate $M_{f_i}$, then all the $m_{ij}$ generate $M$.
+Indeed, for $m\in M$ there are $a_{ij}\in A$ and $k_i\geq0$ such that for all $i$:
+$$ m = \frac{\sum_j a_{ij}m_{ij}}{f_i^{k_i}} \iff f_i^{N_i}\parens{f_i^{k_i}m - \sum_j a_{ij}m_{ij}} $$
+for some $N_i\geq0$.
+We can assume that all the $N_i$ and $k_i$ are equal, and by updating $a_{ij}$ to be $f_i^{N_i}a_{ij}$ we get that
+$$ f_i^Nm = \sum_ja_{ij}m_{ij} . $$
+Because $(f_i)_i$ is the unit ideal, so too is $(f_i^N)_i$ (because its radical is $(f_i)_i$ and $\sqrt I=(1)$ iff $I=(1)$).
+Thus there are $c_i\in A$ such that $\sum_ic_if_i^N=1$ and thus
+$$ m = \sum_ic_if_i^Nm = \sum_{i,j}c_ia_{ij}m_{ij} $$
+as desired.
+
+We summarize this as follows.
+
+\bprop
+
+    Let $M$ be an $A$-module.
+    \benum
+        \item If $M$ is a finitely generated $A$-module, then $S^{-1}M$ is a finitely-generated $S^{-1}A$-module.
+        \item If $A=(f_1,\dots,f_n)$ and $M_{f_i}$ is a finitely-generated $A_{f_i}$-module for all $i$, then $M$ is a finitely generated $A$-module.
+    \eenum
+
+\eprop
+
+\blemm
+
+    Suppose $M$ is a finitely presented $A$-module.
+    Then for any surjection $\phi\colon A^{\oplus p}\to M$, its kernel is finitely generated.
+
+\elemm
+
+\bproof
+
+    Choose a finite presentation of $M$:
+
+    \diagram{
+        &&A^{\oplus p}\cr
+        A^{\oplus m}&A^{\oplus n}&M&0\cr
+        &&0
+    }{
+        \diagarrow{from={2,1}, to={2,2}, text=\beta, y distance=.25cm}
+        \diagarrow{from={2,2}, to={2,3}, text=\alpha, y distance=.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text=\phi, x distance=.25cm}
+        \diagarrow{from={2,3}, to={2,4}}
+        \diagarrow{from={2,3}, to={3,3}}
+    }
+
+    Because the rings are free, we can find lifts $g,h$ making the following diagram commute
+
+    \diagram{
+        &&A^{\oplus p}\cr
+        A^{\oplus m}&A^{\oplus n}&M&0\cr
+        &&0
+    }{
+        \diagarrow{from={2,1}, to={2,2}, text=\beta, y distance=.25cm}
+        \diagarrow{from={2,2}, to={2,3}, text=\alpha, y distance=.25cm}
+        \diagarrow{from={1,3}, to={2,3}, text=\phi, x distance=.25cm}
+        \diagarrow{from={2,3}, to={2,4}}
+        \diagarrow{from={2,3}, to={3,3}}
+        \diagarrow{from={1,3}, to={2,2}, text=g, x distance=-.25cm, x off=-.1cm}
+        \diagarrow{from={2,2}, to={1,3}, text=h, x distance=.25cm, x off=.1cm}
+    }
+
+    Explicitly, if $x_1,\dots,x_p$ generate $A^{\oplus p}$ then by surjectivity there are $y_i\in A^{\oplus n}$ such that $\alpha(y_i)=\phi(x_i)$.
+    So define $g(x_i)=y_i$.
+
+    Now consider the following sequence
+    $$ A^{\oplus m}\oplus A^{\oplus k} \xtos\psi A^{\oplus k} \xtos\phi M \to 0,\qquad \psi = (h\circ\beta)\oplus(\id-h\circ g) . $$
+    We claim that this sequence is exact, and then we are finished.
+    Firsly,
+    $$ \phi\circ h\circ\beta = \alpha\circ\beta = 0,\qquad \phi - \phi\circ h\circ g = \phi - \alpha\circ g = \phi - \phi = 0 $$
+    so that $\phi\circ\psi=0$.
+    Now if $x\in\ker\phi$ we want to find a $y\in A^{\oplus m}$ such that
+    $$ x = \psi(y+x) = h(\beta(y)) + x - h(g(x)) \iff h(\beta(y)) = h(g(x)) . $$
+    Now if $\phi x=0$ then $\alpha gx=0$ so $gx\in\ker\alpha=\im\beta$, so there is a $y\in A^{\oplus m}$ such that $\beta y=gx$.
+    Thus $h\beta y=hgx$ as desired.
+    \qed
+
+\eproof
+
+We already showed that finitely generated modules satisfy the hypothesis of the affine communication lemma.
+We now show this for finite presentations and coherence.
+
+\blemm
+
+    Let $M$ be an $A$-module.
+    \benum
+        \item If $M$ is finitely presented, then $S^{-1}M$ is finitely presented as an $S^{-1}A$-module.
+        \item If $(f_1,\dots,f_n)=A$ and $M_{f_i}$ is a finitely presented $A_{f_i}$-module for all $i$, then $M$ is a finitely presented $A$-module.
+    \eenum
+
+\elemm
+
+\bproof
+
+    (1) is clear because localization is exact.
+    For (2) we know then that $M$ is finitely generated.
+    Thus there is a surjection $\phi\colon A^{\oplus n}\to M$, and its localizations $\phi_{f_i}\colon A_{f_i}^{\oplus n}\to M_{f_i}$ are all surjective as well (as localization is exact).
+    By the above lemma, this means that $\ker(\phi_{f_i})$ is finitely generated.
+    Because $\ker(\phi_{f_i})\cong(\ker\phi)_{f_i}$, this means that $(\ker\phi)_{f_i}$ is finitely generated for all $i$, and thus $\ker\phi$ is.
+    \qed
+
+\eproof
+
+For coherence we note that $M$ is coherent iff it is finitely generated and all of its finitely generated submodules are finitely presented.
+Indeed if $M$ is coherent and $N\subseteq M$ is a finitely generated submodule, let $A^{\oplus n}\to N$ be a surjection.
+Then the composition $A^{\oplus n}\to N\inj M$ has a finitely generated kernel, so $N$ is finitely presented.
+Conversely suppose all of $M$'s finitely generated submodules are finitely presented.
+Let $\phi\colon A^{\oplus n}\to M$ be any map, then consider its kernel $K$.
+Then $A^{\oplus n}/K$ is a submodule of $M$, thus finitely presented, and so by the above lemma the kernel of $A^{\oplus n}\to A^{\oplus n}/K$, which is $K$, is finitely generated.
+
+In particular a finitely generated submodule of a coherent module is coherent.
+
+\blemm
+
+    Let $M$ be an $A$-module.
+    \benum
+        \item If $M$ is coherent, then $S^{-1}M$ is coherent as an $S^{-1}A$-module.
+        \item If $(f_1,\dots,f_n)=A$ and $M_{f_i}$ is a coherent $A_{f_i}$-module for all $i$, then $M$ is a coherent $A$-module.
+    \eenum
+
+\elemm
+
+\bproof
+
+    For (1) if $N'\subseteq S^{-1}M$ is a finitely generated submodule, then $N'=S^{-1}N$ for a finitely generated submodule $N\subseteq M$ (if $x_i/s_i$ generate $N'$
+    then take $N$ generated by $x_i$).
+    Then since $M$ is coherent, $N$ is finitely presented, and so by the previous lemma $N'=S^{-1}N$ is finitely presented as well.
+    Thus $S^{-1}M$ is coherent.
+
+    For (2) let $N\subseteq M$ be finitely generated.
+    Then $N_{f_i}\subseteq M_{f_i}$ is finitely generated, thus finitely presented.
+    This is true for all $i$ so by the previous lemma, $N$ is finitely generated.
+    Thus $M$ is coherent.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A quasicoherent sheaf $\F$ is {\emphcolor finite type} (resp.\ {\emphcolor finitely presented}, {\emphcolor coherent}) if for every affine open $\spec A\subseteq X$,
+    $\Gamma(\spec A,\F)$ is a finitely generated (resp.\ finitely presented, coherent) $A$-module.
+
+\edefn
+
+Note that coherent quasicoherent sheaves are finitely presented, which in turn are finitely generated.
+Because these three notions are equivalent over a Noetherian ring, these three notions are equivalent over a locally Noetherian scheme.
+
+Because coherent modules are an Abelian subcategory of $A$-modules, coherent quasicoherent sheaves form an Abelian subcategory of $\QCoh_X$.
+This can be seen because our construction of the kernel and cokernel of $\alpha\colon\F\to\G$ is the (co)kernel of $\beta\colon M\to N$, and $M,N$ are coherent so the (co)kernel
+of $\beta$ is as well.
+
+Just like how quasicoherence can be generalized to arbitrary ringed spaces, so too can finite type, finitely presented, and coherence.
+
+\bdefn
+
+    Let $(X,\O_X)$ be a ringed space and $\F$ an $\O_X$-module.
+    \benum
+        \item $\F$ is {\emphcolor finite type} if for every $x\in X$ there is an open $x\in U\subseteq X$ and a surjection
+        $$ \O_U^{\oplus n} \to \F|_U \to 0 $$
+        for some $n\geq0$.
+        \item $\F$ is {\emphcolor finitely presentable} if for every $x\in X$ there is an open $x\in U\subseteq X$ and $n,m\geq0$ and an exact sequence
+        $$ \O_U^{\oplus m} \to \O_U^{\oplus n} \to \F|_U . $$
+        \item $\F$ is {\emphcolor coherent} if $\F$ is finite type and for all open $U\subseteq X$, the kernel of any map
+        $$ \O_U^{\oplus n} \to \F|_U $$
+        is of finite type.
+    \eenum
+
+\edefn
+
