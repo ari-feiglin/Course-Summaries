@@ -149,20 +149,26 @@
 \commap\@makescr{F,G,H,O}
 
 \def\implies{\mathrel{\longvarRightarrow}}
-\let\to=\varrightarrow
-\let\longto=\longvarrightarrow
-\let\To=\varRightarrow
-\let\tof=\varrightleftarrows
-\let\xtof=\xvarrightleftarrows
-\let\xto=\xvarrightarrow
-\let\xtto=\xvarrightarrows
-\let\xot=\xvarleftarrow
-\let\tto=\varrightarrows
-\let\inj=\varuphookrightarrow
-\let\ot=\varleftarrow
-\let\xot=\xvarleftarrow
-\let\bul=\bullet
-\let\down=\downarrow
+
+\def\@@malias#1#2{\protected\def#1{#2}}
+\def\@malias#1{\@@malias#1}
+
+\commap\@malias{%
+    {\to}{\varrightarrow},%
+    {\longto}{\longvarrightarrow},%
+    {\To}{\varRightarrow},%
+    {\tof}{\varrightleftarrows},%
+    {\xtof}{\xvarrightleftarrows},%
+    {\xto}{\xvarrightarrow},%
+    {\xtto}{\xvarrightarrows},%
+    {\xot}{\xvarleftarrow},%
+    {\tto}{\varrightarrows},%
+    {\inj}{\varuphookrightarrow},%
+    {\ot}{\varleftarrow},%
+    {\xot}{\xvarleftarrow},%
+    {\bul}{\bullet},%
+    {\down}{\downarrow}%
+}
 
 \def\adjarrow#1#2{\mathrel{\putsym{\xvaradjarrow{#1}[{#2}]}{{\scriptstyle\perp}}}}
 \def\simarrow#1#2{\mathrel{\putsym{\xvaradjarrow{#1}[{#2}]}{{\sim}}}}
@@ -197,6 +203,24 @@
 \def\1{{\bf1}}
 \def\ortimes{\mathbin{\vecc\times}}
 
+\def\@dcsize{.5cm}
+\def\@dcbwd{1.5pt}
+\def\@dcnwd{.5pt}
+\def\@dcline#1#2#3#4{\csname #2rule\endcsname\space #3\space\if.#1\@dcnwd\else\@dcbwd\fi\space #4\space\@dcsize\space depth0pt\relax}
+\def\drawcross#1#2#3#4{{\def\bufferwidth{0pt}\def\bufferheight{0pt}%
+\framebox{%
+    \vbox to2\dimexpr\@dcsize{\offinterlineskip%
+        \vss%
+        \hbox to2\dimexpr\@dcsize{\hfil\@dcline{#1}{v}{width}{height}\hfil}%
+        \vbox to0pt{\vss\hbox to2\dimexpr\@dcsize{%
+            \@dcline{#3}{v}{height}{width}%
+            \@dcline{#4}{v}{height}{width}%
+        }\vss}%
+        \hbox to2\dimexpr\@dcsize{\hfil\@dcline{#2}{v}{width}{height}\hfil}%
+        \vss%
+    }%
+}}}
+
 \def\mathnotefont{\sf}
 
 \def\makemathnote#1#2{\def#1{{\mathnotefont #2}}}
@@ -224,7 +248,7 @@
 \def\makemathop{\@ifstar \@makemathop\@@makemathop}
 
 \def\@mmop#1{\expandafter\makemathop\csname #1\endcsname{#1}}
-\commap\@mmop{id,sk,proj,Nat,inc,ev,im,Fun,End,Ob,open,res,inc,coker,supp,nil,Frac,loc,Proj}
+\commap\@mmop{id,sk,proj,Nat,inc,ev,im,Fun,End,Ob,open,res,inc,coker,supp,nil,Frac,loc,Proj,ann,ass}
 
 \def\@@mmop#1#2{\expandafter\makemathop\csname #1\endcsname{#2}}
 \def\@mmop#1{\@@mmop#1}

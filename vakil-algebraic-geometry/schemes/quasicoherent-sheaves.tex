@@ -239,6 +239,20 @@ Note that $f\in\O_X(U)$ is locally nilpotent iff for every $p\in U$, $f_p$ is in
 This is because $f\in\nil(\O_{X,p})$ iff there is a neighborhood $p\in V$ such that $f|_V\in\nil(\O_X(V))$.
 This clearly shows that $\nil(X)$ is an $\O_X$-module, as $\nil(\O_{X,p})$ is an ideal for all $p$.
 
+We can define the {\emphcolor presheaf of nilpotents} to be $\O_{\nil_\pre X}(U)=\nil\O_X(U)$.
+This is in general not a sheaf, but we can see that $\nil X$ is the sheafification of $\nil_\pre X$.
+We do this by showing it satisfies the universal property of sheafification.
+There is an inclusion map $\nil_\pre X\inj\nil X$, which we will show is the sheafification map.
+
+Suppose $\F$ is a sheaf and $\nil_\pre X\to\F$ is a presheaf map.
+Then there is a unique extension to $\nil X\to\F$: for $f\in\nil X(U)$ there is a covering $U=\bigcup_iU_i$ such that $f|_{U_i}$ is nilpotent.
+Thus it has an image in $\F(U_i)$ via $\nil_\pre X\to\F$.
+These images agree on the overlaps, so we can glue them together to get $f$'s image.
+This will give the same result for any covering of $U$, as if $U=\bigcup_jV_j$ is another covering then gluing the images of $f|_{U_i\cap V_j}$ will give the images of $f|_{U_i}$ and
+$f|_{V_j}$.
+
+It is easily seen that this is a map of sheaves, and uniqueness is clear.
+
 \bnote
 
     $\nil(X)$ is an example of an {\emphcolor ideal sheaf} (of $X$).
@@ -632,4 +646,733 @@ Just like how quasicoherence can be generalized to arbitrary ringed spaces, so t
     \eenum
 
 \edefn
+
+If $\F$ is quasicoherent these definitions agree with our previous definitions.
+Indeed the neighborhoods in (1) and (2) may be assumed to be affine, and because global sections and $\tilde\bul$ form an equivalence on $\Mod_A$ we get the desired result.
+And by taking $U$ to be affine, we see that (3) implies that $\F$ is coherent (as in the previous definition).
+And because finite type can be taken locally, in (3) it is sufficient to consider only any open cover, so coherence implies (3).
+
+\subsubsection{Simple objects and length}
+
+For the remainder of this section $\C$ is an Abelian category.
+
+\bdefn
+
+    An object $M\in\C$ is {\emphcolor simple} if its only subobjects are $0$ and $M$ itself.
+    A {\emphcolor composition series} for an arbitrary object $M\in\C$ is a finite filtration
+    $$ 0 = X_0 \subsetneq X_1 \subsetneq \cdots \subsetneq X_{n-1} \subsetneq X_n = M $$
+    such that the quotients $X_{i+1}/X_i$ are all simple.
+    The {\emphcolor length} of this composition series is $n$.
+    An object with a composition series is said to have {\emphcolor finite length}.
+
+\edefn
+
+\bthrm[title={Jordan-H\"older}, name={jordhold}]
+
+    If $M$ is of finite length, then all of its composition series have the same length.
+    Furthermore, up to permutation, the quotients of any composition series of $M$ are the same.
+
+\ethrm
+
+\bproof
+
+    Suppose $0=X_0\subsetneq X_1\subsetneq\cdots\subsetneq X_n=M$ and $0=Y_0\subsetneq Y_1\subsetneq\cdots\subsetneq Y_p=M$ are two composition series.
+    Define $Z_{ij}=X_i\cap Y_j\subseteq M$ (this is the pullback of $X_i\to M\ot Y_j$).
+    For reasons of abstract nonsense, the following are true:
+    \benum
+        \item if $i\leq i'$ and $j\leq j'$, $Z_{i,j}\subseteq Z_{i',j'}$;
+        \item $Z_{n,j}=Y_j$ and $Z_{i,p}=X_i$;
+        \item $Z_{0,j}=Z_{i,0}=0$;
+        \item $Z_{i,j}\cap Z_{i',j'}=Z_{\min(i,i'),\min(j,j')}$.
+    \eenum
+    The core of (1) and (4) is that $A\to X\times_MY$ is monic if the composition $A\to X\times_MY\to X$ is.
+
+    Now notice that the kernel of $Z_{ij}\to Z_{i+1,j}/Z_{i+1,j-1}$ is $Z_{ij}\cap Z_{i+1,j-1}=Z_{i,j-1}$.
+    Thus we have that $Z_{ij}/Z_{i,j-1}\subseteq Z_{i+1,j}/Z_{i+1,j-1}$.
+    Inductively then we have that $Z_{ij}/Z_{i,j-1}$ is either $0$ or $Y_j/Y_{j-1}$.
+    For $i=n$ this is clear as $Z_{nj}=Y_j$, and then inductively we have that $Z_{ij}/Z_{i,j-1}\subseteq Z_{i+1,j}/Z_{i+1,j-1}=Y_j/Y_{j-1}$.
+    This is simple, so we have the desired result.
+    Similarly $Z_{ij}/Z_{i-1,j}$ is either $0$ or $X_i/X_{i-1}$.
+
+    Now define a matrix whose entries are $Z_{ij}$.
+    Then between adjacent cells, draw a line if the quotient is nonzero.
+    So for example if $Z_{ij}/Z_{i-1,j}$ is nonzero then draw a line between the $(i-1,j)$th and $(i,j)$th cell.
+
+    Take any $2\times2$ submatrix
+    $$ \matrix{Z_{ij}&Z_{i,j+1}\cr Z_{i+1,j}&Z_{i+1,j+1}} = \matrix{A&B\cr C&D} . $$
+    We claim that the drawn lines are of one of the following five forms:
+    $$ \drawcross xx..\qquad \drawcross ..xx\qquad \drawcross ....\qquad \drawcross .x.x\qquad \drawcross xxxx $$
+    We know that $A=B\cap C$, so if $B=D$ then $A=C$.
+    And if $C=D$ then $A=B$; this takes care of the first three cases.
+    Otherwise suppose $D/B$ and $D/C$ are both nonzero.
+    If $B=C$ then $A=B=C$ so that we are in the fourth case.
+
+    Otherwise we will see that $D/B\cong C/A$ and similarly $D/C\cong B/A$ so that we are in the last case.
+    Indeed consider the map $C\to D/B$ which has kernel $C\cap B=A$, so we have an injection $C/A\inj D/B$.
+    Because $D/B$ is simple, either $C/A$ is zero or this is an isomorphism; but if $A=C$ then $C\subseteq B$ so we have a map $D/C\to D/B$.
+    Because $D/C$ is simple, this map is either the zero map or an injection (considering the kernel).
+    If if it is an injection it is an isomorphism and thus $B=C$, a contradiction.
+    But if it is the zero map this means that one of $D/C$ or $D/B$ is zero, contradicting that they are nonzero.
+    Thus $C/A\cong D/B$ and similarly $B/A\cong D/C$, so we are in the fifth case.
+
+    Furthermore note that in all of the cases except the last, the bold lines are all isomorphic.
+    In the the first case we have $D=B$ and $C=A$ so $B/A=D/C$.
+    Similarly for the second.
+    In the fourth case, $B=C=A$ so $D/B=D/C$.
+    In the fifth case we saw that $D/B=C/A$ and $D/C=B/A$, so the straight lines are isomorphic (i.e.\ the two horizontal lines are isomorphic to one another, similar for vertical).
+
+    Note that on the rightmost and bottomost edge of the matrix, all of the horizontal lines are colored: $Z_{i,p}/Z_{i-1,p}$ and $Z_{n,j}/Z_{n,j-1}$
+    are isomorphic to the nonzero $X_i/X_{i-1}$ and $Y_j/Y_{j-1}$ respectively.
+    Thus for any $Y_j/Y_{j-1}$ we can follow the bold line all the way to the left and then make one turn downwards.
+    This brings us to a $X_i/X_{i-1}$, and because the bold lines are isomorphic, we have that $Y_j/Y_{j-1}\cong X_i/X_{i-1}$.
+    We can do this for $X_i/X_{i-1}$ as well, and these processes are inverses.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $M\in\C$ be of finite length.
+    Its {\emphcolor length} is the length of any of its composition series, and is denoted by $\ell(M)$.
+    If $M$ is not of finite length then define $\ell(M)=\infty$.
+
+    This is well-defined in lieu of Jordan-H\"older.
+
+\edefn
+
+
+Note that subobjects of $A/B$ are in correspondence with subobjects of $A$ containing $B$.
+Indeed if $B\subseteq M\subseteq A$ then the kernel of $M\to A/B$ is $M\cap B=B$ so this gives an injection $M/B\inj A/B$.
+Conversely if $N\subseteq A/B$ is a subobject, consider the pullback $M=N\times_{A/B}A$.
+Because $B\inj A$, we have that $B\inj M$ ($B\inj A$ commutes with the zero map $B\to N$).
+These are mutual inverses.
+
+Now if $M$ has finite length, then so too do all of its subquotients.
+That is if we have a filtration $0\subseteq M'\subseteq M''\subseteq M$, then $M''/M'$ has finite length.
+Let $M_\bul$ be a composition series for $M$, then create a matrix as in the Jordan-H\"older theorem proof, whose cells are the intersections of $M_\bul$ with $0\subseteq M'\subseteq M''\subseteq M$.
+
+The horizontal lines in the matrix are all either zero or simple.
+This is because the kernel of $M_{i+1}\cap M'\inj M_{i+1}/M_i$ is $M_i\cap M'$ so $(M_{i+1}\cap M')/(M_i\cap M')$ is a subobject of $M_{i+1}/M_i$.
+Meanwhile the vertical lines are subobjects of $M''/M'$ (or $M/M''$, $M'$): the kernel of $M_i\cap M''\to M''/M'$ is $M_i\cap M'$ so $(M_i\cap M'')/(M_i\cap M')$ is a subobject of $M''/M'$.
+
+The possible submatrices here are the same as in the proof above, except we have one additional option:
+$$ \drawcross xx.x . $$
+This is because if $D/B,D/C$ are nonzero and $B\neq C$, then we have an injection $C\to D/B$.
+As before this has kernel $A$ so $C/A\subseteq D/B$.
+Here it may be that $A=C$ so $C\subseteq B$.
+
+If we take a horizontal line $M_i/M_{i-1}$ and follow the path which goes as left as possible and then down, we will either land on the line $M''/M'$ or not.
+If it does land on $M''/M'$ then keep track of the first vertical line in the path.
+This is a subobject of $M''/M'$, and we claim that these form a composition series of $M''/M'$.
+
+We show two things:
+\benum
+    \item $B/A$ is a subobject of $D/C$,
+    \item $\frac{D/C}{B/A}$ is either zero or simple.
+\eenum
+For (1), the kernel of $B\to D/C$ is $A$ so this is immediate.
+For (2), we split into non-trivial cases: in
+$$ \drawcross xx.. $$
+we have $D=B$ and $C=A$ so
+$$ \frac{D/C}{B/A} = \frac{B/C}{B/C} = 0 . $$
+And in
+$$ \drawcross .x.x $$
+we have $A=B=C$ so
+$$ \frac{D/C}{B/A} = \frac{D/B}{A/A} = D/B $$
+which is simple as the horizontal lines are simple.
+And in
+$$ \drawcross xx.x $$
+we have $A=C$ so
+$$ \frac{D/C}{B/A} = \frac{D/A}{B/A} = D/B $$
+is simple.
+FInally in
+$$ \drawcross xxxx $$
+we have $D/B\cong C/A$.
+Consider then the map $D\to(D/C)/(B/A)$ which is a surjection and $B$ is a subobject of the kernel.
+So this quotients to a surjection $D/B\to(D/C)/(B/A)$, which is either an isomorphism or $(D/C)/(B/A)=0$.
+This is because a simple object has no nontrivial quotients.
+
+This means that by following these paths (left then down), the first vertical lines form a composition series of $M''/M'$.
+
+Thus any filtration of a finite-length object $M$ can be refined into a composition series.
+Indeed suppose $M'\subseteq M$, then we can find a composition series of $M/M'$.
+Because modules of $M/M'$ correspond to modules $M'\subseteq M''\subseteq M$, this forms a series $M'=M_0\subsetneq M_1\subsetneq\cdots\subsetneq M_n=M$
+whose quotients are simple.
+So if we have a filtration $0=M_0\subsetneq\cdots\subsetneq M_n=M$, doing this for every $M_i\subsetneq M_{i+1}$ gives the desired composition series.
+
+In this same way we see that if $M'\subseteq M$ is a subobject then
+$$ \ell(M) = \ell(M') + \ell(M/M') . $$
+This is because a composition series of $M/M'$ corresponds to a filtration of $M'\subseteq M$ whose quotients are simple.
+Appending this to a composition series of $M'$ gives a composition series of $M$.
+Note that this works without any assumptions on the objects: even if $M$ is not of finite length, this identity holds.
+
+Another way of writing this is that length is additive:
+$$ 0 \to M' \to M \to M'' \to 0 \quad\implies\quad \ell(M) = \ell(M') + \ell(M'') . $$
+
+Thus the sum of two finite length objects is finite length, due to the exact sequence $0\to M\to M\oplus N\to N\to0$.
+And subobjects and quotients of finite length objects are also of finite length, in particular kernels and cokernels are.
+Thus the full subcategory of $\C$ consisting of objects of finite length is Abelian.
+
+Now we focus on the case $\C=\Mod_A$ where $A$ is a ring.
+Let us assume that $A$ is not necessarily commutative, then simple modules are those which are isomorphic to $A/\m$ for a maximal right ideal $\m\leq A$.
+All such modules are simple, because there are no right ideals between $\m$ and $A$.
+Note that $A/I$ is simple iff $I$ is a maximal right ideal, otherwise there is a $I\subsetneq J\subsetneq A$ and then $J/I\leq A/I$ is a non-trivial submodule.
+
+And if $M$ is a simple module, let $m\in M$ be nonzero.
+Now consider $f\colon A\to M$ given by $f(a)=am$.
+Then $\im f$ is a nonzero submodule of $M$, so it must be all of $M$.
+Thus $A/\ker f\cong M$ is simple, and thus $\ker f$ must be maximal as per the previous paragraph.
+
+So in the case that $A$ is commutative, the simple modules in $\Mod_A$ are fields which are surjected onto by $A$.
+
+\blemm
+
+    Suppose $M$ is a finite-length module, and $M_\bul$ is a composition series for $M$.
+    Now suppose that $M_i/M_{i-1}\cong A/\m_i$ where $\m_i\leq A$ are maximal ideals.
+    Then $M$ is annihlated by $\m_1\cdots\m_n$, so it can be viewed as an $A/\m_1\cdots\m_n$-module.
+
+\elemm
+
+\bproof
+
+    For each $i$ define $b_i=a_0\cdots a_i$.
+    Then inductively we show that $b_i$ annihlates $M_i$.
+    For $M_0=0$ this is clear.
+    Now we know that for $m\in M_i$, $a_im\in M_i/M_{i-1}$ is zero, so $a_im\in M_{i-1}$.
+    Thus by induction $b_im=b_{i-1}a_im=0$ as desired.
+    \qed
+
+\eproof
+
+Now suppose that in the context of the above lemma, the maximal ideals are $(\m_1,\dots,\m_n)$.
+Removing repeated maximal ideals suppose we have $\n_1,\dots,\n_s$ with multiplicities $\ell_1,\dots,\ell_s$.
+Then by the chinese remainder theorem
+$$ A/\m_1\cdots\m_n = \A/\n_1^{\ell_1}\cdots\n_s^{\ell_s} \cong A/\n_1^{\ell_1}\times\cdots\times A/\n_s^{\ell_s} . $$
+For $1\leq i\leq s$ let $e_i\in A$ be the image of $(0,\dots,1,\dots,0)$, i.e.\ the unique element where $e_i\equiv1\pmod{\n_i^{\ell_i}}$ and $e_i\equiv0\pmod{\n_j^{\ell_j}}$ for $j\neq i$.
+
+\blemm
+
+    We have $M\cong e_1M\times\cdots\times e_sM$, and $e_iM$ is a finite-length module whose simple quotients are $A/\n_i$.
+
+\elemm
+
+\bproof
+
+    The obvious map $M\to e_1M\times\cdots\times e_sM$, $m\mapsto(e_1m,\dots,e_sm)$, is injective.
+    Indeed if $e_im=0$ for all $i$ then $(e_1+\cdots+e_n)m=0$, and $e_1+\cdots+e_n=1$ in $A/\m_1\cdots\m_n$.
+    Since $M$ is an $A/\m_1\cdots\m_n$-module, this means $m=0$.
+
+    This also shows that it is surjective: for $(e_1m_1,\dots,e_nm_n)\in e_1M\times\cdots\times e_sM$, let $m=e_1m_1+\cdots+e_nm_n$.
+    Because $e_i^2=e_i$ and $e_ie_j=0$ for $i\neq j$ in $A/\m_1\cdots\m_n$, then we have $e_im=e_im_i$ as desired.
+
+    Because $M$ is finite-length, so too are the $e_iM$ as submodules.
+    Now consider $e_iM_j$, where $M_\bul$ is the composition series of $M$.
+    Then $e_iM_j$ forms a filtration of $e_iM$, though some components may be equal.
+    Consider the map $e_iM_j\to M_j/M_{j-1}$ which has kernel $e_iM_j\cap M_{j-1}\supseteq e_iM_{j-1}$.
+    Now suppose $M_j/M_{j-1}\cong A/\n_k$.
+
+    If $i=k$ then $e_i-1\in\n_k$ so that for all $m\in M_j$, $e_im-m\in M_{j-1}$.
+    So if $e_im\in M_{j-1}$ then $m\in M_{j-1}$ and thus $e_im\in e_iM_{j-1}$; so $e_iM_j\cap M_{j-1}=e_iM_{j-1}$.
+    Thus $e_iM_j/e_iM_{j-1}$ is a subobject of $M_j/M_{j-1}$, and so is either equal to zero or $A/\n_i$.
+
+    Otherwise $e_i\in\n_k$ so that $e_im\in M_{j-1}$ for all $m\in M_j$, meaning $e_iM_j\subseteq M_{j-1}$.
+    Thus $e_iM_j\cap M_{j-1}=e_iM_j$.
+    And so the quotient is $e_iM_j/e_iM_{j-1}=0$.
+
+    Thus the simple quotients of $e_iM$ are just $A/\n_i$ (as the other quotients are zero).
+    \qed
+
+\eproof
+
+Note that if $M$ is a module with a composition series $M_i$ whose quotients are all isomorphic to $A/\m$, then $M_\p\neq0$ iff $\p=\m$.
+Indeed the composition series gives us a filtration
+$$ 0 = (M_0)_\p \subseteq \cdots \subseteq (M_n)_\p = M_\p . $$
+Localization commutes with quotients, so the quotients here are
+$$ \frac{(M_i)_\p}{(M_{i-1})_\p} = \parens{\frac{M_i}{M_{i-1}}}_\p = (A/\m)_\p = A_\p/\m A_\p . $$
+Now $\m A_\p\neq A_\p$ iff $\m\subseteq\p$ iff $\p=\m$.
+Thus if $\p\neq\m$ then the quotients are zero, meaning $M_\p=0$.
+Thus
+$$ \supp M = \set{\p\in\spec A}[M_\p\neq0] = \set\m . $$
+
+Now if $M=M_1\times\cdots\times M_n$ where each $M_i$ has simple quotients all of the form $A/\m_i$, then
+$$ \supp M = \bigcup_i\supp M_i = \set{\m_1,\dots,\m_n} . $$
+The reason for the first equality is because localization commutes with finite products.
+
+So by the previous lemma if $M$ has finite length, then $\supp M$ consists only of finitely many maximal ideals.
+In other words, $\supp M$ is a finite subset of closed points of $\spec A$.
+
+Because $\QCoh_X$ is Abelian, there is a notion of simple objects and length.
+Our goal is to try and understand these objects.
+
+\subsubsection{Associated points}
+
+Recall that for an $A$-module $M$ and $m\in M$,
+$$ \supp m = \set{\p\in\spec A}[m_\p\neq0] . $$
+Define the annihilator of $m$ by $\ann_A(m)=\set{a\in A}[am=0]$.
+Then we have that
+$$ \supp m = \vof(\ann_A(m)) . $$
+Indeed $m_\p=0$ iff there is a $a\notin\p$ such that $am=0$, i.e.\ iff $\ann_A(m)$ is not a subset of $\p$.
+Thus $\p\notin\supp m$ iff $\p\notin\vof(\ann_A(m))$.
+
+Recall that we have
+$$ \supp M = \set{\p\in\spec A}[M_\p\neq0] = \bigcup_{m\in M}\supp m . $$
+If $M$ is a principal module generated by $m\in M$ then
+$$ \supp M = \supp Am = \supp m = \vof(\ann m) . $$
+Thus if $M$ is finitely generated by $m_1,\dots,m_n$ we have that
+$$ \supp M = \bigcup_{i=1}^n\supp m_i = \bigcup_{i=1}^n\vof(\ann m_i) $$
+so for a finitely-generated $M$, $\supp M\subseteq\spec A$ is closed.
+
+Recall that we extended these concepts to $\O_X$-modules.
+For an $\O_X$-module $\F$ and a global section $s\in\Gamma(X,\F)$ we have
+$$ \supp s = \set{p\in X}[s_p\neq0\hbox{ in $\F_p$}],\qquad \supp\F = \set{p\in X}[\F_p\neq0] = \bigcup_{s\in\Gamma(X,\F)}\supp s . $$
+In particular $\supp\tilde M=\supp M$.
+
+Supports behave well in exact sequences: if $0\to M'\to M\to M''\to0$ is exact then $\supp M=\supp M'\cup\supp M''$.
+We can extend this to $\O_X$-modules: if $0\to\F'\to\F\to\F''\to0$ is exact then $\supp\F=\supp\F'\cup\supp\F''$.
+The proof boils down to the fact that if $0\to A\to B\to C\to0$ is exact, then $B=0$ iff $A=C=0$.
+Then because taking stalks is exact, $0\to\F'_p\to\F_p\to\F''_p\to0$ is exact.
+Then $p\notin\supp\F$ iff $\F_p=0$ iff $\F'_p=\F''_p=0$ as desired.
+
+\bprop[name={suppses}]
+
+    If $0\to\F'\to\F\to\F''\to0$ is a short exact sequence of $\O_X$-modules, then
+    $$ \supp\F = \supp\F'\cup\supp\F'' . $$
+
+\eprop
+
+\bexam
+
+    $\supp\F$ need not be closed in general.
+    Indeed take $A=\bZ$ and $M=\bigoplus_{p\hbox{ prime}}\bZ/(p)$.
+    Then for $p$ prime we know that $(\bZ/(p))_{(p)}=\bZ/(p)$ because $\bZ/(p)$ is a field and the localizing set $\bZ-(p)$ maps to the nonzero elements of $\bZ/(p)$.
+    But $(\bZ/(p))_{(0)}=0$ because the localizing set $\bZ-0$ is mapped to all of $\bZ/(p)$, including zero.
+
+    Thus
+    $$ \supp M = \set{(p)}[p\in\bZ\hbox{ prime}] , $$
+    which is not closed (because its associated ideal $\idof(\supp M)=0$ which has vanishing set all of $\spec\bZ$).
+
+\eexam
+
+If $M$ is finitely generated, and $x\in A$ has value zero at all the points in $\supp M$ (i.e.\ lies in all the prime ideals in $\supp M$), then there is a power $x^n$ which
+annihilates $M$.
+Indeed if $m_1,\dots,m_n$ generate $M$ then $\supp M=\bigcup_i\vof(\ann m_i)$.
+Thus $x$ lies in all of the primes containing $\ann m_i$, thus $x\in\sqrt{\ann m_i}$.
+Then $x^{n_i}\in\ann m_i$, and by taking the maximum $n=n_i$ we have $x^n\in\ann m_i$ and so $x^n\in\ann M$.
+
+Also if $M$ is finitely generated an $x\in A$, then $\supp(M/xM)=\supp M\cap\vof(x)$.
+Firstly $(xM)_\p=x_\p M_\p$, because $xM$ is the image of $M\xtos{\times x}M$, localization commutes with images, and the localization of $\times x$ is $\times x_\p$.
+Thus $\p\notin\supp(M/xM)$ iff $x_\p M_\p=M_\p$, i.e.\ iff $x_\p$ acts surjectively on $M_\p$.
+If $\p\notin\supp M$ then $M_\p=0$ so this is clear, and if $\p\notin\vof(x)$ then $x\notin\p$ so $x_\p$ is a unit and so $\supp(M/xM)\subseteq\supp M\cap\vof(x)$.
+Now conversely suppose $\p\notin\supp(M/xM)$ and $\p\in\vof(x)$, so $x\in\p$; we want to show that $\p\notin\supp M$, i.e.\ that $M_\p=0$.
+
+So in our case we have a finitely generated $A_\p$-module $M_\p$ and a non-unit $x_\p$ which acts surjectively on $M_\p$.
+By Nakayama's lemma this means $M_\p=0$.
+Indeed we can rephrase our situation as having a local ring $(A,\m)$ ($=(A_\p,\p A_\p)$) and a finitely-generated module $M$ ($=M_\p$) such that a non-unit
+$x\in A$ ($=x_\p$) acts surjectively on $M$.
+Because $x\in\m$ this means that $\m M=0$.
+As $M$ is finitely generated, this means that $M$ must be zero by Nakayama.
+
+\bdefn
+
+    Let $M$ be an $A$-module.
+    Its {\emphcolor associated prime ideals} (or {\emphcolor associated points}, if we are taking a geometric viewpoint) are those {\it prime\/} ideals of $A$ which are of the
+    form $\ann_A(m)$ for $m\in M$.
+    The set of associated points of $M$ is denoted $\ass M\subseteq\spec A$.
+
+    The associated points/prime ideals of $A$ are its associated points viewed as a module ovr itself.
+
+\edefn
+
+If $A$ is a domain then $\ann_A(a)=0$ for all $a\in A$, which is prime, so $\ass(A)=\set0$.
+
+\blemm
+
+    Let $M'\subseteq M$ be $A$-modules, then
+    \benum
+        \item $\p\in\ass M$ iff there is an injection $A/\p\inj M$,
+        \item $\ass M'\subseteq\ass M$,
+        \item $\ass M\subseteq\supp M$.
+    \eenum
+
+\elemm
+
+\bproof
+
+    If there is an injection $\phi\colon A/\p\inj M$ then
+    $$ a\in\ann_A(\phi1) \iff a\phi(1) = 0 \iff \phi(a) = 0 \iff a\in\p $$
+    so that $\ann_A(\phi1)=\p$, so $\p$ is an associated point of $M$.
+    Conversely if $\p=\ann_A(m)$ is associated then $A\to M$ given by $a\mapsto am$ has kernel $\p$, giving rise to the desired injection.
+
+    (2) follows from (1) as if $\p\in\ass M'$ then the injection $A/\p\inj M'$ composes with inclusion to give an injection $A/\p\inj M$.
+
+    For (3) if $\p\in\ass M$ then there is an injection $A/\p\inj M$.
+    Because localization is exact and thus preserves monomorphisms, this gives rise to an injection $(A/\p)_\p\inj M_\p$.
+    And $(A/\p)_\p=A_\p/\p A_\p=\kappa(\p)$ is nonzero, so $M_\p$ is nonzero, meaning $\p\in\supp M$ as desired.
+    \qed
+
+\eproof
+
+A simpler proof of (3) is just that $\ann_A(m)$ is independent of if we view $m\in M'$ or $m\in M$.
+
+\blemm
+
+    Suppose $A$ is Noetherian, and $m\in M$ is nonzero.
+    Then there is a multiple $n=xm$ such that for any nonzero $yn\neq0$, we have $\ann yn=\ann n$.
+
+\elemm
+
+\bproof
+
+    In general $\ann n\subseteq\ann yn$.
+    Define
+    $$ \Sigma = \set{\ann xm}[xm\neq0] $$
+    which is a collection of ideals of $A$, and as $A$ is Noetherian has a maximal element $\ann xm$.
+    Then for any $y$, $\ann yxm\subseteq\ann xm$ and thus there is equality.
+    \qed
+
+\eproof
+
+In this case $\ann n$ is prime.
+Indeed if $ab\in\ann n$ then $abn=0$.
+So either $bn=0$, so $b\in\ann n$, or $a\in\ann bn=\ann n$.
+Thus we have proven the following.
+
+\bprop[name={assprimenoether}]
+
+    If $M$ is a nonzero module over a Noetherian ring $A$, then $\ass_AM$ is nonempty.
+    Furthermore, for any nonzero $m\in M$, there is an associated prime $\p$ containing $\ann m$ and $\p=\ann xm$ for some $x\in A$.
+
+\eprop
+
+\bprop
+
+    Suppose $M$ is a nonzero module over a Noetherian ring $A$.
+    Then the natural map
+    $$ M \inj \prod_{\p\in\ass M}M_\p $$
+    is an injection.
+
+\eprop
+
+\bproof
+
+    Let $K$ denote the kernel, and suppose it is nonzero.
+    Then by the above proposition it has an associated prime $\p$ which by monotonicity is an associated prime of $M$.
+    It is the annihilator of $m\in K\subseteq M$, but because $m$ is in the kernel of the map, $m_\p=0$.
+    Thus there is an $a\notin\p$ such that $am=0$, contradicting the fact that $\ann_A(m)=\p$.
+    \qed
+
+\eproof
+
+In the above injection we may restrict the $\p$ to be those associated primes which are maximal amongst the associated primes.
+
+\bprop[name={asszerodiv}]
+
+    Let $A$ be Noetherian and $f\in A$.
+    Then $f$ is a zerodivisor on $M$ iff $f$ vanishes at an associated point of $M$.
+    In other words $\bigcup\ass M$ is the set of zerodivisors of $M$.
+
+\eprop
+
+\bproof
+
+    If $f$ vanishes at $\p\in\ass M$ then $f\in\p=\ann m$ so $fm=0$, meaning $f$ is a zerodivisor.
+
+    Now suppose that $f$ vanishes at no associated point, and consider the commutative square
+
+    \diagram{
+        M&\prod_{\p\in\ass M}M_\p\cr
+        M&\prod_{\p\in\ass M}M_\p
+    }{
+        \diagarrow{from={1,1}, to={1,2}, left cap={(}}
+        \diagarrow{from={2,1}, to={2,2}, left cap={(}}
+        \diagarrow{from={1,1}, to={2,1}, text={\times f}, x distance=-.25cm}
+        \diagarrow{from={1,2}, to={2,2}, text={\times f}, x distance=.25cm}
+    }
+
+    Note that multiplication $M_\p\xtos{\times f}M_\p$ is injective.
+    By assumption $f\notin\p$, so it is a unit of $A_\p$.
+    Thus the right vertical arrow is injective, and thus so too must be the left.
+    \qed
+
+\eproof
+
+A quicker proof of the converse in the above proof is that if $M\xtos{\times f}M$ is not injective then it has a nonzero kernel $K$.
+Then it has an associated point $\p=\ann_A(m)$ for $m\in K$.
+This is also an associated point of $M$, and $fm=0$ implies that $f\in\p$, a contradiction.
+
+Note that $\ass(A/\p)=\set\p$ for $\p\leq A$ prime.
+This is because for any nonzero $a\in A/\p$, $x\in\ann(a)$ iff $xa\in\p$ iff $x\in\p$ (because $a\notin\p$), so $\ann(a)=\p$.
+
+\bprop[name={assses}]
+
+    Suppose
+    $$ 0 \to M' \to M \to M'' \to 0 $$
+    is a short exact sequence of $A$-modules.
+    Then
+    $$ \ass M' \subseteq \ass M \subseteq \ass M' \cup \ass M'' . $$
+
+\eprop
+
+\bproof
+
+    The first inclusion was already proven.
+    Now suppose $\p=\ann m\in\ass M$.
+    We want to find a submodule of $M'$ or $M''$ isomorphic to $A/\p$.
+    Consider the sub-short exact sequence
+    $$ 0 \to Am\cap M' \to Am \to Am/(Am\cap M') \to 0 . $$
+    It is sufficient to prove the proposition for this short exact sequence, as $\p\in\ass Am$, and $\ass(Am\cap M')\subseteq\ass M'$, $\ass(Am/(Am\cap M'))\subseteq\ass(M'')$.
+    Thus it is sufficient to prove the proposition in the case
+    $$ 0 \to I/\p \to A/\p \to A/I \to 0 . $$
+
+    So we want to show that $\p$ is an associated point of either $I/\p$ or $A/I$.
+    If $I/\p\neq0$ then choose a nonzero element $a\in I/\p$, and as it is an element of $A/\p$ we have $\ann(a)=\p$ as desired.
+    Otherwise $\p=I$ in which case $A/I=A/\p$ so clearly $\p$ is an associated point.
+    \qed
+
+\eproof
+
+\bexam
+
+    The inclusions above may be strict, in particular $\ass M$ may be a proper subset of $\ass M'\cup\ass M''$.
+
+    Recall that for an integral domain $A$, $\ass(A)=\set{0}$.
+    Consider then the short exact sequence
+    $$ 0 \to \bZ \xtos{\times2}\bZ \to \bZ/2 \to 0 . $$
+    We have that $\ass(\bZ/2)=\set{(2)}$ which is not contained in $\ass(\bZ)$.
+
+\eexam
+
+In a similar vein we have the following result.
+
+\bprop[name={asssuppses}]
+
+    Suppose $A$ is Noetherian and we have a short exact sequence of $A$-modules
+    $$ 0 \to M' \to M \to M'' \to 0 . $$
+    Suppose $\p\in\ass M''$ but $\p\notin\supp M'$.
+    Then $\p\in\ass M$.
+
+\eprop
+
+\bproof
+
+    Let $m''\in M''$ with $\p=\ann(m'')$.
+    Then choose a lift $m\in M$ of $m''$, and consider the inclusion of short exact sequences
+
+    \diagram{
+        0&\ker(Am\to Am'')&Am&Am''&0\cr
+        0&M'&M&M''&0
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,2}, to={1,3}}
+        \diagarrow{from={1,3}, to={1,4}}
+        \diagarrow{from={1,4}, to={1,5}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={2,3}, to={2,4}}
+        \diagarrow{from={2,4}, to={2,5}}
+        \diagarrow{from={1,2}, to={2,2}, left cap={(}}
+        \diagarrow{from={1,3}, to={2,3}, left cap={(}}
+        \diagarrow{from={1,4}, to={2,4}, left cap={(}}
+    }
+
+    Note that indeed $\ker(Am\to Am'')\subseteq M'$ because if $am=0$ in $M''$, then $am\in M'$ as $M'=\ker(M\to M'')$.
+    Thus we have
+    $$ \supp\ker(Am\to Am'') \subseteq \supp M',\qquad \ass(Am) \subseteq \ass M,\qquad \ass(Am'') \subseteq \ass(M'') , $$
+    and so we can consider the top row.
+    That is, we can consider a short exact sequence of the form
+    $$ 0 \to \p/I \to A/I \to A/\p \to 0 , $$
+    and the hypothesis is $\p\notin\supp(\p/I)$.
+
+    Define $B=A/I$ so that $\q=\p/I$ is a prime ideal of $B$ and our short exact sequence is
+    $$ 0 \to \q \to B \to B/\q \to 0 . $$
+    And because localizing at $\p$ is the same as localizing at $\q$ (for $B$-modules), this means that $\q\notin\supp\q$.
+
+    Because $A$ is Noetherian, $\q$ is finitely generated, and so $\supp\q$ is closed.
+    Note that $\p\notin\vof(I)$ implies $\bigcap\vof(I)=\sqrt I$ is not a subset of $\p$, as this would imply $\p\in\vof(\p)\subseteq\vof(I)$.
+    Thus there is a $b\in\bigcap\supp\q$ but $b\notin\q$.
+
+    From the former we must have that $b^n$ annihilates $\q$ for some $n\geq0$.
+    This is because if $\q=(x_1,\dots,x_n)$ then $\supp\q=\vof(\ann(x_1)\cdots\ann(x_n))$ and so $b^n\in\ann(x_1)\cdots\ann(x_n)\subseteq\ann(\q)$ for some $n$.
+    But from the latter $b^n\notin\q$.
+
+    Thus $\q\subseteq\ann(b^n)$ (because $b^n$ annihilating $\q$ is the same as $\q$ annihilating $b^n$), but because $b^n\notin\q$ we have $\ann(b^n)\subseteq\q$.
+    This is since if $xb^n=0\in\q$ then we must have $x\in\q$.
+    Thus $\q=\ann_B(b^n)$ is an associated prime of $B$, viewed as a $B$-module.
+    Viewed as an $A$-module, $\p=\ann_A(b^n)$ because $ab^n=0$ iff $a+I\in\ann_B(b^n)=\q$ iff $a\in\p$.
+    \qed
+
+\eproof
+
+\blemm
+
+    Suppose $M$ is a finitely generated module over a Noetherian ring $A$.
+    Then $M$ has a finite filtration
+    $$ 0 = M_0 \subsetneq M_1 \subsetneq \cdots \subsetneq M_n = M $$
+    where the quotients are all of the form $M_{i+1}/M_i\cong A/\p_i$ for $\p_i\leq A$ a prime.
+
+\elemm
+
+\bproof
+
+    From the hypotheses on $M$ we conclude it is Noetherian itself.
+    Furthermore by \refmath[proposition]{assprimenoether} there is a prime $\p_0\leq A$ such that $A/\p_0$ embeds into $M$, so define $M_1=A/\p_0$.
+    Now suppose that inductively we've defined $M_0,\dots,M_n$.
+    If $M_n\neq M$, then $M/M_n$ is a Noetherian $A$-module so we can embed $A/\p_n\inj M/M_n$.
+    This corresponds to a submodule $M_n\subsetneq M_{n+1}\subseteq M$ with quotient $M_{n+1}/M_n\cong A/\p_n$.
+
+    Because $M$ is Noetherian and this chain is increasing, it must terminate at some point, i.e.\ $M_n=M$.
+    \qed
+
+\eproof
+
+\blemm
+
+    Suppose $M$ is an $A$-module with a filtration as in the previous lemma.
+    Then every associated prime of $M$ is one of the $\p_i$s.
+    Similarly
+    $$ \supp M = \bigcup_i\vof(\p_i) . $$
+
+\elemm
+
+\bproof
+
+    We inductively show that $\ass M_i\subseteq\set{\p_0,\dots,\p_{i-1}}$.
+    For $M_0=0$ this is clear, and then for $M_{i+1}$ we have a short exact sequence
+    $$ 0 \to M_i \to M_{i+1} \to M_{i+1}/M_i = A/\p_i \to 0 . $$
+    By \refmath[proposition]{assses} we have
+    $$ \ass M_{i+1} \subseteq \ass M_i \cup \ass A/\p_i \subseteq \set{\p_0,\dots,\p_{i-1}} \cup \set{\p_i} $$
+    as desired.
+
+    For the second claim we follow essentially the same proof: inductively we show $\supp M_i=\vof(\p_0)\cup\cdots\cup\vof(\p_{i-1})$
+    using \refmath[proposition]{suppses}.
+    \qed
+
+\eproof
+
+\bcoro
+
+    A finitely generated module over a Noetherian ring has finitely many associated points.
+
+\ecoro
+
+\blemm
+
+    Suppose $M$ is finitely generated over a Noetherian $A$.
+    Then suppose $\p\leq A$ is a prime ideal corresponding to an irreducible component of $\supp M\subseteq\spec A$.
+    Then $\p$ is an associated point of $M$.
+
+\elemm
+
+\bnote
+
+    $\supp M$ is closed in $\spec A$, so its closed irreducible subsets are of the form $\vof(\p)$ for a prime ideal $\p\leq A$.
+
+\enote
+
+\bproof
+
+    Let $M_i$ be the filtration from the previous lemma with $M_{i+1}/M_i\cong A/\p_i$.
+    So by the previous lemma $\supp M=\bigcup_i\vof(\p_i)$, and in general $\supp M_n=\bigcup_{i<n}\vof(\p_i)$.
+    The irreducible components of $\supp M$ are then of the form $\vof(\p_i)$ where $\p_i$ is minimal amongst the $\p_j$s (as it is then minimal in $\supp M$).
+
+    So if $\p_i$ is minimal amongst the $\p_j$s, suppose further that $\p_i$ is its first occurance.
+    Thus we have a short exact sequence
+    $$ 0 \to M_i \to M_{i+1} \to M_{i+1}/M_i = A/\p_i \to 0 . $$
+    Then we have $\p_i\in\ass(A/\p_i)$ and $\p_i\notin\supp M_i$ as $\supp M_i=\vof(\p_0)\cup\cdots\cup\vof(\p_{i-1})$ and none of the $\p_0,\dots,\p_{i-1}$ are contained in $\p_i$ (it is minimal).
+    So by \refmath[proposition]{asssuppses} $\p_i\in\ass M_{i+1}\subseteq\ass M$ as desired.
+    \qed
+
+\eproof
+
+Recall that by \refmath[proposition]{asszerodiv}, $f\in A$ is a zero divisor of $M$ iff it vanishes at some associated point.
+Because $\supp A=\spec A$, by the previous lemma we see that for Noetherian $A$, $f\in A$ is a zerodivisor iff it lies in some minimal prime ideal of $A$.
+
+One direction of this holds true without assuming Noetherian-ness.
+If $f\in A$ lies in a minimal prime, it is a zero divisor.
+Indeed suppose $f\in\p$ is minimal, then by minimality $\p A_\p$ is the unique prime ideal of $A_\p$, and thus $f\in A_\p$ is nilpotent.
+Thus there is an $x\in A-\p$ such that $xf^n=0$, i.e.\ $f$ is a zero-divisor.
+
+\bprop
+
+    If $M$ is finitely generated over a Noetherian $A$, then $\supp M=\cl{\ass M}$.
+
+\eprop
+
+\bproof
+
+    As $\ass M\subseteq\supp M$ and $\supp M$ is closed, we have one direction of inclusion.
+    Now if $\p\in\supp M$, then it lies in some irreducible component of $\supp M$, say $\p\in\vof(\q)=\cl\q$.
+    Then $\q$ is an associated point of $M$ by the above lemma, so $\q\in\ass M$ and $\p\in\cl\q\subseteq\cl{\ass M}$.
+    \qed
+
+\eproof
+
+Recall that radicals commute with localization, so $\nil(A)_\p\cong\nil(A_\p)$.
+Thus $\nil(A)_\p\neq0$ iff $A_\p$ is nonreduced.
+In other words $\supp\nil(A)$ is the locus of points $\p$ where $A_\p$ is nonreduced.
+
+Now if $A$ is Noetherian, $\p\in\ass A$ iff there is a $f\in A$ such that $\supp f=\vof(\p)$.
+For one direction recall that $\supp f=\vof(\ann f)$.
+So if $\p=\ann f$ is associated this is immediate.
+Conversely if $\supp f=\vof(\p)$ then $\p$ corresponds to an irreducible component of $\supp Af=\supp f$, which is finitely generated.
+Thus $\p\in\ass Af\subseteq\ass A$ as desired.
+
+Recall that if $A$ is Noetherian and $M$ finitely generated, there is a filtration
+$$ 0 = M_0 \subsetneq \cdots \subsetneq M_n = M,\qquad \frac{M_{i+1}}{M_i} = \frac A{\p_i} , $$
+and $\ass M$ are among the $\p_i$.
+But it is not necessarily the case that each $\p_i$ is associated.
+But what is true is that each $\p_i$ {\it contains\/} an associated prime.
+
+Indeed, $\supp(A/\p_i)=\vof(\p_i)\subseteq\supp M$ (recall $\supp M$ is the union of these vanishing sets).
+As $\vof(\p_i)=\cl{\p_i}$ is irreducible, it is contained in an irreducible component of $\supp M$.
+So $\vof(\p_i)\subseteq\vof(\p)$ which is irreducible, and thus $\p$ is an associated point of $M$, and $\p_i\leq\p$.
+
+\bprop[name={supploc}]
+
+    If $M$ is an $A$-module and $S\subseteq A$ multiplicative then
+    $$ \supp_{S^{-1}A}S^{-1}M = \supp_AM\cap\spec S^{-1}A $$
+    where we view $\spec S^{-1}A$ as a subset of $\spec A$.
+
+\eprop
+
+\bproof
+
+    For a prime ideal $S^{-1}\p\leq S^{-1}A$ note that $\p\cap S=\emptyset$ meaning $S\subseteq A-\p$.
+    Localizing at $S^{-1}\p$ means localizing by $S^{-1}A-S^{-1}\p$, and because we can focus on non-units, this is equivalent to localizing by
+    $(S^{-1}A-S^{-1}\p)\cap A$.
+    Now $a\in S^{-1}A\cap A$ is in $S^{-1}\p$ iff $a\in\p$: if $a=p/s$ for $p\in\p,s\in S$, then $tsa=tp$ for $t\in S$, so $tsa\in\p$ and $ts\notin\p$ so $a\in\p$.
+    Thus $(S^{-1}A-S^{-1}\p)\cap A=A-\p$.
+
+    Thus localizing by $S$ and then at $S^{-1}\p$ is the same as localizing at $\p$.
+    And so
+    $$ S^{-1}\p \in \supp_{S^{-1}A}S^{-1}M \iff (S^{-1}M)_{S^{-1}\p} = M_\p \neq 0 \iff \p \in \supp_AM $$
+    giving the desired result.
+    \qed
+
+\eproof
+
+\bprop[name={assloc}]
+
+    Let $M$ be a finitely generated module over a Noetherian ring $A$.
+    Then for a multiplicative $S\subseteq A$,
+    $$ \ass_{S^{-1}A}S^{-1}M = \ass_AM\cap\spec S^{-1}A . $$
+
+\eprop
+
+\bproof
+
+    First suppose $\p\in\spec S^{-1}A\cap\ass_AM$, then there is an injection $A/\p\inj M$.
+    Localization preserves injections and so we have an injection $S^{-1}(A/\p)=S^{-1}A/S^{-1}\p\inj S^{-1}M$.
+    Because $S^{-1}\p$ is prime, we have $\p\in\ass_{S^{-1}A}S^{-1}M$.
+
+    Now suppose $\q=S^{-1}\p\in\ass_{S^{-1}A}S^{-1}M$ so $\q=\ann_{S^{-1}A}(m/s)$ for $m\in M$ and $s\in S$.
+    Because $s\in S$ is a unit, we have $\q=\ann_{S^{-1}A}(m)$.
+    Thus $\supp_{S^{-1}A}m=\vof_{S^{-1}A}(\q)$, and by the previous proposition
+    $$ \supp_{S^{-1}A}m = \supp_Am \cap \spec S^{-1}A,\qquad \vof_{S^{-1}A}(\q) = \vof(\p)\cap\spec S^{-1}A . $$
+    Thus $\p\in\supp_Am$, and it is minimally so: if $\p'\in\supp_Am$ and $\p'\leq\p$ then $S^{-1}\p'\leq \q$ and $S^{-1}\p'\in\supp_{S^{-1}A}m$.
+    Thus $\ann_{S^{-1}A}(m)=\q\leq S^{-1}\p'$ so that $S^{-1}\p'=\q$ and thus $\p'=\p$.
+    So $\p$ is corresponds to an irreducible component of $\supp_Am$ and thus is an associated prime of $Am$, and thus of $M$.
+    \qed
+
+\eproof
 
