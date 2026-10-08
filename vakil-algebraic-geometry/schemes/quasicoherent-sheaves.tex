@@ -386,7 +386,7 @@ Because manifolds are also examples of ringed spaces, this allows us to define q
 
 In particular $M\mapsto\tilde M$ commutes with colimits.
 
-\bprop
+\bprop[name={qcoherentgeneral}]
 
     Let $X$ be a scheme.
     An $\O_X$-module is quasicoherent iff there exists an open cover $X=\bigcup_iU_i$ such that for all $i$, $\F|_{U_i}$ fits into an exact sequence
@@ -425,6 +425,102 @@ In particular $M\mapsto\tilde M$ commutes with colimits.
 \eproof
 
 Thus for a general ringed space $(X,\O_X)$ we can take the condition in the above proposition as the definition of quasicoherence.
+
+In fact we can do a bit better.
+Let $(X,\O_X)$ be a ringed space with a ring of global sections $A=\O_X(X)$.
+Then for a module $M\in\Mod_A$ we can define its {\emphcolor associated presheaf} to be $\tilde M_\pre\in\Mod^\pre_{\O_X}$ by
+$$ \tilde M_\pre(U) = \O_X(U)\otimes_{\O_X(X)} M ,\qquad U\subseteq X\hbox{ open} . $$
+Its {\emphcolor associated sheaf} is then the sheafification $\tilde M=\tilde M_\pre^\sh$.
+These constructions are clearly functorial.
+
+A first remark is that when $X=\spec A$ then the associated presheaf of $M$ is the associated sheaf because
+$$ \tilde M(\dof f) = M_f = A_f\otimes M = \O_{\spec A}(\dof f)\otimes_AM . $$
+And in general the associated presheaf, and thus sheaf, of $A=\O_X(X)$ is $X$:
+$$ \tilde A(U) = \O_X(U)\otimes_AA = \O_X(U) . $$
+
+Now an open subsheaf of an associated sheaf is itself an associated sheaf.
+More precisely if $\tilde M$ is an associated sheaf of $\O_X$, then for $U\subseteq X$ open $\tilde M|_U=\varwidetilde{\O_X(U)\otimes_{\O_X(X)}M}$.
+This is clearly true for the associated presheaf.
+Because restriction is left adjoint to $\inc_*$ for inclusion $U\inj X$, both for presheaves and sheaves, we see that sheafification commutes with restriction.
+Indeed, sheafification is left adjoint to inclusion $\Sh(X)\inj\Psh(X)$, and this commutes with $\inc_*$, so sheafification and restriction does as well.
+Thus
+$$ \varwidetilde{\O_X(U)\otimes_{\O_X(X)}M} = \varwidetilde{\O_X(U)\otimes M}_\pre^\sh = \tilde M_\pre|_U^\sh = \tilde M_\pre^\sh|_U = \tilde M|_U . $$
+
+\bprop
+
+    Let $(X,\O_X)$ be a ringed space and $A=\O_X(X)$.
+    Then there is an adjunction
+    $$ \Mod_A \adjarrow{\tilde\bul}{\Gamma} \Mod_{\O_X} . $$
+
+\eprop
+
+\bproof
+
+    First we show this for presheaves: there is an adjunction
+    $$ \Mod_A \adjarrow{\tilde\bul^\pre}{\Gamma} \Mod^\pre_{\O_X} . $$
+    In this case for an $A$-module $M$ and an $\O_X$-module $\F$, global sections forms a bijection:
+    $$ \hom_{\O_X}(\tilde M,\F) \xtos\Gamma \hom_A(M,\Gamma(X,\F)) . $$
+    Indeed recall that for an $A$-module $B$, $B\otimes_A\bul$ is left-adjoint to the forgetful functor $\Mod_B\to\Mod_A$.
+    Thus for any open $U\subseteq X$, there is a unique morphism $\tilde M(U)\to\F(U)$ making the following diagram commute:
+
+    \diagram{
+        M&\Gamma(X,\F)\cr
+        \O_X(U)\otimes M&\Gamma(U,\F)
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,1}, to={2,1}}
+        \diagarrow{from={1,2}, to={2,2}}
+        \diagarrow{from={2,1}, to={2,2}, text={\exists!}, y distance=.25cm}
+    }
+
+    This demonstrates both uniqueness and existence (verifying this for $U\subseteq V$ instead of just $V=X$).
+
+    So we have a chain of adjunctions
+    $$ \Mod_A \adjarrow{\tilde\bul^\pre}{\Gamma} \Mod^\pre_{\O_X} \adjarrow{\sh}{\inc} \Mod_{\O_X} , $$
+    so that $\sh\circ\tilde\bul^\pre=\tilde\bul$ is left adjoint to $\Gamma\circ\inc=\Gamma$ as desired.
+    \qed
+
+\eproof
+
+\blemm
+
+    An $\O_X$-module $\F$ is associated iff there is an exact sequence
+    $$ \O_X^{\oplus I} \to \O_X^{\oplus J} \to \F \to 0 . $$
+
+\elemm
+
+\bproof
+
+    If $\F=\tilde M$ is associated, then there are $I,J$ making the following sequence exact:
+    $$ A^{\oplus I} \to A^{\oplus J} \to M \to 0 ,\qquad A=\O_X(X) . $$
+    Because $\tilde\bul$ is a left adjoint, it preserves direct sums and is right-exact.
+    Furthermore because $\tilde A=\O_X$, applying $\tilde\bul$ gives an exact sequence
+    $$ \O_X^{\oplus I} \to \O_X^{\oplus J} \to \tilde M \to 0 . $$
+
+    Conversely if there is an exact sequence
+    $$ \O_X^{\oplus I} \to \O_X^{\oplus J} \to \F \to 0 , $$
+    then let $M$ fit into the exact sequence
+    $$ A^{\oplus I} \to A^{\oplus J} \to M \to 0 . $$
+    As before applying $\tilde\bul$ gives the exact sequence
+    $$ \O_X^{\oplus I} \to \O_X^{\oplus J} \to \tilde M \to 0 , $$
+    and thus $\tilde F\cong\tilde M$.
+    \qed
+
+\eproof
+
+Say that an $\O_X$-module is {\emphcolor locally associated} if for every $p\in X$ there is a neighborhood $p\in U$ such that $\F|_U$ is an associated $\O_U$-module.
+The previous lemma then gives the following corollary immediately.
+
+\bcoro
+
+    An $\O_X$-module is quasicoherent iff it is locally associated.
+
+\ecoro
+
+Because open subsheaves of an associated sheaf are associated, if $X$ is a scheme we see that it is locally associated iff every point lies in an {\it affine\/} neighborhood
+in which it is associated.
+Thus this corollary shows that quasicoherence, as defined in general, corresponds to quasicoherence defined over schemes.
+The proof of this is essentially the same as the one given \refmath[proposition]{qcoherentgeneral}.
 
 \subsubsection{Finiteness of quasicoherent sheaves}
 
@@ -1044,7 +1140,7 @@ Thus we have proven the following.
 
 \eprop
 
-\bprop
+\bprop[name={natinjasspt}]
 
     Suppose $M$ is a nonzero module over a Noetherian ring $A$.
     Then the natural map
@@ -1375,4 +1471,109 @@ So $\vof(\p_i)\subseteq\vof(\p)$ which is irreducible, and thus $\p$ is an assoc
     \qed
 
 \eproof
+
+\bdefn
+
+    The associated points of $M$ which are {\it not\/} the generic points of irreducible components of $\supp M$ are called {\emphcolor embedded points} or {\emphcolor embedded primes}.
+
+\edefn
+
+If $A$ is reduced, then $A$ has no embedded primes.
+Suppose that $\p=\ann a$ is an embedded prime, so $\p$ is not minimal.
+Let $\q$ be a minimal prime, so there is a $b\in\p-\q$, then $ab=0$ and thus $a\in\q$.
+So $a$ lies in all minimal primes, and since every prime contains a minimal prime, $a$ lies in all primes.
+Thus $a$ is nilpotent, but $A$ is reduced so $a=0$ a contradiction.
+
+It is not true that nonreduced rings have embedded primes.
+For instance $k[x]/(x^2)$ has no embedded primes: its only prime is $(x)=\ann x$, and is thus minimal.
+
+But if $\p$ is an embedded prime of $A$, then $A_\p$ is nonreduced.
+Indeed, suppose $\p=\ann(a)$, then $\p$ is not minimal so there are primes $\q<\p$.
+These form the non-maximal prime ideals of $A_\p$.
+And as before $a\in\q$ for all of them, so $a$ is in the intersection of all the prime ideals of $A_\p$.
+
+\bdefn
+
+    Let $\F$ be a coherent sheaf on a locally Noetherian scheme $X$.
+    Then $\F$'s {\emphcolor associated points} are the points $p\in X$ which lie in an affine subscheme $p\in\spec A\subseteq X$
+    such that $p$ is an associated point of $\Gamma(\spec A,\F)\in\Mod_A$.
+
+\edefn
+
+Recall that for a Noetherian $A$, $\p\leq A$ is an associated point of $M$ iff $\vof(\p)$ is an irreducible component of $\supp m$ for some $m\in M$.
+Indeed if $\p=\ann m$ then $\vof(\ann m)=\supp m$.
+Conversely if $\vof(\p)$ is an irreducible component of $\supp m$, then it is an irreducible component of $\supp Am$ which is finitely generated and thus $\p$
+is an associated prime of $Am\subseteq M$.
+
+So for $A$ Noetherian and $M$ an $A$-module, a prime $\p\leq A$, the following are equivalent:
+\benum
+    \item $\p$ is associated,
+    \item $\vof(\p)=\supp m$ for some $m\in M$,
+    \item $\vof(\p)$ is an irreducible component of $\supp m$ for some $m\in M$.
+\eenum
+
+Thus if $X$ is a locally Noetherian scheme and $\F$ a coherent sheaf, then for $p\in X$ the following are equivalent:
+\benum
+    \item $p$ is associated,
+    \item $\cl p=\supp s$ for some local section $s\in\Gamma(U,\F)$,
+    \item $\cl p$ is an irreducible component of $\supp s$ for some local section $s\in\Gamma(U,\F)$.
+\eenum
+Indeed by the previous equivalence clearly (1) implies (2) implies (3).
+Now if $\cl p$ is an irreducible component of $\supp s$ for $s\in\Gamma(U,\F)$, let $\spec A\subseteq U$ be an open affine subset.
+Then $\supp s\cap\spec A=\supp s|_{\spec A}$, and $\cl p\cap\spec A$ remains an irreducible component of $\supp s\cap\spec A=\supp s|_{\spec A}$.
+So by the previous equivalence (3) implies (1).
+
+If $X$ is locally Noetherian, $\F$ coherent, and $U\subseteq X$ is open, then
+$$ \Gamma(U,\F) \to \prod_{p\in\ass\F\cap U}\F_p $$
+is injective.
+Indeed, this is true for any affine subscheme $\spec A\subseteq U$ by \refmath[proposition]{natinjasspt}.
+So any section in the kernel of this map is in the kernel of all the maps for affine subschemes, which cover $U$, and thus the section must be zero.
+
+\bdefn
+
+    An open subscheme $U\subseteq X$ is {\emphcolor scheme-theoretically dense} if a section of $V\subseteq X$ is zero when it restricts to zero on $U\cap V$.
+
+\edefn
+
+Note that if $U\subseteq X$ is scheme-theoretically dense, then it is topologically dense.
+This is because a scheme-theoretically dense subset intersects all open subsets of $X$.
+If $U\cap V=\emptyset$ then $\O_X(V)$ is the zero ring, and thus $V$ cannot contain any affine subschemes, so $V=\emptyset$.
+
+If $X$ is locally Noetherian, $U\subseteq X$ is scheme-theoretically dense iff it contains all of $X$'s associated points.
+Suppose that $U$ contains all of $X$'s associated points, and let $\spec A\subseteq X$ be affine open.
+There is an injection
+$$ A \inj \prod_{p\in\ass A}A_p , $$
+and because $U$ contains all of $A$'s associated points, so too does $U\cap\spec A$, and thus in the injection above $f$ maps to zero, so $f=0$.
+
+Conversely suppose $U$ doesn't contain an associated point $p$.
+Then $p\in\spec A\subseteq X$ corresponds to $p=\ann f$ for nonzero $f\in A$.
+Now let $q\in U\cap\spec A$, then $p$ is not contained in $q$ as if it were then $p\leq q$ so that $q\in\cl p$ but $p\notin U$ is open.
+Because $p$ is not contained in $q$, there is an $x\in p-q$, and so $x$ becomes a unit in $A_q$.
+Because $x\in\ann f$, this means that $f$ is equal to $0$ in $A_q$ (as $xf=0$ and $x$ is a unit), so $f\in q$ for all $q\in U\cap\spec A$.
+Thus $f|_{U\cap\spec A}=0$ but $f|_{\spec A}\neq0$.
+
+Note that the collection of scheme-theoretically dense open subsets of a scheme $X$ is cofiltered: if $U,V$ are scheme-theoretically dense then so too is $U\cap V$.
+
+\bdefn
+
+    Let $X$ be a scheme.
+    We define the {\emphcolor total fraction ring} to be the filtered colimit over the scheme-theoretically dense subsets of $X$:
+    $$ \colim_{U\subseteq X\text{ dense}}\O_X(U) . $$
+    An {\emphcolor rational function} is an element of the total fraction ring, equivalently a section over a scheme-theoretically dense open subset of $X$.
+
+\edefn
+
+Note that if $f\in\O_X(U)$ and $g\in\O_X(V)$ are rational functions, then $f=g$ (as rational functions) iff $f|_{U\cap V}=g|_{U\cap V}$.
+Clearly this is sufficient, but it is also necessary: if $f|_W=g|_W$ for $W\subseteq U\cap V$, then $f-g=0$ on $W$ which is scheme-theoretically dense, so $f-g=0$ on $U\cap V$.
+
+Thus we see that any rational function $f$ has a {\emphcolor domain of definition}: a maximally open dense $U\subseteq X$ for which $f$ is a section.
+This is because if we let $(U_i,f_i)$ be all the rational functions equal to $f$, then by the previous paragraph, the $f_i$ agree on intersections.
+Thus we can glue the $f_i$ to get a section of $U=\bigcup_iU_i$.
+We say that a rational function $f$ is {\emphcolor regular} at a point $p\in X$ if $p$ lies in $f$'s domain of definition.
+
+Note that if $X$ is integral, then all of its non-empty open subsets are scheme-theoretically dense.
+Indeed, let $\eta$ be its generic point so $\O_{X,\eta}=K(X)$.
+Then by \refmath[proposition]{intschinjmaps}, all of the canonical maps $\O_X(U)\to K(X)$, $f\mapsto f_\eta$, are injective.
+So $f=0$ iff $f_\eta=0$, thus if $f\in\O_X(U)$ is zero in $U\cap V$, it is zero in $U$.
+In particular the total fraction ring of an integral scheme is its fraction field.
 
