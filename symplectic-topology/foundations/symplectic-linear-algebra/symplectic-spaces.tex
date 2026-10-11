@@ -1,0 +1,246 @@
+\subsection{Symplectic spaces}
+
+\bdefn
+
+    Let $V$ be a finite-dimensional vector space.
+    The {\emphcolor kernel} of a $2$-form $\omega\in\Lambda^2(V^*)$ is the subspace
+    $$ \ker\omega = \set{v\in V}[\omega(v,\blank)=0] . $$
+    A $2$-form is {\emphcolor nondegenerate} if its kernel is zero.
+
+    A nondegenerate $2$-form is called a {\emphcolor symplectic form} and the pair $(V,\omega)$ a {\emphcolor symplectic vector space}.
+
+\edefn
+
+\bexam
+
+    The archetypal symplectic vector space is $\bR^{2n}$ equipped with the $2$-form
+    $$ \omega_0 = \sum_{i=1}^n\d x_i\wedge\d y_i $$
+    where $x_1,\dots,x_n,y_1,\dots,y_n$ forms the standard basis and $\d x_i,\d y_i$ form its dual basis.
+
+\eexam
+
+It is clear that a $2$-form $\omega$ is nondegenerate iff its representation matrix relative to any basis is non-singular.
+The representation matrix relative to $B=(v_1,\dots,v_n)$ is $\omega_{ij}=\omega(v_i,v_j)$.
+Equivalently, if the induced map $\hat\omega\colon V\to V^*$ given by $\hat\omega(v)(u)=\omega(v,u)$ is injective, equivalently an isomorphism.
+
+\bdefn
+
+    Let $(V,\omega_V)$ and $(W,\omega_W)$ be two symplectic spaces.
+    A {\emphcolor symplectomorphism} is a linear isomorphism $\phi\colon V\to W$ such that the pullback of $\omega_W$ is $\omega_V$: $\omega_V=\phi^*\omega_W$.
+    Recall that the pullback is defined by
+    $$ (\phi^*\omega_W)(v,u) = \omega_W(\phi v,\phi u) . $$
+    It is clear that the composition and inverse of symplectomorphisms are symplectomorphisms, so the category of symplectic spaces with symplectomorphisms forms a groupoid.
+
+    The collection of symplectomorphisms $V\to V$ is a group denoted by $\Sp(V,\omega)$.
+
+\edefn
+
+\bexam
+
+    In the case of the standard symplectic structure on $\bR^{2n}$, we use the notation $\Sp(2n)=\Sp(\bR^{2n},\omega_0)$.
+    Notice that the representation of $\omega_0$ relative to the standard basis is
+    $$ J_0 = \pmatrix{0&-I_n\cr I_n&0} . $$
+    Thus $\Sp(2n)$ can be viewed as the subgroup of $\gl_{2n}(\bR)$ defined by
+    $$ \Sp(2n) = \set{A\in\gl_{2n}(\bR)}[A^\top J_0A=J_0] . $$
+
+\eexam
+
+\bprop[name={eucsplie}]
+
+    $\Sp(2n)$ is a Lie group with Lie algebra
+    $$ \lsp(2n) = \set{-J_0S}[S\in\Mat_{2n}\hbox{ symmetric}] . $$
+
+\eprop
+
+\bproof
+
+    Let $\lso(2n)\leq\Mat_{2n}$ be the linear subspace of skew-symmetric matrices, and define the map
+    $$ f\colon\Mat_{2n}\to\lso(2n),\qquad f(A) = A^\top J_0A . $$
+    Then $\Sp(2n)=f^{-1}J_0$, so to show that $\Sp(2n)$ is a Lie subalgebra of $\gl_{2n}(\bR)$, it is sufficient to show that $J_0$ is a regular value of $f$.
+
+    Note that $f$'s differential at $A\in\Mat_{2n}$ is
+    $$ df_A(X) = X^\top J_0A + A^\top J_0X . $$
+    If $f(A)=J_0$ and $B\in\lso(2n)$ (which is equal to $\lso(2n)$'s tangent space), then $X=-\frac12AJ_0B$ is a preimage of $B$.
+    Thus $df_A$ is surjective so that $J_0$ is a regular value as desired.
+
+    Now,
+    $$ \lsp(2n) = T_I\Sp(2n) = \ker\d f_I = \set{X\in\Mat_{2n}}[X^\top J_0+J_0X=0] . $$
+    Note that if $X\in\lsp(2n)$ then $X=-J_0S$ where $S=J_0X$, and this is symmetric:
+    $$ S^\top = -X^\top J_0 = J_0X = S . $$
+    Conversely for $S$ symmetric, $-J_0S\in\lsp(2n)$.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $(V,\omega)$ be a symplectic space and $W\leq V$ a subspace.
+    Its {\emphcolor symplectic complement} is the subspace
+    $$ W^\omega = \set{v\in V}[\omega(v,w)=0\hbox{ for all $w\in W$}] . $$
+    Note that unlike the case for inner products, $W^\omega$ and $W$ need not be transversal.
+    The subspace $W$ is called
+    \benum
+        \item {\emphcolor isotropic} if $W\leq W^\omega$,
+        \item {\emphcolor coisotropic} if $W^\omega\leq W$,
+        \item {\emphcolor Lagrangian} if $W=W^\omega$,
+        \item {\emphcolor symplectic} if $W\cap W^\omega=0$.
+    \eenum
+
+\edefn
+
+Note that $W$ is isotropic iff $\omega$ vanishes on $W$, and symplectic iff $(W,\omega|_W)$ is a symplectic space.
+
+\blemm
+
+    For a subspace $W\leq V$,
+    $$ \dim W + \dim W^\omega = \dim V,\qquad W^{\omega\omega} = W . $$
+
+\elemm
+
+\bproof
+
+    Consider $\hat\omega\colon V\to V^*$ which is an isomorphism by non-degeneracy.
+    Let us define
+    $$ \ann W = \set{\phi\in V^*}[\phi(W)=0] . $$
+    Because $\hat\omega$ is an isomorphism, we have
+    $$ \ann W = \set{\hat\omega(v)}[\hat\omega(v)(W)=0] = \hat\omega(W^\omega) $$
+    as desired.
+
+    Notice that a functional in $\ann W$ is the same as a functional over $V/W$.
+    Indeed, $\phi\in\ann W$ iff $W\leq\ker\phi$ iff we can quotient $\phi$ by $W$.
+    Thus $\ann W\cong(V/W)^*$ which has dimension $\dim V-\dim W$ as desired.
+    \qed
+
+\eproof
+
+Let $V$ be a $2n$-dimensional vector space with basis $u_1,\dots,u_n,v_1,\dots,v_n$.
+Then we can define a symplectic form on $V$ by
+$$ \omega = \sum_{i=1}^n\d u_i\wedge\d v_i , $$
+equivalently
+$$ \omega(u_i,u_j) = \omega(v_i,v_j) = 0,\quad \omega(u_i,v_j) = \delta_{ij},\qquad [\omega] = J_0 . $$
+Conversely any basis of a symplectic space which represents the symplectic form like this is called a {\emphcolor symplectic basis}.
+
+Notice that the existence of a symplectic basis is equivalent to the existence of a symplectomorphism $(\bR^{2n},\omega_0)\to(V,\omega)$.
+
+\bthrm
+
+    Let $(V,\omega)$ be a symplectic space.
+    Then $V$ has even dimension, $\dim V=2n$, and there exists a symplectic basis.
+
+\ethrm
+
+\bproof
+
+    We induct on $m=\dim V$.
+    For $m=0$ this is trivial, so suppose $m>0$.
+    Because $\omega$ is non-degenerate there are $u_1,v_1\in V$ such that $\omega(u_1,v_1)\neq0$.
+    We can normalize this and assume $\omega(u_1,v_1)=1$.
+
+    Because $\omega$ is alternating, this means that $u_1,v_1$ are linearly independent.
+    Furthermore the subspace $W$ spanned by $u_1,v_1$ is symplectic as $\omega$ is nondegenerate there.
+    Thus $V=W\oplus W^\omega$, and by induction $W^\omega$ has even dimension and a symplectic basis.
+    By adding $u_1,v_1$ to $W^\omega$'s symplectic basis we get a symplectic basis of $V$, and $V$ has even dimension.
+    \qed
+
+\eproof
+
+An immediate corollary of this theorem is the following.
+
+\bcoro[name={dimsympinvar}]
+
+    Two symplectic spaces $V,W$ are symplectomorphic iff $\dim V=\dim W$.
+
+\ecoro
+
+\bcoro[name={ndextpower}]
+
+    Let $V$ be a $2n$-dimensional vector space and $\omega$ a $2$-form on $V$.
+    Then $\omega$ is nondegenerate iff its $n$-fold exterior power $\omega^n$ is nonzero.
+
+\ecoro
+
+\bproof
+
+    If $\omega$ is degenerate then there is a $v\neq0$ such that $v\imult\omega=0$.
+    Because interior multiplication is an antiderivation:
+    $$ v\imult\omega^n = \omega\wedge(v\imult\omega^{n-1}) + (v\imult\omega)\wedge\omega^{n-1} = \omega\wedge(v\imult\omega^{n-1}) . $$
+    Thus inductively we have $v\imult\omega^n=0$.
+    Because $\omega^n$ is a top-form this means $\omega^n=0$ (we can see this by extending $v$ to a basis, then $\omega$ on that basis is zero).
+
+    Conversely if $\omega$ is nondegenerate, then by the previous theorem there is a symplectic basis
+    $$ \omega = \sum_i\d x_i\wedge\d y_i . $$
+    Then
+    $$ \omega^n = \sum_I\d x_{i_1}\wedge\d y_{i_1}\wedge\cdots\wedge\d x_{i_n}\wedge\d y_{i_n} , $$
+    and we may remove $I$s with repeated indices, so the sum is over permutations of $1,\dots,n$.
+    Each permutation gives the same product as $2$-forms commute, thus
+    $$ \omega^n = n!\d x_1\wedge\d y_1\wedge\cdots\d x_n\wedge\d y_n \neq 0 . \qed $$
+
+\eproof
+
+\bprop
+
+    The Lagrangian subspaces of $V$ are precisely the maximal isotropic subspaces.
+    Moreover, every basis of a Lagrangian subspace can be extended to a symplectic basis of $V$.
+
+\eprop
+
+\bproof
+
+    If $W$ is isotropic then $W\leq W^\omega$ meaning $\dim W\leq\frac12\dim V$.
+    Since Lagrangian subspaces have dimension equal to $\frac12\dim V$, Lagrangian subspaces are maximal.
+    Conversely if $W$ if isotropic and $W\neq W^\omega$, then there is a $v\in W^\omega-W$.
+    Adding $v$ to $W$ results in an isotropic subspace as $\omega$ vanishes on $W+v$.
+    Thus maximal isotropic subspaces must have $W=W^\omega$ so that $W$ is Lagrangian.
+
+    For the second point it is sufficient to consider $V=\bR^{2n}$ with the standard symplectic structure.
+    Let $\Lambda\leq V$ be Lagrangian, then $\Lambda'=J_0\Lambda$ is symplectic as well.
+    Notice that $\Lambda'\cap\Lambda=0$ because for $u\in\Lambda$ we have $\omega_0(u,J_0u)=-u^\top u\neq0$.
+    Thus $\bR^{2n}=\Lambda'\oplus\Lambda$.
+
+    Let $u_1,\dots,u_n$ be a basis for $\Lambda$.
+    Consider the map $\hat\omega\colon \Lambda'\to\Lambda^*$.
+    This is injective as its kernel is $\Lambda\cap\Lambda^\omega=0$, and thus defines an isomorphism.
+    Let $\phi_1,\dots,\phi_n$ be the dual basis of $u_1,\dots,u_n$, and thus there are $v_1,\dots,v_n\in\Lambda'$ such that $\phi_i=\hat\omega(v_i)$.
+
+    Because $\Lambda,\Lambda'$ are Lagrangian we have that
+    $$ \omega(u_i,u_j) = \omega(v_i,v_j) = 0,\qquad \omega(v_i,u_j) = \phi_i(u_j) = \delta_{ij} $$
+    as desired.
+    \qed
+
+\eproof
+
+\bprop
+
+    Let $W\leq V$ be coisotropic.
+    \benum
+        \item The quotient $\bar W=W/W^\omega$ has a unique symplectic structure $\bar\omega$ whose pullback under projection $W\to\bar W$ agrees with $\omega|_W$.
+        \item If $\Lambda\leq V$ is Lagrangian, then
+        $$ \bar\Lambda = \frac{(\Lambda\cap W)+W^\omega}{W^\omega} \leq \bar W $$
+        is Lagrangian.
+    \eenum
+
+\eprop
+
+\bproof
+
+    Let $[w]\in\bar W$ denote the coset of $w$.
+    Notice that $\bar\omega$ must satisfy
+    $$ \omega(w,w') = \bar\omega([w],[w']) , $$
+    which uniquely determines $\bar\omega$, showing uniqueness.
+    Because $W$ is coisotropic, $W^\omega$ is an isotropic subspace of $W$, and so this is well-defined: for $v,v'\in W^\omega$ and $w,w'\in W$,
+    $$ \omega(w+v,w'+v') = \omega(w,w') + \omega(v,w') + \omega(w,v') + \omega(v,v') = \omega(w,w') . $$
+    The middle two terms are zero because $v,v'\in W^\omega$, and $v\in W^\omega\leq W$ so the last term is zero.
+    Furthermore $\bar\omega$ is nondegenerate as if $\bar\omega([w],\blank)=0$, then $w\in W^\omega$ so $[w]=0$.
+    So we have shown (1).
+
+    For (2) we show that
+    $$ \tilde\Lambda = (\Lambda\cap W) + W^\omega \leq V $$
+    is Lagrangian.
+    Indeed,
+    $$ \tilde\Lambda^\omega = (\Lambda\cap W)^\omega\cap W = (\Lambda^\omega + W^\omega)\cap W = \Lambda\cap W + W^\omega = \tilde\Lambda . $$
+    And $\tilde\Lambda$ quotients to $\bar\Lambda$, and $\tilde\Lambda^\omega$ quotients to $\bar\Lambda^\omega$, which are then equal.
+    \qed
+
+\eproof
+
+

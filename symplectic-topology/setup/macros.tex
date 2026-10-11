@@ -1,0 +1,149 @@
+\bgroup
+\catcode`_=11
+\global\let\@mstrip=\_mstrip
+\egroup
+
+\createstack{locale}
+\def\@locale{}
+\def\setlocale#1{%
+    \expanded{\noexpand\stackpush{locale}{\@locale}}%
+    \xdef\@locale{\@locale/#1}%
+}
+\def\endlocale{\stackpop{locale}\@locale}
+
+\def\linput#1{\input{./\@locale/#1}}
+
+\let\CITE\relax
+\def\TODO#1{\par\centerline{\setfontandscale{bf}{20pt}\color{red}TODO: #1}}
+
+\def\frac#1#2{{{#1}\over{#2}}}
+\def\dfrac#1#2{{\displaystyle{{\displaystyle#1}\over{\displaystyle#2}}}}
+
+\def\c#1{{\cal #1}}
+\def\s#1{{\sf  #1}}
+\def\b#1{{\bf  #1}}
+\def\B#1{{\bb  #1}}
+\def\f#1{{\frak#1}}
+
+\def\newmathtype#1#2#3#4{%
+    \expandafter\def\csname @#1\endcsname##1[##2]{\begingroup\left#2 ##1 \;\middle#3\; ##2 \right#4\endgroup}%
+    \expandafter\def\csname @@#1\endcsname##1{\begingroup\left#2 ##1\right#4\endgroup}%
+    \expandafter\def\csname #1\endcsname##1{\@ifnextchar[ {\csname @#1\endcsname{##1}}{\csname @@#1\endcsname{##1}}}%
+}
+
+\def\parens#1{\mathopen{}\mathclose{\left(#1\right)}}
+\def\abs#1{\mathopen{}\mathclose{\left|#1\right|}}
+\def\ccoloneqq{\mathrel{{\mathop:}{\mathop:}{=}}}
+
+\def\@true{\@true}
+\def\@false{\@false}
+
+\def\@mathify@col#1#2{%
+    \relax\xdef#1{%
+        #1%
+        \ifx\@mathifyfstcol\@false%
+            &%
+        \fi%
+        $#2$%
+    }%
+    \ifx\@mathifyfstcol\@true%
+        \global\let\@mathifyfstcol\@false%
+    \fi%
+}
+
+\def\@mathify@row#1{%
+    \noalign{\xdef#1{%
+        #1%
+        \ifx\@mathifyfstrow\@false%
+            \noexpand\cr%
+        \fi%
+    }%
+    \ifx\@mathifyfstrow\@true%
+        \global\let\@mathifyfstrow\@false%
+    \fi%
+    \global\let\@mathifyfstcol\@true}%
+}
+
+\def\mathify#1#2{%
+    \def#1{}%
+    \let\@mathifyfstrow\@true%
+    \let\@mathifyfstcol\@true%
+    \vbox{\everycr={\@mathify@row{#1}}\halign{&\@mathify@col{#1}{##}\cr
+        #2\cr
+    }}%
+}
+
+\def\commsqed#1#2#3#4#5{{%
+    \mathify\@csq{#1}%
+    \expandafter\drawdiagram\expanded{{\@csq}}{%
+        \diagarrow{from={1,1}, to={1,2}, text={#2}, y distance=-.25cm}%
+        \diagarrow{from={2,1}, to={2,2}, text={#3}, y distance=.25cm}%
+        \diagarrow{from={1,1}, to={2,1}, text={#4}, x distance=-.25cm}%
+        \diagarrow{from={1,2}, to={2,2}, text={#5}, x distance=-.25cm}%
+    }%
+}}
+
+\def\commsq#1#2#3#4#5{%
+    \par\medskip%
+    \centerline{\commsqed{#1}{#2}{#3}{#4}{#5}}%
+    \medskip%
+}
+
+\def\diagramed#1#2{{%
+    \mathify\@csq{#1}%
+    \expandafter\drawdiagram\expanded{{\@csq}}{#2}%
+}}
+
+\def\@diagram#1#2#3{%
+    \par\medskip%
+    \centerline{\diagramed{#2}{#3}#1}%
+    \medskip%
+}
+
+\def\diagram{\@ifstar {\@diagram{.}}{\@diagram{}}}
+
+\def\@multline#1{%
+\hbox to\dimexpr\displaywidth-\leftskip-1cm\relax{%
+    \ifx\@nfirst\space%
+        $\displaystyle#1$\hfill%
+        \global\let\@nfirst\undefined%
+    \else%
+        \hfill$\displaystyle#1$%
+    \fi%
+}}
+
+\def\multline#1{%
+    \let\@nfirst\space%
+    \kern\leftskip\vcenter{\halign{\@multline{##}\crcr
+        #1\crcr%
+    }}%
+}
+
+\def\mltext#1{\vcenter{\tabskip=0pt\halign{##\hfil\crcr#1\crcr}}}
+
+\def\textstyle@size{10pt}
+\def\displaystyle@size{10pt}
+\def\scriptstyle@size{7pt}
+\def\scriptscriptstyle@size{5pt}
+
+\def\@text#1#2{\hbox{\setscale{\csname\@mstrip#1@size\endcsname}#2}}
+\def\text#1{\mathpalette\@text{#1}}
+
+\def\@dcsize{.5cm}
+\def\@dcbwd{1.5pt}
+\def\@dcnwd{.5pt}
+\def\@dcline#1#2#3#4{\csname #2rule\endcsname\space #3\space\if.#1\@dcnwd\else\@dcbwd\fi\space #4\space\@dcsize\space depth0pt\relax}
+\def\drawcross#1#2#3#4{{\def\bufferwidth{0pt}\def\bufferheight{0pt}%
+\framebox{%
+    \vbox to2\dimexpr\@dcsize{\offinterlineskip%
+        \vss%
+        \hbox to2\dimexpr\@dcsize{\hfil\@dcline{#1}{v}{width}{height}\hfil}%
+        \vbox to0pt{\vss\hbox to2\dimexpr\@dcsize{%
+            \@dcline{#3}{v}{height}{width}%
+            \@dcline{#4}{v}{height}{width}%
+        }\vss}%
+        \hbox to2\dimexpr\@dcsize{\hfil\@dcline{#2}{v}{width}{height}\hfil}%
+        \vss%
+    }%
+}}}
+
