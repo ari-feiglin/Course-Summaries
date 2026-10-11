@@ -1,0 +1,132 @@
+\subsection{Lagrangian subspaces}
+
+For a symplectic space $(V,\omega)$, let $\L(V,\omega)$ denote the set of its Lagrangian subspaces.
+We denote
+$$ \L(n) = \L(\bR^{2n},\omega_0) . $$
+We can characterize the Lagrangian subspaces of $\bR^{2n}$ more explicitly.
+Firstly a Lagrangian subspace of $\bR^{2n}$ has dimension $n$, and is thus the image of some full-rank linear transform $\bR^n\to\bR^{2n}$, or equivalently a $2n\times n$-matrix of rank $n$.
+We can then determine when such an image is Lagrangian.
+
+\bprop
+
+    Let $X,Y\in\Mat_n$ be matrices, and define $\Lambda\leq\bR^{2n}$ by
+    $$ \Lambda = \im Z,\qquad Z=\pmatrix{X\cr Y} . $$
+    Then $\Lambda\in\L(n)$ iff $Z$ has rank $n$ and $X^\top Y=Y^\top X$.
+
+    In particular the graph $\Lambda=\set{(x,Ax)}[x\in\bR^n]$ of some matrix $A\in\Mat_n$ is Lagrangian iff $A$ is symmetric.
+
+\eprop
+
+\bproof
+
+    It is sufficient to consider when $\omega_0$ is trivial on $\Lambda$.
+    Let $z=(Xu,Yu)$ and $z'=(Xu',Yu')$ in $\Lambda$, then
+    $$ \omega_0(z,z') = \pmatrix{(Xu)^\top&(Yu)^\top}\pmatrix{0&-I\cr I&0}\pmatrix{Xu'\cr Yu'} = u^\top(X^\top Y-Y^\top X)u' . $$
+    This is zero for all $u,u'$ iff $X^\top Y=Y^\top X$, as desired.
+
+    The second claim is because $\Lambda=\im(I,A)$, which has rank $n$.
+    Thus it is Lagrangian iff $A^\top=A$.
+    \qed
+
+\eproof
+
+A matrix $Z\in\bR^{2n\times n}$ of the form
+$$ Z = \pmatrix{X\cr Y},\qquad X^\top Y=Y^\top X $$
+is called a {\emphcolor Lagrangian frame}.
+Notice that $Z$'s columns form an orthonormal basis for $\Lambda=\im Z$ iff $U=X+iY$ is unitary.
+Indeed $Z$'s columns are orthonormal iff
+$$ I = Z^\top Z = X^\top X + Y^\top Y . $$
+And $U$ is unitary iff
+$$ I = U^\dagger U = (X^\top - iY^\top)(X+iY) = X^\top X + Y^\top Y + i(X^\top Y - Y^\top X) = X^\top X + Y^\top Y . $$
+A Lagrangian frame $Z$ for which $U=X+iY$ is unitary is called a {\emphcolor unitary Lagrangian frame}.
+Every Lagrangian subspace has a unitary Lagrangian frame as we can take an orthonormal basis and put it in a matrix.
+
+Let us define the Lagrangian subspace
+$$ \Lambda_\hor = \set{(x,0)\in\bR^{2n}}[x\in\bR^n] = \im\pmatrix{I\cr0} . $$
+
+\blemm
+
+    \benum
+        \item If $\Lambda\in\L(n)$ and $\Psi\in\Sp(2n)$, then $\Psi\Lambda\in\L(n)$.
+        \item For any two Lagrangian subspaces $\Lambda,\Lambda'\in\L(n)$, there is a symplectic matrix $\Psi\in\unitary(n)$ such that $\Lambda'=\Psi\Lambda$.
+        \item $\L(n)$ can be seen to be naturally isomorphic to $\unitary(n)/\orth(n)$, and thus carries the natural structure of a manifold of dimension $n(n+1)/2$.
+    \eenum
+
+\elemm
+
+\bproof
+
+    (1) is clear.
+    For (2) let $\Lambda\leq\bR^{2n}$ be given by a unitary Lagrangian frame $Z=(X,Y)$ and define
+    $$ \Psi = X + iY = \pmatrix{X&-Y\cr Y&X} \in \Sp(2n)\cap\orth(n) . $$
+    Then
+    $$ \Psi\Lambda_\hor = \Lambda , $$
+    and thus we have shown (2).
+
+    A unitary Lagrangian frame of $\Lambda$ is uniquely determined up to choice of orthonormal basis.
+    Altering the basis amounts to multiplication on the right by an orthonormal matrix, so we see that there is a bijection $\unitary(n)/\orth(n)\cong\L(n)$.
+    The dimension of $\unitary(n)$ is $n^2$, and the dimension of $\orth(n)$ is $n(n-1)/2$, so $\dim\L(n)=n(n+1)/2$.
+    \qed
+
+\eproof
+
+We can show that $\L(n)\cong\unitary(n)/\orth(n)$ has a fundamental group isomorphic to the integers.
+This isomorphism is also called the {\emphcolor Maslov index}.
+
+\bthrm
+
+    There exists a unique function, the {\emphcolor Maslov index}, $\mu$ which assigns to each loop $\Lambda\colon\bR/\bZ\to\L(n)$ an integer and satisfies the following axions:
+    \benum
+        \item homotopy: two loops in $\L(n)$ are homotopic iff they have the same Maslov index.
+        \item product: for any two loops $\Lambda\colon\bR/\bZ\to\L(n)$ and $\Psi\colon\bR/\bZ\to\Sp(2n)$, we have
+        $$ \mu(\Psi\Lambda) = \mu(\Lambda) + 2\mu(\Psi) . $$
+        \item direct sum: if $n=n'+n''$, then we can identify $\L(n')\oplus\L(n'')$ as a submanifold of $\L(n)$ and then
+        $$ \mu(\Lambda'\oplus\Lambda'') = \mu(\Lambda') + \mu(\Lambda'') . $$
+        \item zero: a constant loop $\Lambda(t)=\Lambda_0$ has Maslov index zero.
+        \item normalization: the loop $\Lambda\colon\bR/\bZ\to\L(1)$ given by
+        $$ \Lambda(t) = e^{\pi it}\bR \leq \bC = \bR^2 $$
+        has Maslov index one.
+    \eenum
+
+\ethrm
+
+\bproof
+
+    An orthonormal matrix has determinant $\pm1$, thus the map
+    $$ \rho\colon\L(n)\cong\unitary(n)/\orth(n) \to S^1,\qquad \rho([U]) = \det_\bC U^2 $$
+    is well-defined.
+    Here $[U]\in\unitary(n)/\orth(n)$ denotes the coset of the unitary matrix $U=X+iY$, which in turn represents the Lagrangian subspace $\Lambda=\im(X,Y)$.
+
+    Define the Maslov index to be the induced map $\pi_1(\L(n))\to\pi_1(S^1)\isoto\bZ$.
+    That is for a loop $\Lambda$,
+    $$ \mu(\Lambda) = \deg(\rho\circ\Lambda) = \alpha(1) - \alpha(0) $$
+    where $\alpha\colon I\to\bR$ is a lift of $\rho\circ\Lambda$, meaning
+    $$ e^{\pi i\alpha(t)} = \det_\bC(U(t)),\qquad \Lambda = [U] . $$
+
+    The Maslov index then depends only on the homotopy class of $\Lambda$.
+    We show it satisfies the product axiom: first note that if $\Psi$ is unitary $\rho(\Psi\Lambda)=\rho(\Psi)^2\rho(\Lambda)$ ($\rho(\Psi)$ corresponds to the $\rho$ in \refmath[theorem]{maslovsp}).
+    And so the degree of this is
+    $$ \deg(\rho(\Psi\Lambda)) = \deg\rho(\Lambda) + 2\deg\rho(\Psi) = \mu(\Lambda) + 2\mu(\Psi) . $$
+    If $\Psi$ is not unitary, it is homotopic to a loop of unitary matrices, and the result follows.
+
+    We now show the converse direction in the homotopy axiom.
+    Suppose that $\Lambda_0,\Lambda_1$ are two loops of Lagrangian subspaces with the same Maslov index, we must show $\Lambda_0,\Lambda_1$ are homotopic.
+    By the previous lemma and the product axiom, we may assume $\Lambda_j(0)=\Lambda_j(1)=\Lambda_\hor$.
+    Lift $\Lambda_j(t)$ to $U_j(t)=X_j(t)+iY_j(t)\in\unitary(n)$ such that $U_0(0)=U_1(0)=I$ (as these represent $\Lambda_\hor$).
+    We may multiply $U_j$ by right multiplication with orthogonal matrices to get $U_0(1)=U_1(1)=I$ as well.
+    Then $U(t)=U_1(t)U_0(t)^{-1}$ forms a loop of unitary matrices.
+
+    Note that $\mu(\Lambda_0)=\mu(\Lambda_1)$ means $2\mu(U_0)=2\mu(U_1)$, and thus $U_0,U_1$ are homotopic.
+    Thus $\Lambda_0,\Lambda_1$ are homotopic.
+
+    The normalization axiom follows from the other axioms.
+    Note that the loop $\Lambda(t)=e^{\pi it}\bR$ satisfies
+    $$ \Lambda(t) \oplus \Lambda(t) = \Psi(t)\Lambda_0 $$
+    where $\Lambda_0=\bR^2\leq\bC^2$ is constant and $\Psi$ is the loop
+    $$ \Psi(t) = e^{2\pi it}X(t) = e^{\pi it}\pmatrix{\cos(\pi t)&-\sin(\pi t)\cr \sin(\pi t)&\cos(\pi t)} . $$
+    Here $X(t)$ has constant determinant $1$ and so $\det\Psi=e^{2\pi it}$ lifts to $\alpha(t)=t$ and thus $\mu(\Psi)=1$.
+    Thus we have
+    $$ 2\mu(\Lambda) = \mu(\Lambda\oplus\Lambda) = \mu(\Lambda_0) + 2\mu(\Psi) = 2 \implies \mu(\Lambda) = 1 . \qed $$
+
+\eproof
+
