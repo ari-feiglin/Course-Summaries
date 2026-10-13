@@ -38,13 +38,14 @@
 \def\@true{\@true}
 \def\@false{\@false}
 
+\def\mathifycell#1{$#1$}
 \def\@mathify@col#1#2{%
     \relax\xdef#1{%
         #1%
         \ifx\@mathifyfstcol\@false%
             &%
         \fi%
-        $#2$%
+        \mathifycell{#2}%
     }%
     \ifx\@mathifyfstcol\@true%
         \global\let\@mathifyfstcol\@false%
@@ -146,4 +147,35 @@
         \vss%
     }%
 }}}
+
+\bgroup
+\catcode`_=11
+\gdef\makecirc#1#2{\bgroup%
+    \localsetters\relax
+    \_pdfdraw_setaffinetransform100100\relax%
+    \setbox0=\hbox to2\dimexpr#2pt{\vrule width0pt depth0pt height#2 pt depth#2 pt\relax%
+        \hfil\pdfliteral{%
+            \_pdfdraw_nattrans,
+            0 w
+            \_pdfdraw_circle{0}{0}{#2} f
+        }\hfil%
+    }%
+    \pdfxform0\relax%
+    \xdef#1{\pdfrefxform\the\pdflastxform\relax}%
+\egroup}
+\egroup
+
+\makecirc\tscirc{1.5}
+\makecirc\sscirc{1}
+\makecirc\ssscirc{.75}
+
+\def\blank{{%
+    \mkern2mu{\mathchoice%
+        {\vcenter{\tscirc}}%
+        {\vcenter{\tscirc}}%
+        {\vcenter{\sscirc}}%
+        {\vcenter{\ssscirc}}%
+    }\mkern2mu\relax%
+}}
+\let\bul=\blank
 
