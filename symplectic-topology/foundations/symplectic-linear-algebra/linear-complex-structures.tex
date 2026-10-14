@@ -378,7 +378,7 @@ And so we have the following commutative diagram
 
 \eproof
 
-\bcoro
+\bcoro[name={compatlincompcontract}]
 
     For every $\omega\in\S(V)$, there is a homotopy equivalence
     $$ \J(V,\omega) \xtof{J\mapsto g_J}[g\mapsto J_{g,\omega}] \Met(V),\qquad g_J = \omega(\bul,J\bul) . $$
@@ -590,6 +590,99 @@ is an inner product.
     The top triangle commutes, but the bottom does not.
     Despite this, $\pi_1$ and $\pi_0$ are homotopic via $\pi_t=(1-t)\pi_0+t\pi_1$: because both $\pi_0(\omega,J)$ and $\pi_1(\omega,J)$ are compatible with $J$, their convex combinations are symplectic.
     Thus $\pi_0\colon\C_\tau(V)\to\S(V)$ is a homotopy equivalence, and as it is a fibration, its fibers $\pi_0^{-1}\omega\cong\J_\tau(V,\omega)$ are contractible.
+    \qed
+
+\eproof
+
+We now construct a smooth map
+$$ \Met(V) \times \S(V) \times \Lambda^2(V^*) \to \endo(V),\qquad (g,\omega,\hat\omega) \mapsto A_g(\omega,\hat\omega) $$
+which has the following properties:
+\benum
+    \item $\hat\omega+\omega(A_g(\omega,\hat\omega)\bul,\bul)+\omega(\bul,A_g(\omega,\hat\omega)\bul)=0$,
+    \item For every $B\in\endo(V)$: if $\omega(B\bul,\bul)+\omega(\bul,B\bul)=0$ then
+    $$ \iprod{A_g(\omega,\hat\omega),B}_g = 0 , $$
+    where $\iprod{\bul,\bul}_g$ is the induced inner product on $\endo(V)$.
+    \item If $\Phi\colon V'\to V$ is an isomorphism,
+    $$ A_{\Phi^*g}(\Phi^*\omega,\Phi^*\hat\omega) = \Phi^{-1}A_g(\omega,\hat\omega)\Phi . $$
+\eenum
+The conditions (1) and (2) uniquely define $A_g$.
+Indeed, consider the map
+$$ F\colon\endo(V) \to \Lambda^2(V^*),\qquad F(A) = \omega(A\bul,\bul) + \omega(\bul,A\bul) . $$
+The kernel of this map is $\ker F=\lsp(V,\omega)$, which by \refmath[proposition]{eucsplie} has dimension $2n^2+n$.
+And so we have that
+$$ \dim\ker F + \dim\Lambda^2(V^*) = 2n^2 + n + 2n^2 - n = (2n)^2 = \dim\endo(V) , $$
+meaning $F$ is surjective.
+Thus there are $A\in\endo(V)$ such that $F(A)=-\hat\omega$, i.e.\ satisfying (1).
+
+Condition (2) requires that $A$ be orthogonal to $\ker F$.
+In general if we have a direct sum $V=U\oplus W$, then for every $v\in V$, the intersection $(v+U)\cap W$ is a singleton.
+This is because the canonical map $W\to V/U$ is an isomorphism, so every coset $v+U\in V/U$ has a single element of $W$.
+In this case we consider $\endo(V)=\ker F\oplus(\ker F)^\perp$, then $F^{-1}(-\hat\omega)$ is an affine subset of the form $A+\ker F$, and thus has a unique intersection
+with $(\ker F)^\perp$; this gives us the unique $A_g(\omega,\hat\omega)$.
+
+Point (3) follows directly from the existence and uniqueness imposed by (1) and (2).
+
+We also construct a smooth map
+$$ \Met(V)\times[0,1]\times\C_\tau(V)\to\gl(V),\qquad (g,t,\omega,J) \mapsto \Psi_g(t,\omega,J) $$
+satisfying the following:
+\benum
+    \item $\Psi_g(0,\omega,J)=\id_V$.
+    \item If $\omega=J^*\omega$ (i.e.\ $(\omega,J)\in\C(V)$) then $\Psi_g(t,\omega,J)=\id_V$.
+    \item For all $g,t,\omega,J$,
+    $$ \Psi_g(t,\omega,J)^*\parens{\omega + \frac t2(J^*\omega-\omega)} = \omega . $$
+    \item For any isomorphism $\Phi\colon V'\to V$,
+    $$ \Psi_{\Phi^*g}(t,\Phi^*\omega,\Phi^*J) = \Phi^{-1}\Psi_g(t,\omega,J)\Phi . $$
+\eenum
+
+For $g\in\Met(V),\omega\in\S(V),J\in\J_\tau(V,\omega)$, define $t\mapsto\Psi_g(t,\omega,J)$ to be the unique solution of the ODE
+$$ \drv t\Psi_g(t,\omega,J) = A_g\parens{\omega + \frac t2(J^*\omega-\omega),\frac12(J^*\omega-\omega)}\Psi_g(t,\omega,J) , $$
+with the initial condition $\Psi_g(0,\omega,J)=\id$.
+Abbreviate
+$$ \omega_t = \omega + \frac t2(J^*\omega-\omega),\qquad \hat\omega = \frac12(J^*\omega-\omega),\qquad \Psi_t = \Psi_g(t,\omega,J),\qquad A_t = A_g(\omega_t,\hat\omega) . $$
+Then the ODE becomes
+$$ \partial_t\Psi_t = A_t\Psi_t,\qquad \Psi_0 = \id,\qquad \partial_t\omega = \hat\omega . $$
+Thus
+$$ \eqalign{
+    \drv t\Psi_t^*\omega_t &= \Psi_t^*\partial_t\omega_t + \omega_t(\partial_t\Psi_t\bul,\Psi_t\bul) + \omega_t(\Psi_t\bul,\partial_t\Psi_t\bul)\cr
+        &= \Psi_t^*\hat\omega + \omega_t(A_t\Psi_t\bul,\bul) + \omega_t(\Psi_t\bul,A_t\Psi_t\bul)\cr
+        &= \Psi_t^*(\hat\omega + \omega_t(A_g(\omega_t,\hat\omega)\bul,\bul) + \omega_t(\bul,A_g(\omega_t,\hat\omega)\bul))\cr
+        &= 0.\cr
+} $$
+Thus we see $\Psi_t^*\omega_t$ is constant, and thus equal to $\Psi_0^*\omega_0=\omega$.
+Thus $\Psi_t$ satisfies (3).
+
+When $\omega=J^*\omega$ then $\omega_t=\omega$ and $\hat\omega=0$, thus $A_t=A_g(\omega,0)=0$ (because $A_g(\omega,0)$ is in the kernel of the map defined above,
+but also orthogonal to it, thus it must be zero).
+And so $\Psi_t$ is constant, and so equal to $\id$, showing (2).
+
+Equivariance, point (4), follows from equivariance of $A_g$ and uniqueness of solutions to ODEs.
+Smoothness follows from smoothness of solutions to ODEs.
+
+These definitions allow us to define a homotopy inverse to $\J(V,\omega)\inj\J_\tau(V,\omega)$ by choosing an inner product $g$ and defining
+$$ \J_\tau(V,\omega) \to \J(V,\omega),\qquad J\mapsto \Psi_g(1,\omega,J)^{-1}J\Psi_g(1,\omega,J) . $$
+Now define
+$$ f_\bul\colon[0,1]\times\J_\tau(V,\omega) \to \J_\tau(V,\omega),\quad f_t(J) = \Psi_g(t,\omega,J)^*J,\qquad \omega_t = \omega + \frac t2(J^*\omega-\omega) . $$
+Because $\Psi_g(t,\omega,J)^*\omega_t=\omega$ and $J\in\J_\tau(V,\omega_t)$, we have that $f_t(J)=\Psi_g(t,\omega,J)^*J\in\J_\tau(V,\omega)$ for all $t$, so this is well-defined.
+If $J\in\J(V,\omega)$ then $\Psi_g(t,\omega,J)=\id$ and so $f_t(J)=J$.
+And for $t=1$, $J$ is compatible with $\omega_1$ so $f_1(\bul)\in\J(V,\omega)$.
+
+Thus $f_\bul$ forms a strong homotopy retract $\J(V,\omega)\inj\J_\tau(V,\omega)$, so they are homotopy equivalent, and thus $\J_\tau(V,\omega)$ is contractible.
+This gives an alternative proof of the above proposition.
+
+\bprop[name={sympfamfromiso}]
+
+    Let $\omega_t$ be a family of symplectic forms on $V$, depending smoothly on $t\in\bR$.
+    Then there exists a smooth family of isomorphisms $\Phi_t\colon V\to V$ such that $\Phi_0=\id$ and $\Phi_t^*\omega_t=\omega_0$ for all $t$.
+
+\eprop
+
+\bproof
+
+    Fix $g\in\Met(V)$ and define, similar to above,
+    $$ \Psi_t = \Psi_g(t,\omega_0,J),\qquad A_t = A_g(\omega_t,\hat\omega),\qquad \hat\omega = \partial_t\omega . $$
+    Then let $\Psi_t$ be the unique solution to the ODE with initial condition
+    $$ \partial_t\Psi_t = A_t\Psi_t,\qquad \Psi_0 = \id . $$
+    The same computation as above shows that $\partial_t\Psi_t^*\omega_t=0$ and thus $\Psi_t^*\omega_t=\omega_0$ for all $t$.
     \qed
 
 \eproof
