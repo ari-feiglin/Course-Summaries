@@ -139,7 +139,11 @@
 \let\enote=\eppbox
 
 \def\__refmath#1{\gotoanchor{\csname ref@math@#1\endcsname}{\csname math@#1\endcsname}}
-\def\_refmath[#1]#2{\gotoanchor{\csname ref@math@#2\endcsname}{#1 \csname ref@math@#2\endcsname}}
+\def\_refmath[#1]#2{{%
+    \def\_test{#1}%
+    \gotoanchor{\csname ref@math@#2\endcsname}%
+    {\unless\ifx\_test\empty#1 \fi\csname ref@math@#2\endcsname}%
+}}
 \def\refmath{\_ifnextchar[ {\_refmath}{\__refmath}}
 
 \def\__reflmath{\gotoanchor{\lastmcount}{\lastmcount}}

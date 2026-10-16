@@ -1,0 +1,353 @@
+\subsection{Basic concepts}
+
+We will assume, unless otherwise specified, that the manifolds in question are smooth, connected, and without boundary.
+A {\emphcolor closed} manifold is a compact manifold without boundary.
+
+\bdefn
+
+    A {\emphcolor symplectic structure} on a manifold $M$ is a $2$-form $\omega\in\Omega^2(M)$ which is closed, and for every $p\in M$, $\omega_p$ is nondegenerate.
+    A {\emphcolor symplectic manifold} is a pair $(M,\omega)$ where $\omega$ is a symplectic structure on $M$.
+
+\edefn
+
+If $M$ is a symplectic manifold of dimension $2n$, then $\omega^n=\omega\wedge\cdots\wedge\omega$ is a non-vanishing top-form, so that $M$ is oriented.
+Thus we see that not all even-dimensional manifolds have a symplectic structure.
+
+\bexam
+
+    Euclidean space $\bR^{2n}$ has a standard symplectic structure
+    $$ \omega_0 = \sum_{i=1}^n\d x_i\wedge\d y_i . $$
+    Note that this symplectic structure is closed (it is in fact exact); this explains why we want our symplectic structures in general to be closed.
+    We will show that symplectic manifolds are locally symplectomorphic to $(\bR^{2n},\omega_0)$, and this implies that the symplectic form is closed (as it is locally closed).
+
+\eexam
+
+\bexam
+
+    A symplectic structure on a $2$-manifold is the same as a volume form.
+    Indeed any $2$-form on a $2$-manifold is closed, and any nonvanishing $2$-form is nondegenerate.
+
+    So for example $S^2$ has a symplectic structure induced from its standard volume form.
+    Recall that its standard volume form is defined by as
+    $$ \multline{
+        \omega_{(x_1,x_2,x_3)} = \parens{\sum_{i=1}^3x_i\partial_i}\imult\d x_1\wedge\d x_2\wedge\d x_3 = \sum_{i=1}^3x_i\d x_1\wedge\d x_2\wedge\d x_3(\partial_i,\bul,\bul)\cr
+        = x_1\d x_2\wedge\d x_3(\bul,\bul) - x_2\d x_1\wedge\d x_3(\bul,\bul) + x_3\d x_1\wedge\d x_2(\bul,\bul) .
+    } $$
+    We can rewrite this as
+    $$ \omega_x(u,v) = \det\pmatrix{\hbar&x&\hbar\cr\hbar&u&\hbar\cr\hbar&v&\hbar} = \iprod{x,u\times v} . $$
+
+\eexam
+
+\bnote
+
+    Henceforth, we will denote interior multiplication by one of the two
+    $$ X\imult\omega = \iota(X)\omega = \omega(X,\bul) . $$
+
+\enote
+
+By nondegeneracy, a symplectic form induces an isomorphism of vector bundles
+$$ \hat\omega\colon TM\to T^*M,\qquad X\mapsto\iota(X)\omega , $$
+which is equivalent to forming an isomorphism $\X(M)\to\Omega^1(M)$ (much like the musical isomorphisms from Riemannian geometry).
+
+\bexam
+
+    There exist orientable $2n$-manifolds which have no symplectic structure.
+    If $(M,\omega)$ is symplectic, then as $\omega$ is closed, it represents an element in the cohomology $[\omega]\in H^2(M;\bR)$.
+    The $n$-fold cup product of $[\omega]$ corresponds to $[\omega^n]$.
+    Because $\omega^n$ is a volume form, its integral is nonzero, and thus it cannot be exact (by Stokes').
+    This is equivalent to $[\omega]^n=[\omega^n]$ being nonzero.
+
+    So any closed manifold whose $2$nd cohomology class is zero cannot have a symplectic.
+    For instance $S^{2n}$ with $n\geq2$.
+
+\eexam
+
+There is an obvious notion of symplectomorphism between symplectic manifolds.
+
+\bdefn
+
+    A {\emphcolor symplectomorphism} is a diffeomorphism $\psi\colon(M_1,\omega_1)\to(M_2,\omega_2)$ such that $\omega_1=\psi^*\omega_2$.
+    Denote the group of symplectomorphisms of $(M,\omega)$ by
+    $$ \Symp(M,\omega) = \set{\psi\in\Diff(M)}[\psi^*\omega=\omega] . $$
+
+\edefn
+
+\bdefn
+
+    A vector field $X\in\X(M)$ is {\emphcolor symplectic} if $\iota(X)\omega$ is closed.
+    Denote the space of symplectic vector spaces by $\X(M,\omega)$.
+
+\edefn
+
+By Cartan's formula,
+$$ \L_X\omega = \iota(X)\d\omega + \d(\iota(X)\omega) = \d(\iota(X)\omega) , $$
+so $X$ is symplectic iff $\L_X\omega=0$.
+
+If $\phi\colon M\to N$ is a diffeomorphism, it defines an isomorphism $\phi^*\colon\X(N)\to\X(M)$ by mapping $X$ to
+$$ (\phi^*X)_p = d\phi^{-1}_{\phi p}X_{\phi p} . $$
+
+\bprop[name={sympflow}]
+
+    Let $M$ be a closed manifold, and $t\mapsto\psi_t\in\Diff(M)$ a smooth family of diffeomorphisms.
+    Suppose that this family is generate by a smooth family of vector fields $X_t\in\X(M)$, i.e.
+    $$ \drv t\psi_t = X_t\circ\psi_t,\qquad \psi_0=\id . $$
+    Then $\psi_t\in\Symp(M,\omega)$ for all $t$ iff $X_t\in\X(M,\omega)$ for all $t$.
+
+    Furthermore, if $X,Y\in\X(M,\omega)$ then $[X,Y]\in\X(M,\omega)$ as
+    $$ \iota([X,Y])\omega = \d H,\qquad H = \omega(X,Y) . $$
+    Thus $\X(M,\omega)$ is a Lie subalgebra of $\X(M)$.
+
+\eprop
+
+\bproof
+
+    The first claim is due to
+    $$ \drv t\psi_t^*\omega = \psi_t^*(\L_{X_t}\omega) = \psi_t^*\d(\iota(X_t)\omega) . $$
+    And $\psi_t$ are symplectomorphisms iff $\psi_t^*\omega$ is constant, iff the above equation is zero, if $\iota(X_t)\omega$ is closed as desired.
+
+    Now let $X,Y\in\X(M,\omega)$ have flows $\phi_t,\psi_t$ respectively.
+    Then
+    $$ [X,Y] = \L_YX = \evdrv t_{t=0}\psi_t^*X , $$
+    so that
+    $$ \iota([X,Y])\omega = \evdrv t_{t=0}\iota(\psi_t^*X)\omega = \L_Y(\iota(X)\omega) = \iota(Y)\d\iota(X)\omega + \d\iota(Y)\iota(X)\omega = \d\omega(X,Y) . $$
+    The second equality here is because, by the first claim, $\psi_t^*\omega=\omega$ for all $t$, and thus
+    $$ \iota(\psi_t^*X)\omega = \omega(d\psi_t^{-1}X\circ\psi_t,\bul) = \omega(X(\psi_t),d\psi_t) = \psi_t^*\omega(X,\bul) = \psi_t^*(\iota(X)\omega) . $$
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $H\colon M\to\bR$ be smooth.
+    Because $\hat\omega\colon\X(M)\to\Omega^1(M)$ is an isomorphism, there is a unique $X_H\in\X(M)$ such that
+    $$ \omega(X_H,\bul) = \d H . $$
+    This vector field is called the {\emphcolor Hamiltonian vector field} associated to the {\emphcolor Hamiltonian function} $H$.
+    The flow of $X_H$ is called the {\emphcolor Hamiltonian flow} of $H$, and is commonly denoted $\phi^t_H$.
+
+\edefn
+
+It is immediate that Hamiltonian vector fields are symplectic.
+Hamiltonian vector fields are those for which $\iota(X)\omega$ is exact, and symplectic vector fields are those for which $\iota(X)\omega$ is only closed.
+Furthermore, $X_H=X_{H'}$ iff $H-H'$ is constant, as this is only when $\d H=\d H'$.
+
+Notice that
+$$ \d H(X_H) = \omega(X_H,X_H) = 0 $$
+which means that $X_H$ is tangent to $H$'s regular level sets (recall that the tangent space of $H^{-1}x$ is $\ker\d H$).
+
+For two smooth real-valued functions $F,G\in C^\infty(M)$, define their {\emphcolor Poisson bracket} to be
+$$ \poi{F,G} = \omega(X_F,X_G) = \d F(X_G) = X_GF . $$
+Notice that the Poisson bracket is bilinear and antisymmetric.
+The former is because $X_{aH}=aX_H$ and $X_{F+G}=X_F+X_G$ clearly, and the latter is because $\omega$ is antisymmetric.
+
+\bprop
+
+    The Poisson bracket turns $C^\infty(M)$ into a Lie algebra, and
+    $$ X_{\poi{F,G}} = [X_F,X_G] . $$
+
+\eprop
+
+\bproof
+
+    We first prove the second statement.
+    It is sufficient to show that that for all $Y\in\X(M)$,
+    $$ \omega(X_{\poi{F,G}},Y) = \omega([X_F,X_G],Y) . $$
+    The left-hand side is
+    $$ \omega(X_{\poi{F,G}},Y) = \d\poi{F,G}Y = Y\poi{F,G} = YX_GF . $$
+    Because Hamiltonian vector fields are symplectic, we see that
+    $$ 0 = \L_{X_G}\omega(X_F,Y) = -X_G\omega(X_F,Y) - \omega([X_G,X_F],Y) - \omega(X_F,[X_G,Y]) . $$
+    The first term is
+    $$ X_G\omega(X_F,Y) = X_GYF , $$
+    and the third is
+    $$ \omega(X_F,[X_G,Y]) = [X_G,Y]F = YX_GF - X_GYF = \omega(X_{\poi{F,G}},Y) - X_GYF . $$
+    Thus
+    $$ \omega(X_{\poi{F,G}},Y) = \omega([X_F,X_G],Y) $$
+    as desired.
+
+    Now the Jacobi identity for the Poisson bracket is because
+    $$ \multline{
+        \poi{F,\poi{G,H}} = X_{\poi{G,H}}F = [X_G,X_H]F = X_HX_GF - X_GX_HF = X_H\poi{F,G} - X_G\poi{F,H}\cr
+        = \poi{\poi{F,G},H} - \poi{\poi{F,H},G} = -\poi{H,\poi{F,G}} - \poi{G,\poi{H,F}} .
+    } $$
+    Thus the Poisson bracket defines a Lie algebra as desired.
+    \qed
+
+\eproof
+
+In lieu of this result, we have the following Lie algebra morphism
+$$ C^\infty(M) \to \X(M,\omega),\qquad H\mapsto X_H . $$
+The image of this is the Lie subalgebra of Hamiltonian vector fields, and its kernel are the constant maps.
+
+Note that if $F,G\colon M\to\bR$ are smooth, then
+$$ \poi{F,G}\frac{\omega^n}{n!} = \d F\wedge\d G\wedge\frac{\omega^{n-1}}{(n-1)!} . $$
+Indeed, recall that
+$$ \iota(X)\omega^n = n\iota(X)\omega\wedge\omega^{n-1} , $$
+and so
+$$ \d G\wedge\omega^{n-1} = \iota(X_G)\omega\wedge\omega^{n-1} = \frac1n\iota(X_G)\omega^n . $$
+Thus
+$$ \d F\wedge\d G\wedge\omega^{n-1} = \frac1n\d F\wedge\iota(X_G)\omega^n , $$
+and recall that
+$$ 0 = \iota(X_G)(\d F\wedge\omega^n) = (\iota(X_G)\d F)\omega^n - \d F\wedge\iota(X_G)\omega^n = \poi{F,G}\omega^n - \d F\wedge\iota(X_G)\omega^n , $$
+and thus
+$$ \d F\wedge\d G\wedge\omega^{n-1} = \frac1n\poi{F,G}\omega^n $$
+giving the desired result.
+
+Note that $\d F\wedge\d G\wedge\omega^{n-1}=\d(F\d G\wedge\omega^{n-1})$ is exact, and thus if $M$ is closed (or has empty boundary and either $F$ or $G$ has compact
+support), then
+$$ \int_M\poi{F,G}\omega^n = n\int_M\d F\wedge\d G\wedge\omega^{n-1} = 0 . $$
+In other words the mean value of $\poi{F,G}$ is zero.
+
+\bprop[name={hamflowbasic}]
+
+    Let $(M,\omega)$ be symplectic.
+    \benum
+        \item The Hamiltonian flow $\phi_H^t$ is a symplectomorphism for all $t$.
+        Furthermore $H$ is constant along $t\mapsto\phi_H^t(p)$.
+        \item For every Hamiltonian function $H\colon M\to\bR$ and every symplectomorphism $\psi\in\Symp(M,\omega)$, $X_{H\circ\psi}=\psi^*X_H$.
+    \eenum
+
+\eprop
+
+\bproof
+
+    (1) is due to \refmath[proposition]{sympflow}, and
+    $$ \dot\phi^t_H(H) = X_HH = \poi{H,H} = 0 , $$
+    so that $H\circ\phi^t_H$ is constant.
+    (2) is due to
+    $$ \iota(X_{H\circ\psi})\omega = \d(H\circ\psi) = \psi^*\d H = \psi^*\iota(X_H)\omega = \iota(\psi^*X_H)\omega . \qed $$
+
+\eproof
+
+\bdefn
+
+    An {\emphcolor isotopy} of a manifold $M$ is a smooth family of maps $\psi_t\colon M\to M$ such that $\psi_t$ is a diffeomorphism and $\psi_0=\id$.
+    An isotopy is a {\emphcolor symplectic isotopy} if $\psi_t$ is a symplectomorphism for all $t$.
+
+\edefn
+
+Every isotopy induces a time-dependent vector field $X_t$ by
+$$ \drv t\psi_t = X_t\circ\psi_t,\qquad \psi_0 = \id , $$
+i.e. we define $X_t(p)=\drv t\psi_t(\psi_t^{-1}(p))$.
+Conversely every time-dependent vector field $X_t$ determines a unique isotopy (called its {\emphcolor flow}), although the isotopy is only globally defined in
+certain cases (e.g.\ if $X_t$ is compactly supported).
+By \refmath[proposition]{sympflow} if $\psi_t$ is $X_t$'s flow, $\psi_t$ is a symplectic isotopy iff $X_t$ is a symplectic vector space for all $t$.
+
+\bdefn
+
+    Let $\psi_t$ be an isotopy with associated time-dependent vector field $X_t$.
+    Then $\psi_t$ is a {\emphcolor Hamiltonian isotopy} if $\iota(X_t)\omega$ is exact for all $t$ (i.e.\ $X_t$ is a Hamiltonian vector field).
+    In such a case there is a smooth family of functions $H_t\in C^\infty(M)$ such that $\iota(X_t)\omega=\d H_t$.
+    Then $H$ is called a {\emphcolor time-dependent Hamiltonian}, and it is determined by Hamiltonian isotopy up to addition with a smooth function $c_t\in\bR$.
+
+\edefn
+
+If $M$ is simply connected then $H^1(M;\bR)=0$ as well, and thus a $1$-form is closed iff it is exact.
+Thus all symplectic isotopies are Hamiltonian isotopies when $M$ is simply connected.
+
+Also note that a compactly-supported time-dependent Hamiltonian defines a Hamiltonian isotopy via $X_t=\hat\omega^{-1}(\d H_t)$
+
+\bnote
+
+    The existence of $H_t$ amounts to a linear algebra problem.
+    We restate it as follows: suppose $f\colon W\to V$ is a surjective linear map and $\phi\colon N\to V$ is a smooth map.
+    Then there is a smooth lift $\tilde\phi\colon N\to W$ such that $\phi=f\circ\tilde\phi$:
+
+    \diagram{
+        N&V\cr
+        &W
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=\phi, y distance=.2cm}
+        \diagarrow{from={1,1}, to={2,2}, text=\tilde\phi, x distance=-.2cm}
+        \diagarrow{from={2,2}, to={1,2}, text=f, x distance=.2cm}
+    }
+
+    Because $f$ is surjective, it has a right inverse $\tilde f$: $f\circ\tilde f=\id$.
+    Then define $\tilde\phi=\tilde f\circ\phi$.
+
+    In our case $V$ is the space of exact $1$-forms
+    $$ V=\c B^1(M),\qquad W=C^\infty(M),\qquad N=\bR,\qquad f=\d,\qquad \phi=\iota(X_t)\omega . $$
+
+\enote
+
+\bdefn
+
+    A symplectomorphism $\psi\in\Symp(M,\omega)$ is {\emphcolor Hamiltonian} if there exists a Hamiltonian isotopy from $\psi_0=\id$ to $\psi_1=\psi$.
+    Denote the space of Hamiltonian symplectomorphisms by $\Ham(M,\omega)$.
+
+    Let $H_t$ be a compactly supported time-dependent Hamiltonian function.
+    This then determines a compactly supported Hamiltonian isotopy $\psi_t$, and define $\phi_H=\psi_1$.
+    Such a Hamiltonian symplectomorphism is called {\emphcolor compactly supported} and we denote the space of compactly supported Hamiltonian symplectomorphisms by
+    $$ \Ham_c(M,\omega) = \set{\phi_H}[H\in C^\infty_c([0,1]\times M)] . $$
+
+\edefn
+
+Note that if $M$ is closed then $\Ham_c(M,\omega)=\Ham(M,\omega)$.
+
+\bprop
+
+    $\Ham(M,\omega)$ is a normal subgroup of $\Symp(M,\omega)$.
+
+\eprop
+
+\bproof
+
+    First we need to show that $\Ham(M,\omega)$ is a subgroup; we begin by showing it is closed under composition.
+    Let $\phi_t,\psi_t$ be Hamiltonian isotopies generated by $X_t,Y_t$ respectively.
+    Then by the chain rule
+    $$ \partial_t(\phi_t\circ\psi_t) = (\partial_t\phi_t)\circ\psi_t + \d\phi_t\circ\partial_t\psi_t , \eqcnt $$
+    here $\d\phi_t\colon TM\to TM$ is $\phi_t$'s differential.
+    This equality is obtained by considering the partial derivatives of $\phi_t\circ\psi_s$ and adding them according to the chain rule.
+    Continuing this computation, by assumption we have
+    $$ \partial_t(\phi_t\circ\psi_t) = (X_t\circ\phi_t)\circ\psi_t + \d\phi_t\circ Y_t\circ\psi_t = (X_t + \d\phi_t Y_t\circ\phi_t^{-1})\circ(\phi_t\circ\psi_t) . $$
+    Thus we must show that $(X\#Y)_t=X_t+\phi_t^*Y_t$ is Hamiltonian.
+    This is clear, as $\phi_t$ is a symplectomorphism and so by \refmath[proposition]{hamflowbasic} $\phi_t^*Y_t$ is Hamiltonian as well.
+    The sum of Hamiltonian vector fields is Hamiltonian, and thus $X\#Y$ is.
+
+    Note that by \gotoleqn{}, we have
+    $$ 0 = \partial_t(\phi_t^{-1}\circ\phi_t) = (\partial_t\phi_t^{-1})\circ\phi_t + \d\phi_t^{-1}\circ\partial_t\phi_t , $$
+    and thus
+    $$ \partial_t\phi_t^{-1} = -\d\phi_t^{-1}\circ\partial_t\phi_t\circ\phi_t^{-1} = -d\phi_t^{-1}\circ X_t\circ\phi_t\circ\phi_t^{-1} , $$
+    and so $\phi_t^{-1}$ is generated by $-(\phi_t^{-1})^*X_t$, so it is Hamiltonian.
+    Thus $\Ham(M,\omega)$ is a subgroup.
+
+    Now if $\chi\in\Symp(M,\omega)$ and $\phi_t$ is a Hamiltonian isotopy generated by $X_t$, then
+    $$ \partial_t(\chi^{-1}\circ\phi_t\circ\chi) = \d\chi^{-1}\circ\partial_t\phi_t\circ\chi = \d\chi^{-1}X_t\circ\phi_t\circ\chi . $$
+    And so $\chi^{-1}\circ\phi_t\circ\chi$ is generated by $(\chi^{-1})^*X_t$, which is Hamiltonian.
+    Thus $\Ham(M,\omega)$ is closed under conjugation, and thus a normal subgroup of $\Symp(M,\omega)$ as desired.
+    \qed
+
+\eproof
+
+\bremark
+
+    While not every manifold admits a symplectic structure, be it due to dimension, orientation, or otherwise, every manifold induces a symplectic structure
+    on an associated manifold.
+    More exactly, every manifold $L$ induces a canonical symplectic structure on its cotangent bundle $T^*L$.
+    We explain how to define this symplectic structure.
+
+    Consider the projection
+    $$ \pi\colon T^*L \to L,\qquad (p,\phi)\mapsto p , $$
+    whose differential is a map
+    $$ \d\pi(p,\phi)\colon T_{(p,\phi)}T^*L \to T_pL . $$
+    Now consider the composition
+    $$ \lambda_{\can,(p,\phi)} = T_{(p,\phi)}T^*L \xtos{\d\pi(p,\phi)} T_pL \xtos\phi \bR = \phi\circ\d\pi_{(p,\phi)} . $$
+    This defines a rough (potentially non-smooth) $1$-form $\lambda_\can$ on $T^*L$.
+    By considering local coordinates, we will show that $\lambda_\can$ is a smooth $1$-form.
+
+    Let $(x_i)$ be a coordinate chart for $L$, which then induces a coordinate chart $(x_i,\d x_i)$ for $T^*L$.
+    Then in terms of these coordinates $\pi$ has the representation $\pi(x,\phi)=x$ where $\phi=\sum_i\phi_i\d x_i$.
+    Thus
+    $$ \d\pi(x,\phi)\pdv{x_j} = \pdv{x_j},\qquad \d\pi(x,\phi)\pdv{\phi_j} = 0 , $$
+    and so
+    $$ \lambda_{\can,(x,\phi)}\parens{\sum_i\xi_i\pdv{x_i} + \eta_i\pdv{\phi_i}} = \phi\parens{\sum_i\xi_i\pdv{x_i}} = \sum_i\xi_i\phi_i , $$
+    which is clearly smooth in all parameters.
+    Equivalently we may write
+    $$ \lambda_\can = \sum_{i=1}^n\phi_i\d x_i . $$
+
+    Now we define the symplectic form
+    $$ \omega_\can = -\d\lambda_\can , $$
+    which is nondegenerate because locally it has the form
+    $$ \omega_\can = \sum_{i=1}^n\d\phi_i\wedge\d x_i . $$
+    Notice that $\omega_\can$ is locally symplectomorphic to $(\bR^{2n},\omega_0)$; we will see this is true of all symplectic manifolds.
+
+\eremark
+

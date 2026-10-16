@@ -1,0 +1,165 @@
+\subsection{Moser isotopy and Darboux's theorem}
+
+\blemm[title={Moser isotopy, compact}, name={mosercompactisotopy}]
+
+    Let $M$ be a compact manifold, and $\omega_t$ a smooth family of symplectic forms on $M$ which has an exact derivative:
+    $$ \drv t\omega_t = \d\sigma_t,\qquad \sigma_t\in\Omega^1(M) . $$
+    Then there exists an isotopy $\psi_t\in\Diff(M)$ such that $\psi_t^*\omega_t=\omega_0$.
+
+\elemm
+
+\bproof
+
+    Instead of considering isotopies, we consider the time-dependent vector fields $X_t$ which are associated to them.
+    Because $M$ is compact, this is a one-tone-one correspondence.
+    So we have
+    $$ \drv t\psi_t = X_t\circ\psi_t,\qquad \psi_0 = \id . $$
+    Now differentiate $\psi_t^*\omega_t$, we want it to be zero:
+    $$ \drv t\psi_t^*\omega_t = \psi_t^*\parens{\drv t\omega_t + \L_{X_t}\omega_t} = \psi_t^*\parens{\d\sigma_t + \d\iota(X_t)\omega_t} . $$
+    So it is sufficient to require that
+    $$ \sigma_t + \iota(X_t)\omega_t = 0 , $$
+    so $X_t=\hat\omega_t^{-1}\sigma_t$ gives the time-dependent vector field.
+    Taking its flow gives the desired isotopy.
+    \qed
+
+\eproof
+
+We want to extend this result to non-compact manifolds.
+As-is we cannot do this, but the following lemma is sufficient.
+
+\blemm[title={Moser isotopy}, name={moserisotopy}]
+
+    Let $M$ be a manifold and $Q\subseteq M$ a compact submanifold.
+    Suppose that $\omega_0,\omega_1\in\Omega^2(M)$ are closed $2$-forms such that $\omega_0$ and $\omega_1$ agree on $Q$ and are nondegenerate at each point of $q$.
+    Then there exist open neighborhoods $U_0,U_1$ of $Q$ and a diffeomorphism $\psi\colon U_0\to U_1$ such that
+    $$ \psi|_Q = \id,\qquad \psi^*\omega_1 = \omega_0 . $$
+
+\elemm
+
+\bproof
+
+    Note that if $\omega$ is nondegenerate at a point $p\in M$, then it is nondegenerate in a neighborhood of $p$.
+    Indeed, relative to any local frame of $p$ $\omega$ has nonsingular representation at $p$, and taking this representation is smooth, so the result follows
+    because $\gl(n)$ is open in $\Mat_n$.
+    Thus $\omega_0,\omega_1$ are both nondegenerate in an open neighborhood $U_0$ of $Q$.
+
+    We claim the existence of a $1$-form $\sigma\in\Omega^1(U_0)$ such that
+    $$ \sigma|_Q = 0,\qquad \d\sigma = \omega_1-\omega_0 . $$
+    Then define
+    $$ \omega_t = \omega_0 + t(\omega_1-\omega_0) = \omega_0 + t\d\sigma . $$
+    This, as a convex combination of $\omega_0,\omega_1$, is nondegenerate on $U_0$ as well.
+    Applying Moser's argument above to $Q$, we get diffeomorphisms $\psi_t\colon U_0\to U_t$ satisying $\psi_t^*\omega_t=\omega_0$; take $\psi=\psi_1$ for the lemma.
+    In more detail, define $X_t=\hat\omega_t^{-1}\sigma$ in $U_0$, then this time-dependent vector field has global flow in a neighborhood of $Q$ as it is compact.
+    Shrink $U_0$ to be this neighborhood, so the $\psi_t$ are diffeomorphisms from $U_0$ to a neighborhood of $Q$.
+
+    Thus all that remains is to find a $\sigma\in\Omega^1(U_0)$ which restricts to $0$ on $Q$ and whose exterior derivative is $\omega_1-\omega_0$.
+    Endow $M$ with any Riemannian metric, then $Q$ has a tubular neighborhood.
+    We explain what this means.
+    Let $\exp\colon\E\subseteq TM\to M$ be the exponential map, where $\exp(p,tv)$ is the geodesic starting at $p$ with initial velocity $v$.
+    Recall that $\E$ is an open subset of $TM$ whose fibers are star-shaped about $0$.
+    Let $TQ^\perp\subseteq TM|_Q$ be the orthogonal subbundle of $TQ\subseteq TM|_Q$, then there is an open subset $W\subseteq TQ^\perp$ of the form
+    $$ W = \set{(q,v)}[q\in Q,\ v\in T_qQ^\perp,\ \norm v<\epsilon] $$
+    such that $\exp$ forms a diffeomorphism from $W$ to $\exp(W)$ which is also open.
+    This $\exp(W)$ is called a {\emphcolor tubular neighborhood} of $Q$; its existence is nontrivial.
+
+    Define $U_0$ to be the tubular neighborhood $\exp(W)$.
+    Then define for $0\leq t\leq1$,
+    $$ \phi_t\colon U_0\to U_0,\qquad \phi_t(\exp(q,v)) = \exp(q,tv) , $$
+    which is a diffeomorphism for $t>0$.
+    And $\phi_0(\exp(q,v))=\exp(q,0)=q$ so that $\phi_0(U_0)\subseteq Q$, $\phi_1=\id$, and $\phi_t|_Q=\id$.
+    The last claim is because $\exp(q,v)\in Q$ iff $v=0$ because $\exp$ is a diffeomorphism from $W$ (because $\exp(q,v)=\exp(\exp(q,v),0)$).
+
+    Let $\tau=\omega_1-\omega_0$, then these facts mean
+    $$ \phi_0^*\tau = 0,\qquad \phi_1^*\tau = \tau . $$
+    For $t>0$ define
+    $$ X_t = (\partial_t\phi_t)\circ\phi_t^{-1} . $$
+    Then we have
+    $$ \drv t\phi_t^*\tau = \phi_t^*\L_{X_t}\tau = \d(\phi_t^*(\iota(X_t)\tau)) , $$
+    so define $\sigma_t=\phi_t^*(\iota(X_t)\tau)$.
+    Then for $w\in T_xU_0$ we have
+    $$ \sigma_t(x;w) = \tau(\phi_t(x);\ X_t(\phi_t(x)),\d\phi_t(x)(w)) = \tau(\phi_t(x);\ \partial_t\phi_t(x),\d\phi_t(x)(w)) . $$
+    This is then smooth at $t=0$, and for $x\in Q$ vanishes (because $\phi_t(x)=x$ and $\tau(x;\bul)=0$ as $\omega_0,\omega_1$ agree on $Q$).
+    Thus
+    $$ \omega_1 - \omega_0 = \tau = \phi_1^*\tau - \phi_0^*\tau = \int_0^1\drv t\parens{\phi_t^*\tau}\d t = \int_0^1\d\sigma_t\d t , $$
+    so define
+    $$ \sigma = \int_0^1\sigma_t\d t $$
+    then we get
+    $$ \omega_1 - \omega_0 = \d\sigma . $$
+    And on $Q$, the $\sigma_t$ vanish and thus so too does $\sigma$, so $\sigma$ satisfies the conditions.
+    \qed
+
+\eproof
+
+\bthrm[title={Darboux's}, name={darboux}]
+
+    Every symplectic form $\omega$ on $M$ is locally symplectomorphic to the standard form $\omega_0$ on $\bR^{2n}$.
+
+\ethrm
+
+\bproof
+
+    Choose a point $q\in M$, then $\omega$ has a symplectic basis on $T_qM$.
+    Let $(x_i,y_i)$ be a local coordinate chart on $q\in U$ such that $(\partial_ix_i,\partial_iy_i)$ is a symplectic basis of $\omega_0$ on $T_qM$.
+    Define the symplectic form on $U$,
+    $$ \tilde\omega = \sum_i\d x_i\wedge\d y_i . $$
+    By \refmath{moserisotopy}, by taking $Q=\set q$, there is a diffeomorphism $\psi\colon U_0\to U_1$, with $q\in U_0,U_1\subseteq U$ open, such that $\omega=\psi^*\tilde\omega$.
+    So $(U_0,\omega)$ is symplectomorphic to $(U_1,\tilde\omega)$, which is clearly symplectomorphic to the standard Euclidean symplectic form $\omega_0$.
+    \qed
+
+\eproof
+
+\bnote
+
+    In Riemannian geometry, not every metric is locally isomorphic to the Euclidean metric.
+    The failure of this is measured by the curvature of the metric.
+    In contrast to this, Darboux's theorem shows that all symplectic manifolds are locally isomorphic.
+
+    Thus there are no meaningful local invariants for symplectic manifolds, and so symplectic geometry focuses on global invariants.
+
+\enote
+
+\bcoro
+
+    Let $(M,\omega)$ be a symplectic manifold of dimension $2n$.
+    Then there exists an open cover $\set{U_\alpha}_\alpha$ of $M$ with charts $\alpha\colon U_\alpha\to\alpha(U_\alpha)\subseteq\bR^{2n}$
+    such that $\alpha^*\omega_0=\omega$.
+    The atlas has symplectic transition matrices:
+    $$ \d(\beta\circ\alpha^{-1})(x) \in \Sp(2n),\qquad x\in\alpha(U_\alpha\cap U_\beta) . $$
+    Such charts are called {\emphcolor Darboux charts}.
+
+\ecoro
+
+\bthrm[title={Moser stability}, name={moserstability}]
+
+    Let $M$ be a closed manifold, and suppose $\omega_t$ is a smooth family of cohomologous symplectic forms on $M$.
+    Then there is a smooth family of diffeomorphisms $\psi_t$ of $M$ such that
+    $$ \psi_0 = \id,\qquad \psi_t^*\omega_t = \omega_0 . $$
+
+\ethrm
+
+\bproof
+
+    We apply \refmath[lemma]{mosercompactisotopy}, so we need to find a smooth family of $1$-forms $\sigma_t$ such that
+    $$ \d\sigma_t = \tau_t = \drv t\omega_t . $$
+    Because $\omega_t$ are cohomologous, $\omega_t-\omega$ are exact and thus so too is $\tau_t$.
+    Thus there do exist $1$-forms $\sigma_t$ such that $\d\sigma_t=\tau_t$.
+    The only issue is ensuring $\sigma_t$ is smooth, and this can be done by induction on the number of sets in a good cover of $M$.
+    \TODO{This?}
+    \qed
+
+\eproof
+
+\bdefn
+
+    Two symplectic forms $\omega_0,\omega_1$ on a manifold $M$ are {\emphcolor isotopic} if they can be connected by a smooth family
+    of cohomologous symplectic forms $\omega_t$.
+
+    They are said to be {\emphcolor strongly isotopic} if there is an isotopy $\psi_t$ of $M$ such that $\psi_1^*\omega_0=\omega_1$.
+
+\edefn
+
+In general being strongly isotopic implies being isotopic.
+This is because we can define $\omega_t=\psi_t^*\omega_0$.
+And as $\psi_\bul$ is a homotopy, by the homotopy-invariance of de Rham cohomology, $\psi_t^*$ induces the same map on homotopy for all $t$.
+\refmath{moserstability} says that the two notions coincide when $M$ is closed.
+
