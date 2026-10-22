@@ -1,0 +1,290 @@
+\subsection{Distributions and foliations}
+\rightline{\setfont{it}Material from the book {\rm``Introduction to Smooth Manifolds''} by John M.\ Lee}
+
+We take a small detour from our discussion on symplectic manifolds to discuss distributions and foliations.
+This is in preparation for the next section on contact structures.
+
+\bdefn
+
+    A {\emphcolor distribution} of a manifold $M$ is a (smooth) subbundle of $TM$.
+    Its rank is its rank as a subbundle.
+    An {\emphcolor integral manifold} of a distribution $D$ is a submanifold $N\subseteq M$ such that $D|_N=TN$.
+
+\edefn
+
+\bexam
+
+    If $V$ is a nonvanishing vector field on $M$, then it spans a smooth rank-$1$ distribution.
+    The image of any of its integral curves is an integral manifold.
+
+\eexam
+
+\bexam
+
+    Not every distribution has integral manifolds.
+    Take $D$ to be the smooth distribution on $\bR^3$ spanned by
+    $$ X = \pdv x + y\pdv z,\qquad Y = \pdv y . $$
+    If $N$ is an integral manifold, then as $X,Y$ are tangent to $N$ their integral curves must lie in $N$ for a short while.
+    The $x$-axis is an integral curve of $X$, and the $y$-axis is of $Y$.
+    Thus $N$ contains an open subset of the $xy$-plane, but for any point $p$ on the $xy$-plane not on the $x$-axis, its tangent space
+    is not equal to $D_p$.
+
+\eexam
+
+\bdefn
+
+    A distribution $D$ on $M$ is {\emphcolor involutive} if the Lie bracket of any two local sections of $D$ is another local section of $D$.
+    And $D$ is {\emphcolor integrable} if every point of $M$ lies in an integral manifold of $D$.
+
+\edefn
+
+\bremark[name={involutiveglobal}]
+
+    It is sufficient to consider only global sections of $D$ in determining if it is involutive.
+    That is, $D$ is involutive iff its space of global sections $\Gamma(D)$ is a Lie subalgebra of $\X(M)$.
+
+    Clearly if $D$ is involutive then this is true.
+    Conversely suppose $\Gamma(D)\subseteq\X(M)$ is a Lie subalgebra, and let $X,Y\in\Gamma(U,D)$ be local sections on $U\subseteq M$.
+    Let $\psi\in C^\infty(M)$ be a smooth bump function which is $1$ in a neighborhood of $p\in U$ and supported in $U$.
+    Then $\psi X,\psi Y$ can be defined on all of $M$, so by assumption $[\psi X,\psi Y]\in\Gamma(D)$.
+    Computing yields
+    $$ [\psi X,\psi Y] = \psi^2[X,Y] + \psi(X\psi)Y - \psi(Y\psi)X , $$
+    and evaluating at $p$ gives $[X,Y]_p$ (because $\psi$ is constant around $p$, $X_p\psi=0$).
+    So $[X,Y]_p\in D_p$ meaning $[X,Y]$ is a local section of $D$ as desired.
+
+\eremark
+
+\bprop
+
+    Every integrable distribution is involutive.
+
+\eprop
+
+\bproof
+
+    If $X,Y$ are local sections of $D\subseteq TM$ defined on $U\subseteq M$, let $p\in U$.
+    Then $p$ lies in an integral manifold $N$ of $D$, and so $X_p,Y_p\in T_pN=D_p$.
+    So $X,Y$ are tangent to $N$ at $p$, and thus so is $[X,Y]$, meaning $[X,Y]_p\in T_pN=D_p$ as desired.
+    \qed
+
+\eproof
+
+Being involutive can be checked on a local frame of $D$: if $V_1,\dots,V_k$ is a local frame for $D$, then $D$ is involutive (in the neighborhood
+for which this is a frame) iff $[V_i,V_j]$ is a local section of $D$ for all $i,j$.
+Indeed, let $X=X^iV_i$ and $Y=Y^jV_j$ be local sections of $D$, then
+$$ [X,Y] = X^iY^j[V_i,V_j] + X^i(V_iY^j)V_j - Y^j(V_jX^i)V_i $$
+which is a local section of $D$ as desired.
+
+\blemm
+
+    Let $M$ be $n$-dimensional, and $D\subseteq TM$ a not necessarily smooth distribution of rank $k$.
+    Then $D$ is smooth iff for every $p\in M$ there is a neighborhood $p\in U$ and smooth $1$-forms $\omega^1,\dots,\omega^{n-k}$ on $U$ such that
+    $$ D|_U = \ker\omega^1\cap\cdots\cap\ker\omega^{n-k} . $$
+
+\elemm
+
+\bproof
+
+    If such $1$-forms exist, then by dimensional considerations we must have that they are linearly independent.
+    Complete them to a local coframe $\omega^1,\dots,\omega^n$ of $T^*U$, and let $E_1,\dots,E_n$ be their dual frame.
+    Then $D$ is spanned by $E_{n-k+1},\dots,E_n$, and so around every point of $M$, $D$ has a smooth local frame, and is thus a distribution.
+
+    Conversely if $D$ is smooth, then let $Y_1,\dots,Y_k$ span $D$ locally.
+    We can complete these to a local frame of $TM$, $Y_1,\dots,Y_n$.
+    Let $\omega^1,\dots,\omega^n$ be the dual coframe, then $D$ is equal to $\ker\omega^{k+1}\cap\cdots\cap\ker\omega^n$.
+    \qed
+
+\eproof
+
+\bdefn
+
+    If $D$ is a rank-$k$ distribution of $M$, then any local smooth $1$-forms $\omega^1,\dots,\omega^{n-k}$ such that $D=\bigcap_i\ker\omega^i$ are called
+    {\emphcolor local defining forms} for $D$.
+    And a differential form $\omega\in\Omega^p(M)$ {\emphcolor annihilates} $D$ if $\omega(X_1,\dots,X_p)=0$ when $X_i\in D$.
+
+\edefn
+
+\bprop
+
+    If $\omega^1,\dots,\omega^{n-k}$ are local defining forms for $D$, then $\eta\in\Omega^p(M)$ annihilates $D$ iff
+    $$ \eta = \sum_i \omega^i\wedge\beta^i , $$
+    where $\beta^i$ are smooth $(p-1)$-forms.
+
+\eprop
+
+\bproof
+
+    An $\eta$ of this form annihilates $D$ as evaluating at $\bar X\in D$ will result in sums whose terms all have some $\omega^i(X_j)=0$.
+    Conversely if $\eta$ annihilates $D$, extend $\omega^i$ to a local coframe for $T^*M$ and let $E_i$ be the associated local frame for $TM$.
+    So $E_{n-k+1},\dots,E_n$ is a local frame for $D$.
+    Then $\eta$ can be written as
+    $$ \eta = \sum_I \eta_I\omega^I,\qquad \eta_I = \eta(E_{i_1},\dots,E_{i_n}) . $$
+    Thus $\eta$ annihilates $D$ iff $\eta_I=0$ whenever $I$'s values lie between $n-k+1$ and $n$.
+    And so
+    $$ \eta = \sum_{i_1\leq n-k}\eta_I\omega^I = \sum_{i_1=1}^{n-k}\omega^{i_1}\wedge\parens{\sum_{I'}\eta_{i_1I'}\omega^{I'}} . $$
+    This is true in a neighborhood of each point of $U$ (because extending to a local coframe of $T^*M$ may require shrinking the neighborhood),
+    and then patching together with a partition of unity gives us the desired result on all of $U$.
+    \qed
+
+\eproof
+
+\bprop[name={involdisann}]
+
+    Let $D$ be a smooth distribution on $M$.
+    Then $D$ is involutive iff whenever $\eta\in\Omega^1(U)$ annihilates $D$ so too does $\d\eta\in\Omega^2(U)$.
+
+\eprop
+
+\bproof
+
+    If $D$ is involutive, and suppose $\eta\in\Omega^1(U)$ annihilates $D$.
+    Then for $X,Y$ local sections of $D$,
+    $$ \d\eta(X,Y) = X(\eta(Y)) - Y(\eta(X)) - \eta([X,Y]) = 0 $$
+    because $D$ is involutive.
+
+    Conversely suppose the condition holds, and let $\omega^i$ be local defining sections for $D$.
+    Then for local sections $X,Y$,
+    $$ \omega^i([X,Y]) = X(\omega^i(Y)) - Y(\omega^i(X)) - \d\omega^i(X,Y) = 0 $$
+    by assumption, so $[X,Y]$ is a local section of $D$.
+    \qed
+
+\eproof
+
+Note that if $\omega$ annihilates $D$ and $\eta$ is an arbitrary differential form, then $\omega\wedge\eta$ annihilates $D$.
+Thus $D$ is involutive iff whenever $\omega\in\Omega^p(M)$ annihilates $D$ so too does $\d\omega$.
+This is an immediate consequence of the previous two results.
+
+\bdefn
+
+    Suppose we have a rank-$k$ distribution $D\subseteq TM$.
+    A coordinate chart $(U,\phi)$ for $M$ is {\emphcolor flat for $D$} if $\phi(U)\subseteq\bR^n$ is an open cube, and for every $p\in U$ $D$ is spanned by
+    $\pdv{x^1},\dots,\pdv{x^k}$.
+    In such a case, any slice $x^{k+1}=c^{k+1},\dots,x^n=c^n$ is an integral manifold of $D$.
+    If every point of $M$ lies in a flat chart for $D$, then $D$ is said to be {\emphcolor completely integrable}.
+
+\edefn
+
+Clearly a completely integrable distribution is integrable, and integrable distributions are involutive.
+The following theorem will show that these three concepts are equivalent.
+
+\bthrm[name={Frobenius}]
+
+    Every involutive distribution is completely integrable.
+
+\ethrm
+
+\bproof
+
+    Suppose that $D$ is locally spanned by commuting vector fields $V_1,\dots,V_k$.
+    Then by the canonical form for commuting vector fields $V_i=\pdv{x^i}$ for a coordinate chart $(U,\phi)$; this chart is then flat for $D$.
+    Thus we will show that if $D$ is involutive, it is locally spanned by commuting vector fields.
+
+    Because our questions are local, we may assume $M$ is an open subset $U\subseteq\bR^n$.
+    Let $X_1,\dots,X_k$ be a local frame for $D$, and let $p\in U$.
+    By potentially reordering coordinates, we may assume that $D_p$ is complementary to the subspace spanned by $\evpdv{x^{k+1}}_p,\dots,\evpdv{x^n}_p$.
+    Let $\pi\colon\bR^n\to\bR^k$ be projection onto the first $k$ coordinates, which induces $\d\pi\colon T\bR^n\to T\bR^k$ by
+    $$ \d\pi\parens{\sum_{i=1}^nv^i\evpdv{x^i}_q} = \sum_{i=1}^kv^i\evpdv{x^i}_{\pi q} . $$
+    Restricting $\d\pi$ to $D$ remains a smooth bundle morphism.
+
+    By choice of coordinates, $D_p\subseteq T_p\bR^n$ is complementary to $\ker\d\pi_p$.
+    Thus $\d\pi_p|_{D_p}$ is an isomorphism $D_p\to T_{\pi p}\bR^k$.
+    And so by continuity (e.g.\ of the determinant), so is $\d\pi_q|_{D_q}$ for $q$ in a neighborhood of $p$.
+    Now define a new local frame of $D$ in a neighborhood of $p$ by
+    $$ V_i|_q = (\d\pi|_{D_q})^{-1}\evpdv{x^i}_{\pi q} , $$
+    which is smooth as $\d\pi$'s matrix entries are.
+
+    We claim that the $V_i$ commute; this is sufficient to prove the theorem.
+    By naturality of the Lie brackets,
+    $$ \d\pi_q[V_i,V_j]_q = \bracks{\evpdv{x_i}_{\pi q},\evpdv{x_j}_{\pi q}} = 0 , $$
+    and since $D$ is involutive $[V_i,V_j]_q\in D_q$ on which $\d\pi_q$ is an isomorphism, so $[V_i,V_j]=0$ as desired.
+    \qed
+
+\eproof
+
+\blemm
+
+    Let $D$ be an involutive rank-$k$ distribution, and $(U,(x^i))$ a flat chart for $D$.
+    If $H$ is any integral manifold of $D$, then $H\cap U$ is a countable union of disjoint open subsets of parallel $k$-slices of $U$.
+    These parallel slices are open in $H$ and embedded in $M$.
+
+\elemm
+
+\bproof
+
+    The final claim is immediate as being open in $U$ implies being open in $U\cap H$ (as $U$ is open), and slices of $U$ are embedded in $U$ and thus in $M$.
+
+    Let $H$ be an integral manifold of $D$, and consider the connected components of $H\cap U$.
+    Let $V$ be such a connected component, we will show it is contained in a single slice.
+    Because $\d x^{k+1},\dots,\d x^n$ are local defining forms for $D$, it follows that the pullbacks of these forms to $H$ and thus $V$ are zero.
+    Thus $x^{k+1},\dots,x^n$ are all constant on $V$ as it is connected, so $V$ lies in a single slice $S$.
+
+    And so $H\cap U$ is the disjoint union of such slices of $x^{k+1},\dots,x^n$, as desired.
+    \qed
+
+\eproof
+
+A smooth manifold $H\subseteq M$ is {\emphcolor weakly embedded} if any smooth map $F\colon N\to M$ whose image lies in $H$ is smooth as a map $F\colon N\to H$.
+
+\bthrm
+
+    Every integral manifold of an involutive distribution is weakly embedded.
+
+\ethrm
+
+\bproof
+
+    Let $H$ be an integral manifold of $D$, and $F\colon N\to M$ be smooth such that $F(N)\subseteq H$.
+    Let $p\in N$ and $q=F(p)\in H$, so there are flat coordinates $(y^1,\dots,y^n)$ for $D$ in a neighborhood $q\in U$.
+    Let $(x^i)$ be coordinates for $N$ on a connected neighborhood $B$ of $p$ so that $F(B)\subseteq U$.
+    We then write $F$ in terms of these coordinates
+    $$ (y^1,\dots,y^n) = (F^1(x),\dots,F^n(x)) . $$
+    By the above lemma, as $F(B)\subseteq H\cap U$, $F^{k+1},\dots,F^n$ takes only countably many values (as there are only countably many slices).
+    As $B$ is connected, the intermediate value theorem shows that these functions must be constant.
+    Thus $F(B)$ lies in a single slice $S\subseteq U$.
+    And since $H\cap S$ is open in $H$ and embedded in $M$, $F|_B$ is smooth from $B\to S\cap H$, and thus smooth into $H$.
+    \qed
+
+\eproof
+
+We can also view involutive distributions in another way, through foliations.
+
+\bdefn
+
+    Let $\F$ be a collection of $k$-dimensional submanifolds of $M$.
+    A smooth chart $(U,\phi)$ for $M$ is {\emphcolor flat for $\F$} if $\phi(U)\subseteq\bR^n$ is a cube and each manifold of $\F$ intersects $U$ in a countable
+    union of $k$-dimensional slices of the form $x^{k+1}=c^{k+1},\dots,x^n=c^n$.
+
+    A $k$-dimensional {\emphcolor foliation} for $M$ is a collection $\F$ of disjoint, connected, immersed $k$-dimensional submanifolds of $M$ whose union is $M$
+    such that each $p\in M$ lies in a smooth chart flat for $\F$.
+    The manifolds of $\F$ are called the {\emphcolor leaves} of the foliation.
+
+\edefn
+
+\bprop
+
+    Let $\F$ be a foliation on $M$, then the collection of tangent spaces to the leaves of $\F$ forms an involutive distribution.
+
+\eprop
+
+\bproof
+
+    Define $D$ to be this distribution.
+    Let $p\in M$ and $U$ be flat for $\F$.
+    Then for every leaf intersecting $U$, its tangent space is spanned by $\pdv{x^1},\dots,\pdv{x^k}$.
+    These then form a local frame of $D$, so it is smooth.
+    Furthermore $U$ is clearly flat for $D$, so it is completely integrable.
+    \qed
+
+\eproof
+
+The converse of this proposition is also true, though we will not prove it.
+
+\bthrm[title={Global Frobenius}]
+
+    Let $D$ be an involutive distribution.
+    The collection of all maximal connected integral manifolds of $D$ forms a foliation of $M$.
+
+\ethrm
+
+Thus there is a correspondence between involutive distributions and foliation.
+

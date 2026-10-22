@@ -1,0 +1,103 @@
+\subsection{Morse functions}
+
+\bdefn
+
+    Let $f\colon M\to\bR$ be a smooth function, then a {\emphcolor critical point} of $f$ is a point
+    $p\in M$ such that $\d f_p=0$.
+    Denote by $\crit(f)$ the set of critical points of $f$.
+
+    For $p\in\crit(f)$ define the bilinear form $\d f_p^2\colon T_pM\times T_pM\to\bR$ by
+    $$ \d f_p^2(X,Y) = X(\tilde Yf) $$
+    where $\tilde Y$ is any extension of $Y$ to a local vector field.
+    Then $p$ is said to be {\emphcolor nondegenerate} iff $\d f_p^2$ is a nondegenerate bilinear form.
+    Its {\emphcolor index} is the number of negative eigenvalues of this bilinear form and is denoted
+    $\ind(f;p)$.
+
+\edefn
+
+Note $\d f_p^2$ is well-defined when $p$ is critical: if $\tilde Y=Y^i\pdv{x^i}$ is any extension of $Y$, then
+$$ X(\tilde Yf) = X\parens{Y^i\pdvof f{x^i}} = X(Y^i)\evpdvof f{x^i}_p + Y^i(p)X\parens{\pdvof f{x^i}}
+= Y^i(p)X\parens{\pdvof f{x^i}} $$
+which is only dependent on $Y^i(p)$, i.e.\ $Y$.
+Relative to a coordinate chart $\pdv{x^i}$, the bilinear form has the representation
+$$ \d f_p^2\parens{\pdv{x^i},\pdv{x^j}} = \pdvof{^2f}{x^ix^j}(p) , $$
+i.e.\ it is the Hessian of $f$ relative to this coordinate chart.
+Thus $p$ is nondegenerate iff the Hessian is nonsingular, and its index is the number of negative eigenvalues
+of the Hessian.
+
+\bdefn
+
+    A smooth function $f\colon M\to\bR$ is called a {\emphcolor Morse function} if all of its critical
+    points are nondegenerate.
+
+\edefn
+
+\bexam
+
+    Consider $M=\bR^2$ with $f(x,y)=x^2+y^2$, $g(x,y)=x^2-y^2$, and $h(x,y)=-x^2-y^2$.
+    The only critical point of these functions is the origin, and the Hessian of these are
+    $$ H_f = 2I,\qquad H_g = \diag(2,-2),\qquad H_h = \diag(-2,-2) , $$
+    thus
+    $$ \ind(f;0) = 0,\qquad \ind(g;0) = 1,\qquad \ind(h;0) = 2 . $$
+
+\eexam
+
+\bthrm[title={Morse Lemma}]
+
+    Let $f\colon M\to\bR$ be a smooth function and $p\in M$ a nondegenerate critical point of $f$ with
+    index $\lambda$.
+    Then there is a coordinate chart $(x_i)$ about $p$ such that in this chart
+    $$ f(x_1,\dots,x_n) = f(p) - x_1^2 - \cdots - x_\lambda^2 + x_{\lambda+1}^2 + \cdots + x_n^2 . 
+    \eqcnt $$
+
+\ethrm
+
+\bproof
+
+    This is a local question so we may assume that $M=\bR^n$ and $p=0$.
+    Firstly for any such coordinate chart, $\lambda$ must be the index of $p$.
+    Indeed in such a coordinate chart the Hessian of $f$ has the form
+    $$ \pdvof{^2f}{x_ix_j}(p) = \cases{-2&$i=j\leq\lambda$\cr2&$i=j>\lambda$\cr0&else} , $$
+    which has $\lambda$ negative eigenvalues and so $\lambda=\ind(f;p)$.
+
+    We may assume that $f(p)=f(0)=0$, and thus we can write $f$ via a Taylor series
+    $$ f(x_1,\dots,x_n) = \sum_{i=1}^n x_ig_i(x_1,\dots,x_n),\qquad g_i(0) = \pdvof f{x_i}(0) . $$
+    Because $p$ is a critical point we have $g_i(0)=0$ and so expanding these as a Taylor series
+    $$ f(x_1,\dots,x_n) = \sum_{i,j=1}^n x_ix_jh_{ij}(x_1,\dots,x_n),\qquad h_{ij}(0) = \pdv{^2f}{x_ix_j}(0)
+    . $$
+    We may replace $h_{ij}$ with $\frac12(h_{ij}+h_{ji})$ so that $h_{ij}=h_{ji}$.
+    Note that because the matrix $(h_{ij}(0))_{ij}$ is the Hessian of $f$ at $0$ which is nondegenerate,
+    we may perform some linear change of coordinates and assume that $h_{11}(0)\neq0$.
+
+    By induction we prove that there are coordinates $u_1,\dots,u_n$ for which $f$ has the representation
+    $$ f = \pm u_1^2 \pm\cdots\pm u_{k-1}^2 + \sum_{i,j\geq k}u_iu_jH_{ij}(u_1,\dots,u_n) $$
+    such that $(H_{ij}(u_1,\dots,u_n))_{ij}$ is symmetric and $H_{kk}(0)\neq0$.
+    We have shown this for $k=1$.
+    Define
+    $$ g(u_1,\dots,u_n) = \sqrt{\abs{H_{kk}(u_1,\dots,u_n)}} , $$
+    which is smooth and nonzero in some neighborhood of $0$.
+    Define now new coordinates $v_1,\dots,v_n$ by
+    $$ \displaylines{
+        v_i = u_i\hbox{ for $i\neq k$}\cr
+        v_k = g(u_1,\dots,u_n)\parens{u_k + \sum_{i>k}u_iH_{ik}(u_1,\dots,u_n)/H_{kk}(u_1,\dots,u_n)} .
+    } $$
+    A computation shows that
+    $$ \pdvof{v_k}{u_k}(0) = g(0) \neq 0 , $$
+    so that there is a neighborhood in which the $v_i$s form a coordinate chart.
+    Then $f$ has the representation
+    $$ f = \sum_{i\leq k}\pm v_i^2 + \sum_{i,j>k}v_iv_jH'_{ij}(v_1,\dots,v_n),\qquad
+    H'_{ij}(u_1,\dots,u_n) = H_{ij} - \frac{H_{ik}^2}{H_{kk}} , $$
+    giving us the desired result.
+    \qed
+
+\eproof
+
+Because smooth functions of the form \gotoleqn{} have a single critical point at the origin, an immediate
+corollary of this theorem is that nondegenerate critical points are isolated.
+
+\bcoro
+
+    Nondegenerate critical points of a smooth function are isolated.
+
+\ecoro
+
