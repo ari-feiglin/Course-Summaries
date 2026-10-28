@@ -1,0 +1,172 @@
+\subsection{Homotopy type in terms of critical values}
+
+Let $f$ be a Morse function on a manifold $M$, then for $a\in\bR$ we define the {\emphcolor level set}
+$$ M_a = f^{-1}(-\infty,a] = \set{p\in M}[f(p)\leq a] . $$
+Because $(-\infty,a]$ has codimension $0$ in $\bR$, $f$ is trivially transervsal to it, and so $M_a$
+is a smooth submanifold of $M$.
+It turns out that these level sets offer rich insight into $M$.
+For one, if $M$ is compact then $f$ attains a minimum $a$ and a maxmimum $b$, so that
+$$ M_x = \emptyset\hbox{ when $x<a$},\qquad M_y = M\hbox{ when $y\geq b$} . $$
+Now $a,b$ are critical values of $f$, and it turns out that these level sets have interesting behavior
+around level sets.
+
+For a Riemannian metric $g$ on $M$ and $f\in C^\infty(M)$, define $\grad f\in\X(M)$ to be the vector field
+determined by
+$$ \iota(\grad f)g = \d f . $$
+
+\bthrm[name={nocritdiff}]
+
+    Let $f$ be a smooth real-valued function on $M$, and let $a<b$ be real.
+    Suppose that $f^{-1}[a,b]\subseteq M$ is compact and contains no critical points of $f$.
+    Then $M_a$ and $M_b$ is diffeomorphic, and the inclusion $M_a\inj M_b$ is a strong deformation retract.
+
+\ethrm
+
+\bproof
+
+    Choose a Riemannian metric on $M$, and define $\rho\colon M\to\bR$ to be a smooth function equal to
+    $1/\iprod{\grad f,\grad f}$ on the compact set $f^{-1}[a,b]$ which vanishes outside a compact
+    neighborhood of $f^{-1}[a,b]$.
+    Note that $\rho$ is only-well defined by the assumption that $f$ has no critical points in $f^{-1}[a,b]$.
+    Then define $X=\rho\grad(f)$.
+    This vector field is compactly supported and thus generates a global flow $\theta_t\colon M\to M$.
+
+    Fix a $p\in M$ and consider the map $t\mapsto f(\theta_t(p))$, which is smooth $\bR\to\bR$.
+    Then
+    $$ \drvof{f(\theta_t(p))}t = \iprod{\drvof{\theta_t(p)}t,\grad f} = \iprod{X,\grad f} =
+    \frac\rho{\grad f,\grad f} . $$
+    This is $1$ when $a\leq f(\theta_t(p))\leq b$, and otherwise we may assume it is bound by $1$.
+    Thus $t\mapsto f(\theta_t(p))$ is linear of the form $t+f(p)$ when $a\leq f(\theta_t(p))\leq b$, and
+    otherwise is less than $t+f(p)$.
+
+    Consider the diffeomorphism $\theta_{b-a}\colon M\to M$.
+    Then if $f(p)\leq a$ we have $f(\theta_{b-a}(p))\leq b-a+f(p)\leq b$ so $\theta_{b-a}(M_a)\subseteq M_b$.
+    Similarly we see that $\theta_{a-b}=\theta_{b-a}^{-1}$ maps $M_b$ into $M_a$ so that they form a
+    diffeomorphism $M_a\cong M_b$.
+
+    Now define a homotopy $H\colon[0,1]\times M_b\to M_b$ by
+    $$ H_t(p) = \cases{p&if $f(p)\leq a$\cr \phi_{t(a-f(p))}(p)&if $a\leq f(p)\leq b$} . $$
+    Both of these cases agree when $f(p)=a$, and thus this is continuous.
+    Now $H_0$ is the identity, $H_t(p)=p$ when $p\in M_a$, and
+    $H_1(p)=\phi_{a-f(p)}(p)\in M_a$ for $p\notin M_a$ so that $H$ is a strong deformation retract.
+    \qed
+
+\eproof
+
+\bthrm
+
+    Let $f\colon M\to\bR$ be a smooth function and $p\in M$ a nondegenerate critical point with index
+    $\lambda$ and $f(p)=c$.
+    If $f^{-1}[c-\epsilon,c+\epsilon]$ is compact and contains no critical points other than $p$ then
+    $\epsilon$ can be taken sufficiently small so that $M_{c+\epsilon}$ is homotopy equivalent to
+    $M_{c-\epsilon}$ attached to a $\lambda$-cell.
+
+\ethrm
+
+\bnote
+
+    By a $\lambda$-cell we mean a manifold diffeomorphic to the unit ball in $\bR^\lambda$.
+    Attaching it to a manifold means gluing it along some $g\colon\partial e_\lambda\to M$.
+
+\enote
+
+\bproof
+
+    Take a neighborhood $U$ around $p$ such that $f$ has the representation
+    $$ f = c - u_1^2 - \cdots - u_\lambda^2 + u_{\lambda+1}^2 + \cdots u_n^2 . $$
+    Take $\epsilon>0$ sufficiently small so that $f^{-1}[c-\epsilon,c+\epsilon]$ contains no critical points
+    other than $p$ and $U$ contains the closed ball $\set{\bar u}[\norm u^2\leq2\epsilon]$.
+    Define $e_\lambda$ in $U$ to be
+    $$ e_\lambda = \set{(u_1,\dots,u_\lambda,0,\dots,0)\in U}[u_1^2+\cdots+u_\lambda^2\leq\epsilon] . $$
+    Now, $\bar u\in e_\lambda\cap M_{c-\epsilon}$ iff
+    $$ u_{\lambda+1} = \cdots = u_n = 0,\qquad u_1^2+\cdots+u_\lambda^2\leq\epsilon,\qquad
+    -u_1^2+\cdots+u_\lambda^2 \leq -\epsilon , $$
+    i.e.\ $e_\lambda\cap M_{c-\epsilon}=\partial e_\lambda$.
+    Thus in $U$ we see that $e_\lambda\cup M_{c-\epsilon}$ is a gluing of $e_\lambda$ and $M_{c-\epsilon}$.
+
+    Let $\mu\colon\bR\to\bR$ be a smooth function such that
+    $$ \mu(0) > \epsilon,\qquad \mu(r) = 0 \hbox{ for $r\geq2\epsilon$},\qquad -1 < \mu' \leq 0 . $$
+    Define $F\colon M\to\bR$ to be equal to $f$ outside of $U$ and within $U$,
+    $$ F = f - \mu(u_1^2 + \cdots + u_\lambda^2 + 2u_{\lambda+1}^2 + \cdots + 2u_n^2) . $$
+    This is a smooth function as it agrees on its overlaps.
+    For convenience define
+    $$ \xi,\eta\colon U\to[0,\infty),\qquad \xi = u_1^2 + \cdots + u_\lambda^2,\qquad
+    \eta = u_{\lambda+1}^2 + \cdots + u_n^2 $$
+    so that
+    $$ f = c - \xi + \eta,\qquad F = c - \xi + \eta - \mu(\xi + 2\eta) . $$
+
+    Now we make a few claims which will progress our proof.
+    \benum
+        \item $F^{-1}(-\infty,c+\epsilon]=M_{c+\epsilon}=f^{-1}(-\infty,c+\epsilon]$.
+        Outside the ellipsoid $\xi+2\eta\leq2\epsilon$ both $f$ and $F$ agree, so that
+        these sets agree outside of this ellipsoid.
+        Within the ellipsoid note that
+        $$ F \leq f = c - \xi + \eta \leq c + \frac12\xi + \eta \leq c + \epsilon $$
+        and so the ellipsoid is contained in both sets.
+
+        \item The critical points of $F$ and $f$ are the same.
+        We have
+        $$ \pdvof F\xi = - 1 - \mu'(\xi + 2\eta) < 0,\qquad
+        \pdvof F\eta = 1 - 2\mu'(\xi + 2\eta) \geq 1 , $$
+        and so
+        $$ \d F = \pdvof F\xi\d\xi + \pdvof F\eta\d\eta , $$
+        and since $\d\xi,\d\eta$ are only every simultaneously zero at the origin, $F$'s only critical
+        point in $U$ is the origin.
+        And outside of $U$ it agrees with $f$.
+
+        \item $F^{-1}(-\infty,c-\epsilon]$ is a deformation retract of $M_{c+\epsilon}$.
+        Now consider $F^{-1}[c-\epsilon,c+\epsilon]=F^{-1}[c-\epsilon,\infty)\cap F^{-1}(-\infty,c+\epsilon]$.
+        By the first point, the second set here is $f^{-1}(-\infty,c+\epsilon]$.
+        And since $F\leq f$ in $U$, the first set is contained in $f^{-1}[c-\epsilon,\infty)$.
+        Putting this together we have
+        $$ F^{-1}[c-\epsilon,c+\epsilon] \subseteq f^{-1}[c-\epsilon,c+\epsilon] . $$
+        Thus it is compact, and by (2) the only critical point of $F$ in it is potentially the origin.
+        But
+        $$ F(p) = c - \mu(0) < c - \epsilon , $$
+        so that the origin is not in $F^{-1}[c-\epsilon,c+\epsilon]$.
+        By \refmath[theorem]{nocritdiff} this means that $F^{-1}(-\infty,c-\epsilon]$ is a deformation
+        retract of $F^{-1}(-\infty,c+\epsilon]$ which is $M_{c+\epsilon}$ by (1).
+    \eenum
+    Let us denote by $H$ the closure of $F^{-1}(-\infty,c-\epsilon]-M_{c-\epsilon}$ so that
+    $F^{-1}(-\infty,c-\epsilon]=M_{c-\epsilon}\cup H$.
+    Now we have defined
+    $$ e_\lambda = \set{q\in U}[\xi(q)\leq\epsilon,\ \eta(q)=0] . $$
+    Because $\pdvof F\xi<0$ we have that for $q\in e_\lambda$, $F(q)\leq F(p)<c-\epsilon$
+    and $f(q)\geq c-\epsilon$.
+    Thus $e_\lambda$ is contained in $F^{-1}(-\infty,c-\epsilon]-M_{c-\epsilon}\subseteq H$.
+
+    Finally we claim that $M_{c-\epsilon}\cup e_\lambda$ is a deformation retract of $M_{c-\epsilon}\cup H$.
+    In lieu of (3) this proves the desired result.
+    The deformation retract $h_t$ is defined as follows:
+    \benum
+        \item For $\xi\leq\epsilon$ define
+        $$ h_t(u_1,\dots,u_n) = (u_1,\dots,u_\lambda,tu_{\lambda+1},\cdots,tu_n) $$
+        so that $h_0$ maps into $e_\lambda$, $h_1$ is the identity, and $h_t|_{e_\lambda}$ is the identity.
+        This is well-defined, as in it maps $F^{-1}(-\infty,c-\epsilon]$ to itself, because
+        $\pdvof F\eta>0$ so that $F(\xi,t\eta)\leq F(\xi,\eta)\leq c-\epsilon$ for $t\leq1$.
+        \item For $\epsilon\leq\xi\leq\eta+\epsilon$, let
+        $$ h_t(u_1,\dots,u_n) = (u_1,\dots,u_\lambda,s_tu_{\lambda+1},\dots,s_tu_n),\qquad
+        s_t = t + (1-t)\parens{\frac{\xi-\epsilon}\eta}^{1/2} . $$
+        Here $s_t\in[0,1]$ so that this is well-defined for the same reason as above.
+        And $s_1=1$ so that $h_1$ is the identity, and $h_0$ maps into
+        $f^{-1}(c-\epsilon)\subseteq M_{c-\epsilon}$.
+        When $\xi=\epsilon$ this agrees with the definition in (1), so it remains continuous.
+        \item For $\eta+\epsilon\leq\xi$, i.e.\ within $M_{c-\epsilon}$, define $h_t$ to be the identity.
+        When $\xi=\eta+\epsilon$ this corresponds to the definition in (2).
+    \eenum
+    And so we have finished.
+    \qed
+
+\eproof
+
+The following corollary can be obtained from topological considerations regarding, and is immediate in the
+case when $M$ is compact (by induction).
+
+\bcoro
+
+    Let $f\colon M\to\bR$ be a Morse function on $M$ such that for every $a\in\bR$, $M_a$ is compact.
+    Then $M$ is homotopy-equivalent to a CW-complex with a cell of dimension $\lambda$ for each critical
+    point of index $\lambda$.
+
+\ecoro
+

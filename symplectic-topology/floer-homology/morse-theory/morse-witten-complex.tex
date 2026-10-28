@@ -1,0 +1,314 @@
+\subsection{The Morse-Witten complex}
+
+\bdefn
+
+    Let $f\colon M\to\bR$ be a Morse function.
+    A {\emphcolor pseudo-gradient field} for $f$ is a vector field $X\in\X(M)$ such that
+    \benum
+        \item $(Xf)(p)\leq0$ with equality iff $p$ is a critical point of $f$.
+        \item There is a local Morse chart around every critical point of $f$ in which $X$ coincides with
+        the negative gradient for $f$.
+    \eenum
+
+\edefn
+
+Explicitly point (2) means that if $p\in\crit f$ then there is a Morse chart $(U,(u_i))$ centered at $p$
+such that $X$ has the form
+$$ X = -\sum_i\pdvof f{u_i}\pdv{u_i} = 2\parens{-\sum_{i=1}^\lambda u_i\pdv{u_i} + \sum_{i=\lambda+1}^nu_i\pdv{u_i}} . \eqcnt{pgradloc} $$
+Every Morse function posseses a pseudo-gradient.
+Because critical points are isolated, there are only countably many.
+So let $\set{c_i}_{i\geq1}$ enumerate $f$'s critical points and let $(U_i,\phi_i)$ be disjoint Morse charts
+for each $c_i$.
+We can then add more charts to obtain an atlas $(U_i,\phi_i)_i$ of $M$, and we may assume that each critical
+point lies in a single chart, and moreover lies in a neighborhood disjoint from all other $U_j$s, call it
+$V_i$.
+
+Now let $X_j$ be a local vector field on $U_j$ defined by pulling back $-\grad f\circ\phi_i^{-1}$ on
+$\phi_i(U_i)\subseteq\bR^n$.
+Let $(\chi_j)_j$ be a partition of unity subordinate to this open cover and define
+$$ X = \sum_j\chi_jX_j , $$
+where of course we extend $\chi_jX_j$ to all of $M$.
+Because $X_jf\leq0$ with equality only at critical points we have $Xf\leq0$ with equality iff $\chi_jX_jf=0$
+for all $j$, and taking a $j$ where $\chi_j\neq0$ we have $X_jf=0$ so that the point is critical.
+For a critical point $c_i\in U_i$, $X$ is equal to $X_i=-\grad f$ in the Morse chart $V_i$.
+
+So we have proven the following.
+
+\bprop
+
+    Every Morse function possesses a pseudo-gradient.
+
+\eprop
+
+\bdefn
+
+    Let $f$ be a Morse function and $X$ a pseudo-gradient.
+    Let $\theta_t$ be the flow of $X$, and $p\in\crit f$ critical.
+    Then we define its {\emphcolor stable} and {\emphcolor unstable manifolds} to be, respectively,
+    $$ W^s_X(p) = \set{x\in M}[\lim_{t\to+\infty}\theta_t(x)=p],\qquad
+    W^u_X(p) = \set{x\in M}[\lim_{t\to-\infty}\theta_t(x)=p] . $$
+
+\edefn
+
+Consider $f$ in a Morse chart,
+$$ f(x_-,x_+) = c - \norm{x_-}^2 + \norm{x_+}^2 . $$
+Define the bilinear form $Q$ on $\bR^n$ by $Q(x_-,x_+)=-\norm{x_-}^2+\norm{x_+}^2$.
+Now for $\epsilon,\delta>0$ define the set
+$$ U(\epsilon,\delta) = \set{x\in\bR^n}[-\epsilon<Q(x)<\epsilon,\ \norm{x_-}^2\norm{x_+}^2\leq\eta(\epsilon+\eta)] . $$
+The Morse chart is diffeomorphic to some $U(\epsilon,\eta)$ under some diffeomorphism $\phi$.
+Then the boundary of $U=U(\epsilon,\eta)$ can be written in three parts:
+\benum
+    \item Subsets of the sublevel sets of $Q$:
+    $$ \partial_\pm U = \set{x\in\partial U}[Q(x)=\pm\epsilon,\ \norm{x_\mp}^2\leq\eta] . $$
+    \item Trajectories of $\grad Q$:
+    $$ \partial_0U = \set{x\in\partial U}[\norm{x_-}^2\norm{x_+}^2=\eta(\epsilon+\eta)] . $$
+\eenum
+Now suppose that $\Omega(p)=\phi(U(\epsilon,\eta))$ is a Morse chart about $p\in\crit f$.
+Then define
+$$ \partial_\pm\Omega(p) = \phi(\partial_\pm U),\qquad \partial_0\Omega(p) = \phi(\partial_0U) . $$
+
+Note that in $\Omega(p)$, $X$ has the form \gotoeqn{pgradloc}, whose flow lines are of the form
+$$ \theta(t,p) = (p_1e^{-t},\dots,p_\lambda e^{-t},p_{\lambda+1}e^t,\dots,p_ne^t) . $$
+We see that as $t\to\infty$, this converges to $0$ iff $p_i=0$ for $i>\lambda$ and similarly for $-\infty$.
+Thus in $U$,
+$$ W^s(0)\cap U = U\cap V_+,\qquad W^u(0)\cap U = U\cap V_- , $$
+where $V_+=\set{x\in\bR^n}[x_-=0]$ and similarly $V_-=\set{x\in\bR^n}[x_+=0]$.
+Define $W_0=W^s(0)\cap U=U\cap V_+$ in $M$ (i.e.\ its image under $\phi)$.
+Now if $x\in W^s(p)$ then $\theta(t,x)\in W_0$ for all $t>t_0$ for some $t_0$.
+If $\theta(t_0,x)\notin W_0$ then it has a coordinate $i>\lambda$ which is nonzero, but then by our explicit
+solution for $\theta$ in $U$ we see that $\theta(t,x)$ cannot converge to zero, a contradiction.
+
+These arguments can be seen to show the following.
+The dimensions come from the dimensions of $V_+,V_-$.
+
+\bprop
+
+    The stable and unstable manifolds of $p\in\crit f$ are submanifolds of $M$ diffeomorphic to open
+    balls, with dimensions
+    $$ \dim W^u(p) = \codim W^s(p) = \ind(f;p) . $$
+
+\eprop
+
+\bprop
+
+    Suppose $M$ is compact, and $\gamma\colon\bR\to M$ an integral curve of a pseudo-gradient $X$.
+    Then the following limits both exist and are critical points of $f$:
+    $$ \lim_{t\to\infty}\gamma(t) = c,\qquad \lim_{t\to-\infty}\gamma(t) = d . $$
+
+\eprop
+
+\bproof
+
+    Let
+    $$ \Omega = \bigcup_{c\in\crit f}\Omega(c) $$
+    be the union of all the Morse neighborhoods, of which there are finitely many as $M$ is compact.
+
+    We show the claim for $c$, the claim for $d$ follows similarly or by considering $-f$.
+    Suppose that $c$ does not exist, which means that every time $\gamma(t)$ enters a Morse neighborhood
+    it must then exit it.
+    More than this, it must eventually leave it forever because $f\circ\gamma$ is decreasing.
+    Thus $\gamma$ must leave all of the Morse neighborhoods at some point, as there are only finitely many.
+    So suppose that for every $t\geq t_0$, $\gamma(t_0)\notin\Omega$.
+
+    Because $M$, and thus $M-\Omega$, is compact, the map $x\mapsto(Xf)(x)$ has a maximum.
+    And because $x\notin\Omega$ this maximum is negative.
+    So there is an $\epsilon_0>0$ such that $(Xf)(x)\leq-\epsilon_0$ for all $x\notin\Omega$.
+
+    And so for every $t\geq t_0$ we have
+    $$ f(\gamma(t)) - f(\gamma(t_0)) = \int_{t_0}^t\drvof{(f\circ\gamma)}u\d u
+    = \int_{t_0}^t(Xf)\circ\gamma \leq -\epsilon_0(t-t_0) . $$
+    Thus as $t\to\infty$ we have that $f\circ\gamma(t)\to-\infty$ which is impossible as $f$ has a minimum.
+
+    So $\gamma$ remains in a Morse neighborhood forever, which is only if it converges to the critical point
+    of that neighborhood.
+    \qed
+
+\eproof
+
+Immediately we have the following corollary.
+
+\bcoro
+
+    Let $M$ be compact, then it can be decomposed into
+    $$ M = \bigsqcup_{p\in\crit f}W^s(p) = \bigsqcup_{p\in\crit f}W^u(f) . $$
+
+\ecoro
+
+\bdefn
+
+    A pseudo-gradient $X$ for a Morse function $f$ satisfies the {\emphcolor Smale condition} if for every
+    $p,q\in\crit f$, $W^u(p)$ and $W^s(q)$ intersect transversally.
+
+\edefn
+
+Notice that if $x\in W^u(p)\cap W^s(q)$ then
+$$ \lim_{t\to-\infty} f\circ\theta^x(t) = f(p),\qquad \lim_{t\to\infty}f\circ\theta^x(t) = f(q) , $$
+and since $f$ decreases along $X$'s flow, we must have $f(q)\leq f(p)$.
+
+If $X$ satisfies the Smale condition, then for $p,q\in\crit f$ define
+$$ \M(p,q) = W^u(p)\cap W^s(q) = \set{x\in M}[\lim_{t\to-\infty}\theta(t,x)=p,\ \lim_{t\to\infty}\theta(t,x)=q] . $$
+This is the set of all of the flow lines coming from $p$ which flow to $q$.
+We know that
+$$ \codim\M(p,q) = \codim W^u(p) + \codim W^s(q) , $$
+and thus
+$$ \dim\M(p,q) = \ind(f;p) - \ind(f;q) . $$
+
+\bprop
+
+    The group $\bR$ acts smoothly on $\M(p,q)$ by translations:
+    $$ t\cdot x = \theta(t,x) . $$
+    This action is free and proper if $p\neq q$.
+
+\eprop
+
+\bproof
+
+    This is obviously a smooth group action.
+    The only critical points in $\M(p,q)$ are those equal to both $p$ and $q$ (because they are invariant under
+    the flow), so if $p\neq q$ then $\M(p,q)$ has no critical points.
+    Thus any $x\in\M(p,q)$ is not critical and then $f\circ\theta^x$ is decreasing in $t$, is strictly so
+    as none of the points $\theta^x(t)$ are critical, so if $\theta(t,x)=\theta(t',x)$ then
+    $f(\theta(t,x))=f(\theta(t',x))$ which implies $t=t'$.
+
+    To show that the action is proper, recall that $f(q)<f(p)$ because $f$ decreases along the flow lines.
+    For any $x\in\M(p,q)$ then we have $f(q)<f(x)<f(p)$, and because the limits of $f\theta^x(t)$ are $f(p),f(q)$, by the mean value theorem
+    for any $f(q)<c<f(p)$ there is a unique $t$ such that $f\theta^x(t)=c$.
+    Choose any regular value $c$ and define $S=\M(p,q)\cap f^{-1}c$, which is a submanifold.
+    Then the map
+    $$ \bR\times S \to \M(p,q),\qquad (s,x) \mapsto \theta(s,x) $$
+    is a bijective smooth map, and is seen to be a diffeomorphism.
+    Then $\bR$'s action on $\M(p,q)$ has the form
+    $$ t\cdot(s,x) = (t+s,x) , $$
+    and so if $K\subseteq\M(p,q)^2\cong(\bR\times S)^2$ is compact, the preimage of $(t,s,x)\mapsto((t+s,x),(s,x))$ is compact in $S$ and bounded in $\bR$, so compact
+    as well.
+    Thus the action is proper.
+    \qed
+
+\eproof
+
+Thus for critical $p\neq q$, the quotient
+$$ \L(p,q) = \M(p,q)/\bR $$
+is a smooth manifold of dimension $\ind(f;p)-\ind(f;q)-1$, called the {\emphcolor space of trajectories}.
+Thus $\L(p,q)$ is nonempty only when $\ind(p)>\ind(q)$.
+Considering the proof above we see that $\L(p,q)$ is diffeomorphic to $\M(p,q)\cap f^{-1}c$ for $f(q)\leq c\leq f(p)$ regular.
+It can be viewed as a smooth structure on the set of all (maximal) integral curves of $X$ whose limits are $p,q$.
+
+The existence of a pseudo-gradient satisfying the Smale condition is non-trivial and we omit the proof below.
+
+\bthrm
+
+    Every Morse function possesses a pseudo-gradient which satisfies Smale condition.
+
+\ethrm
+
+\bdefn
+
+    Let $f$ be a Morse function and $X$ a Smale pseudo-gradient.
+    The {\emphcolor space of broken trajectories} is the set
+    $$ \bar\L(p,q) = \bigcup_{p=p_0,\dots,q=p_n\in\crit f}\L(p_0,p_1)\times\cdots\times\L(p_{n-1},p_n) . $$
+    Which will be endowed with a topology.
+
+\edefn
+
+Let $\lambda=(\lambda_1,\dots,\lambda_n)$ be a broken trajectory connecting $p_i\in\crit f$.
+Thus $\lambda_i$ exits $\Omega(p_{i-1})$ and enters $\Omega(p_i)$ (Morse neighborhoods) and $f\circ\lambda_i$ is decreasing.
+Let $U_{i-1}^-$ be a neighborhood of the exit point from $\Omega(p_{i-1})$ which is contained in its (the exit point's) level set.
+Similarly $U_i^+$ is a neighborhood of the entrance point to $\Omega(p_i)$ contained in its level set.
+Let $U^-,U^+$ be the collections of $U^-_i$ and $U^+_i$ respectively.
+And we define $\W(\lambda,U^-,U^+)$ to be the set of all broken trajectories $\mu=(\mu_1,\dots,\mu_k)$ where there are integers $0<i_0<\cdots<i_k=n$ such that
+\benum
+    \item For all $j\leq k$, $\mu_j\in\L(p_{i_j},p_{i_{j+1}})$.
+    \item $\mu_j$ exits the charts $\Omega(p_{i_j}),\dots,\Omega(p_{i_{j+1}-1})$ through the interiors of the corresponding $U^-$, and enters $\Omega(p_{i_j+1}),\dots,\Omega(p_{i_{j+1}})$
+    through the corresponding charts in $U^+$.
+\eenum
+Then this collection of $\W(\lambda,U^-,U^+)$ forms a basis for a topology on $\bar\L(p,q)$.
+Furthermore this topology agrees with the topology on $\L(p,q)\subseteq\bar\L(p,q)$.
+
+Notice that if $\ind(p)=\ind(q)+1$ then $\bar L(p,q)=\L(p,q)$ as the space of trajectories is only nonempty when the indices decrease.
+Thus for any other critical point $c$, one of $\L(p,c)$ or $\L(c,q)$ must be empty.
+
+\bprop
+
+    The space $\bar\L(p,q)$ is compact.
+
+\eprop
+
+\bproof
+
+    Omitted.\CITE
+
+\eproof
+
+\bcoro
+
+    If $\ind(p)=\ind(q)+1$ then $\L(p,q)$ is a finite set.
+
+\ecoro
+
+\bproof
+
+    By the above discussion, $\L(p,q)=\bar\L(p,q)$ and is thus a compact manifold of dimension $0$, and thus finite.
+    \qed
+
+\eproof
+
+We now turn our focus to the Morse-Witten (or just Morse) complex of a Morse function (along with a Smale pseudo-gradient).
+
+\bimport
+
+    For the remainder of the discussion regarding Morse theory, the underlying manifold is assumed to be
+    compact.
+
+\eimport
+
+\bdefn
+
+    For a Morse function $f$ and a Smale pseudo-gradient $X$, define $\crit_k(f)$ to be the set of
+    critical points of $f$ of index $k$.
+    Then define $C_k(f)$ to be the free $\bZ/2$-module generated by $\crit_k(f)$:
+    $$ C_k(f) = \set{\sum_{p\in\crit_kf}\alpha_pp}[\alpha_p\in\bZ/2] . $$
+    These $C_k(f)$s form a chain complex with differential
+    $$ \partial_X\colon C_k(f) \to C_{k-1}(f),\qquad
+    \partial_X(p) = \sum_{q\in\crit_{k-1}f}\abs{\L(p,q)}q , $$
+    where $\abs{\L(p,q)}$ denotes the (finite) cardinality of $\L(p,q)$ modulo $\bZ/2$.
+    This chain complex is called the {\emphcolor Morse-Witten complex} (or {\emphcolor Morse complex}).
+
+\edefn
+
+The assumption that the manifold is compact ensures that $\partial_X$ is well-defined, as $\crit_k(f)$ is
+finitely-generated and thus all of the sums above are finite.
+
+It is not a priori clear why this forms a chain complex.
+The double composition of $\partial_X$ is, for $p\in\crit_{k+1}(f)$,
+$$ \partial_X\circ\partial_X(p) = \sum_{q\in\crit_{k-1}f,\ r\in\crit_kf}\abs{\L(p,r)}\abs{\L(r,q)}q . $$
+The terms in this sum are subsets of $\bar\L(p,q)$, we can rewrite it as
+$$ = \sum_{q\in\crit_{k-1}f}\abs{\bigsqcup_{r\in\crit_{k-1}f}\L(p,r)\times\L(r,q)}q , $$
+this is $\bar\L(p,q)$ without $\L(p,q)$.
+
+We will prove that this union is the boundary of $\bar\L(p,q)$:
+$$ \partial\bar\L(p,q) = \bigsqcup_{r\in\crit_kf}\L(p,r)\times\L(r,q) . $$
+Furthermore we will show $\bar\L(p,q)$ is a compact manifold of dimension $1$.
+Because all connected compact $1$-manifolds are diffeomorphic to either $[0,1]$ or $S^1$, and thus all
+compact $1$-manifolds are disjoint unions of copies of the unit interval and the $1$-sphere, their
+boundaries have an even number of points.
+Thus if we can prove these two things we will have finished.
+
+We just need to show that we can provide $\bar\L(p,q)$ with charts about points in
+$(\lambda_1,\lambda_2)\in\L(p,r)\times\L(r,q)$ which are diffeomorphic to the half-spaces $[0,\delta)$.
+So we will define a continuous embedding
+$$ \psi\colon[0,\delta) \to \bar\L(p,q) $$
+such that
+$$ \psi(0) = (\lambda_1,\lambda_2),\qquad \psi(s) \in \L(p,q)\hbox{ for $s>0$}, $$
+and $\psi$ is smooth on $(0,\delta)$.
+This can be done.\CITE
+
+\bdefn
+
+    The chain complex $(C_\bul(f),\partial_X)$ gives rise to homology modules denoted
+    $$ \HM_k(f,X;\bZ/2) = H_k(C_\bul(f),\partial_X) = \frac{\ker\partial_X}{\im\partial_X} . $$
+    These modules are called the manifold's {\emphcolor Morse homology}.
+
+\edefn
+
+This 
+
