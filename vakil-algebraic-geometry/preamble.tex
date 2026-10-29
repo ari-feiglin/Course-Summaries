@@ -1,264 +1,31 @@
 \input setup
 
-\bgroup
-\catcode`_=11
-\global\let\@mstrip=\_mstrip
-\egroup
+\def\pagedecor{\pageborder{rgb{.5 .9 .8}}{rgb{0 .3 .3}}{5}}
+\def\setboxshadow{\def\boxshadowcolor{rgb{.3 .8 .7}}}
+\def\contentbox{\bppbox{rgb{.7 1 .9}}{rgb{0 .3 .3}}{rgb{0 .4 .4}}}
 
-\let\CITE\relax
-\def\TODO#1{\par\centerline{\setfontandscale{bf}{20pt}\color{red}TODO: #1}}
-
-\def\pagedecor{\pageborder{rgb{1 .7 .7}}{rgb{.5 .2 .2}}{5}}
-\def\setboxshadow{\def\boxshadowcolor{rgb{.8 .6 .6}}}
-\def\contentbox{\bppbox{rgb{1 .8 .8}}{rgb{.5 .1 .1}}{rgb{.3 0 0}}}
-
-\def\diagtxtwrap#1{\setscale{8pt}$#1$}%
-
-\def\frac#1#2{{{#1}\over{#2}}}
-\def\dfrac#1#2{{\displaystyle{{\displaystyle#1}\over{\displaystyle#2}}}}
-
-\def\c#1{{\cal #1}}
-\def\s#1{{\sf  #1}}
-\def\b#1{{\bf  #1}}
-\def\B#1{{\bb  #1}}
-\def\f#1{{\frak#1}}
-
-\def\newmathtype#1#2#3#4{%
-    \expandafter\def\csname @#1\endcsname##1[##2]{\begingroup\left#2 ##1 \;\middle#3\; ##2 \right#4\endgroup}%
-    \expandafter\def\csname @@#1\endcsname##1{\begingroup\left#2 ##1\right#4\endgroup}%
-    \expandafter\def\csname #1\endcsname##1{\@ifnextchar[ {\csname @#1\endcsname{##1}}{\csname @@#1\endcsname{##1}}}%
-}
-
-\newmathtype{set}\{\vert\}
-\newmathtype{gen}<\vert>
-\newmathtype{norm}|{}|
-\newmathtype{ideal}(\vert)
-
-\def\parens#1{\mathopen{}\mathclose{\left(#1\right)}}
-\def\abs#1{\mathopen{}\mathclose{\left|#1\right|}}
-\def\ccoloneqq{\mathrel{{\mathop:}{\mathop:}{=}}}
-
-\def\@true{\@true}
-\def\@false{\@false}
-
-\def\@mathify@col#1#2{%
-    \relax\xdef#1{%
-        #1%
-        \ifx\@mathifyfstcol\@false%
-            &%
-        \fi%
-        $#2$%
-    }%
-    \ifx\@mathifyfstcol\@true%
-        \global\let\@mathifyfstcol\@false%
-    \fi%
-}
-
-\def\@mathify@row#1{%
-    \noalign{\xdef#1{%
-        #1%
-        \ifx\@mathifyfstrow\@false%
-            \noexpand\cr%
-        \fi%
-    }%
-    \ifx\@mathifyfstrow\@true%
-        \global\let\@mathifyfstrow\@false%
-    \fi%
-    \global\let\@mathifyfstcol\@true}%
-}
-
-\def\mathify#1#2{%
-    \def#1{}%
-    \let\@mathifyfstrow\@true%
-    \let\@mathifyfstcol\@true%
-    \vbox{\everycr={\@mathify@row{#1}}\halign{&\@mathify@col{#1}{##}\cr
-        #2\cr
-    }}%
-}
-
-\def\commsqed#1#2#3#4#5{{%
-    \mathify\@csq{#1}%
-    \expandafter\drawdiagram\expanded{{\@csq}}{%
-        \diagarrow{from={1,1}, to={1,2}, text={#2}, y distance=-.25cm}%
-        \diagarrow{from={2,1}, to={2,2}, text={#3}, y distance=.25cm}%
-        \diagarrow{from={1,1}, to={2,1}, text={#4}, x distance=-.25cm}%
-        \diagarrow{from={1,2}, to={2,2}, text={#5}, x distance=-.25cm}%
-    }%
-}}
-
-\def\commsq#1#2#3#4#5{%
-    \par\medskip%
-    \centerline{\commsqed{#1}{#2}{#3}{#4}{#5}}%
-    \medskip%
-}
-
-\def\diagramed#1#2{{%
-    \mathify\@csq{#1}%
-    \expandafter\drawdiagram\expanded{{\@csq}}{#2}%
-}}
-
-\def\@diagram#1#2#3{%
-    \par\medskip%
-    \centerline{\diagramed{#2}{#3}#1}%
-    \medskip%
-}
-
-\def\diagram{\@ifstar {\@diagram{.}}{\@diagram{}}}
-
-\def\@multline#1{%
-\hbox to\dimexpr\displaywidth-\leftskip-1cm\relax{%
-    \ifx\@nfirst\space%
-        $\displaystyle#1$\hfill%
-        \global\let\@nfirst\undefined%
-    \else%
-        \hfill$\displaystyle#1$%
-    \fi%
-}}
-
-\def\multline#1{%
-    \let\@nfirst\space%
-    \kern\leftskip\vcenter{\halign{\@multline{##}\crcr
-        #1\crcr%
-    }}%
-}
-
-\def\mltext#1{\vcenter{\tabskip=0pt\halign{##\hfil\crcr#1\crcr}}}
+\def\rmht#1{\vbox to0pt{\vss\hbox{#1}}}
 
 \mathchardef\supsetneq="3529
 \mathchardef\subsetneq="3528
 \mathchardef\rtimes="256F
 \mathchardef\nmid="352D
 
-\def\coloneqq{\mathrel{{\mathop:}{=}}}
-
-\let\epsilon=\varepsilon
-\let\phi=\varphi
-
-\def\@makeletter#1#2#3{\expandafter\def\csname #2\endcsname{{#1#3}}}
-
-\def\@makecal#1{\@makeletter\c{#1}{#1}}
-\commap\@makecal{U,V,O,A,B,C,D,E,F,G,H,S}
-
-\def\@makefrak#1{\@makeletter\f{#1}{#1}}
-\commap\@makefrak{p,q,m,n}
-
-\def\@makebb#1{\@makeletter\bb{b#1}{#1}}
-\commap\@makebb{N,Z,Q,R,C,F,A,P}
-
-\def\@makescr#1{\@makeletter\scr{s#1}{#1}}
+\commap\@makecal{U,V,O,A,B,C,D,E,F,G,H,S,L,J,N,M,W}
+\commap\@makefrak{X,p,q,m,n}
+\commap\@makebb{N,Z,Q,R,C,F,A,P,G}
 \commap\@makescr{F,G,H,O}
 
-\def\implies{\mathrel{\longvarRightarrow}}
-
-\def\@@malias#1#2{\protected\def#1{#2}}
-\def\@malias#1{\@@malias#1}
-
-\commap\@malias{%
-    {\to}{\varrightarrow},%
-    {\longto}{\longvarrightarrow},%
-    {\To}{\varRightarrow},%
-    {\tof}{\varrightleftarrows},%
-    {\xtof}{\xvarrightleftarrows},%
-    {\xto}{\xvarrightarrow},%
-    {\xtto}{\xvarrightarrows},%
-    {\xot}{\xvarleftarrow},%
-    {\tto}{\varrightarrows},%
-    {\inj}{\varuphookrightarrow},%
-    {\ot}{\varleftarrow},%
-    {\xot}{\xvarleftarrow},%
-    {\bul}{\bullet},%
-    {\down}{\downarrow}%
-}
-
-\def\adjarrow#1#2{\mathrel{\putsym{\xvaradjarrow{#1}[{#2}]}{{\scriptstyle\perp}}}}
-\def\simarrow#1#2{\mathrel{\putsym{\xvaradjarrow{#1}[{#2}]}{{\sim}}}}
-
-\def\y{{\sf y}}
-\def\colim{\mathop{\rm colim}\nolimits}
-\def\lim{\mathop{\rm lim}\nolimits}
-\def\ilim{\underlvecc\lim}
-\def\coflim{\undervecc\colim}
-\def\ihom{\mathop{\bf Hom}\nolimits}
-\def\ehom{\mathop{\underline{\hom}}\nolimits}
-
-\def\mathrm#1{{\rm#1}}
-\def\xtos#1{\xto{\ #1\ }}
-
-\def\diagrowheight{1cm}
-\def\diagcolwidth{1cm}
-
-\def\binom#1#2{{{#1}\choose{#2}}}
-\let\xto=\xvarrightarrow
-\let\xfrom=\xvarleftarrow
-\let\bul=\bullet
-\let\ls=\setminus
-\let\ul=\underline
-\let\bar=\overline
-\let\cl=\overline
-\let\tilde=\widetilde
-\let\hat=\widehat
-
-\def\hrel#1{\allowbreak\mkern18mu({\rm rel}\,\,#1)}
-\def\hto{\xto\sim}
-\def\1{{\bf1}}
-\def\ortimes{\mathbin{\vecc\times}}
-
-\def\textstyle@size{10pt}
-\def\displaystyle@size{10pt}
-\def\scriptstyle@size{7pt}
-\def\scriptscriptstyle@size{5pt}
-
-\def\@text#1#2{\hbox{\setscale{\csname\@mstrip#1@size\endcsname}#2}}
-\def\text#1{\mathpalette\@text{#1}}
-
-\def\@dcsize{.5cm}
-\def\@dcbwd{1.5pt}
-\def\@dcnwd{.5pt}
-\def\@dcline#1#2#3#4{\csname #2rule\endcsname\space #3\space\if.#1\@dcnwd\else\@dcbwd\fi\space #4\space\@dcsize\space depth0pt\relax}
-\def\drawcross#1#2#3#4{{\def\bufferwidth{0pt}\def\bufferheight{0pt}%
-\framebox{%
-    \vbox to2\dimexpr\@dcsize{\offinterlineskip%
-        \vss%
-        \hbox to2\dimexpr\@dcsize{\hfil\@dcline{#1}{v}{width}{height}\hfil}%
-        \vbox to0pt{\vss\hbox to2\dimexpr\@dcsize{%
-            \@dcline{#3}{v}{height}{width}%
-            \@dcline{#4}{v}{height}{width}%
-        }\vss}%
-        \hbox to2\dimexpr\@dcsize{\hfil\@dcline{#2}{v}{width}{height}\hfil}%
-        \vss%
-    }%
-}}}
-
-\def\mathnotefont{\sf}
-
-\def\makemathnote#1#2{\def#1{{\mathnotefont #2}}}
-\def\@mmnote#1{\expandafter\makemathnote\csname #1\endcsname{#1}}
 \commap\@mmnote{op,rev,lax,pre,sh,ext,tor,aff}
+\commap\@mmnoteA{{homo}{hom}}
 
-\def\makemathnote#1#2{\def#1{{\mathnotefont #2}}}
-\def\@@mmnote#1#2{\expandafter\makemathnote\csname #1\endcsname{#2}}
-\def\@mmnote#1{\@@mmnote#1}
-\commap\@mmnote{{homo}{hom}}
-
-\def\mathnamefont{\sf}
-\def\makemathname#1#2{\def#1{{\mathnamefont #2}}}
-\def\@mmname#1{\expandafter\makemathname\csname #1\endcsname{#1}}
 \commap\@mmname{Set,sSet,Top,Grp,Ab,Cat,Mod,Alg,Mon,Psh,Sh,Ring,Sch,Space,LocRing,AffSch,CommMon,LocAlg,QCoh}
+\commap\@mmnameA{{RS}{RSp},{LRS}{LocRSp}}
 
-\def\@@mmname#1#2{\expandafter\makemathname\csname #1\endcsname{#2}}
-\def\@mmname#1{\@@mmname#1}
-\commap\@mmname{{RS}{RSp},{LRS}{LocRSp}}
+\makemathops\rm{id,sk,proj,Nat,inc,ev,im,Fun,End,Ob,open,res,inc,coker,supp,nil,Frac,loc,Proj,ann,ass,rank,graph}
+\makemathopsA\rm{{idof}{I},{vof}{V},{dof}{D},{spec}{Spec},{clos}{cl},{gl}{GL}}
 
-\def\mathopfont{\rm}
+%\makemathopsA\frak{{lso}{so},{lsp}{sp}}
 
-\def\@@makemathop#1#2{\def#1{\mathop{\null\mathopfont #2}\nolimits}}
-\def\@makemathop#1#2{\def#1{\mathop{\null\mathopfont #2}}}
-\def\makemathop{\@ifstar \@makemathop\@@makemathop}
-
-\def\@mmop#1{\expandafter\makemathop\csname #1\endcsname{#1}}
-\commap\@mmop{id,sk,proj,Nat,inc,ev,im,Fun,End,Ob,open,res,inc,coker,supp,nil,Frac,loc,Proj,ann,ass}
-
-\def\@@mmop#1#2{\expandafter\makemathop\csname #1\endcsname{#2}}
-\def\@mmop#1{\@@mmop#1}
-\commap\@mmop{{idof}{I},{vof}{V},{dof}{D},{spec}{Spec},{clos}{cl}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

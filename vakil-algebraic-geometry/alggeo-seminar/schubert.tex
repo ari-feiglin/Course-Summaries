@@ -1,0 +1,337 @@
+\input ../preamble
+\def\@cntrprefix{\the\counter{section}.}
+
+\centerline{\setfontandscale{bf}{20pt}Schubert Calculus}
+\smallskip
+\centerline{\it Ari Feiglin}
+
+\section{Grassmanians}
+
+\bnote
+
+    Subvarieties are assumed to be closed.
+
+\enote
+
+The focus of this discussion is on Schubert calculus, in particular the sort of problems it solves in
+enumerative geometry.
+In general the problem is to determine the number of spaces (of a given dimension) intersect some set
+of given spaces.
+We are dealing here with linear spaces and thus it is natural to consider a form of topology on linear
+subspaces.
+
+\bdefn
+
+    Let $V$ be an $n$-dimensional vector space, then for $k\leq n$ we define $V$'s {\emphcolor Grassmanian}
+    to be the space
+    $$ G(k,V) = \set{\Lambda\leq V}[\hbox{$\Lambda$ is $k$-dimensional}] . $$
+
+\edefn
+
+The Grassmanian will of course be given the structure of a variety, in due time.
+First of all, if $\Psi\colon V\cong V'$ is an isomorphism of vector spaces then their Grassmanians are in
+bijection
+$$ G(k,V) \lisoto G(k,V'),\qquad \Lambda\mapsto\Psi\Lambda , $$
+and this is an isomorphism of varieties.
+Writing
+$$ G(k,n) = G(k,\bF^n) , $$
+we see that for $n$-dimensional $V$, $G(k,V)\cong G(k,n)$.
+
+Note further that there is an isomorphism
+$$ G(k,V) \lisoto G(n-k,V^*),\qquad \Lambda\mapsto\ann\Lambda = \set{\phi\in V^*}[\phi\Lambda=0] , $$
+which is again an isomorphism of varieties.
+Thus we have $G(k,n)\cong G(n-k,n)$.
+
+Now we proceed with endowing $G(k,V)$ a variety structure.
+For $\Lambda\in G(k,V)$ consider the exterior power
+$$ \bigwedge^k\Lambda \leq \bigwedge^kV , $$
+which is $1$-dimensional.
+Thus there is a natural map
+$$ G(k,V) \to \bP\parens{\bigwedge^kV} \cong \bP^{\binom nk-1},\qquad \Lambda \mapsto \bigwedge^k\Lambda . $$
+This map is called the {\emphcolor Pl\"ucker embedding}.
+We will continue to use $N=\binom nk-1$.
+
+\blemm
+
+    The Pl\"ucker embedding is indeed injective, and its image in $\bP(V^k)$ is a subvariety.
+
+\elemm
+
+\bproof
+
+    Choose basis vectors $v_1,\dots,v_k\in\Lambda$ so that $\eta=v_1\wedge\cdots\wedge v_k$ spans
+    $\Lambda^k$.
+    Considering the exterior algebra $\bigwedge V$, a vector $v\in V$ annihiltes $\eta$ (meaning
+    $v\wedge\eta$) iff $v$ is in the span of $v_1,\dots,v_k$, i.e.\ $v\in\Lambda$.
+    Thus we can determine $\Lambda$ from its image in $\bP(V^k)$ by
+    $$ \Lambda = \set{v\in V}[v\wedge\eta=0] , $$
+    so the Pl\"ucker embedding is injective.
+
+    Extend a basis $v_1,\dots,v_k\in\Lambda$ to a basis of $V$.
+    Then we can write a $\eta\in\bigwedge^kV$ as $\eta=\sum_I\eta_Iv_I$ for scalars $\eta_I$.
+    Then
+
+    Now consider the map
+    $$ V \xtos{\wedge\eta} \bigwedge^{k+1}V , $$
+    we claim that $\eta=v_1\wedge\cdots\wedge v_k$ for linearly independent $v_i\in V$ iff the kernel
+    of this map has dimension at least $k$.
+    If $\eta$ is of this form then $v_1,\dots,v_k$ are in the kernel.
+    Otherwise suppose $v_1,\dots,v_k$ are linearly independent vectors in the kernel.
+    We may extend these $v_i$ to a basis of $V$, so that there are scalars $\eta_I$ such that
+    $$ \eta = \sum_I\eta_Iv_I,\qquad v_I = v_{i_1}\wedge\cdots\wedge v_{i_k}\hbox{ for $I=(i_1<\cdots<i_k)$} . $$
+    Then we know
+    $$ 0 = v_1\wedge\cdots\wedge v_k\wedge\eta = \sum_I\eta_Iv_1\wedge\cdots\wedge v_k\wedge v_I
+    = \sum_{I\cap[k]=\emptyset}\eta_Iv_I , $$
+    so that for any multi-index $I$ which is not $(1,\dots,k)$, we have $\eta_I=0$.
+    Thus $\eta$ is a scalar multiple of $v_1\wedge\cdots\wedge v_k$, as desired.
+    And thus the image of the Grassmanian is
+    $$ G(k,V) = \set{\eta\in\bigwedge^kV}[\rank(V\xtos{\wedge\eta}\bigwedge^{k+1}V)\leq n-k] , $$
+    which is an algebraic subset of $\bP(V^k)$ as it is the zeroset of all of the $(n-k+1)$st minors of
+    the map $\bul\wedge\eta$.
+
+    To show that $G(k,V)$ is irreducible, we note that there is a transitive action of $\gl(V)$ on
+    $G(k,V)$.
+    Choosing any $\Lambda\in G(k,V)$ we have that $\gl(V)\Lambda=G(k,V)$ is irreducible because
+    it is the image of the irreducible $\gl(V)$ (it is an open subset of the irreducible $\bA^n$).
+    \qed
+
+\eproof
+
+Let $e_1,\dots,e_n$ be a basis for $V$ and identify $V\cong\bF^n$ so that
+$\Lambda$ is the row space of some matrix $k\times n$ matrix $A=(a_{ij})$.
+Then $\bigwedge^kV$ is spanned by $e_I=e_{i_1}\wedge\cdots\wedge e_{i_k}$ for $I=(i_1<\cdots<i_k)$.
+So for the basis $v_1,\dots,v_k\in\Lambda$ determined by $A$ there are scalars $p_I$ such that
+$$ v_1\wedge\cdots\wedge v_k = \sum_Ip_Ie_I . $$
+Then we see that $p_I$ is the determinant of the submatrix of $A$ whose columns are determined by $I$.
+These are the {\emphcolor Pl\"ucker coordinates} of $A$.
+
+\bexam
+
+    Note that the Pl\"ucker embedding for $k=1$ gives an isomorphism $G(1,V)\cong\bP(V)$.
+    So the most basic example of a Grassmanian is projective space.
+
+\eexam
+
+Because $G(k,V)$ is a variety it has an affine cover.
+For an $(n-k)$-dimensional subspace $\Gamma\leq V$ define
+$$ U_\Gamma = \set{\Lambda\in G}[\Lambda\cap\Gamma=0] $$
+to be the set of all subspaces which do not intersect $\Gamma$.
+This is a Zariski open subset of $G$, because taking $w_1,\dots,w_{n-k}$ a basis for $\Gamma$ and
+setting $\eta=w_1\wedge\cdots\wedge w_{n-k}$, we see that
+$$ U_\Gamma = \set{[\omega]\in G\subseteq\bP(V^k)}[\omega\wedge\eta\neq0] . $$
+We now claim that $U_\Gamma$ is isomorphic to $\bA^{k(n-k)}$.
+Let $\Omega\in U_\Gamma$ be a complementary $k$-space to $\Gamma$, so that $V=\Gamma\oplus\Omega$,
+and for any $\Lambda\in U_\Gamma$ we have projections
+$$ \Lambda \xtos{\pi_\Gamma} \Gamma,\qquad \Lambda \xtos{\pi_\Omega} \Omega $$
+modulo $\Omega$ and $\Gamma$ respectively.
+Because the kernel of $\pi_\Omega$ is $\Gamma$ we see that $\pi_\Omega$ is an isomorphism, and so
+$\Lambda$ is the graph of
+$$ \phi \colon \Omega \xtos{\pi_\Omega^{-1}} \Lambda \inj V \xtos{\pi_\Gamma} \Gamma . $$
+Indeed its graph is
+$$ \graph\phi = \set{\omega+\pi_\Gamma\pi_\Omega^{-1}\omega}[\omega\in\Omega] , $$
+and any $v\in\Omega$ is in this graph via $\omega=\pi_\Omega(v)$, and they have the same dimension.
+
+Conversely if $\phi\colon\Omega\to\Gamma$ is linear then its graph is complementary to $\Gamma$.
+So we have a correspondence
+$$ U_\Gamma \xtof{\Lambda\mapsto\pi_\Gamma\circ\pi_\Omega^{-1}}[\phi\mapsto\graph\phi] \hom(\Omega,\Gamma) . $$
+And considering them in Pl\"ucker coordinates, we see that these are morphisms of varieties.
+Because $\hom(\Omega,\Gamma)\cong\bA^{k(n-k)}$, we see that $G(k,V)$ is a variety of dimension $k(n-k)$.
+
+\bprop
+
+    The Grassmanian $G(k,V)$ is a projective variety of dimension $k(n-k)$.
+
+\eprop
+
+\bnote
+
+    In S.\ L.\ Kleiman and Dan Laksov, they define the Grassmanian $G(k,n)$ as the collection of $k$-planes in
+    $\bP^n$.
+    This corresponds to our $G(k+1,n+1)$.
+    We will denote this by
+    $$ \bG(k,V) = \bG(k,\bP(V)) \cong G(k+1,n+1) . $$
+
+\enote
+
+\section{The Chow Group}
+
+\bdefn
+
+    Consider a complex flag $\V$ in $V$, i.e.\ a sequence of subspaces
+    $$ 0 < V_1 < \cdots < V_{n-1} < V_n = V,\qquad \dim V_i = i . $$
+    Furthermore suppose we have a sequence $a$
+    $$ n-k \geq a_1 \geq \cdots \geq a_k \geq 0 . $$
+    Define the {\emphcolor Schubert cycle} to be the closed subset
+    $$ \Sigma_a(\V) = \set{\Lambda\in G(k,n)}[\dim(V_{n-k+i-a_i}\cap\Lambda)\geq i\hbox{ for all $i$}] . $$
+
+\edefn
+
+\bremark
+
+    In general for a subspace $\Gamma\leq V$, the set
+    $$ \set{\Lambda\in G(k,n)}[\dim(\Gamma\cap\Lambda)\geq i] $$
+    is closed, as $\dim(\Gamma\cap\Lambda)=\dim\Gamma+\dim\Lambda-\dim(\Gamma+\Lambda)$ so the condition
+    is equivalent to $\dim(\Gamma+\Lambda)\leq\dim\Gamma+k-i$.
+    Choosing bases for $\Lambda,\Gamma$, this is iff the rank of the matrix obtained by concatenating the
+    bases has rank $\leq\dim\Gamma+k-i$, which is iff all submatrices of larger size have zero determinant.
+
+\eremark
+
+For convenience, we write
+$$ \Sigma_{a_1,\dots,a_s}(\V) = \Sigma_{a_1,\dots,a_s,0,\dots,0} $$
+and
+$$ \Sigma_{a^s} = \Sigma_{a,\dots,a} $$
+to duplicate $a$ $s$ times.
+
+\bexam
+
+    Note that for any flag $\V$,
+    $$ \Sigma_0(\V) = G(k,n) . $$
+    That is, any $k$-dimensional subspace $\Lambda$ satisfies $\dim(V_{n-k+i}\cap\Lambda)\geq i$ for all $i$.
+    Indeed,
+    $$ \dim(V_{n-k+i}\cap\Lambda) = \dim V_{n-k+i} + \dim\Lambda - \dim(V_{n-k+i}+\Lambda) \geq
+    n - k + i + k - n = i . $$
+
+\eexam
+
+\bexam
+
+    Suppose $V_\ell$ is a subspace of dimension $\ell$, then extend it to an arbitrary complete flag $\V$
+    and we see that
+    $$ \Sigma_{n-k+1-\ell}(\V) = \set{\Lambda}[\Lambda\cap V_\ell\neq0] . $$
+    Indeed for $i=1$ the Schubert condition gives
+    $$ \dim(V_\ell\cap\Lambda) \geq 1 \iff V_\ell\cap\Lambda\neq 0 . $$
+    The conditions on $i\geq1$ are tautological as shown by the previous example.
+
+\eexam
+
+\bexam
+
+    Given an $\ell$-subspace $V_\ell$ then we have (for any extension $\V$)
+    $$ \Sigma_{(n-\ell)^k}(\V) = \set{\Lambda}[\Lambda\subseteq V_\ell] , $$
+    because the Schubert conditions gives for all $i$
+    $$ \dim(\Lambda\cap V_{\ell-k+i}) \geq i , $$
+    so for $i=k$ this means $\Lambda\subseteq V_\ell$, and then considering the first example the rest of
+    the conditions follow.
+
+    And similarly
+    $$ \Sigma_{(n-k)^\ell}(\V) = \set{\Lambda}[V_\ell\subseteq\Lambda] $$
+    because
+    $$ \dim(\Lambda\cap V_i) \geq i \hbox{ for $i\leq\ell$} \iff V_\ell \leq \Lambda $$
+    and the other conditions are tautological again.
+
+\eexam
+
+Note that if we define for sequences $a\leq b$ iff $a_i\leq b_i$ for all $i$, then
+$$ \Sigma_a(\V) \subseteq \Sigma_b(\V) \iff a \leq b . $$
+For a sequence $a$ define
+$$ \abs a = \sum_i a_i . $$
+
+\bthrm
+
+    The Schubert cycle $\Sigma_a(\V)$ is an irreducible subvariety of $G(k,V)$ of codimension $\abs a$.
+
+\ethrm
+
+\bprop[name={intwithlin}]
+
+    Let $e_1,\dots,e_n$ be a basis for $V$ and consider the standard flag $V_i=\gen{e_1,\dots,e_i}$.
+    Let $a$ be a decreasing sequence and $b$ be the strictly increasing sequence $b_i=n-k+i-a_i$.
+    Then $\Sigma_a(\V)\subseteq G(k,n)\subseteq\bP^N$ is the intersection
+    $$ \Sigma_a(\V) = G(k,V) \cap \bigcap_{I\not\leq b}V(p_I) , $$
+    where $p_I$ is the Pl\"ucker coordinate associated to $I=(i_1<\cdots<i_k)$.
+
+\eprop
+
+\bproof
+
+    For $\Lambda\in G(k,V)$ write $\Lambda$ as the row space as the matrix $A=(a_{ij})$.
+    The Pl\"ucker coordinate $p_I(\Lambda)$ is then the determinant of the submatrix of $A$ whose columns
+    are given by $I$.
+
+    Now suppose that $\Lambda\in\Sigma_a(V)$ so that $\dim(\Lambda\cap V_{b_i})\geq i$ for all $i$.
+    For $I\not\leq b$ there is a $j$ such that $i_j>b_j$, and since $\dim(\Lambda\cap V_{b_j})\geq j$,
+    there are $j$ linearly independent vectors in $\Lambda$ whose coordinates past $b_j$ are zero.
+    If we take these vectors to be $v_1,\dots,v_j$ and extend them to a basis $v_1,\dots,v_k$ of $\Lambda$,
+    then for every index in $I$ past $i_j$ (inclusive), the coordinates of $v_1,\dots,v_j$ are zero.
+    Thus the submatrix of $A$ determined by $I$ has a $j\times(k-j+1)$ block of zeroes.
+    That is, it is of the form
+
+    \medskip
+    $$ \left(\vcenter{\halign{\strut\hfil$#$\hfil&\@gobble{#1}\kern.2cm\vrule\kern.2cm&\hfil$#$\hfil&\rlap{\kern.5cm$#$}\cr
+        \omit\hfil\rmht{\ $j-1$\ }\hfil&\omit&\omit\hfil\rmht{\ $k-j+1$\ }\hfil\cr
+        *&&0&j\cr\noalign{\hrule}
+        *&&*&k-j\cr
+    }}\right)\kern1cm . $$
+    Thus its rank is at most $(k-j)+(j-1)=k-1$ which means it is singular, so $p_I(\Lambda)=0$.
+
+    Now suppose that $p_I(\Lambda)=0$ for all $I\not\leq b$, but $\dim(\Lambda\cap V_{b_j})<j$ for some $j$.
+    So if consider the submatrix of $A$ determined by columns of index $>b_j$, it must have rank $>k-j$.
+    This is because there are $<j$ rows which are also in $\Lambda\cap V_{b_j}$:
+
+    \medskip
+    $$ \left(\vcenter{\halign{\strut\hfil$#$\hfil&\@gobble{#1}\kern.2cm\vrule\kern.2cm&\hfil$#$\hfil&\rlap{\kern.5cm$#$}\cr
+        \omit\hfil\rmht{\ $b_j$\ }\hfil\cr
+        *&&\ 0\ &<j\cr\noalign{\hrule}
+        *&&*&>k-j\cr
+    }}\right)\kern1cm . $$
+
+    Performing row operations gives us a block-diagonal matrix of full rank, and so the right column of blocks
+    is linearly independent.
+    So there are at least $k-j+1$ columns with indices greater than $b_j$ which are linearly independent.
+    Extend these to $k$ linearly independent columns (because $A$ is of rank $k$) and let $I$ be the
+    indices of these columns.
+    Then the submatrix determined by $I$ is nonsingular so $p_I(\Lambda)\neq0$.
+    Because at least $k-j+1$ of these indices is greater than $b_j$, and as they are ascending this means
+    that $i_j>b_j$, a contradiction.
+    \qed
+
+\eproof
+
+The reason for wanting to consider Schubert cycles follows from the above examples.
+Consider the following problem.
+
+\bprob[name={interfourq}]
+
+    If $V_1,V_2,V_3,V_4\subseteq\bP^{2n+1}$ are four general $n$-planes, how many lines $L\subseteq\bP^{2n+1}$
+    intersect all four?
+
+\eprob
+
+We know by the above example that $\Sigma_n(V_i)\subseteq\bG(1,2n+1)$ is the number of lines meeting $V_i$,
+so we want to count the intersection
+$$ Q = \bigcap\Sigma_n(V_i) . $$
+Unfortunately we do not yet have the tools to do this.
+%Now consider \refmath[proposition]{intwithlin}: we have $b=(n+1,2n+2)$ which means the only $I$s which are
+%not bound by $b$ are of the form $I=(i_1,i_2)$ with $i_1>n+1$.
+%So we choose the indices from $(n+1,2n+2]$ which gives us $\binom{n+1}2$ choices for $I$.
+%Thus $\Sigma_n(V_i)=\bG(1,2n+1)\cap W_i$ where $W_i$ is an $\parens{N-\binom{n+1}2}$-plane of $\bP^N$.
+%Here we have
+%$$ N = \binom{2n+2}2 - 1 = 2n^2 + 3n,\qquad \binom{n+1}2 = \frac{n^2+n}2 . $$
+%Now the number of 
+
+\section{The Chow Groups}
+
+\bdefn
+
+    Let $X$ be any algebraic variety.
+    A {\emphcolor $k$-cycle} on $X$ is a formal sum of subvarieties (closed integral subschemes) of $X$
+    of dimension $k$.
+    In other words the group of $k$-cycles on $X$ is the free Abelian group on $X$'s $k$-dimensional
+    subvarieties, and is denoted $Z_k(X)$.
+    $X$'s {\emphcolor group of cycles} is the graded Abelian group $Z(X)=\bigoplus_kZ_k(X)$.
+
+    A cycle $\sum n_iY_i\in Z(X)$ is {\emphcolor effective} if all of the $n_i$ are nonnegative.
+    A {\emphcolor divisor} is an $(n-1)$-cycle (where $n=\dim X$).
+
+\edefn
+
+\bdefn
+
+    Let $K(X)$ denote the field of rational functions of $X$.
+
+
+\edefn
+
+\bye
+
