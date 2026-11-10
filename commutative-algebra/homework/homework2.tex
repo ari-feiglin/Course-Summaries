@@ -1,0 +1,437 @@
+\input pdfToolbox
+\input pdfmsym
+\pdfmsymsetscalefactor{10}
+\input ../preamble
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+\setcounter{section}{2}
+
+\centerline{\setfontandscale{bf}{20pt}Algebraic Geometry}
+\medskip
+\centerline{\bf Exercise \the\counter{section}}
+\smallskip
+\centerline{\it Ari Feiglin}
+
+\bprob
+
+    Let $R$ be a ring, and set $X=\spec(R)$.
+    \benum
+        \item Let $I,J\leq R$ be ideals.
+        Show that if $I\subseteq J$ then $V(J)\subseteq V(I)$, and give an example where the converse fails.
+        \item Let $Z,W\subseteq X$ be subsets.
+        Show that if $Z\subseteq W$ then $I(W)\subseteq I(Z)$, and give an example where the converse fails.
+        \item Show that $V(I(Z))=\cl Z$ for all $Z\subseteq X$, and $I(V(J))=\sqrt J$ for all ideals $J\leq R$.
+    \eenum
+
+\eprob
+
+\benum
+    \item $V(J)$ is the set of all prime ideals containing $J$.
+    Since $I$ is contained in $J$, a prime ideal which contains $J$ must contain $I$, and thus is in $V(I)$.
+    In the case of $R=\bZ$, let $I=2\bZ$ and $J=4\bZ$ so that $V(I)=V(J)=\set{2\bZ}$, but clearly we have that $I$ is not a subset of $J$.
+
+    \item $I(W)$ is the set of all $f\in R$ such that $W\subseteq V(f)$.
+    Since $Z$ is contained in $W$, this implies $Z\subseteq V(f)$ and so $f\in I(Z)$, as desired.
+    Take $R=\bC[x]$, whose spectrum consists of the zero ideal and all principal ideals of the form $(x-\lambda)$ for $\lambda\in\bC$.
+    Let $W=\set0$ contain just the zero ideal and $Z=\set{(x-\lambda)}_{\lambda\in\bC}$ be its complement.
+    Then clearly we don't have $Z\subseteq W$, but
+    $$ I(W) = \bigcap W = 0,\qquad I(Z) = \bigcap Z = \bigcap_{\lambda\in\bC}(x-\lambda) = 0 , $$
+    since a polynomial is in $(x-\lambda)$ iff $\lambda$ is a root of it, and if it is in all $(x-\lambda)$ then it must be zero.
+    Thus $I(W)\subseteq I(Z)$, $Z$ is not a subset of $W$.
+
+    \item The closed sets of $X$ are the vanishing sets $V(\bul)$, so the closure of $Z$ is of this form.
+    $V(I(Z))$ is the set of all prime ideals containing $I(Z)=\bigcap_{\p\in Z}\p$.
+    If $Z\subseteq V(J)$ then for every $\p\in Z$, we have that $J\leq\p$, which means that $J\leq\bigcap_{\p\in Z}\p=I(Z)$.
+    We showed above that $V(\bul)$ is contravariant, so $V(I(Z))\leq V(J)$, meaning $V(I(Z))$ is the smallest closed set containing $Z$;
+    it is its closure.
+
+    By definition,
+    $$ I(V(J)) = \bigcap_{\p\in V(J)}\p = \bigcap_{J\leq\p}\p = \sqrt J, $$
+    as desired.
+\eenum
+
+\bprob
+
+    Let $R,S$ be rings, $X=\spec(R),Y=\spec(S)$ their spectra, and $\phi\colon R\to S$ a ring morphism with $\phi^*\colon Y\to X$ the induced
+    map.
+    \benum
+        \item Prove that $\ker\phi\subseteq\nil(R)$ iff $\phi^*(Y)$ is dense in $X$.
+        Find an example where $\phi$ is injective, but $\phi*(Y)\neq X$.
+
+        \item Assume that $\phi$ is surjective.
+        Prove that $\phi^*$ is a closed immersion (its image is closed, and it is a homeomorphism onto its image).
+    \eenum
+
+\eprob
+
+\benum
+    \item $\phi^*(Y)$ is dense in $X$ iff its closure is $X$.
+    We showed that the closure of a subset of $X$ is equal to $V(I(\bul))$, thus $\phi^*(Y)$ is dense iff $V(I(\phi^*Y))=X$.
+    Since $X=V(0)$, and the vanishing sets of two ideals are the same iff their radicals are, this occurs iff $\sqrt{I(\phi^*Y)}=\nil(R)$.
+    Now $\sqrt I=\nil(0)$ iff $I\leq\nil(0)$, since the radical is order-preserving and $I\leq\sqrt I$.
+    So $\phi^*Y$ is dense iff $I(\phi^*Y)\leq\nil(R)$.
+
+    Now $\phi^*Y$ is the set of all preimages of prime ideals in $S$, so
+    $$ I(\phi^*Y) = \bigcap_{\q\in\spec(S)}\phi^{-1}\q = \phi^{-1}\bigcap_{\q\in\spec(S)}\q = \phi^{-1}\nil(S) . $$
+    So $\phi^*Y$ is dense iff $\phi^{-1}\nil(S)\leq\nil(R)$.
+    If $\ker\phi\subseteq\nil(R)$ then if $f\in\phi^{-1}\nil(S)$ we have that $\phi(f^n)=0$ for some $n$, which means $f^n\in\ker\phi\subseteq\nil(R)$
+    so that $f\in\nil(R)$; meaning $\phi^{-1}\nil(S)\leq\nil(R)$ as desired.
+    Conversely let $\phi(f)=0$ then $f\in\phi^{-1}\nil(S)\leq\nil(R)$ so $\ker\phi\leq\nil(R)$ as desired.
+
+    Let $k$ be a field of zero characteristic and $\phi\colon\bZ\to k$ the unique morphism, which is injective by virtue of $k$ having zero characteristic.
+    We have that $X=\spec(\bZ)$ is infinite, yet $Y=\spec(k)$ just consists of a single point.
+    Thus $\phi^*\colon Y\to X$ cannot be surjective.
+
+    \item If $\phi$ is surjective, then it induces an isomorphism $R/\ker\phi\to S$, which maps prime ideals of $R/\ker\phi$ to $S$.
+    Prime ideals of $R/\ker\phi$ are in bijection with prime ideals of $R$ containing $\ker\phi$, i.e.\ $V(\ker\phi)$.
+    The inverse of this, the map $Y\to V(\ker\phi)$ is given by $\phi^{-1}$.
+    And so we see that $\phi^*Y=V(\ker\phi)$, so $\phi^*Y$ is closed.
+
+    To show that $\phi^*$ is a homeomorphism onto its image, it is sufficient to show that it is injective and a closed map onto its image.
+    Indeed, for an ideal $J\leq S$,
+    $$ \phi^*V(J) = \set{\phi^{-1}\q}[J\leq\q] , $$
+    and by surjectivity, $J\leq\q$ iff $\phi^{-1}J\leq \phi^{-1}\q$, so this is equal to
+    $$ \phi^*V(J) = \set{\phi^{-1}\q}[\phi^{-1}J\leq\phi^{-1}\q] = V(\phi^{-1}J) \cap \phi^*Y , $$
+    which is closed in its image (since $\phi^*Y=V(\ker\phi)$, this is equal to $V(\phi^{-1}J)$, but that's not important here.)
+    Injectivity follows from surjectivity of $\phi$: the preimage map of a surjective function is injective.
+\eenum
+
+\bprob
+
+    Let $S\subseteq R$ be multiplicatively closed, and denote by $\iota\colon R\to S^{-1}R$ the structure map.
+    \benum
+        \item Show that $\iota^*$ is a topological embedding.
+        \item $S$ is {\emphcolor saturated} if $xy\in S$ implies $x\in S$ and $y\in S$.
+        \benum
+            \item $S$ has a {\emphcolor saturation}: a smallest saturated multiplicatively closed set containing it.
+            \item Let $I\leq R$ be an ideal.
+            Show that $S=1+I$ is multiplicatively closed, and compute its saturation.
+            \item Show that if $\hat S$ and $S$ have the same saturation, then $S^{-1}R\cong\hat S^{-1}R$.
+            \item Show that $S$ is saturated iff $R-S=\bigcup_{S\cap\p=\emptyset}\p$, where the intersection runs over prime ideals of $R$
+            which don't intersect $S$.
+            \item Show that the set of zero-divisors of $R$ is a union of prime ideals.
+        \eenum
+    \eenum
+
+\eprob
+
+\benum
+    \item $\iota^*$ is already continuous.
+    In lecture we showed that $\q\mapsto\iota^*\q$ is a bijection from $\spec(S^{-1}R)$ to prime ideals $\p\leq R$ not intersecting $S$.
+    So $\iota^*$ is injective, and to show that it is a homeomorphism onto its image it is sufficient to show it is a closed map.
+    We know that $\iota^*$'s inverse is $S^{-1}$, and it extends to a left inverse on all ideals of $S^{-1}R$: $S^{-1}\iota^{-1}J=J$ for all ideals
+    $J\leq S^{-1}R$, in particular all ideals of $S^{-1}R$ are of the form $S^{-1}I$ for an ideal $I\leq R$.
+
+    To show $\iota^*$ is closed, we compute its image on $V(S^{-1}I)$:
+    $$ \iota^*V(S^{-1}I) = \set{\iota^{-1}\q}[S^{-1}I\leq\q] . $$
+    Now we claim that $S^{-1}I\leq\q$ iff $I\leq\iota^*\q$.
+    If $S^{-1}I\leq\q$ and $x\in I$, then $\iota(x)\in S^{-1}I\leq\q$ and so $x\in\iota^*\q$.
+    Conversely, since $S^{-1}$ is order-preserving, if $I\leq\iota^*\q$ then $S^{-1}I\leq S^{-1}\iota^*\q=\q$ as desired.
+    Thus
+    $$ \iota^*V(S^{-1}I) = \set{\iota^*\q}[I\leq\iota^*\q] = V(I)\cap\im\iota^* , $$
+    which is closed in the subspace topology.
+    Thus $\iota^*$ is indeed a topological embedding.
+
+    \item
+    \benum
+        \item We can give an easy nonconstructive proof by noting that the arbitrary intersection of saturated multiplicatively closed sets is
+        saturated and multiplicatively closed.
+        Since $S\subseteq R$ is saturated and multiplicatively closed, taking the intersection of all saturated multiplicatively closed sets containing
+        $S$ will yield the desired set.
+
+        Constructively, we claim that
+        $$ \hat S = \set{f\in R}[\hbox{$fg\in S$ for some $g\in R$}] $$
+        is the desired saturation.
+        Firstly, it is multiplicatively closed: for $f,g\in\hat S$ suppose that $f',g'$ satisfy $ff',gg'\in S$.
+        Then $fgf'g'\in S$ so that $fg\in\hat S$.
+        And it is saturated: if $fg\in\hat S$ then there is a $h\in R$ such that $fgh\in S$.
+        Since $fgh=f(gh)=g(fh)$, we see that by definition $f,g\in\hat S$ as desired.
+        Clearly we also have that $S\subseteq\hat S$, as for $f\in S$, $f\cdot1\in S$.
+
+        Now if $S\subseteq S'$ is saturated, then for $f\in\hat S$ we have that $fg\in\hat S$ for some $g\in R$.
+        Then $fg\in S'$ and so $f\in S'$, meaning $\hat S\subseteq S'$ as desired.
+        Thus $\hat S$ is the desired saturation.
+
+        \item $S$ is multiplicatively closed: for $x,y\in I$ we have that $(1+x)(1+y)=1+x+y+xy$ which is in $1+I$.
+        The above point shows us that $S$'s saturation is
+        $$ \hat S = \set{f\in R}[\hbox{$fg\in 1+I$ for some $g\in R$}] , $$
+        i.e.\ the set of all $f\in R$ which are invertible in $R/I$.
+        So $\hat S=\pi^{-1}(R/I)^\times$, where $\pi\colon R\to R/I$ is the projection.
+
+        Now in general, $x\in R$ is invertible iff it is not contained in any proper ideal.
+        That is,
+        $$ R^\times = \bigcap_{I<R}I^c . $$
+        This intersection is equal to the union over all prime ideals: clearly the intersection over all prime ideals is a superset of this,
+        and conversely every proper ideal has an extension to a prime ideal, so the intersections are the same.
+
+        The prime ideals of $R/I$ are in bijection with the prime ideals containing $I$, $V(I)$.
+        Thus
+        $$ \hat S = \pi^{-1}\bigcap_{\p\in V(I)}(\p/I)^c = \bigcap_{\p\in V(I)}\p^c . $$
+        We can further consider only maximal ideals: since every ideal has an extension to a maximal ideal, $R^\times$ is the intersection over all maximal
+        extensions of $I$.
+        So we also have
+        $$ \hat S = \bigcap_{\m\in V_m(I)}\m^c , $$
+        where $V_m(I)=V(I)\cap\specm(R)$ is the vanishing set of maximal ideals.
+
+        \item It is sufficient to prove this when $\hat S$ is $S$'s saturation.
+        Consider the structure morphism $\iota\colon R\to S^{-1}R$.
+        Notice then that we have the following: if $\iota(r)=0$ then there is a $s\in S\subseteq\hat S$ such that $sr=0$, and every element of $S^{-1}R$ is of the form
+        $\iota(r)\iota(s)^{-1}$ for some $r\in R,s\in S\subseteq\hat S$.
+        Thus we need only show that $\iota(\hat S)$ are invertible to apply a result from lecture giving us an isomorphism $\hat S^{-1}R\cong S^{-1}R$.
+
+        For $f\in\hat S$, there is a $g\in R$ such that $fg\in S$, which means that $\iota(fg)=\iota(f)\iota(g)$ is invertible.
+        This implies that $\iota(f)$ is invertible as well (its inverse is $\iota(g)\iota(fg)^{-1}$), as desired.
+
+        \item Notice that for a prime $\p$, $\p^c$ is saturated: if $fg\notin\p$ then $f,g\notin\p$ since it is an ideal.
+        And as noted above, the intersection of saturated sets is saturated.
+        Thus if $R-S$ is a union of prime ideals, then $S$ is an intersection of the complement of prime ideals, so the intersection of saturated sets, and is thus saturated.
+
+        Notice that the saturation of $S$ is equal to the preimage under $\iota$ of the units of $S^{-1}R$.
+        Indeed, if $fg\in S$ then $\iota(fg)\subseteq\iota(S)$ is a unit, so $\iota(f)$ is.
+        Conversely if $\iota(f)$ is a unit then there is a $g\in R,s,t\in S$ such that $t(fg-s)=0$, which implies $tfg\in S$, so that $f$ is in the saturation.
+
+        Thus if $S$ is saturated and $f\in R-S$ then $\iota(f)$ is not a unit, and thus is contained in a prime ideal $\p\leq S^{-1}R$.
+        Then $f\in\iota^*\p$ is a prime ideal not intersecting $S$, so $f$ is in the union.
+        And if $f\in\p$ for $\p\cap S=\emptyset$ then $f\notin S$ so the inclusion in the other direction is true always.
+
+        \item Let $S$ be the set of non-zero-divisors of $R$.
+        This is a multiplicatively closed saturated set: if $f,g\in S$ are non-zero-divisors so is $fg$ since if $fgh=0$ then $gh=0$ and so $h=0$;
+        and if $fg\in S$, then $f,g\in S$ since if $fh=0$ then $fgh=0$ so $h=0$.
+        Thus $R-S$, the set of zero-divisors, is a union of prime ideals, as above.
+    \eenum
+\eenum
+
+\bprob
+
+    Let $R$ be a ringe and $X=\spec(R)$.
+    \benum
+        \item Let $\p\in X$, show that $R_\p$ is a local ring, and its maximal ideal is $\p R_\p$.
+        \item Consider the case $R=\bC[x]$ and $\p=(x)$.
+        Describe the topological space $\spec(R_\p)$, and the map $\spec(R_\p)\to X$ corresponding to the structure map, explicitly.
+        \item Let $\p\in X$, define the {\emphcolor residue field} of $\p$ on $X$ to be $k(\p)=R_\p/\p R_\p$.
+        Prove that this is indeed a field.
+        \item Let $k$ be any field.
+        Show that a morphism $\spec(K)\to X$ (i.e.\ a morphism $R\to K$) is the same as giving a point $\p\in X$ and an embedding $k(\p)\to X$.
+    \eenum
+
+\eprob
+
+\benum
+    \item We show that $\p R_\p$'s complement consists of units.
+    Indeed, $\p R_\p$ consists of all fractions $x/y$ with $x\in\p$ and $y\notin\p$.
+    So an element of its complement is of the form $x/y$ with $x,y\notin\p$ which is a unit as it has inverse $y/x$.
+    And $\p R_\p$ is proper since $\p$ intersects with the locallizing set trivially (the set is $\p$'s complement).
+    Thus $\p R_\p$ is the unique maximal ideal of $R_\p$, as desired.
+
+    \item Prime ideals in $\spec(R_\p)$ are of the form $(R-\p)^{-1}\q=\q R_\p$ for prime $\q$ where $\q\cap(R-\p)=\emptyset$, i.e.\ $\q\subseteq\p$.
+    That is,
+    $$ \spec(R_\p) = \set{\q R_\p}[\q\subseteq\p] . $$
+    %in the previous question we showed that $S^{-1}I\leq\q\in\spec(S^{-1}R)$ iff $I\leq\iota^{-1}\q$.
+    %prime ideals in $\spec(S^{-1}R)$ are of the form $S^{-1}\q$ for $\q\in\spec(R)$ with $\q\cap S=\emptyset$, so
+    %$$ V(S^{-1}I) = \set{S^{-1}\q}[\q\cap S=\emptyset,\ I\leq\q] , $$
+    %So for $R_\p$, the closed sets are
+    %$$ V(IR_\p) = \set{\q R_\p}[I\leq\q\leq\p] . $$
+    %If $I$ is an ideal which is not contained in $\p$, then $IR_\p=R_\p$ since it intersects $\p$'s complement non-trivially, so the vanishing set of $IR_\p$
+    %is empty.
+    In our case, $\p=(x)$ only contains two prime ideals: itself and zero.
+    Thus
+    $$ Y = \spec(\bC[x]_{(x)}) = \set{0,\ (x)\bC[x]_{(x)}} . $$
+    The closed sets of this space are $\emptyset,Y,\set{(x)\bC[x]_{(x)}}$.
+    The singleton containing the maximal ideal is the vanishing set of the maximal ideal, and $\set0$ is not a vanishing set since if $I\leq0$ then $I=0$ and
+    so $V(I)=Y$.
+    Thus the open sets are $\emptyset,Y,\set0$.
+
+    The morphism $\iota^*\colon Y\to X$ corresponding to the structure map maps $0$ to $\iota^{-1}0$ which is the zero ideal in $\bC[x]$.
+    And it maps $(x)\bC[x]_{(x)}$ to $(x)\in\bC[x]$ (since $\iota^{-1}S^{-1}\p=\p$ for prime $\p$).
+
+    \item This is just the quotient of a ring by a maximal ideal; this is always a field.
+
+    \item Let $\phi\colon R\to K$ be a morphism, then since $\spec(K)=\set0$, the induced morphism $\phi^*\colon\spec(K)\to\spec(R)$
+    corresponds just to the point $\phi^{-1}0=\ker\phi=\p$.
+    To then define an inclusion $k(\p)\to K$, we need to find a map $R_\p\to K$ where $\p R_\p$ is contained in the kernel.
+    For a map $R_\p\to K$, we need a map $R\to K$ which maps $R-\p$ to units, in our case just non-zero values.
+    By definition $\phi$ does this, and thus it defines a map $\tilde\phi\colon R_\p\to K$ by $x/y\mapsto\phi(x)\phi(y)^{-1}$.
+    Its kernel consists of fractions of the form $x/y$ for $x\in\ker\phi=\p$, so $\p R_\p$ is indeed contained in the kernel.
+    Thus we can quotient $\tilde\phi\colon R_\p\to K$ to give a ring morphism $k(\p)\to K$, which is immediately an embedding as it originates from a field.
+    Explicitly, $\tilde\phi$ is defined by
+    $$ \tilde\phi(r/x + \p R_\p) = \phi(r)\phi(x)^{-1} . $$
+
+    Now, let $\psi\colon k(\p)\to K$ be an embedding.
+    We define $\hat\psi\colon R\to K$ via the following composition:
+    $$ \hat\psi \colon R \xtos\iota R_\p \xtos\pi k(\p) \xtos\psi K . $$
+    Explicitly, $\hat\psi(r)=\psi(r/1+\p R_\p)$.
+
+    We claim that the two maps defined above: mapping $\phi$ to $\tilde\phi$ and vice versa, are inverses.
+    Indeed, if we are given $\phi$ and we define $\tilde\phi$, then
+    $$ \hat{\tilde\phi}(r)=\tilde\phi(r/1+\p R_\p)=\phi(r)\phi(1)^{-1}=\phi(r) . $$
+    And if we are given $\psi$ and we define $\hat\psi$, then $\ker\hat\psi$ are all $r\in R$ such that $r/1+\p R_\p\in\ker\psi$.
+    Since $\psi$ is an embedding, its kernel is trivial and thus $r/1\in\p R_\p$, meaning $r\in\p$ (by saturation).
+    Thus $\ker\hat\psi=\p$, and
+    $$ \tilde{\hat\psi}[r/x] = \hat\psi(r)\hat\psi(x)^{-1} = \psi[r/1] \cdot \psi[x/1]^{-1} , $$
+    where $[\bul]=\bul+\p R_\p$ are the cosets.
+    Since $x/1$ is invertible, so is $[x/1]$ with inverse $[1/x]$, so this is equal to
+    $$ \tilde{\hat\psi}[r/x] = \psi[r/1]\psi[1/x] = \psi[r/x] . $$
+
+    Thus $\tilde\bul$ and $\hat\bul$ are the desired bijections.
+\eenum
+
+\def\pdvof#1#2{\frac{\partial#1}{\partial#2}}
+
+\bprob
+
+    Let $f\in\bC[x,y]$ be a nonzero irreducible polynomial with $f(0,0)=0$.
+    Define $R=\bC[x,y]/(f)$ and $X=\spec(R)$; $X$ is called a {\emphcolor plane curve}.
+    $X$ is {\emphcolor singular at the origin} if $\pdvof fx(0,0)=\pdvof fy(0,0)=0$.
+    \benum
+        \item Let $\iota\colon R\to R_x$ be the structure map.
+        Prove that if $y/x\in\im\iota$ then $X$ is nonsingular at the origin.
+        \item The converse is not true.
+        There are two problems:
+        \benum
+            \item The tangent line to $X$ at the origin may be vertical.
+            For example, let $f=x-y^2$.
+            Show that $X$ is nonsingular at the origin, but $y/x\notin\im\iota$.
+            \item $y/x$ may have poles other than at the origin.
+            For example, let $f=y^2-y+x^2$.
+            Show that $X$ is nonsingular at the origin, but $y/x\notin\im\iota$.
+        \eenum
+        \item Suppose $\pdvof fy(0,0)\neq0$, and let $\iota'\colon R_{(x,y)}\to\Frac(R)$ be the structure morphism.
+        Show that $y/x\in\im\iota'$.
+    \eenum
+
+\eprob
+
+\benum
+    \item If $y/x\in\im\iota$ then there is a $g\in R$ such that $y/x=g/1$.
+    Since $R$ is an integral domain, as $f$ is irreducible, this means that $y=xg$ modulo $(f)$.
+    Writing $g=g+(f)$, this means that $xg-y\in(f)$, so there is a polynomial $h$ such that $xg-y=fh$.
+    Applying the product rule for gradients, we see that
+    $$ \nabla(xg-y)(0) = \nabla(xg)(0) - \nabla(y)(0) = g(0)e_1 - e_2 , $$
+    where $e_i$ are the standard basis vectors.
+    On the other hand,
+    $$ \nabla(fh)(0) = f(0)\nabla h(0) + h(0)\nabla f(0) = h(0)\nabla f(0) . $$
+    Thus we have that $h(0)\nabla f(0)=g(0)e_1-e_2$ which is nonzero, so $\nabla f(0)$ is nonzero, meaning $X$ is nonsingular at the origin.
+
+    \item
+    \benum
+        \item $f$'s partial derivative with respect to $x$ is $1$, so $X$ is nonsingular at the origin.
+        But as above, if $y/x\in\im\iota$ we have that $xg-y=fh$ for some polynomials $g,h$.
+        But then we have that, setting $x=0$, $-y=h(0,y)\cdot(-y^2)$.
+        Considering dimensions, this cannot be.
+
+        \item $f$'s partial derivative with respect to $y$ is $2y-1$, which is $-1$ at the origin, so $X$ is nonsingular at the origin.
+        And again, if $y/x\in\im\iota$ then $xg-y=fh$ for some polynomials $g,h$.
+        But then setting $x=0$ and $y=1$ gives us $-1=0$, a contradiction.
+    \eenum
+
+    \item We want to show that $y/x=g/h$ modulo $f$ for some $h\notin(x,y)$, that is $hy-gx\in(f)$.
+    Suppose $f$ is of the form
+    $$ f = \sum_{t,\ell}a_{t,\ell}x^ty^\ell . $$
+    Since $f(0,0)=0$ we can take the sum over $t,\ell$ not both zero.
+    Then let us write
+    $$ f = y\sum_{\ell\geq1,t}a_{t,\ell}x^ty^{\ell-1} + x\sum_{t\geq1}a_{t,0}x^{t-1} . $$ 
+    $f$'s partial derivative with respect to $y$ at $0$ is
+    $$ \pdvof fy(0,0) = \sum_{t,\ell}a_{t,\ell}\ell x^ty^{\ell-1}(0,0) = a_{0,1} . $$
+    So let $h=\sum_{\ell\geq1,t}a_{t,\ell}x^ty^{\ell-1}$ and $g=-\sum_{t\geq1}a_{t,0}x^{t-1}$, so that $f=hy-gx$.
+    And notice that $h(0,0)=a_{0,1}\neq0$ so $h\notin(x,y)$, as desired.
+\eenum
+
+\bprob
+
+    Let $X=\spec(R)$ be the spectrum of a ring.
+    Then $V$ forms a contravariant functor $\pow(R)\to\pow(X)$, and $I$ forms a contravariant functor $\pow(X)\to\pow(R)$.
+    Show that these form an antitone Galois connection: viewed as functors $V\colon\pow(R)\tof\pow(X)^\op\colon I$, $V$ is a left adjoint of $I$.
+
+\eprob
+
+Recall that a functor between posets is just an order-preserving function.
+If $P,Q$ are posets, an adjunction $F\colon P\tof Q\colon G$ amounts to two functors satisfying either of the two equivalent conditions:
+\benum
+    \item $Fp\leq q$ iff $p\leq Gq$ for all $p\in P$ and $q\in Q$.
+    This is the Yoneda form of an adjunction; a natural bijection between hom-sets.
+    \item $p\leq GFp$ and $FGq\leq q$ for all $p\in P$ and $q\in Q$.
+    This is the unit-counit form of an adjunction; a natural map from a poset functor to another amounts to a statement that the first is
+    less that the other, and the triangle identities always hold in a poset category.
+\eenum
+In our case, these amount to: $Z\subseteq V(J)$ iff $J\subseteq I(Z)$ (by contravariance), and $J\subseteq I(V(J))$ and $Z\subseteq V(I(Z))$.
+The latter is easy to see, as we showed above that $I(V(J))=\sqrt J$ and $V(I(Z))=\cl Z$.
+The former is also easy to see: if $Z\subseteq V(J)$ then for $f\in J$ we have that $Z\subseteq V(J)\subseteq V(f)$ so that $f\in I(Z)$.
+Conversely if $J\subseteq I(Z)=\bigcap_{\p\in Z}\p$, then $J\subseteq\p$ for all $\p\in Z$ so $\p\in V(J)$, so $Z\subseteq V(J)$ as desired.
+
+Thus we have shown, in two ways, that $V,I$ forms an antitone Galois connection.
+
+\bprob
+
+    Let $X$ be a compact Hausdorff space, and define $R=C(X)$ to be the ring of continuous real-valued functions on $X$.
+    Further define $Y=\specm(R)$ to be the maximum spectrum of $R$.
+    \benum
+        \item For $x\in X$, show that $I(x)=\set{f\in R}[f(x)=0]$ is a maximal ideal of $R$.
+        This defines a map $\mu\colon X\to Y$.
+        \item Show that $\mu$ is continuous.
+        \item Let $\m\in Y$, and define $V(\m)=\set{x\in X}[f(x)=0\hbox{ for all $f\in\m$}]$.
+        \benum
+            \item Show that $V(\m)\neq\emptyset$.
+            \item Conclude that $\mu$ is surjective.
+        \eenum
+        \item Use Urysohn's lemma to show that $\mu$ is injective.
+        \item For $f\in R$, define $X_f=\set{x\in X}[f(x)\neq0]=R-V(x)$.
+        Show that $X_f$ forms a basis for the topology of $X$, and $\mu(X_f)=Y_f$.
+        \item Conclude that $\mu$ is a homeomorphism.
+    \eenum
+
+\eprob
+
+\benum
+    \item If we consider the map $\ev_x\colon R\to\bR$ mapping a function $f$ to its value on $x$, we see that $I(x)$ is simply the kernel
+    of $\ev_x$, and is thus an ideal.
+    Now, if $c=g(x)\neq0$ then consider the function $f=c-g$, which is in $V(x)$, and we see that $f+g=c$ is invertible (with inverse $c^{-1}$).
+    Thus $(g)+I(x)$ contains a unit, and thus is all of $R$.
+    So $I(x)$ must be maximal.
+
+    \item Let $V(J)\in Y$ be closed, then its preimage under $\mu$ is
+    $$ \mu^{-1}V(J) = \set{x\in X}[J\leq I(x)] , $$
+    which we claim is closed.
+    Indeed, $J\leq I(x)$ iff for every $f\in J$, $f(x)=0$, iff $x\in f^{-1}0$.
+    So this is equal to
+    $$ \mu^{-1}V(J) = \bigcap_{f\in I}f^{-1}0 , $$
+    an intersection of closed sets, and is thus closed as desired.
+    So the preimage under $\mu$ of closed sets is closed, so $\mu$ is continuous as desired.
+
+    \item
+    \benum
+        \item Notice that
+        $$ V(\m) = \bigcap_{f\in\m}\set{x\in X}[f(x)=0] = \bigcap_{f\in\m}f^{-1}0 . $$
+        Since $X$ is compact, if $V(\m)=\emptyset$ then there must be a finite collection of elements $f_1,\dots,f_n$ such that $\bigcap_{i=1}^nf_i^{-1}0=\emptyset$.
+        Then the function $g=f_1^2+\cdots+f_n^2$ is continuous and has no zeroes (a zero of $g$ must be a zero of every $f_i$).
+        Since inversion is continuous $\bR^\times\to\bR^\times$, $g$ has an inverse.
+        But $g\in\m$, a contradiction to $\m$ being a proper ideal.
+
+        \item As above, $V(\m)\neq\emptyset$, so let $x\in V(\m)$.
+        Then $\m\subseteq\mu(x)$, and by maximality this means $\mu(x)=\m$.
+        So $\mu$ is surjective.
+    \eenum
+
+    \item For $x\neq y\in X$, since $X$ is compact Hausdorff and thus normal, there must be a Urysohn function $f\colon X\to\bR$ such that $f(x)=0,f(y)=1$.
+    But then $f\in\mu(x)$ and $f\notin\mu(y)$ so $\mu(x)\neq\mu(y)$ and $\mu$ is injective.
+
+    \item It is sufficient to show that $V(f)=f^{-1}0$ forms a basis of closed sets.
+    Clearly $V(f)$ are all closed as the preimage of closed sets.
+    Now, $\emptyset=V(1)$ and $X=V(0)$ so we need only show that all nontrivial proper closed subsets of $X$ are intersections of sets of the form $V(f)$.
+    For $S\subsetneq X$ and for each $x\notin S$, let $f_x\in R$ be a Urysohn function where $f_x(S)=0$ and $f_x(x)=1$.
+    Then we claim
+    $$ S = \bigcap_{x\notin S}V(f_x) . $$
+    Indeed, for each $x\notin S$, $S\subseteq f_x^{-1}0=V(f_x)$ so that $S$ is a subset of the intersection.
+    And for $x\notin S$, $x\notin V(f_x)$ and so $x$ is not in the intersection.
+    Thus $S$ can be written as an intersection of closed basis sets.
+
+    Since $\mu$ is a bijection, we show instead that $\mu(V(f))=V_Y(f)=\set{\m\in Y}[f\in\m]$.
+    Indeed, since $\mu$ is a bijection every maximal ideal in $Y$ is of the form $\mu(x)$, so
+    $$ V_Y(f) = \set{\m\in Y}[f\in\m] = \set{\mu(x)}[f\in\mu(x)] = \set{\mu(x)}[f(x)=0] = \mu(V(f)) , $$
+    as desired.
+    As $\mu$ is a bijection it preserves complements so $\mu(X_f)=\mu(V(f)^c)=V_Y(f)^c=Y_f$ as desired.
+
+    \item Since $\mu$ maps open basis sets to open sets in $Y$, it maps open sets to open sets and is thus an open map.
+    It is also a continuous bijection, thus a homeomorphism.
+\eenum
+
+\bye

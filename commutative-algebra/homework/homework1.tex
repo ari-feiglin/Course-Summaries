@@ -1,0 +1,374 @@
+\input pdfToolbox
+\input pdfmsym
+\pdfmsymsetscalefactor{10}
+\input ../preamble
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+\setcounter{section}{1}
+
+\centerline{\setfontandscale{bf}{20pt}Algebraic Geometry}
+\medskip
+\centerline{\bf Exercise 1}
+\smallskip
+\centerline{\it Ari Feiglin}
+
+\bprob
+
+    Let $n<\omega$.
+    \benum
+        \item Let $a_1,\dots,a_n\in\bC$, show that $(x_1-a_1,\dots,x_n-a_n)\in\bC[x_1,\dots,x_n]$ is a maximal ideal.
+        \item Let $E\subseteq\bC[\bar x]$ be a subset and denote its generated ideal by $(E)$.
+        Show that $Z((E))=Z(E)$, i.e.\ that
+        $$ \set{a\in\bC^n}[\forall f\in E,\ f(a)=0] = \set{a\in\bC^n}[\forall f\in(E),\ f(a)=0] $$
+        \item Let $I\leq\bC[x_1,\dots,x_n]$ be an ideal and $(a_1,\dots,a_n)\in\bC^n$ a point.
+        Show that $a\in Z(I)$ iff $I\leq(x_1-a_1,\dots,x_n-a_n)$.
+    \eenum
+
+\eprob
+
+\benum
+    \item Clearly $I=(x_1-a_1,\dots,x_n-a_n)$ is a proper ideal as it cannot contain $1$: the product of $x-a$ with any polynomial has degree $\geq1$.
+    To show that $I$ is maximal, we will show $\bC[\bar x]/I$ is isomorphic to $\bC$, by defining a surjection $\phi\colon\bC[\bar x]\to\bC$ with kernel $I$ and
+    appealing to the first isomorphism theorem.
+    Define $\phi$ by evaluation on $a_1,\dots,a_n$: $\phi(f)=f(a_1,\dots,a_n)$.
+    $\phi$ is a ring morphism, which we show indirectly by noting that $\phi$ is simply the composition
+    $$ \phi = \bC[x_1,\dots,x_n] \cong \bC[x_1][x_2]\cdots[x_n] \xtos{\ev_{a_n}} \bC[x_1]\cdots[x_{n-1}] \to\cdots\to \bC[x_1] \xtos{\ev_{a_1}} \bC , $$
+    where $\ev_a\colon R[x]\to R$ is the evaluation map $f\mapsto f(a)$ (which is always a ring morphism for $R$ commutative, as is the case here).
+    Each $\ev_a$ is a surjection as it restricts to the identity on $R$, and thus $\phi$ is surjective as the composition of surjective maps.
+
+    Clearly $I\subseteq\ker\phi$ since each of its generators map to zero under $\phi$.
+    Conversely if $f\in\ker\phi$, that is $f(a_1,\dots,a_n)=0$, then viewing it as an element of $\bC[x_1,\dots,x_{n-1}][x_n]$, there are polynomials $q(x_1,\dots,x_n)$ and
+    $r(x_1,\dots,x_n)$ such that
+    $$ f(\bar x) = q(\bar x)\cdot(x_n-a_n) + r(\bar x) , $$
+    and $x_n$'s degree in $r(\bar x)$ is less than that of $x_n-a_n$'s, so zero.
+    That is to say, $r(\bar x)$ is a polynomial in $x_1,\dots,x_{n-1}$.
+
+    But then
+    $$ 0 = f(\bar a) = q(\bar a)\cdot0 + r(\bar a) , $$
+    meaning that $r$ is in the kernel of the evaluation map $\bC[x_1,\dots,x_{n-1}]\to\bC$.
+    Proceeding by induction (the base case of $n=0$ is simply that the kernel is trivial, so $r=0$), we see that $r(\bar x)\in(x_1-a_1,\dots,x_{n-1}-a_{n-1})$ and so
+    $f(\bar x)=q(\bar x)\cdot(x_n-a_n)+r(\bar x)$ is in $(x_1-a_1,\dots,x_n-a_n)=I$, as desired.
+
+    Thus we have constructed a surjective ring morphism $\phi\colon\bC[\bar x]\to\bC$ whose kernel is $I$.
+    So $\bC[\bar x]/I\cong\bC$, a field, so $I$ is maximal, as desired.
+
+    \item Clearly $Z$ is contravariant: $E\subseteq F$ implies $Z(F)\subseteq Z(E)$, thus $Z((E))\subseteq Z(E)$.
+    Now if $a\in Z(E)$, let $f\in(E)$ so that $f=\sum_i g_ie_i$ for $e_i\in E$ and $g_i$ polynomials.
+    Then $e_i(a)=0$ for all $i$, so
+    $$ f(a) = \sum_i g_i(a)e_i(a) = 0 , $$
+    meaning $a\in Z((E))$ as desired.
+
+    \item $a\in Z(I)$ precisely when $I$ is contained in the kernel of the evaluation map defined in (1).
+    We showed that this kernel is equal to $(x_1-a_1,\dots,x_n-a_n)$, as desired.
+\eenum
+
+\bprob
+
+    Let $R$ be a ring, and $I,J\leq R$ ideals.
+    Prove:
+    \benum
+        \item $\sqrt{IJ}=\sqrt I\cap\sqrt J=\sqrt{I\cap J}$.
+        \item $\sqrt I=(1)$ iff $I=(1)$.
+        \item If $I$ is prime then $\sqrt{I^n}=I$ for all $n<\omega$.
+        \item Find an example of a non-prime $I$ for which the above point fails, and another where it holds.
+    \eenum
+
+\eprob
+
+\benum
+    \item $\sqrt\bul$ is covariant, in the sense that it preserves subsets: if $I\subseteq J$ then $a\in\sqrt I$ iff $a^n\in I\subseteq J$ for some $n$,
+    so $a\in\sqrt J$.
+    We know that $IJ\subseteq I,J$ and thus
+    $$ \sqrt{IJ} \subseteq \sqrt{I\cap J} \subseteq \sqrt I\cap\sqrt J . $$
+    So all we need to show is that $\sqrt I\cap\sqrt J\subseteq\sqrt{IJ}$.
+    Let $a\in\sqrt I\cap\sqrt J$ so that for some $n,m$, $a^n\in I$ and $a^m\in J$.
+    But then $a^{n+m}\in IJ$, so that $a\in\sqrt{IJ}$, as desired.
+
+    \item Since $I\subseteq\sqrt I$, if $I=(1)$ then $\sqrt I=(1)$.
+    Conversely, if $\sqrt I=(1)$ then $1\in\sqrt I$, which means $1\in I$ since $1$ is idempotent.
+    Thus $I=(1)$ as desired.
+
+    \item By point (1), for every ideal $I$
+    $$ \sqrt{I^n} = \sqrt I\cap\cdots\cap\sqrt I = \sqrt I . $$
+    So it is sufficient to show that $\sqrt I=I$ when $I$ is prime, equivalently $\sqrt I\subseteq I$.
+    Suppose $a\in\sqrt I$, then $a^n\in I$ for some $n$.
+    But $I$ is prime so $a\in I$ (by induction, either $a$ or $a^{n-1}$ is in $I$), as desired.
+
+    \item Consider $R=\bZ$, whose ideals are of the form $I=n\bZ$ and prime ideals are $p\bZ$ for $p$ prime.
+    Then $a\in\sqrt{n\bZ}$ iff $n$ divides $a^k$ for some $k$, which occurs iff $a$ shares the same prime divisors as $n$ (not considering repeats).
+    Indeed, $n$ dividing $a^k$ means each of $n$'s prime divisors must divide $a^k$ and thus $a$.
+    And conversely if $a$ is the product of $n$'s prime divisors, take the largest multiplicity $k$ of $n$'s prime divisors, then $n$ must divide $a^k$.
+
+    Thus, if $n=p_1^{k_1}\cdots p_N^{k_N}$ then $\sqrt{n\bZ}=p_1\cdots p_N\bZ$.
+    We clearly see then that if $n$ is a product of distinct primes, $\sqrt{n\bZ}=n\bZ$, and otherwise $n\bZ$ and $\sqrt{n\bZ}$ are distinct.
+    For example,
+    $$ \sqrt{6\bZ} = 6\bZ,\qquad \sqrt{4\bZ} = 2\bZ \neq 4\bZ . $$
+    $4\bZ$ is not prime as $4$ is not.
+\eenum
+
+\bprob
+
+    Let $R$ be a ring, and consider a polynomial $f=\sum_{k=0}^na_kx^k$ in $R[x]$.
+    Prove the following.
+    \benum
+        \item $f\in R[x]^\times$ iff $a_0\in R^\times$ and $a_1,\dots,a_n$ are nilpotent.
+        \item $f$ is nilpotent iff $a_0,\dots,a_n$ are nilpotent.
+        \item $f$ is a zero-divisor iff $af=0$ for some $a\in R$.
+        \item A polynomial is {\emphcolor primitive} if the ideal in $R$ generated by its coefficients is all of $R$.
+        Show that $fg$ is primitive iff $f$ and $g$ are.
+        \item Show $J(R[x])=\nil(R[x])$.
+    \eenum
+
+\eprob
+
+\benum
+    \item Suppose that $f$'s coefficients satisfy the condition given.
+    Then we have that $a_1,\dots,a_n\in\nil(R[x])$ as $R$ is a subring, and since the nil-radical is an ideal,
+    $$ f - a_0 = \sum_{k=1}^n a_kx^k \in \nil(R[x]) . $$
+    Now we generalize and claim that the sum of a unit and a nilpotent element is a unit: let $e\in R$ be a unit and $n\in\nil(R)$ nilpotent, we want to show $e+n$ is a unit as well.
+    Suppose that $e+n$ is not a unit, then $(e+n)$ is a proper ideal and thus can be extended to a prime ideal $\p$.
+    The nil-radical is the intersection of all prime ideals and thus $n\in\p$, but then $e\in\p$, a contradiction to $e$ being a unit.
+
+    Thus $f$ is a unit, as the sum of a nilpotent element and a unit.
+
+    Conversely suppose $f$ were a unit, and let $\p$ be a prime ideal so that $R/\p$ is an integral domain.
+    Consider the projection $\pi\colon R\to R/\p$ and extend it to $\pi\colon R[x]\to(R/\p)[x]$ pointwise; this is still a ring morphism.
+    $\pi(f)$ is still a unit, but since $R/\p$ is an integral domain unit polynomials are constant (considering degrees, which sum when multiplied).
+    Thus $\pi(f)$'s non-zero coefficients must be zero in $R/\p$, meaning $a_1,\dots,a_n\in\p$.
+    So $a_1,\dots,a_n$ are in every prime ideal of $R$, and thus are nilpotent.
+    And $a_0$ must be a unit, since if $fg=1$ then $(fg)(0)=f(0)g(0)=a_0g(0)=1$, so $g$'s zero coefficient is $a_0$'s inverse.
+
+    \item If $f$ is nilpotent, then as before take a prime ideal $\p$ and consider the projection $\pi\colon R\to R/\p$ and its lift to polynomial rings.
+    Nilpotent elements are preserved under ring morphisms: if $f^n=0$ then $\pi(f)^n=\pi(f^n)=0$.
+    Thus $\pi(f)$ is nilpotent in $(R/\p)[x]$, but as an integral domain this means that $\pi(f)=0$.
+    That is, each of $f$'s coefficient are mapped to $0$, meaning they are in $\p$.
+
+    So $f$'s coefficients are in every prime ideal, and thus nilpotent.
+
+    Conversely suppose that $a_0,\dots,a_n$ are all nilpotent.
+    Then as before they are nilpotent in $R[x]$, and since the nil-radical is an ideal,
+    $$ f = \sum_{k=0}^n a_kx^k \in \nil(R[x]) , $$
+    as desired.
+
+    \item Let $gf=0$ such that $g=\sum_{k=0}^mb_kx^k$ is minimal in its degree.
+    Suppose that $m>0$, meaning $g$ is not a constant, then we have
+    $$ 0 = gf = \sum_{k=0}^{n+m}\sum_{j=0}^k a_jb_{k-j}x^k . $$
+    The $n+m$th coefficient of the right-hand side is $a_nb_m$, so $a_nb_m=0$.
+    Thus $a_ng$ has degree strictly less than $m$, as $a_n$ annihlates $g$'s leading coefficient.
+    But at the same time $a_ngf=0$, so $a_ng$ annihlates $f$ but has degree less than $m$, contradicting $g$'s minimality.
+
+    \item Denote $g=\sum_{k=0}^mb_kx^k$ so that
+    $$ fg = \sum_{k=0}^{n+m}\parens{\sum_{j=0}^k a_jb_{k-j}}x^k = \sum_{k=0}^{n+m} c_kx^k . $$
+
+    In general, we have the following relationship:
+    $$ (\bar c) \subseteq (\bar a)\cdot(\bar b) \subseteq \sqrt{(\bar c)} . $$
+    The first inclusion is clear, as every $c_k$ is a linear combination of $a_ib_j$s.
+    For the second we note that $\sqrt I$ is the intersection of all prime ideals containing $I$.
+    Indeed, consider the projection $\pi\colon R\to R/I$ and then
+    $$ \sqrt I = \pi^{-1}(\nil_{R/I}(0)) = \pi^{-1}\bigcap_\p\p = \bigcap_\p\pi^{-1}(\p) , $$
+    where the intersection is over the prime ideals of $R/I$.
+    The prime ideals of $R/I$ are of the form $\p/I$ for a prime ideal $I\subseteq\p$, and the inverse image of
+    $\p/I$ is just $\p$, thus this intersection of all prime ideals containing $I$.
+
+    So let $(\bar c)\subseteq\p$ be prime, we want to show that $(\bar a)\cdot(\bar b)\subseteq\p$.
+    Consider the projection $\pi\colon R[x]\to(R/\p)[x]$, an integral domain as $R/\p$ is.
+    Then $\pi(fg)=0$, and so either $\pi(f)$ or $\pi(g)$ is zero, meaning $(\bar a)$ or $(\bar b)\subseteq\p$, as desired.
+
+    So if $fg$ is primitive, $(\bar c)=R$ and so $(\bar a)=(\bar b)=R$, so $f,g$ are primitive.
+    Conversely if $f,g$ are primitive then $(\bar a)=(\bar b)=R$ so $\sqrt{(\bar c)}=R$, and as we showed this means that
+    $(\bar c)=R$ so $fg$ is primitive.
+
+    \item In general the nil-radical is a subset of the Jacobson radical, as maximal ideals are prime.
+    So let $f\in J(R[x])$, then in particular $xf-1$ is a unit.
+    As we showed, this means that all of its non-constant coefficients, which are $a_0,\dots,a_n$, are nilpotent.
+    Appealing to (2), this shows that $f\in\nil(R[x])$ as desired.
+\eenum
+
+\bprob
+
+    Let $V$ be a finite-dimensional complex vector space and $T\colon V\to V$ an endomorphism.
+    \benum
+        \item Show that there is a unique morphism $\phi\colon\bC[x]\to\endo_\bC(V)$ mapping $x$ to $T$ and keeping $\bC$ fixed pointwise.
+        \item Consider the spectrum of $T$, $\sigma(T)$, and show that $\sigma(T)$ and $\spec(\im\phi)$ are in bijection.
+    \eenum
+
+\eprob
+
+\benum
+    \item $\bC[x]$ is the free $\bC$-algebra on a single generator; the claim is true for any other $\bC$-algebra $A$ and not just $\endo_\bC(V)$.
+    That is, let $a\in A$, then there is a unique $\bC$-algebra morphism $\phi\colon\bC[x]\to A$ mapping $x$ to $a$.
+    Indeed, defining $\phi(x)=a$ forces us to extend by linearity and multiplicity
+    $$ \phi\parens{\sum_{k=0}^nz_kx^k} = z_ka^k . $$
+    This is clearly linear, and multiplicative since
+    $$ \phi\parens{\parens{\sum_kz_kx^k}\parens{\sum_jw_jx^j}} = \phi\parens{\sum_k\parens{\sum_jz_jw_{k-j}}x^k} = \sum_k\sum_jz_jw_{k-j}a^k =
+    \parens{\sum_kz_ka^k}\parens{\sum_jw_ja^j} $$
+    as desired.
+
+    \item The image of $\phi$ are all linear combinations of $\set{T^0,T^1,T^2,\dots}$.
+    If $v\in V$ is an eigenvector of $T$ with eigenvalue $\lambda$, notice that for $f=\sum_kz_kx^k$:
+    $$ \phi(f)v = \sum_kz_kT^kv = \sum_k z_k\lambda^k v = f(\lambda)v . $$
+
+    Now consider $T$'s characteristic polynomial $p_T$.
+    By Cayley-Hamilton, $\phi(p_T)=0$.
+    Thus for $\p\subseteq\im\phi$ prime, we have that $p_T\in\phi^{-1}(\p)$, which is prime.
+    Since $\bC$ is a field, $\bC[x]$ is a PID and so prime ideals are those ideals generated by an irreducible element.
+    Irreducible elements in $\bC[x]$ are linear polynomials, so every prime ideal is of the form $(x-\lambda)$ (or $0$).
+    Thus $\phi^{-1}(\p)=(x-\lambda)$, and if $p_T$ is in $(x-\lambda)$ that means $\lambda$ is a root of $p_T$: an eigenvalue.
+    The zero case can be ignored: $\phi^{-1}(\p)$ cannot be zero since $p_T\notin0$.
+
+    Thus every prime ideal of $\im\phi$ is of the form $\p_\lambda=\phi((x-\lambda))$ for some eigenvalue $\lambda$.
+    Conversely we claim that for an eigenvalue $\lambda$, $\p_\lambda$ is prime.
+    Indeed, if $\phi(f)\cdot\phi(g)\in\p_\lambda$ then there is some polynomial $h\in\bC[x]$ with root $\lambda$ such that $\phi(h)=\phi(f)\phi(g)=\phi(fg)$.
+    Let $v\in V$ be an eigenvector of $T$ with eigenvalue $\lambda$.
+    Then
+    $$ \phi(fg)v = f(\lambda)g(\lambda)v,\qquad \phi(h)v = h(\lambda)v = 0 , $$
+    so $f(\lambda)g(\lambda)=0$, meaning that either $f$ or $g$ has the root $\lambda$ and is thus in $\p_\lambda$, meaning it is prime.
+
+    And so $\lambda\oto\p_\lambda$ is a bijection $\sigma(T)\cong\spec(\im\phi)$.
+\eenum
+
+\bprob
+
+    \benum
+        \item Let $k$ be a field.
+        \benum
+            \item Describe the topological space $\spec(k)$.
+            \item Let $\phi\colon\bZ\to k$ be the unique morphism.
+            Show that
+            $$ \im\phi^* = \set{(\chr k)} $$
+        \eenum
+        \item Let $R,S$ be rings and $f\colon\spec(S)\to\spec(R)$ a continuous map.
+        Must $f$ arise from a ring morphism $R\to S$?
+        \item Let $\phi,\psi\colon R\to S$ be morphisms of rings such that $\phi^*=\psi^*$, must $\phi=\psi$?
+    \eenum
+
+\eprob
+
+\benum
+    \item
+    \benum
+        \item Fields have a single proper ideal, $0$, which is prime.
+        Thus $\spec(k)=\set0$, and there is only one topology on a single-point space: $\set{\emptyset,\set0}$.
+        \item $\phi^*\colon\spec(k)\to\spec(\bZ)$ is given by $\phi^*(\p)=\phi^{-1}(\p)$; in our case
+        $\phi^*(0)=\set{n\in\bZ}[\phi(n)=0]$.
+        $\phi(n)=0$ iff $\chr(k)$ divides $n$, i.e.\ $\phi(0)=(\chr k)$.
+        $0$ is the only element of $\spec(k)$, so we have the desired result.
+    \eenum
+
+    \item Let $R=\bZ$ and $S=k$ as before, so there is only a single ring morphism $\bZ\to k$ as above.
+    But since $\spec(k)$ has the discrete topology, any map $\spec(k)=\set0\to\spec(\bZ)$ is continuous.
+    These maps correspond to points in $\spec(\bZ)$, of which there are countably many (one for each prime $p$).
+    So any map $f\colon\spec(k)\to\spec(\bZ)$ which maps the zero ideal to a prime other than $\chr k$ does not arise
+    from $\phi$.
+
+    \item This is not the case.
+    Take a field $k$ and any two distinct field morphisms $\phi,\psi\colon k\to k$.
+    Since $\spec(k)=\set0$, there is only a single map $\spec(k)\to\spec(k)$, thus $\phi^*=\psi^*$.
+    For example, take $k=\bC$, $\phi$ to be the identity, and $\psi$ to be complex conjugation.
+\eenum
+
+\bprob
+
+    Let $R$ be a ring and $\p\in\spec(R)$ a prime ideal.
+    Show the following:
+    \benum
+        \item $\cl{\set\p}=V(\p)$.
+        \item $\set\p$ is closed iff $\p$ is maximal.
+        \item $\spec(R)$ is a $T_0$-space: any two points are topologically distinct.
+        \item Show that $\spec(R)$ is not necessarily $T_1$: find an example for which there exist $\p\neq\q\in\spec(R)$
+        and every neighborhood of $\p$ contains $\q$.
+    \eenum
+
+\eprob
+
+\benum
+    \item The closed sets of the topology are of the form $V(I)$, so $\cl{\set\p}=V(I)$ for some $I$.
+    If $\p\in I$ then $I\leq\p$ and so $V(\p)\subseteq V(I)$; thus $V(\p)$ is the smallest closed set containing $\p$.
+    Thus $\cl{\set\p}=V(\p)$.
+
+    \item $\set\p$ is closed iff $\set\p$ is equal to its closure, $V(\p)$.
+    $V(\p)=\set\p$ when there are no prime ideals $\q$ properly containing $\p$.
+    If $\p$ is maximal this is clearly true, and conversely if this is true then $\p$ must be maximal: if it were contained
+    in an ideal then we could extend it to a prime ideal, a contradiction.
+
+    \item Suppose not, then the open neighborhoods of $\p$ and $\q$ are the same.
+    This means that the closed neighborhoods (in the sense of closed sets containing a point, not necessarily containing an
+    open neighborhood of the point) are the same: $\p\in F$ iff $\p\notin F^c$ iff $\q\notin F^c$ iff $\q\in F$.
+    In particular their closures are equal, so $V(\p)=V(\q)$ meaning $\p\leq\q$ and $\q\leq\p$, so they are equal.
+
+    \item Take $R=\bC[x]$; its prime ideals are of the form $0$ or $(x-a)$ for $a\in\bC$.
+    Notice that $\cl{\set0}=V(0)=\spec(R)$, so $0$ isn't in any non-trivial closed set; in other words it is contained
+    in every non-empty open set.
+    So for any other point $\p$, $0$ is contained in all of its neighborhoods, thus it can't be $T_1$.
+\eenum
+
+\bprob
+
+    Let $k$ be a field and $K$ its algebraic closure.
+    Prove that the points of $\spec(k[x])$ (other than the generic point $0$) are in bijection with the orbits of $K$
+    under the action of $\Gal(K/k)$.
+
+\eprob
+
+Define $G=\Gal(K/k)$, and let $c\in K$, then $c$'s orbit under $G$ is the set of roots of its minimal polynomial
+$f_c\in k[x]$.
+Indeed,
+$$ f_c(\sigma c) = \sigma f_c(c) = 0 , $$
+so $G\cdot c$ is a subset of these roots.
+Conversely suppose $d$ was another root of $f_c$, and consider the unique $k$-algebra morphism $\phi_c\colon k[x]\to k[c]$
+mapping $x\mapsto c$.
+This surjective map has kernel $(f_c)$ and thus quotients to give an isomorphism $\phi_c\colon k[x]/(f_c)\to k[c]$.
+Similarly $\phi_d$ has kernel $(f_d)$ and quotients to $\phi_d\colon k[x]/(f_c)\to k[d]$, and the composition
+$$ k[c] \xtos{\phi_c^{-1}} k[x]/(f_c) \xtos{\phi_d} k[d] $$
+maps $c$ to $d$.
+
+We can extend such map $\sigma\colon k[c]\to K$ to an automorphism $\sigma\colon K\to K$.
+This is a usual application of Zorn's lemma and the observation that if $F[a]/F$ is algebraic then we can extend maps
+$F\to K$ ($K$ algebraic closure) to $F[a]\to K$: take $a$'s minimal polynomial $f$ and a root $b\in K$, so that
+the map $F[x]\to K$ given by $p(x)\mapsto p(b)$ has kernel $(f)$ giving a map $F[a]\cong F[x]/(f)\to K$.
+Zorn on the poset of all extensions of $\sigma$ shows that we can extend $\sigma$ to $K\to K$.
+Such an extension must be a surjection (and thus an automorphism): let $a\in K$ and consider all of its conjugates,
+a finite set.
+$\sigma$ restricts to an isomorphism on this set of conjugates, as it is a surjection of finite sets, and so there is a
+conjugate which $\sigma$ maps to it.
+
+Thus for every two conjugates $c,d$, there is a $\sigma\in G$ such that $\sigma(c)=d$.
+So we have shown that $G\cdot c$ is precisely the set of conjugates of $c$.
+
+Non-zero points of $\spec(k[x])$ are the principal ideals generated by irreducible polynomials (since $k[x]$ is a PID).
+Thus we have a bijection (since every irreducible polynomial over $k$ has a root in $K$ and is thus a minimal polynomial
+of some element of $K$),
+$$ \spec(k[x])-\set0 \to K/G,\qquad (f)\mapsto\hbox{roots of $f$} . $$
+
+\bprob
+
+    Let $R$ be a ring, and denote $R[\epsilon]=R[x]/(x^2)$ and $\epsilon\in R[\epsilon]$ to mean the coset of $x$.
+    \benum
+        \item Describe the topological space $\spec(C[\epsilon])$.
+        \item Let $f\in\bC[x]$, considered as an element of $\bC[x][\epsilon]$.
+        Show that
+        $$ f(x+\epsilon) - f(x) = \epsilon\cdot f'(x) $$
+    \eenum
+
+\eprob
+
+\benum
+    \item Ideals of $\bC[\epsilon]$ are of the form $(f)/(x^2)$ for an ideal $(x^2)\subseteq(f)$, i.e.\ a polynomial
+    $f$ which divides $x^2$.
+    There are only two such ideals: $(x),(x^2)$.
+    These correspond to the ideals $0$ and $(\epsilon)$ in $\bC[\epsilon]$.
+    $0$ is not prime since $\epsilon^2=0$, and so $\spec(\bC[\epsilon])$ is $\set{(\epsilon)}$ (there is no need to check
+    its primality; a prime ideal must exist and this is the only other ideal).
+
+    This is a single-point space, which has a unique topology.
+
+    \item Let $f=\sum_ka_kx^k$.
+    Then
+    $$ f(x+\epsilon) = \sum_k a_k(x+\epsilon)^k = \sum_k a_k\sum_{j=0}^k\binom kj x^{k-j}\epsilon^j , $$
+    and since $\epsilon^j=0$ for $j>1$, this is equal to
+    $$ a_0 + \sum_{k=1}a_k(x^k+kx^{k-1}\epsilon) = f(x) + \epsilon\sum_{k=1}kx^{k-1} = f(x) + \epsilon f'(x) , $$
+    as desired.
+\eenum
+
+\bye
+

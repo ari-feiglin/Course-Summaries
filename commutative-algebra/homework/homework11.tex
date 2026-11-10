@@ -1,0 +1,365 @@
+\input pdfToolbox
+\input pdfmsym
+\pdfmsymsetscalefactor{10}
+\input ../preamble
+\def\enumindent{0cm}
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+\setcounter{section}{11}
+
+\centerline{\setfontandscale{bf}{20pt}Commutative Algebra \& Algebraic Geometry}
+\medskip
+\centerline{\bf Exercise \the\counter{section}}
+\smallskip
+\centerline{\it Ari Feiglin}
+
+\bprob
+
+    \benum
+        \item Let $f_i\colon X_i\to Y_i$ be morphisms of varieties for $i=1,2$.
+        \benum
+            \item Show that there is a canonical morphism $f_1\times f_2\colon X_1\times X_2\to Y_1\times Y_2$.
+            \item Show that if $f_1,f_2$ both satisfy any of the below properties, so too does $f_1\times f_2$:
+
+            {\tabskip=0pt plus 1fil\halign to\hsize{(#)\hfil\tabskip=.25cm&#\hfil\tabskip=0pt plus.2fil&(#)\hfil\tabskip=.25cm&#\hfil\tabskip=0pt plus 1fil\cr
+                1&being an isomorphism,&2&being an open embedding,\cr
+                3&being a closed embedding,&4&being affine.\cr
+            }}
+        \eenum
+        \item Show that $\bA^n\times\bA^m\cong\bA^{n+m}$.
+        \item Let $X$ and $Y$ be nonempty algebraic varieties.
+        \benum
+            \item Show that $\dim(X\times Y)=\dim X+\dim Y$.
+            \item Prove that $X$ and $Y$ are connected iff $X\times Y$ is.
+            \item Prove that if $X\times Y$ is irreducible, then $X$ and $Y$ are.
+            \item Assume that $X$ and $Y$ are irreducible.
+            \benum
+                \item Suppose that $X\times Y=C_1\cup C_2$ where $C_1,C_2$ are proper closed subsets of $X\times Y$.
+                Show that for any $y\in Y$, either $X\times\set y\subseteq C_1$ or $C_2$.
+                \item For $i=1,2$, define $F_i=\set{y\in Y}[X\times\set y\subseteq C_i]$.
+                Show that $F_i=\bigcap_{x\in X}\pi_Y(C_i\cap(\set x\times Y))$ and that $F_i$ is closed.
+                \item Conclude that $X\times Y$ is irreducible.
+            \eenum
+            \item Prove that $X$ and $Y$ are separated iff $X\times Y$ is.
+            \item Prove that $X$ and $Y$ are complete iff $X\times Y$ is.
+        \eenum
+    \eenum
+
+\eprob
+
+\benum
+    \item
+    \benum
+        \item In any category with all limits of a certain shape, taking limits of that shape is functorial.
+        In this case, taking finite products is functorial.
+        A natural transformation between product diagrams amounts to morphisms between the objects whose product we are taking, without restrictions.
+
+        Because the set underlying the product of varieties is the product of the underlying sets of varieties, the underlying set-theoretic function of
+        $f_1\times f_2$ is $(x,y)\mapsto(f_1(x),f_2(y))$.
+
+        \item For (1) this is due to functorality.
+        We see that $(f_1\times f_2)\circ(g_1\times g_2)=(f_1\circ g_1)\times(f_2\circ g_2)$.
+        Thus
+        $$ (f_1\times f_2) \circ (f_1^{-1}\times f_2^{-1}) = \id\times\id = \id , $$
+        and we have a similar equality in the other direction, so $f_1\times f_2$ is an isomorphism.
+
+        For (2) and (3), we claim that if $f_1,f_2$ are embeddings then so is $f_1\times f_2$.
+        We then see that restricting $f_1\times f_2$ to $X_1\times X_2\to f_1(X_1)\times f_2(X_2)$ is an isomorphism from (1),
+        and since the induced SWF structure of the product and the product of induced structures is the same, this means that $f_1\times f_2$
+        is indeed an embedding.
+
+        In lecture we showed that the product of open subsets of a variety is open, and the product of closed subsets is closed.
+        Thus in the case of (2), $f_1(X_1)\times f_2(X_2)$ is open, and it is closed in (3).
+        Thus $f_1\times f_2$ is an open embedding in (2) and closed in (3).
+
+        For (4), if $U_i$ is an open affine cover of $Y_1$ and $V_j$ an open affine cover of $Y_2$, then $U_i\times V_j$ is an open affine cover of $Y_1\times Y_2$.
+        This is because the product of affine varieties is affine, and the product of open subsets if open.
+        For each $i,j$, we have that
+        $$ (f_1\times f_2)^{-1}(U_i\times V_j) = (f_1^{-1}U_i)\times(f_2^{-1}V_j) , $$
+        and since $f_1,f_2$ are affine, $f_1^{-1}U_i$ and $f_2^{-1}V_j$ are affine.
+        Thus this preimage is affine, as desired.
+    \eenum
+
+    \item Recall that for an SWF $X$,
+    $$ \hom(X,\bA^{n+m}) \cong \O_X(X)^{n+m} \cong \O_X(X)^n \times \O_X(X)^m \cong \hom(X,\bA^n) \times \hom(X,\bA^m) , $$
+    which is the universal property of the product $\bA^n\times\bA^m$.
+    By Yoneda, $\bA^{n+m}\cong\bA^n\times\bA^m$.
+
+    \item
+    \benum
+        \item If $X,Y$ are affine of dimensions $n=\dim X$ and $m=\dim Y$, then there are finite surjections $f\colon X\to\bA^n$ and $g\colon Y\to\bA^m$.
+        The product map $X\times Y\to\bA^{n+m}$ is then surjective, and we claim finite.
+        Indeed, $k[X\times Y]\cong k[X]\otimes_kk[Y]$, and if $k[X]$ is a finite $k[\bA^n]$-algebra and $k[Y]$ a finite $k[\bA^m]$-algebra, then
+        $k[X]\otimes k[Y]$ is a finite $k[\bA^n]\otimes k[\bA^m]\cong k[\bA^{n+m}]$-algebra.
+
+        Thus $\dim(X\times Y)=n+m=\dim X+\dim Y$.
+
+        Now in general, let $U_i$ be an open affine cover of $X$ and $V_j$ an open affine cover of $Y$.
+        Then $U_i\times V_j$ is an open affine cover of $X\times Y$, so
+        $$ \multline{
+            \dim(X\times Y) = \sup_{i,j}\dim(U_i\times V_j) = \sup_{i,j}(\dim U_i+\dim V_j) = (\sup_i\dim U_i) + (\sup_j\dim V_j)\cr
+            = \dim X + \dim Y ,
+        } $$
+        where the second equality is due to what we just proved.
+
+        \item Suppose that $X$ and $Y$ are connected.
+        Notice that for $y\in Y$, $X\times\set y\subseteq X\times Y$ is isomorphic to $X$ via projection.
+        This is because the singleton is an affine variety, and is terminal in the category of SWFs; the product of an object with a terminal object is isomorphic
+        to the original object via projection.
+
+        Thus $X\times\set y$ is connected, and for the same reason so is $\set x\times Y$ for all $x\in X$.
+        If we then fix $y\in Y$ and consider
+        $$ Z_x = (X\times\set y) \cup (\set x\times Y), $$
+        we see that $Z_x$ is connected as it is the union of non-disjoint connected spaces.
+        Then
+        $$ X \times Y = \bigcup_x Z_x $$
+        is connected since each $Z_x$ is connected and they have non-empty intersection: $\bigcap_xZ_x=X\times\set y$.
+
+        Conversely if $X\times Y$ is connected, then $X=\pi_X(X\times Y)$ is connected as the continuous image of a connected space.
+        So is $Y=\pi_Y(X\times Y)$.
+
+        \item The continuous image of an irreducible space is irreducible.
+        If $f\colon X\to Y$ is continuous and $X$ is irreducible, then suppose $f(X)=C_1\cup C_2$ is a union of closed subsets.
+        Then $X=f^{-1}(C_1\cup C_2)=f^{-1}C_1\cup f^{-1}C_2$ is a proper closed union, so $X=f^{-1}C_i$ for some $i$, which means $f(X)\subseteq C_i$,
+        so the original union was not proper; $f(X)$ is irreducible.
+
+        Since $X=\pi_X(X\times Y)$, $X$ is irreducible; the same is true for $Y$.
+
+        \item Suppose $X\times Y=C_1\cup C_2$ be a proper closed union, and let $y\in Y$.
+        Then $X\times\set y$ is irreducible as it is isomorphic to $X$; thus it is contained in either $C_1$ or $C_2$.
+
+        Define $F_i=\set{y\in Y}[X\times\set y\subseteq C_i]$, then
+        $$ F_i = \bigcap_{x\in X}\pi_Y(C_i\cap(\set x\times Y)) , $$
+        since the latter consists of all $y\in Y$ such that for all $x\in X$ there is an $x'\in X$ such that $(x',y)\in C_i\cap(\set x\times Y)$.
+        This requires that $x=x'$, so $(x,y)\in C_i$ for all $x\in X$, i.e.\ $X\times\set y\subseteq C_i$.
+
+        Now
+        $$ \pi_Y(C_i\cap(\set x\times Y)) = \set{y\in Y}[(x,y)\in C_i] $$
+        is the preimage of $C_i$ under $y\mapsto(x,y)$ which is continuous (it is the inverse of $\pi_Y\colon Y\to\set x\times Y$ which we already explained
+        is an isomorphism).
+        Thus it is closed, so $F_i$ is closed as the intersection of these closed sets.
+
+        Since $Y=F_1\cup F_2$ as for every $y\in Y$, $X\times\set y$ is contained in either $C_1$ or $C_2$.
+        Since $Y$ is irreducible, $Y=F_i$ for some $i$.
+        Thus $X\times\set y\subseteq C_i$ for all $y\in Y$, thus $X\times Y\subseteq C_i$ as desired.
+
+        \item There is a canonical isomorphism $X^2\times Y^2\cong(X\times Y)^2$ given by permuting coordinates.
+        Under this isomorphism, $\Delta(X\times Y)=\Delta(X)\times\Delta(Y)$.
+        Thus if $X,Y$ are separated then $\Delta(X)\subseteq X^2$ and $\Delta(Y)\subseteq Y^2$ are closed, and thus so is their product.
+        Thus $X\times Y$ is separated.
+
+        Conversely if $X\times Y$ is separated, then for any $y\in Y$, $X\times\set y\subseteq X\times Y$ is a subvariety and thus separated.
+        Since $X$ is isomorphic to $X\times\set y$, we see that $X$ is separated.
+        Similarly $Y$ is separated.
+
+        \item In lieu of the previous point, we can assume that $X,Y,X\times Y$ are separated.
+        If $X$ and $Y$ are complete, then let $W$ be another variety.
+        We can factorize the projection $X\times Y\times W\to W$ by
+        $$ X\times Y\times W \xtos\proj Y\times W \xtos\proj W . $$
+        Since $X,Y$ are complete each projection is a closed map.
+        The composition of closed maps is closed, and thus $X\times Y\times W\to W$ is closed, so $X\times Y$ is complete.
+
+        For $y\in Y$, $X\times\set y\subseteq X\times Y$ is a closed subvariety (since $X\subseteq X$ and $\set y\subseteq Y$ are closed, so is their product).
+        Thus it is complete (closed subvarieties of complete varieties are complete), and it is isomorphic to $X$ so $X$ is complete.
+        Similar for $Y$.
+    \eenum
+\eenum
+
+\advancecounter{math counter}{1}
+
+\bprob
+
+    Let $U,X,Y$ be algebraic varieties with open embeddings $\alpha\colon U\inj X$ and $\beta\colon U\inj Y$.
+    Show that $X\amalg_UY$ is also an algebraic variety.
+
+\eprob
+
+Recall that $X\amalg_UY$ is given as the quotient SWF of $X\amalg Y$ by identifying $\alpha(u)\sim\beta(u)$ for $u\in U$.
+Since $\alpha,\beta$ are injective, we only identify an element of $X$ with at most a single element of $Y$ and vice versa.
+Indeed, if $x\sim y,y'$ then $x=\alpha(u)$ and $y=\beta(u)$ for some $u\in U$, and also $x=\alpha(u')$ and $y'=\beta(u')$ for another $u'$.
+By injectivity, $u=u'$ so $y=y'$.
+In particular no two elements of $X$ or two elements of $Y$ are identitified, as this would require them both being identitifed with a single element from
+the other set.
+
+Let $\phi_X\colon X\to X\amalg_UY$ be the composition of the inclusion $X\to X\amalg Y$ with the quotient $X\amalg Y\to X\amalg_UY$.
+We claim that $\phi_X$ is an open embedding.
+It is a morphism of SWFs as the composition of morphisms.
+It is injective since as explained, no two elements of $X$ are identified.
+Furthermore, $X\to X\amalg Y\to X\amalg_UY$ are both open maps, so their composition $\phi_X$ is as well.
+So $\phi_X$ is an injective continuous open map, thus an open embedding.
+
+Now we claim that $\phi_X$ is an isomorphism $X\to\phi_X(X)$.
+As an open embedding, it is sufficient to show that $\phi_X^*$ is an isomorphism on all open $V\subseteq\phi_X(X)$.
+Let $\pi\colon X\amalg Y\to X\amalg_UY$ be the quotient map, and $\iota_X\colon X\to X\amalg Y$ and $\iota_Y\colon Y\to X\amalg Y$ be the inclusions.
+Then
+$$ \eqalign{
+    \O(V) &= \set{f\colon V\to k}[f\circ\pi\in\O(\pi^{-1}V)]\cr
+        &= \set{f\colon V\to k}[f\circ\pi\circ\iota_X\in\O(\iota_X^{-1}\pi^{-1}V),\ f\circ\pi\circ\iota_Y\in\O(\iota_Y^{-1}\pi^{-1}V)]\cr
+        &= \set{f\colon V\to k}[\phi_X^*(f)\in\O(\phi_X^{-1}V),\ \phi_Y^*(f)\in\O(\phi_Y^{-1}V)] .
+} $$
+So now we need to show that if $\phi_X^*(f)\in\O(\phi_X^{-1}V)$ then $\phi_Y^*(f)\in\O(\phi_Y^{-1}V)$.
+Now, $\phi_Y^{-1}(\phi_X(X))=\beta(U)$ is isomorphic to $U\cong\alpha(U)$.
+Thus $\O(\phi_Y^{-1}V)$ is isomorphic to $\O(\phi_X^{-1}V\cap\alpha(U))$, so we get the desired result.
+
+Thus $\phi_X$ is an isomorphism $X\to\phi_X(X)$.
+This means that $X\amalg_UY=\phi_X(X)\cup\phi_Y(Y)$ is an open cover by algebraic varieties.
+Thus $X\amalg_UY$ is itself an algebraic variety (the union of affine covers of $\phi_X(X)$ and $\phi_Y(Y)$ is an affine cover of $X\amalg_UY$).
+
+\bprob
+
+    \benum
+        \item Let $X$ be a topological space.
+        Show that $X$ is Hausdorff iff $\Delta(X)$ is closed in $X\times X$.
+        \item Suppose the case in the previous question.
+        Show that $X\amalg_UY$ is separated iff $X$ and $Y$ are separated and $U\to X\times Y$ given by $u\mapsto(u,u)$ is a closed embedding.
+        \item Find an example of a variety $X$ and two open affine subsets $U,V\subseteq X$ such that $U\cap V$ is not affine.
+    \eenum
+
+\eprob
+
+\benum
+    \item $\Delta(X)\subseteq X\times X$ is closed iff every $(x,y)\in X\times X-\Delta(X)$ has a neighborhood disjoint from $\Delta(X)$.
+    Since product neighborhoods form a basis of $X\times X$, this is iff for all $x\neq y\in X$ there are neighborhoods $x\in U$ and $y\in V$ such that
+    $U\times V$ and $\Delta(X)$ are disjoint.
+    This is iff $U$ and $V$ are disjoint: a point $(a,b)$ is in the intersection $(U\times V)\cap\Delta(X)$ iff $a\in U,b\in V$ and $a=b$, i.e.\ iff $a=b\in U\cap V$.
+
+    Thus $\Delta(X)\subseteq X\times X$ is closed iff for every $x\neq y\in X$ there are neighborhoods $x\in U$ and $y\in V$ such that $U\cap V=\emptyset$.
+    That is, iff $X$ is Hausdorff.
+
+    \item In general the map $u\to(u,u)$ is an embedding since it is continuous, injective (since $U$ embeds into $X$ and $Y$), and open onto its image since it maps $V\subseteq U$ open
+    to $V\mapsto (V\times V)\cap\Delta(U)$, where $\Delta(U)=\set{(u,u)}[u\in U]\subseteq X\times Y$.
+    And since $U\inj X,Y$ are open embeddings, $V\times V\subseteq X\times Y$ is the product of open subsets and thus open.
+    So $u\to(u,u)$ is open onto its image, injective, and continuous; thus an embedding.
+    To be a closed embedding we must have that $\Delta(U)\subseteq X\times Y$ is closed.
+
+    Since we can embed $X$ and $Y$ into $Z=X\amalg_UY$ via $\phi_X(X)$ and $\phi_Y(Y)$, and $\phi_X(X)\cap\phi_Y(Y)$ is isomorphic to $U$, this question is equivalent to the following.
+    If $Z$ is a variety and $Z=X\cup Y$ is an open cover, then $Z$ is separated iff $X$ and $Y$ are, and $\Delta(X\cap Y)\subseteq X\times Y$ is closed.
+
+    Now notice that
+    $$ Z^2 = X^2 \cup (X\times Y) \cup (Y\times X) \cup Y^2 $$
+    is an open cover of $Z^2$ (since $X,Y\subseteq Z$ are open).
+    Furthermore we have
+    $$ \Delta(Z) = \Delta(X) \cup \Delta(Y) \subseteq Z^2 . $$
+    A subspace is closed iff it is closed in an open cover, so $\Delta(Z)\subseteq Z^2$ is closed iff its intersections which each of these open subsets is closed (relatively).
+    Notice that
+    $$ \displaylines{
+        \Delta(Z)\cap X^2 = (\Delta(X)\cup\Delta(Y))\cap X^2 = \Delta(X) \cup \Delta(X\cap Y) = \Delta(X) \subseteq X^2,\cr
+        \Delta(Z)\cap(X\times Y) = \Delta(X\cap Y) \subseteq X\times Y,\cr
+        \Delta(Z)\cap(Y\times X) = \Delta(X\cap Y) \subseteq Y\times X,\cr
+        \Delta(Z)\cap Y^2 = \Delta(Y) \subseteq Y^2.
+    } $$
+    So $\Delta(Z)\subseteq Z^2$ is closed iff all of these sets are closed.
+    The first and last lines means that $X$ and $Y$ are separated.
+    The second line means that $\Delta(X\cap Y)\subseteq X\times Y$ is closed, so the diagonal morphism is a closed embedding.
+    Note that the second and third lines are equivalent: the isomorphism $X\times Y\cong Y\times X$ leaves the diagonal $\Delta(X\cap Y)$ fixed, so
+    it is closed in $X\times Y$ iff it is closed in $Y\times X$.
+
+    Thus we get the desired result: $Z$ is separated iff $X$ and $Y$ are, and $\Delta(X\cap Y)\subseteq X\times Y$ is closed.
+
+    \item Consider the diagonal image of $\bA^n$ in $\bA^n\times\bA^n\cong\bA^{2n}$.
+    This is $\Delta(\bA^n)=Z(x_1-y_1,\dots,x_n-y_n)$ which is closed in $\bA^{2n}$.
+    Furthermore, the diagonal morphism forms an isomorphism $\bA^n\cong\Delta(\bA^n)$.
+    Thus if $\Delta(\bA^n-0)\subseteq\bA^{2n}$ were closed, then $\Delta(\bA^n-0)\subseteq\Delta(\bA^n)$ would be closed.
+    But this would imply (by taking the inverse of the diagonal morphism, $\Delta(\bA^n)\to\bA^n$) that $\bA^n-0\subseteq\bA^n$ is closed.
+    But this is not true, since $\bA^n$ is irreducible and thus connected and $\bA^n-0$ is open (and thus not closed).
+
+    So the diagonal morphism $\bA^n-0\to\bA^{2n}$ is not a closed embedding, so $\bA^n\coprod_{\bA^n-0}\bA^n$ is not separated.
+
+    \item Consider the variety in the previous point.
+    Recall that restriction forms an isomorphism $\O(\bA^n)\to\O(\bA^n-0)$, and thus if $\bA^n-0$ were affine then since global sections reflects isomorphisms of affine varieties,
+    this would mean inclusion $\bA^n-0\inj\bA^n$ is an isomorphism, which is clearly not the case.
+
+    So if we let $U,V$ be the quotient of the copies of $\bA^n$ in $\bA^n\amalg_{\bA^n-0}\bA^n$, they are affine as they are isomorphic to $\bA^n$ (from the previous question).
+    But their intersection is isomorphic to $\bA^n-0$, which is not affine.
+\eenum
+
+\advancecounter{math counter}{1}
+
+\bprob
+
+    \benum
+        \item Let $\pi\colon\bP^1\times\bA^3\to\bA^3$ be the projection.
+        Let the coordinates of $\bP^1$ be $[x:y]$, and the coordinates of $\bA^3$ be $(u,v,w)$.
+        Let $Z=Z_{\bP^1\times\bA^3}(x^2+uxy+vy^2,x-wy)$.
+        Show explicitly that $\pi(Z)\subseteq\bA^3$ is closed.
+
+        \item Let $X$ be a complete irreducible variety of dimension $\geq1$, and let $x\in X$.
+        Show that $X-\set x$ is not universally closed.
+    \eenum
+
+\eprob
+
+\benum
+    \item Notice that if $x^2+uxy+vy^2=x-wy=0$, then $w=x/y$ since if $y=0$ this would imply $x=0$ a contradiction.
+    Thus dividing the first equation by $y^2$ we get
+    $$ 0 = \frac{x^2}{y^2} + u\frac xy + v = w^2 + uw + v . $$
+    And so we see that
+    $$ \pi(Z) = Z_{\bA^3}(w^2+uw+v) . $$
+    This is because if $(u,v,w)\in\pi(Z)$ then there is some $[x:y]$ such that $([x:y],(u,v,w))\in Z$ which implies $w^2+uw+v=0$ as we showed.
+    Conversely if $w^2+uw+v=0$ then choosing $y=1$ and $x=w$, we get that $([x:y],(u,v,w))\in Z$ and so $(u,v,w)\in\pi(Z)$.
+
+    So $\pi(Z)$ is indeed closed, as desired.
+
+    \item Consider the projection $\pi\colon(X-\set x)\times X\to X$.
+    Since $X$ is complete and thus separated, $\Delta(X)\subseteq X\times X$ is closed.
+    Thus $\Delta(X)\cap(X-\set x)\times X\subseteq(X-\set x)\times X$ is closed, and it is equal to
+    $$ \Delta(X)\cap(X-\set x)\times X = \set{(y,y)\in Y\times Y}[y\neq x] = \Delta(X-\set x) . $$
+    But $\pi(\Delta(X-\set x))=X-\set x\subseteq X$ is not closed, as it is open in $X$ and $X$ is irreducible and thus connected.
+\eenum
+
+\bprob[title={The rigidity lemma}]
+
+    Let $X,Y,Z$ separated irreducible varieties such that $X$ is further complete.
+    Let $f\colon X\times Y\to Z$ be a morphism such that there are $x_0\in X,y_0\in Y,z_0\in Z$ where
+    $$ f(x_0\times Y) = z_0 = f(X\times y_0) . $$
+    Show that $f$ is the constant function $z_0$.
+
+\eprob
+
+Define
+$$ S = \set{y\in Y}[f(X\times y)=z_0] , $$
+which is non-empty as it contains $y_0$.
+Furthermore we can write it as
+$$ S = \bigcap_{x\in X}\set{y\in Y}[f(x,y)=z_0] = \bigcap_{x\in X}f_x^{-1}(z_0) $$
+where $f_x(y)=f(x,y)$ is a morphism $Y\to Z$, so that $f_x^{-1}z_0$ is closed for all $x\in X$ and thus $S$ is closed.
+
+Now consider the graph of $f$, $\Gamma(f)\subseteq X\times Y\times Z$.
+Since $Z$ is separated, $\Gamma(f)$ is closed, and since $X$ is complete, $W=\pi(\Gamma(f))\subseteq Y\times Z$ is closed.
+Consider also the projection $\pi_Y\colon W\to Y$, which has fibers
+$$ \pi_Y^{-1}y = \set{(y,z)\in Y\times Z}[f(x,y)=z\hbox{ for some $x\in X$}] = \set y\times f(X\times y) . $$
+Notice that $f(X\times\set y)$ is a point iff $\pi_Y^{-1}y$ is a point.
+Since $X$ is irreducible, so is $X\times y$, and thus so is $f(X\times y)$ (the continuous image of an irreducible space is irreducible).
+Thus $\pi_Y^{-1}y$ is irreducible, and so it is a point iff it has dimension zero.
+Furthermore as it is irreducible, for any $(y,z)\in\pi_Y^{-1}y$, $\dim_{(y,z)}\pi_Y^{-1}y=\dim\pi_Y^{-1}y$.
+
+Now $f(X\times y)=z_0$ iff $f(X\times y)$ is a point, as $X\times y$ contains $(x_0,y)$ whose image is $z_0$.
+Thus
+$$ S = \set{y\in Y}[f(X\times y)=z_0] = \set{y\in Y}[\hbox{$f(X\times y)$ is a point}] = \set{y\in Y}[\dim\pi_Y^{-1}y=0] . $$
+Now we know that
+$$ \set{(y,z)\in W}[\dim_{(y,z)}\pi_Y^{-1}y\geq1] = \set{(y,z)\in W}[\dim\pi_Y^{-1}y\geq1]\subseteq W $$
+is closed.
+Thus $\set{(y,z)\in W}[\dim\pi_Y^{-1}y=0]=S\times Z\subseteq W$ is open, and thus $S$ is open.
+
+Since $S\subseteq Y$ is nonempty open and closed, and $Y$ is irreducible, $S$ must be all of $Y$.
+So $f(X\times y)=z_0$ for all $y\in Y$, i.e.\ $f(x,y)=z_0$ for all $x\in X,y\in Y$ as desired.
+
+\bprob
+
+    An {\emphcolor algebraic group} is a group object $G$ in the category of varieties.
+    That is, it is a variety $G$ with morphisms $m\colon G\times G\to G$ (multiplication) and $i\colon G\to G$ (inversion) satisfying the group axioms.
+    $G$ is an {\emphcolor Abelian variety} if it is complete and irreducible.
+    Show that an Abelian variety is an Abelian group.
+
+\eprob
+
+Consider the commutator morphism $C\colon G\times G\to G$ given by $C(g,h)=ghg^{-1}h^{-1}$.
+$G$ is an Abelian iff $C$ is trivial, i.e.\ $C(g,h)=1$ for all $g,h\in G$.
+Notice that $C$ is a morphism of varieties, as it can be written as the composition
+$$ G\times G \xtos{(m,i\circ m)} G\times G \xtos m G . $$
+The first arrow is a morphism as each coordinate is (and by the universal property of products).
+
+Now we have for all $g\in G$, $C(1,g)=C(g,1)=1$.
+Thus by the rigidity lemma $C$ is the constant map $1$, meaning $G$ is indeed Abelian.
+
+\bye
+

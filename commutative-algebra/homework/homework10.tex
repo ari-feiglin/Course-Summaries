@@ -1,0 +1,300 @@
+\input pdfToolbox
+\input pdfmsym
+\pdfmsymsetscalefactor{10}
+\input ../preamble
+\def\enumindent{0cm}
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+\setcounter{section}{10}
+
+\centerline{\setfontandscale{bf}{20pt}Commutative Algebra \& Algebraic Geometry}
+\medskip
+\centerline{\bf Exercise \the\counter{section}}
+\smallskip
+\centerline{\it Ari Feiglin}
+
+\def\pgl{{\rm PGL}}
+\def\aut{{\rm Aut}}
+
+\bprob
+
+    Let $n\in\bN$, and denote by $\aut(\bP^n)$ the group of automorphisms of $\bP^n$.
+    \benum
+        \item Construct a homomorphism $\eta\colon\gl_{n+1}(K)\to\aut(\bP^n)$.
+        \item Prove that the center of $\gl_{n+1}(K)$ consists of scalar matrices $K^\times I$.
+        \item Deduce that $\eta$ factors as $\gl_{n+1}(K)\to\pgl_{n+1}(K)\xto{\bar\eta}\aut(\bP^n)$ where $\bar\eta$ is injective.
+        \item Let $\c H$ be the set of hyperplanes of $\bP^n$.
+        Show that $\aut(\bP^n)$ acts transitively on $\c H$.
+        \item Let $P_0,\dots,P_k\in\bP^n$ be distinct points.
+        Show that there is a hyperplane $H\in\c H$ such that $P_0\in H$ but $P_i\notin H$ for all other $i$.
+    \eenum
+
+\eprob
+
+\benum
+    \item Let $g\in\gl_{n+1}(K)$, then $g$ defines a map $\bA^{n+1}-0\to\bA^{n+1}-0$ as it is injective.
+    Since it is linear it acts on its coordinates linearly, thus defining a morphism.
+    By problem 3 in exercise 9, this means it defines a unique morphism $\eta(g)\colon\bP^n\to\bP^n$ such that $\pi\circ g=\eta(g)\circ\pi$.
+    Then $\eta$ is a homomorphism: for $g,h\in\gl_{n+1}(K)$,
+    $$ \eta(g\circ h)\circ\pi = \pi\circ(g\circ h) = (\pi\circ g)\circ h = \eta(g)\circ \pi\circ h = \eta(g)\circ\eta(h)\circ\pi . $$
+    By uniqueness of $\eta(g)$, this means that $\eta(g\circ h)=\eta(g)\circ\eta(h)$.
+    Since $\eta(\id)=\id$, this means that $\eta$ maps $\gl_{n+1}(K)$ to automorphisms of $\bP^n$ homomorphically.
+
+    \item If $g\in Z(\gl_{n+1}(K))$, then $g$ commutes with elementary matrices.
+    In particular, for $c\in K^\times$ let $c\rho_i$ denote the diagonal matrix with ones on the diagonal except for $c$ at the $i$th index.
+    Then $(c\rho_i)g$ corresponds to the elementary row operation of multiplying $g$'s $i$th row by $c$, and $g(c\rho_i)$ is multiplying $g$'s $i$th column by $c$.
+    Since $(c\rho_i)g=g(c\rho_i)$ this clearly means that $g$ must be a diagonal matrix.
+
+    We claim that $g$ is in fact a scalar matrix: so $g_{ii}=g_{jj}$ for all $i,j$.
+    Let $\rho_{ij}$ be the elementary matrix for swapping the $i$th and $j$th rows/columns.
+    So $\rho_{ij}g$ is the matrix obtained by swapping $g$'s $i$th and $j$th rows, and $g\rho_{ij}$ is swapping $g$'s $i$th and $j$th columns.
+    Then $\rho_{ij}g$'s element at the $(i,j)$th index is $g_{jj}$, while $g\rho_{ij}$'s is $g_{ii}$.
+    Since $\rho_{ij}g=g\rho_{ij}$, this means $g_{jj}=g_{ii}$ as desired.
+
+    So all matrices in the center are scalar.
+    The converse is clear, since multiplying by a scalar matrix (on either side) is the same as scaling the matrix.
+
+    \item We have $\eta(g)=\id$ iff $\pi\circ g=\pi$, by uniqueness.
+    This means that for every $P\in\bA^{n+1}-0$, $g(P)$ is a scalar multiple of $P$ (since $\pi\circ g(P)=\pi(P)$).
+    So all vectors are eigenvectors of $g$, which means that $g$ must be scalar.
+    Conversely a scalar matrix $g$ clearly satisfies $\pi\circ g=\pi$.
+
+    Thus $\ker\eta=Z(\gl_{n+1}(K))$, and so $\eta$ factors as desired.
+
+    \item For a hyperplane $H=Z\parens{\sum_ia_ix_i}$, $H$ is the set of all $\pi(b_0,\dots,b_n)$ such that $\sum_ia_ib_i=0$.
+    For $g\in\gl_{n+1}(K)$, let us conflate $g$ and $\eta(g)$ so we can write $g\circ\pi=\pi\circ g$.
+    Then
+    $$ \pi(\bar b) \in gH \iff g^{-1}\pi(\bar b) \in H \iff \pi(g^{-1}\bar b) \in H \iff \bar a\cdot(g^{-1}\bar b) = 0 , $$
+    and this in turn is iff $((g^\top)^{-1}\bar a)\cdot\bar b=0$, which is iff $\bar b$ is in the hyperplane given by coefficients $(g^\top)^{-1}\bar a$.
+    So $\gl_{n+1}(K)$ action restricts to one on $\c H$.
+    Furthermore since $\gl_{n+1}(K)$ acts transitively on $\bA^{n+1}-0$, it acts transitively on $\c H$: for any $\bar c$ we can find $g\in\gl_{n+1}(K)$ such that $(g^\top)^{-1}\bar a=\bar c$.
+
+    \item First let us assume $P_0=[1:0:\cdots:0]$.
+    Then a hyperplane $H$ containing $P_0$ is any one of the form $H=Z\parens{\sum_{i>0}a_ix_i}$ (i.e.\ $a_0=0$).
+    Let $P_i=[b_{i,0}:\cdots:b_{i,n}]$; since $P_i\neq P_0$ we have that $b_{i,j}\neq0$ for some $j>0$.
+    A hyperplane containing both $P_0$ and $P_i$ is of the form
+    $$ H = Z\parens{\sum_{j>0}a_jx_j},\qquad \sum_{i>0}a_jb_{i,j} = 0 . $$
+
+    So there is a one-to-one correspondence between hyperplanes containing $P_0$ and $P_i$ and vectors in the kernel of $\phi_i\colon(a_1,\dots,a_n)\mapsto\sum_{i=1}^na_jb_{i,j}$.
+    Since the $b_{i,j}$ are not all zero, this kernel is not all of $\bA^n$.
+    Thus $\bigcup_i\ker\phi_i$ is not all of $\bA^n$ (since then it would be a vector space, and the finite union of vector spaces is a vector space iff one contains all the others, which would mean
+    $\ker\phi_i=\bA^n$ for some $i$).
+
+    So let $(a_1,\dots,a_n)$ not in $\bigcup_i\ker\phi_i$, then the hyperplane it defines $H=Z\parens{\sum_{i=1}^na_ix_i}$ contains $P_0$ but not contain any other $P_i$.
+
+    In general, since $\gl_{n+1}(K)$ acts transitively on $\bA^{n+1}-0$ and thus $\bP^n$, there is a $g$ such that $gP_0=[1:0:\cdots:0]$.
+    Then let $H$ be such that $gP_0\in H$ but $gP_i\notin H$ for all other $i$.
+    Then $P_0\in g^{-1}H$ but $P_i\notin g^{-1}H$ for all other $i$, so $g^{-1}H$ gives the desired hyperplane.
+\eenum
+
+\bprob
+
+    Let $n\geq1$.
+    \benum
+        \item Prove that restriction forms an isomorphism $\O(\bA^{n+1})\to\O(\bA^{n+1}-0)$.
+        \item Deduce that $\O(\bP^n)\cong k$ and thus that $\bP^n$ is not an affine variety.
+    \eenum
+
+\eprob
+
+\benum
+    \item First we show that restriction is injective.
+    Suppose that $f|_{\bA^{n+1}-0}=0$ for $f\in k[\bA^{n+1}]$.
+    Thus $Z(f)\supseteq\bA^{n+1}-0$ which is open, and thus dense since $\bA^{n+1}$ is irreducible, meaning $Z(f)=\bA^{n+1}$.
+    Thus $f=0$ as desired.
+
+    Since $\bA^{n+1}-0$ is open, its coordinate ring consists of rational functions $f/g$ where $g$ is nonzero on $\bA^{n+1}-0$.
+    If $g$ is nonzero on $\bA^{n+1}-0$, this means that $Z(g)\subseteq\set0$.
+    But if $g$ is not a scalar, then $Z(g)$ has dimension $n-1$ and thus cannot be empty or a point; a contradiction.
+    Thus $g$ is a scalar, and $f/g$ is a polynomial.
+
+    So sections of $\bA^{n+1}-0$ are polynomials, showing the surjectivity of restriction.
+
+    \item By definition
+    $$ \O(\bP^n) = \set{f\colon\bP^n\to k}[{f\circ\pi\in\O(\bA^{n+1}-0)=k[\bA^{n+1}]}] . $$
+    Suppose $f\circ\pi=p\in k[\bA^{n+1}]$, then this means for all $\lambda\in k^\times$
+    $$ p(\lambda\bar x) = f\circ\pi(\lambda\bar x) = f\circ\pi(\bar x) = p(\bar x) . $$
+    Writing $p=\sum_\alpha a_\alpha\bar x^\alpha$ this means that
+    $$ \sum_\alpha \lambda^{\abs\alpha}a_\alpha x^\alpha = \sum_\alpha a_\alpha x^\alpha . $$
+    Viewing this as a polynomial in $\lambda$, this means all of its non-constant coefficients are zero:
+    $$ \sum_{\abs\alpha=n}a_\alpha x^\alpha = 0 $$
+    for all $n>0$.
+    So for $\abs\alpha>0$ we have $a_\alpha=0$.
+    And thus $p$ is a scalar.
+
+    Thus $f\circ\pi$ is a constant scalar, and so $f$ is as well (by surjectivity of $\pi$).
+    Thus $\O(\bP^n)=k$ as desired.
+
+    If $\bP^n$ were affine, its coordinate ring would be a quotient of $k[\bA^m]$ for some $m$, by an ideal $I$ and $\bP^n\cong Z(I)$.
+    But since its coordinate ring is $k$, $I$ would have to be maximal, and then $Z(I)$ is a point.
+    $\bP^n$ is not a point, so it cannot be affine.
+\eenum
+
+\bprob
+
+    Prove that
+    \benum
+        \item being an isomorphism is local on the target,
+        \item being an isomorphism is not local on the source.
+    \eenum
+
+\eprob
+
+\benum
+    \item First we claim that if $\phi\colon X\to Y$ is a morphism of SWFs and $U\subseteq Y$ is open, then the restriction
+    $\phi\colon\phi^{-1}U\to U$ is a morphism of SWFs as well.
+    This is clear since we are just restricting our perspective to open subsets of $U$ and $\phi^{-1}U$, which are open subsets of $Y$
+    and $X$ respectively.
+
+    Now if $\phi\colon X\to Y$ is an isomorphism, let $U\subseteq Y$ be open.
+    Then the restriction $\phi\colon\phi^{-1}U\to U$ remains a morphism with inverse $\phi^{-1}\colon U\to\phi^{-1}U$ (since this is just
+    the restriction of the morphism $\phi^{-1}$).
+    Thus $\phi|_{\phi^{-1}U}$ is an isomorphism; in particular if $\phi$ is an isomorphism then it is locally an isomorphism on its target.
+
+    Conversely suppose $\set{U_i}$ is an open cover of $Y$ such that $\phi\colon\phi^{-1}U_i\to U_i$ is an isomorphism for each $i$.
+    Then $\phi$ is injective since if $\phi x=\phi y$, then these images lie in some $U_i$, so $x,y\in\phi^{-1}U_i$ over which $\phi$
+    is bijective and thus $x=y$.
+    And $\phi$ is surjective, as every element of $U_i$ has a preimage in $\phi^{-1}U_i$ since $\phi$ is an isomorphism there, and the
+    $U_i$ cover $Y$.
+
+    Thus $\phi^{-1}$ exists globally, and it is continuous since restricting it to the open cover $\phi^{-1}U_i$ is continuous.
+    It is also a morphism, since taking a basis of $X$ by open subsets of $\phi^{-1}U_i$ as $i$ ranges, we see that $\phi^{-1}$ defines
+    a morphism of coordinate rings from these basic open subsets, since $\phi^{-1}$ is a morphism $U_i\to\phi^{-1}U_i$.
+    By the equivalence of SWFs defined on basic open subsets and SWFs defined on all open subsets, we have the desired result.
+
+    \item Consider the morphism $\phi=(\id,\id)\colon\bA^n\amalg\bA^n\to\bA^n$.
+    Restricting $\phi$ to each copy of $\bA^n$ in the source yields $\id$, which is an isomorphism, but clearly $\phi$ itself is not
+    as it is not even injective.
+\eenum
+
+\bprob
+
+    Prove that:
+    \benum
+        \item a composition of affine morphisms is affine,
+        \item an isomorphism of varieties is affine,
+        \item being an affine morphism is local on the target,
+        \item being an affine morphism is not local on the source.
+    \eenum
+
+\eprob
+
+\benum
+    \item Suppose $X\xtos\phi Y\xtos\psi Z$ are affine.
+    Let $U\subseteq Z$ be open affine, then $\psi^{-1}U\subseteq Y$ is open affine as $\psi$ is an affine morphism, and thus
+    $(\psi\circ\phi)^{-1}U=\phi^{-1}(\psi^{-1}U)$ is affine as $\phi$ is affine.
+    Thus $\psi\circ\phi$ is affine.
+
+    \item Suppose $X\xtos\phi Y$ is an isomorphism, and let $U\subseteq Y$ be open affine.
+    Then $\phi\colon\phi^{-1}U\to U$ is an isomorphism (being an isomorphism is local on the source), so $\phi^{-1}U$ is isomorphic
+    to an affine variety (as $U$ is), and thus affine.
+    Thus $\phi$ is affine.
+
+    \item Clearly if $\phi$ is affine, it is locally affine on the target; we just take a covering of the target by open affine subsets $U_i$,
+    then $\phi^{-1}U_i$ is affine by assumption.
+    In recitation we showed that $\phi$ is affine iff there is an open cover of affine subsets $\set{U_i}$, $\phi^{-1}U_i$ is affine.
+    So conversely suppose there is an open cover of the target $\set{W_i}$ such that $\phi$ is affine $\phi^{-1}W_i\to W_i$.
+
+    Since open subsets of algebraic varieties are algebraic varieties, we can cover each $W_i$ by an open covering of affine subsets
+    $\set{U_i^j}$, and then by assumption $\phi|_{\phi^{-1}W_i}^{-1}(U_i^j)=\phi^{-1}(U_i^j)$ is affine for each $i,j$.
+    Thus there is an open affine covering $\set{U_i^j}$ for which $\phi^{-1}U_i^j$ is affine for all $i,j$.
+    By the result from recitation, this means that $\phi$ is affine.
+
+    \item Consider $\phi=(\id,\id)\colon\bA^1\amalg\bA^1\to\bA^1$.
+    This is locally affine on its source, as it is locally an isomorphism on its source and isomorphisms are affine.
+    But if $\phi$ were affine, this would imply that $\phi^{-1}\bA^1=\bA^1\amalg\bA^1$ is affine.
+    The disjoint union has coordinate ring
+    $$ \O(\bA^1\amalg\bA^1) \cong \O(\bA^1)\times\O(\bA^1) \cong k[x]\times k[y] . $$
+    Define $f\colon k[x,y]\to k[x]\times k[y]$ in the obvious manner, mapping $x$ to $(x,0)$ and $y$ to $(0,y)$.
+    This then maps
+    $$ \sum_{n,k}a_{n,k}x^ny^k \mapsto \sum_{n,k}a_{n,k}(x^n,0)(0,y^k) = \sum_na_{n,0}(x^n,0) + \sum_ka_{0,k}(0,y^k) . $$
+    So its kernel is $(xy)$.
+
+    Since these are affine varieties, this means $\bA^1\amalg\bA^1\cong Z(xy)\subseteq\bA^2$.
+    The irreducible components of $Z(xy)$ are $Z(x),Z(y)$ (they are irreducible since their ideals are prime, and their union is $Z(xy)$).
+    Since both copies of $\bA^1$ are the irreducible components of $\bA^1\amalg\bA^1$, this means that the isomorphism must map
+    one copy to $Z(x)$ and the other to $Z(y)$.
+    But $Z(x)\cap Z(y)=Z(x,y)=\set0$ is nonempty, so the isomorphism is not injective, a contradiction.
+
+    So $\phi$ is not affine, despite being locally affine on its source.
+\eenum
+
+\advancecounter{math counter}{1}
+
+\bprob
+
+    Let $X$ be a topological space, show the following.
+    \benum
+        \item If $Y\subseteq X$ is a subspace, then $\dim Y\leq\dim X$.
+        \item If $X=\bigcup_iX_i$ is a finite union of closed subsets, then $\dim X=\max_i\dim X_i$.
+        \item If $X=\bigcup_iU_i$ is an open cover, $\dim X=\sup_i\dim U_i$.
+        \item Give an example of $X$ and an open dense $U\subseteq X$ such that $\dim U<\dim X$.
+        \item Give an example of an infinite-dimensional Noetherian space.
+    \eenum
+
+\eprob
+
+\benum
+    \item Suppose $Y_0\subseteq Y$ is closed irreducible, then we claim $\cll_X(Y_0)\subseteq X$ is closed irreducible.
+    Indeed, suppose $\cll_X(Y_0)=Z_0\cup Z_1$ are closed sets, then
+    $$ Y_0 = \cll_X(Y_0)\cap Y = (Z_0\cap Y) \cup (Z_1\cap Y) , $$
+    where the first equality is because $\cll_Y(Y_0)=\cll_X(Y_0)\cap Y$ and $Y_0$ is closed.
+    Since $Y_0$ is irreducible and $Z_i\cap Y$ are closed in $Y$, $Y_0=Z_i\cap Y$ for some $i$.
+    Thus
+    $$ \cll_X(Y_0) = \cll_X(Z_i\cap Y) \subseteq \cll_X(Z_i) = Z_i , $$
+    which means $\cll_X(Y_0)=Z_i$, so $\cll_X(Y_0)$ is indeed irreducible.
+
+    Now we claim that if $Y_0\subsetneq Y_1\subseteq Y$ are closed, then $\cll_X(Y_0)\subsetneq\cll_X(Y_1)$.
+    Weak inclusion is clear.
+    For strict inclusion let $y\in Y_1-Y_0$, then $y\in\cll_X(Y_1)$ but it cannot be in $\cll_X(Y_0)$.
+    If it were, then $y\in\cll_X(Y_0)\cap Y=\cll_Y(Y_0)=Y_0$ a contradiction.
+
+    Thus if $\emptyset\neq Y_0\subsetneq\cdots\subsetneq Y_n$ is a chain of irreducible closed subsets of $Y$, then $\emptyset\neq\cl{Y_0}\subsetneq\cdots\subsetneq\cl{Y_n}$
+    is a chain of irreducible closed subsets of $X$.
+    Thus $\dim Y\leq\dim X$ as desired.
+
+    \item By point (1), we have $\dim X_i\leq\dim X$ for all $i$ and thus $\max_i\dim X_i\leq\dim X$.
+    Now let $\emptyset\neq Z_0\subsetneq\cdots\subsetneq Z_n$ be a chain of irreducible closed subsets of $X$.
+    We have
+    $$ Z_n = \bigcup_i(Z_n\cap X_i) $$
+    and since $Z_n$ is irreducible and this is a finite union of closed sets, there is some $i$ where $Z_n=Z_n\cap X_i$, meaning $Z_n\subseteq X_i$.
+    Thus this irreducible chain is contained in $X_i$; thus $\dim X\leq\max_i\dim X_i$ as desired.
+
+    \item Again by point (1) we have $\sup_i\dim U_i\leq\dim X$.
+    Now let $\emptyset\neq Z_0\subsetneq\cdots\subsetneq Z_n$ be a chain of irreducible closed subsets of $X$.
+    Let $U_i$ be such that $Z_0\cap U_i$ is nonempty (since $Z_0$ is nonempty and the $U_i$ cover $X$, such an $i$ exists).
+    Since $Z_j\cap U_i$ is open in $Z_j$ which is irreducible, and thus $Z_j\cap U_i$ is irreducible (open subsets of irreducible spaces are irreducible because irreducibility is equivalent
+    to non-empty open subsets having non-empty intersection, if this is true for a space $X$ it is clearly true for all open subsets of $X$).
+
+    Thus $\emptyset\neq Z_0\cap U_i\subseteq\cdots\subseteq Z_n\cap U_i$ forms a chain of irreducible subsets of $U_i$, and they are all closed since the $Z_j$ are.
+    Furthermore, we claim $Z_j\cap U_i\subsetneq Z_{j+1}\cap U_i$.
+    This is because $Z_{j+1}\cap U_i$ is dense in $Z_{j+1}$ (nonempty open subsets of irreducible spaces are dense), but $Z_j\cap U_i$ is not: it is dense in $Z_j$ but $Z_j$ is closed and thus
+    not dense in $Z_{j+1}$.
+    So this is a proper chain of closed irreducible subsets of $U_i$, meaning $\dim X\leq\sup_i\dim U_i$ as desired.
+
+    \item Let $X=\set{0,1}$ with the topology $\set{\emptyset,X,\set0}$; the closed subsets of $X$ are then $\set{\emptyset,X,\set1}$.
+    Then $\set 0\subseteq X$ is open dense as the only closed subset it is contained in is $X$.
+    But as a point, $\dim\set0=0$.
+
+    On the other hand $X$ is irreducible, since the only proper closed subset of $X$ is $\set1$ and it is not equal to $X$.
+    Thus $\emptyset\neq\set1\subsetneq X$ is a chain of closed irreducible subsets of $X$, so $\dim X=1$.
+    So $\dim\set0<\dim X$ despite $\set0$ being open dense in $X$.
+
+    \item Consider $\omega$ (the ordinal) equipped with the topology whose closed sets are $[n]=\set{0,\dots,n-1}$ for $n\leq\omega$ (setting $[0]=\emptyset$ and $[\omega]=\omega$).
+    This is a topology as
+    $$ [n] \cup [m] = [\max\set{n,m}],\qquad \bigcap_i[n_i] = [\min_in_i] . $$
+    Furthermore this shows that each $[n]$ is irreducible, since if $[n]=[n_0]\cup[n_1]$ then $n=\max\set{n_0,n_1}$, so $n=n_0$ or $n=n_1$.
+    Thus we have arbitrarily long chains of irreducible closed subsets
+    $$ \emptyset \neq [1] \subsetneq [2] \subsetneq \cdots \subsetneq [n] , $$
+    thus $\dim\omega=\infty$.
+
+    And $\omega$ is Noetherian: let $\Sigma$ be a collection of closed subsets of $\omega$.
+    Let $\Sigma_\omega$ be the set of $n\leq\omega$ for which $[n]\in\Sigma$.
+    Since $\omega$ is well-ordered, $\Sigma_\omega$ has a minimum, which means $[\min\Sigma_\omega]\in\Sigma$.
+    Then
+    $$ \bigcap\Sigma = \bigcap_{[n]\in\Sigma}[n] = [\min\set{n\leq\omega}[{[n]\in\Sigma}] = [\min\Sigma_\omega] \in \Sigma . $$
+    Thus $\Sigma$ has a minimal element; so $\omega$'s closed subsets of the DCC and $\omega$ is Noetherian.
+\eenum
+
+\bye
+

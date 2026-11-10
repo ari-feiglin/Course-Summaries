@@ -1,0 +1,631 @@
+\input pdfToolbox
+\input pdfmsym
+\pdfmsymsetscalefactor{10}
+\input ../preamble
+\def\enumindent{0cm}
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+\setcounter{section}{7}
+
+\centerline{\setfontandscale{bf}{20pt}Commutative Algebra \& Algebraic Geometry}
+\medskip
+\centerline{\bf Exercise \the\counter{section}}
+\smallskip
+\centerline{\it Ari Feiglin}
+
+\def\rad{{\rm rad}}
+
+\bprob
+
+    \benum
+        \item Let $X$ be an affine variety.
+        Prove the following.
+        \benum
+            \item Let $\cll_X$ be the set of closed subsets of $X$, and $\rad_X$ the set of radical ideals of $k[X]$.
+            We have maps $\I\colon\cll_X\to\rad_X$ and $Z\colon\rad_X\to\cll_X$; show these form an antiequivalence of posets.
+
+            \item Show that these maps send irreducible closed subsets to prime ideals and vice versa.
+
+            \item Show that these maps send points to maximal ideals and vice versa.
+        \eenum
+
+        \item Let $f\colon X\to Y$ be a morphism of affine varieties, inducing a map $f^*\colon k[Y]\to k[X]$.
+        Prove the following.
+        \benum
+            \item Let $T\subseteq X$ be a subset, then $(f^*)^{-1}(\I_X(T))=\I_Y(f(T))$.
+            \item $f^*$ is injective iff $f$ is {\emphcolor dominant} ($f(X)$ is dense in $Y$).
+            \item $f^*$ is surjective iff $f$ is a closed embedding.
+        \eenum
+    \eenum
+
+\eprob
+
+\def\prime{{\rm prime}}
+
+\benum
+    \item For an affine variety $X\subseteq\bA^n$, we know that $X$ is homeomorphic to $\specm(A)$ for $A=k[X]$.
+    The homeomorphism is given by mapping $P=(a_1,\dots,a_n)\in X$ to $\m_P=(x_1-a_1,\dots,x_n-a_n)$, call it $\phi$.
+
+    Denote the zero set of $T\subseteq k[X]$ by $Z_X(T)=\set{P\in X}[f(P)=0\hbox{ for all $f\in T$}]$.
+    And denote its vanishing set in $\specm(A)$ by $V_A(T)=\set{\m\in\specm(A)}[T\leq\m]$.
+
+    Now we claim that $\phi$ maps $Z_X(T)$ to $V_A(T)$.
+    Indeed, we know $f(P)=0$ iff $f\in\m_P$, so $P\in Z_X(T)$ iff $f(P)=0$ for all $f\in T$ iff $f\in\m_P$ for all $f\in T$
+    iff $T\subseteq\m_P$ iff $\phi(P)\in V_A(T)$.
+    That is,
+    $$ \phi(Z_X(T)) = V_A(T) . $$
+    This shows that $\phi$ is a closed map, and since it is bijective (as $\m_P$ exhaust the maximal ideals of $A$), its inverse is closed as well.
+    Thus it forms a homeomorphism.
+
+    We also have functions $\I_X$ and $\I_A$ from $\cll_X$ and $\cll_{\specm(A)}$ respectively to $\rad_A$ given by
+    $$ \I_X(S) = \set{f\in A}[f(P)=0\hbox{ for all $P\in S$}],\qquad \I_A(Z) = \bigcap_{\m\in Z}\m . $$
+    We claim that $\I_X(S)=\I_A(\phi(S))$.
+    Indeed, $f\in\I_A(\phi(S))$ iff $f\in\m$ for all $\m\in\phi(S)$, i.e.\ iff $f\in\m_P$ for all $P\in S$.
+    As before, this is equivalent to $f(P)=0$ for all $P\in S$, which is equivalent to $f\in\I_X(S)$.
+
+    So we have the following diagram where each triangle commutes
+
+    \bigskip
+    \centerline{\drawdiagram{
+        $\cll_X$&&$\cll_{\specm(A)}$\cr
+        &$\rad_A$
+    }{
+        \diagarrow{from={1,1}, to={1,3}, text=$\phi$, y distance=.25cm}
+        \diagarrow{from={1,1}, to={2,2}, text=$\I_X$, x distance=-.4cm, x off=-.1cm}
+        \diagarrow{from={2,2}, to={1,1}, text=$Z_X$, x distance=.3cm, x off=.1cm}
+        \diagarrow{from={1,3}, to={2,2}, text=$\I_A$, x distance=.4cm, x off=.1cm}
+        \diagarrow{from={2,2}, to={1,3}, text=$V_A$, x distance=-.5cm, x off=-.1cm}
+    }}
+
+    Now we know that
+    $$ \I_A\circ V_A(I) = \bigcap_{\m\in V_A(I)}\m = \bigcap_{I\leq\m}\m = \jac_A(I) = \sqrt I = I , $$
+    where the second-to-last equality is because $A$ is Jacobson.
+    Now consider $\I_A^\prime$ and $V_A^\prime$ which are the ideal and vanishing set functions for $\spec(A)$, i.e.\ we have
+    $$ \I_A^\prime(S) = \bigcap_{\p\in S}\p,\qquad V_A^\prime(T) = \set{\p\in\spec(A)}[T\subseteq\p] . $$
+    We know that $V_A^\prime\circ\I_A^\prime(S)=\cl S$ in $\spec(A)$.
+    Clearly for $S\subseteq\specm(A)$ we have $\I_A^\prime(S)=\I_A(S)$ since they are both just the intersection of $S$.
+    Furthermore $V_A(\bul)=V_A^\prime(\bul)\cap\specm(A)$, thus
+    $$ V_A\circ\I_A(S) = (V_A^\prime\circ\I_A^\prime(S))\cap\specm(A) = \cl(S)\cap\specm(A) = \cl(S) , $$
+    where the first closure is in $\spec(A)$, and the equality is because closure in a subspace is just the intersection of closure in the larger
+    space with the subspace.
+    So for $S$ closed this is the identity.
+
+    Thus $\I_A,V_A$ are inverses.
+    And since they are both isomorphic to $\I_X$ and $Z_X$ we get the desired result:
+    $$ \I_X\circ Z_X = (\I_A\circ\phi)\circ(\phi^{-1}\circ V_A) = \I_A\circ V_A = \id, $$
+    and
+    $$ Z_X\circ\I_X = (\phi^{-1}\circ V_A)\circ(\I_A\circ\phi) = \phi^{-1}\circ\phi = \id $$
+    as desired.
+
+    Since $\I_A,V_A$ are order-reversing so too are $\I_X=\I_A\circ\phi,Z_X=\phi^{-1}\circ V_A$ (since $\phi,\phi^{-1}$ preserve order
+    as bijections).
+    This completes the proof.
+
+    \item From the previous homework we know that $Z\subseteq\spec(A)$ closed is irreducible iff $\abs Z\subseteq\specm(A)$ is closed
+    irreducible, and $\abs Z=Z\cap\specm(A)$.
+    All closed subsets of $\specm(A)$ are of this form (by the subspace topology).
+
+    We showed in a previous homework that the closed irreducible subsets of $\spec(A)$ are those of the form $V_A^\prime(\p)$ for $\p\leq A$
+    prime.
+
+    So if $Z\subseteq\specm(A)$ is irreducible, then it is of the form $Z=\abs Y$ for $Y\subseteq\spec(A)$ irreducible (since $Y$ is irreducible
+    iff $\abs Y$ is).
+    And so $Y=V_A^\prime(\p)$ for prime $\p$, and so $Z=V_A(\p)$ and since $\I_A$ is inverse to $V_A$,
+    $$ \I_A(Z) = \p . $$
+
+    Since $\phi$ is a homeomorphism it maps closed irreducible sets to closed irreducible sets and vice versa.
+    So for $Z\subseteq X$ closed irreducible, $\phi(Z)\subseteq\specm(A)$ is closed irreducible and so as we just showed
+    $$ \I_X(Z) = \I_A\circ\phi(Z) = \p $$
+    for some prime $\p$ as desired.
+
+    Conversely for $\p$ prime, $V_A^\prime(\p)$ is irreducible and thus $V_A(\p)$ is irreducible in the subspace topology.
+    Then $Z_X(\p)=\phi^{-1}V_A(\p)$ is irreducible since $\phi$ is a homeomorphism.
+
+    \item A point of $\specm(A)$ is a maximal ideal $\m$, and we have $V_A(\m)=V_A^\prime(\m)=\set m$ by maximality.
+    And then
+    $$ \I_A(\set\m) = \I_A\circ V_A(\m) = \m , $$
+    so $\I_A$ sends points to maximal ideals.
+
+    Then
+    $$ \I_X(\set P) = \I_A\circ\phi(\set P) $$
+    is also a maximal ideal since $\phi(\set P)$ is a point.
+    And
+    $$ Z_X(\m) = \phi^{-1}\circ V_A(\m) = \phi^{-1}\set\m $$
+    is also a point.
+
+    \item We view $X,Y$ as closed subsets of affine space $\bA^n,\bA^m$.
+    Let $A=k[X]$ and $B=k[Y]$, then $f^*$ induces a map $\tilde f\colon\specm(A)\to\specm(B)$ which maps a maximal ideal $\m\leq A$
+    to $(f^*)^{-1}(\m)\leq B$.
+    Let $\phi\colon X\to\specm(A)$ and $\psi\colon Y\to\specm(B)$ be the homeomorphisms mapping $P\mapsto\m_P$.
+    Then we have the following diagram
+
+    \commsq{\specm(A)&\specm(B)\cr X&Y}
+        {\tilde f}{f}{\phi^{-1}}{\psi^{-1}}
+
+    We claim this commutes, so
+    $$ \psi\circ f = \tilde f\circ\phi . $$
+    Indeed, let $P\in X$ then
+    $$ \tilde f\circ\phi(P) = \tilde f(\m_P) = \set{q\in B}[f^*(q)\in\m_P],\qquad
+    \psi\circ f(P) = \m_{f(P)} . $$
+    Since everything is well-defined here, both of these are maximal ideals.
+    So to show they are equal it is sufficient to show that one is contained in the other.
+
+    For $q\in B$ such that $f^*(q)\in\m_P$ we have that $f^*(q)=q\circ f$ is in $\m_P$, meaning $q(f(P))=0$.
+    Since $\m_{f(P)}$ is the maximal ideal consisting of polynomials where $f(P)$ is a root, we see that $q\in\m_{f(P)}$.
+    So we have inclusion and thus equality.
+
+    Now,
+    $$ \I_Y(f(T)) = \I_B(\psi(f(T))) = \bigcap_{\m\in\psi(f(T))}\m . $$
+    On ther other hand,
+    $$ \eqalign{
+        (f^*)^{-1}(\I_X(T)) &= (f^*)^{-1}(\I_A\circ\phi(T))\cr
+            &= (f^*)^{-1}\bigcap_{\m\in\phi(T)}\m\cr
+            &= \bigcap_{\m\in\phi(T)}(f^*)^{-1}\m\cr
+            &= \bigcap_{\m\in\phi(T)}\tilde f(\m)\cr
+            &= \bigcap_{\m\in\phi(T)}\psi\circ f\circ\phi^{-1}(\m)\cr
+            &= \bigcap_{x\in T}\psi\circ f(x),
+    } $$
+    and this is just the intersection of $\psi(f(T))$, so $\I_Y(f(T))$ as desired.
+
+    \item Let $\tilde g\colon\spec(A)\to\spec(B)$ be the map induced by $f^*\colon B\to A$, which restricts to $\tilde f$ on the maximum
+    spectra.
+    We showed that $\tilde g$ is dominant iff $\ker f^*\subseteq\nil(B)$, and since $B$ is reduced this is if $f^*$ is injective.
+    We claim that $\tilde g$ is dominant iff $\tilde f$ is.
+
+    Now we claim that
+    $$ \tilde f(\specm(A)) = \tilde g(\spec(A))\cap\specm(B) = \abs{\tilde g(\spec(A))} . $$
+    The left-to-right inclusion is clear.
+    Now if $\tilde g(\p)$ is maximal, then for $\p\leq\m$ maximal we have $\tilde g(\p)\leq\tilde g(\m)$ and by maximality this must be
+    maximal.
+    So $\tilde g(\p)=\tilde g(\m)=\tilde f(\m)$, so the two sets are equal.
+
+    Now we claim that for $S\subseteq\spec(A)$, if $\abs S\subseteq\specm(A)$ is dense then $S$ is.
+    We know that
+    $$ \cl{\abs S} = V_A\circ\I_A(\abs S), $$
+    and previously we showed that $V_A(I)=\specm(A)$ iff $V_A^\prime(I)=\spec(A)$.
+    And $V_A^\prime(I)=\spec(A)$ iff $I\subseteq\nil(A)=0$, so iff $I=0$.
+    So $\abs S$ is dense iff $\I_A(\abs S)=0$, and $\I_A(S)\subseteq\I_A(\abs S)$ so this implies $S$ is dense.
+
+    So if $\tilde f$ is dominant, then so is $\tilde g$ and so $f^*$ is injective.
+    And conversely if $f^*$ is injective then $\tilde g$ is dominant and in $\spec(A)$,
+    $$ \cl{\tilde f(\specm(A))} = \cl{\tilde g(\specm(A))} \supseteq \tilde g(\cl{\specm(A)}) = \tilde g(\spec(A)) . $$
+    This is dense and closed, so it must be all of $\spec(A)$.
+    So $\tilde f(\specm(A))$ is dense in $\spec(A)$ and contained in $\specm(A)$, so it is dense in $\specm(A)$.
+    Thus $\tilde f$ is dominant when $f^*$ is injective.
+
+    Here we used that $\specm(A)$ is dense in $\spec(A)$.
+    This is because its closure is
+    $$ V_A^\prime\parens{\bigcap_{\m\in\specm(A)}\m} = V_A^\prime(\jac(A)) = \spec(A) , $$
+    since the Jacobson is equal to the nilradical as $A$ is Jacobson.
+
+    So we see that $f^*$ is injective iff $\tilde f$ is dominant.
+    Since $f$ and $\tilde f$ are topologically conjugate, $\tilde f$ is dominant iff $f$ is so we conclude the proof.
+
+    \item As before, we prove this for $\tilde f$ and appeal to the fact that $f$ and $\tilde f$ are topologically conjugate.
+
+    If $f^*$ is surjective then $\tilde g$ is a closed embedding.
+    Then its restriction $\tilde f$ is a closed embedding since it is a homeomorphism onto its image as a restriction of a homeomorphism,
+    and its image is $\tilde f(\specm(A))=\tilde g(\spec(A))\cap\specm(B)$ as above, which is relatively closed.
+    So if $f^*$ is surjective then $\tilde f$ and thus $f$ is a closed embedding.
+
+    Conversely if $f$ is a closed embedding, then $f(X)\subseteq Y$ is a closed subset isomorphic to $X$, thus an isomorphic affine variety.
+    Inclusion $f(X)\inj Y$ is a morphism which induces a map $k[Y]\to k[f(X)]$ which is surjective.
+    This is because $k[f(X)]$ are polynomial functions $f(X)\to k$ and thus the restriction of a polynomial function $Y\to k$.
+    Then the composition
+    $$ k[Y] \xtos{\inc^*} k[f(X)] \xtos{f^*} k[X] $$
+    is surjective since $f$ is an homeomorphism between $X$ and $f(X)$, and by functorality it is equal to $(\inc\circ f)^*=f^*$.
+\eenum
+
+\bprob
+
+    Fix a variety $X$.
+    \benum
+        \item Let $X=\bP^2$ and let $P=[a:b:c]\in\bP^2$, compute the stalk $\O_{\bP^2,P}$.
+        \item Give a criterion on a germ $(U,f)\in\O_{X,p}$ to be a unit.
+        \item Assume $X$ is irreducible, let $p\in X$ and $U,V$ be open neighborhoods of $p$, $f\in\O_X(U)$ and $g\in\O_X(V)$ such that
+        the germs $(U,f)$ and $(V,g)$ are equal in $\O_{X,p}$.
+        \item Find a counterexample to the above point if $X$ is not irreducible.
+    \eenum
+
+\eprob
+
+\benum
+    \item In recitation we showed that for an affine neighborhood $p\in U$ we have
+    $$ \O_{X,p} \cong k[U]_{\m_P} $$
+    where $\m_P$ is the maximal ideal of functions zero at $P$.
+
+    Suppose $P=[a:b:1]$, the other cases (when $c=0$) are solved similarly.
+    $P$ has an affine neighborhood isomorphic to $\bA^2$, and $P$ is isomorphic to the point $(a,b)$.
+    Then
+    $$ \O_{\bP^2,P} \cong k[\bA^2]_{(x_1-a,x_2-b)} . $$
+    The isomorphism $k[\bA^2]\to k[\bA^2]$ obtained by mapping $x_1\mapsto x_1-a$ and $x_2\mapsto x_2-b$ (with inverse obtained by adding $a$
+    and $b$) lifts to an isomorphism $k[\bA^2]_{(x_1-a,x_2-b)}\cong k[\bA^2]_{(x_1,x_2)}$.
+    So in general
+    $$ \O_{\bP^2,P} \cong k[x_1,x_2]_{(x_1,x_2)} . $$
+
+    \item We claim that $(U,f)$ is a unit iff $f(P)\neq0$.
+    If $(U,f)$ is a unit there is a germ $(V,g)$ such that $(U,f)\cdot(V,g)=(U\cap V,f\cdot g)$ is the identity, so equivalent to the germ of 
+    the constant $1$.
+    Thus $f\cdot g(P)=1$, which means $f(P)\neq0$.
+
+    Conversely if $f(P)\neq0$ then $P\in D_U(f)$ and so $(D_U(f),1/f)$ is a germ in $\O_{X,P}$.
+    And $(U,f)\cdot(D_U(f),1/f)=(D_U(f),1)$ is a germ of $1$, so it is the identity.
+    Thus $(U,f)$ is a unit.
+
+    \item Irreduciblity is equivalent to all nonempty open subsets having nonempty intersection, equivalently being dense.
+    This means an open subset of an irreducible space is irreducible (open subsets of an open subset are open).
+
+    By definition $f|_W=g|_W$ on some subset $W\subseteq U\cap V$.
+    Since $X$ is irreducible, $U\cap V$ is irreducible and thus $W$ is dense in $U\cap V$.
+    By the universal property of $\bA^1$, regular maps in $\O_X(U)$ are continuous $U\to\bA^1$.
+    Thus the map $f-g\colon U\cap W\to k$ is continuous, and so its zero set $Z(f-g)$ is closed in $U\cap V$ (as the proper closed sets of $\bA^1$
+    are the finite sets, so $\set0$ is closed).
+    Since it contains a dense set $W$, it must be all of $U\cap V$ (since it contains $\cl W=U\cap V$).
+    Thus $f=g$ on $U\cap V$.
+
+    \item Consider the disjoint union $X=\bA^1\amalg\bA^1$.
+    This has an open cover of $\bA^1$s, so it is a variety.
+    And by the universal properties of affine space and the coproduct
+    $$ \O_X(X) \cong \hom(X,\bA^1) \cong \hom(\bA^1,\bA^1)^2 \cong k[x]^2 . $$
+    So a regular map $f\in\O_X(X)$ is given by two polynomials $f_1,f_2$ which dictate $f$'s behavior on the two copies of the affine line.
+
+    So let $p,q,r\in k[x]$ be three distinct polynomials.
+    Define $f$ to be the regular function given by $(p,q)$, and $g$ be the regular function $(p,r)$.
+    Take a point $P$ in the first copy of the affine line, so $(X,f)$ and $(X,g)$ both restrict to $p$ on an open neighborhood of $P$ (the first
+    copy of the affine line).
+    But clearly $f$ and $g$ don't agree on all of $X$.
+\eenum
+
+\def\pdv#1{\frac{}{\partial#1}}
+\def\pdvof#1#2{\frac{\partial#1}{\partial#2}}
+\def\ipdvof#1#2{{\partial#1}/{\partial#2}}
+\bprob
+
+    For coprime $f,g\in k[x,y]$, let $C=Z(f)$ and $D=Z(g)$ be the curves they define.
+    \benum
+        \item Let $f=x^2+y^2-1$ and $g=y-x^2+1$.
+        Determine the intersection of $C$ and $D$ and for which points this intersection is transversal.
+        \item Let $\bar f,\bar g$ be the linear parts of the Taylor expansions of $f$ and $g$, respectively, centered around $P\in C\cap D$.
+        Show that $f$ and $g$ intersect transversally iff $\bar f,\bar g$ form a basis of $\m_P/\m_P^2$.
+        \item Define the {\emphcolor Jacobian} of $f$ and $g$ to be the polynomial obtained as the determinant of the matrix of their partial derivatives:
+        $$ J(f,g) = \det\pmatrix{\pdvof fx&\pdvof fy\cr\pdvof gx&\pdvof gy} . $$
+        Show that for $P\in C\cap D$, $C$ and $D$ intersect transversally at $P$ iff $J(f,g)\neq0$.
+    \eenum
+
+\eprob
+
+\benum
+    \item We know
+    $$ C\cap D = Z(f,g) , $$
+    so we first simplify the ideal $(f,g)$.
+    In our quotient we have $y=x^2-1$, so we can subsitute that in $f$ to get
+    $$ x^2 + (x^2-1)^2 - 1 = x^4 - x^2 , $$
+    thus
+    $$ (f,g) = (y-x^2+1,x^2(x^2-1)) . $$
+    So
+    $$ C\cap D = Z(y-x^2+1)\cap Z(x^2(x^2-1)) . $$
+    Zeroes of the latter term are given by $x=0$ or $x=\pm1$.
+    As $y=x^2-1$ these give the intersection points
+    $$ (0,-1),\qquad (1,0),\qquad (-1,0) . $$
+
+    The stalk at the point at $P=(a,b)$ is $k[x,y]_{(x-a,y-b)}$.
+    Notice that
+    $$ (y+x^2-1)g = y^2 - x^4 + 2x^2 - 1 $$
+    so we have
+    $$ f - (y+x^2-1)g = x^2(x^2-1) . $$
+    Since $x^2$ is not in $(x\pm1,y)$ when localizing by these maximal ideals it is a unit so we see that
+    $$ x^2 - 1 \in (f,g)k[x,y]_{(x\pm1,y)} , $$
+    and thus $x\pm1$ is in the right-hand ideal (since $x\mp1$ is a unit).
+    Similarly
+    $$ f + g = y(1+y) , $$
+    and since $1+y$ is a unit in the localization by $(x\pm1,y)$ we see that $y$ is in the ideal as well.
+    Thus in the localization $(x\pm1,y)\subseteq(f,g)$ and since the right-hand ideal is proper (as $(f,g)\subseteq(x\pm1,y)$) the ideal is maximal.
+    So $f,g$ intersect transversally at $(\pm1,0)$.
+
+    Our calculations show that $1+y$ is in the localization of $(f,g)$ by $(x,y+1)$ as well, but we claim that the intersection is not transversal
+    If it were, then $C$ and $D$ would intersect transversally at all the points in their intersection so $(f,g)$ would be radical.
+    But as above we know $x^2(x^2-1)\in(f,g)$ and so $x^2(x^2-1)^2\in(f,g)$, and if it were radical then $x(x^2-1)\in(f,g)$.
+
+    But if we quotient $k[x,y]$ by $(y-x^2+1)$ we get $k[x]$ (by mapping $y$ to $x^2-1$).
+    Then $(f,g)$ corresponds to $(x^2(x^2-1))$ and $x(x^2-1)$ to itself.
+    And clearly $x(x^2-1)$ is not $(x^2(x^2-1))$, a contradiction.
+
+    \item Denote $P=(P^0,P^1)$.
+    Notice that every polynomial $f\in k[x,y]$ has an expansion around $P$.
+    This is because the morphism $k[x,y]\mapsto k[x,y]$ given by $x\mapsto x-P^0$ and $y\mapsto y-P^1$ is an isomorphism, given by $x\mapsto x+P^0,y\mapsto y+P^1$.
+    So $f\in k[x,y]$ is equal to the image of some polynomial $\sum_{n,m}a_{nm}x^ny^m$, i.e.
+    $$ f = \sum_{n,m}a_{n,m}(x-P^0)^n(y-P^1)^m . $$
+    For such a polynomial, we have $f(P)=a_{0,0}$ and by linearity and the product rule we have
+    $$ \pdvof fx(P) = a_{1,0},\qquad \pdvof fy(P) = a_{0,1} . $$
+
+    Let us define a map $\m_P\to\bA^2$ by $h\mapsto(\ipdvof hx,\ipdvof hy)(P)$.
+    This is $\bR$-linear by linearity of the derivative.
+    Furthermore it is surjective: for $(a,b)\in\bA^2$ define $h=a(x-P^0)+b(y-P^1)$ then we see that $h(P)=0$ and $\ipdvof hx=a,\ipdvof hy=b$.
+
+    We also show that its kernel is $\m_P^2$.
+    For $p,q\in\m_P$ we see that
+    $$ \pdv x(pq) = \parens{\pdvof px}q + p\parens{\pdvof qx} , $$
+    and evaluating at $P$ gives $0$ as $p(P)=q(P)=0$; similarly for $y$.
+    So $\m_P^2$ is contained in the kernel.
+    Conversely for $f\in\m_P$ in the kernel we can consider its expansion around $P$, $f=\sum_{n,m}a_{n,m}(x-P^0)^n(y-P^1)^m$.
+    It being in the kernel means that $a_{0,0}=a_{1,0}=a_{0,1}=0$, and so all of the terms in $f$ are of the form $(x-P^0)^n(y-P^1)^m$ for $n+m\geq2$ (not both $\leq1$)
+    which is then in $\m_P^2$.
+
+    So this map quotients to a linear isomorphism $\m_P/\m_P^2\cong\bA^2$.
+    Via this isomorphism, we see that $(1,0),(0,1)\in\bA^2$ have preimages $x-P^0$ and $y-P^1$ (from our previous computation) respectively.
+    Furthermore for a polynomial $f\in k[x,y]$ with expansion around $P$ given by the coefficients $a_{n,m}$, by definition we have
+    $$ \bar f = a_{0,0} + a_{1,0}(x-P^0) + a_{0,1}(y-P^1),\qquad a_{0,0} = f(P),\quad a_{1,0} = \pdvof fx(P),\quad a_{0,1} = \pdvof fy(P) . $$
+    For $f\in\m_P$ this is just its projection into $\m_P/\m_P^2$.
+
+    Now, we know that $\O_{\bA^2,P}=k[x,y]_{\m_P}$ which is a local ring with maximal ideal $\m_Pk[x,y]_{\m_P}$ and $\m_P=(x-P^0,y-P^1)$.
+    By a change of coordinates, we can assume $P^0=P^1=0$ (via mapping $x\mapsto x-P^0$ and $y\mapsto y-P^1$).
+    This doesn't change any of the proof, but it does tidy it up.
+    So $C,D$ intersect transversally at $P=(0,0)$ iff $x,y\in(f,g)k[x,y]_{\m_P}$.
+    Let $a_{n,m}$ be the coefficients of $f$, and $b_{n,m}$ the coefficients of $g$.
+
+    In such a case, after multiplying out the denominators, we see that there are polynomials $p,q,r\in k[x,y]$ with $p\notin\m_P$ such that
+    $$ xp = fq + gr . $$
+    To show that $\bar f,\bar g$ form a basis of $\m_P/\m_P^2$ it is sufficient to show that $x$ and $y$ are in their span, as they form a basis for $\m_P/\m_P^2$.
+    Differentiating the above identity and then evaluating at $P$ we see
+    $$ p(P) = \pdvof fx(P)q(P) + \pdvof gx(P)r(P) = a_{1,0}q(P) + b_{1,0}r(P) . $$
+    Let $c=p(P)$, $\alpha=q(P)$, and $\beta=r(P)$; $c\neq0$ since $p\notin\m_P$.
+    Then $c=\alpha a_{1,0}+\beta b_{1,0}$ so
+    $$ cx = \alpha a_{1,0}x + \beta b_{1,0}x = \alpha\bar f + \beta\bar g $$
+    since $a_{0,0}=b_{0,0}=0$ as $f,g\in\m_P$.
+    Since $c$ is nonzero and thus a unit, this shows that $x$ is in the span of $\bar f,\bar g$ as desired, and similarly so is $y$.
+    Thus if $f,g$ intersect transversally at $P$ then $\bar f,\bar g$ form a basis.
+
+    Conversely suppose $\bar f,\bar g$ form a basis, we want to show they intersect transversally.
+    It is sufficient to show that $x,y$ are in $(f,g)$ in the stalk $\O_{\bA^2,P}=k[x,y]_{\m_P}$ as its maximal ideal is generated by $x,y$ (and $(f,g)$ is proper since it
+    is contained in $(x,y)=\m_P$).
+    Since $\bar f,\bar g$ form a basis there are $\alpha,\beta$ scalars such that $x=\alpha\bar f+\beta\bar g$.
+    Since $f-\bar f=\tilde f\in\m_P^2$ we have that
+    $$ x = \alpha(f-\tilde f) + \beta(g-\tilde g) = \alpha f + \beta g - (\alpha\tilde f + \beta\tilde g) \in (f,g) + \m_P^2 . $$
+    And similarly $y\in(f,g)+\m_P^2$ so that
+    $$ \m_P = (f,g) + \m_P^2 . $$
+    By Nakayama's lemma (the second formulation, with $I=M=\m_P$ in the local ring $k[x,y]_{\m_P}$ and $N=(f,g)$) we see $(f,g)=\m_P$ as desired (all in the stalk).
+
+    \item Via the isomorphism $\m_P/\m_P^2\to\bA^2$, $\bar f=a_{1,0}x+a_{0,1}y,\bar g=b_{1,0}x+b_{0,1}$ form a basis iff $(a_{1,0},a_{0,1})$ and $(b_{1,0},b_{0,1})$ do in $\bA^2$.
+    This is iff the determinant of the matrix they form has nonzero determinant.
+    Since $a_{1,0}=\ipdvof fx(P)$ and $a_{0,1}=\ipdvof fy(P)$ we get the desired result.
+\eenum
+
+\bprob
+
+    Let $X$ be an irreducible variety.
+    \benum
+        \item Let $U$ be a nonempty affine open subset of $X$.
+        Show that $\O_X(U)$ is a domain.
+        Further show that $\Frac(\O_X(U))$ is independent, up to canonical isomorphism, on the choice of $U$.
+        Define the {\emphcolor function field} of $X$ to be $k(X)=\Frac(\O_X(U))$.
+
+        \item Compute $k(\bP^2)$.
+
+        \item Define embeddings $\O_X(X)\to k(X)$ and $\O_{X,P}\to k(X)$ for all $P\in X$.
+
+        \item Show that the image of $\O_{X,P}$ in $k(X)$ are $f/g\in\Frac(\O_X(U))$ where $U$ is an affine open neighborhood of $P$
+        and $g(P)\neq0$.
+
+        \item Prove that $\O_X(X)=\bigcap_P\O_{X,P}$ in $k(X)$.
+    \eenum
+
+\eprob
+
+\benum
+    \item Since $X$ is irreducible, its open subsets are irreducible as well.
+    Thus $U$ is an irreducible affine variety, and we showed in question 1 that this means $\I(U)$ is prime.
+    Then we know $\O_X(U)\cong k[U]=k[\bA^n]/\I(U)$ which is then a domain.
+
+    We claim that $k(X)$ is equal to the filtered colimit $\colim_{V\subseteq X}\O_X(V)$ over all $V\subseteq X$ nonempty open.
+    Then clearly it is independent on choice of affine neighborhood.
+    For any nonempty open $U\subseteq X$ by irreducibility $U$ is dense.
+    Let $\Op_*(X)$ denote the nonempty open subsets of a topological space $X$.
+    For $X$ irreducible this is cofiltered, as the intersection of any two nonempty open subsets is nonempty.
+    And $\Op(U)_*^\op\subseteq\Op(X)_*^\op$ is cofinal: for every $V\subseteq X$ nonempty, $U\cap V\subseteq V$ is a nonempty neighborhood
+    of $U$.
+    Since filtered colimits can be taken over cofinal subsets we see that for any $U\subseteq X$ open,
+    $$ \colim_{V\subseteq X}\O_X(V) \cong \colim_{V\subseteq U}\O_X(V) . $$
+
+    So now it remains to show that the right-hand colimit is isomorphic to $\Frac(\O_X(U))$.
+    This is just a question about affine varieties.
+    We see that elements of the colimit are elements $(V,f)$ for $f\in\O_X(V)$ where we identify $(V,f)$ and $(W,g)$ if they restrict to
+    the same function on some common open subset of $V$ and $W$.
+    Using the same argument as for stalks, this is iff $f|_{V\cap W}=g|_{V\cap W}$.
+
+    For the sake of conciseness we will define $k(X)$ to be the colimit and show that it is isomorphic to $\Frac(\O_X(U))$.
+
+    There is a canonical morphism for all open $V\subseteq X$ from $\O_X(V)$ to $k(X)$ (as it is the colimit) given by $f\mapsto(V,f)$.
+    In particular this is true for $U$, and we claim that it maps nonzero elements to units of $k(X)$.
+    For $f\in\O_X(U)$ nonzero, $D_U(f)$ is then nonempty and so there is an element $(D_U(f),1/f)\in k(X)$.
+    This an inverse for $(U,f)$, so it is a unit.
+    By localization, this induces a morphism which we see is
+    $$ \phi\colon\Frac(\O_X(U)) \to k(X),\qquad f/g\mapsto (D_U(g),f/g) . $$
+    This map is injective: if $\phi(f/g)=0$ then $f/g$ is identitfied with $0$ and thus $f/g|_{D_U(g)}=0$ implying $f|_{D_U(g)}=0$.
+    By density again this means $f=0$ on $U$ so $f/g=0$.
+
+    It is also surjective.
+    For $V\subseteq U$ open we know that $\O_X(V)$ are rational functions on $V$, say $f/g$ for $0\notin g(V)$ for polynomials $f,g$.
+    Then $f,g\in\O_X(U)$ as they are polynomial, $g\neq0$ so $f/g$ is an element of $\Frac(\O_X(U))$.
+    Thus we have an isomorphism
+    $$ k(X) \cong \Frac(\O_X(U)) . $$
+
+    \item $\bP^2$ has an affine neighborhood $\bA^2$, so
+    $$ k(\bP^2) = \Frac(k[\bA^2]) = k(x,y) . $$
+
+    \item There is a canonical morphism $\O_X(X)\to\colim_{U\subseteq X}\O_X(U)=k(X)$ given by mapping $f\in\O_X(X)$ to the germ $(X,f)$.
+    This is injective since if $(X,f)=0$ then $f|_U=0$ for some nonempty open $U$.
+    But $U$ is then dense and as before this means $f=0$.
+
+    We have
+    $$ \O_{X,P} = \colim_{P\in U\subseteq X}\O_X(U),\qquad k(X) = \colim_{U\subseteq X}\O_X(U) , $$
+    so the stalk is the colimit of the restriction $\O_X$ to a subcategory of $\Op_*(X)^\op$.
+    In general if $F$ is the restriction of a functor $G$, then there is a canonical map $\colim F\to\colim G$ obtained from the canonical maps
+    $Fc\to\colim G$.
+    In our case this map is $(U,f)\mapsto(U,f)$ (the former germ is in $\O_{X,P}$ the latter is in $k(X)$).
+    This is again injective for the same reason.
+
+    As before we can restrict our view to neighborhoods contained in an affine neighborhood (or any nonempty neighborhood) $U$.
+    So our map $\O_{X,P}\to k(X)$ can be taken relative to open subsets in $U$.
+    Also our map $\O_X(X)\to k(X)$ is equal to first restricting and then taking the map $\O_X(U)\to k(X)$.
+    This is because the germ of $f\in\O_X(X)$ is equal to the germ of $f|_U\in\O_X(U)$ by definition.
+
+    \item The image of $\O_{X,P}$ consists of all germs of $f\in\O_X(V)$ for $P\in V\subseteq U$ open.
+    For any $f/g\in\Frac(\O_X(U))$ such that $g(P)\neq0$ we see that $f/g\in\O_X(D_U(g))$ and $P\in D_U(g)$.
+    Thus $f/g$ lies in the image of $\O_{X,P}$.
+
+    Conversely for a map in $\O_X(V)$ for $P\in V\subseteq U$ open we know that it is of the form $f/g$ for $f,g$ polynomial and
+    $g$ being nonzero on $V$, in particular $g(P)\neq0$.
+    So every element in the image of $\O_{X,P}$ is of the form $f/g$ for $g(P)\neq0$ and vice versa.
+
+    \item The image of $\O_X(X)$ in $k(X)$ are all germs of functions in $\O_X(X)$.
+    Clearly this is contained in the image of every $\O_{X,P}$ as per the previous point.
+
+    If $f/g\in\bigcap_P\O_{X,P}$ then $g(P)\neq0$ for all $P$ so $g$ is nonzero on all of $X$.
+    By definition for affine $U\subseteq X$, $\O_X(U)=\O_\reg(U)$ consists of all locally rational functions, so $f/g$ is in $\O_X(U)$.
+    That means there is $q_U\in\O_X(U)$ such that $(U,q_U)=f/g$.
+    For any two affine $U,V$ we have that $q_U$ and $q_V$ define the same germ, and by density this means $q_U|_{U\cap V}=q_V|_{U\cap V}$.
+    Since $X$ has an open cover of affine subsets, by the sheaf axiom this means there is a $q\in\O_X(X)$ such that $q|_U=q_U$ for all $U\subseteq X$
+    affine.
+    Then clearly $q$'s germ is equal to $q_U$'s, which is $f/g$.
+\eenum
+
+\bprob
+
+    Fix a ring $R$.
+    \benum
+        \item Assume $R$ is Noetherian, show that $\nil(R)^k=0$ for some $k$.
+        \item Assume $R$ is Artinian, show that
+        $$ R \cong \prod_{\m\in\specm(R)}R_\m . $$
+    \eenum
+
+\eprob
+
+\benum
+    \item Since $R$ is Noetherian its ideals are finitely generated, so $\nil(R)=(f_1,\dots,f_n)$ for $f_i\in R$.
+    For an index set $I=(i_1,\dots,i_k)$ let $f_I=\prod_jf_{i_j}$.
+    Then inductively we see
+    $$ \nil(R)^k = \gen{f_I}[\hbox{$I$ is an index set of length $k$}] . $$
+    Suppose that $f_i^{n_i}=0$ for all $i$, and let $k=\sum_in_i$.
+    Then for every index set $I$ of length $k$, there must be some $i$ which occurs in $I$ at least $n_i$ times (pigeonhole) and then $f_I=0$.
+    Thus $\nil(R)^k=0$ as desired.
+
+    \item Since $R$ is Artinian, its max spectrum (which is equal to its spectrum) is finite, and by the previous point $\nil(R)^k=0$.
+    And so
+    $$ \nil(R) = \bigcap_{\m_i\in\specm(R)}\m_i = \prod_i\m_i . $$
+    Thus
+    $$ 0 = \nil(R)^k = \prod_i\m_i^k . $$
+    The $\m_i^k$ are coprime since if $I$ is radical and contains $\m_i^k,\m_j^k$ it contains $\m_i,\m_j$ and thus is unital.
+    So if $I$ contains $\m_i^k,\m_j^k$ its radical is unital and thus $I$ is unital.
+
+    So by CRT
+    $$ R \cong R/(0) \cong R/\prod_i\m_i^k \cong \prod_iR/\m_i^k . $$
+    Localizing $R/\m_i^k$ at $\m_j$ is $R_{\m_j}$ quotiented by $\m_i^k$, but this is trivial if $i\neq j$ as the localizing set and $\m_i^k$
+    is nontrivial.
+    Rnd if $i=j$ then it is isomorphic just to $R/\m_i^k$.
+    Thus by exactness
+    $$ R_{\m_i} \cong \prod_j(R/\m_j^k)_{\m_i} \cong R/\m_i^k , $$
+    so
+    $$ R \cong \prod_iR/\m_i^k \cong \prod_iR_{\m_i} $$
+    as desired
+\eenum
+
+\bprob
+
+    Let $P_1,\dots,P_6$ be the vertices of a nondegenerate hexagon and let $L_1,\dots,L_6$ be the sides of the hexagon continued to lines.
+    Let $Q_1=L_1\cap L_4$, $Q_2=L_2\cap L_5$, $Q_3=L_3\cap L_6$ be the intersection points of opposite sides.
+    Write $L_i=Z_{\bA^2}(\ell_i)$ and assume that $Q_1,Q_2,Q_3$ lie on a single line $L=Z_{\bA^2}(\ell)$.
+    We show that the hexagon lies on a conic.
+    \benum
+        \item Write $f=\ell_1\ell_3\ell_5$ and $g=\ell_2\ell_4\ell_6$, $F=Z(f)$, and $G=Z(g)$.
+        Prove that $F$ and $G$ intersect transversally.
+
+        \item Prove that $g\in(\ell,f)k[x,y]$.
+
+        \item Deduce that $g=q\ell+cf$ for some quadratic $q\in k[x,y]$ and scalar $c\in k$.
+
+        \item Set $C=Z(q)$ and show that $P_1,\dots,P_6\in C$.
+    \eenum
+
+\eprob
+
+\benum
+    \item Let $P\in F\cap G$ so that $f(P)=g(P)=0$.
+    Without loss of generality, $\ell_1(P)=\ell_2(P)=0$.
+    Since the hexagon is nondegenerate $\ell_i(P)\neq0$ for all the other $i$, so that they are units in $\O_{\bA^2,P}$.
+    Thus in the stalk
+    $$ (f,g) = (\ell_1,\ell_2) . $$
+    Now $\ell_1,\ell_2$ are coprime (they share a root) linear polynomials in $x,y$ which are not scalar multiples of one another so they generate a
+    maximal ideal in $k[x,y]$.
+    Say $\ell_1=ax+by+c$ and $\ell_2=cx+dy+e$, then we can divide $\ell_1$ by $a$ (if it is zero then $b$ is not, so we can swap variables)
+    and then subtract $\ell_2-c/a\ell_1$ to get a linear polynomial in $y$ and then subtract that from $\ell_1$ to get a linear polynomial in $x$.
+    So $(\ell_1,\ell_2)\supseteq(x-a',y-b')$, which is maximal and thus they are equal.
+
+    And so $(\ell_1,\ell_2)$'s image in the stalk is maximal, so $f,g$ intersect transversally.
+
+    \item We know from AF+BG that $g\in(\ell,f)k[x,y]$ iff $g\in(\ell,f)\O_{\bA^2,P}$ for all $P$ in the intersection of $\ell,f$.
+    The intersection of $f$ and $\ell$ are the points $Q_1,Q_2,Q_3$ and so $g(P)=0$ as well, so $g$ is not a unit in the stalk.
+    And if $\ell(P)=f(P)=0$ then one $\ell_i$ must be zero but not the rest ($\ell_1,\ell_3,\ell_5$ don't intersect on $\ell$).
+    Then we see $(\ell,f)=(\ell,\ell_i)$ in the stalk and this is maximal as they are both linear as before.
+    Since the stalk is local, this is a maximal ideal, and $g$ is not a unit, this means $g\in(\ell,f)$ in the stalk.
+    Thus $g\in(\ell,f)k[x,y]$.
+
+    \item By the previous point $g=q\ell+cf$ for polynomials $q,c$.
+    Since $g,f$ have order $3$ and $\ell$ has order $1$, so by the same reason in recitation we see that $q$ has order $2$ and $c$ is a scalar.
+
+    \item For $P=P_1,\dots,P_6$ we have both $f(P)=g(P)=0$.
+    Thus $q(P)\ell(P)=0$, but $P$ is a vertex of the hexagon and so it is not on $\ell$, so $q(P)=0$.
+    Thus $P\in Z(q)$ as desired.
+\eenum
+
+\bprob
+
+    \benum
+        \item Show that the space of degree $m$ homogeneous polynomials in $n$ variables can be identified with $\bA^{k_m}$ for some $k_m$.
+        \item Show that the general linear group $\gl_n$ acts on $\bA^{k_m}$ by a linear change of variables.
+        Show that this is an action of varieties, so the action of every $g\in\gl_n$ is a morphism of varieties.
+        \item We identify $(a_0,\dots,a_4)$ with the following degree $4$ homogeneous polynomial in two variables $\sum_i\binom40a_ix^{4-i}y^i$.
+        For $\bar a\in\bA^5$ define its {\emphcolor Hankel matrix} to be
+        $$ \pmatrix{a_0&a_1&a_2\cr a_1&a_2&a_3\cr a_2&a_3&a_4} , $$
+        and define its {\emphcolor catalecticant}, $C(a)$, to be the determinant of the Hankel matrix.
+
+        For $g\in\gl_2$ and $a\in\bA^5$ show that $C(g\cdot a)=\det(g)^6C(a)$.
+        \item Show that $C\in k[\bA^5]$, and deduce that the Zariski closure $\cl{\gl_2(\bC)f}$ is contained in $Z(C)$.
+        \item Deduce that $g$ is not in $\cl{\gl_2(\bC)f}$.
+    \eenum
+
+\eprob
+
+\benum
+    \item Consider an elementary homogeneous polynomial of degree $m$, so of the form $x_1^{k_1}\cdots x_n^{k_n}$ where $k_1+\cdots+k_n=m$.
+    The number of choices of $k_1,\dots,k_n$ can be viewed as the number of ways to place $n-1$ bars among $m$ stripes (between the $i-1$th and
+    $i$th bar we count the number of stars and set $k_i$ equal to that).
+    Thus there are $k^n_m=\binom{m+n-1}{n-1}$ such elementary polynomials; they form a basis for the homogeneous polynomials of degree $m$.
+
+    Let us enumerate the tuples $I$ where $\sum I=m$ by $I_1,\dots,I_{k^n_m}$.
+    Define the map
+    $$ \phi\colon\bA^{k^n_m} \to k[x_1,\dots,x_n]_{\homo,m},\qquad (a_1,\dots,a_{k^n_m}) \mapsto \sum_{i=1}^{k^n_m}a_i\binom m{I_i}x^{I_i} , $$
+    where $\binom m{I_i}$ is the multinomial coefficient and $x^I=x_1^{i_1}\cdots x_n^{i_n}$.
+    This is clearly linear and an isomorphism as the dimensions are equal and $\binom m{I_i}x^{I_i}$ form a basis as explained.
+
+    \item We have $g\in\gl_n$ act on $k[x_1,\dots,x_n]$ by mapping the variable $x_i$ to
+    $$ x_i \mapsto \sum_j g_{ij}x_j . $$
+    This is the map on $k[x_1,\dots,x_n]_{\homo,1}$ represented by $g$ under the basis $x_1,\dots,x_n$.
+    As this is a map on homogeneous polynomials of degree $1$ it extends to a map on those of degree $m$.
+
+    This is clearly a group action, since $gh$'s action is represented by $gh$ (on homogeneous polynomials of degree $1$), and thus equal to
+    the action of $h$ then $g$ (on homogeneous of degree $1$, thus on all homogeneous polynomials).
+
+    For $x^I$ we see that $g$ maps it to a function polynomial in $x_1,\dots,x_n$.
+    Thus through the linear isomorphism $\phi$, $g$ acts polynomially and thus is an isomorphism of varieties.
+
+    \item The determinant of a matrix is polynomial in its inputs so $C\in k[\bA^5]$.
+    And for $g\in\gl_2(\bC)$ we have $C(g\cdot f)=\det g^6C(f)$.
+    The Hankel matrix of $f$ is ${\rm diag}(1,0,1)$ which has determinant zero, so $C(f)=0$.
+    Thus $C(g\cdot f)=0$ and so $\gl_2(\bC)f\subseteq Z(C)$ and since $Z(C)$ is closed, $\cl{\gl_2(\bC)f}\subseteq Z(C)$ as desired.
+
+    \item The Hankel matrix of $g$ is the matrix of zeroes except whose skew-diagonal consists of $1$s, which has determinant $-1$.
+    So $C(g)=-1$ and so $g\notin Z(C)$ and thus is not in $\cl{\gl_2(\bC)f}$.
+\eenum
+
+\bye
+

@@ -1,0 +1,69 @@
+\input pdfToolbox
+\input pdfmsym
+\pdfmsymsetscalefactor{10}
+\input ../preamble
+
+\def\printmcount{\the\counter{math counter}}
+
+\bprob
+
+    Suppose $T$ is diagonalizable, and let $\lambda_1,\dots,\lambda_n$ be its eigenvalues (without repetitions).
+    Let $m(x)=(x-\lambda_1)\cdots(x-\lambda_n)$, show that $m(T)=0$.
+
+\eprob
+
+Represent $T$ as a diagonal matrix, then $m(T)$ is a product of diagonal matrices whose product is easily seen to be zero.
+
+\bprob
+
+    Suppose $T$ is diagonalizable, and let $\lambda_1,\dots,\lambda_n$ be its eigenvalues (without repetitions).
+    We know then that
+    $$ V = V_{\lambda_1} \oplus \cdots \oplus V_{\lambda_n} . $$
+    For each $i=1,\dots,n$ define $P_i\colon V\to V$ by
+    $$ P_i = \prod_{j\neq i}\frac1{\lambda_i-\lambda_j}(T-\lambda_j\id) . $$
+    Show that $P_i$ is the projection onto $V_{\lambda_i}$ parallel to $V_{\lambda_1}\oplus\cdots\oplus\hat V_{\lambda_i}\oplus\cdots V_{\lambda_n}$
+
+\eprob
+
+For $v\in V_{\lambda_i}$ it is clear that $P_iv=v$.
+And for $v_j\in V_{\lambda_j}$ for $i\neq j$, it is clear that $P_jv=0$.
+Since $V$ is the direct sum of $V_{\lambda_i}$ with all other $V_{\lambda_j}$, the result is clear.
+
+\bprob
+
+    Suppose $T$ is diagonalizable, and let $\lambda_1,\dots,\lambda_n$ be its eigenvalues (without repetitions).
+    Further let $U$ be a $T$-invariant subspace.
+    Show that
+    $$ U = \bigoplus_{i=1}^n(U\cap V_{\lambda_i}) . $$
+    Conclude that the restriction $T|_U\colon U\to U$ is diagonalizable.
+
+\eprob
+
+Right-to-left inclusion is clear.
+We know that $V$ is the direct sum of $V_{\lambda_i}$, so for $u\in U$ there are $v_i\in V_{\lambda_i}$ such that $u=v_1+\cdots+v_n$.
+So $v_i=P_iu$, and since $P_i$ is polynomial in $T$, $U$ is $P_i$-invariant, so $v_i\in U$.
+Thus $u\in\bigoplus_i(U\cap V_{\lambda_i})$ as desired.
+
+Note that $T|_U$'s eigenspace of value $\lambda$ is $V_\lambda(T|_U)=V_\lambda\cap U$.
+We showed that $U$ is the direct sum of $T|_U$'s eigenspaces, so $T|_U$ is diagonalizable.
+
+\bprob
+
+    We say that $T,S$ are {\emphcolor simultaneously diagonalizable} if there is a basis which diagonalizes them both.
+    Show that $T,S$ are simultaneously diagonalizable iff they are both diagonalizable and commute.
+
+\eprob
+
+If $T,S$ are simultaneously diagonalizable, say by a basis $B$, then $[T]_B,[S]_B$ are diagonal and commute; thus $T,S$ commute.
+
+Conversely suppose $T,S$ commute and are diagonalizable.
+Let $V_\lambda(T)$ be an eigenspace of $T$, then it is $S$-invariant.
+Thus as we showed,
+$$ V_\lambda(T) = \bigoplus_\mu V_\lambda(T)\cap V_\mu(S) , $$
+where the sum is over $S$'s eigenvalues.
+Thus
+$$ V = \bigoplus_\lambda V_\lambda(T) = \bigoplus_{\lambda,\mu} V_\lambda(T)\cap V_\mu(S) . $$
+The union of bases for each subspace in the sum gives the desired basis.
+
+\bye
+

@@ -1,0 +1,487 @@
+\input pdfToolbox
+\input pdfmsym
+\pdfmsymsetscalefactor{10}
+\input ../preamble
+\def\enumindent{0cm}
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+\setcounter{section}{3}
+
+\centerline{\setfontandscale{bf}{20pt}Commutative Algebra \& Algebraic Geometry}
+\medskip
+\centerline{\bf Exercise \the\counter{section}}
+\smallskip
+\centerline{\it Ari Feiglin}
+
+\def\red{{\sf red}}
+
+\bprob
+
+    \benum
+        \item Prove that $\spec(R)$ is connected iff its {\emphcolor reduction} $\spec(R)_\red=\spec(R/\nil(R))$ is connected.
+        \item Compute the connected components of $X=\spec(R)$ in the following cases:
+        \benum
+            \item $R=\bZ/60\bZ$,
+            \item $R=\bC[x,y,z]/(x^2+y^2-z^2,x^2+y^2-z)$.
+        \eenum
+        \item Find a polynomial $f\in\bR[x,y]$ such that $\spec(\bR[x,y]/(f))$ is connected but $\spec(\bC[x,y]/(f))$ is disconnected.
+    \eenum
+
+\eprob
+
+\benum
+    \item Consider the projection $\pi\colon R\to R/\nil(R)$.
+    From the previous problem set, we know that this induces $\pi^*\colon\spec(R/\nil(R))\to\spec(R)$, a topological embedding onto its image $V(\nil(R))$.
+    Since $V(\nil(R))=\spec(R)$, we get that $\pi^*$ is a homeomorphism $\spec(R/\nil(R))\to\spec(R)$.
+    Since connectedness is a topological property, the result follows.
+
+    \item
+    \benum
+        \item For $R=\bZ/60\bZ$ we note that the prime factorization of $60$ is $60=2^2\cdot3\cdot5$ so that
+        $$ R \cong (\bZ/4\bZ) \times (\bZ/3\bZ) \times (\bZ/5\bZ) $$
+        so that
+        $$ \spec(R) \cong \spec(\bZ/4\bZ) \sqcup \spec(\bZ/3\bZ) \times \spec(\bZ/5\bZ) . $$
+        The ideals inducing the ring isomorphism are $4\bZ/60\bZ$, $3\bZ/60\bZ$, $5\bZ/60\bZ$, so that
+        $$ \spec(R) = V(4\bZ/60\bZ) \sqcup V(3\bZ/60\bZ) \sqcup V(5\bZ/60\bZ) . $$
+        (Meaning for these coprime ideals $I_1,I_2,I_3$ we have $R\cong(R/I_1)\times(R/I_2)\times(R/I_3)$, and we saw in recitation this implies $\spec(R)=V(I_1)\sqcup V(I_2)\sqcup V(I_3)$.)
+        Each of these rings are connected (for $3,5$ this is because they are fields, and $n^2\equiv n\pmod4$ is only solved by $0,1$), so these are the connected components of $\spec(R)$.
+
+        \item Note that
+        $$ (x^2+y^2-z^2,x^2+y^2-z) = (x^2+y^2-z,z^2-z) . $$
+        The right-hand side is contained in the left because $z^2-z$ is equal to $(x^2+y^2-z)-(x^2+y^2-z^2)$.
+        The left-hand side is contained in the right because $x^2+y^2-z^2=(x^2+y^2-z)-(z^2-z)$.
+
+        Now we see that $(x^2+y^2-z,z),(x^2+y^2-z,z-1)$ are comaximal ($1=z-(z-1)$), and their product is the given ideal $(x^2+y^2-z^2,z(z-1))$.
+        Thus
+        $$ R \cong \frac{\bC[x,y,z]}{(x^2+y^2-z,z)} \times \frac{\bC[x,y,z]}{(x^2+y^2-z,z-1)} $$
+        by the chinese remainder theorem.
+        Now for $f\in\bC[x,y]$, $\bC[x,y,z]/(f-z,z-a)\cong\bC[x,y]/(f-a)$.
+        This is because $(f-z,z-a)=(f-a,z-a)$, and $\bC[x,y,z]/(f-a)\to\bC[x,y]/(f-a)$ given by mapping $g(x,y,z)+(f-a)$ to $g(x,y,a)+(f-a)$ is a well-defined surjective morphism.
+        Its kernel is then $(f-a,z-a)/(f-a)$, and we get the desired isomorphism.
+
+        So we have that
+        $$ R \cong \frac{\bC[x,y]}{(x^2+y^2)} \times \frac{\bC[x,y]}{(x^2+y^2-1)} . $$
+        These are both irreducible since $(x^2+y^2),(x^2+y^2-1)$ are both prime (the polynomials are irreducible), and thus the rings in the product are integral domains and this irreducible
+        (since $\nil(R)=0$ for an integral domain, which is prime again since it's an integral domain).
+        Thus they are also connected.
+
+        So the connected components of $R$ are the vanishing sets of the ideals by which we quotiented.
+        That is,
+        $$ X = V\parens{\frac{(x^2+y^2-z,z)}{(x^2+y^2-z^2,x^2+y^2-z)}} \sqcup V\parens{\frac{(x^2+y^2-z,z-1)}{(x^2+y^2-z^2,x^2+y^2-z)}} $$
+        are the connected components of $X$.
+    \eenum
+
+    \item Let $f=x^2+1$, which is irreducible over $\bR$ and thus $(f)\leq\bR[x,y]$ is prime.
+    Then $\bR[x,y]/(f)$ is an integral domain and thus has no nontrivial idempotents (if $f(f-1)=0$ in an integral domain, $f=0$ or $1$), so it is connected.
+    But let $g=\frac{ix+1}2\in\bC[x,y]$, then
+    $$ g(g-1) = \frac{(ix+1)(ix-1)}4 = \frac{-x^2-1}4 = - \frac{x^2+1}4 , $$
+    which is zero modulo $f$.
+    Thus $g$ is a nontrivial idempotent in $\bC[x,y]/(f)$ and thus it is disconnected.
+\eenum
+
+\bprob
+
+    Let $X$ be a topological space.
+    \benum
+        \item Show that the following are equivalent:
+        \benum
+            \item $X$ is irreducible,
+            \item Any nonempty open subset of $X$ is dense,
+            \item Any two nonempty open subsets have nonempty intersection.
+        \eenum
+        \item Let $Y\subseteq X$ be a subspace.
+        Show the following.
+        \benum
+            \item $Y$ is irreducible iff $\cl Y$ is irreducible.
+            \item If $Y$ is irreducible then it is contained in an irreducible component of $X$.
+        \eenum
+        \item Prove that $X$ is a union of its irreducible components and they are closed.
+        \item Assume $X$ is Hausdorff, describe $X$'s irreducible components.
+        \item Now assume $X=\spec(R)$.
+        \benum
+            \item Show that an irreducible component of $X$ is the same as $V(\p)$ where $\p\in X$ is minimal.
+            \item Compute the irreducible components of $X$ in the case $R=\bC[x,y]/(x^2)$ and $R=\bC[x,y,z]/(x^2+y^2-1,x^2+z^2-1)$.
+        \eenum
+    \eenum
+
+\eprob
+
+\benum
+    \item A set is dense iff it intersects every nonempty open subset of $X$.
+    Thus the second and third points are clearly equivalent.
+    If $X$ is irreducible, then let $U\subseteq X$ be nonempty open.
+    It is dense because $\cl U\cup(X-U)=X$ is a union of closed sets, and since $X$ is irreducible one must be equal to $X$, so $\cl U=X$ meaning $U$ is dense.
+
+    Conversely suppose every two nonempty open subsets have nonempty intersection, and $X=Z\cup W$ for closed sets $Z,W$.
+    Then $Z^c\cap W^c=\emptyset$ for open subsets $Z^c,W^c$.
+    Thus one must be empty, so its complement is all of $X$; $X$ is then irreducible.
+
+    \item If $Y$ is reducible, then $Y=Z\cup W$ for proper closed subsets $Z,W\subseteq Y$.
+    Then $\cl Y=\cl Z\cup\cl W$, and these are proper closed subsets: $Z=\cl Z\cap Y$ so if $\cl Z=\cl Y$ then $Z=\cl Y\cap Y=Y$, a contradiction.
+    Thus $\cl Y$ is reducible.
+
+    And if $\cl Y$ is reducible, $\cl Y=Z\cup W$ for proper closed subsets, then $Y=(Z\cap Y)\cup(W\cap Y)$ is a union of closed sets.
+    If $Z\cap Y=Y$ then $Y\subseteq Z$ so $\cl Y\subseteq\cl Z=Z$ a contradiction (since $\cl Y$ is closed, relatively closed subsets are closed).
+    Thus $Y$ is reducible.
+    So we have shown the first point.
+
+    Let $\c X$ be the set of all irreducible subsets of $X$ containing $Y$, it is nonempty since $Y\in\c X$.
+    Then we apply Zorn to $\c X$ to obtain a maximal irreducible component.
+    Let $C\subseteq\c X$ be a chain of irreducible subsets of $X$ containing $Y$, we claim its union $\c Y=\bigcup C$ is irreducible.
+    If $\c Y=Z\cup W$ is a union of closed subsets and say $W\neq\c Y$ so let $x\in\c Y-W$; we claim $Z=\c Y$.
+    Let $y\in\c Y$, then there exists a $Y'\in C$ such that $x,y\in Y'$ (since $C$ is a chain), and $Y'=(Z\cap Y')\cup(W\cap Y')$.
+    Since $Y'$ is irreducible, either $Z\cap Y'=Y'$ or $W\cap Y'=Y'$.
+    But $x\notin W\cap Y'$ so $W\cap Y'\neq Y'$ and thus $Z\cap Y'=Y'$, meaning $y\in Z$.
+    Thus $Z=\c Y$ as desired.
+
+    So $\c Y$ is irreducible and maximal by definition.
+
+    \item Each irreducible component $\c Y$ is closed because $\cl{\c Y}$ is irreducible and contains $\c Y$, so by maximality $\c Y=\cl{\c Y}$.
+    And for every $x\in X$, $\set x$ is irreducible and thus contained in an irreducible component.
+    So the union of all irreducible components contains every point in $X$, as desired.
+
+    \item If $X$ is Hausdorff, its irreducible components are the singletons.
+    If $Y\subseteq X$ has at least two points $x\neq y\in Y$ then they have disjoint neighborhoods $x\in U,y\in V$.
+    Since $U\cap V=\emptyset$, by the first point $Y$ cannot be irreducible.
+    And singletons are clearly irreducible, thus proving the claim.
+
+    \item
+    \benum
+        \item The closed sets of $X$ are of the form $V(J)$ for an ideal $J\leq R$.
+        An irreducible component is closed, thus of this form.
+        Now for prime $\p$, $V(\p)$ is irreducible: if $V(\p)=V(I)\cup V(J)=V(IJ)$ then $IJ\leq\p$, so by primality either $I\leq\p$ or $J\leq\p$, and then $V(\p)\subseteq V(I)$ or $V(J)$,
+        thus $V(\p)$ is indeed irreducible.
+
+        Since $V(J)=V(\sqrt J)$ we focus on radical ideals.
+        We claim that $V(J)$ is reducible for a radical ideal $J$ if it is not prime.
+        If $J$ is not prime, there are ideals $I_1,I_2$ such that $I_1I_2\leq J$ but $I_1,I_2$ are not contained in $J$.
+        Then $V(J)\subseteq V(I_1I_2)$, so
+        $$ V(J) = V(I_1I_2)\cap V(J) = (V(I_1) \cup V(I_2))\cap V(J) = V(I_1+J) \cup V(I_2+J) . $$
+        We claim that for $I=I_1,I_2$, $V(I+J)\neq V(J)$.
+        Indeed, this equality holds only when $J=\sqrt{I+J}$, but $I\leq\sqrt{I+J}$ and this is not contained in $J$, so $V(J)\neq V(J+I)$ so that $V(J)$ is reducible.
+
+        So all irreducible subsets are of the form $V(\p)$ for $\p$ prime.
+        And for prime ideals $\p,\q$, $V(\p)\subseteq V(\q)$ iff $\q\leq\p$ (since $\p\in V(\q)$ implies $\q\leq\p$ and in the other direction $V$ is order-reversing).
+        Thus a maximal irreducible subset is a minimal prime ideal, as desired.
+
+        \item For $R=\bC[x,y]/(x^2)$ we recall that prime ideals of $R$ are prime ideals of $\bC[x,y]$ containing $(x^2)$.
+        Prime ideals of $\bC[x,y]$ are of the form $(f(x,y))$ for $f$ irreducible or $(x-a,y-b)$ (maximal ideals).
+        The latter contains $(x^2)$ only when $a=0$.
+        For the former, $(x^2)\subseteq(f(x,y))$ iff $f$ divides $x^2$, so $f=x$.
+
+        Thus the prime ideals of $R$ are $(x)/(x^2)$ and $(x,y-b)/(x^2)$.
+        The only minimal prime ideal is $(x)/(x^2)$, it is a minimum prime ideal, thus $V((x)/(x^2))=X$ is irreducible.
+        Alternatively, we note that $\sqrt{(x^2)}=(x)$ is prime, so $\nil(R)$ is prime and thus $X$ is irreducible.
+
+        For $R=\bC[x,y,z]/(x^2+y^2-1,x^2+z^2-1)$.
+        Let $I$ be the ideal, then notice that
+        $$ (x^2 + y^2 - 1) - (x^2 + z^2 - 1) = y^2 - z^2 = (y-z)(y+z) \in I . $$
+        Now we claim that $I+(y-z),I+(y+z)$ are the minimal prime ideals containing $I$.
+        Note that $I+(y-z)=(x^2+y^2-1,y-z)$ (since modulo $z-y$, $x^2+z^2-1=x^2+y^2-1$), and $I+(y+z)=(x^2+y^2-1,y+z)$.
+        Then
+        $$ \frac{\bC[x,y,z]}{(x^2+y^2-1,y-z)} \cong \frac{\bC[x,y]}{(x^2+y^2-1)} $$
+        by mapping $f(x,y,z)$ to $f(x,y,y)$ in $\bC[x,y,z]/(x^2+y^2-1)$.
+        Similarly
+        $$ \frac{\bC[x,y,z]}{(x^2+y^2-1,y+z)} \cong \frac{\bC[x,y]}{(x^2+y^2-1)} . $$
+        Since $x^2+y^2-1$ is irreducible over $\bC[x,y]$, it generates a prime ideal and thus $I+(y-z),I+(y+z)$ are prime as well.
+
+        Now if $I\leq\p$ for any other prime ideal, then $(y-z)(y+z)\in I$ so $y-z$ or $y+z$ is in $\p$.
+        Thus $I+(y-z)$ or $I+(y+z)$ is contained in $\p$, so these are the minimal prime ideals containing $I$.
+        So $(I+(y\pm z))/I$ are minimal prime ideals and thus their vanishing sets are the irreducible components of $X$.
+    \eenum
+\eenum
+
+\def\colsp{{\rm colsp}}
+
+\bprob
+
+    Let $R$ be a PID, and $M$ a fg $R$-module.
+    \benum
+        \item Show that $R$ is Noetherian.
+        \item Now show that if $M\leq R^n$, then $M$ is free of rank $\leq n$.
+        \item Find $n,k\in\bN$ and a matrix $C\in M_{n\times k}(R)$ such that $M\cong R^n/\colsp(C)$.
+        \item Let $D_1\in\gl_n(R)$ and $D_2\in\gl_k(R)$ be invertible.
+        Show that
+        $$ R^n/\colsp(D_1C) \cong M \cong R^n/\colsp(CD_2) . $$
+        This allows us to do row/column operations on $C$ without changing $M$.
+        \item Assume $c_{1,1}\nmid c_{1,2}$.
+        Show that $(c_{1,1},c_{1,2})=(d)$ for some $d\in R$ and that there exist $s,t,x,y\in R$ such that $d=sc_{1,1}+tc_{1,2}$ and $c_{1,1}=xd$ and $c_{1,2}=yd$.
+        Furthermore show that
+        $$ D = \pmatrix{s&-y\cr t&x\cr &&I_{k-2}} $$
+        is invertible, and $C'=CD$ has $c'_{1,1}=d$.
+        \item If $c_{1,1}\nmid c_{1,j}$ for some $j$, swap $c_{1,2}$ with $c_{1,j}$ (via an elementary column operation, so it doesn't change $M$), and repeat the previous point.
+        Show that in each step, $(c_{1,1})\subseteq(c'_{1,1})$ and explain why this means the process terminates.
+        \item Explain why we may replace $C$ by a matrix such that its first column and row are zero except for $c_{1,1}$.
+        \item Show that $C$ can be replaced by a matrix which is nonzero outside of its diagonal and $c_{1,1}\mid c_{2,2}\mid\cdots$.
+        \item Conclude the invariant factor decomposition theorem from recitation.
+    \eenum
+
+\eprob
+
+\def\vline{\vrule width.5pt height10pt depth0pt\relax}
+
+\benum
+    \item $R$ is Notherian because every ideal is finitely generated (alternatively the union of any ascending chain of ideals is an ideal, principal because $R$ is a PID, and its generator
+    must lie in one of the ideals and thus it stabilizes at that ideal).
+
+    \item For $n=1$, if $M\leq R$ then $M$ is an ideal, thus of the form $M=(a)$ for $a\in R$ since it is a PID.
+    If $a\neq0$ then $\set a$ forms a basis for $M$ and thus it is of rank $1$, otherwise $M=0$ and it is free of rank zero.
+
+    Inductively, let $M'=M\cap(0\times R^{n-1})$ so that $M'\leq R^{n-1}$ and thus is free of rank $\leq n-1$.
+    Let $\pi_1\colon R^n\to R$ project onto the first coordinate, then this is a morphism of $R$-modules and thus $\pi_1(M)\leq R$ is a submodule.
+    By our base case, $\pi_1(M)=(f)$ for some $f\in R$.
+
+    Now let $m\in M$ such that $\pi_1(m)=f$.
+    Let $B'$ be a basis for $M'$ of cardinality $\leq n-1$, and define $B$ to be $B'$ if $f=0$ and $B'\cup\set m$ otherwise.
+    We claim that $B$ is a basis for $M$.
+    It is linearly independent since if $\sum_ia_im'_i+am=0$ for $a_i,a\in R$ and $m'_i\in B'$, then projecting onto the first coordinate gives
+    $$ 0 = \pi_1\parens{\sum_ia_im'_i+am} = af $$
+    and so $a=0$ since $R$ is an integral domain.
+    By $B'$'s linear independence, $a_i=0$ for all $i$ as well, so $B$ is linearly independent (for $f=0$ it is linearly independent as it is equal to $B'$).
+    Now for $x\in M$, we have that $\pi_1(x)=af$ and thus $x-af\in B'$ so that $B$ spans $M$, so it is a basis.
+
+    Thus $M$ has a basis of cardinality $\leq n$, as desired.
+
+    \item Suppose that $M$ is generated by $n$ elements, let $B=(m_1,\dots,m_n)$ generate it.
+    Then $\pi\colon R^n\to M$ by $e_i\mapsto m_i$ is a surjective map of $R$-modules, and thus $R^n/\ker\pi\cong M$.
+    Since $\ker\pi\leq R^n$, by the above point it is free with rank $k\leq n$.
+    Let $(v_1,\dots,v_k)$ be a basis for $\ker\pi$ in $R^n$, then its span is just the column-span of the matrix
+    $$ C = \pmatrix{\vline & & \vline\cr v_1 & \cdots & v_k\cr \vline & & \vline} , $$
+    which is of size $n\times k$ as desired.
+
+    \item Note that $\colsp(D_1C)=D_1\colsp(C)$, since the columns of $D_1C$ are the columns of $C$ times $D_1$.
+    Define $\phi\colon R^n\to R^n/\colsp(D_1C)$ by $v\mapsto D_1v+\colsp(D_1C)$.
+    Since $D_1$ is invertible, this is surjective, and $D_1v\in\colsp(D_1C)=D_1\colsp(C)$ iff $v\in\colsp(C)$ because $D_1$ is invertible.
+    Thus its kernel is $\colsp(C)$ so that it forms an isomorphism $M\cong R^n/\colsp(C)\cong R^n/\colsp(D_1C)$.
+
+    And notice that $\colsp(CD_2)=C\colsp(D_2)=C\cdot R^k=\colsp(C)$, since invertible matrices have full column span.
+
+    Since elementary row/column matrices are invertible, we see that we can apply row/column operations to $C$ without changing $M$.
+
+    \item Since $R$ is a PID, $(c_{1,1},c_{1,2})=(d)$ for some $d\in R$ since its an ideal.
+    Then $d=sc_{1,1}+tc_{1,2}$ since $d\in(c_{1,1},c_{1,2})$, and since $c_{1,1},c_{1,2}\in(d)$ we have $c_{1,1}=xd$ and $c_{1,2}=yd$.
+
+    Matrices are invertible iff their determinant is a unit (via the adjugate matrix).
+    $D$'s determinant is $sx+ty$.
+    We know that
+    $$ d = sc_{1,1} + tc_{1,2} = sxd + tyd \implies sx + ty = 1 $$
+    because this is an integral domain.
+    So $D$ is indeed invertible (its inverse is $(x,y;\;-t,s)\oplus I_{k-2}$).
+
+    And
+    $$ c'_{1,1} = \sum_{i=1}^k c_{1,i}d_{i,1} = c_{1,1}d_{1,1} + c_{1,2}d_{2,1} = sc_{1,1} + tc_{1,2} = d , $$
+    and
+    $$ c'_{1,2} = \sum_{i=1}^k c_{1,i}d_{i,2} = -yc_{1,1} + xc_{1,2} , $$
+    which is divisible by $d$.
+
+    \item If $c_{1,1}\nmid c_{1,j}$ then via an elementary column operation $C_2\oto C_j$, we repeat the previous step, and then swap $C_2$ and $C_j$ back.
+    In each step we have that $(c_{1,1})\subseteq(c'_{1,1})$ because $c'_{1,1}$ is the generator of the ideal $(c_{1,1},c_{1,j})$ which contains $(c_{1,1})$.
+    Since $R$ is Notherian, this ascending chain of ideals must stabilize, so this process terminates.
+
+    At each step we have $c_{1,j}\in(c'_{1,1})$ so that at the end of the process, we have $c_{1,j}\in(c'_{1,1})$ for all $j$ meaning that at the end $c_{1,1}$ divides
+    every element in its row.
+    If we do the same thing to its column, we get that $c_{1,1}$ divides every element in its column.
+    Since we just shrunk $c_{1,1}$ (relative to the divisibility preorder), $c_{1,1}$ still divides its row.
+
+    \item We can then perform elementary row and column operations to make all elements in the first row and column other than $c_{1,1}$ zero.
+    Explicitly, for $c_{1,j}$ say, since $c_{1,1}$ divides it, there is an $a\in R$ such that $c_{1,j}=ac_{1,1}$.
+    Then the elementary column operation $C_j\leftarrow C_j-aC_1$ makes $c_{1,j}$ zero.
+
+    \item We can repeat this process on the submatrix of $C$ starting at $c_{2,2}$, and then at $c_{3,3}$, and so on.
+    In the end we end up with a matrix of the form
+    $$ C = \pmatrix{c_{1,1}\cr & c_{2,2} \cr && \ddots} . $$
+    Now we add the second row to the first (an elementary row operation), and let $d=(c_{1,1},c_{2,2})$ so there are $s,t,x,y\in R$ such that $d=sc_{1,1}+tc_{2,2}$ and $c_{1,1}=xd$ and $c_{2,2}=yd$ as before.
+    Then the same matrix $D$ from the fifth point is invertible and transforms $C$ only in the top left submatrix to
+    $$ \pmatrix{s&-y\cr t&x}\pmatrix{c_{1,1}&c_{2,2}\cr&c_{2,2}} = \pmatrix{d&-yc_{1,1}+xc_{2,2}\cr tc_{2,2}&xc_{2,2}} , $$
+    all of its components are all divisible by $d$ so after row and column operations we get a matrix where $c_{1,1}=d$ and $c_{2,2}$ is divisible by $c_{1,1}$.
+
+    We repeat this until $c_{1,1}$ divides all $c_{i,i}$, which must terminate as $(c_{1,1})\subseteq(c'_{1,1})$.
+    Now we do this same process for $c_{2,2}$ and $c_{i,i}$ for $i>2$ 
+    Since $c_{1,1}$ divides $c_{2,2}$ and $c_{i,i}$ the resulting $c_{2,2}$ and $c_{i,i}$ will still be divisible by $c_{1,1}$ (since $(c_{2,2},c_{i,i})\subseteq(c_{1,1})$).
+    We repeat this for the entire diagonal, going downward, giving us the desired result.
+
+    \item So we have that $M\cong R^n/\colsp(C)$ where $C$ is diagonal (not square) with $c_1\mid c_2\mid\cdots$.
+    Then we have that
+    $$ \colsp(C) = \colsp\pmatrix{c_1\cr &c_2\cr&&\ddots} = \lspan\set{c_ie_i}[1\leq i\leq\ell] , $$
+    where $e_i\in R^n$ are the standard basis vectors, and $c_i$ are nonzero diagonal elements.
+    Define $\phi\colon R^n\to R^{n-\ell}\oplus\bigoplus_{i=1}^\ell R/(c_i)$ by
+    \benum
+        \item for $1\leq i\leq\ell$, map $e_i\in R^n$ to $1+(c_i)\in R/(c_i)$,
+        \item for $\ell<j\leq n$, map $e_j\in R^n$ to $e_{j-\ell}\in R^{n-\ell}$.
+    \eenum
+
+    This is surjective, since for $(v_1,\dots,v_{n-\ell})\in\bR^{n-\ell}$ and $f_i+(c_i)\in R/(c_i)$, $\phi$ maps $\sum_{i=1}^\ell f_ie_i+\sum_{j=\ell+1}^n v_{j-\ell}e_j$ to this.
+    Now, $(\bar v,\bar f+(\bar c))$ is in $\phi$'s kernel iff $\bar v=0$ and $f_i\in(c_i)$.
+    Thus
+    $$ \ker\phi = \set{\sum_{i=1}^\ell f_ie_i}[f_i\in(c_i)] = \lspan\set{c_ie_i}[1\leq i\leq\ell] = \colsp(C) . $$
+    So $\phi$ induces an isomorphism
+    $$ M \cong R^n/\colsp(C) \cong R^{n-\ell}\oplus\bigoplus_{i=1}^\ell R/(c_i) , $$
+    and $c_1\mid c_2\mid\cdots$ as desired.
+\eenum
+
+\def\tor{{\rm tor}}
+
+\bprob
+
+    Assume $R$ is a domain and let $M$ be a fg $R$-module.
+    \benum
+        \item In class we showed that if $M$ is free, it is torsion-free.
+        \benum
+            \item Show that if $R$ is a PID and $M$ is torsion-free, it is free.
+            \item Find an example where $R$ is not a PID and $M$ is torsion-free but not free.
+        \eenum
+        \item Let $M_\tor$ be the subset of torsion elements of $M$.
+        Show that:
+        \benum
+            \item $M_\tor$ is a submodule of $M$,
+            \item $M/M_\tor$ is torsion-free,
+            \item For $S=R-0$, let $\iota\colon M\to S^{-1}M$ be the structure morphism, then $\ker\iota=M_\tor$.
+        \eenum
+    \eenum
+
+\eprob
+
+\benum
+    \item
+    \benum
+        \item We construct a maximal linearly independent set $B$ inductively.
+        Start with some $0\neq b_1\in M$, and assuming we have $b_1,\dots,b_n$ if there exists a $b_{n+1}\in M$ such that $b_1,\dots,b_{n+1}$ is linearly independent, add it to $B$.
+        Since $b_1,\dots,b_{n+1}$ is linearly independent, the submodule generated by $b_1,\dots,b_n$ is strictly contained in that generated by $b_1,\dots,b_{n+1}$.
+        Since $R$ is a PID and $M$ is fg, $M$ is Noetherian, so this procedure must terminate.
+        Thus we have a finite maximal linearly independent set $B=\set{b_1,\dots,b_k}$.
+
+        Consider a generating set $m_1,\dots,m_n\in M$.
+        For each $i$, $B\cup\set{m_i}$ is dependent so $a_im_i\in\lspan(B)$ for some $0\neq a_i\in R$.
+        If we let $a=a_1\cdots a_n$ then $am_i\in\lspan(B)$ for all $i$, and thus $aM\subseteq\lspan(B)$.
+        Since $R$ is a domain and $a_i\neq0$, $a$ is nonzero as well.
+
+        Since $B$ is finite and free, by the previous question submodules of a submodule over a PID are free, so $aM$ is free.
+        Multiplication by $a$, $M\to aM$, is an isomorphism since $a\neq0$ and $M$ is torsion-free so $am\neq0$ for $m\neq0$, and this is clearly surjective.
+        Thus $M\cong aM$ which is free, so $M$ is free.
+
+        \item Let $R$ be a domain, and $I\leq R$ an ideal.
+        Then $I$ is free iff it is principal.
+        Clearly if $I=(a)=Ra$ then multiplication by $a$ gives an isomorphism of modules $R\to I$, so that $I$ is free.
+        If $I$ is free, then let $B$ be a basis.
+        If it has two elements $f\neq g\in B$ then $fg-gf=0$ which contradicts linear independence.
+        Thus $B$ is a singleton $\set a$, and thus $I=Ra=(a)$ is principal.
+
+        Since $R$ is a domain, $I\leq R$ is always torsion-free.
+
+        So for example take $R=\bC[x,y]$ and the maximal ideal $I=(x,y)$.
+        $I$ is not principal, since if $(x,y)=(f)$ then $x,y$ both divide $f$ and thus $f=xyg$ for some polynomial $g$ (by primality of $x,y$ and $x$ not dividing $y$).
+        But then $x,y\notin(f)$ a contradiction.
+        So we see that $I$ is torsion-free ($R$ is a domain), but not free.
+    \eenum
+
+    \item
+    \benum
+        \item Clearly $0\in M_\tor$ since it is torsion.
+        If $m\in M_\tor$ is torsion, say $am=0$, and $b\in R$, then $a(bm)=b(am)=0$ so that $bm\in M_\tor$.
+        And if $m,n\in M_\tor$ are torsion, so say $am=bn=0$, then $ab(m+n)=0$ and $ab\neq0$ since $R$ is a domain so that $m+n\in M_\tor$.
+        Thus $M_\tor$ is a submodule.
+
+        \item If $\bar m\in M/M_\tor$ is torsion, then for some $0\neq a\in R$, $am\in M_\tor$.
+        Then there exists a $0\neq b\in R$ such that $bam=0$, and since $ba\neq0$ as $R$ is a domain, $m\in M_\tor$ so that $\bar m=0$.
+        Thus $M/M_\tor$ is torsion-free.
+
+        \item We have that $m\in\ker\iota$ iff $m/1=0$ iff there is an $a\in S$ such that $am=0$.
+        This just means that there is a $0\neq a\in R$ such that $am=0$, equivalently $m$ is torsion.
+        So $\ker\iota=M_\tor$ as desired.
+    \eenum
+\eenum
+
+%\bprob
+%
+%    Let $K$ be a field, and $A,B\in M_n(K)$.
+%    $A$ and $B$ are {\emphcolor similar} over $K$, denoted $A\sim_KB$, if $A=gBg^{-1}$ for $g\in\gl_n(K)$.
+%    \benum
+%        \item The matrix $A-xI\in M_n(K[x])$ is defined over a PID and thus has a Smith normal form.
+%        $A$'s {\emphcolor invariant factors} are the diagonal elements of $A-xI$'s Smith normal form (counting multiplicity, and up to multiplication
+%        by units).
+%        Show that $A\sim_KB$ iff $A$ and $B$ have the same invariant factors.
+%
+%        \item Deduce that if $L/K$ is a field extension, then $A\sim_LB$ iff $A\sim_KB$.
+%    \eenum
+%
+%\eprob
+%
+%\benum
+%    \item If $A\sim_KB$ then $A=gBg^{-1}$ and thus
+%    $$ A - xI = g(B-xI)g^{-1}, $$
+%    so that $A-xI$ and $B-xI$ have the same Smith normal form (as it is obtained from row and column operations).
+%
+%    Conversely, since $K[x]$ is the free $K$-algebra there is a unique $K$-algebra map $K[x]\to\endo_K(K^n)$ which maps $x$ to multiplication
+%    by $A$.
+%    That is, there is a unique structure of $K^n$ as a $K[x]$-module (which preserves the $K$-module structure).
+%    Let us denote thuis by $K^n_A$; we similarly obtain $K^n_B$.
+%
+%    Note that $K^n_A\cong K^n_B$ as $K[x]$-modules iff $A\sim_KB$.
+%    This is because an isomorphism $g\colo K^n_A\to K^n_B$ is an invertible matrix which satisfies $g\circ x=x\circ g$, i.e.\ $gA=Bg$.
+%    Furthermore, we claim that $K^n_A\cong K[x]^n/\colsp(xI-A)$.
+%
+%    Indeed, let us define $\phi\colon K[x]^n\to K^n_A$ by mapping $K[x]^n$'s basis to $K^n_A$'s basis over $K$ (both denoted $e_1,\dots,e_n$,
+%    as they are the vectors consisting of all zeroes except $1$ at the $i$th index).
+%    Since $K[x]^n$ is the free $K[x]$-module over this basis, this is well-defined.
+%    We see this extends by linearity to mapping $xe_i\mapsto Ae_i$ and in general $f(x)e_i\mapsto f(A)e_i$.
+%    And so for a general vector $\bar f=(f_1,\dots,f_n)\in K[x]^n$,
+%    $$ \phi\colon\bar f \mapsto \sum_i f_i(A)e_i . $$
+%
+%    Notice that for a matrix $M$ over $K$, $\phi(M\bar f)=M\phi(\bar f)$ since
+%    $$ \phi(M\bar f) = \phi{\sum_i R_i(M)f_ie_i} = \sum_i R_i(M)f_i(A)e_i = M\sum_if_i(A)e_i = M\phi(\bar f) . $$
+%    Thus $\phi(A\bar f)=\phi(x\bar f)$, so that the columnspace of $xI-A$ (all vectors of the form $(xI-A)\bar f$) is contained in $\phi$'s
+%    kernel.
+%    We claim that this is an equality, and so
+%    $$ K^n_A \cong \frac{K[x]^n}{\ker\phi} = \frac{K[x]^n}{\colsp(xI-A)} . $$
+%
+%    We know that $K[x]^n/\colsp(xI-A)$ is isomorphic to $K[x]^n/\colsp(S)$ where $S$ is the Smith normal form of $xI-A$.
+%    This is equal to $xI-B$'s Smith normal form, so we have
+%    $$ K^n_A \cong \frac{K[x]^n}{\colsp(xI-A)} \cong \frac{K[x]^n}{\colsp(S)} \cong \frac{K[x]^n}{\colsp(xI-B)} \cong K^n_B . $$
+%    Thus $K^n_A\cong K^n_B$, and so as we explained this means $A\sim_KB$.
+%
+%    \item If $A\sim_KB$ then clearly $A\sim_LB$, since $\gl_n(K)\subseteq\gl_n(L)$.
+%    And if $A\sim_LB$ then $xI-A$ and $xI-B$'s Smith normal form over $K[x]$ yields a Smith normal form over $L[x]$, and thus they must be equal.
+%    So by the previous point $A\sim_KB$.
+%\eenum
+%
+%\bprob
+%
+%    Suppose $X=\spec(R)$ is irreducible, so that $\eta=\nil(R)$ is prime.
+%    This is called the {\emphcolor generic point} of $X$.
+%    A property of points of $X$ is called {\emphcolor generic} if it is true in a dense subset; in good cases a property holds for $\eta$ iff
+%    it is generic (thus the name).
+%    \benum
+%        \item Assume $R$ is reduced.
+%        Show that $R_\eta=\frac(R)$, and let $\iota\colon R\to R_\eta$ be the structure morphism.
+%        Show that $f=g$ iff $\iota(f)=\iota(g)$.
+%
+%        \item Find an example where the above point fails (the second part; $\iota(f)=\iota(g)$ but $f\neq g$) when $R$ is not reduced.
+%
+%        \item If $K$ is a field and $f\in K[x,y]$, $\spec(K[x,y]/(f))$ is {\emphcolor singular} if there exist some $a,b\in K$ such that
+%        $$ f(a,b) = \pdvof fx(a,b) = \pdvof fy(a,b) = 0 . $$
+%        Let $f\in\bC[x,y]$ be nonconstant and irreducible.
+%        A {\emphcolor level curve} of $f$ is $\spec(\bC[x,y]/(f-a))$ for some $a\in\bC$.
+%        We want to show level curves are generically nonsingular.
+%        \benum
+%            \item Given $\p\in\spec(\bC[t])$, we say $f$ is {\emphcolor singular at level $\p$} if $k(\p)[x,y]/(f-t)$ is singular.
+%            Show that $f$ is nonsingular at level $\eta$, where $\eta$ is the generic point of $\spec(\bC[t])$.
+%
+%            \item Use the above to find a dense open subset $U\subseteq\spec(\bC[t])$ such that for every $\p\in U$, $f$ is nonsingular
+%            at level $\p$.
+%        \eenum
+%    \eenum
+%
+%\eprob
+%
+%\benum
+%    \item Since $R$ is reduced, $\eta=\nil(R)=0$.
+%    This being prime (since $X$ is irreducible) means that $R$ is an integral domain, and $R_\eta=\frac(R)$ (since $\frac(R)$ is localization
+%    at $R-0$).
+%    $\iota$ is injective since $f/1=g/1$ iff $f=g$ (since this is an integral domain), so we have the desired result.
+%
+%    \item 
+%\eenum
+%
+
+\bye
+

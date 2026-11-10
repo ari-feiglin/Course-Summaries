@@ -1,0 +1,656 @@
+\input pdfToolbox
+\input pdfmsym
+\pdfmsymsetscalefactor{10}
+\input ../preamble
+\def\enumindent{0cm}
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+\setcounter{section}{6}
+
+\centerline{\setfontandscale{bf}{20pt}Commutative Algebra \& Algebraic Geometry}
+\medskip
+\centerline{\bf Exercise \the\counter{section}}
+\smallskip
+\centerline{\it Ari Feiglin}
+
+\bprob
+
+    Fix a morphism of rings $R\to A$.
+    \benum
+        \item Assume that $A$ is a flat $R$-module, and let $M$ be a flat $A$-module.
+        Show that $M$ is flat as an $R$-module.
+        \item Let $M$ be a flat $R$-module, show that $A\otimes_RM$ is a flat $A$-module.
+        \item Let $S$ be a multiplicative subset of $R$, and let $R$ be a flat $R$-module.
+        Show that $S^{-1}M$ is a flat $S^{-1}R$-module.
+        \item We say a morphism of affine schemes is {\emphcolor flat} if the corresponding morphism of rings is flat.
+        Show that $\spec(A)\to\spec(R)$ is flat iff there exists an open cover $\set{\spec(R)_{f_i}}_{i\in I}$ of $\spec(R)$ such that
+        the corresponding maps $\spec(A)\times_{\spec(R)}\spec(R)_{f_i}\to\spec(R)_{f_i}$ are all flat.
+        \item Suppose $0\to M\to N\to K\to0$ is a SES of $R$-modules.
+        Show that if $M,K$ are flat then $N$ is flat.
+        Further show that the converse need not be true.
+    \eenum
+
+\eprob
+
+In this problem we use repeatedly the associativity of the tensor product.
+That is, if $R,S$ are rings and $M\in\Mod_R,N\in\Mod_{R,S},K\in\Mod_S$, then
+$$ (M\otimes_RN)\otimes_SK \cong M\otimes_R(N\otimes_SK) $$
+naturally as $S$-modules.
+Indeed, if $L$ is any $S$-module by the tensor-hom adjunction,
+$$ \hom((M\otimes_RN)\otimes_SK,L) \cong \hom(M\otimes_RN,\hom(K,L)) \cong \hom(M,\hom(N,\hom(K,L))) . $$
+Similarly,
+$$ \hom(M\otimes_R(N\otimes_SK),L) \cong \hom(M,\hom(N\otimes_SK,L)) \cong \hom(M,\hom(N,\hom(K,L))) , $$
+all naturally.
+So
+$$ \hom((M\otimes_RN)\otimes_SK,\bul) \cong \hom(M\otimes_R(N\otimes_SK),\bul) $$
+naturally, and since the Yoneda embedding is free and faithful, and thus reflects isomorphisms, $(M\otimes_RN)\otimes_SK\cong M\otimes_R(N\otimes_SK)$.
+
+\benum
+    \item We want to show that $\bul\otimes_RM|_R$ is exact (where $\bul|_R$ denotes restriction of an $A$-module to an $R$-module).
+    For any $R$-module $N$, we have (we omit explicitly writing $\bul|_R$)
+    $$ N \otimes_R M \cong N \otimes_R (A\otimes_AM) \cong (N\otimes_RA) \otimes_A M $$
+    naturally.
+    That is $\bul\otimes_RM\cong(\bul\otimes_RA)\otimes_AM$.
+    Since $A$ is a flat $R$-module, $\bul\otimes_RA$ is exact, and $M$ is a flat $A$-module so tensoring with it over $A$ is exact.
+    Thus $\bul\otimes_RM$ is naturally isomorphic to the composition of exact functors, and is thus exact, so $M$ is flat.
+
+    \item Let $N$ be an $A$-module, then
+    $$ N \otimes_A (A\otimes_RM) \cong (N\otimes_AA) \otimes_R M \cong N \otimes_R M . $$
+    Thus $\bul\otimes_A(A\otimes_RM)\cong\bul\otimes_RM$ which is exact, so $A\otimes_RM$ is flat.
+
+    \item We know $S^{-1}M\cong(S^{-1}R)\otimes_RM$, so this follows from the previous point.
+
+    \item If $\spec(A)\to\spec(R)$ is flat, then consider the open covering of $\spec(R)$ by the basic open set $\spec(R)=\spec(R)_1$.
+    Then
+    $$ \spec(A) \times_{\spec(R)} \spec(R) \cong \spec(A) , $$
+    and the map from the fiber product to $\spec(R)$ just corresponds to the map $\spec(A)\to\spec(R)$, which is flat by assumption.
+
+    Conversely, we have flat maps $R_{f_i}\to R_{f_i}\otimes_RA\cong A_{f_i}$ for an open cover.
+    Since the $\spec(R)_{f_i}$ form an open cover, for every $\p\in\spec(R)$ there is an $f_i$ such that $\p\in\spec(R)_{f_i}$, meaning $f_i\notin\p$.
+    In particular this means that $\p$ does not intersect the localizing set $\set{f_i^k}_{k\geq0}$ and so $\p R_{f_i}$ is a prime ideal.
+    Since $A_{f_i}$ is a flat $R_{f_i}$-module, this means that $(A_{f_i})_{\p R_{f_i}}$ is a flat $(R_{f_i})_{\p R_{f_i}}$-module.
+
+    In general we know that if $S,T\subseteq R$ are multiplicative and $\bar T\subseteq S^{-1}R$ is the image of $T$ in $S^{-1}R$ (which remains multiplicatively closed),
+    then $\bar T^{-1}S^{-1}R\cong (S\cup T)^{-1}R$ naturally.
+    This can be shown by appealing to the universal property of localization.
+    Consider the canonical $\iota_0\colon R\to(S\cup T)^{-1}R$ which maps $S\cup T$ to units.
+    In particular it maps $S$ to units and thus factors through $R\to S^{-1}R$, and since it maps $T$ to units it must map $\bar T$ to units, and thus it factors through
+    $S^{-1}R\to\bar T^{-1}S^{-1}R$.
+    So we have a unique map $\bar T^{-1}S^{-1}R\to(S\cup T)^{-1}R$, and similarly we have a unique map in the opposite direction (unique in the property of factorizing through
+    the relevant maps).
+    By uniqueness, their compositions must be the identities.
+    A similar result (proven the same way) holds for modules.
+
+    Since $\set{f_i^k}_k$ is contained in $R-\p$, we then see that $(A_{f_i})_{\p R_{f_i}}\cong((R-\p)\cup\set{f_i}^k)^{-1}A=A_\p$.
+    So $A_\p$ is a flat $R_\p$ module for every prime $\p$.
+    Thus by the locality of flatness, $A$ is a flat $R$-module as desired.
+
+    \item Let $L$ be an arbitrary $R$-module, then the $\tor$ functor gives us an exact sequence
+    $$ \tor^R_1(M,L) \to \tor^R_1(N,L) \to \tor^R_1(K,L) . $$
+    Since $M,K$ are flat we know $\tor^R_1(M,L)=\tor^R_1(K,L)=0$, and so by exactness $\tor^R_1(N,L)=0$.
+    This means that $N$ is flat, as desired.
+
+    Now consider the flat $\bZ$-module, $\bZ$ (it is free and thus flat).
+    We have an SES
+    $$ 0 \to (2) \to \bZ \to \bZ/2 \to 0 . $$
+    Here both $(2)$ and $\bZ$ are free, and thus flat, but $\bZ/2$ is not flat.
+    This is because multiplication by $2$ in $\bZ$ is injective $\bZ\to\bZ$, but tensoring with $\bZ/2$ gives the map $\bZ/2\to\bZ/2$ which maps $x\mapsto 2x=0$ and is
+    thus not injective.
+    So tensoring with $\bZ/2$ doesn't preserve injections, and thus it is not flat.
+    So $N$ being flat is not enough to deduce that $K$ is.
+
+    And now consider $R=\bC[x,y]$, which is a flat $R$-module, and $I=(x,y)\leq R$.
+    So we have an SES
+    $$ 0 \to I \to R \to R/I \to 0 . $$
+    But we claim that $I$ is not a flat $R$-module.
+    Consider the ideal $J=(y)\leq R$ and the injection $R/J\to R/J$ given by multiplication by $x$.
+    This is an injection because $x\cdot f(x,y)\in J$ iff $f(x,y)\in J$ since $J$ is prime.
+
+    Now recall that $R/J\otimes_RI\cong I/(IJ)$ by $(r+J)\otimes a\mapsto ra+IJ$.
+    Under this identification, multiplication by $x$ is tensored to give a map $I/(IJ)\to I/(IJ)$ given by $f+IJ\mapsto xf+IJ$.
+    But this is not injective: $IJ=(x,y)(x)=(x^2,xy)$ and so $y\notin IJ$ is mapped to $xy\in IJ$.
+    So tensoring with $I$ does not preserve injections, and thus $I$ is not flat.
+\eenum
+
+\bprob
+
+    Let $M$ be an $R$-module.
+    We will show that $M$ is flat iff for all $a\in R^m$ and $x\in M^m$ ($m\geq0$) such that $a^\top x=0$, there exists some $n\geq0$, a matrix $B\in\mat_{m\times n}(R)$,
+    and a vector $y\in M^n$ such that
+    $$ a^\top B = 0,\qquad By=x . $$
+    \benum
+        \item Assume $M$ is flat, and let $a\in R^m,x\in M^m$ be such that $a^\top x=0$.
+        \benum
+            \item Consider the sequence $0\to K\to R^m\to R$, where $R^m\to R$ is given by $b\mapsto a^\top b$, and $K$ is the kernel of that map.
+            Show that $K\otimes_RM\to M^m\to M$ is exact, where the map $M^m\to M$ is given by $t\mapsto a^\top t$.
+            \item Conclude that $x=\sum_{j=1}^n\beta_jy_j$ for some $n\geq0$, and $\sum_{j=1}^n\beta_j\otimes y_j\in K\otimes_RM$.
+            Let $B_{ij}=(\beta_j)_i$, and show that $B$ and $y$ satisfy the conclusion of the claim.
+        \eenum
+        \item In the other direction, let $I\leq R$ be an ideal and show that $I\otimes_RM\to IM$ is an isomorphism and conclude the result.
+    \eenum
+
+\eprob
+
+\benum
+    \item Let us denote by $\phi\colon R^m\to R$ the map given: $\phi(b)=a^\top b$.
+    So we have an exact sequence
+    $$ 0 \to K \to R^m \xtos\phi R . $$
+    Since $M$ is flat, tensoring preserves exact sequences and thus the following is exact
+    $$ 0 \to K\otimes_RM \to R^m\otimes_RM \xtos{\phi\otimes M} R\otimes_RM . $$
+    We know $R^m\otimes_RM\cong M^m$ via $(b_i)\otimes m\mapsto(b_im)$, and $R\otimes_RM\cong M$ via $b\otimes m\mapsto bm$.
+    Thus this induces an exact sequence
+    $$ 0 \to K\otimes_RM \xtos\psi M^m \xtos{\phi'} M , $$
+    where the first map is $(k_i)\otimes m\mapsto(k_im)$, and the second is given by the composition
+    $$ M^m \cong R^m\otimes_RM \xtos{\phi\otimes M} R\otimes_RM \cong M . $$
+    Let $e_i\in R^m$ be the standard basis vectors, so this is given by mapping a vector $(m_i)\in M^m$ through
+    $$ (m_i) = \sum_i e_im_i \mapsto \sum_i (e_i\otimes m_i) \xmapsto{\phi\otimes M} \sum_i (a^\top e_i)\otimes m_i \mapsto \sum_i(a^\top e_i)m_i . $$
+    Since $a^\top e_i=a_i$ this is just the map
+    $$ (m_i) \mapsto \sum_i a_im_i = a^\top m, $$
+    as desired.
+
+    Since the sequence is exact, we have that $\im\psi=\ker\phi'$.
+    And by assumption $a^\top x=0$ so $x\in\im\psi$ so there are $\beta_j\otimes y_j\in K\otimes_RM$, for $j=1,\dots,n$ for some $n$, such that
+    $$ \psi'\parens{\sum_j \beta_j\otimes y_j} = \sum_j\beta_jy_j = x . $$
+    Now $\beta_j\in K\subseteq R^m$ so define $B\in\mat_{n\times m}(R)$ by $B_{ij}=(\beta_j)_i$.
+    Then
+    $$ By = \sum_j \col_j(B)y_j = \sum_j\beta_jy_j = x . $$
+    And since for any $z\in M^n$ we have that $Bz\in\im\psi$ (since $\beta_j\in K$), and thus $a^\top Bz=0$.
+    This implies that $a^\top B=0$ (take $z=e_i$, this shows that the $i$th column of $a^\top B$ is zero), as desired.
+
+    \item The map $I\otimes_RM\to IM$ is always a surjection, so we need only show it is an injection.
+    Suppose that $\sum_{i=1}^ma_i\otimes m_i\in I\otimes_RM$ is in the kernel, so $\sum_ia_im_i=0$.
+    Letting $a=(a_i)\in R^m$ and $x=(m_i)\in M^m$ by assumption there is a matrix $B\in\mat_{m\times n}(R)$ and a vector $y\in R^n$ such that $a^\top B=0$ and $By=x$.
+
+    Now let us define the following: for $a\in R^m$ and $x\in M^m$, define
+    $$ a^\top \otimes x = \sum_{i=1}^m a_i\otimes x_i . $$
+    Now we claim that for any $A\in\mat_{m\times n}(R)$ and $y\in M^n$,
+    $$ a^\top \otimes(Ay) = (A^\top a)\otimes y = (a^\top A)^\top\otimes y. $$
+    Indeed,
+    $$ a^\top \otimes(Ay) = \sum_{i=1}^m a_i\otimes(Ay)_i = \sum_{i=1}^m a_i\otimes\sum_{j=1}^n A_{ij}y_j = \sum_{i,j} A_{ij}a_i\otimes y_j . $$
+    and
+    $$ (A^\top a)\otimes y = \sum_{j=1}^n(A^\top a)_j\otimes y_j = \sum_{j,i} A^\top_{ji}a_i\otimes y_j = \sum_{j,i}A_{ij}a_i\otimes y_j , $$
+    as desired.
+
+    Now in our case, we have
+    $$ \sum_{i=1}^m a_i\otimes m_i = a^\top \otimes x = a^\top \otimes (By) = (a^\top B)^\top\otimes y = 0\otimes y = 0 , $$
+    as desired.
+    So the map is indeed an injection, and thus $M$ is flat.
+\eenum
+
+\bprob
+
+    Fix a ring $R$ and a fg $R$-module $M$.
+    \benum
+        \item Assume $R$ is a field, show that $M$ is flat.
+        \item Assume $R$ is a local ring with maximal ideal $\m$.
+        Show that $M$ is flat iff it is free.
+        \item Assume $R$ is a PID, show that $M$ is flat iff it is torsion-free.
+    \eenum
+
+\eprob
+
+\benum
+    \item If $R$ is a field, all modules over it are free (linear algebra) and thus flat.
+
+    \item If $M$ is free it is flat, so assume that $M$ is flat and we will show it is free.
+
+    Nakayama's lemma says that $x_1,\dots,x_n\in M$ generate it iff their projections generate $M/\m M$ as an $R/\m$-module.
+    So choose a basis for $M/\m M$ (since $R/\m$ is a field), and let $x_1,\dots,x_n\in M$ be their preimages.
+    So by Nakayama, $x_1,\dots,x_n\in M$ generate $M$ and their projections form a basis.
+
+    We claim that $x_1,\dots,x_n$ are linearly independent.
+    Suppose not, so there is an $a\in R^n$ such that $a^\top x=0$.
+    By the equational criterion proven above, there is a $B\in\mat_{m\times n}(R)$ and $y\in M^m$ such that $By=x$ and $a^\top B=0$.
+
+    We induct on $n$ to show that if $a^\top x=0$ for a vector $x=(x_1,\dots,x_n)$ which are linearly independent in $M/\m M$, then $a=0$.
+    For $n=1$, if $x_1$ is a basis for $M/\m M$ then $x_1\notin\m M$ and if $By=x_1$ then $y=(y_1,\dots,y_m)$ and $B=(b_1,\dots,b_n)^\top$ so
+    $x_1=\sum_ib_iy_i$ and $ab_i=0$ for all $i$.
+    Now $x_1\notin\m M$ and thus we must have that there is a $b_i$ which is not in $\m$.
+    Since $R$ is local, this means $b_i$ is a unit, and thus $a=0$.
+
+    Now for $n>1$ we have $\sum_ia_ix_i=0$.
+    Let $\bar x$ denote the projection of $x\in M$ to $M/\m M$ and $\bar a$ project $R$ to $R/\m$.
+    So we have
+    $$ \sum_i\bar a_i\bar x_i = 0 \implies \bar a_i = 0 \hbox{ for all $i$}. $$
+    Meaning $a_i\in\m$ for all $i$.
+    And we have
+    $$ x_i = \sum_j b_{ij}y_j,\qquad \sum_i a_ib_{ij} = 0 \hbox{ for all $j$}. $$
+    Now since $x_n\notin\m M$, we see that we must have some $b_{nj}\notin\m$ and thus $b_{nj}$ is a unit for the same reason as before.
+    Thus for this $j$,
+    $$ \sum_i a_ib_{ij} = 0 \implies a_n = -\sum_{i<n}a_ib_{ij}/b_{nj} . $$
+    Now
+    $$ 0 = \sum_i a_ix_i = \sum_{i<n}a_ix_i - \sum_{i<n}a_i(b_{ij}/b_{nj})x_n = \sum_{i<n}a_i(x_i-(b_{ij}/b_{nj})x_n) . $$
+    Since the $x_i$ are linearly independent in $\m M$, $x_i-(b_{ij}/b_{nj})x_n$ are linearly independent for $i=1,\dots,n-1$.
+    By induction, we have $a_i=0$ for $i<n$.
+    Then we have $a_nx_n=0$ and by the base case, $a_n=0$ as well.
+
+    So $x_1,\dots,x_n$ are linearly independent over $M$ and thus form a bases and $M$ is free as desired.
+
+    \item If $M$ is flat then it is torsion-free.
+    Indeed, if $x\in M$ and $a\in R$ a non-zero divisor such that $ax=0$ then by the equational criterion there are $b_1,\dots,b_n\in R$ such that $ab_i=0$ for all
+    $i$ and $y_1,\dots,y_n\in M$ such that $\sum_ib_iy_i=x$.
+    Since $a$ is a non-zero divisor, $b_i=0$ for all $i$ and thus $x=0$.
+
+    Conversely if $M$ is torsion-free, then let $I=(a)$ be an ideal of $R$.
+    Then $IM=(a)M=aM=\set{am}[m\in M]$, and define $aM\to (a)\otimes_RM$ by $bm\mapsto b\otimes m$.
+    This is well-defined: if $bm=bn$ then $b(m-n)=0$ and since $M$ is torsion-free and $R$ is a domain, $m=n$.
+    And this is an inverse to $(a)\otimes_RM\to aM$, $ab\otimes m\mapsto abm$.
+    Indeed, the composition maps $ab\otimes m\mapsto abm\mapsto ab\otimes m$, and composition in the other direction maps $abm\mapsto ab\otimes m\mapsto abm$.
+    Thus $(a)\otimes_RM\to aM$ is an isomorphism for all ideals $I=(a)$, and thus $M$ is flat.
+
+    Note that these proofs work for modules which aren't finitely-generated.
+\eenum
+
+\bprob
+
+    For each ring $R$ and $R$-module $M$, determine if $M$ is flat.
+    \benum
+        \item $R=\bZ$ and $M=\bQ$,
+        \item $R=\bC[x,y]$ and $M=(x,y)$,
+        \item $R=\bC[x,y]/(y^2-x^3-x)$ and $M=(x,y)$.
+    \eenum
+
+\eprob
+
+\benum
+    \item $M$ is the localization of $\bZ$ at $\bZ-0$, and since $\bZ$ is a flat $\bZ$-module and localization preserves flatness, $M$ is flat.
+
+    \item This was the example I gave in the first question of a module which is not flat.
+
+    \item We first note that $f=y^2-x^3-x$ is irreducible.
+    If it factored, it would have to factor as $f=(y-g(x))(y+g(x))$, but that would imply $x^3+x$ is a square $g(x)^2$ which it is not.
+    Thus $R$ is an integral domain, and since $M\leq R$ is an ideal it is torsion-free.
+
+    Now consider all the prime ideals containing $f$, these are $\m=(x-a,y-b)$ such that $f(a,b)=0$ i.e.\ $b^2=a^3+a$.
+    Thus the maximal ideals of $R$ are quotients of these $\m$, which we identify with $\m$.
+    We will show that $M_\m$ is a flat $R_\m$-module, and then by locality $M$ is flat.
+
+    If $\m\neq(x,y)$ then either $x$ or $y$ is not in $\m$ and thus becomes a unit in $R_\m$, and then $M_\m=(x,y)_\m=R_\m$ is free and thus flat.
+    Otherwise $\m=(x,y)$, and then $1+x^2\notin\m$ so $1+x^2$ is a unit in $R_\m$.
+    Then $y^2=x(1+x^2)$ implies $x=(1+x^2)^{-1}y^2$, so $M_\m=(x,y)_\m=(y)_\m$ is a principal ideal in $R_\m$.
+    Since $R$ is an integral domain, localization remains an integral domain, and principal ideals in an integral domain are free.
+    Thus $M_\m$ is a free, and thus flat, $R_\m$-module.
+
+    So $M_\m$ is flat for all maximal $\m\leq R$, and thus $M$ is flat.
+\eenum
+
+\bprob
+
+    Let $R$ be a ring and $M$ a flat $R$-module.
+    $M$ is called {\emphcolor faithfully flat} if tensoring with it reflects exactness: $0\to N\to K\to L\to0$ is exact iff $0\to N\otimes M\to K\otimes M\to L\otimes M\to0$ is exact.
+    \benum
+        \item Show that the following are equivalent for a flat module $M$.
+        \benum
+            \item $M$ is faithfully flat,
+            \item $N\otimes M=0$ iff $N=0$ for all $R$-modules $N$,
+            \item For all $\p\in\spec(R)$, $k(p)\otimes M\neq0$,
+            \item For any maximal $\m\leq R$, $M/\m M\neq0$.
+        \eenum
+        \item Let $A$ be a flat $R$-algebra.
+        Show that the following are equivalent:
+        \benum
+            \item $A$ is faithfully-flat,
+            \item $\spec(A)\to\spec(R)$ is surjective,
+            \item All closed points of $\spec(R)$ are in the image of $\spec(A)\to\spec(R)$.
+        \eenum
+        \item Let $\phi\colon R\to A$ be a morphism of local rings, i.e.\ $R$ and $A$ are local with maximal ideals $\m,\f n$ and $\phi^{-1}\f n=\m$.
+        Assume $A$ is flat, show that it is faithfully-flat.
+    \eenum
+
+\eprob
+
+\benum
+    \item We show the equivalence of the first two points by a slight generalization: an additive exact functor $F$ is faithfully exact (i.e.\ reflects exactness) if $F(M)=0$ only when $M=0$.
+    If $F$ is faithfully flat and $F(M)=0$, then $F(0)=0\to F(M)\to 0=F(0)$ is exact, and thus by faithfullness $0\to M\to 0$ is exact and thus $M=0$.
+    Conversely if $F(M)=0$ implies $M=0$, then suppose $F(M)\xtos{Ff} F(N)\xtos{Fg} F(K)\to0$ is exact.
+    If $F(g\circ f)=0$ then since $F$ is exact it commutes with images (as they can be written as kernels of cokernels, and $F$ commutes with those), so $0=\im F(g\circ f)=F(\im g\circ f)$, and thus $\im g\circ f=0$ so $g\circ f=0$.
+    Thus $\im f\subseteq\ker g$.
+    Furthermore exact functors commute with quotients (for a similar reason as before), so
+    $$ F(\ker g/\im f) \cong \frac{F\ker g}{F\im f} \cong \frac{\ker Fg}{\im Ff} = 0 , $$
+    where the final equality is due to exactness of the sequence.
+    Thus $\ker g/\im f=0$ and thus $\im f=\ker g$, so $F$ reflects exactness.
+
+    Since $k(\p)\neq0$, if $M$ is faithfully flat then $k(\p)\otimes M\neq0$.
+    Conversely suppose that $k(\p)\otimes M\neq0$ for all prime $\p$, then if $N\otimes M=0$, we have
+    $$ 0 = R_\p \otimes N \otimes M \cong N_\p \otimes M \cong (N_\p \otimes_{k(\p)} k(\p)) \otimes M \cong N_\p \otimes_{k(\p)} (k(\p) \otimes M) . $$
+    But over a field $K$, $V\otimes_KU=0$ iff $V=0$ or $U=0$ (considering dimensions), so this implies $N_\p=0$.
+    This is true for all prime $\p$, and thus $N=0$.
+
+    Note the above argument works when replacing prime ideals with maximal ideals.
+    And $k(\m)\cong R/\m$, so $k(\p)\otimes M\cong M/\m M$.
+    Thus $M$ is faithfully flat iff $M/\m M\neq0$ for all maximal $\m$.
+
+    \item Let $\phi\colon R\to A$ be the algebra morphism.
+
+    If $A$ is faithfully flat, then let $\p\in\spec(R)$.
+    Then $k(\p)\otimes_RA\neq0$, so
+    $$ 0 \neq k(\p) \otimes_R A = \frac{R_\p}{\p R_\p} \otimes_R A \cong \frac R\p \otimes_R R_\p \otimes_R A \cong \frac R\p \otimes_R A_\p \cong \frac{A_\p}{\p A_\p} . $$
+    So $A_\p/\p A_\p$ is a nonzero $R$-algebra, so $\p A_\p\neq A_\p$.
+    Recall that $A_\p$ is isomorphic to the localization of $A$ by $\phi(R-\p)$, and $\p A_\p$ is equal to $\phi(\p)A_\p$.
+    Since $\p A_\p$ is a proper ideal of $A_\p$, it is contained in a prime ideal of $A_\p$.
+    Such an ideal is of the form $\q A_\p$ for $\q\in\spec(A)$ and $\q\cap\phi(R-\p)=\emptyset$.
+
+    Thus we have that $\phi^{-1}\q\leq\p$ since if $\phi(x)\in\q$ then $\phi(x)\notin\phi(R-\p)$ and so $x\in\p$.
+    But on the other hand, $\phi(\p)A_\p\leq\q A_\p$ so $\phi(\p)\leq\q$ and thus $\p\leq\phi^{-1}\q$.
+    Thus we have that $\p=\phi^*(\q)$ so $\phi^*$ is surjective.
+
+    And if $\spec(A)\to\spec(R)$ is surjective obviously its image contains all the closed points.
+
+    And if $\phi^*$'s image contains all the closed points, i.e.\ maximal ideals $\m\leq R$ then $A$ is faithfully flat.
+    Indeed, let $\m\in\spec(R)$ so $\m=\phi^{-1}\q$ for some $\q\in\spec(A)$.
+    Then $\m A=\phi^{-1}(\q)A$ is a subset of $\q$, since $\phi^{-1}(\q)A$ is the ideal generated by $\phi(\phi^{-1}\q)$ by definition, which is a subset of $(\q)=\q$.
+    Since $\q\neq A$, we have $\m A\neq A$ and thus $A/\m A\neq0$ for all maximal $\m\in\spec(R)$, so $A$ is faithfully flat.
+
+    \item If $\phi$ is a morphism of local rings then by definition $\phi^*$'s image contains all maximal ideals, i.e.\ closed points, and thus if $A$ is flat it is faithfully flat.
+\eenum
+
+\bprob
+
+    Fix a morphism of rings $\phi\colon B\to A$, and denote $X=\spec(A),Y=\spec(B)$.
+    \benum
+        \item Assume $\phi$ is flat, and let $I,J\leq B$.
+        Prove that $(I\cap J)A=IA\cap JA$.
+        \item Find a counterexample to the above point when $\phi$ is not flat.
+        \item Assume $\phi$ is flat.
+        Prove the {\emphcolor going-down property}: for any $\q_1,\q_2\in Y$ such that $\q_1\in\cl{\set{\q_2}}$, and $\p_1\in X$ such that $\phi^*(\p_1)=\q_1$,
+        then there exists some $\p_2\in X$ such that $\p_1\in\cl{\set{\p_2}}$ and $\phi^*(\p_2)=\q_2$.
+    \eenum
+
+\eprob
+
+\benum
+    \item By definition, we have
+    $$ (I\cap J)A = (\phi(I\cap J)) = (\phi(I)\cap\phi(J)) \subseteq (\phi(I))\cap(\phi(J)) = IA\cap JA . $$
+    So one inclusion is true in general.
+
+    If $A$ is flat, consider the exact sequence
+    $$ 0 \to I\cap J \to B \to (B/I) \oplus (B/J) . $$
+    Since $A$ is flat, tensoring is exact and thus the following sequence is exact
+    $$ 0 \to (I\cap J)\otimes A \to A \to (A/IA) \oplus (A/JA) , $$
+    where the first map is $b\otimes a\mapsto ba$, then second is the obvious sum of projections (we use that $A\otimes B\cong A$, and $A\otimes(B/I)\cong A/(IA)$).
+    Since $A$ is flat, $(I\cap J)\otimes A\cong(I\cap J)A$, and thus
+    $$ 0 \to (I\cap J)A \to A \to (A/IA) \oplus (A/JA) $$
+    is exact, where the first map is the inclusion map.
+
+    Thus $(I\cap J)A$ is equal to the kernel of $A\to(A/IA)\oplus(A/JA)$, which is just $IA\cap JA$, as desired.
+
+    \item Consider $B=\bZ[x,y]$ and $A=\bZ[x,y,z]/(zx-zy)$, and $I=(x),J=(y)$.
+    Then notice that $zx\in(x)A$ so $zx=zy\in(x)A\cap(y)A$.
+    But $I\cap J=(xy)$, and $zx\notin(xy)A$.
+    This is because we can consider $A/(xy)=\bZ[x,y,z]/(zx-zy,xy)$, and quotienting over a larger ideal,
+    $$ \frac{\bZ[x,y,z]}{(x-y,xy)} \cong \frac{\bZ[x,z]}{(x^2)} \cong \frac{\bZ[x]}{(x^2)}[z] . $$
+    And $zx$ is nonzero here clearly since $x$ is nonzero in $\bZ[x]/(x^2)$, thus $zx$ is nonzero in $A/(xy)$, and thus $zx\notin(xy)A$.
+
+    \item Since $B\to A$ is flat, so is $B_{\q_1}\to A_{\q_1}$ (flatness is local).
+    This is actually faithfully flat, since $\phi^{-1}(\p_1 A_{\q_1})=\q_1 B_{\q_1}$ is the unique maximal ideal of $B_{\q_1}$, so the spectrum map has all of the closed points
+    in its image, and thus is faithfully flat by the previous question.
+    Thus the map $\spec(A_{\q_1})\to\spec(B_{\q_1})$ is surjective.
+    The spectrum of $\spec(A_\p)$ corresponds to all the prime ideals of $A$ which are contained in $\p$ (all those $\q\in\spec(A)$ such that $\p\in\cl{\set\q}$).
+    So let $\phi^*(\p_2 A_{\q_1})=\q_2 B_{\q_2}$, then it follows $\phi^*(\p_2)=\q_2$, and $\p_1\in\cl{\set{\p_2}}$.
+\eenum
+
+\def\R{{\scr R}}
+
+\bprob
+
+    Fix a ring $R$ and two $R$-modules $M,N$.
+    \benum
+        \item Show that $N$ has a free resolution: free $R$-modules $N_0,N_1,\dots$ such that there is a long exact
+        sequence
+        $$ \R\to N \colon \cdots \to N_1 \to N_0 \to N \to 0 . $$
+        \item Show that tensoring with $M$ forms a chain complex $\R\otimes M\to N\otimes M\to0$.
+        Define $\tor^n(M,N)$ to be the $n$th homology module of $R\otimes M$.
+        \item Show that $\tor^R_0(M,N)\cong M\otimes N$.
+        \item Given another module $N'$ and a free resolution $\R'\to N'\to0$, show that a morphism $N\to N'$
+        lifts to a morphism of resolutions, i.e.\ a commutative diagram:
+
+        \centerline{\drawdiagram{
+            $\cdots$&$N_1$&$N_0$&$N$\cr
+            $\cdots$&$N'_1$&$N'_0$&$N'$\cr
+        }{
+            \diagarrow{from={1,1}, to={1,2}}
+            \diagarrow{from={1,2}, to={1,3}}
+            \diagarrow{from={1,3}, to={1,4}}
+            \diagarrow{from={2,1}, to={2,2}}
+            \diagarrow{from={2,2}, to={2,3}}
+            \diagarrow{from={2,3}, to={2,4}}
+            \diagarrow{from={1,2}, to={2,2}}
+            \diagarrow{from={1,3}, to={2,3}}
+        }}
+
+        \item Show that such a lift induces a morphism of chain complexes.
+
+        \item Given two distinct lifts, show that the two induced maps are homotopic (two maps between chain complexes
+        $f,g\colon C\to D$ are {\emphcolor homotopic} if there are maps $s_i\colon C_i\to D_{i+1}$ such that
+        $f-g=ds+sd$).
+
+        \item Show that a lift induces a map $\tor^R_i(M,N)\to\tor^R_i(M,N')$.
+
+        \item Show that homotopic maps induce the same map between torsion modules.
+
+        \item Let $\R,\R'$ be two free resolutions of $N$, show that they define isomorphic torsion modules.
+        Thus $\tor^R(\bul,M)$ is well-defined.
+
+        \item Show that $\tor^R_i(\bul,\bul)$ is a bifunctor $\Mod_R\times\Mod_R\to\Mod_R$.
+
+        \item Show that $\tor^R(M,\bul)$ maps a short exact sequence to long exact sequences.
+
+        \item Assume that $N$ is free, and let $i>0$.
+        Show that $\tor^R_i(N,M)=0$.
+
+        \item Show that $M$ is flat iff $\tor^R_i(M,\bul)=0$ for all $i>0$ iff $\tor^R_1(M,\bul)=0$.
+    \eenum
+
+\eprob
+
+\benum
+    \item For every $R$-module $N$ there is a surjective map $N_0\xtos{d_0}N\to0$ where $N_0$ is free
+    (e.g.\ let $N_0=R^{\oplus N}$ and map $e_n\mapsto n$ for $n\in N$).
+    Now suppose we have defined $d_n\colon N_n\to N_{n-1}$.
+    Consider then $\ker d_n\subseteq N_n$ and let $d_{n+1}\colon N_{n+1}\to\ker d_n$ be surjective where $N_{n+1}$
+    is free, as before.
+    Then $d_{n+1}\colon N_{n+1}\to N_n$ has image $\ker d_n$, and thus the chain is exact, and we have a free resolution.
+
+    \item Additive functors, like tensoring with $M$, map chain complexes to chain complexes.
+    This is because if $g\circ f=0$ then
+    $$ F(g) \circ F(f) = F(g\circ f) = F(0) = 0 . $$
+
+    \item Let $F$ be right-exact, like $\bul\otimes M$, then if $N_1\xto{d_1}N_0\xto{d_0}N\to0$ is exact then so is
+    $F(N_1)\to F(N_0)\to F(N)\to0$.
+    Thus $\im F(d_1)=\ker F(d_0)$.
+    And we want to show that the homology module of $F(N_1)\to F(N_0)\to0$ is isomorphic to $F(N)$.
+
+    The homology module is $F(N_0)/\im F(d_1)=F(N_0)/\ker F(d_0)\cong F(N)$ where the last isomorphism is due to the
+    isomorphism theorem and the surjectivity of $F(d_0)\colon F(N_0)\to F(N)$.
+
+    \item Suppose the free resolution $\R$ has differentials $d_\bul$ and $\R'$ has differentials $d'_\bul$.
+    Given $f\colon N\to N'$ we inductively define $f_i\colon N_i\to N'_i$ such that $d'_i\circ f_i=f_{i-1}\circ d_i$
+    (where $f_{-1}=f$).
+
+    For $i=0$ we need $d'_0\circ f_0=f\circ d_0$.
+    It is sufficient to find images for $x\in N_0$ where the $x$s are from a basis for $N_0$ and extend by linearity,
+    as it is free and the condition ($d'\circ f=f\circ d$) is linear.
+    By assumption $d'_0\colon N'_0\to N'$ is surjective, so certainly for every $x$ there is an $f_0(x)$
+    such that $d'_0(f_0(x))=f\circ d_0(x)$, as desired.
+
+    Now assuming we have constructed $f_i$ we construct $f_{i+1}$, again we need only find a value of $f_{i+1}(x)$
+    for an individual $x$ and use this to define the values on a basis and extend by linearity.
+    We need to find a $y\in N_{i+1}$ such that
+    $$ d_{i+1}'(y) = f_i\circ d_{i+1}(x) . $$
+    That is, we want to show $f_i\circ d_{i+1}(x)\in\im d_{i+1}'$.
+    By exactness this is equal to the kernel of $d'_i$ so it is sufficient to show $d'_i\circ f_i\circ d_{i+1}=0$.
+    Inductively we have
+    $$ d'_i\circ f_i = f_{i-1} \circ d_i \implies d'_i\circ f_i\circ d_{i+1} = f_{i-1}\circ d_i\circ d_{i+1} = 0 $$
+    as desired.
+    So such a $y$ exists, and we can set $f_{i+1}(x)=y$.
+
+    \item Tensoring is functorial, it maps commutative diagrams to commutative diagrams.
+
+    \item If $F$ is an additive functor, then homotopic maps $\R\to\R'$ are mapped to homotopic maps $F(\R)\to F(\R')$.
+    This is because
+    $$ F(f) - F(g) = F(f-g) = F(ds+sd) = F(d)F(s) + F(s)F(d), $$
+    so $F(s)$ forms the homotopy.
+    So it is sufficient to show that any two lifts of $f\colon N\to N'$ are homotopic, then the induced maps by $\bul\otimes M$ are homotopic.
+
+    If we have two lifts $f_i,g_i$ then $f_{-1}=g_{-1}=f$ and so choosing $s_{-1}=0$ gives us our base.
+    Now suppose that inductively we have $f_i-g_i=d'_{i+1}s_i+s_{i-1}d_i$.
+    So we need to define $s_{i+1}\colon N_{i+1}\to N'_{i+2}$ such that
+    $$ f_{i+1} - g_{i+1} = d'_{i+2}\circ s_{i+1} + s_i\circ d_{i+1} , $$
+    equivalently
+    $$ d'_{i+2}\circ s_{i+1} = f_{i+1} - g_{i+1} - s_i\circ d_{i+1} . $$
+    As before it is sufficient to find a value $y=s_{i+1}(x)$ for any $x\in N_{i+1}$ by freeness.
+    So we want to show that $\im(f_{i+1}-g_{i+1}+s_i\circ d_{i+1})\in\im d'_{i+2}=\ker d'_{i+1}$.
+    Thus we compute
+    $$ \eqalign{
+        d'_{i+1}(f_{i+1} - g_{i+1} - s_i\circ d_{i+1}) &= (f_i-g_i)\circ d_{i+1} - d'_{i+1}\circ s_i\circ d_{i+1}\cr
+            &= (d'_{i+1}\circ s_i + s_{i-1}\circ d_i)\circ d_{i+1} - d'_{i+1}\circ s_i\circ d_{i+1}\cr
+            &= d'_{i+1}s_id_{i+1} - d'_{i+1}s_id_{i+1} = 0.
+    } $$
+    As desired.
+
+    \item We just need to show that if we have a map of chain complexes $f\colon C\to D$ then it induces a map
+    between their homology modules.
+    Indeed, since $d'_{i+1}\circ f_{i+1}=f_i\circ d_{i+1}$, we see that $f_i$ maps boundaries to boundaries.
+    And if $d_ix=0$ then $d'_i\circ f_i(x)=f_{i-1}\circ d_i(x)=0$, so $f_i(x)$ is a cycle meaning $f_i$ maps cycles to cycles.
+
+    Thus we can restrict $f_i\colon C_i\to D_i$ to $f_i\colon Z_i(C)\to Z_i(D)$ and then since $f_i(B_i(C))\subseteq B_i(D)$, we can
+    quotient to give a map $H_i(f)\colon H_i(f)\to H_i(D)$.
+    Note that this is clearly functorial: the identity restricts to the identity on cycles, and quotienting the identity gives the identity.
+    And $H_i(f\circ g)=H_i(f)\circ H_i(g)$ since both are just the map $[x]\mapsto[f(g(x))]$ where $[x]$ is the coset of the cycle $x$.
+    Furthermore since quotienting and restricting are additive, $H_i$ is an additive functor.
+
+    In particular if we have a map between resolutions $f\colon(\R\to N)\to(\R'\to N')$, this lifts to a map of chain complexes
+    $f\otimes M\colon(\R\otimes M)\to(R'\otimes M)$ which then quotient to give maps between the homology modules, which are just the torsion
+    modules.
+
+    \item It is sufficient to show that homotopic maps between chain complexes $f,g\colon C\to D$ induce equal maps on the homology modules.
+    Since homology is additive, it is sufficient to show that $H_n(f-g)=0$ in order to show that $H_n(f)=H_n(g)$.
+    That is, we need to show that for any chain homotopy $s$, $H_n(sd+d's)=0$.
+
+    Notice that $d's$ maps into boundaries, and thus quotients to zero.
+    So we need only show that $H_n(sd)=0$.
+    But $sd$ is just the zero map on cycles: if $a\in Z_i(C)$ then $da=0$ by definition so $sda=0$, so we get the desired result.
+
+    So in particular two lifts of the same map $f\colon N\to N'$, since they are homotopic and thus lift to homotopic maps $\R\otimes M\to\R'\otimes M$, induce
+    the same maps on torsion modules.
+
+    \item If $\R,\R'$ are two free resolutions of $N$, by above there is a unique (up to homotopy) extension of $\id\colon N\to N$ to $F\colon\R\to\R'$, and by the same
+    reason to $G\colon\R'\to\R$.
+    Now, $F\circ G\colon\R'\to\R'$ is also an extension of the identity, but $\id\colon\R'\to\R'$ is already an extension of the identity so they are chain homotopic.
+    Thus $\tor(M,F\circ G)=\tor(M,\id)=\id$ and similarly $\tor(M,G\circ F)=\id$.
+    We show in the next point that the $\tor$ is functorial (when considering any free resolution), so $\tor(M,F),\tor(M,G)$ are isomorphisms between $\tor(M,N)_\R,\tor(M,N)_{\R'}$.
+
+    \item If we have a map $f\colon M\to M'$ then for any free resolution $\R\to N$ this induces a map of chain complexes $\R\otimes M\to\R\otimes M'$ whose $i$th
+    component is $\id_{N_i}\otimes f\colon N_i\otimes M\to N_i\otimes M'$.
+    This is a morphism of chain complexes since we consider the following square
+
+    \commsq{N_i\otimes M&N_{i-1}\otimes M\cr N_i\otimes M'&N_{i-1}\otimes M'}
+        {d_i\otimes\id}{d_i\otimes\id}{\id\otimes f}{\id\otimes f}
+
+    we want to show it commutes.
+    This is due to functorality of the tensor:
+    $$ (\id\otimes f)\circ(d_i\otimes\id) = d_i\otimes f = (d_i\otimes\id)\circ(\id\otimes f) . $$
+    Thus it quotients to give a map $\id\otimes f\colon\tor^R(M,N)\to\tor^R(M',N)$.
+    That is,
+    $$ \tor^R_n(f,N) = H_n(\id\otimes f) . $$
+
+    To show that $\tor$ is a bifunctor, we show it is functorial in both coordinates, and that they commute.
+
+    Firstly, $\tor$ is functorial in its first coordinate since given maps $M\xtos fM'\xtos{f'}M''$, the induced maps $\tor^R(M,N)\to\tor^R(M',N)\to\tor^R(M'',N)$
+    are the quotients of $\id\otimes f$ and $\id\otimes f'$ respectively.
+    Quotienting is functorial, and $\id\otimes(f'\circ f)=(\id\otimes f')\circ(\id\otimes f)$, so $\tor^R(M,N)\to\tor^R(M'',N)$ is equal to the composition of the maps.
+    And the identity $M\xtos\id M$ induces $\tor^R(M,N)\to\tor^R(M,N)$ given by quotienting $\id\otimes\id=\id$, which is again the identity.
+
+    And $\tor$ is functorial in the second coordinate since if we have $N\xtos fN'\xtos{f'}N''$, with free resolutions $\R,\R',\R''$, then $f$ lifts to $F\colon\R\to\R'$
+    and $f'$ lifts to $F'\colon\R'\to\R''$.
+    Clearly then $F'\circ F\colon\R\to\R''$ is a lift of $f'\circ f$, and so $\tor(M,f'\circ f)$ is the quotient of $F'\circ F$.
+    Quotienting is functorial, so this is equal to the quotient of $F'$ composed with the quotient of $F$, so $\tor(M,f')\circ\tor(M,f)$ as desired.
+    And $\id\colon\R\to\R$ is a lift of $\id\colon N\to N$ since the identity is always a chain complex morphism, and quotienting the identity gives the identity.
+    Thus $\tor(M,\id)=\id$ as desired.
+
+    Now suppose we have $f\colon M\to M'$ and $g\colon N\to N'$.
+    Let $f^*=\tor(f,\bul)$ and $g_*=\tor(\bul,g)$, so we want to show
+
+    \commsq{\tor(M,N)&\tor(M',N)\cr\tor(M,N')&\tor(M',N')}
+        {f^*}{f^*}{g_*}{g_*}
+
+    commutes.
+    Let $\R,\R'$ be free resolutions of $N,N'$ respectively, and denote the lift of $g\colon N\to N'$ by $G\colon\R\to\R'$.
+    Then
+    $$ \tor_n(M,g) = H_n(G\otimes\id_M),\qquad \tor_n(f,N) = H_n(\id_{N_n}\otimes f) . $$
+    So we want to show
+    $$ H_n(\id_{N'_n}\otimes f)\circ H_n(G\otimes\id_M) = H_n(G\otimes\id_{M'}) \circ H_n(\id_{N_n}\otimes f) . $$
+    Both sides are equal to $H_n(G\circ f)$ as desired.
+
+    Thus $\tor$ is indeed a bifunctor.
+
+    %\item If $0\to N\to K\to L\to0$ is an SES, then let $\R_N,\R_L$ be free resolutions of $N,L$.
+    %We claim that there is a free resolution $\R_K$ of $K$ fitting into an exact sequence $0\to\R_N\to\R_K\to\R_L\to0$.
+    %Since each level is an exact sequence of free modules, it must split, so define $K_n=N_n\oplus L_n$, which gives an obvious SES $0\to N_n\to K_n\to L_n\to0$.
+
+    %Now we need to define $d^K_n\colon K_n\to K_{n-1}$ so that the differentials are exact and commute with the inclusions and projections $N_n\to K_n\to L_n$.
+    %For $n>0$ we just define
+    %$$ d^K_n = \matrix{d^N_n\cr\oplus\cr d^L_n} \colon \matrix{N_n\cr\oplus\cr L_n} \longvarrightarrow \matrix{N_{n-1}\cr\oplus\cr L_{n-1}} . $$
+    %By exactness of $d^N,d^L$ these are exact and commute with the inclusion and projection.
+
+    %The only issue is $d^K_0\colon N_0\oplus L_0\to K$.
+    %We want to make the following diagram commute, and be exact
+
+    %\centerline{\drawdiagram{
+    %    &$0$&$0$&$0$\cr
+    %    $0$&$N$&$K$&$L$&$0$\cr
+    %    $0$&$N_0$&$K_0$&$L_0$&$0$\cr
+    %    $0$&$N_1$&$K_1$&$L_1$&$0$\cr
+    %}{
+    %    \diagarrow{from={2,1}, to={2,2}}
+    %    \diagarrow{from={2,2}, to={2,3}, text=$f$, y distance=.25cm}
+    %    \diagarrow{from={2,3}, to={2,4}, text=$g$, y distance=.25cm}
+    %    \diagarrow{from={2,4}, to={2,5}}
+    %    \diagarrow{from={3,1}, to={3,2}}
+    %    \diagarrow{from={3,2}, to={3,3}, text=$\iota$, y distance=.25cm}
+    %    \diagarrow{from={3,3}, to={3,4}, text=$\pi$, y distance=.25cm}
+    %    \diagarrow{from={3,4}, to={3,5}}
+    %    \diagarrow{from={4,1}, to={4,2}}
+    %    \diagarrow{from={4,2}, to={4,3}, text=$\iota$, y distance=.25cm}
+    %    \diagarrow{from={4,3}, to={4,4}, text=$\pi$, y distance=.25cm}
+    %    \diagarrow{from={4,4}, to={4,5}}
+    %    \diagarrow{from={2,2}, to={1,2}}
+    %    \diagarrow{from={2,3}, to={1,3}}
+    %    \diagarrow{from={2,4}, to={1,4}}
+    %    \diagarrow{from={3,2}, to={2,2}, text=$d^N_0$, x distance=-.25cm}
+    %    \diagarrow{from={3,3}, to={2,3}, text=$d^K_0$, x distance=.25cm, dashed}
+    %    \diagarrow{from={3,4}, to={2,4}, text=$d^L_0$, x distance=.25cm}
+    %    \diagarrow{from={4,2}, to={3,2}, text=$d^N_1$, x distance=-.25cm}
+    %    \diagarrow{from={4,3}, to={3,3}, text=$d^K_1$, x distance=.25cm}
+    %    \diagarrow{from={4,4}, to={3,4}, text=$d^L_1$, x distance=.25cm}
+    %}}
+
+    %In order to have $d_0^K\circ\iota=f\circ d_0^N$ we must define $d_0^K$ to be equal to $f\circ d_0^N$ on the $N_0$ component of $K_0=N_0\oplus L_0$.
+    %And we want
+    %$$ g\circ d_0^K = d_0^L\circ\pi . $$
+    %This means that on the $L_0$ component of $K_0$ we need $g\circ d_0^K=d_0^L$.
+    %And since $g$ is surjective, we can find such a value $d_0^K(x)$ for every $x\in L_0$.
+
+    %This $d_0^K$ is surjective: 
+    \item Let $0\to N\to K\to L\to0$ be a SES.
+    Let $\R\to M$ be a free resolution, and since free modules are flat we get a SES of chain complexes $0\to\R\otimes N\to\R\otimes K\to\R\otimes L\to0$.
+    Homology gives long exact sequences from short exact sequences of complexes (via the snake lemma), so this gives a long exact sequence
+    $$ \cdots \to H_{i+1}(\R\otimes L) \to H_i(\R\otimes N) \to H_i(\R\otimes K) \to H_i(\R\otimes L) \to H_{i-1}(\R\otimes N) \to \cdots . $$
+    Since $\tor^R_i(\bul,M)$ is defined to be $H_i(\R\otimes\bul)$, this is a long exact sequence
+    $$ \cdots \to \tor^R_{i+1}(L,M) \to \tor^R_i(N,M) \to \tor^R_i(K,M) \to \tor^R_i(L,M) \to \tor^R_{i-1}(N,M) \to \cdots . $$
+    This ends with $M\otimes_RN\to M\otimes_RK\to M\otimes_RL\to0$ because $\tor^R_0(M,N)=M\otimes_RN$.
+
+    \item Let $N$ be free, then $0\to N\to N\to0$ is a free resolution of $N$, and so $\tor(M,N)$ is the homology of $0\to M\otimes N\to0$.
+    This has zeroth homology isomorphic to $M\otimes N$, and all other homology modules are zero, as desired.
+
+    \item If $M$ is flat then $\bul\otimes_MM$ is exact.
+    Thus if $\R\to N\to0$ is exact then so is $\R\otimes M\to N\otimes M\to0$.
+    So the chain complex $\R\otimes M\to0$ is exact at all indices greater than zero and thus its homology modules, $\tor^R_i(M,N)$, are zero.
+
+    Conversely if $\tor^R_1(M,N)=0$ for all $N$, then let $0\to L\to K\to N\to0$ be SES, so we have a long exact sequence
+    $$ \cdots \to \tor^R_1(M,N) = 0 \to M\otimes L\to M\otimes K\to M\otimes N\to 0 , $$
+    so tensoring with $M$ maps a SES to a SES, and thus $M$ is flat.
+\eenum
+
+\bye
+

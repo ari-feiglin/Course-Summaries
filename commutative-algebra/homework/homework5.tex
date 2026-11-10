@@ -1,0 +1,592 @@
+\input pdfToolbox
+\input pdfmsym
+\pdfmsymsetscalefactor{10}
+\input ../preamble
+\def\enumindent{0cm}
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+\setcounter{section}{5}
+
+\centerline{\setfontandscale{bf}{20pt}Commutative Algebra \& Algebraic Geometry}
+\medskip
+\centerline{\bf Exercise \the\counter{section}}
+\smallskip
+\centerline{\it Ari Feiglin}
+
+\bprob
+
+    \benum
+        \item Let $a,b\in\bC$ be nonzero, and $L$ be the line in $\bC^2$ defined by $ax+by=0$.
+        Let $P\colon\bC^2\to\bC^2$ be orthogonal projection onto $L$, with respect to the standard inner product.
+        \benum
+            \item Find a morphism of $\bC$-algebras $\phi\colon\bC[z,w]\to\bC[x,y]$ which induces a morphism on closed points
+            $\abs{\phi^*}\colon\abs{\bA^2_\bC}\to\abs{\bA^2_\bC}$ equal to $P$, identifying $\abs{\bA^2_\bC}$ with $\bC^2$.
+            \item Let $\pi\colon\bC[x,y]\to\bC[x,y]/(xy-1)$ be the projection.
+            Show that if $a,b\neq0$, then $\pi\circ\phi$ is finite.
+        \eenum
+        \item Let $R=\bC[x,y]/(y^2z-x^3-1)$.
+        \benum
+            \item Show that $R$ is not a finite $\bC[x,y]$-algebra.
+            \item Find $x',y'\in R$ such that $R$ is a finite $\bC[x',y']$-algebra.
+        \eenum
+    \eenum
+
+\eprob
+
+\benum
+    \item
+    \benum
+        \item Note that $L$ is spanned by $(b,-a)$ and thus $P$ is given by
+        $$ P(\lambda,\mu) = \frac{(\lambda,\mu)\cdot(b,-a)}{\norm{(b,-a)}^2}(b,-a) = \frac{b\lambda-a\mu}{a^2+b^2}(b,-a) . $$
+        And so we want a $\phi$ such that $\phi^*=\phi^{-1}$ maps
+        $$ (x-\lambda,y-\mu) \mapsto \parens{z - \frac{b^2\lambda-ab\mu}{a^2+b^2},\ w - \frac{a^2\mu - ab\lambda}{a^2+b^2}} = (z-P_1,w-P_2) . $$
+
+        Since we are dealing with maximal ideals, $\phi^{-1}(x-\lambda,y-\mu)=(z-P_1,w-P_2)$ iff $\phi(z-P_1,w-P_2)\subseteq(x-\lambda,y-\mu)$
+        since then $\phi^{-1}(x-\lambda,y-\mu)\supseteq(z-P_1,w-P_2)$ and since $\phi^{-1}$ maps maximal ideals to maximal ideals, we must have equality.
+
+        Since $\bC[z,w]$ is the free $\bC$-algebra on two generators, we need only define $\phi$ on $z,w$.
+        We will try $\phi$ which maps $\phi z=\alpha x+\beta y$, $\phi w=\gamma x+\delta y$.
+        Then
+        $$ \phi\parens{z-\frac{b^2\lambda-ab\mu}{a^2+b^2}} = \alpha x + \beta y - \frac{b^2\lambda-ab\mu}{a^2+b^2} . $$
+        We want this to be in $(x-\lambda,y-\mu)$, so let us write this as
+        $$ = \alpha\parens{x - \lambda\cdot\frac1\alpha\cdot\frac{b^2}{a^2+b^2}} + \beta\parens{y - \mu\cdot\frac1\beta\cdot\frac{-ab}{a^2+b^2}} . $$
+        So we see that
+        $$ \alpha = \frac{b^2}{a^2+b^2},\qquad \beta = -\frac{ab}{a^2+b^2} $$
+        do the trick.
+        Similarly
+        $$ \gamma = -\frac{ab}{a^2+b^2},\qquad \delta = \frac{a^2}{a^2+b^2} . $$
+
+        These are not dependent on $\lambda,\mu$ and thus $\phi$ is well-defined and satisfies the desired property.
+        Notice that if we only assume that not both $a,b$ are zero, then these definitions work as well (I assume this is what the question meant to ask, but ``both not zero'' and ``not both zero''
+        mean different things).
+
+        \item Notice that
+        $$ z\cdot x = (\alpha x + \beta y)x = \alpha x^2 + \beta xy = \alpha x^2 + \beta . $$
+        Since $b\neq0$, $\alpha\neq0$ and thus is invertible (since it is a complex number).
+        Thus
+        $$ t^2 - \frac z\alpha t + \frac\beta\alpha \in \bC[z,w][t] $$
+        is a monic polynomial with root $x$, so $x$ is integral over $\bC[z,w]$.
+        Similarly
+        $$ w\cdot y = (\gamma x + \delta y)y = \delta y^2 + \gamma , $$
+        and thus $t^2-w/\delta t+\gamma/\delta$ is a monic polynomial over $\bC[z,w]$ with root $y$, so $y$ is integral over $\bC[z,w]$.
+
+        Furthermore, $x,y$ generate $\bC[x,y]/(xy-1)$ so it is integral over $\bC[z,w]$ and fg, so it is finite as desired.
+    \eenum
+
+    \item
+    \benum
+        \item Note that we can embed $R$ into $\Frac(\bC[x,y])$ by mapping $z$ to $\frac{x^3+1}y\notin\bC[x,y]$.
+        Identifying $R$ with its image in the field of fractions, $\bC[x,y]\subsetneq R\subseteq\Frac(\bC[x,y])$.
+        Since $\bC$ is a field, $\bC[x,y]$ is a UFD and thus normal, so it is integrally closed in its field of fractions.
+        Thus $R$ cannot be integral over $\bC[x,y]$, since it is a proper extension of it.
+        And so it cannot be finite over $\bC[x,y]$.
+
+        \item We recall the proof of Noether's normalization lemma.
+        Consider $f=y^2z-x^3-1$; its multidegrees (of nonzero coefficients) are $(3,0,0)$, $(0,2,1)$, and $(0,0,0)$.
+        Then we set $k_3=1$,
+        $$ \eqalign{
+            k_2 &= 1 + \max\set{k_3\cdot0,k_3\cdot0,k_3\cdot1} = 2,\cr
+            k_1 &= 1 + \max\set{k_2\cdot0 + k_3\cdot0, k_2\cdot0 + k_2\cdot2, k_2\cdot0 + k_3\cdot0} = 5.
+        } $$
+        Then
+        $$ x' = x - z^{k_1} = x - z^5,\qquad y' = y - z^{k_2} = y - z^2 $$
+        does the trick.
+    \eenum
+\eenum
+
+\bprob
+
+    Let $k$ be a field.
+    \benum
+        \item Show that $k$ is algebraically closed iff for every $n\in\bN$ and nonconstant $f\in k[x_1,\dots,x_n]$, $f$ has a zero.
+        \item Let $A$ be a fg $k$-algebra and $\m\leq A$ a maximal ideal.
+        We assume the third formulation of Nullstellensatz (polynomial rings over $k$ are Jacobson), and wish to prove the first
+        ($A/\m$ is a finite $k$-algebra).
+        \benum
+            \item Show that $A$ satisfies the third form of Nullstellensatz.
+            That is, it is Jacobson: $\p=\jac_A(\p)$ for all prime ideals $\p\leq A$.
+            \item Show that if $B\subseteq A$ is a fg $k$-subalgebra, then $\m\cap B$ is a maximal ideal of $B$.
+            \item Suppose that $A/\m$ is not a finite extension of $k$.
+            Find an element $x\in A$ such that $x$ is transcendental in $A/\m$.
+            Conclude that $\m\cap k[x]=0$ and reach a contradiction.
+        \eenum
+    \eenum
+
+\eprob
+
+\benum
+    \item If every non-constant multivariate polynomial has a zero, then every non-constant single-variable polynomial has a zero, so $k$ is
+    algebraically closed.
+    Conversely if $f\in k[\bar x]$ is nonconstant, it is not a unit, and thus $(f)\neq(1)$.
+    By Nullstellensatz, $Z(f)=Z((f))\neq\emptyset$, so $f$ has a zero.
+
+    \item
+    \benum
+        \item Since $A$ is fg, there is a polynomial $k$-algebra $k[x_1,\dots,x_n]$ as well as a surjective $k$-algebra morphism
+        $k[x_1,\dots,x_n]\to A$, so $A$ is isomorphic to $k[\bar x]/I$ for some ideal $I$.
+        The third form of Nullstellensatz says that $k[\bar x]$ is Jacobson, we claim that the quotient of a Jacobson ring is Jacobson, an
+        in particular $A$ is.
+
+        If $B$ is a Jacobson ring and $I\leq B$ is an ideal, let $\p\in B/I$ be prime.
+        Let $\pi\colon B\to B/I$ be the projection so by correspondence $\p=\pi(\tilde\p)$ for a prime ideal $I\leq\tilde\p\leq B$.
+        Then
+        $$ \jac_{B/I}(\p) = \bigcap_{\p\leq\m}\m , $$
+        where the intersection ranges over all maximal ideals containing $\p$.
+        By correspondence the maximal ideals in $B/I$ correspond to maximal ideals in $B$ containing $I$, and so the maximal ideals
+        containing $\p$ correspond to the maximal ideals containing $\tilde\p$:
+        $$ \jac_{B/I}(\p) = \bigcap_{\tilde\p\leq\tilde\m}\pi(\tilde\m) = \pi\parens{\bigcap_{\tilde\p\leq\tilde\m}\tilde\m}
+        = \pi(\jac_B(\tilde\p)), $$
+        and this is equal to $\pi(\tilde\p)=\p$ since $B$ is Jacobson.
+        So $B/I$ is indeed Jacobson, as desired.
+
+        \item This was listed as optional, so I unfortunately decided not to do it, I apologize!
+
+        \item $A/\m$ is a field and a fg $k$-algebra, suppose $A/\m$ is not a finite extension of $k$.
+        Suppose $x_1,\dots,x_n\in A$ generate $A$ and thus their projections generate $A/\m$.
+        If these are all algebraic over $k$, then $A/\m$ must be finite (if $x_1,\dots,x_n$ are algebraic over $k$ then
+        $k[x_1,\dots,x_n]$ is a finite extension of $k$), so one must be transcendental, let it be $a$.
+
+        By the above point since $k[a]\subseteq A$ is a fg subalgebra, $k[a]\cap\m$ is a maximal ideal of $k[a]$.
+        But since $a\in A$ is transcendental in $A/\m$, there can be no single-variable polynomials $p\in k[x]$ such that $p(a)=0$ in
+        $A/\m$.
+        That is, $p(a)\notin\m$ for all non-zero $p\in k[x]$.
+        Thus $k[a]\cap\m=0$ is a maximal ideal of $k[a]$.
+
+        On the other hand since $a$ is transcendental, $k[a]$ is isomorphic to the $k[x]$ as $k$-algebras.
+        $0$ is not a maximal ideal of $k[x]$, and thus not a maximal ideal of $k[a]$, a contradiction.
+    \eenum
+\eenum
+
+\bprob
+
+    Let $R$ be a ring.
+    \benum
+        \item Let $M,N$ be free $R$-modules with respective bases $\set{a_i}_{i\in I},\set{b_j}_{j\in J}$.
+        Show that $M\otimes_RN$ is a free $R$-module with basis $\set{a_i\otimes b_j}_{i\in I,j\in J}$.
+        \item Let $A$ be an $R$-algebra, show that $A\otimes_R(R[x])\cong A[x]$.
+        \item Let $\phi\colon R\to A$ be a morphism of rings and $I\leq R$ an ideal.
+        Show that $A\otimes_R(R/I)\cong A/IA$.
+        \item Assume $R$ is a PID, and let $a,b\in R$.
+        Compute $(R/(a))\otimes_R(R/(b))$, and explain what this means for $R=\bZ$.
+        \item Let $L/K$ be a finite Galois field extension.
+        Show that there is an isomorphism of $K$-algebras
+        $$ L\otimes_RL \to \prod_{\sigma\in\Gal(L/K)}L,\qquad a\otimes b\mapsto(a\sigma(b))_{\sigma\in\Gal(L/K)} . $$
+        \item Let $A$ be an $R$-algebra and $S\subseteq R$ a multiplicative subset.
+        Let $M$ be an $R$-module, show that $(S^{-1}A)\otimes_RM\cong S^{-1}(A\otimes_RM)$.
+    \eenum
+
+\eprob
+
+\benum
+    \item Let $P$ be the free $R$-module generated by $\set{a_i\otimes b_j}_{i\in I,j\in J}$.
+    Define $M\times N\to P$ by $(a_i,b_j)\mapsto a_i\otimes b_j$, and extending by linearity.
+    This is well-defined since $a_i,b_j$ form bases.
+    This is $R$-bilinear, since the tensor product is, and thus forms an $R$-algebra morphism $M\otimes_RN\to P$.
+
+    Then define $P\to M\otimes_RN$ by mapping $a_i\otimes b_j$ to itself (the former viewed as a basis element of $P$, the latter as an
+    element of the tensor product).
+
+    These are clearly inverses (since $a_i\otimes b_j$ generates the tensor product and forms a basis for $P$, it is sufficient to check
+    this just for elements of this form), and thus $M\otimes_RN$ is free with basis $a_i\otimes b_j$ (following the basis from $P$).
+
+    \item Define a map $A\times R[x]$ which maps $(a,p(x))$ to $ap(x)\in A[x]$, where
+    $$ a\sum_kb_kx^k = \sum_k ab_kx^k \in A[x] , $$
+    (since $b_k\in R$, and $A$ is an $R$-algebra, $ab_k\in A$ so this is indeed a polynomial over $A$.)
+    This is $R$-bilinear clearly and thus gives us a map $\Phi\colon A\otimes_RR[x]\to A[x]$.
+    It is a ring morphism since $(ap)(bq)=ab(pq)$, and thus gives a morphism of $R$-algebras.
+
+    In the other direction define $\Psi\colon A[x]\to A\otimes_RR[x]$ by
+    $$ \Psi\sum_ka_kx^k = \sum_k(a_k\otimes x^k) . $$
+    This is an $R$-algebra morphism as well: it is $R$-linear since $ra_kx^k$ is mapped to $ra_k\otimes x^k=a_k\otimes rx^k$.
+    And it is a ring morphism since
+    $$ \Psi\sum_k\sum_i a_ib_{k-i}x^k \mapsto \sum_k\sum_i a_ib_{k-i}\otimes x^k = 
+    \sum_k\sum_i(a_i\otimes x^i)(b_{k-i}\otimes x^{k-i}) = \parens{\sum_k a_k\otimes x^k}\parens{\sum_k b_k\otimes x^k} $$
+
+    These are inverses, since
+    $$ \Phi\Psi a_kx^k = \Phi(a_k\otimes x^k) = a_kx^k , $$
+    and
+    $$ \Psi\Phi a\otimes x^k = \Psi ax^k = a\otimes x^k . $$
+    Thus we have the desired isomorphisms.
+
+    \item Let us define an $R$-algebra morphism $A\to A\otimes_R(R/I)$ by $a\mapsto a\otimes 1$.
+    Then for $x\in I$, we have that $\phi(x)\mapsto\phi(x)\otimes 1=1\otimes x$ (since $\phi(x)=x\cdot1$), which is zero as $x\in R/I$ is zero.
+    Thus $IA$ lies in the kernel of this map, so we can quotient it to give an $R$-algebra morphism $\Phi\colon A/IA\to A\otimes_R(R/I)$.
+
+    Define $A\times(R/I)\to A/IA$ by $(a,r+I)\mapsto(ar)+IA$.
+    This is well-defined since for $x\in I$, $ax\in IA$.
+    Furthermore it is $R$-bilinear clearly and thus defines an $R$-module morphism $\Psi\colon A\otimes_R(R/I)\to A/IA$.
+    It is also a ring morphism, but this is immediate as we will show it is $\Phi$'s inverse.
+
+    Indeed,
+    $$ \Phi\Psi a\otimes(r+I) = \Phi (ar+IA) = ar\otimes1 = a\otimes(r+I) , $$
+    and
+    $$ \Psi\Phi(a+IA) = \Psi(a\otimes1) = a+IA , $$
+    as desired.
+
+    \item We claim that in general, for ideals $I,J\leq R$,
+    $$ R/I \otimes R/J \cong R/(I+J) . $$
+    By the above point,
+    $$ R/I \otimes R/J \cong \frac{R/I}{J\cdot R/I} . $$
+    And $J\cdot R/I=(I+J)/I$, since for $j\in J$ and $x\in R$, $j(x+I)=jx+I$ where $jx\in J$ and thus $jx+I\in(I+J)/I$.
+    Conversely for $i+j+R\in(I+J)/I$, $i+j+I=j+I=j(1+I)\in J\cdot(R/I)$.
+    Thus by the isomorphism theorems, there is an isomorphism of $R$-algebras
+    $$ R/I \otimes R/J \cong \frac{R/I}{J\cdot R/I} = \frac{R/I}{(I+J)/I} \cong R/(I+J). $$
+
+    In our case, $(a)+(b)=(c)$ where $c$ is a gcd of $a$ and $b$ and so
+    $$ R/(a) \otimes R/(b) \cong R/(c) . $$
+
+    When $R=\bZ$ we literally have
+    $$ \bZ/n \otimes_\bZ \bZ/m \cong \bZ/\gcd(n,m) . $$
+
+    \item Let $G=\Gal(L/K)$.
+    Since $L/K$ is finite Galois, it is generated by a single element $L=K[a]$.
+    Let $p_a$ be $a$'s minimal polynomial, which splits since the extension is Galois: $p_a(x)=\prod_{\sigma\in G}(x-\sigma(a))$.
+    Thus
+    $$ L\otimes_KL = L \otimes_K K[a] \cong L \otimes_K \frac{K[x]}{(p_a)} . $$
+    Now, by the above points we have
+    $$ A \otimes_R \frac{R[x]}I \cong A \otimes_R R[x] \otimes_{R[x]} \frac{R[x]}I \cong A[x] \otimes_{R[x]} \frac{R[x]}I \cong \frac{A[x]}{I\cdot A[x]} . $$
+    Chasing definitions, the isomorphism is given by $a\otimes(p(x)+I)\mapsto ap(x)+IA[x]$.
+    In our case, $(p_a)\cdot L[x]=(p_a)$ where the right-hand ideal is in $L[x]$, and thus
+    $$ L\otimes_KL \cong \frac{L[x]}{(p_a)} . $$
+    Recall that $p_a$ splits over $L$: $p_a=\prod_\sigma(x-\sigma(a))$.
+    The $\sigma(a)$'s are all distinct (since $p_a$ splits), and thus the ideals $(x-\sigma(a))$ are coprime (as they are distinct maximal ideals), and thus
+    by the Chinese remainder theorem:
+    $$ L\otimes_KL \cong \frac{L[x]}{\parens{\prod_\sigma(x-\sigma(a))}} \cong \prod_\sigma \frac{L[x]}{(x-\sigma(a))} \cong \prod_\sigma L . $$
+
+    So we have a composition of isomorphisms,
+    $$ L \otimes_K L \xtos{(1)} L \otimes_K \frac{K[x]}{(p_a)} \xtos{(2)} \frac{L[x]}{(p_a)} \xtos{(3)} \prod_\sigma \frac{L[x]}{(x-\sigma)} \xtos{(4)} \prod_\sigma L . $$
+    For $\beta\in L=K[a]$, let $p_\beta(x)\in K[x]$ be a polynomial such that $p_\beta(a)=\beta$.
+    Chasing definitions, we see
+    $$ \alpha\otimes\beta \xmapsto{(1)} \alpha\otimes(p_\beta(x)+(p_a)) \xmapsto{(2)} \alpha p_\beta(x) + (p_a) \xmapsto{(3)} (\alpha p_\beta(x) + (x-\sigma(a)))_\sigma
+    \xmapsto{(4)} (\alpha p_\beta(\sigma a))_\sigma . $$
+    For $\sigma\in G$ and $p\in K[x]$ we have $p(\sigma(x))=\sigma(p(x))$, and thus $\alpha p_\beta(\sigma a)=\alpha\sigma(p_\beta(a))=\alpha\sigma(\beta)$.
+    So our isomorphism is given by
+    $$ \alpha\otimes\beta \mapsto (\alpha\sigma(\beta))_\sigma, $$
+    as desired.
+
+    \item We have that $S^{-1}A\cong S^{-1}R\otimes_RA$ as $R$-algebras.
+    Thus
+    $$ (S^{-1}A)\otimes_RM \cong (S^{-1}R\otimes_RA)\otimes_RM S^{-1}R\otimes_R(A\otimes_RM) \cong S^{-1}(A\otimes_RM) . $$
+
+    This is true also when we take $S\subseteq A$ multiplicative (which may have been the intended question?).
+    Indeed,
+    $$ S^{-1}A\otimes_RM \cong (S^{-1}A\otimes_AA)\otimes_RM \cong S^{-1}A\otimes_A(A\otimes_RM) \cong S^{-1}(A\otimes_RM) . $$
+    The last isomorphism is due to the natural isomorphism $S^{-1}\bul\cong S^{-1}A\otimes_A\bul$.
+\eenum
+
+\bprob
+
+    Let $R$ be a ring, $S=\spec(R)$, and $A$ and $B$ be $R$-algebras with $X=\spec(A),Y=\spec(B)$.
+    \benum
+        \item Assume $R\to A,R\to B$ are surjective, so that $X\to S,Y\to S$ are closed embeddings.
+        \benum
+            \item Show that $X\times_SY$ is homeomorphic to $X\cap Y$.
+            \item Let $R=\bC[x,y]$, $A=\bC[x,y]/(y-f)$ for $f\in\bC[x]$, and $B=\bC[x,y]/(y)$.
+            Prove $A\otimes_RB$ is a complex vector space whose dimension equals the number of zeroes of $f$, with multiplicity.
+        \eenum
+        \item Let $\p\in S$ and suppose $A=k(\p)$.
+        Let $\phi$ be the morphism $Y\to S$, and show that $X\times_SY$ is homeomorphic to $\phi^{-1}\p$.
+        \item Assume $R=\bC[x],A=\bC[y]$, and the morphism $R\to A$ is $x\mapsto y^2$.
+        Prove that $X\times_SX$ has two irreducible components.
+        \item By the definition of a pullback, the identity $X\to X$ yields a morphism $X\to X\times_SX$ called the {\emphcolor diagonal}
+        and denoted $\Delta$.
+        Show that $\Delta$ is a closed embedding.
+    \eenum
+
+\eprob
+
+\benum
+    \item
+    \benum
+        \item The closed embeddings $X,Y\to S$ yield homeomorphisms $X\cong V_R(I)$ and $Y\cong V_R(J)$ for ideals $I,J$ (the kernels of the maps
+        from $R\to A,B$).
+        Then $X\cap Y$ is $V_R(I)\cap V_R(J)=V_R(I+J)$, which is an affine scheme as $V_R(I+J)\cong\spec(R/(I+J))$.
+        So we have $A\cong R/I,B\cong R/J$, and then as we showed
+        $$ A\otimes_RB \cong (R/I)\otimes_R(R/J) \cong R/(I+J) , $$
+        which yields a homeomorphism
+        $$ X\times_SY = \spec(A\otimes_RB) \cong \spec(R/(I+J)) \cong V_R(I+J) = V_R(I)\cap V_R(J) = X\cap Y $$
+        as desired.
+
+        \item We have by above
+        $$ A\otimes_RB = \frac{\bC[x,y]}{(y-f)} \otimes_{\bC[x,y]} \frac{\bC[x,y]}{(y)} \cong \frac{\bC[x,y]}{(y,y-f)} \cong \bC[x]/(f). $$
+        Note that as $\bC$-vector spaces
+        $$ \bC[x]/(f) \cong \set{g\in\bC[x]}[\deg g<\deg f] , $$
+        and the right-hand side is a complex vector space of dimension $\deg f$.
+        The number of $f$'s zeroes, counted with multiplicity, is just $\deg f$.
+    \eenum
+
+    \item From homework 4 question 3, we know that $\phi^{-1}(\p)$ is homeomorphic to $\spec(B_\p/\p B_\p)$.
+    The pullback is
+    $$ X\times_SY = \spec(A\otimes_RB) = \spec(k(\p)\otimes_RB) = \spec\parens{\frac{R_\p}{\p R_\p}\otimes_RB} . $$
+    Now, from the previous question we know $A/IA\cong A\otimes_RR/I$ and $S^{-1}A\otimes_RB\cong S^{-1}(A\otimes_RB$, so
+    $$ \frac{R_\p}{\p R_\p} \otimes_RB \cong (R/\p) \otimes_R R_\p \otimes_RB \cong (R/\p) \otimes_R (R\otimes_RB)_\p \cong
+    (R/\p) \otimes_R B_\p \cong \frac{B_\p}{\p B_\p} . $$
+    Thus this induces a homeomorphism
+    $$ X\times_SY = \spec\parens{\frac{R_\p}{\p R_\p}\otimes_RB} \cong \spec\parens{\frac{B_\p}{\p B_\p}} \cong \phi^{-1}(\p) , $$
+    as desired.
+
+    \item Recall that an irreducible component of $\spec(A)$ is the vanishing set of a minimal prime ideal.
+    So we must find the minimal prime ideals of $A\otimes_RA$:
+    $$ A\otimes_RA \cong \bC[y] \otimes_{\bC[x]} \bC[y] \cong \frac{\bC[y_1,y_2]}{(y_1^2-y_2^2)} . $$
+    The final equality is due to the tensor $\bC[y_1]\otimes_\bC\bC[y_2]\cong\bC[y_1,y_2]$ and having to identify the image of $x$
+    in both cases.
+    Explicity, $\bC[y_1]\times\bC[y_2]\to\bC[y_1,y_2]/(y_1^2-y_2^2)$ given by $(f(y_1),g(y_2))\mapsto f(y_1)g(y_2)$ is $\bC[x]$-bilinear since
+    $(xf(y_1),g(y_2))$ is mapped to $y_1^2f(y_1)g(y_2)=y_2^2f(y_1)g(y_2)$, the image of $(f(y_1),xg(y_2))$.
+    Thus it yields a map $\bC[y_1]\otimes_{\bC[x]}\bC[y_2]\to\bC[y_1,y_2]/(y_1^2-y_2^2)$.
+
+    The obvious map $\bC[y_1,y_2]\to\bC[y_1]\otimes_{\bC[x]}\bC[y_2]$ mapping $y_1\mapsto y_1\otimes1,y_2\mapsto 1\otimes y_2$ maps
+    $y_1^2-y_2^2$ to zero (since both are equal to $x$), and thus quotients to give a map $\bC[y_1,y_2]/(y_1^2-y_2^2)$ to the tensor product.
+    These two maps are clearly inverses.
+
+    Thus we have
+    $$ A\otimes_RA \cong \frac{\bC[y_1,y_2]}{(y_1^2-y_2^2)} . $$
+    Note that $y_1^2-y_2^2=(y_1-y_2)(y_1+y_2)$, a factorization of irreducibles.
+    Let $\p_1=(y_1-y_2)/(y_1^2-y_2^2)$ and $\p_2=(y_1+y_2)/(y_1^2-y_2^2)$, so they are prime (as $y_1\pm y_2$ are irreducible).
+    Furthermore, $\p_1\p_2=0$ and thus they must be the minimal prime ideals.
+    This is because any other prime ideal contains $0$ and thus by primality one of $\p_1$ or $\p_2$, and $\p_1,\p_2$ are distinct.
+
+    Thus the tensor has two distinct minimal prime ideals, and thus two irreducible components.
+
+    \item We showed explicitly that given maps $\phi,\psi\spec(C)\to\spec(A),\spec(B)$, then the map $\spec(C)\to\spec(A\otimes_RB)$ is induced
+    by $A\otimes_RB\to C$, $a\otimes b\mapsto\phi(a)\psi(b)$.
+    In our case $C=A=B$ and $\phi=\psi=\id$ so $\Delta$ is $(a\otimes b\mapsto ab)^*$.
+    The map $a\otimes b\mapsto ab$ is clearly surjective, and thus $\Delta$ is a closed embedding as desired.
+\eenum
+
+\bprob
+
+    For rings $R,S$, an {\emphcolor $(R,S)$-bimodule} is an Abelian group which is both an $R$- and $S$-module, such that their operations commute.
+    Denote the category of $(R,S)$-bimodules by $\Mod_{R,S}$.
+    Let $M\in\Mod_R,K\in\Mod_{R,S},N\in\Mod_S$.
+    \benum
+        \item Show that there is a natural $S$-module structure on $M\otimes_RK$, which gives us a functor $\bul\otimes_RK\colon\Mod_R\to\Mod_S$.
+        \item Find a natural $R$-module structure on $\hom_S(K,N)$, yielding a functor $\hom_S(K,\bul)\colon\Mod_S\to\Mod_R$.
+        \item Show that there is an adjunction $\bul\otimes_RK\vdash\hom_S(K,\bul)$.
+        \item Now assume $S$ is an $R$-algebra (and thus also an $(R,S)$-bimodule).
+        Denote $\bul\otimes_RS$ by $\bul^S$ and call it {\emphcolor extension by scalars}, $\bul^S\colon\Mod_R\to\Mod_S$.
+        Similarly we can view $N$ as an $R$-module via {\emphcolor restriction}, yielding a functor $\bul_R\colon\Mod_S\to\Mod_R$.
+        Show that $\bul_R$ is naturally isomorphic to $\hom_S(S,\bul)$, and thus there is an adjunction $\bul^S\vdash\bul_R$.
+    \eenum
+
+\eprob
+
+\benum
+    \item The natural structure is given by $s\cdot(m\otimes k)=m\otimes(sk)$ and extending by linearity.
+    Assuming this is well-defined this gives an $S$-module structure, since
+    $$ s_1s_2(m\otimes k)=m\otimes(s_1s_2k)=s_1(m\otimes(s_2k))=s_1(s_2(m\otimes k)) . $$
+    To show this is well-defined and linear, we note that the map $M\times K\to M\otimes K$ given by $s(m,k)=m\otimes(sk)$ is $R$-bilinear.
+    This is clearly additive and bi-multiplicative since
+    $$ s(rm,k) = (rm)\otimes(sk) = r(m\otimes(sk)) = rs(m,k) = m\otimes(rsk) = m\otimes(srk) = s(m,rk) . $$
+    And it is functorial: if $f\colon M\to M'$ is an $R$-module morphism, then $f\otimes K\colon M\otimes K\to M\otimes K$ is an $S$-module morphism since 
+    $$ f\otimes K(s(m\otimes k)) = f\otimes K(m\otimes sk) = f(m)\otimes sk = s(f(m)\otimes k) = s(f\otimes K)(m\otimes k) , $$
+    and $\id\otimes K$ is the identity.
+
+    \item The sum of two $S$-module morphisms is an $S$-module morphism clearly.
+    And for $f\in\hom_S(K,N)$ and $r\in R$ define $rf$ by $(rf)(k)=f(rk)$.
+    This is an $S$-module morphism since it is additive:
+    $$ (rf)(k+k') = f(rk+rk') = f(rk) + f(rk') = (rf)(k) + (rf)(k'), $$
+    and multiplicative
+    $$ (rf)(sk) = f(rsk) = f(srk) = sf(rk) = s(rf)(k) . $$
+
+    This turns $\hom_S(K,N)$ into an $R$-module since $r(f+f')(k)=(f+f')(rk)=f(rk)+f'(rk)=(rf+rf')(k)$ so multiplication is additive.
+    And
+    $$ ((rr')f)(k) = f(rr'k) = f(r'rk) = (r'f)(rk) = (r(r'f))(k) \implies (rr')f = r(r'f) . $$
+
+    This is also functorial since if $F\colon N\to N'$ is an $S$-module morphism then $F^*\colon\hom_S(K,N)\to\hom_S(K,N')$ given by $f\mapsto F\circ f$
+    is an $R$-module morphism.
+    Indeed,
+    $$ F\circ(f+f') = F\circ f + F\circ f' $$
+    so it is additive, and
+    $$ (F\circ(rf))(k) = F((rf)(k)) = F(f(rk)) = r(F\circ f)(k) \implies F^*(rf) = rF^*(f) , $$
+    so it is multiplicative.
+    Clearly $\id^*$ is the identity as well.
+
+    \item We show that $\hom_S(M\otimes_RK,N)\cong\hom_R(M,\hom_S(K,N))$ naturally.
+    For an $S$-map $F\colon M\otimes_RK\to N$, define $\hat F\colon M\to\hom_S(K,N)$ by
+    $$ \hat F(m)(k) = F(m\otimes k),\qquad m\in M,k\in K . $$
+    This is well-defined: $\hat F(m)$ is an $S$-module morphism:
+    $$ \hat F(m)(k+k') = F(m\otimes k + m\otimes k') = \hat F(m)(k) + \hat F(m)(k') , $$
+    and
+    $$ \hat F(m)(sk) = F(m\otimes sk) = F(s(m\otimes k)) = sF(m\otimes k) = s\hat F(m)(k) . $$
+
+    And conversely given $G\colon M\to\hom_S(K,N)$, define $\tilde G\colon M\otimes_RK\to N$ by
+    $$ \tilde G(m\otimes k) = G(m)(k) . $$
+    This is well-defined since the map $M\times K\to N$ given by $G'(m,k)=G(m)(k)$ is $R$-bilinear.
+    It is additive:
+    $$ G'(m+m',k) = G(m+m')(k) = (G(m)+G(m'))(k) = G(m)(k) + G(m')(k) = G'(m,k) + G'(m',k) , $$
+    and
+    $$ G'(m,k+k') = G(m)(k+k') = G(m)(k) + G(m)(k') = G'(m,k) + G'(m,k') . $$
+    And it is $R$-bilinear:
+    $$ G'(rm,k) = G(rm)(k) = rG(m)(k) = G(m)(rk) = G'(m,rk) . $$
+
+    And clearly $\tilde\bul$ and $\hat\bul$ are inverses:
+    $$ \tilde{\hat F}(m\otimes k) = \hat F(m)(k) = F(m\otimes k), $$
+    so $\tilde{\hat F}=F$.
+    And similarly
+    $$ \hat{\tilde G}(m)(k) = \tilde G(m\otimes k) = G(m)(k) , $$
+    so $\hat{\tilde G}=G$.
+
+    Naturality is an easy tedious computation.
+
+    \item We define a natural isomorphism $\hom_S(S,N)\to N_R$ by mapping $f\in\hom_S(S,N)$ to $f(1)$; denote this by $\ev_1$, so $\ev_1(f)=f(1)$.
+    This is clearly additive and is $R$-linear since
+    $$ \ev_1(rf) = (rf)(1) = f(r) = rf(1) = r\ev_1(f) . $$
+    Note that $f(r)=rf(1)$ since $f$ is an $S$-module morphism and thus an $R$-module morphism via the map $R\to S$.
+
+    Furthermore it is injective since if $f(1)=0$ then $f(s)=sf(1)=0$ for all $s\in S$, so $f=0$.
+    And finally it is injective: for $n\in N$, define $f\colon S\to N$ by $f(s)=sn$.
+    This is clearly $S$-linear and $f(1)=n$.
+    Thus $\ev_1$ is an isomorphism, easily seen to be natural.
+
+    Thus we have an adjunction
+    $$ \bul^S = \bul\otimes_RS \vdash \hom_S(S,\bul) \cong \bul_R $$
+    as desired.
+\eenum
+
+\bprob
+
+    Let $R$ be a ring, $M,N$ be fg $R$-modules.
+    \benum
+        \item Assume $R$ is local with maximal ideal $\m$.
+        \benum
+            \item Show that $M\cong0$ iff $M/\m M\cong0$.
+            \item Show that $M\otimes_RN\cong0$ iff $M\cong0$ or $N\cong0$.
+        \eenum
+        \item Let $f\colon M\to M$ be surjective, show that it is an isomorphism.
+    \eenum
+
+\eprob
+
+\benum
+    \item
+    \benum
+        \item If $M\cong0$ then $M/\m M\cong0$ clearly.
+        Conversely, if $M/\m M\cong0$ then $\m M=M$, and by Nakayama's lemma this means $M\cong0$.
+        (Nakayama's lemma being $\jac(R)M=M$ implying $M\cong0$, in this case $\jac(R)=\m$ since it is local.)
+
+        \item Note that in general for an ideal $I\leq R$,
+        $$ \frac M{IM} \otimes_{R/I} \frac N{IN} \cong \parens{M\otimes_R\frac RI} \otimes_{R/I} \parens{N\otimes_R\frac RI}
+        \cong M\otimes_R N\otimes_R\frac RI \cong \frac{M\otimes_RN}{I(M\otimes_RN)} . $$
+        Thus if $M\otimes_RN\cong0$ then
+        $$ \frac M{\m M}\otimes_{R/\m} \frac N{\m N} \cong \frac{M\otimes_RN}{\m(M\otimes_RN)} \cong 0 . $$
+        But $R/\m$ is a field, and over a field $\dim_K(V\otimes_KW)=(\dim_KV)(\dim_KW)$, so the tensor is zero iff $V\cong0$ or $W\cong0$.
+        So $M/\m M$ or $N/\m N$ is zero, and by the above point, either $M\cong0$ or $N\cong0$.
+
+        Conversely the tensor of any module with the zero module is zero.
+    \eenum
+
+    \item We view $M$ as an $R[x]$ module by $x\cdot m=f(m)$ for all $m\in M$.
+    This is well-defined since the $R$-module structure on $M$ endows $\endo(M)$ with an $R$-module structure $R\to\endo(M)$.
+    Then $R[x]$ is the free $R$-algebra in a single indeterminant, and so there is a unique morphism $R[x]\to\endo(M)$ mapping $x$ to $f$ commuting with the maps
+    $R\to R[x],\endo(M)$; that is to say, this extends $M$'s $R$-module structure to an $R[x]$-module structure uniquely.
+
+    The $R[x]$-module structure must be given by $p(x)\cdot m=p(f)(m)$ for all $m\in M$ (where $p(f)$ denotes substituting $f$ for $x$ in the polynomial).
+
+    In any case, the assumption translates to the fact that $x\cdot M=M$ and thus $(x)\cdot M=M$, where $(x)\leq R[x]$ is the ideal generated by $x$.
+    Since $M$ is fg as an $R$-module, it is fg as an $R[x]$-module, and thus we can apply Nakayama's lemma: there is a $p\in(x)$ such that $p\cdot m=m$ for all $m\in M$.
+    $p\in(x)$ means that $p=x\cdot q$ for some polynomial $q\in R[x]$, and then
+    $$ m = p\cdot m = f\circ q(f)(m) = q(f)\circ f(m) . $$
+    Thus $q(f)$ is $f$'s inverse, so it is an isomorphism as desired.
+\eenum
+
+\bprob
+
+    \benum
+        \item Find a natural bijection between the closed points of $\abs{\spec(\bQ(x)\otimes_\bQ\bC)}$ and the set of transcendental complex numbers.
+        \item Consider the Galois group $\Gal(\bar\bQ/\bQ)$ which we identify with $\lim_K\Gal(K/\bQ)$ for $K/\bQ$ finite Galois.
+        Equipping $\Gal(K/\bQ)$ with the discrete topology induces a topology on $\Gal(\bar\bQ/\bQ)$ called the {\emphcolor Krull topology}.
+        Prove that $\Gal(\bar\bQ/\bQ)$ and $\spec(\bar\bQ\otimes_\bQ\bar\bQ)$ are homeomorphic.
+    \eenum
+
+\eprob
+
+\benum
+    \item In general if $A,B$ are $R$-algebras and $S\subseteq A$ is multiplicatively closed, 
+    $$ S^{-1}A\otimes_RB \cong (S^{-1}A\otimes_AA)\otimes_RB \cong S^{-1}A\otimes_A(A\otimes_RB) . $$
+    Since localization commutes with tensoring, this is isomorphic to
+    $$ S^{-1}A\otimes_RB \cong S^{-1}(A\otimes_A(A\otimes_RB)) \cong S^{-1}(A\otimes_RB) . $$
+    In our case, $\bQ(x)$ is the localization of $\bQ[x]$ with respect to $S=\bQ[x]-0$, and so
+    $$ \bQ(x)\otimes_\bQ\bC \cong S^{-1}(\bQ[x]\otimes_\bQ\bC) \cong S^{-1}\bC[x] , $$
+    where the final isomorphism is due to an above point.
+    Thus
+    $$ \bQ(x) \otimes_\bQ \bC \cong \set{\frac{f(x)}{p(x)}}[{f(x)\in\bC[x],0\neq p(x)\in\bQ[x]}] . $$
+
+    Recall that maximal ideals of $S^{-1}A$ are all of the form $S^{-1}\m$ where $\m\leq A$ is an ideal maximal in the property of not intersecting $S$.
+    Since maximal ideals are prime, and prime ideals of $S^{-1}A$ are of the form $S^{-1}\p$ for $\p\leq A$ prime, $\m$ is prime.
+    In our case, prime ideals of $\bC[x]$ are maximal and of the form $(x-\lambda)$ for $\lambda\in\bC$.
+    Thus maximal ideals of $\bQ(x)\otimes_\bQ\bC$ are the localization of maximal ideals $(x-\lambda)$ which don't intersect $\bQ[x]-0$, equivalently $(x-\lambda)\cap\bQ[x]=0$.
+
+    An ideal $(x-\lambda)$ intersects $\bQ[x]$ trivially iff $\lambda$ is transcendental: if $(x-\lambda)p(x)\in\bQ[x]$ then this gives a rational polynomial with root $\lambda$,
+    so it is algebraic.
+    Conversely if $\lambda$ is algebraic then $q(\lambda)=0$ for some $q\in\bQ[x]$ and thus $q(x)=(x-\lambda)p(x)\in(x-\lambda)\cap\bQ[x]$ for some $p\in\bC[x]$.
+
+    Thus the bijection in question is given by
+    $$ \lambda \oto S^{-1}(x-\lambda) . $$
+
+    \item We have that $\bar\bQ=\colim_KK$ as $K$ goes through finite Galois extensions of $\bQ$ (this is functorial due to restriction).
+    This is a direct colimit, as two finite Galois extensions are contained in their compositum.
+    Tensoring is left-adjoint and thus commutes with colimits:
+    $$ \bar\bQ\otimes_\bQ\bar\bQ \cong \colim_{K,K'}K\otimes_\bQ K' . $$
+    Notice that the the product of two directed sets is directed, so this is again a direct colimit.
+    We can restrict direct colimits to cofinal subsets, and the diagonal is cofinal, so this is isomorphic to
+    $$ \bar\bQ \otimes_\bQ \bar\bQ  \cong \colim_K K\otimes_\bQ K . $$
+
+    Now, $\spec$ is an antiequivalence and in particular preserves colimits (since it is contravariant it turns colimits into limits).
+    Thus
+    $$ \spec(\bar\bQ\otimes_\bQ\bar\bQ) \cong \lim_K \spec(K\otimes_\bQ K) . $$
+    By the question above, $K\otimes_\bQ K$ is isomorphic to $\prod_{\Gal(K/\bQ)}K\cong K^n$ where $n=\abs{\Gal(K/\bQ)}$.
+
+    Since $K$ is a field and thus Noetherian, $K^n$ is Noetherian as well (the property is preserved under finite direct sums).
+    If $v,u\in K^n$ are vectors, then we can normalize them so that all of their components are zero or one and this does not change the ideal they generate $(v,u)$.
+    If we let $w$ be the vector obtained by taking their ``union'' ($w_i=1$ iff $v_i$ or $u_i=1$), then we see that $(v,u)=(w)$.
+    Thus inductively we see $K^n$ is a PID whose ideals are generated by vectors whose components are all $0$ or $1$.
+    Notice that $(v)\subseteq(u)$ iff the set of indices where $u_i=1$ contains the set of indices where $v_i=1$.
+    Thus the maximal ideals of $K^n$ are those generated by vectors $v$ which contain only a single zero.
+    These are also the prime ideals: if $v_i=v_j=0$ for $i\neq j$, then let $u^i$ be $v$ but whose $i$th component is $1$, then $u^iu^j=v$ but neither are in $(v)$.
+
+    Thus $\abs{\spec(K^n)}=\spec(K^n)$ has size $n$.
+    Since it is finite and all points are closed, $\spec(K^n)$ is homeomorphic to $[n]$, the discrete space of size $n$.
+    In particular
+    $$ \spec(K\otimes_\bQ K) \cong \spec\parens{\prod_{\Gal(K/\bQ)}K} \cong \Gal(K/\bQ) , $$
+    since $\Gal(K/\bQ)$ was given the discrete topology.
+
+    And thus
+    $$ \spec(\bar\bQ\otimes_\bQ\bQ) \cong \lim_K \Gal(K/\bQ) \cong \Gal(\bar\bQ/\bQ) $$
+    as desired.
+\eenum
+
+\bprob
+
+    Consider the {\emphcolor combinatorial Nullstellensatz}:
+
+    \domcountfalse
+    \bthrm[title=Combinatorial Nullstellensatz]
+
+        Let $k$ be a field, $f\in k[x_1,\dots,x_n]$.
+        Suppose $x^{t_1}\cdots x^{t_n}$ is a monomial of maximal degree appearing in $f$ (that is, $\sum_it_i$ is maximal).
+        Let $S_1,\dots,S_n\subseteq k$ be subsets such that $\abs{S_i}>t_i$ for all $i$.
+        Then there are $s_i\in S_i$ such that $f(s_1,\dots,s_n)\neq0$.
+
+    \ethrm
+
+    \noindent Use it to prove the following:
+
+    \bthrm[title=Cauchy-Davenport]
+
+        Let $p$ be prime, and $A,B\subseteq\bF_p$ nonempty such that $\abs A+\abs B-1\leq p$.
+        Then $\abs{A+B}\geq\abs A+\abs B-1$.
+
+    \ethrm
+
+\eprob
+
+Suppose this were not the case, so $\abs{A+B}\leq\abs A+\abs B-2<p$.
+Let us extend $A+B$ to a subset $C\subseteq\bF_p$ of size $n=\abs A+\abs B-2$.
+Define $f\in\bF_p[x,y]$ by
+$$ f(x,y) = \prod_{c\in C}(x+y-c) . $$
+The maximal degree of $f$ is $\abs C=n$, and by the binomial theorem, the coefficient of $x^ky^{n-k}$ in $f$ is $\binom nk$, which is nonzero since $n<p$.
+In particular for $k=\abs A-1$ we have $n-k=\abs B-1$, so $\abs A>k,\abs B>n-k$ and thus by the combinatorial Nullstellensatz there are $a\in A,b\in B$ such that $f(a,b)\neq0$.
+But then $a+b\notin C$ and in particular $a+b\notin A+B$, a contradiction.
+
+\bye
+

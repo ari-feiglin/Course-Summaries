@@ -1,0 +1,378 @@
+\input pdfToolbox
+\input pdfmsym
+\pdfmsymsetscalefactor{10}
+\input ../preamble
+\def\enumindent{0cm}
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+\setcounter{section}{7}
+
+\centerline{\setfontandscale{bf}{20pt}Commutative Algebra \& Algebraic Geometry}
+\medskip
+\centerline{\bf Exercise \the\counter{section}}
+\smallskip
+\centerline{\it Ari Feiglin}
+
+\bprob
+
+    \benum
+        \item Let $k=\bC$, determine which of the following is Zariski closed, and if it is compute its ideal:
+        \benum
+            \item $X=\set{(a,a^2)}[a\in\bC]$,
+            \item $X=\set{(a,\sin a)}[a\in\bC]$.
+        \eenum
+        \item Let $A$ be a fg $k$-algebra, and let $X=\spec(A)$.
+        Let $Y,Z\subseteq X$ be closed, then show
+        \benum
+            \item $\abs{Y\cup Z}=\abs Y\cup\abs Z$,
+            \item $\abs{Y\cap Z}=\abs Y\cap\abs Z$,
+            \item $Y$ is connected iff $\abs Y$ is connected,
+            \item $Y$ is irreducible iff $\abs Y$ is irreducible.
+        \eenum
+    \eenum
+
+\eprob
+
+\benum
+    \item
+    \benum
+        \item Clearly we have $X=Z(y-x^2)$ so $X$ is closed.
+        Its ideal is then
+        $$ \I(X) = \sqrt{(y-x^2)} = (y-x^2) , $$
+        since $y-x^2$ is irreducible as if $y-x^2=f(x,y)g(x,y)$ then one of $f,g$ must have degree $0$ over $y$ and the other degree $1$.
+        So $y-x^2=p(x)g(x,y)$, but we must have that $p$ is a constant since $y$ has no $x$ component in $y-x^2$.
+
+        \item Here $X$ is not closed.
+        If it were, then it would be contained in some proper $Z(f)$ for some $f\in\bC[x,y]$.
+        But if $f(a,\sin a)=0$ for all $a\in\bC$ then $f$ must be zero, since $\sin x$ is not an algebraic function of $x$.
+        Then $Z(f)=Z(0)=X$ a contradiction.
+    \eenum
+
+    \item
+    \benum
+        \item We know that for $Y\subseteq X$ closed, $S\subseteq Y$ is relatively closed iff $S$ is closed in $X$.
+        Thus $p\in Y$ is a closed point in $Y$ iff it is a closed point in $X$.
+        Thus
+        $$ \abs Y = \abs X\cap Y . $$
+        Since $Y\cup Z$ is closed, we see
+        $$ \abs{Y\cup Z} = \abs X\cap(Y\cup Z) = (\abs X\cap Y)\cup(\abs X\cap Z) = \abs Y\cup\abs Z . $$
+        \item Similar to above, we have
+        $$ \abs{Y\cap Z} = \abs X\cap(Y\cap Z) = (\abs X\cap Y)\cap(\abs X\cap Z) = \abs Y\cap\abs Z . $$
+        \item Since $Y$ is closed, it is of the form $Z(I)$ for a radical ideal $I\leq A$.
+        We know $Y=Z(I)$ is homeomorphic to $\spec(A/I)$, and $A/I$ is a reduced fg $k$-algebra, so it is sufficient to show that $X$
+        is connected (resp.\ irreducible) iff $\abs X$ is.
+
+        Recall that $\abs X$ is the maximal spectrum of $A$, with closed sets given by
+        $$ Z_m(I) = Z(I)\cap X = \set{\m\leq A\hbox{ maximal}}[I\leq\m] . $$
+        Then we have that
+        $$ Z_m\parens{\sum I_i} = Z\parens{\sum I_i}\cap\abs X = \bigcap_iZ(I_i)\cap\abs X = \bigcap_iZ_m(I_i), $$
+        and
+        $$ Z_m\parens{IJ} = Z(IJ)\cap\abs X = (Z(I)\cup Z(J))\cap\abs X = Z_m(I)\cup Z_m(J) . $$
+
+        We make the following claims: $Z_m(I)=\abs X$ iff $Z(I)=X$ and $Z_m(I)=\emptyset$ iff $Z(I)=\emptyset$.
+        Both ``if'' directions are clear.
+        The latter equivalence is also clear since $Z_m(I)=\emptyset$ means $I$ is not contained in any maximal ideal and thus it cannot be a proper
+        ideal, so $Z(I)=\emptyset$.
+        For the former ``only if'' direction, let $\p\in X$ then for every maximal extension $\p\leq\m$ we have $I\leq\m$.
+        Then
+        $$ I \geq \bigcap_{\p\leq\m}\m = \jac(\p) = \p , $$
+        where the final equality is due to $A$ being a Jacobson ring as a fg $k$-algebra, so $\p\in Z(I)$ and $Z(I)=X$ as desired.
+
+        If $X$ is disconnected, then $X$ can be written as the disjoint union of two non-empty closed subsets.
+        Say $X=Z(I)\cup Z(J)$, then $\abs X=Z_m(I)\cup Z_m(J)$ are disjoint.
+        And $Z_m(I),Z_m(J)$ are nonempty because we showed this means $Z(I)$ or $Z(J)$ is empty.
+
+        Conversely if $\abs X$ is disconnected, so $\abs X=Z_m(I)\cup Z_m(J)$ is a disjoint union of non-empty closed subsets.
+        So $\abs X=Z_m(IJ)$ and thus we showed $X=Z(IJ)=Z(I)\cup Z(J)$.
+        This is a disjoint union since $Z_m(I)\cap Z_m(J)=Z_m(I+J)=\emptyset$ so $Z(I)\cap Z(J)=Z(I+J)$ is empty as well as we showed.
+
+        \item If $X$ is reducible, then $X=Z(I)\cup Z(J)$ for $Z(I),Z(J)$ proper.
+        Then $\abs X=Z_m(I)\cup Z_m(J)$ and these are proper as $Z(I),Z(J)$ are proper ($Z_m(I)=\abs X$ iff $Z(I)=X$), so $\abs X$ is reducible.
+        Conversely if $\abs X=Z_m(I)\cup Z_m(J)=Z_m(IJ)$ then $X=Z(IJ)=Z(I)\cup Z(J)$ and these are proper as $Z_m(I),Z_m(J)$ are proper,
+        so $X$ is reducible.
+    \eenum
+\eenum
+
+\bprob
+
+    \benum
+        \item Let $X$ be a topological space, and $\F\colon\Op(X)^\op\to\Alg_k$ be a subpresheaf of $\fun(\bul,k)$.
+        Find an example of $\F$ satisfying the localization condition but not the sheaf condition.
+        And similarly find a sheaf $\F$ not satisfying the localization condition.
+
+        \item Let $X$ be a topological space and $\set{B_i}$ a basis for the topology.
+        Show that to define a structure sheaf $\O$ on $X$ it is enough to define it on the basic open sets so that $\F$ satisfies the axioms
+        on the basic open sets (and also necessary).
+
+        \item Prove that $\SWF_k$ admits all colimits.
+
+        \item Show that in $\SWF_k$, $(\bA^2,\O_{\bA^2})$ is the product of $(\bA^1,\O_{\bA^1})$ with itself.
+        Deduce that the forgetful functor $\SWF_k\to\Top$ is not a right-adjoint.
+
+        \item Find an SWF which is not a variety.
+
+        \item Fix two SWFs $(X,\O_X)$ and $(Y,\O_Y)$.
+        Find a continuous map $X\to Y$ which does not lift to a morphism of SWFs.
+        And find a morphism $(X,\O_X)\to(Y,\O_Y)$ which is not an isomorphism, but $X\to Y$ is a homeomorphism.
+    \eenum
+
+\eprob
+
+\benum
+    \item Let $X=\bR=k$ and equip it with the discrete topology.
+    Then for every $S\subseteq\bR$ let $\O(S)$ be the set of functions $S\to\bR$ which are continuous in the usual topology.
+    This satisfies the localization condition: for $f\in\O(S)$ then $D_S(f)$ is open (as all sets are open) and $1/f$ is continuous
+    over it in the usual topology (as the composition with the continuous $D_S(f)\to\bR^\times\xtos{\bul^{-1}}\bR^\times$) so
+    $1/f\in O(D_S(f))$.
+    But it is not a sheaf.
+    For one, clearly $\O(X)$ is not all of $\fun(X,\bR)$ since not all functions are continuous in the usual topology.
+    But let $f\colon X\to\bR$ not be in $\O(X)$, then $\set{x}_{x\in X}$ is an open cover of $X$ and $f_x\colon\set x\to\bR$ given by
+    $f_x(x)=f(x)$ is continuous so $f_x\in\O(\set x)$.
+    If $\O$ were a sheaf, then there would be a $g\in\O(X)$ such that $g|_{\set x}=f|_{\set x}$ for all $x$, i.e.\ $g(x)=f(x)$
+    so $g=f$ identically.
+    But we assumed $f\notin\O(X)$, so $\O$ is not a sheaf.
+
+    The presheaf $\fun(\bul,k)$ is itself a sheaf, independent of the underlying topology.
+    But it is not necessarily local.
+    For example take $X=\bR$ with the trivial topology, so $\id\in\fun(X,k)$.
+    But $D_X(\id)=X-0$ is not open, so $\fun(\bul,k)$ is not local.
+
+    \item Let $U\subseteq X$ be open and let $\set{B_i}$ be a cover of $U$ with basic open sets.
+    Then define
+    $$ \O(U) = \set{f\colon U\to k}[f|_{B_i}\in\O(B_i)\hbox{ for all $i$}] . $$
+    We claim that this is independent on the open cover.
+    Indeed, if $\set{B_j}$ is another open cover and $f|_{B_i}\in\O(B_i)$ for all $i$, we want to show $f|_{B_j}\in\O(B_j)$ for all $j$.
+
+    Let $\set{B^{ij}_k}$ be an open cover for $B_i\cap B_j$ for an $i,j$, so $\set{B^{ij}_k}_{i,k}$ covers $B_j$ and $\set{B^{ij}_k}_{j,k}$
+    cover $B_i$.
+    So there are $f_{ijk}\in\O(B^{ij}_k)$ such that $f_{ijk}|_{B^{ij}_k}=f|_{B^{ij}_k}$.
+    Since $\set{B^{ij}_k}_{i,k}$ cover $B_j$ this means that there is a $g\in\O(B_j)$ such that $g|_{B^{ij}_k}=f|_{B^{ij}_k}$ for all
+    $i,k$.
+    And thus $g=f|_{B_j}$, so $f|_{B_j}\in\O(B_j)$ as desired.
+
+    In particular this means that for $B=B_i$ basic, with the open cover $\set{B}$ we get that our new definition of $\O(B)$
+    agrees with the given $\O(B)$.
+
+    Now say $U\subseteq V$ and $f\in\O(V)$.
+    If we let $\set{B_i}$ cover $U$ and extend it to a covering of $V$, we see that $f|_{B_i}\in\O(B_i)$ for all $i$ so by definition
+    $f|_U\in\O(U)$ as well, meaning $\O$ is a presheaf.
+
+    And if $\set{U_i}$ is an open cover of $U$ and $f\colon U\to k$ has $f|_{U_i}\in\O(U_i)$ for all $i$, then let $B^i_j$ cover $U_i$
+    so that $\set{B^i_j}_{i,j}$ covers $U$ then by definition $f|_{B^i_j}\in\O(B^i_j)$ for all $i,j$.
+    So $f\in\O(U)$, and thus $\O$ is a sheaf.
+
+    If $f\in\O(U)$, cover $U$ by $B_i$ so that
+    $$ D_U(f) = \bigcup_iD_{B_i}(f) $$
+    is open.
+    Cover $D_{B_i}(f)$ by $B^j_i$ so by assumption $1/f|_{B^j_i}\in\O(B^j_i)$, and thus by definition $1/f|_{D_{B_i}(f)}\in\O(D_{B_i}(f))$.
+    These cover $D_U(f)$ so $1/f\in\O(D_U(f))$ showing that $\O$ is local, and thus a structure sheaf.
+
+    \item I unfortunately don't have time to prove these constructions.
+    For a coproduct $Y=\coprod_iX_i$, it is sufficient to define the structure sheaf on the basic open sets of the coproduct,
+    which are just the open subsets of $X_i$.
+    For $U\subseteq X_i$ define
+    $$ \O_Y(U) = \O_{X_i}(U) . $$
+
+    Now if $\pi\colon X\to Y$ is a quotient map, there is a unique SWF structure on $Y$ given one on $X$ making it final.
+    For $U\subseteq Y$ open, define
+    $$ \O_Y(U) = \set{f\colon U\to k}[f\circ\pi\in\O_X(\pi^{-1}U)] . $$
+    Then the coequalizer of two SWF morphisms is given as the SWF on the coequalizer of the topological spaces, which is a
+    quotient.
+
+    \item From lecture we know that for any SWF $(X,\O_X)$ we have
+    $$ \hom_\SWF(X,\bA^n) \cong \O_X(X)^n $$
+    naturally, and thus
+    $$ \hom_\SWF(X,\bA^n) \cong \hom(X,\bA^1)^n $$
+    naturally.
+    So by Yoneda, $\bA^n$ is the $n$-fold product of $\bA^1$ with itself in $\SWF$.
+
+    But $\bA^2$ is not homeomorphic to $\bA^1\times\bA^1$ as topological spaces.
+    The closed sets of $\bA^1$ are the finite subsets of $\bA^1$ itself, so the closed subsets of $\bA^1\times\bA^1$ are all of the form
+    $S_1\times S_2,S_1\times\bA^1,\bA^1\times S_2,\bA^1\times\bA^1$ for $S_i$ finite.
+    So $Z(x^2+y^2)\subseteq\bA^2$ for example cannot be homeomorphic to a closed subset of $\bA^1\times\bA^1$.
+
+    So the forgetful functor doesn't preserve limits and is thus not a right adjoint.
+
+    \item
+
+    \item For the first, let $X=\bR$ with two SWFs $(X,\O_1)$ and $(X,\O_2)$.
+    The first being the SWF of smooth maps and the second being the SWF of continuous maps on $\bR$.
+    $\id\colon X\to X$ is not a morphism of SWFs $\O_1\to\O_2$ since this would imply $\O_1\subseteq\O_2$, which is not true (not all continuous
+    maps are smooth).
+
+    Conversely $\id\colon\O_2\to\O_1$ from continuous maps to smooth maps is a morphism of SWFs.
+    It is not an isomorphism since its inverse would have to be $\id\colon\O_2\to\O_1$ ($\id$'s inverse is itself) which we already showed is
+    not a morphism of SWFs, while $\id\colon X\to X$ is clearly a homeomorphism.
+\eenum
+
+\bprob
+
+    Define $U_x=U_y=U_z=\bA^2$, and we denote their coordinates as follows:
+    $$ k[U_x] = k\bracks{\frac yx,\frac zx},\qquad k[U_y] = k\bracks{\frac xy,\frac zy},\qquad 
+    k[U_z] = k\bracks{\frac xz,\frac yz} . $$
+    Further define
+    $$ U_{xy} = D_{U_x}(y/x),\qquad V_{xy} = D_{U_y}(x/y) , $$
+    and
+    $$ \phi_{xy}\colon U_{xy} \to V_{xy},\qquad (a,b)\mapsto \parens{\frac1a,\frac ba} . $$
+    We do the same for the other two pairs of variables.
+    \benum
+        \item Prove that $\phi_{xy}$ is a well-defined isomorphism of varieties.
+        \item Via the maps defined, we glue $U_x,U_y,U_z$ together and obtain the {\emphcolor projective plane} $\bP^2$.
+        Prove that $\O_{\bP^2}(\bP^2)=k$ and deduce that $\bP^2$ is not affine.
+        \item Find a natural bijection between $\bP^2$ and the set of lines through the origin in $k^3$.
+        Given a nonzero point $(a,b,c)\in k^3$ we denote the line through it and the origin by $[a:b:c]$.
+        These are called the {\emphcolor projective coordinates} of $\bP^2$.
+        \item Let $a,b,c\in k$ such that $a$ or $b$ is nonzero.
+        Consider
+        $$ Z_{U_z}\parens{a\frac xz + b\frac yz + c} \subseteq U_z . $$
+        Let $L$ be its image in $\bP^2$.
+        Show that $\cl L$ has a single point not in $L$ and write its projective coordinates.
+    \eenum
+
+\eprob
+
+\benum
+    \item Firstly $\phi_{xy}$ lands in $V_{xy}$ since if $0\neq a=y/x$ then $0\neq 1/a=x/y$ so $(1/a,b/a)$ is not a zero
+    of $x/y$.
+    Since $U_{xy},V_{xy}$ are open subspaces of affine space, it is sufficient to check that $\phi_{xy}$'s components
+    are rational functions to see it is a morphism of SWFs, which they clearly are.
+    And $\phi_{xy}$'s inverse is given by $\psi_{xy}$ defined $V_{xy}\to U_{xy}$ by $(c,d)\mapsto(1/c,d/c)$.
+    This is symmetric to $\phi_{xy}$ and so is also a morphism of SWFs.
+    
+    \item We have the following colimiting diagram,
+
+    \bigskip
+    \centerline{\drawdiagram{
+        &$U_{xz}$\cr
+        $U_{xy}$&&$U_{yz}$\cr
+        $U_x$&$U_y$&$U_z$\cr
+        &$\bP^2$\cr
+    }{
+        \diagarrow{from={1,2}, to={3,1}, curve=-2.5cm, dest orient={left, top}}
+        \diagarrow{from={1,2}, to={3,3}, curve=2.5cm, dest orient={right, top}}
+        \diagarrow{from={2,1}, to={3,1}}
+        \diagarrow{from={2,1}, to={3,2}}
+        \diagarrow{from={2,3}, to={3,2}}
+        \diagarrow{from={2,3}, to={3,3}}
+        \diagarrow{from={3,1}, to={4,2}}
+        \diagarrow{from={3,2}, to={4,2}}
+        \diagarrow{from={3,3}, to={4,2}}
+    }}
+
+    And since global sections preserves contravariantly preserves colimits, the following diagram is limiting
+
+    \bigskip
+    \centerline{\drawdiagram{
+        &$\O(U_{xz})$\cr
+        $\O(U_{xy})$&&$\O(U_{yz})$\cr
+        $k\bA^2$&$k\bA^2$&$k\bA^2$\cr
+        &$\O(\bP^2)$\cr
+    }{
+        \diagarrow{to={1,2}, from={3,1}, curve=2.5cm, origin orient={left, top}}
+        \diagarrow{to={1,2}, from={3,3}, curve=-2.5cm, origin orient={right, top}}
+        \diagarrow{to={2,1}, from={3,1}}
+        \diagarrow{to={2,1}, from={3,2}}
+        \diagarrow{to={2,3}, from={3,2}}
+        \diagarrow{to={2,3}, from={3,3}}
+        \diagarrow{to={3,1}, from={4,2}}
+        \diagarrow{to={3,2}, from={4,2}}
+        \diagarrow{to={3,3}, from={4,2}}
+    }}
+
+    The map $k\bA^2=\O(U_y)\to\O(U_{xy})$ is the map $p\mapsto p\circ\phi_{xy}$, which is the function
+    $(a,b)\mapsto p(1/a,b/a)$.
+    So $\O(\bP^2)$ are triplets of polynomials $p_1,p_2,p_3$ such that
+    $$ p_1 = p_2\circ\phi_{xy},\qquad p_1 = p_3\circ\phi_{xz},\qquad p_2 = p_3\circ\phi_{yz} . $$
+    But $p_2\circ\phi_{xy}$ is not polynomial in $(a,b)$, unless $p_2\in k$.
+    So we see that $p_1=p_2=p_3\in k$, meaning $\O(\bP^2)=k$.
+
+    For an affine variety $Y$ we have $\O(Y)=k[Y]\cong k[\bA^n]/\I(Y)$.
+    This is isomorphic to $k$ iff $\I(Y)$ is maximal, i.e.\ iff $Y=Z\circ\I(Y)$ is a single point.
+    But $\bP^2$ is not a single point, as it contains copies of $\bA^2$ so it is not affine.
+
+    \item As a topological space, $\bP^2$ is the disjoint union $U_{x}\amalg U_{y}\amalg U_{z}$ quotiented by
+    $(a,b)\in U_{x}$ being identified with $(1/a,b/a)\in U_y$ and $(1/a,b/a)\in U_z$ for $a\neq0$ and similar for $U_y$.
+
+    For a line $[a:b:c]$ we map it to the following points:
+    $$ [a:b:c] \mapsto \cases{(b/a,c/a)\in U_x\cr (a/b,c/b)\in U_y\cr (a/c,b/c)\in U_z} , $$
+    when these are defined.
+    Since $(a,b,c)\neq0$ at least one will be defined.
+    And when two are defined, e.g.\ $a,b\neq0$ then we see that
+    $$ (b/a,c/a) \sim (a/b,c/b) , $$
+    so that $[a:b:c]$ determines the same point in $\bP^2$.
+
+    And for any point in $\bP^2$, say $(b,c)\in U_x\subseteq\bP^2$ then $[1:b:c]$ is mapped to it.
+    So this mapping is surjective and injective.
+
+    \item The line $a\frac xz+b\frac yz+c=0$ can be homogenized to give $ax+by+cz=0$.
+    So the closure of $L$ is the projective zero set of this homogeneous polynomial:
+    $$ \cl L = \set{[x:y:z]}[ax+by+cz=0] . $$
+    When $z\neq0$ then this is in $L$, as it is in $U_z$.
+    And there is a unique solutio when $z=0$: $ax+by=0$ so the solution is
+    $$ [-b:a:0] . $$
+\eenum
+
+\bprob
+
+    Suppose that for every $k$-algebra $A$ we have a function $f_A\colon A\to A$.
+    Further suppose that these commute for all $k$-algebra morphisms: for all $\phi\colon A\to B$ we have $\phi\circ f_A=f_B\circ\phi$.
+    Show that there is a $f\in k[x]$ such that $f_A(a)=f(a)$ for all $a\in A$.
+
+\eprob
+
+Consider $f_{k[x]}\colon k[x]\to k[x]$ and let $f\in k[x]$ be $x$'s image under $f_{k[x]}$.
+Then for $a\in A$ let $\phi\colon k[x]\to A$ be the unique $k$-algebra morphism given by $\phi(x)=a$.
+Then we have
+$$ f_A(a) = f_A\circ\phi(x) = \phi\circ f_{k[x]}(x) = \phi(f(x)) , $$
+and as a $k$-algebra morphism $\phi$ commutes with polynomials, so $\phi(f(x))=f(\phi(x))=f(a)$.
+Thus we have $f_A(a)=f(a)$ as desired.
+
+\bprob
+
+    Let $X\subset\bA^n$ be a proper affine subvariety over $\bC$.
+    \benum
+        \item Let $\mu$ be the Lebesgue measure on $\bA^n$, show that $\mu(X)=0$.
+        \item Deduce that ``almost all complex matrices are diagonalizable''.
+        \item Assume $X$ is not finite.
+        Show that $X$ is unbounded in the Euclidean metric on $\bA^n$ and thus not compact in the Euclidean topology.
+    \eenum
+
+\eprob
+
+\benum
+    \item Since $X$ is closed, $X\subseteq Z(f)$ for a polynomial $f\in k[\bA^n]$.
+    Let $\chi$ denote the indicator function of $Z(f)$, so by Fubini-Tonelli,
+    $$ \mu(X) \leq \mu(Z(f)) = \int_{\bA^n}\chi = \int_{\bA^1}\cdots\int_{\bA^1}\chi(x_1,\dots,x_n)\,dx_n\cdots dx_1 . $$
+    For $a_1\in\bA^1$ we have that $\chi(a_1,x_2,\dots,x_n)$ is the indicator function of $Z(f(a_1,x_2,\dots,x_n))$.
+
+    Now $f(a,\bar x)$ is identically zero iff $f(y,\bar x)=(y-a)g(y,\bar x)$ for some polynomial $g$.
+    $g(y,\bar x)$'s maximal degree in $y$ is less than $f$'s so there can be only finitely many values $a$ such that
+    $f(a,\bar x)$ is identically zero.
+    That is, for almost every $a$ we have that $Z(f(a,\bar x))$ is a proepr subvariety of $\bA^{n-1}$.
+
+    So we have
+    $$ \mu(Z(f)) = \int_{\bA^1}\mu(Z(f(a,\bar x)))\,da . $$
+    Since for almost all $a$, $Z(f(a,\bar x))$ is a proper subvariety, by induction on $n$ its measure is zero.
+    So the above integrand is zero almost everywhere, and thus $\mu(Z(f))=0$ so $\mu(X)=0$.
+
+    For the base step, we just note that for a single-variable polynomial $f\in k[x]$, $Z(f)$ is finite and thus has
+    zero measure.
+
+    \item If a matrix $A$ is not diagonalizable, it must in particular have a repeated eigenvalue.
+    That is, its characteristic polynomial $p_A$ has a multiple root.
+    This occurs iff its discriminant is zero, ${\rm disc}(p_A)=0$.
+    Since $p_A$'s coefficients are polynomial in $A$ and the discriminant is polynomial in its input, $A\mapsto{\rm disc}(p_A)$
+    is polynomial.
+
+    So the set of non-diagonalizable matrices is contained in $Z({\rm disc}(p_\bul))$ which has measure zero, as it is proper
+    (some matrices don't have repeated eigenvalues).
+
+    \item Let $X=Z(I)$, and consider $A=k[\bA^n]/I=k[X]$.
+    Then $A$ is a fg $k$-algebra and thus by Noether's normalization lemma there is an embedding $k[\bA^m]\to A$.
+    This gives rise to a morphism of SWFs $\bA^m\to X$ which must be surjective, as it is induced by an injective map.
+    Furthermore, this is a continuous map as it is locally rational, which is continuous in the Euclidean topology.
+    Since $\bA^m$ is unbound in $\bA^n$, so too must $X$ be.
+\eenum
+
+\bye
+
