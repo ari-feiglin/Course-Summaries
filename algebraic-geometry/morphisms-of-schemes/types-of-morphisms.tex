@@ -1,0 +1,340 @@
+\subsection{Types of morphisms}
+
+\subsubsection{Open embeddings, finite morphisms}
+
+Recall that a morphism of locally ringed spaces $(X,\O_X)\to(Y,\O_Y)$ is a topological map $\phi\colon X\to Y$
+equipped with a morphism of sheaves $\phi^\sharp\colon\O_X\to\phi_*\O_Y$ such that the associated map
+of stalks $\phi_p\colon\O_{X,\phi p}\to\O_{Y,p}$ maps the maximal ideal $\m_{X,\phi p}$ into $\m_{Y,p}$
+for all $p\in Y$.
+A morphism of schemes is then a morphism of locally ringed spaces.
+It is clear that an isomorphism of ringed spaces is an isomorphism of locally ringed spaces.
+
+Furthermore recall the mutual right adjunction
+$$ \hom_{\LRS}(X,\spec A) \cong \hom_\Ring(A,\Gamma(X,\O_X)) $$
+which was proven in \refmath[theorem]{specglobsectionadj}.
+
+The affine scheme $\spec\bZ$ is terminal in the category of affine schemes (because $\bZ$ is the initial ring),
+and it is thus terminal in the category of schemes by taking an affine cover.
+
+\bdefn
+
+    Let $S$ be a scheme.
+    The category of {\emphcolor $S$-schemes} is the over category $\Sch_S$.
+    That is, it is the category whose objects are schemes $X$ with a morphism $X\to S$ (called the
+    {\emphcolor structure morphism}), and morphisms
+    are commutative triangles
+
+    \diagram{
+        X&&Y\cr
+        &S
+    }{
+        \diagarrow{from={1,1}, to={1,3}}
+        \diagarrow{from={1,1}, to={2,2}}
+        \diagarrow{from={1,3}, to={2,2}}
+    }
+
+\edefn
+
+For a ring $A$, we may define an $A$-scheme to be a scheme whose structure sheaf is valued in the category
+of $A$-algebras.
+A $\spec A$-scheme determines an $A$-algebra, as the structure morphism gives a global section
+$A\to\Gamma(X,\O_X)$ and all sections are $\Gamma(X,\O_X)$-algebras.
+The converse follows by \refmath[theorem]{specglobsectionadj}.
+So an $A$-scheme is the same as a $\spec A$-scheme.
+
+\bdefn
+
+    A class of morphisms of schemes is called {\emphcolor reasonable} if it contains all isomorphisms
+    and satisfies the following properties:
+    \benum
+        \item The class is closed under composition,
+        \item The class is preserved by base change (pullback): if $X\to Y$ is in the class, then for any
+        $Y'\to Y$, the induced map $X\times_YY'\to Y'$ is also in the class.
+        (This assumes the pullback exists, and we will see that pullbacks of schemes always exist.)
+        \item The class is {\emphcolor local on target}.
+        That is to say, (a) if $\pi\colon X\to Y$ is in the class, then for any open $V\subseteq Y$, the
+        restriction $\pi^{-1}V\to V$ is in the class.
+        And (b) if there is an open cover $Y=\bigcup_iV_i$ such that $\pi^{-1}V_i\to V_i$ is in the class for
+        all $i$ then $\pi$ is in the class.
+    \eenum
+
+\edefn
+
+Note that if a property has (1) and (2) then it is closed under products.
+That is to say if $X\to Y$ and $X'\to Y'$ are morphisms of $S$-schemes with the property then
+$X\times_SX'\to Y\times_SY'$ has the property.
+Indeed we note that $X\times_SX'\to X'\times_SY$ has the property as it is the morphism
+$$ X\times_SX' \cong X\times_Y(Y\times_SX') \to Y\times_SX' \cong X'\times_SY . $$
+Similarly $X'\times_SY\to X'\times_SY'$ has the property, and thus $X\times_SX'\to Y\times_SY'$ does.
+
+\bexam
+
+    Clearly the class of isomorphisms is reasonable.
+
+\eexam
+
+\bdefn
+
+    A morphism $X\to Y$ is an {\emphcolor open embedding} (or {\emphcolor open immersion}) if it factors
+    as
+    $$ (X,\O_X) \lisoto (U,\O_Y|_U) \inj (Y,\O_Y) $$
+    for $U\subseteq Y$ open.
+    That is $X$ is isomorphic to an open subscheme of $Y$.
+
+\edefn
+
+Open embeddings clearly satisfy (1) and (3) of being reasonable.
+Now if $\iota\colon U\to Z$ is an open embedding and $\rho\colon Y\to Z$ is an arbitrary morphism, then
+$U\times_ZY=(\rho^{-1}U,\O_Y|_{\rho^{-1}U})$.
+This is easy enough to check, and this is clearly an open subscheme of $Y$.
+Thus the class of open embeddings is reasonable.
+
+If $X\subseteq Y$ is an open subscheme and $Y$ is locally Noetherian, then so too is $X$ (clearly, as an
+affine open subscheme of $X$ is an affine open subscheme of $Y$).
+And if $Y$ is Noetherian so too is $X$ as $Y$ is a Noetherian space and thus $X$ is quasicompact.
+
+\bdefn
+
+    A property of morphisms is {\emphcolor local on the source} when (a) if $\pi\colon X\to Y$
+    has the property and $U\subseteq X$ is an open subscheme, then $\pi|_U\colon U\to Y$ has the property.
+    And (b) if $X=\bigcup_iU_i$ is an open cover where $\pi|_{U_i}\colon U_i\to Y$ has the property then
+    so does $\pi$.
+
+\edefn
+
+\bdefn
+
+    Let $\pi\colon X\to Y$ be a morphism of topological spaces.
+    It is {\emphcolor quasicompact} if for every quasicompact open $U\subseteq Y$, $\pi^{-1}U\subseteq X$
+    is quasicompact.
+    And it is {\emphcolor quasiseparated} if for every quasiseparated open $U\subseteq Y$,
+    $\pi^{-1}U\subseteq X$ is quasiseparated.
+
+    A morphism of schemes has one of these properties if the underlying topological map has it.
+
+\edefn
+
+For a morphism of schemes it is sufficient to check quasicompactness/quasiseparatedness on affine open subsets.
+This is because any open subset of a scheme can be covered with an affine open cover, and if it is
+quasicompact then this cover can be taken to be finite, and its preimage is a finite union of quasicompact
+spaces and thus quasicompact.
+And similarly for quasiseparatedness: a space with an open cover of quasiseparated subspaces is quasiseparated.
+
+The composition of quasicompact or quasiseparated morphisms is quasicompact or quasiseparated respectively.
+
+\bexam
+
+    Clearly if $X$ is a Noetherian space then any map $X\to Y$ is quasicompact.
+    In particular if $X$ is a Noetherian scheme (this is not true for $X$ quasicompact!).
+    And if $X$ is a quasiseparated space then any map $X\to Y$ is quasiseparated (as all open subsets of
+    $X$ are quasiseparated).
+
+\eexam
+
+\bprop
+
+    Let $\pi\colon X\to Y$ be a morphism of schemes.
+    \benum
+        \item $\pi$ is quasicompact iff there is an open affine cover $Y=\bigcup_iU_i$ such that $\pi^{-1}U_i$ is quasicompact.
+        \item $\pi$ is quasiseparated iff there is an open affine cover $Y=\bigcup_iU_i$ such that $\pi^{-1}U_i$ is quasiseparated.
+    \eenum
+
+\eprop
+
+\bproof
+
+    Both points are proven with affine communication.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A morphism of schemes $\pi\colon X\to Y$ is {\emphcolor affine} if $\pi^{-1}U$ is affine for all $U\subseteq Y$ affine.
+
+\edefn
+
+Because quasicompactness and quasiseparatedness can be checked on affine open subsets of $Y$, affine morphisms are quasicompact and
+quasiseparated.
+
+\bprop
+
+    A morphism $\pi\colon X\to Y$ is affine iff there is an open affine cover $Y=\bigcup_iU_i$ such that $\pi^{-1}U_i$ are all affine.
+
+\eprop
+
+\bproof
+
+    We check that the property of an affine $U\subseteq Y$ having $\pi^{-1}U$ being affine satisfies the conditions of the
+    \refmath{affcomm}.
+    Clearly for $\spec A\subseteq Y$ if $\pi^{-1}\spec A=\spec B$ then $\pi^{-1}\spec A_f=\spec B_{\pi^\sharp f}$.
+    And if $(f_1,\dots,f_n)=A$ and $\pi^{-1}\spec A_{f_i}=\spec B_i$.
+    Now we may suppose that our map is $\pi\colon X\to\spec A$, i.e.\ the codomain is $\spec A$, and we want to show $X$ is affine.
+    So define $B=\Gamma(X,\O_X)$ so that $X\to\spec A$ factors through $X\to\spec B$ (arising from the identity $B\to\Gamma(X,\O_X)$).
+
+    So we have the commutative triangle
+    \diagram{
+        X&&\spec B\cr
+        &\spec A
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=\alpha, y distance=.15cm}
+        \diagarrow{from={1,1}, to={2,2}, text=\pi, x distance=.15cm}
+        \diagarrow{from={1,2}, to={2,2}, text=\beta, x distance=.15cm}
+    }
+    And we want to show that $\alpha$ is an isomorphism.
+    Now $\spec A=\bigcup_i\dof(f_i)$ and $\beta^{-1}\dof(f_i)=\dof(\beta^\sharp f_i)=\spec B_{\beta^\sharp f_i}$.
+    And $\pi^{-1}\dof(f_i)=\spec B_i$.
+    Furthermore we have that $X=\pi^{-1}\spec B$ is quasicompact and quasiseparated by the above proposition.
+
+    By \refmath{qcqslemm} there is a natural isomorphism $B_{\beta^\sharp f_i}=\Gamma(X,\O_X)_{\beta^\sharp f_i}\cong\Gamma(X_{\beta^\sharp f_i},\O_X)=A_i$.
+    And so $\alpha$ induces an isomorphism $\spec B_i\to\spec B_{\beta^\sharp f_i}$.
+    Because the $B_i$ cover $\spec B$ we have that $\alpha$ is an isomorphism $X\to\spec B$ as desired.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Let $Z\subseteq\spec A$ be closed such that locally $Z$ is cut out by a single equation.
+    That is, there is an open affine cover $\spec A=\bigcup_i\spec A_i$ such that $Z\cap\vof_{A_i}(f_i)$ for $f_i\in A_i$.
+    Then $Y=\spec A-Z$ is affine.
+
+\ecoro
+
+\bproof
+
+    Under the inclusion $\iota\colon Y\to\spec A$, the preimage of each $\spec A_i\subseteq\spec A$ is $\dof_{A_i}(f_i)=\spec A_{i,f_i}$ which is affine.
+    By the above proposition $\iota$ is an affine morphism, and so $Y=\iota^{-1}\spec A$ is affine.
+    \qed
+
+\eproof
+
+Recall that a morphism of rings $A\to B$ is {\emphcolor finite} if it endows $B$ with an $A$-algebra structure such that $B$ is finitely generated as an $A$-{\it module}.
+And it is of {\emphcolor finite type} if $B$ is a finitely generated $A$-{\it algebra}.
+
+\bdefn
+
+    A morphism of schemes $\pi\colon X\to Y$ is {\emphcolor finite} if it is affine and for $\spec B\subseteq Y$, $\pi^{-1}\spec B=\spec A$
+    and $\pi\colon\spec A\to\spec B$ makes $A$ into a finite $B$-algebra.
+
+    It is {\emphcolor locally of finite type} if for every affine open $\spec A\subseteq X$ and $\spec B\subseteq Y$ such that $\pi\spec A\subseteq\spec B$,
+    $A$ is a finite type $B$-algebra.
+    It is {\emphcolor of finite type} if it is locally of finite type and quasicompact (so the preimage of affine open in $Y$ can be covered by finitely many
+    affine opens in $X$).
+
+\edefn
+
+\bprop
+
+    $\pi\colon X\to Y$ is locally of finite type iff $Y=\bigcup_i\spec B_i$ and $\pi^{-1}\spec B_i=\bigcup_j\spec A_{ij}$ where $A_{ij}$ is a finite type $B_i$-algebra.
+    And it is of finite type if there are finitely many $A_{ij}$.
+
+\eprop
+
+\bproof
+
+    See homework 2.
+    \qed
+
+\eproof
+
+\bprop
+
+    $\pi\colon X\to Y$ is finite iff $Y=\bigcup_i\spec B_i$ and $\pi^{-1}\spec B_i=\spec A_i$ making $A_i$ into a finite $B_i$-algebra.
+
+\eprop
+
+\bproof
+
+    By affine communication, if $\pi^{-1}\spec B=\spec A$ then $\pi^{-1}\spec B_f=\spec A_{\pi^\sharp f}$ and $A_{\pi^\sharp f}$ is a finite $B_f$-algebra.
+    Conversely if $B=(f_1,\dots,f_n)$ and $A_{\pi^\sharp f_i}$ are finite $B_{f_i}$-algebras, then $A$ is a finite $B$-algebra.
+    \qed
+
+\eproof
+
+\subsubsection{Chevalley's theorem}
+
+\TODO{This}
+
+\subsubsection{Closed embeddings}
+
+\bdefn
+
+    A morphism of schemes $\pi\colon X\to Y$ is a {\emphcolor closed embedding} if it is affine, and for $\spec B\subseteq Y$ and
+    $\pi^{-1}\spec B=\spec A$, the induced map $B\to A$ is surjective.
+    A {\emphcolor closed subscheme} of a scheme $Y$ is a subset $X\subseteq Y$ which is a scheme and for which the inclusion is a closed
+    embedding.
+
+\edefn
+
+Clearly closed embeddings are finite and closed embeddings are closed under composition.
+Furthermore by affine locality we may show easily that the property of being a closed embedding is affine-local on the target.
+
+\bremark
+
+    If $\pi\colon X\to Y$ is a closed embedding, then $\pi$ is a topological closed embedding $\pi^\sharp\colon\O_Y\to\pi_*\O_X$ is surjective.
+    Indeed, if $Y=\bigcup_i\spec B_i$ is an affine open cover and $\pi^{-1}\spec B_i=\spec A_i$ then the restriction
+    $\pi\colon\spec A_i\to\spec B_i$ is a closed embedding (corresponding to $\spec B/I\cong\vof(I)\inj\spec B$).
+    Because being a topological closed embedding is local on target, $\pi$ is.
+
+    Thus the stalks of $\pi_*\O_X$ are $(\pi_*\O_X)_{\pi p}\cong\O_{X,p}$ for $p\in X$ and otherwise zero when the point is outside of
+    $\pi$'s image.
+    Then on $\spec B\subseteq Y$ we have that $\O_Y|_{\spec B}\to(\pi_*\O_X)|_{\spec B}$ is $\spec B\to\spec A$, whose stalks are surjective.
+    Thus $\pi^\sharp$'s stalks are surjective, and thus $\pi^\sharp$ is.
+
+    The converse is also true: if $\pi$ is a topological closed embedding and $\pi^\sharp$ is an epimorphism of sheaves, then $\pi$ is a closed
+    embedding.
+
+\eremark
+
+\bdefn
+
+    Let $Y$ be a scheme (or a ringed space), then a sub-$\O_Y$-module of $\O_Y$ is called an {\emphcolor ideal sheaf}.
+    This is equivalent to its sections being ideals of $\O_Y$'s sections.
+
+\edefn
+
+\blemm
+
+    If $\pi\colon X\to Y$ is affine then $\pi_*\O_X$ is a quasicoherent sheaf on $Y$.
+
+\elemm
+
+\bproof
+
+    By \refmath[lemma]{distinguishedquasicoherent}, it is sufficient to show that for $\spec A\subseteq Y$ and $f\in A$,
+    $\Gamma(\spec A,\pi_*\O_X)_f\cong\Gamma(\spec A_f,\pi_*\O_X)$.
+    By assumption $\pi^{-1}\spec A=\spec B$ for some $B$ and so $\pi^{-1}\spec A_f=\spec B_{\pi^\sharp f}$.
+    Thus we have the desired isomorphism.
+    \qed
+
+\eproof
+
+In particular if $\pi$ is a closed embedding then $\pi_*\O_X$ is a quasicoherent sheaf on $Y$.
+Because quasicoherent sheaves form an Abelian category, the kernel of $\O_Y\to\pi_*\O_X$ is quasicoherent.
+Call it $\I_{X/Y}$, and it fits into an exact sequence of quasicoherent sheaves on $Y$
+$$ 0 \to \I_{X/Y} \to \O_Y \to \pi_*\O_X \to 0 , $$
+called the {\emphcolor closed subscheme exact sequence} for $\pi\colon X\inj Y$.
+From such an exact sequence we recover $X$ and $\pi$.
+Taking local sections on an affine open $\spec B\subseteq Y$ is exact on quasicoherent sheaves, because quasicoherent sheaves on $\spec B$
+are in equivalence with $B$-modules (via global sections and $M\mapsto\tilde M$).
+So if $I=\Gamma(\spec B,\I_{X/Y})$ then we have an exact sequence
+$$ 0 \to I \to B \to \Gamma(\pi^{-1}\spec B,\O_X) \to 0 , $$
+so that $\Gamma(\pi^{-1}\spec B,\O_X)=B/I$, and we have that $\pi^{-1}\spec B=\spec(B/I)\subseteq\spec B$ (viewing $X$ as a subspace of $Y$).
+
+Conversely if $\I$ is a quasicoherent sheaf of ideals, so it fits into an exact sequence where $\F$ is quasicoherent on $Y$
+$$ 0 \to \I \to \O_Y \to \F \to 0 . $$
+For $\spec B\subseteq Y$ affine open let $\I(B)=\Gamma(\spec B,\I)$.
+Now notice that for $\spec A,\spec B\subseteq Y$ affine open, $\spec A/\I(A)\subseteq\spec A$ and $\spec B/\I(B)\subseteq\spec B$
+restrict to the same closed subscheme of the intersection $\spec A\cap\spec B$.
+We may cover the intersection $\spec A\cap\spec B$ with open affine subschemes which are simultaneously distinguished in both $\spec A$ and
+$\spec B$.
+So let $\spec A_f=\spec B_g\subseteq\spec A\cap\spec B$, then $\spec A/\I(A)\cap\spec A_f=\spec(A/\I(A))_f$.
+
+\bprop
+
+    $\pi\colon X\inj Y$ is a closed embedding iff $\pi$ is a closed topological embedding, $\pi^\sharp$ is surjective, and $\ker(\pi^\sharp)$
+    is a quasicoherent sheaf of ideals.
+
+\eprop
+

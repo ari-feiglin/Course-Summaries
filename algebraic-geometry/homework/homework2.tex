@@ -1,0 +1,420 @@
+\input ../preamble
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+\setcounter{section}{2}
+
+\centerline{\setfontandscale{bf}{20pt}Algebraic Geometry}
+\medskip
+\centerline{\bf Exercise \the\counter{section}}
+\smallskip
+\centerline{\it Ari Feiglin}
+
+\bprob[title={Hartshorne II.2.4}]
+
+    For a ring $A$ and a scheme $(X,\O_X)$ show that global sections is bijection
+    $$ \hom_\Sch(X,\spec A) \xtos\Gamma \hom_\Ring(A,\Gamma(X,\O_X)) . $$
+
+\eprob
+
+We don't need that $X$ is a scheme, just that it is a locally ringed space.
+For a morphism $\phi\colon X\to\spec A$ with underlying morphism of sheaves
+$\phi^\sharp\colon\spec A\to\phi_*X$, for $f\in A$ let $\phi^\sharp_f$ be its $\dof(f)$-component.
+So global sections maps $\phi$ to $\phi^\sharp_1$.
+We want to show that $\phi^\sharp_1$ uniquely determines $\phi$; i.e.\ global sections is injective.
+
+Let $x\in X$, then because $\phi$ is a local map we have that $\phi^\sharp$ is a local map of rings
+$\O_{\spec A,\phi x}\to \O_{X,x}$.
+So it maps the maximal ideal on the left into the maximal ideal of the right side; meaning
+$\phi(x)A_{\phi x}$ is mapped into $\m_{X,x}$.
+Now this means that for $f\in A$, $f\notin\phi(x)$ iff $f_x\notin\phi(x)A_{\phi x}$ iff it is a unit in
+$\phi(x)A_{\phi x}$ iff $\phi_x(f_{\phi x})\notin\m_{X,x}$.
+Here $f_{\phi x}$ and $\phi_x$ are the stalks of $f,\phi$ at $\phi x$ and $x$ respectively.
+
+Because $\phi$ is a morphism, we have the following commutative diagram
+\commsq{\Gamma(\spec A,\O_{\spec A})&\Gamma(X,\O_X)\cr \O_{\spec A,\phi x}&\O_{X,x}}
+    {\phi^\sharp_1}{\phi^\sharp_x}{\bul_{\phi x}}{\bul_x}
+Meaning $\phi^\sharp_x(f_{\phi x})=\phi^\sharp_1(f)_x$.
+Thus
+$$ f\in\phi(x) \iff \phi^\sharp_1(f)_x \in \m_{X,x} . $$
+And so $\phi^\sharp_1$ uniquely determines the topological map $\phi$.
+
+To show that it determines all of the other components of $\phi^\sharp$, it is sufficient to consider
+only its components on distinguished open subsets $\dof f$, that is $\phi^\sharp_f$.
+We have a commutative square (recall $\Gamma(\dof f,\spec A)=A_f$)
+\commsq{A&\Gamma(X,\O_X)\cr A_f&\Gamma(\phi^{-1}\dof f,\O_X)}
+    {\phi^\sharp_1}{\phi^\sharp_f}{\res}{\res}
+By the universal property of localization, the bottom arrow is unique.
+Thus $\phi^\sharp_1$ determines $\phi^\sharp_f$ as desired.
+Note that in this proof we needed the fact that $\phi^\sharp_1$ also determines the topological map $\phi$
+because we had to consider the pullback of $\O_X$.
+
+So we have shown that global sections is injective.
+It remains to show that it is surjective.
+
+We follow closely the proof of injectiveness.
+Suppose $\sigma\colon A\to\Gamma(X,\O_X)$ is a ring map.
+First we define the topological map $\phi\colon X\to\spec A$, which we define according to the above proof.
+For $x\in X$ let $\sigma_x\colon A\to\Gamma(X,\O_X)\to\O_{X,x}$ be the composition, which is a ring map,
+and define $\phi(x)=\sigma_x^{-1}(\m_{X,x})$.
+This is well-defined because $\sigma_x$ is a ring map and the preimage of a prime ideal is prime.
+
+Now we claim $\sigma$ is continuous.
+Indeed, for $f\in A$
+$$ \sigma^{-1}\dof f = \set{x\in X}[f\notin\sigma_x^{-1}(\m_{X,x})] =
+\set{x\in X}[\sigma_x(f)\notin\m_{X,x}] . $$
+Note that $\sigma_x(f)$ is equal to the stalk of $\sigma(f)\in\Gamma(X,\O_X)$ at $x$.
+So $\sigma^{-1}\dof f$ is the set of points $x\in X$ where the global section $\sigma(f)$ is nonzero
+in the residue field $\kappa(x)=\O_{X,x}/\m_{X,x}$.
+That is
+$$ \sigma^{-1}\dof f = \set{x\in X}[\sigma(f)(x)\neq0] , $$
+where $s(x)$ is equal to the image of $s_x\in\O_{X,x}$ under the projection $\O_{X,x}\to\kappa(x)$.
+
+This is an open set: if $s\in\Gamma(X,\O_X)$ is nonzero in $\kappa(x)$, then it is invertible in
+$\O_{X,x}$ (because it is local), so let $t\in\Gamma(U,\O_X)$ be a section whose germ is an inverse for
+$s_x$.
+Then we have $st=1$ in $\O_{X,x}$ which means that $st=1$ in a neighborhood of $x$, and thus $s$ is
+invertible in a neighborhood of $x$, so for every $y$ in that neighborhood $s_y$ is invertible and thus
+nonzero in $\kappa(y)$.
+So this neighborhood is contained in $\set{x\in X}[s(x)\neq0]$, so it is open.
+
+Thus $\sigma$ is continuous.
+Now we define $\phi^\sharp\colon\O_{\spec A}\to\phi_*\O_X$ on the distinguished open sets.
+We must of course have $\phi^\sharp_1=\sigma$, and by considering the commutative square (same as above)
+\diagram{
+    A&\Gamma(X,\O_X)\cr
+    A_f&\Gamma(\phi^{-1}\dof f,\O_X)
+}{
+    \diagarrow{from={1,1}, to={1,2}, text={\phi^\sharp_1=\sigma}, y distance=.15cm}
+    \diagarrow{from={2,1}, to={2,2}, text=\phi^\sharp_f, y distance=.15cm, dashed}
+    \diagarrow{from={1,1}, to={2,1}, text=\res, x distance=.15cm}
+    \diagarrow{from={1,2}, to={2,2}, text=\res, x distance=.15cm}
+}
+and by the universal property of localization, $\phi^\sharp_f$ is uniquely determined.
+This forms a morphism of sheaves, again by the universal property.
+Consider the diagram
+\diagram{
+    A&\Gamma(X,\O_X)\cr
+    A_f&\Gamma(\phi^{-1}\dof f,\O_X)\cr
+    A_g&\Gamma(\phi^{-1}\dof g,\O_X)\cr
+}{
+    \diagarrow{from={1,1}, to={1,2}, text={\phi^\sharp_1=\sigma}, y distance=.15cm}
+    \diagarrow{from={2,1}, to={2,2}, text=\phi^\sharp_f, y distance=.15cm, dashed}
+    \diagarrow{from={3,1}, to={3,2}, text=\phi^\sharp_g, y distance=.25cm, y off=.05cm, dashed}
+    \diagarrow{from={3,1}, to={3,2}, text=\hat\phi^\sharp_g, y distance=-.3cm, y off=-.05cm, dashed}
+    \diagarrow{from={1,1}, to={2,1}, text=\res, x distance=.15cm}
+    \diagarrow{from={1,2}, to={2,2}, text=\res, x distance=.15cm}
+    \diagarrow{from={2,1}, to={3,1}, text=\res, x distance=.15cm}
+    \diagarrow{from={2,2}, to={3,2}, text=\res, x distance=.15cm}
+}
+Here $\phi^\sharp_1$ uniquely determines $\phi^\sharp_g$ and $\phi^\sharp_f$ determines a $\hat\phi^\sharp_g$.
+So both squares here commute (the upper and lower).
+These are again by localization.
+But $\hat\phi^\sharp_g$ satisfies the universal property given by localization at $g$ for $A$ as well,
+and thus it must coincide with $\phi^\sharp_g$, and so the middle horizontal arrows are equal and the
+whole diagram commutes.
+
+Thus this is a morphism of sheaves whose global section is $\sigma$.
+We must show it is a local morphism, and then we will finally (finally) be done.
+For $x\in X$ we need to show that $\phi(x)A_{\phi x}\leq\O_{\spec A,\phi x}$ is mapped into
+$\m_{X,x}\leq\O_{X,x}$ by $\phi_x$.
+Consider the commutative square
+\commsq{A&\Gamma(X,\O_X)\cr A_{\phi x}&\O_{X,x}}
+    {\sigma}{\phi_x}{\bul_{\phi x}}{\bul_x}
+Then $\phi(x)A_{\phi x}$ is the image of $\phi(x)\leq A$ in $A_{\phi x}$ and so
+$$ \phi_x(\phi(x)A_{\phi x}) = \sigma(\phi(x))_x = \sigma_x(\phi(x)) $$
+(recall that $\sigma_x$ is the composition of $\sigma$ with taking the stalk at $x$).
+But the definition of $\phi(x)$ is
+$$ \phi(x) = \sigma_x^{-1}\m_{X,x} , $$
+and thus
+$$ \sigma_x(\phi(x)) \subseteq \m_{X,x} $$
+as desired.
+\qed
+
+\bprob[title={Hartshorne II.2.14}]
+
+    Let $S$ be a graded ring.
+    \benum
+        \item Show that $\Proj S=\emptyset$ iff every element of $S_+$ is nilpotent.
+        \item Let $\phi\colon S\to T$ be a morphism of graded rings and define
+        $U=\set{\p\in\Proj T}[\phi(S_+)\nsubseteq\p]$.
+        Show that $U$ is open in $\Proj T$ and $\phi$ determines a natural morphism $\Phi\colon U\to\Proj S$.
+        \item $\Phi$ may an isomorphism even when $\phi$ is not.
+        Suppose that $\phi_d\colon S_d\to T_d$ is an isomorphism when $d\geq d_0$ for some integer $d_0$.
+        Show that $U=\Proj T$ and $\Phi$ is an isomorphism.
+    \eenum
+
+\eprob
+
+\benum
+    \item If every element of $S_+$ is nilpotent, meaning $S_+\subseteq\nil(S)$, then every prime ideal of $S$ contains
+    $S_+$ (because it contains $\nil(S)$).
+    Thus every homogeneous prime ideal is irrelevant, and so $\Proj S=\emptyset$.
+
+    Now we claim that
+    $$ \nil(S) = \bigcap_{\mltext{$\p$ homogeneous\cr prime}}\p . $$
+    Because $\nil(S)$ is the intersection of all prime ideals, it is contained in the intersection on the right.
+    For an ideal $I$ define its {\emphcolor homogenization} to be the ideal generated by $I$'s homogeneous elements:
+    $$ I_\homo = \ideal{a\in I}[\text{$a$ homogeneous}] = \bigoplus_n(I\cap S_n) . $$
+    This is clearly a homogeneous ideal contained in $I$, and thus the homogeneous elements contained in $I_\homo$ are the same homogeneous elements
+    contained in $I$.
+    Also if $I$ is homogeneous then $I_\homo=I$.
+
+    Furthermore for $\p$ prime, $\p_\homo$ is prime.
+    This is because if $a,b\in S_\homo$ are homogeneous such that $a,b\notin\p_\homo$ then $a,b\notin\p$ because $\p$ and $\p_\homo$ have the
+    same homogeneous elements, and thus $ab\notin\p$ so $ab\notin\p_\homo$.
+    Because for homogeneous ideals primality can be checked on homogeneous elements, it follows that $\p_\homo$ is prime.
+
+    Thus
+    $$ \nil(S) = \bigcap_{\p\text{ prime}}\p \supseteq \bigcap_{\p\text{ prime}}\p_\homo = \bigcap_{\mltext{$\p$ homogeneous\cr prime}}\p , $$
+    so we have equality.
+
+    Now this means that if $\Proj S=\emptyset$ then all of $S$'s homogeneous prime ideals are irrelevant.
+    Meaning for $\p$ homogeneous prime, $S_+\subseteq\p$.
+    And so
+    $$ S_+ \subseteq \bigcap_{\mltext{$\p$ homogeneous\cr prime}}\p = \nil(S) $$
+    as desired.
+
+    \item For a homogeneous prime $\p\leq T$, $\phi(S_+)\subseteq\p$ is equivalent to $\phi(f)\in\p$ for every homogeneous $f\in S_\homo$ of positive degree.
+    Thus $\p\in U$ iff there is a positive degree $f\in S_\homo$ such that $\phi(f)\notin\p$, meaning
+    $$ U = \bigcap_{f\in S_\homo}\dof_+(\phi f) , $$
+    which is open.
+
+    Now define $\Phi\colon U\to\Proj S$ by $\Phi(\p)=\phi^{-1}\p$.
+    This is a continuous map, as for $f\in S_\homo$ of positive degree
+    $$ \Phi^{-1}\dof_+(f) = \set{\p\in U}[f\notin\phi^{-1}\p] = \set{\p\in U}[\phi(f)\notin\p] = \dof_+(\phi f)\cap U , $$
+    which is open.
+    Note that $\dof_+(\phi f)\subseteq U$ so this is also just equal to $\dof_+(\phi f)$.
+
+    We also define a morphism of sheaves $\Phi^\sharp\colon\O_{\Proj S}\to\Phi_*\O_U$ on the distinguished open sets of $\Proj S$.
+    Its component on $\dof_+(f)\subseteq\Proj S$ is the map $\O_{\Proj S}(\dof_+(f))=S[1/f]_0$ to $\O_U(\dof_+(\phi f))=T[1/\phi f]_0$
+    determined by $\phi$.
+    In more detail, consider the composition $S\xto\phi T\to T[1/\phi f]$, and by localization this defines a map $S[1/f]\to T[1/\phi f]$.
+    This map is graded because $\phi$ is ($a/f$ is sent to $\phi a/\phi f$, which has degree $\deg\phi a-\deg\phi f=\deg a-\deg f=\deg(a/f)$)
+    and thus determines a morphism $S[1/f]_0\to T[1/\phi f]_0$.
+
+    By universality of localization this is clearly a morphism of sheaves.
+    That is, the restrictions $S[1/f]\to S[1/g]$ determine maps $S[1/g]\to T[1/\phi g]$ which by localization must be the same as the one
+    determined by $S\to T$.
+
+    \item First we show $U=\Proj T$.
+    For $\p\leq T$ homogeneous prime, if $\phi(S_+)\subseteq\p$ then for $d\geq d_0$ we have $T_d\subseteq\p$.
+    Now for $f\in T_d$ homogeneous of positive degree, we have that $f^{d_0}\in T_{dd_0}\subseteq\p$ and thus $f\in\p$.
+    So $T_+\subseteq\p$, meaning $\p$ is irrelevant.
+    Thus $\phi(S_+)\subseteq\p$ iff $T_+\subseteq\p$, which shows $U=\Proj T$ as desired.
+
+    We also see that $\Phi$ is an open map onto its image as for $f\in T$ homogeneous of positive degree
+    $$ \Phi\dof_+(f) = \set{\Phi\p}[f\notin\p] = \set{\Phi\p}[f^{d_0}\notin\p] \set{\Phi\p}[\phi^{-1}f^{d_0}\notin\Phi\p] = \dof_+(\phi^{-1}f^{d_0})\cap\im\Phi . $$
+
+    Now $\Phi$ is injective as if $\phi^{-1}\q=\phi^{-1}\q'$ for $\q,\q'\in\Proj T$, then for $f\in T$ homogeneous of positive degree if $f\in\q$ then
+    $f^{d_0}\in\q$ and there is an $x\in S$ such that $\phi(x)=f^{d_0}\in\q$ so that $\phi(x)\in\q'$ as well so $f^{d_0}\in\q'$ and thus $f\in\q'$.
+    By symmetry $\q$ and $\q'$ have the same homogeneous elements of positive degree.
+    The elements of positive degree determine the elements of zero degree, as $\q$ is relevant so if we choose $f\in T$ homogeneous of positive degree not in $\q$,
+    then $g\in T_0$ is in $\q$ iff $fg\in\q$, and this is homogeneous of positive degree.
+    Thus $\q$ and $\q'$ have the same homogeneous elements and are thus equal.
+
+    And $\Phi$ is also surjective.
+    For $\p\in\Proj S$ let us $f\in S$ be homogeneous of degree $\geq d_0$ such that $f\notin\p$.
+    Now define
+    $$ \q = \set{a\in T}[a\phi(f)\in\phi(\p)] . $$
+    This is an ideal: it is clearly closed under addition and if $a\phi(f)\in\phi(\p)$ and $b\in T$ then $b\phi(f)$ has degree $\geq d_0$ and so lies in $S$.
+    Thus $ab\phi f^2\in\phi(\p)$ (as it is an ideal), and since $f\notin\p$ by primality we have $ab\phi f\in\phi\p$ as desired.
+    It is homogeneous because if $a\phi f\in\phi\p$ then taking $a_i\phi f=(a\phi f)_{i+d_0}$ and this is in $\phi\p$.
+    Finally it is prime because if $a\phi f,b\phi f\notin\phi\p$ then $ab\phi f^2\notin\phi\p$ and thus $ab\phi f\notin\phi\p$.
+
+    And $\phi(\p)\subseteq\q$ clearly so that $\p\subseteq\phi^{-1}\q$.
+    Conversely if $\phi(a)\in\q$ then $\phi(af)\in\phi\p$ so $af\in\p$ and thus $a\in\p$.
+    So $\phi^{-1}\q=\p$ as desired.
+    Thus $\Phi$ is a bijective open continuous map, meaning it is a homeomorphism.
+
+    And for $f$ of positive homogeneous, the natural map $S[1/f]\to T[1/\phi f]$ is an isomorphism.
+    This is because elements on both sides may be written as $a/f^n$ and $b/\phi f^n$ for $a,b,f^n$ of degrees $\geq d_0$ (by exponentiating both the numerator and denominator
+    by a sufficiently large $n$), and $\phi$ is an isomorphism for such degrees.
+    And so $\phi^\sharp$ is an isomorphism on the distinguished open sets, and thus an isomorphism of sheaves as desired.
+\eenum
+
+\bprob[title={Hartshorne II.2.9}]
+
+    A {\emphcolor generic point} for an irreducible space $Z$ is a point $p\in Z$ whose closure is all of $Z$.
+    Show that for a closed irreducible subset $Z$ of a scheme $X$, $Z$ has a unique generic point.
+    Such a space $X$ is called {\emphcolor Sober}.
+
+\eprob
+
+This is true for affine schemes, as we showed that closed irreducible subsets of $\spec A$ are the vanishing sets of prime ideals.
+And the closure of $\p\in\spec A$ is precisely its vanishing set.
+Furthermore the vanishing set of distinct prime ideals are distinct, showing uniqueness.
+
+Now we make the following topological claim: if $X=\bigcup_iU_i$ is an open cover of a space $X$ such that each $U_i$ is Sober, then
+$X$ is Sober.
+Let $Z\subseteq X$ be irreducible and closed, then there is an $i$ for which $Z\cap U_i$ is nonempty.
+As it is an open subset of $Z$, it is irreducible, and it is closed in $U_i$.
+Thus there is some $p\in Z\cap U_i$ such that $Z\cap U_i=\clos_{U_i}(p)$.
+Because $U_i\cap Z\subseteq Z$ is open and thus dense, we have that
+$$ Z = \clos_Z(U_i\cap Z) = \clos_Z(\clos_{U_i}(p)) = \clos_Z(p) , $$
+and because $Z$ is closed this means $Z=\clos_X(p)$, showing existence.
+
+For uniqueness, if $Z=\clos_X(p)=\clos_X(q)$, then suppose $p\in U_i$.
+If $q\notin U_i$ then $X-U_i$ is a closed set containing $q$ and so $\clos_X(q)\subseteq X-U_i$ which does not contain $p$ a contradiction.
+Thus $p,q\in U_i$ and $\clos_{U_i}(p)=\clos_{U_i}(q)=Z\cap U_i$, and because $U_i$ is Sober this means $p=q$.
+
+\bprob[title={Hartshorne II.3.1}]
+
+    Show that a morphism of schemes $f\colon X\to Y$ is locally of finite type iff for {\it every\/} open affine $\spec B\subseteq Y$, $f^{-1}\spec B$
+    can be covered with open affine $\spec A_i$ such that each $A_i$ is a finitely generated $B$-algebra.
+
+\eprob
+
+We appeal here to the affine communication lemma.
+In particular we show that if $\spec B\subseteq Y$ is open affine satisfying the condition in question, then so is each $\spec B_x\subseteq\spec B$,
+and if $(x_1,\dots,x_n)=B$ and $\spec B_{x_i}\subseteq Y$ satisfy the condition then so does $\spec B\subseteq Y$.
+
+But first we use the affine communication lemma to prove that if $f^{-1}\spec B$ is covered by open affine $\spec A_i$ where each $A_i$
+is finitely generated as a $B$-algebra, then every affine open subset of $f^{-1}\spec B$ is a finitely generated $B$-algebra.
+So suppose $\spec A\xtos f\spec B$ corresponds to the finitely generated $B\xtos{f^*}A$.
+Then for $x\in A$, $A_x$ is a finitely generated $A$-algebra, we have that $B\to A\to A_x$ is finitely generated.
+Because $\spec A_f\inj\spec A$ corresponds to localization, we see that $\spec A_x\to\spec A\to\spec B$ corresponds to this map, as desired.
+Now suppose that $A=(x_1,\dots,x_n)$ and $\spec A_{x_i}\xtos f\spec B$ are finitely generated.
+This map corresponds to $B\xtos{f^*}A\to A_{x_i}$, so we need to show that if $A_{x_i}$ are finitely generated $B$-algebras, then so too is $A$ as desired.
+This last claim follows from the fact that $A$ embeds into $\prod_iA_{x_i}$ via the natural map, so if the $A_{x_i}$ are finitely generated
+then $A$ must be too.
+
+Now we turn to the actual problem at hand.
+
+Suppose that $\spec A\subseteq f^{-1}\spec B$ such that $f\colon\spec A\to\spec B$ corresponds to a finitely generated map $B\to A$.
+Then $f\colon\spec A\to\spec B$ corresponds to a ring map $f^*\colon B\to A$, and $f|_{\spec A}^{-1}\spec B_x=\spec A_{f^*x}$.
+And we know that if $B\to A$ is finitely generated, so too is $B_x\to A_{f^*x}$ (because it is generated by the generators of $A$).
+Thus $f\colon\spec A_{f^*x}\to\spec B_x$ is finitely generated, and the $\spec A_{f^*x}$ cover $f^{-1}\spec B$ as desired.
+Taking an open affine cover $f^{-1}\spec B=\bigcup_i\spec A_i$, we then have that $f^{-1}\spec B_x=\bigcup_i\spec A_{i,f_i^*x}$ and we showed that
+$A_{i,f_i^*x}$ are finitely generated $B_x$-algebras as desired.
+
+Conversely suppose $(x_1,\dots,x_n)=B$, and the condition is satisfied for $\spec B_{x_i}\subseteq Y$.
+If $\spec A\subseteq f^{-1}\spec B$ is open affine, then let $f^*\colon B\to A$ be the associated ring map.
+As before $\spec A_{f^*x_i}\subseteq f^{-1}\spec B_{x_i}$, and because the condition is satisfied for $\spec B_{x_i}$
+we showed above that this means that every open affine subset of $f^{-1}\spec B_{x_i}$ is finitely generated over $B_{x_i}$.
+So $B_{x_i}\to A_{f^*x_i}$ is finitely generated.
+Because $B\to B_{x_i}$ is finitely generated, we have that $B\to A_{f^*x_i}$ is finitely generated.
+And the $fx_i$ generate the unit ideal of $A$, so as before this means $B\to A$ is finitely generated.
+And so the condition holds for $\spec B$.
+
+So by the affine communication lemma, we have that if the condition is true for some open affine cover, it is true for every open affine subset.
+In fact we have shown something even stronger: if $\spec B\subseteq Y$ and $\spec A\subseteq X$ are open affine with $f(\spec A)\subseteq B$,
+then $A$ is a finitely generated $B$-algebra.
+
+\bprob[title={Hartshorne II.3.14}]
+
+    Let $X$ be a scheme of finite type over a field.
+    Show that the set of closed points $\abs X$ is dense in $X$.
+
+\eprob
+
+The scheme $X$ being of finite type over a field $k$ means that for each open affine $\spec A\subseteq X$, $A$ is a finitely generated $k$-algebra.
+This follows from the previous problem.
+
+If $X$ is then an affine scheme, $X=\spec A$, this follows from a form of Nullstellensatz.
+The closed points of $X$ are the maximal ideals of $A$, whose associated ideal is then $\jac(A)$ ($A$'s Jacobson radical).
+By Nullstellensatz as $A$ is a finitely generated $k$-algebra, $\jac(A)=\nil(A)$.
+The closure of $\abs X$ is the vanishing set of its associated ideal, which is $\vof\nil(A)=\spec A$.
+Thus $\abs X$ is dense in $X$ as desired.
+
+Now we claim that if $X$ is a scheme of finite type over $k$, then a closed point of an open affine subscheme of $X$ is a closed point of all of $X$.
+That is if $\spec A\subseteq X$ is affine open and $\m\leq A$ is maximal, then $x=[\m]\in X$ is closed.
+It is sufficient to show that if $x\in\spec B\subseteq X$ for any other affine open, then $x$ corresponds to a maximal ideal of $B$ as well.
+This is sufficient as then $\set x$ is closed in all affine open subschemes, which cover $X$.
+
+So suppose that $x$ corresponds to the prime ideal $\p\leq B$.
+As $\spec A\cap\spec B$ is open, there is a $f\in B$ such that $x\in\spec B_f\subseteq\spec A$.
+Because $x$ is closed in $\spec A$, it is closed in $\spec B_f$.
+Thus $\p_f\leq B_f$ maximal.
+And by assumption $B$ and $B_f$ are finitely generated $k$-algebras, and so the $k$-algebra morphism $B\to B_f$ pulls back maximal ideals of $B_f$
+to maximal ideals of $B$.
+The preimage of $\p_f\leq B_f$ is $\p$, and so $\p\leq B$ is maximal meaning $x$ is closed in $\spec B$ as well.
+
+It then follows that the closed points of $X$ are the maximal ideals of its open affine subschemes.
+In each open affine subscheme, the closure of this set is the whole subscheme, and thus its closure in $X$ is all of $X$ as desired.
+
+\bprob
+
+    Let $\phi\colon Z\to X$ be a morphism of schemes.
+    Show that the two following conditions are equivalent.
+    \benum
+        \item $\phi$ is a closed embedding as a topological map, and $\phi^\sharp\colon\O_X\to\phi_*\O_Z$ is a surjective map of sheaves.
+        \item For an affine open $\spec A\subseteq X$, $\phi^{-1}\spec A=\spec B$ is affine and $\phi\colon\spec B\to\spec A$ corresponds to
+        a surjective map of rings $\phi^*\colon A\to B$.
+    \eenum
+    If $\phi$ satisfies any of these equivalent conditions, it is called a {\emphcolor closed immersion}.
+
+\eprob
+
+First we show (2) implies (1).
+Cover $X$ with affine open $X=\bigcup_iU_i$, with $U_i=\spec A_i$ so that $\phi^{-1}\spec A_i=\spec B_i=V_i$.
+Then $\phi\colon V_i\to U_i$ is a closed embedding for each $U_i$ as $B_i\to A_i$ is surjective (this is a claim regarding affine schemes which is clear).
+Now we have a claim about topological spaces: if $X=\bigcup_iU_i$ is an open cover for which $\phi|_{\phi^{-1}U_i}\colon \phi^{-1}U_i\to U_i$ is a closed embedding,
+then $\phi$ is a closed embedding.
+It is clear that it is injective: for two elements with the same image, their image lies in some $U_i$, and thus both elements lie in $\phi^{-1}U_i$ for which
+$\phi$ is injective and thus the elements are equal.
+And $\phi$'s image is closed since $\phi(Z)\cap U_i=\phi(\phi^{-1}U_i)\subseteq U_i$ is closed for all $i$, and as the $U_i$ form an open cover, $\phi(Z)\subseteq X$
+is closed.
+Finally $\phi$ is an open map onto its image as this is true for an open cover of $Z$.
+
+Then $\phi^\sharp|_{U_i}\colon\O_X|_{U_i}\to(\phi_*\O_Z)|_{U_i}\cong\phi_*(\O_Z|_{\phi^{-1}U_i})$ is surjective, as it corresponds to the map $\spec B_i\to\spec A_i$ and $A_i\to B_i$
+is surjective.
+%We know from the first problem set that for $p=\phi(z)\in\phi(Z)$, $(\phi_*\O_Z)_p=\O_{Z,z}$, and otherwise the stalk is zero.
+Thus taking stalks shows that at each $p\in X$, $\phi^\sharp_z\colon\O_{X,p}\to\phi_*(\O_Z)_p$ is surjective (as $p$ must lie in some $U_i$, and restricted to $U_i$, $\phi^\sharp$ is
+surjective).
+And thus $\phi^\sharp\colon\O_X\to\phi_*\O_Z$ is surjective, as desired.
+
+Now suppose (1), we will show (2).
+First we show that when $X=\spec A$ then $Z=\spec B$ is affine and $\phi\colon\spec B\to\spec A$ corresponds to a surjective map of rings $A\to B$.
+
+Let $Z=\bigcup_iV_i$ be an affine open covering with $V_i=\spec B_i$ such that $\phi(V_i)=\phi(Z)\cap U_i$ for $U_i\subseteq\spec A$ open.
+We may refine $U_i$ to an open cover of distinguished open $\dof_A(f_{ij})\subseteq U_i$, and we cover the open $X-\phi(Y)$ with $\dof_A(f_{0j})$; since $X$ is quasicompact
+we may take only finitely many $f_{ij}$.
+Now $\phi|_{V_i}\colon V_i\to X$ is a morphism of affine schemes corresponding to $\phi_i\colon A\to B_i$, and the preimage of $\dof_A(f_{ij})$ under $\phi|_{V_i}$
+is $\spec B_{i,\phi_if_{ij}}$.
+Because $\dof_A(f_{ij})\cap\phi(Z)\subseteq\phi(V_i)$, we have that $\phi^{-1}\dof_A(f_{ij})$ is affine, equal to $\spec B_{i,\phi_if_{ij}}$.
+
+Because $\dof_A(f_{ij})$ cover $\spec A$, the $f_{ij}$ generate the unit ideal of $A$, and so $f_{ij}\in\Gamma(Z,\O_Z)$ generate the unit ideal of $Z$ (here
+we view $f_{ij}$ as its image under $\phi^\sharp$, which is equal to $\phi_if_{ij}$ when restricted to $V_i$).
+Because $\phi^{-1}\dof_A(f_{ij})$ is affine, we have that $Z$ is affine.
+
+Define for a scheme $X$, $A=\Gamma(X,\O_X)$.
+The last claim is based off of the following facts
+\benum
+    \item if we let $X_f=\set{p\in X}[f(p)\neq0]$ (i.e.\ the open set of points where the global section $f$ is not in $\m_{X,p}$),
+    then for $\phi\colon Y\to X$ then $\phi^{-1}X_f=Y_{\phi^\sharp f}$.
+    \item if $X$ has a finite open affine cover $U_i$ such that $U_i\cap U_j$ is quasicompact, then $\Gamma(X_f,\O_X)\cong A_f$.
+    \item if $\phi\colon X\to Y$ is a morphism of schemes such that there is an open cover $Y=\bigcup_iU_i$ such that $\phi\colon\phi^{-1}U_i\to U_i$
+    is an isomorphism, then $\phi$ is an isomorphism.
+    \item if $X$ is a scheme with global sections $f_1,\dots,f_n\in A$ which generate the unit ideal and $X_{f_i}$ are affine,
+    then $X$ is affine.
+\eenum
+The first point is easy enough, because for $p\in Y$ we have $p\in Y_{\phi^\sharp f}$ iff $\phi^\sharp f_p\in\m_{Y,p}$ iff $f_{\phi p}\in\m_{X,\phi p}$ iff $\phi p\in X_f$.
+
+For the second point, note that $X$ is quasicompact as the finite union of quasicompact subspaces.
+So if $g\in A$ restricts to zero on $X_f$, then for affine $\spec B\subseteq X$ we have $g$ is zero in $X_f\cap\spec B=\dof_B(f)$.
+And so $g$ is zero in $B_f$, which means there is an $n>0$ such that $f^ng=0$ in $\spec B$.
+Covering $X$ with finitely many affine opens, we see there is an $n$ such that $f^ng=0$ on $X$.
+
+Now let $U_i=\spec B_i$.
+If $g\in\Gamma(X_f,\O_X)$ then in $U_i\cap X_f=\dof_{B_i}(f)$ we have that $f^ng\in B_i$ for some $n>0$.
+So there is an $n>0$ such that $f^ng\in B_i$ for all $i$, more precisely there are $b_i\in B_i$ such that $b_i|_{\dof_{B_i}f}=(f^ng)|_{\dof_{B_i}f}$.
+And in $U_i\cap U_j$ we have that both $b_i$ and $b_j$ are equal in $X_f$ to $f^ng$, and thus $b_i-b_j$ is zero in $X_f\cap U_i\cap U_j$.
+So by the previous paragraph because $U_i\cap U_j$ is quasicompact there is an $m$ such that $f^m(b_i-b_j)=0$ on $U_i\cap U_J$.
+Doing this for all $i,j$, by increasing $n$ we may assume that the $b_i$s agree on the overlaps $U_i\cap U_j$.
+Thus they define a global section of the form $f^ng$.
+
+So we see that there is a natural inclusion $\Gamma(X_f,\O_X)\to A_f$.
+And for $h/f^n\in A_f$ ($h\in A$) we have that $h/f^n$ is in each $\dof_{B_i}(f)$ and so it is in $\Gamma(X_f,\O_X)$ so this is an isomorphism, proving (2).
+
+For the third point, $\phi$ is a homeomorphism (this is just a topological claim, whose proof is similar to before).
+And $\phi^\sharp|_{U_i}\colon\O_Y\to(\phi_*\O_X)|_{U_i}$ is an isomorphism as it corresponds to $\phi^{-1}U_i\to U_i$.
+By taking stalks we see that for every $p\in Y$, $\phi^\sharp_p$ is an isomorphism (as $p\in U_i$ for some $i$), and thus $\phi^\sharp$ is an isomorphism
+as desired.
+
+For the fourth point let $A=\Gamma(X,\O_X)$ and consider the natural map $\phi\colon X\to\spec A$ induced by the global sections-spec adjunction and $\id\colon A\to A$.
+Then $\phi^{-1}\spec A_{f_i}=X_{f_i}$ is affine by assumptuon.
+By the second point $\phi$ defines an isomorphism on the global sections, and because these are affine schemes, $\phi$ restricts to an isomorphism $\phi^{-1}\spec A_{f_i}\to X_{f_i}$.
+The $X_{f_i}$ cover $X$ and thus by the third point $\phi$ is an isomorphism, so $X$ is affine as desired.
+
+\bye
+

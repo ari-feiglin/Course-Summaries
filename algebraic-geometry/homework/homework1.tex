@@ -1,0 +1,410 @@
+\input ../preamble
+
+\def\printmcount{\the\counter{section}.\the\counter{math counter}}
+\setcounter{section}{1}
+
+\centerline{\setfontandscale{bf}{20pt}Algebraic Geometry}
+\medskip
+\centerline{\bf Exercise \the\counter{section}}
+\smallskip
+\centerline{\it Ari Feiglin}
+
+\bprob[title={Hartshorne II.1.8}]
+
+    For an open subset $U\subseteq X$, consider the local sections functor $\Gamma(U,\bul)\colon\Ab_X\to\Ab$.
+    Show that this functor is left exact.
+
+\eprob
+
+Being left exact is equivalent to being additive and preserving kernels.
+We know that the presheaf sum of two sheaves and the presheaf kernel of a morphism of sheaves is a sheaf.
+Thus $\Gamma(U,\bul)$ being left exact is due to the fact that it preserves presheaf sums and kernels, and when restricting our attention to sheaves
+these limits are the same.
+The local sections functor preserves limits (and colimits) in the presheaf category because limits in a functor category are taken componentwise.
+
+\bprob[title={Hartshorne II.1.15}]
+
+    Let $\F,\G$ be Abelian sheaves on $X$.
+    Define a presheaf on $X$ by $U\mapsto\hom(\F|_U,\G|_U)$; show this defines a sheaf on $X$, called the {\emphcolor sheaf-hom}.
+
+\eprop
+
+We need to show that if $U=\bigcup_iU_i$ is an open cover and $\phi_i\colon\F|_{U_i}\to\G|_{U_i}$ are sheaf morphisms such that $\phi_i|_{U_i\cap U_j}=\phi_j|_{U_i\cap U_j}$,
+then there is a $\phi\colon\F|_U\to\G|_U$ which restricts to $\phi_i$ on $U_i$.
+Let $V\subseteq U$ be open, and let $s\in\F(V)$, then consider the sections $\phi_i(s|_{V\cap U_i})\in\G(V\cap U_i)$ of the open cover $V=\bigcup_i(V\cap U_i)$.
+These sections agree on their common domains because $\phi_i$ do:
+$$ \phi_i(s|_{V\cap U_i})|_{V\cap U_i\cap U_j} = \phi_i(s|_{V\cap U_i\cap U_j}) = \phi_j(s|_{V\cap U_i\cap U_j}) = \phi_j(s|_{V\cap U_j})|_{U_i} . $$
+Because $\G$ is a sheaf there is a unique $\phi(s)\in\G(V)$ which restricts to $\phi(s|_{V\cap U_i})$ for each $i$.
+
+This defines the $V$-component of a morphism of set-valued sheaves $\phi\colon\F|_U\to\G|_U$.
+Indeed if $V\subseteq W\subseteq U$ are open, then for $s\in\F(W)$ we have that $\phi(s|_V)$ is the gluing of $\phi_i(s|_{V\cap U_i})$.
+On the other hand $\phi(s)$ is the gluing of $\phi_i(s|_{W\cap U_i})$, and restricting this to $V\subseteq W$ gives the gluing of $\phi_i(s|_{V\cap U_i})$,
+so that $\phi(s|_V)=\phi(s)|_V$ as desired.
+
+Furthermore each component of $\phi$ is a morphism of Abelian groups.
+For $V\subseteq U$, let $s,t\in\F(V)$ be sections.
+Then
+$$ \phi(s+t)|_{V\cap U_i} = \phi_i((s+t)|_{V\cap U_i}) = \phi_i(s|_{V\cap U_i}) + \phi_i(t|_{V\cap U_i}) = (\phi(s) + \phi(t))|_{V\cap U_i} , $$
+and as $\G$ is a sheaf this means $\phi(s+t)=\phi(s)+\phi(t)$ as they agree on an open cover of $V$.
+Thus $\phi\colon\F|_U\to\G|_U$ is a morphism in $\Ab_U$.
+
+Finally it restricts to $\phi_i$ on $U_i$ because for $V\subseteq U_i$ we have that $\phi_i|_{V\cap U_j}=\phi_j|_{V\cap U_j}$ for all $j$.
+So let $s\in\F(V)$, we have that
+$$ \phi(s)|_{V\cap U_j} = \phi_j(s)|_{V\cap U_j} = \phi_i(s)|_{V\cap U_j} , $$
+and thus $\phi(s)=\phi_i(s)$ as desired, meaning $\phi|_{U_i}=\phi_i$.
+So we have shown that the sheaf-hom of two sheaves (in fact we needed only for $\G$ to be a sheaf) is a sheaf.
+
+\bprob[title={Hartshorne II.1.16}, name={flasque}]
+
+    A sheaf $\F$ on $X$ is {\emphcolor flasque} if its restriction maps are all surjective.
+    \benum
+        \item Show that constant sheaves on an irreducible space are flasque.
+        \item Show that if $0\to\F'\to\F\to\F''\to0$ is exact with $\F'$ flasque then for any open $U\subseteq X$,
+        $0\to\F'(U)\to\F(U)\to\F''(U)\to0$ is exact.
+        \item Show that if $0\to\F'\to\F\to\F''\to0$ is exact with $\F',\F$ flasque, then $\F''$ is flasque.
+        \item Show that if $f\colon X\to Y$ is continuous and $\F\in\Sh(X)$ is flasque, then $f_*\F\in\Sh(Y)$ is flasque.
+        \item Let $\F\in\Sh(X)$ be a sheaf, then we define a new sheaf $\G$ on $X$ called the {\emphcolor sheaf of discontinuous sections} by
+        $$ \G(U) = \prod_{p\in U}\F_p . $$
+        Show that $\G$ is flasque and there is a natural injection $\F\inj\G$.
+    \eenum
+
+\eprob
+
+\benum
+    \item The restriction maps of $\ul A$ to nonempty subsets are all the identity $\id_A$ which is surjective.
+    And the restrictions to the empty subset is the zero map which is surjective.
+
+    \item First we claim that the presheaf quotient $(\F/\F')(U)=\F(U)/\F'(U)$ defines a sheaf.
+    First it is separated, as if $U=\bigcup_iU_i$ is an open cover and $[s]\in\F(U)/\F'(U)$ satisfies $[s]|_{U_i}=0$ for all $i$, then
+    $s|_{U_i}\in\F'(U_i)$ for all $i$.
+    Because $\F'$ is a sheaf, by the sheaf property $s\in\F'(U)$ and so $[s]=0$.
+
+    Now suppose we have $[s_i]\in\F(U_i)/\F'(U_i)$ such that $[s_i]|_{U_i\cap U_j}=[s_j]|_{U_i\cap U_j}$ for all $i,j$.
+    This means that $(s_i-s_j)|_{U_i\cap U_j}\in\F'(U_i\cap U_j)$ for all $i,j$.
+    Then we want to find an $s\in\F(U)$ such that $[s]|_{U_i}=[s_i]$ for all $i$, i.e.\ $s|_{U_i}-s_i\in\F'(U_i)$.
+
+    Define the poset
+    $$ \displaylines{
+        \Sigma = \set{(V,s_V)}[V\subseteq U\hbox{ open},\ s_V\in\F(V),\ s_V|_{V\cap U_i}-s_i|_{U_i\cap V}\in\F'(U_i\cap V)\hbox{ for all $i$}],\cr
+        (V,s_V) \leq (W,s_W) \iff V\subseteq W\hbox{ and } s_W|_V=s_V .
+    } $$
+    This poset is nonempty as it contains the zero section on the empty set.
+    Furthermore it satisfies the conditions of Zorn's lemma: if $(V_\alpha,s_\alpha)_\alpha$ is a chain in $\Sigma$ then by definition
+    the sections agree on their intersections (as it is a chain), and thus they glue to a section $s_V\in\F(V)$ on $V=\bigcup_\alpha V_\alpha$.
+    And because $[s_V]|_{V_\alpha\cap U_i}=[s_i]|_{V_\alpha\cap U_i}$ for all $i,\alpha$, by separatedness we have that $[s_V]_{V\cap U_i}=[s_i]_{V\cap U_i}$
+    so that $(V,s_V)\in\Sigma$ is an upper bound for the chain.
+
+    So let $(V,s_V)\in\Sigma$ be maximal.
+    If $U=V$ we are finished, otherwise suppose $V\subsetneq U$.
+    Then there is an $i$ such that $V\cap U_i\neq U_i$.
+    By definition $(s_V-s_i)|_{V\cap U_i}=t\in\F'(U_i\cap V)$, and by flasqueness we may view $t$ as a section of $\F'(U_i)$ so $(s_V-s_i)|_{V\cap U_i}=t|_{V\cap U_i}$.
+    Consider then the sections
+    $$ s_V \in \F(V),\qquad s_i + t \in \F'(U_i) \subseteq \F(U_i) . $$
+    These agree on the intersection $V\cap U_i$, and thus extend to a section $\bar s_V$ on $\bar V=V\cup U_i\supsetneq V$.
+    Notice that for a $j$,
+    $$ \displaylines{
+        [\bar s_V]|_{V\cap U_j} = [s_V]|_{V\cap U_j} = [s_j]|_{V\cap U_j} ,\cr
+        [\bar s_V]|_{U_i\cap U_j} = [s_i+t]|_{U_i\cap U_j} = [s_i]|_{U_i\cap U_j} = [s_j]|_{V\cap U_j}.
+    } $$
+    Thus $[\bar s_V]$ agrees with $[s_j]$ on an open cover of $\bar V$ and thus on all of $\bar V$.
+    So we have shown that $(\bar V,\bar s_V)\in\Sigma$, but it is a proper extension of $(V,s_V)$ contradicting its maximality.
+    Thus $U=V$ and we are finished.
+
+    Given an exact sequence $0\to\F'\to\F\to\F''\to0$, then we have $\F''=\coker(\F'\to\F)$ which is just $\F/\F'$.
+    As we showed, this is the presheaf quotient, whose local quotients are $\F(U)/\F'(U)$.
+    So we get the desired result, but to be explicit we have an isomorphism of short exact sequences
+
+    \diagram{
+        0&\F'&\F&\F''&0\cr
+        0&\F'&\F&\F/\F'&0
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,2}, to={1,3}}
+        \diagarrow{from={1,3}, to={1,4}}
+        \diagarrow{from={1,4}, to={1,5}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}, text=\subseteq, y distance=.2cm}
+        \diagarrow{from={2,3}, to={2,4}}
+        \diagarrow{from={2,4}, to={2,5}, text=\pi, y distance=.2cm}
+        \diagarrow{from={1,2}, to={2,2}, text=\cong, x distance=.2cm}
+        \diagarrow{from={1,3}, to={2,3}, text=\cong, x distance=.2cm}
+        \diagarrow{from={1,4}, to={2,4}, text=\cong, x distance=.2cm}
+    }
+
+    Applying $\Gamma(U,\bul)$ maps the bottom sequence to a short exact sequence, and the top sequence is isomorphic to it and thus is also exact.
+
+    \item Let $U\subseteq V$ be open in $X$, then by (2) both of the rows in the following sequence are exact
+
+    \diagram{
+        0&\F'(V)&\F(V)&\F''(V)&0\cr
+        0&\F(U)'&\F(U)&\F''(U)&0
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,2}, to={1,3}}
+        \diagarrow{from={1,3}, to={1,4}, right cap=>>}
+        \diagarrow{from={1,4}, to={1,5}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={2,3}, to={2,4}, right cap=>>}
+        \diagarrow{from={2,4}, to={2,5}}
+        \diagarrow{from={1,2}, to={2,2}, right cap=>>}
+        \diagarrow{from={1,3}, to={2,3}, right cap=>>}
+        \diagarrow{from={1,4}, to={2,4}}
+    }
+
+    where the vertical arrows are the restriction maps.
+    The last horizontal maps are surjective because the rows are exact, and the first two vertical maps are surjective because $\F',\F$ are flasque.
+    In particular the composition $\F(V)\to\F''(V)\to\F''(U)$ is surjective, which implies that restriction $\F''(V)\to\F''(U)$ is.
+    Thus $\F''$ is flasque, as desired.
+
+    \item Let $U\subseteq V\subseteq Y$ be open.
+    Then by definition
+    $$ f_*\F(V) \xtos\res f_*\F(U) \quad=\quad \F(f^{-1}V) \xtos\res \F(f^{-1}U) , $$
+    which is surjective as $\F$ is flasque.
+    So $f_*\F$ is flasque as well.
+
+    \item The restriction map between $U\subseteq V\subseteq X$ for $\G$ is
+    $$ (s_p\in\F_p)_{p\in V} \in \G(V) \mapsto (s_p\in\F_p)_{p\in U} \in \G(U) $$
+    is surjective as for $(s_p\in\F_p)_{p\in U}\in\G(U)$, we can define $(\bar s_p)_{p\in V}\in\G(V)$ by
+    $$ \bar s_p = \cases{s_p&$p\in U$\cr 0&else} , $$
+    and then clearly $(\bar s_p)_V$ restricts to $(s_p)_U$.
+
+    Define
+    $$ \F(U) \to \G(U),\qquad s\mapsto(s_p)_{p\in U} . $$
+    This is an Abelian group morphism because its coordinates are the canonical projections $\F(U)\to\F_p$ which are Abelian morphisms.
+    This is injective as if $s\in\F(U)$ is in the kernel, then $s_p=0$ for all $p\in U$.
+    Thus for all $p\in U$ there is an open neighborhood $p\in U_p\subseteq U$ such that $s|_{U_p}=0$.
+    The $U_p$ then cover $U$ and $s|_{U_p}=0$ for all $p$, and as $\F$ is separated this means $s=0$.
+    So the kernel is trivial and thus the map is an injection.
+
+    Furthermore these maps clearly assemble into a morphism of sheaves.
+    Indeed, if $U\subseteq V$ then both paths $\F(V)\to\G(U)$ in the square
+    \commsq{\F(V)&\G(V)\cr\F(U)&\G(U)}
+        {}{}{}{}
+    map $s\in\F(V)$ to $(s_p)_{p\in U}$ (recall that $(s|_U)_p=s_p$ for $p\in U$ and $s\in\F(V)$).
+    The components of this morphism are injections and thus this map $\F\to\G$ is injective.
+\eenum
+
+\bprob[title={Hartshorne II.1.17}]
+
+    Let $X$ be a topological space, $p\in X$, and $A\in\Ab$ be an Abelian group.
+    Define the {\emphcolor skyscraper sheaf} by
+    $$ p_*A(U) = \cases{A&$p\in U$\cr0&else} . $$
+    Verify that this is a sheaf, and that its stalks satisfy
+    $$ (p_*A)_q = \cases{A&$q\in\cl p$\cr0&else} . $$
+    Also show that $p_*A$ can be viewed as the pushforward of the constant sheaf $A$ on $*$ via $*\to A$ which maps $*$ to $p$, or as
+    the pushforward of the constant sheaf $A$ on the irreducible subspace $\cl p\subseteq A$ along its inclusion to $A$.
+
+\eprob
+
+We first show the last claim, which will automatically show that $p_*A$ is a sheaf.
+Let $i_p\colon *\to A$ be the map $i_p(*)=p$.
+Then $A$ is a constant sheaf on $*$ and its pushforward satisfies for $U\subseteq X$,
+$$ i_{p,*}A(U) = A(i_p^{-1}U) = \cases{A&$i_p^{-1}(U)\neq\emptyset$\cr0&else} , $$
+and because $i_p^{-1}U$ is empty iff $p\notin U$ we see that
+$$ i_{p,*}A(U) = p_*A(U) . $$
+The restriction maps of $i_{p,*}A$ are those of the constant sheaf $A$, i.e.\ the identities when $p\in U\subseteq V$ and zero otherwise,
+which are the restriction maps of $p_*A$, so $p_*A=i_{p,*}A$ as desired.
+
+Note that $q\in\cl p$ iff every neighborhood of $q$ contains $p$.
+So if we denote by $i_p\colon\cl p\inj A$ the inclusion, then
+$$ i_{p,*}A(U) = \cases{A&$i_p^{-1}U\neq\emptyset$\cr0&else} , $$
+and $i_p^{-1}U$ is nonempty iff $\cl p\cap U$ is nonempty, which means there is a $q\in\cl p$ for which $U$ is a neighborhood.
+This is iff $p\in U$, and so we see that $i_{p,*}A(U)=p_*A(U)$.
+And again the restriction maps are equal.
+
+Now for $q\in X$ we have that
+$$ (p_*A)_q = \colim_{q\in U}p_*A(U) . $$
+If $q\notin\cl p$ then there is a neighborhood $U$ of $q$ which does not contain $p$.
+The set of all such neighborhoods is cofinal in $\open_q(X)^\op$ and thus we can restrict the colimit to this subposet:
+$$ (p_*A)_q = \colim_{q\in U,p\notin U}p_*A(U) = \colim_U0 = 0 . $$
+And if $q\in\cl p$ then all of $q$'s neighborhoods contain $p$, so the filtered colimit above is just the filtered colimit of the constant functor valued at $A$,
+which is equal to $A$, as desired.
+
+\bprob[title={Hartshorne II.1.19}]
+
+    Let $Z\subseteq X$ be closed and $i\colon Z\inj X$ the inclusion.
+    Define $U=X-Z$ to be its complement and $j\colon U\inj X$ its inclusion.
+    \benum
+        \item Let $\F$ be a sheaf on $Z$.
+        Show that for $p\in X$ the stalk $(i_*\F)_p$ is $\F_p$ if $p\in Z$ and $0$ otherwise.
+        \item Let $\F$ be a sheaf on $U$, and define $j_!\F$ to be the sheaf on $X$ associated to the presheaf
+        $$ j_!^\pre\F(V) = \cases{\F(V)&if $V\subseteq U$\cr 0&else} . $$
+        Show that for $p\in X$ the stalk of this sheaf satisfies
+        $$ (j_!\F)_p = \cases{\F_p&$p\in U$\cr0&else}, $$
+        and that $j_!\F$ is uniquely determined by this property and that $(j_!\F)|_U=\F$.
+        The sheaf $j_!\F$ is called the {\emphcolor extension of $\F$ by zero}.
+        \item Now let $\F$ be a sheaf; show that there is an exact sequence of sheaves on $X$
+        $$ 0 \to j_!(\F|_U) \to \F \to i_*(\F|_Z) \to 0 . $$
+    \eenum
+
+\eprob
+
+\benum
+    \item Note that the sheaf $i_*\F$ is defined by, for $V\subseteq X$ open
+    $$ (i_*\F)(V) = \F(i^{-1}V) = \F(V\cap Z) . $$
+    Thus for $p\in X$,
+    $$ (i_*\F)_p = \colim_{p\in V}\F(V\cap Z) . $$
+    If $p\in Z$ then all of $p$'s neighborhoods in $Z$ are of the form $V\cap Z$ for $V\subseteq X$ open and so this is equal to
+    $$ (i_*\F)_p = \colim_{p\in W\subseteq Z}\F(W) = \F_p $$
+    (where the last equality is by definition).
+    Otherwise if $p\notin Z$ then as $Z$ is closed there is a neighborhood $p\in W$ disjoint from $Z$.
+    Then $W\cap Z=\emptyset$ is terminal in the category over which we take the colimit (which we view as $\set{V\cap Z}_V$ ordered by reverse inclusion).
+    The colimit over a category with a terminal object is equal to the functor at that object so
+    $$ (i_*\F)_p = \colim_{p\in V}\F(V\cap Z) = \F(W\cap Z) = \F(\emptyset) = 0 . $$
+
+    \item We know that the stalks of the sheaf associated to a presheaf are isomorphic to the stalks of the presheaf.
+    This is because we have adjoints
+    $$ \Psh(X) \adjarrow{\sh}{\inc} \Sh(X) \adjarrow{\bul_p}{p_*\bul} \Ab , $$
+    and so we have adjoints
+    $$ \Psh(X) \adjarrow{\bul^\sh_p}{p_*\bul} \Ab . $$
+    But taking stalks is left-adjoint to the skyscraper sheaf over the category of presheaves.
+    Thus $\bul^\sh_p$ and $\bul_p$ are both left-adjoints of $\Ab\xtos{p_*\bul}\Psh(X)$, and thus isomorphic.
+    So we can focus on the stalks of $j_!^\pre\F$; these are isomorphic to the stalks of $j_!\F$.
+
+    As before for $p\in X$,
+    $$ (j_!^\pre\F)_p = \colim_{p\in V}j_!^\pre\F(V) . $$
+    If $p\in U$ then the subposet of neighborhoods of $p$ contained in $U$ is cofinal in $\open_p(X)^\op$ (the opposite poset of $p$'s neighborhoods) and thus
+    we can restrict the colimit to this category:
+    $$ (j_!^\pre\F)_p = \colim_{p\in V\subseteq U}j_!^\pre\F(V) = \colim_{p\in V\subseteq U}\F(V) = \F_p . $$
+    Conversely if $p\notin U$ then no neighborhood of $p$ is contained in $U$ (as it is open) and thus
+    $$ (j_!^\pre\F)_p = \colim_{p\in V}j_!^\pre\F(V) = \colim_{p\in V}0 = 0 $$
+    as the filtered colimit of a constant functor is the constant.
+
+    If $\G$ is another sheaf satisfying $\G|_U=\F$ and $\G_p=\F_p$ if $p\in U$ and $0$ otherwise, then $\G$ is isomorphic to $j_!\F$.
+    Indeed, define the morphism $\phi\colon\G\to j_!^\pre\F$ whose component for $V\subseteq X$ is $\id$ if $V\subseteq0$ and $0$ otherwise.
+    This is clearly a morphism of presheaves, and thus composition with the sheafification map $\G\to j_!^\pre\F\to j_!\F$, which we will also denote by $\phi$,
+    is a morphism of sheaves.
+    For every $p\in X$, $\phi_p$ is an isomorphism.
+    On $U$ $\phi$ is the identity and so this is clear, and for $p\notin U$ then $\G_p,(j_!\F)_p$ are both zero and thus $\phi_p=0$ is automatically an isomorphism.
+    Because $\phi_p$ is an isomorphism for all $p\in X$, $\phi$ is an isomorphism $\G\cong j_!\F$.
+
+    \item Define $j_!^\pre(\F|_U)\to\F$ to be the obvious map, whose component on $V$ is either $\id$ or $0$ depending on if $V\subseteq U$ or not.
+    By the universal property of sheafification this defines a map $j_!(\F|_U)\to\F$.
+    The stalks of this map are the same as the stalks of $j_!^\pre(\F|_U)\to\F$ (by the argument in the previous point), i.e.\ the identity when $p\in U$
+    and zero otherwise.
+
+    Define $\F\to i_*(\F|_Z)$ to be the unit of the adjunction $\bul|_Z=i^{-1}\dashv i_*$.
+    Then for $p\in Z$ we have by (1)
+    $$ i_*(\F|_Z)_p = (\F|_Z)_p = \F_p . $$
+    The last equality is because $i^{-1}\dashv i_*$ and $\bul_p\dashv p_*$ are adjunctions and thus $(i^{-1}\bul)_p\dashv i_*(p_*\bul)$.
+    Clearly $f_*g_*\bul=(f\circ g)_*\bul$ and thus $i_*(p_*\bul)=i(p)_*\bul$, which has left adjoint $\bul_{i(p)}$, so that $(i^{-1}\bul)_p=\bul_{i(p)}$ (up to natural isomorphism).
+    And for $p\in U=X-Z$ we have by (1)
+    $$ i_*(\F|_Z)_p = 0 . $$
+
+    Consider the sequence of these maps
+    $$ 0 \to j_!(\F|_U) \to \F \to i_*(\F|_Z) \to 0 . $$
+    Then taking the stalk at $p\in Z$ we get the sequence
+    $$ 0 \to 0 \to \F_p \to i_*(\F|_Z)_p = \F_p \to 0 $$
+    which is exact as the non-trivial arrow is an isomorphism.
+    And for $p\notin Z$ we get the sequence
+    $$ 0 \to j_!(\F|_U)_p = \F_p \to \F_p \to 0 \to 0 , $$
+    which is again exact.
+    So taking stalks at all $p\in X$ gives an exact sequence, so the original sequence is exact.
+\eenum
+
+\bprob[title={Hartshorne II.1.20}]
+
+    Let $Z\subseteq X$ be a closed subset and $\F$ a sheaf on $X$.
+    Define $\Gamma_Z(X,\F)$ to be the subgroup of $\Gamma(X,\F)$ consisting of sections whose supports are contained in $Z$.
+    \benum
+        \item Show that the presheaf $V\mapsto\Gamma_{Z\cap V}(V,\F|_V)$ is a sheaf.
+        It is called the {\emphcolor subsheaf of $\F$ with supports in $Z$} and is denoted $\H^0_Z(\F)$.
+        \item Let $U=X-Z$ and $j\colon U\to X$ the inclusion.
+        Show that there is an exact sequence of sheaves
+        $$ 0 \to \H^0_Z(\F) \to \F \to j_*(\F|_U) $$
+        and if $\F$ is flasque the last arrow is surjective.
+    \eenum
+
+\eprob
+
+\benum
+    \item Let $U=\bigcup_iU_i$ be an open cover and $s_i\in\Gamma_{Z\cap U_i}(U_i,\F_{U_i})$ such that $s_i|_{U_i\cap U_j}=s_j|_{U_i\cap U_j}$.
+    Then by gluing, these form a unique section $s\in\Gamma(U,\F|_U)$ which restricts to $s_i$ on $U_i$.
+    Note that for $p\in U_i$, $s_p=s_{i,p}$ and thus $p\in\supp s$ iff $p\in\supp s_i$ so that
+    $$ \supp s = \bigcup_i\supp s_i \subseteq \bigcup_i(Z\cap U_i) = Z\cap\bigcup_iU_i = Z\cap U , $$
+    meaning $s\in\Gamma_{Z\cap U}(U,\F|_U)$ as desired.
+    Uniqueness of gluing follows from the uniqueness of gluing in $\F$.
+
+    \item The inclusion $\H^0_Z(\F)\subseteq\F$ gives the first arrow in the sequence.
+    The map $\F\to j_*(\F|_U)$ is given by restriction $\F(V)\to \F(U\cap V)$.
+    Because $\H^0_Z(\F)$ is a sheaf, the image of $\H^0_Z(\F)\inj\F$ {\it is\/} $\H^0_Z(\F)$ (the image of a sheaf morphism is the sheafification of the presheaf image).
+    So we just need to show that $\ker(\F\to j_*(\F|_U))=\H^0_Z(\F)$.
+
+    This is equivalent to the claim that for $s\in\F(V)$, $s|_{U\cap V}=0$ iff $s\in\Gamma_{Z\cap V}(V,\F)$.
+    Note that $s\in\Gamma_{Z\cap V}(V,\F)$ iff $s_p=0$ when $p\in V-Z=U\cap V$.
+    And $s|_{U\cap V}=0$ iff $s_p=0$ for all $p\in U\cap V$, proving the desired claim.
+    This last equivalence is due to \refmath{flasque} (5), as $\F(U)\to\prod_{p\in U}\F_p$ is injective.
+
+    Now if $\F$ is flasque then $\F\to j_*(\F|_U)$ is clearly surjective, because its components are the surjections $\F(V)\to\F(U\cap V)$.
+    So this map is surjective on each component, thus surjective as a presheaf morphism and in particular as a sheaf morphism (an epimorphism in a category is an epimorphism in any subcategory
+    containing it).
+\eenum
+
+\bprob[title={Hartshorne II.1.22}]
+
+    Let $X$ be a topological space with open cover $X=\bigcup_iU_i$.
+    For each $i$ let $\F_i$ be a sheaf on $U_i$, and suppose for each $i,j$ we have an isomorphism $\phi_{ij}\colon\F_i|_{U_i\cap U_j}\to\F_j|_{U_i\cap U_j}$.
+    Finally suppose that these isomorphisms satisfy the {\emphcolor cocycle conditions}:
+    \benum
+        \item $\phi_{ii}=\id$
+        \item for $i,j,k$, $\phi_{ik}=\phi_{jk}\circ\phi_{ij}$ on $U_i\cap U_j\cap U_k$.
+    \eenum
+    Show that there exists a unique sheaf $\F$ on $X$ with isomorphisms $\psi_i\colon\F|_{U_i}\to\F_i$ such that $\psi_j=\phi_{ij}\circ\psi_i$ on $U_i\cap U_j$.
+
+\eprob
+
+Let us write $U_{i_0,\dots,i_n}$ for the intersection $U_{i_0}\cap\cdots\cap U_{i_n}$.
+For $V\subseteq X$ define
+$$ \F(V) = \set{(s_i)_i\in\prod_i\F_i(V\cap U_i)}[s_i|_{V\cap U_{ij}}=s_j|_{V\cap U_{ij}}\hbox{ via $\phi_{ij}$, for all $i,j$}] . $$
+By $x=y$ via $\phi$ we mean $\phi(x)=y$.
+This naturally carries the structure of an Abelian group by $(s_i)_i+(t_i)_i=(s_i+t_i)_i$.
+Then for $V\subseteq W$ we define $\F(W)\to\F(V)$ by
+$$ (s_i)_i \in \F(W) \mapsto (s_i|_{V\cap U_i}) \in \F(V) . $$
+This is clearly well-defined and natural (i.e.\ makes $\F$ into a presheaf).
+Furthermore $\F$ is a sheaf.
+Let $V=\bigcup_\alpha V_\alpha$ be an open cover and $(s_i^\alpha)\in\F(V_\alpha)$ be sections such that $(s_i^\alpha)|_{V_\alpha\cap V_\beta}=(s_i^\beta)_{V_\alpha\cap V_\beta}$
+for all $\alpha,\beta$.
+In particular this means $s_i^\alpha$ and $s_i^\beta$ agree with each other on $V_{\alpha,\beta}\cap U_i$.
+Because $\F_i$ is a sheaf, this means they uniquely glue to give $s_i\in\F(V\cap U_i)$ (by uniqueness of $\F_i$'s gluing this is unique).
+Now $(s_i)_i\in\F(V)$ because for each $i,j$,
+$$ \phi_{ij}(s_i|_{U_{ij}})|_{V_\alpha} = \phi_{ij}(s_i|_{V_\alpha\cap U_{ij}}) = s_j|_{V_\alpha\cap U_{ij}}\qquad\hbox{for all $\alpha$} . $$
+And thus because $\F_i$ is separated this means $\phi_{ij}(s_i|_{U_{ij}})=s_j|_{U_{ij}}$ as desired.
+
+Now for $V\subseteq U_i$ define
+$$ \psi_i\colon\F(V) \to \F_i(V),\qquad (s_j\in\F_i(V\cap U_j))_j \mapsto s_i \in \F_i(V) . $$
+This is clearly a well-defined morphism.
+Further define
+$$ \tilde\psi_i\colon\F_i(V)\to\F(V),\qquad s \mapsto (\phi_{ij}(s|_{V\cap U_j}))_j . $$
+This is well-defined: for $j,k$ we have
+$$ \phi_{jk}(\phi_{ij}(s|_{V\cap U_j})|_{V\cap U_{jk}}) = \phi_{jk}\circ\phi_{ij}(s|_{V\cap U_{ijk}}) = \phi_{ik}(s|_{V\cap U_{ijk}}) = \phi_{ik}(s|_{V\cap U_k})|_{V\cap U_{jk}} . $$
+Furthermore these clearly assemble into a morphism $\F_i\to\F|_{U_i}$.
+Now $\psi_i,\tilde\psi_i$ are inverses: for $s\in\F_i(V)$,
+$$ \psi_i\circ\tilde\psi_i(s) = \psi_i(\phi_{ij}(s|_{V\cap U_j}))_j = \phi_{ii}(s|_{V\cap U_i}) = s $$
+by the cocycle condition (1).
+And for $(s_j)_j\in\F(V)$,
+$$ \tilde\psi_i\circ\psi_i(s_j)_j = \tilde\psi_i(s_i) = (\phi_{ij}(s_i|_{V\cap U_j}))_j . $$
+So we want to show that $\phi_{ij}(s_i|_{V\cap U_j})=s_j$.
+Because $(s_j)_j\in\F(V)$ we have $\phi_{ij}(s_i|_{V\cap U_j})=s_j|_{V\cap U_j}=s_j$ as desired.
+
+And for $V\subseteq U_i\cap U_j$ and $(s_k)_k\in\F(V)$ we have that
+$$ \phi_{ij}\circ\psi_i(s_k)_k = \phi_{ij}(s_i),\qquad \psi_j(s_k)_k = s_j . $$
+And as before because $(s_k)_k\in\F(V)$ we have $\phi_{ij}(s_i)=s_j$ on $V\cap U_i\cap U_j=V$, so $\phi_{ij}\circ\psi_i=\psi_j$.
+
+The sheaf $\F$ satisfies the universal property:
+$$ \hom(\F,\G) \cong \set{(\rho_i\colon\F_i\to\G|_{U_i})_i}[\rho_i=\rho_j\phi_{ij}\hbox{ on $U_{ij}$}] . \eqcnt $$
+Clearly every morphism $\rho\colon\F\to\G$ defines
+$$ \rho_i\colon \F_i \xtos{\psi_i^{-1}} \F|_{U_i} \xtos{\rho|_{U_i}} \G|_{U_i} $$
+and on $U_{ij}$,
+$$ \rho_j\circ\phi_{ij} = \rho|_{U_{ij}}\circ\psi_j^{-1}\circ\phi_{ij} = \rho|_{U_{ij}}\circ\psi_i^{-1} = \rho_i , $$
+as desired.
+And given $(\rho_i)_i$ define $\rho\colon\F(V)\to\G(V)$ by mapping $(s_i\in\F_j(V\cap U_i))_i$ to the gluing of $\rho_i(s_i)\in\G(V\cap U_i)$.
+By definition these sections agree on their intersections:
+$$ \rho_j(s_j)|_{U_{ij}} = \rho_j(\phi_{ij}(s_i|_{U_{ij}})) = \rho_i(s_i)|_{U_{ij}} , $$
+so such a gluing exists and is unique.
+
+These two processes are mutual inverses, and thus \gotoleqn{} is a natural isomorphism.
+Because universal properties define objects up to unique isomorphism, we are finished.
+
+\bye
+
