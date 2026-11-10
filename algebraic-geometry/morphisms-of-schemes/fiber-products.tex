@@ -1,0 +1,216 @@
+\subsection{Fiber products}
+
+We will show that the category of schemes has fiber products (pullbacks).
+We do this in steps.
+
+\blemm[name={pullbackaffine}]
+
+    Suppose $\alpha\colon X\to Z$ and $\beta\colon Y\to Z$ are morphisms of affine schemes.
+    Then their fiber product $X\times_ZY$ exists (in the category of schemes) and is affine.
+
+\elemm
+
+\bproof
+
+    Let $X=\spec A$, $Y=\spec B$, $Z=\spec C$, then their fiber product is a representation of
+    $$ \Sch(\bul,\spec A)\times_{\Sch(\bul,\spec C)}\Sch(\bul,\spec B) , $$
+    and following the spec-global sections functor we see that
+    $$ \eqalign{
+        \Sch(\bul,\spec A)\times_{\Sch(\bul,\spec C)}\Sch(\bul,\spec B) &\cong
+            \Ring(A,\Gamma\bul)\times_{\Ring(C,\Gamma\bul)}\Ring(B,\Gamma\bul)\cr
+        &\cong\Ring(A\otimes_CB,\Gamma\bul)\cr
+        &\cong \Sch(\bul,\spec(A\otimes_CB)) .
+    } $$
+    So that the fiber product is $\spec(A\otimes_CB)$ which is affine.
+    \qed
+
+\eproof
+
+\bnote
+
+    It follows that $\bA^1_k\times_k\bA^1_k\cong\bA^2_k$, because $k[x]\otimes_kk[y]\cong k[x,y]$
+    via the obvious map $p(x)\otimes q(y)\mapsto p(x)q(y)$.
+    But as sets it is not true that $\abs{\bA^2_k}\cong\abs{\bA^1_k}\times\abs{\bA^1_k}$, as there are
+    prime ideals of $\bA^2_k$ not of the form $(x-a,y-b)$ (i.e.\ which are not maximal) or $(x-a)$ or
+    $(y-b)$.
+    So the underlying set of a fiber product of schemes is not the fiber product of underlying sets.
+
+\enote
+
+\blemm[name={pullbackopen}]
+
+    Suppose $\iota\colon U\inj Z$ is an open embedding and $\rho\colon Y\to Z$ is a morphism.
+    Then $U\times_ZY$ is $(\rho^{-1}U,\O_Y|_{\rho^{-1}U})$.
+    In particular the fiber product of an open embedding is an open embedding:
+
+    \diagram{
+        U\times_ZY&Y\cr
+        U&Z
+    }{
+        \diagarrow{from={1,1}, to={1,2}, left cap={(}, text=\text{open}, y distance=.15cm}
+        \diagarrow{from={1,1}, to={2,1}}
+        \diagarrow{from={2,1}, to={2,2}, left cap={(}, text=\text{open}, y distance=.15cm}
+        \diagarrow{from={1,2}, to={2,2}}
+    }
+
+\elemm
+
+\bproof
+
+    Suppose we have the following commutative square
+    \commsq{W&Y\cr U&Z}
+        {\alpha}{\iota}{\beta}{\rho}
+    Then as topological maps we must have that $\alpha(W)\subseteq\rho^{-1}U$.
+    And so restricting $\alpha$'s codomain to the open $\rho^{-1}U$ gives us the desired map
+    $\bar\alpha\colon W\to\rho^{-1}U$ making the diagram commute.
+    \qed
+
+\eproof
+
+\blemm[name={pullbackalmostaffine}]
+
+    Suppose $\alpha\colon X\to Z$ is a morphism of affine schemes, and $\beta\colon Y\to Z$
+    factors as $Y\xinj\iota Y'\to Z$ where $\iota$ is an open embedding and $Y'$ affine.
+    Then $X\times_ZY$ exists.
+
+\elemm
+
+\bproof
+
+    Consider the diagram below:
+    \diagram{
+        W&W'&X\cr
+        Y&Y'&Z
+    }{
+        \diagarrow{from={1,1}, to={1,2}, left cap={(}, text=\text{open}, y distance=.15cm}
+        \diagarrow{from={1,1}, to={2,1}}
+        \diagarrow{from={2,1}, to={2,2}, left cap={(}, text=\text{open}, y distance=.15cm}
+        \diagarrow{from={1,2}, to={2,2}}
+        \diagarrow{from={1,2}, to={1,3}}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={1,3}, to={2,3}}
+    }
+    The right square has a pullback (because the schemes are affine), and the left square has a pullback
+    (because open embeddings have pullbacks).
+    Thus the rectangle as a whole is a pullback.
+    \qed
+
+\eproof
+
+\blemm[name={pullbackyarb}]
+
+    Suppose $X,Z$ are affine and $Y$ is arbitrary.
+    Then $X\times_ZY$ exists.
+
+\elemm
+
+\bproof
+
+    First assume that $Y$ has a cover by two affine open subsets $Y_1,Y_2$.
+    Let $Y_{12}=Y_1\cap Y_2$, so that by \refmath[lemma]{pullbackaffine} $W_i=X\times_ZY_i$ exists
+    and so does $W_{12}=X\times_ZY_{12}$ by \refmath[lemma]{pullbackalmostaffine}.
+    Furthermore by the proof of \refmath[lemma]{pullbackalmostaffine} the canonical map
+    $X\times_ZY_{12}\inj X\times_ZY_i$ is an open embedding (it is the map $W\inj W'$ in the proof).
+    And so we can glue $W_1$ and $W_2$ along $W_{12}$, call this scheme $W$.
+
+    There are obvious maps $W\xtos{\alpha'}Y$ and $W\xtos{\beta'}X$.
+    We want to show that $W=X\times_ZY$.
+    So suppose that we have $\alpha''\colon V\to X$ and $\beta''\colon V\to Y$ which commute with
+    $\alpha,\beta$.
+    That is, we must fill in the below diagram with a $\gamma$:
+
+    \diagram{
+        V\cr
+        &W&Y\cr
+        &X&Z
+    }{
+        \diagarrow{from={1,1}, to={2,3}, text=\beta'', x distance=.15cm}
+        \diagarrow{from={1,1}, to={3,2}, text=\alpha'', x distance=-.15cm}
+        \diagarrow{from={1,1}, to={2,2}, text=\gamma, x distance=-.15cm, dashed}
+        \diagarrow{from={2,2}, to={2,3}, text=\alpha', y distance=.15cm}
+        \diagarrow{from={2,2}, to={3,2}, text=\beta', x distance=-.15cm}
+        \diagarrow{from={2,3}, to={3,3}, text=\beta, x distance=.15cm}
+        \diagarrow{from={3,2}, to={3,3}, text=\alpha, y distance=.15cm}
+    }
+
+    Define $V_i=(\beta'')^{-1}Y_i$ and $V_{12}=(\beta'')^{-1}Y_{12}=V_1\cap V_2$.
+    Then for each $i$ there is a unique map $V_i\to W_i$ fitting into the pullback ($W_i=Y_i\times_ZX$).
+    Thus a unique $\gamma_i\colon V_i\to W$ fitting into the diagram above (with $V_i$ for $V$).
+    And similarly there is a unique map $\gamma_{12}\colon V_{12}\to W$ fitting into the diagram.
+    By uniqueness, $\gamma_1$ and $\gamma_2$ must agree on $V_{12}$ with $\gamma_{12}$, and thus there
+    is a unique gluing $\gamma\colon V\to W$.
+
+    In the general case, cover $Y$ with an open cover of affine open subsets $Y_i$.
+    As before $Y_{ij}=Y_i\cap Y_j$ has a pullback, so let
+    $$ W_i = Y_i\times_ZX,\qquad W_{ij} = Y_{ij}\times_ZX . $$
+    Then we may glue the $W_i$ along $W_{ij}$ together to form a scheme $W$.
+
+    Now given $\alpha''\colon V\to X$ and $\beta''\colon V\to Y$ as before, define
+    $V_i=(\beta'')^{-1}Y_i$ and $V_{ij}=(\beta'')^{-1}Y_{ij}=V_i\cap V_j$.
+    As before for each $i$ there is a unique $V_i\to W_i$ fitting into the diagram, giving us a unique
+    $\gamma_i\colon V_i\to W$.
+    And there are unique $\gamma_{ij}\colon V_{ij}\to W$, so $\gamma_i$ and $\gamma_j$ must agree on
+    $V_i\cap V_j$ with $\gamma_{ij}$.
+    Thus they uniquely glue together to give $\gamma$.
+    \qed
+
+\eproof
+
+\blemm[name={pullbackxyarb}]
+
+    If $Z$ is affine and $X,Y$ are arbitrary then $X\times_ZY$ exists.
+
+\elemm
+
+\bproof
+
+    Consider the above lemma and its proof.
+    In it we know that $W_i=X\times_ZY_i$ exists because $Y_i$ is affine (this is what the lemma proves).
+    And $W_{ij}=X\times Y_{ij}$ exists by \refmath[lemma]{pullbackopen}.
+    Thus the proof of the lemma works again (now that we know the lemma is true) for general $X$ as well.
+    \qed
+
+\eproof
+
+\blemm[name={pullbackxyarbzalmostaffine}]
+
+    Suppose $X,Y$ are abitrary and $Z$ is an open subscheme of an affine scheme $Z'$.
+    Then $X\times_ZY$ exists.
+
+\elemm
+
+\bproof
+
+    In general if $Z\to Z'$ is monic then $X\times_ZY$ and $X\times_{Z'}Y$ satisfy the same universal property,
+    so one exists iff the other does.
+    So this lemma follows from the previous one.
+    \qed
+
+\eproof
+
+\bthrm[name={fiberproductsexist}]
+
+    For arbitrary schemes $X,Y,Z$, the fiber product $X\times_ZY$ exists.
+
+\ethrm
+
+\bproof
+
+    Cover $Z$ with affine open subschemes $Z_i$, and let $X_i=\alpha^{-1}Z_i$ and $Y_i=\beta^{-1}Z_i$.
+    Further define $Z_{ij}=Z_i\cap Z_j$ and $X_{ij}=\alpha^{-1}Z_{ij}=X_i\cap X_j$ and similar for $Y$.
+    Then by \refmath[lemma]{pullbackxyarb} $W_iX_i\times_{Z_i}Y_i$ exists for all $i$, and by
+    \refmath[lemma]{pullbackxyarbzalmostaffine} $W_{ij}=X_{ij}\times_{Z_{ij}}Y_{ij}$ exists for all $ij$.
+
+    Note that as before $X_i\times_{Z_i}Y_i=X_i\times_ZY_i$, and furthermore we can see that
+    $X_i\times_ZY_i=X\times_ZY_i$.
+    This is because they both satisfy the same universal property: any $V$ with
+    $\alpha''\colon V\to X$ and $\beta''\colon V\to Y_i$ must have that $\alpha\alpha''=\beta\beta''$
+    which means that $\alpha\alpha''$ lies in $Z_i$ and thus $\alpha''$ lies in $X_i$.
+    So we may identify $W_i=X\times_ZY_i$.
+    And similarly $W_{ij}=X\times_ZY_{ij}$, and then we may glue the $W_i$s along the $W_{ij}$s, and for
+    the same reason as in \refmath[lemma]{pullbackyarb} this gives us the fiber product
+    $X\times_ZY$.
+    \qed
+
+\eproof
+
