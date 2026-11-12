@@ -214,3 +214,252 @@ We do this in steps.
 
 \eproof
 
+\subsubsection{Representable functors}
+
+In this section we will give a more sophisticated perspective on fiber products and provide an alternative
+proof as to their existence.
+We assume only \refmath[lemma]{pullbackaffine} and \refmath[lemma]{pullbackopen}.
+
+Recall that a (contravariant) functor is {\emphcolor representable} if it is naturally isomorphic to
+$\hom(\bul,X)$.
+And for a diagram $D\colon I\to\C$, its limit exists iff the limit of $\y\circ D\colon I\to\Psh(\C)$ is
+representable (here $\y$ is the Yoneda embedding, $\y(X)=\hom(\bul,X)$).
+Note that $\y\circ D$'s limit exists because $\Psh(\C)$ is complete.
+
+Writing $h_X=\hom(\bul,X)$, we see that $X\times_ZY$ exists iff $h_X\times_{h_Z}h_Y$ is representable.
+So we will give an alternative perspective on the above proof in light of this.
+
+Note that if $U_i$ is an open cover of $Y$, a morphism $Y\to X$ is determined by its restrictions
+$U_i\to X$.
+And given morphisms $U_i\to X$ which agree on $U_i\cap U_j$, they in turn glue to give $Y\to X$.
+Thus we have an equalizer diagram
+$$ h_X(Y) \to \prod h_X(U_i) \tto \prod h_X(U_i\cap U_j) , $$
+which is to say that $h_X$ forms a sheaf on every scheme $Y$.
+In general if $F$ is a contravariant functor $\Sch^\op\to\Set$ which forms a sheaf on every scheme $Y$
+(i.e.\ $F|_{\open(Y)}$ is a sheaf), then $F$ is called a {\emphcolor Zariski sheaf}.
+So if $F$ is representable it is a Zariski sheaf.
+
+\blemm[name={fiberzariski}]
+
+    For schemes $X,Y,Z$, $h_X\times_{h_Z}h_Y$ is a Zariski sheaf.
+
+\elemm
+
+\bproof
+
+    Let $\alpha\colon X\to Z$ and $\beta\colon Y\to Z$ so that for any scheme $W$
+    $$ h_X(W)\times_{h_Z(W)}h_Y(W) = \set{(f\colon W\to X,g\colon W\to Y)}[\alpha f=\beta g] . $$
+    Now suppose $U_i$ cover $W$ and we are given $f_i\colon U_i\to X$ and $g_i\colon U_i\to Y$ such that
+    $\alpha f_i=\beta g_i$ and $f_i|_{U_i\cap U_j}=f_j|_{U_i\cap U_j}$ and similar for $g_i$s.
+    Then the $f_i$ and $g_i$ glue uniquely together to give $f\colon W\to X$ and $g\colon W\to Y$, and
+    because locally we have $\alpha f=\beta g$ we must have this globally.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A subfunctor $h'\inj h$ is an {\emphcolor open subfunctor} if for all schemes $X$ and maps
+    $h_X\to h$, the fibered product $h_X\times_hh'$ is representable, say by a scheme $U$, and
+    $h_U\to h_X$ (induced from $h_X\times_hh'\to h_X$) corresponds to an open embedding of schemes
+    $U\to X$.
+
+\edefn
+
+\blemm
+
+    A morphism $h_W\to h_Z$ is an open subfunctor iff $W\to Z$ is an open embedding.
+
+\elemm
+
+\bproof
+
+    Suppose that $h_W\to h_Z$ is an open subfunctor, then taking $X=Z$ we have that
+    $h_Z\times_{h_Z}h_W\cong h_W$ (which is already representable) and then by definition $W\to Z$ is an
+    open embedding.
+
+    Conversely if $W\to Z$ is an open embedding then for a scheme $X$ by \refmath[lemma]{pullbackopen}
+    we know that $X\times_ZW$ exists and is isomorphic to $h_U$ where $U\inj X$ is open.
+    Thus $h_X\times_{h_Z}h_W$ is representable by $h_U$ and $U\inj X$ is an open embedding.
+    \qed
+
+\eproof
+
+\blemm
+
+    If $h''\inj h'$ and $h'\inj h$ are open subfunctors, then $h''\inj h$ is an open subfunctor.
+
+\elemm
+
+\bproof
+
+    Let $X$ be a scheme, and so
+    $$ h_X\times_hh'' \cong h_X\times_h(h'\times_{h'}h'') \cong (h_X\times_hh')\times_{h'}h'' . $$
+    By assumption there is an open subscheme $U\inj X$ so that $h_X\times_hh'\cong h_U$, so
+    $$ h_X\times_hh'' \cong h_U\times_{h'}h'' , $$
+    and again there is an open subscheme $V\inj U$ such that this is isomorphic to $h_V$, and
+    $V\inj U\inj X$ is an open embedding as desired.
+    \qed
+
+\eproof
+
+\blemm
+
+    \benum
+        \item If $h'\inj h$ and $h''\inj h$ are open subfunctors, their pullback $h'\times_hh''$
+        is an open subfunctor of $h',h'',h$.
+        We call the pullback their {\emphcolor intersection}.
+        \item If $U,V\inj X$ are open subschemes of $X$, then the intersection of $h_U,h_V\inj h_X$
+        is $h_{U\cap V}$.
+    \eenum
+
+\elemm
+
+\bproof
+
+    For (1), let $X$ be a scheme so that
+    $$ h_X\times_{h'}(h'\times_hh'') \cong h_X\times_hh'' \cong h_U $$
+    for some open subscheme $U\inj X$.
+    Thus $h'\times_hh''$ is an open subfunctor of $h'$, and by symmetry for $h''$.
+    As these are open subfunctors of $h$, by the previous lemma the intersection is an open subfunctor of $h$.
+
+    For (2) we need to show that $h_U\times_{h_X}h_V\cong h_{U\cap V}$.
+    This follows directly from \refmath[lemma]{pullbackopen}.
+    \qed
+
+\eproof
+
+\blemm[name={fiberopenisopen}]
+
+    Let $\alpha\colon X\to Z$ and $\beta\colon Y\to Z$ be morphisms of schemes.
+    Let $U\subseteq X,V\subseteq Y,W\subseteq Z$ be open subschemes so that $\alpha(U),\beta(V)\subseteq W$.
+    Show that the natural map $h_U\times_{h_W}h_V\inj h_X\times_{h_Z}h_Y$ is an open embedding.
+
+\elemm
+
+\bproof
+
+    We want to show that for any $h_T\colon h_X\times_{h_Z}h_Y$, the pullback
+    $h_T\times_{h_X\times_{h_Z}h_Y}h_V\times_{h_W}h_U$ is represented by an open subscheme of $T$.
+    The map $h_T\to h_X\times_{h_Z}h_Y$ is determined by morphisms $\phi\colon T\to X$ and
+    $\psi\colon T\to Y$.
+    Then we claim that
+    $$ h_T\times_{h_X\times_{h_Z}h_Y}h_V\times_{h_W}h_U \cong h_{\phi^{-1}U\cap\psi^{-1}V} . $$
+    Indeed a pair of morphisms $h\to h_T$ and $h\colon h_V\times_{h_W}h_U$ gives morphisms
+    from $h$ to $h_T,h_V,h_U$ which commute with the base morphisms, and thus a morphism
+    $h\to h_U\times_{h_X}h_T$ and $h\to h_V\times_{h_Y}h_T$.
+    Because $U\subseteq X$ and $V\subseteq Y$ are open, we know that these fiber products are
+    $h_{\phi^{-1}U}$ and $h_{\psi^{-1}V}$, so we have morphisms $h\to h_{\phi^{-1}U}$ and
+    $h\to h_{\psi^{-1}V}$.
+    These commute with the base morphisms giving us a morphism
+    $h\to h_{\phi^{-1}U}\times_{h_T}h_{\psi^{-1}V}=h_{\phi^{-1}U\cap\psi^{-1}V}$.
+    All of the steps here gave unique morphisms, so we have shown the desired result.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Let $h_i$ be a collection of open subfunctors of $h$.
+    Then for a scheme $X$ and a morphism $h_X\to h$, we have that $h_X\times_hh_i=h_{U_i}$ for some open
+    subscheme $U_i\inj X$.
+    Then $h_i$ {\emphcolor covers} $h$ if the $U_i$ cover $X$ for all $X$.
+
+\edefn
+
+\blemm[name={pullbackcover}]
+
+    Suppose we have morphisms of schemes $X\to Z$ and $Y\to Z$.
+    Let $\set{Z_i}_i$ be an affine cover of $Z$, and $\set{X_{ij}}_j$ be an affine cover of $Z_i$'s
+    preimage in $X$, and $\set{Y_{ij}}_j$ an affine cover of $Z_i$'s preimage in $Y$.
+    Then $\set{h_{X_{ij}}\times_{h_{Z_i}}h_{Y_{ik}}}_{ijk}$ is an open cover of $h_X\times_{h_Z}h_Y$.
+
+\elemm
+
+\bproof
+
+    By \refmath[lemma]{fiberopenisopen} these are open subfunctors of $h_X\times_{h_Z}h_Y$.
+    By the same lemma for $h_T\to h_X\times_{h_Z}h_Y$ corresponding to $T\xto\phi X$ and $T\xto\psi Y$,
+    we have that
+    $$ h_T\times_{h_X\times_{h_Z}h_Y}h_{X_{ij}}\times_{h_{Z_i}}h_{Y_{ik}}\cong
+    h_{\phi^{-1}X_{ij}\cap\psi^{-1}Y_{ik}} . $$
+    So we claim that $\phi^{-1}X_{ij}\cap\psi^{-1}Y_{ik}$ cover $T$.
+    Indeed for $t\in T$ we have that $\alpha\phi(t)=\beta\psi(t)\in Z_i$ for some $i$.
+    Then $\phi(t)\in X_{ij}$ for some $j$ and $\psi(t)\in Y_{ik}$ for some $k$, and thus
+    $t\in\phi^{-1}X_{ij}\cap\psi^{-1}X_{ik}$ as desired.
+    \qed
+
+\eproof
+
+\blemm
+
+    Let $h$ be a Zariski sheaf which has an open cover by representable functors.
+    Then $h$ is representable.
+
+\elemm
+
+\bproof
+
+    Let $h_{U_i}\inj h$ be an open cover.
+    Then $h_{U_i}\times_hh_{U_j}$ is representable by some open $U_{ij}\inj U_i$.
+    It follows then that $U_{ij}\cong U_{ji}$ and so we can glue the $U_i$ along the $U_{ij}$s to get a
+    scheme $X$.
+
+    Now we construct a morphism $h_X\to h$.
+    By Yoneda this is equivalent to giving an element of $h(X)$.
+    Because $h$ is a Zariski sheaf, we can do this locally.
+    The $U_i$ cover $X$, so we can give compatible sections of $h(U_i)$, which is the same as
+    $h_{U_i}\to h$.
+    Taking the given open embeddings $h_{U_i}\inj h$ we see that we may glue them together (they agree
+    on overlaps) to give us $h_X\to h$.
+
+    Now let $Y$ be another scheme, we want to show that $h_X(Y)\to h(Y)$ is an isomorphism.
+    Given a morphism $h_Y\to h$ we have that $h_Y\times_hh_{U_i}\cong h_{V_i}$ cover $Y$.
+    Then we have morphisms $h_{V_i}\to h_{U_i}\inj h_X$, which glue together to give $h_Y\to h_X$.
+    And conversely if $h_Y\to h_X$ is a morphism, then this gives us a morphism $h_Y\to h_X\to h$.
+    These two procedures are natural inverses, so we see that $\hom(\bul,h_X)\cong\hom(\bul,h)$
+    and thus $h\cong h_X$ as desired.
+    \qed
+
+\eproof
+
+\bthrm
+
+    The fiber products of schemes exists.
+
+\ethrm
+
+\bproof
+
+    We know that $h_X\times_{h_Z}h_Y$ is a Zariski sheaf by \refmath[lemma]{fiberzariski}.
+    Furthermore by \refmath[lemma]{pullbackcover} we can cover this by representable functors.
+    Thus by the previous lemma $h_X\times_{h_Z}h_Y$ is representable, and so $X\times_ZY$ exists.
+    \qed
+
+\eproof
+
+\subsubsection{Computing fiber products}
+
+There are a few ways of computing fiber products (base change).
+The first is if we want to base change relative to an open embedding, then we know what the fiber product
+looks like by \refmath[lemma]{pullbackopen}.
+
+Secondly we know that for rings $A\otimes_BB[x_1,\dots,x_n]\cong A[x_1,\dots,x_n]$.
+We form morphisms in both directions by mapping $a\otimes p(\bar x)\mapsto ap(\bar x)$, and conversely
+mapping $x_i$ to $1\otimes x_i$ and using the universal property of polynomial algebras.
+In particular $A[\bar x]\cong A\otimes_\bZ\bZ[\bar x]$.
+
+Thus we have that
+$$ \spec A\times_{\spec B}\bA^n_B \cong \bA^n_A . $$
+In particular
+$$ \bA^n_A \cong \spec A\times_{\spec\bZ}\bA^n_\bZ . $$
+In general then we define the following.
+
+\bdefn
+
+    Let $X$ be a scheme, then we define $\bA^n_X$ by $X\times_{\bZ}\bA^n_\bZ$.
+
+\edefn
+
+
+
