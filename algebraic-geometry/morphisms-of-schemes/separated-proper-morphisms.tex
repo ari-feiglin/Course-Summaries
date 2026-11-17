@@ -1,5 +1,7 @@
 \subsection{Separated and proper morphisms}
 
+\subsubsection{Separated morphisms and varieties}
+
 \bdefn
 
     Let $P$ be a property of morphisms.
@@ -300,6 +302,285 @@ We can generalize this result somewhat.
 
     A {\emphcolor variety} over a field $k$ (a {\emphcolor $k$-variety}) is a reduced, separated scheme
     of finite type over $k$.
+    A {\emphcolor subvariety} of a $k$-variety $X$ is a reduced locally closed subscheme of $X$.
 
 \edefn
+
+If $Z\inj X$ is locally closed, then it is of finite type.
+Thus $Z\inj X\to k$ is of finite type.
+Furthermore $Z\inj X$ is separated (because the diagonal is an isomorphism), and thus so is $Z\to k$.
+Thus subvarieties are themselves varieties.
+
+Note that $k$-varieties are Noetherian spaces: the preimage of $k$ in $X$ is a finite union of affine schemes,
+which are all Noetherian spaces.
+
+In general a morphism of $k$-varieties are of finite type and separated.
+This is because if $X\to Y$ is a morphism of varieties, then $X\to Y\to k$ is of finite type and separated,
+and by the above proposition $X\to Y$ is as well.
+
+\bprop
+
+    \benum
+        \item If $k$ is perfect, the product of $k$-varieties (the fibered product over $\spec k$) is a
+        $k$-variety.
+        \item If $k$ is algebraically closed, the product of irreducible $k$-varieties is an irreducible
+        $k$-variety.
+        \item If $k$ is algebraically closed, the product of connected $k$-varieties is connected.
+    \eenum
+
+\eprop
+
+\bproof
+
+    If $X,Y$ are $k$-varieties then $X\times_kY\to X\to k$ is separated and of finite type by base change
+    and composition.
+    For reducedness we need to show that if $A,B$ are reduced $k$-algebras, then $A\otimes_kB$
+    is as well.
+    This is an algebraic result which is true.
+
+    For (2) need only show that the product is irreducible.
+    To show a space is irreducible it is sufficient to find a cover of irreducible open subsets which all
+    have nonempty intersection.
+    Let $U_i$ be an affine open cover of $X$ and $V_j$ for $Y$.
+    Then $U_i\times V_j$ cover $X$, and they are irreducible (if $k$ is separably closed then if
+    $\spec A,\spec B$ are irreducible so too is $\spec A\otimes_kB$), and their intersections are as well.
+    \qed
+
+\eproof
+
+\bprop
+
+    Suppose $X$ is a separated $A$-scheme, then the intersection of affine open subsets of $X$ is affine open.
+
+\eprop
+
+\bproof
+
+    First note that $\Delta\cap(U\times_AV)\cong U\cap V$.
+    This is because cones of one form below are the same as cones of the second:
+
+    \medskip
+    \hbox to\hsize{\hfill\commsqed{S&U\times_AV\cr X&X\times_AX}{}{}{}{}%
+        \hfill%
+        \commsqed{S&U\cr V&X}{}{}{}{}%
+    }
+    \medskip
+
+    We have that $U\cap V\cong\Delta\cap(U\times_AV)$.
+    We know that $U\times_AV$ is affine, and $\Delta\cap(U\times_AV)$ is a closed subscheme of $U\times_AV$
+    and thus affine.
+    \qed
+
+\eproof
+
+\bcoro
+
+    The intersection of anty two affine open subsets of $\spec A$ is affine.
+
+\ecoro
+
+\bproof
+
+    Take $X=\spec A$ in the above proposition.
+    \qed
+
+\eproof
+
+\bcoro[name={quasiprojseparated}]
+
+    Every quasiprojective $A$-scheme is separated over $A$.
+    In particular every reduced quasiprojective $k$-scheme is a $k$-variety.
+
+\ecoro
+
+\bproof
+
+    If $X\to\spec A$ is a quasiprojective $A$-scheme, then the structure morphism factors as a locally closed
+    embedding followed by the structure morphism $X\to\bP^n_A\to\spec A$.
+    Locally closed embeddings are separated, and thus $X\to\spec A$ is.
+    \qed
+
+\eproof
+
+\subsubsection{Proper morphisms}
+
+\bdefn
+
+    A morphism $\pi\colon X\to Y$ is {\emphcolor universally closed} if for every $Z\to Y$, the induced
+    morphism $Z\times_YX\to Z$ is closed (as a morphism of topological spaces).
+
+    A morphism is {\emphcolor proper} if it is separated, of finite type, and universally closed.
+    If $X$ is an $A$-scheme, it is said to be {\emphcolor proper} if the structure map $X\to\spec A$ is.
+
+\edefn
+
+Being universally closed is reasonable.
+It is closed under composition because if $X\to Y\to Z$ are universally closed and $W\to Z$ is a morphism,
+then consider the composition:
+$$ W\times_ZX \to W\times_ZY \to W $$
+the right arrow is closed.
+The left arrow is as well because it is equal to
+$$ W\times_ZX = W\times_ZY\times_YX \to W\times_ZY $$
+which is closed.
+It is closed under base change because if $X\to Y$ is universally closed, then for $Z\to Y$,
+$X\times_YZ\to Z$ is also universally closed as for $W\to Z$,
+$$ X\times_YZ\times_ZW = X\times_YW \to W $$
+is closed.
+Finally it is local on target: if $V\subseteq X$ is mapped into $U\subseteq Y$ then consider the pullback
+for $Z\to U$,
+\diagram{
+    V\times_UZ&Z\cr
+    V&U\cr
+    X&Y
+}{
+    \diagarrow{from={1,1}, to={1,2}}
+    \diagarrow{from={2,1}, to={2,2}}
+    \diagarrow{from={3,1}, to={3,2}}
+    \diagarrow{from={1,1}, to={2,1}}
+    \diagarrow{from={2,1}, to={3,1}}
+    \diagarrow{from={1,2}, to={2,2}}
+    \diagarrow{from={2,2}, to={3,2}}
+}
+So we see that $V\times_UZ\to Z$ is the pullback of $X\to Y$, and is thus universally closed (in particular
+closed).
+Now cover $Y$ with $U_i$ whose preimages in $X$ are $V_i$ and suppose $V_i\to U_i$ are locally closed.
+Let $Z\to Y$ be a morphism and let $Z_i$ be the preimages of $U_i$.
+Then $Z_i\times_{U_i}V_i\to Z_i$ are closed, and they glue to give $Z\times_YX\to Z$.
+Being a closed map is local on the target so we are done.
+
+Because each condition in being proper is then reasonable, being proper is reasonable.
+
+\bprop
+
+    The classes of universally closed and proper morphisms are reasonable.
+
+\eprop
+
+\bprop
+
+    Finite morphisms are proper.
+    In particular closed embeddings are proper.
+
+\eprop
+
+\bproof
+
+    Finite morphisms are by definition affine and thus separated, and finite morphisms are of finite type.
+    So we need only show that finite morphisms are universally closed.
+    Recall that finite morphisms are reasonable, so they remain finite after base change, and finite
+    morphisms are also closed.
+    \qed
+
+\eproof
+
+\bthrm
+
+    Projective $A$-schemes are proper over $A$.
+
+\ethrm
+
+\bproof
+
+    A projective $A$-scheme $X$ is a closed subscheme of $\bP^n_A$.
+    Because closed embeddings are proper, it is sufficient to show that $\bP^n_A$ is proper.
+    Clearly $\bP^n_A\to\spec A$ is of finite type, and we showed it is separated by
+    \refmath[corollary]{quasiprojseparated}.
+    So it remains to show that it is universally closed.
+
+    Because $\bP^n_A=\bP^n_\bZ\times_\bZ\spec A$, it is sufficient to show that $\bP^n_\bZ\to\spec\bZ$
+    is universally closed.
+    That is, we want to show that $\bP^n_X=\bP^n_\bZ\times_\bZ X\to X$ is closed for all schemes $X$.
+    Being closed is local on the target, so it is sufficient to show this for affine $X=\spec B$.
+    And $\bP^n_B\to\spec B$ is indeed closed (this is the fundamental theorem of elimination theory and is
+    non-trivial).
+    \qed
+
+\eproof
+
+\subsubsection{Valuation rings and criteria for separatedness and properness}
+
+\bdefn
+
+    Let $k$ be a field and $G$ a linearly ordered Abelian group.
+    A {\emphcolor valuation} of $k$ with values in $G$ is a map $v\colon k^\times\to G$ such that for all
+    nonzero $x,y\in k$,
+    $$ (1)\ v(xy) = v(x) + v(y),\qquad (2)\ v(x+y) \geq \min(v(x),v(y)) , $$
+    where we set $v(0)=\infty$.
+
+\edefn
+
+If $v\colon k^\times\to G$ is a valuation, then $A=\set{x\in k}[v(x)\geq0]\cup0$ is a subring of $k$.
+Indeed, because $v$ is a group morphism we have $v(1)=0$ so it lies in $A$, the sum of elements of $A$
+clearly lie in $A$, so does the product, and $2v(-1)=v(1)=0$ so that $v(-1)=0$ and thus $-1\in A$.
+So $A$ is a ring, called the {\emphcolor valuation ring of $v$} (or {\it a\/} valuation ring of $k$).
+
+Define $\m=\set{x\in k}[v(x)>0]\cup0$; this is a proper ideal of $A$.
+And if $v(x)=0$ then $x^{-1}\in k$ is in $A$ because $0=v(xx^{-1})=v(x)+v(x^{-1})$ so $v(x^{-1})=0$.
+Thus $x\notin\m$ iff $x$ is invertible, so $(A,\m)$ is a local ring.
+
+\bdefn
+
+    A {\emphcolor valuation ring} is an integral domain which is the valuation ring of some valuation on
+    its field of fractions.
+
+    If $\ell\leq k$ is a subfield and $v(x)=0$ for $x\in\ell$, then $v$ is a valuation of $k/\ell$.
+    And its valuation ring is a valuation ring of $k/\ell$.
+
+\edefn
+
+\bdefn
+
+    Suppose $A,B$ are local rings, then $B$ {\emphcolor dominates} $A$ if $A\subseteq B$ and inclusion forms
+    a local map $A\inj B$; i.e.\ $\m_A=\m_B\cap A$.
+
+\edefn
+
+\bthrm
+
+    Let $k$ be a field, then a local ring $A\subseteq k$ is a valuation ring of $k$ iff it is a maximal
+    local subring of $k$ with respect to domination.
+    Furthermore every local subring of $k$ is dominated by some valuation ring of $k$.
+
+\ethrm
+
+\bdefn
+
+    A valuation ring is {\emphcolor discrete} if its value group $G$ is the integers.
+    The corresponding valuation ring is called a {\emphcolor discrete valuation ring} ({\emphcolor DVR}).
+
+\edefn
+
+\bthrm
+
+    Let $A$ be a Noetherian local domain of dimension $1$, with maximal ideal $\m$.
+    The following are equivalent.
+    \benum
+        \item $A$ is a DVR,
+        \item $A$ is normal (integrally closed),
+        \item $A$ is a regular local ring,
+        \item $\m$ is a principal ideal.
+    \eenum
+
+\ethrm
+
+\bnote
+
+    A regular local ring is a Noetherian local ring which satisfies any of the following equivalent properties:
+    \benum
+        \item The Krull dimension of $A$ is equal to the minimal number of generators of its maximal ideal.
+        This is well-defined because the ring is Noetherian and so $\m$ is finitely generated.
+        \item The Krull dimension of $A$ is equal to $\dim_k\m/\m^2$ where $k=A/\m$ is $A$'s residue field.
+    \eenum
+    Clearly the first property here is equivalent to (4) above as $A$ has dimension $1$.
+
+\enote
+
+\bdefn
+
+    A {\emphcolor Dedekind domain} is an integrally closed Noetherian domain of dimension one.
+
+\edefn
+
+Thus the localization of a Dedekind domain at a nonzero prime ideal is a DVR.
+
 
