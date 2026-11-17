@@ -17,10 +17,31 @@
 \commap\@mmname{Set,sSet,Top,Grp,Ab,Cat,Mod,Alg,Mon,Psh,Sh,Ring,Sch,Space,LocRing,AffSch,CommMon,LocAlg,QCoh}
 \commap\@mmnameA{{RS}{RSp},{LRS}{LocRSp}}
 
-\makemathops\rm{id,sk,proj,Nat,inc,ev,im,Fun,End,Ob,open,res,inc,coker,supp,nil,Frac,loc,Proj,ann,ass,rank,graph,ord,length,Ch,div}
+\makemathops\rm{id,sk,proj,Nat,inc,ev,im,Fun,End,Ob,open,res,inc,coker,supp,nil,Frac,loc,Proj,ann,ass,rank,graph,ord,length,Ch,div,Mat}
 \makemathopsA\rm{{idof}{I},{vof}{V},{dof}{D},{spec}{Spec},{clos}{cl},{gl}{GL},{rat}{Rat},{jac}{Jac}}
 
 %\makemathopsA\frak{{lso}{so},{lsp}{sp}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\@darrow@wd{2pt}
+
+\def\@@@darrow@type#1#2#3#4#5#6{\mathrel{\arrow@skip%
+    \vcenter{\hbox{$\m@th#6%
+        #1{\vecc@w}{\vecc@hw}[#4][#5]%
+        \xleaders\hbox to1.5\dimexpr\@darrow@wd{\vrule width\dimexpr\@darrow@wd * \@font@scale\relax height \dimexpr \vecc@w pt * #4 * \@font@scale\relax depth 0pt\hfil}\hskip\dimexpr #3pt * #4 * \@font@scale\relax%
+        #2{\vecc@w}{\vecc@hw}[#4][#5]%
+    $}}\arrow@skip%
+}}
+
+\def\@@darrow@type#1#2{\@@@darrow@type#2{\csname vecc@\m@strip#1@sf\endcsname}{\csname vecc@\m@strip#1@s\endcsname}{#1}}
+
+\def\@darrow@type#1#2#3{\mathpalette\@@darrow@type{{#1}{#2}{#3}}}
+
+\def\@darrow@def#1#2#3{%
+    \expandafter\def\csname #1\endcsname{\@darrow@type{#2}{#3}{\arrow@len}}%
+    \expandafter\def\csname long#1\endcsname{\@darrow@type{#2}{#3}{\long@arrow@len}}%
+}
+
+\@darrow@def{ratto}\@linecap\@rarrow
 

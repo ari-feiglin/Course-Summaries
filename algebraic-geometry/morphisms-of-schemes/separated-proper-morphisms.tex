@@ -1,0 +1,305 @@
+\subsection{Separated and proper morphisms}
+
+\bdefn
+
+    Let $P$ be a property of morphisms.
+    Define the property $P\delta$ ($P$-delta) to be the class of morphisms $\pi\colon X\to Y$ whose
+    diagonal $\delta_\pi\colon X\to X\times_YX$ lies in $P$.
+
+\edefn
+
+\bthrm[name={cancellationtheorem}, title={The Cancellation Theorem}]
+
+    Let $P$ be a class of morphisms preserved by base change and composition.
+    Suppose we have a commutative diagram
+    \diagram{
+        X&&Y\cr
+        &Z
+    }{
+        \diagarrow{from={1,1}, to={1,3}, text=\pi, y distance=.1cm}
+        \diagarrow{from={1,1}, to={2,2}, text={\tau\in P}, x distance=-.15cm}
+        \diagarrow{from={1,3}, to={2,2}, text={\rho\in P\delta}, x distance=.15cm}
+    }
+    If $\tau\in P$ and $\rho\in P\delta$ then $\pi\in P$.
+
+\ethrm
+
+\bproof
+
+    Consider the diagram
+    \diagram{
+        X&X\times_YY&X\times_ZY&Z\times_ZY&Y\cr
+        Y&Y\times_ZY&&X&Z
+    }{
+        \diagarrow{from={1,1}, to={1,2}, ds, right cap=-}
+        \diagarrow{from={1,4}, to={1,5}, ds, right cap=-}
+        \diagarrow{from={1,2}, to={1,3}}
+        \diagarrow{from={1,3}, to={1,4}}
+        \diagarrow{from={1,2}, to={2,1}}
+        \diagarrow{from={1,3}, to={2,2}}
+        \diagarrow{from={1,3}, to={2,4}}
+        \diagarrow{from={1,4}, to={2,5}}
+        \diagarrow{from={2,1}, to={2,2}, text=P, y distance=.15cm}
+        \diagarrow{from={2,4}, to={2,5}, text=P, y distance=.15cm}
+    }
+    The squares are pullbacks, so the top arrows are in $P$, thus $X\to Y$ is.
+    \qed
+
+\eproof
+
+\bprop
+
+    If $P$ is a reasonable class of morphisms, so too is $P\delta$.
+
+\eprop
+
+\bproof
+
+    First we show that $P\delta$ is closed under composition.
+    If $X\to Y\to Z$ are morphisms such that $X\to X\times_YX$ and $Y\to Y\times_ZY$ are in $P$ then
+    consider the diagram
+    \diagram{
+        X&X\times_YX&X\times_ZX\cr
+        &Y&Y\times_ZY
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=P, y distance=.15cm}
+        \diagarrow{from={2,2}, to={2,3}, text=P, y distance=.15cm}
+        \diagarrow{from={1,2}, to={1,3}}
+        \diagarrow{from={1,2}, to={2,2}}
+        \diagarrow{from={1,3}, to={2,3}}
+    }
+    The square is a pullback so the top arrows are in $P$, thus $X\to X\times_ZX$ is.
+
+    To show that $P\delta$ is closed under base change we must show that if $X\to Y$ is in $P\delta$ and
+    $Z\to Y$ is a morphism, then $X\times_YZ\to Z$ is in $P\delta$.
+    This boils down to showing if $X\to X\times_YX$ is in $P$ then $X\times_YZ\to X\times_YX\times_YZ$ is
+    in $P$.
+    This is because reasonable classes are closed under products.
+
+    Suppose we have a cover $U_i$ of $Y$ such that $V_i\to U_i$ is in $P\delta$ where $V_i$ is the preimage
+    of $U_i$.
+    So we have a pullback diagram
+    \diagram{
+        V_i&U_i\cr
+        X&Y
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=P\delta, y distance=.15cm}
+        \diagarrow{from={1,1}, to={2,1}, left cap={(}}
+        \diagarrow{from={1,2}, to={2,2}, left cap={(}}
+        \diagarrow{from={2,1}, to={2,2}}
+    }
+    This means that the following diagram is a pullback as well
+    \diagram{
+        V_i&V_i\times_{U_i}V_i\cr
+        X&X\times_YX
+    }{
+        \diagarrow{from={1,1}, to={1,2}, text=P, y distance=.15cm}
+        \diagarrow{from={1,1}, to={2,1}, left cap={(}}
+        \diagarrow{from={1,2}, to={2,2}, left cap={(}}
+        \diagarrow{from={2,1}, to={2,2}}
+    }
+    And the $V_i\times_{U_i}V_i$ cover $X\times_YX$, so because $P$ is local on target so is $P\delta$.
+    \qed
+
+\eproof
+
+\bexam
+
+    Recall that $\pi\colon X\to Y$ is a monomorphism iff $\delta_\pi\colon X\to X\times_YX$ is an isomorphism.
+    Because the property of being an isomorphism is reasonable, and its diagonal property is the property
+    of being a monomorphism, it follows that being a monomorphism is reasonable.
+
+\eexam
+
+\bprop
+
+    A morphism $\pi\colon X\to Y$ is quasiseparated iff the diagonal $\delta_\pi\colon X\to X\times_YX$
+    is quasicompact.
+
+\eprop
+
+\bproof
+
+    Suppose $\delta_\pi$ is quasicompact, then let $\spec A\subseteq Y$ be affine open.
+    We want to show that if $U,V\subseteq X$ are affine open with $\pi(U),\pi(V)\subseteq\spec A$ then
+    $U\cap V$ is compact.
+    Because being quasicompact is reasonable, $U\cap V\to U\times_{\spec A}V$ is quasicompact.
+    The righthand side is an affine scheme and thus compact, so its preimage $U\cap V$ is.
+    Thus $\pi$ is quasiseparated.
+
+    Conversely if $\pi$ is quasiseparated, then we may cover $X\times_YX$ with an affine cover of the form
+    $U\times_WV$ where $\pi(U),\pi(V)\subseteq W$.
+    On this target $\delta_\pi$ restricts to $U\cap V\to U\times_WV$.
+    Because $\pi$ is quasiseparated, $U\cap V$ is quasicompact, and thus this is a morphism between
+    quasicompact spaces and is thus quasicompact.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Quasiseparated morphisms are reasonable.
+
+\ecoro
+
+\bprop[name={diagonallc}]
+
+    Let $\pi\colon X\to Y$ be a morphism of schemes, and let $\delta_\pi$ be its diagonal.
+    \benum
+        \item If $X$ and $Y$ are affine, then $\delta_\pi$ is a closed embedding.
+        \item In general $\delta_\pi$ is a locally closed embedding.
+    \eenum
+
+\eprop
+
+\bproof
+
+    If $X=\spec A,Y=\spec B$, then $X\times_YX=\spec A\otimes_BA$ and $A\otimes_BA\to A$ given by
+    $a_1\otimes a_2\mapsto a_1a_2$ is surjective, proving (1).
+
+    Cover $Y$ with affine opens $V_i$ and cover the preimage of $V_i$ in $X$ with affine opens $U_{ij}$.
+    Then $U_{ij}\times_{V_i}U_{ij}$ is an affine open subscheme of $X\times_YX$, and they cover the image
+    of $\delta_\pi$.
+    Now $\delta_\pi^{-1}(U_{ij}\times_{V_i}U_{ij})=U_{ij}$ and $\delta_\pi$ restricts to a closed
+    embedding $U_{ij}\to U_{ij}\times_{V_i}U_{ij}$ by (1), proving (2).
+
+    Note that these open subsets may not cover $X\times_YX$, so $\delta_\pi$ is not necessarily a closed
+    embedding.
+    It is just a closed embedding into the union of these affine opens.
+    \qed
+
+\eproof
+
+\bdefn
+
+    A morphism $\pi\colon X\to Y$ is {\emphcolor separated} if $\delta_\pi\colon X\to X\times_YX$ is a
+    closed embedding.
+    An $A$-scheme is {\emphcolor separated} if the structure morphism $X\to\spec A$ is separated.
+
+    By the above proposition and \refmath[proposition]{lcembcl}, $\pi$ is separated iff the
+    $\Delta_\pi=\im\delta_\pi$ is closed in $X\times_YX$; this is purely topological.
+
+\edefn
+
+\bremark
+
+    As closed embeddings are quasicompact (they are affine), a separated morphism is quasiseparated.
+
+\eremark
+
+\bprop
+
+    Separated morphisms are reasonable.
+
+\eprop
+
+\bproof
+
+    They are the diagonal (delta) property of being a closed embedding.
+    \qed
+
+\eproof
+
+\bprop
+
+    Affine morphisms are separated.
+
+\eprop
+
+\bproof
+
+    By \refmath[proposition]{diagonallc} and separated morphisms being reasonable.
+    \qed
+
+\eproof
+
+\bprop
+
+    An $A$-scheme $X$ is separated iff it is separated as a $\bZ$-scheme.
+
+\eprop
+
+\bproof
+
+    If $X$ is separated over $A$, then $X\to\spec A\to\spec\bZ$ is separated because affine morphisms are
+    separated.
+    Conversely if this composition is separated, then consider the diagram
+    \diagram{
+        X&&\spec A\cr
+        &\spec\bZ
+    }{
+        \diagarrow{from={1,1}, to={1,3}}
+        \diagarrow{from={1,1}, to={2,2}}
+        \diagarrow{from={1,3}, to={2,2}}
+    }
+    Then $A\to\spec\bZ$ has the diagonal property of being separated (the diagonal is an affine morphism
+    and thus separated), and $X\to\spec\bZ$ is separated by assumption.
+    By \refmath{cancellationtheorem}, $X\to\spec A$ is separated.
+    \qed
+
+\eproof
+
+We can generalize this result somewhat.
+
+\bprop
+
+    Consider the composition $\tau=X\xtos\pi Y\xtos\rho Z$.
+    \benum
+        \item If $\tau$ is separated (resp.\ locally closed, locally of finite type, quasiseparated),
+        then so is $\pi$.
+        \item If $\tau$ is quasicompact and $Y$ Noetherian, then $\pi$ is quasicompact.
+    \eenum
+
+\eprop
+
+\bproof
+
+    We appeal to \refmath{cancellationtheorem} and consider the diagram
+    \diagram{
+        X&&Y\cr
+        &Z
+    }{
+        \diagarrow{from={1,1}, to={1,3}, text=\pi, y distance=.1cm}
+        \diagarrow{from={1,1}, to={2,2}, text={\tau}, x distance=-.15cm}
+        \diagarrow{from={1,3}, to={2,2}, text={\rho}, x distance=.15cm}
+    }
+    We want to show that in each case, $\rho\in P\delta$.
+    The diagonal is always locally closed and thus of locally finite type, so in those cases we are done.
+    And the diagonal is also always separated, because the diagonal of the diagonal is an isomorphism
+    which is closed.
+    And $\delta_\rho$ is quasiseparated iff its diagonal is quasicompact; the diagonal of the diagonal is an
+    isomorphism, so we are done.
+    This shows (1).
+
+    And if $Y$ is Noetherian then $Y\to Y\times_ZY$ is quasicompact as all maps out of a Noetherian space
+    are, showing (2).
+    \qed
+
+\eproof
+
+\bexam
+
+    The morphism $\bP^n_A\to\spec A$ is separated.
+
+    Cover $\bP^n_A\times_A\bP^n_A$ with open subsets of the form $U_i\times_AU_j$ where $U_i$ are the usual
+    affine cover of $\bP^n_A$.
+    We want to show that $U_i\cap U_j\to U_i\times_AU_j$ is closed.
+    When $i=j$ we showed this in \refmath[proposition]{diagonallc}.
+    For $i\neq j$,
+    $$ U_i\times_AU_j = \spec A[x_{0/i},\dots,x_{n/i},y_{0/j},\dots,y_{n/j}]/(x_{i/i}-1,y_{j/j}-1) , $$
+    and
+    $$ U_i\cap U_j = \spec A[x_{0/i},\dots,x_{n/i},1/x_{j/i}]/(x_{i/i}-1) . $$
+    The morphism
+    $$ A[x_{0/i},\dots,x_{n/i},y_{0/j},\dots,y_{n/j}]/(x_{i/i}-1,y_{j/j}-1) \to
+    \spec A[x_{0/i},\dots,x_{n/i},1/x_{j/i}]/(x_{i/i}-1) $$
+    given by $x_{k/i}\mapsto x_{k/i}$ and $y_{k/j}\mapsto x_{k/i}/x_{j/i}$ is surjective and thus we are done.
+
+\eexam
+
+\bdefn
+
+    A {\emphcolor variety} over a field $k$ (a {\emphcolor $k$-variety}) is a reduced, separated scheme
+    of finite type over $k$.
+
+\edefn
+
