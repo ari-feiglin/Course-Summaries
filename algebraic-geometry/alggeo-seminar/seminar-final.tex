@@ -1,0 +1,768 @@
+\input ../preamble
+\def\@cntrprefix{\the\counter{section}.\the\counter{subsection}.}
+\settocdepthformat1{marker=\setfont{bf}\rlap, marker buffer=.75cm, title=\setfont{bf}, value=\setfont{bf}, leader=\dotfill, indent=0pt, buffer=3pt}
+
+\def\blnote{%
+    \bppbox{rgb{1 1 1}}{rgb{0 0 0}}{rgb{0 0 0}}
+    \def\curremphcolor{rgb{0 0 0}}%
+    \noindent{\setfont{bf}Lecture Note:} %
+    \@noindentnext%
+}
+\let\elnote=\eppbox
+
+%\setscale{12pt}
+%\baselineskip=14.5pt
+%\lineskip=1.2pt
+%\parskip=0pt plus 1.2pt
+
+\centerline{\setfontandscale{bf}{20pt}Schubert Calculus}
+\smallskip
+\centerline{\it Ari Feiglin}
+
+We begin with our central problem:
+
+\bprob
+
+    If $L_1,\dots,L_4\subseteq\bP^3$ are four general lines, how many lines intersect all four?
+
+    In general for four general $n$-planes in $\bP^{2n+1}$, how many lines $L\subseteq\bP^{2n+1}$
+    intersect all four?
+
+\eprob
+
+\section{Grassmanians}
+
+To discuss this, we are considering intersections of subspaces.
+So it is natural to consider the Grassmanian (the intersection theory of the Grassmanian).
+
+\bdefn
+
+    For a vector space $V$ and an integer $k$, define the {\emphcolor Grassmanian}
+    $$ G(k,V) = \set{\Lambda\leq V}[\dim\Lambda=k] . $$
+    In particular define
+    $$ G(k,n) = G(k,\bF^n) . $$
+    And
+    $$ \bG(k,\bP(V)) = \set{\hbox{linear subspaces of $\bP(V)$ of dimension $k$}},\qquad \bG(k,n) = G(k+1,n+1) . $$
+
+\edefn
+
+The Grassmanian is a projective variety.
+Consider the {\emphcolor Pl\"ucker embedding}
+$$ G(k,V) \inj \bP\parens{\bigwedge^kV},\qquad \Lambda\mapsto\bigwedge^kV . $$
+
+\blnote
+
+    Make sure to differentiate between wedge, $V$, $\Lambda$.
+    Briefly explain the wedge/exterior product if necessary.
+
+\elnote
+
+\blemm
+
+    The Pl\"ucker embedding is injective and its image is a subvariety.
+
+\elemm
+
+\bproof
+
+    Choose basis vectors $v_1,\dots,v_k\in\Lambda$ so that $\eta=v_1\wedge\cdots\wedge v_k$ spans
+    $\Lambda^k$.
+    Considering the exterior algebra $\bigwedge V$, a vector $v\in V$ annihiltes $\eta$ (meaning
+    $v\wedge\eta$) iff $v$ is in the span of $v_1,\dots,v_k$, i.e.\ $v\in\Lambda$.
+    Thus we can determine $\Lambda$ from its image in $\bP(V^k)$ by
+    $$ \Lambda = \set{v\in V}[v\wedge\eta=0] , $$
+    so the Pl\"ucker embedding is injective.
+
+    The image is
+    $$ G(k,V) = \set{\gen{v_1\wedge\cdots\wedge v_k}}[v_1,\dots,v_k\text{ are linearly independent}] . $$
+    We claim that this is equal to
+    $$ G(k,V) = \set{\gen\eta}[\eta\in\bigwedge^kV,\ \rank(V\xtos{\wedge\eta}\bigwedge^{k+1}V)\leq n-k] . $$
+    This is sufficient as the condition is algebraic: the determinants of all $(n-k+1)$-dimensional submatrices of $\bul\wedge\eta$ must be zero.
+
+    Clearly if $\eta=v_1\wedge\cdots\wedge v_k$ then the kernel of $\bul\wedge\eta$ is $\gen{v_1,\dots,v_k}$.
+    Conversely if $v_1,\dots,v_k$ are linearly independent vectors in the kernel of $\bul\wedge\eta$, we extend them to a basis
+    $v_1,\dots,v_n$ of $V$.
+    Thus
+    $$ \eta = \sum_I\eta_Iv_I,\qquad \eta_I \in \bF . $$
+    Then
+    $$ 0 = v_1\wedge\cdots\wedge v_k\wedge\eta = \sum_I\eta_I(v_1\wedge\cdots\wedge v_k\wedge v_I) = \sum_{I\cap\set{1,\dots,k}=\emptyset}\eta_I(v_1\wedge\cdots\wedge v_k\wedge v_I) . $$
+    Thus $\eta_I=0$ when $I$ does not contain one of $1,\dots,k$, so $\eta=cv_1\wedge\cdots\wedge v_k$ as desired.
+
+    To show that $G(k,V)$ is irreducible, we note that there is a transitive action of $\gl(V)$ on $G(k,V)$.
+    It is algebraic by considering the Pl\"ucker coordinates.
+    Choosing any $\Lambda\in G(k,V)$ we have that $\gl(V)\Lambda=G(k,V)$ is irreducible because
+    it is the image of the irreducible $\gl(V)$ (it is an open subset of the irreducible $\bA^n$).
+    \qed
+
+\eproof
+
+We now determine the Grassmanian's dimension.
+For $\Gamma\in G(n-k,V)$ let
+$$ U_\Gamma = \set{\Lambda\in G(k,V)}[\Lambda\cap\Gamma=0] \subseteq G(k,V),\qquad \Gamma\in G(n-k,V) . $$
+This is an open subset as in Pl\"ucker coordinates it is
+$$ U_{\gen\mu} = \set{\gen\eta}[\mu\wedge\eta\neq0] . $$
+Choose $\Omega\in U_\Gamma$; there is an isomorphism
+$$ U_\Gamma \cong \hom(\Omega,\Gamma) $$
+Given by
+$$ U_\Gamma
+\matrix{\scriptstyle\Lambda\mapsto\parens{\Omega\isoto \Lambda \inj V \xto{\pi_\Gamma} \Gamma}\cr \xtof{\kern2cm}\cr\scriptstyle \phi\mapsto\graph\phi}
+\hom(\Omega,\Gamma) . $$
+These are morphisms of varieties, so $U_\Gamma\cong\bA^{k(n-k)}$.
+
+\bprop
+
+    The Grassmanian $G(k,n)$ is a projective variety of dimension $k(n-k)$.
+
+\eprop
+
+\section{Schubert Varieties}
+
+We are concerned with specific subsets of the Grassmanian.
+Namely,
+$$ Q = \set{L\in\bG(1,\bP^{2n+1})}[L\cap V_i\neq\emptyset\text{ for $i=1,\dots,4$}] = \set{L\in G(2,2n+2)}[L\cap V_i\neq0\text{ for $i=1,\dots,4$}] . $$
+We generalize.
+
+\bdefn
+
+    Consider a complete flag $\V$ in $V$, i.e.\ a sequence of subspaces
+    $$ 0 < V_1 < \cdots < V_{n-1} < V_n = V,\qquad \dim V_i = i . $$
+    We are also given a sequence $a$
+    $$ n-k \geq a_1 \geq \cdots \geq a_k \geq 0 . $$
+    Define the {\emphcolor Schubert variety} to be the closed subset
+    $$ \Sigma_a(\V) = \set{\Lambda\in G(k,n)}[\dim(V_{n-k+i-a_i}\cap\Lambda)\geq i\hbox{ for all $i$}] . $$
+
+\edefn
+
+\blemm
+
+    The Schubert variety $\Sigma_a(\V)\subseteq G(k,n)$ is a subvariety of codimension $\abs a=a_1+\cdots+a_k$.
+
+\elemm
+
+\bproof
+
+    In general for $\Gamma\leq V$, we have
+    $$ \set{\Lambda\in G(k,n)}[\dim(\Gamma\cap\Lambda)\geq i] = \set{\Lambda}[\dim(\Gamma+\Lambda)\leq\dim\Gamma+k-i] , $$
+    which is closed as we may consider the concatenation of the bases of $\Gamma,\Lambda$ and this condition is equivalent
+    to the resulting basis having rank $\leq\dim\Gamma+k-i$.
+
+    Thus $\Sigma_a(\V)$ is closed.
+    It being irreducible and having the above codimension is not proven here (consider Schubert cells).
+    \qed
+
+\eproof
+
+\bremark
+
+    Note that $\Sigma_a(\V)\subseteq\Sigma_b(\V)$ iff $b\leq a$.
+
+\eremark
+
+For convenience, we write
+$$ \Sigma_{a_1,\dots,a_s}(\V) = \Sigma_{a_1,\dots,a_s,0,\dots,0} $$
+and
+$$ \Sigma_{a^s} = \Sigma_{a,\dots,a} $$
+to duplicate $a$ $s$ times.
+And we may combine these notations.
+
+\bremark
+
+    If $a_i=0$ then the $i$th (and all subsequent) conditions are tautological.
+    Indeed,
+    $$ \dim(V_{n-k+i}\cap\Lambda) \geq i \iff \dim(V_{n-k+i}\cap\Lambda) \leq \dim V_{n-k+i} + k - i = n . $$
+
+\eremark
+
+\bexam
+
+    Let $V_\ell\in G(\ell,V)$ and extend it to a complete flag arbitrarily.
+
+    \benum
+        \item For any flag $\V$,
+        $$ \Sigma_0(\V) = G(k,n) . $$
+
+        \item 
+        $$ \Sigma_{n-k+1-\ell}(V_\ell) = \set{\Lambda}[\dim(V_\ell\cap\Lambda)\geq1] = \set{\Lambda}[\Lambda\cap V_\ell\neq0] . $$
+
+        \item 
+        $$ \Sigma_{(n-\ell)^k}(V_\ell) = \set{\Lambda}[\dim(\Lambda\cap V_{\ell-k+i})\geq i] = \set{\Lambda}[\Lambda\subseteq V_\ell] . $$
+
+        \item
+        $$ \Sigma_{(n-k)^\ell}(V_\ell) = \set{\Lambda}[\dim(\Lambda\cap V_i)\geq i] = \set{\Lambda}[V_\ell\subseteq\Lambda] $$
+
+        \item Thus we have that $\Sigma_{(n-k)^k}(\V)$ is the point $V_k$.
+    \eenum
+
+\eexam
+
+From the above examples
+$$ \set{L\in\bG(1,2n+1)}[L\cap V\neq\emptyset] = \Sigma_n(V) \implies Q = \bigcap_{i=1}^4\Sigma_n(V_i) . $$
+
+This motivates the construction of the {\it Chow ring}.
+For a variety/scheme $X$ we construct a ring $\Ch(X)$ of the form
+$$ \Ch(X) = \frac{\text{Formal sums of subvarieties of $X$}}{\text{Some equivalence}} . $$
+We want the ring to have a product where the product of subvarieties is (generally) their intersection.
+When $X=G(k,n)$ we also want $\Sigma_a(\V)\sim\Sigma_a(\V')$.
+
+\section{Chow Groups}
+
+\bdefn
+
+    For a variety $X$, let
+    $$ \displaylines{
+        Z_k(X) = \set{\text{Formal sums of subvarieties of dimension $k$}}\cr
+        Z(X) = \bigoplus_kZ_k(X) .
+    } $$
+    Here subvarieties means irreducible.
+
+\edefn
+
+\bdefn
+
+    Let $Y\subseteq X$ be a closed subscheme, and $Z\subseteq Y$ an irreducible component.
+    The ring $\O_{Y,Z}$ is the stalk of $Y$ at $Z$'s generic point.
+    This is a Noetherian ring of dimension $0$ (because it corresponds to the localization of a ring at a minimal prime).
+    So it has finite length, define the {\emphcolor multiplicity} of $Y$ at $Z$ to be $m_Z=\length\O_{Y,Z}$.
+
+    For a closed subscheme $Y\subseteq X$, let
+    $$ Y = \sum_Zm_ZZ \in Z(X) . $$
+
+\edefn
+
+\bdefn
+
+    Let $\rat_k(X)\subseteq Z_k(X)$ be the subgroup generated by elements of the form
+    $$ \rat_k(X) = \gen{\Phi\cap(\set{t_0}\times X)-\Phi\cap(\set{t_1}\times X)}[\mltext*{$\Phi\subseteq\bP^1\times X$ is a $(k+1)$-dimensional\cr subvariety not contained
+    in $X$}] . $$
+    These $\Phi\cap(\set{t_0}\times X)$ have dimension $k$ because in an affine open $\Phi\cap(\bA^1\times X)$ they are the vanishing of a single $t-t_0$.
+
+    Then define
+    $$ \displaylines{
+        \Ch_k(X) = \frac{Z_k(X)}{\rat_k(X)}\cr
+        \Ch(X) = \bigoplus_k\Ch_k(X)
+    } $$
+
+\edefn
+
+\blnote
+
+    Try drawing an example.
+    Draw $X$ as a circle, and draw two different regions (not necessarily connected).
+    Extend $X$ to a cylinder (the bottom line is $\bP^1$) and draw one of the other regions on the other copy of $X$.
+    Draw some shape to connect them.
+
+    Similarly draw $X=\bP^2$ as a square with two intersecting lines, on another with a hyperbola.
+    Then connect the two through the box.
+
+    This shows how rational equivalence is a sort of analogue to homotopy (instead of a continuous map, a ``continuous'' family of subvarieties).
+
+\elnote
+
+\bremark
+
+    $X$ is not rationally equivalent to zero because then $\dim\Phi=n+1$, i.e.\ $\Phi=\bP^1\times X$.
+
+\eremark
+
+\section{Computing Chow Groups}
+
+\bprop
+
+    $$ \Ch(\bA^n) = \Ch_n(\bA^n) = \bZ[\bA^n] . $$
+
+\eprop
+
+\bproof
+
+    We show $Y\subsetneq\bA^n$ is rationally equivalent to zero.
+    Let $z_1,\dots,z_n$ be coordinates so that the origin doesn't lie in $Y$.
+    Define
+    $$ W^\circ = \set{(t,tz)\in(\bA^1-0)\times\bA^n}[z\in Y] = \vof\set{f(z/t)}[f(Y)=0] . $$
+    This is irreducible as the image of $(\bA^1-0)\times Y$, and let $W=\cl{W^\circ}\subseteq\bP^1\times\bA^n$.
+    Because $0\notin Y$ there is a $g(z)\in\idof(Y)$ with nonconstant term $c$.
+    Let $G(t,z)=g(z/t)$ on $(\bA^1-0)\times\bA^n$ and extend this to $\bP^1-0$ whose value on $\infty\times\bA^n$ is $c$.
+
+    Then $G$ vanishes on $W$ (because it vanishes on $W^\circ$), and thus $\infty\times\bA^n$ cannot intersect $W$.
+    So
+    $$ W\cap(\set1\times\bA^n) = Y,\qquad W\cap(\set\infty\times\bA^n) = \emptyset , $$
+    meaning $Y$ is rationally equivalent to zero.
+    \qed
+
+\eproof
+
+\bthrm[title={Excision}]
+
+    $Y\subseteq X$ is a closed subscheme, let $U=X-Y$.
+    The exact sequence of cycles induces a right-exact sequence
+    $$ \Ch(Y) \xto{[Z]\mapsto[Z]} \Ch(X) \xtos{[Z]\mapsto[Z\cap U]} \Ch(U) \to 0 . $$
+
+\ethrm
+
+\bcoro
+
+    For $U\subseteq\bA^n$ nonempty, $\Ch(U)=\bZ[U]$.
+
+\ecoro
+
+\bproof
+
+    The first arrow below is zero as all subvarieties of affine space are zero:
+    $$ \Ch(\bA^n-U) \xtos0 \Ch(\bA^n) \xtos\sim \Ch(U) \to 0 . \qed $$
+
+\eproof
+
+There is another tool to compute Chow groups, stratification.
+
+\bdefn
+
+    A {\emphcolor stratification} of a space $X$ is a finite collection of disjoint irreducible locally closed subspaces $U_i$
+    which cover $X$, such that if $\cl U_i\cap U_j\neq\emptyset$ then $U_j\subseteq\cl U_i$.
+    The $U_i$ are the {\emphcolor (open) strata} and their closures are the {\emphcolor closed strata}.
+
+\edefn
+
+From the closed strata we obtain the open strata:
+$$ U_i = Y_i - \bigcup_{Y_j\subsetneq Y_i}Y_j,\qquad Y_i = \cl U_i . $$
+Write $i\leq j$ iff $U_i\subseteq Y_j$.
+
+\bdefn
+
+    A stratification is {\emphcolor (quasi-)affine} if the open strata are all (quasi-)affine.
+
+\edefn
+
+\bprop
+
+    If a variety has a quasi-affine stratification, its Chow group is generated by the classes of the closed strata.
+
+\eprop
+
+\bproof
+
+    Induct on the number of strata $U_i$.
+    Let $U_0$ be minimal.
+    Because $Y_0$ is the union of all the strata contained in it and $U_0$, $U_0$ is closed.
+    The other $U_i$ form a stratification of $X-U_0$, and there is an exact sequence
+    $$ \bZ[U_0] = \Ch(U_0) \to \Ch(X) \to \Ch(X-U_0) \to 0 . $$
+    Inductively $\Ch(X-U_0)$ is generated by the other $Y_i$, and so $\Ch(X)$ is generated by all the $Y_i$.
+    \qed
+
+\eproof
+
+\bnote
+
+    The closed strata may be zero in the Chow group.
+    E.g.\ $U_0=*$ and $U_1=\bA^1-*$ in $\bA^1$.
+
+    Totaro (2024) proved that if the stratification is affine then the closed strata form a basis of $\Ch(X)$.
+
+\enote
+
+\section{Chow Rings}
+
+We now discuss the ring structure.
+
+\bdefn
+
+    Two subvarieties $A,B\subseteq X$ are {\emphcolor generically transverse} if the points at which they interset transversally
+    is dense in their intersection.
+    Two cycles $\alpha=\sum_i\alpha_iA_i$ and $\beta=\sum_j\beta_jB_j$ are generically transverse if $A_i,B_j$ are generically transverse.
+
+\edefn
+
+\bthrm[title={Moving lemma}]
+
+    Let $f\colon Y\to X$ be a morphism of smooth quasi-projective varieties.
+    \benum
+        \item Given cycles $\alpha,\beta\in Z(X)$, there is a cycle $\alpha'$ rationally equivalent to $\alpha$ such that $\alpha',\beta$
+        are generically transverse.
+        \item The class $[\alpha'\cap\beta]$ is independent of choice of $\alpha'$.
+    \eenum
+
+\ethrm
+
+Thus we may give $\Ch(X)$ a ring structure:
+$$ [\alpha]\cdot[\beta] = [\alpha'\cap\beta] . $$
+Giving $\Ch(X)$ the inverse grading, this turns it into a graded ring:
+$$ \Ch(X) = \bigoplus\Ch^k(X),\qquad \Ch^k(X) = \Ch_{\dim X-k}(X) . $$
+
+\section{Functorality}
+
+If $f\colon X\to Y$ is a proper morphism of varieties, then for a subvariety $Z\subseteq X$, $f(Z)\subseteq Y$ is a subvariety (as $f$ is closed).
+Furthermore $f$ induces a map
+$$ f^*\colon K(f(Z)) \to K(Z),\qquad f^*(r) = r\circ f . $$
+This is injective: if $r\circ f=0$ then $r\circ f$ is zero on a dense open of $X$, but because $f$ is surjective the image of a dense open is dense open.
+Thus $r\circ f=0$.
+
+Furthermore if $\dim Z=\dim f(Z)$ then
+$$ \trdeg_\bF K(f(Z)) = \dim f(Z) = \dim Z = \trdeg_\bF Z \implies \trdeg_{K(f(Z))}K(Z) = 0 . $$
+Thus $K(f(Z))/K(Z)$ is an algebraic extension, and they are both finitely generated over $\bF$, so it is finite (algebraic and finitely generated implies finite).
+Define the degree of the extension to be $\deg_f(Z)$.
+If $\dim Z<\dim f(Z)$ then define it to be zero.
+
+Finally define the {\emphcolor pushforward}
+$$ f_*\colon Z_k(X) \to Z_k(Y),\qquad f_*(Z) = \deg_f(Z)Z . $$
+This map preserves rational equivalence (Fulton), so it descends into
+$$ f_*\colon\Ch_k(X) \to \Ch_k(Y) . $$
+
+In particular, if $X\to\spec k$ is proper then its pushforward is
+$$ \deg\colon \Ch(X) \to \Ch(\spec k) \cong \bZ,\qquad [p]\mapsto[\kappa(p):\bF] \in \bZ $$
+where $\kappa(p)=\O_{X,p}/\m_{X,p}$ is its residue field.
+It maps varieties of nonzero dimension to zero.
+If $\bF$ is algebraically closed then $\deg$ maps points to $1$.
+
+\section{Schubert Calculus}
+
+\bthrm[title={Kleiman, special case}]
+
+    $G=\gl_n(\bF)$ acts on $X$ algebraically, then for $Y\subseteq X$, $[AY]=[Y]$ for $A\in G$.
+    If $G$ acts transitively, for $Y,Z\subseteq X$ for general $A\in G$, $AY$ and $Z$ are generically transverse (in char $0$).
+
+\ethrm
+
+\bproof
+
+    Let $L$ connect $1$ to $A$ in $\Mat_n(\bF)$ and let
+    $$ Z^\circ = \set{(B,x)\in(G\cap L)\times X}[B^{-1}x\in Y] \subseteq \bA^1\times X . $$
+    Note that
+    $$ G\cap L = \set{tA+(1-t)I}[\det(tA+(1-t)I)\neq0] $$
+    which is $L$ with at most $n$ points removed (polynomial has at most $n$ roots).
+
+    Thus its projective closure is $\cl L=\bP^1$.
+    Furthermore $Z^\circ$ is closed in $(G\cap L)\times X$, and so $\cl Z^\circ\cap((G\cap L)\times X)=Z^\circ$.
+    So $\cl Z^\circ\subseteq\bP^1\times X$'s fibers in $G\cap L$ are the same as $Z^\circ$'s.
+    At $B=1$ the fiber is $Y$ and at $B=A$ it is $AY$.
+
+    Note that $Z^\circ$ is irreducible as there is an isomorphism
+    $$ Z^\circ \cong (G\cap L)\times Y,\qquad (B,x) \mapsto (B,B^{-1}x) . $$
+    With inverse $(B,x)\mapsto(B,Bx)$.
+    \qed
+
+\eproof
+
+Note that $\gl_n$ acts transitively on $G(k,n)$ and on complete flags.
+By Kleiman for every $A\in\gl_n$
+$$ [\Sigma_a(\V)] = [A\Sigma_a(\V)] = [\Sigma_a(A\V)] . $$
+Thus the class of a Schubert variety is independent of the flag.
+
+Define the {\emphcolor Schubert cycle}
+$$ \sigma_a = [\Sigma_a(\V)] \in \Ch(G(k,n)) . $$
+
+The Schubert varieties form the closed strata of an affine stratification:
+$$ \Sigma_a^\circ = \Sigma_a - \bigcup_{b<a}\Sigma_b \qquad\text{(Schubert cells)} . $$
+
+\bprop
+
+    The open strata $\Sigma_a^\circ$ are isomorphic to $\bA^{k(n-k)-\abs a}$, so this is an affine stratification.
+
+\eprop
+
+\blnote
+
+    Proving this helps prove $\Sigma_a$ is irreducible and its dimension.
+
+\elnote
+
+Thus the $\sigma_a$ generate $G(k,n)$ as a group.
+
+\bremark
+
+    Recall that we wanted to compute the cardinality of
+    $$ Q = \bigcap_{i=1}^4\Sigma_n(V_i) \in \bG(1,2n+1) . $$
+    For general $V_i$ the Schubert varieties to intersect generically transversally.
+    Thus
+    $$ \sigma_n^4 = \bracks{\bigcap_{i=1}^4\Sigma_n(V_i)} = [Q] . $$
+    This is a $0$-cycle because it has codimension $4n=\dim\bG(1,2n+1)$.
+
+    Furthermore because Grassmanians are projective we can count the number of points in a $0$-cycle via $\deg$.
+    So if we can nicely compute the product of Schubert cycles and their degrees, we will have finished.
+
+\eremark
+
+\bprop
+
+    $$ \sigma_{n-k}^k = \sigma_{1^k}^{n-k} = \sigma_{(n-k)^k} \in \Ch_0(G) . $$
+
+\eprop
+
+\bproof
+
+    The only Schubert cycle with codimension $k(n-k)$ is $a=(n-k)^k$.
+    Thus $\Ch_0(G)=\bZ[\sigma_{(n-k)^k}$; we need only show that $\sigma_{n-k}^k,\sigma_{1^k}^{n-k}$ have degree $1$.
+    Recall for a hypersurface $H\leq V$,
+    $$ \Sigma_{1^k}(H) = \set{\Lambda}[\Lambda\leq H] . $$
+    Thus (by Kleiman or direct analysis the intersection is transverse)
+    $$ \bigcap_{i=1}^{n-k}\Sigma_{1^k}(H_i) = \set{\Lambda}[\Lambda\leq\bigcap_{i=1}^{n-k}H_i] = \set{\bigcap H_i} $$
+    as desired.
+
+    For $\sigma_{n-k}^k$ a similar proof or $G(k,V)\cong G(n-k,V^*)$.
+    \qed
+
+\eproof
+
+\bdefn
+
+    Two flags $\V,\W$ are {\emphcolor transverse} if any of the following equivalent conditions hold
+    \benum
+        \item $V_i\cap W_{n-i}=0$
+        \item $\dim(V_i\cap W_j)=\min(0,i+j-n)$
+        \item There is a basis $e_1,\dots,e_n\in V$ such that
+        $$ V_i = \gen{e_1,\dots,e_i},\qquad W_j = \gen{e_{n-j+1},\dots,e_n} . $$
+    \eenum
+    (1) implies (3) by taking $e_i\in V_i\cap W_{n+1-i}-0$.
+
+\edefn
+
+The space of transverse flags is open dense in the variety of flags.
+By (3) all two complete flags can be mapped to one another by $\gl_n$'s action.
+Thus for transverse flags $\V,\W$, $\Sigma_a(\V),\Sigma_b(\W)$ are generically transverse.
+(This is true for general flags, so for some transverse flags $\V',\W'$ which can be mapped to $\V,\W$.)
+
+\bprop
+
+    Let $\V,\W$ be transverse and $a,b$ tuples with $\abs a+\abs b=k(n-k)$.
+    Then $\Sigma_a(\V),\Sigma_b(\W)$ intersect transversally at a unique point iff $b=a^*$ and are otherwise disjoint.
+    Here
+    $$ a^* = (n-k-a_k,\dots,n-k-a_1),\qquad a^*_i = n - k - a_{k+1-i} . $$
+    This is equivalent to
+    $$ \deg\sigma_a\sigma_b = [b=a^*] . $$
+
+\eprop
+
+\bproof
+
+    The $\Sigma_a(\V),\Sigma_b(\W)$ intersect generically transversally.
+    Thus
+    $$ \deg\sigma_a\sigma_b = \abs{\Sigma_a(\V)\cap\Sigma_b(\W)} =
+    \#\set{\Lambda}[\mltext{%
+        $\dim(V_{n-k+i-a_i}\cap\Lambda)\geq i$,\cr
+        $\dim(W_{n-k+i-b_i}\cap\Lambda)\geq i$%
+    }\text{\quad for all $i$}] . $$
+    If the intersection is nonempty let $\Lambda$ lie in it.
+    Then we have, for each $i$
+    $$ \dim(V_{n-k+i-a_i}\cap\Lambda) \geq i,\qquad \dim(W_{n-i+1-b_{k-i+1}}\cap\Lambda) \geq k+1-i . $$
+    Thus we must have that $\Lambda\cap V_{n-k+i-a_i}\cap W_{n-i+1-b_{k-i+1}}$ is nonzero.
+    By transversality
+    $$ \dim(V_{n-k+i-a_i}\cap W_{n-i+1-b_{k-i+1}}) = n - k + 1 - a_i - b_{k-i+1} \geq 1 \iff a_i + b_{k-i+1} \leq n - k . $$
+    Now if $a_i+b_{k-i+1}\leq n-k$ then we have $\abs a+\abs b\leq k(n-k)$.
+    Because this is an equality we must have $a_i+b_{k-i+1}=n-k$ for all $i$.
+
+    Thus $V_{n-k+i-a_i}\cap W_{n-i+1-b_{k-i+1}}$ meet in a one-dimensional subspace
+    $\Gamma_i=\gen{e_{n-k+i-a_i}}$ contained in $\Lambda$.
+    Thus the disjoint $\Gamma_i$ are all contained in $\Lambda$, and thus $\Lambda=\bigoplus_i\Gamma_i$.
+    So the intersection is a singleton if it is non-empty.
+    \qed
+
+\eproof
+
+\bcoro
+
+    $\Ch(G)$ is freely generated by the Schubert cycles.
+
+\ecoro
+
+We can compute the coefficients of cycles.
+$$ [\Gamma] = \sum_{\abs a=m}\gamma_a\sigma_a \in \Ch^m(G) \implies \gamma_a = \deg([\Gamma]\sigma_{a^*}) = \#(\Gamma\cap\Sigma_{a^*}(\V)) . $$
+In particular
+$$ \sigma_a\sigma_b = \sum_{\abs c=\abs a+\abs b}\gamma_{a,b;c}\sigma_c,\qquad \gamma_{a,b;c} = \deg(\sigma_a\sigma_b\sigma_{c^*})\quad\text{(Littlewoord-Richardson coefficients)} . $$
+These coefficients are independent of $n,k$.
+
+A {\emphcolor special Schubert class} is $\sigma_b=\sigma_{b,0,\dots,0}$ for integer $b$.
+
+\bthrm[title={Pieri's formula}, name={pieri}]
+
+    $$ \sigma_b\sigma_a = \sum_{\mltext{$\abs c=\abs a+b$\cr$a_i\leq c_i\leq a_{i-1}$}}\sigma_c \rlap{\kern3cm{$\sigma_b$ special.}} $$
+
+\ethrm
+
+Recall that we want to compute $\sigma_n^4$ in $\bG(1,2n+1)=G(2,2n+2)$.
+So we focus here on $k=2$, and the dimension of $G$ is $4n$.
+Using Pieri we have
+$$ \sigma_n^2 = \sigma_{2n} + \sigma_{2n-1,1} + \cdots + \sigma_{n+1,n-1} + \sigma_{n,n} . $$
+To square this again we want to compute products of Schubert classes of the form $\sigma_{a,b}$.
+
+\blemm
+
+    Assuming $a_1-a_2\geq b_1-b_2$,
+    $$ \sigma_{a_1,a_2}\sigma_{b_1,b_2} = \sum_{k=0}^{b_1-b_2}\sigma_{a_1+b_1-k,a_2+b_2+k} . $$
+
+\elemm
+
+\bproof
+
+    First consider the case where $b_1=b_2=b$, then
+    $$ \Sigma_{b,b}(\W) = \set{\Lambda}[\Lambda\leq W_{n-b}] . $$
+    Thus
+    $$ \eqalign{
+        \Sigma_{a_1,a_2}(\V)\cap\Sigma_{b,b}(\W) &=
+         \set{\Lambda}[\Lambda\cap V_{n-1-a_1}\neq0,\ \Lambda\subseteq V_{n-a_2},\ \Lambda\subseteq W_{n-b}]\cr
+        &= \set{\Lambda}[\Lambda\cap(V_{n-1-a_1}\cap W_{n-b})\neq0,\ \Lambda\subseteq V_{n-a_2}\cap W_{n-b}]\cr
+        &= \Sigma_{a_1+b,a_2+b}(\dots V_{n-1-a_1}\cap W_{n-b},\ V_{n-a_2}\cap W_{n-b}\dots) .
+    } $$
+    And so we have that
+    $$ \sigma_{a_1,a_2}\sigma_{b,b} = \sigma_{a_1+b,a_2+b} . $$
+
+    By Pieri we have that ($b\leq a$):
+    $$ \sigma_{a_1,a_2} = \sigma_{a_1-a_2}\sigma_{a_2,a_2},\qquad\sigma_a\sigma_b = \sum_{k=0}^b\sigma_{a+b-k,k} . $$
+    And thus
+    $$ \eqalign{
+        \sigma_{a_1,a_2}\sigma_{b_1,b_2} &= \sigma_{a_1-a_2}\sigma_{b_1-b_2}\sigma_{a_2,a_2}\sigma_{b_2,b_2}\cr
+            &= \sigma_{a_1-a_2}\sigma_{b_1-b_2}\sigma_{a_2+b_2,a_2+b_2}\cr
+            &= \sum_{k=0}^{b_1-b_2}\sigma_{a_1-a_2+b_1-b_2-k,k}\sigma_{a_2+b_2,a_2+b_2}\cr
+            &= \sum_{k=0}^{b_1-b_2}\sigma_{a_1+b_1-k,a_2+b_2+k} .
+    } $$
+    Which completes the proof.
+    \qed
+
+\eproof
+
+This shows us that
+$$ \sigma_{2n-k,k}^2 = \sum_{i=0}^{2n-2k}\sigma_{4n-2k-i,2k+i} . $$
+Note that we must have $4n-2k-i\leq 2n$ so $i\geq 2n-2k$, thus
+$$ \sigma_{2n-k,k}^2 = \sigma_{2n,2n} $$
+which is the class of a point.
+And when $j>k$,
+$$ \sigma_{2n-k,k}\sigma_{2n-j,j} = \sum_{i=0}^{2n-2j}\sigma_{4n-k-j-i,k+j+i} , $$
+so we have $4n-k-j-i\leq 2n$ so that $2n-k-j\leq i\leq 2n-2j$, but $j>k$ so this sum is empty.
+
+Thus in
+$$ \sigma_n^2 = \sum_k\sigma_{2n-k,k} , $$
+all the terms square to the class of a point and distinct terms have product zero.
+Thus
+$$ \sigma_n^4 = (n+1)\sigma_{2n,2n} , $$
+which means that $\deg\sigma_n^4=n+1$.
+We have finally answered our original question.
+
+\bansw
+
+    If $V_1,\dots,V_4\subseteq\bP^{2n+1}$ are four general $n$-planes, then there are $n+1$ lines intersecting
+    them all.
+
+    In particular, for $n=1$, there are $2$ lines intersecting four general lines
+    $L_1,\dots,L_4\subseteq\bP^3$.
+
+\eansw
+
+\section{Projective Space and a Generalization}
+
+\bprob
+
+    Given four subvarieties $X_1,\dots,X_4\subseteq\bP^{2n+1}$ of dimension $n$ and degrees $d_1,\dots,d_4$,
+    how many lines intersect all of them?
+
+\eprob
+
+We need to understand $\Ch(\bP^n)$.
+
+\bthrm
+
+    Let $H\subseteq\bP^n$ be a hyperplane and let $\zeta\in\Ch^1(\bP^n)$ be its class.
+    Then as rings
+    $$ \Ch(\bP^n) = \frac{\bZ[\zeta]}{(\zeta^{n+1})} . $$
+
+\ethrm
+
+\bproof
+
+    Let $\bP^0\subsetneq\cdots\subsetneq\bP^n$ be an affine stratification, with strata $U_i=\bP^i-\bP^{i-1}$.
+    Then $\bP^{n-k}$'s class generates $\Ch^k(\bP^n)$, in particular $\bP^0$ generates $\Ch^0(\bP^n)$.
+    Points are not rationally equivalent to zero in a projective variety by $\deg$; $\Ch^n(\bP^n)=\bZ[\bP^0]$.
+
+    So any $(n-k)$-plane $L$ generates $\Ch^k(\bP^n)$.
+    Let $M$ be a general $k$-plane, so that $L$ and $M$ intersect transversally in one point.
+    Thus $n[L]\cdot[M]=n\in\Ch^n(\bP^n)=\bZ$ is nonzero, and so $[L]$ freely generates $\Ch^k(\bP^n)$.
+    That is, $\Ch^k(\bP^n)\cong\bZ$.
+
+    Because $L$ is the transverse intersection of $k$ hyperplanes, $[L]=\zeta^k$.
+    Thus the obvious map $\bZ[\zeta]\to\Ch(\bP^n)$ has kernel $(\zeta^{n+1})$ and is surjective, as desired.
+    \qed
+
+\eproof
+
+\bcoro[name={projvarinchow}]
+
+    If $X\subseteq\bP^n$ has codimension $k$ and degree $d$, then $[X]=d\zeta^k$.
+
+\ecoro
+
+\bproof
+
+    We know that $[X]=m\zeta^k$ for some $m\in\bZ$ by the above theorem.
+    $X$ intersects a general $k$-plane transversally in $d$ points, so that
+    $$ d = \deg([X]\zeta^{n-k}) = \deg(m\zeta^n) = m $$
+    as $\zeta^n$ is a single point.
+    So $[X]=d\zeta^k$ as desired.
+    \qed
+
+\eproof
+
+\bcoro[title={B\'ezout}]
+
+    Let $X_1,\dots,X_k\subseteq\bP^n$ be subvarieties of codimension $c_1,\dots,c_k$ with $\sum c_i\leq n$ and the $X_i$ intersect
+    generically transversally, then
+    $$ \deg(X_1\cap\cdots\cap X_k) = \prod\deg(X_i) . $$
+
+\ecoro
+
+\bproof
+
+    Define $d_i=\deg X_i$, so we have
+    $$ \deg(X_1\cap\cdots\cap X_k) = \deg([X_1]\cdots[X_k]\zeta^{n-c}) =
+    \deg(d_1\zeta^{c_1}\cdots d_n\zeta^{c_n}\zeta^{n-c}) = \deg(d_1\cdots d_n\zeta^n) = d_1\cdots d_n $$
+    as desired.
+    \qed
+
+\eproof
+
+Consider the subvariety of lines intersecting $X$ of dimension $n$ and degree $d$:
+$$ \Sigma_X = \set{L\in\bG(1,2n+1)}[L\cap X\neq\emptyset] . $$
+Let us further define the incidence subvariety
+$$ I_X = \set{(x,L)\in X\times\bG(1,2n+1)}[x\in L] , $$
+which comes equipped with two projections
+{\def\diagrowheight{0pt}\diagram{
+    &X\cr
+    I_X\cr
+    &\Sigma_X&\bG(1,2n+1)
+}{
+    \diagarrow{from={2,1}, to={1,2}, text={\pi_X}, y distance=.15cm}
+    \diagarrow{from={2,1}, to={3,2}, text={\pi_\Sigma}, y distance=.15cm}
+    \diagarrow{from={3,2}, to={3,3}, left cap={(}}
+}}
+Note that $\pi_X$'s fibers are isomorphic to $\bP^{2n}$ because the collection of lines in $\bP^{2n+1}$ which
+pass through a specified point are isomorphic to $\bP^{2n}$.
+Thus $\dim I_X=\dim X+2n=3n$.
+
+Furthermore generally $\pi_\Sigma$'s fibers are singletons, so $\dim\Sigma_X=3n$ as well.
+This is because for a general line, if it intersects $X$, it does so in a single point.
+
+We know that within $\Ch(\bP^{2n+1})$, $[X]=d[\bP^n]$.
+Now consider $I=I_{\bP^{2n+1}}$, so that
+$$ I_X = \pi_{\bP^{2n+1}}^{-1}X . $$
+Pulling back along a morphism of varieties preserves rational equivalence (under certain conditions), and so
+$$ [I_X] = \pi_\bP^*[X] = \pi_\bP^* d[\bP^n] = d[\pi_\bP^{-1}\bP^n] = d[I_{\bP^n}] \in \Ch(I) . $$
+Now consider the projection $\pi_G\colon I\to\bG(1,2n+1)$, which pushes forward varieties:
+$$ \pi_{G,*}[I_{\bP^n}] = [\pi_G(I_{\bP^n})] , $$
+and
+$$ \pi_G(I_{\bP^n}) = \set{L\in\bG(1,2n+1)}[L\cap\bP^n\neq\emptyset] = \Sigma_n(\bP^n) , $$
+and thus
+$$ \pi_{G,*}[I_{\bP^n}] = \sigma_n \in \Ch(G) . $$
+Putting this together, we have that
+$$ [\Sigma_X] = \pi_{G,*}[I_X] = d\pi_{G,*}[I_{\bP^n}] = d\sigma_n . $$
+
+For general $X_i$ then we have, as computed before,
+$$ \bracks{\bigcap_i\Sigma_{X_i}} = d_1\cdots d_4\sigma_n^4 = (n+1)d_1\cdots d_4\sigma_{2n,2n} . $$
+The size of the intersection is the degree of this, which is $(n+1)d_1\cdots d_4$.
+
+\bansw
+
+    The number of lines intersecting four subvarieties $X_1,\dots,X_4\subseteq\bP^{2n+1}$ of dimensions $n$
+    and degrees $d_1,\dots,d_4$ is $(n+1)d_1\cdots d_4$.
+
+    In particular in $n=1$, the number of lines intersecting four curves $C_1,\dots,C_4$ of degrees
+    $d_1,\dots,d_4$ is $2d_1\cdots d_4$.
+
+\eansw
+
+
+\bye
+
