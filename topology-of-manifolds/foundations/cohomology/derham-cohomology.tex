@@ -1,0 +1,229 @@
+\subsection{De Rham Cohomology}
+
+For a manifold $M$ we have a complex of $\bR$-modules:
+$$ 0 \to \Omega^0(M) \xtos\d \Omega^1(M) \xtos\d \cdots \xtos\d \Omega^n(M) \to 0 $$
+called the {\emphcolor de Rham complex}.
+The cohomology of this complex is called {\emphcolor de Rham cohomology} and is denoted
+$$ H^p_\dR(M) = \frac{Z^p(M)}{B^p(M)},\qquad Z^p(M) = \ker\d,\quad B^p(M) = \im\d . $$
+De Rham cohomology is functorial as if $F\colon M\to N$ is a smooth map then its pullback
+$F^*\colon\Omega^\bul(N)\to\Omega^\bul(M)$ is a chain map.
+That is to say,
+$$ \d F^*\omega = F^*\d\omega . $$
+And thus $F^*$ induces a map of cohomology rings, $F^*\colon H^\bul_\dR(N)\to H^\bul_\dR(M)$.
+
+So we see that de Rham cohomology forms a contravariant functor
+$$ \Man^\op \to \GrMod_\bR,\qquad M\mapsto H^\bul_\dR(M) $$
+from the category of smooth manifolds to the category of graded $\bR$-modules.
+
+It is easy to see that the cohomology of a disjoint union is the sum of cohomologies
+$$ H^\bul_\dR\parens{\bigsqcup_jM_j} \cong \bigoplus_jH^\bul_\dR(M_j),\qquad \omega \mapsto (\inc_1^*\omega,\dots) . $$
+And note that
+$$ H^0_\dR(M) = \set{f\in\Omega^0(M)=C^\infty(M)}[\d f=0] = \set{\text{locally constant functions}} , $$
+so if $M$ is connected, $H^0_\dR(M)\cong\bR$.
+
+We also want to show homotopy invariance.
+
+\blemm
+
+    Consider $i_t\colon M\to M\times[0,1]$ which map $m\mapsto(m,t)$.
+    Then there is a chain homotopy from $i_0^*$ to $i_1^*\colon\Omega^*(M\times[0,1])\to\Omega^*(M)$.
+
+\elemm
+
+\bproof
+
+    We need a chain homotopy $h\colon\Omega^p(M\times[0,1])\to\Omega^{p-1}(M)$ such that
+    $$ h\circ\d + \d\circ h = i_1^* - i_0^* . $$
+    Let $s$ be the standard coordinate of $\bR$ and $S\in\X(M\times\bR)$ be given by $S_{(q,s)}=(0,\ipdv s|_s)$.
+    Then define
+    $$ h\omega = \int_0^1i_t^*(\iota(S)\omega)\d t,\qquad \omega \in \Omega^p(M\times[0,1]) . $$
+    This is a smooth integral in a vector space, so $h\omega\in\Omega^{p-1}(M)$ is smooth.
+    We have
+    $$ h(\d\omega) + \d h(\omega) = \int_0^1(i_t^*(\iota(S)\d\omega) + \d i_t^*\iota(S)\omega)\d t
+    = \int_0^1i_t^*(\iota(S)\d\omega + \d\iota(S)\omega)\d t , $$
+    which by Cartan is equal to
+    $$ = \int_0^1i_t^*(\L_S\omega)\d t . $$
+    The flow of $S$ is $\theta_t(q,s)=(q,t+s)$ so that $S$ is complete.
+    Then $i_t=\theta_t\circ i_0$ so
+    $$ i_t^*\L_S\omega = i_0^*(\theta_t^*\L_S\omega) = i_0^*\parens{\drv t\theta_t^*\omega} = \drv ti_t^*\omega , $$
+    and thus we have
+    $$ h(\d\omega) + \d h(\omega) = i_1^*\omega - i_0^*\omega . \qed $$
+
+\eproof
+
+\bthrm
+
+    Homotopic smooth maps induce chain homotopic pullbacks on the de Rham complex.
+
+\ethrm
+
+\bproof
+
+    For $F,G\colon M\to N$ homotopic, let $H\colon M\times[0,1]\to N$ be a smooth homotopy.
+    Then $i_1^*$ and $i_0^*$ are chain homotopic by the above lemma, and thus so are $i_1^*H^*=(H\circ i_1)^*=G^*$ and
+    $i_0^*H^*=F^*$.
+    \qed
+
+\eproof
+
+\bcoro
+
+    De Rham cohomology is homotopy invariant.
+    In particular it is invariant under homeomorphisms.
+
+\ecoro
+
+\bproof
+
+    If $F,G$ are homotopy inverses then they are respectively homotopic to smooth $\tilde F,\tilde G$ which remain
+    homotopy inverses.
+    By the above theorem these induce isomorphisms between the de Rham cohomologies of the manifolds.
+    \qed
+
+\eproof
+
+\bcoro
+
+    If $M$ is contractible, then $H^p_\dR(M)=0$ for $p\geq1$.
+
+\ecoro
+
+\bproof
+
+    This is the cohomology of a point.
+    \qed
+
+\eproof
+
+\bthrm[title={Poincare's lemma}, name={poincarelemm}]
+
+    A differential form $\omega\in H^p_\dR(M)$ is closed iff it is locally exact.
+    That is, for every point $p\in M$ there is a neighborhood $p\in U$ in which $\omega|_U$ is exact.
+
+\ethrm
+
+\bproof
+
+    If $\omega$ is locally exact, it is closed, because the definition of the exterior derivative is local.
+    Conversely let $p\in U$ be an open ball chart.
+    Then $U$ is contractible so $H_\dR(U)=0$ and because $\omega$ is closed, it must be exact in $U$.
+    \qed
+
+\eproof
+
+De Rham cohomology also has Mayer Vietoris.
+
+\bthrm[title={Mayer-Vietoris}, name={mayerviet}]
+
+    Let $U,V\subseteq M$ be open such that $M=U\cup V$.
+    Consider the inclusions
+    \diagram{
+        &U\cr
+        U\cap V&&M\cr
+        &V
+    }{
+        \diagarrow{from={2,1}, to={1,2}, text=i, x distance=-.15cm, left cap={(}}
+        \diagarrow{from={2,1}, to={3,2}, text=j, x distance=-.15cm, left cap={(}}
+        \diagarrow{from={1,2}, to={2,3}, text=k, x distance=.15cm, left cap={(}}
+        \diagarrow{from={3,2}, to={2,3}, text=\ell, x distance=.15cm, left cap={(}}
+    }
+    These define an exact sequence of complexes
+    $$ 0 \to \Omega^\bul(M) \xtos{k^*\oplus\ell^*} \Omega^\bul(U)\oplus\Omega^\bul(V) \xtos{i^*-j^*}
+    \Omega^\bul(U\cap V) \to 0 , $$
+    which then descends into a long exact sequence of cohomology modules
+    $$ \cdots \to H_\dR^p(M) \xtos{k^*\oplus\ell^*} H_\dR^p(U)\oplus\Omega^\bul(V) \xtos{i^*-j^*}
+    H_\dR^p(U\cap V) \xtos\partial H_\dR^{p+1}(M) \to \cdots , $$
+
+\ethrm
+
+\bproof
+
+    The injectivity of the first map is clear.
+    The composition of the two maps is clearly zero, and if $i^*\eta'-j^*\eta=0$, meaning $\eta|_{U\cap V}=\eta'|_{U\cap V}$.
+    Thus we can glue $\eta,\eta'$ to get a global form on $M$ restricting to $\eta,\eta'$
+    So the complex is exact in the middle.
+    Finally if $\omega\in\Omega^p(U\cap V)$, let $\phi,\psi$ be a partition of unity subordinate to $U,V$.
+    Then define $\eta=\psi\omega$ on $U$ and $\eta'=-\phi\omega$ on $V$, so that
+    $$ i^*\eta - j^*\eta' = \psi\omega + \phi\omega = \omega $$
+    so that it is surjective.
+    \qed
+
+\eproof
+
+The connecting map
+$$ H_\dR^p(U\cap V) \xtos\partial H_\dR^{p+1}(M) $$
+is the map
+$$ \omega \mapsto (\psi\omega,-\phi\omega) \mapsto (\d\psi\omega,-\d\phi\omega) \mapsto \d\psi\omega . $$
+
+\bremark
+
+    Mayer Vietoris allows us to prove inductively that $H^p_\dR(S^n)=\bR$ for $p=0$ or $n$ and is zero otherwise.
+    This also lets us prove invariance of dimension: a topological manifold cannot be homeomorphic to both an open subset of
+    $\bR^n$ and $\bR^m$.
+
+\eremark
+
+We may also define the compactly supported de Rham complex: $\Omega^p_c(M)$ is the space of differential $p$-forms which are
+compactly supported.
+The derivative of a compactly supported form is easily seen to be compactly supported, so we have a complex
+$$ 0 \to \Omega_c^0(M) \xtos\d \Omega_c^1(M) \xtos\d \cdots \xtos\d \Omega_c^n(M) \to 0 $$
+The cohomology of the complex is denoted $H_c^\bul(M)$, and it is functorial and almost satisfies the same results above.
+
+One issue is functorality: if $F\colon M\to N$ is smooth and $\omega\in\Omega(N)$ is a differential form then
+$$ \supp F^*\omega = \set{p\in M}[F^*\omega_p\neq0] = \set{p\in M}[\omega_{Fp}\neq0] = F^{-1}\supp\omega , $$
+which need not be compact.
+Thus we restrict ourselves to the case of {\it proper\/} (smooth) maps: maps which pull back compact subsets to compact subsets.
+
+In the case where $M$ itself is compact, clearly these definitions coincide.
+
+If $M$ is oriented and boundaryless, integration forms a map (where $n=\dim M$)
+$$ I = \int \colon \Omega^n_c(M) \to \bR,\qquad I(\omega) = \int_M\omega . $$
+Because $M$ has no boundary, exact forms have zero integral, so this descends to a map
+$$ I = \int \colon H^n_c(M) \to \bR,\qquad I(\omega) = \int_M\omega . $$
+Integration will allow us to consider the top-cohomology (cohomology in degree $\dim M$).
+
+\bthrm[title={Top Cohomology}, name={topcohomologycases}]
+
+    Let $M$ be a smooth $n$-manifold without boundary.
+    \benum
+        \item {\emphcolor Orientable, compact support}: if $M$ is oriented, then $I\colon H^n_c(M)\to\bR$ is an isomorphism.
+        \item {\emphcolor Orientable, compact}: if $M$ is oriented and compact, $H^n_\dR(M)\cong\bR$ and is generated by any
+        orientation form.
+        \item {\emphcolor Orientable, noncompact}: if $M$ is oriented and noncompact, then $H^n_\dR(M)=0$.
+        \item {\emphcolor Nonorientable}: if $M$ is nonorientable, then $H^n_c(M)=H^n_\dR(M)=0$.
+    \eenum
+
+\ethrm
+
+If $j\colon U\to M$ is an open embedding, then it defines a pushforward $j_*\colon\Omega^\bul_c(U)\to\Omega^\bul_c(M)$ because
+a differential form $\omega$ which is supported in $U$ can be extended to all of $M$ by zero.
+Thus compactly supported de Rham cohomology is covariant in open embeddings and contravariant in proper maps.
+
+\bthrm[title={Compact Support Mayer-Vietoris}, name={mayervietcs}]
+
+    Let $M=U\cup V$ be open with inclusions $i,j$ respectively.
+    Then
+    $$ 0 \to \Omega^\bul_c(U\cap V) \xtos\delta \Omega^\bul_c(U)\oplus\Omega^\bul_c(V) \xtos{\text{sum}} \Omega^\bul_c(M)
+    \to 0 $$
+    is exact, where $\delta$ is signed inclusion $\omega\mapsto(-i_*\omega,j_*\omega)$ and the second arrow is the sum
+    $i_*+j_*$.
+
+\ethrm
+
+\bproof
+
+    The first map is clearly injective, and clearly the composition of the maps is zero.
+    If $\eta+\mu=0$ then $\mu=-\eta$ must be a form on $U\cap V$, so we have exactness at the first two spots.
+    The sum is surjective as if we let $\phi,\psi$ be a partition of unity for $U,V$, then $(\phi\omega,\psi\omega)$
+    is a preimage of $\omega\in\Omega^\bul_c(M)$ (it has compact support).
+    \qed
+
+\eproof
+
+In the situation above, we have a cohomology long exact sequence.
+The connecting morphism
+$$ H_c^p(M) \to H_c^{p+1}(U\cap V) $$
+is the map
+$$ \omega \mapsto (\phi\omega,\psi\omega) \mapsto (\d\phi\omega,\d\psi\omega) \mapsto \d\psi\omega $$
+from the usual construction.
+

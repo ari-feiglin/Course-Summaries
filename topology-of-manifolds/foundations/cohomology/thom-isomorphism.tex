@@ -1,0 +1,150 @@
+\subsection{The Thom Isomorphism}
+
+Recall that a vector bundle of rank $n$ is a map $\pi\colon E\to M$ such that the fibers $E_x=\pi^{-1}x$ all have the structure of a vector space.
+Furthermore there is an open cover $\set{U_i}$ of $M$ and local trivializations $\phi_i\colon E|_{U_i}=\pi^{-1}U_i\isoto U_i\times\bR^n$ which is linear
+on the fibers (meaning $E_x$ is mapped linearly to $\set x\times\bR^n$).
+Then the maps
+$$ \phi_i\circ\phi_j^{-1}\colon(U_i\cap U_j)\times\bR^n \isoto (U_i\cap U_j)\times\bR^n $$
+are linear isomorphisms on the fibers and thus of the form
+$$ \phi_i\circ\phi_j^{-1}(p,v) = (p,g_{ij}(p)v) $$
+for {\emphcolor transition functions}
+$$ g_{ij} \colon U_i\cap U_j \to \gl_n(\bR) . $$
+The transition functions satisfy the {\emphcolor cocycle condition}:
+$$ g_{ij}\circ g_{jk} = g_{jk}\qquad\text{on $U_i\cap U_j\cap U_k$.} $$
+
+If $g'_{ij}$ are other transition functions coming from another trivialization $\phi'_i$, then notice that $\phi_i\circ(\phi'_i)^{-1}$ is of the form
+$(p,v)\mapsto(p,\lambda_i(p)v)$ for $\lambda_i\colon U_i\to\gl_n(\bR)$.
+Thus
+$$ g_{ij} = \phi_i\phi_j^{-1} = \lambda_i\phi'_i(\phi'_j)^{-1}\lambda_j^{-1} = \lambda_ig'_{ij}\lambda_j^{-1} . $$
+And so we see that all transitions are equivalent in this sense.
+
+\bdefn
+
+    Suppose $E$ is a vector bundle which has a trivialization whose transition functions take values in a subgroup $H\leq\gl_n(\bR)$.
+    Then we say that {\emphcolor $E$'s structure group may be reduced to $H$}.
+
+    The vector bundle $E$ is said to be {\emphcolor oriented} by trivializations $\phi_i$ if $g_{ij}$ has positive determinant.
+    That is to say, its structure group may be reduced to $\gl_n^+(\bR)$.
+    If $\psi_j$ is another trivialization, it is said to be {\emphcolor equivalent} to $\phi_i$ if $\phi_i\circ\phi_j^{-1}(x)\in\gl_n(\bR)$
+    has positive determinant.
+
+\edefn
+
+We easily see that $M$ is orientable as a manifold iff its tangent bundle $TM$ is orientable as a vector bundle.
+
+\blemm
+
+    The structure group of any vector bundle $E\to M$ may be reduced to $\orth(n)$.
+    It may be reduced to $\sorth(n)$ iff $E$ is orientable.
+
+\elemm
+
+\bproof
+
+    Give $E$ a Riemannian metric structure (which exists by gluing via a partition of unity).
+    Relative to this metric, cover $E$ with orthonormal trivializations (which exist by the Gram-Schmidt process).
+    Then $g_{ij}$ preserves orthonormal bases, so it takes values in $\orth(n)$.
+    \qed
+
+\eproof
+
+Recall that if $f\colon M\to N$ is a smooth map and $\pi\colon E\to N$ is a vector bundle, we may pull back to form a vector bundle $f^*\pi\colon f^*E\to M$.
+Explicitly set
+$$ f^*E = \set{(p,v)\in M\times E}[f(p)=\pi(v)] = \coprod_{p\in M}E_{f(p)},\qquad f^*\pi(p,v) = p . $$
+Its fibers are $E_{fp}$.
+If $\phi_i\colon E|_{V_i}\to V_i\times\bR^n$ is a trivialization of $E$, then define $U_i=f^{-1}V_i$ and
+$$ \psi_i\colon(f^*E)|_{U_i} = \set{(p,v)\in f^*E}[f(p)\in V_i] \isoto U_i\times\bR^n,\qquad \psi_i(p,v) = (p,\phi_i(fp,v)) . $$
+The transition functions of the pullback are $f^*g_{ij}=g_{ij}\circ f$.
+
+Suppose $E\to M$ and $F\to M$ are vector bundles.
+Then we may construct the vector bundle $\hom(E,F)\to M$ whose fibers are $\hom(E_p,F_p)$.
+Define $\iso(E,F)\to M$ to be the fiber bundle whose fibers are isomorphisms $E_p\isoto F_p$.
+This is a fiber bundle with fiber $\gl_n(\bR)$.
+Furthermore an isomorphism of vector bundles $E\isoto F$ is simply a section of $\iso(E,F)$.
+
+\bprop
+
+    Suppose $M$ is compact and $f_0,f_1\colon M\to N$ are homotopic, and $E\to N$ is a vector bundle.
+    Then $f_0^*E$ and $f_1^*E$ are isomorphic vector bundles.
+
+\eprop
+
+\bproof
+
+    Let $f\colon M\times[0,1]\to N$ be a homotopy from $f_0$ to $f_1$, and let $\pi\colon M\times[0,1]\to M$ be the projection.
+    Suppose that for some $t_0\in[0,1]$, $f_{t_0}^*E$ is isomorphic to a vector bundle $F\to M$.
+    We will then show that for all $t$ sufficiently close to $t_0$, $f_t^*E$ is isomorphic to $F$.
+    By compactness, we get that {\it all\/} $f_t^*E$ are isomorphic to $F$; taking $F=f_1^*E$ we complete the proof.
+
+    Over $M\times[0,1]$ we have the bundles $f^*E$ and $\pi^*F$.
+    Because $f_{t_0}^*E\cong F$, we have a section of $\iso(f^*E,\pi^*F)$ over $M\times\set{t_0}$.
+    This is a section of $\hom(f^*E,\pi^*F)$, which is a vector bundle, and thus this section may be extended to a neighborhood of $M\times\set{t_0}$.
+    Furthermore it must be invertible in a neighborhood of $M\times\set{t_0}$.
+    So this extends to a local section of $\iso(f^*E,\pi^*F)$ around $M\times\set{t_0}$.
+    This gives us precisely what we want.
+    \qed
+
+\eproof
+
+\bcoro
+
+    If $M$ is contractible, all of its vector bundles are trivial.
+
+\ecoro
+
+\bproof
+
+    Let $f\colon M\to*\inj M$ be a constant map, so that $\id\colon M\to M$ is homotopic to it.
+    Then for a vector bundle $E\to M$, $E$ and $f^*E$ are isomorphic and $f^*E$ is just the trivial bundle $M\times E_*$.
+    \qed
+
+\eproof
+
+\blemm
+
+    If $E\to M$ is an oriented vector bundle such that $M$ is also orientable, then $E$ is orientable as a manifold.
+    Furthermore if $M$ is of finite type, so too is $E$.
+
+\elemm
+
+\bproof
+
+    Let $(U_i,\psi_i)$ be an oriented atlas for $M$, so that $h_{ij}=\psi_i\circ\psi_j^{-1}$ has Jacobian with positive determinant.
+    And let $\phi_i\colon E|_{U_i}\to U_i\times\bR^n$ be local trivializations of $E$ such that $g_{ij}$ have positive determinant.
+    Now
+    $$ E|_{U_i} \xtos{\phi_i} U_i\times\bR^n \xtos{\psi_i\times\id} \bR^n\times\bR^n $$
+    gives an atlas for $E$.
+    The transition functions of this atlas are
+    $$ (\psi_i\times\id)\circ\phi_i\circ\phi_j^{-1}\circ(\psi_j^{-1}\times\id) \colon \bR^{n+m} \to \bR^{n+m} , $$
+    which send $(x,y)$ to $(h_{ij}(x),g_{ij}(\psi_i(x))y)$.
+    This has Jacobian
+    $$ \pmatrix{J(h_{ij})*\cr0&g_{ij}\circ\psi_i} , $$
+    which has positive determinant, as desired.
+
+    The second claim is clear, as $E|_{U_i}\cap E|_{U_j}=E|_{U_i\cap U_j}\cong(U_i\cap U_j)\times\bR^n$, so that we see $E|_{U_i}$ forms
+    a good cover if $U_i$ does.
+    \qed
+
+\eproof
+
+\bcoro
+
+    Suppose $M$ is an orientable $m$-manifold and $E\to M$ is an orientable rank-$n$ vector bundle.
+    Suppose further that $M$ is of finite type.
+    Then
+    $$ H^\bul_\dR(E) \cong H^\bul_\dR(M),\qquad H^\bul_c(E) \cong H^{\bul-n}(M) . $$
+
+\ecoro
+
+\bproof
+
+    The first isomorphism comes from the fact that the zero section $M\to E$ embeds $M$ into $E$, and forms a deformation
+    retract of $E$ onto $M$ (by connecting a vector $(p,v)\in E$ to $(p,0)$ along a line).
+    Thus $E$ is homotopy equivalent to $M$.
+
+    For the second isomorphism we have by the above lemma that $E$ is orientable.
+    Then by Poincar\'e duality and the first isomorphism
+    $$ H^\bul_c(E) \cong (H^{n+m-\bul}_\dR(E))^* \cong (H^{n+m-\bul}_\dR(M))^* \cong H^{\bul-n}_c(M) . \qed $$
+
+\eproof
+

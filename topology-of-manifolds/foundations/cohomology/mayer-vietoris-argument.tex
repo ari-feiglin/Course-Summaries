@@ -1,0 +1,124 @@
+\subsection{The Mayer-Vietoris Argument}
+
+\bdefn
+
+    An open cover $\U=\set{U_i}_i$ of $M$ is {\emphcolor good} if all nonempty finite intersections
+    $U_{i_1}\cap\cdots\cap U_{i_n}$ are diffeomorphic to $\bR^n$.
+    If $M$ has a finite good cover, it is said to be of {\emphcolor finite type}.
+
+\edefn
+
+\bprop
+
+    Every manifold has a good cover, and if the manifold is compact it is of finite type.
+
+\eprop
+
+\bproof
+
+    Give $M$ a Riemannian metric, then cover $M$ with geodesically convex open subsets.
+    The intersection of geodesically convex subsets is geodesically convex, and open geodesically convex subsets are
+    diffeomorphic to $\bR^n$.
+    \qed
+
+\eproof
+
+A {\emphcolor refinement} of an open cover $\set{U_i}_i$ is an open cover $\set{V_j}_j$ such that every $V_j$ is contained
+in some $U_i$.
+Refinment gives the collection of open covers the structure of a preorder (it is transitive and reflexive).
+It is further a directed preorder, as every two open covers have a common refinment (taking intersections).
+The above result tells us that the collection of good covers is cofinal in the collection of covers.
+
+\bprop
+
+    If $M$ has a finite good cover, its cohomology (both regular and compact) is finite dimensional.
+
+\eprop
+
+\bproof
+
+    From Mayer-Vietoris we have an exact
+    $$ H^{p-1}(U\cap V) \to H^p(U\cup V) \to H^p(U)\oplus H^p(V) , $$
+    so if $H^p(U),H^p(V),H^{p-1}(U\cap V)$ are finite dimensional so too is $U\cup V$.
+    Taking a finite good cover, we inductively see that $H^p(U_1\cup\cdots\cup U_n)$ is finite-dimensional.
+    \qed
+
+\eproof
+
+Consider the following bilinear form
+$$ \int\colon H^p(M)\otimes H^{n-p}_c(M) \to \bR,\qquad (\omega,\eta)\mapsto\int_M\omega\wedge\eta . $$
+This descends into cohomology as both integration and wedge products respect $\d$.
+Giving such a bilinear form is the same as giving a morphism to the dual:
+$$ H^p(M) \to (H^{n-p}_c(M))^* . $$
+
+Recall \refmath{mayerviet} and \refmath{mayervietcs}: we have a diagram whose rows are exact:
+{\def\diagcolwidth{0cm}%
+\def\diagcolbuf{-8pt}%
+\diagram{
+    \cdots&H^p(U\cup V)&H^p(U)\oplus H^p(V)&H^p(U\cap V)&H^{p+1}(U\cup V)&\cdots\cr
+    \cdots&(H_c^{n-p}(U\cup V))^*&(H_c^{n-p}(U))^*\oplus (H_c^{n-p}(V))^*&(H_c^{n-p}(U\cap V))^*&(H_c^{n-p-1}(U\cup V))^*&\cdots
+}{
+    \diagarrow{from={1,2}, to={1,3}, text=\text{res}, y distance=.15cm}
+    \diagarrow{from={1,3}, to={1,4}, text=\text{diff}, y distance=.15cm}
+    \diagarrow{from={1,4}, to={1,5}, text={\partial_1}, y distance=.15cm}
+    \diagarrow{from={2,2}, to={2,3}, text=\text{sum}, y distance=.15cm}
+    \diagarrow{from={2,3}, to={2,4}, text=\delta^*, y distance=.15cm}
+    \diagarrow{from={2,4}, to={2,5}, text={\partial_2^*}, y distance=.15cm}
+    \diagarrow{from={1,1}, to={1,2}}
+    \diagarrow{from={1,5}, to={1,6}}
+    \diagarrow{from={2,5}, to={2,6}}
+    \diagarrow{from={2,1}, to={2,2}}
+    \diagarrow{from={1,2}, to={2,2}}
+    \diagarrow{from={1,3}, to={2,3}}
+    \diagarrow{from={1,4}, to={2,4}}
+    \diagarrow{from={1,5}, to={2,5}}
+}}
+We claim that this is sign-commutative.
+For the first square maps $\omega$ to $(\omega|_U,\omega|_V)$ to the functional
+$$ (\eta,\mu) \mapsto \int_U\omega\wedge\eta + \int_V\omega\wedge\mu , $$
+so we see this is commutative.
+The second square maps $(\eta,\mu)$ to $\eta-\mu$ to the functional
+$$ \theta\mapsto \int_{U\cap V}\theta\wedge\eta - \int_{U\cap V}\theta\wedge\mu . $$
+The bottom line first maps this pair to the functional
+$$ (\eta',\mu') \mapsto \int_{U\cap V}\eta\wedge\eta' - \int_{U\cap V}\mu\wedge\mu' . $$
+
+For the third square, let $\phi,\psi$ be a partition of unity for $U,V$.
+Then $\partial_1\omega$ is a form such that
+$$ \partial_1\omega|_U = -\d(\psi\omega),\qquad \partial_2\omega|_V = \d(\phi\omega) . $$
+And $\partial_2\tau\in H^{n-p}_c(U\cap V)$ is a differential form where
+$$ (\d(\phi\tau),\d(\psi\tau)) = (-\tau\text{ extended to $U$},\ \tau\text{ extended to $V$}) . $$
+Note that because $\omega,\tau$ are closed, $\d(f\tau)=(\d f)\tau$ and $\d(f\omega)=(\d f)\omega$.
+
+So the top path maps $\omega$ to the functional
+$$ \eta \mapsto \int_{U\cup V}\partial_1\omega\wedge\eta , $$
+and the bottom path maps $\omega$ to the functional
+$$ \eta \mapsto \int_{U\cap V}\omega\wedge(\partial_2\eta). $$
+Now
+$$ \int_{U\cap V}\omega\wedge(\partial_2\eta) = \int_{U\cap V}\omega\wedge(\d\psi)\eta
+= (-1)^{\deg\omega}\int_{U\cap V}(\d\psi)\omega\wedge\eta . $$
+Conversely as $\partial_1\omega$ is supported in $U\cap V$,
+$$ \int_{U\cup V}(\partial_1\omega)\wedge\eta = \int_{U\cap V}-(\d\psi)\omega\wedge\eta , $$
+as desired.
+
+We want to say that the vertical arrows are isomorphisms.
+By the five lemma, it is sufficient to show this for $U,V,U\cap V$, and the result follows for $U\cup V$.
+
+\bthrm[title={Poincar\'e Duality}, name={poincareduality}]
+
+    If $M$ is of finite type, then integration forms a natural isomorphism $H^p_\dR(M)\cong(H^{n-p}_c(M))^*$.
+
+\ethrm
+
+\bproof
+
+    We induct on the number of elements in a good cover of $M$.
+    If $M\cong\bR^n$ this follows from $H^0_\dR(\bR^n)=\bR=H^n_c(\bR^n)$ and all other cohomology modules are zero.
+    For $U_0,\dots,U_n$ a good cover, Poincar\'e holds for $U_1\cup\cdots\cup U_n$, $U_0$, and $(U_1\cup\cdots\cup U_n)\cap U_0$
+    by induction, so it holds for $U_0\cup\cdots\cup U_n$ by the above discussion.
+    \qed
+
+\eproof
+
+We then see that if $M$ is a compact oriented $n$-manifold then $H^n_\dR(M)\cong\bR$.
+In particular note, say, that compact positively-dimensional manifolds are not contractible.
+
