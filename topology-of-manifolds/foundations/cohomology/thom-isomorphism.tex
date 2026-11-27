@@ -62,12 +62,20 @@ Define $\iso(E,F)\to M$ to be the fiber bundle whose fibers are isomorphisms $E_
 This is a fiber bundle with fiber $\gl_n(\bR)$.
 Furthermore an isomorphism of vector bundles $E\isoto F$ is simply a section of $\iso(E,F)$.
 
-\bprop
+\bprop[name={bundlehomotopy}]
 
-    Suppose $M$ is compact and $f_0,f_1\colon M\to N$ are homotopic, and $E\to N$ is a vector bundle.
+    Suppose $f_0,f_1\colon M\to N$ are homotopic, and $E\to N$ is a vector bundle.
     Then $f_0^*E$ and $f_1^*E$ are isomorphic vector bundles.
 
 \eprop
+
+%\bnote
+%
+%    A paracompact space is one for which every open cover has a locally finite refinement.
+%    Locally finite means that every point in $M$ has a neighborhood which meets only finitely many opens in the refinement.
+%    Every metric space, and thus every manifold, is paracompact, so the assumption here is superfluous.
+%
+%\enote
 
 \bproof
 
@@ -100,7 +108,7 @@ Furthermore an isomorphism of vector bundles $E\isoto F$ is simply a section of 
 
 \eproof
 
-\blemm
+\blemm[name={orientedvboveroriented}]
 
     If $E\to M$ is an oriented vector bundle such that $M$ is also orientable, then $E$ is orientable as a manifold.
     Furthermore if $M$ is of finite type, so too is $E$.
@@ -118,7 +126,7 @@ Furthermore an isomorphism of vector bundles $E\isoto F$ is simply a section of 
     $$ (\psi_i\times\id)\circ\phi_i\circ\phi_j^{-1}\circ(\psi_j^{-1}\times\id) \colon \bR^{n+m} \to \bR^{n+m} , $$
     which send $(x,y)$ to $(h_{ij}(x),g_{ij}(\psi_i(x))y)$.
     This has Jacobian
-    $$ \pmatrix{J(h_{ij})*\cr0&g_{ij}\circ\psi_i} , $$
+    $$ \pmatrix{J(h_{ij})&*\cr0&g_{ij}\circ\psi_i} , $$
     which has positive determinant, as desired.
 
     The second claim is clear, as $E|_{U_i}\cap E|_{U_j}=E|_{U_i\cap U_j}\cong(U_i\cap U_j)\times\bR^n$, so that we see $E|_{U_i}$ forms
@@ -145,6 +153,237 @@ Furthermore an isomorphism of vector bundles $E\isoto F$ is simply a section of 
     For the second isomorphism we have by the above lemma that $E$ is orientable.
     Then by Poincar\'e duality and the first isomorphism
     $$ H^\bul_c(E) \cong (H^{n+m-\bul}_\dR(E))^* \cong (H^{n+m-\bul}_\dR(M))^* \cong H^{\bul-n}_c(M) . \qed $$
+
+\eproof
+
+\bdefn
+
+    Let $E\to M$ be a vector bundle.
+    A differential form $\omega\in\Omega^\bul(E)$ has {\emphcolor compact support vertically} if for every compact $K\subseteq M$,
+    $\pi^{-1}K\cap\supp\omega\subseteq E$ is compact.
+    Note then that $\supp\omega|_{E_x}\subseteq E_x\cap\supp\omega$ is closed in a compact set, thus compact.
+    So if $\omega$ has compact support vertically, while it may not have compact support, it does have compact support in $E$'s fibers.
+
+    Denote by $\Omega_\cv^\bul(E)$ the space of differential forms on $E$ with compact vertical support.
+
+\edefn
+
+Let $E=M\times\bR^n$ be a trivial bundle, and denote by $t_1,\dots,t_n$ the coordinates of $\bR^n$.
+Then if we let $x_1,\dots,x_m$ be local coordinates of $M$, we have that a differential form on $E$ looks locally like
+$$ \omega = \sum_{I,J}\alpha_{I,J}\d x_I\wedge\d t_J,\qquad \alpha_{I,J} \in C^\infty(M\times\bR^n) . $$
+Then
+$$ \omega = \sum_{I,J}\alpha_{I,J}(\pi^*\d x_I)\wedge\d t_J , $$
+were $\pi\colon E\to M$ is the projection.
+Thus differential forms on $E$ are linear combinations of forms of the form $(\pi^*\tau)\wedge f(x,t)\d t_J$ where $\tau$ is a differential
+form on $M$ and $f(x,t)\in C^\infty(E)$.
+
+If $\omega$ has vertical compact support then for each $x\in M$, $f(x,t)$ has compact support in $\bR^n$.
+Thus we may define the map $\pi_*\colon\Omega^\bul_\cv(E)\to\Omega^{\bul-n}(M)$ by considering these forms.
+\benum
+    \item If $\omega=(\pi^*\tau)\wedge f(x,t)\d t_J$ where $J$ is not of length $n$, then $\pi_*\omega=0$.
+    \item If $\omega=(\pi^*\tau)\wedge f(x,t)\d t_1\wedge\cdots\wedge\d t_n$, then
+    $$ \pi_*\omega = \parens{\int_{\bR^n}f(x,t)\d t_1\cdots\d t_n}\tau . $$
+\eenum
+
+In general if $E\to M$ is an oriented vector bundle, let $(U_i,\phi_i)$ be an oriented trivialization then let $\bar x,\bar y$ be coordinates
+for $U_i,U_j$ (in $M$) and $\bar t,\bar u$ be frames for $E|_{U_i}$ and $E|_{U_j}$ given by these trivializations.
+Because the trivialization is oriented, for every point of $U_i\cap U_j$, $\bar t$ and $\bar u$ are related by an element of $\gl_n^+(\bR)$.
+A form on $E$ is locally of the form $\omega|_{U_i}=(\pi^*\tau)\wedge f(x,t)\d t_J$.
+Again if $J$ does not contain all $1,\dots,n$ then we define $\pi_*\omega|_{U_i}=0$.
+And otherwise $\omega_i=\omega|_{U_i}=(\pi^*\tau)f(x,t)\d t_1\wedge\cdots\wedge\d t_n$ so define
+$$ \pi_*\omega_i = \parens{\int_{\bR^n}f(x,t)\d t_1\cdots\d t_n}\tau . $$
+Suppose that in $U_j$, $\omega_j=(\pi^*\eta)g(x,u)\d u_1\wedge\cdots\wedge\d u_n$ and so
+$$ \pi_*\omega_j = \parens{\int_{\bR^n}g(x,t)\d u_1\cdots\d u_n}\eta . $$
+Let $\Phi\colon U_i\cap U_j\to\gl_n^+(\bR)$ be the transition from $\bar u$ to $\bar t$ so that $\bar u=\Phi(x)\bar t$.
+We have that in $U_i\cap U_j$,
+$$ \omega_j = (\pi^*\eta)g(x,u)\d u_1\wedge\cdots\wedge\d u_n = (\pi^*\eta)g(x,\Phi(x)t)\det(\Phi(x))\d t_1\wedge\cdots\wedge\d t_n
+= (\pi^*\tau)f(x,t)\d t_1\wedge\cdots\wedge\d t_n = \omega_i . $$
+Integrating over $E_x$ for a set $x$ with respect to $\bar t$ gives us
+$$ \tau\cdot\int_{\bR^n}f(x,t)\d\bar t = \eta\cdot\int_{\bR^n}g(x,\Phi(x)t)\det{\Phi(x)}\d\bar t . $$
+Because $\Phi(x)$ has positive determinant this is equal to
+$$ = \eta\cdot\int_{\bR^n}g(x,u)\d\bar u . $$
+Thus the $\pi_*\omega_i$ all agree on their intersections and glue together to give $\pi_*\omega\in\Omega^{\bul-n}(M)$.
+
+\bdefn
+
+    Let $E\to M$ be an oriented vector bundle.
+    The map defined above
+    $$ \pi_*\colon\Omega^\bul_\cv(E)\to\Omega^{\bul-n}(M) $$
+    is called {\emphcolor integration along the fiber}.
+
+\edefn
+
+\bprop
+
+    Integration along the fiber is a map of complexes.
+    Thus it descends into a map of cohomology
+    $$ \pi_*\colon H^\bul_\cv(E) \to H^{\bul-n}_\dR(M) . $$
+
+\eprop
+
+\bproof
+
+    We must show that $\pi_*$ commutes with exterior differentiation.
+    Let $(U_i,\phi_i)$ be a trivialization for $E$, with a partition of unity $\rho_i$ subordinate to it.
+    Then for $\omega\in\Omega^\bul_\cv(E)$, we have $\omega=\sum_i\rho_i\omega$.
+    Because both $\pi_*$ and $\d$ are linear, it is sufficient to prove this for $\rho_i\omega$.
+    Thus we may assume from the outset that $E=M\times\bR^n$.
+
+    If $\omega=(\pi^*\tau)f(x,t)\d t$, then
+    $$ \d\pi_*\omega = \d\parens{\int f(x,t)\d t} = \parens{\sum_i\d x_i\int\pdvof f{x_i}(x,t)\d t}\tau
+    + (\d\tau)\int f(x,t)\d t . $$
+    And
+    $$ \multline{
+        \pi_*\d\omega = \pi_*((\pi^*\d\tau)f\d t+\d f\wedge\pi^*\tau\wedge\d t)
+        = \pi_*\parens{(\pi^*\d\tau)f\d t + \sum_i\d x_i\pdvof f{x_i}\wedge\pi^*\tau\wedge\d t}\cr
+        = \parens{\tau\int f\d t}\d\tau + \parens{\sum_i\int\pdvof f{x_i}\d t}\d x_i\wedge\tau ,
+    } $$
+    which is equal to $\d\pi_*\omega$.
+
+    Now if $\omega=(\pi^*\tau)f\d t_I$ where $I$ does not contain all $1,\dots,n$.
+    Then $\d\pi_*\omega=0$.
+    On the other hand
+    $$ \d\omega = (\pi^*\d\tau)f\d t_I + (\pi^*\tau)\d f\d t_I. $$
+    The first term integrates to zero, but the second term has subterms of the form
+    $$ (\pi^*\tau)\pdvof f{t_i}\d t_i\d t_I , $$
+    which may integrate to be nonzero when $\d t_i\d t_I=\pm\d t_1\cdots\d t_n$.
+    In such a case
+    $$ \int_{-\infty}^\infty\pdvof f{t_i}(x,t)\d t_i = f(\dots,+\infty,\dots) - f(\dot,-\infty,\dots) = 0 $$
+    as $f$ has compact support.
+    And so integrating $\ipdvof f{t_i}\d t$ is zero.
+    \qed
+
+\eproof
+
+\bprop[name={projformulas}]
+
+    We have the following projection formulas.
+    \benum
+        \item Let $\pi\colon E\to M$ be an oriented rank-$n$ vector bundle.
+        Let $\tau\in\Omega^\bul(M)$ and $\omega\in\Omega^\bul_\cv(E)$.
+        Then
+        $$ \pi_*(\pi^*\tau\wedge\omega) = \tau\wedge\pi_*\omega . $$
+        \item If further $M$ is an oriented $m$-manifold, $\omega\in\Omega^q_\cv(E)$ and $\tau\in\Omega_c^{m+n-q}(M)$, then with the induced
+        orientation on $E$ (by \refmath[lemma]{orientedvboveroriented})
+        $$ \int_E(\pi^*\tau)\wedge\omega = \int_M\tau\wedge\pi_*\omega . $$
+    \eenum
+
+\eprop
+
+\bproof
+
+    For (1) we may look locally so we may assume $E=M\times\bR^n$.
+    Suppose $\omega=\pi^*\eta\cdot f(x,t)\d t_J$ where $J$ does not contain all $1,\dots,n$.
+    Then $\pi_*\omega=0$ and
+    $$ \pi_*(\pi^*\tau\wedge\omega) = \pi_*(\pi^*(\tau\wedge\eta)f(x,t)\d t_J) = 0 = \tau\wedge\pi_*\omega . $$
+    Alternatively suppose $\omega=\pi^*\eta\cdot f(x,t)\d\bar t$.
+    Then
+    $$ \pi_*(\pi^*\tau\wedge\omega) = (\tau\wedge\eta)\int_{\bR^n}f(x,t)\d\bar t = \tau\wedge\pi_*\omega . $$
+
+    Let $\set{(U_i,\phi_i)}$ be an oriented trivialization for $E$ and $\rho_i$ a partition of unity subordinate to it.
+    Then $\omega=\sum_i\rho_i\omega$, so
+    $$ \int_E(\pi^*\tau)\wedge\omega = \sum_i\int_{E|_{U_i}}\pi^*\tau\wedge\rho_i\omega $$
+    and
+    $$ \int_M\tau\wedge\pi_*\omega = \sum_i\int_{U_i}\tau\wedge\pi_*(\rho_i\omega) . $$
+    It is thus sufficient to prove this over $E=M\times\bR^n$, which is done as in (1).
+    \qed
+
+\eproof
+
+\bthrm[title={Thom Isomorphism}, name={thomiso}]
+
+    Let $\pi\colon E\to M$ be an orientable vector bundle of rank-$n$ over a finite type manifold $M$.
+    Then integration along fibers is an isomorphism
+    $$ \pi_*\colon H^\bul_\cv(E) \isoto H^{\bul-n}_\dR(M) . $$
+
+\ethrm
+
+\bproof
+
+    Let $U,V$ be open subsets of $M$, so that we can form an exact sequence of complexes
+    $$ 0 \to \Omega^\bul_\cv(E|_{U\cup V}) \to \Omega^\bul_\cv(E|_U) \oplus \Omega^\bul_\cv(E|_V) \to \Omega^\bul_\cv(E|_{U\cap V}) \to 0 $$
+    as in \refmath{mayerviet}.
+    Consider now the diagram
+    {\def\diagcolbuf{0pt}\def\diagcolwidth{0pt}
+    \diagram{
+        \cdots&H^\bul_\cv(E|_{U\cup V})&H^\bul_\cv(E|_U)\oplus H^\bul_\cv(E|_V)&H^\bul_\cv(E|_{U\cap V})&H^{\bul+1}(E|_{U\cup V})&\cdots\cr
+        \cdots&H^{\bul-n}(U\cup V)&H^{\bul-n}(U)\oplus H^{\bul-n}(V)&H^{\bul-n}(U\cap V)&H^{\bul+1-n}(U\cup V)&\cdots
+    }{
+        \diagarrow{from={1,1}, to={1,2}}
+        \diagarrow{from={1,2}, to={1,3}}
+        \diagarrow{from={1,3}, to={1,4}}
+        \diagarrow{from={1,5}, to={1,6}}
+        \diagarrow{from={2,1}, to={2,2}}
+        \diagarrow{from={2,2}, to={2,3}}
+        \diagarrow{from={2,3}, to={2,4}}
+        \diagarrow{from={2,5}, to={2,6}}
+        \diagarrow{from={1,2}, to={2,2}, text={\pi_*}, x distance=.15cm}
+        \diagarrow{from={1,3}, to={2,3}, text={\pi_*}, x distance=.15cm}
+        \diagarrow{from={1,4}, to={2,4}, text={\pi_*}, x distance=.15cm}
+        \diagarrow{from={1,5}, to={2,5}, text={\pi_*}, x distance=.15cm}
+        \diagarrow{from={1,4}, to={1,5}, text={\partial_1}, y distance=.15cm}
+        \diagarrow{from={2,4}, to={2,5}, text={\partial_2}, y distance=.15cm}
+    }}
+    The squares here all commute.
+    Commuting of the first two squares follows from linearity of $\pi_*$.
+    Recall that
+    $$ \pi_*\partial_1\omega = \pi_*\d(\pi^*\rho_V\omega) = \pi_*(\pi^*(\d\rho_V)\wedge\omega + \pi^*\rho_V\d\omega) , $$
+    with the projection identity above this is equal to
+    $$ = \d\rho_V\wedge\pi_*\omega + \rho_V\wedge\pi_*\d\omega . $$
+    And on the other hand
+    $$ \partial_2(\pi_*\omega) = \d(\rho_V(\pi_*\omega)) = \d\rho_V\wedge\pi_*\omega + \rho_V\wedge\pi_*\d\omega . $$
+    So we have commutativity.
+
+    If $U$ is diffeomorphic to $\bR^n$, then $E|_U$ is trivial by \refmath[proposition]{bundlehomotopy}.
+    So we need to show that integration is an isomorphism
+    $$ \pi_*\colon H^\bul(M\times\bR^n) \isoto H^{\bul-n}_\dR(M) . $$
+    This can be done.
+    The proof then reduces to an inductive argument on the size of a good cover of $M$.
+    \qed
+
+\eproof
+
+Denote the inverse of $\pi_*$ by
+$$ \T\colon H^\bul(M) \to H^{\bul+n}_\cv(E) . $$
+The image of $1\in\bR\cong H^0(M)$ in $H^n(E)$ is called the {\emphcolor Thom class} of the oriented bundle $E$.
+Notice then that by the projection formula
+$$ \pi_*(\pi^*\omega\wedge\T(1)) = \omega\wedge\pi_*\T(1) = \omega . $$
+Thus we see that $\T$ can be given by
+$$ \T(\bul) = \pi^*(\bul)\wedge\Phi $$
+where $\Phi=\T(1)$ is the Thom class of $E$.
+
+\bprop
+
+    The Thom class $\Phi$ on a rank-$n$ oriented bundle $E$ is uniquely characterized as the cohomology class in $H^n_\cv(E)$ which restricts
+    to the generator of $H^n_c(F)$ for each fiber $F$.
+
+\eprop
+
+\bproof
+
+    Since $\pi_*\Phi=1$, $\Phi|_F$ is an $n$-form on the fiber with total integral $1$.
+    If $\Phi'\in H^n_\cv(E)$ restricts to the generator on each fiber, then
+    $$ \pi_*(\pi^*\omega\wedge\Phi') = \omega\wedge\pi_*\Phi' = \omega , $$
+    which means that $\pi^*(\bul)\wedge\Phi'$ must be the Thom isomorphism, so $\Phi'=\T(1)=\Phi$.
+    \qed
+
+\eproof
+
+\bprop
+
+    If $E,F\to M$ are oriented vector bundles, with projections $\pi_E,\pi_F$, then the Thom class of $E\oplus F$ is
+    $$ \Phi(E\oplus F) = \pi_E^*\Phi(E)\wedge\pi_F^*\Phi(F) \in H^{n+m}_\cv(E\oplus F) . $$
+
+\eprop
+
+\bproof
+
+    Let $m$ be the rank of $E$ and $n$ the rank of $F$.
+    Then $\pi_E^*\Phi(E)\wedge\pi_F^*\Phi(F)$ is a class of $H^{m+n}_\cv(E\oplus F)$ whose restriction to each fiber is
+    the generator of the compact homology of the fiber, via the isomorphism
+    $$ H^{m+n}_c(\bR^m\times\bR^n) \cong H^m_c(\bR^m)\otimes H^n_c(\bR^n) $$
+    given by the wedge product.
+    \qed
 
 \eproof
 
